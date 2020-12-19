@@ -100,7 +100,7 @@ public class PickRandomEvent extends QuestEvent {
         return null;
     }
 
-    private class RandomEvent {
+    private static class RandomEvent {
 
         private final EventID identifier;
         private final VariableNumber chance;

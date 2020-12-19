@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.compatibility.quests;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import me.blackvein.quests.Quests;
 import org.bukkit.Bukkit;
 import pl.betoncraft.betonquest.BetonQuest;
@@ -21,10 +22,11 @@ public class QuestsIntegrator implements Integrator {
     }
 
     @Override
+    @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
     public void hook() {
         questsInstance = (Quests) Bukkit.getPluginManager().getPlugin("Quests");
-        plugin.registerConditions("quest", QuestCondition.class);
-        plugin.registerEvents("quest", QuestEvent.class);
+        plugin.registerConditions("quest", QuestsCondition.class);
+        plugin.registerEvents("quest", QuestsEvent.class);
         questsInstance.getCustomRewards().add(new EventReward());
         questsInstance.getCustomRequirements().add(new ConditionRequirement());
     }

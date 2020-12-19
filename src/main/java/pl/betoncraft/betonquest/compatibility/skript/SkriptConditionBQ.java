@@ -4,6 +4,7 @@ import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import pl.betoncraft.betonquest.BetonQuest;
@@ -36,6 +37,7 @@ public class SkriptConditionBQ extends Condition {
     }
 
     @Override
+    @SuppressFBWarnings("NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE")
     public String toString(final Event event, final boolean debug) {
         return player.getSingle(event).getName() + " meets " + condition.toString();
     }

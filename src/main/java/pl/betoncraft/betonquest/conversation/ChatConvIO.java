@@ -78,7 +78,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         }
         // if player passes max distance
         if (!event.getTo().getWorld().equals(conv.getLocation().getWorld()) || event.getTo()
-                .distance(conv.getLocation()) > Integer.valueOf(Config.getString("config.max_npc_distance"))) {
+                .distance(conv.getLocation()) > Integer.parseInt(Config.getString("config.max_npc_distance"))) {
             // we can stop the player or end conversation
             if (conv.isMovementBlock()) {
                 moveBack(event);
@@ -98,7 +98,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         // if the player is in other world (he teleported himself), teleport him
         // back to the center of the conversation
         if (!event.getTo().getWorld().equals(conv.getLocation().getWorld()) || event.getTo()
-                .distance(conv.getLocation()) > Integer.valueOf(Config.getString("config.max_npc_distance")) * 2) {
+                .distance(conv.getLocation()) > Integer.parseInt(Config.getString("config.max_npc_distance")) * 2) {
             event.getPlayer().teleport(conv.getLocation());
             return;
         }
@@ -125,10 +125,11 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
             return;
         }
         final String message = event.getMessage().trim();
-        for (final int i : options.keySet()) {
-            if (message.equals(Integer.toString(i))) {
-                conv.sendMessage(answerFormat + options.get(i));
-                conv.passPlayerAnswer(i);
+        for (final Map.Entry<Integer, String> entry : options.entrySet()) {
+            final int index = entry.getKey();
+            if (message.equals(Integer.toString(index))) {
+                conv.sendMessage(answerFormat + entry.getValue());
+                conv.passPlayerAnswer(index);
                 event.setCancelled(true);
                 return;
             }

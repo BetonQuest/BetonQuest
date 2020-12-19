@@ -46,13 +46,7 @@ public class QuestItemHandler implements Listener {
             return;
         }
         final String playerID = PlayerConverter.getID(event.getPlayer());
-        if (playerID == null) {
-            return;
-        }
         final ItemStack item = event.getItemDrop().getItemStack();
-        if (item == null) {
-            return;
-        }
         if (Journal.isJournal(playerID, item)) {
             event.getItemDrop().remove();
         } else if (Utils.isQuestItem(item)) {

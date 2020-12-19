@@ -133,7 +133,7 @@ public class PotionHandler {
         return true;
     }
 
-    private class CustomEffectHandler {
+    private static class CustomEffectHandler {
 
         private PotionEffectType customType;
         private Existence customTypeE = Existence.WHATEVER;

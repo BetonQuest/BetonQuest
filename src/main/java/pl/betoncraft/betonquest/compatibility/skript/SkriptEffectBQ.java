@@ -4,6 +4,7 @@ import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -37,6 +38,7 @@ public class SkriptEffectBQ extends Effect {
     }
 
     @Override
+    @SuppressFBWarnings("NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE")
     public String toString(final Event event, final boolean debug) {
         return "fire " + this.event.toString() + " for " + player.getSingle(event).getName();
     }

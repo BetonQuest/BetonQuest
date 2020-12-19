@@ -156,13 +156,14 @@ public class BlockSelector {
             return false;
         }
 
-        for (final String singleState : states.keySet()) {
+        for (final Map.Entry<String, String> entry : states.entrySet()) {
+            final String singleState = entry.getKey();
             if (!blockStates.containsKey(singleState)) {
                 return false;
             }
 
             final String blockState = blockStates.get(singleState);
-            final String state = states.get(singleState);
+            final String state = entry.getValue();
             if (!blockState.equals(state)) {
                 final Pattern statePattern = Pattern.compile("^" + state + "$");
                 final Matcher stateMatcher = statePattern.matcher(blockState);

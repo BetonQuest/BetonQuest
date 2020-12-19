@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.utils;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import pl.betoncraft.betonquest.BetonQuest;
 
 import java.io.File;
@@ -154,6 +155,7 @@ public final class LogUtils {
         }
     }
 
+    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     private static void createLogFile() throws IOException {
         LOG_FILE.getParentFile().mkdirs();
         LOG_FILE.createNewFile();

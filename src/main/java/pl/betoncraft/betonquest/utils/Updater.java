@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.utils;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.bukkit.Bukkit;
@@ -15,6 +16,7 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.logging.Level;
@@ -103,6 +105,7 @@ public class Updater {
     }
 
     @SuppressWarnings("PMD.AvoidFileStream")
+    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     private void downloadUpdate() throws QuestRuntimeException {
         LogUtils.getLogger().log(Level.INFO, "(Autoupdater) Updater started download of new version...");
         if (!config.enabled) {
@@ -172,7 +175,8 @@ public class Updater {
     }
 
     private String readStringFromURL(final String url) throws IOException {
-        try (InputStreamReader reader = new InputStreamReader(new URL(url).openStream()); BufferedReader bufferedReader = new BufferedReader(reader)) {
+        try (InputStreamReader reader = new InputStreamReader(new URL(url).openStream(), StandardCharsets.UTF_8);
+             BufferedReader bufferedReader = new BufferedReader(reader)) {
             final StringBuilder builder = new StringBuilder();
             int singleChar = bufferedReader.read();
             while (singleChar != -1) {

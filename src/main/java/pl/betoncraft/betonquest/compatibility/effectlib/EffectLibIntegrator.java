@@ -1,6 +1,7 @@
 package pl.betoncraft.betonquest.compatibility.effectlib;
 
 import de.slikey.effectlib.EffectManager;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.compatibility.Integrator;
@@ -15,6 +16,7 @@ public class EffectLibIntegrator implements Integrator {
     private EffectManager manager;
 
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
+    @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
     public EffectLibIntegrator() {
         instance = this;
         plugin = BetonQuest.getInstance();

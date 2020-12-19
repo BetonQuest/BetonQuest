@@ -265,10 +265,11 @@ public class PlayerData {
      * this action (so they won't be started twice)
      */
     public void startObjectives() {
-        for (final String objective : objectives.keySet()) {
+        for (final Map.Entry<String, String> entry : objectives.entrySet()) {
+            final String objective = entry.getKey();
             try {
                 final ObjectiveID objectiveID = new ObjectiveID(null, objective);
-                BetonQuest.resumeObjective(playerID, objectiveID, objectives.get(objective));
+                BetonQuest.resumeObjective(playerID, objectiveID, entry.getValue());
             } catch (final ObjectNotFoundException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Loaded '" + objective
                         + "' objective from the database, but it is not defined in configuration. Skipping.");

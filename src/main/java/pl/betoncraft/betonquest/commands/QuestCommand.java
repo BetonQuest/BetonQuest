@@ -1379,8 +1379,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         Config.setString(pack + ".main.variables.vectors." + args[2],
-                String.format(Locale.US, "$%s$->(%.2f,%.2f,%.2f)", name, vector.getBlockX(), vector.getBlockY(),
-                        vector.getBlockZ()));
+                String.format(Locale.US, "$%s$->(%.2f,%.2f,%.2f)", name, vector.getX(), vector.getY(), vector.getZ()));
         player.sendMessage("§2OK");
     }
 
@@ -1730,18 +1729,17 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         sender.sendMessage("§e----- §aBetonQuest §e-----");
         if (sender instanceof Player) {
             final String lang = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID((Player) sender)).getLanguage();
-            for (final String command : cmds.keySet()) {
+            for (final Map.Entry<String, String> entry : cmds.entrySet()) {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
                         "tellraw " + sender.getName() + " {\"text\":\"\",\"extra\":[{\"text\":\"§c/" + alias + " "
-                                + cmds.get(
-                                command)
+                                + entry.getValue()
                                 + "\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"§b"
-                                + Config.getMessage(lang, "command_" + command) + "\"}}]}");
+                                + Config.getMessage(lang, "command_" + entry.getKey()) + "\"}}]}");
             }
         } else {
-            for (final String command : cmds.keySet()) {
-                sender.sendMessage("§c/" + alias + " " + cmds.get(command));
-                sender.sendMessage("§b- " + Config.getMessage(Config.getLanguage(), "command_" + command));
+            for (final Map.Entry<String, String> entry : cmds.entrySet()) {
+                sender.sendMessage("§c/" + alias + " " + entry.getValue());
+                sender.sendMessage("§b- " + Config.getMessage(Config.getLanguage(), "command_" + entry.getKey()));
             }
         }
     }

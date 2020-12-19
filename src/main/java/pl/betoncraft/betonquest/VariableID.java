@@ -1,9 +1,12 @@
 package pl.betoncraft.betonquest;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 
+@Deprecated
 @SuppressWarnings("PMD.CommentRequired")
+@SuppressFBWarnings("NM_SAME_SIMPLE_NAME_AS_SUPERCLASS")
 public class VariableID extends pl.betoncraft.betonquest.id.VariableID {
 
     /**

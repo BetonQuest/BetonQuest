@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.database;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.plugin.Plugin;
 import pl.betoncraft.betonquest.utils.LogUtils;
 
@@ -29,6 +30,7 @@ public class SQLite extends Database {
     }
 
     @Override
+    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     public Connection openConnection() {
         if (!plugin.getDataFolder().exists()) {
             plugin.getDataFolder().mkdirs();

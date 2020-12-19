@@ -14,11 +14,11 @@ import java.util.stream.Stream;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class LocalChatPaginator extends ChatPaginator {
-    public static Map<Character, Integer> fontSizes;
-    public static int defaultCharWidth = 6;
+    public static final Map<Character, Integer> FONT_SIZES;
+    public static final int DEFAULT_CHAR_WIDTH = 6;
 
     static {
-        fontSizes = Stream.of(new Object[][]{
+        FONT_SIZES = Stream.of(new Object[][]{
                 {' ', 4}, {'!', 2}, {'"', 5}, {'#', 6}, {'$', 6}, {'%', 6}, {'&', 6}, {'\'', 3},
                 {'(', 6}, {')', 6}, {'*', 5}, {'+', 6}, {',', 2}, {'-', 6}, {'.', 2}, {'/', 6},
                 {'0', 6}, {'1', 6}, {'2', 6}, {'3', 6}, {'4', 6}, {'5', 6}, {'6', 6}, {'7', 6},
@@ -99,7 +99,7 @@ public class LocalChatPaginator extends ChatPaginator {
             return new String[]{""};
         }
 
-        final int maxWidth = lineLength * defaultCharWidth;
+        final int maxWidth = lineLength * DEFAULT_CHAR_WIDTH;
 
         // A string shorter than the lineWidth is a single line
         if (getWidth(rawString) <= maxWidth && !rawString.contains("\n")) {
@@ -206,7 +206,7 @@ public class LocalChatPaginator extends ChatPaginator {
     }
 
     public static int getWidth(final Character character) {
-        return fontSizes.containsKey(character) ? fontSizes.get(character) : defaultCharWidth;
+        return FONT_SIZES.containsKey(character) ? FONT_SIZES.get(character) : DEFAULT_CHAR_WIDTH;
     }
 
     /**

@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.compatibility.holographicdisplays;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.compatibility.Integrator;
 import pl.betoncraft.betonquest.compatibility.citizens.CitizensHologram;
@@ -12,6 +13,7 @@ public class HolographicDisplaysIntegrator implements Integrator {
     private HologramLoop hologramLoop;
 
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
+    @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
     public HolographicDisplaysIntegrator() {
         instance = this;
     }

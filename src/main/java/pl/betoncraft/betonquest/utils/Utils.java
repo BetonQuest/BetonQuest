@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.utils;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
@@ -43,6 +44,7 @@ public final class Utils {
     /**
      * Does a full configuration backup.
      */
+    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     public static void backup() {
         LogUtils.getLogger().log(Level.INFO, "Backing up!");
         final long time = new Date().getTime();
@@ -75,6 +77,7 @@ public final class Utils {
      * @param databaseBackupFile non-existent file where the database should be dumped
      * @return true if the backup was successful, false if there was an error
      */
+    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     public static boolean backupDatabase(final File databaseBackupFile) {
         final BetonQuest instance = BetonQuest.getInstance();
         try {
@@ -95,10 +98,10 @@ public final class Utils {
                 map.put(table, database.querySQL(QueryType.valueOf(enumName), new String[]{}));
             }
             // extract data from resultsets into the config file
-            for (final String key : map.keySet()) {
-                LogUtils.getLogger().log(Level.FINE, "Saving " + key + " to the backup file");
+            for (final Map.Entry<String, ResultSet> entry : map.entrySet()) {
+                LogUtils.getLogger().log(Level.FINE, "Saving " + entry.getKey() + " to the backup file");
                 // prepare resultset and meta
-                try (ResultSet res = map.get(key)) {
+                try (ResultSet res = entry.getValue()) {
                     final ResultSetMetaData rsmd = res.getMetaData();
                     // get the list of column names
                     final List<String> columns = new ArrayList<>();
@@ -116,7 +119,7 @@ public final class Utils {
                         for (final String columnName : columns) {
                             try {
                                 final String value = res.getString(columnName);
-                                config.set(key + "." + counter + "." + columnName, value);
+                                config.set(entry.getKey() + "." + counter + "." + columnName, value);
                             } catch (SQLException e) {
                                 LogUtils.getLogger().log(Level.WARNING, "Could not read SQL: " + e.getMessage());
                                 LogUtils.logThrowable(e);
@@ -224,6 +227,7 @@ public final class Utils {
      * If the database backup file exists, loads it into the database.
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
+    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     public static void loadDatabaseFromBackup() {
         final BetonQuest instance = BetonQuest.getInstance();
         final File file = new File(instance.getDataFolder(), "database-backup.yml");

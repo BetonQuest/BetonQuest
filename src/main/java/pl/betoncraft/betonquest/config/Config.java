@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.config;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -46,6 +47,7 @@ public class Config {
      * @param verboose controls if this object should log it's actions to the file
      */
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
+    @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
     public Config(final boolean verboose) {
 
         PACKAGES.clear();
@@ -110,6 +112,7 @@ public class Config {
      * @param packName name of the new package
      * @return true if the package was created, false if it already existed
      */
+    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     public static boolean createDefaultPackage(final String packName) {
         final File def = new File(instance.root, packName.replace("-", File.separator));
         if (!def.exists()) {
@@ -138,6 +141,7 @@ public class Config {
      * @param resource resource name
      * @param name     file name
      */
+    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     private static void saveResource(final File root, final String resource, final String name) {
         if (!root.isDirectory()) {
             return;
@@ -321,13 +325,13 @@ public class Config {
      */
     public static String getNpc(final String value) {
         // load npc assignments from all packages
-        for (final String packName : PACKAGES.keySet()) {
-            final ConfigPackage pack = PACKAGES.get(packName);
+        for (final Map.Entry<String, ConfigPackage> entry : PACKAGES.entrySet()) {
+            final ConfigPackage pack = entry.getValue();
             final ConfigurationSection assignments = pack.getMain().getConfig().getConfigurationSection("npcs");
             if (assignments != null) {
                 for (final String assignment : assignments.getKeys(false)) {
                     if (assignment.equalsIgnoreCase(value)) {
-                        return packName + "." + assignments.getString(assignment);
+                        return entry.getKey() + "." + assignments.getString(assignment);
                     }
                 }
             }

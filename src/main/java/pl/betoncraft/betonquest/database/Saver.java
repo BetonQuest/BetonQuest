@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.database;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import pl.betoncraft.betonquest.BetonQuest;
@@ -14,6 +15,7 @@ import java.util.logging.Level;
  * Saves the data to the database asynchronously
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.DoNotUseThreads"})
+@SuppressFBWarnings("IS2_INCONSISTENT_SYNC")
 public class Saver extends Thread implements Listener {
 
     private final Connector con;
@@ -32,6 +34,7 @@ public class Saver extends Thread implements Listener {
     }
 
     @Override
+    @SuppressFBWarnings("UW_UNCOND_WAIT")
     public void run() {
         boolean active = false;
         while (true) {

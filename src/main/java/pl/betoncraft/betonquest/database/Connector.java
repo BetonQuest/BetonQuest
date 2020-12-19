@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.database;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.utils.LogUtils;
 
@@ -33,9 +34,10 @@ public class Connector {
     /**
      * This method should be used before any other database operations.
      */
+    @SuppressFBWarnings({"ODR_OPEN_DATABASE_RESOURCE", "OBL_UNSATISFIED_OBLIGATION"})
     public final void refresh() {
         try {
-            connection.prepareStatement("SELECT 1").executeQuery();
+            connection.prepareStatement("SELECT 1").executeQuery().close();
         } catch (SQLException e) {
             LogUtils.getLogger().log(Level.WARNING, "Reconnecting to the database");
             LogUtils.logThrowable(e);
@@ -52,6 +54,7 @@ public class Connector {
      * @return ResultSet with the requested data
      */
     @SuppressWarnings({"PMD.NcssCount", "PMD.CloseResource"})
+    @SuppressFBWarnings({"ODR_OPEN_DATABASE_RESOURCE", "OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE"})
     public ResultSet querySQL(final QueryType type, final String... args) {
         String stringStatement;
         switch (type) {

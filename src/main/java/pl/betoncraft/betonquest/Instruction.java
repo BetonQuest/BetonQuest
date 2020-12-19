@@ -498,7 +498,7 @@ public class Instruction {
     }
 
     @SuppressWarnings("PMD.ShortClassName")
-    public class Item {
+    public static class Item {
 
         private final ItemID itemID;
         private final QuestItem questItem;

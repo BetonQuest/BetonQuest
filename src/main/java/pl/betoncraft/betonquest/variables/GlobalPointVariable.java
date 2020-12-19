@@ -11,10 +11,6 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 @SuppressWarnings("PMD.CommentRequired")
 public class GlobalPointVariable extends PointVariable {
 
-    protected String category;
-    protected Type type;
-    protected int amount;
-
     public GlobalPointVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
     }

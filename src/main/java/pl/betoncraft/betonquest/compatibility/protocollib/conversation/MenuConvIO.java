@@ -524,7 +524,7 @@ public class MenuConvIO extends ChatConvIO {
                         .replace("{npc_name}", npcName);
 
                 optionLines = Arrays.stream(LocalChatPaginator.wordWrap(
-                        Utils.replaceReset(StringUtils.stripEnd(optionText, "\n"), i == 0 ? configOptionSelectedReset : configOptionTextReset),
+                        Utils.replaceReset(StringUtils.stripEnd(optionText, "\n"), configOptionSelectedReset),
                         configLineLength, configOptionSelectedWrap))
                         .collect(Collectors.toList());
 
@@ -535,7 +535,7 @@ public class MenuConvIO extends ChatConvIO {
                         .replace("{npc_name}", npcName);
 
                 optionLines = Arrays.stream(LocalChatPaginator.wordWrap(
-                        Utils.replaceReset(StringUtils.stripEnd(optionText, "\n"), i == 0 ? configOptionSelectedReset : configOptionTextReset),
+                        Utils.replaceReset(StringUtils.stripEnd(optionText, "\n"), configOptionTextReset),
                         configLineLength, configOptionWrap))
                         .collect(Collectors.toList());
 
