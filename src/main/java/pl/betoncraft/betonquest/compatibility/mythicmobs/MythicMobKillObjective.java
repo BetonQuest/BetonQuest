@@ -1,31 +1,29 @@
 package pl.betoncraft.betonquest.compatibility.mythicmobs;
 
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Collections;
-import java.util.logging.Level;
-
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.lumine.xikage.mythicmobs.adapters.bukkit.BukkitAdapter;
+import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMobDeathEvent;
+import io.lumine.xikage.mythicmobs.mobs.ActiveMob;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.EventHandler;
-
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
+import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.utils.LogUtils;
-import pl.betoncraft.betonquest.VariableNumber;
-import pl.betoncraft.betonquest.utils.PlayerConverter;
-import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
+import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
+import pl.betoncraft.betonquest.utils.LogUtils;
+import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-import io.lumine.xikage.mythicmobs.mobs.ActiveMob;
-import io.lumine.xikage.mythicmobs.adapters.bukkit.BukkitAdapter;
-import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMobDeathEvent;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.logging.Level;
 
 /**
  * Player has to kill MythicMobs monster
