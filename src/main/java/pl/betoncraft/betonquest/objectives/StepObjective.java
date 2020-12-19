@@ -54,13 +54,14 @@ public class StepObjective extends Objective implements Listener {
         if (event.getAction() != Action.PHYSICAL) {
             return;
         }
-        if (event.getClickedBlock() == null) {
+        final Block clickedBlock = event.getClickedBlock();
+        if (clickedBlock == null) {
             return;
         }
         try {
             final String playerID = PlayerConverter.getID(event.getPlayer());
             final Block block = loc.getLocation(playerID).getBlock();
-            if (!event.getClickedBlock().equals(block)) {
+            if (!clickedBlock.equals(block)) {
                 return;
             }
 

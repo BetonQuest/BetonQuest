@@ -74,6 +74,7 @@ public class GlobalLocations extends BukkitRunnable {
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @Override
     public void run() {
         // do nothing if there is no defined locations

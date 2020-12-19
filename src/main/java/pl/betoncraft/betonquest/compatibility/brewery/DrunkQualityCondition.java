@@ -1,6 +1,7 @@
 package pl.betoncraft.betonquest.compatibility.brewery;
 
 import com.dre.brewery.BPlayer;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
@@ -23,6 +24,7 @@ public class DrunkQualityCondition extends Condition {
     }
 
     @Override
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
         final BPlayer bPlayer = BPlayer.get(PlayerConverter.getPlayer(playerID));
         return bPlayer.getQuality() >= quality;

@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.conversation;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -47,6 +48,7 @@ public class ConversationResumer implements Listener {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @EventHandler(ignoreCancelled = true)
     public void onMove(final PlayerMoveEvent event) {
         if (!event.getPlayer().equals(player)) {

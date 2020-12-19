@@ -194,6 +194,7 @@ public class BetonQuest extends JavaPlugin {
      * @param playerID    ID of the player
      * @param objectiveID ID of the objective
      */
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
     public static void newObjective(final String playerID, final ObjectiveID objectiveID) {
         // null check
         if (playerID == null || objectiveID == null) {

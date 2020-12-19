@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.commands;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -53,6 +54,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Registers a new executor and a new tab completer of the /betonquest
      * command
      */
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public QuestCommand() {
         BetonQuest.getInstance().getCommand("betonquest").setExecutor(this);
         BetonQuest.getInstance().getCommand("betonquest").setTabCompleter(this);
@@ -1390,6 +1392,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param args
      * @return
      */
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private List<String> completeVector(final String... args) {
         if (args.length == 2) {
             if (args[1] == null || !args[1].contains(".")) {

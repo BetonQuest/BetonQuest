@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.commands;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,6 +23,7 @@ import java.util.logging.Level;
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition"})
 public class LangCommand implements CommandExecutor, SimpleTabCompleter {
 
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public LangCommand() {
         BetonQuest.getInstance().getCommand("questlang").setExecutor(this);
         BetonQuest.getInstance().getCommand("questlang").setTabCompleter(this);

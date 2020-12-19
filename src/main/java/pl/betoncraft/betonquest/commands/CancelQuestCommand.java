@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.commands;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,6 +18,7 @@ public class CancelQuestCommand implements CommandExecutor {
     /**
      * Registers a new executor of the /cancelquest command
      */
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public CancelQuestCommand() {
         BetonQuest.getInstance().getCommand("cancelquest").setExecutor(this);
     }

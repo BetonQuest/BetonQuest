@@ -1,6 +1,7 @@
 package pl.betoncraft.betonquest.variables;
 
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Location;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Variable;
@@ -64,6 +65,7 @@ public class LocationVariable extends Variable {
         return "";
     }
 
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private String buildFormattedLocation(final Location playerLocation, final String format) {
         return String.format(Locale.US, format,
                 playerLocation.getX(),

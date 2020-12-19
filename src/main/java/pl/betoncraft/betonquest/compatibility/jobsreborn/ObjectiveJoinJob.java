@@ -3,6 +3,7 @@ package pl.betoncraft.betonquest.compatibility.jobsreborn;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.api.JobsJoinEvent;
 import com.gamingmesh.jobs.container.Job;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -33,6 +34,7 @@ public class ObjectiveJoinJob extends Objective implements Listener {
         throw new InstructionParseException("Jobs Reborn job " + instructions.getPart(1) + " does not exist");
     }
 
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @EventHandler(ignoreCancelled = true)
     public void onJobsJoinEvent(final JobsJoinEvent event) {
         if (event.getJob().getName().equalsIgnoreCase(this.sJobName)) {

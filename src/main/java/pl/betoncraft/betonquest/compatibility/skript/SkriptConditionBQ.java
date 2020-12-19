@@ -37,12 +37,13 @@ public class SkriptConditionBQ extends Condition {
     }
 
     @Override
-    @SuppressFBWarnings("NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE")
+    @SuppressFBWarnings({"NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE", "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"})
     public String toString(final Event event, final boolean debug) {
         return player.getSingle(event).getName() + " meets " + condition.toString();
     }
 
     @Override
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public boolean check(final Event event) {
         final String conditionID = condition.getSingle(event);
         try {

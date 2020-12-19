@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.objectives;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -38,6 +39,7 @@ public class ArrowShootObjective extends Objective implements Listener {
         range = instruction.getVarNum();
     }
 
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @EventHandler(ignoreCancelled = true)
     public void onArrowHit(final ProjectileHitEvent event) {
         // check if it's the arrow shot by the player with active objectve
@@ -59,6 +61,7 @@ public class ArrowShootObjective extends Objective implements Listener {
             // wait one tick, let the arrow land completely
             new BukkitRunnable() {
                 @Override
+                @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
                 public void run() {
                     final Location arrowLocation = arrow.getLocation();
                     if (arrowLocation == null) {

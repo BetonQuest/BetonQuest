@@ -1,6 +1,7 @@
 package pl.betoncraft.betonquest;
 
 import com.google.common.collect.Lists;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -57,6 +58,7 @@ public class Journal {
      * @param item     ItemStack to check against being the journal
      * @return true if the ItemStack is the journal, false otherwise
      */
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public static boolean isJournal(final String playerID, final ItemStack item) {
         // if there is no item then it's not a journal
         if (item == null) {
@@ -385,6 +387,7 @@ public class Journal {
      * @return the journal ItemStack
      */
     @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public ItemStack getAsItem() {
         // create the book with default title/author
         final ItemStack item = new ItemStack(Material.WRITTEN_BOOK);

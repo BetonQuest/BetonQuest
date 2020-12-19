@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.commands;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,6 +17,7 @@ public class JournalCommand implements CommandExecutor {
     /**
      * Registers a new executor of the /journal command
      */
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public JournalCommand() {
         BetonQuest.getInstance().getCommand("journal").setExecutor(this);
     }

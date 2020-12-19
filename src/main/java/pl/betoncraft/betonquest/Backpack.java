@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -152,6 +153,7 @@ public class Backpack implements Listener {
          * @param page number of the page to display, starting from 0
          */
         @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
+        @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
         public Page(final int page) {
             super();
             this.page = page;
@@ -421,6 +423,7 @@ public class Backpack implements Listener {
         private final Map<Integer, String> items = new HashMap<>();
 
         @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
+        @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
         public Compass() {
             super();
             Integer counter = 0;

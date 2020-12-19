@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.config;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import pl.betoncraft.betonquest.config.ConfigAccessor.AccessorType;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 import pl.betoncraft.betonquest.id.GlobalVariableID;
@@ -41,6 +42,7 @@ public class ConfigPackage {
      * @param pack the directory containing this package
      * @param name the name of this package
      */
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public ConfigPackage(final File pack, final String name) {
         if (!pack.isDirectory()) {
             throw new IllegalArgumentException("The file '" + pack.getName() + "' is not a folder!");

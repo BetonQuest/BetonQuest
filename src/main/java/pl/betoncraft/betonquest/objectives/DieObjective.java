@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.objectives;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
@@ -51,6 +52,7 @@ public class DieObjective extends Objective implements Listener {
         }
     }
 
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onLastDamage(final EntityDamageEvent event) {
         if (!cancel || !(event.getEntity() instanceof Player)) {

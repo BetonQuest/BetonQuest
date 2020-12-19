@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.conditions;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.Instruction;
@@ -26,6 +27,7 @@ public class LocationCondition extends Condition {
     }
 
     @Override
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
         final Location location = loc.getLocation(playerID);
         final Player player = PlayerConverter.getPlayer(playerID);
