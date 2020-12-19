@@ -53,8 +53,9 @@ public class ConfigAccessor {
                 if (str == null) {
                     fileConfiguration = new YamlConfiguration();
                 } else {
-                    fileConfiguration = YamlConfiguration
-                            .loadConfiguration(new InputStreamReader(str, StandardCharsets.UTF_8));
+                    try (InputStreamReader reader = new InputStreamReader(str, StandardCharsets.UTF_8)) {
+                        fileConfiguration = YamlConfiguration.loadConfiguration(reader);
+                    }
                 }
             } catch (IOException exception) {
                 fileConfiguration = new YamlConfiguration();
@@ -64,9 +65,10 @@ public class ConfigAccessor {
             // Look for defaults in the jar
             try (InputStream defConfigStream = plugin.getResource(fileName)) {
                 if (defConfigStream != null) {
-                    final YamlConfiguration defConfig = YamlConfiguration
-                            .loadConfiguration(new InputStreamReader(defConfigStream, StandardCharsets.UTF_8));
-                    fileConfiguration.setDefaults(defConfig);
+                    try (InputStreamReader reader = new InputStreamReader(defConfigStream, StandardCharsets.UTF_8)) {
+                        final YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(reader);
+                        fileConfiguration.setDefaults(defConfig);
+                    }
                 }
             } catch (IOException e) {
                 // Empty

@@ -121,6 +121,9 @@ public class LocalChatPaginator extends ChatPaginator {
 
             // skip chat color modifiers
             if (singleChar == ChatColor.COLOR_CHAR) {
+                if (rawChars.length <= i + 1) {
+                    break;
+                }
                 word.append(ChatColor.getByChar(String.valueOf(rawChars[i + 1]).toLowerCase(Locale.ROOT)));
                 i++; // Eat the next character as we have already processed it
                 continue;
