@@ -64,9 +64,6 @@ public class ArrowShootObjective extends Objective implements Listener {
                 @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
                 public void run() {
                     final Location arrowLocation = arrow.getLocation();
-                    if (arrowLocation == null) {
-                        return;
-                    }
                     try {
                         final double pRange = range.getDouble(playerID);
                         if (arrowLocation.getWorld().equals(location.getWorld())

@@ -84,8 +84,7 @@ public class CitizensWalkingListener implements Listener {
                 public void run() {
                     final CitizensConversation conv = (CitizensConversation) event.getConversation();
                     final NPC npc = conv.getNPC();
-                    Integer npcId = npcs.get(npc);
-                    npcId--;
+                    final int npcId = npcs.get(npc) - 1;
                     if (npcId == 0) {
                         npcs.remove(npc);
                         if (npc.isSpawned()) {
