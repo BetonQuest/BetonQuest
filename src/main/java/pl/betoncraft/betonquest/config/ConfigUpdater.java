@@ -41,7 +41,7 @@ import java.util.logging.Level;
         "PMD.SwitchDensity", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidCatchingNPE",
         "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition", "PMD.CloseResource",
         "PMD.UseLocaleWithCaseConversions", "PMD.SimplifyStartsWith", "PMD.UseIndexOfChar",
-        "PMD.UseStringBufferForStringAppends"})
+        "PMD.UseStringBufferForStringAppends", "lgtm"})
 @SuppressFBWarnings({"NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", "ODR_OPEN_DATABASE_RESOURCE", "DLS_DEAD_LOCAL_STORE",
         "OBL_UNSATISFIED_OBLIGATION", "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING",
         "RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE", "REC_CATCH_EXCEPTION", "RV_RETURN_VALUE_IGNORED_BAD_PRACTICE",

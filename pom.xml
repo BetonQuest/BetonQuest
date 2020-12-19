@@ -82,7 +82,7 @@
       <repositories>
         <repository>
           <id>heroes-repo</id>
-          <url>http://nexus.hc.to/content/repositories/pub_releases/</url> <!--lgtm [java/maven/non-https-url]-->
+          <url>http://nexus.hc.to/content/repositories/pub_releases/</url>
         </repository>
       </repositories>
       <dependencies>

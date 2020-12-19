@@ -426,7 +426,7 @@ public class Backpack implements Listener {
         @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
         public Compass() {
             super();
-            Integer counter = 0;
+            int counter = 0;
             // for every package
             for (final ConfigPackage pack : Config.getPackages().values()) {
                 final String packName = pack.getName();
