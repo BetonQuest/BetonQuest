@@ -323,11 +323,13 @@ The fallback NotifyIO is `chat` if no argument other than `message` is specified
 
 
 !!! warning
-    All colons (`:`) in the message part of the notification need to be escaped with one backslash (`\`) when using single quotes
-    (`'...'`) and with two backslashes (`\\`) when using double quotes (`"..."`).
+    All colons (`:`) in the message part of the notification need to be escaped, including those inside variables, with one backslash (`\`) when using single quotes
+    (`'...'`) or no quoting at all (`...`) and with two backslashes (`\\`) when using double quotes (`"..."`).
     Example:  
     `eventName: 'notify Peter:Heya %player%!'` -> `eventName: 'notify Peter{++\++}:Heya %player%!'`    
+    `eventName: notify Peter:Heya %player%!` -> `eventName: notify Peter{++\++}:Heya %player%!`
     `eventName: "notify Peter:Heya %player%!"` -> `eventName: "notify Peter{++\\++}:Heya %player%!"`
+    `otherEvent: notify You own %math.calc:5% fish!` -> `otherEvent: You own %math.calc{++\++}:5% fish!`
 
 <h3>Examples:</h3>
 
