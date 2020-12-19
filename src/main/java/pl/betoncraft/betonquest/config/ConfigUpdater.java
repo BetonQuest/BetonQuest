@@ -63,7 +63,7 @@ public class ConfigUpdater {
      * Destination version. At the end of the updating process this will be the
      * current version
      */
-    private static final String DESTINATION = "v63";
+    private static final String DESTINATION = "v64";
     /**
      * BetonQuest's instance
      */
@@ -181,6 +181,22 @@ public class ConfigUpdater {
         }
         // update again until destination is reached
         update();
+    }
+
+    @SuppressWarnings("unused")
+    private void updateFromV63() {
+        String updateStrategy = config.getString("update.strategy");
+        if (updateStrategy != null) {
+            updateStrategy = updateStrategy.toUpperCase(Locale.ROOT);
+            if (updateStrategy.startsWith("MAYOR")) {
+                final String newUpdateStrategy = updateStrategy.replace("MAYOR", "MAJOR");
+                LogUtils.getLogger().log(Level.INFO, "Adjusting update strategy '" + updateStrategy + "' to '" + newUpdateStrategy + "'.");
+                config.set("update.strategy", newUpdateStrategy);
+            }
+        }
+        config.set("version", "v64");
+        instance.saveConfig();
+        LogUtils.getLogger().log(Level.INFO, "Successfully updated config to version 64.");
     }
 
     @SuppressWarnings("unused")

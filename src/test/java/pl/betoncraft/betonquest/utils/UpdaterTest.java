@@ -71,38 +71,38 @@ public class UpdaterTest {
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
-    public void testVersionCompareMayor() {
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR, false, V_1_0_0, V_1_0_0, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR, true, V_1_0_0, V_2_0_0, V_1_1_0, V_1_0_1);
+    public void testVersionCompareMajor() {
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR, false, V_1_0_0, V_1_0_0, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR, true, V_1_0_0, V_2_0_0, V_1_1_0, V_1_0_1);
 
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR, false, V_2_0_0, V_1_0_0, V_2_0_0, V_1_1_0, V_1_0_1, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR, false, V_2_0_0, V_1_0_0, V_2_0_0, V_1_1_0, V_1_0_1, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
 
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR, false, V_1_1_0, V_1_0_0, V_1_1_0, V_1_0_1, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR, true, V_1_1_0, V_2_0_0);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR, false, V_1_1_0, V_1_0_0, V_1_1_0, V_1_0_1, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR, true, V_1_1_0, V_2_0_0);
 
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR, false, V_1_0_1, V_1_0_0, V_1_0_1, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR, true, V_1_0_1, V_2_0_0, V_1_1_0);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR, false, V_1_0_1, V_1_0_0, V_1_0_1, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR, true, V_1_0_1, V_2_0_0, V_1_1_0);
 
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR, false, V_1_0_0_DEV_1, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR, true, V_1_0_0_DEV_1, V_1_0_0, V_2_0_0, V_1_1_0, V_1_0_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR, false, V_1_0_0_DEV_1, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR, true, V_1_0_0_DEV_1, V_1_0_0, V_2_0_0, V_1_1_0, V_1_0_1);
 
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR, false, V_1_0_0_DEV_2, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR, true, V_1_0_0_DEV_2, V_1_0_0, V_2_0_0, V_1_1_0, V_1_0_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR, false, V_1_0_0_DEV_2, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR, true, V_1_0_0_DEV_2, V_1_0_0, V_2_0_0, V_1_1_0, V_1_0_1);
 
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR, false, V_2_0_0_DEV_1, V_1_0_0, V_1_1_0, V_1_0_1, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR, true, V_2_0_0_DEV_1, V_2_0_0);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR, false, V_2_0_0_DEV_1, V_1_0_0, V_1_1_0, V_1_0_1, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR, true, V_2_0_0_DEV_1, V_2_0_0);
 
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR, false, V_1_1_0_DEV_1, V_1_0_0, V_1_0_1, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR, true, V_1_1_0_DEV_1, V_2_0_0, V_1_1_0);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR, false, V_1_1_0_DEV_1, V_1_0_0, V_1_0_1, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR, true, V_1_1_0_DEV_1, V_2_0_0, V_1_1_0);
 
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR, false, V_1_0_1_DEV_1, V_1_0_0, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR, true, V_1_0_1_DEV_1, V_2_0_0, V_1_1_0, V_1_0_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR, false, V_1_0_1_DEV_1, V_1_0_0, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR, true, V_1_0_1_DEV_1, V_2_0_0, V_1_1_0, V_1_0_1);
 
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR, false, V_1_0_1_DEV_UNOFFICIAL, V_1_0_0, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR, true, V_1_0_1_DEV_UNOFFICIAL, V_2_0_0, V_1_1_0, V_1_0_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR, false, V_1_0_1_DEV_UNOFFICIAL, V_1_0_0, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR, true, V_1_0_1_DEV_UNOFFICIAL, V_2_0_0, V_1_1_0, V_1_0_1);
 
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR, false, V_1_0_1_ARTIFACT_1, V_1_0_0, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR, true, V_1_0_1_ARTIFACT_1, V_2_0_0, V_1_1_0, V_1_0_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR, false, V_1_0_1_ARTIFACT_1, V_1_0_0, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR, true, V_1_0_1_ARTIFACT_1, V_2_0_0, V_1_1_0, V_1_0_1);
     }
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
@@ -176,38 +176,38 @@ public class UpdaterTest {
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
-    public void testVersionCompareMayorDev() {
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR_DEV, false, V_1_0_0, V_1_0_0, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR_DEV, true, V_1_0_0, V_2_0_0, V_1_1_0, V_1_0_1, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1);
+    public void testVersionCompareMajorDev() {
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR_DEV, false, V_1_0_0, V_1_0_0, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR_DEV, true, V_1_0_0, V_2_0_0, V_1_1_0, V_1_0_1, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1);
 
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR_DEV, false, V_2_0_0, V_1_0_0, V_2_0_0, V_1_1_0, V_1_0_1, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR_DEV, false, V_2_0_0, V_1_0_0, V_2_0_0, V_1_1_0, V_1_0_1, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
 
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR_DEV, false, V_1_1_0, V_1_0_0, V_1_1_0, V_1_0_1, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR_DEV, true, V_1_1_0, V_2_0_0, V_2_0_0_DEV_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR_DEV, false, V_1_1_0, V_1_0_0, V_1_1_0, V_1_0_1, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR_DEV, true, V_1_1_0, V_2_0_0, V_2_0_0_DEV_1);
 
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR_DEV, false, V_1_0_1, V_1_0_0, V_1_0_1, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR_DEV, true, V_1_0_1, V_2_0_0, V_1_1_0, V_2_0_0_DEV_1, V_1_1_0_DEV_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR_DEV, false, V_1_0_1, V_1_0_0, V_1_0_1, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR_DEV, true, V_1_0_1, V_2_0_0, V_1_1_0, V_2_0_0_DEV_1, V_1_1_0_DEV_1);
 
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR_DEV, false, V_1_0_0_DEV_1, V_1_0_0_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR_DEV, true, V_1_0_0_DEV_1, V_1_0_0, V_2_0_0, V_1_1_0, V_1_0_1, V_1_0_0_DEV_2, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR_DEV, false, V_1_0_0_DEV_1, V_1_0_0_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR_DEV, true, V_1_0_0_DEV_1, V_1_0_0, V_2_0_0, V_1_1_0, V_1_0_1, V_1_0_0_DEV_2, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1);
 
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR_DEV, false, V_1_0_0_DEV_2, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR_DEV, true, V_1_0_0_DEV_2, V_1_0_0, V_2_0_0, V_1_1_0, V_1_0_1, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR_DEV, false, V_1_0_0_DEV_2, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR_DEV, true, V_1_0_0_DEV_2, V_1_0_0, V_2_0_0, V_1_1_0, V_1_0_1, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1);
 
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR_DEV, false, V_2_0_0_DEV_1, V_1_0_0, V_1_1_0, V_1_0_1, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR_DEV, true, V_2_0_0_DEV_1, V_2_0_0);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR_DEV, false, V_2_0_0_DEV_1, V_1_0_0, V_1_1_0, V_1_0_1, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR_DEV, true, V_2_0_0_DEV_1, V_2_0_0);
 
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR_DEV, false, V_1_1_0_DEV_1, V_1_0_0, V_1_0_1, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR_DEV, true, V_1_1_0_DEV_1, V_2_0_0, V_1_1_0, V_2_0_0_DEV_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR_DEV, false, V_1_1_0_DEV_1, V_1_0_0, V_1_0_1, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_1_1_0_DEV_1, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR_DEV, true, V_1_1_0_DEV_1, V_2_0_0, V_1_1_0, V_2_0_0_DEV_1);
 
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR_DEV, false, V_1_0_1_DEV_1, V_1_0_0, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR_DEV, true, V_1_0_1_DEV_1, V_2_0_0, V_1_1_0, V_1_0_1, V_2_0_0_DEV_1, V_1_1_0_DEV_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR_DEV, false, V_1_0_1_DEV_1, V_1_0_0, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_1_0_1_DEV_1, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR_DEV, true, V_1_0_1_DEV_1, V_2_0_0, V_1_1_0, V_1_0_1, V_2_0_0_DEV_1, V_1_1_0_DEV_1);
 
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR_DEV, false, V_1_0_1_DEV_UNOFFICIAL, V_1_0_0, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR_DEV, true, V_1_0_1_DEV_UNOFFICIAL, V_2_0_0, V_1_1_0, V_1_0_1, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR_DEV, false, V_1_0_1_DEV_UNOFFICIAL, V_1_0_0, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR_DEV, true, V_1_0_1_DEV_UNOFFICIAL, V_2_0_0, V_1_1_0, V_1_0_1, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1);
 
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR_DEV, false, V_1_0_1_ARTIFACT_1, V_1_0_0, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
-        assertMultipleVersions(Updater.UpdateStrategy.MAYOR_DEV, true, V_1_0_1_ARTIFACT_1, V_2_0_0, V_1_1_0, V_1_0_1, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR_DEV, false, V_1_0_1_ARTIFACT_1, V_1_0_0, V_1_0_0_DEV_1, V_1_0_0_DEV_2, V_1_0_1_DEV_UNOFFICIAL, V_1_0_1_ARTIFACT_1);
+        assertMultipleVersions(Updater.UpdateStrategy.MAJOR_DEV, true, V_1_0_1_ARTIFACT_1, V_2_0_0, V_1_1_0, V_1_0_1, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1);
     }
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
