@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.conversation;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.tuple.Pair;
@@ -389,6 +390,7 @@ public class Conversation implements Listener {
      * Instead of ending the conversation it saves it to the database, from
      * where it will be resumed after the player logs in again.
      */
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public void suspend() {
         if (inOut == null) {
             LogUtils.getLogger().log(Level.WARNING, "Conversation IO is not loaded, conversation will end for player "

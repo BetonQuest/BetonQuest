@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.objectives;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
@@ -53,6 +54,7 @@ public class MobKillObjective extends Objective implements Listener {
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @EventHandler(ignoreCancelled = true)
     public void onMobKill(final MobKilledEvent event) {
         // check if it's the right entity type

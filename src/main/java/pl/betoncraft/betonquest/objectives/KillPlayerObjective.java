@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.objectives;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -42,6 +43,7 @@ public class KillPlayerObjective extends Objective implements Listener {
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @EventHandler(ignoreCancelled = true)
     public void onKill(final PlayerDeathEvent event) {
         if (event.getEntity().getKiller() == null) {

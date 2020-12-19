@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.compatibility.mmogroup.mmoitems;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
 import net.mmogroup.mmolib.api.item.NBTItem;
@@ -37,6 +38,7 @@ public class MMOItemsTakeEvent extends QuestEvent {
     }
 
     @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.CyclomaticComplexity"})
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final Inventory inv = PlayerConverter.getPlayer(playerID).getInventory();

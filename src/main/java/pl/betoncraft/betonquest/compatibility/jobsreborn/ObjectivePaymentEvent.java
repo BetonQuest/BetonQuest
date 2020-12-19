@@ -1,6 +1,7 @@
 package pl.betoncraft.betonquest.compatibility.jobsreborn;
 
 import com.gamingmesh.jobs.api.JobsPaymentEvent;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -32,6 +33,7 @@ public class ObjectivePaymentEvent extends Objective implements Listener {
         }
     }
 
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @EventHandler(ignoreCancelled = true)
     public void onJobsPaymentEvent(final JobsPaymentEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer().getPlayer().getPlayer());

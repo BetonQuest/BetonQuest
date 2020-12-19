@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.objectives;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -63,6 +64,7 @@ public class BrewObjective extends Objective implements Listener {
         final ItemStack[] contentBefore = topInventory.getStorageContents();
         new BukkitRunnable() {
             @Override
+            @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
             public void run() {
                 final ItemStack[] contentAfter = topInventory.getStorageContents();
                 if (!itemsAdded(contentBefore, contentAfter)) {

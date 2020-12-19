@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.conversation;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -56,6 +57,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
     protected boolean showNumber = true;
     protected boolean showNPCText = true;
 
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public InventoryConvIO(final Conversation conv, final String playerID) {
         this.conv = conv;
         this.player = PlayerConverter.getPlayer(playerID);
@@ -116,6 +118,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
 
     @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.NcssCount",
             "PMD.NPathComplexity", "PMD.AvoidUsingShortType"})
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @Override
     public void display() {
         // prevent displaying anything if the player closed the conversation
@@ -352,6 +355,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         return printMessages;
     }
 
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected List<String> stringToLines(final String singleLine, final String color, final String prefix) {
         String inputPrefix = prefix;
         final ArrayList<String> multiLine = new ArrayList<>();

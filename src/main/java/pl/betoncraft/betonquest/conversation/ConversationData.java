@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.conversation;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -47,6 +48,7 @@ public class ConversationData {
      * @throws InstructionParseException when there is a syntax error in the defined conversation
      */
     @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public ConversationData(final ConfigPackage pack, final String name) throws InstructionParseException {
         this.pack = pack;
         final String pkg = pack.getName();
@@ -390,6 +392,7 @@ public class ConversationData {
     /**
      * Check if conversation has at least one valid option for player
      */
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public boolean isReady(final String playerID) {
         for (final String option : getStartingOptions()) {
             final String convName;
@@ -449,6 +452,7 @@ public class ConversationData {
         private final List<String> extendLinks;
 
         @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
+        @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
         protected Option(final String name, final OptionType type) throws InstructionParseException {
             this.name = name;
             this.type = type;

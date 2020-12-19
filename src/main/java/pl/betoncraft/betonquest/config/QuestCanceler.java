@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.config;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -50,6 +51,7 @@ public class QuestCanceler {
      * @throws InstructionParseException when parsing the canceler fails for some reason
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public QuestCanceler(final String cancelerID) throws InstructionParseException {
         if (cancelerID == null) {
             throw new InstructionParseException("Name is null");
@@ -277,6 +279,7 @@ public class QuestCanceler {
         return questName.replace("_", " ").replace("&", "§");
     }
 
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public ItemStack getItem(final String playerID) {
         ItemStack stack = new ItemStack(Material.BONE);
         if (item != null) {

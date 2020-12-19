@@ -333,6 +333,7 @@ public final class Utils {
      * @param item ItemStack to check
      * @return true if the supplied ItemStack is a quest item, false otherwise
      */
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public static boolean isQuestItem(final ItemStack item) {
         if (item == null) {
             return false;
@@ -341,6 +342,7 @@ public final class Utils {
                 && item.getItemMeta().getLore().contains(Config.getMessage(Config.getLanguage(), "quest_item"));
     }
 
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public static List<String> getParty(final String playerID, final double range, final String pack, final ConditionID... conditions) {
         final List<String> list = new ArrayList<>();
         final Player player = PlayerConverter.getPlayer(playerID);

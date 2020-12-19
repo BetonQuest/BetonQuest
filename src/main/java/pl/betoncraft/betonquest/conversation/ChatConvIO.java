@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.conversation;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -70,6 +71,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @EventHandler(ignoreCancelled = true)
     public void onWalkAway(final PlayerMoveEvent event) {
         // return if it's someone else
@@ -94,6 +96,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
      *
      * @param event PlayerMoveEvent event, for extracting the necessary data
      */
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private void moveBack(final PlayerMoveEvent event) {
         // if the player is in other world (he teleported himself), teleport him
         // back to the center of the conversation

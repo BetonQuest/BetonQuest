@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.compatibility.mmogroup.mmoitems;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
 import net.Indyuce.mmoitems.api.player.PlayerData;
@@ -45,6 +46,7 @@ public class MMOItemsGiveEvent extends QuestEvent {
     }
 
     @SuppressWarnings("PMD.PreserveStackTrace")
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final Player player = PlayerConverter.getPlayer(playerID);

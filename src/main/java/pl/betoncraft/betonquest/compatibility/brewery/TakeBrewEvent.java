@@ -2,6 +2,7 @@ package pl.betoncraft.betonquest.compatibility.brewery;
 
 import com.dre.brewery.Brew;
 import com.dre.brewery.recipe.BRecipe;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.Instruction;
@@ -42,6 +43,7 @@ public class TakeBrewEvent extends QuestEvent {
     }
 
     @Override
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected Void execute(final String playerID) throws QuestRuntimeException {
 
         final Player player = PlayerConverter.getPlayer(playerID);

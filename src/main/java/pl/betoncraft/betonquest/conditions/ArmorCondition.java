@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.conditions;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Condition;
@@ -21,6 +22,7 @@ public class ArmorCondition extends Condition {
     }
 
     @Override
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected Boolean execute(final String playerID) {
         for (final ItemStack armor : PlayerConverter.getPlayer(playerID).getEquipment().getArmorContents()) {
             if (item != null && item.compare(armor)) {

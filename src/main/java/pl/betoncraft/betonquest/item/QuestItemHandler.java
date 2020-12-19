@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.item;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.ItemFrame;
@@ -56,6 +57,7 @@ public class QuestItemHandler implements Listener {
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @EventHandler(ignoreCancelled = true)
     public void onItemMove(final InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player)) {

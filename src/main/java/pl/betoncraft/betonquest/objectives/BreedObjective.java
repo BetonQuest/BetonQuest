@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.objectives;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -34,6 +35,7 @@ public class BreedObjective extends Objective implements Listener {
         notify = instruction.hasArgument("notify");
     }
 
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @EventHandler(ignoreCancelled = true)
     public void onBreeding(final EntityBreedEvent event) {
         if (event.getEntityType() != type || !(event.getBreeder() instanceof Player)) {

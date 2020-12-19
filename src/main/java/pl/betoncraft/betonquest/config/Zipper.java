@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.config;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.io.*;
@@ -66,6 +67,7 @@ public class Zipper {
      *
      * @param node file or directory
      */
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public void generateFileList(final File node) {
 
         if (node.getName().matches("^backup.*") || node.getName().matches("^database\\.db$")

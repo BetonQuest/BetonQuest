@@ -47,7 +47,7 @@ public class Config {
      * @param verboose controls if this object should log it's actions to the file
      */
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
-    @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
+    @SuppressFBWarnings({"ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"})
     public Config(final boolean verboose) {
 
         PACKAGES.clear();
@@ -141,7 +141,7 @@ public class Config {
      * @param resource resource name
      * @param name     file name
      */
-    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
+    @SuppressFBWarnings({"RV_RETURN_VALUE_IGNORED_BAD_PRACTICE", "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"})
     private static void saveResource(final File root, final String resource, final String name) {
         if (!root.isDirectory()) {
             return;
@@ -527,6 +527,7 @@ public class Config {
         return getPackages().get(defaultPackage);
     }
 
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private void searchForPackages(final File file) {
         if (file.isDirectory() && !UTIL_DIR_NAMES.contains(file.getName())) {
             final File[] content = file.listFiles();

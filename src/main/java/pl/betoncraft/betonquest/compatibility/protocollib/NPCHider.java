@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.compatibility.protocollib;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCSpawnEvent;
 import net.citizensnpcs.api.npc.NPC;
@@ -61,6 +62,7 @@ public final class NPCHider extends BukkitRunnable implements Listener {
         return instance;
     }
 
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private void loadFromConfig() {
 
         for (final ConfigPackage cfgPackage : Config.getPackages().values()) {

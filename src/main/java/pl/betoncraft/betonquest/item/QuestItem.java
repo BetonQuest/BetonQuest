@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.item;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -141,6 +142,7 @@ public class QuestItem {
      * @return converted string
      */
     @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public static String itemToString(final ItemStack item) {
         String durability = "";
         String name = "";
@@ -326,6 +328,7 @@ public class QuestItem {
      * @return true if the item matches
      */
     @SuppressWarnings("PMD.NPathComplexity")
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public boolean compare(final ItemStack item) {
         // basic item checks
         if (item == null) {
@@ -418,6 +421,7 @@ public class QuestItem {
      * @return the ItemStack equal to this quest item
      */
     @SuppressWarnings("PMD.NPathComplexity")
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public ItemStack generate(final int stackSize) {
         // Try resolve material directly
         final Material material = selector.getRandomMaterial();

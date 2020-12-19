@@ -12,6 +12,7 @@ import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
 import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.session.ClipboardHolder;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import pl.betoncraft.betonquest.Instruction;
@@ -36,6 +37,7 @@ public class PasteSchematicEvent extends QuestEvent {
     private final CompoundLocation loc;
     private final boolean noAir;
 
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public PasteSchematicEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         loc = instruction.getLocation();
