@@ -6,11 +6,11 @@ There are two ways to update BetonQuest. You can either use the comfortable Auto
 
 ### Deciding what version to use
 
-Each plugin version is a number that consists of three parts. For example 2.4.3, the first number (2 in this example) is named MAYOR,
+Each plugin version is a number that consists of three parts. For example 2.4.3, the first number (2 in this example) is named MAJOR,
 the second MINOR (4 in this example) and the third PATCH (3 in this example).
 When we release a new version of BetonQuest we will change these numbers in a specific way. Each number has a fixed meaning.
 
-   | Update Strategy  | `MAYOR`                | `MINOR`                | `PATCH`                |
+   | Update Strategy  | `MAJOR`                | `MINOR`                | `PATCH`                |
    |------------------|------------------------|------------------------|------------------------|
    | Bug Fixes        | :white_check_mark:     | :white_check_mark:     | :white_check_mark:     | 
    | New Features     | :white_check_mark:     | :white_check_mark:     | :x:                    | 

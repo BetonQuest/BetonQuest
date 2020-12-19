@@ -95,6 +95,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The plugin will no longer be loaded before the worlds are loaded
 - Citizens Holograms are now more robust on reload and reload faster
 - Added player death/respawn behavior to Region Objective and improved performance
+- Renamed `MAYOR` and `MAYOR_DEV` update strategies to `MAJOR` and `MAJOR_DEV`.
 ### Deprecated
 - Marked message event for removal in BQ 2.0
 - Marked playsound event for removal in BQ 2.0

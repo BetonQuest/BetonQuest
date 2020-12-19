@@ -225,10 +225,10 @@ public class Updater {
     }
 
     public enum UpdateStrategy {
-        MAYOR(false),
+        MAJOR(false),
         MINOR(false),
         PATCH(false),
-        MAYOR_DEV(true),
+        MAJOR_DEV(true),
         MINOR_DEV(true),
         PATCH_DEV(true);
 
@@ -240,8 +240,8 @@ public class Updater {
 
         public UpdateStrategy toDev() {
             switch (this) {
-                case MAYOR:
-                    return MAYOR_DEV;
+                case MAJOR:
+                    return MAJOR_DEV;
                 case MINOR:
                     return MINOR_DEV;
                 case PATCH:
@@ -290,20 +290,20 @@ public class Updater {
             if (version.isUnofficial() || !updateStrategy.isDev && version.isDev()) {
                 return false;
             }
-            final int mayorVersion = Integer.compare(artifactVersion.getMajorVersion(), version.artifactVersion.getMajorVersion());
+            final int majorVersion = Integer.compare(artifactVersion.getMajorVersion(), version.artifactVersion.getMajorVersion());
             final int minorVersion = Integer.compare(artifactVersion.getMinorVersion(), version.artifactVersion.getMinorVersion());
             final int patchVersion = Integer.compare(artifactVersion.getIncrementalVersion(), version.artifactVersion.getIncrementalVersion());
             switch (updateStrategy) {
-                case MAYOR:
-                case MAYOR_DEV:
-                    if (mayorVersion > 0) {
+                case MAJOR:
+                case MAJOR_DEV:
+                    if (majorVersion > 0) {
                         return false;
-                    } else if (mayorVersion < 0) {
+                    } else if (majorVersion < 0) {
                         return true;
                     }
                 case MINOR:
                 case MINOR_DEV:
-                    if (mayorVersion == 0) {
+                    if (majorVersion == 0) {
                         if (minorVersion > 0) {
                             return false;
                         } else if (minorVersion < 0) {
@@ -312,7 +312,7 @@ public class Updater {
                     }
                 case PATCH:
                 case PATCH_DEV:
-                    if (mayorVersion == 0 && minorVersion == 0) {
+                    if (majorVersion == 0 && minorVersion == 0) {
                         if (patchVersion > 0) {
                             return false;
                         } else if (patchVersion < 0) {
