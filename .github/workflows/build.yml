@@ -112,6 +112,10 @@ jobs:
           sed -i "s~\${maven-version}~${POM_MAVEN_VERSION}~g" ./src/main/resources/plugin.yml
           echo "Set the plugin version to '${POM_MAVEN_VERSION}'"
 
+      - name: Activate lf line ending check in editorconfig
+        run: |
+          sed -i "s~#end_of_line = lf~end_of_line = lf~g" ./.editorconfig
+
       - name: Build with Maven
         run: |
           mkdir -p build/output
