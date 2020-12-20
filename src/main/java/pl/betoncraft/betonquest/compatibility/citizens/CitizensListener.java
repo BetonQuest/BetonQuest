@@ -15,6 +15,10 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
 
 /**
@@ -25,6 +29,9 @@ public class CitizensListener implements Listener {
 
     private RightClickListener rightClick;
     private LeftClickListener leftClick;
+
+    private final Map<UUID, Long> npcInteractionLimiter = new HashMap<>();
+    private int interactionLimit;
 
     /**
      * Initializes the listener
@@ -51,6 +58,7 @@ public class CitizensListener implements Listener {
             leftClick = new LeftClickListener();
             Bukkit.getPluginManager().registerEvents(leftClick, plugin);
         }
+        interactionLimit = plugin.getConfig().getInt("npcInteractionLimit", 500);
     }
 
     private class RightClickListener implements Listener {
@@ -75,11 +83,17 @@ public class CitizensListener implements Listener {
         }
     }
 
-    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
+    @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     public void interactLogic(final NPCClickEvent event) {
         if (!event.getClicker().hasPermission("betonquest.conversation")) {
             return;
         }
+        final Long lastClick = npcInteractionLimiter.get(event.getClicker().getUniqueId());
+        final long currentClick = new Date().getTime();
+        if (lastClick != null && lastClick + interactionLimit >= currentClick) {
+            return;
+        }
+        npcInteractionLimiter.put(event.getClicker().getUniqueId(), currentClick);
         if (NPCMoveEvent.blocksTalking(event.getNPC())) {
             return;
         }
