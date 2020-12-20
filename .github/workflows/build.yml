@@ -115,7 +115,7 @@ jobs:
         run: |
           mkdir -p build/artifacts
           mvn -B verify
-          cp target/* build/artifacts/
+          cp -r target/* build/artifacts/
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
@@ -198,7 +198,7 @@ jobs:
           mkdir -p build/documentation
           cd config
           mkdocs build
-          cp target/* ../build/documentation
+          cp -r target/* ../build/documentation
 
       - name: Upload documentation
         uses: actions/upload-artifact@v1
