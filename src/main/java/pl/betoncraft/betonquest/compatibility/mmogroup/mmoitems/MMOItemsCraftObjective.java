@@ -106,7 +106,7 @@ public class MMOItemsCraftObjective extends Objective implements Listener {
             return;
         }
 
-        StationAction action = event.getInteraction();
+        final StationAction action = event.getInteraction();
         if (action == StationAction.INTERACT_WITH_RECIPE || action == StationAction.CANCEL_QUEUE) {
             return;
         }

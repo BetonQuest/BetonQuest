@@ -273,16 +273,18 @@ argument followed by the keyword.
 Only mobs that are in loaded chunks can be killed by using this event.
 
 !!! example
-```YAML killmob ZOMBIE 100;200;300;world 40 name:Bolec
-```
+    ```YAML
+    killmob ZOMBIE 100;200;300;world 40 name:Bolec
+    ```
 
 ## Language Event: `language`
 
 This event changes player's language to the specified one. There is only one argument, the language name.
 
 !!! example
-```YAML language en
-```
+    ```YAML
+    language en
+    ```
 
 ## Lever: `lever`
 
@@ -291,7 +293,8 @@ This event changes player's language to the specified one. There is only one arg
 This event can switch a lever. The first argument is a location and the second one is state: `on`, `off` or `toggle`.
 
 !!! example
-```YAML lever 100;200;300;world toggle
+    ```YAML
+    lever 100;200;300;world toggle
     ```
 
 ## Lightning: `lightning`
@@ -309,7 +312,9 @@ Strikes a lightning at given location. The only argument is the location.
 
 **static**
 
-This event simply displays a message to the player. The instruction string is the message. All `&` color codes are respected. You can add additional translations by starting them with `{lang}` argument, just like in the example. The player will see his language or the default one if it's not defined. You can use conversation variables with this event. Just make sure not to use `%npc%`.
+**This event is deprecated. Please use [notify](#notification-notify) instead.**
+
+~~This event simply displays a message to the player. The instruction string is the message. All `&` color codes are respected. You can add additional translations by starting them with `{lang}` argument, just like in the example. The player will see his language or the default one if it's not defined. You can use conversation variables with this event. Just make sure not to use `%npc%`.~~
 
 !!! example
     ```YAML
@@ -417,10 +422,12 @@ There must be two `%%` before the event's name if variables are used, one is fro
 
 ## Play sound: `playsound`
 
-This event will play a specified sound for the player. The only required argument is the sound name in **lower case** letters
+**This event is deprecated. Please use [notify](#notification-notify) instead.**
+
+~~This event will play a specified sound for the player. The only required argument is the sound name in **lower case** letters
 (can take custom values if you're using a resource pack). There are also a few optional arguments. 
 `category:` is the [sound category](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/SoundCategory.html) (if not specified it will use `MASTER`),
-`volume:` is a decimal responsible for the sound's volume, `pitch:` specifies the pitch and `location:` makes the sound play at specified location.
+`volume:` is a decimal responsible for the sound's volume, `pitch:` specifies the pitch and `location:` makes the sound play at specified location.~~
 
 !!! example
     ```YAML
@@ -473,7 +480,9 @@ This event works in the same way as `point` event, the only difference is that i
 
 **persistent**, **static**
 
-Sets a block at given location to specified material. Useful for triggering redstone contraptions. There are two required arguments. First is required, and should be  material's name ([List of materials](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html)). Second is a location and is also required. Last, optional is `data:` with an integer, which defines block's data value. Default is 0.
+Changes the block at the given position.
+The first argument is a [Block Selector](../Reference/#block-selectors), the second a location.
+Very powerful if used to trigger redstone contraptions.
 
 !!! example
     ```YAML
@@ -547,12 +556,14 @@ Minutes can be achieved with floating point.
 
 ## Title: `title`
 
-This event displays a title or a subtitle. The first argument is the type (`title` or `subtitle`),
+**This event is deprecated. Please use [notify](#notification-notify) instead.**
+
+~~This event displays a title or a subtitle. The first argument is the type (`title` or `subtitle`),
 second argument are title's duration times (in ticks) separated by semicolons - fade in, stay and fade out:
 `20;100;20`. If you set it to three zeros (`0;0;0`) the plugin will use default Minecraft values.
 After these two required arguments there is a title message, formatted like in the `message` event,
 which supports multiple languages, color codes and variables.
-Keep in mind that the subtitle will only appear if the title is visible - that's how Minecraft works.
+Keep in mind that the subtitle will only appear if the title is visible - that's how Minecraft works.~~
 
 !!! example
     ```YAML
