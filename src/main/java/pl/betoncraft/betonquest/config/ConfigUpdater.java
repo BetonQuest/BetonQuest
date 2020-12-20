@@ -1535,7 +1535,7 @@ public class ConfigUpdater {
         instance.saveConfig();
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "lgtm"})
     private void updateFromV21() {
         try {
             LogUtils.getLogger().log(Level.FINE, "Updating the database");
@@ -1857,7 +1857,7 @@ public class ConfigUpdater {
         instance.saveConfig();
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "lgtm"})
     private void updateFromV16() {
         try {
             // move objectives from events.yml to objectives.yml
@@ -2100,7 +2100,7 @@ public class ConfigUpdater {
         instance.saveConfig();
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "lgtm"})
     private void updateFromV12() {
         try {
             LogUtils.getLogger().log(Level.FINE, "Moving all configuration to \"default\" package");
@@ -2221,7 +2221,7 @@ public class ConfigUpdater {
         instance.saveConfig();
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "lgtm"})
     private void updateFromV11() {
         try {
             LogUtils.getLogger().log(Level.FINE, "Updating objectives in configuration");
@@ -2752,7 +2752,7 @@ public class ConfigUpdater {
         instance.saveConfig();
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "lgtm"})
     private void updateFromV5() {
         try {
             // delete isused column from tables objectives and tags
