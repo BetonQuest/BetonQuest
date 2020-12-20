@@ -53,26 +53,43 @@ The `update` section controls the Auto-Updater. It has the following settings:
 
   * `enabled` (default `true`). Enables or disables the Updater. If set to false, it is not possible to update with the updater and no version checks are executed.
   * `strategy` (default `MINOR`). The update strategy is the most important feature of the Auto-Updater. An explanation is available [here](Updating-and-Backups.md).
-  * `automatic` (default `true`). If true the updater will download new Versions automatically. Otherwise, 
-   the updater will only download new versions when the update command is executed.   
-    
+  * `automatic` (default `true`). If true the updater will download new Versions automatically. Otherwise, the updater
+    will only download new versions when the update command is executed.
+
 ### Journal slots
-`default_journal_slot` is the inventory slot in which the journal will appear after using the `/journal` command. BetonQuest will try to move items out of the way
-if the slot is occupied. If the inventory is full the journal will not be added. You can disable this behaviour by setting the option to `-1`. BetonQuest will then just
-use any free slot.
+
+`default_journal_slot` is the inventory slot in which the journal will appear after using the `/journal` command.
+BetonQuest will try to move items out of the way if the slot is occupied. If the inventory is full the journal will not
+be added. You can disable this behaviour by setting the option to `-1`. BetonQuest will then just use any free slot.
 
 ### Citizens identifier
-`citizens_npcs_by_name` sets whether NPCs from Citizens 2 should be identified in main.yml by their name instead of their id. 
-This is a dangerous setting as two different NPC's at the opposite edges of your world that share the same name by accident will trigger the same quest.
+
+`citizens_npcs_by_name` sets whether NPCs from Citizens 2 should be identified in main.yml by their name instead of
+their id. This is a dangerous setting as two different NPC's at the opposite edges of your world that share the same
+name by accident will trigger the same quest.
+
+### Citizens left click
+
+`acceptNPCLeftClick` activates that a conversation with an NPC can also be started by left clicking the NPC and not only
+by right clicking the NPC.
+
+### Citizens interact limit
+
+`npcInteractionLimit` prevents NPC / BetonQuest conversation click spamming. The time's unit is milliseconds. Default
+value: `500`
 
 ### Conversation End Distance
-`max_npc_distance` is the distance you need to walk away from the NPC for the conversation to end (in the case of using chat-based conversation interface).
+
+`max_npc_distance` is the distance you need to walk away from the NPC for the conversation to end (in the case of using
+chat-based conversation interface).
 
 ### Default conversation style
+
 `default_conversation_IO` is a comma-separated list of conversation interfaces with the first valid one used.
 Read [this page](Conversations.md) for more information about conversation interfaces.
 
 ### Default Chat interceptor
+
 `default_interceptor` is a comma-separated list of chat interceptors with the first valid one used.
 Read [this page](Conversations.md) for more information about chat interceptors.
 
