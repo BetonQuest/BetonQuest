@@ -357,11 +357,11 @@ This one requires the player to have a specified tag. Together with `!` negation
 
 **persistent**, **static**
 
-This condition is met if the block at specified location matches the given material. First argument is a location, and the second one is a `block selector`. The older `data:value` parameter is still supported but now deprecated.
+This condition is met if the block at specified location matches the given material. First argument is a location, and the second one is a `block selector`.
 
 !!! example
     ```YAML
-    testforblock 100;200;300;world STONE:1
+    testforblock 100;200;300;world STONE
     ```
 
 ## Time: `time`
