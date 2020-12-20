@@ -263,15 +263,26 @@ Kills the player. Nothing else.
  
 **persistent**, **static**
 
-Kills all mobs of given type at the location. First argument is the [type of the mob](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html). Next argument is the location. Third argument is the radius around the location, in which the mobs must be to get killed.  
-You can also specify `name:` argument, followed by the name of the mob which should get killed. All `_` characters will be replaced with spaces. If you want to kill only mobs that have been marked using the spawn mob event use `marked:` argument followed by the keyword.
+Kills all mobs of given type at the location. First argument is
+the [type of the mob](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html). Next argument is the
+location. Third argument is the radius around the location, in which the mobs must be to get killed.  
+You can also specify `name:` argument, followed by the name of the mob which should get killed. All `_` characters will
+be replaced with spaces. If you want to kill only mobs that have been marked using the spawn mob event use `marked:`
+argument followed by the keyword.
 
 Only mobs that are in loaded chunks can be killed by using this event.
 
 !!! example
-    ```YAML
-    killmob ZOMBIE 100;200;300;world 40 name:Bolec
-    ```
+```YAML killmob ZOMBIE 100;200;300;world 40 name:Bolec
+```
+
+## Language Event: `language`
+
+This event changes player's language to the specified one. There is only one argument, the language name.
+
+!!! example
+```YAML language en
+```
 
 ## Lever: `lever`
 
@@ -280,8 +291,7 @@ Only mobs that are in loaded chunks can be killed by using this event.
 This event can switch a lever. The first argument is a location and the second one is state: `on`, `off` or `toggle`.
 
 !!! example
-    ```YAML
-    lever 100;200;300;world toggle
+```YAML lever 100;200;300;world toggle
     ```
 
 ## Lightning: `lightning`
