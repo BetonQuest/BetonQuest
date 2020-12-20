@@ -253,7 +253,7 @@ be displayed to the player for which you ran the event.
     
     **In events.yml**
     ```YAML
-    particle beton loc:100;200;300;world;180;-90 private`
+    particle beton loc:100;200;300;world;180;-90 private
     ```
 
 ## [Heroes](http://dev.bukkit.org/bukkit-plugins/heroes/)
