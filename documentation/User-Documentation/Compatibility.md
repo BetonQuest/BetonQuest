@@ -277,7 +277,7 @@ This condition checks if the player can use specified skill. The first argument 
 
 !!! example
     ```YAML
-    heroesskill charge`
+    heroesskill charge
     ```
 
 ### Events
