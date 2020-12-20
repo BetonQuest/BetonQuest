@@ -3,33 +3,32 @@ on: [push, pull_request]
 
 jobs:
   prepare:
-    name: Prepare version
+    name: Prepare Versioning
     runs-on: ubuntu-latest
 
     outputs:
       VERSION: ${{ steps.save_version.outputs.version }}
 
     steps:
-      - name: Check fork version tagging
+      - name: Validate that a fork does not create a version tag
         if: "github.repository != 'BetonQuest/BetonQuest' && startsWith(github.ref,'refs/tags/v')"
         run: |
           echo "Version tags are not supported in forks!"
           exit 1
 
-      - name: Checkout
+      - name: Checkout source code
         uses: actions/checkout@v2
 
-      - name: Set up JDK 1.8
+      - name: Setup JDK 1.8
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
 
-      - name: Collect maven version
+      - name: Read version from pom.xml
         run: |
           POM_MAVEN_VERSION=$(mvn help:evaluate -Dexpression=version -q -DforceStdout)
           echo "POM_MAVEN_VERSION=$POM_MAVEN_VERSION" >> $GITHUB_ENV
           echo "Collected the pom.xml version. The version is '$POM_MAVEN_VERSION'"
-          mkdir build
 
       - name: Generate build number for Development Build
         if: "github.repository == 'BetonQuest/BetonQuest' && github.event_name != 'pull_request' && !startsWith(github.ref,'refs/tags/v') && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v' ) )"
@@ -38,7 +37,7 @@ jobs:
           token: ${{ secrets.github_token }}
           prefix: ${{ env.POM_MAVEN_VERSION }}
 
-      - name: Update Version for Release Build
+      - name: Set version for Release Build
         if: "startsWith(github.ref,'refs/tags/v')"
         run: |
           # Extract the version from the tag
@@ -48,20 +47,20 @@ jobs:
           if [ $TAG_MAVEN_VERSION != $POM_MAVEN_VERSION ]; then echo "::error::The version of the tag and the version of the pom are not equal! Tag is '$TAG_MAVEN_VERSION' and pom is '$POM_MAVEN_VERSION'."; exit 1; fi
           echo "POM_MAVEN_VERSION=$POM_MAVEN_VERSION" >> $GITHUB_ENV
 
-      - name: Update Version for Development Build
+      - name: Set version for Development Build
         if: "github.repository == 'BetonQuest/BetonQuest' && github.event_name != 'pull_request' && !startsWith(github.ref,'refs/tags/v') && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v' ) )"
         run: |
           POM_MAVEN_VERSION=${POM_MAVEN_VERSION}-DEV-${BUILD_NUMBER}
           echo "POM_MAVEN_VERSION=$POM_MAVEN_VERSION" >> $GITHUB_ENV
 
-      - name: Update Version for Artifact Build
+      - name: Set version for Artifact Build
         if: "github.event_name == 'pull_request' || github.repository != 'BetonQuest/BetonQuest' || !startsWith(github.ref,'refs/tags/v') && github.ref != 'refs/heads/master' && !startsWith(github.ref,'refs/heads/master_v')"
         run: |
           if [ ${{ github.repository }} != 'BetonQuest/BetonQuest' ]; then REPO=${{ github.repository }}-; fi
           POM_MAVEN_VERSION=${POM_MAVEN_VERSION}-DEV-ARTIFACT-${REPO}${{ github.run_number }}
           echo "POM_MAVEN_VERSION=$POM_MAVEN_VERSION" >> $GITHUB_ENV
 
-      - name: Save Version to output
+      - name: Save version to output variable
         id: save_version
         run: |
           echo "The version is '$POM_MAVEN_VERSION'"
@@ -74,18 +73,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout source code
         uses: actions/checkout@v2
 
-      - name: Set up JDK 1.8
+      - name: Setup JDK 1.8
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-          server-id: BetonQuest
-          server-username: REPOSITORY_USER
-          server-password: REPOSITORY_PASS
 
-      - name: Set Version
+      - name: Set version variable from 'Prepare Versioning'
         run: |
           POM_MAVEN_VERSION=${{ needs.prepare.outputs.VERSION }}
           echo "POM_MAVEN_VERSION=$POM_MAVEN_VERSION" >> $GITHUB_ENV
@@ -110,7 +106,6 @@ jobs:
       - name: Set plugin version
         run: |
           sed -i "s~\${maven-version}~${POM_MAVEN_VERSION}~g" ./src/main/resources/plugin.yml
-          echo "Set the plugin version to '${POM_MAVEN_VERSION}'"
 
       - name: Activate lf line ending check in editorconfig
         run: |
@@ -118,26 +113,15 @@ jobs:
 
       - name: Build with Maven
         run: |
-          mkdir -p build/output
+          mkdir -p build/artifacts
           mvn -B verify
-          cp target/betonquest*.jar build/output/
-          cp target/BetonQuest.jar build/output/
-
-      - name: Publish to Maven Repo
-        if: "github.repository == 'BetonQuest/BetonQuest' && github.event_name != 'pull_request' && (github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v') || startsWith(github.ref,'refs/tags/v') )"
-        run: |
-          mvn -B deploy
-        env:
-          REPOSITORY_ID: ${{ secrets.REPOSITORY_ID }}
-          REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
-          REPOSITORY_USER: ${{ secrets.REPOSITORY_USER }}
-          REPOSITORY_PASS: ${{ secrets.REPOSITORY_PASS }}
+          cp target/* build/artifacts/
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
           name: BetonQuest-Artifacts
-          path: build/output
+          path: build/artifacts
 
   documentation:
     name: Build Documentation
@@ -146,18 +130,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout source code
         uses: actions/checkout@v2
         with:
           lfs: 'true'
 
-      - name: Setup Python
+      - name: Setup Python 3.6
         uses: actions/setup-python@v1
         with:
           python-version: '3.6'
           architecture: 'x64'
 
-      - name: Set Version
+      - name: Set version variable from 'Prepare Versioning'
         run: |
           POM_MAVEN_VERSION=${{ needs.prepare.outputs.VERSION }}
           echo "POM_MAVEN_VERSION=$POM_MAVEN_VERSION" >> $GITHUB_ENV
@@ -209,16 +193,12 @@ jobs:
         env:
           POM_MAVEN_VERSION: ${{ env.POM_MAVEN_VERSION }}
 
-
-      - name: Set documentation version
+      - name: Build with with mkdocs
         run: |
-          sed -i "s~BetonQuest - UNOFFICIAL~BetonQuest - ${POM_MAVEN_VERSION}~g" ./config/mkdocs.yml
-          echo "Set the documentation version to '${POM_MAVEN_VERSION}'"
-
-      - name: Build with mkdocs
-        run: |
+          mkdir -p build/documentation
           cd config
-          mkdocs build --site-dir="../build/documentation"
+          mkdocs build
+          cp target/* ../build/documentation
 
       - name: Upload documentation
         uses: actions/upload-artifact@v1
@@ -233,7 +213,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout source code
         uses: actions/checkout@v2
 
       - name: Set Version
@@ -252,6 +232,16 @@ jobs:
         with:
           name: BetonQuest-Documentation
           path: build/documentation/
+
+      - name: Publish to Maven Repository
+        if: "github.repository == 'BetonQuest/BetonQuest' && github.event_name != 'pull_request' && (github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v') || startsWith(github.ref,'refs/tags/v') )"
+        run: |
+          mvn -B deploy
+        env:
+          REPOSITORY_ID: ${{ secrets.REPOSITORY_ID }}
+          REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
+          REPOSITORY_USER: ${{ secrets.REPOSITORY_USER }}
+          REPOSITORY_PASS: ${{ secrets.REPOSITORY_PASS }}
 
       - name: Set CHANGELOG.md version
         run: |
@@ -296,8 +286,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout source code
         uses: actions/checkout@v2
+
+      - name: Setup JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+          server-id: BetonQuest
+          server-username: REPOSITORY_USER
+          server-password: REPOSITORY_PASS
 
       - name: Set Version and prepare snapshot variables
         run: |

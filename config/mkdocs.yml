@@ -1,4 +1,4 @@
-site_name: BetonQuest - UNOFFICIAL
+site_name: BetonQuest
 site_author: Co0sh and contributors
 site_url: https://betonquest.org/old
 site_dir: target/documentation
@@ -10,7 +10,6 @@ copyright: '© 2020  Jakub "Co0sh" Sapalski  & Contributers. GPLv3'
 
 
 extra_css:
-  - 'webCode/css/mkpdf.css'
   - 'webCode/css/version_select.css'
   - 'webCode/css/superFences.css'
   - 'webCode/css/centered.css'
@@ -82,17 +81,10 @@ markdown_extensions:
   - toc:
       permalink: 🔗
 
-# Bundie's Tip: Disable mkpdfs whilst using `mkdocs serve` on a local machine. But be carefull not to commit that.
 plugins:
   - search
   - git-revision-date-localized:
       type: timeago
-  - mkpdfs:
-      author: Co0sh and contributors
-      toc_title: Table of contents
-      output_path: pdf/BetonQuest.pdf
-      design: ../documentation/webCode/css/pdf.css
-
 
 extra:
   version:
