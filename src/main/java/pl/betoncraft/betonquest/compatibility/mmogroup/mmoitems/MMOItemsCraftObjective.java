@@ -98,14 +98,16 @@ public class MMOItemsCraftObjective extends Objective implements Listener {
     /**
      * This listener handles items that were crafted in a MMOItems Craftingstation GUI.
      *
-     * This is only a TEMPORARY SOLUTION as this is fired twice for one crafting action.
-     * The author of MMOItems has confirmed that this event will be rewritten.
-     * Users need to double the input amount if they want the item to be crafted in a crafting station.
      */
     @EventHandler(ignoreCancelled = true)
     public void onRecipeUse(final PlayerUseCraftingStationEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
         if (!containsPlayer(playerID) && !checkConditions(playerID)) {
+            return;
+        }
+
+        StationAction action = event.getInteraction();
+        if (action == StationAction.INTERACT_WITH_RECIPE || action == StationAction.CANCEL_QUEUE) {
             return;
         }
 
@@ -115,9 +117,6 @@ public class MMOItemsCraftObjective extends Objective implements Listener {
         }
 
         final CraftingRecipe craftingRecipe = (CraftingRecipe) usedRecipe;
-        if (event.getInteraction() == StationAction.INTERACT_WITH_RECIPE && craftingRecipe.getCraftingTime() > 0.0) {
-            return;
-        }
 
         final ConfigMMOItem craftedItem = craftingRecipe.getOutput();
         if (isInvalidItem(craftedItem.getPreview())) {

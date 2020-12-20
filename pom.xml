@@ -116,19 +116,19 @@
         <dependency>
           <groupId>net.Indyuce</groupId>
           <artifactId>MMOLib</artifactId>
-          <version>1.7</version>
+          <version>1.7.3</version>
           <scope>provided</scope>
         </dependency>
         <dependency>
           <groupId>net.Indyuce</groupId>
           <artifactId>MMOCore</artifactId>
-          <version>1.6</version>
+          <version>1.6.1</version>
           <scope>provided</scope>
         </dependency>
         <dependency>
           <groupId>net.Indyuce</groupId>
           <artifactId>MMOItems</artifactId>
-          <version>6.5</version>
+          <version>6.5.1-SNAPSHOT</version>
           <scope>provided</scope>
         </dependency>
       </dependencies>

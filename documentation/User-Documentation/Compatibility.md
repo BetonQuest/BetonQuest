@@ -547,9 +547,6 @@ An amount can also be set if it shall differ from the default (which is one) by 
 The amount is based on how many items have actually been crafted, not how often a specific recipe has been used! Therefore,
 a recipe that makes four items at once will let the objective progress by four steps.  
 
-!!! warning test
-    MMOItems API is currently broken. You need to double the amount for all objectives that use crafting
-    stations recipes with a crafting time of zero!
 
 ```YAML linenums="1"
 mmoitemcraft SWORD STEEL_SWORD
