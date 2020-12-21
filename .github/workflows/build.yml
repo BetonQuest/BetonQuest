@@ -313,6 +313,8 @@ jobs:
 
       - name: Deploy to Github Pages
         run: |
+          git config --global user.name "BetonQuest-Bot"
+          git config --global user.email "contact@betonquest.org"
           mike deploy ${POM_MAVEN_VERSION} latest
           mike delete ${POM_MAVEN_VERSION}-dev
 
@@ -459,6 +461,8 @@ jobs:
 
       - name: Deploy to Github Pages
         run: |
+          git config --global user.name "BetonQuest-Bot"
+          git config --global user.email "contact@betonquest.org"
           mike deploy ${VERSION}-dev dev
 
       - name: Publish to Maven Repository
