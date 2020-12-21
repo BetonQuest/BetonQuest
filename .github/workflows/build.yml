@@ -306,8 +306,8 @@ jobs:
           mkdir -p target/documentation
           cp -r build/artifacts/* target/artifacts/
           cp -r build/documentation/* target/documentation/
-          git apply build/artifacts/changes.patch
           git apply build/documentation/changes.patch
+          git apply --reject build/artifacts/changes.patch
           rm build/artifacts/changes.patch
           rm build/documentation/changes.patch
 
@@ -452,8 +452,8 @@ jobs:
           mkdir -p target/documentation
           cp -r build/artifacts/* target/artifacts/
           cp -r build/documentation/* target/documentation/
-          git apply build/artifacts/changes.patch
           git apply build/documentation/changes.patch
+          git apply --reject build/artifacts/changes.patch
           rm build/artifacts/changes.patch
           rm build/documentation/changes.patch
 
