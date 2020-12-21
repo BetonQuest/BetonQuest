@@ -66,10 +66,10 @@ jobs:
           echo "The version is '$POM_MAVEN_VERSION'"
           echo ::set-output name=version::$POM_MAVEN_VERSION
 
-  build:
+  artifacts:
     name: Build Artifacts
     if: always()
-    needs: [prepare]
+    needs: [ prepare ]
     runs-on: ubuntu-latest
 
     steps:
