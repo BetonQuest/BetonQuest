@@ -302,8 +302,8 @@ jobs:
 
       - name: Load target folder and patch files
         run: |
-          mkdir -p build/artifacts
-          mkdir -p build/documentation
+          mkdir -p target/artifacts
+          mkdir -p target/documentation
           cp -r build/artifacts/* target/artifacts/
           cp -r build/documentation/* target/documentation/
           git apply build/artifacts/changes.patch
@@ -448,8 +448,8 @@ jobs:
 
       - name: Load target folder and patch files
         run: |
-          mkdir -p build/artifacts
-          mkdir -p build/documentation
+          mkdir -p target/artifacts
+          mkdir -p target/documentation
           cp -r build/artifacts/* target/artifacts/
           cp -r build/documentation/* target/documentation/
           git apply build/artifacts/changes.patch
