@@ -41,7 +41,7 @@ import java.util.logging.Level;
         "PMD.SwitchDensity", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidCatchingNPE",
         "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition", "PMD.CloseResource",
         "PMD.UseLocaleWithCaseConversions", "PMD.SimplifyStartsWith", "PMD.UseIndexOfChar",
-        "PMD.UseStringBufferForStringAppends", "lgtm"})
+        "PMD.UseStringBufferForStringAppends"})
 @SuppressFBWarnings({"NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", "ODR_OPEN_DATABASE_RESOURCE", "DLS_DEAD_LOCAL_STORE",
         "OBL_UNSATISFIED_OBLIGATION", "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING",
         "RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE", "REC_CATCH_EXCEPTION", "RV_RETURN_VALUE_IGNORED_BAD_PRACTICE",
@@ -1535,7 +1535,7 @@ public class ConfigUpdater {
         instance.saveConfig();
     }
 
-    @SuppressWarnings({"unused", "lgtm"})
+    @SuppressWarnings({"unused", "lgtm [java/database-resource-leak]"})
     private void updateFromV21() {
         try {
             LogUtils.getLogger().log(Level.FINE, "Updating the database");
@@ -1857,7 +1857,7 @@ public class ConfigUpdater {
         instance.saveConfig();
     }
 
-    @SuppressWarnings({"unused", "lgtm"})
+    @SuppressWarnings({"unused", "lgtm [java/database-resource-leak]"})
     private void updateFromV16() {
         try {
             // move objectives from events.yml to objectives.yml
@@ -2100,7 +2100,7 @@ public class ConfigUpdater {
         instance.saveConfig();
     }
 
-    @SuppressWarnings({"unused", "lgtm"})
+    @SuppressWarnings({"unused", "lgtm [java/database-resource-leak]"})
     private void updateFromV12() {
         try {
             LogUtils.getLogger().log(Level.FINE, "Moving all configuration to \"default\" package");
@@ -2221,7 +2221,7 @@ public class ConfigUpdater {
         instance.saveConfig();
     }
 
-    @SuppressWarnings({"unused", "lgtm"})
+    @SuppressWarnings({"unused", "lgtm [java/database-resource-leak]"})
     private void updateFromV11() {
         try {
             LogUtils.getLogger().log(Level.FINE, "Updating objectives in configuration");
@@ -2752,7 +2752,7 @@ public class ConfigUpdater {
         instance.saveConfig();
     }
 
-    @SuppressWarnings({"unused", "lgtm"})
+    @SuppressWarnings({"unused", "lgtm [java/database-resource-leak]"})
     private void updateFromV5() {
         try {
             // delete isused column from tables objectives and tags
