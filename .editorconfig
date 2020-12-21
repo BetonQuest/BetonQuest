@@ -8,6 +8,8 @@ indent_style = space
 indent_size = 2
 #The line ending lf is only checked in the build pipeline. Don't remove this and the following line.
 #end_of_line = lf
+[documentation/media/**]
+#end_of_line = unset
 
 [*.java]
 indent_size = 4
