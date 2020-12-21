@@ -116,6 +116,7 @@ jobs:
           mkdir -p build/artifacts
           mvn -B verify
           cp -r target/artifacts/* build/artifacts/
+          git diff > build/artifacts/changes.patch
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
@@ -198,6 +199,7 @@ jobs:
           mkdir -p build/documentation
           mkdocs build
           cp -r target/documentation/* build/documentation/
+          git diff > build/documentation/changes.patch
 
       - name: Upload documentation
         uses: actions/upload-artifact@v1
