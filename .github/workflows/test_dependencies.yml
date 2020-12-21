@@ -43,8 +43,7 @@ jobs:
         if: "env.MKDOCS_MATERIAL_INSIDERS == null"
         run: |
           python3 -m pip install --upgrade pip
-          sudo apt-get install python3-setuptools
-          python3 -m pip install -r ./config/docs-requirements.txt
+          pip install -r ./config/docs-requirements.txt
 
       - name: Install dependencies insiders
         env:
@@ -52,8 +51,7 @@ jobs:
         if: "env.MKDOCS_MATERIAL_INSIDERS != null"
         run: |
           python3 -m pip install --upgrade pip
-          sudo apt-get install python3-setuptools
-          python3 -m pip install -r ./config/docs-requirements-insiders.txt
+          pip install -r ./config/docs-requirements-insiders.txt
 
       - name: Build with mkdocs
         run: |

@@ -168,8 +168,7 @@ jobs:
         if: "env.MKDOCS_MATERIAL_INSIDERS == null"
         run: |
           python3 -m pip install --upgrade pip
-          sudo apt-get install python3-setuptools
-          python3 -m pip install -r ./config/docs-requirements.txt
+          pip install -r ./config/docs-requirements.txt
 
       - name: Cache dependencies insiders
         env:
@@ -265,8 +264,7 @@ jobs:
         if: "env.MKDOCS_MATERIAL_INSIDERS == null"
         run: |
           python3 -m pip install --upgrade pip
-          sudo apt-get install python3-setuptools
-          python3 -m pip install -r ./config/docs-requirements.txt
+          pip install -r ./config/docs-requirements.txt
 
       - name: Cache dependencies insiders
         env:
@@ -285,8 +283,7 @@ jobs:
         if: "env.MKDOCS_MATERIAL_INSIDERS != null"
         run: |
           python3 -m pip install --upgrade pip
-          sudo apt-get install python3-setuptools
-          python3 -m pip install -r ./config/docs-requirements-insiders.txt
+          pip install -r ./config/docs-requirements-insiders.txt
 
       - name: Load target folder and patch files
         run: |
@@ -397,8 +394,7 @@ jobs:
         if: "env.MKDOCS_MATERIAL_INSIDERS == null"
         run: |
           python3 -m pip install --upgrade pip
-          sudo apt-get install python3-setuptools
-          python3 -m pip install -r ./config/docs-requirements.txt
+          pip install -r ./config/docs-requirements.txt
 
       - name: Cache dependencies insiders
         env:
@@ -417,8 +413,7 @@ jobs:
         if: "env.MKDOCS_MATERIAL_INSIDERS != null"
         run: |
           python3 -m pip install --upgrade pip
-          sudo apt-get install python3-setuptools
-          python3 -m pip install -r ./config/docs-requirements-insiders.txt
+          pip install -r ./config/docs-requirements-insiders.txt
 
       - name: Load target folder and patch files
         run: |
