@@ -120,7 +120,7 @@ jobs:
           mvn -B verify
           mkdir -p build/artifacts
           cp -r target/artifacts/* build/artifacts/
-          git diff > build/artifacts/changes.patch
+          git diff . ':(exclude)CHANGELOG.md' > build/artifacts/changes.patch
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
@@ -306,8 +306,8 @@ jobs:
           mkdir -p target/documentation
           cp -r build/artifacts/* target/artifacts/
           cp -r build/documentation/* target/documentation/
+          git apply build/artifacts/changes.patch
           git apply build/documentation/changes.patch
-          git apply --reject build/artifacts/changes.patch
           rm build/artifacts/changes.patch
           rm build/documentation/changes.patch
 
@@ -452,8 +452,8 @@ jobs:
           mkdir -p target/documentation
           cp -r build/artifacts/* target/artifacts/
           cp -r build/documentation/* target/documentation/
+          git apply build/artifacts/changes.patch
           git apply build/documentation/changes.patch
-          git apply --reject build/artifacts/changes.patch
           rm build/artifacts/changes.patch
           rm build/documentation/changes.patch
 
