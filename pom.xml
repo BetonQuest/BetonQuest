@@ -383,6 +383,7 @@
   </dependencies>
 
   <build>
+    <directory>target/artifacts</directory>
     <sourceDirectory>src/main/java</sourceDirectory>
     <resources>
       <resource>

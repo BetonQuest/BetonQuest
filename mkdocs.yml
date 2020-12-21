@@ -1,12 +1,12 @@
 site_name: BetonQuest
-site_author: Co0sh and contributors
+site_author: BetonQuest Organisation
 site_url: https://betonquest.org/old
 site_dir: target/documentation
-docs_dir: ./../documentation
+docs_dir: documentation
 repo_name: BetonQuest on GitHub
 edit_uri: /BetonQuest/BetonQuest/edit/master/documentation/
 repo_url: https://github.com/BetonQuest/BetonQuest
-copyright: '© 2020  Jakub "Co0sh" Sapalski  & Contributers. GPLv3'
+copyright: '© 2020  BetonQuest Organisation. GPLv3'
 
 
 extra_css:

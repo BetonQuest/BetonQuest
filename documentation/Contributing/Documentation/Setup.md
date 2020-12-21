@@ -52,7 +52,5 @@ MkDocs enables you to create a website that shows you your changes while you mak
 Execute this to see a preview of the webpage on <a href="http://127.0.0.1:8000" target="_blank">127.0.0.1:8000</a>:
 
 ```BASH
-#Navigate to ./config from the project root 
-cd config
 mkdocs serve
 ```
