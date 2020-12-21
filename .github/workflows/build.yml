@@ -111,11 +111,11 @@ jobs:
         run: |
           sed -i "s~#end_of_line = lf~end_of_line = lf~g" ./.editorconfig
 
-      - name: Build with Maven package
+      - name: Build with Maven. Phase 'package'
         run: |
           mvn -B package
 
-      - name: Build with Maven verify
+      - name: Build with Maven. Phase 'verify'
         run: |
           mvn -B verify
           mkdir -p build/artifacts
@@ -298,6 +298,7 @@ jobs:
       - name: Deploy to Github Pages
         run: |
           mike deploy ${POM_MAVEN_VERSION} latest
+          mike delete ${POM_MAVEN_VERSION}-dev
 
       - name: Publish to Maven Repository
         run: |
@@ -326,6 +327,7 @@ jobs:
             build/documentation/Documentation.zip
 
       - name: Publish to Discord
+        if: "always()"
         run: |
           bash .github/scripts/discord.sh
         env:
@@ -353,7 +355,6 @@ jobs:
           echo "VERSION=${array[0]}" >> $GITHUB_ENV
           echo "VERSION_NUMBER=${array[2]}" >> $GITHUB_ENV
           echo "BRANCH_NAME=${GITHUB_REF:11}" >> $GITHUB_ENV
-
 
       - name: Download Artifacts
         uses: actions/download-artifact@v1
@@ -451,9 +452,10 @@ jobs:
           RUN_ID: ${{ github.run_id }}
           COMMIT_HASH: ${{ github.sha }}
           PLUGIN: "@build/artifacts/BetonQuest.jar"
-          DOCS: "@build/documentation/pdf/Documentation.zip"
+          DOCS: "@build/documentation/Documentation.zip"
 
       - name: Publish to Discord
+        if: "always()"
         run: |
           bash .github/scripts/discord.sh
         env:
