@@ -315,7 +315,7 @@ jobs:
         run: |
           git config --global user.name "BetonQuest-Bot"
           git config --global user.email "contact@betonquest.org"
-          mike deploy ${POM_MAVEN_VERSION} latest
+          mike deploy --push ${POM_MAVEN_VERSION} latest
           mike delete ${POM_MAVEN_VERSION}-dev
 
       - name: Publish to Maven Repository
@@ -465,7 +465,7 @@ jobs:
         run: |
           git config --global user.name "BetonQuest-Bot"
           git config --global user.email "contact@betonquest.org"
-          mike deploy ${VERSION}-dev dev
+          mike deploy --push ${VERSION}-dev dev
 
       - name: Publish to Maven Repository
         run: |
