@@ -220,6 +220,8 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2
+        with:
+          lfs: 'true'
 
       - name: Set version variable from 'Prepare Versioning'
         run: |
@@ -345,6 +347,8 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2
+        with:
+          lfs: 'true'
 
       - name: Set version variable from 'Prepare Versioning' and prepare snapshot variables
         run: |
