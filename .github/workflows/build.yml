@@ -329,7 +329,9 @@ jobs:
 
       - name: Zip Documentation
         run: |
-          zip -r build/documentation/Documentation.zip build/documentation
+          cd build/documentation/
+          zip -r Documentation.zip .
+          cd ../..
 
       - name: Create release
         uses: docker://antonyurchenko/git-release:latest
@@ -476,7 +478,9 @@ jobs:
 
       - name: Zip Documentation
         run: |
-          zip -r build/documentation/Documentation.zip build/documentation
+          cd build/documentation/
+          zip -r Documentation.zip .
+          cd ../..
 
       - name: Create snapshot
         run: |
