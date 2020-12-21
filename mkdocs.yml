@@ -10,14 +10,10 @@ copyright: '© 2020  BetonQuest Organisation. GPLv3'
 
 
 extra_css:
-  - 'webCode/css/version_select.css'
   - 'webCode/css/superFences.css'
   - 'webCode/css/centered.css'
   - 'webCode/css/contentAreaFullWidth.css'
   - 'webCode/css/admonition.css'
-
-extra_javascript:
-  - 'webCode/js/version_select.js'
 
 # More info on this theme: https://squidfunk.github.io/mkdocs-material
 theme:
