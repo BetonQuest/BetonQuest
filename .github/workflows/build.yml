@@ -168,6 +168,7 @@ jobs:
         if: "env.MKDOCS_MATERIAL_INSIDERS == null"
         run: |
           python3 -m pip install --upgrade pip
+          sudo apt-get install python3-setuptools
           python3 -m pip install -r ./config/docs-requirements.txt
 
       - name: Cache dependencies insiders
@@ -187,6 +188,7 @@ jobs:
         if: "env.MKDOCS_MATERIAL_INSIDERS != null"
         run: |
           python3 -m pip install --upgrade pip
+          apt-get install python3-setuptools
           python3 -m pip install -r ./config/docs-requirements-insiders.txt
 
       - name: Set CHANGELOG.md version
@@ -263,6 +265,7 @@ jobs:
         if: "env.MKDOCS_MATERIAL_INSIDERS == null"
         run: |
           python3 -m pip install --upgrade pip
+          sudo apt-get install python3-setuptools
           python3 -m pip install -r ./config/docs-requirements.txt
 
       - name: Cache dependencies insiders
@@ -282,6 +285,7 @@ jobs:
         if: "env.MKDOCS_MATERIAL_INSIDERS != null"
         run: |
           python3 -m pip install --upgrade pip
+          sudo apt-get install python3-setuptools
           python3 -m pip install -r ./config/docs-requirements-insiders.txt
 
       - name: Load target folder and patch files
@@ -393,6 +397,7 @@ jobs:
         if: "env.MKDOCS_MATERIAL_INSIDERS == null"
         run: |
           python3 -m pip install --upgrade pip
+          sudo apt-get install python3-setuptools
           python3 -m pip install -r ./config/docs-requirements.txt
 
       - name: Cache dependencies insiders
@@ -412,6 +417,7 @@ jobs:
         if: "env.MKDOCS_MATERIAL_INSIDERS != null"
         run: |
           python3 -m pip install --upgrade pip
+          sudo apt-get install python3-setuptools
           python3 -m pip install -r ./config/docs-requirements-insiders.txt
 
       - name: Load target folder and patch files
