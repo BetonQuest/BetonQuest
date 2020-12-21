@@ -60,7 +60,7 @@ jobs:
   alert:
     name: Alert to Discord
     if: failure()
-    needs: [build, documentation]
+    needs: [ artifacts, documentation ]
     runs-on: ubuntu-latest
 
     steps:

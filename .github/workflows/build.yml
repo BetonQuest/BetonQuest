@@ -214,7 +214,7 @@ jobs:
   deploy-release:
     name: Deploy Release
     if: "always() && github.repository == 'BetonQuest/BetonQuest' && startsWith(github.ref,'refs/tags/v')"
-    needs: [prepare, build, documentation]
+    needs: [ prepare, artifacts, documentation ]
     runs-on: ubuntu-latest
 
     steps:
@@ -230,7 +230,7 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: BetonQuest-Artifacts
-          path: build/output/
+          path: build/artifacts/
 
       - name: Download Documentation
         uses: actions/download-artifact@v1
@@ -337,7 +337,7 @@ jobs:
   deploy-snapshot:
     name: Deploy Snapshot
     if: "always() && github.repository == 'BetonQuest/BetonQuest' && github.event_name != 'pull_request' && !startsWith(github.ref,'refs/tags/v') && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v' ) )"
-    needs: [prepare, build, documentation]
+    needs: [ prepare, artifacts, documentation ]
     runs-on: ubuntu-latest
 
     steps:
@@ -359,7 +359,7 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: BetonQuest-Artifacts
-          path: build/output/
+          path: build/artifacts/
 
       - name: Download Documentation
         uses: actions/download-artifact@v1
