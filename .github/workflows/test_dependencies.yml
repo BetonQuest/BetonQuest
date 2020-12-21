@@ -4,22 +4,19 @@ on:
     - cron: "0 0 * * *"
 
 jobs:
-  build:
+  artifacts:
     name: Build Artifacts
     if: "always() && github.repository == 'BetonQuest/BetonQuest'"
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout source code
         uses: actions/checkout@v2
 
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-          server-id: BetonQuest
-          server-username: REPOSITORY_USER
-          server-password: REPOSITORY_PASS
 
       - name: Build with Maven
         run: |
@@ -31,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout source code
         uses: actions/checkout@v2
 
       - name: Setup Python
@@ -41,21 +38,29 @@ jobs:
           architecture: 'x64'
 
       - name: Install dependencies
+        env:
+          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
+        if: "env.MKDOCS_MATERIAL_INSIDERS == null"
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -r ./config/docs-requirements.txt
+
+      - name: Install dependencies insiders
+        env:
+          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
+        if: "env.MKDOCS_MATERIAL_INSIDERS != null"
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install -r ./config/docs-requirements-insiders.txt
-        env:
-          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
 
       - name: Build with mkdocs
         run: |
-          cd config
-          mkdocs build --site-dir="build/documentation"
+          mkdocs build
 
   alert:
     name: Alert to Discord
     if: failure()
-    needs: [build, documentation]
+    needs: [ artifacts, documentation ]
     runs-on: ubuntu-latest
 
     steps:
