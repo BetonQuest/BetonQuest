@@ -35,7 +35,7 @@ public class MessageEvent extends QuestEvent {
         super(instruction, false);
         LogUtils.getLogger().log(Level.WARNING, "Message event will be REMOVED! Usage in package '"
                 + instruction.getPackage().getName() + "'. Use the Notify system instead: "
-                + "https://betonquest.github.io/BetonQuest/versions/dev/User-Documentation/Notifications/");
+                + "https://betonquest.github.io/BetonQuest/DEV/User-Documentation/Notifications/");
         final String[] parts;
         try {
             parts = instruction.getInstruction().substring(8).split(" ");

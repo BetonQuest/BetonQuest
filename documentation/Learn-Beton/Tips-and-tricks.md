@@ -1,8 +1,7 @@
 # Tips and tricks
 
 ## Can I assign multiple conversation files to one NPC?
-No. You can use cross-conversation-pointers though.
-https://betonquest.github.io/BetonQuest/versions/dev/User-Documentation/Conversations/#cross-conversation-pointers
+No. You can use [cross-conversation-pointers](../User-Documentation/Conversations.md#cross-conversation-pointers) though.
 
 ## Can I delete all tags from a player at once?
 No. You either need to run all `/q t del PLAYER PACKAGE.TAG` commands or you can use `/q purge PLAYER` to reset an entire player profile.
@@ -40,7 +39,9 @@ You can just add them together using `math.calc`.
 ```
 
 ## How to match different items with just one condition?
-If you want a player to have e.g. `potato + poisonous_potato = 64` in his inventory you can make a special item in your items.yml file that matches items based of their names. More specifically, you can have a *Block Selector* that is a *regex*.  https://betonquest.github.io/BetonQuest/versions/dev/User-Documentation/Reference/#block-selectors
+If you want a player to have e.g. `potato + poisonous_potato = 64` in his inventory you can make a special item in your 
+items.yml file that matches items based of their names. 
+More specifically, you can have a [*Block Selector*](../User-Documentation/Reference.md#block-selectors) that is a *regex*.
 It would look like this in the example:
 ```YAML
 #items.yml
