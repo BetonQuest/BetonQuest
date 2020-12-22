@@ -443,7 +443,7 @@ This condition can check wands. The first argument is either `hand`, `inventory`
     wand hand name:master spells:flare,missile:2
     ```
 
-## [McMMO](http://dev.bukkit.org/bukkit-plugins/mcmmo/)
+## [McMMO](https://www.spigotmc.org/resources/official-mcmmo-original-author-returns.64348/)
 
 ### Conditions
 
