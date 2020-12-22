@@ -58,13 +58,16 @@ public class ConversationData {
         convName = name;
         // get the main data
         final FileConfiguration conv = pack.getConversation(name).getConfig();
+        if(conv.get("quester") == null) {
+            throw new InstructionParseException("The 'quester' name is missing in the conversation file!");
+        }
         if (conv.isConfigurationSection("quester")) {
             //noinspection ConstantConditions
             for (final String lang : conv.getConfigurationSection("quester").getKeys(false)) {
                 quester.put(lang, ChatColor.translateAlternateColorCodes('&', pack.getString("conversations." + name + ".quester." + lang)));
             }
         } else {
-            quester.put(Config.getLanguage(), ChatColor.translateAlternateColorCodes('&', pack.getString("conversations." + name + ".quester")));
+            quester.put(Config.getLanguage(), ChatColor.translateAlternateColorCodes('&', conv.getString("quester")));
         }
         if (conv.isConfigurationSection("prefix")) {
             //noinspection ConstantConditions
