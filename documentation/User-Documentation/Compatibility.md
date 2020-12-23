@@ -103,7 +103,7 @@ This condition will return true if a npc is inside a region. First argument is t
 
 !!! example
     ```YAML
-    npcregion 16 spawn`
+    npcregion 16 spawn
     ```
 
 ### Events
@@ -152,7 +152,7 @@ The first argument is number (ID of the NPC), and the second is optional `cancel
 
 !!! example
     ```YAML
-    npcinteract 3 cancel conditions:sneak events:steal`
+    npcinteract 3 cancel conditions:sneak events:steal
     ```
 
 #### NPC Kill: `npckill`
@@ -161,7 +161,7 @@ NPC Kill objective requires the player to kill an NPC with the given ID. You can
 
 !!! example
     ```YAML
-    npckill 16 amount:3 events:reward`
+    npckill 16 amount:3 events:reward
     ```
 
 #### NPC Range: `npcrange`
@@ -756,7 +756,7 @@ menu_conv_io:
 
   npc_name_type: chat
   npc_name_align: center
-  npc_name_format: '&e{npc_name}&r'
+  npc_name_format: '&e{npc_name}&r
 ```
 
 Where:
