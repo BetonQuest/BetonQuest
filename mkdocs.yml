@@ -126,11 +126,11 @@ nav:
           - '🤝 Compatibility List': User-Documentation/Compatibility.md
           - '🔮   Variables List': User-Documentation/Variables-List.md
 
-      - 'Notifications:':
+      - 'Notifications':
         - '🔊   Settings': User-Documentation/Notification-Settings.md
         - "🏷️   IO's & Categories": User-Documentation/Notification-IO's-&-Categories.md
 
-      - 'Technical:':
+      - 'Technical':
         - '🔒 Permissions & Commands': User-Documentation/Commands-and-permissions.md
         - '📥 Updating': User-Documentation/Updating-and-Backups.md
         - '🔧  Configuration': User-Documentation/Configuration.md

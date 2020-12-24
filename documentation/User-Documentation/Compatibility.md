@@ -875,6 +875,9 @@ This condition checks if the player has specified or greater level is the specif
 
 BetonQuest can also hook into Skript. Firstly, to avoid any confusion, I will refere to everything here by name of the plugin (Skript event is something else than BetonQuest event). Having Skript on your server will enable using BetonQuest events and conditions in scripts, and also trigger them by BetonQuest event.
 
+You can use cross-package paths using `-` between the packages. Example:
+`player meets condition "default-Forest-Jack.Completed"`
+
 ### Skript event triggered by BetonQuest `skript` event
 
 This entry will describe two things: Skript event and BetonQuest event.
