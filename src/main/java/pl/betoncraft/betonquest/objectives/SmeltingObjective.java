@@ -1,7 +1,6 @@
 package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -14,6 +13,7 @@ import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
+import pl.betoncraft.betonquest.utils.BlockSelector;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 /**
@@ -22,13 +22,13 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 @SuppressWarnings("PMD.CommentRequired")
 public class SmeltingObjective extends Objective implements Listener {
 
-    private final Material material;
+    private final BlockSelector blockSelector;
     private final int amount;
 
     public SmeltingObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = SmeltData.class;
-        material = instruction.getEnum(Material.class);
+        blockSelector = new BlockSelector(instruction.next());
         amount = instruction.getInt();
         if (amount <= 0) {
             throw new InstructionParseException("Amount cannot be less than 1");
@@ -38,7 +38,7 @@ public class SmeltingObjective extends Objective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onSmelting(final FurnaceExtractEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
-        if (containsPlayer(playerID) && event.getItemType().equals(material) && checkConditions(playerID)) {
+        if (containsPlayer(playerID) && blockSelector.match(event.getItemType()) && checkConditions(playerID)) {
             final SmeltData playerData = (SmeltData) dataMap.get(playerID);
             playerData.subtract(event.getItemAmount());
             if (playerData.isZero()) {

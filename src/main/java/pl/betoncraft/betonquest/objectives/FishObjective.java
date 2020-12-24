@@ -2,7 +2,6 @@ package pl.betoncraft.betonquest.objectives;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
@@ -17,6 +16,7 @@ import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
+import pl.betoncraft.betonquest.utils.BlockSelector;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
@@ -29,33 +29,16 @@ import java.util.logging.Level;
 @SuppressWarnings("PMD.CommentRequired")
 public class FishObjective extends Objective implements Listener {
 
-    private final byte data;
     private final int amount;
     private final boolean notify;
     private final int notifyInterval;
-    private Material fish;
+    private final BlockSelector blockSelector;
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public FishObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = FishData.class;
-        final String[] fishParts = instruction.next().split(":");
-        fish = Material.matchMaterial(fishParts[0]);
-        if (fish == null) {
-            fish = Material.matchMaterial(fishParts[0], true);
-            if (fish == null) {
-                throw new InstructionParseException("Unknown fish type");
-            }
-        }
-        if (fishParts.length > 1) {
-            try {
-                data = Byte.parseByte(fishParts[1]);
-            } catch (NumberFormatException e) {
-                throw new InstructionParseException("Could not parse fish data value", e);
-            }
-        } else {
-            data = -1;
-        }
+        blockSelector = new BlockSelector(instruction.next());
         amount = instruction.getInt();
         if (amount <= 0) {
             throw new InstructionParseException("Fish amount cannot be less than 0");
@@ -82,10 +65,7 @@ public class FishObjective extends Objective implements Listener {
             return;
         }
         final ItemStack item = ((Item) event.getCaught()).getItemStack();
-        if (item.getType() != fish) {
-            return;
-        }
-        if (data >= 0 && item.getData().getData() != data) {
+        if(!blockSelector.match(item.getType())) {
             return;
         }
         final FishData data = (FishData) dataMap.get(playerID);

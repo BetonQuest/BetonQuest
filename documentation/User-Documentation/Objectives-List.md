@@ -109,7 +109,7 @@ Death objective completes when the player dies meeting all conditions. You can o
 
 ## Fishing: `fish`
 
-Requires the player to catch a fish. It doesn't have to be a fish, it can also be a treasure or junk. The first argument is [material](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html) name of the item to catch, optionally with data value after a colon. Second argument must be amount of fish to catch. You can also add `notify` argument if you want to display progress, optionally with the notification interval after colon.
+Requires the player to catch a fish. It doesn't have to be a fish, it can also be a treasure or junk. The first argument is a `block selector` name of the item to catch, optionally with data value after a colon. Second argument must be amount of fish to catch. You can also add `notify` argument if you want to display progress, optionally with the notification interval after colon.
 
 Fishing has the same properties as mob kill objective.
 
@@ -277,7 +277,7 @@ Sheep shearing has the same properties as mob kill objective.
 
 ## Smelting: `smelt`
 
-To complete this objective player must smelt specified item. Note that you must define item as output from furnace, not the ingredient. This one does not support data values (it doesn’t have to). First argument is material name. Next is amount (integer).
+To complete this objective player must smelt specified item. Note that you must define item as output from furnace, not the ingredient. This one does not support data values (it doesn’t have to). First argument is a `block selector`. Next is amount (integer).
 
 Smelting has the same properties as crafting objective.
 

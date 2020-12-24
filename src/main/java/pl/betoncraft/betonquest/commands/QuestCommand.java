@@ -1073,6 +1073,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             final List<String> tags = playerData.getTags();
             LogUtils.getLogger().log(Level.FINE, "Listing tags");
             sendMessage(sender, "player_tags");
+            Collections.sort(tags);
             for (final String tag : tags) {
                 sender.sendMessage("§b- " + tag);
             }
@@ -1249,6 +1250,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             // display objectives
             LogUtils.getLogger().log(Level.FINE, "Listing objectives");
             sendMessage(sender, "player_objectives");
+            Collections.sort(tags);
             for (final String tag : tags) {
                 sender.sendMessage("§b- " + tag);
             }
