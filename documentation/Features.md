@@ -22,7 +22,7 @@ Questers can make use of BetonQuests notifyIO system that provides access to all
 Therefore you can provide information to your players like so:
 
  <video controls loop
-     src="../../media/content/User-Documentation/Notifications/NotifySystemOverview.mp4"
+     src="../media/content/User-Documentation/Notifications/NotifySystemOverview.mp4"
      width="780" height="400">
  Sorry, your browser doesn't support embedded videos.
  </video>
