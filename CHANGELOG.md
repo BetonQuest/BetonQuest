@@ -146,6 +146,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fixed region and npcregion condition
 - fixed debugging dose not start on server startup
 - fixed ghost holograms caused by reloading BQ
+- fixed deadlock(Server crash) in Conversations with a large amount of npc and player options with a large amount of conditions 
 ### Security
 - fixed issue, where objectives that count things are out of sync with the database. This has also affected BungeeCord support
 

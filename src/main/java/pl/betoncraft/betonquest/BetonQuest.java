@@ -33,11 +33,10 @@ import pl.betoncraft.betonquest.variables.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.*;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 /**
  * Represents BetonQuest plugin
@@ -45,7 +44,6 @@ import java.util.stream.Stream;
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength", "PMD.GodClass",
         "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidFieldNameMatchingMethodName"})
 public class BetonQuest extends JavaPlugin {
-
     private static BetonQuest instance;
     private static final Map<String, Class<? extends Condition>> CONDITION_TYPES = new HashMap<>();
     private static final Map<String, Class<? extends QuestEvent>> EVENT_TYPES = new HashMap<>();
@@ -83,17 +81,41 @@ public class BetonQuest extends JavaPlugin {
         return instance;
     }
 
-    public static boolean conditions(final String playerID, final ConditionID... conditionIDs) {
-        return conditions(playerID, Arrays.stream(conditionIDs));
-    }
-
     public static boolean conditions(final String playerID, final Collection<ConditionID> conditionIDs) {
-        return conditions(playerID, conditionIDs.stream());
+        ConditionID[] ids = new ConditionID[conditionIDs.size()];
+        int index = 0;
+        for(final ConditionID id : conditionIDs) {
+            ids[index++] = id;
+        }
+        return conditions(playerID, ids);
     }
 
-    private static boolean conditions(final String playerID, final Stream<ConditionID> stream) {
-        final Stream<ConditionID> conditions = Bukkit.isPrimaryThread() ? stream : stream.parallel();
-        return conditions.allMatch(con -> condition(playerID, con));
+    public static boolean conditions(final String playerID, final ConditionID... conditionIDs) {
+        if(Bukkit.isPrimaryThread()) {
+            for(final ConditionID id : conditionIDs) {
+                if(!condition(playerID, id)) {
+                    return false;
+                }
+            }
+        } else {
+            final List<CompletableFuture<Boolean>> conditions = new ArrayList<>();
+            for(final ConditionID id : conditionIDs) {
+                final CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(
+                        () -> condition(playerID, id));
+                conditions.add(future);
+            }
+            for (final CompletableFuture<Boolean> condition : conditions) {
+                try {
+                    if(!condition.get()) {
+                        return false;
+                    }
+                } catch (InterruptedException | ExecutionException e) {
+                    LogUtils.logThrowableReport(e);
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**
