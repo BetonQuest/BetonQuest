@@ -35,7 +35,7 @@ jobs:
           echo "Collected the pom.xml version. The version is '$POM_MAVEN_VERSION'"
 
       - name: Get the previous build-number tag from Development Build
-        if: "github.repository == 'BetonQuest/BetonQuest' && github.event_name != 'pull_request' && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v' ) )"
+        if: "github.repository == 'BetonQuest/BetonQuest' && github.event_name != 'pull_request' && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v') )"
         run: |
           PREVIOUS_VERSION_TAG=$(git tag -l ${POM_MAVEN_VERSION}-build-number- >&1 | head -n 1)
           echo "PREVIOUS_VERSION_TAG=$PREVIOUS_VERSION_TAG" >> $GITHUB_ENV
@@ -44,9 +44,9 @@ jobs:
 
       - name: Check for difference in documentation only
         id: save_changes
-        if: "github.repository == 'BetonQuest/BetonQuest' && github.event_name != 'pull_request' && !startsWith(github.ref,'refs/tags/v') && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v' ) )"
+        if: "github.repository == 'BetonQuest/BetonQuest' && github.event_name != 'pull_request' && !startsWith(github.ref,'refs/tags/v') && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v') )"
         run: |
-          DIFF_OUTSIDE_DOCS=$(git diff ${PREVIOUS_VERSION_TAG} --name-only | grep -v '^documentation/' > /dev/null && echo Changes | echo Nothing)
+          DIFF_OUTSIDE_DOCS=$(git diff ${PREVIOUS_VERSION_TAG} --name-only . ':(exclude)documentation/' > /dev/null && echo Changes | echo Nothing)
           DIFF_INSIDE_DOCS=$(git diff ${PREVIOUS_VERSION_TAG} --name-only documentation > /dev/null && echo Changes | echo Nothing)
           if [[ $DIFF_OUTSIDE_DOCS == Nothing && $DIFF_INSIDE_DOCS == Changes ]]; then CHANGES_IN_DOCS_ONLY=true; else CHANGES_IN_DOCS_ONLY=false; fi
           echo "CHANGES_IN_DOCS_ONLY=$CHANGES_IN_DOCS_ONLY" >> $GITHUB_ENV
@@ -54,13 +54,14 @@ jobs:
           echo "Check for difference in documentation only. The value is '$CHANGES_IN_DOCS_ONLY'"
 
       - name: Generate build number for Development Build
-        if: "github.repository == 'BetonQuest/BetonQuest' && github.event_name != 'pull_request' && !startsWith(github.ref,'refs/tags/v') && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v' ) ) && $CHANGES_IN_DOCS_ONLY == 'false'"
+        if: "github.repository == 'BetonQuest/BetonQuest' && github.event_name != 'pull_request' && !startsWith(github.ref,'refs/tags/v') && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v') ) && $CHANGES_IN_DOCS_ONLY == 'false'"
         uses: einaregilsson/build-number@v3
         with:
           token: ${{ secrets.github_token }}
           prefix: ${{ env.POM_MAVEN_VERSION }}
 
       - name: Set version for 'Release Build'
+        id: release
         if: "startsWith(github.ref,'refs/tags/v')"
         run: |
           # Extract the version from the tag
@@ -72,7 +73,8 @@ jobs:
           echo ::set-output name=release::true
 
       - name: Set version for 'Development Build'
-        if: "github.repository == 'BetonQuest/BetonQuest' && github.event_name != 'pull_request' && !startsWith(github.ref,'refs/tags/v') && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v' ) )"
+        id: developement
+        if: "github.repository == 'BetonQuest/BetonQuest' && github.event_name != 'pull_request' && !startsWith(github.ref,'refs/tags/v') && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v') )"
         run: |
           if [ $CHANGES_IN_DOCS_ONLY == true ]; then POM_MAVEN_VERSION=${PREVIOUS_VERSION_TAG/build-number/DEV}; else POM_MAVEN_VERSION=${POM_MAVEN_VERSION}-DEV-${BUILD_NUMBER}; fi
           echo "POM_MAVEN_VERSION=$POM_MAVEN_VERSION" >> $GITHUB_ENV
@@ -91,13 +93,26 @@ jobs:
           echo "The version is '$POM_MAVEN_VERSION'"
           echo ::set-output name=version::$POM_MAVEN_VERSION
 
-  artifacts:
+  build-artifacts:
     name: Build Artifacts
     if: always()
     needs: [ prepare ]
     runs-on: ubuntu-latest
 
     steps:
+      - name: Set variables from 'Prepare Build Variables'
+        run: |
+          POM_MAVEN_VERSION=${{ needs.prepare.outputs.VERSION }}
+          echo "POM_MAVEN_VERSION=$POM_MAVEN_VERSION" >> $GITHUB_ENV
+          PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
+          echo "PREVIOUS_VERSION_TAG=$PREVIOUS_VERSION_TAG" >> $GITHUB_ENV
+          CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
+          echo "CHANGES_IN_DOCS_ONLY=$CHANGES_IN_DOCS_ONLY" >> $GITHUB_ENV
+          IS_RELEASE=${{ needs.prepare.outputs.IS_RELEASE }}
+          echo "IS_RELEASE=$IS_RELEASE" >> $GITHUB_ENV
+          IS_DEVELOPEMENT=${{ needs.prepare.outputs.IS_DEVELOPEMENT }}
+          echo "IS_DEVELOPEMENT=$IS_DEVELOPEMENT" >> $GITHUB_ENV
+
       - name: Checkout source code
         uses: actions/checkout@v2
 
@@ -105,11 +120,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-
-      - name: Set version variable from 'Prepare Versioning'
-        run: |
-          POM_MAVEN_VERSION=${{ needs.prepare.outputs.VERSION }}
-          echo "POM_MAVEN_VERSION=$POM_MAVEN_VERSION" >> $GITHUB_ENV
 
       - name: Cache dependencies
         uses: actions/cache@v1
@@ -120,7 +130,7 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Remove SNAPSHOT version for Release Build
-        if: "startsWith(github.ref,'refs/tags/v')"
+        if: "IS_RELEASE == 'true'"
         run: |
           mvn versions:set -DremoveSnapshot
 
@@ -145,7 +155,7 @@ jobs:
           mvn -B verify
           mkdir -p build/artifacts
           cp -r target/artifacts/* build/artifacts/
-          git diff . ':(exclude)CHANGELOG.md' > build/artifacts/changes.patch
+          git diff > build/artifacts/changes.patch
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
@@ -153,13 +163,26 @@ jobs:
           name: BetonQuest-Artifacts
           path: build/artifacts
 
-  documentation:
+  build-documentation:
     name: Build Documentation
     if: always()
     needs: [prepare]
     runs-on: ubuntu-latest
 
     steps:
+      - name: Set version variable from 'Prepare Versioning'
+        run: |
+          POM_MAVEN_VERSION=${{ needs.prepare.outputs.VERSION }}
+          echo "POM_MAVEN_VERSION=$POM_MAVEN_VERSION" >> $GITHUB_ENV
+          PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
+          echo "PREVIOUS_VERSION_TAG=$PREVIOUS_VERSION_TAG" >> $GITHUB_ENV
+          CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
+          echo "CHANGES_IN_DOCS_ONLY=$CHANGES_IN_DOCS_ONLY" >> $GITHUB_ENV
+          IS_RELEASE=${{ needs.prepare.outputs.IS_RELEASE }}
+          echo "IS_RELEASE=$IS_RELEASE" >> $GITHUB_ENV
+          IS_DEVELOPEMENT=${{ needs.prepare.outputs.IS_DEVELOPEMENT }}
+          echo "IS_DEVELOPEMENT=$IS_DEVELOPEMENT" >> $GITHUB_ENV
+
       - name: Checkout source code
         uses: actions/checkout@v2
 
@@ -182,14 +205,7 @@ jobs:
           python-version: '3.6'
           architecture: 'x64'
 
-      - name: Set version variable from 'Prepare Versioning'
-        run: |
-          POM_MAVEN_VERSION=${{ needs.prepare.outputs.VERSION }}
-          echo "POM_MAVEN_VERSION=$POM_MAVEN_VERSION" >> $GITHUB_ENV
-
       - name: Cache dependencies
-        env:
-          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
         if: "env.MKDOCS_MATERIAL_INSIDERS == null"
         uses: actions/cache@v1
         with:
@@ -199,8 +215,6 @@ jobs:
             ${{ runner.os }}-pip-
 
       - name: Install dependencies
-        env:
-          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
         if: "env.MKDOCS_MATERIAL_INSIDERS == null"
         run: |
           python3 -m pip install --upgrade pip
@@ -247,13 +261,87 @@ jobs:
           name: BetonQuest-Documentation
           path: build/documentation
 
-  deploy-release:
-    name: Deploy Release
-    if: "always() && github.repository == 'BetonQuest/BetonQuest' && startsWith(github.ref,'refs/tags/v')"
-    needs: [ prepare, artifacts, documentation ]
+  deploy-artifacts:
+    name: Deploy Artifacts
+    if: "always() && ( needs.prepare.outputs.IS_RELEASE == 'true' || needs.prepare.outputs.IS_DEVELOPEMENT == 'true' )"
+    needs: [ prepare, build-artifacts, build-documentation ]
     runs-on: ubuntu-latest
 
     steps:
+      - name: Set version variable from 'Prepare Versioning'
+        run: |
+          POM_MAVEN_VERSION=${{ needs.prepare.outputs.VERSION }}
+          echo "POM_MAVEN_VERSION=$POM_MAVEN_VERSION" >> $GITHUB_ENV
+          PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
+          echo "PREVIOUS_VERSION_TAG=$PREVIOUS_VERSION_TAG" >> $GITHUB_ENV
+          CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
+          echo "CHANGES_IN_DOCS_ONLY=$CHANGES_IN_DOCS_ONLY" >> $GITHUB_ENV
+          IS_RELEASE=${{ needs.prepare.outputs.IS_RELEASE }}
+          echo "IS_RELEASE=$IS_RELEASE" >> $GITHUB_ENV
+          IS_DEVELOPEMENT=${{ needs.prepare.outputs.IS_DEVELOPEMENT }}
+          echo "IS_DEVELOPEMENT=$IS_DEVELOPEMENT" >> $GITHUB_ENV
+
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Setup JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+          server-id: BetonQuest
+          server-username: REPOSITORY_USER
+          server-password: REPOSITORY_PASS
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v1
+        with:
+          name: BetonQuest-Artifacts
+          path: build/artifacts/
+
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Load target folder and patch files
+        run: |
+          mkdir -p target/artifacts
+          cp -r build/artifacts/* target/artifacts/
+          git apply build/artifacts/changes.patch
+          rm build/artifacts/changes.patch
+
+      - name: Publish to Maven Repository
+        run: |
+          mvn -B deploy
+        env:
+          REPOSITORY_ID: ${{ secrets.REPOSITORY_ID }}
+          REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
+          REPOSITORY_USER: ${{ secrets.REPOSITORY_USER }}
+          REPOSITORY_PASS: ${{ secrets.REPOSITORY_PASS }}
+
+  deploy-documentation:
+    name: Deploy Documentation
+    if: "always() && ( needs.prepare.outputs.IS_RELEASE == 'true' || needs.prepare.outputs.IS_DEVELOPEMENT == 'true' )"
+    needs: [ prepare, build-artifacts, build-documentation ]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set version variable from 'Prepare Versioning'
+        run: |
+          POM_MAVEN_VERSION=${{ needs.prepare.outputs.VERSION }}
+          echo "POM_MAVEN_VERSION=$POM_MAVEN_VERSION" >> $GITHUB_ENV
+          PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
+          echo "PREVIOUS_VERSION_TAG=$PREVIOUS_VERSION_TAG" >> $GITHUB_ENV
+          CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
+          echo "CHANGES_IN_DOCS_ONLY=$CHANGES_IN_DOCS_ONLY" >> $GITHUB_ENV
+          IS_RELEASE=${{ needs.prepare.outputs.IS_RELEASE }}
+          echo "IS_RELEASE=$IS_RELEASE" >> $GITHUB_ENV
+          IS_DEVELOPEMENT=${{ needs.prepare.outputs.IS_DEVELOPEMENT }}
+          echo "IS_DEVELOPEMENT=$IS_DEVELOPEMENT" >> $GITHUB_ENV
+
       - name: Checkout source code
         uses: actions/checkout@v2
         with:
@@ -272,30 +360,11 @@ jobs:
       - name: Git LFS Pull
         run: git lfs pull
 
-      - name: Setup JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-          server-id: BetonQuest
-          server-username: REPOSITORY_USER
-          server-password: REPOSITORY_PASS
-
       - name: Setup Python 3.6
         uses: actions/setup-python@v1
         with:
           python-version: '3.6'
           architecture: 'x64'
-
-      - name: Set version variable from 'Prepare Versioning'
-        run: |
-          POM_MAVEN_VERSION=${{ needs.prepare.outputs.VERSION }}
-          echo "POM_MAVEN_VERSION=$POM_MAVEN_VERSION" >> $GITHUB_ENV
-
-      - name: Download Artifacts
-        uses: actions/download-artifact@v1
-        with:
-          name: BetonQuest-Artifacts
-          path: build/artifacts/
 
       - name: Download Documentation
         uses: actions/download-artifact@v1
@@ -304,16 +373,6 @@ jobs:
           path: build/documentation/
 
       - name: Cache dependencies
-        uses: actions/cache@v1
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-      - name: Cache dependencies
-        env:
-          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
         if: "env.MKDOCS_MATERIAL_INSIDERS == null"
         uses: actions/cache@v1
         with:
@@ -323,8 +382,6 @@ jobs:
             ${{ runner.os }}-pip-
 
       - name: Install dependencies
-        env:
-          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
         if: "env.MKDOCS_MATERIAL_INSIDERS == null"
         run: |
           python3 -m pip install --upgrade pip
@@ -351,36 +408,81 @@ jobs:
 
       - name: Load target folder and patch files
         run: |
+          mkdir -p target/documentation
+          cp -r build/documentation/* target/documentation/
+          git apply build/documentation/changes.patch
+          rm build/documentation/changes.patch
+
+      - name: Deploy to Github Pages Release
+        if: "IS_RELEASE == 'true'"
+        run: |
+          git config --global user.name "BetonQuest-Bot"
+          git config --global user.email "contact@betonquest.org"
+
+          mike deploy --push ${POM_MAVEN_VERSION} RELEASE
+          mike delete --push ${POM_MAVEN_VERSION}-DEV
+
+      - name: Deploy to Github Pages Developement
+        if: "IS_DEVELOPEMENT == 'true'"
+        run: |
+          git config --global user.name "BetonQuest-Bot"
+          git config --global user.email "contact@betonquest.org"
+
+          IFS='-' read -r -a array <<< "$POM_MAVEN_VERSION"
+          mike deploy --push ${array[0]}-DEV DEV
+
+  create-release:
+    name: Deploy Release
+    if: "always() && needs.prepare.outputs.IS_RELEASE == 'true'"
+    needs: [ prepare, build-artifacts, build-documentation, deploy-artifacts, deploy-documentation ]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set version variable from 'Prepare Versioning'
+        run: |
+          POM_MAVEN_VERSION=${{ needs.prepare.outputs.VERSION }}
+          echo "POM_MAVEN_VERSION=$POM_MAVEN_VERSION" >> $GITHUB_ENV
+          PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
+          echo "PREVIOUS_VERSION_TAG=$PREVIOUS_VERSION_TAG" >> $GITHUB_ENV
+          CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
+          echo "CHANGES_IN_DOCS_ONLY=$CHANGES_IN_DOCS_ONLY" >> $GITHUB_ENV
+          IS_RELEASE=${{ needs.prepare.outputs.IS_RELEASE }}
+          echo "IS_RELEASE=$IS_RELEASE" >> $GITHUB_ENV
+          IS_DEVELOPEMENT=${{ needs.prepare.outputs.IS_DEVELOPEMENT }}
+          echo "IS_DEVELOPEMENT=$IS_DEVELOPEMENT" >> $GITHUB_ENV
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v1
+        with:
+          name: BetonQuest-Artifacts
+          path: build/artifacts/
+
+      - name: Download Documentation
+        uses: actions/download-artifact@v1
+        with:
+          name: BetonQuest-Documentation
+          path: build/documentation/
+
+      - name: Load target folder and patch files
+        run: |
           mkdir -p target/artifacts
           mkdir -p target/documentation
           cp -r build/artifacts/* target/artifacts/
           cp -r build/documentation/* target/documentation/
-          git apply build/artifacts/changes.patch
-          git apply build/documentation/changes.patch
           rm build/artifacts/changes.patch
           rm build/documentation/changes.patch
-
-      - name: Deploy to Github Pages
-        run: |
-          git config --global user.name "BetonQuest-Bot"
-          git config --global user.email "contact@betonquest.org"
-          mike deploy --push ${POM_MAVEN_VERSION} RELEASE
-          mike delete --push ${POM_MAVEN_VERSION}-DEV
-
-      - name: Publish to Maven Repository
-        run: |
-          mvn -B deploy
-        env:
-          REPOSITORY_ID: ${{ secrets.REPOSITORY_ID }}
-          REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
-          REPOSITORY_USER: ${{ secrets.REPOSITORY_USER }}
-          REPOSITORY_PASS: ${{ secrets.REPOSITORY_PASS }}
 
       - name: Zip Documentation
         run: |
           cd build/documentation/
           zip -r Documentation.zip .
           cd ../..
+
+      - name: Set CHANGELOG.md version
+        run: |
+          sed -i "s~## \[Unreleased\]~## \[${POM_MAVEN_VERSION}\]~g" ./CHANGELOG.md
+          DATE=$(date +%Y-%m-%d)
+          sed -i "s~\${current-date}~$DATE~g" ./CHANGELOG.md
 
       - name: Create release
         uses: docker://antonyurchenko/git-release:latest
@@ -395,6 +497,10 @@ jobs:
             build/artifacts/BetonQuest.jar
             build/documentation/Documentation.zip
 
+      - name: Delete obsolete git tag
+        run: |
+          git push --delete origin ${PREVIOUS_VERSION_TAG}
+
       - name: Publish to Discord
         if: "always()"
         run: |
@@ -405,54 +511,25 @@ jobs:
           VERSION: ${{ env.POM_MAVEN_VERSION }}
           RELEASE: "release"
 
-  deploy-snapshot:
+  create-developement:
     name: Deploy Snapshot
-    if: "always() && github.repository == 'BetonQuest/BetonQuest' && github.event_name != 'pull_request' && !startsWith(github.ref,'refs/tags/v') && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v' ) )"
-    needs: [ prepare, artifacts, documentation ]
+    if: "always() && needs.prepare.outputs.IS_DEVELOPEMENT == 'true'"
+    needs: [ prepare, build-artifacts, build-documentation, deploy-artifacts, deploy-documentation ]
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-
-      - name: Create LFS file list
-        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
-
-      - name: Restore LFS cache
-        uses: actions/cache@v2
-        id: lfs-cache
-        with:
-          path: .git/lfs
-          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}-v1
-
-      - name: Git LFS Pull
-        run: git lfs pull
-
-      - name: Setup JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-          server-id: BetonQuest
-          server-username: REPOSITORY_USER
-          server-password: REPOSITORY_PASS
-
-      - name: Setup Python 3.6
-        uses: actions/setup-python@v1
-        with:
-          python-version: '3.6'
-          architecture: 'x64'
-
-      - name: Set version variable from 'Prepare Versioning' and prepare snapshot variables
+      - name: Set version variable from 'Prepare Versioning'
         run: |
           POM_MAVEN_VERSION=${{ needs.prepare.outputs.VERSION }}
           echo "POM_MAVEN_VERSION=$POM_MAVEN_VERSION" >> $GITHUB_ENV
-
-          IFS='-' read -r -a array <<< "$POM_MAVEN_VERSION"
-          echo "VERSION=${array[0]}" >> $GITHUB_ENV
-          echo "VERSION_NUMBER=${array[2]}" >> $GITHUB_ENV
-          echo "BRANCH_NAME=${GITHUB_REF:11}" >> $GITHUB_ENV
+          PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
+          echo "PREVIOUS_VERSION_TAG=$PREVIOUS_VERSION_TAG" >> $GITHUB_ENV
+          CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
+          echo "CHANGES_IN_DOCS_ONLY=$CHANGES_IN_DOCS_ONLY" >> $GITHUB_ENV
+          IS_RELEASE=${{ needs.prepare.outputs.IS_RELEASE }}
+          echo "IS_RELEASE=$IS_RELEASE" >> $GITHUB_ENV
+          IS_DEVELOPEMENT=${{ needs.prepare.outputs.IS_DEVELOPEMENT }}
+          echo "IS_DEVELOPEMENT=$IS_DEVELOPEMENT" >> $GITHUB_ENV
 
       - name: Download Artifacts
         uses: actions/download-artifact@v1
@@ -466,77 +543,14 @@ jobs:
           name: BetonQuest-Documentation
           path: build/documentation/
 
-      - name: Cache dependencies
-        uses: actions/cache@v1
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-      - name: Cache dependencies
-        env:
-          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
-        if: "env.MKDOCS_MATERIAL_INSIDERS == null"
-        uses: actions/cache@v1
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/config/docs-requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
-      - name: Install dependencies
-        env:
-          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
-        if: "env.MKDOCS_MATERIAL_INSIDERS == null"
-        run: |
-          python3 -m pip install --upgrade pip
-          pip install -r ./config/docs-requirements.txt
-
-      - name: Cache dependencies insiders
-        env:
-          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
-        if: "env.MKDOCS_MATERIAL_INSIDERS != null"
-        uses: actions/cache@v1
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/config/docs-requirements-insiders.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
-      - name: Install dependencies insiders
-        env:
-          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
-        if: "env.MKDOCS_MATERIAL_INSIDERS != null"
-        run: |
-          python3 -m pip install --upgrade pip
-          pip install -r ./config/docs-requirements-insiders.txt
-
       - name: Load target folder and patch files
         run: |
           mkdir -p target/artifacts
           mkdir -p target/documentation
           cp -r build/artifacts/* target/artifacts/
           cp -r build/documentation/* target/documentation/
-          git apply build/artifacts/changes.patch
-          git apply build/documentation/changes.patch
           rm build/artifacts/changes.patch
           rm build/documentation/changes.patch
-
-      - name: Deploy to Github Pages
-        run: |
-          git config --global user.name "BetonQuest-Bot"
-          git config --global user.email "contact@betonquest.org"
-          mike deploy --push ${VERSION}-DEV DEV
-
-      - name: Publish to Maven Repository
-        run: |
-          mvn -B deploy
-        env:
-          REPOSITORY_ID: ${{ secrets.REPOSITORY_ID }}
-          REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
-          REPOSITORY_USER: ${{ secrets.REPOSITORY_USER }}
-          REPOSITORY_PASS: ${{ secrets.REPOSITORY_PASS }}
 
       - name: Zip Documentation
         run: |
@@ -544,7 +558,14 @@ jobs:
           zip -r Documentation.zip .
           cd ../..
 
-      - name: Create snapshot
+      - name: Prepare snapshot variables
+        run: |
+          IFS='-' read -r -a array <<< "$POM_MAVEN_VERSION"
+          echo "VERSION=${array[0]}" >> $GITHUB_ENV
+          echo "VERSION_NUMBER=${array[2]}" >> $GITHUB_ENV
+          echo "BRANCH_NAME=${GITHUB_REF:11}" >> $GITHUB_ENV
+
+      - name: Create developement
         run: |
           if [ -z ${PASSWORD} ]; then echo "WARNING! You need to pass the SNAPSHOT_UPLOAD_PASSWORD environment variable."; exit 1; fi
           RESPONSE=$(curl --insecure -F "secret=$PASSWORD" -F "version=$VERSION" -F "versionNumber=$VERSION_NUMBER" -F "runID=$RUN_ID" -F "branch=$BRANCH_NAME" -F "commitHash=$COMMIT_HASH" -F "plugin=$PLUGIN" -F "docs=$DOCS" https://betonquest.org/old/api/v1/builds/upload)
