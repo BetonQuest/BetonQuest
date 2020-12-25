@@ -263,7 +263,7 @@ jobs:
 
   deploy-artifacts:
     name: Deploy Artifacts
-    if: "always() && ( needs.prepare.outputs.IS_RELEASE == 'true' || needs.prepare.outputs.IS_DEVELOPEMENT == 'true' )"
+    if: "always() && ( needs.prepare.outputs.IS_RELEASE == 'true' || needs.prepare.outputs.IS_DEVELOPEMENT == 'true' ) && needs.prepare.outputs.CHANGES_IN_DOCS_ONLY != 'true'"
     needs: [ prepare, build-artifacts, build-documentation ]
     runs-on: ubuntu-latest
 
@@ -432,7 +432,7 @@ jobs:
           mike deploy --push ${array[0]}-DEV DEV
 
   create-release:
-    name: Deploy Release
+    name: Create Release Build
     if: "always() && needs.prepare.outputs.IS_RELEASE == 'true'"
     needs: [ prepare, build-artifacts, build-documentation, deploy-artifacts, deploy-documentation ]
     runs-on: ubuntu-latest
@@ -512,7 +512,7 @@ jobs:
           RELEASE: "release"
 
   create-developement:
-    name: Deploy Snapshot
+    name: Create Developement Build
     if: "always() && needs.prepare.outputs.IS_DEVELOPEMENT == 'true'"
     needs: [ prepare, build-artifacts, build-documentation, deploy-artifacts, deploy-documentation ]
     runs-on: ubuntu-latest
