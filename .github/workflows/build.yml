@@ -54,7 +54,7 @@ jobs:
           echo "Check for difference in documentation only. The value is '$CHANGES_IN_DOCS_ONLY'"
 
       - name: Generate build number for Development Build
-        if: "github.repository == 'BetonQuest/BetonQuest' && github.event_name != 'pull_request' && !startsWith(github.ref,'refs/tags/v') && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v') ) && $CHANGES_IN_DOCS_ONLY == 'false'"
+        if: "github.repository == 'BetonQuest/BetonQuest' && github.event_name != 'pull_request' && !startsWith(github.ref,'refs/tags/v') && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v') ) && CHANGES_IN_DOCS_ONLY == 'false'"
         uses: einaregilsson/build-number@v3
         with:
           token: ${{ secrets.github_token }}
