@@ -423,7 +423,7 @@ jobs:
           mike delete --push ${POM_MAVEN_VERSION}-DEV
 
       - name: Deploy to Github Pages Developement
-        if: "enc.IS_DEVELOPEMENT == 'true'"
+        if: "env.IS_DEVELOPEMENT == 'true'"
         run: |
           git config --global user.name "BetonQuest-Bot"
           git config --global user.email "contact@betonquest.org"
