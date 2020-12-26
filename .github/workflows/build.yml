@@ -37,7 +37,7 @@ jobs:
       - name: Get the previous build-number tag from Development Build
         if: "github.repository == 'BetonQuest/BetonQuest' && github.event_name != 'pull_request' && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v') )"
         run: |
-          PREVIOUS_VERSION_TAG=$(git tag -l ${POM_MAVEN_VERSION}-build-number- >&1 | head -n 1)
+          PREVIOUS_VERSION_TAG=$(git tag -l ${POM_MAVEN_VERSION}-build-number-* >&1 | head -n 1)
           echo "PREVIOUS_VERSION_TAG=$PREVIOUS_VERSION_TAG" >> $GITHUB_ENV
           echo ::set-output name=save_tag::$PREVIOUS_VERSION_TAG
           echo "Collected the previous build-number tag. The tag is '$PREVIOUS_VERSION_TAG'"
