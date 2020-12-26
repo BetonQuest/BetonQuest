@@ -130,7 +130,7 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Remove SNAPSHOT version for Release Build
-        if: "IS_RELEASE == 'true'"
+        if: "env.IS_RELEASE == 'true'"
         run: |
           mvn versions:set -DremoveSnapshot
 
