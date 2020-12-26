@@ -453,6 +453,9 @@ jobs:
           IS_DEVELOPEMENT=${{ needs.prepare.outputs.IS_DEVELOPEMENT }}
           echo "IS_DEVELOPEMENT=$IS_DEVELOPEMENT" >> $GITHUB_ENV
 
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
       - name: Download Artifacts
         uses: actions/download-artifact@v1
         with:
@@ -532,6 +535,9 @@ jobs:
           echo "IS_RELEASE=$IS_RELEASE" >> $GITHUB_ENV
           IS_DEVELOPEMENT=${{ needs.prepare.outputs.IS_DEVELOPEMENT }}
           echo "IS_DEVELOPEMENT=$IS_DEVELOPEMENT" >> $GITHUB_ENV
+
+      - name: Checkout source code
+        uses: actions/checkout@v2
 
       - name: Download Artifacts
         uses: actions/download-artifact@v1
