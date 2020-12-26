@@ -518,7 +518,7 @@ jobs:
 
   create-developement:
     name: Create Developement Build
-    if: "always() && needs.prepare.outputs.IS_DEVELOPEMENT == 'true'"
+    if: "always() && needs.prepare.outputs.IS_DEVELOPEMENT == 'true' && needs.prepare.outputs.CHANGES_IN_DOCS_ONLY != 'true'"
     needs: [ prepare, build-artifacts, build-documentation, deploy-artifacts, deploy-documentation ]
     runs-on: ubuntu-latest
 
