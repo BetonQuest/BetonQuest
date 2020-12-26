@@ -170,7 +170,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set version variable from 'Prepare Versioning'
+      - name: Set variables from 'Prepare Build Variables'
         run: |
           POM_MAVEN_VERSION=${{ needs.prepare.outputs.VERSION }}
           echo "POM_MAVEN_VERSION=$POM_MAVEN_VERSION" >> $GITHUB_ENV
@@ -268,7 +268,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set version variable from 'Prepare Versioning'
+      - name: Set variables from 'Prepare Build Variables'
         run: |
           POM_MAVEN_VERSION=${{ needs.prepare.outputs.VERSION }}
           echo "POM_MAVEN_VERSION=$POM_MAVEN_VERSION" >> $GITHUB_ENV
@@ -306,7 +306,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Load target folder and patch files
+      - name: Load target folder and patch file
         run: |
           mkdir -p target/artifacts
           cp -r build/artifacts/* target/artifacts/
@@ -329,7 +329,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set version variable from 'Prepare Versioning'
+      - name: Set variables from 'Prepare Build Variables'
         run: |
           POM_MAVEN_VERSION=${{ needs.prepare.outputs.VERSION }}
           echo "POM_MAVEN_VERSION=$POM_MAVEN_VERSION" >> $GITHUB_ENV
@@ -406,14 +406,14 @@ jobs:
           python3 -m pip install --upgrade pip
           pip install -r ./config/docs-requirements-insiders.txt
 
-      - name: Load target folder and patch files
+      - name: Load target folder and patch file
         run: |
           mkdir -p target/documentation
           cp -r build/documentation/* target/documentation/
           git apply build/documentation/changes.patch
           rm build/documentation/changes.patch
 
-      - name: Deploy to Github Pages Release
+      - name: Deploy Release to Github Pages
         if: "env.IS_RELEASE == 'true'"
         run: |
           git config --global user.name "BetonQuest-Bot"
@@ -422,7 +422,7 @@ jobs:
           mike deploy --push ${POM_MAVEN_VERSION} RELEASE
           mike delete --push ${POM_MAVEN_VERSION}-DEV
 
-      - name: Deploy to Github Pages Developement
+      - name: Deploy Developement to Github Pages
         if: "env.IS_DEVELOPEMENT == 'true'"
         run: |
           git config --global user.name "BetonQuest-Bot"
@@ -438,7 +438,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set version variable from 'Prepare Versioning'
+      - name: Set variables from 'Prepare Build Variables'
         run: |
           POM_MAVEN_VERSION=${{ needs.prepare.outputs.VERSION }}
           echo "POM_MAVEN_VERSION=$POM_MAVEN_VERSION" >> $GITHUB_ENV
@@ -463,7 +463,7 @@ jobs:
           name: BetonQuest-Documentation
           path: build/documentation/
 
-      - name: Load target folder and patch files
+      - name: Load target folder
         run: |
           mkdir -p target/artifacts
           mkdir -p target/documentation
@@ -518,7 +518,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set version variable from 'Prepare Versioning'
+      - name: Set variables from 'Prepare Build Variables'
         run: |
           POM_MAVEN_VERSION=${{ needs.prepare.outputs.VERSION }}
           echo "POM_MAVEN_VERSION=$POM_MAVEN_VERSION" >> $GITHUB_ENV
@@ -543,7 +543,7 @@ jobs:
           name: BetonQuest-Documentation
           path: build/documentation/
 
-      - name: Load target folder and patch files
+      - name: Load target folder
         run: |
           mkdir -p target/artifacts
           mkdir -p target/documentation
@@ -558,7 +558,7 @@ jobs:
           zip -r Documentation.zip .
           cd ../..
 
-      - name: Prepare snapshot variables
+      - name: Prepare developement variables
         run: |
           IFS='-' read -r -a array <<< "$POM_MAVEN_VERSION"
           echo "VERSION=${array[0]}" >> $GITHUB_ENV
