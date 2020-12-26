@@ -12,7 +12,7 @@ Use [Semantic Versioning](https://semver.org/) to do so.
 ###Step 2: Build a release
 
 You can create a release by tagging a commit with a version tag. A version tag needs to 
-tag the commit that should be a release with the version from the pom.xml(without `SNAPSHOT`).
+tag the commit that should be a release with the version from the pom.xml(without `-SNAPSHOT`).
 
 ###Step 3: Post-Release
 
