@@ -25,6 +25,7 @@ import pl.betoncraft.betonquest.conversation.ConversationData.OptionType;
 import pl.betoncraft.betonquest.database.Connector.UpdateType;
 import pl.betoncraft.betonquest.database.Saver.Record;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
+import pl.betoncraft.betonquest.id.ConditionID;
 import pl.betoncraft.betonquest.id.EventID;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
@@ -223,18 +224,25 @@ public class Conversation implements Listener {
      * @param options list of pointers to player options separated by commas
      */
     private void printOptions(final String... options) {
-        final List<Pair<String, CompletableFuture<Boolean>>> futuresOptions = new ArrayList<>();
+        final List<Pair<String, List<CompletableFuture<Boolean>>>> futuresOptions = new ArrayList<>();
         for (final String option : options) {
-            final CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(
-                    () -> BetonQuest.conditions(playerID, data.getConditionIDs(option, OptionType.PLAYER)));
-            futuresOptions.add(Pair.of(option, future));
+            final List<CompletableFuture<Boolean>> conditions = new ArrayList<>();
+            for (final ConditionID conditionID : data.getConditionIDs(option, OptionType.PLAYER)) {
+                final CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(
+                        () -> BetonQuest.condition(playerID, conditionID));
+                conditions.add(future);
+            }
+            futuresOptions.add(Pair.of(option, conditions));
         }
 
         int optionsCount = 0;
-        for (final Pair<String, CompletableFuture<Boolean>> future : futuresOptions) {
+        option:
+        for (final Pair<String, List<CompletableFuture<Boolean>>> future : futuresOptions) {
             try {
-                if (!future.getValue().get(1, TimeUnit.SECONDS)) {
-                    continue;
+                for (final CompletableFuture<Boolean> completableFuture : future.getValue()) {
+                    if (!completableFuture.get(1, TimeUnit.SECONDS)) {
+                        continue option;
+                    }
                 }
             } catch (final CancellationException | InterruptedException | ExecutionException | TimeoutException e) {
                 LogUtils.logThrowableReport(e);
