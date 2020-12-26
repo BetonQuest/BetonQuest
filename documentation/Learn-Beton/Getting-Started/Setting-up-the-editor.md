@@ -28,8 +28,6 @@ A full guide on extensions can be found <a href="https://code.visualstudio.com/d
 
 ### Setup
 
-![Shows the location of the settings](../../media/content/LearnBeton/vscode.png){: align=right width=60%}
-
 Open up any of your quests using *File > Open Folder...*. Then click on any file to open it.
 There are a few general things to keep in mind when editing files.
 VSCode does a really nice job at exposing these directly to the user. They are all listed in the bottom right corner 
@@ -45,6 +43,8 @@ of the editor window.
     `LF` end of line characters. 
     
     `YAML` language module.
+
+![Shows the location of the settings](../../media/content/LearnBeton/vscode.png){width=60%}
 
 These ensure that the extension is activated.
 
@@ -78,7 +78,13 @@ if they do. An example might be provided after the colon (`:`). Just replace it 
 **Take a look at this short video or play around with it yourself until you understand how it works:**
 
 *Note: This video is slightly outdated and does not show some newer features!*
-![GIF shows autocomplete](https://raw.githubusercontent.com/BetonQuest/betonquest-code-snippets/master/assets/demo.gif)
 
+<div style="text-align: center">
+ <video controls loop
+     src="/../media/content/LearnBeton/VSCodeExtensionShowcase.mp4"
+     width="780" height="500">
+ Sorry, your browser doesn't support embedded videos.
+ </video>
+</div>
 
 Next step: [Quick-Start-Tutorial](./Quick-Start-Tutorial.md)
