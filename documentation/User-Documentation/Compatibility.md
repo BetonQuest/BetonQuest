@@ -723,6 +723,22 @@ hide_npcs:
   127: '!questStarted'
 ```
 
+### Higing Player's
+You can also hide players for specific players. If the `source_player` meets the conditions 
+every player that meets the `target_player` is completely hidden for him. 
+This is realy helpful if you want a lonely place on your server, 
+or our have trouble with a quest when multiple players can see or effect each other.
+
+Note that a player that fit the `source_player`conditions can't be pushed anymore from other players. 
+Also if you leave the `source_player` or `target_player` empty all players are effected. 
+
+```YAML
+player_hider:
+  example_hider:
+    source_player: in_region
+    target_player: in_region
+```
+
 ### Conversation IO: `menu`
 
 ProtocolLib also enables a conversation IO that makes use of a chat menu system.
