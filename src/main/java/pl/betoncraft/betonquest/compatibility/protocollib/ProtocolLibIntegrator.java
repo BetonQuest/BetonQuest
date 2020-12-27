@@ -34,6 +34,7 @@ public class ProtocolLibIntegrator implements Integrator {
 
         try {
             playerHider = new PlayerHider();
+            UpdateVisibilityNowEvent.setHider(playerHider);
         } catch (InstructionParseException e) {
             LogUtils.getLogger().log(Level.SEVERE, "Could not start PlayerHider! " + e.getMessage(), e);
         }
@@ -50,6 +51,7 @@ public class ProtocolLibIntegrator implements Integrator {
         playerHider.stop();
         try {
             playerHider = new PlayerHider();
+            UpdateVisibilityNowEvent.setHider(playerHider);
         } catch (InstructionParseException e) {
             LogUtils.getLogger().log(Level.SEVERE, "Could not start PlayerHider! " + e.getMessage(), e);
         }

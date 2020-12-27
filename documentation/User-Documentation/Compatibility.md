@@ -723,11 +723,12 @@ hide_npcs:
   127: '!questStarted'
 ```
 
-### Higing Player's
+### Hiding Player's
 You can also hide players for specific players. If the `source_player` meets the conditions 
-every player that meets the `target_player` is completely hidden for him. 
-This is realy helpful if you want a lonely place on your server, 
+every player that meets the `target_player` conditions is completely hidden for him. 
+This is really helpful if you want a lonely place on your server, 
 or our have trouble with a quest when multiple players can see or effect each other.
+You can configure the interval which checks the conditions in the [config.yml](./Configuration.md#player-hider-interval).
 
 Note that a player that fit the `source_player`conditions can't be pushed anymore from other players. 
 Also if you leave the `source_player` or `target_player` empty all players are effected. 

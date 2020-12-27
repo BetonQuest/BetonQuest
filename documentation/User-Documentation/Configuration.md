@@ -123,7 +123,7 @@ Once again, if you have "keepInventory" gamerule true, this setting has to be fa
 This was used in the past when the `unbreakable` tag couldn't be added to items.
 Turn it off and make your quest items unbreakable by vanilla means.
 
-### Player Hider intervall
+### Player Hider interval
 `player_hider_check_interval` the interval in which the PlayerHider checks the conditions and update visibility
 
 ### Sounds

@@ -80,7 +80,10 @@ public class PlayerHider {
         return conditionList;
     }
 
-    private void updateVisibility() {
+    /**
+     * Trigger an update for the player visibility
+     */
+    public void updateVisibility() {
         final Map<Player, List<Player>> playersToHide = getPlayersToHide();
         for (final Player source : Bukkit.getOnlinePlayers()) {
             final List<Player> playerToHideList = playersToHide.get(source);
