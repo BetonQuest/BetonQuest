@@ -18,7 +18,7 @@ public class UpdateVisibilityNowEvent extends QuestEvent {
     protected Void execute(final String playerID) throws QuestRuntimeException {
         NPCHider.getInstance().applyVisibility(PlayerConverter.getPlayer(playerID));
         if(hider != null) {
-            hider.updateVisibility();;
+            hider.updateVisibility();
         }
         return null;
     }
