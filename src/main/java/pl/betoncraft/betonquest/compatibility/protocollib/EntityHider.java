@@ -44,7 +44,6 @@ public class EntityHider implements Listener {
             PacketType.Play.Server.REL_ENTITY_MOVE,
             PacketType.Play.Server.ENTITY_LOOK,
             PacketType.Play.Server.ENTITY_MOVE_LOOK,
-            PacketType.Play.Server.ENTITY_MOVE_LOOK,
             PacketType.Play.Server.ENTITY_TELEPORT,
             PacketType.Play.Server.ENTITY_HEAD_ROTATION,
             PacketType.Play.Server.ENTITY_STATUS,
@@ -52,7 +51,8 @@ public class EntityHider implements Listener {
             PacketType.Play.Server.ENTITY_METADATA,
             PacketType.Play.Server.ENTITY_EFFECT,
             PacketType.Play.Server.REMOVE_ENTITY_EFFECT,
-            PacketType.Play.Server.BLOCK_BREAK_ANIMATION
+            PacketType.Play.Server.BLOCK_BREAK_ANIMATION,
+            PacketType.Play.Server.COMBAT_EVENT
 
             // We don't handle DESTROY_ENTITY though
     };
@@ -89,7 +89,7 @@ public class EntityHider implements Listener {
      * Set the visibility status of a given entity for a particular observer.
      *
      * @param observer - the observer player.
-     * @param entityID   - ID of the entity that will be hidden or made visible.
+     * @param entityID - ID of the entity that will be hidden or made visible.
      * @param visible  - TRUE if the entity should be made visible, FALSE if not.
      * @return TRUE if the entity was visible before this method call, FALSE otherwise.
      */
