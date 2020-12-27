@@ -20,6 +20,7 @@ import pl.betoncraft.betonquest.events.*;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
+import pl.betoncraft.betonquest.extra.playerhider.PlayerHider;
 import pl.betoncraft.betonquest.id.ConditionID;
 import pl.betoncraft.betonquest.id.EventID;
 import pl.betoncraft.betonquest.id.ObjectiveID;
@@ -64,6 +65,7 @@ public class BetonQuest extends JavaPlugin {
     private Updater updater;
     private final ConcurrentHashMap<String, PlayerData> playerDataMap = new ConcurrentHashMap<>();
     private GlobalData globalData;
+    private PlayerHider playerHider;
 
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
@@ -350,7 +352,7 @@ public class BetonQuest extends JavaPlugin {
         return NOTIFY_IO_TYPES.get(name);
     }
 
-    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.DoNotUseThreads"})
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.DoNotUseThreads", "PMD.NPathComplexity"})
     @Override
     public void onEnable() {
 
@@ -639,6 +641,12 @@ public class BetonQuest extends JavaPlugin {
         // updater
         updater = new Updater(this.getFile());
 
+        try {
+            playerHider = new PlayerHider();
+        } catch (InstructionParseException e) {
+            LogUtils.getLogger().log(Level.SEVERE, "Could not start PlayerHider! " + e.getMessage(), e);
+        }
+
         // done
         LogUtils.getLogger().log(Level.INFO, "BetonQuest succesfully enabled!");
     }
@@ -865,6 +873,14 @@ public class BetonQuest extends JavaPlugin {
         Compatibility.reload();
         // load all events, conditions, objectives, conversations etc.
         loadData();
+
+        playerHider.stop();
+        try {
+            playerHider = new PlayerHider();
+        } catch (InstructionParseException e) {
+            LogUtils.getLogger().log(Level.SEVERE, "Could not start PlayerHider! " + e.getMessage(), e);
+        }
+
         // start objectives and update journals for every online player
         for (final Player player : Bukkit.getOnlinePlayers()) {
             final String playerID = PlayerConverter.getID(player);
