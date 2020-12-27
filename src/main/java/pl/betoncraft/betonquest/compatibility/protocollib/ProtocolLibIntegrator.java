@@ -5,6 +5,9 @@ import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.compatibility.Integrator;
 import pl.betoncraft.betonquest.compatibility.protocollib.conversation.MenuConvIO;
 import pl.betoncraft.betonquest.compatibility.protocollib.conversation.PacketInterceptor;
+import pl.betoncraft.betonquest.compatibility.protocollib.hider.NPCHider;
+import pl.betoncraft.betonquest.compatibility.protocollib.hider.PlayerHider;
+import pl.betoncraft.betonquest.compatibility.protocollib.hider.UpdateVisibilityNowEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.LogUtils;
 

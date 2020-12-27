@@ -1,4 +1,4 @@
-package pl.betoncraft.betonquest.compatibility.protocollib;
+package pl.betoncraft.betonquest.compatibility.protocollib.hider;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.citizensnpcs.api.CitizensAPI;

@@ -1,4 +1,4 @@
-package pl.betoncraft.betonquest.compatibility.protocollib;
+package pl.betoncraft.betonquest.compatibility.protocollib.hider;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -18,11 +18,6 @@ import java.util.*;
  * The PlayerHider can hide other players, if the source fits all conditions and the targets also fits there conditions.
  */
 public class PlayerHider {
-    /**
-     * Players that previously had collision enabled
-     */
-    private static final List<UUID> PLAYERS_WITH_COLLISION = new ArrayList<>();
-
     /**
      * The map's key is an array containing the source player's conditions
      * and the map's value is an array containing the target player's conditions.
@@ -90,17 +85,10 @@ public class PlayerHider {
         for (final Player source : Bukkit.getOnlinePlayers()) {
             final List<Player> playerToHideList = playersToHide.get(source);
             if (playerToHideList == null) {
-                if (PLAYERS_WITH_COLLISION.remove(source.getUniqueId())) {
-                    source.setCollidable(true);
-                }
                 for (final Player target : Bukkit.getOnlinePlayers()) {
                     hider.showEntity(source, target);
                 }
             } else {
-                if (source.isCollidable()) {
-                    PLAYERS_WITH_COLLISION.add(source.getUniqueId());
-                    source.setCollidable(false);
-                }
                 for (final Player target : Bukkit.getOnlinePlayers()) {
                     if(playerToHideList.contains(target)) {
                         hider.hideEntity(source, target);

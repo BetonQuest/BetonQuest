@@ -1,4 +1,4 @@
-package pl.betoncraft.betonquest.compatibility.protocollib;
+package pl.betoncraft.betonquest.compatibility.protocollib.hider;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
