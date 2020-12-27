@@ -1,4 +1,4 @@
-package pl.betoncraft.betonquest.compatibility.protocollib;
+package pl.betoncraft.betonquest.compatibility.protocollib.hider;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.citizensnpcs.api.CitizensAPI;
@@ -38,7 +38,7 @@ public final class NPCHider extends BukkitRunnable implements Listener {
     private NPCHider() {
         super();
         npcs = new HashMap<>();
-        final int updateInterval = BetonQuest.getInstance().getConfig().getInt("hidden_npcs_check_interval", 5 * 20);
+        final int updateInterval = BetonQuest.getInstance().getConfig().getInt("npc_hider_check_interval", 5 * 20);
         hider = new EntityHider(BetonQuest.getInstance(), EntityHider.Policy.BLACKLIST);
         loadFromConfig();
         runTaskTimer(BetonQuest.getInstance(), 0, updateInterval);

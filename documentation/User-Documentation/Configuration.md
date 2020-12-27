@@ -123,6 +123,14 @@ Once again, if you have "keepInventory" gamerule true, this setting has to be fa
 This was used in the past when the `unbreakable` tag couldn't be added to items.
 Turn it off and make your quest items unbreakable by vanilla means.
 
+### Player Hider interval
+`player_hider_check_interval` the interval in which the PlayerHider checks the conditions and updates the player's visibility.
+Cannot be disabled currently. If you want this to be semi-disabled set a very high value. 
+
+### NPC Hider interval
+`npc_hider_check_interval` is the interval in which the NPCHider checks the conditions and updates the NPC's visibility.
+Cannot be disabled currently. If you want this to be semi-disabled set a very high value.
+
 ### Sounds
 This section defines what sounds will be played on these occasions:
 

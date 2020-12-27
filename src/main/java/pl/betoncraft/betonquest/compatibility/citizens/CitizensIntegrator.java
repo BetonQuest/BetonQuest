@@ -3,8 +3,8 @@ package pl.betoncraft.betonquest.compatibility.citizens;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.compatibility.Integrator;
-import pl.betoncraft.betonquest.compatibility.protocollib.NPCHider;
-import pl.betoncraft.betonquest.compatibility.protocollib.UpdateVisibilityNowEvent;
+import pl.betoncraft.betonquest.compatibility.protocollib.hider.NPCHider;
+import pl.betoncraft.betonquest.compatibility.protocollib.hider.UpdateVisibilityNowEvent;
 
 import java.util.Arrays;
 

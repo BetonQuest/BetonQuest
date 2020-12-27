@@ -71,6 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added 'neutralMobDeathAllPlayers' argument to the `mmobkill` objective
 - Added custom model data support for items
 - Added new config option 'npcInteractionLimit' default 500 that limits the click on an NPC to every x milliseconds
+- Added PlayerHider to hide specific players for specified players
 
 ### Changed
 - devbuilds always show notifications for new devbuilds, even when the user is not on a _DEV strategy
