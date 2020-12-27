@@ -2,7 +2,6 @@ package pl.betoncraft.betonquest.compatibility.protocollib.hider;
 
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
-import pl.betoncraft.betonquest.compatibility.protocollib.hider.NPCHider;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
