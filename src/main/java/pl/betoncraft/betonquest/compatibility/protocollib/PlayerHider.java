@@ -1,4 +1,4 @@
-package pl.betoncraft.betonquest.extra.playerhider;
+package pl.betoncraft.betonquest.compatibility.protocollib;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -32,6 +32,10 @@ public class PlayerHider {
      * The running hider
      */
     private final BukkitTask bukkitTask;
+    /**
+     * ProtocolLib EntityHider
+     */
+    private final EntityHider hider;
 
     /**
      * Initialize and start a new PlayerHider
@@ -52,13 +56,15 @@ public class PlayerHider {
         }
 
         final long period = BetonQuest.getInstance().getConfig().getLong("player_hider_check_interval", 20);
-        bukkitTask = Bukkit.getScheduler().runTaskTimer(BetonQuest.getInstance(), this::updateVisibility, 1, period);
+        hider = new EntityHider(BetonQuest.getInstance(), EntityHider.Policy.BLACKLIST);
+        bukkitTask = Bukkit.getScheduler().runTaskTimerAsynchronously(BetonQuest.getInstance(), this::updateVisibility, 1, period);
     }
 
     /**
      * Stops the running PlayerHider.
      */
     public void stop() {
+        hider.close();
         bukkitTask.cancel();
     }
 
@@ -88,7 +94,7 @@ public class PlayerHider {
                     source.setCollidable(true);
                 }
                 for (final Player target : Bukkit.getOnlinePlayers()) {
-                    source.showPlayer(BetonQuest.getInstance(), target);
+                    hider.showEntity(source, target);
                 }
             } else {
                 if (source.isCollidable()) {
@@ -97,9 +103,9 @@ public class PlayerHider {
                 }
                 for (final Player target : Bukkit.getOnlinePlayers()) {
                     if(playerToHideList.contains(target)) {
-                        source.hidePlayer(BetonQuest.getInstance(), target);
+                        hider.hideEntity(source, target);
                     } else {
-                        source.showPlayer(BetonQuest.getInstance(), target);
+                        hider.showEntity(source, target);
                     }
                 }
             }

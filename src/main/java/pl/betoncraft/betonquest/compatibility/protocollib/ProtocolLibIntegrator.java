@@ -5,12 +5,17 @@ import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.compatibility.Integrator;
 import pl.betoncraft.betonquest.compatibility.protocollib.conversation.MenuConvIO;
 import pl.betoncraft.betonquest.compatibility.protocollib.conversation.PacketInterceptor;
+import pl.betoncraft.betonquest.exceptions.InstructionParseException;
+import pl.betoncraft.betonquest.utils.LogUtils;
+
+import java.util.logging.Level;
 
 
 @SuppressWarnings("PMD.CommentRequired")
 public class ProtocolLibIntegrator implements Integrator {
 
     private final BetonQuest plugin;
+    private PlayerHider playerHider;
 
     public ProtocolLibIntegrator() {
         plugin = BetonQuest.getInstance();
@@ -23,6 +28,12 @@ public class ProtocolLibIntegrator implements Integrator {
             NPCHider.start();
             plugin.registerEvents("updatevisibility", UpdateVisibilityNowEvent.class);
         }
+
+        try {
+            playerHider = new PlayerHider();
+        } catch (InstructionParseException e) {
+            LogUtils.getLogger().log(Level.SEVERE, "Could not start PlayerHider! " + e.getMessage(), e);
+        }
         plugin.registerConversationIO("menu", MenuConvIO.class);
         plugin.registerInterceptor("packet", PacketInterceptor.class);
     }
@@ -32,6 +43,12 @@ public class ProtocolLibIntegrator implements Integrator {
         //if NPCHider is running, reload it
         if (NPCHider.getInstance() != null) {
             NPCHider.start();
+        }
+        playerHider.stop();
+        try {
+            playerHider = new PlayerHider();
+        } catch (InstructionParseException e) {
+            LogUtils.getLogger().log(Level.SEVERE, "Could not start PlayerHider! " + e.getMessage(), e);
         }
     }
 
