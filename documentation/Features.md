@@ -32,7 +32,19 @@ can set his own language which means that - if translated - all conversations wi
 
 You can give players information about where they are in a quest using the "Journal". The Journal is a book in which you can
 write content based on the players actions.
- 
+
+##Player, NPC and Hologram Hider
+
+BetonQuest allows you to hide Players from each other based on whatever conditions you define. The same works for NPC's
+and HolographicDisplays Holograms.
+
+<video controls loop 
+  src="../../media/content/User-Documentation/Compatibility/PlayerHider.mp4"
+  width="780" height="500">
+Sorry, your browser doesn't support embedded videos.
+</video>
+
+
 ##[Upcoming] First Class Item System 
  
 BetonQuest allows for item customization far beyond what other plugins can do. You can use ANY item from ANY plugin
@@ -51,3 +63,18 @@ lines based upon the progress in your old plugin.
 If just Beton isn't enough you can always just hook into Skript or Denizen too.
 
 Full list of integrations [here](User-Documentation/Compatibility.md).
+
+##Content our users made
+
+Check out these amazing creations from our community: 
+
+### Water Well by Titanium
+<video controls loop
+  src="../../media/content/Home/Features/WaterWell.mp4"
+  width="780" height="500">
+Sorry, your browser doesn't support embedded videos.
+</video>
+
+### Dialog with audio by Bartos13
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/Yu3KZLAW7zY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

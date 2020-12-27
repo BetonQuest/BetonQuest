@@ -293,6 +293,8 @@ This event simply gives the player specified amount of Heroes experience. The fi
 
 ## [HolographicDisplays](http://dev.bukkit.org/bukkit-plugins/holographic-displays/)
 
+
+### Hidden Holograms
 Installing this plugin will enable you to create hidden holograms, which will be shown to players only if they meet specified conditions. Note that you need to have [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/) installed in order to hide holograms from certain players.
 
 In order to create a hologram, you have to add `holograms` section in your _custom.yml_ file. Add a node named as your hologram to this section and define `lines`, `conditions` and `location` subnodes. The fist one should be a list of texts - these will be the lines of a hologram. Color codes are supported. Second is a list of conditions separated by commas. Third is a location in a standard format, like in `teleport` event. An example of such hologram definition:
@@ -313,6 +315,8 @@ holograms:
 A line can also represent a floating item. To do so enter the line as 'item:`custom_item`'. It will be replaced with the `custom_item` defined defined in items.yml. If the Item is defined for example as map, a floating map will be seen between two lines of text.
 
 The holograms are updated every 10 seconds. If you want to make it faster, add `hologram_update_interval` option in _config.yml_ file and set it to a number of ticks you want to pass between updates (one second is 20 ticks). Don't set it to 0 or negative numbers, it will result in an error.
+
+### NPC Holograms
 
 If Citizens is also installed then you can have holograms configured relative to an npc. Add the following to _custom.yml_.
 
@@ -715,7 +719,9 @@ You can also use placeholders from other plugins in BetonQuest. Simply insert a 
 ## [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/)
 
 ### Hiding NPC's
-Having ProtocolLib installed will let you hide Citizens NPCs if specified conditions are met. You can do that by adding `hide_npcs` section to _custom.yml_ file in your package. There you can assign conditions to specific NPC IDs:
+Having ProtocolLib installed will let you hide Citizens NPCs if specified conditions are met.
+You can do that by adding a `hide_npcs` section to the *custom.yml* file in your package. 
+It allows you to assign conditions to specific NPC IDs like so:
 
 ```YAML
 hide_npcs:
@@ -723,22 +729,44 @@ hide_npcs:
   127: '!questStarted'
 ```
 
+The interval the conditions are checked in can be configured in the [config.yml](./Configuration.md#npc-hider-interval).
+
 ### Hiding Player's
+
+<video controls loop
+  src="../../media/content/User-Documentation/Compatibility/PlayerHider.mp4"
+  width="780">
+  Sorry, your browser doesn't support embedded videos.
+</video>
+
 You can also hide players for specific players. If the `source_player` meets the conditions 
 every player that meets the `target_player` conditions is completely hidden for him. 
 This is really helpful if you want a lonely place on your server, 
-or our have trouble with a quest when multiple players can see or effect each other.
+or your quests break when multiple players can see or affect each other.
 You can configure the interval which checks the conditions in the [config.yml](./Configuration.md#player-hider-interval).
 
-Note that a player that fit the `source_player`conditions can't be pushed anymore from other players. 
-Also if you leave the `source_player` or `target_player` empty all players are effected. 
+Special behaviour:
+
+* A player that meets the `source_player`conditions can't be pushed anymore by other players. 
+* By leaving the e.g. `source_player` argument empty it will match all players.
 
 ```YAML
 player_hider:
-  example_hider:
-    source_player: in_region
-    target_player: in_region
+  example_hider:  #All players in a special region cannot see any other players in that region.
+    source_player: in_StoryRegion
+    target_player: in_StoryRegion
+  another_hider: #No one can see any players inside a secret room.
+    #The source_player argument is left out to match all players.    
+    target_player: in_secretRoom
+  empty_hider: #in_Lobby is a world condition. Therefore, the lobby world appears empty for everyone that is in it.
+    source_player: in_Lobby
+    #The target_player argument is left out to match all players.
 ```
+
+### Force Visibility update
+You can run the `updatevisibility` event to manually update the visibility. This is useful for performance optimizations
+on large servers if used together with the [player hider interval](./Configuration.md#player-hider-interval)
+and [npc hider interval](./Configuration.md#npc-hider-interval) set to high values.
 
 ### Conversation IO: `menu`
 
