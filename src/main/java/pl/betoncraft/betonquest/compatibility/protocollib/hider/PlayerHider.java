@@ -52,7 +52,7 @@ public class PlayerHider {
 
         final long period = BetonQuest.getInstance().getConfig().getLong("player_hider_check_interval", 20);
         hider = new EntityHider(BetonQuest.getInstance(), EntityHider.Policy.BLACKLIST);
-        bukkitTask = Bukkit.getScheduler().runTaskTimerAsynchronously(BetonQuest.getInstance(), this::updateVisibility, 1, period);
+        bukkitTask = Bukkit.getScheduler().runTaskTimer(BetonQuest.getInstance(), this::updateVisibility, 1, period);
     }
 
     /**
