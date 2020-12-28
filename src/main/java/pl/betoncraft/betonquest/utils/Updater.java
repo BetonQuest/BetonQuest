@@ -1,6 +1,5 @@
 package pl.betoncraft.betonquest.utils;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.bukkit.Bukkit;
@@ -17,56 +16,51 @@ import java.net.UnknownHostException;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.StandardCharsets;
-import java.util.Iterator;
+import java.util.Date;
 import java.util.Locale;
 import java.util.logging.Level;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class Updater {
     private static final String RELEASE_API_URL = "https://api.github.com/repos/BetonQuest/BetonQuest/releases";
-    private static final String DEV_API_URL = "https://betonquest.org/old/api/v1/";
-    private static final String DEV_API_LATEST = DEV_API_URL + "builds/latest";
-    private static final String DEV_API_DOWNLOAD = DEV_API_URL + "/builds/download/:version/:versionNumber/BetonQuest.jar";
+    private static final long CHECK_DELAY = 1000 * 60 * 10;
 
     private final BetonQuest plugin;
     private final String fileName;
-    private final ConfigValues config;
     private Pair<Version, String> latest;
+    private long lastCheck;
 
-    public Updater(final File file) {
-        this.plugin = BetonQuest.getInstance();
+    public Updater(final BetonQuest plugin, final File file) {
+        this.plugin = plugin;
         this.fileName = file.getName();
-        this.config = new ConfigValues();
+        this.latest = Pair.of(new Version(plugin.getDescription().getVersion()), null);
         searchForUpdate();
     }
 
-    private void searchForUpdate() {
-        latest = Pair.of(new Version(plugin.getDescription().getVersion()), null);
-        config.load();
+    public final void searchForUpdate() {
+        final UpdaterConfig config = new UpdaterConfig();
         if (!config.enabled) {
             return;
         }
+        final long currentTime = new Date().getTime();
+        if(lastCheck + CHECK_DELAY > currentTime) {
+            return;
+        }
+        lastCheck = currentTime;
 
         new BukkitRunnable() {
             @Override
             public void run() {
                 LogUtils.getLogger().log(Level.INFO, "(Autoupdater) Search for newer version...");
                 try {
-                    findDev();
-                } catch (UnknownHostException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) The update url for dev builds is not reachable!");
-                } catch (IOException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) Could not get the latest dev build number!", e);
-                }
-                try {
-                    findRelease();
+                    findNewVersion(config);
                 } catch (UnknownHostException e) {
                     LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) The update url for releases is not reachable!");
                 } catch (IOException e) {
                     LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) Could not get the latest release!", e);
                 }
                 if (latest.getValue() == null) {
-                    LogUtils.getLogger().log(Level.INFO, "(Autoupdater) BetonQuest is uptodate.");
+                    LogUtils.getLogger().log(Level.INFO, "(Autoupdater) BetonQuest is on the newest version.");
                 } else {
                     LogUtils.getLogger().log(Level.INFO, "(Autoupdater) Found newer version '" + latest.getKey().getVersion()
                             + "'" + (config.automatic ? ", it will be downloaded and automatically installed on the next restart." : ", it will be installed, if you execute '/q update'!"));
@@ -78,53 +72,42 @@ public class Updater {
         }.runTaskAsynchronously(BetonQuest.getInstance());
     }
 
-    private void findRelease() throws IOException {
-        final JSONArray json = new JSONArray(readStringFromURL(RELEASE_API_URL));
-        for (int i = 0; i < json.length(); i++) {
-            final JSONObject release = json.getJSONObject(i);
+    private void findNewVersion(final UpdaterConfig config) throws IOException {
+        final JSONArray releaseArray = new JSONArray(readStringFromURL());
+        for (int index = 0; index < releaseArray.length(); index++) {
+            final JSONObject release = releaseArray.getJSONObject(index);
             final Version version = new Version(release.getString("tag_name").substring(1));
-            final String url = release.getJSONArray("assets").getJSONObject(0).getString("browser_download_url");
-            if (latest.getKey().isNewer(version, config.updateStrategy)) {
-                latest = Pair.of(version, url);
-            }
-        }
-    }
-
-    private void findDev() throws IOException {
-        final JSONObject json = new JSONObject(readStringFromURL(DEV_API_LATEST));
-        final Iterator<String> keys = json.keys();
-        while (keys.hasNext()) {
-            final String key = keys.next();
-            final String dev = json.getString(key);
-            final Version version = new Version(key + "-DEV-" + dev);
-            final String url = DEV_API_DOWNLOAD.replace(":versionNumber", dev).replace(":version", key);
-            if (latest.getKey().isNewer(version, config.updateStrategy)) {
-                latest = Pair.of(version, url);
+            final JSONArray assetsArray = release.getJSONArray("assets");
+            for (int i = 0; i < assetsArray.length(); i++) {
+                final JSONObject asset = assetsArray.getJSONObject(i);
+                if("BetonQuest.jar".equals(asset.getString("name"))) {
+                    final String url = asset.getString("browser_download_url");
+                    if (latest.getKey().isNewer(version, config.updateStrategy)) {
+                        latest = Pair.of(version, url);
+                    }
+                }
             }
         }
     }
 
     @SuppressWarnings("PMD.AvoidFileStream")
-    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     private void downloadUpdate() throws QuestRuntimeException {
         LogUtils.getLogger().log(Level.INFO, "(Autoupdater) Updater started download of new version...");
-        if (!config.enabled) {
-            throw new QuestRuntimeException("The updater is disabled in the config! Check config entry 'update.enabled'.");
-        }
         if (latest.getValue() == null) {
-            throw new QuestRuntimeException("The updater did not find an update! This can depend on your update_strategy, check config entry 'update.update_strategy'.");
+            throw new QuestRuntimeException("The updater is disabled or the updater did not find an update!"
+                    + " Check config entry 'update.enabled' or this can depend on your update_strategy, check config entry 'update.update_strategy'.");
         }
         LogUtils.getLogger().log(Level.INFO, "(Autoupdater) The target version is '" + latest.getKey().getVersion() + "'...");
         try {
             final URL remoteFile = new URL(latest.getValue());
             try (ReadableByteChannel rbc = Channels.newChannel(remoteFile.openStream())) {
                 final File folder = Bukkit.getUpdateFolderFile();
-                if (!folder.exists()) {
-                    folder.mkdirs();
+                if (!folder.mkdirs()) {
+                    throw new QuestRuntimeException("The updater could not create the folder '" + folder.getName() + "'!");
                 }
                 final File file = new File(folder, fileName);
-                if (!file.exists()) {
-                    file.createNewFile();
+                if (!file.createNewFile()) {
+                    throw new QuestRuntimeException("The updater could not create the file '" + file.getName() + "'!");
                 }
                 try (FileOutputStream fos = new FileOutputStream(file)) {
                     fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
@@ -142,10 +125,9 @@ public class Updater {
             @Override
             public void run() {
                 try {
-                    final String version = getUpdateVersion();
                     downloadUpdate();
                     if (sender != null) {
-                        sender.sendMessage("§2(Autoupdater) Download finished. Restart the server to update the plugin to version '" + version + "'.");
+                        sender.sendMessage("§2(Autoupdater) Download finished. Restart the server to update the plugin to version '" + getUpdateVersion() + "'.");
                     }
                 } catch (QuestRuntimeException e) {
                     if (sender != null) {
@@ -168,14 +150,8 @@ public class Updater {
         return null;
     }
 
-    public void reload() {
-        if (!latest.getKey().isUnofficial()) {
-            searchForUpdate();
-        }
-    }
-
-    private String readStringFromURL(final String url) throws IOException {
-        try (InputStreamReader reader = new InputStreamReader(new URL(url).openStream(), StandardCharsets.UTF_8);
+    private String readStringFromURL() throws IOException {
+        try (InputStreamReader reader = new InputStreamReader(new URL(Updater.RELEASE_API_URL).openStream(), StandardCharsets.UTF_8);
              BufferedReader bufferedReader = new BufferedReader(reader)) {
             final StringBuilder builder = new StringBuilder();
             int singleChar = bufferedReader.read();
@@ -187,39 +163,33 @@ public class Updater {
         }
     }
 
-    private class ConfigValues {
-        private boolean enabled;
-        private UpdateStrategy updateStrategy;
-        private boolean automatic;
+    private class UpdaterConfig {
+        private final boolean enabled;
+        private final UpdateStrategy updateStrategy;
+        private final boolean automatic;
 
-        public ConfigValues() {
-        }
-
-        private void load() {
-            // TODO Delete in BQ 2.0.0 getConfig().set("", null)
-            plugin.getConfig().set("update.download_bugfixes", null);
-            plugin.getConfig().set("update.notify_new_release", null);
-            plugin.getConfig().set("update.notify_dev_build", null);
-
+        public UpdaterConfig() {
             enabled = plugin.getConfig().getBoolean("update.enabled");
+
+            UpdateStrategy strategy = UpdateStrategy.MINOR;
             final String updateStrategyString = plugin.getConfig().getString("update.strategy");
             if (updateStrategyString == null) {
-                updateStrategy = UpdateStrategy.MINOR;
-                plugin.getConfig().set("update.strategy", updateStrategy.toString());
+                plugin.getConfig().set("update.strategy", strategy.toString());
                 plugin.saveConfig();
             } else {
-                updateStrategy = UpdateStrategy.valueOf(updateStrategyString.toUpperCase(Locale.ROOT));
+                strategy = UpdateStrategy.valueOf(updateStrategyString.toUpperCase(Locale.ROOT));
             }
-            if (plugin.getConfig().isSet("update.automatic")) {
-                automatic = plugin.getConfig().getBoolean("update.automatic");
-            } else {
-                automatic = true;
-                plugin.getConfig().set("update.automatic", automatic);
-                plugin.saveConfig();
-            }
-            if (latest.getKey().isDev() && !updateStrategy.isDev || latest.getKey().isUnofficial()) {
-                updateStrategy = updateStrategy.toDev();
+
+            if (latest.getKey().isDev() && !strategy.isDev || latest.getKey().isUnofficial()) {
+                updateStrategy = strategy.toDev();
                 automatic = false;
+            } else {
+                updateStrategy = strategy;
+                if(!plugin.getConfig().isSet("update.automatic")) {
+                    plugin.getConfig().set("update.automatic", true);
+                    plugin.saveConfig();
+                }
+                automatic = plugin.getConfig().getBoolean("update.automatic");
             }
         }
     }
@@ -313,22 +283,26 @@ public class Updater {
                 case PATCH:
                 case PATCH_DEV:
                     if (majorVersion == 0 && minorVersion == 0) {
-                        if (patchVersion > 0) {
-                            return false;
-                        } else if (patchVersion < 0) {
-                            return true;
-                        } else {
-                            final Integer thisDev = isDev() ? dev : isUnofficial() ? 0 : null;
-                            final Integer targetDev = version.isDev() ? version.dev : version.isUnofficial() ? 0 : null;
-                            if (thisDev == null || targetDev == null) {
-                                return thisDev != null;
-                            } else {
-                                return thisDev.compareTo(targetDev) < 0;
-                            }
-                        }
+                        return isNewerPatch(version, patchVersion);
                     }
                 default:
                     return false;
+            }
+        }
+
+        private boolean isNewerPatch(final Version version, final int patchVersion) {
+            if (patchVersion > 0) {
+                return false;
+            } else if (patchVersion < 0) {
+                return true;
+            } else {
+                final Integer thisDev = isDev() ? dev : isUnofficial() ? 0 : null;
+                final Integer targetDev = version.isDev() ? version.dev : version.isUnofficial() ? 0 : null;
+                if (thisDev == null || targetDev == null) {
+                    return thisDev != null;
+                } else {
+                    return thisDev.compareTo(targetDev) < 0;
+                }
             }
         }
 
