@@ -8,27 +8,11 @@ jobs:
 
     outputs:
       VERSION: ${{ steps.save_version.outputs.version }}
-      PREVIOUS_VERSION_TAG: ${{ steps.save_tag.outputs.tag }}
-      CHANGES_IN_DOCS_ONLY: ${{ steps.save_changes.outputs.changes }}
-      IS_RELEASE: ${{ steps.release.outputs.release }}
-      IS_DEVELOPEMENT: ${{ steps.developement.outputs.developement }}
+      TYPE: ${{ steps.save_type.outputs.type }}
 
     steps:
-      - name: Validate that a fork does not create a version tag
-        if: "github.repository != 'BetonQuest/BetonQuest' && startsWith(github.ref,'refs/tags/v')"
-        run: |
-          echo "Version tags are not supported in forks!"
-          exit 1
-
       - name: Checkout source code
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-
-      - name: Setup JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
 
       - name: Read version from pom.xml
         run: |
