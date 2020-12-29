@@ -17,13 +17,18 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.logging.Level;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class Updater {
-    private static final String RELEASE_API_URL = "https://api.github.com/repos/BetonQuest/BetonQuest/releases";
     private static final long CHECK_DELAY = 1000 * 60 * 10;
+
+    private static final String RELEASE_API_URL = "https://api.github.com/repos/BetonQuest/BetonQuest/releases";
+    private static final String DEV_API_URL = "https://betonquest.org/old/api/v1/";
+    private static final String DEV_API_LATEST = DEV_API_URL + "builds/latest";
+    private static final String DEV_API_DOWNLOAD = DEV_API_URL + "/builds/download/:version/:versionNumber/BetonQuest.jar";
 
     private final BetonQuest plugin;
     private final String fileName;
@@ -53,9 +58,16 @@ public class Updater {
             public void run() {
                 LogUtils.getLogger().log(Level.INFO, "(Autoupdater) Search for newer version...");
                 try {
-                    findNewVersion(config);
+                    findNewDev(config);
                 } catch (UnknownHostException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) The update url for releases is not reachable!");
+                    LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) The update url for dev builds is not reachable!");
+                } catch (IOException e) {
+                    LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) Could not get the latest dev build number!", e);
+                }
+                try {
+                    findNewRelease(config);
+                } catch (UnknownHostException e) {
+                    LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) The update url for releases builds is not reachable!");
                 } catch (IOException e) {
                     LogUtils.getLogger().log(Level.WARNING, "(Autoupdater) Could not get the latest release!", e);
                 }
@@ -72,8 +84,22 @@ public class Updater {
         }.runTaskAsynchronously(BetonQuest.getInstance());
     }
 
-    private void findNewVersion(final UpdaterConfig config) throws IOException {
-        final JSONArray releaseArray = new JSONArray(readStringFromURL());
+    private void findNewDev(final UpdaterConfig config) throws IOException {
+        final JSONObject json = new JSONObject(readStringFromURL(DEV_API_LATEST));
+        final Iterator<String> keys = json.keys();
+        while (keys.hasNext()) {
+            final String key = keys.next();
+            final String dev = json.getString(key);
+            final Version version = new Version(key + "-DEV-" + dev);
+            final String url = DEV_API_DOWNLOAD.replace(":versionNumber", dev).replace(":version", key);
+            if (latest.getKey().isNewer(version, config.updateStrategy)) {
+                latest = Pair.of(version, url);
+            }
+        }
+    }
+
+    private void findNewRelease(final UpdaterConfig config) throws IOException {
+        final JSONArray releaseArray = new JSONArray(readStringFromURL(RELEASE_API_URL));
         for (int index = 0; index < releaseArray.length(); index++) {
             final JSONObject release = releaseArray.getJSONObject(index);
             final Version version = new Version(release.getString("tag_name").substring(1));
@@ -150,8 +176,8 @@ public class Updater {
         return null;
     }
 
-    private String readStringFromURL() throws IOException {
-        try (InputStreamReader reader = new InputStreamReader(new URL(Updater.RELEASE_API_URL).openStream(), StandardCharsets.UTF_8);
+    private String readStringFromURL(final String url) throws IOException {
+        try (InputStreamReader reader = new InputStreamReader(new URL(url).openStream(), StandardCharsets.UTF_8);
              BufferedReader bufferedReader = new BufferedReader(reader)) {
             final StringBuilder builder = new StringBuilder();
             int singleChar = bufferedReader.read();
