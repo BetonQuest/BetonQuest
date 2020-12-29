@@ -26,7 +26,7 @@ public class Updater {
     private static final long CHECK_DELAY = 1000 * 60 * 10;
 
     private static final String RELEASE_API_URL = "https://api.github.com/repos/BetonQuest/BetonQuest/releases";
-    private static final String DEV_API_URL = "https://betonquest.org/old/api/v1/";
+    private static final String DEV_API_URL = "https://betonquest.org/api/v1/";
     private static final String DEV_API_LATEST = DEV_API_URL + "builds/latest";
     private static final String DEV_API_DOWNLOAD = DEV_API_URL + "/builds/download/:version/:versionNumber/BetonQuest.jar";
 
