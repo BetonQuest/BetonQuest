@@ -72,7 +72,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added custom model data support for items
 - Added new config option 'npcInteractionLimit' default 500 that limits the click on an NPC to every x milliseconds
 - Added PlayerHider to hide specific players for specified players
-
 ### Changed
 - devbuilds always show notifications for new devbuilds, even when the user is not on a _DEV strategy
 - Items for HolographicDisplays are now defines in items.yml
@@ -147,7 +146,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fixed region and npcregion condition
 - fixed debugging dose not start on server startup
 - fixed ghost holograms caused by reloading BQ
-- fixed deadlock(Server crash) in Conversations with a large amount of npc and player options with a large amount of conditions 
+- fixed deadlock(Server crash) in Conversations with a large amount of npc and player options with a large amount of conditions
+- fixed door event not working correctly
 ### Security
 - fixed issue, where objectives that count things are out of sync with the database. This has also affected BungeeCord support
 

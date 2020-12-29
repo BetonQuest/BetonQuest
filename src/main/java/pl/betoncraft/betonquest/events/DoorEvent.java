@@ -1,9 +1,7 @@
 package pl.betoncraft.betonquest.events;
 
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import org.bukkit.material.MaterialData;
-import org.bukkit.material.Openable;
+import org.bukkit.block.data.Openable;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
@@ -37,24 +35,21 @@ public class DoorEvent extends QuestEvent {
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final Block block = loc.getLocation(playerID).getBlock();
-        final BlockState state = block.getState();
-        final MaterialData data = state.getData();
-        if (data instanceof Openable) {
-            final Openable openable = (Openable) data;
-            switch (type) {
-                case ON:
-                    openable.setOpen(true);
-                    break;
-                case OFF:
-                    openable.setOpen(false);
-                    break;
-                case TOGGLE:
-                    openable.setOpen(!openable.isOpen());
-                    break;
-            }
-            state.setData((MaterialData) openable);
-            state.update();
+
+        final Openable door = (Openable) block.getBlockData();
+
+        switch (type) {
+            case ON:
+                door.setOpen(true);
+                break;
+            case OFF:
+                door.setOpen(false);
+                break;
+            case TOGGLE:
+                door.setOpen(!door.isOpen());
+                break;
         }
+        block.setBlockData(door);
         return null;
     }
 
