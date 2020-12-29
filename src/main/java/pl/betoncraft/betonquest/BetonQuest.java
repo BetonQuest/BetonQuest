@@ -637,7 +637,7 @@ public class BetonQuest extends JavaPlugin {
         new BStatsMetrics(this, CONDITIONS, EVENTS, OBJECTIVES, VARIABLES, CONDITION_TYPES, EVENT_TYPES, OBJECTIVE_TYPES, VARIABLE_TYPES);
 
         // updater
-        updater = new Updater(this.getFile());
+        updater = new Updater(this, this.getFile());
 
         // done
         LogUtils.getLogger().log(Level.INFO, "BetonQuest succesfully enabled!");
@@ -854,7 +854,7 @@ public class BetonQuest extends JavaPlugin {
         new Config();
         Notify.load();
         // reload updater settings
-        BetonQuest.getInstance().getUpdater().reload();
+        BetonQuest.getInstance().getUpdater().searchForUpdate();
         // load new static events
         new StaticEvents();
         // stop current global locations listener
