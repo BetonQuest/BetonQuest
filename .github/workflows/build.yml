@@ -475,6 +475,7 @@ jobs:
       - name: Zip Documentation
         run: |
           cd build/documentation/
+          find . -name \*.mp4 -type f -delete
           zip -r Documentation.zip .
           cd ../..
 
@@ -558,6 +559,7 @@ jobs:
       - name: Zip Documentation
         run: |
           cd build/documentation/
+          find . -name \*.mp4 -type f -delete
           zip -r Documentation.zip .
           cd ../..
 
