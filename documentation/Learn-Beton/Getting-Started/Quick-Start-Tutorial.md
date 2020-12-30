@@ -2,8 +2,8 @@ This section will teach you the very basics of BetonQuest.
 
 ## Checking out the "default" example quest. 
 
-Let's start by checking out the build in example quest. You can find it in the BetonQuest directory that has been generated in your plugins folder.
-The folder you are looking for is named "_default_".
+Let's start by checking out the build in example quest. You can find it in the BetonQuest directory that has been
+generated in your plugins folder. The folder you are looking for is named "_default_".
 
 Open it up and find a file called _main.yml_. It contains a lot of options, but you only need to look at this section:
 ```YAML linenums="1"
@@ -15,9 +15,10 @@ You obtain a NPC's ID by selecting it with **/npc sel** while looking at it and 
 Execute **/q reload** and right-click the NPC.
 
 The conversation should start. If it did not, check if you correctly assigned the ID. Ask the Innkeeper for some quests.
-He will tell you to cut some trees. If you want, type **/journal** to get the journal and see a new entry. Now, don't try to place any wood blocks.
-BetonQuest will detect that and increase the number of blocks to destroy. Just go and find some trees that you can cut down. 
-Now you can return to Innkeeper and give him the wood. You will receive the reward.
+He will tell you to cut some trees. If you want, type **/journal** to get the journal and see a new entry.
+Now, don't try to place any wood blocks. BetonQuest will detect that and increase the number of blocks to destroy.
+Just go and find some trees that you can cut down. Now you can return to Innkeeper and give him the wood.
+You will receive the reward.
 
 ## Using events and conditions
 
@@ -31,17 +32,19 @@ Do that now or just continue with this tutorial.
 Let's just open _events.yml_ file inside the _default_ package. At the end add a new line:
 
 ```YAML linenums="1"
-mega: "message Hello world!"
+mega: "notify Hello world!"
 ```
 
 This is an event instruction. BetonQuest will use it to determine what type of event it is and what exactly should it do. 
-`mega` is the name, `message` is the events type and `Hello world!` tells the message event what it needs to display. In this case,
-if you run `mega` event, it will display to you `Hello world!` message. Now save the file, issue **/q reload** command
-and run the event with **/q e {name} mega** command (`q` is shortcut for `quest`, `e` is shortcut for `event`, `{name}`
-is your Minecraft name without the brackets and `mega` is the name of the event we've just created). It should show you white `Hello world!` message in the chat.
+`mega` is the name, `notify` is the events type and `Hello world!` tells the message event what it needs to display.
+In this case, if you run `mega` event, it will display to you `Hello world!` message. Now save the file,
+issue **/q reload** command and run the event with **/q e {name} default.mega** command (`q` is shortcut for `quest`,
+`e` is shortcut for `event`, `{name}` is your Minecraft name without the brackets, `default` is the package/quest
+and `mega` is the name of the event we've just created). It should show you white `Hello world!` message in the chat.
 
-Let's create another event, more complicated one. `teleport` seems complicated enough. As you can read in the [Events list](../../User-Documentation/Events-List.md),
-it needs a single argument, the location. Press F3 and check out your current location (it's shown on the left, three numbers, `x`, `y` and `z`).
+Let's create another event, more complicated one. `teleport` seems complicated enough.
+As you can read in the [Events list](../../User-Documentation/Events-List.md), it needs a single argument, the location.
+Press F3 and check out your current location (it's shown on the left, three numbers, `x`, `y` and `z`).
 Now add in _events.yml_ another line:
 
 ```YAML linenums="1"
@@ -50,11 +53,11 @@ tp: "teleport 100;200;300;world"
 
 and replace `100` with your `x` coordinate, `200` with `y` and `300` with `z`. `world` needs to be replaced with your 
 current world's name. Save the file, reload the plugin (**/q reload**) and run this event with a command described
- before.
-It should teleport you to the location you have specified.
+before. It should teleport you to the location you have specified.
 
 Congratulations, you have just created your first events. Go ahead and do some experiments with other event types. 
-You can find them in [Events list](../../User-Documentation/Events-List.md) chapter. Once you're done let's start learning conditions.
+You can find them in [Events list](../../User-Documentation/Events-List.md) chapter.
+Once you're done let's start learning conditions.
 
 ### Conditions
 
@@ -72,8 +75,8 @@ so you don't have to run around the world). Note that at the end of location arg
 This is the maximum distance you can be away from the location to meet the condition. Alright, save the file and reload the plugin.
 
 Now walk to the location you have defined in the condition. Try to stand on the exact block corresponding to that location. 
-Issue **/q c {name} mega** command (`c` is shortcut for `condition`). It should show you "checking condition blah blah
-blah: **true**". We're focusing on that last word, **true**. This means that you're meeting the condition: you're standing withing
+Issue **/q c {name} default.mega** command (`c` is shortcut for `condition`). It should show you "Condition blah blah
+blah: **true**". We're focusing on that last word, **true**. This means that you're meeting the condition: you're standing within
 5 block radius of the location. Now move 2 blocks away and issue that command again. You should still be meeting the condition. 
 Walk 4 more blocks away and try now. It should show **false**. You are now outside of that 5 block radius. Get it? Great.
 
@@ -154,9 +157,9 @@ kill_creepers: "mobkill CREEPER 3 events:bar conditions:has_beton_tag"
 
 Now let's analyze it. `kill_creepers` is a name of the objective. `mobkill` is a type. In this case, to complete the objective the player will have to kill some mobs.
 `creeper` is a type of the mob, so we know that these mobs will have to be Creepers. `3` is the amount. It means that the player has to kill 3 Creepers.
-`events:bar` means than once the player kills those Creepers, the `bar` event will be run (it's the teleportation event).
+`events:bar` means than once the player kills those Creepers, the `bar` event will be run (it's the teleportation event, but we renamed it).
 `conditions:has_beton_tag` tells us that the player will have to have `beton` tag while killing Creepers to complete the objective.
-Save it, reload the plugin and issue **/q o {name} add kill_creepers** command (`o` is for `objective`, `add` tells the plugin to add an objective).
+Save it, reload the plugin and issue **/q o {name} add default.kill_creepers** command (`o` is for `objective`, `add` tells the plugin to add an objective).
 
 Now you can check if you actually have this objective with **/q o {name}** command, it will show you all your active objectives. It should show `default.kill_creepers`. Alright, remove (yes, remove!) the `beton` tag from you and find some Creepers to kill. Once you killes 3 of them you will notice that nothing happened. It's because `has_beton_tag` condtion is not met, so the objective does not count your progress. Now add the tag again and kill another Creepers. When the third is dead you should be teleported to the location defined in `bar` event.
 
@@ -176,10 +179,11 @@ NPC_options:
 
 It's the most basic conversation possible. The NPC named `Miner` upon starting the conversation will use `greeting` option,
 which means he will say `Hi there, traveler!`. Then the conversation will end, because there are no player options defined.
-Now you need to link the conversation with an NPC. You do that in the _main.yml_ file. Open it now. As you can see,
-conversation is linked to `Innkeeper` word. It's the one you have put on the sign, remember? Now, add another line under the Innkeeper:
-`Miner: miner.yml`, save the file and reload the server. This will link our new conversation with the NPC named "Miner".
-Construct a new NPC on the server, give him a sign with "Miner" name and click on the head.
+Now you need to link the conversation with an NPC. For that you now need to create or select an other NPC.
+Then you link your conversation to the npc in the _main.yml_ file. Open it now. As you can see, the previous NPC
+conversation is linked to `Innkeeper` word. Now, add another line under the Innkeeper:
+`'1': miner`, save the file and reload the server. This will link our new conversation with the NPC with the id "1".
+Now click on that NPC.
 
 Guess what, the conversation finished right after it started. 
 The Miner just said `Hi there, traveler!`, as expected. Now go to the conversation file and edit it (again, manually, no copy-paste!) so the options look like this:
@@ -232,7 +236,7 @@ NPC_options:
 This means: `first_greeting` should be used if the player **does not** pass `has_met_miner` condition (meaning he doesn't have a tag because he haven't talked to the NPC yet). When this option is used, it will fire `meet_miner` event and display `hello` and `bye` options. Alright, but what happens if the player met the Miner and now negated `has_met_miner` condition doesn't work? NPC will try to use next option defined in `first` setting. There is none yet, so let's add it.
 
 ```YAML linenums="1"
-first: first_greeting, regular_greeting
+first: first_greeting,regular_greeting
 NPC_options:
   regular_greeting:
     text: Hi %player%!
@@ -244,7 +248,7 @@ This option does not have any conditions, so if the `first_greeting` fails, the 
 Here's the whole conversation you created, so you can check if you understood everything correctly:
 
 ```YAML linenums="1"
-first: first_greeting, regular_greeting
+first: first_greeting,regular_greeting
 NPC_options:
   first_greeting:
     text: Hi there, traveler!
