@@ -127,7 +127,7 @@ public class Config {
             saveResource(def, "default/custom.yml", "custom.yml");
             final File conversations = new File(def, "conversations");
             conversations.mkdir();
-            saveResource(conversations, "default/defaultConversation.yml", "innkeeper.yml");
+            saveResource(conversations, "default/conversations/innkeeper.yml", "innkeeper.yml");
             plugin.saveConfig();
             return true;
         }
