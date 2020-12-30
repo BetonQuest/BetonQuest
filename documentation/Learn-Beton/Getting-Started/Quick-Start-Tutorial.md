@@ -105,21 +105,22 @@ of the event, otherwise it will get confusing really fast. Example:
     ```
 
 
-Now `sayHello` event will run only if it meets `isAtSpawn` condition. Reload the plugin, walk outside of the 5 block radius and try to run `sayHello` event.
-Puff, nothing happens. It's because you're not meeting `isAtSpawn` condition. Walk into the radius again and try to run that event now.
-It should happily display the `Hello world!` message.
+Now `sayHello` event will run only if it meets `isAtSpawn` condition. Reload the plugin, walk outside of the 5 block
+radius and try to run `sayHello` event. Puff, nothing happens. It's because you're not meeting `isAtSpawn` condition.
+Walk into the radius again and try to run that event now. It should happily display the `Hello world!` message.
 
-It's very nice that we can add such conditions, but the problem is: what if you wanted to display the message only if the player is _outside_ the radius?
-Don't worry, you don't have to specify `inverted_location` condition or anything like that. You can simply negate the condition.
-Negation makes the condition behave in the exact opposite way, in this case it `isAtSpawn` will be met only if the player is outside of the 5 block radius,
-and it won't be met if he's inside. Open the _events.yml_ and add an exclamation mark before the `isAtSpawn` condition, so it looks like this:
+It's very nice that we can add such conditions, but the problem is: what if you wanted to display the message only if  the
+player is _outside_ the radius? Don't worry, you don't have to specify `inverted_location` condition or anything like that.
+You can simply negate the condition. Negation makes the condition behave in the exact opposite way, in this case it
+`isAtSpawn` will be met only if the player is outside of the 5 block radius, and it won't be met if he's inside.
+Open the _events.yml_ and add an exclamation mark before the `isAtSpawn` condition, so it looks like this:
 
 ```YAML linenums="1"
 sayHello: "message Hello world! conditions:!isAtSpawn"
 ```
 
-This means "display message `Hello world!` if the `isAtSpawn` condition is _not met_". Save the file, reload the plugin and run the event
-inside and outside of the radius to see how it works.
+This means "display message `Hello world!` if the `isAtSpawn` condition is _not met_". Save the file, reload the plugin
+and run the event inside and outside of the radius to see how it works.
 
 ## Basic tags
 
@@ -130,22 +131,30 @@ add_beton_tag: "tag add beton"
 del_beton_tag: "tag del beton"
 ```
 
-It's a good practice to give your events names that describe what they are doing. Imagine you have 100 events, `foo24`, `bar65`, `baz12` etc.
-You would get lost pretty quickly. So, `add_beton_tag` event here simply adds `beton` tag to the player, `del_beton_tag` removes it. Save the file,
-reload the plugin and run this event. Nothing happens... or does it? Issue **/q t {name}** command (`t` is shortcut for `tags`).
-It should show you a list with few entries. Right now focus on `default.beton`, the rest are used by the default quest for Innkeeper.
-Alright, `default` is the name of the package in which the tag is, and `beton` is the name of the tag, as defined in `add_beton_tag` event.
-Now run `del_beton_tag` event. Guess what, `default.beton` disappeared from the list! And that's it, you know how to add and remove tags. Pretty useless.
+It's a good practice to give your events names that describe what they are doing. Imagine you have 100 events, `foo24`,
+`bar65`, `baz12` etc. You would get lost pretty quickly. So, `add_beton_tag` event here simply adds `beton` tag to the
+player, `del_beton_tag` removes it. Save the file, reload the plugin and run this event. Nothing happens... or does it?
+Issue **/q t {name}** command (`t` is shortcut for `tags`). It should show you a list with few entries.
+Right now focus on `default.beton`, the rest are used by the default quest for Innkeeper. Alright, `default` is the name
+of the package in which the tag is, and `beton` is the name of the tag, as defined in `add_beton_tag` event.
+Now run `del_beton_tag` event. Guess what, `default.beton` disappeared from the list! And that's it, you know how to
+add and remove tags. Pretty useless.
 
-Nothing could be more wrong. Tags are one the most powerful things in BetonQuest. They just need to be used with `tag` condition. Open _conditions.yml_ and add
+Nothing could be more wrong. Tags are one the most powerful things in BetonQuest. They just need to be used with `tag`
+condition. Open _conditions.yml_ and add
 
 ```YAML linenums="1"
 has_beton_tag: "tag beton"
 ```
 
-line. As you can imagine, `tag` is the type of condition (the same as `tag` event, but these are not the same things - one is an event, the other one is a condition) and `beton` is the name of the tag. You don't have to specify `default.beton`, but you can if you want. Now save, reload and check it with a command. It should show **false**, since you have removed the tag with `del_beton_tag` event. Add it again with `add_beton_tag` event and check the `has_beton_tag` condition again. Now it will show **true**.
+line. As you can imagine, `tag` is the type of condition (the same as `tag` event, but these are not the same things - one
+is an event, the other one is a condition) and `beton` is the name of the tag. You don't have to specify `default.beton`,
+but you can if you want. Now save, reload and check it with a command. It should show **false**, since you have removed
+the tag with `del_beton_tag` event. Add it again with `add_beton_tag` event and check the `has_beton_tag` condition again.
+Now it will show **true**.
 
-Now you probably understand how powerful this system is. You could for example set a tag on the first time the player talks with an NPC, and if the NPC sees that tag next time they talk, he will tell something different, like "welcome back".
+Now you probably understand how powerful this system is. You could for example set a tag on the first time the player
+talks with an NPC, and if the NPC sees that tag next time they talk, he will tell something different, like "welcome back".
 
 ## Creating objectives
 
@@ -155,19 +164,31 @@ Time to write some objectives! Open the _objectives.yml_ file and add a new line
 kill_creepers: "mobkill CREEPER 3 events:bar conditions:has_beton_tag"
 ```
 
-Now let's analyze it. `kill_creepers` is a name of the objective. `mobkill` is a type. In this case, to complete the objective the player will have to kill some mobs.
-`creeper` is a type of the mob, so we know that these mobs will have to be Creepers. `3` is the amount. It means that the player has to kill 3 Creepers.
-`events:bar` means than once the player kills those Creepers, the `bar` event will be run (it's the teleportation event, but we renamed it).
+Now let's analyze it. `kill_creepers` is a name of the objective. `mobkill` is a type. In this case, to complete the
+objective the player will have to kill some mobs. `creeper` is a type of the mob, so we know that these mobs will have
+to be Creepers. `3` is the amount. It means that the player has to kill 3 Creepers. `events:bar` means than once the
+player kills those Creepers, the `bar` event will be run (it's the teleportation event, but we renamed it).
 `conditions:has_beton_tag` tells us that the player will have to have `beton` tag while killing Creepers to complete the objective.
-Save it, reload the plugin and issue **/q o {name} add default.kill_creepers** command (`o` is for `objective`, `add` tells the plugin to add an objective).
+Save it, reload the plugin and issue **/q o {name} add default.kill_creepers** command (`o` is for `objective`, `add`
+tells the plugin to add an objective).
 
-Now you can check if you actually have this objective with **/q o {name}** command, it will show you all your active objectives. It should show `default.kill_creepers`. Alright, remove (yes, remove!) the `beton` tag from you and find some Creepers to kill. Once you killes 3 of them you will notice that nothing happened. It's because `has_beton_tag` condtion is not met, so the objective does not count your progress. Now add the tag again and kill another Creepers. When the third is dead you should be teleported to the location defined in `bar` event.
+Now you can check if you actually have this objective with **/q o {name}** command, it will show you all your active
+objectives. It should show `default.kill_creepers`. Alright, remove (yes, remove!) the `beton` tag from you and find
+some Creepers to kill. Once you killes 3 of them you will notice that nothing happened. It's because `has_beton_tag`
+condtion is not met, so the objective does not count your progress. Now add the tag again and kill another Creepers.
+When the third is dead you should be teleported to the location defined in `bar` event.
 
-Congratulations, now you know how to use objectives. You should experiment with other types now, since objectives will be used very often in your quests. Once you're done check out the _Writing your first conversation_ chapter to use your knowledge to write your fisrt conversation.
+Congratulations, now you know how to use objectives. You should experiment with other types now, since objectives will
+be used very often in your quests. Once you're done check out the _Writing your first conversation_ chapter to use your
+knowledge to write your fisrt conversation.
 
 ## Writing your first conversation
 
-Now that you have seen BetonQuest in action and understood events, conditions and objectives, it's time for writing your first conversation. There's a _conversations_ directory inside the default package. It contains a single file, _innkeeper.yml_. This is the conversation with Innkeeper, the one who asks you to cut some trees. Open it, we'll use that for reference. Now create a new file, let's say _miner.yml_. Now type (don't copy-paste it, you'll learn better while typing) that into the file:
+Now that you have seen BetonQuest in action and understood events, conditions and objectives, it's time for writing your
+first conversation. There's a _conversations_ directory inside the default package. It contains a single file,
+_innkeeper.yml_. This is the conversation with Innkeeper, the one who asks you to cut some trees. Open it, we'll use
+that for reference. Now create a new file, let's say _miner.yml_. Now type
+(don't copy-paste it, you'll learn better while typing) that into the file:
 
 ```YAML linenums="1"
 quester: Miner
@@ -186,7 +207,8 @@ conversation is linked to `Innkeeper` word. Now, add another line under the Innk
 Now click on that NPC.
 
 Guess what, the conversation finished right after it started. 
-The Miner just said `Hi there, traveler!`, as expected. Now go to the conversation file and edit it (again, manually, no copy-paste!) so the options look like this:
+The Miner just said `Hi there, traveler!`, as expected. Now go to the conversation file and edit it
+(again, manually, no copy-paste!) so the options look like this:
 
 ```YAML linenums="1"
 NPC_options:
@@ -200,9 +222,12 @@ player_options:
     text: I need to go, sorry.
 ```
 
-When you save the file, reload the plugin and start the conversation again you will notice that there are two options for you to choose: `Hello!` and `I need to go, sorry.` Choosing any of them will end the conversation, because these options did not specify any pointers.
+When you save the file, reload the plugin and start the conversation again you will notice that there are two options
+for you to choose: `Hello!` and `I need to go, sorry.` Choosing any of them will end the conversation, because these
+options did not specify any pointers.
 
-Now add a new NPC option, for example `weather` with text `Nice weather.` and make `hello` player option point to it. When you save&reload, the Miner should say `Nice weather.` when you tell him `Hello!`. I think you get how it works.
+Now add a new NPC option, for example `weather` with text `Nice weather.` and make `hello` player option point to it.
+When you save&reload, the Miner should say `Nice weather.` when you tell him `Hello!`. I think you get how it works.
 
 ```YAML linenums="1"
 NPC_options:
@@ -219,9 +244,14 @@ player_options:
     text: I need to go, sorry.
 ```
 
-Now, every time you talk to the Miner, he will say the same thing. It would be nice if the second time you talk to him he knew your name. We can do that with tags. Define a `meet_miner` event and `has_met_miner` condition. When you talk to the Miner for the first time, he will check if you have met him. If not, he will meet you (with that event) and next time you talk, the condition will be passed and he will use your name.
+Now, every time you talk to the Miner, he will say the same thing. It would be nice if the second time you talk to him
+he knew your name. We can do that with tags. Define a `meet_miner` event and `has_met_miner` condition. When you talk
+to the Miner for the first time, he will check if you have met him. If not, he will meet you (with that event) and next
+time you talk, the condition will be passed and he will use your name.
 
-Now, rename `greeting` NPC option to `first_greeting`. Add `meet_miner` event and negated `has_met_miner` condition (negated because this option should only show if the player has not met the Miner yet). You will need to surround the condition with `''`, because strings cannot start with exclamation marks in YAML. It should look like this:
+Now, rename `greeting` NPC option to `first_greeting`. Add `meet_miner` event and negated `has_met_miner` condition
+(negated because this option should only show if the player has not met the Miner yet). You will need to surround the
+condition with `''`, because strings cannot start with exclamation marks in YAML. It should look like this:
 
 ```YAML linenums="1"
 first: first_greeting
@@ -233,7 +263,11 @@ NPC_options:
     pointers: hello, bye 
 ```
 
-This means: `first_greeting` should be used if the player **does not** pass `has_met_miner` condition (meaning he doesn't have a tag because he haven't talked to the NPC yet). When this option is used, it will fire `meet_miner` event and display `hello` and `bye` options. Alright, but what happens if the player met the Miner and now negated `has_met_miner` condition doesn't work? NPC will try to use next option defined in `first` setting. There is none yet, so let's add it.
+This means: `first_greeting` should be used if the player **does not** pass `has_met_miner` condition (meaning he
+doesn't have a tag because he haven't talked to the NPC yet). When this option is used, it will fire `meet_miner` event
+and display `hello` and `bye` options. Alright, but what happens if the player met the Miner and now negated
+`has_met_miner` condition doesn't work? NPC will try to use next option defined in `first` setting. There is none yet,
+so let's add it.
 
 ```YAML linenums="1"
 first: first_greeting,regular_greeting
@@ -243,7 +277,11 @@ NPC_options:
     pointers: hello, bye
 ```
 
-This option does not have any conditions, so if the `first_greeting` fails, the NPC will always choose this one. Now take a look at the `%player%` thing. It's a variable. In this place it will show your name. There are more than this one, they are described in _Reference_ chapter. Alright, save&reload and start the conversation. If you did everything correctly, the Miner should greet you as a "traveler", and the second time you talk to him, he should greet you with your Minecraft name.
+This option does not have any conditions, so if the `first_greeting` fails, the NPC will always choose this one.
+Now take a look at the `%player%` thing. It's a variable. In this place it will show your name. There are more than this
+one, they are described in _Reference_ chapter. Alright, save&reload and start the conversation. If you did everything
+correctly, the Miner should greet you as a "traveler", and the second time you talk to him, he should greet you with
+your Minecraft name.
 
 Here's the whole conversation you created, so you can check if you understood everything correctly:
 
@@ -270,8 +308,8 @@ player_options:
 
 Now you should experiment some more with this conversation, you can help yourself by looking at the
 <a href="https://github.com/BetonQuest/BetonQuest/blob/master/src/main/resources/default/conversations/innkeeper.yml" target="_blank">innkeeper.yml</a> file.
-Try to understand how that conversation works step by step. As the excercise you should complete the Miner NPC, so he asks you to mine some iron ore,
-then smelt it in the furnace, next craft an armor with it and return to him wearing this armor.
+Try to understand how that conversation works step by step. As the excercise you should complete the Miner NPC, so he
+asks you to mine some iron ore, then smelt it in the furnace, next craft an armor with it and return to him wearing this armor.
 
 You might want to check out the [Reference](../../User-Documentation/Reference.md) chapter to see how to handle items in 
 your quests and how to add entries to the journal. If you want to use Citizens NPCs instead of the ones made with clay 
