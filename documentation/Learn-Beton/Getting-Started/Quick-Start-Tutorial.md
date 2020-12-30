@@ -17,7 +17,7 @@ Execute **/q reload** and right-click the NPC.
 The conversation should start. If it did not, check if you correctly assigned the ID. Ask the Innkeeper for some quests.
 He will tell you to cut some trees. If you want, type **/journal** to get the journal and see a new entry.
 Now, don't try to place any wood blocks. BetonQuest will detect that and increase the number of blocks to destroy.
-Just go and find some trees that you can cut down. Now you can return to Innkeeper and give him the wood.
+Just go and find some trees that you can cut down. Now you can return to the Innkeeper and give him the wood.
 You will receive the reward.
 
 ## Using events and conditions
@@ -29,7 +29,7 @@ Do that now or just continue with this tutorial.
 
 ### Events
 
-Let's just open _events.yml_ file inside the _default_ package. At the end add a new line:
+Let's just open _events.yml_ file inside the _default_ package. Add a new line at the bottom:
 
 ```YAML linenums="1"
 mega: "notify Hello world!"
@@ -200,9 +200,9 @@ NPC_options:
 
 It's the most basic conversation possible. The NPC named `Miner` upon starting the conversation will use `greeting` option,
 which means he will say `Hi there, traveler!`. Then the conversation will end, because there are no player options defined.
-Now you need to link the conversation with an NPC. For that you now need to create or select an other NPC.
-Then you link your conversation to the npc in the _main.yml_ file. Open it now. As you can see, the previous NPC
-conversation is linked to `Innkeeper` word. Now, add another line under the Innkeeper:
+Now you need to link the conversation with an NPC. For that you now need to create or select another NPC.
+Then you link your conversation to the npc in the _main.yml_ file. Open it now. As you can see the previous NPC
+conversation is linked to `Innkeeper` word. Now add another line under the Innkeeper:
 `'1': miner`, save the file and reload the server. This will link our new conversation with the NPC with the id "1".
 Now click on that NPC.
 
