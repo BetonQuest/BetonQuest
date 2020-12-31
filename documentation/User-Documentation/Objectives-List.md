@@ -320,6 +320,15 @@ To complete this objective player must jump. The only argument is amount.
     jump 15 events:legExerciseDone
     ```
 
+## Riding: `riding`
+
+This objective can be completed by riding the specified entity.
+`any` is also a valid input and matches any entity.
+
+```YAML
+riding horse
+```
+
 ## Variable: `variable`
 
 This objective is different. You cannot complete it, it will also ignore defined events and conditions. You can start it and that's it.
