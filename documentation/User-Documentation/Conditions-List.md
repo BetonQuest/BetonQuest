@@ -297,6 +297,15 @@ Requires the player to have amount of points equal to the specified category or 
     point beton 20
     ```
 
+## Riding: `riding`
+
+This condition checks if the player rides the specified entity.
+`any` is also a valid input and matches any entity.
+
+```YAML
+riding horse
+```
+
 ## Random: `random`
 
 **persistent**, **static**
