@@ -39,7 +39,7 @@ BetonQuest allows you to hide Players from each other based on whatever conditio
 and HolographicDisplays Holograms.
 
 <video controls loop 
-  src="../../media/content/User-Documentation/Compatibility/PlayerHider.mp4"
+  src="../../../media/content/User-Documentation/Compatibility/PlayerHider.mp4"
   width="780" height="500">
 Sorry, your browser doesn't support embedded videos.
 </video>
@@ -64,13 +64,13 @@ If just Beton isn't enough you can always just hook into Skript or Denizen too.
 
 Full list of integrations [here](User-Documentation/Compatibility.md).
 
-##Content our users made
+##Examples
 
-Check out these amazing creations from our community: 
+Our community created a lot of cool stuff! Take a look at this handpicked selection: 
 
 ### Water Well by Titanium
 <video controls loop
-  src="../../media/content/Home/Features/WaterWell.mp4"
+  src="../../../media/content/Home/Features/WaterWell.mp4"
   width="780" height="500">
 Sorry, your browser doesn't support embedded videos.
 </video>

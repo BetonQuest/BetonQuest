@@ -366,6 +366,10 @@ myEvent3: "notify This is a custom message! category:firstChoice,secondChoice"
 myEvent: "notify Another message! category:info io:advancement frame:challenge"
 ```
 
+## Broadcast: `notifyall`
+
+This events works just like the [notify](#notification-notify) event but shows the notification for all online players.
+
 ## Objective: `objective`
 
 **persistent**, **static**
