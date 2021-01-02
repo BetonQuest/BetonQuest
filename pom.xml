@@ -21,6 +21,7 @@
   <distributionManagement>
     <repository>
       <id>BetonQuest</id>
+      <!--suppress UnresolvedMavenProperty -->
       <url>${env.REPOSITORY_URL}</url>
     </repository>
   </distributionManagement>
