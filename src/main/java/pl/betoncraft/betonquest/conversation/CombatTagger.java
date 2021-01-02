@@ -71,7 +71,7 @@ public class CombatTagger implements Listener {
                     TAGGED.put(playerID, false);
                 }
             });
-            UNTAGGERS.get(playerID).runTaskLater(BetonQuest.getInstance(), delay * 20);
+            UNTAGGERS.get(playerID).runTaskLater(BetonQuest.getInstance(), delay * 20L);
         }
     }
 
