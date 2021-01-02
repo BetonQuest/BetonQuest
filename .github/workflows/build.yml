@@ -51,7 +51,7 @@ jobs:
           echo "Check for difference in documentation only. The value is '$CHANGES_IN_DOCS_ONLY'"
 
       - name: Generate build number for Development Build
-        if: "github.repository == 'BetonQuest/BetonQuest' && github.event_name != 'pull_request' && !startsWith(github.ref,'refs/tags/v') && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v') ) && env.CHANGES_IN_DOCS_ONLY == 'false'"
+        if: "!cancelled() && github.repository == 'BetonQuest/BetonQuest' && github.event_name != 'pull_request' && !startsWith(github.ref,'refs/tags/v') && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v') ) && env.CHANGES_IN_DOCS_ONLY == 'false'"
         uses: einaregilsson/build-number@v3
         with:
           token: ${{ secrets.github_token }}
@@ -92,7 +92,7 @@ jobs:
 
   build-artifacts:
     name: Build Artifacts
-    if: always()
+    if: "always() && !cancelled()"
     needs: [ prepare ]
     runs-on: ubuntu-latest
 
@@ -162,7 +162,7 @@ jobs:
 
   build-documentation:
     name: Build Documentation
-    if: always()
+    if: "always() && !cancelled()"
     needs: [prepare]
     runs-on: ubuntu-latest
 
@@ -260,7 +260,7 @@ jobs:
 
   deploy-artifacts:
     name: Deploy Artifacts
-    if: "always() && ( needs.prepare.outputs.IS_RELEASE == 'true' || needs.prepare.outputs.IS_DEVELOPEMENT == 'true' ) && needs.prepare.outputs.CHANGES_IN_DOCS_ONLY != 'true'"
+    if: "always() && !cancelled() && ( needs.prepare.outputs.IS_RELEASE == 'true' || needs.prepare.outputs.IS_DEVELOPEMENT == 'true' ) && needs.prepare.outputs.CHANGES_IN_DOCS_ONLY != 'true'"
     needs: [ prepare, build-artifacts, build-documentation ]
     runs-on: ubuntu-latest
 
@@ -311,6 +311,7 @@ jobs:
           rm build/artifacts/changes.patch
 
       - name: Publish to Maven Repository
+        if: "!cancelled()"
         run: |
           mvn -B deploy
         env:
@@ -321,7 +322,7 @@ jobs:
 
   deploy-documentation:
     name: Deploy Documentation
-    if: "always() && ( needs.prepare.outputs.IS_RELEASE == 'true' || needs.prepare.outputs.IS_DEVELOPEMENT == 'true' )"
+    if: "always() && !cancelled() && ( needs.prepare.outputs.IS_RELEASE == 'true' || needs.prepare.outputs.IS_DEVELOPEMENT == 'true' )"
     needs: [ prepare, build-artifacts, build-documentation ]
     runs-on: ubuntu-latest
 
@@ -411,7 +412,7 @@ jobs:
           rm build/documentation/changes.patch
 
       - name: Deploy Release to Github Pages
-        if: "env.IS_RELEASE == 'true'"
+        if: "env.IS_RELEASE == 'true' && !cancelled()"
         run: |
           git config --global user.name "BetonQuest-Bot"
           git config --global user.email "contact@betonquest.org"
@@ -420,7 +421,7 @@ jobs:
           mike delete --push ${POM_MAVEN_VERSION}-DEV
 
       - name: Deploy Developement to Github Pages
-        if: "env.IS_DEVELOPEMENT == 'true'"
+        if: "env.IS_DEVELOPEMENT == 'true' && !cancelled()"
         run: |
           git config --global user.name "BetonQuest-Bot"
           git config --global user.email "contact@betonquest.org"
@@ -430,7 +431,7 @@ jobs:
 
   create-release:
     name: Create Release Build
-    if: "always() && needs.prepare.outputs.IS_RELEASE == 'true'"
+    if: "always()&& !cancelled() && needs.prepare.outputs.IS_RELEASE == 'true'"
     needs: [ prepare, build-artifacts, build-documentation, deploy-artifacts, deploy-documentation ]
     runs-on: ubuntu-latest
 
@@ -514,7 +515,7 @@ jobs:
 
   create-developement:
     name: Create Developement Build
-    if: "always() && needs.prepare.outputs.IS_DEVELOPEMENT == 'true' && needs.prepare.outputs.CHANGES_IN_DOCS_ONLY != 'true'"
+    if: "always() && !cancelled() && needs.prepare.outputs.IS_DEVELOPEMENT == 'true' && needs.prepare.outputs.CHANGES_IN_DOCS_ONLY != 'true'"
     needs: [ prepare, build-artifacts, build-documentation, deploy-artifacts, deploy-documentation ]
     runs-on: ubuntu-latest
 
