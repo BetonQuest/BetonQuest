@@ -116,7 +116,7 @@ public class Updater {
         }
     }
 
-    @SuppressWarnings("PMD.AvoidFileStream")
+    @SuppressWarnings({"PMD.AvoidFileStream", "PMD.CyclomaticComplexity"})
     private void downloadUpdate() throws QuestRuntimeException {
         LogUtils.getLogger().log(Level.INFO, "(Autoupdater) Updater started download of new version...");
         if (latest.getValue() == null) {

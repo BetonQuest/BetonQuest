@@ -83,7 +83,7 @@
       <repositories>
         <repository>
           <id>heroes-repo</id>
-          <url>https://nexus.hc.to/content/repositories/pub_releases/</url>
+          <url>http://nexus.hc.to/content/repositories/pub_releases/</url>
         </repository>
       </repositories>
       <dependencies>
