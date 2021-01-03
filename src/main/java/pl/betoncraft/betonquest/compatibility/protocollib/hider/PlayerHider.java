@@ -10,9 +10,12 @@ import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 import pl.betoncraft.betonquest.id.ConditionID;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
 
 /**
  * The PlayerHider can hide other players, if the source fits all conditions and the targets also fits there conditions.
@@ -52,7 +55,7 @@ public class PlayerHider {
 
         final long period = BetonQuest.getInstance().getConfig().getLong("player_hider_check_interval", 20);
         hider = new EntityHider(BetonQuest.getInstance(), EntityHider.Policy.BLACKLIST);
-        bukkitTask = Bukkit.getScheduler().runTaskTimer(BetonQuest.getInstance(), this::updateVisibility, 1, period);
+        bukkitTask = Bukkit.getScheduler().runTaskTimerAsynchronously(BetonQuest.getInstance(), this::updateVisibility, 1, period);
     }
 
     /**
@@ -84,35 +87,45 @@ public class PlayerHider {
      * Trigger an update for the player visibility
      */
     public void updateVisibility() {
-        final Map<Player, List<Player>> playersToHide = getPlayersToHide();
-        for (final Player source : Bukkit.getOnlinePlayers()) {
+        Collection<? extends Player> onlinePlayer;
+        try {
+             onlinePlayer = Bukkit.getScheduler().callSyncMethod(BetonQuest.getInstance(), Bukkit::getOnlinePlayers).get();
+        } catch (InterruptedException | ExecutionException e) {
+            LogUtils.getLogger().log(Level.SEVERE, "Could not get online player list!", e);
+            return;
+        }
+
+        final Map<Player, List<Player>> playersToHide = getPlayersToHide(onlinePlayer);
+        for (final Player source : onlinePlayer) {
             final List<Player> playerToHideList = playersToHide.get(source);
-            if (playerToHideList == null) {
-                for (final Player target : Bukkit.getOnlinePlayers()) {
-                    hider.showEntity(source, target);
-                }
-            } else {
-                for (final Player target : Bukkit.getOnlinePlayers()) {
-                    if(playerToHideList.contains(target)) {
-                        hider.hideEntity(source, target);
-                    } else {
+            Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
+                if (playerToHideList == null) {
+                    for (final Player target : onlinePlayer) {
                         hider.showEntity(source, target);
                     }
+                } else {
+                    for (final Player target : onlinePlayer) {
+                        if(playerToHideList.contains(target)) {
+                            hider.hideEntity(source, target);
+                        } else {
+                            hider.showEntity(source, target);
+                        }
+                    }
                 }
-            }
+            });
         }
     }
 
-    private Map<Player, List<Player>> getPlayersToHide() {
+    private Map<Player, List<Player>> getPlayersToHide(final Collection<? extends Player> onlinePlayer) {
         final Map<Player, List<Player>> playersToHide = new HashMap<>();
         for (final Map.Entry<ConditionID[], ConditionID[]> hider : hiders.entrySet()) {
             final List<Player> targetPlayers = new ArrayList<>();
-            for (final Player target : Bukkit.getOnlinePlayers()) {
+            for (final Player target : onlinePlayer) {
                 if (BetonQuest.conditions(PlayerConverter.getID(target), hider.getValue())) {
                     targetPlayers.add(target);
                 }
             }
-            for (final Player source : Bukkit.getOnlinePlayers()) {
+            for (final Player source : onlinePlayer) {
                 if (!BetonQuest.conditions(PlayerConverter.getID(source), hider.getKey())) {
                     continue;
                 }
