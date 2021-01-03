@@ -128,7 +128,7 @@ public class Updater {
             final URL remoteFile = new URL(latest.getValue());
             try (ReadableByteChannel rbc = Channels.newChannel(remoteFile.openStream())) {
                 final File folder = Bukkit.getUpdateFolderFile();
-                if (!folder.mkdirs()) {
+                if (!folder.exists() && !folder.mkdirs()) {
                     throw new QuestRuntimeException("The updater could not create the folder '" + folder.getName() + "'!");
                 }
                 final File file = new File(folder, fileName);
