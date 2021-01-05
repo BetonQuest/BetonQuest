@@ -1,4 +1,4 @@
-package pl.betoncraft.betonquest.compatibility.protocollib.hider;
+package pl.betoncraft.betonquest.mechanics;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -10,12 +10,9 @@ import pl.betoncraft.betonquest.config.ConfigPackage;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 import pl.betoncraft.betonquest.id.ConditionID;
-import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
 
 /**
  * The PlayerHider can hide other players, if the source fits all conditions and the targets also fits there conditions.
@@ -30,13 +27,10 @@ public class PlayerHider {
      * The running hider
      */
     private final BukkitTask bukkitTask;
-    /**
-     * ProtocolLib EntityHider
-     */
-    private final EntityHider hider;
 
     /**
      * Initialize and start a new PlayerHider
+     *
      * @throws InstructionParseException Thrown if there is an configuration error.
      */
     public PlayerHider() throws InstructionParseException {
@@ -54,15 +48,13 @@ public class PlayerHider {
         }
 
         final long period = BetonQuest.getInstance().getConfig().getLong("player_hider_check_interval", 20);
-        hider = new EntityHider(BetonQuest.getInstance(), EntityHider.Policy.BLACKLIST);
-        bukkitTask = Bukkit.getScheduler().runTaskTimerAsynchronously(BetonQuest.getInstance(), this::updateVisibility, 1, period);
+        bukkitTask = Bukkit.getScheduler().runTaskTimer(BetonQuest.getInstance(), this::updateVisibility, 1, period);
     }
 
     /**
      * Stops the running PlayerHider.
      */
     public void stop() {
-        hider.close();
         bukkitTask.cancel();
     }
 
@@ -87,32 +79,23 @@ public class PlayerHider {
      * Trigger an update for the player visibility
      */
     public void updateVisibility() {
-        Collection<? extends Player> onlinePlayer;
-        try {
-             onlinePlayer = Bukkit.getScheduler().callSyncMethod(BetonQuest.getInstance(), Bukkit::getOnlinePlayers).get();
-        } catch (InterruptedException | ExecutionException e) {
-            LogUtils.getLogger().log(Level.SEVERE, "Could not get online player list!", e);
-            return;
-        }
-
+        final Collection<? extends Player> onlinePlayer = Bukkit.getOnlinePlayers();
         final Map<Player, List<Player>> playersToHide = getPlayersToHide(onlinePlayer);
         for (final Player source : onlinePlayer) {
             final List<Player> playerToHideList = playersToHide.get(source);
-            Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
-                if (playerToHideList == null) {
-                    for (final Player target : onlinePlayer) {
-                        hider.showEntity(source, target);
-                    }
-                } else {
-                    for (final Player target : onlinePlayer) {
-                        if(playerToHideList.contains(target)) {
-                            hider.hideEntity(source, target);
-                        } else {
-                            hider.showEntity(source, target);
-                        }
+            if (playerToHideList == null) {
+                for (final Player target : onlinePlayer) {
+                    source.showPlayer(BetonQuest.getInstance(), target);
+                }
+            } else {
+                for (final Player target : onlinePlayer) {
+                    if (playerToHideList.contains(target)) {
+                        source.hidePlayer(BetonQuest.getInstance(), target);
+                    } else {
+                        source.showPlayer(BetonQuest.getInstance(), target);
                     }
                 }
-            });
+            }
         }
     }
 

@@ -25,6 +25,7 @@ import pl.betoncraft.betonquest.id.EventID;
 import pl.betoncraft.betonquest.id.ObjectiveID;
 import pl.betoncraft.betonquest.id.VariableID;
 import pl.betoncraft.betonquest.item.QuestItemHandler;
+import pl.betoncraft.betonquest.mechanics.PlayerHider;
 import pl.betoncraft.betonquest.notify.*;
 import pl.betoncraft.betonquest.objectives.*;
 import pl.betoncraft.betonquest.utils.*;
@@ -64,6 +65,7 @@ public class BetonQuest extends JavaPlugin {
     private Updater updater;
     private final ConcurrentHashMap<String, PlayerData> playerDataMap = new ConcurrentHashMap<>();
     private GlobalData globalData;
+    private PlayerHider playerHider;
 
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
@@ -350,7 +352,7 @@ public class BetonQuest extends JavaPlugin {
         return NOTIFY_IO_TYPES.get(name);
     }
 
-    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.DoNotUseThreads"})
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.DoNotUseThreads", "PMD.NPathComplexity"})
     @Override
     public void onEnable() {
 
@@ -620,6 +622,13 @@ public class BetonQuest extends JavaPlugin {
                         new ConversationResumer(playerID, playerData.getConversation());
                     }
                 }
+
+
+                try {
+                    playerHider = new PlayerHider();
+                } catch (InstructionParseException e) {
+                    LogUtils.getLogger().log(Level.SEVERE, "Could not start PlayerHider! " + e.getMessage(), e);
+                }
             }
         });
 
@@ -874,6 +883,12 @@ public class BetonQuest extends JavaPlugin {
             final Journal journal = playerData.getJournal();
             journal.update();
         }
+        playerHider.stop();
+        try {
+            playerHider = new PlayerHider();
+        } catch (InstructionParseException e) {
+            LogUtils.getLogger().log(Level.SEVERE, "Could not start PlayerHider! " + e.getMessage(), e);
+        }
     }
 
     @Override
@@ -893,6 +908,7 @@ public class BetonQuest extends JavaPlugin {
         // cancel static events (they are registered outside of Bukkit so it
         // won't happen automatically)
         StaticEvents.stop();
+        playerHider.stop();
         // done
         LogUtils.getLogger().log(Level.INFO, "BetonQuest succesfully disabled!");
     }
