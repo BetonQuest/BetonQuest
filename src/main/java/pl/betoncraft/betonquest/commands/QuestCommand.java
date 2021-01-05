@@ -30,6 +30,7 @@ import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.id.ConditionID;
 import pl.betoncraft.betonquest.id.EventID;
+import pl.betoncraft.betonquest.id.ItemID;
 import pl.betoncraft.betonquest.id.ObjectiveID;
 import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.*;
@@ -120,13 +121,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 case "objective":
                 case "o":
                     LogUtils.getLogger().log(Level.FINE, "Loading data asynchronously");
-                    final CommandSender finalSender1 = sender;
-                    final String[] finalArgs1 = args;
                     new BukkitRunnable() {
 
                         @Override
                         public void run() {
-                            handleObjectives(finalSender1, finalArgs1);
+                            handleObjectives(sender, args);
                         }
                     }.runTaskAsynchronously(BetonQuest.getInstance());
                     break;
@@ -136,13 +135,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 case "gtags":
                 case "gt":
                     LogUtils.getLogger().log(Level.FINE, "Loading data asynchronously");
-                    final CommandSender finalSender8 = sender;
-                    final String[] finalArgs8 = args;
                     new BukkitRunnable() {
 
                         @Override
                         public void run() {
-                            handleGlobalTags(finalSender8, finalArgs8);
+                            handleGlobalTags(sender, args);
                         }
                     }.runTaskAsynchronously(BetonQuest.getInstance());
                     break;
@@ -152,13 +149,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 case "gpoint":
                 case "gp":
                     LogUtils.getLogger().log(Level.FINE, "Loading data asynchronously");
-                    final CommandSender finalSender9 = sender;
-                    final String[] finalArgs9 = args;
                     new BukkitRunnable() {
 
                         @Override
                         public void run() {
-                            handleGlobalPoints(finalSender9, finalArgs9);
+                            handleGlobalPoints(sender, args);
                         }
                     }.runTaskAsynchronously(BetonQuest.getInstance());
                     break;
@@ -166,13 +161,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 case "tag":
                 case "t":
                     LogUtils.getLogger().log(Level.FINE, "Loading data asynchronously");
-                    final CommandSender finalSender2 = sender;
-                    final String[] finalArgs2 = args;
                     new BukkitRunnable() {
 
                         @Override
                         public void run() {
-                            handleTags(finalSender2, finalArgs2);
+                            handleTags(sender, args);
                         }
                     }.runTaskAsynchronously(BetonQuest.getInstance());
                     break;
@@ -180,13 +173,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 case "point":
                 case "p":
                     LogUtils.getLogger().log(Level.FINE, "Loading data asynchronously");
-                    final CommandSender finalSender3 = sender;
-                    final String[] finalArgs3 = args;
                     new BukkitRunnable() {
 
                         @Override
                         public void run() {
-                            handlePoints(finalSender3, finalArgs3);
+                            handlePoints(sender, args);
                         }
                     }.runTaskAsynchronously(BetonQuest.getInstance());
                     break;
@@ -194,13 +185,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 case "journal":
                 case "j":
                     LogUtils.getLogger().log(Level.FINE, "Loading data asynchronously");
-                    final CommandSender finalSender4 = sender;
-                    final String[] finalArgs4 = args;
                     new BukkitRunnable() {
 
                         @Override
                         public void run() {
-                            handleJournals(finalSender4, finalArgs4);
+                            handleJournals(sender, args);
                         }
                     }.runTaskAsynchronously(BetonQuest.getInstance());
                     break;
@@ -208,26 +197,22 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 case "del":
                 case "d":
                     LogUtils.getLogger().log(Level.FINE, "Loading data asynchronously");
-                    final CommandSender finalSender5 = sender;
-                    final String[] finalArgs5 = args;
                     new BukkitRunnable() {
 
                         @Override
                         public void run() {
-                            handleDeleting(finalSender5, finalArgs5);
+                            handleDeleting(sender, args);
                         }
                     }.runTaskAsynchronously(BetonQuest.getInstance());
                     break;
                 case "rename":
                 case "r":
                     LogUtils.getLogger().log(Level.FINE, "Loading data asynchronously");
-                    final CommandSender finalSender6 = sender;
-                    final String[] finalArgs6 = args;
                     new BukkitRunnable() {
 
                         @Override
                         public void run() {
-                            handleRenaming(finalSender6, finalArgs6);
+                            handleRenaming(sender, args);
                         }
                     }.runTaskAsynchronously(BetonQuest.getInstance());
                     break;
@@ -242,13 +227,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     break;
                 case "purge":
                     LogUtils.getLogger().log(Level.FINE, "Loading data asynchronously");
-                    final CommandSender finalSender7 = sender;
-                    final String[] finalArgs7 = args;
                     new BukkitRunnable() {
 
                         @Override
                         public void run() {
-                            purgePlayer(finalSender7, finalArgs7);
+                            purgePlayer(sender, args);
                         }
                     }.runTaskAsynchronously(BetonQuest.getInstance());
                     break;
@@ -448,16 +431,19 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         try {
-            final int splitIndex = args[1].indexOf('.');
-            final String pack = args[1].substring(0, splitIndex);
-            final String item = args[1].substring(splitIndex + 1);
-            final ConfigPackage configPack = Config.getPackages().get(pack);
-            final GiveEvent give = new GiveEvent(new Instruction(configPack, null, "give " + item));
+            ItemID itemID;
+            try {
+                itemID = new ItemID(null, args[1]);
+            } catch (ObjectNotFoundException e) {
+                sendMessage(sender, "error", e.getMessage());
+                LogUtils.getLogger().log(Level.WARNING, "Could not find Item: " + e.getMessage());
+                LogUtils.logThrowable(e);
+                return;
+            }
+            final GiveEvent give = new GiveEvent(new Instruction(itemID.getPackage(), null, "give " + itemID.getBaseID()));
             give.fire(PlayerConverter.getID((Player) sender));
         } catch (InstructionParseException | QuestRuntimeException e) {
-            sendMessage(sender, "error", new String[]{
-                    e.getMessage()
-            });
+            sendMessage(sender, "error", e.getMessage());
             LogUtils.getLogger().log(Level.WARNING, "Error while creating an item: " + e.getMessage());
             LogUtils.logThrowable(e);
         }
@@ -501,9 +487,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         LogUtils.getLogger().log(Level.FINE, "Purging player " + args[1]);
         playerData.purgePlayer();
         // done
-        sendMessage(sender, "purged", new String[]{
-                args[1]
-        });
+        sendMessage(sender, "purged", args[1]);
     }
 
     /**
@@ -908,7 +892,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final ItemStack item = player.getInventory().getItemInMainHand();
 
         // if item is air then there is nothing to add to items.yml
-        if (item == null || item.getType() == Material.AIR) {
+        if (item.getType() == Material.AIR) {
             LogUtils.getLogger().log(Level.FINE, "Cannot continue, item must not be air");
             sendMessage(sender, "no_item");
             return;
@@ -927,9 +911,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         config.getConfig().set(name, instructions.trim());
         config.saveConfig();
         // done
-        sendMessage(sender, "item_created", new String[]{
-                args[1]
-        });
+        sendMessage(sender, "item_created", args[1]);
 
     }
 
@@ -966,9 +948,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         try {
             eventID = new EventID(null, args[2]);
         } catch (ObjectNotFoundException e) {
-            sendMessage(sender, "error", new String[]{
-                    e.getMessage()
-            });
+            sendMessage(sender, "error", e.getMessage());
             LogUtils.getLogger().log(Level.WARNING, "Could not find event: " + e.getMessage());
             LogUtils.logThrowable(e);
             return;
@@ -976,9 +956,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         // fire the event
         final String playerID = "-".equals(args[1]) ? null : PlayerConverter.getID(args[1]);
         BetonQuest.event(playerID, eventID);
-        sendMessage(sender, "player_event", new String[]{
-                eventID.generateInstruction().getInstruction()
-        });
+        sendMessage(sender, "player_event", eventID.generateInstruction().getInstruction());
     }
 
     /**
@@ -1018,19 +996,15 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         try {
             conditionID = new ConditionID(null, args[2]);
         } catch (ObjectNotFoundException e) {
-            sendMessage(sender, "error", new String[]{
-                    e.getMessage()
-            });
+            sendMessage(sender, "error", e.getMessage());
             LogUtils.getLogger().log(Level.WARNING, "Could not find condition: " + e.getMessage());
             LogUtils.logThrowable(e);
             return;
         }
         // display message about condition
         final String playerID = "-".equals(args[1]) ? null : PlayerConverter.getID(args[1]);
-        sendMessage(sender, "player_condition", new String[]{
-                (conditionID.inverted() ? "! " : "") + conditionID.generateInstruction().getInstruction(),
-                Boolean.toString(BetonQuest.condition(playerID, conditionID))
-        });
+        sendMessage(sender, "player_condition", (conditionID.inverted() ? "! " : "") + conditionID.generateInstruction().getInstruction(),
+                Boolean.toString(BetonQuest.condition(playerID, conditionID)));
     }
 
     /**
@@ -1242,10 +1216,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             } else {
                 // if player is offline then convert his raw objective strings
                 // to tags
-                tags = new ArrayList<>();
-                for (final String string : playerData.getRawObjectives().keySet()) {
-                    tags.add(string);
-                }
+                tags = new ArrayList<>(playerData.getRawObjectives().keySet());
             }
             // display objectives
             LogUtils.getLogger().log(Level.FINE, "Listing objectives");
@@ -1267,9 +1238,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         try {
             objectiveID = new ObjectiveID(null, args[3]);
         } catch (ObjectNotFoundException e) {
-            sendMessage(sender, "error", new String[]{
-                    e.getMessage()
-            });
+            sendMessage(sender, "error", e.getMessage());
             LogUtils.getLogger().log(Level.WARNING, "Could not find objective: " + e.getMessage());
             LogUtils.logThrowable(e);
             return;
@@ -1487,9 +1456,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 try {
                     nameID = new ObjectiveID(null, name);
                 } catch (ObjectNotFoundException e) {
-                    sendMessage(sender, "error", new String[]{
-                            e.getMessage()
-                    });
+                    sendMessage(sender, "error", e.getMessage());
                     LogUtils.getLogger().log(Level.WARNING, "Could not find Objective: " + e.getMessage());
                     LogUtils.logThrowable(e);
                     return;
@@ -1563,9 +1530,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 sendMessage(sender, "unknown_argument");
                 return;
         }
-        BetonQuest.getInstance().getSaver().add(new Record(updateType, new String[]{
-                rename, name
-        }));
+        BetonQuest.getInstance().getSaver().add(new Record(updateType, rename, name));
         sendMessage(sender, "everything_renamed");
     }
 
@@ -1628,9 +1593,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 try {
                     objectiveID = new ObjectiveID(null, name);
                 } catch (ObjectNotFoundException e) {
-                    sendMessage(sender, "error", new String[]{
-                            e.getMessage()
-                    });
+                    sendMessage(sender, "error", e.getMessage());
                     LogUtils.getLogger().log(Level.WARNING, "Could not fine objective: " + e.getMessage());
                     LogUtils.logThrowable(e);
                     return;
@@ -1658,9 +1621,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 sendMessage(sender, "unknown_argument");
                 return;
         }
-        BetonQuest.getInstance().getSaver().add(new Record(updateType, new String[]{
-                name
-        }));
+        BetonQuest.getInstance().getSaver().add(new Record(updateType, name));
         sendMessage(sender, "everything_removed");
     }
 
