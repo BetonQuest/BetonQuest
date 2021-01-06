@@ -137,11 +137,7 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
         }
     }
 
-    protected String getFullId() throws QuestRuntimeException {
-        try {
-            return instruction.getEvent().getFullID();
-        } catch (final InstructionParseException exep) {
-            throw new QuestRuntimeException(exep);
-        }
+    protected String getFullId() {
+        return instruction.getID().getFullID();
     }
 }
