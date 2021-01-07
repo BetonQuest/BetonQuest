@@ -1,6 +1,5 @@
 package pl.betoncraft.betonquest.conditions;
 
-import org.bukkit.Bukkit;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Condition;
@@ -8,7 +7,6 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.id.ConditionID;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * One of specified conditions has to be true
