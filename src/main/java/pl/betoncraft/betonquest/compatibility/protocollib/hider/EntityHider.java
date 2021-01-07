@@ -117,12 +117,10 @@ public class EntityHider implements Listener {
     // Helper method
     @SuppressWarnings("PMD.LinguisticNaming")
     protected boolean setMembership(final Player observer, final int entityID, final boolean member) {
-        synchronized (this) {
-            if (member) {
-                return observerEntityMap.put(observer.getEntityId(), entityID, true) != null;
-            } else {
-                return observerEntityMap.remove(observer.getEntityId(), entityID) != null;
-            }
+        if (member) {
+            return observerEntityMap.put(observer.getEntityId(), entityID, true) != null;
+        } else {
+            return observerEntityMap.remove(observer.getEntityId(), entityID) != null;
         }
     }
 
@@ -134,9 +132,7 @@ public class EntityHider implements Listener {
      * @return TRUE if they are present, FALSE otherwise.
      */
     protected boolean getMembership(final Player observer, final int entityID) {
-        synchronized (this) {
-            return observerEntityMap.contains(observer.getEntityId(), entityID);
-        }
+        return observerEntityMap.contains(observer.getEntityId(), entityID);
     }
 
     /**
@@ -162,10 +158,8 @@ public class EntityHider implements Listener {
     protected void removeEntity(final Entity entity, final boolean destroyed) {
         final int entityID = entity.getEntityId();
 
-        synchronized (this) {
-            for (final Map<Integer, Boolean> maps : observerEntityMap.rowMap().values()) {
-                maps.remove(entityID);
-            }
+        for (final Map<Integer, Boolean> maps : observerEntityMap.rowMap().values()) {
+            maps.remove(entityID);
         }
     }
 
@@ -176,9 +170,7 @@ public class EntityHider implements Listener {
      */
     protected void removePlayer(final Player player) {
         // Cleanup
-        synchronized (this) {
-            observerEntityMap.rowMap().remove(player.getEntityId());
-        }
+        observerEntityMap.rowMap().remove(player.getEntityId());
     }
 
     /**
