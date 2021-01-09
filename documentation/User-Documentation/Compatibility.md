@@ -578,7 +578,7 @@ mmoitemcastability LIFE_ENDER
 ####Cast class skill: `mmocorecastskill`
 This objective requires the player to cast a class skill. The only argument is the abilityID.
 ```YAML linenums="1"
-mmoitemcastskill BACKSTAB
+mmocorecastskill BACKSTAB
 ```
 
 
