@@ -33,7 +33,7 @@ public class PlaysoundEvent extends QuestEvent {
         super(instruction, true);
         LogUtils.getLogger().log(Level.WARNING, "Playsound event will be REMOVED! Usage in package '"
                 + instruction.getPackage().getName() + "'. Use the Notify system instead: "
-                + "https://betonquest.github.io/BetonQuest/DEV/User-Documentation/Notification-Settings/");
+                + "https://betonquest.github.io/BetonQuest/RELEASE/User-Documentation/Notification-Settings/");
         sound = instruction.next();
         location = instruction.getLocation(instruction.getOptional("location"));
         final String category = instruction.getOptional("category");

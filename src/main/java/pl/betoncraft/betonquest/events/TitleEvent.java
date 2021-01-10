@@ -34,7 +34,7 @@ public class TitleEvent extends QuestEvent {
         super(instruction, true);
         LogUtils.getLogger().log(Level.WARNING, "Title event will be REMOVED! Usage in package '"
                 + instruction.getPackage().getName() + "'. Use the Notify system instead: "
-                + "https://betonquest.github.io/BetonQuest/DEV/User-Documentation/Notification-Settings/");
+                + "https://betonquest.github.io/BetonQuest/RELEASE/User-Documentation/Notification-Settings/");
         type = instruction.getEnum(TitleType.class);
         final String times = instruction.next();
         if (!times.matches("^\\d+;\\d+;\\d+$")) {

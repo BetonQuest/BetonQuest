@@ -34,7 +34,7 @@ BetonQuest is an advanced and powerful quest plugin. It offers RPG-style convers
 
 **Advanced Information & Documentation: https://betonquest.github.io/BetonQuest/**
 
-**New here? Learn how to make Quests:** https://betonquest.github.io/BetonQuest/DEV/Learn-Beton/Getting-Started/Quick-Start-Tutorial/
+**New here? Learn how to make Quests:** https://betonquest.github.io/BetonQuest/RELEASE/Learn-Beton/Getting-Started/Quick-Start-Tutorial/
 
 ---
 
@@ -44,7 +44,7 @@ Join our **Discord** for support: https://discord.com/invite/rK6mfHq
 
 Report **Issues** here: https://github.com/BetonQuest/BetonQuest/issues/new/choose
 
-**Developer** Documentation here: https://betonquest.github.io/BetonQuest/DEV/Developer-Documentation/API/
+**Developer** Documentation here: https://betonquest.github.io/BetonQuest/RELEASE/Developer-Documentation/API/
 
 
 

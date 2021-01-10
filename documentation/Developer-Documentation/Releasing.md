@@ -22,7 +22,7 @@ Now copy the template from below into the file.
 
 
 ```CHANGELOG
-## [Unreleased] - CURRENT_DATA_HERE
+## [Unreleased] - ${current-date}
 ### Added
 ### Changed
 ### Deprecated
