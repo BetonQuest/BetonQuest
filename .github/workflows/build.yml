@@ -540,7 +540,7 @@ jobs:
           PRE_RELEASE: false
           CHANGELOG_FILE: CHANGELOG.md
           ALLOW_TAG_PREFIX: true
-          RELEASE_NAME: BetonQuest ${{ POM_MAVEN_VERSION }}
+          RELEASE_NAME: BetonQuest ${POM_MAVEN_VERSION}
         with:
           args: |
             build/artifacts/BetonQuest.jar
