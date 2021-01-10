@@ -54,6 +54,9 @@ If you want to create a conversation with multiple NPCs at once or split a huge 
 
 Keep in mind that you can only cross-point to NPC options. It means that you can use those pointers only in `first` starting options and in all player options. Using them in NPC options will throw errors.
 
+!!! warning 
+    This does not work across packages yet.
+
 ## Conversation variables
 
 You can use variables in the conversations. They will be resolved and displayed to the player when he starts a conversation. A variable generally looks like that: `%type.optional.arguments%`. Type is a mandatory argument, it defines what kind of variable it is. Optional arguments depend on the type of the variable, i.e. `%npc%` does not have any additional arguments, but `%player%` can also have `display` (it will look like that: `%player.display%`). You can find a list of all available variable types in the "Variables List" chapter.
