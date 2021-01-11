@@ -1,26 +1,70 @@
-package pl.betoncraft.betonquest.utils;
+package pl.betoncraft.betonquest.utils.updater;
 
 import org.junit.Test;
+import pl.betoncraft.betonquest.utils.Updater;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
-public class UpdaterTest {
-    private final static Updater.Version V_1_0_0 = new Updater.Version("1.0.0");
-    private final static Updater.Version V_2_0_0 = new Updater.Version("2.0.0");
-    private final static Updater.Version V_1_1_0 = new Updater.Version("1.1.0");
-    private final static Updater.Version V_1_0_1 = new Updater.Version("1.0.1");
-    private final static Updater.Version V_1_0_0_DEV_1 = new Updater.Version("1.0.0-DEV-1");
-    private final static Updater.Version V_1_0_0_DEV_2 = new Updater.Version("1.0.0-DEV-2");
-    private final static Updater.Version V_2_0_0_DEV_1 = new Updater.Version("2.0.0-DEV-1");
-    private final static Updater.Version V_1_1_0_DEV_1 = new Updater.Version("1.1.0-DEV-1");
-    private final static Updater.Version V_1_0_1_DEV_1 = new Updater.Version("1.0.1-DEV-1");
-    private final static Updater.Version V_1_0_1_DEV_UNOFFICIAL = new Updater.Version("1.0.1-DEV-UNOFFICIAL");
-    private final static Updater.Version V_1_0_1_ARTIFACT_1 = new Updater.Version("1.0.1-ARTIFACT-1");
+/**
+ * This test should only ensure, that the {@link Updater.Version} dose not break anything or select wrong versions
+ * and push them into the production server.
+ */
+@SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.TooManyMethods"})
+public class VersionTest {
+    /**
+     * A version that represent a MAJOR Version
+     */
+    private static final Updater.Version V_1_0_0 = new Updater.Version("1.0.0");
+    /**
+     * A version that represent a newer MAJOR Version
+     */
+    private static final Updater.Version V_2_0_0 = new Updater.Version("2.0.0");
+    /**
+     * A version that represent a newer MINOR Version
+     */
+    private static final Updater.Version V_1_1_0 = new Updater.Version("1.1.0");
+    /**
+     * A version that represent a newer PATCH Version
+     */
+    private static final Updater.Version V_1_0_1 = new Updater.Version("1.0.1");
+    /**
+     * A version that represent a DEV Version
+     */
+    private static final Updater.Version V_1_0_0_DEV_1 = new Updater.Version("1.0.0-DEV-1");
+    /**
+     * A version that represent a newer DEV Version
+     */
+    private static final Updater.Version V_1_0_0_DEV_2 = new Updater.Version("1.0.0-DEV-2");
+    /**
+     * A version that represent a newer MAJOR-DEV Version
+     */
+    private static final Updater.Version V_2_0_0_DEV_1 = new Updater.Version("2.0.0-DEV-1");
+    /**
+     * A version that represent a newer MINOR-DEV Version
+     */
+    private static final Updater.Version V_1_1_0_DEV_1 = new Updater.Version("1.1.0-DEV-1");
+    /**
+     * A version that represent a newer PATCH-DEV Version
+     */
+    private static final Updater.Version V_1_0_1_DEV_1 = new Updater.Version("1.0.1-DEV-1");
+    /**
+     * A version that represent a local PATCH Version
+     */
+    private static final Updater.Version V_1_0_1_DEV_UNOFFICIAL = new Updater.Version("1.0.1-DEV-UNOFFICIAL");
+    /**
+     * A version that represent a fork PATCH Version
+     */
+    private static final Updater.Version V_1_0_1_ARTIFACT_1 = new Updater.Version("1.0.1-ARTIFACT-1");
 
-    public UpdaterTest() {
+    /**
+     * Empty constructor
+     */
+    public VersionTest() {
     }
 
+    /**
+     * Test if the {@link pl.betoncraft.betonquest.utils.Updater.Version}'s have the correct string version
+     */
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     public void testVersionString() {
@@ -37,6 +81,9 @@ public class UpdaterTest {
         assertVersionString(V_1_0_1_ARTIFACT_1, "1.0.1-ARTIFACT-1");
     }
 
+    /**
+     * Test if the {@link pl.betoncraft.betonquest.utils.Updater.Version}'s have the correct DEV boolean
+     */
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     public void testVersionDev() {
@@ -53,6 +100,9 @@ public class UpdaterTest {
         assertVersionDev(V_1_0_1_ARTIFACT_1, false);
     }
 
+    /**
+     * Test if the {@link pl.betoncraft.betonquest.utils.Updater.Version}'s have the correct official boolean
+     */
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     public void testVersionOfficial() {
@@ -69,6 +119,10 @@ public class UpdaterTest {
         assertVersionOfficial(V_1_0_1_ARTIFACT_1, true);
     }
 
+    /**
+     * Compares all version combinations withe the
+     * {@link pl.betoncraft.betonquest.utils.Updater.UpdateStrategy#MAJOR} strategy.
+     */
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     public void testVersionCompareMajor() {
@@ -105,6 +159,10 @@ public class UpdaterTest {
         assertMultipleVersions(Updater.UpdateStrategy.MAJOR, true, V_1_0_1_ARTIFACT_1, V_2_0_0, V_1_1_0, V_1_0_1);
     }
 
+    /**
+     * Compares all version combinations withe the
+     * {@link pl.betoncraft.betonquest.utils.Updater.UpdateStrategy#MINOR} strategy.
+     */
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     public void testVersionCompareMinor() {
@@ -140,6 +198,10 @@ public class UpdaterTest {
         assertMultipleVersions(Updater.UpdateStrategy.MINOR, true, V_1_0_1_ARTIFACT_1, V_1_1_0, V_1_0_1);
     }
 
+    /**
+     * Compares all version combinations withe the
+     * {@link pl.betoncraft.betonquest.utils.Updater.UpdateStrategy#PATCH} strategy.
+     */
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     public void testVersionComparePatch() {
@@ -174,6 +236,10 @@ public class UpdaterTest {
         assertMultipleVersions(Updater.UpdateStrategy.PATCH, true, V_1_0_1_ARTIFACT_1, V_1_0_1);
     }
 
+    /**
+     * Compares all version combinations withe the
+     * {@link pl.betoncraft.betonquest.utils.Updater.UpdateStrategy#MAJOR_DEV} strategy.
+     */
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     public void testVersionCompareMajorDev() {
@@ -210,6 +276,10 @@ public class UpdaterTest {
         assertMultipleVersions(Updater.UpdateStrategy.MAJOR_DEV, true, V_1_0_1_ARTIFACT_1, V_2_0_0, V_1_1_0, V_1_0_1, V_2_0_0_DEV_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1);
     }
 
+    /**
+     * Compares all version combinations withe the
+     * {@link pl.betoncraft.betonquest.utils.Updater.UpdateStrategy#MINOR_DEV} strategy.
+     */
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     public void testVersionCompareMinorDev() {
@@ -245,6 +315,10 @@ public class UpdaterTest {
         assertMultipleVersions(Updater.UpdateStrategy.MINOR_DEV, true, V_1_0_1_ARTIFACT_1, V_1_1_0, V_1_0_1, V_1_1_0_DEV_1, V_1_0_1_DEV_1);
     }
 
+    /**
+     * Compares all version combinations withe the
+     * {@link pl.betoncraft.betonquest.utils.Updater.UpdateStrategy#PATCH_DEV} strategy.
+     */
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     public void testVersionComparePatchDev() {

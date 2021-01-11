@@ -12,6 +12,7 @@ update:
   enabled: true
   strategy: MINOR
   automatic: true
+  ingameNotification: true
 default_journal_slot: '-1'
 max_npc_distance: '5'
 citizens_npcs_by_name: 'false'
