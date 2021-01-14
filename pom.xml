@@ -1,5 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
@@ -163,33 +163,6 @@
     </profile>
 
     <profile>
-      <id>from-elmakers</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <repositories>
-        <repository>
-          <id>elmakers-repo</id>
-          <url>https://maven.elmakers.com/repository/</url>
-        </repository>
-      </repositories>
-      <dependencies>
-        <dependency>
-          <groupId>de.slikey</groupId>
-          <artifactId>EffectLib</artifactId>
-          <version>6.1</version>
-          <scope>provided</scope>
-        </dependency>
-        <dependency>
-          <groupId>com.elmakers.mine.bukkit</groupId>
-          <artifactId>MagicAPI</artifactId>
-          <version>7.9.11</version>
-          <scope>provided</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-
-    <profile>
       <id>from-codemc</id>
       <activation>
         <activeByDefault>true</activeByDefault>
@@ -322,7 +295,20 @@
   </profiles>
 
   <dependencies>
-    <!-- only dependencies from maven central -->
+    <!-- only dependencies from maven central that are MC Plugins-->
+    <dependency>
+      <groupId>com.elmakers.mine.bukkit</groupId>
+      <artifactId>EffectLib</artifactId>
+      <version>8.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.elmakers.mine.bukkit</groupId>
+      <artifactId>MagicAPI</artifactId>
+      <version>8.2</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- only dependencies from maven central that are no MC Plugins-->
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-artifact</artifactId>
