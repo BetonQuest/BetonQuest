@@ -13,10 +13,16 @@
     <maven.compiler.source>1.8</maven.compiler.source>
   </properties>
 
+  <name>BetonQuest</name>
   <groupId>pl.betoncraft</groupId>
   <artifactId>betonquest</artifactId>
-  <name>BetonQuest</name>
   <version>${version}-SNAPSHOT</version>
+  <description>Large Variety of Adventure Supplies</description>
+
+  <organization>
+    <name>BetonQuest Organisation</name>
+    <url>https://www.betonquest.org</url>
+  </organization>
 
   <distributionManagement>
     <repository>

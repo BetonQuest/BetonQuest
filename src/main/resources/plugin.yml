@@ -1,9 +1,11 @@
-name: BetonQuest
-main: pl.betoncraft.betonquest.BetonQuest
+name: ${name}
+main: ${groupId}.${artifactId}.${name}
+version: ${maven-version}
+description: ${description}
+website: ${organization.url}
+author: ${organization.name}
+authors: [ Wolf2323, SaltyAimbOtter, seyfahni, joblo2213, bundabrg, Co0sh ]
 api-version: 1.13
-description: Advanced role-playing quests and NPC conversations
-authors: [Co0sh]
-website: https://www.spigotmc.org/resources/betonquest.2117/
 softdepend:
   - Skript
   - MMOLib
@@ -28,38 +30,37 @@ softdepend:
   - ProtocolLib
   - Brewery
   - Jobs
-version: ${maven-version}
 commands:
   betonquest:
     description: General quest command
     usage: /<command>
     permission: betonquest.admin
-    aliases: [q, bq, bquest, bquests, betonquests, quest, quests]
+    aliases: [ q, bq, bquest, bquests, betonquests, quest, quests ]
   journal:
     description: Adds journal to your inventory
     usage: /<command>
     permission: betonquest.journal
-    aliases: [j, bj, bjournal, betonjournal, betonquestjournal]
+    aliases: [ j, bj, bjournal, betonjournal, betonquestjournal ]
   backpack:
     description: Opens quest backpack
     usage: /<command>
     permission: betonquest.backpack
-    aliases: [b, bb, bbackpack, betonbackpack, betonquestbackpack]
+    aliases: [ b, bb, bbackpack, betonbackpack, betonquestbackpack ]
   cancelquest:
     description: Opens the window with quest cancelers
     usage: /<command>
     permission: betonquest.backpack
-    aliases: [bcq, bcancelquest, betoncancelquest, betonquestcancelquest]
+    aliases: [ bcq, bcancelquest, betoncancelquest, betonquestcancelquest ]
   compass:
-    description:
+    description: Opens the compass menu
     usage: /<command>
     permission: betonquest.backpack
-    aliases: [bc, bcompass, betoncompass, betonquestcompass]
+    aliases: [ bc, bcompass, betoncompass, betonquestcompass ]
   questlang:
     description: Changes the language
     usage: /<command> lang
     permission: betonquest.language
-    aliases: [ql]
+    aliases: [ ql ]
 permissions:
   betonquest.admin:
     default: op
