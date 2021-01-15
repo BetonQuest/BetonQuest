@@ -1,5 +1,5 @@
 name: Build
-on: [push, pull_request]
+on: [ push, pull_request ]
 
 jobs:
   prepare:
@@ -176,7 +176,7 @@ jobs:
   build-documentation:
     name: Build Documentation
     if: "always() && !cancelled()"
-    needs: [prepare]
+    needs: [ prepare ]
     runs-on: ubuntu-latest
 
     steps:
@@ -540,7 +540,7 @@ jobs:
           PRE_RELEASE: false
           CHANGELOG_FILE: CHANGELOG.md
           ALLOW_TAG_PREFIX: true
-          RELEASE_NAME: BetonQuest ${POM_MAVEN_VERSION}
+          RELEASE_NAME: BetonQuest ${{ env.POM_MAVEN_VERSION }}
         with:
           args: |
             build/artifacts/BetonQuest.jar
