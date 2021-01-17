@@ -109,12 +109,14 @@ hasAnyPotato: "item anyPotato"
 #objectives.yml
  myVariableStorage: "variable no-chat"`
 ```
+
 2. Assign values to that storage using a key and a value. Both can be any text you like:
- ```YAML
+```YAML
 #events.yml
 addBlock: "variable myVariableStorage blockName REDSTONE"
 addLocation: "variable myVariableStorage location 123;456;789;world"
 ```
+
 3. Read from your variable storage using the storages name and the data key.
 ```YAML
 #conditions.yml
