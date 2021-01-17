@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 ### Fixes
 - The Autoupdater got a small fix, and the fail safety for broken downloads was improved
-- `npcrange` objective does not throw errors anymore when the player is in a different world
+- `npcrange` objective does not throw errors when the player is in a different world than the NPC
 ### Security
 
 ## [1.12.0] - 2021-01-10
