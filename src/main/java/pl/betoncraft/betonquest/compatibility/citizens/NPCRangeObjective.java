@@ -75,6 +75,9 @@ public class NPCRangeObjective extends Objective {
             if (!containsPlayer(playerID)) {
                 continue;
             }
+            if (npcEntity.getWorld() != player.getWorld()) {
+                continue;
+            }
             final double radius = this.radius.getDouble(playerID);
             final double distanceSqrd = npcEntity.getLocation().distanceSquared(player.getLocation());
             final double radiusSqrd = radius * radius;
