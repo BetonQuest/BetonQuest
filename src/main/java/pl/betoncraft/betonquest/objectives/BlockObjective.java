@@ -39,7 +39,7 @@ public class BlockObjective extends Objective implements Listener {
         exactMatch = instruction.hasArgument("exactMatch");
         neededAmount = instruction.getInt();
         notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
-        notify = instruction.hasArgument("notify") || notifyInterval > 0;
+        notify = instruction.hasArgument("notify");
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
