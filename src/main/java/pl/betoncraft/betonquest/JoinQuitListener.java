@@ -57,13 +57,15 @@ public class JoinQuitListener implements Listener {
         playerData.startObjectives();
         GlobalObjectives.startAll(playerID);
         // display changelog message to the admins
-        if (event.getPlayer().hasPermission("betonquest.admin")
-                && new File(BetonQuest.getInstance().getDataFolder(), "CHANGELOG.md").exists()) {
-            try {
-                Config.sendNotify(null, PlayerConverter.getID(event.getPlayer()), "changelog", null, "changelog,info");
-            } catch (final QuestRuntimeException exception) {
-                LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'changelog' category. Error was: '" + exception.getMessage() + "'");
-                LogUtils.logThrowableIgnore(exception);
+        if (event.getPlayer().hasPermission("betonquest.admin")) {
+            BetonQuest.getInstance().getUpdater().sendUpdateNotification(event.getPlayer());
+            if (new File(BetonQuest.getInstance().getDataFolder(), "CHANGELOG.md").exists()) {
+                try {
+                    Config.sendNotify(null, PlayerConverter.getID(event.getPlayer()), "changelog", null, "changelog,info");
+                } catch (final QuestRuntimeException exception) {
+                    LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'changelog' category. Error was: '" + exception.getMessage() + "'");
+                    LogUtils.logThrowableIgnore(exception);
+                }
             }
         }
         if (Journal.hasJournal(playerID)) {

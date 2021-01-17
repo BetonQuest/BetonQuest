@@ -6,10 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - ${current-date}
 ### Added
+- Ingame update notification if the updater found an update
 ### Changed
 ### Deprecated
 ### Removed
 ### Fixes
+- The Autoupdater got a small fix, and the fail safety for broken downloads was improved
 ### Security
 
 ## [1.12.0] - 2021-01-10

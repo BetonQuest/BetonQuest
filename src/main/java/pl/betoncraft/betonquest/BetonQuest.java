@@ -4,6 +4,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -34,7 +35,9 @@ import pl.betoncraft.betonquest.variables.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,7 +48,6 @@ import java.util.regex.Pattern;
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength", "PMD.GodClass",
         "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidFieldNameMatchingMethodName"})
 public class BetonQuest extends JavaPlugin {
-    private static BetonQuest instance;
     private static final Map<String, Class<? extends Condition>> CONDITION_TYPES = new HashMap<>();
     private static final Map<String, Class<? extends QuestEvent>> EVENT_TYPES = new HashMap<>();
     private static final Map<String, Class<? extends Objective>> OBJECTIVE_TYPES = new HashMap<>();
@@ -58,12 +60,14 @@ public class BetonQuest extends JavaPlugin {
     private static final Map<ObjectiveID, Objective> OBJECTIVES = new HashMap<>();
     private static final Map<String, ConversationData> CONVERSATIONS = new HashMap<>();
     private static final Map<VariableID, Variable> VARIABLES = new HashMap<>();
+    private static BetonQuest instance;
+    private final ConcurrentHashMap<String, PlayerData> playerDataMap = new ConcurrentHashMap<>();
+    private String pluginTag;
     private Database database;
     private boolean isMySQLUsed;
     @SuppressWarnings("PMD.DoNotUseThreads")
     private Saver saver;
     private Updater updater;
-    private final ConcurrentHashMap<String, PlayerData> playerDataMap = new ConcurrentHashMap<>();
     private GlobalData globalData;
     private PlayerHider playerHider;
 
@@ -84,31 +88,31 @@ public class BetonQuest extends JavaPlugin {
     }
 
     public static boolean conditions(final String playerID, final Collection<ConditionID> conditionIDs) {
-        ConditionID[] ids = new ConditionID[conditionIDs.size()];
+        final ConditionID[] ids = new ConditionID[conditionIDs.size()];
         int index = 0;
-        for(final ConditionID id : conditionIDs) {
+        for (final ConditionID id : conditionIDs) {
             ids[index++] = id;
         }
         return conditions(playerID, ids);
     }
 
     public static boolean conditions(final String playerID, final ConditionID... conditionIDs) {
-        if(Bukkit.isPrimaryThread()) {
-            for(final ConditionID id : conditionIDs) {
-                if(!condition(playerID, id)) {
+        if (Bukkit.isPrimaryThread()) {
+            for (final ConditionID id : conditionIDs) {
+                if (!condition(playerID, id)) {
                     return false;
                 }
             }
         } else {
             final List<CompletableFuture<Boolean>> conditions = new ArrayList<>();
-            for(final ConditionID id : conditionIDs) {
+            for (final ConditionID id : conditionIDs) {
                 final CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(
                         () -> condition(playerID, id));
                 conditions.add(future);
             }
             for (final CompletableFuture<Boolean> condition : conditions) {
                 try {
-                    if(!condition.get()) {
+                    if (!condition.get()) {
                         return false;
                     }
                 } catch (InterruptedException | ExecutionException e) {
@@ -157,7 +161,7 @@ public class BetonQuest extends JavaPlugin {
             return false;
         }
         // and check if it's met or not
-        boolean outcome;
+        final boolean outcome;
         try {
             outcome = condition.handle(playerID);
         } catch (final QuestRuntimeException e) {
@@ -352,9 +356,14 @@ public class BetonQuest extends JavaPlugin {
         return NOTIFY_IO_TYPES.get(name);
     }
 
+    public String getPluginTag() {
+        return pluginTag;
+    }
+
     @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.DoNotUseThreads", "PMD.NPathComplexity"})
     @Override
     public void onEnable() {
+        pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
 
         // initialize debugger
         LogUtils.setupLogger();
@@ -626,7 +635,7 @@ public class BetonQuest extends JavaPlugin {
 
                 try {
                     playerHider = new PlayerHider();
-                } catch (InstructionParseException e) {
+                } catch (final InstructionParseException e) {
                     LogUtils.getLogger().log(Level.SEVERE, "Could not start PlayerHider! " + e.getMessage(), e);
                 }
             }
@@ -646,7 +655,7 @@ public class BetonQuest extends JavaPlugin {
         new BStatsMetrics(this, CONDITIONS, EVENTS, OBJECTIVES, VARIABLES, CONDITION_TYPES, EVENT_TYPES, OBJECTIVE_TYPES, VARIABLE_TYPES);
 
         // updater
-        updater = new Updater(this, this.getFile());
+        updater = new Updater(this.getDescription().getVersion(), this.getFile());
 
         // done
         LogUtils.getLogger().log(Level.INFO, "BetonQuest succesfully enabled!");
@@ -863,7 +872,7 @@ public class BetonQuest extends JavaPlugin {
         new Config();
         Notify.load();
         // reload updater settings
-        BetonQuest.getInstance().getUpdater().searchForUpdate();
+        BetonQuest.getInstance().getUpdater().searchUpdate();
         // load new static events
         new StaticEvents();
         // stop current global locations listener
@@ -886,7 +895,7 @@ public class BetonQuest extends JavaPlugin {
         playerHider.stop();
         try {
             playerHider = new PlayerHider();
-        } catch (InstructionParseException e) {
+        } catch (final InstructionParseException e) {
             LogUtils.getLogger().log(Level.SEVERE, "Could not start PlayerHider! " + e.getMessage(), e);
         }
     }
