@@ -9,7 +9,6 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,11 +20,12 @@ import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 
 /**
  * EntityHider From: https://gist.github.com/aadnk/5871793
+ * We use the fork: https://gist.github.com/dmulloy2/5526f5bf906c064c255e
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class EntityHider implements Listener {
@@ -52,18 +52,18 @@ public class EntityHider implements Listener {
             PacketType.Play.Server.ENTITY_EFFECT,
             PacketType.Play.Server.REMOVE_ENTITY_EFFECT,
             PacketType.Play.Server.BLOCK_BREAK_ANIMATION,
+            PacketType.Play.Server.UPDATE_ENTITY_NBT,
             PacketType.Play.Server.COMBAT_EVENT
 
             // We don't handle DESTROY_ENTITY though
     };
     // Current policy
     protected final Policy policy;
-    protected Table<Integer, Integer, Boolean> observerEntityMap = HashBasedTable.create();
-    private ProtocolManager manager;
-
     // Listeners
     private final Listener bukkitListener;
     private final PacketAdapter protocolListener;
+    protected Table<Integer, Integer, Boolean> observerEntityMap = HashBasedTable.create();
+    private ProtocolManager manager;
 
     /**
      * Construct a new entity hider.
@@ -93,7 +93,6 @@ public class EntityHider implements Listener {
      * @param visible  - TRUE if the entity should be made visible, FALSE if not.
      * @return TRUE if the entity was visible before this method call, FALSE otherwise.
      */
-    @SuppressWarnings("PMD.LinguisticNaming")
     protected boolean setVisibility(final Player observer, final int entityID, final boolean visible) {
         switch (policy) {
             case BLACKLIST:
@@ -115,7 +114,6 @@ public class EntityHider implements Listener {
      * @return TRUE if they already were present, FALSE otherwise.
      */
     // Helper method
-    @SuppressWarnings("PMD.LinguisticNaming")
     protected boolean setMembership(final Player observer, final int entityID, final boolean member) {
         if (member) {
             return observerEntityMap.put(observer.getEntityId(), entityID, true) != null;
@@ -146,7 +144,7 @@ public class EntityHider implements Listener {
         // If we are using a whitelist, presence means visibility - if not, the opposite is the case
         final boolean presence = getMembership(observer, entityID);
 
-        return policy == Policy.WHITELIST ? presence : !presence;
+        return (policy == Policy.WHITELIST) == presence;
     }
 
     /**
@@ -180,24 +178,21 @@ public class EntityHider implements Listener {
      */
     private Listener constructBukkit() {
         return new Listener() {
-            @SuppressFBWarnings("UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS")
             @EventHandler
-            public void onEntityDeath(final EntityDeathEvent event) {
-                removeEntity(event.getEntity(), true);
+            public void onEntityDeath(final EntityDeathEvent e) {
+                removeEntity(e.getEntity(), true);
             }
 
-            @SuppressFBWarnings("UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS")
             @EventHandler
-            public void onChunkUnload(final ChunkUnloadEvent event) {
-                for (final Entity entity : event.getChunk().getEntities()) {
+            public void onChunkUnload(final ChunkUnloadEvent e) {
+                for (final Entity entity : e.getChunk().getEntities()) {
                     removeEntity(entity, false);
                 }
             }
 
-            @SuppressFBWarnings("UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS")
             @EventHandler
-            public void onPlayerQuit(final PlayerQuitEvent event) {
-                removePlayer(event.getPlayer());
+            public void onPlayerQuit(final PlayerQuitEvent e) {
+                removePlayer(e.getPlayer());
             }
         };
     }
@@ -212,11 +207,13 @@ public class EntityHider implements Listener {
         return new PacketAdapter(plugin, ENTITY_PACKETS) {
             @Override
             public void onPacketSending(final PacketEvent event) {
-                final int entityID = event.getPacket().getIntegers().read(0);
+                final int index = event.getPacketType() == PacketType.Play.Server.COMBAT_EVENT ? 1 : 0;
 
-                // See if this packet should be cancelled
-                if (!isVisible(event.getPlayer(), entityID)) {
-                    event.setCancelled(true);
+                final Integer entityID = event.getPacket().getIntegers().readSafely(index);
+                if (entityID != null) {
+                    if (!isVisible(event.getPlayer(), entityID)) {
+                        event.setCancelled(true);
+                    }
                 }
             }
         };
@@ -252,7 +249,7 @@ public class EntityHider implements Listener {
 
         // Resend packets
         if (manager != null && hiddenBefore) {
-            manager.updateEntity(entity, Arrays.asList(observer));
+            manager.updateEntity(entity, Collections.singletonList(observer));
         }
         return hiddenBefore;
     }
@@ -264,7 +261,6 @@ public class EntityHider implements Listener {
      * @param entity   - the entity to hide.
      * @return TRUE if the entity was previously visible, FALSE otherwise.
      */
-    @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
     public final boolean hideEntity(final Player observer, final Entity entity) {
         validate(observer, entity);
         final boolean visibleBefore = setVisibility(observer, entity.getEntityId(), false);
