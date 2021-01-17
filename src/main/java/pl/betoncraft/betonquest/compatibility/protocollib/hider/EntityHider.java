@@ -9,6 +9,7 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -93,6 +94,7 @@ public class EntityHider implements Listener {
      * @param visible  - TRUE if the entity should be made visible, FALSE if not.
      * @return TRUE if the entity was visible before this method call, FALSE otherwise.
      */
+    @SuppressWarnings("PMD.LinguisticNaming")
     protected boolean setVisibility(final Player observer, final int entityID, final boolean visible) {
         switch (policy) {
             case BLACKLIST:
@@ -114,6 +116,7 @@ public class EntityHider implements Listener {
      * @return TRUE if they already were present, FALSE otherwise.
      */
     // Helper method
+    @SuppressWarnings("PMD.LinguisticNaming")
     protected boolean setMembership(final Player observer, final int entityID, final boolean member) {
         if (member) {
             return observerEntityMap.put(observer.getEntityId(), entityID, true) != null;
@@ -179,20 +182,23 @@ public class EntityHider implements Listener {
     private Listener constructBukkit() {
         return new Listener() {
             @EventHandler
-            public void onEntityDeath(final EntityDeathEvent e) {
-                removeEntity(e.getEntity(), true);
+            @SuppressFBWarnings("UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS")
+            public void onEntityDeath(final EntityDeathEvent event) {
+                removeEntity(event.getEntity(), true);
             }
 
             @EventHandler
-            public void onChunkUnload(final ChunkUnloadEvent e) {
-                for (final Entity entity : e.getChunk().getEntities()) {
+            @SuppressFBWarnings("UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS")
+            public void onChunkUnload(final ChunkUnloadEvent event) {
+                for (final Entity entity : event.getChunk().getEntities()) {
                     removeEntity(entity, false);
                 }
             }
 
             @EventHandler
-            public void onPlayerQuit(final PlayerQuitEvent e) {
-                removePlayer(e.getPlayer());
+            @SuppressFBWarnings("UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS")
+            public void onPlayerQuit(final PlayerQuitEvent event) {
+                removePlayer(event.getPlayer());
             }
         };
     }
@@ -210,10 +216,8 @@ public class EntityHider implements Listener {
                 final int index = event.getPacketType() == PacketType.Play.Server.COMBAT_EVENT ? 1 : 0;
 
                 final Integer entityID = event.getPacket().getIntegers().readSafely(index);
-                if (entityID != null) {
-                    if (!isVisible(event.getPlayer(), entityID)) {
-                        event.setCancelled(true);
-                    }
+                if (entityID != null && !isVisible(event.getPlayer(), entityID)) {
+                    event.setCancelled(true);
                 }
             }
         };
@@ -261,6 +265,7 @@ public class EntityHider implements Listener {
      * @param entity   - the entity to hide.
      * @return TRUE if the entity was previously visible, FALSE otherwise.
      */
+    @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
     public final boolean hideEntity(final Player observer, final Entity entity) {
         validate(observer, entity);
         final boolean visibleBefore = setVisibility(observer, entity.getEntityId(), false);
