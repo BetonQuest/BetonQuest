@@ -13,10 +13,16 @@
     <maven.compiler.source>1.8</maven.compiler.source>
   </properties>
 
+  <name>BetonQuest</name>
   <groupId>pl.betoncraft</groupId>
   <artifactId>betonquest</artifactId>
-  <name>BetonQuest</name>
   <version>${version}-SNAPSHOT</version>
+  <description>All Your Adventure Supplies</description>
+
+  <organization>
+    <name>BetonQuest Organisation</name>
+    <url>https://www.betonquest.org</url>
+  </organization>
 
   <distributionManagement>
     <repository>
@@ -231,6 +237,27 @@
           <groupId>com.comphenix.protocol</groupId>
           <artifactId>ProtocolLib</artifactId>
           <version>4.5.1</version>
+          <scope>provided</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+
+    <profile>
+      <id>from-papermc</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <repositories>
+        <repository>
+          <id>papermc</id>
+          <url>https://papermc.io/repo/repository/maven-public/</url>
+        </repository>
+      </repositories>
+      <dependencies>
+        <dependency>
+          <groupId>com.destroystokyo.paper</groupId>
+          <artifactId>paper-api</artifactId>
+          <version>1.16.4-R0.1-SNAPSHOT</version>
           <scope>provided</scope>
         </dependency>
       </dependencies>
