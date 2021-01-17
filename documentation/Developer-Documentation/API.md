@@ -2,7 +2,7 @@
 
 !!! warning
     All existing API will break in BetonQuest 2.0 which is being worked on while you read this.
-    If you plan on doing something with this API you are better off to wait for BetonQuest 2.0.
+    If you plan on doing something with this API please keep in mind that you will need to change it again later.
 
 Add this to your pom.yml.
 

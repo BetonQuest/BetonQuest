@@ -24,7 +24,7 @@ Or use a `run` event in which you specify all tag-deleting events at once.
 (We will improve this don't worry)
 
 ## How do I start an objective from a conversation?
-Use the [objective eventm](../User-Documentation/Events-List.md/#objective-objective).
+Use the [objective event](../User-Documentation/Events-List.md/#objective-objective).
 
 ## Why is X thing not working?
 If something stopped working before asking for help please do /q reload and READ THE OUTPUT IN CONSOLE!
