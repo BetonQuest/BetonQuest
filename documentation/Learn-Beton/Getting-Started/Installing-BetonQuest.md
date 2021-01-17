@@ -8,4 +8,4 @@ Just give the first paragraph of their Spigot page a good read and you will find
 
 Once you have installed these start up your server!
 
-Next step: [Setting up the editor](Setting-up-the-editor.md)
+**Next step: [Setting up the editor](Setting-up-the-editor.md)**

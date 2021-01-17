@@ -1,14 +1,14 @@
 #Feature List
 
-<h4>Once this page is finished it will give you an overview of nearly all of BetonQuests features.</h4>
+<h4>This page is unfinished and only shows some of our features.</h4>
 
-##Multi-threaded conversations
 
+##Beautiful multi-threaded Conversations
 Players can have immersive conversation with NPC's by utilizing BetonQuests Multi-Path-Conversation System.
-Questers can freely define multi-threaded stories, narrated with NPC conversations, and with multiple endings that affect a player's gameplay differently. 
-Questers can also choose between five different styles to display their conversations:
+Questers can freely define multi-threaded stories, narrated with NPC conversations,
+and with multiple endings that affect a player's gameplay.
+Questers can also choose between five different styles to display their conversations.
 
-##Beautiful Conversations
  <video autoplay muted loop
      src="../media/content/User-Documentation/Conversations/MenuConvIO.mp4"
      width="780">
@@ -72,6 +72,13 @@ Our community created a lot of cool stuff! Take a look at this handpicked select
 <video controls loop
   src="../media/content/Home/Features/WaterWell.mp4"
   width="780" height="500">
+Sorry, your browser doesn't support embedded videos.
+</video>
+
+### Wheat Press by Titanium
+<video controls loop
+src="../media/content/Home/Features/WheatPress.mp4"
+width="780" height="500">
 Sorry, your browser doesn't support embedded videos.
 </video>
 

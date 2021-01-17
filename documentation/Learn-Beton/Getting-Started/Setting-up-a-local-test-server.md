@@ -41,4 +41,4 @@ Now check the server's folder. You will find a bunch of new folders and files th
 You need to accept the EULA (Minecrafts End-User-License-Agreement)to be able to run a Minecraft server.
 You will find a link in the eula.txt file. After you read it you need to set `eula=false` to `eula=true`.
 
-Next step: [Install BetonQuest](Installing-BetonQuest.md).
+**Next step: [Install BetonQuest](Installing-BetonQuest.md).**

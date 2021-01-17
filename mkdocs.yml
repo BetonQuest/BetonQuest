@@ -100,24 +100,26 @@ extra:
 #Notice that here are a few strange looking hairspaces in here. They make the space between the emojis and the text look equal
 nav:
   - 'Home':
-      - 'Welcome! 👋': index.md
-      - For-Owners.md
-      - For-Questers.md
-      - Features.md
+      - '👋 Welcome!': index.md
+      - 'Overview':
+          - '✨ Features': Features.md
+          - '👔  For Owners': For-Owners.md
+          - '🎨 For Questers': For-Questers.md
   - 'Learn Beton':
-      - Learn-Beton/Welcome.md
+      - '👋 Welcome!': Learn-Beton/Welcome.md
       - 'Getting Started':
-          - Learn-Beton/Getting-Started/Setting-up-a-local-test-server.md
-          - Learn-Beton/Getting-Started/Installing-BetonQuest.md
-          - Learn-Beton/Getting-Started/Setting-up-the-editor.md
-          - Learn-Beton/Getting-Started/Quick-Start-Tutorial.md
-      - Learn-Beton/Frequently-Asked-Questions.md
-      - Learn-Beton/Tips-and-tricks.md
+          - '💻 Setting up a local test server': Learn-Beton/Getting-Started/Setting-up-a-local-test-server.md
+          - '📥 Installing BetonQuest': Learn-Beton/Getting-Started/Installing-BetonQuest.md
+          - '✒️ Setting up the editor': Learn-Beton/Getting-Started/Setting-up-the-editor.md
+          - '📑 YAML for questers': Learn-Beton/Getting-Started/YAML-for-questers.md
+          - '⏱️   Quick Start Tutorial': Learn-Beton/Getting-Started/Quick-Start-Tutorial.md
+      - '❓ Frequently Asked Questions':
+          - '🤔  General FAQ': Learn-Beton/Frequently-Asked-Questions.md
 
   - 'User Documentation':
       - 'General':
-        - '📚   Reference': User-Documentation/Reference.md
-        - '💬  Conversations': User-Documentation/Conversations.md
+          - '📚   Reference': User-Documentation/Reference.md
+          - '💬  Conversations': User-Documentation/Conversations.md
 
       - 'Types':
           - '✔️ Objectives List': User-Documentation/Objectives-List.md
@@ -127,28 +129,27 @@ nav:
           - '🔮   Variables List': User-Documentation/Variables-List.md
 
       - 'Notifications':
-        - '🔊   Settings': User-Documentation/Notification-Settings.md
-        - "🏷️   IO's & Categories": User-Documentation/Notification-IO's-&-Categories.md
+          - '🔊   Settings': User-Documentation/Notification-Settings.md
+          - "🏷️   IO's & Categories": User-Documentation/Notification-IO's-&-Categories.md
 
       - 'Technical':
-        - '🔒 Permissions & Commands': User-Documentation/Commands-and-permissions.md
-        - '📥 Updating': User-Documentation/Updating-and-Backups.md
-        - '🔧  Configuration': User-Documentation/Configuration.md
-        - '🗃️ Changelog': User-Documentation/CHANGELOG.md
+          - '🔒 Permissions & Commands': User-Documentation/Commands-and-permissions.md
+          - '📥 Updating': User-Documentation/Updating-and-Backups.md
+          - '🔧  Configuration': User-Documentation/Configuration.md
+          - '🗃️ Changelog': User-Documentation/CHANGELOG.md
 
   - 'Developer Documentation':
-      - Developer-Documentation/Contributing-Guidelines.md
-      - Developer-Documentation/API.md
-      - Developer-Documentation/Releasing.md
-      - Developer-Documentation/Versioning.md
+      - '📚 Contributing Guidelines': Developer-Documentation/Contributing-Guidelines.md
+      - '⚙️ API': Developer-Documentation/API.md
+      - '🏭 Releasing': Developer-Documentation/Releasing.md
+      - '🏷️ Versioning': Developer-Documentation/Versioning.md
   - 'Contributing':
-      - 'General':
-          - Contributing/Contributing.md
+      - '🤝 Overview': Contributing/Contributing.md
       - 'Docs':
-          - Contributing/Documentation/Setup.md
-          - Contributing/Documentation/Guidelines.md
+          - '🔧 Setup': Contributing/Documentation/Setup.md
+          - '📚 Guidelines': Contributing/Documentation/Guidelines.md
       - 'Sponsorships':
-          - 'Patreon': Contributing/Sponsors.md
+          - '💲 Patreon': Contributing/Sponsors.md
 
 
 google_analytics:
