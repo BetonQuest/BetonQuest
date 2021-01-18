@@ -9,6 +9,7 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import com.google.common.collect.Tables;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -63,7 +64,7 @@ public class EntityHider implements Listener {
     // Listeners
     private final Listener bukkitListener;
     private final PacketAdapter protocolListener;
-    protected Table<Integer, Integer, Boolean> observerEntityMap = HashBasedTable.create();
+    protected Table<Integer, Integer, Boolean> observerEntityMap = Tables.synchronizedTable(HashBasedTable.create());
     private ProtocolManager manager;
 
     /**
