@@ -79,15 +79,18 @@ has10Points: "point blockCounter 10"
 You need to use the PIPE `|` character at the start of the multiline string.
 ```YAML
 text: |
-  This is line one 
-    line two
-      line three
+  This is line one.
+  This is line two.
+          
+          You
+        can also
+  format this using spaces.
 ```
 
-## How to get rid of not resolvable variables that show "0"?
+## How to deal with unresolvable variables that show "0"?
 You can just add them together using `math.calc`.
 ```
-%math.calc:0-objective.PickWheat1.left-objective.PickWheat2.left-objective.PickWheat3.left-objective.PickWheat4.left'
+%math.calc:objective.PickWheat1.left+objective.PickWheat2.left+objective.PickWheat3.left+objective.PickWheat4.left'
 ```
 
 ## How to match different items with just one condition?
