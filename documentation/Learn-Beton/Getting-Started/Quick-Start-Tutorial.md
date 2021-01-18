@@ -1,4 +1,4 @@
-This section will teach you the very basics of BetonQuest.
+This page will teach you the very basics of BetonQuest.
 
 ## Checking out the "default" example quest. 
 

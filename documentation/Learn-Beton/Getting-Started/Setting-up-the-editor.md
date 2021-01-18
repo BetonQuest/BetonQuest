@@ -87,4 +87,4 @@ if they do. An example might be provided after the colon (`:`). Just replace it 
  </video>
 </div>
 
-Next step: [Quick-Start-Tutorial](./Quick-Start-Tutorial.md)
+**Next step: [YAML-for-questers](./YAML-for-questers.md)**
