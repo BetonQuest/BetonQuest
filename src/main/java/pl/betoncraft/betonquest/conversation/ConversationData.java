@@ -1,7 +1,7 @@
 package pl.betoncraft.betonquest.conversation;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -34,11 +34,10 @@ public class ConversationData {
     private final EventID[] finalEvents;
     private final String[] startingOptions;
     private final boolean blockMovement;
-    private String convIO;
-    private String interceptor;
-
     private final Map<String, Option> npcOptions;
     private final Map<String, Option> playerOptions;
+    private String convIO;
+    private String interceptor;
 
     /**
      * Loads conversation from package.
@@ -58,7 +57,7 @@ public class ConversationData {
         convName = name;
         // get the main data
         final FileConfiguration conv = pack.getConversation(name).getConfig();
-        if(conv.get("quester") == null) {
+        if (conv.get("quester") == null) {
             throw new InstructionParseException("The 'quester' name is missing in the conversation file!");
         }
         if (conv.isConfigurationSection("quester")) {
@@ -130,7 +129,7 @@ public class ConversationData {
             for (int i = 0; i < array.length; i++) {
                 try {
                     finalEvents[i] = new EventID(pack, array[i]);
-                } catch (ObjectNotFoundException e) {
+                } catch (final ObjectNotFoundException e) {
                     throw new InstructionParseException("Error while loading final events: " + e.getMessage(), e);
                 }
             }
@@ -523,7 +522,7 @@ public class ConversationData {
                 for (final String variable : variables) {
                     try {
                         BetonQuest.createVariable(pack, variable);
-                    } catch (InstructionParseException e) {
+                    } catch (final InstructionParseException e) {
                         throw new InstructionParseException("Error while creating '" + variable + "' variable: "
                                 + e.getMessage(), e);
                     }
@@ -537,7 +536,7 @@ public class ConversationData {
                         conditions.add(new ConditionID(pack, rawCondition.trim()));
                     }
                 }
-            } catch (ObjectNotFoundException e) {
+            } catch (final ObjectNotFoundException e) {
                 throw new InstructionParseException("Error in '" + name + "' " + type.getReadable() + " option's conditions: "
                         + e.getMessage(), e);
             }
@@ -549,7 +548,7 @@ public class ConversationData {
                         events.add(new EventID(pack, rawEvent.trim()));
                     }
                 }
-            } catch (ObjectNotFoundException e) {
+            } catch (final ObjectNotFoundException e) {
                 throw new InstructionParseException("Error in '" + name + "' " + type.getReadable() + " option's events: "
                         + e.getMessage(), e);
             }

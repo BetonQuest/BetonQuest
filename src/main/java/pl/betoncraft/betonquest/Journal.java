@@ -2,7 +2,7 @@ package pl.betoncraft.betonquest;
 
 import com.google.common.collect.Lists;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -217,7 +217,7 @@ public class Journal {
             for (final String variable : BetonQuest.resolveVariables(text)) {
                 try {
                     BetonQuest.createVariable(pack, variable);
-                } catch (InstructionParseException e) {
+                } catch (final InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Error while creating variable '" + variable + "' on journal page '" + pointerName + "' in "
                             + PlayerConverter.getName(playerID) + "'s journal: " + e.getMessage());
                     LogUtils.logThrowable(e);
@@ -264,7 +264,7 @@ public class Journal {
                             if (!BetonQuest.conditions(playerID, pageConditions)) {
                                 continue;
                             }
-                        } catch (ObjectNotFoundException exception) {
+                        } catch (final ObjectNotFoundException exception) {
                             LogUtils.getLogger().log(Level.WARNING,
                                     "Error while generating main page in " + PlayerConverter.getPlayer(playerID) + "'s journal: " + exception.getMessage());
                             LogUtils.logThrowable(exception);
@@ -291,7 +291,7 @@ public class Journal {
                     for (final String variable : BetonQuest.resolveVariables(text)) {
                         try {
                             BetonQuest.createVariable(pack, variable);
-                        } catch (InstructionParseException e) {
+                        } catch (final InstructionParseException e) {
                             LogUtils.getLogger().log(Level.WARNING, "Error while creating variable '" + variable + "' on main page in "
                                     + PlayerConverter.getName(playerID) + "'s journal: " + e.getMessage());
                             LogUtils.logThrowable(e);

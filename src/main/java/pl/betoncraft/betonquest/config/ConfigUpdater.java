@@ -1,7 +1,7 @@
 package pl.betoncraft.betonquest.config;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.*;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
@@ -69,13 +69,13 @@ public class ConfigUpdater {
      */
     private final BetonQuest instance = BetonQuest.getInstance();
     /**
-     * Main configuration instance
-     */
-    private FileConfiguration config = instance.getConfig();
-    /**
      * Deprecated ConfigHandler, used for updating older configuration files
      */
     private final ConfigHandler configHandler;
+    /**
+     * Main configuration instance
+     */
+    private FileConfiguration config = instance.getConfig();
 
     public ConfigUpdater() {
         final String version = BetonQuest.getInstance().getConfig().getString("version", null);
@@ -581,7 +581,7 @@ public class ConfigUpdater {
                     final int data;
                     try {
                         data = Integer.parseInt(parts[1]);
-                    } catch (NumberFormatException e) {
+                    } catch (final NumberFormatException e) {
                         LogUtils.getLogger().log(Level.WARNING, "    It's incorrect");
                         LogUtils.logThrowable(e);
                         continue;
@@ -621,7 +621,7 @@ public class ConfigUpdater {
                 pack.getItems().saveConfig();
                 pack.getObjectives().saveConfig();
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LogUtils.getLogger().log(Level.WARNING, ERROR);
             LogUtils.logThrowable(e);
         }
@@ -662,14 +662,14 @@ public class ConfigUpdater {
                         final String updatedInstruction = QuestItem.itemToString(itemStack);
                         LogUtils.getLogger().log(Level.FINE, "    New instruction: '" + updatedInstruction + "'");
                         items.set(key, updatedInstruction);
-                    } catch (InstructionParseException e) {
+                    } catch (final InstructionParseException e) {
                         LogUtils.getLogger().log(Level.WARNING, "Item " + packName + "." + key + " was incorrect, skipping.");
                         LogUtils.logThrowable(e);
                     }
                 }
                 pack.getItems().saveConfig();
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LogUtils.getLogger().log(Level.WARNING, ERROR);
             LogUtils.logThrowable(e);
         }
@@ -762,7 +762,7 @@ public class ConfigUpdater {
                 }
                 objectives.saveConfig();
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LogUtils.getLogger().log(Level.WARNING, ERROR);
             LogUtils.logThrowable(e);
         }
@@ -817,7 +817,7 @@ public class ConfigUpdater {
                             new String[]{packName + ".global_" + locName, "global_" + locName}));
                 }
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LogUtils.getLogger().log(Level.WARNING, ERROR);
             LogUtils.logThrowable(e);
         }
@@ -958,7 +958,7 @@ public class ConfigUpdater {
                     pack.getMain().saveConfig();
                 }
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LogUtils.getLogger().log(Level.WARNING, ERROR);
             LogUtils.logThrowable(e);
         }
@@ -982,7 +982,7 @@ public class ConfigUpdater {
                 }
                 pack.getMain().saveConfig();
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LogUtils.getLogger().log(Level.WARNING, ERROR);
             LogUtils.logThrowable(e);
         }
@@ -1405,7 +1405,7 @@ public class ConfigUpdater {
                 main.saveConfig();
             }
             LogUtils.getLogger().log(Level.FINE, "Done, all cross-package tags and points are now global, the rest is local.");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LogUtils.getLogger().log(Level.WARNING, ERROR);
             LogUtils.logThrowable(e);
         }
@@ -1422,7 +1422,7 @@ public class ConfigUpdater {
             config.set("journal.one_entry_per_page", "false");
             config.set("journal.reversed_order", "false");
             config.set("journal.hide_date", "false");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LogUtils.getLogger().log(Level.WARNING, ERROR);
             LogUtils.logThrowable(e);
         }
@@ -1475,7 +1475,7 @@ public class ConfigUpdater {
                     pack.getConversation(convName).saveConfig();
                 }
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LogUtils.getLogger().log(Level.WARNING, ERROR);
             LogUtils.logThrowable(e);
         }
@@ -1498,7 +1498,7 @@ public class ConfigUpdater {
                 }
                 pack.getEvents().saveConfig();
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LogUtils.getLogger().log(Level.WARNING, ERROR);
             LogUtils.logThrowable(e);
         }
@@ -1519,7 +1519,7 @@ public class ConfigUpdater {
         try {
             LogUtils.getLogger().log(Level.FINE, "Adding option to disable mcMMO hooking to the config");
             config.set("hook.mcmmo", "true");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LogUtils.getLogger().log(Level.WARNING, ERROR);
             LogUtils.logThrowable(e);
         }
@@ -1559,7 +1559,7 @@ public class ConfigUpdater {
                         + " FROM " + prefix + "player_old").executeUpdate();
                 con.prepareStatement("COMMIT").executeUpdate();
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LogUtils.getLogger().log(Level.WARNING, ERROR);
             LogUtils.logThrowable(e);
         }
@@ -1594,7 +1594,7 @@ public class ConfigUpdater {
                         }
                         textColors.add(ChatColor.getByChar(code.charAt(0)));
                     }
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     LogUtils.getLogger().log(Level.WARNING, "Could not parse NPC text format, saving defaults");
                     LogUtils.logThrowable(e);
                     npcColors.add(ChatColor.DARK_RED);
@@ -1624,7 +1624,7 @@ public class ConfigUpdater {
                         }
                         optionColors.add(ChatColor.getByChar(code.charAt(0)));
                     }
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     LogUtils.getLogger().log(Level.WARNING, "Could not parse player option format, saving defaults");
                     LogUtils.logThrowable(e);
                     numberColors.add(ChatColor.YELLOW);
@@ -1652,7 +1652,7 @@ public class ConfigUpdater {
                         }
                         answerColors.add(ChatColor.getByChar(code.charAt(0)));
                     }
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     LogUtils.getLogger().log(Level.WARNING, "Could not parse player answer format, saving defaults");
                     LogUtils.logThrowable(e);
                     playerColors.add(ChatColor.DARK_GREEN);
@@ -1712,7 +1712,7 @@ public class ConfigUpdater {
             }
             config.set("conversation_colors.answer", answer.substring(0, answer.length() - 1));
             config.set("conversation", null);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LogUtils.getLogger().log(Level.WARNING, ERROR);
             LogUtils.logThrowable(e);
         }
@@ -1782,7 +1782,7 @@ public class ConfigUpdater {
                 }
             }
             LogUtils.getLogger().log(Level.INFO, "Removed no longer used 'unknown' message from conversations.");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LogUtils.getLogger().log(Level.WARNING, ERROR);
             LogUtils.logThrowable(e);
         }
@@ -1824,14 +1824,14 @@ public class ConfigUpdater {
                             messages.getString(lang + ".conversation_start").replace("%quester%", "{1}"));
                     messages.set(lang + ".conversation_end",
                             messages.getString(lang + ".conversation_end").replace("%quester%", "{1}"));
-                } catch (NullPointerException e) {
+                } catch (final NullPointerException e) {
                     LogUtils.getLogger().log(Level.WARNING, "The language " + lang + " is not present in the defaults, please update it manually.");
                     LogUtils.logThrowable(e);
                 }
             }
             confMessages.saveConfig();
             LogUtils.getLogger().log(Level.INFO, "Updated messages to new replace format");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LogUtils.getLogger().log(Level.WARNING, ERROR);
             LogUtils.logThrowable(e);
         }
@@ -1849,7 +1849,7 @@ public class ConfigUpdater {
                 main.saveConfig();
             }
             LogUtils.getLogger().log(Level.INFO, "Added prefix option to all packages.");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LogUtils.getLogger().log(Level.WARNING, ERROR);
             LogUtils.logThrowable(e);
         }
@@ -2009,7 +2009,7 @@ public class ConfigUpdater {
                             newInst = "";
                             break;
                     }
-                } catch (ArrayIndexOutOfBoundsException e) {
+                } catch (final ArrayIndexOutOfBoundsException e) {
                     LogUtils.getLogger().log(Level.WARNING, "    Could not read data from objective " + label + ", removing");
                     LogUtils.logThrowable(e);
                     final PreparedStatement stmt = con
@@ -2027,7 +2027,7 @@ public class ConfigUpdater {
                 stmt.executeUpdate();
             }
             LogUtils.getLogger().log(Level.INFO, "Updated objective instruction strings in the database");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LogUtils.getLogger().log(Level.WARNING, ERROR);
             LogUtils.logThrowable(e);
         }
@@ -2039,7 +2039,7 @@ public class ConfigUpdater {
     private void updateFromV15() {
         try {
             config.set("remove_items_after_respawn", "true");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LogUtils.getLogger().log(Level.WARNING, ERROR);
             LogUtils.logThrowable(e);
         }
@@ -2064,7 +2064,7 @@ public class ConfigUpdater {
             config.set("hook.skript", "true");
             LogUtils.getLogger().log(Level.INFO, "Added default_package, hook and cmd_blacklist"
                     + " options to main config, removed metrics and uuid!");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LogUtils.getLogger().log(Level.WARNING, ERROR);
             LogUtils.logThrowable(e);
         }
@@ -2091,7 +2091,7 @@ public class ConfigUpdater {
                     conv.saveConfig();
                 }
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LogUtils.getLogger().log(Level.WARNING, ERROR);
             LogUtils.logThrowable(e);
         }
@@ -2212,7 +2212,7 @@ public class ConfigUpdater {
                 stmt.executeUpdate();
             }
             LogUtils.getLogger().log(Level.FINE, "Done! Everything converted.");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LogUtils.getLogger().log(Level.WARNING, ERROR);
             LogUtils.logThrowable(e);
         }
@@ -2313,7 +2313,7 @@ public class ConfigUpdater {
                 }
             }
             LogUtils.getLogger().log(Level.FINE, "Done! Everything converted");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LogUtils.getLogger().log(Level.WARNING, ERROR);
             LogUtils.logThrowable(e);
         }
@@ -2488,7 +2488,7 @@ public class ConfigUpdater {
                                 if (armor == null) {
                                     armor = Material.matchMaterial(material + "_" + armorType, true);
                                 }
-                            } catch (Exception e) {
+                            } catch (final Exception e) {
                                 LogUtils.getLogger().log(Level.WARNING, "      Could not read armor type, skipping");
                                 LogUtils.logThrowable(e);
                                 continue conditions;
@@ -2711,7 +2711,7 @@ public class ConfigUpdater {
             LogUtils.getLogger().log(Level.FINE, "  All events updated successfully, saving to the file");
             events.saveConfig();
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LogUtils.getLogger().log(Level.WARNING, ERROR);
             LogUtils.logThrowable(e);
         }
@@ -2790,7 +2790,7 @@ public class ConfigUpdater {
                 connection.prepareStatement("COMMIT").executeUpdate();
             }
             LogUtils.getLogger().log(Level.INFO, "Updated database format to better one.");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LogUtils.getLogger().log(Level.WARNING, ERROR);
             LogUtils.logThrowable(e);
         }
@@ -2865,7 +2865,7 @@ public class ConfigUpdater {
             // when all conditions are converted, save the file
             conditionsAccessor.saveConfig();
             LogUtils.getLogger().log(Level.INFO, "Converted give/take events and item conditions to new format!");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LogUtils.getLogger().log(Level.WARNING, ERROR);
             LogUtils.logThrowable(e);
         }
@@ -3165,7 +3165,7 @@ public class ConfigUpdater {
             // every place where conditions are is now updated, finished!
             LogUtils.getLogger().log(Level.INFO, "Converted inverted conditions to a new format using exclamation marks!");
             LogUtils.getLogger().log(Level.FINE, "Converting took " + (new Date().getTime() - time) + "ms");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             // try-catch block is required - if there is some exception,
             // the version wouldn't get changed and updater would fall into
             // an infinite loop of endless exceptiorns
@@ -3394,7 +3394,7 @@ public class ConfigUpdater {
                         list.put(playerID, Bukkit.getOfflinePlayer(playerID).getUniqueId().toString());
                     }
                 }
-            } catch (SQLException e) {
+            } catch (final SQLException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Could not convert name to UUID");
                 LogUtils.logThrowable(e);
             }
@@ -3420,7 +3420,7 @@ public class ConfigUpdater {
             }
             Files.copy(BetonQuest.getInstance().getResource("CHANGELOG.md"), changelog.toPath());
             LogUtils.getLogger().log(Level.INFO, "Changelog added!");
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LogUtils.getLogger().log(Level.WARNING, "Couldn't add a Changelog file:" + e.getMessage());
             LogUtils.logThrowable(e);
         }

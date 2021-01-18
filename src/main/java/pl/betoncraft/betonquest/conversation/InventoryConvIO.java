@@ -1,7 +1,7 @@
 package pl.betoncraft.betonquest.conversation;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -163,7 +163,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
                         SKULL_CACHE.put(npcName, npc);
                         inv.setItem(0, npc);
                     });
-                } catch (IllegalArgumentException e) {
+                } catch (final IllegalArgumentException e) {
                     LogUtils.getLogger().log(Level.FINE, "Could not load skull for chest conversation!", e);
                 }
             });
@@ -195,7 +195,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
                     final int colonIndex = materialName.indexOf(':');
                     try {
                         data = Short.valueOf(materialName.substring(colonIndex + 1));
-                    } catch (NumberFormatException e) {
+                    } catch (final NumberFormatException e) {
                         LogUtils.getLogger().log(Level.WARNING, "Could not read material data: " + e.getMessage());
                         LogUtils.logThrowable(e);
                         data = 0;

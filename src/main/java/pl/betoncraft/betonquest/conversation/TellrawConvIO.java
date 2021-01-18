@@ -3,7 +3,7 @@ package pl.betoncraft.betonquest.conversation;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
@@ -21,6 +21,10 @@ import java.util.*;
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition"})
 public class TellrawConvIO extends ChatConvIO {
 
+    static {
+        new UnknownCommandTellrawListener();
+    }
+
     protected Map<Integer, String> hashes;
     protected ChatColor color;
     protected boolean italic;
@@ -30,10 +34,6 @@ public class TellrawConvIO extends ChatConvIO {
     protected boolean magic;
     protected String number;
     private int count;
-
-    static {
-        new UnknownCommandTellrawListener();
-    }
 
     public TellrawConvIO(final Conversation conv, final String playerID) {
         super(conv, playerID);

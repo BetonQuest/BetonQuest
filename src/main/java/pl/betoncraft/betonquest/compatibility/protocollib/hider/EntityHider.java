@@ -34,7 +34,6 @@ public class EntityHider implements Listener {
     // Packets that update remote player entities
     private static final PacketType[] ENTITY_PACKETS = {
             PacketType.Play.Server.ENTITY_EQUIPMENT,
-            PacketType.Play.Server.BED,
             PacketType.Play.Server.ANIMATION,
             PacketType.Play.Server.NAMED_ENTITY_SPAWN,
             PacketType.Play.Server.COLLECT,
@@ -45,7 +44,7 @@ public class EntityHider implements Listener {
             PacketType.Play.Server.ENTITY_VELOCITY,
             PacketType.Play.Server.REL_ENTITY_MOVE,
             PacketType.Play.Server.ENTITY_LOOK,
-            PacketType.Play.Server.ENTITY_MOVE_LOOK,
+            PacketType.Play.Server.REL_ENTITY_MOVE_LOOK,
             PacketType.Play.Server.ENTITY_TELEPORT,
             PacketType.Play.Server.ENTITY_HEAD_ROTATION,
             PacketType.Play.Server.ENTITY_STATUS,
@@ -54,7 +53,6 @@ public class EntityHider implements Listener {
             PacketType.Play.Server.ENTITY_EFFECT,
             PacketType.Play.Server.REMOVE_ENTITY_EFFECT,
             PacketType.Play.Server.BLOCK_BREAK_ANIMATION,
-            PacketType.Play.Server.UPDATE_ENTITY_NBT,
             PacketType.Play.Server.COMBAT_EVENT
 
             // We don't handle DESTROY_ENTITY though

@@ -431,7 +431,23 @@
               <relocations>
                 <relocation>
                   <pattern>org.bstats</pattern>
-                  <shadedPattern>pl.betoncraft.betonquest.bstats</shadedPattern>
+                  <shadedPattern>${groupId}.${artifactId}.shaded.org.bstats</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.apache.maven</pattern>
+                  <shadedPattern>${groupId}.${artifactId}.shaded.org.apache.maven</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.google.common</pattern>
+                  <shadedPattern>${groupId}.${artifactId}.shaded.com.google.common</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.apache.commons</pattern>
+                  <shadedPattern>${groupId}.${artifactId}.shaded.org.apache.commons</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.json</pattern>
+                  <shadedPattern>${groupId}.${artifactId}.shaded.org.json</shadedPattern>
                 </relocation>
               </relocations>
               <filters>
