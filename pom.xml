@@ -249,7 +249,7 @@
       </activation>
       <repositories>
         <repository>
-          <id>papermc</id>
+          <id>papermc-repo</id>
           <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
       </repositories>
@@ -428,38 +428,53 @@
             <configuration>
               <createDependencyReducedPom>false</createDependencyReducedPom>
               <shadedArtifactAttached>true</shadedArtifactAttached>
-              <relocations>
-                <relocation>
-                  <pattern>org.bstats</pattern>
-                  <shadedPattern>${groupId}.${artifactId}.shaded.org.bstats</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>org.apache.maven</pattern>
-                  <shadedPattern>${groupId}.${artifactId}.shaded.org.apache.maven</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>com.google.common</pattern>
-                  <shadedPattern>${groupId}.${artifactId}.shaded.com.google.common</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>org.apache.commons</pattern>
-                  <shadedPattern>${groupId}.${artifactId}.shaded.org.apache.commons</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>org.json</pattern>
-                  <shadedPattern>${groupId}.${artifactId}.shaded.org.json</shadedPattern>
-                </relocation>
-              </relocations>
+              <minimizeJar>true</minimizeJar>
+              <artifactSet>
+                <includes>
+                  <include>org.bstats</include>
+                  <include>org.apache.maven</include>
+                  <include>org.apache.commons</include>
+                  <include>com.google.guava</include>
+                  <include>commons-io</include>
+                  <include>org.json</include>
+                </includes>
+              </artifactSet>
               <filters>
                 <filter>
                   <artifact>*</artifact>
                   <excludes>
-                    <exclude>META-INF/MANIFEST.MF</exclude>
-                    <exclude>META-INF/LICENSE</exclude>
-                    <exclude>META-INF/NOTICE</exclude>
+                    <exclude>META-INF/**</exclude>
                   </excludes>
                 </filter>
+                <filter>
+                  <artifact>org.bstats</artifact>
+                  <includes>
+                    <include>org/bstats/**</include>
+                  </includes>
+                </filter>
               </filters>
+              <relocations>
+                <relocation>
+                  <pattern>org.bstats</pattern>
+                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.org.bstats</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.google.common</pattern>
+                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.com.google.common</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.apache.maven</pattern>
+                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.org.apache.maven</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.apache.commons</pattern>
+                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.org.apache.commons</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.json</pattern>
+                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.org.json</shadedPattern>
+                </relocation>
+              </relocations>
             </configuration>
           </execution>
         </executions>
