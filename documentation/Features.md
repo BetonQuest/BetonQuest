@@ -49,7 +49,7 @@ Sorry, your browser doesn't support embedded videos.
  
 BetonQuest allows for item customization far beyond what other plugins can do. You can use ANY item from ANY plugin
 in your quests as rewards or conditions. BetonQuest also features a set of powerful item flags that will add non-vanilla
-behaviour to your items. For example, you could make a proper "Quest Item" that cannot be thrown away**** and won't be dropped when the player dies.
+behaviour to your items. For example, you could make a proper "Quest Item" that cannot be thrown away and won't be dropped when the player dies.
 This system is *really* powerful, read the [final concept](https://github.com/BetonQuest/BetonQuest/issues/1037#issuecomment-590513472)
 to get an idea of what will be possible.
 

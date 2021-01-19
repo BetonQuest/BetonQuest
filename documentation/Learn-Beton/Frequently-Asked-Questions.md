@@ -69,7 +69,7 @@ blockBroken: "folder addPoint,sendNotify,checkForCompletion"
 addPoint: "point blockCounter 1"
 sendNotify: "notify &a%point.blockCounter.amount%&8/&210 &7stone broken. io:chat"
 
-checkForCompletion: "run ^objective remove mineStone ^point blockCounter *0 conditions:has10Points"
+checkForCompletion: "run ^objective remove mineStone ^deletepoint blockCounter conditions:has10Points"
 
 #conditions.yml
 has10Points: "point blockCounter 10"
