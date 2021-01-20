@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - ${current-date}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixes
+### Security
+
+## [1.12.1] - 2021-02-05
+### Added
 - Ingame update notification if the updater found an update
 ### Changed
 ### Deprecated
