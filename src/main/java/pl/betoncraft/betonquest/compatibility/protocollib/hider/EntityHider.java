@@ -9,7 +9,6 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import com.google.common.collect.Tables;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -23,7 +22,9 @@ import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * EntityHider From: https://gist.github.com/aadnk/5871793
@@ -62,7 +63,7 @@ public class EntityHider implements Listener {
     // Listeners
     private final Listener bukkitListener;
     private final PacketAdapter protocolListener;
-    protected Table<Integer, Integer, Boolean> observerEntityMap = Tables.synchronizedTable(HashBasedTable.create());
+    protected Table<Integer, Integer, Boolean> observerEntityMap = HashBasedTable.create();
     private ProtocolManager manager;
 
     /**
@@ -158,8 +159,10 @@ public class EntityHider implements Listener {
     protected void removeEntity(final Entity entity, final boolean destroyed) {
         final int entityID = entity.getEntityId();
 
-        for (final Map<Integer, Boolean> maps : observerEntityMap.rowMap().values()) {
-            maps.remove(entityID);
+        final List<Map.Entry<Integer, Map<Integer, Boolean>>> list = new CopyOnWriteArrayList<>(observerEntityMap.rowMap().entrySet());
+
+        for (final Map.Entry<Integer, Map<Integer, Boolean>> integerMapEntry : list) {
+            integerMapEntry.getValue().remove(entityID);
         }
     }
 
@@ -214,9 +217,11 @@ public class EntityHider implements Listener {
             public void onPacketSending(final PacketEvent event) {
                 final int index = event.getPacketType() == PacketType.Play.Server.COMBAT_EVENT ? 1 : 0;
 
-                final Integer entityID = event.getPacket().getIntegers().readSafely(index);
-                if (entityID != null && !isVisible(event.getPlayer(), entityID)) {
-                    event.setCancelled(true);
+                if (!event.isPlayerTemporary()) {
+                    final Integer entityID = event.getPacket().getIntegers().readSafely(index);
+                    if (entityID != null && !isVisible(event.getPlayer(), entityID)) {
+                        event.setCancelled(true);
+                    }
                 }
             }
         };

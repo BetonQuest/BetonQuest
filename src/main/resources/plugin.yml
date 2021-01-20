@@ -1,9 +1,9 @@
-name: ${name}
-main: ${groupId}.${artifactId}.${name}
+name: ${project.name}
+main: ${project.groupId}.${project.artifactId}.${project,name}
 version: ${maven-version}
-description: ${description}
-website: ${organization.url}
-author: ${organization.name}
+description: ${project.description}
+website: ${project.organization.url}
+author: ${project.organization.name}
 authors: [ Wolf2323, SaltyAimbOtter, seyfahni, joblo2213, bundabrg, Co0sh ]
 api-version: 1.13
 softdepend:
