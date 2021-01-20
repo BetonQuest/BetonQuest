@@ -4,7 +4,6 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -72,7 +71,7 @@ public class HologramLoop {
                     for (int i = 0; i < conditions.length; i++) {
                         try {
                             conditions[i] = new ConditionID(pack, parts[i]);
-                        } catch (ObjectNotFoundException e) {
+                        } catch (final ObjectNotFoundException e) {
                             LogUtils.getLogger().log(Level.WARNING, "Error while loading " + parts[i] + " condition for hologram " + packName + "."
                                     + key + ": " + e.getMessage());
                             LogUtils.logThrowable(e);
@@ -104,22 +103,12 @@ public class HologramLoop {
                             }
                             final ItemStack stack = new QuestItem(itemID).generate(stackSize);
                             hologram.appendItemLine(stack);
-                        } catch (InstructionParseException e) {
+                        } catch (final InstructionParseException e) {
                             LogUtils.getLogger().log(Level.WARNING, "Could not parse item in " + key + " hologram: " + e.getMessage());
                             LogUtils.logThrowable(e);
-                        } catch (ObjectNotFoundException e) {
+                        } catch (final ObjectNotFoundException e) {
                             LogUtils.getLogger().log(Level.WARNING, "Could not find item in " + key + " hologram: " + e.getMessage());
                             LogUtils.logThrowable(e);
-
-                            //TODO Remove this code in the version 1.13 or later
-                            //This support the old implementation of Items
-                            final Material material = Material.matchMaterial(line.substring(5));
-                            if (material != null) {
-                                LogUtils.getLogger().log(Level.WARNING, "You use the Old method to define a hover item, this still work, but use the new method,"
-                                        + " defining it as a BetonQuest Item in the items.yml. The compatibility will be removed in 1.13");
-                                hologram.appendItemLine(new ItemStack(material));
-                            }
-                            //Remove up to here
                         }
                     } else {
                         hologram.appendTextLine(line.replace('&', '§'));

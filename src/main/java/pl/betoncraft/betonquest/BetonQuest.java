@@ -14,7 +14,6 @@ import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.conditions.*;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.config.ConfigPackage;
-import pl.betoncraft.betonquest.config.ConfigUpdater;
 import pl.betoncraft.betonquest.conversation.*;
 import pl.betoncraft.betonquest.database.*;
 import pl.betoncraft.betonquest.events.*;
@@ -405,9 +404,6 @@ public class BetonQuest extends JavaPlugin {
         // load database backup
         Utils.loadDatabaseFromBackup();
 
-        // update configuration if needed
-        new ConfigUpdater();
-
         // if it's a first start of the plugin, debug option is not there
         // add it so debug option is turned off after first start
         if (getConfig().getString("debug", null) == null) {
@@ -493,7 +489,6 @@ public class BetonQuest extends JavaPlugin {
         registerConditions("fly", FlyingCondition.class);
 
         // register events
-        registerEvents("message", MessageEvent.class);
         registerEvents("objective", ObjectiveEvent.class);
         registerEvents("command", CommandEvent.class);
         registerEvents("tag", TagEvent.class);
@@ -534,9 +529,7 @@ public class BetonQuest extends JavaPlugin {
         registerEvents("door", DoorEvent.class);
         registerEvents("if", IfElseEvent.class);
         registerEvents("variable", VariableEvent.class);
-        registerEvents("title", TitleEvent.class);
         registerEvents("language", LanguageEvent.class);
-        registerEvents("playsound", PlaysoundEvent.class);
         registerEvents("pickrandom", PickRandomEvent.class);
         registerEvents("experience", ExperienceEvent.class);
         registerEvents("notify", NotifyEvent.class);
@@ -612,32 +605,27 @@ public class BetonQuest extends JavaPlugin {
 
         // schedule quest data loading on the first tick, so all other
         // plugins can register their types
-        Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
-
-            @Override
-            public void run() {
-                // Load all events and conditions
-                loadData();
-                // Load global tags and points
-                globalData = new GlobalData();
-                // load data for all online players
-                for (final Player player : Bukkit.getOnlinePlayers()) {
-                    final String playerID = PlayerConverter.getID(player);
-                    final PlayerData playerData = new PlayerData(playerID);
-                    playerDataMap.put(playerID, playerData);
-                    playerData.startObjectives();
-                    playerData.getJournal().update();
-                    if (playerData.getConversation() != null) {
-                        new ConversationResumer(playerID, playerData.getConversation());
-                    }
+        Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
+            // Load all events and conditions
+            loadData();
+            // Load global tags and points
+            globalData = new GlobalData();
+            // load data for all online players
+            for (final Player player : Bukkit.getOnlinePlayers()) {
+                final String playerID = PlayerConverter.getID(player);
+                final PlayerData playerData = new PlayerData(playerID);
+                playerDataMap.put(playerID, playerData);
+                playerData.startObjectives();
+                playerData.getJournal().update();
+                if (playerData.getConversation() != null) {
+                    new ConversationResumer(playerID, playerData.getConversation());
                 }
+            }
 
-
-                try {
-                    playerHider = new PlayerHider();
-                } catch (final InstructionParseException e) {
-                    LogUtils.getLogger().log(Level.SEVERE, "Could not start PlayerHider! " + e.getMessage(), e);
-                }
+            try {
+                playerHider = new PlayerHider();
+            } catch (final InstructionParseException e) {
+                LogUtils.getLogger().log(Level.SEVERE, "Could not start PlayerHider! " + e.getMessage(), e);
             }
         });
 

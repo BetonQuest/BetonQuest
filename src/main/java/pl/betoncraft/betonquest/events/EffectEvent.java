@@ -7,10 +7,7 @@ import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
-
-import java.util.logging.Level;
 
 /**
  * Gives the player specified potion effect
@@ -35,17 +32,11 @@ public class EffectEvent extends QuestEvent {
         try {
             duration = instruction.getVarNum();
             amplifier = instruction.getVarNum();
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             throw new InstructionParseException("Could not parse number arguments", e);
         }
 
-        if (instruction.hasArgument("--ambient")) {
-            LogUtils.getLogger().log(Level.WARNING, instruction.getID().getFullID() + ": Effect event uses \"--ambient\" which is deprecated. Please use \"ambient\"");
-            ambient = true;
-        } else {
-            ambient = instruction.hasArgument("ambient");
-        }
-
+        ambient = instruction.hasArgument("ambient");
         hidden = instruction.hasArgument("hidden");
         icon = !instruction.hasArgument("noicon");
     }

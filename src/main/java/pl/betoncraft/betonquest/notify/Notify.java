@@ -113,8 +113,7 @@ public final class Notify {
     /**
      * The Notifications should be in a separate configuration in the main folder
      */
-    // TODO Delete in BQ 2.0.0
-    @Deprecated
+    // TODO Replace with new new method
     private static void loadCategorySettings() {
         final Map<String, Map<String, String>> settings = new HashMap<>();
         for (final String packName : Config.getPackages().keySet()) {

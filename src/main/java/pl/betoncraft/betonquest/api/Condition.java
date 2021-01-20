@@ -35,17 +35,6 @@ abstract public class Condition extends ForceSyncHandler<Boolean> {
     protected boolean persistent;
 
     /**
-     * @deprecated There is a new constructor that handles thread safety.
-     * Using this may worsen your conditions performance!
-     * This will be removed in 2.0 release
-     */
-    // TODO Delete in BQ 2.0.0
-    @Deprecated
-    public Condition(final Instruction instruction) {
-        this(instruction, true);
-    }
-
-    /**
      * Creates new instance of the condition. The condition should parse
      * instruction string at this point and extract all the data from it. If
      * anything goes wrong, throw {@link InstructionParseException} with an

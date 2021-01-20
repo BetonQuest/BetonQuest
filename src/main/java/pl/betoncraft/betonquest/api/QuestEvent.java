@@ -44,17 +44,6 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
     protected boolean persistent;
 
     /**
-     * @deprecated There is a new constructor that handles thread safety.
-     * Using this may worsen your event performance!,
-     * this will be removed in 2.0 release
-     */
-    // TODO Delete in BQ 2.0.0
-    @Deprecated
-    public QuestEvent(final Instruction instruction) throws InstructionParseException {
-        this(instruction, true);
-    }
-
-    /**
      * Creates new instance of the event. The event should parse instruction
      * string without doing anything else. If anything goes wrong, throw
      * {@link InstructionParseException} with error message describing the

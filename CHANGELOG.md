@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 ### Deprecated
 ### Removed
+- `message` event
+- `title` event
+- `playsound` event
+- more deprecated stuff
 ### Fixes
 ### Security
 
