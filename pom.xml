@@ -14,7 +14,7 @@
   </properties>
 
   <name>BetonQuest</name>
-  <groupId>pl.betoncraft</groupId>
+  <groupId>org.betonquest</groupId>
   <artifactId>betonquest</artifactId>
   <version>${version}-SNAPSHOT</version>
   <description>All Your Adventure Supplies</description>

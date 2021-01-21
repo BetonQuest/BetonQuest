@@ -62,9 +62,9 @@ Report **Issues** here: https://github.com/BetonQuest/BetonQuest/issues/new/choo
 
 <dependencies>
     <dependency>
-        <groupId>pl.betoncraft</groupId>
+        <groupId>org.betonquest</groupId>
         <artifactId>betonquest</artifactId>
-        <version>1.12.0</version>
+        <version>2.0.0-SNAPSHOT</version>
     </dependency>
 </dependencies>
 ```
