@@ -63,7 +63,7 @@ public class VersionTest {
     }
 
     /**
-     * Test if the {@link pl.betoncraft.betonquest.utils.Updater.Version}'s have the correct string version
+     * Test if the {@link org.betonquest.betonquest.utils.Updater.Version}'s have the correct string version
      */
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
@@ -82,7 +82,7 @@ public class VersionTest {
     }
 
     /**
-     * Test if the {@link pl.betoncraft.betonquest.utils.Updater.Version}'s have the correct DEV boolean
+     * Test if the {@link org.betonquest.betonquest.utils.Updater.Version}'s have the correct DEV boolean
      */
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
@@ -101,7 +101,7 @@ public class VersionTest {
     }
 
     /**
-     * Test if the {@link pl.betoncraft.betonquest.utils.Updater.Version}'s have the correct official boolean
+     * Test if the {@link org.betonquest.betonquest.utils.Updater.Version}'s have the correct official boolean
      */
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
@@ -121,7 +121,7 @@ public class VersionTest {
 
     /**
      * Compares all version combinations withe the
-     * {@link pl.betoncraft.betonquest.utils.Updater.UpdateStrategy#MAJOR} strategy.
+     * {@link org.betonquest.betonquest.utils.Updater.UpdateStrategy#MAJOR} strategy.
      */
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
@@ -161,7 +161,7 @@ public class VersionTest {
 
     /**
      * Compares all version combinations withe the
-     * {@link pl.betoncraft.betonquest.utils.Updater.UpdateStrategy#MINOR} strategy.
+     * {@link org.betonquest.betonquest.utils.Updater.UpdateStrategy#MINOR} strategy.
      */
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
@@ -200,7 +200,7 @@ public class VersionTest {
 
     /**
      * Compares all version combinations withe the
-     * {@link pl.betoncraft.betonquest.utils.Updater.UpdateStrategy#PATCH} strategy.
+     * {@link org.betonquest.betonquest.utils.Updater.UpdateStrategy#PATCH} strategy.
      */
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
@@ -238,7 +238,7 @@ public class VersionTest {
 
     /**
      * Compares all version combinations withe the
-     * {@link pl.betoncraft.betonquest.utils.Updater.UpdateStrategy#MAJOR_DEV} strategy.
+     * {@link org.betonquest.betonquest.utils.Updater.UpdateStrategy#MAJOR_DEV} strategy.
      */
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
@@ -278,7 +278,7 @@ public class VersionTest {
 
     /**
      * Compares all version combinations withe the
-     * {@link pl.betoncraft.betonquest.utils.Updater.UpdateStrategy#MINOR_DEV} strategy.
+     * {@link org.betonquest.betonquest.utils.Updater.UpdateStrategy#MINOR_DEV} strategy.
      */
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
@@ -317,7 +317,7 @@ public class VersionTest {
 
     /**
      * Compares all version combinations withe the
-     * {@link pl.betoncraft.betonquest.utils.Updater.UpdateStrategy#PATCH_DEV} strategy.
+     * {@link org.betonquest.betonquest.utils.Updater.UpdateStrategy#PATCH_DEV} strategy.
      */
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test

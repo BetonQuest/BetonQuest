@@ -51,7 +51,7 @@ abstract class AbstractData<T extends Cloneable> {
      * This class parses a string into a object.
      * Each part of the input string can be a {@link Variable}s instead of an {@link Integer} or {@link String}.
      *
-     * @param packName Name of the {@link pl.betoncraft.betonquest.config.ConfigPackage} - required for
+     * @param packName Name of the {@link org.betonquest.betonquest.config.ConfigPackage} - required for
      *                 {@link Variable} resolution
      * @param data     string containing raw object in the defined format
      * @throws InstructionParseException Is thrown when an error appears while parsing the {@link Variable}s or the object

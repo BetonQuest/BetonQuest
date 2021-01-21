@@ -12,7 +12,7 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
  *
  * <p>
  * Registering your condition is done through
- * {@link pl.betoncraft.betonquest.BetonQuest#registerConditions(String, Class)
+ * {@link org.betonquest.betonquest.BetonQuest#registerConditions(String, Class)
  * registerConditions()} method.
  * </p>
  */
@@ -41,7 +41,7 @@ abstract public class Condition extends ForceSyncHandler<Boolean> {
      * error message describing the problem.
      *
      * @param instruction the Instruction object; you can get one from ID instance with
-     *                    {@link pl.betoncraft.betonquest.id.ID#generateInstruction()
+     *                    {@link org.betonquest.betonquest.id.ID#generateInstruction()
      *                    ID.generateInstruction()} or create it from an instruction
      *                    string
      * @param forceSync   If set to true this executes the condition on the servers main thread.

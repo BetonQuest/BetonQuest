@@ -20,7 +20,7 @@ import java.util.logging.Level;
  * </p>
  * <p>
  * Registering your events is done through
- * {@link pl.betoncraft.betonquest.BetonQuest#registerEvents(String, Class) registerEvents()} method.
+ * {@link org.betonquest.betonquest.BetonQuest#registerEvents(String, Class) registerEvents()} method.
  * </p>
  */
 @SuppressWarnings("PMD.CommentRequired")

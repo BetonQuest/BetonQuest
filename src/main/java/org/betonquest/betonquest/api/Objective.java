@@ -27,7 +27,7 @@ import java.util.logging.Level;
  * </p>
  * <p>
  * Registering your objectives is done through
- * {@link pl.betoncraft.betonquest.BetonQuest#registerObjectives(String, Class)
+ * {@link org.betonquest.betonquest.BetonQuest#registerObjectives(String, Class)
  * registerObjectives()} method.
  * </p>
  */
@@ -80,7 +80,7 @@ public abstract class Objective {
             final String event = i >= tempEvents1.length ? tempEvents2[i - tempEvents1.length] : tempEvents1[i];
             try {
                 events[i] = new EventID(instruction.getPackage(), event);
-            } catch (ObjectNotFoundException e) {
+            } catch (final ObjectNotFoundException e) {
                 if (length == 1 && "ID is null".equals(e.getMessage())) {
                     throw new InstructionParseException("Error while parsing objective events: No events are defined!", e);
                 }
@@ -96,7 +96,7 @@ public abstract class Objective {
                     : tempConditions1[i];
             try {
                 conditions[i] = new ConditionID(instruction.getPackage(), condition);
-            } catch (ObjectNotFoundException e) {
+            } catch (final ObjectNotFoundException e) {
                 throw new InstructionParseException("Error while parsing objective conditions: " + e.getMessage(), e);
             }
         }
@@ -400,7 +400,7 @@ public abstract class Objective {
         public void handle(final QREThrowing qreThrowing) {
             try {
                 qreThrowing.run();
-            } catch (QuestRuntimeException e) {
+            } catch (final QuestRuntimeException e) {
                 if (System.currentTimeMillis() - last < ERROR_RATE_LIMIT_MILLIS) {
                     return;
                 }
