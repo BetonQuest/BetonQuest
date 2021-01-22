@@ -39,7 +39,7 @@ public class KillPlayerObjective extends Objective implements Listener {
         required = instruction.getList(instruction.getOptional("required"), instruction::getCondition)
                 .toArray(new ConditionID[0]);
         notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
-        notify = instruction.hasArgument("notify") || notifyInterval > 0;
+        notify = instruction.hasArgument("notify");
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")

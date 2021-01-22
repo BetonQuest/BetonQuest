@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `npcrange` objective does not throw errors when the player is in a different world than the NPC
 - The block objectives notify could not be disabled.
 - fixed ConcurrentModificationException in EntityHider
+- fixed notify enabled by default for some objectives
 ### Security
 
 ## [1.12.0] - 2021-01-10

@@ -37,7 +37,7 @@ public class MMOCoreBreakCustomBlockObjective extends Objective implements Liste
         neededAmount = instruction.getInt();
 
         notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
-        notify = instruction.hasArgument("notify") || notifyInterval > 0;
+        notify = instruction.hasArgument("notify");
     }
 
     @EventHandler(ignoreCancelled = true)
