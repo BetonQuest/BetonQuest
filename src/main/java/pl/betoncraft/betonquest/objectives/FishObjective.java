@@ -44,7 +44,7 @@ public class FishObjective extends Objective implements Listener {
             throw new InstructionParseException("Fish amount cannot be less than 0");
         }
         notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
-        notify = instruction.hasArgument("notify") || notifyInterval > 0;
+        notify = instruction.hasArgument("notify");
     }
 
     @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
