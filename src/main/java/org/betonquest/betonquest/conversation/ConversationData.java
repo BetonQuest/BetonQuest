@@ -393,6 +393,9 @@ public class ConversationData {
 
     /**
      * Check if conversation has at least one valid option for player
+     *
+     * @param playerID The target player
+     * @return True, if the player can star the conversation.
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public boolean isReady(final String playerID) {

@@ -154,7 +154,7 @@ public class Config {
             try {
                 file.createNewFile();
                 try (InputStream input = plugin.getResource(resource);
-                     OutputStream output = Files.newOutputStream(file.toPath());) {
+                     OutputStream output = Files.newOutputStream(file.toPath())) {
                     final byte[] buffer = new byte[1024];
                     int len = input.read(buffer);
                     while (len != -1) {
@@ -346,6 +346,7 @@ public class Config {
      * Sends a message to player in his chosen language or default or English
      * (if previous not found).
      *
+     * @param packName    ID of the pack
      * @param playerID    ID of the player
      * @param messageName ID of the message
      */
@@ -358,6 +359,7 @@ public class Config {
      * (if previous not found). It will replace all {x} sequences with the
      * variables.
      *
+     * @param packName    ID of the pack
      * @param playerID    ID of the player
      * @param messageName ID of the message
      * @param variables   array of variables which will be inserted into the string
@@ -371,6 +373,7 @@ public class Config {
      * (if previous not found). It will replace all {x} sequences with the
      * variables and play the sound.
      *
+     * @param packName    ID of the pack
      * @param playerID    ID of the player
      * @param messageName ID of the message
      * @param variables   array of variables which will be inserted into the string
@@ -385,6 +388,7 @@ public class Config {
      * (if previous not found). It will replace all {x} sequences with the
      * variables and play the sound. It will also add a prefix to the message.
      *
+     * @param packName        ID of the pack
      * @param playerID        ID of the player
      * @param messageName     ID of the message
      * @param variables       array of variables which will be inserted into the message
@@ -431,11 +435,13 @@ public class Config {
      * (if previous not found). It will replace all {x} sequences with the
      * variables and play the sound. It will also add a prefix to the message.
      *
+     * @param packName    ID of the pack
      * @param player      player
      * @param messageName ID of the message
      * @param variables   array of variables which will be inserted into the message
      * @param category    notification category
      * @param data        custom notifyIO data
+     * @throws QuestRuntimeException thrown if it is not possible to send the notification
      */
     public static void sendNotify(final String packName, final Player player, final String messageName, final String[] variables, final String category, final Map<String, String> data) throws QuestRuntimeException {
         final String message = parseMessage(packName, player, messageName, variables);
@@ -462,11 +468,13 @@ public class Config {
     /**
      * Retrieve's a message in the language of the player, replacing variables
      *
+     * @param packName        ID of the pack
      * @param player          player
      * @param messageName     name of the message to retrieve
      * @param variables       Variables to replace in message
      * @param prefixName      ID of the prefix
      * @param prefixVariables array of variables which will be inserted into the prefix
+     * @return The parsed message.
      */
     public static String parseMessage(final String packName, final Player player, final String messageName, final String[] variables, final String prefixName,
                                       final String... prefixVariables) {

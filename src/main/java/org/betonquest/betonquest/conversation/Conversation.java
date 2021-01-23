@@ -53,11 +53,11 @@ public class Conversation implements Listener {
     private final Conversation conv;
     private final BetonQuest plugin;
     private final Map<Integer, String> current = new HashMap<>();
+    private final boolean messagesDelaying;
     private ConversationData data;
     private ConversationIO inOut;
     private String option;
     private boolean ended;
-    private final boolean messagesDelaying;
     private Interceptor interceptor;
 
 
@@ -326,6 +326,8 @@ public class Conversation implements Listener {
 
     /**
      * Send message to player, bypassing any message delaying if needed
+     *
+     * @param message The message to send
      */
     public void sendMessage(final String message) {
         if (interceptor == null) {

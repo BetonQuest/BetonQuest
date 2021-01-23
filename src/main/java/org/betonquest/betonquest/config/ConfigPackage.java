@@ -140,6 +140,9 @@ public class ConfigPackage {
 
     /**
      * Perform Variable substitution
+     *
+     * @param input The String to substitution
+     * @return the substituted string
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity"})
     public String subst(final String input) {
@@ -162,7 +165,7 @@ public class ConfigPackage {
             try {
                 final GlobalVariableID variableID = new GlobalVariableID(this, varName);
                 varVal = variableID.getPackage().getMain().getConfig().getString("variables." + variableID.getBaseID());
-            } catch (ObjectNotFoundException e) {
+            } catch (final ObjectNotFoundException e) {
                 LogUtils.getLogger().log(Level.WARNING, e.getMessage());
                 LogUtils.logThrowable(e);
                 return variableInput;
@@ -204,7 +207,7 @@ public class ConfigPackage {
                     locZ = Double.parseDouble(innerVarVal.substring(offset2 + 1, offset3));
                     // rest is world + possible other arguments
                     rest = innerVarVal.substring(offset3);
-                } catch (NumberFormatException e) {
+                } catch (final NumberFormatException e) {
                     LogUtils.getLogger().log(Level.WARNING, String.format(
                             "Could not parse coordinates in inner variable %s in variable %s in package %s",
                             innerVarName, varName, name));
@@ -223,7 +226,7 @@ public class ConfigPackage {
                     vecLocX = Double.parseDouble(varVal.substring(offset1 + 1, offset2));
                     vecLocY = Double.parseDouble(varVal.substring(offset2 + 1, offset3));
                     vecLocZ = Double.parseDouble(varVal.substring(offset3 + 1, offset4));
-                } catch (NumberFormatException e) {
+                } catch (final NumberFormatException e) {
                     LogUtils.getLogger().log(Level.WARNING, String.format("Could not parse vector inlocation variable %s in package %s",
                             varName, name));
                     LogUtils.logThrowable(e);
@@ -273,7 +276,7 @@ public class ConfigPackage {
     /**
      * Returns a string with inserted variables and color codes and linebreaks replaced
      *
-     * @param address
+     * @param address The address of the String.
      * @return a fully formatted string
      */
     public String getFormattedString(final String address) {

@@ -17,7 +17,7 @@ public class CompoundLocation {
 
     /**
      * This class parses a string into a {@link Location} and a {@link Vector}. The input string has
-     * to be in the format 'x;y;z;world[;yaw;pitch][-> (x;y;z)]'. All elements in square brackets are optional.
+     * to be in the format 'x;y;z;world[;yaw;pitch][-&gt; (x;y;z)]'. All elements in square brackets are optional.
      * The last optional part is the {@link Vector} that will be added to the {@link Location} if specified.
      * Each part of the input string can be a {@link Variable} instead of an {@link Integer} or {@link String}.
      *

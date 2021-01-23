@@ -10,6 +10,8 @@ public interface Integrator {
 
     /**
      * Integrate with another plugin.
+     *
+     * @throws HookException Is thrown, if the hooking was not successful
      */
     void hook() throws HookException;
 

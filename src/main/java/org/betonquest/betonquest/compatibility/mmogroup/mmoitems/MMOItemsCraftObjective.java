@@ -48,6 +48,8 @@ public class MMOItemsCraftObjective extends Objective implements Listener {
     /**
      * This is just Spigots basic crafting event for
      * MMOItems vanilla crafting functionality.
+     *
+     * @param event The event
      */
     @EventHandler
     public void onItemCraft(final CraftItemEvent event) {
@@ -73,6 +75,8 @@ public class MMOItemsCraftObjective extends Objective implements Listener {
 
     /**
      * This event is called by MMOItems "recipe-amounts" crafting system.
+     *
+     * @param event The event
      */
     @EventHandler(ignoreCancelled = true)
     public void onRecipeUse(final CraftMMOItemEvent event) {
@@ -96,6 +100,8 @@ public class MMOItemsCraftObjective extends Objective implements Listener {
 
     /**
      * This listener handles items that were crafted in a MMOItems Craftingstation GUI.
+     *
+     * @param event The event.
      */
     @EventHandler(ignoreCancelled = true)
     public void onRecipeUse(final PlayerUseCraftingStationEvent event) {
@@ -139,6 +145,31 @@ public class MMOItemsCraftObjective extends Objective implements Listener {
         return !realItemID.equalsIgnoreCase(itemId) || !realItemType.equalsIgnoreCase(itemType.getId());
     }
 
+    @Override
+    public void start() {
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+    }
+
+    @Override
+    public void stop() {
+        HandlerList.unregisterAll(this);
+    }
+
+    @Override
+    public String getDefaultDataInstruction() {
+        return String.valueOf(amount);
+    }
+
+    @Override
+    public String getProperty(final String name, final String playerID) {
+        if ("left".equalsIgnoreCase(name)) {
+            return Integer.toString(((CraftData) dataMap.get(playerID)).getAmount());
+        } else if ("amount".equalsIgnoreCase(name)) {
+            return Integer.toString(amount);
+        }
+        return "";
+    }
+
     public static class CraftData extends ObjectiveData {
 
         private int itemsLeft;
@@ -165,31 +196,6 @@ public class MMOItemsCraftObjective extends Objective implements Listener {
         public String toString() {
             return Integer.toString(itemsLeft);
         }
-    }
-
-    @Override
-    public void start() {
-        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-    }
-
-    @Override
-    public void stop() {
-        HandlerList.unregisterAll(this);
-    }
-
-    @Override
-    public String getDefaultDataInstruction() {
-        return String.valueOf(amount);
-    }
-
-    @Override
-    public String getProperty(final String name, final String playerID) {
-        if ("left".equalsIgnoreCase(name)) {
-            return Integer.toString(((CraftData) dataMap.get(playerID)).getAmount());
-        } else if ("amount".equalsIgnoreCase(name)) {
-            return Integer.toString(amount);
-        }
-        return "";
     }
 }
 

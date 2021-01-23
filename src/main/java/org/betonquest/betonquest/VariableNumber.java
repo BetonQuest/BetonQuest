@@ -23,12 +23,13 @@ public class VariableNumber {
      *
      * @param packName the package in which the variable is defined
      * @param variable the string to parse
+     * @throws InstructionParseException If the variable could not be created.
      */
     public VariableNumber(final String packName, final String variable) throws InstructionParseException {
         if (variable.length() > 2 && variable.charAt(0) == '%' && variable.endsWith("%")) {
             try {
                 this.variable = BetonQuest.createVariable(Config.getPackages().get(packName), variable);
-            } catch (InstructionParseException e) {
+            } catch (final InstructionParseException e) {
                 throw new InstructionParseException("Could not create variable: " + e.getMessage(), e);
             }
             if (this.variable == null) {
@@ -89,7 +90,7 @@ public class VariableNumber {
             double parsed = 0;
             try {
                 parsed = Double.parseDouble(resolved);
-            } catch (NumberFormatException e) {
+            } catch (final NumberFormatException e) {
                 LogUtils.getLogger().log(Level.FINE, "Could not parse the variable as a number, it's value is: '" + resolved + "'; returning 0.");
                 LogUtils.logThrowable(e);
             }

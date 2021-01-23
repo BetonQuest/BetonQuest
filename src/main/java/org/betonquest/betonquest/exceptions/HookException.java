@@ -22,7 +22,8 @@ public class HookException extends Exception {
      * Constructs a new exception related to a plugin
      * {@link Exception#Exception(String)}
      *
-     * @param plugin The plugin
+     * @param plugin  The plugin
+     * @param message The Message.
      */
     public HookException(final Plugin plugin, final String message) {
         super(message);
@@ -33,7 +34,9 @@ public class HookException extends Exception {
      * Constructs a new exception related to a plugin
      * {@link Exception#Exception(String, Throwable)}
      *
-     * @param plugin The plugin
+     * @param plugin  The plugin
+     * @param message The message
+     * @param cause   The Throwable
      */
     public HookException(final Plugin plugin, final String message, final Throwable cause) {
         super(message, cause);
@@ -45,6 +48,7 @@ public class HookException extends Exception {
      * {@link Exception#Exception(Throwable)}
      *
      * @param plugin The plugin
+     * @param cause  the exceptions cause.
      */
     public HookException(final Plugin plugin, final Throwable cause) {
         super(cause);

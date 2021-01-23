@@ -31,6 +31,8 @@ public class GlobalObjectives {
     /**
      * Adds a objective to the list of global objectives.
      * This method should only be called in the constructor of global objectives
+     *
+     * @param objectiveID The objective to add.
      */
     public static void add(final ObjectiveID objectiveID) {
         instance.globalObjectiveIds.add(objectiveID);

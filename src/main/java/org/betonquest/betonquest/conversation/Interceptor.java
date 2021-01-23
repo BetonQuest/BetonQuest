@@ -7,6 +7,8 @@ public interface Interceptor {
 
     /**
      * Send message to player bypassing Interceptor
+     *
+     * @param message The message
      */
     void sendMessage(String message);
 

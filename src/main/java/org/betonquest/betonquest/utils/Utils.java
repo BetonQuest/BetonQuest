@@ -120,7 +120,7 @@ public final class Utils {
                             try {
                                 final String value = res.getString(columnName);
                                 config.set(entry.getKey() + "." + counter + "." + columnName, value);
-                            } catch (SQLException e) {
+                            } catch (final SQLException e) {
                                 LogUtils.getLogger().log(Level.WARNING, "Could not read SQL: " + e.getMessage());
                                 LogUtils.logThrowable(e);
                                 done = false;
@@ -389,22 +389,22 @@ public final class Utils {
         }
         try {
             return Color.fromRGB(Integer.parseInt(string));
-        } catch (NumberFormatException e1) {
+        } catch (final NumberFormatException e1) {
             LogUtils.logThrowableIgnore(e1);
             // string is not a decimal number
             try {
                 return Color.fromRGB(Integer.parseInt(string.replace("#", ""), 16));
-            } catch (NumberFormatException e2) {
+            } catch (final NumberFormatException e2) {
                 LogUtils.logThrowableIgnore(e2);
                 // string is not a hexadecimal number, try dye color
                 try {
                     return DyeColor.valueOf(string.trim().toUpperCase(Locale.ROOT).replace(' ', '_')).getColor();
-                } catch (IllegalArgumentException e3) {
+                } catch (final IllegalArgumentException e3) {
                     // this was not a dye color name
                     throw new InstructionParseException("Dye color does not exist: " + string, e3);
                 }
             }
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             // string was a number, but incorrect
             throw new InstructionParseException("Incorrect RGB code: " + string, e);
         }
@@ -432,7 +432,11 @@ public final class Utils {
     }
 
     /**
-     * Replace resets with colorcode
+     * Replace resets with colorcode.
+     *
+     * @param string input string.
+     * @param color  default color.
+     * @return the formatted string.
      */
     public static String replaceReset(final String string, final String color) {
         return string.replace(ChatColor.RESET.toString(), ChatColor.RESET + color);
@@ -471,6 +475,9 @@ public final class Utils {
 
     /**
      * Split a string by white space, except if between quotes
+     *
+     * @param string the input string.
+     * @return the split string.
      */
     public static String[] split(final String string) {
         final List<String> list = new ArrayList<>();

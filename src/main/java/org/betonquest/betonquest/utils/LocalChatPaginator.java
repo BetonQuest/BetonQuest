@@ -36,6 +36,9 @@ public class LocalChatPaginator extends ChatPaginator {
 
     /**
      * Takes a string and returns the last colors that can be copied to a new line
+     *
+     * @param input the input string.
+     * @return last colors that can be copied to a new line
      */
     @SuppressWarnings("PMD.CyclomaticComplexity")
     public static String getLastColors(final String input) {
@@ -193,6 +196,9 @@ public class LocalChatPaginator extends ChatPaginator {
 
     /**
      * Return the width of text taking into account variable font size and ignoring hidden characters
+     *
+     * @param input the input string.
+     * @return width of text
      */
     public static int getWidth(final String input) {
         int ret = 0;
@@ -213,7 +219,10 @@ public class LocalChatPaginator extends ChatPaginator {
     }
 
     /**
-     * Return the length of the line minus hidden characters
+     * Returns the length of the line minus hidden characters.
+     *
+     * @param input the input string.
+     * @return the length of the line minus hidden characters.
      */
     public static int lineLength(final String input) {
         int ret = 0;
@@ -230,6 +239,9 @@ public class LocalChatPaginator extends ChatPaginator {
 
     /**
      * Return the number of hidden characters in input
+     *
+     * @param input the input string.
+     * @return number of hidden characters.
      */
     public static int hiddenCount(final String input) {
         final char[] rawChars = input.toCharArray();

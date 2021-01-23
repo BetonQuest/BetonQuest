@@ -21,30 +21,11 @@ public class WorldGuardIntegrator implements Integrator {
         plugin = BetonQuest.getInstance();
     }
 
-    @Override
-    public void hook() {
-        plugin.registerConditions("region", RegionCondition.class);
-        plugin.registerObjectives("region", RegionObjective.class);
-        if (Compatibility.getHooked().contains("Citizens")) {
-            plugin.registerConditions("npcregion", NPCRegionCondition.class);
-        }
-    }
-
-    @Override
-    public void reload() {
-        // Empty
-    }
-
-    @Override
-    public void close() {
-        // Empty
-    }
-
-
     /**
      * Return true if location is inside region
      *
-     * @param loc Location to Check
+     * @param loc        Location to Check
+     * @param regionName The name of the region
      * @return boolean True if in region
      */
     public static boolean isInsideRegion(final Location loc, final String regionName) {
@@ -64,5 +45,24 @@ public class WorldGuardIntegrator implements Integrator {
         }
 
         return region.contains(BukkitAdapter.asBlockVector(loc));
+    }
+
+    @Override
+    public void hook() {
+        plugin.registerConditions("region", RegionCondition.class);
+        plugin.registerObjectives("region", RegionObjective.class);
+        if (Compatibility.getHooked().contains("Citizens")) {
+            plugin.registerConditions("npcregion", NPCRegionCondition.class);
+        }
+    }
+
+    @Override
+    public void reload() {
+        // Empty
+    }
+
+    @Override
+    public void close() {
+        // Empty
     }
 }

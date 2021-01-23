@@ -526,14 +526,17 @@ public class Instruction {
         private static final long serialVersionUID = 2007556828888605511L;
 
         /**
-         * {@link Exception#Exception(String)}
+         * @param message The message
+         * @see Exception#Exception(String)
          */
         public PartParseException(final String message) {
             super("Error while parsing " + (lastOptional == null ? currentIndex : lastOptional + " optional") + " argument: " + message);
         }
 
         /**
-         * {@link Exception#Exception(String, Throwable)}
+         * @param message The message
+         * @param cause   The Throwable
+         * @see Exception#Exception(String, Throwable)
          */
         public PartParseException(final String message, final Throwable cause) {
             super("Error while parsing " + (lastOptional == null ? currentIndex : lastOptional + " optional") + " argument: " + message, cause);

@@ -49,6 +49,8 @@ public interface ConversationIO {
 
     /**
      * Send message through ConversationIO
+     *
+     * @param message The message to send
      */
     default void print(final String message) {
         // Empty
