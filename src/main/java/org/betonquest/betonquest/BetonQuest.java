@@ -1,6 +1,7 @@
 package org.betonquest.betonquest;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.betonquest.betonquest.api.*;
@@ -59,6 +60,14 @@ public class BetonQuest extends JavaPlugin {
     private static final Map<ObjectiveID, Objective> OBJECTIVES = new HashMap<>();
     private static final Map<String, ConversationData> CONVERSATIONS = new HashMap<>();
     private static final Map<VariableID, Variable> VARIABLES = new HashMap<>();
+    /**
+     * The BetonQuest Plugin instance
+     * -- GETTER --
+     * Returns the plugin's instance
+     *
+     * @return the plugin's instance
+     */
+    @Getter
     private static BetonQuest instance;
     private final ConcurrentHashMap<String, PlayerData> playerDataMap = new ConcurrentHashMap<>();
     private String pluginTag;
@@ -75,15 +84,6 @@ public class BetonQuest extends JavaPlugin {
     public BetonQuest() {
         super();
         instance = this;
-    }
-
-    /**
-     * Returns the plugin's instance
-     *
-     * @return the plugin's instance
-     */
-    public static BetonQuest getInstance() {
-        return instance;
     }
 
     public static boolean conditions(final String playerID, final Collection<ConditionID> conditionIDs) {
