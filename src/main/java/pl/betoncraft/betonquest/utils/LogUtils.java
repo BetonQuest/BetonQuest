@@ -187,7 +187,7 @@ public final class LogUtils {
      */
     public static void logThrowableReport(final Throwable throwable) {
         LogUtils.getLogger().log(Level.SEVERE,
-                "This is a exception, that shouldn't normally occur. If you do not know why this occurs, " + REPORT_MSG,
+                "This is an exception, that shouldn't normally occur. If you do not know why this occurs, " + REPORT_MSG,
                 throwable);
     }
 
@@ -198,7 +198,7 @@ public final class LogUtils {
      */
     public static void logThrowableIgnore(final Throwable throwable) {
         LogUtils.getLogger().log(Level.FINER,
-                "This is a exception, that could be normally ignored. If you think anyway, this is not normal, "
+                "This is an exception, that could be normally ignored. If you think anyway, this is not normal, "
                         + REPORT_MSG,
                 throwable);
     }
