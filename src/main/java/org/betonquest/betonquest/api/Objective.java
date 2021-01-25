@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.api;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.GlobalObjectives;
 import org.betonquest.betonquest.Instruction;
@@ -32,6 +33,7 @@ import java.util.logging.Level;
  * </p>
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition"})
+@CustomLog
 public abstract class Objective {
 
     protected Instruction instruction;
@@ -210,7 +212,7 @@ public abstract class Objective {
                             + PlayerConverter.getName(playerID) + ": " + e.getCause().getMessage());
                     LogUtils.logThrowable(e);
                 } else {
-                    LogUtils.logThrowableReport(e);
+                    LOG.reportException(e);
                 }
             }
             if (dataMap.isEmpty()) {

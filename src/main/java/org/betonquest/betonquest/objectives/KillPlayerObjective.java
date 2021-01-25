@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.objectives;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
@@ -20,6 +21,7 @@ import java.util.Locale;
 import java.util.logging.Level;
 
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class KillPlayerObjective extends Objective implements Listener {
 
     private final int notifyInterval;
@@ -72,8 +74,8 @@ public class KillPlayerObjective extends Objective implements Listener {
                 } catch (final QuestRuntimeException exception) {
                     try {
                         LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'players_to_kill' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
-                    } catch (final InstructionParseException exep) {
-                        LogUtils.logThrowableReport(exep);
+                    } catch (final InstructionParseException e) {
+                        LOG.reportException(e);
                     }
                 }
             }

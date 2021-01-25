@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.objectives;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Instruction.Item;
@@ -21,6 +22,7 @@ import java.util.Locale;
 import java.util.logging.Level;
 
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class PickupObjective extends Objective implements Listener {
 
     private final Item[] pickupItems;
@@ -69,8 +71,8 @@ public class PickupObjective extends Objective implements Listener {
             } catch (final QuestRuntimeException exception) {
                 try {
                     LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'items_to_pickup' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
-                } catch (final InstructionParseException exep) {
-                    LogUtils.logThrowableReport(exep);
+                } catch (final InstructionParseException e) {
+                    LOG.reportException(e);
                 }
             }
         }
@@ -112,6 +114,10 @@ public class PickupObjective extends Objective implements Listener {
         }
     }
 
+    private PickupData getPickupData(final String playerID) {
+        return (PickupData) dataMap.get(playerID);
+    }
+
     public static class PickupData extends ObjectiveData {
 
         private int amount;
@@ -139,9 +145,5 @@ public class PickupObjective extends Objective implements Listener {
             return Integer.toString(amount);
         }
 
-    }
-
-    private PickupData getPickupData(final String playerID) {
-        return (PickupData) dataMap.get(playerID);
     }
 }

@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.conditions;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.LogUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -15,6 +15,7 @@ import java.util.List;
  * Allows for checking multiple conditions with one instruction string.
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class CheckCondition extends Condition {
 
     private final List<Condition> internalConditions = new ArrayList<>();
@@ -61,7 +62,7 @@ public class CheckCondition extends Condition {
             if (e.getCause() instanceof InstructionParseException) {
                 throw new InstructionParseException("Error in internal condition: " + e.getCause().getMessage(), e);
             } else {
-                LogUtils.logThrowableReport(e);
+                LOG.reportException(e);
             }
         }
         return null;

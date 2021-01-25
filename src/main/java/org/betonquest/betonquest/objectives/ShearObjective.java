@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.objectives;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
@@ -23,6 +24,7 @@ import java.util.logging.Level;
  * Requires the player to shear a sheep.
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class ShearObjective extends Objective implements Listener {
 
     private final String color;
@@ -73,8 +75,8 @@ public class ShearObjective extends Objective implements Listener {
                 } catch (final QuestRuntimeException exception) {
                     try {
                         LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'sheep_to_shear' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
-                    } catch (final InstructionParseException exep) {
-                        LogUtils.logThrowableReport(exep);
+                    } catch (final InstructionParseException e) {
+                        LOG.reportException(e);
                     }
                 }
             }

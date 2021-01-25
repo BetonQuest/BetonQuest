@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmocore;
 
+import lombok.CustomLog;
 import net.Indyuce.mmocore.api.block.BlockType;
 import net.Indyuce.mmocore.api.block.SkullBlockType;
 import net.Indyuce.mmocore.api.block.VanillaBlockType;
@@ -21,6 +22,7 @@ import org.bukkit.event.Listener;
 import java.util.logging.Level;
 
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class MMOCoreBreakCustomBlockObjective extends Objective implements Listener {
 
     private final String desiredBlockId;
@@ -74,8 +76,8 @@ public class MMOCoreBreakCustomBlockObjective extends Objective implements Liste
             try {
                 LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to send a notification for the 'blocks_to_break' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
                 LogUtils.logThrowableIgnore(exception);
-            } catch (final InstructionParseException exep) {
-                LogUtils.logThrowableReport(exep);
+            } catch (final InstructionParseException e) {
+                LOG.reportException(e);
             }
         }
     }

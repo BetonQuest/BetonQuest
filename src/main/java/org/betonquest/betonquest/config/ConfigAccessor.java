@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.config;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.utils.LogUtils;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -12,6 +13,7 @@ import java.nio.file.Files;
 import java.util.logging.Level;
 
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class ConfigAccessor {
 
     private final String fileName;
@@ -57,7 +59,7 @@ public class ConfigAccessor {
                         fileConfiguration = YamlConfiguration.loadConfiguration(reader);
                     }
                 }
-            } catch (IOException exception) {
+            } catch (final IOException exception) {
                 fileConfiguration = new YamlConfiguration();
             }
         } else {
@@ -70,7 +72,7 @@ public class ConfigAccessor {
                         fileConfiguration.setDefaults(defConfig);
                     }
                 }
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 // Empty
             }
         }
@@ -105,7 +107,7 @@ public class ConfigAccessor {
             } else {
                 getConfig().save(configFile);
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LogUtils.getLogger().log(Level.SEVERE, "Could not save config to " + configFile);
             LogUtils.logThrowable(e);
         }
@@ -123,7 +125,7 @@ public class ConfigAccessor {
             try {
                 configFile.createNewFile();
                 try (InputStream input = plugin.getResource(fileName);
-                     OutputStream out = Files.newOutputStream(configFile.toPath());) {
+                     OutputStream out = Files.newOutputStream(configFile.toPath())) {
                     if (input == null) {
                         return;
                     }
@@ -134,8 +136,8 @@ public class ConfigAccessor {
                         length = input.read(buffer);
                     }
                 }
-            } catch (IOException e) {
-                LogUtils.logThrowableReport(e);
+            } catch (final IOException e) {
+                LOG.reportException(e);
             }
         }
     }

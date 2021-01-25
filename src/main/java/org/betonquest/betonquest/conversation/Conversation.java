@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.conversation;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.tuple.Pair;
@@ -39,6 +40,7 @@ import java.util.logging.Level;
  * Represents a conversation between player and NPC
  */
 @SuppressWarnings({"PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.CommentRequired"})
+@CustomLog
 public class Conversation implements Listener {
 
     private static final ConcurrentHashMap<String, Conversation> LIST = new ConcurrentHashMap<>();
@@ -245,7 +247,7 @@ public class Conversation implements Listener {
                     }
                 }
             } catch (final CancellationException | InterruptedException | ExecutionException | TimeoutException e) {
-                LogUtils.logThrowableReport(e);
+                LOG.reportException(e);
                 continue;
             }
             final String option = future.getKey();

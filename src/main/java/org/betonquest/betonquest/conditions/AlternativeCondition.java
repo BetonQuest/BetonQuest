@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.conditions;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -17,6 +17,7 @@ import java.util.concurrent.ExecutionException;
  * One of specified conditions has to be true
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class AlternativeCondition extends Condition {
 
     private final List<ConditionID> conditionIDs;
@@ -47,7 +48,7 @@ public class AlternativeCondition extends Condition {
                         return true;
                     }
                 } catch (final InterruptedException | ExecutionException e) {
-                    LogUtils.logThrowableReport(e);
+                    LOG.reportException(e);
                     return false;
                 }
             }

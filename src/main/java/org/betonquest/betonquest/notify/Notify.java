@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.notify;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -12,6 +13,7 @@ import java.util.*;
 import java.util.logging.Level;
 
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public final class Notify {
     private static final Map<String, Map<String, String>> CATEGORY_SETTINGS = new HashMap<>();
     private static String defaultNotifyIO;
@@ -60,9 +62,9 @@ public final class Notify {
 
         try {
             return new SuppressNotifyIO(categoryData);
-        } catch (final InstructionParseException exception) {
-            LogUtils.logThrowableReport(exception);
-            throw new UnsupportedOperationException(exception);
+        } catch (final InstructionParseException e) {
+            LOG.reportException(e);
+            throw new UnsupportedOperationException(e);
         }
     }
 

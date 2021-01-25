@@ -101,7 +101,7 @@ public final class LogUtils {
             if (debugReadError || "true".equals(debugString)) {
                 startDebug();
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             getLogger().log(Level.WARNING,
                     "It was not possible to crate the log file or to register the plugin internal logger. "
                             + "This is not critical, the server can still run, but it is not possible to use a 'debug log'.",
@@ -141,7 +141,7 @@ public final class LogUtils {
             final File newFile = new File(LOG_FILE.getParentFile(), newName + ".log");
             try {
                 Files.move(LOG_FILE.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 getLogger().log(Level.WARNING,
                         "It was not possible to rename the 'debug log'. This means '" + LOG_FILE.getName()
                                 + "' couldn't be renamed and writing to this file will be continued.",
@@ -178,17 +178,6 @@ public final class LogUtils {
         final int stackSize = throwable.getStackTrace().length;
         final StackTraceElement element = throwable.getStackTrace()[stackSize - 1];
         getLogger().throwing(element.getClassName(), element.getMethodName(), throwable);
-    }
-
-    /**
-     * Log a throwable, that shouldn't normally occur, to the log
-     *
-     * @param throwable The {@link Throwable} to log
-     */
-    public static void logThrowableReport(final Throwable throwable) {
-        LogUtils.getLogger().log(Level.SEVERE,
-                "This is an exception, that shouldn't normally occur. If you do not know why this occurs, " + REPORT_MSG,
-                throwable);
     }
 
     /**

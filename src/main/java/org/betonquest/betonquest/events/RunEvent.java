@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.events;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.LogUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -15,6 +15,7 @@ import java.util.List;
  * Allows for running multiple events with one instruction string.
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class RunEvent extends QuestEvent {
 
     private final List<QuestEvent> internalEvents = new ArrayList<>();
@@ -63,7 +64,7 @@ public class RunEvent extends QuestEvent {
             if (e.getCause() instanceof InstructionParseException) {
                 throw new InstructionParseException("Error in internal event: " + e.getCause().getMessage(), e);
             } else {
-                LogUtils.logThrowableReport(e);
+                LOG.reportException(e);
             }
         }
         return null;

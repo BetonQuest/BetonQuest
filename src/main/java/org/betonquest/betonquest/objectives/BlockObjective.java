@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.objectives;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
@@ -24,6 +25,7 @@ import java.util.logging.Level;
  * (breaking when should be placing) will reverse the progress.
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
+@CustomLog
 public class BlockObjective extends Objective implements Listener {
 
     private final int neededAmount;
@@ -60,8 +62,8 @@ public class BlockObjective extends Objective implements Listener {
                     } catch (final QuestRuntimeException exception) {
                         try {
                             LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'blocks_to_break' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
-                        } catch (final InstructionParseException exep) {
-                            LogUtils.logThrowableReport(exep);
+                        } catch (final InstructionParseException e) {
+                            LOG.reportException(e);
                         }
                     }
                 } else {
@@ -72,8 +74,8 @@ public class BlockObjective extends Objective implements Listener {
                     } catch (final QuestRuntimeException exception) {
                         try {
                             LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'blocks_to_place' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
-                        } catch (final InstructionParseException exep) {
-                            LogUtils.logThrowableReport(exep);
+                        } catch (final InstructionParseException e) {
+                            LOG.reportException(e);
                         }
                     }
                 }
@@ -99,8 +101,8 @@ public class BlockObjective extends Objective implements Listener {
                     } catch (final QuestRuntimeException exception) {
                         try {
                             LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'blocks_to_break' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
-                        } catch (final InstructionParseException exep) {
-                            LogUtils.logThrowableReport(exep);
+                        } catch (final InstructionParseException e) {
+                            LOG.reportException(e);
                         }
                     }
                 } else {
@@ -111,8 +113,8 @@ public class BlockObjective extends Objective implements Listener {
                     } catch (final QuestRuntimeException exception) {
                         try {
                             LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'blocks_to_place' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
-                        } catch (final InstructionParseException exep) {
-                            LogUtils.logThrowableReport(exep);
+                        } catch (final InstructionParseException e) {
+                            LOG.reportException(e);
                         }
                     }
                 }

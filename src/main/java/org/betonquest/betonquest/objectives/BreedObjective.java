@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.objectives;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
@@ -21,6 +22,7 @@ import java.util.Locale;
 import java.util.logging.Level;
 
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class BreedObjective extends Objective implements Listener {
 
     private final EntityType type;
@@ -57,8 +59,8 @@ public class BreedObjective extends Objective implements Listener {
                 } catch (final QuestRuntimeException exception) {
                     try {
                         LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'animals_to_breed' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
-                    } catch (final InstructionParseException exep) {
-                        LogUtils.logThrowableReport(exep);
+                    } catch (final InstructionParseException e) {
+                        LOG.reportException(e);
                     }
                 }
             }

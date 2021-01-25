@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.objectives;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
@@ -24,24 +25,25 @@ import java.util.logging.Level;
  * The player must step on the pressure plate
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class StepObjective extends Objective implements Listener {
     private static final BlockSelector PRESSURE_PLATE_SELECTOR = getPressurePlateSelector();
 
     private final CompoundLocation loc;
 
-    private static BlockSelector getPressurePlateSelector() {
-        try {
-            return new BlockSelector("*_PRESSURE_PLATE");
-        } catch (InstructionParseException exception) {
-            LogUtils.logThrowableReport(exception);
-        }
-        return null;
-    }
-
     public StepObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = ObjectiveData.class;
         loc = instruction.getLocation();
+    }
+
+    private static BlockSelector getPressurePlateSelector() {
+        try {
+            return new BlockSelector("*_PRESSURE_PLATE");
+        } catch (final InstructionParseException e) {
+            LOG.reportException(e);
+        }
+        return null;
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
@@ -75,7 +77,7 @@ public class StepObjective extends Objective implements Listener {
             if (checkConditions(playerID)) {
                 completeObjective(playerID);
             }
-        } catch (QuestRuntimeException e) {
+        } catch (final QuestRuntimeException e) {
             LogUtils.getLogger().log(Level.WARNING, "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
             LogUtils.logThrowable(e);
         }
@@ -102,7 +104,7 @@ public class StepObjective extends Objective implements Listener {
             final Block block;
             try {
                 block = loc.getLocation(playerID).getBlock();
-            } catch (QuestRuntimeException e) {
+            } catch (final QuestRuntimeException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Error while getting location property in '" + instruction.getID() + "' objective: "
                         + e.getMessage());
                 LogUtils.logThrowable(e);
