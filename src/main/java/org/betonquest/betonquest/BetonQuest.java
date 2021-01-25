@@ -1,7 +1,6 @@
 package org.betonquest.betonquest;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
@@ -26,6 +25,7 @@ import org.betonquest.betonquest.mechanics.PlayerHider;
 import org.betonquest.betonquest.notify.*;
 import org.betonquest.betonquest.objectives.*;
 import org.betonquest.betonquest.utils.*;
+import org.betonquest.betonquest.utils.logger.BetonQuestLogger;
 import org.betonquest.betonquest.variables.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -48,7 +48,6 @@ import java.util.regex.Pattern;
  */
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength", "PMD.GodClass",
         "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidFieldNameMatchingMethodName"})
-@CustomLog
 public class BetonQuest extends JavaPlugin {
     private static final Map<String, Class<? extends Condition>> CONDITION_TYPES = new HashMap<>();
     private static final Map<String, Class<? extends QuestEvent>> EVENT_TYPES = new HashMap<>();
@@ -72,6 +71,7 @@ public class BetonQuest extends JavaPlugin {
     @Getter
     private static BetonQuest instance;
     private final ConcurrentHashMap<String, PlayerData> playerDataMap = new ConcurrentHashMap<>();
+    private final BetonQuestLogger log = new BetonQuestLogger(this, null);
     private String pluginTag;
     private Database database;
     private boolean isMySQLUsed;
@@ -117,7 +117,7 @@ public class BetonQuest extends JavaPlugin {
                         return false;
                     }
                 } catch (InterruptedException | ExecutionException e) {
-                    LOG.reportException(e);
+                    getInstance().log.reportException(e);
                     return false;
                 }
             }
@@ -320,10 +320,10 @@ public class BetonQuest extends JavaPlugin {
             if (e.getCause() instanceof InstructionParseException) {
                 throw new InstructionParseException("Error in " + variableID + " variable: " + e.getCause().getMessage(), e);
             } else {
-                LOG.reportException(e);
+                getInstance().log.reportException(e);
             }
         } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-            LOG.reportException(e);
+            getInstance().log.reportException(e);
         }
         return null;
     }
@@ -714,10 +714,10 @@ public class BetonQuest extends JavaPlugin {
                                 "Error in '" + identifier + "' event (" + type + "): " + e.getCause().getMessage());
                         LogUtils.logThrowable(e);
                     } else {
-                        LOG.reportException(e);
+                        log.reportException(e);
                     }
                 } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-                    LOG.reportException(e);
+                    log.reportException(e);
                 }
             }
             final FileConfiguration cConfig = pack.getConditions().getConfig();
@@ -764,10 +764,10 @@ public class BetonQuest extends JavaPlugin {
                                 "Error in '" + identifier + "' condition (" + type + "): " + e.getCause().getMessage());
                         LogUtils.logThrowable(e);
                     } else {
-                        LOG.reportException(e);
+                        log.reportException(e);
                     }
                 } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-                    LOG.reportException(e);
+                    log.reportException(e);
                 }
             }
             final FileConfiguration oConfig = pack.getObjectives().getConfig();
@@ -815,10 +815,10 @@ public class BetonQuest extends JavaPlugin {
                                 "Error in '" + identifier + "' objective (" + type + "): " + e.getCause().getMessage());
                         LogUtils.logThrowable(e);
                     } else {
-                        LOG.reportException(e);
+                        log.reportException(e);
                     }
                 } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-                    LOG.reportException(e);
+                    log.reportException(e);
                 }
             }
             for (final String convName : pack.getConversationNames()) {
