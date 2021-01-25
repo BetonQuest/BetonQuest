@@ -229,7 +229,7 @@ public class Config {
      * does not exist
      */
     public static String getMessage(final String lang, final String message) {
-        return getMessage(lang, message, null);
+        return getMessage(lang, message, (String) null);
     }
 
     /**
@@ -351,7 +351,7 @@ public class Config {
      * @param messageName ID of the message
      */
     public static void sendMessage(final String packName, final String playerID, final String messageName) {
-        sendMessage(packName, playerID, messageName, null, null, null, null);
+        sendMessage(packName, playerID, messageName, (String[]) null, null, null);
     }
 
     /**
@@ -365,7 +365,7 @@ public class Config {
      * @param variables   array of variables which will be inserted into the string
      */
     public static void sendMessage(final String packName, final String playerID, final String messageName, final String... variables) {
-        sendMessage(packName, playerID, messageName, variables, null, null, null);
+        sendMessage(packName, playerID, messageName, variables, null, null, (String) null);
     }
 
     /**
@@ -380,7 +380,7 @@ public class Config {
      * @param soundName   name of the sound to play to the player
      */
     public static void sendMessage(final String packName, final String playerID, final String messageName, final String[] variables, final String soundName) {
-        sendMessage(packName, playerID, messageName, variables, soundName, null, null);
+        sendMessage(packName, playerID, messageName, variables, soundName, null, (String) null);
     }
 
     /**
@@ -453,11 +453,11 @@ public class Config {
     }
 
     public static String parseMessage(final String packName, final String playerID, final String messageName, final String... variables) {
-        return parseMessage(packName, playerID, messageName, variables, null, null);
+        return parseMessage(packName, playerID, messageName, variables, null, (String) null);
     }
 
     public static String parseMessage(final String packName, final Player player, final String messageName, final String... variables) {
-        return parseMessage(packName, player, messageName, variables, null, null);
+        return parseMessage(packName, player, messageName, variables, null, (String) null);
     }
 
     public static String parseMessage(final String packName, final String playerID, final String messageName, final String[] variables, final String prefixName,
