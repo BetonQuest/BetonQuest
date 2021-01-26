@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.commands;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.config.Config;
@@ -21,6 +22,7 @@ import java.util.logging.Level;
  * Changes the default language for the player
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition"})
+@CustomLog
 public class LangCommand implements CommandExecutor, SimpleTabCompleter {
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
@@ -68,9 +70,8 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
             }
             try {
                 Config.sendNotify(null, playerID, "language_changed", new String[]{lang}, "language_changed,info");
-            } catch (QuestRuntimeException exception) {
-                LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'language_changed' category. Error was: '" + exception.getMessage() + "'");
-                LogUtils.logThrowableIgnore(exception);
+            } catch (final QuestRuntimeException e) {
+                LOG.warning("The notify system was unable to play a sound for the 'language_changed' category. Error was: '" + e.getMessage() + "'", e);
             }
 
         } else {

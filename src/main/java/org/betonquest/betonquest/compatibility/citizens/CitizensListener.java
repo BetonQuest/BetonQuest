@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.citizens;
 
+import lombok.CustomLog;
 import net.citizensnpcs.api.event.CitizensReloadEvent;
 import net.citizensnpcs.api.event.NPCClickEvent;
 import net.citizensnpcs.api.event.NPCLeftClickEvent;
@@ -8,7 +9,6 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.CombatTagger;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -19,18 +19,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Level;
 
 /**
  * Starts new conversations with NPCs
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class CitizensListener implements Listener {
 
+    private final Map<UUID, Long> npcInteractionLimiter = new HashMap<>();
     private RightClickListener rightClick;
     private LeftClickListener leftClick;
-
-    private final Map<UUID, Long> npcInteractionLimiter = new HashMap<>();
     private int interactionLimit;
 
     /**
@@ -61,6 +60,46 @@ public class CitizensListener implements Listener {
         interactionLimit = plugin.getConfig().getInt("npcInteractionLimit", 500);
     }
 
+    @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
+    public void interactLogic(final NPCClickEvent event) {
+        if (!event.getClicker().hasPermission("betonquest.conversation")) {
+            return;
+        }
+        final Long lastClick = npcInteractionLimiter.get(event.getClicker().getUniqueId());
+        final long currentClick = new Date().getTime();
+        if (lastClick != null && lastClick + interactionLimit >= currentClick) {
+            return;
+        }
+        npcInteractionLimiter.put(event.getClicker().getUniqueId(), currentClick);
+        if (NPCMoveEvent.blocksTalking(event.getNPC())) {
+            return;
+        }
+        final String playerID = PlayerConverter.getID(event.getClicker());
+        if (CombatTagger.isTagged(playerID)) {
+            try {
+                Config.sendNotify(null, playerID, "busy", "busy,error");
+            } catch (final QuestRuntimeException e) {
+                LOG.warning("The notify system was unable to play a sound for the 'busy' category. Error was: '" + e.getMessage() + "'", e);
+            }
+            return;
+        }
+        final String npcId = String.valueOf(event.getNPC().getId());
+        String assignment = Config.getNpc(npcId);
+        if ("true".equalsIgnoreCase(Config.getString("config.citizens_npcs_by_name")) && assignment == null) {
+            assignment = Config.getNpc(event.getNPC().getName());
+        }
+        if (assignment != null) {
+            event.setCancelled(true);
+            new CitizensConversation(playerID, assignment, event.getNPC().getEntity().getLocation(),
+                    event.getNPC());
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onCitizensReload(final CitizensReloadEvent event) {
+        CitizensHologram.reload();
+    }
+
     private class RightClickListener implements Listener {
 
         public RightClickListener() {
@@ -81,46 +120,5 @@ public class CitizensListener implements Listener {
         public void onNPCClick(final NPCLeftClickEvent event) {
             interactLogic(event);
         }
-    }
-
-    @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
-    public void interactLogic(final NPCClickEvent event) {
-        if (!event.getClicker().hasPermission("betonquest.conversation")) {
-            return;
-        }
-        final Long lastClick = npcInteractionLimiter.get(event.getClicker().getUniqueId());
-        final long currentClick = new Date().getTime();
-        if (lastClick != null && lastClick + interactionLimit >= currentClick) {
-            return;
-        }
-        npcInteractionLimiter.put(event.getClicker().getUniqueId(), currentClick);
-        if (NPCMoveEvent.blocksTalking(event.getNPC())) {
-            return;
-        }
-        final String playerID = PlayerConverter.getID(event.getClicker());
-        if (CombatTagger.isTagged(playerID)) {
-            try {
-                Config.sendNotify(null, playerID, "busy", "busy,error");
-            } catch (final QuestRuntimeException exception) {
-                LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'busy' category. Error was: '" + exception.getMessage() + "'");
-                LogUtils.logThrowableIgnore(exception);
-            }
-            return;
-        }
-        final String npcId = String.valueOf(event.getNPC().getId());
-        String assignment = Config.getNpc(npcId);
-        if ("true".equalsIgnoreCase(Config.getString("config.citizens_npcs_by_name")) && assignment == null) {
-            assignment = Config.getNpc(event.getNPC().getName());
-        }
-        if (assignment != null) {
-            event.setCancelled(true);
-            new CitizensConversation(playerID, assignment, event.getNPC().getEntity().getLocation(),
-                    event.getNPC());
-        }
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onCitizensReload(final CitizensReloadEvent event) {
-        CitizensHologram.reload();
     }
 }

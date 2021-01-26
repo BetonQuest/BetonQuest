@@ -1,5 +1,6 @@
 package org.betonquest.betonquest;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.ConversationResumer;
@@ -23,6 +24,7 @@ import java.util.logging.Level;
  * Listener which handles data loadin/saving when players are joining/quitting
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class JoinQuitListener implements Listener {
     /**
      * Creates new listener, which will handle the data loading/saving
@@ -62,9 +64,8 @@ public class JoinQuitListener implements Listener {
             if (new File(BetonQuest.getInstance().getDataFolder(), "CHANGELOG.md").exists()) {
                 try {
                     Config.sendNotify(null, PlayerConverter.getID(event.getPlayer()), "changelog", null, "changelog,info");
-                } catch (final QuestRuntimeException exception) {
-                    LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'changelog' category. Error was: '" + exception.getMessage() + "'");
-                    LogUtils.logThrowableIgnore(exception);
+                } catch (final QuestRuntimeException e) {
+                    LOG.warning("The notify system was unable to play a sound for the 'changelog' category. Error was: '" + e.getMessage() + "'", e);
                 }
             }
         }

@@ -181,18 +181,6 @@ public final class LogUtils {
     }
 
     /**
-     * Log a throwable, that could be normally ignored, only to the debug log
-     *
-     * @param throwable The {@link Throwable} to log
-     */
-    public static void logThrowableIgnore(final Throwable throwable) {
-        LogUtils.getLogger().log(Level.FINER,
-                "This is an exception, that could be normally ignored. If you think anyway, this is not normal, "
-                        + REPORT_MSG,
-                throwable);
-    }
-
-    /**
      * A history of {@link LogRecord}
      */
     private static class History {

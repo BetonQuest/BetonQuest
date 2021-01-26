@@ -1133,7 +1133,7 @@ public class BetonQuest extends JavaPlugin {
      */
     public String getVariableValue(final String packName, final String name, final String playerID) {
         if (!Config.getPackages().containsKey(packName)) {
-            LogUtils.logThrowableIgnore(new QuestRuntimeException("A variable contains the non-existent package '" + packName + "' !"));
+            getInstance().log.warning("Could not resolve variable!", new QuestRuntimeException("A variable contains the non-existent package '" + packName + "' !"));
             return "&cCould not resolve variable because the package '" + packName + "' is invalid.";
         }
         try {

@@ -2,7 +2,6 @@ package org.betonquest.betonquest.notify;
 
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.betonquest.betonquest.utils.location.VectorData;
@@ -43,8 +42,13 @@ class NotifySound {
         final float pitch = notify.getFloatData(KEY_SOUND_PITCH, 1);
 
         final String playerOffsetString = data.get(KEY_SOUND_PLAYER_OFFSET);
-        final Float playerOffsetDistance = getPlayerOffsetDistance(playerOffsetString);
-        final VectorData playerOffset = playerOffsetDistance == null ? getPlayerOffset(playerOffsetString) : null;
+        Float playerOffsetDistance = null;
+        VectorData playerOffset = null;
+        try {
+            playerOffsetDistance = getPlayerOffsetDistance(playerOffsetString);
+        } catch (final InstructionParseException e) {
+            playerOffset = getPlayerOffset(playerOffsetString);
+        }
 
         String soundString = data.get(KEY_SOUND);
         final Sound sound = getSound(soundString);
@@ -134,13 +138,12 @@ class NotifySound {
         return null;
     }
 
-    private Float getPlayerOffsetDistance(final String playerOffsetString) {
+    private Float getPlayerOffsetDistance(final String playerOffsetString) throws InstructionParseException {
         if (playerOffsetString != null) {
             try {
                 return Float.parseFloat(playerOffsetString);
-            } catch (final NumberFormatException exception) {
-                LogUtils.logThrowableIgnore(exception);
-                return null;
+            } catch (final NumberFormatException e) {
+                throw new InstructionParseException(e);
             }
         }
         return null;

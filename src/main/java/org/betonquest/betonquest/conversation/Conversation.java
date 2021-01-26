@@ -28,7 +28,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.plugin.IllegalPluginAccessException;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.InvocationTargetException;
@@ -366,9 +365,8 @@ public class Conversation implements Listener {
             event.setCancelled(true);
             try {
                 Config.sendNotify(getPackage().getName(), PlayerConverter.getID(event.getPlayer()), "command_blocked", "command_blocked,error");
-            } catch (final QuestRuntimeException exception) {
-                LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'command_blocked' category. Error was: '" + exception.getMessage() + "'");
-                LogUtils.logThrowableIgnore(exception);
+            } catch (final QuestRuntimeException e) {
+                LOG.warning("The notify system was unable to play a sound for the 'command_blocked' category. Error was: '" + e.getMessage() + "'", e);
             }
         }
     }
@@ -425,18 +423,13 @@ public class Conversation implements Listener {
         LIST.remove(playerID);
         HandlerList.unregisterAll(this);
 
-        try {
-            new BukkitRunnable() {
+        new BukkitRunnable() {
 
-                @Override
-                public void run() {
-                    Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationEndEvent(player, Conversation.this));
-                }
-            }.runTask(BetonQuest.getInstance());
-        } catch (final IllegalPluginAccessException e) {
-            LogUtils.logThrowableIgnore(e);
-        }
-
+            @Override
+            public void run() {
+                Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationEndEvent(player, Conversation.this));
+            }
+        }.runTask(BetonQuest.getInstance());
     }
 
     /**

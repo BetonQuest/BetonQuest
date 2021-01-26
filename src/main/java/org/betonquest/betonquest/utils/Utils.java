@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.utils;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.ConfigAccessor;
@@ -36,6 +37,7 @@ import java.util.regex.Pattern;
  * Various utilities.
  */
 @SuppressWarnings({"PMD.ClassNamingConventions", "PMD.GodClass", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
+@CustomLog
 public final class Utils {
 
     private Utils() {
@@ -390,12 +392,12 @@ public final class Utils {
         try {
             return Color.fromRGB(Integer.parseInt(string));
         } catch (final NumberFormatException e1) {
-            LogUtils.logThrowableIgnore(e1);
+            LOG.debug("Could not parse number!", e1);
             // string is not a decimal number
             try {
                 return Color.fromRGB(Integer.parseInt(string.replace("#", ""), 16));
             } catch (final NumberFormatException e2) {
-                LogUtils.logThrowableIgnore(e2);
+                LOG.debug("Could not parse number!", e2);
                 // string is not a hexadecimal number, try dye color
                 try {
                     return DyeColor.valueOf(string.trim().toUpperCase(Locale.ROOT).replace(' ', '_')).getColor();

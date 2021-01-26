@@ -2,6 +2,7 @@ package org.betonquest.betonquest;
 
 import com.google.common.collect.Lists;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.ConfigPackage;
@@ -29,6 +30,7 @@ import java.util.logging.Level;
  * Represents player's journal.
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition"})
+@CustomLog
 public class Journal {
 
     private final String playerID;
@@ -374,9 +376,8 @@ public class Journal {
             // if there is no place for the item then print a message about it
             try {
                 Config.sendNotify(null, playerID, "inventory_full", null, "inventory_full,error");
-            } catch (final QuestRuntimeException exception) {
-                LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'inventory_full' category. Error was: '" + exception.getMessage() + "'");
-                LogUtils.logThrowableIgnore(exception);
+            } catch (final QuestRuntimeException e) {
+                LOG.warning("The notify system was unable to play a sound for the 'inventory_full' category. Error was: '" + e.getMessage() + "'", e);
             }
         }
     }

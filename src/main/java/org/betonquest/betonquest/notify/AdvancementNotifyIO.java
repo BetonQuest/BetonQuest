@@ -3,9 +3,9 @@ package org.betonquest.betonquest.notify;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.advancement.Advancement;
@@ -16,9 +16,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Level;
 
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class AdvancementNotifyIO extends NotifyIO {
 
     private final String frame;
@@ -49,8 +49,7 @@ public class AdvancementNotifyIO extends NotifyIO {
         try {
             add(key, message);
         } catch (final JsonIOException e) {
-            LogUtils.getLogger().log(Level.SEVERE, "Failed to create notification with text: '" + message + "'! Cause: " + e.getMessage());
-            LogUtils.logThrowableIgnore(e);
+            LOG.warning("Failed to create notification with text: '" + message + "'! Cause: " + e.getMessage(), e);
         }
         return key;
     }

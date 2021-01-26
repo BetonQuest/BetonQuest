@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.citizens;
 
 import de.slikey.effectlib.util.DynamicLocation;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.BetonQuest;
@@ -27,14 +28,15 @@ import java.util.logging.Level;
  * Displays a particle above NPCs with conversations.
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class CitizensParticle extends BukkitRunnable {
 
     private static CitizensParticle instance;
     private final Map<UUID, Map<Integer, Effect>> players = new HashMap<>();
     private final List<Effect> effects = new ArrayList<>();
+    private final boolean enabled;
     private int interval = 100;
     private int tick;
-    private final boolean enabled;
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AssignmentToNonFinalStatic"})
     @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
@@ -101,8 +103,8 @@ public class CitizensParticle extends BukkitRunnable {
                         for (final String npcID : npcs.getKeys(false)) {
                             try {
                                 effect.npcs.add(Integer.parseInt(npcID));
-                            } catch (NumberFormatException e) {
-                                LogUtils.logThrowableIgnore(e);
+                            } catch (final NumberFormatException e) {
+                                LOG.debug("Could not parse number!", e);
                             }
                         }
                     }
@@ -113,8 +115,8 @@ public class CitizensParticle extends BukkitRunnable {
                 for (final String cond : settings.getStringList("conditions")) {
                     try {
                         effect.conditions.add(new ConditionID(pack, cond));
-                    } catch (ObjectNotFoundException e) {
-                        LogUtils.logThrowableIgnore(e);
+                    } catch (final ObjectNotFoundException e) {
+                        LOG.debug("Could not find condition!", e);
                     }
                 }
 

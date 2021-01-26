@@ -97,7 +97,10 @@ public class BetonQuestLogger {
      */
     public void warning(final String msg, final Throwable thrown) {
         logger.log(Level.WARNING, addTopic(msg));
-        debug(thrown);
+
+        final int stackSize = thrown.getStackTrace().length;
+        final StackTraceElement element = thrown.getStackTrace()[stackSize - 1];
+        logger.throwing(element.getClassName(), element.getMethodName(), thrown);
     }
 
     /**
@@ -134,11 +137,28 @@ public class BetonQuestLogger {
      * Logs a debug message with the {@link Level#FINE} level to the log.
      * <p>
      * Use this for additional debug log information.
+     * <p>
+     * If you can provide an exception use {@link BetonQuestLogger#debug(String, Throwable)} instead.
      *
      * @param msg The message to log.
      */
     public void debug(final String msg) {
         logger.log(Level.FINE, addTopic(msg));
+    }
+
+    /**
+     * Logs a debug message with the {@link Level#FINE} level to the log.
+     * The {@link Throwable} is logged together with the message.
+     * <p>
+     * Use this for additional debug log information.
+     * <p>
+     * If you cannot provide an exception use {@link BetonQuestLogger#debug(String)} instead.
+     *
+     * @param msg    The message to log.
+     * @param thrown The throwable to log.
+     */
+    public void debug(final String msg, final Throwable thrown) {
+        logger.log(Level.FINE, addTopic(msg), thrown);
     }
 
     /**
@@ -157,11 +177,5 @@ public class BetonQuestLogger {
 
     private String addTopic(final String msg) {
         return topic + msg;
-    }
-
-    private void debug(final Throwable throwable) {
-        final int stackSize = throwable.getStackTrace().length;
-        final StackTraceElement element = throwable.getStackTrace()[stackSize - 1];
-        logger.throwing(element.getClassName(), element.getMethodName(), throwable);
     }
 }

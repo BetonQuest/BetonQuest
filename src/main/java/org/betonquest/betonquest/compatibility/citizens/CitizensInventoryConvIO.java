@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.compatibility.citizens;
 
+import lombok.CustomLog;
 import net.citizensnpcs.trait.SkinTrait;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.InventoryConvIO;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.lang.reflect.Field;
@@ -11,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
 
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class CitizensInventoryConvIO extends InventoryConvIO {
 
     public CitizensInventoryConvIO(final Conversation conv, final String playerID) {
@@ -53,7 +54,7 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
                 } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
                         | InstantiationException | InvocationTargetException | NoSuchMethodException
                         | ClassNotFoundException e) {
-                    LogUtils.logThrowableIgnore(e);
+                    LOG.debug("Could not resolve a skin Texture!", e);
                 }
             }
         }

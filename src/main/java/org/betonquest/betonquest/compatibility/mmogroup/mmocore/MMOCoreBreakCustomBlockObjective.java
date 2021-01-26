@@ -12,14 +12,11 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-
-import java.util.logging.Level;
 
 @SuppressWarnings("PMD.CommentRequired")
 @CustomLog
@@ -74,8 +71,8 @@ public class MMOCoreBreakCustomBlockObjective extends Objective implements Liste
                     "blocks_to_break,info");
         } catch (final QuestRuntimeException exception) {
             try {
-                LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to send a notification for the 'blocks_to_break' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
-                LogUtils.logThrowableIgnore(exception);
+                LOG.warning("The notify system was unable to send a notification for the 'blocks_to_break' category in '"
+                        + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'", exception);
             } catch (final InstructionParseException e) {
                 LOG.reportException(e);
             }

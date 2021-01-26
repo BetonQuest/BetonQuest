@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.conditions;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.LogUtils;
 
 import java.time.DateTimeException;
 import java.time.DayOfWeek;
@@ -15,6 +15,7 @@ import java.util.Locale;
  * Created by Jonas Blocher on 27.11.2017.
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class DayOfWeekCondition extends Condition {
 
     private final DayOfWeek day;
@@ -28,13 +29,13 @@ public class DayOfWeekCondition extends Condition {
         DayOfWeek dayOfWeek;
         try {
             dayOfWeek = DayOfWeek.of(Integer.parseInt(dayString));
-        } catch (DateTimeException e) {
+        } catch (final DateTimeException e) {
             throw new InstructionParseException(dayString + " is not a valid day of a week", e);
-        } catch (NumberFormatException e) {
-            LogUtils.logThrowableIgnore(e);
+        } catch (final NumberFormatException e) {
+            LOG.debug("Could not parse number!", e);
             try {
                 dayOfWeek = DayOfWeek.valueOf(dayString.toUpperCase(Locale.ROOT));
-            } catch (IllegalArgumentException iae) {
+            } catch (final IllegalArgumentException iae) {
                 throw new InstructionParseException(dayString + " is not a valid day of a week", iae);
             }
         }
