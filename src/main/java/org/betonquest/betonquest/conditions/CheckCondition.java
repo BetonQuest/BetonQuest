@@ -62,7 +62,7 @@ public class CheckCondition extends Condition {
             if (e.getCause() instanceof InstructionParseException) {
                 throw new InstructionParseException("Error in internal condition: " + e.getCause().getMessage(), e);
             } else {
-                LOG.reportException(e);
+                LOG.reportException(this.instruction.getPackage(), e);
             }
         }
         return null;

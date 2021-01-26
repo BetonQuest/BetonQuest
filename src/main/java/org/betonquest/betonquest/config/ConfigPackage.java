@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.config;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import org.betonquest.betonquest.config.ConfigAccessor.AccessorType;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.GlobalVariableID;
@@ -18,6 +19,7 @@ import java.util.regex.Pattern;
  * Holds configuration files of the package
  */
 @SuppressWarnings({"PMD.GodClass", "PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition"})
+@CustomLog
 public class ConfigPackage {
 
     private final String name;
@@ -164,12 +166,11 @@ public class ConfigPackage {
                 final GlobalVariableID variableID = new GlobalVariableID(this, varName);
                 varVal = variableID.getPackage().getMain().getConfig().getString("variables." + variableID.getBaseID());
             } catch (final ObjectNotFoundException e) {
-                LogUtils.getLogger().log(Level.WARNING, e.getMessage());
-                LogUtils.logThrowable(e);
+                LOG.warning(this, e.getMessage(), e);
                 return variableInput;
             }
             if (varVal == null) {
-                LOG.warning(String.format("Variable %s not defined in package %s", varName, name));
+                LOG.warning(this, String.format("Variable %s not defined in package %s", varName, name));
                 return variableInput;
             }
 
@@ -180,13 +181,13 @@ public class ConfigPackage {
                 final String innerVarName = varVal.substring(1, varVal.indexOf('$', 2));
                 final String innerVarVal = main.getConfig().getString("variables." + innerVarName);
                 if (innerVarVal == null) {
-                    LOG.warning(String.format("Location variable %s is not defined, in variable %s, package %s.",
+                    LOG.warning(this, String.format("Location variable %s is not defined, in variable %s, package %s.",
                             innerVarName, varName, name));
                     return variableInput;
                 }
 
                 if (!innerVarVal.matches("^\\-?\\d+;\\-?\\d+;\\-?\\d+;.+$")) {
-                    LOG.warning(
+                    LOG.warning(this,
                             String.format("Inner variable %s is not valid location, in variable %s, package %s.",
                                     innerVarName, varName, name));
                     return variableInput;
@@ -206,10 +207,9 @@ public class ConfigPackage {
                     // rest is world + possible other arguments
                     rest = innerVarVal.substring(offset3);
                 } catch (final NumberFormatException e) {
-                    LogUtils.getLogger().log(Level.WARNING, String.format(
+                    LOG.warning(this, String.format(
                             "Could not parse coordinates in inner variable %s in variable %s in package %s",
-                            innerVarName, varName, name));
-                    LogUtils.logThrowable(e);
+                            innerVarName, varName, name), e);
                     return variableInput;
                 }
                 // parse the vector
@@ -225,9 +225,8 @@ public class ConfigPackage {
                     vecLocY = Double.parseDouble(varVal.substring(offset2 + 1, offset3));
                     vecLocZ = Double.parseDouble(varVal.substring(offset3 + 1, offset4));
                 } catch (final NumberFormatException e) {
-                    LogUtils.getLogger().log(Level.WARNING, String.format("Could not parse vector inlocation variable %s in package %s",
-                            varName, name));
-                    LogUtils.logThrowable(e);
+                    LOG.warning(this, String.format("Could not parse vector inlocation variable %s in package %s",
+                            varName, name), e);
                     return variableInput;
                 }
                 final double locationX = locX + vecLocX;

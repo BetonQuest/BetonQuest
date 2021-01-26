@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.conversation;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.utils.LocalChatPaginator;
@@ -30,6 +31,7 @@ import java.util.*;
  */
 @SuppressWarnings({"PMD.TooManyFields", "PMD.CommentRequired", "PMD.AvoidFieldNameMatchingMethodName",
         "PMD.AvoidLiteralsInIfCondition"})
+@CustomLog
 public class InventoryConvIO implements Listener, ConversationIO {
     private static final Map<String, ItemStack> SKULL_CACHE = new HashMap<>();
 
@@ -162,7 +164,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
                         inv.setItem(0, npc);
                     });
                 } catch (final IllegalArgumentException e) {
-                    LOG.debug("Could not load skull for chest conversation!", e);
+                    LOG.debug(conv.getPackage(), "Could not load skull for chest conversation!", e);
                 }
             });
         }
@@ -194,8 +196,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
                     try {
                         data = Short.valueOf(materialName.substring(colonIndex + 1));
                     } catch (final NumberFormatException e) {
-                        LogUtils.getLogger().log(Level.WARNING, "Could not read material data: " + e.getMessage());
-                        LogUtils.logThrowable(e);
+                        LOG.warning(conv.getPackage(), "Could not read material data: " + e.getMessage(), e);
                         data = 0;
                     }
                     materialName = materialName.substring(0, colonIndex);

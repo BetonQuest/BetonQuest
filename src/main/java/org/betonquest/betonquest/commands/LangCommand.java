@@ -46,7 +46,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
                 builder.append(lang).append(", ");
             }
             if (builder.length() < 3) {
-                LOG.warning("No translations loaded, somethings wrong!");
+                LOG.warning(null, "No translations loaded, somethings wrong!");
                 return false;
             }
             final String finalMessage = builder.substring(0, builder.length() - 2) + ".";
@@ -69,7 +69,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
             try {
                 Config.sendNotify(null, playerID, "language_changed", new String[]{lang}, "language_changed,info");
             } catch (final QuestRuntimeException e) {
-                LOG.warning("The notify system was unable to play a sound for the 'language_changed' category. Error was: '" + e.getMessage() + "'", e);
+                LOG.warning(null, "The notify system was unable to play a sound for the 'language_changed' category. Error was: '" + e.getMessage() + "'", e);
             }
 
         } else {

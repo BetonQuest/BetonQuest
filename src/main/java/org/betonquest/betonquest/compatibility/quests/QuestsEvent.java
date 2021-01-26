@@ -33,7 +33,7 @@ public class QuestsEvent extends QuestEvent {
             }
         }
         if (quest == null) {
-            LOG.warning("Quest '" + questName + "' is not defined");
+            LOG.warning(instruction.getPackage(), "Quest '" + questName + "' is not defined");
             return null;
         }
         QuestsIntegrator.getQuestsInstance().getQuester(PlayerConverter.getPlayer(playerID).getUniqueId()).takeQuest(quest, override);

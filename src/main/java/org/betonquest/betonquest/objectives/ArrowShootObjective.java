@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.objectives;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Bukkit;
@@ -21,12 +21,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.logging.Level;
-
 /**
  * Requires the player to shoot a target with a bow
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class ArrowShootObjective extends Objective implements Listener {
 
     private final CompoundLocation loc;
@@ -71,15 +70,13 @@ public class ArrowShootObjective extends Objective implements Listener {
                                 && checkConditions(playerID)) {
                             completeObjective(playerID);
                         }
-                    } catch (QuestRuntimeException e) {
-                        LogUtils.getLogger().log(Level.WARNING, "Could not resolve range variable: " + e.getMessage());
-                        LogUtils.logThrowable(e);
+                    } catch (final QuestRuntimeException e) {
+                        LOG.warning(instruction.getPackage(), "Could not resolve range variable: " + e.getMessage(), e);
                     }
                 }
             }.runTask(BetonQuest.getInstance());
-        } catch (QuestRuntimeException e) {
-            LogUtils.getLogger().log(Level.WARNING, "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
-            LogUtils.logThrowable(e);
+        } catch (final QuestRuntimeException e) {
+            LOG.warning(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
         }
     }
 

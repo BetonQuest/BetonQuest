@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.objectives;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Bukkit;
@@ -15,9 +15,8 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
-import java.util.logging.Level;
-
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class RespawnObjective extends Objective implements Listener {
 
     private final CompoundLocation location;
@@ -36,9 +35,8 @@ public class RespawnObjective extends Objective implements Listener {
             if (location != null) {
                 try {
                     event.setRespawnLocation(location.getLocation(playerID));
-                } catch (QuestRuntimeException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Error while handling '" + instruction.getID() + "' objective: \" + e.getMessage()");
-                    LogUtils.logThrowable(e);
+                } catch (final QuestRuntimeException e) {
+                    LOG.warning(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: \" + e.getMessage()", e);
                 }
             }
             completeObjective(playerID);

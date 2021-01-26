@@ -47,11 +47,11 @@ public final class Utils {
      */
     @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     public static void backup() {
-        LOG.info("Backing up!");
+        LOG.info(null, "Backing up!");
         final long time = new Date().getTime();
         final BetonQuest instance = BetonQuest.getInstance();
         if (!backupDatabase(new File(instance.getDataFolder(), "database-backup.yml"))) {
-            LOG.warning("There was an error during backing up the database! This does not affect"
+            LOG.warning(null, "There was an error during backing up the database! This does not affect"
                     + " the configuration backup, nor damage your database. You should backup"
                     + " the database maually if you want to be extra safe, but it's not necessary if"
                     + " you don't want to downgrade later.");
@@ -68,8 +68,8 @@ public final class Utils {
         // delete database backup so it doesn't make a mess later on
         new File(instance.getDataFolder(), "database-backup.yml").delete();
         // done
-        LOG.debug("Done in " + (new Date().getTime() - time) + "ms");
-        LOG.info("Done, you can find the backup in \"backups\" directory.");
+        LOG.debug(null, "Done in " + (new Date().getTime() - time) + "ms");
+        LOG.info(null, "Done, you can find the backup in \"backups\" directory.");
     }
 
     /**
@@ -94,23 +94,23 @@ public final class Utils {
             final Connector database = new Connector();
             // load resultsets into the map
             for (final String table : tables) {
-                LOG.debug("Loading " + table);
+                LOG.debug(null, "Loading " + table);
                 final String enumName = ("LOAD_ALL_" + table).toUpperCase(Locale.ROOT);
                 map.put(table, database.querySQL(QueryType.valueOf(enumName), new String[]{}));
             }
             // extract data from resultsets into the config file
             for (final Map.Entry<String, ResultSet> entry : map.entrySet()) {
-                LOG.debug("Saving " + entry.getKey() + " to the backup file");
+                LOG.debug(null, "Saving " + entry.getKey() + " to the backup file");
                 // prepare resultset and meta
                 try (ResultSet res = entry.getValue()) {
                     final ResultSetMetaData rsmd = res.getMetaData();
                     // get the list of column names
                     final List<String> columns = new ArrayList<>();
                     final int columnCount = rsmd.getColumnCount();
-                    LOG.debug("  There are " + columnCount + " columns in this ResultSet");
+                    LOG.debug(null, "  There are " + columnCount + " columns in this ResultSet");
                     for (int i = 1; i <= rsmd.getColumnCount(); i++) {
                         final String columnName = rsmd.getColumnName(i);
-                        LOG.debug("    Adding column " + columnName);
+                        LOG.debug(null, "    Adding column " + columnName);
                         columns.add(columnName);
                     }
                     // counter for counting rows
@@ -122,8 +122,7 @@ public final class Utils {
                                 final String value = res.getString(columnName);
                                 config.set(entry.getKey() + "." + counter + "." + columnName, value);
                             } catch (final SQLException e) {
-                                LogUtils.getLogger().log(Level.WARNING, "Could not read SQL: " + e.getMessage());
-                                LogUtils.logThrowable(e);
+                                LOG.warning(null, "Could not read SQL: " + e.getMessage(), e);
                                 done = false;
                                 // do nothing, as there can be nothing done
                                 // error while loading the string means the
@@ -132,15 +131,14 @@ public final class Utils {
                         }
                         counter++;
                     }
-                    LOG.debug("  Saved " + (counter + 1) + " rows");
+                    LOG.debug(null, "  Saved " + (counter + 1) + " rows");
                 }
             }
             // save the config at the end
             accessor.saveConfig();
             return done;
         } catch (IOException | SQLException e) {
-            LogUtils.getLogger().log(Level.WARNING, "There was an error during database backup: " + e.getMessage());
-            LogUtils.logThrowable(e);
+            LOG.warning(null, "There was an error during database backup: " + e.getMessage(), e);
             final File brokenFile = new File(instance.getDataFolder(), "database-backup.yml");
             if (brokenFile.exists()) {
                 brokenFile.delete();
@@ -236,7 +234,7 @@ public final class Utils {
         if (!file.exists()) {
             return;
         }
-        LOG.info("Loading database backup!");
+        LOG.info(null, "Loading database backup!");
         // backup the database
         final File backupFolder = new File(instance.getDataFolder(), "backups");
         if (!backupFolder.isDirectory()) {
@@ -247,9 +245,9 @@ public final class Utils {
             backupNumber++;
         }
         final String filename = "old-database-" + backupNumber + ".yml";
-        LOG.info("Backing up old database!");
+        LOG.info(null, "Backing up old database!");
         if (!backupDatabase(new File(backupFolder, filename))) {
-            LOG.warning("There was an error during old database backup process. This means that"
+            LOG.warning(null, "There was an error during old database backup process. This means that"
                     + " if the plugin loaded new database (from backup), the old one would be lost "
                     + "forever. Because of that the loading of backup was aborted!");
             return;
@@ -391,12 +389,12 @@ public final class Utils {
         try {
             return Color.fromRGB(Integer.parseInt(string));
         } catch (final NumberFormatException e1) {
-            LOG.debug("Could not parse number!", e1);
+            LOG.debug(null, "Could not parse number!", e1);
             // string is not a decimal number
             try {
                 return Color.fromRGB(Integer.parseInt(string.replace("#", ""), 16));
             } catch (final NumberFormatException e2) {
-                LOG.debug("Could not parse number!", e2);
+                LOG.debug(null, "Could not parse number!", e2);
                 // string is not a hexadecimal number, try dye color
                 try {
                     return DyeColor.valueOf(string.trim().toUpperCase(Locale.ROOT).replace(' ', '_')).getColor();

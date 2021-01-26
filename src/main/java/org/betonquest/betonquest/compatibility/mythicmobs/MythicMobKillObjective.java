@@ -111,9 +111,9 @@ public class MythicMobKillObjective extends Objective implements Listener {
             }
         } catch (final QuestRuntimeException exception) {
             try {
-                LOG.error("Unable to resolve minMobLevel / maxMobLevel variable in " + instruction.getObjective().getFullID());
+                LOG.error(instruction.getPackage(), "Unable to resolve minMobLevel / maxMobLevel variable in " + instruction.getObjective().getFullID());
             } catch (final InstructionParseException e) {
-                LOG.reportException(exception);
+                LOG.reportException(instruction.getPackage(), exception);
             }
             return;
         }
@@ -133,9 +133,9 @@ public class MythicMobKillObjective extends Objective implements Listener {
                 Config.sendNotify(instruction.getPackage().getName(), playerID, "mobs_to_kill", new String[]{String.valueOf(playerData.getAmount())}, "mobs_to_kill,info");
             } catch (final QuestRuntimeException exception) {
                 try {
-                    LOG.warning("The notify system was unable to play a sound for the 'mobs_to_kill' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                    LOG.warning(instruction.getPackage(), "The notify system was unable to play a sound for the 'mobs_to_kill' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
                 } catch (final InstructionParseException e) {
-                    LOG.reportException(e);
+                    LOG.reportException(instruction.getPackage(), e);
                 }
             }
         }

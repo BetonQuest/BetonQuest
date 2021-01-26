@@ -71,9 +71,9 @@ public class KillPlayerObjective extends Objective implements Listener {
                             "players_to_kill,info");
                 } catch (final QuestRuntimeException exception) {
                     try {
-                        LOG.warning("The notify system was unable to play a sound for the 'players_to_kill' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                        LOG.warning(instruction.getPackage(), "The notify system was unable to play a sound for the 'players_to_kill' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
                     } catch (final InstructionParseException e) {
-                        LOG.reportException(e);
+                        LOG.reportException(instruction.getPackage(), e);
                     }
                 }
             }

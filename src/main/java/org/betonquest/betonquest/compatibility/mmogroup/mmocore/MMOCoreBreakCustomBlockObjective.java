@@ -71,10 +71,10 @@ public class MMOCoreBreakCustomBlockObjective extends Objective implements Liste
                     "blocks_to_break,info");
         } catch (final QuestRuntimeException exception) {
             try {
-                LOG.warning("The notify system was unable to send a notification for the 'blocks_to_break' category in '"
+                LOG.warning(instruction.getPackage(), "The notify system was unable to send a notification for the 'blocks_to_break' category in '"
                         + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'", exception);
             } catch (final InstructionParseException e) {
-                LOG.reportException(e);
+                LOG.reportException(instruction.getPackage(), e);
             }
         }
     }

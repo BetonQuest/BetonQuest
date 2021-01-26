@@ -1,18 +1,17 @@
 package org.betonquest.betonquest.events;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.LogUtils;
-
-import java.util.logging.Level;
 
 /**
  * Gives journal to the player.
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class GiveJournalEvent extends QuestEvent {
 
     private int journalSlot;
@@ -21,9 +20,8 @@ public class GiveJournalEvent extends QuestEvent {
         super(instruction, false);
         try {
             journalSlot = Integer.parseInt(Config.getString("config.default_journal_slot"));
-        } catch (NumberFormatException e) {
-            LogUtils.getLogger().log(Level.WARNING, "Could not read default_journal_slot: " + e.getMessage());
-            LogUtils.logThrowable(e);
+        } catch (final NumberFormatException e) {
+            LOG.warning(instruction.getPackage(), "Could not read default_journal_slot: " + e.getMessage(), e);
             journalSlot = -1;
         }
     }

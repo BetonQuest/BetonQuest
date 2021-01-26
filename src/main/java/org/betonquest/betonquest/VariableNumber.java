@@ -1,17 +1,16 @@
 package org.betonquest.betonquest;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.LogUtils;
-
-import java.util.logging.Level;
 
 /**
  * Represents a number which might also be a variable.
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class VariableNumber {
 
     private double number;
@@ -91,8 +90,7 @@ public class VariableNumber {
             try {
                 parsed = Double.parseDouble(resolved);
             } catch (final NumberFormatException e) {
-                LogUtils.getLogger().log(Level.FINE, "Could not parse the variable as a number, it's value is: '" + resolved + "'; returning 0.");
-                LogUtils.logThrowable(e);
+                LOG.debug(null, "Could not parse the variable as a number, it's value is: '" + resolved + "'; returning 0.", e);
             }
             return parsed;
         }

@@ -1,15 +1,14 @@
 package org.betonquest.betonquest.variables;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.LogUtils;
 
 import java.util.Locale;
-import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,6 +16,7 @@ import java.util.regex.Pattern;
  * This variable evaluates the given calculation and returns the result.
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class MathVariable extends Variable {
 
     private final Calculable calculation;
@@ -38,9 +38,8 @@ public class MathVariable extends Variable {
                 return String.format(Locale.US, "%.0f", value);
             }
             return String.valueOf(value);
-        } catch (QuestRuntimeException e) {
-            LogUtils.getLogger().log(Level.WARNING, "Could not calculate '" + calculation.toString() + "' (" + e.getMessage() + "). Returning 0 instead.");
-            LogUtils.logThrowable(e);
+        } catch (final QuestRuntimeException e) {
+            LOG.warning(instruction.getPackage(), "Could not calculate '" + calculation.toString() + "' (" + e.getMessage() + "). Returning 0 instead.", e);
             return "0";
         }
     }
@@ -132,7 +131,7 @@ public class MathVariable extends Variable {
         //if a variable is specified
         try {
             return new ClaculableVariable(super.instruction.getPackage(), "%" + string + "%");
-        } catch (InstructionParseException e) {
+        } catch (final InstructionParseException e) {
             throw new InstructionParseException(e.getMessage(), e);
         }
     }
@@ -231,7 +230,7 @@ public class MathVariable extends Variable {
                     default:
                         throw new QuestRuntimeException("unsupported operation: " + operation);
                 }
-            } catch (ArithmeticException e) {
+            } catch (final ArithmeticException e) {
                 throw new QuestRuntimeException(e.getMessage(), e);
             }
         }

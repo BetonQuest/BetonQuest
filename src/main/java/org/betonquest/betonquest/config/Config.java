@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.config;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.config.ConfigAccessor.AccessorType;
 import org.betonquest.betonquest.database.PlayerData;
@@ -24,6 +25,7 @@ import java.util.*;
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyMethods", "PMD.UseObjectForClearerAPI",
         "PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition"})
+@CustomLog
 public class Config {
 
     private static final List<String> UTIL_DIR_NAMES = Arrays.asList("logs", "backups", "conversations");
@@ -73,7 +75,7 @@ public class Config {
         for (final String key : messages.getConfig().getKeys(false)) {
             if (!"global".equals(key)) {
                 if (verboose) {
-                    LOG.debug("Loaded " + key + " language");
+                    LOG.debug(null, "Loaded " + key + " language");
                 }
                 LANGUAGES.add(key);
             }
@@ -100,8 +102,7 @@ public class Config {
                 try {
                     CANCELERS.put(name, new QuestCanceler(name));
                 } catch (final InstructionParseException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Could not load '" + name + "' quest canceler: " + e.getMessage());
-                    LogUtils.logThrowable(e);
+                    LOG.warning(pack, "Could not load '" + name + "' quest canceler: " + e.getMessage(), e);
                 }
             }
         }
@@ -117,7 +118,7 @@ public class Config {
     public static boolean createDefaultPackage(final String packName) {
         final File def = new File(instance.root, packName.replace("-", File.separator));
         if (!def.exists()) {
-            LOG.info("Deploying " + packName + " package!");
+            LOG.info(null, "Deploying " + packName + " package!");
             def.mkdirs();
             saveResource(def, "default/main.yml", "main.yml");
             saveResource(def, "default/events.yml", "events.yml");
@@ -161,8 +162,7 @@ public class Config {
                     }
                 }
             } catch (final IOException e) {
-                LogUtils.getLogger().log(Level.WARNING, "Could not save resource: " + e.getMessage());
-                LogUtils.logThrowable(e);
+                LOG.warning(null, "Could not save resource: " + e.getMessage(), e);
             }
         }
     }
@@ -516,8 +516,7 @@ public class Config {
             try {
                 player.playSound(player.getLocation(), Sound.valueOf(rawSound), 1F, 1F);
             } catch (final IllegalArgumentException e) {
-                LogUtils.getLogger().log(Level.WARNING, "Unknown sound type: " + rawSound);
-                LogUtils.logThrowable(e);
+                LOG.warning(null, "Unknown sound type: " + rawSound, e);
             }
         }
     }

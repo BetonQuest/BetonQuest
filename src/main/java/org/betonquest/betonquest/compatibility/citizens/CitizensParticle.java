@@ -60,7 +60,7 @@ public class CitizensParticle extends BukkitRunnable {
             // load the condition check interval
             interval = section.getInt("check_interval", 100);
             if (interval <= 0) {
-                LOG.warning("Could not load npc effects of package " + pack.getName() + ": " +
+                LOG.warning(pack, "Could not load npc effects of package " + pack.getName() + ": " +
                         "Check interval must be bigger than 0.");
                 enabled = false;
                 return;
@@ -86,7 +86,7 @@ public class CitizensParticle extends BukkitRunnable {
                 // load the interval between animations
                 effect.interval = settings.getInt("interval", 100);
                 if (effect.interval <= 0) {
-                    LOG.warning("Could not load npc effect " + key + " in package " + pack.getName() + ": " +
+                    LOG.warning(pack, "Could not load npc effect " + key + " in package " + pack.getName() + ": " +
                             "Effect interval must be bigger than 0.");
                     continue;
                 }
@@ -102,7 +102,7 @@ public class CitizensParticle extends BukkitRunnable {
                             try {
                                 effect.npcs.add(Integer.parseInt(npcID));
                             } catch (final NumberFormatException e) {
-                                LOG.debug("Could not parse number!", e);
+                                LOG.debug(pack, "Could not parse number!", e);
                             }
                         }
                     }
@@ -114,7 +114,7 @@ public class CitizensParticle extends BukkitRunnable {
                     try {
                         effect.conditions.add(new ConditionID(pack, cond));
                     } catch (final ObjectNotFoundException e) {
-                        LOG.debug("Could not find condition!", e);
+                        LOG.debug(pack, "Could not find condition!", e);
                     }
                 }
 

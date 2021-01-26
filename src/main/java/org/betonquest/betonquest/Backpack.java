@@ -1,6 +1,7 @@
 package org.betonquest.betonquest;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import org.betonquest.betonquest.api.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.ConfigPackage;
@@ -36,6 +37,7 @@ import java.util.Map;
  * Represents a chest GUI for the backpack displayed to the player.
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition"})
+@CustomLog
 public class Backpack implements Listener {
 
     /**
@@ -51,6 +53,10 @@ public class Backpack implements Listener {
      */
     private final PlayerData playerData;
     /**
+     * Language of the player
+     */
+    private final String lang;
+    /**
      * The inventory created by this object
      */
     private Inventory inv;
@@ -58,10 +64,6 @@ public class Backpack implements Listener {
      * Currently displayed page
      */
     private Display display;
-    /**
-     * Language of the player
-     */
-    private final String lang;
 
     /**
      * Creates new backpack GUI opened at given page type.
@@ -183,13 +185,11 @@ public class Backpack implements Listener {
                 ItemStack previous;
                 try {
                     previous = new QuestItem(new ItemID(Config.getDefaultPackage(), "previous_button")).generate(1);
-                } catch (ObjectNotFoundException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Could not find item: " + e.getMessage());
-                    LogUtils.logThrowable(e);
+                } catch (final ObjectNotFoundException e) {
+                    LOG.warning(null, "Could not find item: " + e.getMessage(), e);
                     previous = new ItemStack(Material.GLOWSTONE_DUST);
-                } catch (InstructionParseException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Could not load previous button: " + e.getMessage());
-                    LogUtils.logThrowable(e);
+                } catch (final InstructionParseException e) {
+                    LOG.warning(null, "Could not load previous button: " + e.getMessage(), e);
                     player.closeInventory();
                     return;
                 }
@@ -202,13 +202,11 @@ public class Backpack implements Listener {
                 ItemStack next;
                 try {
                     next = new QuestItem(new ItemID(Config.getDefaultPackage(), "next_button")).generate(1);
-                } catch (ObjectNotFoundException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Could not find item: " + e.getMessage());
-                    LogUtils.logThrowable(e);
+                } catch (final ObjectNotFoundException e) {
+                    LOG.warning(null, "Could not find item: " + e.getMessage(), e);
                     next = new ItemStack(Material.REDSTONE);
-                } catch (InstructionParseException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Could not load next button: " + e.getMessage());
-                    LogUtils.logThrowable(e);
+                } catch (final InstructionParseException e) {
+                    LOG.warning(null, "Could not load next button: " + e.getMessage(), e);
                     player.closeInventory();
                     return;
                 }
@@ -221,13 +219,11 @@ public class Backpack implements Listener {
             ItemStack cancel;
             try {
                 cancel = new QuestItem(new ItemID(Config.getDefaultPackage(), "cancel_button")).generate(1);
-            } catch (ObjectNotFoundException e) {
-                LogUtils.getLogger().log(Level.WARNING, "Could not find object: " + e.getMessage());
-                LogUtils.logThrowable(e);
+            } catch (final ObjectNotFoundException e) {
+                LOG.warning(null, "Could not find object: " + e.getMessage(), e);
                 cancel = new ItemStack(Material.BONE);
-            } catch (InstructionParseException e) {
-                LogUtils.getLogger().log(Level.WARNING, "Could not load cancel button: " + e.getMessage());
-                LogUtils.logThrowable(e);
+            } catch (final InstructionParseException e) {
+                LOG.warning(null, "Could not load cancel button: " + e.getMessage(), e);
                 player.closeInventory();
                 return;
             }
@@ -239,13 +235,11 @@ public class Backpack implements Listener {
             ItemStack compassItem;
             try {
                 compassItem = new QuestItem(new ItemID(Config.getDefaultPackage(), "compass_button")).generate(1);
-            } catch (ObjectNotFoundException e) {
-                LogUtils.getLogger().log(Level.WARNING, "Could not find item: " + e.getMessage());
-                LogUtils.logThrowable(e);
+            } catch (final ObjectNotFoundException e) {
+                LOG.warning(null, "Could not find item: " + e.getMessage(), e);
                 compassItem = new ItemStack(Material.COMPASS);
-            } catch (InstructionParseException e) {
-                LogUtils.getLogger().log(Level.WARNING, "Could not load compass button: " + e.getMessage());
-                LogUtils.logThrowable(e);
+            } catch (final InstructionParseException e) {
+                LOG.warning(null, "Could not load compass button: " + e.getMessage(), e);
                 player.closeInventory();
                 return;
             }
@@ -386,7 +380,7 @@ public class Backpack implements Listener {
             int numberOfRows = (size - size % 9) / 9 + 1;
             if (numberOfRows > 6) {
                 numberOfRows = 6;
-                LOG.warning("Player " + player.getName() + " has too many active quests, please"
+                LOG.warning(null, "Player " + player.getName() + " has too many active quests, please"
                         + " don't allow for so many of them. It slows down your server!");
             }
             inv = Bukkit.createInventory(null, numberOfRows * 9, Config.getMessage(lang, "cancel_page"));
@@ -446,12 +440,11 @@ public class Backpack implements Listener {
                             name = pack.getString("main.compass." + key + ".name");
                         }
                         if (name == null) {
-                            LOG.warning("Name not defined in a compass pointer in " + packName + " package: " + key);
+                            LOG.warning(null, "Name not defined in a compass pointer in " + packName + " package: " + key);
                             continue;
                         }
                         if (location == null) {
-                            LOG.warning(
-                                    "Location not defined in a compass pointer in " + packName + " package: " + key);
+                            LOG.warning(null, "Location not defined in a compass pointer in " + packName + " package: " + key);
                             continue;
                         }
                         // check if the player has special compass tag
@@ -461,14 +454,13 @@ public class Backpack implements Listener {
                         // if the tag is present, continue
                         final String[] parts = location.split(";");
                         if (parts.length != 4) {
-                            LOG.warning("Could not parse location in a compass pointer in " + packName + " package: "
+                            LOG.warning(null, "Could not parse location in a compass pointer in " + packName + " package: "
                                     + key);
                             continue;
                         }
                         final World world = Bukkit.getWorld(parts[3]);
                         if (world == null) {
-                            LOG.warning(
-                                    "World does not exist in a compass pointer in " + packName + " package: " + key);
+                            LOG.warning(null, "World does not exist in a compass pointer in " + packName + " package: " + key);
                         }
                         final int locX;
                         final int locY;
@@ -477,10 +469,9 @@ public class Backpack implements Listener {
                             locX = Integer.parseInt(parts[0]);
                             locY = Integer.parseInt(parts[1]);
                             locZ = Integer.parseInt(parts[2]);
-                        } catch (NumberFormatException e) {
-                            LogUtils.getLogger().log(Level.WARNING, "Could not parse location coordinates in a compass pointer in " + packName
-                                    + " package: " + key);
-                            LogUtils.logThrowable(e);
+                        } catch (final NumberFormatException e) {
+                            LOG.warning(null, "Could not parse location coordinates in a compass pointer in " + packName
+                                    + " package: " + key, e);
                             player.closeInventory();
                             return;
                         }
@@ -500,7 +491,7 @@ public class Backpack implements Listener {
             final int size = locations.size();
             final int numberOfRows = (size - size % 9) / 9 + 1;
             if (numberOfRows > 6) {
-                LOG.warning("Player " + player.getName() + " has too many compass pointers, please"
+                LOG.warning(null, "Player " + player.getName() + " has too many compass pointers, please"
                         + " don't allow for so many of them. It slows down your server!");
                 player.closeInventory();
                 return;
@@ -513,14 +504,12 @@ public class Backpack implements Listener {
                 ItemStack compass;
                 try {
                     compass = new QuestItem(new ItemID(Config.getDefaultPackage(), item)).generate(1);
-                } catch (InstructionParseException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Could not load compass button: " + e.getMessage());
-                    LogUtils.logThrowable(e);
+                } catch (final InstructionParseException e) {
+                    LOG.warning(null, "Could not load compass button: " + e.getMessage(), e);
                     player.closeInventory();
                     return;
-                } catch (ObjectNotFoundException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Could not find item: " + e.getMessage());
-                    LogUtils.logThrowable(e);
+                } catch (final ObjectNotFoundException e) {
+                    LOG.warning(null, "Could not find item: " + e.getMessage(), e);
                     compass = new ItemStack(Material.COMPASS);
                 }
                 final ItemMeta meta = compass.getItemMeta();

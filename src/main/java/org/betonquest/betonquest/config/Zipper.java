@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.config;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.betonquest.betonquest.utils.LogUtils;
+import lombok.CustomLog;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,11 +11,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class Zipper {
     private final List<String> fileList = new ArrayList<>();
     private final String sourceFolder;
@@ -43,7 +43,7 @@ public class Zipper {
         final byte[] buffer = new byte[1024];
 
         try (OutputStream fos = Files.newOutputStream(Paths.get(zipFile));
-             ZipOutputStream zos = new ZipOutputStream(fos);) {
+             ZipOutputStream zos = new ZipOutputStream(fos)) {
 
             for (final String file : this.fileList) {
 
@@ -59,9 +59,8 @@ public class Zipper {
                 }
             }
             zos.closeEntry();
-        } catch (IOException e) {
-            LogUtils.getLogger().log(Level.WARNING, "Couldn't zip the files");
-            LogUtils.logThrowable(e);
+        } catch (final IOException e) {
+            LOG.warning(null, "Couldn't zip the files", e);
         }
     }
 

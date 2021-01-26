@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.BlockSelector;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Bukkit;
@@ -18,8 +17,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
-
-import java.util.logging.Level;
 
 /**
  * The player must step on the pressure plate
@@ -41,7 +38,7 @@ public class StepObjective extends Objective implements Listener {
         try {
             return new BlockSelector("*_PRESSURE_PLATE");
         } catch (final InstructionParseException e) {
-            LOG.reportException(e);
+            LOG.reportException(null, e);
         }
         return null;
     }
@@ -78,8 +75,7 @@ public class StepObjective extends Objective implements Listener {
                 completeObjective(playerID);
             }
         } catch (final QuestRuntimeException e) {
-            LogUtils.getLogger().log(Level.WARNING, "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
-            LogUtils.logThrowable(e);
+            LOG.warning(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
         }
     }
 
@@ -105,9 +101,8 @@ public class StepObjective extends Objective implements Listener {
             try {
                 block = loc.getLocation(playerID).getBlock();
             } catch (final QuestRuntimeException e) {
-                LogUtils.getLogger().log(Level.WARNING, "Error while getting location property in '" + instruction.getID() + "' objective: "
-                        + e.getMessage());
-                LogUtils.logThrowable(e);
+                LOG.warning(instruction.getPackage(), "Error while getting location property in '" + instruction.getID() + "' objective: "
+                        + e.getMessage(), e);
                 return "";
             }
             return "X: " + block.getX() + ", Y: " + block.getY() + ", Z: " + block.getZ();

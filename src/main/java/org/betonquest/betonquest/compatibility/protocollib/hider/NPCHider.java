@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.protocollib.hider;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCSpawnEvent;
 import net.citizensnpcs.api.npc.NPC;
@@ -26,6 +27,7 @@ import java.util.Map;
 import java.util.Set;
 
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public final class NPCHider extends BukkitRunnable implements Listener {
 
     private static NPCHider instance;
@@ -78,8 +80,7 @@ public final class NPCHider extends BukkitRunnable implements Listener {
                 try {
                     npcId = Integer.parseInt(npcIds);
                 } catch (final NumberFormatException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "NPC ID '" + npcIds + "' is not a valid number, in custom.yml hide_npcs");
-                    LogUtils.logThrowable(e);
+                    LOG.warning(cfgPackage, "NPC ID '" + npcIds + "' is not a valid number, in custom.yml hide_npcs", e);
                     continue npcs;
                 }
                 final Set<ConditionID> conditions = new HashSet<>();
@@ -89,9 +90,7 @@ public final class NPCHider extends BukkitRunnable implements Listener {
                     try {
                         conditions.add(new ConditionID(cfgPackage, condition));
                     } catch (final ObjectNotFoundException e) {
-                        LogUtils.getLogger().log(Level.WARNING, "Condition '" + condition +
-                                "' does not exist, in custom.yml hide_npcs with ID " + npcIds);
-                        LogUtils.logThrowable(e);
+                        LOG.warning(cfgPackage, "Condition '" + condition + "' does not exist, in custom.yml hide_npcs with ID " + npcIds, e);
                         continue npcs;
                     }
                 }
@@ -129,7 +128,7 @@ public final class NPCHider extends BukkitRunnable implements Listener {
     public void applyVisibility(final Player player, final Integer npcID) {
         final NPC npc = CitizensAPI.getNPCRegistry().getById(npcID);
         if (npc == null) {
-            LOG.warning("NPCHider could not update visibility for npc " + npcID + ": No npc with this id found!");
+            LOG.warning(null, "NPCHider could not update visibility for npc " + npcID + ": No npc with this id found!");
             return;
         }
         if (npc.isSpawned()) {

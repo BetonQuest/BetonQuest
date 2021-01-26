@@ -54,7 +54,7 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
                 } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
                         | InstantiationException | InvocationTargetException | NoSuchMethodException
                         | ClassNotFoundException e) {
-                    LOG.debug("Could not resolve a skin Texture!", e);
+                    LOG.debug(citizensConv.getPackage(), "Could not resolve a skin Texture!", e);
                 }
             }
         }

@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.events;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Point;
@@ -9,23 +10,21 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.logging.Level;
 
 /**
  * Modifies player's points
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class PointEvent extends QuestEvent {
     protected final VariableNumber count;
     protected final boolean multi;
-    private final boolean notify;
     protected final String categoryName;
     protected final String category;
+    private final boolean notify;
 
     public PointEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
@@ -41,7 +40,7 @@ public class PointEvent extends QuestEvent {
         }
         try {
             count = new VariableNumber(instruction.getPackage().getName(), number);
-        } catch (InstructionParseException e) {
+        } catch (final InstructionParseException e) {
             throw new InstructionParseException("Could not parse point count", e);
         }
         notify = instruction.hasArgument("notify");
@@ -56,10 +55,9 @@ public class PointEvent extends QuestEvent {
                     final PlayerData playerData = new PlayerData(playerID);
                     try {
                         addPoints(playerID, playerData);
-                    } catch (QuestRuntimeException e) {
-                        LogUtils.getLogger().log(Level.WARNING, "Error while asynchronously adding " + count + " points of '" + category
-                                + "' category to player " + PlayerConverter.getName(playerID) + ": " + e.getMessage());
-                        LogUtils.logThrowable(e);
+                    } catch (final QuestRuntimeException e) {
+                        LOG.warning(instruction.getPackage(), "Error while asynchronously adding " + count + " points of '" + category
+                                + "' category to player " + PlayerConverter.getName(playerID) + ": " + e.getMessage(), e);
                     }
                 }
             }.runTaskAsynchronously(BetonQuest.getInstance());
@@ -80,9 +78,8 @@ public class PointEvent extends QuestEvent {
                     if (notify) {
                         try {
                             Config.sendNotify(instruction.getPackage().getName(), playerID, "point_multiplied", new String[]{String.valueOf(intCount), categoryName}, "point_multiplied,info");
-                        } catch (final QuestRuntimeException exception) {
-                            LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'point_multiplied' category in '" + getFullId() + "'. Error was: '" + exception.getMessage() + "'");
-                            LogUtils.logThrowable(exception);
+                        } catch (final QuestRuntimeException e) {
+                            LOG.warning(instruction.getPackage(), "The notify system was unable to play a sound for the 'point_multiplied' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
                         }
                     }
                 }
@@ -92,17 +89,15 @@ public class PointEvent extends QuestEvent {
             if (notify && intCount > 0) {
                 try {
                     Config.sendNotify(instruction.getPackage().getName(), playerID, "point_given", new String[]{String.valueOf(intCount), categoryName}, "point_given,info");
-                } catch (final QuestRuntimeException exception) {
-                    LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'point_given' category in '" + getFullId() + "'. Error was: '" + exception.getMessage() + "'");
-                    LogUtils.logThrowable(exception);
+                } catch (final QuestRuntimeException e) {
+                    LOG.warning(instruction.getPackage(), "The notify system was unable to play a sound for the 'point_given' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
                 }
 
             } else if (notify) {
                 try {
                     Config.sendNotify(instruction.getPackage().getName(), playerID, "point_taken", new String[]{String.valueOf(Math.abs(intCount)), categoryName}, "point_taken,info");
-                } catch (final QuestRuntimeException exception) {
-                    LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'point_taken' category in '" + getFullId() + "'. Error was: '" + exception.getMessage() + "'");
-                    LogUtils.logThrowable(exception);
+                } catch (final QuestRuntimeException e) {
+                    LOG.warning(instruction.getPackage(), "The notify system was unable to play a sound for the 'point_taken' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
                 }
             }
         }

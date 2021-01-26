@@ -58,9 +58,9 @@ public class BlockObjective extends Objective implements Listener {
                                 "blocks_to_break,info");
                     } catch (final QuestRuntimeException exception) {
                         try {
-                            LOG.warning("The notify system was unable to play a sound for the 'blocks_to_break' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                            LOG.warning(instruction.getPackage(), "The notify system was unable to play a sound for the 'blocks_to_break' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
                         } catch (final InstructionParseException e) {
-                            LOG.reportException(e);
+                            LOG.reportException(instruction.getPackage(), e);
                         }
                     }
                 } else {
@@ -70,9 +70,9 @@ public class BlockObjective extends Objective implements Listener {
                                 "blocks_to_place,info");
                     } catch (final QuestRuntimeException exception) {
                         try {
-                            LOG.warning("The notify system was unable to play a sound for the 'blocks_to_place' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                            LOG.warning(instruction.getPackage(), "The notify system was unable to play a sound for the 'blocks_to_place' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
                         } catch (final InstructionParseException e) {
-                            LOG.reportException(e);
+                            LOG.reportException(instruction.getPackage(), e);
                         }
                     }
                 }
@@ -97,9 +97,9 @@ public class BlockObjective extends Objective implements Listener {
                                 "blocks_to_break,info");
                     } catch (final QuestRuntimeException exception) {
                         try {
-                            LOG.warning("The notify system was unable to play a sound for the 'blocks_to_break' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                            LOG.warning(instruction.getPackage(), "The notify system was unable to play a sound for the 'blocks_to_break' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
                         } catch (final InstructionParseException e) {
-                            LOG.reportException(e);
+                            LOG.reportException(instruction.getPackage(), e);
                         }
                     }
                 } else {
@@ -109,9 +109,9 @@ public class BlockObjective extends Objective implements Listener {
                                 "blocks_to_place,info");
                     } catch (final QuestRuntimeException exception) {
                         try {
-                            LOG.warning("The notify system was unable to play a sound for the 'blocks_to_place' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                            LOG.warning(instruction.getPackage(), "The notify system was unable to play a sound for the 'blocks_to_place' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
                         } catch (final InstructionParseException e) {
-                            LOG.reportException(e);
+                            LOG.reportException(instruction.getPackage(), e);
                         }
                     }
                 }

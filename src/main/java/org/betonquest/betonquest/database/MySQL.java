@@ -1,17 +1,17 @@
 package org.betonquest.betonquest.database;
 
-import org.betonquest.betonquest.utils.LogUtils;
+import lombok.CustomLog;
 import org.bukkit.plugin.Plugin;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level;
 
 /**
  * Connects to and uses a MySQL database
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class MySQL extends Database {
     private final String user;
     private final String database;
@@ -46,8 +46,7 @@ public class MySQL extends Database {
             connection = DriverManager.getConnection(
                     "jdbc:mysql://" + this.hostname + ":" + this.port + "/" + this.database + "?&useSSL=false", this.user, this.password);
         } catch (ClassNotFoundException | SQLException e) {
-            LogUtils.getLogger().log(Level.WARNING, "MySQL says: " + e.getMessage());
-            LogUtils.logThrowable(e);
+            LOG.warning(null, "MySQL says: " + e.getMessage(), e);
         }
         return connection;
     }

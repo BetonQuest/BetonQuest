@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.objectives;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
@@ -8,7 +9,6 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.BlockSelector;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Bukkit;
@@ -21,13 +21,12 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
-import java.util.logging.Level;
-
 /**
  * Player has to click on block (or air). Left click, right click and any one of
  * them is supported.
  */
 @SuppressWarnings({"PMD.GodClass", "PMD.CommentRequired"})
+@CustomLog
 public class ActionObjective extends Objective implements Listener {
 
     private final Click action;
@@ -133,9 +132,8 @@ public class ActionObjective extends Objective implements Listener {
                         completeObjective(playerID);
                     }
                 }
-            } catch (QuestRuntimeException e) {
-                LogUtils.getLogger().log(Level.WARNING, "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
-                LogUtils.logThrowable(e);
+            } catch (final QuestRuntimeException e) {
+                LOG.warning(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
             }
         }
     }
@@ -164,10 +162,9 @@ public class ActionObjective extends Objective implements Listener {
             final Location location;
             try {
                 location = loc.getLocation(playerID);
-            } catch (QuestRuntimeException e) {
-                LogUtils.getLogger().log(Level.WARNING, "Error while getting location property in '" + instruction.getID() + "' objective: "
-                        + e.getMessage());
-                LogUtils.logThrowable(e);
+            } catch (final QuestRuntimeException e) {
+                LOG.warning(instruction.getPackage(), "Error while getting location property in '" + instruction.getID() + "' objective: "
+                        + e.getMessage(), e);
                 return "";
             }
             return "X: " + location.getBlockX() + ", Y: " + location.getBlockY() + ", Z: " + location.getBlockZ();

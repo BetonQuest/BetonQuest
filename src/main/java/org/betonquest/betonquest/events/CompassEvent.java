@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.events;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.QuestEvent;
@@ -8,7 +9,6 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Bukkit;
@@ -17,12 +17,12 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import java.util.Locale;
-import java.util.logging.Level;
 
 /**
  * Adds a compass specific tag to the player.
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class CompassEvent extends QuestEvent {
 
     private final Action action;
@@ -60,9 +60,8 @@ public class CompassEvent extends QuestEvent {
                 // Add Tag to player
                 try {
                     new TagEvent(new Instruction(instruction.getPackage(), null, "tag " + action.toString().toLowerCase(Locale.ROOT) + " compass-" + compass)).handle(playerID);
-                } catch (InstructionParseException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Failed to tag player with compass point: " + compass);
-                    LogUtils.logThrowable(e);
+                } catch (final InstructionParseException e) {
+                    LOG.warning(instruction.getPackage(), "Failed to tag player with compass point: " + compass, e);
                 }
                 return null;
             case SET:
@@ -70,8 +69,7 @@ public class CompassEvent extends QuestEvent {
                 try {
                     location = new CompoundLocation(compassPackage.getName(), compassSection.getString("location")).getLocation(playerID);
                 } catch (QuestRuntimeException | InstructionParseException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Failed to set compass: " + compass);
-                    LogUtils.logThrowable(e);
+                    LOG.warning(instruction.getPackage(), "Failed to set compass: " + compass, e);
                     return null;
                 }
 

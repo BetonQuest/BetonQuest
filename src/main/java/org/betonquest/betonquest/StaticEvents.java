@@ -1,5 +1,6 @@
 package org.betonquest.betonquest;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -14,6 +15,7 @@ import java.util.*;
 /**
  * StaticEvents contains logic for running events that aren't tied to any player
  */
+@CustomLog
 public class StaticEvents {
 
     /**
@@ -26,7 +28,7 @@ public class StaticEvents {
      * to run at specified times
      */
     public StaticEvents() {
-        LOG.debug("Initializing static events");
+        LOG.debug(null, "Initializing static events");
         // old timers need to be deleted in case of reloading the plugin
         boolean deleted = false;
         for (final EventTimer eventTimer : TIMERS) {
@@ -34,15 +36,15 @@ public class StaticEvents {
             deleted = true;
         }
         if (deleted) {
-            LOG.debug("Previous timers has been canceled");
+            LOG.debug(null, "Previous timers has been canceled");
         }
         for (final ConfigPackage pack : Config.getPackages().values()) {
             final String packName = pack.getName();
-            LOG.debug("Searching package " + packName);
+            LOG.debug(pack, "Searching package " + packName);
             // get those hours and events
             final ConfigurationSection config = pack.getMain().getConfig().getConfigurationSection("static");
             if (config == null) {
-                LOG.debug("There are no static events defined, skipping");
+                LOG.debug(pack, "There are no static events defined, skipping");
                 continue;
             }
             // for each hour, create an event timer
@@ -50,10 +52,10 @@ public class StaticEvents {
                 final String value = config.getString(key);
                 final long timeStamp = getTimestamp(key);
                 if (timeStamp < 0) {
-                    LOG.warning("Incorrect time value in static event declaration (" + key + "), skipping this one");
+                    LOG.warning(pack, "Incorrect time value in static event declaration (" + key + "), skipping this one");
                     continue;
                 }
-                LOG.debug("Scheduling static events " + value + " at hour " + key + ". Current timestamp: "
+                LOG.debug(pack, "Scheduling static events " + value + " at hour " + key + ". Current timestamp: "
                         + new Date().getTime() + ", target timestamp: " + timeStamp);
                 try {
                     final String[] events = value.split(",");
@@ -63,19 +65,18 @@ public class StaticEvents {
                     }
                     TIMERS.add(new EventTimer(timeStamp, eventIDS));
                 } catch (final ObjectNotFoundException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Could not load static event '" + packName + "." + key + "': " + e.getMessage());
-                    LogUtils.logThrowable(e);
+                    LOG.warning(pack, "Could not load static event '" + packName + "." + key + "': " + e.getMessage(), e);
                 }
             }
         }
-        LOG.debug("Static events initialization done");
+        LOG.debug(null, "Static events initialization done");
     }
 
     /**
      * Cancels all scheduled timers
      */
     public static void stop() {
-        LOG.debug("Killing all timers on disable");
+        LOG.debug(null, "Killing all timers on disable");
         for (final EventTimer timer : TIMERS) {
             timer.cancel();
         }
@@ -96,8 +97,7 @@ public class StaticEvents {
         try {
             timeStamp = new SimpleDateFormat("dd.MM.yy HH:mm", Locale.ROOT).parse(timeString).getTime();
         } catch (final ParseException e) {
-            LogUtils.getLogger().log(Level.WARNING, "Error in time setting in static event declaration: " + hour);
-            LogUtils.logThrowable(e);
+            LOG.warning(null, "Error in time setting in static event declaration: " + hour, e);
         }
         // if the timestamp is too old, add one day to it
         if (timeStamp < new Date().getTime()) {

@@ -152,7 +152,7 @@ public abstract class Objective {
             BetonQuest.getInstance().getPlayerData(playerID).addNewRawObjective((ObjectiveID) instruction.getID());
             addPlayer(playerID, getDefaultDataInstruction());
         }
-        LOG.debug(
+        LOG.debug(instruction.getPackage(),
                 "Objective \"" + instruction.getID().getFullID() + "\" has been completed for player "
                         + PlayerConverter.getName(playerID)
                         + ", firing events.");
@@ -160,7 +160,7 @@ public abstract class Objective {
         for (final EventID event : events) {
             BetonQuest.event(playerID, event);
         }
-        LOG.debug(
+        LOG.debug(instruction.getPackage(),
                 "Firing events in objective \"" + instruction.getID().getFullID() + "\" for player "
                         + PlayerConverter.getName(playerID)
                         + " finished");
@@ -175,7 +175,7 @@ public abstract class Objective {
      * @return if all conditions of this objective has been met
      */
     public final boolean checkConditions(final String playerID) {
-        LOG.debug("Condition check in \"" + instruction.getID().getFullID()
+        LOG.debug(instruction.getPackage(), "Condition check in \"" + instruction.getID().getFullID()
                 + "\" objective for player " + PlayerConverter.getName(playerID));
         return BetonQuest.conditions(playerID, conditions);
     }
@@ -195,22 +195,21 @@ public abstract class Objective {
     /**
      * Adds this objective to the player.
      *
-     * @param playerID    ID of the player
-     * @param instruction instruction string for player's data
+     * @param playerID          ID of the player
+     * @param instructionString instruction string for player's data
      */
-    public final void addPlayer(final String playerID, final String instruction) {
+    public final void addPlayer(final String playerID, final String instructionString) {
         synchronized (this) {
             ObjectiveData data = null;
             try {
-                data = template.getConstructor(String.class, String.class, String.class).newInstance(instruction, playerID,
+                data = template.getConstructor(String.class, String.class, String.class).newInstance(instructionString, playerID,
                         this.instruction.getID().getFullID());
             } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
                 if (e.getCause() instanceof InstructionParseException) {
-                    LogUtils.getLogger().log(Level.WARNING, "Error while loading " + this.instruction.getID().getFullID() + " objective data for player "
-                            + PlayerConverter.getName(playerID) + ": " + e.getCause().getMessage());
-                    LogUtils.logThrowable(e);
+                    LOG.warning(instruction.getPackage(), "Error while loading " + this.instruction.getID().getFullID() + " objective data for player "
+                            + PlayerConverter.getName(playerID) + ": " + e.getCause().getMessage(), e);
                 } else {
-                    LOG.reportException(e);
+                    LOG.reportException(instruction.getPackage(), e);
                 }
             }
             if (dataMap.isEmpty()) {
@@ -405,9 +404,7 @@ public abstract class Objective {
                     return;
                 }
                 last = System.currentTimeMillis();
-                LogUtils.getLogger().log(Level.WARNING,
-                        "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
-                LogUtils.logThrowable(e);
+                LOG.warning(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
             }
         }
     }

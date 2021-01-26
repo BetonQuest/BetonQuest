@@ -77,7 +77,7 @@ public final class LogUtils {
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public static void setupLogger() {
         if (fileHandler != null) {
-            LOG.warning("The logger was already registered!");
+            LOG.warning(null, "The logger was already registered!");
             return;
         }
         BetonQuest.getInstance().getLogger().setLevel(Level.ALL);
@@ -91,13 +91,13 @@ public final class LogUtils {
             final boolean debugReadError = debugString == null && !dataFolderExists;
 
             if (debugReadError) {
-                LOG.warning("It was not possible to read, if debugging is enabled. This enables debugging mode automatically.");
+                LOG.warning(null, "It was not possible to read, if debugging is enabled. This enables debugging mode automatically.");
             }
             if (debugReadError || "true".equals(debugString)) {
                 startDebug();
             }
         } catch (final IOException e) {
-            LOG.warning("It was not possible to crate the log file or to register the plugin internal logger. "
+            LOG.warning(null, "It was not possible to crate the log file or to register the plugin internal logger. "
                             + "This is not critical, the server can still run, but it is not possible to use a 'debug log'.",
                     e);
         }
@@ -135,13 +135,13 @@ public final class LogUtils {
             try {
                 Files.move(LOG_FILE.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             } catch (final IOException e) {
-                LOG.warning("It was not possible to rename the 'debug log'. This means '" + LOG_FILE.getName()
+                LOG.warning(null, "It was not possible to rename the 'debug log'. This means '" + LOG_FILE.getName()
                                 + "' couldn't be renamed and writing to this file will be continued.",
                         e);
                 return;
             }
             createLogFile();
-            LOG.info("A new log file was created, and the old one was renamed to '" + newFile.getName() + "'.");
+            LOG.info(null, "A new log file was created, and the old one was renamed to '" + newFile.getName() + "'.");
         }
     }
 

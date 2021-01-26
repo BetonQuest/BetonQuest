@@ -54,7 +54,7 @@ public class ObjectiveEvent extends QuestEvent {
                 }
                 BetonQuest.getInstance().getSaver().add(new Saver.Record(Connector.UpdateType.REMOVE_ALL_OBJECTIVES, objective.toString()));
             } else {
-                LOG.warning("You tried to call an objective add / finish event in a static context! Only objective delete works here.");
+                LOG.warning(instruction.getPackage(), "You tried to call an objective add / finish event in a static context! Only objective delete works here.");
             }
         } else if (PlayerConverter.getPlayer(playerID) == null) {
             new BukkitRunnable() {
@@ -72,7 +72,7 @@ public class ObjectiveEvent extends QuestEvent {
                             break;
                         case "complete":
                         case "finish":
-                            LOG.warning("Cannot complete objective for offline player!");
+                            LOG.warning(instruction.getPackage(), "Cannot complete objective for offline player!");
                             break;
                         default:
                             break;

@@ -48,7 +48,7 @@ public class AlternativeCondition extends Condition {
                         return true;
                     }
                 } catch (final InterruptedException | ExecutionException e) {
-                    LOG.reportException(e);
+                    LOG.reportException(instruction.getPackage(), e);
                     return false;
                 }
             }

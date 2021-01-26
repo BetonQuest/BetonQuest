@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.database;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.betonquest.betonquest.utils.LogUtils;
+import lombok.CustomLog;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
@@ -9,12 +9,12 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level;
 
 /**
  * Connects to and uses a SQLite database
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class SQLite extends Database {
     private final String dbLocation;
 
@@ -39,9 +39,8 @@ public class SQLite extends Database {
         if (!(file.exists())) {
             try {
                 file.createNewFile();
-            } catch (IOException e) {
-                LogUtils.getLogger().log(Level.SEVERE, "Unable to create database!");
-                LogUtils.logThrowable(e);
+            } catch (final IOException e) {
+                LOG.error(null, "Unable to create database!", e);
             }
         }
         Connection connection = null;
@@ -50,8 +49,7 @@ public class SQLite extends Database {
             connection = DriverManager
                     .getConnection("jdbc:sqlite:" + plugin.getDataFolder().toPath().toString() + "/" + dbLocation);
         } catch (ClassNotFoundException | SQLException e) {
-            LogUtils.getLogger().log(Level.SEVERE, "There was an exception with SQL");
-            LogUtils.logThrowable(e);
+            LOG.error(null, "There was an exception with SQL", e);
         }
         return connection;
     }

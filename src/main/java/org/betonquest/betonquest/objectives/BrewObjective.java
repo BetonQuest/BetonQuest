@@ -137,9 +137,9 @@ public class BrewObjective extends Objective implements Listener {
                                 "potions_to_brew,info");
                     } catch (final QuestRuntimeException exception) {
                         try {
-                            LOG.warning("The notify system was unable to play a sound for the 'potions_to_brew' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                            LOG.warning(instruction.getPackage(), "The notify system was unable to play a sound for the 'potions_to_brew' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
                         } catch (final InstructionParseException e) {
-                            LOG.reportException(e);
+                            LOG.reportException(instruction.getPackage(), e);
                         }
                     }
                 }

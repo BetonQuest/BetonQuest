@@ -29,7 +29,7 @@ public class BackpackCommand implements CommandExecutor {
         if ("backpack".equalsIgnoreCase(cmd.getName())) {
             // command sender must be a player, console can't have a backpack
             if (sender instanceof Player) {
-                LOG.debug("Executing /backpack command for " + sender.getName());
+                LOG.debug(null, "Executing /backpack command for " + sender.getName());
                 new Backpack(PlayerConverter.getID((Player) sender));
             }
             return true;

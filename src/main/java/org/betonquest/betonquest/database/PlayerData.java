@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.database;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.Point;
@@ -29,6 +30,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Represents an object storing all player-related data, which can load and save it.
  */
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.CommentRequired"})
+@CustomLog
 public class PlayerData {
 
     @SuppressWarnings("PMD.DoNotUseThreads")
@@ -100,9 +102,8 @@ public class PlayerData {
                     try {
                         item = new QuestItem(instruction).generate(amount);
                     } catch (final InstructionParseException e) {
-                        LogUtils.getLogger().log(Level.WARNING, "Could not load backpack item for player " + PlayerConverter.getName(playerID)
-                                + ", with instruction '" + instruction + "', because: " + e.getMessage());
-                        LogUtils.logThrowable(e);
+                        LOG.warning(null, "Could not load backpack item for player " + PlayerConverter.getName(playerID)
+                                + ", with instruction '" + instruction + "', because: " + e.getMessage(), e);
                         continue;
                     }
                     backpack.add(item);
@@ -124,13 +125,12 @@ public class PlayerData {
                 }
 
                 // log data to debugger
-                LOG.debug("There are " + objectives.size() + " objectives, " + tags.size() + " tags, " + points.size()
+                LOG.debug(null, "There are " + objectives.size() + " objectives, " + tags.size() + " tags, " + points.size()
                         + " points, " + entries.size() + " journal entries and " + backpack.size()
                         + " items loaded for player " + PlayerConverter.getName(playerID));
             }
         } catch (final SQLException e) {
-            LogUtils.getLogger().log(Level.SEVERE, "There was an exception with SQL");
-            LogUtils.logThrowable(e);
+            LOG.error(null, "There was an exception with SQL", e);
         }
     }
 
@@ -268,9 +268,8 @@ public class PlayerData {
                 final ObjectiveID objectiveID = new ObjectiveID(null, objective);
                 BetonQuest.resumeObjective(playerID, objectiveID, entry.getValue());
             } catch (final ObjectNotFoundException e) {
-                LogUtils.getLogger().log(Level.WARNING, "Loaded '" + objective
-                        + "' objective from the database, but it is not defined in configuration. Skipping.");
-                LogUtils.logThrowable(e);
+                LOG.warning(null, "Loaded '" + objective
+                        + "' objective from the database, but it is not defined in configuration. Skipping.", e);
             }
         }
         objectives.clear();

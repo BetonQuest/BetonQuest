@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.config;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.database.PlayerData;
@@ -27,20 +28,20 @@ import java.util.Map;
  * Represents a quest canceler, which cancels quests for players.
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition"})
+@CustomLog
 public class QuestCanceler {
 
-    private String item;
     private final String[] tags;
     private final String[] points;
     private final String[] journal;
     private final ConditionID[] conditions;
     private final EventID[] events;
     private final ObjectiveID[] objectives;
-    private Location loc;
     private final Map<String, String> name = new HashMap<>();
-
     private final String packName;
     private final String cancelerName;
+    private String item;
+    private Location loc;
 
     /**
      * Creates a new canceler with given name.
@@ -89,7 +90,7 @@ public class QuestCanceler {
             for (int i = 0; i < arr.length; i++) {
                 try {
                     events[i] = new EventID(Config.getPackages().get(packName), arr[i]);
-                } catch (ObjectNotFoundException e) {
+                } catch (final ObjectNotFoundException e) {
                     throw new InstructionParseException("Error while parsing quest canceler events: " + e.getMessage(), e);
                 }
             }
@@ -103,7 +104,7 @@ public class QuestCanceler {
             for (int i = 0; i < arr.length; i++) {
                 try {
                     conditions[i] = new ConditionID(Config.getPackages().get(packName), arr[i]);
-                } catch (ObjectNotFoundException e) {
+                } catch (final ObjectNotFoundException e) {
                     throw new InstructionParseException("Error while parsing quest canceler conditions: " + e.getMessage(), e);
                 }
             }
@@ -117,7 +118,7 @@ public class QuestCanceler {
             for (int i = 0; i < arr.length; i++) {
                 try {
                     objectives[i] = new ObjectiveID(Config.getPackages().get(packName), arr[i]);
-                } catch (ObjectNotFoundException e) {
+                } catch (final ObjectNotFoundException e) {
                     throw new InstructionParseException("Error while parsing quest canceler objectives: " + e.getMessage(), e);
                 }
             }
@@ -133,7 +134,7 @@ public class QuestCanceler {
         // get location
         if (locParts != null) {
             if (locParts.length != 4 && locParts.length != 6) {
-                LOG.warning("Wrong location format in quest canceler " + name);
+                LOG.warning(pack, "Wrong location format in quest canceler " + name);
                 return;
             }
             final double locX;
@@ -143,14 +144,13 @@ public class QuestCanceler {
                 locX = Double.parseDouble(locParts[0]);
                 locY = Double.parseDouble(locParts[1]);
                 locZ = Double.parseDouble(locParts[2]);
-            } catch (NumberFormatException e) {
-                LogUtils.getLogger().log(Level.WARNING, "Could not parse location in quest canceler " + name);
-                LogUtils.logThrowable(e);
+            } catch (final NumberFormatException e) {
+                LOG.warning(pack, "Could not parse location in quest canceler " + name, e);
                 return;
             }
             final World world = Bukkit.getWorld(locParts[3]);
             if (world == null) {
-                LOG.warning("The world doesn't exist in quest canceler " + name);
+                LOG.warning(pack, "The world doesn't exist in quest canceler " + name);
                 return;
             }
             float yaw = 0;
@@ -159,9 +159,8 @@ public class QuestCanceler {
                 try {
                     yaw = Float.parseFloat(locParts[4]);
                     pitch = Float.parseFloat(locParts[5]);
-                } catch (NumberFormatException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Could not parse yaw/pitch in quest canceler " + name + ", setting to 0");
-                    LogUtils.logThrowable(e);
+                } catch (final NumberFormatException e) {
+                    LOG.warning(pack, "Could not parse yaw/pitch in quest canceler " + name + ", setting to 0", e);
                     yaw = 0;
                     pitch = 0;
                 }
@@ -191,12 +190,12 @@ public class QuestCanceler {
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     public void cancel(final String playerID) {
-        LOG.debug("Canceling the quest " + name + " for player " + PlayerConverter.getName(playerID));
+        LOG.debug(null, "Canceling the quest " + name + " for player " + PlayerConverter.getName(playerID));
         final PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
         // remove tags, points, objectives and journals
         if (tags != null) {
             for (final String tag : tags) {
-                LOG.debug("  Removing tag " + tag);
+                LOG.debug(null, "  Removing tag " + tag);
                 if (tag.contains(".")) {
                     playerData.removeTag(tag);
                 } else {
@@ -206,7 +205,7 @@ public class QuestCanceler {
         }
         if (points != null) {
             for (final String point : points) {
-                LOG.debug("  Removing points " + point);
+                LOG.debug(null, "  Removing points " + point);
                 if (point.contains(".")) {
                     playerData.removePointsCategory(point);
                 } else {
@@ -216,7 +215,7 @@ public class QuestCanceler {
         }
         if (objectives != null) {
             for (final ObjectiveID objectiveID : objectives) {
-                LOG.debug("  Removing objective " + objectiveID);
+                LOG.debug(objectiveID.getPackage(), "  Removing objective " + objectiveID);
                 BetonQuest.getInstance().getObjective(objectiveID).removePlayer(playerID);
                 playerData.removeRawObjective(objectiveID);
             }
@@ -224,7 +223,7 @@ public class QuestCanceler {
         if (journal != null) {
             final Journal journal = playerData.getJournal();
             for (final String entry : this.journal) {
-                LOG.debug("  Removing entry " + entry);
+                LOG.debug(null, "  Removing entry " + entry);
                 if (entry.contains(".")) {
                     journal.removePointer(entry);
                 } else {
@@ -235,7 +234,7 @@ public class QuestCanceler {
         }
         // teleport player to the location
         if (loc != null) {
-            LOG.debug("  Teleporting to new location");
+            LOG.debug(null, "  Teleporting to new location");
             PlayerConverter.getPlayer(playerID).teleport(loc);
         }
         // fire all events
@@ -245,12 +244,12 @@ public class QuestCanceler {
             }
         }
         // done
-        LOG.debug("Quest removed!");
+        LOG.debug(null, "Quest removed!");
         final String questName = getName(playerID);
         try {
             Config.sendNotify(packName, playerID, "quest_canceled", new String[]{questName}, "quest_cancelled,quest_canceled,info");
         } catch (final QuestRuntimeException exception) {
-            LOG.warning("The notify system was unable to play a sound for the 'quest_canceled' category in quest '" + name + "'. Error was: '" + exception.getMessage() + "'");
+            LOG.warning(null, "The notify system was unable to play a sound for the 'quest_canceled' category in quest '" + name + "'. Error was: '" + exception.getMessage() + "'");
         }
     }
 
@@ -271,7 +270,7 @@ public class QuestCanceler {
             questName = name.get("en");
         }
         if (questName == null) {
-            LOG.warning("Default quest name not defined in canceler " + packName + "." + cancelerName);
+            LOG.warning(null, "Default quest name not defined in canceler " + packName + "." + cancelerName);
             questName = "Quest";
         }
         return questName.replace("_", " ").replace("&", "§");
@@ -285,8 +284,7 @@ public class QuestCanceler {
                 final ItemID itemID = new ItemID(Config.getPackages().get(packName), item);
                 stack = new QuestItem(itemID).generate(1);
             } catch (InstructionParseException | ObjectNotFoundException e) {
-                LogUtils.getLogger().log(Level.WARNING, "Could not load cancel button: " + e.getMessage());
-                LogUtils.logThrowable(e);
+                LOG.warning(null, "Could not load cancel button: " + e.getMessage(), e);
             }
         }
         final ItemMeta meta = stack.getItemMeta();

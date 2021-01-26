@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.citizens;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import lombok.CustomLog;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.BetonQuest;
@@ -34,6 +35,7 @@ import java.util.Map;
  * we only have a fast update when needed to ensure they are relative to the NPC position
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.GodClass", "PMD.AssignmentToNonFinalStatic"})
+@CustomLog
 public class CitizensHologram extends BukkitRunnable {
 
     private static CitizensHologram instance;
@@ -104,7 +106,7 @@ public class CitizensHologram extends BukkitRunnable {
                     try {
                         npcs.put(Integer.parseInt(npcID), new ArrayList<>());
                     } catch (final NumberFormatException exception) {
-                        LOG.warning("Could not parse number of NPC '" + npcID + "'");
+                        LOG.warning(pack, "Could not parse number of NPC '" + npcID + "'");
                     }
                 }
             }
@@ -118,7 +120,7 @@ public class CitizensHologram extends BukkitRunnable {
             }
             interval = hologramsSection.getInt("check_interval", 100);
             if (interval <= 0) {
-                LOG.warning("Could not load npc holograms of package " + pack.getName() + ": " +
+                LOG.warning(pack, "Could not load npc holograms of package " + pack.getName() + ": " +
                         "Check interval must be bigger than 0.");
                 return;
             }
@@ -162,8 +164,7 @@ public class CitizensHologram extends BukkitRunnable {
                 final String[] vectorParts = vector.split(";");
                 return new Vector(Double.parseDouble(vectorParts[0]), Double.parseDouble(vectorParts[1]), Double.parseDouble(vectorParts[2]));
             } catch (final NumberFormatException e) {
-                LogUtils.getLogger().log(Level.WARNING, pack.getName() + ": Invalid vector in Hologram '" + key + "': " + vector);
-                LogUtils.logThrowable(e);
+                LOG.warning(pack, pack.getName() + ": Invalid vector in Hologram '" + key + "': " + vector, e);
             }
         }
         return new Vector(0, 3, 0);
@@ -176,9 +177,8 @@ public class CitizensHologram extends BukkitRunnable {
                 try {
                     conditions.add(new ConditionID(pack, part));
                 } catch (final ObjectNotFoundException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Error while loading " + part + " condition for hologram " + pack.getName() + "."
-                            + key + ": " + e.getMessage());
-                    LogUtils.logThrowable(e);
+                    LOG.warning(pack, "Error while loading " + part + " condition for hologram " + pack.getName() + "."
+                            + key + ": " + e.getMessage(), e);
                 }
             }
         }
@@ -273,11 +273,9 @@ public class CitizensHologram extends BukkitRunnable {
                     final ItemStack stack = new QuestItem(itemID).generate(stackSize);
                     hologram.appendItemLine(stack);
                 } catch (final InstructionParseException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Could not parse item in " + npcHologram.pack.getName() + " hologram: " + e.getMessage());
-                    LogUtils.logThrowable(e);
+                    LOG.warning(npcHologram.pack, "Could not parse item in " + npcHologram.pack.getName() + " hologram: " + e.getMessage(), e);
                 } catch (final ObjectNotFoundException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Could not find item in " + npcHologram.pack.getName() + " hologram: " + e.getMessage());
-                    LogUtils.logThrowable(e);
+                    LOG.warning(npcHologram.pack, "Could not find item in " + npcHologram.pack.getName() + " hologram: " + e.getMessage(), e);
                 }
             } else {
                 hologram.appendTextLine(line.replace('&', '§'));

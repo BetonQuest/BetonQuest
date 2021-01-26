@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
 import net.mmogroup.mmolib.api.item.NBTItem;
@@ -10,20 +11,18 @@ import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.logging.Level;
-
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class MMOItemsTakeEvent extends QuestEvent {
 
     private final Type itemType;
     private final String itemID;
-    private VariableNumber deleteAmountVar = new VariableNumber(1);
     private final boolean notify;
+    private VariableNumber deleteAmountVar = new VariableNumber(1);
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public MMOItemsTakeEvent(final Instruction instruction) throws InstructionParseException {
@@ -73,9 +72,8 @@ public class MMOItemsTakeEvent extends QuestEvent {
                 Config.sendNotify(instruction.getPackage().getName(), playerID, "items_taken",
                         new String[]{itemName, String.valueOf(deletedCounter)},
                         "items_taken,info");
-            } catch (final QuestRuntimeException exception) {
-                LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'items_taken' category in '" + getFullId() + "'. Error was: '" + exception.getMessage() + "'");
-                LogUtils.logThrowable(exception);
+            } catch (final QuestRuntimeException e) {
+                LOG.warning(instruction.getPackage(), "The notify system was unable to play a sound for the 'items_taken' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
             }
         }
         return null;

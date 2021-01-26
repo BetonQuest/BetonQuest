@@ -6,8 +6,6 @@ package org.betonquest.betonquest.utils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-import java.util.logging.Level;
-
 
 /**
  * Helper class which uses the bungee API to send tellraw like messages to players and allows falling back on legacy
@@ -97,9 +95,7 @@ public interface ComponentBuilder {
         public static ComponentBuilder create() {
             try {
                 return new BugeeCordAPIBuilder();
-            } catch (LinkageError e) {
-                LogUtils.getLogger().log(Level.WARNING, "Could not link BungeeCordAPIBuilder: " + e.getMessage());
-                LogUtils.logThrowable(e);
+            } catch (final LinkageError e) {
                 return new LegacyBuilder();
             }
         }

@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.utils;
 
+import lombok.CustomLog;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -26,6 +27,7 @@ import java.util.*;
 /**
  * This {@link Updater} checks for new versions on the BeonQuest page and on the GitHub page and download them if wanted.
  */
+@CustomLog
 public class Updater {
     /**
      * The RELEASE API URL.
@@ -114,7 +116,7 @@ public class Updater {
             searchUpdateTask(config);
             if (latest.getValue() != null) {
 
-                LOG.info(getUpdateNotification(config));
+                LOG.info(null, getUpdateNotification(config));
                 if (config.automatic) {
                     update(Bukkit.getConsoleSender());
                 }
@@ -126,17 +128,17 @@ public class Updater {
         try {
             searchUpdateTaskRelease(config);
         } catch (final UnknownHostException e) {
-            LOG.warning("The update url for releases builds is not reachable!");
+            LOG.warning(null, "The update url for releases builds is not reachable!");
         } catch (final IOException e) {
-            LOG.warning("Could not get the latest release!", e);
+            LOG.warning(null, "Could not get the latest release!", e);
         }
         if (!(isUpdateAvailable() && config.forcedStrategy) && config.updateStrategy.isDev) {
             try {
                 searchUpdateTaskDev(config);
             } catch (final UnknownHostException e) {
-                LOG.warning("The update url for dev builds is not reachable!");
+                LOG.warning(null, "The update url for dev builds is not reachable!");
             } catch (final IOException e) {
-                LOG.warning("Could not get the latest dev build number!", e);
+                LOG.warning(null, "Could not get the latest dev build number!", e);
             }
         }
     }
@@ -244,13 +246,13 @@ public class Updater {
                 sendMessage(sender, ChatColor.DARK_GREEN + "...download finished. Restart the server to update the plugin.");
             } catch (final QuestRuntimeException e) {
                 sendMessage(sender, ChatColor.RED + e.getMessage());
-                LogUtils.logThrowable(e);
+                LOG.debug(null, "Error while performing update!", e);
             }
         });
     }
 
     private void sendMessage(final CommandSender sender, final String message) {
-        LOG.info(message);
+        LOG.info(null, message);
         if (sender != null && !(sender instanceof ConsoleCommandSender)) {
             sender.sendMessage(BetonQuest.getInstance().getPluginTag() + message);
         }
@@ -528,7 +530,7 @@ public class Updater {
                 strategy = stringUpdateStrategy == null ? UpdateStrategy.MINOR :
                         UpdateStrategy.valueOf(stringUpdateStrategy.toUpperCase(Locale.ROOT));
             } catch (final IllegalArgumentException exception) {
-                LOG.error("Could not read 'update.strategy' in 'config.yml'!", exception);
+                LOG.error(null, "Could not read 'update.strategy' in 'config.yml'!", exception);
                 strategy = UpdateStrategy.MINOR;
             }
 

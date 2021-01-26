@@ -1,18 +1,18 @@
 package org.betonquest.betonquest.database;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.betonquest.betonquest.utils.LogUtils;
+import lombok.CustomLog;
 import org.bukkit.plugin.Plugin;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.logging.Level;
 
 /**
  * Abstract Database class, serves as a base for any connection method (MySQL,
  * SQLite, etc.)
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
+@CustomLog
 public abstract class Database {
 
     protected Plugin plugin;
@@ -36,9 +36,8 @@ public abstract class Database {
     public void closeConnection() {
         try {
             con.close();
-        } catch (SQLException e) {
-            LogUtils.getLogger().log(Level.SEVERE, "There was an exception with SQL");
-            LogUtils.logThrowable(e);
+        } catch (final SQLException e) {
+            LOG.error(null, "There was an exception with SQL", e);
         }
         con = null;
     }
@@ -81,9 +80,8 @@ public abstract class Database {
             getConnection().createStatement()
                     .executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "global_points (id INTEGER PRIMARY KEY "
                             + autoIncrement + ", category VARCHAR(256) NOT NULL, count INT NOT NULL);");
-        } catch (SQLException e) {
-            LogUtils.getLogger().log(Level.SEVERE, "There was an exception with SQL");
-            LogUtils.logThrowable(e);
+        } catch (final SQLException e) {
+            LOG.error(null, "There was an exception with SQL", e);
         }
     }
 }

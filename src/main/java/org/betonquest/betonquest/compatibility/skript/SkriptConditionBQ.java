@@ -5,20 +5,19 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-
-import java.util.logging.Level;
 
 /**
  * Skript condition, which checks specified BetonQuest's condition
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class SkriptConditionBQ extends Condition {
 
     private Expression<Player> player;
@@ -48,9 +47,8 @@ public class SkriptConditionBQ extends Condition {
         final String conditionID = condition.getSingle(event);
         try {
             return BetonQuest.condition(PlayerConverter.getID(player.getSingle(event)), new ConditionID(null, conditionID));
-        } catch (ObjectNotFoundException e) {
-            LogUtils.getLogger().log(Level.WARNING, "Error while checking Skript condition - could not load condition with ID '" + conditionID + "': " + e.getMessage());
-            LogUtils.logThrowable(e);
+        } catch (final ObjectNotFoundException e) {
+            LOG.warning(null, "Error while checking Skript condition - could not load condition with ID '" + conditionID + "': " + e.getMessage(), e);
             return false;
         }
     }

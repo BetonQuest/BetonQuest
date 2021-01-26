@@ -3,14 +3,12 @@ package org.betonquest.betonquest.config;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.logging.Level;
 
 @SuppressWarnings("PMD.CommentRequired")
 @CustomLog
@@ -108,8 +106,7 @@ public class ConfigAccessor {
                 getConfig().save(configFile);
             }
         } catch (final IOException e) {
-            LogUtils.getLogger().log(Level.SEVERE, "Could not save config to " + configFile);
-            LogUtils.logThrowable(e);
+            LOG.error(null, "Could not save config to " + configFile, e);
         }
     }
 
@@ -137,7 +134,7 @@ public class ConfigAccessor {
                     }
                 }
             } catch (final IOException e) {
-                LOG.reportException(e);
+                LOG.reportException(null, e);
             }
         }
     }

@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.objectives;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Bukkit;
@@ -22,12 +22,11 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.logging.Level;
-
 /**
  * Player needs to die. Death can be canceled, also respawn location can be set
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class DieObjective extends Objective implements Listener {
 
     private final boolean cancel;
@@ -77,8 +76,7 @@ public class DieObjective extends Objective implements Listener {
                     targetLocation = location.getLocation(playerID);
                 }
             } catch (final QuestRuntimeException e) {
-                LogUtils.getLogger().log(Level.SEVERE, "Couldn't execute onLastDamage in DieObjective");
-                LogUtils.logThrowable(e);
+                LOG.warning(instruction.getPackage(), "Couldn't execute onLastDamage in DieObjective", e);
             }
             final Location finaltagetLocation = targetLocation;
             new BukkitRunnable() {

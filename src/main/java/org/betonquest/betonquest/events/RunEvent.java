@@ -64,7 +64,7 @@ public class RunEvent extends QuestEvent {
             if (e.getCause() instanceof InstructionParseException) {
                 throw new InstructionParseException("Error in internal event: " + e.getCause().getMessage(), e);
             } else {
-                LOG.reportException(e);
+                LOG.reportException(super.instruction.getPackage(), e);
             }
         }
         return null;

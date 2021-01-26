@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
 import net.Indyuce.mmoitems.api.player.PlayerData;
@@ -10,25 +11,24 @@ import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
-import java.util.logging.Level;
 
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class MMOItemsGiveEvent extends QuestEvent {
 
     private final MMOItems mmoPlugin = MMOItems.plugin;
 
     private final Type itemType;
     private final String itemID;
-    private VariableNumber amountVar = new VariableNumber(1);
     private final boolean scale;
     private final boolean notify;
     private final boolean singleStack;
+    private VariableNumber amountVar = new VariableNumber(1);
 
     public MMOItemsGiveEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
@@ -64,9 +64,8 @@ public class MMOItemsGiveEvent extends QuestEvent {
                 Config.sendNotify(instruction.getPackage().getName(), playerID, "items_given",
                         new String[]{mmoItem.getItemMeta().getDisplayName(), String.valueOf(amount)},
                         "items_given,info");
-            } catch (final QuestRuntimeException exception) {
-                LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'items_given' category in '" + getFullId() + "'. Error was: '" + exception.getMessage() + "'");
-                LogUtils.logThrowable(exception);
+            } catch (final QuestRuntimeException e) {
+                LOG.warning(instruction.getPackage(), "The notify system was unable to play a sound for the 'items_given' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
             }
         }
 

@@ -1,20 +1,20 @@
 package org.betonquest.betonquest.database;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.database.Connector.UpdateType;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.logging.Level;
 
 /**
  * Saves the data to the database asynchronously
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.DoNotUseThreads"})
+@CustomLog
 @SuppressFBWarnings("IS2_INCONSISTENT_SYNC")
 public class Saver extends Thread implements Listener {
 
@@ -46,9 +46,8 @@ public class Saver extends Thread implements Listener {
                     try {
                         active = false;
                         wait();
-                    } catch (InterruptedException e) {
-                        LogUtils.getLogger().log(Level.SEVERE, "There was a exception with SQL");
-                        LogUtils.logThrowable(e);
+                    } catch (final InterruptedException e) {
+                        LOG.error(null, "There was a exception with SQL", e);
                     }
                 }
             }

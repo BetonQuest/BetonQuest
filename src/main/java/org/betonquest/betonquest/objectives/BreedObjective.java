@@ -56,9 +56,9 @@ public class BreedObjective extends Objective implements Listener {
                             "animals_to_breed,info");
                 } catch (final QuestRuntimeException exception) {
                     try {
-                        LOG.warning("The notify system was unable to play a sound for the 'animals_to_breed' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                        LOG.warning(instruction.getPackage(), "The notify system was unable to play a sound for the 'animals_to_breed' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
                     } catch (final InstructionParseException e) {
-                        LOG.reportException(e);
+                        LOG.reportException(instruction.getPackage(), e);
                     }
                 }
             }

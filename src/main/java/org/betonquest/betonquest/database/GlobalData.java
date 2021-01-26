@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.database;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Point;
 import org.betonquest.betonquest.database.Connector.QueryType;
@@ -15,6 +16,7 @@ import java.util.List;
  * Represents an object storing all player-related data, which can load and save it.
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class GlobalData {
 
     @SuppressWarnings("PMD.DoNotUseThreads")
@@ -35,7 +37,7 @@ public class GlobalData {
             // get connection to the database
             final Connector con = new Connector();
             try (ResultSet res2 = con.querySQL(QueryType.LOAD_ALL_GLOBAL_TAGS);
-                 ResultSet res4 = con.querySQL(QueryType.LOAD_ALL_GLOBAL_POINTS);) {
+                 ResultSet res4 = con.querySQL(QueryType.LOAD_ALL_GLOBAL_POINTS)) {
                 // put them into the list
                 while (res2.next()) {
                     globalTags.add(res2.getString("tag"));
@@ -45,12 +47,11 @@ public class GlobalData {
                     globalPoints.add(new Point(res4.getString("category"), res4.getInt("count")));
                 }
                 // log data to debugger
-                LOG.debug("There are " + globalTags.size() + " global_tags and " + globalPoints.size()
+                LOG.debug(null, "There are " + globalTags.size() + " global_tags and " + globalPoints.size()
                         + " global_points loaded");
             }
-        } catch (SQLException e) {
-            LogUtils.getLogger().log(Level.SEVERE, "There was an exception with SQL");
-            LogUtils.logThrowable(e);
+        } catch (final SQLException e) {
+            LOG.error(null, "There was an exception with SQL", e);
         }
     }
 

@@ -68,9 +68,9 @@ public class PickupObjective extends Objective implements Listener {
                 Config.sendNotify(instruction.getPackage().getName(), playerID, "items_to_pickup", new String[]{Integer.toString(playerData.getAmount())}, "items_to_pickup,info");
             } catch (final QuestRuntimeException exception) {
                 try {
-                    LOG.warning("The notify system was unable to play a sound for the 'items_to_pickup' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                    LOG.warning(instruction.getPackage(), "The notify system was unable to play a sound for the 'items_to_pickup' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
                 } catch (final InstructionParseException e) {
-                    LOG.reportException(e);
+                    LOG.reportException(instruction.getPackage(), e);
                 }
             }
         }

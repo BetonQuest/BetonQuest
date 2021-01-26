@@ -49,7 +49,7 @@ public class AdvancementNotifyIO extends NotifyIO {
         try {
             add(key, message);
         } catch (final JsonIOException e) {
-            LOG.warning("Failed to create notification with text: '" + message + "'! Cause: " + e.getMessage(), e);
+            LOG.warning(null, "Failed to create notification with text: '" + message + "'! Cause: " + e.getMessage(), e);
         }
         return key;
     }

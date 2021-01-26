@@ -5,21 +5,20 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.EventID;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.logging.Level;
-
 /**
  * Skript effect, which fires specified BetonQuest's event
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class SkriptEffectBQ extends Effect {
 
     private Expression<String> event;
@@ -52,9 +51,8 @@ public class SkriptEffectBQ extends Effect {
                 final String eventID = SkriptEffectBQ.this.event.getSingle(event);
                 try {
                     BetonQuest.event(PlayerConverter.getID(player.getSingle(event)), new EventID(null, eventID));
-                } catch (ObjectNotFoundException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Error when running Skript event - could not load '" + eventID + "' event: " + e.getMessage());
-                    LogUtils.logThrowable(e);
+                } catch (final ObjectNotFoundException e) {
+                    LOG.warning(null, "Error when running Skript event - could not load '" + eventID + "' event: " + e.getMessage(), e);
                 }
 
             }

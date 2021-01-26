@@ -32,7 +32,7 @@ public class DayOfWeekCondition extends Condition {
         } catch (final DateTimeException e) {
             throw new InstructionParseException(dayString + " is not a valid day of a week", e);
         } catch (final NumberFormatException e) {
-            LOG.debug("Could not parse number!", e);
+            LOG.debug(instruction.getPackage(), "Could not parse number!", e);
             try {
                 dayOfWeek = DayOfWeek.valueOf(dayString.toUpperCase(Locale.ROOT));
             } catch (final IllegalArgumentException iae) {

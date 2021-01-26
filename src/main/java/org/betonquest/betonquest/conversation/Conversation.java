@@ -99,14 +99,14 @@ public class Conversation implements Listener {
 
         // check if data is present
         if (data == null) {
-            LOG.warning("Conversation '" + conversationID
+            LOG.warning(pack, "Conversation '" + conversationID
                     + "' does not exist. Check for errors on /q reload! It probably couldn't be loaded due to some other error.");
             return;
         }
 
         // if the player has active conversation, terminate this one
         if (LIST.containsKey(playerID)) {
-            LOG.debug("Player " + PlayerConverter.getName(playerID) + " is in conversation right now, returning.");
+            LOG.debug(pack, "Player " + PlayerConverter.getName(playerID) + " is in conversation right now, returning.");
             return;
         }
 
@@ -244,7 +244,7 @@ public class Conversation implements Listener {
                     }
                 }
             } catch (final CancellationException | InterruptedException | ExecutionException | TimeoutException e) {
-                LOG.reportException(e);
+                LOG.reportException(pack, e);
                 continue;
             }
             final String option = future.getKey();
@@ -364,7 +364,7 @@ public class Conversation implements Listener {
             try {
                 Config.sendNotify(getPackage().getName(), PlayerConverter.getID(event.getPlayer()), "command_blocked", "command_blocked,error");
             } catch (final QuestRuntimeException e) {
-                LOG.warning("The notify system was unable to play a sound for the 'command_blocked' category. Error was: '" + e.getMessage() + "'", e);
+                LOG.warning(pack, "The notify system was unable to play a sound for the 'command_blocked' category. Error was: '" + e.getMessage() + "'", e);
             }
         }
     }
@@ -398,7 +398,7 @@ public class Conversation implements Listener {
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public void suspend() {
         if (inOut == null) {
-            LOG.warning("Conversation IO is not loaded, conversation will end for player "
+            LOG.warning(pack, "Conversation IO is not loaded, conversation will end for player "
                     + PlayerConverter.getName(playerID));
             LIST.remove(playerID);
             HandlerList.unregisterAll(this);
@@ -511,8 +511,7 @@ public class Conversation implements Listener {
                 conv.inOut = convIO.getConstructor(Conversation.class, String.class).newInstance(conv, playerID);
             } catch (final InstantiationException | IllegalAccessException | IllegalArgumentException
                     | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                LogUtils.getLogger().log(Level.WARNING, "Error when loading conversation IO");
-                LogUtils.logThrowable(e);
+                LOG.warning(pack, "Error when loading conversation IO", e);
                 return;
             }
 
@@ -527,8 +526,7 @@ public class Conversation implements Listener {
                     conv.interceptor = interceptor.getConstructor(Conversation.class, String.class).newInstance(conv, playerID);
                 } catch (final InstantiationException | IllegalAccessException | IllegalArgumentException
                         | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Error when loading interceptor");
-                    LogUtils.logThrowable(e);
+                    LOG.warning(pack, "Error when loading interceptor", e);
                     return;
                 }
             }

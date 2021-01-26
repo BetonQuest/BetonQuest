@@ -203,13 +203,13 @@ public class Journal {
                     text = pack.getFormattedString("journal." + pointerName);
                 }
             } else {
-                LOG.warning("No defined journal entry " + pointerName + " in package " + pack.getName());
+                LOG.warning(pack, "No defined journal entry " + pointerName + " in package " + pack.getName());
                 text = "error";
             }
 
             // handle case when the text isn't defined
             if (text == null) {
-                LOG.warning("No text defined for journal entry " + pointerName + " in language " + lang);
+                LOG.warning(pack, "No text defined for journal entry " + pointerName + " in language " + lang);
                 text = "error";
             }
 
@@ -218,9 +218,8 @@ public class Journal {
                 try {
                     BetonQuest.createVariable(pack, variable);
                 } catch (final InstructionParseException e) {
-                    LogUtils.getLogger().log(Level.WARNING, "Error while creating variable '" + variable + "' on journal page '" + pointerName + "' in "
-                            + PlayerConverter.getName(playerID) + "'s journal: " + e.getMessage());
-                    LogUtils.logThrowable(e);
+                    LOG.warning(pack, "Error while creating variable '" + variable + "' on journal page '" + pointerName + "' in "
+                            + PlayerConverter.getName(playerID) + "'s journal: " + e.getMessage(), e);
                 }
                 text = text.replace(variable,
                         BetonQuest.getInstance().getVariableValue(packName, variable, playerID));
@@ -264,10 +263,8 @@ public class Journal {
                             if (!BetonQuest.conditions(playerID, pageConditions)) {
                                 continue;
                             }
-                        } catch (final ObjectNotFoundException exception) {
-                            LogUtils.getLogger().log(Level.WARNING,
-                                    "Error while generating main page in " + PlayerConverter.getPlayer(playerID) + "'s journal: " + exception.getMessage());
-                            LogUtils.logThrowable(exception);
+                        } catch (final ObjectNotFoundException e) {
+                            LOG.warning(pack, "Error while generating main page in " + PlayerConverter.getPlayer(playerID) + "'s journal: " + e.getMessage(), e);
                             continue;
                         }
                     }
@@ -292,9 +289,8 @@ public class Journal {
                         try {
                             BetonQuest.createVariable(pack, variable);
                         } catch (final InstructionParseException e) {
-                            LogUtils.getLogger().log(Level.WARNING, "Error while creating variable '" + variable + "' on main page in "
-                                    + PlayerConverter.getName(playerID) + "'s journal: " + e.getMessage());
-                            LogUtils.logThrowable(e);
+                            LOG.warning(pack, "Error while creating variable '" + variable + "' on main page in "
+                                    + PlayerConverter.getName(playerID) + "'s journal: " + e.getMessage(), e);
                         }
                         text = text.replace(variable,
                                 BetonQuest.getInstance().getVariableValue(packName, variable, playerID));
@@ -311,9 +307,8 @@ public class Journal {
                     }
                     linesOrder.add(text + "§r"); // reset the formatting
                 } else {
-                    LOG.warning("Priority of " + packName + "." + key
+                    LOG.warning(pack, "Priority of " + packName + "." + key
                             + " journal main page line is not defined");
-                    continue;
                 }
             }
         }
@@ -375,7 +370,7 @@ public class Journal {
             try {
                 Config.sendNotify(null, playerID, "inventory_full", null, "inventory_full,error");
             } catch (final QuestRuntimeException e) {
-                LOG.warning("The notify system was unable to play a sound for the 'inventory_full' category. Error was: '" + e.getMessage() + "'", e);
+                LOG.warning(null, "The notify system was unable to play a sound for the 'inventory_full' category. Error was: '" + e.getMessage() + "'", e);
             }
         }
     }

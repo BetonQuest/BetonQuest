@@ -51,7 +51,7 @@ public class ConversationData {
     public ConversationData(final ConfigPackage pack, final String name) throws InstructionParseException {
         this.pack = pack;
         final String pkg = pack.getName();
-        LOG.debug(String.format("Loading %s conversation from %s package", name, pkg));
+        LOG.debug(pack, String.format("Loading %s conversation from %s package", name, pkg));
         // package and name must be correct, it loads only existing
         // conversations
         convName = name;
@@ -206,7 +206,7 @@ public class ConversationData {
         }
 
         // done, everything will work
-        LOG.debug(String.format("Conversation loaded: %d NPC options and %d player options", npcOptions.size(),
+        LOG.debug(pack, String.format("Conversation loaded: %d NPC options and %d player options", npcOptions.size(),
                 playerOptions.size()));
     }
 
@@ -228,7 +228,7 @@ public class ConversationData {
             final String targetOption = parts[4];
             final ConversationData conv = BetonQuest.getInstance().getConversation(packName + "." + targetConv);
             if (conv == null) {
-                LOG.warning("External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, "
+                LOG.warning(conv.pack, "External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, "
                         + ("<starting_option>".equals(sourceOption) ? "starting option"
                         : "'" + sourceOption + "' player option")
                         + " points to '" + targetConv
@@ -236,7 +236,7 @@ public class ConversationData {
                 continue;
             }
             if (conv.getText(Config.getLanguage(), targetOption, OptionType.NPC) == null) {
-                LOG.warning("External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, "
+                LOG.warning(conv.pack, "External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, "
                         + ("<starting_option>".equals(sourceOption) ? "starting option"
                         : "'" + sourceOption + "' player option")
                         + " points to '" + targetOption + "' NPC option in '" + targetConv

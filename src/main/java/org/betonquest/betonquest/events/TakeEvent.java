@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.events;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Instruction.Item;
@@ -9,18 +10,17 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.item.QuestItem;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
-import java.util.logging.Level;
 
 /**
  * Removes items from player's inventory and/or backpack
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class TakeEvent extends QuestEvent {
 
     private final Item[] questItems;
@@ -53,9 +53,8 @@ public class TakeEvent extends QuestEvent {
                                     questItem.getName() == null ? questItem.getMaterial().toString().toLowerCase(Locale.ROOT).replace("_", " ") : questItem.getName(),
                                     String.valueOf(counter)},
                             "items_taken,info");
-                } catch (final QuestRuntimeException exception) {
-                    LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'items_taken' category in '" + getFullId() + "'. Error was: '" + exception.getMessage() + "'");
-                    LogUtils.logThrowable(exception);
+                } catch (final QuestRuntimeException e) {
+                    LOG.warning(instruction.getPackage(), "The notify system was unable to play a sound for the 'items_taken' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
                 }
             }
 

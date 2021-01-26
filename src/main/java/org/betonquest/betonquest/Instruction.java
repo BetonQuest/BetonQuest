@@ -1,12 +1,12 @@
 package org.betonquest.betonquest;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.*;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.BlockSelector;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Material;
@@ -18,12 +18,12 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
 import java.util.*;
-import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessivePublicCount", "PMD.GodClass", "PMD.CommentRequired",
         "PMD.AvoidFieldNameMatchingTypeName", "PMD.AvoidLiteralsInIfCondition"})
+@CustomLog
 public class Instruction {
     private static final Pattern NUMBER_PATTERN = Pattern.compile("(?:\\s|\\G|^)((\\+|-)?\\d+)(?:\\s|$)");
     private final ConfigPackage pack;
@@ -39,8 +39,7 @@ public class Instruction {
         try {
             this.identifier = identifier == null ? new NoID(pack) : identifier;
         } catch (final ObjectNotFoundException e) {
-            LogUtils.getLogger().log(Level.WARNING, "Could not find instruction: " + e.getMessage());
-            LogUtils.logThrowable(e);
+            LOG.warning(pack, "Could not find instruction: " + e.getMessage(), e);
         }
         this.instruction = instruction;
         this.parts = Utils.split(instruction);

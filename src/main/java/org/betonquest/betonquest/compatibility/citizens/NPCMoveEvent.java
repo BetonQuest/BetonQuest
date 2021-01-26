@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.citizens;
 
+import lombok.CustomLog;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.ai.event.NavigationCancelEvent;
 import net.citizensnpcs.api.ai.event.NavigationCompleteEvent;
@@ -30,6 +31,7 @@ import java.util.Map;
  * Moves the NPC to a specified location, optionally firing doneEvents when it's done.
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class NPCMoveEvent extends QuestEvent implements Listener {
 
     private static final Map<Integer, NPCMoveEvent> MOVING_NPCS = new HashMap<>();
@@ -149,7 +151,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
             return;
         }
         if (event instanceof NavigationStuckEvent || event instanceof NavigationCancelEvent) {
-            LOG.warning("The NPC was stucked, maybe the distance between two points was too high. "
+            LOG.warning(instruction.getPackage(), "The NPC was stucked, maybe the distance between two points was too high. "
                     + "This is a Citizens behavior, your NPC was teleported by Citizens, we continue the movement from this location.");
         }
         if (locationsIterator.hasNext()) {
@@ -157,16 +159,14 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
                 final Location next = locationsIterator.next().getLocation(currentPlayer);
                 npc.getNavigator().setTarget(next);
             } catch (final QuestRuntimeException e) {
-                LogUtils.getLogger().log(Level.WARNING, "Error while NPC " + npc.getId() + " navigation: " + e.getMessage());
-                LogUtils.logThrowable(e);
+                LOG.warning(instruction.getPackage(), "Error while NPC " + npc.getId() + " navigation: " + e.getMessage(), e);
             }
             return;
         }
         try {
             npc.getNavigator().setTarget(locationsIterator.previous().getLocation(currentPlayer));
         } catch (final QuestRuntimeException e) {
-            LogUtils.getLogger().log(Level.WARNING, "Error while finishing NPC " + npc.getId() + " navigation: " + e.getMessage());
-            LogUtils.logThrowable(e);
+            LOG.warning(instruction.getPackage(), "Error while finishing NPC " + npc.getId() + " navigation: " + e.getMessage(), e);
         }
         npc.getNavigator().setPaused(true);
         new BukkitRunnable() {

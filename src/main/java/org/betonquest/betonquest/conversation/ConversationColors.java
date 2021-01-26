@@ -1,18 +1,18 @@
 package org.betonquest.betonquest.conversation;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.bukkit.ChatColor;
 
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.logging.Level;
 
 /**
  * Holds the colors of the conversations
  */
 @SuppressWarnings({"PMD.ClassNamingConventions", "PMD.CommentRequired"})
+@CustomLog
 public final class ConversationColors {
 
     private static ChatColor[] npcColors;
@@ -57,15 +57,14 @@ public final class ConversationColors {
             for (int i = 0; i < option.length; i++) {
                 optionColors[i] = ChatColor.valueOf(option[i].toUpperCase(Locale.ROOT).trim().replace(" ", "_"));
             }
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             textColors = new ChatColor[]{};
             npcColors = new ChatColor[]{};
             playerColors = new ChatColor[]{};
             optionColors = new ChatColor[]{};
             answerColors = new ChatColor[]{};
             numberColors = new ChatColor[]{};
-            LogUtils.getLogger().log(Level.WARNING, "Could not parse conversation colors, everything will be white!");
-            LogUtils.logThrowable(e);
+            LOG.warning(null, "Could not parse conversation colors, everything will be white!", e);
         }
     }
 

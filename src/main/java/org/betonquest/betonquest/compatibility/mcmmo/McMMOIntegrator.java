@@ -21,9 +21,9 @@ public class McMMOIntegrator implements Integrator {
         plugin.registerEvents("mcmmoexp", McMMOAddExpEvent.class);
         try {
             new MCMMOQuestItemHandler();
-            LOG.debug("Enabled MCMMO QuestItemHandler");
+            LOG.debug(null, "Enabled MCMMO QuestItemHandler");
         } catch (final LinkageError e) {
-            LOG.warning("MCMMO version is not compatible with the QuestItemHandler.", e);
+            LOG.warning(null, "MCMMO version is not compatible with the QuestItemHandler.", e);
         }
     }
 

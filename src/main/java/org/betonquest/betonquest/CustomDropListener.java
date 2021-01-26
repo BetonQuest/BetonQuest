@@ -1,10 +1,10 @@
 package org.betonquest.betonquest;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.item.QuestItem;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,9 +12,9 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.metadata.MetadataValue;
 
 import java.util.List;
-import java.util.logging.Level;
 
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class CustomDropListener implements Listener {
 
     public CustomDropListener() {
@@ -34,8 +34,7 @@ public class CustomDropListener implements Listener {
                             .generate(Integer.parseInt(item.substring(separatorIndex + 1))));
                 }
             } catch (InstructionParseException | ObjectNotFoundException e) {
-                LogUtils.getLogger().log(Level.WARNING, "Error when dropping custom item from entity: " + e.getMessage());
-                LogUtils.logThrowable(e);
+                LOG.warning(null, "Error when dropping custom item from entity: " + e.getMessage(), e);
             }
             dropIndex++;
         }

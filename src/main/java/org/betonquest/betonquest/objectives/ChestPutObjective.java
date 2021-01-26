@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.objectives;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
@@ -29,6 +30,7 @@ import org.bukkit.inventory.InventoryHolder;
  * disappear once the chest is closed.
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class ChestPutObjective extends Objective implements Listener {
 
     private final Condition chestItemCondition;
@@ -52,7 +54,7 @@ public class ChestPutObjective extends Objective implements Listener {
         } else {
             try {
                 chestTakeEvent = new ChestTakeEvent(new Instruction(instruction.getPackage(), new NoID(instruction.getPackage()), "chesttake " + location + " " + items));
-            } catch (ObjectNotFoundException e) {
+            } catch (final ObjectNotFoundException e) {
                 throw new InstructionParseException("Could not create inner chest take event: " + e.getMessage(), e);
             }
         }
@@ -74,7 +76,7 @@ public class ChestPutObjective extends Objective implements Listener {
             final Block block = targetChestLocation.getBlock();
             if (!(block.getState() instanceof InventoryHolder)) {
                 final World world = targetChestLocation.getWorld();
-                LOG.warning(
+                LOG.warning(instruction.getPackage(),
                         String.format("Error in '%s' chestput objective: Block at location x:%d y:%d z:%d in world '%s' isn't a chest!",
                                 instruction.getID().getFullID(),
                                 targetChestLocation.getBlockX(),
@@ -93,9 +95,8 @@ public class ChestPutObjective extends Objective implements Listener {
                     chestTakeEvent.handle(playerID);
                 }
             }
-        } catch (QuestRuntimeException e) {
-            LogUtils.getLogger().log(Level.WARNING, "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
-            LogUtils.logThrowable(e);
+        } catch (final QuestRuntimeException e) {
+            LOG.warning(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
         }
     }
 

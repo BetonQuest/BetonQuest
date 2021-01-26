@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.events;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Journal;
@@ -11,19 +12,18 @@ import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Date;
-import java.util.logging.Level;
 
 /**
  * Adds the entry to player's journal
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class JournalEvent extends QuestEvent {
 
     private final String name;
@@ -64,9 +64,8 @@ public class JournalEvent extends QuestEvent {
                 journal.addPointer(new Pointer(name, new Date().getTime()));
                 try {
                     Config.sendNotify(instruction.getPackage().getName(), playerID, "new_journal_entry", null, "new_journal_entry,info");
-                } catch (final QuestRuntimeException exception) {
-                    LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'new_journal_entry' category in '" + getFullId() + "'. Error was: '" + exception.getMessage() + "'");
-                    LogUtils.logThrowable(exception);
+                } catch (final QuestRuntimeException e) {
+                    LOG.warning(instruction.getPackage(), "The notify system was unable to play a sound for the 'new_journal_entry' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
                 }
             } else if (name != null) {
                 journal.removePointer(name);

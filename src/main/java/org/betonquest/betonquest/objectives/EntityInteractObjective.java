@@ -131,8 +131,7 @@ public class EntityInteractObjective extends Objective {
                     return false;
                 }
             } catch (final QuestRuntimeException e) {
-                LogUtils.getLogger().log(Level.WARNING, "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
-                LogUtils.logThrowable(e);
+                LOG.warning(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
             }
         }
 
@@ -155,9 +154,9 @@ public class EntityInteractObjective extends Objective {
                         "mobs_to_click,info");
             } catch (final QuestRuntimeException exception) {
                 try {
-                    LOG.warning("The notify system was unable to play a sound for the 'mobs_to_click' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                    LOG.warning(instruction.getPackage(), "The notify system was unable to play a sound for the 'mobs_to_click' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
                 } catch (final InstructionParseException e) {
-                    LOG.reportException(e);
+                    LOG.reportException(instruction.getPackage(), e);
                 }
             }
         }
