@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.brewery.BreweryIntegrator;
 import org.betonquest.betonquest.compatibility.citizens.CitizensIntegrator;
@@ -25,7 +26,6 @@ import org.betonquest.betonquest.compatibility.vault.VaultIntegrator;
 import org.betonquest.betonquest.compatibility.worldedit.WorldEditIntegrator;
 import org.betonquest.betonquest.compatibility.worldguard.WorldGuardIntegrator;
 import org.betonquest.betonquest.exceptions.HookException;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -34,12 +34,12 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
-import java.util.logging.Level;
 
 /**
  * Compatibility with other plugins
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition"})
+@CustomLog
 public class Compatibility implements Listener {
 
     private static Compatibility instance;
@@ -97,7 +97,7 @@ public class Compatibility implements Listener {
                         string.append(plugin).append(", ");
                     }
                     final String plugins = string.substring(0, string.length() - 2);
-                    LogUtils.getLogger().log(Level.INFO, "Hooked into " + plugins + "!");
+                    LOG.info("Hooked into " + plugins + "!");
                 }
             }
         }.runTask(BetonQuest.getInstance());
@@ -150,7 +150,7 @@ public class Compatibility implements Listener {
 
         // hook into the plugin if it's enabled in the config
         if ("true".equalsIgnoreCase(plugin.getConfig().getString("hook." + name.toLowerCase(Locale.ROOT)))) {
-            LogUtils.getLogger().log(Level.INFO, "Hooking into " + name);
+            LOG.info("Hooking into " + name);
 
             // log important information in case of an error
             try {
@@ -163,8 +163,8 @@ public class Compatibility implements Listener {
                         BetonQuest.getInstance().getDescription().getVersion(),
                         Bukkit.getVersion(),
                         exception.getMessage());
-                LogUtils.getLogger().log(Level.WARNING, message, exception);
-                LogUtils.getLogger().log(Level.WARNING, "BetonQuest will work correctly save for that single integration. "
+                LOG.warning(message, exception);
+                LOG.warning("BetonQuest will work correctly save for that single integration. "
                         + "You can turn it off by setting 'hook." + name.toLowerCase(Locale.ROOT)
                         + "' to false in config.yml file.");
             }

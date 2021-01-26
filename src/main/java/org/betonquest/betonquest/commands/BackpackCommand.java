@@ -1,20 +1,19 @@
 package org.betonquest.betonquest.commands;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import org.betonquest.betonquest.Backpack;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.logging.Level;
-
 /**
  * The backpack command. It opens player's backpack.
  */
+@CustomLog
 public class BackpackCommand implements CommandExecutor {
 
     /**
@@ -30,7 +29,7 @@ public class BackpackCommand implements CommandExecutor {
         if ("backpack".equalsIgnoreCase(cmd.getName())) {
             // command sender must be a player, console can't have a backpack
             if (sender instanceof Player) {
-                LogUtils.getLogger().log(Level.FINE, "Executing /backpack command for " + sender.getName());
+                LOG.debug("Executing /backpack command for " + sender.getName());
                 new Backpack(PlayerConverter.getID((Player) sender));
             }
             return true;

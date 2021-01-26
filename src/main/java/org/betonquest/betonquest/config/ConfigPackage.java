@@ -4,7 +4,6 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.config.ConfigAccessor.AccessorType;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.GlobalVariableID;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.Utils;
 
 import java.io.File;
@@ -12,7 +11,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -171,7 +169,7 @@ public class ConfigPackage {
                 return variableInput;
             }
             if (varVal == null) {
-                LogUtils.getLogger().log(Level.WARNING, String.format("Variable %s not defined in package %s", varName, name));
+                LOG.warning(String.format("Variable %s not defined in package %s", varName, name));
                 return variableInput;
             }
 
@@ -182,13 +180,13 @@ public class ConfigPackage {
                 final String innerVarName = varVal.substring(1, varVal.indexOf('$', 2));
                 final String innerVarVal = main.getConfig().getString("variables." + innerVarName);
                 if (innerVarVal == null) {
-                    LogUtils.getLogger().log(Level.WARNING, String.format("Location variable %s is not defined, in variable %s, package %s.",
+                    LOG.warning(String.format("Location variable %s is not defined, in variable %s, package %s.",
                             innerVarName, varName, name));
                     return variableInput;
                 }
 
                 if (!innerVarVal.matches("^\\-?\\d+;\\-?\\d+;\\-?\\d+;.+$")) {
-                    LogUtils.getLogger().log(Level.WARNING,
+                    LOG.warning(
                             String.format("Inner variable %s is not valid location, in variable %s, package %s.",
                                     innerVarName, varName, name));
                     return variableInput;

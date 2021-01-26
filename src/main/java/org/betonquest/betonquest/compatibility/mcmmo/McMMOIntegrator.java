@@ -1,13 +1,12 @@
 package org.betonquest.betonquest.compatibility.mcmmo;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Integrator;
-import org.betonquest.betonquest.utils.LogUtils;
-
-import java.util.logging.Level;
 
 
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class McMMOIntegrator implements Integrator {
 
     private final BetonQuest plugin;
@@ -22,10 +21,9 @@ public class McMMOIntegrator implements Integrator {
         plugin.registerEvents("mcmmoexp", McMMOAddExpEvent.class);
         try {
             new MCMMOQuestItemHandler();
-            LogUtils.getLogger().log(Level.FINE, "Enabled MCMMO QuestItemHandler");
-        } catch (LinkageError e) {
-            LogUtils.getLogger().log(Level.WARNING, "MCMMO version is not compatible with the QuestItemHandler.");
-            LogUtils.logThrowable(e);
+            LOG.debug("Enabled MCMMO QuestItemHandler");
+        } catch (final LinkageError e) {
+            LOG.warning("MCMMO version is not compatible with the QuestItemHandler.", e);
         }
     }
 

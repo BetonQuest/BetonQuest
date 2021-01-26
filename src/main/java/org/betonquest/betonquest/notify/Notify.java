@@ -4,13 +4,11 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.bukkit.configuration.ConfigurationSection;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.logging.Level;
 
 @SuppressWarnings("PMD.CommentRequired")
 @CustomLog
@@ -57,7 +55,7 @@ public final class Notify {
         try {
             return getNotifyIO(ios, categoryData);
         } catch (final InstructionParseException exception) {
-            LogUtils.getLogger().log(Level.WARNING, exception.getMessage(), exception);
+            LOG.warning(exception.getMessage(), exception);
         }
 
         try {

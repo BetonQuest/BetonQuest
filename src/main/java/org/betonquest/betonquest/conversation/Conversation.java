@@ -17,7 +17,6 @@ import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -33,7 +32,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.*;
-import java.util.logging.Level;
 
 /**
  * Represents a conversation between player and NPC
@@ -101,14 +99,14 @@ public class Conversation implements Listener {
 
         // check if data is present
         if (data == null) {
-            LogUtils.getLogger().log(Level.WARNING, "Conversation '" + conversationID
+            LOG.warning("Conversation '" + conversationID
                     + "' does not exist. Check for errors on /q reload! It probably couldn't be loaded due to some other error.");
             return;
         }
 
         // if the player has active conversation, terminate this one
         if (LIST.containsKey(playerID)) {
-            LogUtils.getLogger().log(Level.FINE, "Player " + PlayerConverter.getName(playerID) + " is in conversation right now, returning.");
+            LOG.debug("Player " + PlayerConverter.getName(playerID) + " is in conversation right now, returning.");
             return;
         }
 
@@ -400,7 +398,7 @@ public class Conversation implements Listener {
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public void suspend() {
         if (inOut == null) {
-            LogUtils.getLogger().log(Level.WARNING, "Conversation IO is not loaded, conversation will end for player "
+            LOG.warning("Conversation IO is not loaded, conversation will end for player "
                     + PlayerConverter.getName(playerID));
             LIST.remove(playerID);
             HandlerList.unregisterAll(this);

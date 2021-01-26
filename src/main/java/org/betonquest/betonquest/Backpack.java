@@ -10,7 +10,6 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.item.QuestItem;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
@@ -32,7 +31,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 
 /**
  * Represents a chest GUI for the backpack displayed to the player.
@@ -388,7 +386,7 @@ public class Backpack implements Listener {
             int numberOfRows = (size - size % 9) / 9 + 1;
             if (numberOfRows > 6) {
                 numberOfRows = 6;
-                LogUtils.getLogger().log(Level.WARNING, "Player " + player.getName() + " has too many active quests, please"
+                LOG.warning("Player " + player.getName() + " has too many active quests, please"
                         + " don't allow for so many of them. It slows down your server!");
             }
             inv = Bukkit.createInventory(null, numberOfRows * 9, Config.getMessage(lang, "cancel_page"));
@@ -448,11 +446,11 @@ public class Backpack implements Listener {
                             name = pack.getString("main.compass." + key + ".name");
                         }
                         if (name == null) {
-                            LogUtils.getLogger().log(Level.WARNING, "Name not defined in a compass pointer in " + packName + " package: " + key);
+                            LOG.warning("Name not defined in a compass pointer in " + packName + " package: " + key);
                             continue;
                         }
                         if (location == null) {
-                            LogUtils.getLogger().log(Level.WARNING,
+                            LOG.warning(
                                     "Location not defined in a compass pointer in " + packName + " package: " + key);
                             continue;
                         }
@@ -463,13 +461,13 @@ public class Backpack implements Listener {
                         // if the tag is present, continue
                         final String[] parts = location.split(";");
                         if (parts.length != 4) {
-                            LogUtils.getLogger().log(Level.WARNING, "Could not parse location in a compass pointer in " + packName + " package: "
+                            LOG.warning("Could not parse location in a compass pointer in " + packName + " package: "
                                     + key);
                             continue;
                         }
                         final World world = Bukkit.getWorld(parts[3]);
                         if (world == null) {
-                            LogUtils.getLogger().log(Level.WARNING,
+                            LOG.warning(
                                     "World does not exist in a compass pointer in " + packName + " package: " + key);
                         }
                         final int locX;
@@ -502,7 +500,7 @@ public class Backpack implements Listener {
             final int size = locations.size();
             final int numberOfRows = (size - size % 9) / 9 + 1;
             if (numberOfRows > 6) {
-                LogUtils.getLogger().log(Level.WARNING, "Player " + player.getName() + " has too many compass pointers, please"
+                LOG.warning("Player " + player.getName() + " has too many compass pointers, please"
                         + " don't allow for so many of them. It slows down your server!");
                 player.closeInventory();
                 return;

@@ -12,7 +12,6 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -24,7 +23,6 @@ import org.bukkit.event.Listener;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Level;
 
 /**
  * Player has to kill MythicMobs monster
@@ -113,7 +111,7 @@ public class MythicMobKillObjective extends Objective implements Listener {
             }
         } catch (final QuestRuntimeException exception) {
             try {
-                LogUtils.getLogger().log(Level.SEVERE, "Unable to resolve minMobLevel / maxMobLevel variable in " + instruction.getObjective().getFullID());
+                LOG.error("Unable to resolve minMobLevel / maxMobLevel variable in " + instruction.getObjective().getFullID());
             } catch (final InstructionParseException e) {
                 LOG.reportException(exception);
             }
@@ -135,7 +133,7 @@ public class MythicMobKillObjective extends Objective implements Listener {
                 Config.sendNotify(instruction.getPackage().getName(), playerID, "mobs_to_kill", new String[]{String.valueOf(playerData.getAmount())}, "mobs_to_kill,info");
             } catch (final QuestRuntimeException exception) {
                 try {
-                    LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'mobs_to_kill' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                    LOG.warning("The notify system was unable to play a sound for the 'mobs_to_kill' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
                 } catch (final InstructionParseException e) {
                     LOG.reportException(e);
                 }

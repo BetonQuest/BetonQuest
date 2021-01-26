@@ -12,7 +12,6 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -22,7 +21,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.logging.Level;
 
 /**
  * Displays a particle above NPCs with conversations.
@@ -62,7 +60,7 @@ public class CitizensParticle extends BukkitRunnable {
             // load the condition check interval
             interval = section.getInt("check_interval", 100);
             if (interval <= 0) {
-                LogUtils.getLogger().log(Level.WARNING, "Could not load npc effects of package " + pack.getName() + ": " +
+                LOG.warning("Could not load npc effects of package " + pack.getName() + ": " +
                         "Check interval must be bigger than 0.");
                 enabled = false;
                 return;
@@ -88,7 +86,7 @@ public class CitizensParticle extends BukkitRunnable {
                 // load the interval between animations
                 effect.interval = settings.getInt("interval", 100);
                 if (effect.interval <= 0) {
-                    LogUtils.getLogger().log(Level.WARNING, "Could not load npc effect " + key + " in package " + pack.getName() + ": " +
+                    LOG.warning("Could not load npc effect " + key + " in package " + pack.getName() + ": " +
                             "Effect interval must be bigger than 0.");
                     continue;
                 }

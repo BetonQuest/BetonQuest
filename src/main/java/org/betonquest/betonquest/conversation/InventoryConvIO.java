@@ -4,7 +4,6 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.utils.LocalChatPaginator;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
@@ -25,7 +24,6 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
-import java.util.logging.Level;
 
 /**
  * Inventory GUI for conversations
@@ -164,7 +162,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
                         inv.setItem(0, npc);
                     });
                 } catch (final IllegalArgumentException e) {
-                    LogUtils.getLogger().log(Level.FINE, "Could not load skull for chest conversation!", e);
+                    LOG.debug("Could not load skull for chest conversation!", e);
                 }
             });
         }

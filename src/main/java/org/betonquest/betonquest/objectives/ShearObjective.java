@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
@@ -17,8 +16,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerShearEntityEvent;
-
-import java.util.logging.Level;
 
 /**
  * Requires the player to shear a sheep.
@@ -74,7 +71,7 @@ public class ShearObjective extends Objective implements Listener {
                             "sheep_to_shear,info");
                 } catch (final QuestRuntimeException exception) {
                     try {
-                        LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'sheep_to_shear' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                        LOG.warning("The notify system was unable to play a sound for the 'sheep_to_shear' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
                     } catch (final InstructionParseException e) {
                         LOG.reportException(e);
                     }

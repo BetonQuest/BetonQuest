@@ -29,7 +29,6 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,11 +47,11 @@ public final class Utils {
      */
     @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     public static void backup() {
-        LogUtils.getLogger().log(Level.INFO, "Backing up!");
+        LOG.info("Backing up!");
         final long time = new Date().getTime();
         final BetonQuest instance = BetonQuest.getInstance();
         if (!backupDatabase(new File(instance.getDataFolder(), "database-backup.yml"))) {
-            LogUtils.getLogger().log(Level.WARNING, "There was an error during backing up the database! This does not affect"
+            LOG.warning("There was an error during backing up the database! This does not affect"
                     + " the configuration backup, nor damage your database. You should backup"
                     + " the database maually if you want to be extra safe, but it's not necessary if"
                     + " you don't want to downgrade later.");
@@ -69,8 +68,8 @@ public final class Utils {
         // delete database backup so it doesn't make a mess later on
         new File(instance.getDataFolder(), "database-backup.yml").delete();
         // done
-        LogUtils.getLogger().log(Level.FINE, "Done in " + (new Date().getTime() - time) + "ms");
-        LogUtils.getLogger().log(Level.INFO, "Done, you can find the backup in \"backups\" directory.");
+        LOG.debug("Done in " + (new Date().getTime() - time) + "ms");
+        LOG.info("Done, you can find the backup in \"backups\" directory.");
     }
 
     /**
@@ -95,23 +94,23 @@ public final class Utils {
             final Connector database = new Connector();
             // load resultsets into the map
             for (final String table : tables) {
-                LogUtils.getLogger().log(Level.FINE, "Loading " + table);
+                LOG.debug("Loading " + table);
                 final String enumName = ("LOAD_ALL_" + table).toUpperCase(Locale.ROOT);
                 map.put(table, database.querySQL(QueryType.valueOf(enumName), new String[]{}));
             }
             // extract data from resultsets into the config file
             for (final Map.Entry<String, ResultSet> entry : map.entrySet()) {
-                LogUtils.getLogger().log(Level.FINE, "Saving " + entry.getKey() + " to the backup file");
+                LOG.debug("Saving " + entry.getKey() + " to the backup file");
                 // prepare resultset and meta
                 try (ResultSet res = entry.getValue()) {
                     final ResultSetMetaData rsmd = res.getMetaData();
                     // get the list of column names
                     final List<String> columns = new ArrayList<>();
                     final int columnCount = rsmd.getColumnCount();
-                    LogUtils.getLogger().log(Level.FINE, "  There are " + columnCount + " columns in this ResultSet");
+                    LOG.debug("  There are " + columnCount + " columns in this ResultSet");
                     for (int i = 1; i <= rsmd.getColumnCount(); i++) {
                         final String columnName = rsmd.getColumnName(i);
-                        LogUtils.getLogger().log(Level.FINE, "    Adding column " + columnName);
+                        LOG.debug("    Adding column " + columnName);
                         columns.add(columnName);
                     }
                     // counter for counting rows
@@ -133,7 +132,7 @@ public final class Utils {
                         }
                         counter++;
                     }
-                    LogUtils.getLogger().log(Level.FINE, "  Saved " + (counter + 1) + " rows");
+                    LOG.debug("  Saved " + (counter + 1) + " rows");
                 }
             }
             // save the config at the end
@@ -237,7 +236,7 @@ public final class Utils {
         if (!file.exists()) {
             return;
         }
-        LogUtils.getLogger().log(Level.INFO, "Loading database backup!");
+        LOG.info("Loading database backup!");
         // backup the database
         final File backupFolder = new File(instance.getDataFolder(), "backups");
         if (!backupFolder.isDirectory()) {
@@ -248,9 +247,9 @@ public final class Utils {
             backupNumber++;
         }
         final String filename = "old-database-" + backupNumber + ".yml";
-        LogUtils.getLogger().log(Level.INFO, "Backing up old database!");
+        LOG.info("Backing up old database!");
         if (!backupDatabase(new File(backupFolder, filename))) {
-            LogUtils.getLogger().log(Level.WARNING, "There was an error during old database backup process. This means that"
+            LOG.warning("There was an error during old database backup process. This means that"
                     + " if the plugin loaded new database (from backup), the old one would be lost "
                     + "forever. Because of that the loading of backup was aborted!");
             return;

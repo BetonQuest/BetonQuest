@@ -4,14 +4,12 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.EventID;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.logging.Level;
 
 /**
  * StaticEvents contains logic for running events that aren't tied to any player
@@ -28,7 +26,7 @@ public class StaticEvents {
      * to run at specified times
      */
     public StaticEvents() {
-        LogUtils.getLogger().log(Level.FINE, "Initializing static events");
+        LOG.debug("Initializing static events");
         // old timers need to be deleted in case of reloading the plugin
         boolean deleted = false;
         for (final EventTimer eventTimer : TIMERS) {
@@ -36,15 +34,15 @@ public class StaticEvents {
             deleted = true;
         }
         if (deleted) {
-            LogUtils.getLogger().log(Level.FINE, "Previous timers has been canceled");
+            LOG.debug("Previous timers has been canceled");
         }
         for (final ConfigPackage pack : Config.getPackages().values()) {
             final String packName = pack.getName();
-            LogUtils.getLogger().log(Level.FINE, "Searching package " + packName);
+            LOG.debug("Searching package " + packName);
             // get those hours and events
             final ConfigurationSection config = pack.getMain().getConfig().getConfigurationSection("static");
             if (config == null) {
-                LogUtils.getLogger().log(Level.FINE, "There are no static events defined, skipping");
+                LOG.debug("There are no static events defined, skipping");
                 continue;
             }
             // for each hour, create an event timer
@@ -52,10 +50,10 @@ public class StaticEvents {
                 final String value = config.getString(key);
                 final long timeStamp = getTimestamp(key);
                 if (timeStamp < 0) {
-                    LogUtils.getLogger().log(Level.WARNING, "Incorrect time value in static event declaration (" + key + "), skipping this one");
+                    LOG.warning("Incorrect time value in static event declaration (" + key + "), skipping this one");
                     continue;
                 }
-                LogUtils.getLogger().log(Level.FINE, "Scheduling static events " + value + " at hour " + key + ". Current timestamp: "
+                LOG.debug("Scheduling static events " + value + " at hour " + key + ". Current timestamp: "
                         + new Date().getTime() + ", target timestamp: " + timeStamp);
                 try {
                     final String[] events = value.split(",");
@@ -70,14 +68,14 @@ public class StaticEvents {
                 }
             }
         }
-        LogUtils.getLogger().log(Level.FINE, "Static events initialization done");
+        LOG.debug("Static events initialization done");
     }
 
     /**
      * Cancels all scheduled timers
      */
     public static void stop() {
-        LogUtils.getLogger().log(Level.FINE, "Killing all timers on disable");
+        LOG.debug("Killing all timers on disable");
         for (final EventTimer timer : TIMERS) {
             timer.cancel();
         }

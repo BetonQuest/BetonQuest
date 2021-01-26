@@ -1,18 +1,17 @@
 package org.betonquest.betonquest.compatibility.vault;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Integrator;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
-import java.util.logging.Level;
-
 
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class VaultIntegrator implements Integrator {
 
     private static VaultIntegrator instance;
@@ -54,14 +53,14 @@ public class VaultIntegrator implements Integrator {
             economy = economyProvider.getProvider();
         }
         if (economy == null) {
-            LogUtils.getLogger().log(Level.WARNING, "There is no economy plugin on the server!");
+            LOG.warning("There is no economy plugin on the server!");
         } else {
             plugin.registerEvents("money", MoneyEvent.class);
             plugin.registerConditions("money", MoneyCondition.class);
             plugin.registerVariable("money", MoneyVariable.class);
         }
         if (permission == null) {
-            LogUtils.getLogger().log(Level.WARNING, "Could not get permission provider!");
+            LOG.warning("Could not get permission provider!");
         } else {
             plugin.registerEvents("permission", PermissionEvent.class);
         }

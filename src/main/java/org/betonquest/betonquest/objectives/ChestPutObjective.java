@@ -11,7 +11,6 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.NoID;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Bukkit;
@@ -24,8 +23,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.InventoryHolder;
-
-import java.util.logging.Level;
 
 /**
  * Requires the player to put items in the chest. Items can optionally NOT
@@ -77,7 +74,7 @@ public class ChestPutObjective extends Objective implements Listener {
             final Block block = targetChestLocation.getBlock();
             if (!(block.getState() instanceof InventoryHolder)) {
                 final World world = targetChestLocation.getWorld();
-                LogUtils.getLogger().log(Level.WARNING,
+                LOG.warning(
                         String.format("Error in '%s' chestput objective: Block at location x:%d y:%d z:%d in world '%s' isn't a chest!",
                                 instruction.getID().getFullID(),
                                 targetChestLocation.getBlockX(),

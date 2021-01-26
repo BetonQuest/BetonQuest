@@ -7,7 +7,6 @@ import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.notify.Notify;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
@@ -19,7 +18,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.util.*;
-import java.util.logging.Level;
 
 /**
  * Handles the configuration of the plugin
@@ -75,7 +73,7 @@ public class Config {
         for (final String key : messages.getConfig().getKeys(false)) {
             if (!"global".equals(key)) {
                 if (verboose) {
-                    LogUtils.getLogger().log(Level.FINE, "Loaded " + key + " language");
+                    LOG.debug("Loaded " + key + " language");
                 }
                 LANGUAGES.add(key);
             }
@@ -119,7 +117,7 @@ public class Config {
     public static boolean createDefaultPackage(final String packName) {
         final File def = new File(instance.root, packName.replace("-", File.separator));
         if (!def.exists()) {
-            LogUtils.getLogger().log(Level.INFO, "Deploying " + packName + " package!");
+            LOG.info("Deploying " + packName + " package!");
             def.mkdirs();
             saveResource(def, "default/main.yml", "main.yml");
             saveResource(def, "default/events.yml", "events.yml");

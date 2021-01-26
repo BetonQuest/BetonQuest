@@ -1,17 +1,15 @@
 package org.betonquest.betonquest.api;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import java.util.logging.Level;
 
 /**
  * <p>
@@ -24,6 +22,7 @@ import java.util.logging.Level;
  * </p>
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public abstract class QuestEvent extends ForceSyncHandler<Void> {
 
     /**
@@ -98,28 +97,28 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
             if (staticness) {
                 handle(null);
             } else {
-                LogUtils.getLogger().log(Level.FINE, "Static event will be fired once for every player:");
+                LOG.debug("Static event will be fired once for every player:");
                 for (final Player player : Bukkit.getOnlinePlayers()) {
                     final String onlinePlayerID = PlayerConverter.getID(player);
                     if (!BetonQuest.conditions(onlinePlayerID, conditions)) {
-                        LogUtils.getLogger().log(Level.FINE, "Event conditions were not met for player " + player.getName());
+                        LOG.debug("Event conditions were not met for player " + player.getName());
                         continue;
                     }
-                    LogUtils.getLogger().log(Level.FINE, "  Firing this static event for player " + player.getName());
+                    LOG.debug("  Firing this static event for player " + player.getName());
                     handle(onlinePlayerID);
                 }
             }
         } else if (PlayerConverter.getPlayer(playerID) == null) {
             // handle persistent event
             if (!persistent) {
-                LogUtils.getLogger().log(Level.FINE, "Player " + playerID + " is offline, cannot fire event because it's not persistent.");
+                LOG.debug("Player " + playerID + " is offline, cannot fire event because it's not persistent.");
                 return;
             }
             handle(playerID);
         } else {
             // handle standard event
             if (!BetonQuest.conditions(playerID, conditions)) {
-                LogUtils.getLogger().log(Level.FINE, "Event conditions were not met.");
+                LOG.debug("Event conditions were not met.");
                 return;
             }
             handle(playerID);

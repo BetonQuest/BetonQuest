@@ -12,7 +12,6 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Material;
@@ -24,7 +23,6 @@ import org.bukkit.inventory.meta.BookMeta;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.logging.Level;
 
 /**
  * Represents player's journal.
@@ -205,13 +203,13 @@ public class Journal {
                     text = pack.getFormattedString("journal." + pointerName);
                 }
             } else {
-                LogUtils.getLogger().log(Level.WARNING, "No defined journal entry " + pointerName + " in package " + pack.getName());
+                LOG.warning("No defined journal entry " + pointerName + " in package " + pack.getName());
                 text = "error";
             }
 
             // handle case when the text isn't defined
             if (text == null) {
-                LogUtils.getLogger().log(Level.WARNING, "No text defined for journal entry " + pointerName + " in language " + lang);
+                LOG.warning("No text defined for journal entry " + pointerName + " in language " + lang);
                 text = "error";
             }
 
@@ -313,7 +311,7 @@ public class Journal {
                     }
                     linesOrder.add(text + "§r"); // reset the formatting
                 } else {
-                    LogUtils.getLogger().log(Level.WARNING, "Priority of " + packName + "." + key
+                    LOG.warning("Priority of " + packName + "." + key
                             + " journal main page line is not defined");
                     continue;
                 }

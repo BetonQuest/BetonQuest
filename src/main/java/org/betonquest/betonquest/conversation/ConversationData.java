@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.conversation;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.config.Config;
@@ -9,19 +10,18 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.*;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 /**
  * Represents the data of the conversation.
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
+@CustomLog
 public class ConversationData {
 
     private static final List<String> EXTERNAL_POINTERS = new ArrayList<>();
@@ -51,7 +51,7 @@ public class ConversationData {
     public ConversationData(final ConfigPackage pack, final String name) throws InstructionParseException {
         this.pack = pack;
         final String pkg = pack.getName();
-        LogUtils.getLogger().log(Level.FINE, String.format("Loading %s conversation from %s package", name, pkg));
+        LOG.debug(String.format("Loading %s conversation from %s package", name, pkg));
         // package and name must be correct, it loads only existing
         // conversations
         convName = name;
@@ -206,7 +206,7 @@ public class ConversationData {
         }
 
         // done, everything will work
-        LogUtils.getLogger().log(Level.FINE, String.format("Conversation loaded: %d NPC options and %d player options", npcOptions.size(),
+        LOG.debug(String.format("Conversation loaded: %d NPC options and %d player options", npcOptions.size(),
                 playerOptions.size()));
     }
 
@@ -228,7 +228,7 @@ public class ConversationData {
             final String targetOption = parts[4];
             final ConversationData conv = BetonQuest.getInstance().getConversation(packName + "." + targetConv);
             if (conv == null) {
-                LogUtils.getLogger().log(Level.WARNING, "External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, "
+                LOG.warning("External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, "
                         + ("<starting_option>".equals(sourceOption) ? "starting option"
                         : "'" + sourceOption + "' player option")
                         + " points to '" + targetConv
@@ -236,7 +236,7 @@ public class ConversationData {
                 continue;
             }
             if (conv.getText(Config.getLanguage(), targetOption, OptionType.NPC) == null) {
-                LogUtils.getLogger().log(Level.WARNING, "External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, "
+                LOG.warning("External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, "
                         + ("<starting_option>".equals(sourceOption) ? "starting option"
                         : "'" + sourceOption + "' player option")
                         + " points to '" + targetOption + "' NPC option in '" + targetConv

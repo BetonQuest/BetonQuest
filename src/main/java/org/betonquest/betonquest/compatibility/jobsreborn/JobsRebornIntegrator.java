@@ -1,13 +1,12 @@
 package org.betonquest.betonquest.compatibility.jobsreborn;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Integrator;
-import org.betonquest.betonquest.utils.LogUtils;
-
-import java.util.logging.Level;
 
 
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class JobsRebornIntegrator implements Integrator {
 
     private final BetonQuest plugin;
@@ -23,7 +22,7 @@ public class JobsRebornIntegrator implements Integrator {
         plugin.registerConditions("nujobs_hasjob", ConditionHasJob.class);
         plugin.registerConditions("nujobs_jobfull", ConditionJobFull.class);
         plugin.registerConditions("nujobs_joblevel", ConditionJobLevel.class);
-        LogUtils.getLogger().log(Level.INFO, "Registered Conditions [nujobs_canlevel,nujobs_hasjob,nujobs_jobfull,nujobs_joblevel]");
+        LOG.info("Registered Conditions [nujobs_canlevel,nujobs_hasjob,nujobs_jobfull,nujobs_joblevel]");
 
         //register events
         plugin.registerEvents("nujobs_addexp", EventAddExp.class);
@@ -32,14 +31,14 @@ public class JobsRebornIntegrator implements Integrator {
         plugin.registerEvents("nujobs_joinjob", EventJoinJob.class);
         plugin.registerEvents("nujobs_leavejob", EventLeaveJob.class);
         plugin.registerEvents("nujobs_setlevel", EventSetLevel.class);
-        LogUtils.getLogger().log(Level.INFO, "Registered Events [nujobs_addexp,nujobs_addlevel,nujobs_dellevel,nujobs_joinjob,nujobs_leavejob,nujobs_setlevel]");
+        LOG.info("Registered Events [nujobs_addexp,nujobs_addlevel,nujobs_dellevel,nujobs_joinjob,nujobs_leavejob,nujobs_setlevel]");
 
         //register objectives
         plugin.registerObjectives("nujobs_joinjob", ObjectiveJoinJob.class);
         plugin.registerObjectives("nujobs_leavejob", ObjectiveLeaveJob.class);
         plugin.registerObjectives("nujobs_levelup", ObjectiveLevelUpEvent.class);
         plugin.registerObjectives("nujobs_payment", ObjectivePaymentEvent.class);
-        LogUtils.getLogger().log(Level.INFO, "Registered Objectives [nujobs_joinjob,nujobs_leavejob,nujobs_levelup,nujobs_payment]");
+        LOG.info("Registered Objectives [nujobs_joinjob,nujobs_leavejob,nujobs_levelup,nujobs_payment]");
 
     }
 

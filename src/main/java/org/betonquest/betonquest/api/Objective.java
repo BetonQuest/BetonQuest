@@ -12,14 +12,12 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ObjectiveID;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 
 /**
  * <p>
@@ -154,7 +152,7 @@ public abstract class Objective {
             BetonQuest.getInstance().getPlayerData(playerID).addNewRawObjective((ObjectiveID) instruction.getID());
             addPlayer(playerID, getDefaultDataInstruction());
         }
-        LogUtils.getLogger().log(Level.FINE,
+        LOG.debug(
                 "Objective \"" + instruction.getID().getFullID() + "\" has been completed for player "
                         + PlayerConverter.getName(playerID)
                         + ", firing events.");
@@ -162,7 +160,7 @@ public abstract class Objective {
         for (final EventID event : events) {
             BetonQuest.event(playerID, event);
         }
-        LogUtils.getLogger().log(Level.FINE,
+        LOG.debug(
                 "Firing events in objective \"" + instruction.getID().getFullID() + "\" for player "
                         + PlayerConverter.getName(playerID)
                         + " finished");
@@ -177,7 +175,7 @@ public abstract class Objective {
      * @return if all conditions of this objective has been met
      */
     public final boolean checkConditions(final String playerID) {
-        LogUtils.getLogger().log(Level.FINE, "Condition check in \"" + instruction.getID().getFullID()
+        LOG.debug("Condition check in \"" + instruction.getID().getFullID()
                 + "\" objective for player " + PlayerConverter.getName(playerID));
         return BetonQuest.conditions(playerID, conditions);
     }

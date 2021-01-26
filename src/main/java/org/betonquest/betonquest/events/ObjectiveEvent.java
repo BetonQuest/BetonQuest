@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.events;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
@@ -9,7 +10,6 @@ import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ObjectiveID;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -17,12 +17,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
 import java.util.Locale;
-import java.util.logging.Level;
 
 /**
  * Starts an objective for the player
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
+@CustomLog
 public class ObjectiveEvent extends QuestEvent {
 
     private final ObjectiveID objective;
@@ -54,7 +54,7 @@ public class ObjectiveEvent extends QuestEvent {
                 }
                 BetonQuest.getInstance().getSaver().add(new Saver.Record(Connector.UpdateType.REMOVE_ALL_OBJECTIVES, objective.toString()));
             } else {
-                LogUtils.getLogger().log(Level.WARNING, "You tried to call an objective add / finish event in a static context! Only objective delete works here.");
+                LOG.warning("You tried to call an objective add / finish event in a static context! Only objective delete works here.");
             }
         } else if (PlayerConverter.getPlayer(playerID) == null) {
             new BukkitRunnable() {
@@ -72,7 +72,7 @@ public class ObjectiveEvent extends QuestEvent {
                             break;
                         case "complete":
                         case "finish":
-                            LogUtils.getLogger().log(Level.WARNING, "Cannot complete objective for offline player!");
+                            LOG.warning("Cannot complete objective for offline player!");
                             break;
                         default:
                             break;

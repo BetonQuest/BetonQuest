@@ -11,7 +11,6 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.item.QuestItem;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Bukkit;
@@ -25,7 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Level;
 
 /**
  * Hides and shows holograms to players, based on conditions.
@@ -51,7 +49,7 @@ public class HologramLoop {
             }
             for (final String key : section.getKeys(false)) {
                 if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
-                    LogUtils.getLogger().log(Level.WARNING, "Holograms won't be able to hide from players without ProtocolLib plugin! "
+                    LOG.warning("Holograms won't be able to hide from players without ProtocolLib plugin! "
                             + "Install it to use conditioned holograms.");
                     runnable = null;
                     return;
@@ -61,7 +59,7 @@ public class HologramLoop {
                 final String rawLocation = section.getString(key + ".location");
                 final int checkInterval = section.getInt(key + ".check_interval", 0);
                 if (rawLocation == null) {
-                    LogUtils.getLogger().log(Level.WARNING, "Location is not specified in " + key + " hologram");
+                    LOG.warning("Location is not specified in " + key + " hologram");
                     continue;
                 }
                 ConditionID[] conditions = {};

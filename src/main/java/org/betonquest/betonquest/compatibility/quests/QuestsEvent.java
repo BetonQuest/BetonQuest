@@ -1,18 +1,17 @@
 package org.betonquest.betonquest.compatibility.quests;
 
+import lombok.CustomLog;
 import me.blackvein.quests.Quest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
-
-import java.util.logging.Level;
 
 /**
  * Starts a quests in Quests plugin.
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class QuestsEvent extends QuestEvent {
 
     private final String questName;
@@ -34,7 +33,7 @@ public class QuestsEvent extends QuestEvent {
             }
         }
         if (quest == null) {
-            LogUtils.getLogger().log(Level.WARNING, "Quest '" + questName + "' is not defined");
+            LOG.warning("Quest '" + questName + "' is not defined");
             return null;
         }
         QuestsIntegrator.getQuestsInstance().getQuester(PlayerConverter.getPlayer(playerID).getUniqueId()).takeQuest(quest, override);

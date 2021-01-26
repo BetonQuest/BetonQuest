@@ -12,7 +12,6 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.item.QuestItem;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -26,7 +25,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 
 /**
  * Displays a hologram relative to an npc
@@ -106,7 +104,7 @@ public class CitizensHologram extends BukkitRunnable {
                     try {
                         npcs.put(Integer.parseInt(npcID), new ArrayList<>());
                     } catch (final NumberFormatException exception) {
-                        LogUtils.getLogger().log(Level.WARNING, "Could not parse number of NPC '" + npcID + "'");
+                        LOG.warning("Could not parse number of NPC '" + npcID + "'");
                     }
                 }
             }
@@ -120,7 +118,7 @@ public class CitizensHologram extends BukkitRunnable {
             }
             interval = hologramsSection.getInt("check_interval", 100);
             if (interval <= 0) {
-                LogUtils.getLogger().log(Level.WARNING, "Could not load npc holograms of package " + pack.getName() + ": " +
+                LOG.warning("Could not load npc holograms of package " + pack.getName() + ": " +
                         "Check interval must be bigger than 0.");
                 return;
             }

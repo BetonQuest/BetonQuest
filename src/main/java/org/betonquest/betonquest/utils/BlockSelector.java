@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.utils;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -10,7 +11,6 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 
 import java.util.*;
-import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,6 +27,7 @@ import java.util.regex.Pattern;
  * brackets. Regex allowed
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class BlockSelector {
     private final List<Material> materials;
     private final Map<String, String> states;
@@ -118,7 +119,7 @@ public class BlockSelector {
         try {
             state.setBlockData(getBlockData());
         } catch (final IllegalArgumentException exception) {
-            LogUtils.getLogger().log(Level.SEVERE, "Could not place block '" + toString() + "'! Probably the block has a invalid blockstate: " + exception.getMessage(), exception);
+            LOG.error("Could not place block '" + toString() + "'! Probably the block has a invalid blockstate: " + exception.getMessage(), exception);
         }
 
         state.update(true, applyPhysics);

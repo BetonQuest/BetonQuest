@@ -9,7 +9,6 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -25,7 +24,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
 
 @SuppressWarnings("PMD.CommentRequired")
 public final class NPCHider extends BukkitRunnable implements Listener {
@@ -131,7 +129,7 @@ public final class NPCHider extends BukkitRunnable implements Listener {
     public void applyVisibility(final Player player, final Integer npcID) {
         final NPC npc = CitizensAPI.getNPCRegistry().getById(npcID);
         if (npc == null) {
-            LogUtils.getLogger().log(Level.WARNING, "NPCHider could not update visibility for npc " + npcID + ": No npc with this id found!");
+            LOG.warning("NPCHider could not update visibility for npc " + npcID + ": No npc with this id found!");
             return;
         }
         if (npc.isSpawned()) {

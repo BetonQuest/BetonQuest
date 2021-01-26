@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.utils;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 
 import java.io.File;
@@ -16,13 +17,8 @@ import java.util.logging.*;
 /**
  * Setup the log for the plugin.
  */
+@CustomLog
 public final class LogUtils {
-
-    /**
-     * The message, containing all information, to report a bug
-     */
-    private static final String REPORT_MSG = "please report this to <https://github.com/BetonQuest/BetonQuest/issues>. "
-            + "And there you have a cookie: <http://i.imgur.com/iR4UMH5.png>";
     /**
      * The file of the latest log
      */
@@ -81,10 +77,10 @@ public final class LogUtils {
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public static void setupLogger() {
         if (fileHandler != null) {
-            getLogger().log(Level.WARNING, "The logger was already registered!");
+            LOG.warning("The logger was already registered!");
             return;
         }
-        getLogger().setLevel(Level.ALL);
+        BetonQuest.getInstance().getLogger().setLevel(Level.ALL);
 
         try {
             renameLogFile();
@@ -95,15 +91,13 @@ public final class LogUtils {
             final boolean debugReadError = debugString == null && !dataFolderExists;
 
             if (debugReadError) {
-                getLogger().log(Level.WARNING,
-                        "It was not possible to read, if debugging is enabled. This enables debugging mode automatically.");
+                LOG.warning("It was not possible to read, if debugging is enabled. This enables debugging mode automatically.");
             }
             if (debugReadError || "true".equals(debugString)) {
                 startDebug();
             }
         } catch (final IOException e) {
-            getLogger().log(Level.WARNING,
-                    "It was not possible to crate the log file or to register the plugin internal logger. "
+            LOG.warning("It was not possible to crate the log file or to register the plugin internal logger. "
                             + "This is not critical, the server can still run, but it is not possible to use a 'debug log'.",
                     e);
         }
@@ -112,7 +106,7 @@ public final class LogUtils {
     private static void setupLoggerHandler()
             throws IOException {
         fileHandler = new FileHandler(LOG_FILE.getAbsolutePath());
-        getLogger().addHandler(fileHandler);
+        BetonQuest.getInstance().getLogger().addHandler(fileHandler);
         fileHandler.setFormatter(new LogFormatter());
         fileHandler.setFilter(getLogFilter());
     }
@@ -133,7 +127,6 @@ public final class LogUtils {
         }
         if (!LOG_FILE.exists()) {
             createLogFile();
-            getLogger().log(Level.INFO, "A new log file was created.");
             return;
         }
         if (LOG_FILE.length() != 0) {
@@ -142,16 +135,13 @@ public final class LogUtils {
             try {
                 Files.move(LOG_FILE.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             } catch (final IOException e) {
-                getLogger().log(Level.WARNING,
-                        "It was not possible to rename the 'debug log'. This means '" + LOG_FILE.getName()
+                LOG.warning("It was not possible to rename the 'debug log'. This means '" + LOG_FILE.getName()
                                 + "' couldn't be renamed and writing to this file will be continued.",
                         e);
                 return;
             }
             createLogFile();
-            getLogger().log(Level.INFO,
-                    "A new log file was created, and the old one was renamed to '" + newFile.getName() + "'.");
-            return;
+            LOG.info("A new log file was created, and the old one was renamed to '" + newFile.getName() + "'.");
         }
     }
 
@@ -159,25 +149,6 @@ public final class LogUtils {
     private static void createLogFile() throws IOException {
         LOG_FILE.getParentFile().mkdirs();
         LOG_FILE.createNewFile();
-    }
-
-    /**
-     * @return The logger from the plugin
-     */
-    public static Logger getLogger() {
-        return BetonQuest.getInstance().getLogger();
-    }
-
-    /**
-     * Log a throwable, that is already logged with a message, only to the debug
-     * log
-     *
-     * @param throwable The {@link Throwable} to log
-     */
-    public static void logThrowable(final Throwable throwable) {
-        final int stackSize = throwable.getStackTrace().length;
-        final StackTraceElement element = throwable.getStackTrace()[stackSize - 1];
-        getLogger().throwing(element.getClassName(), element.getMethodName(), throwable);
     }
 
     /**

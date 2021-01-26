@@ -6,7 +6,6 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.ConversationResumer;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -18,7 +17,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.io.File;
-import java.util.logging.Level;
 
 /**
  * Listener which handles data loadin/saving when players are joining/quitting
@@ -54,7 +52,7 @@ public class JoinQuitListener implements Listener {
         if (playerData == null) {
             playerData = new PlayerData(playerID);
             BetonQuest.getInstance().putPlayerData(playerID, playerData);
-            LogUtils.getLogger().log(Level.WARNING, "Failed to load data for player " + event.getPlayer().getName() + ", forcing.");
+            LOG.warning("Failed to load data for player " + event.getPlayer().getName() + ", forcing.");
         }
         playerData.startObjectives();
         GlobalObjectives.startAll(playerID);

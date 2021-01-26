@@ -13,7 +13,6 @@ import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.EventID;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Bukkit;
@@ -26,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.logging.Level;
 
 /**
  * Moves the NPC to a specified location, optionally firing doneEvents when it's done.
@@ -151,7 +149,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
             return;
         }
         if (event instanceof NavigationStuckEvent || event instanceof NavigationCancelEvent) {
-            LogUtils.getLogger().log(Level.WARNING, "The NPC was stucked, maybe the distance between two points was too high. "
+            LOG.warning("The NPC was stucked, maybe the distance between two points was too high. "
                     + "This is a Citizens behavior, your NPC was teleported by Citizens, we continue the movement from this location.");
         }
         if (locationsIterator.hasNext()) {

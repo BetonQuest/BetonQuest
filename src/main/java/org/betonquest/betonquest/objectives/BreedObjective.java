@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
@@ -19,7 +18,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityBreedEvent;
 
 import java.util.Locale;
-import java.util.logging.Level;
 
 @SuppressWarnings("PMD.CommentRequired")
 @CustomLog
@@ -58,7 +56,7 @@ public class BreedObjective extends Objective implements Listener {
                             "animals_to_breed,info");
                 } catch (final QuestRuntimeException exception) {
                     try {
-                        LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'animals_to_breed' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                        LOG.warning("The notify system was unable to play a sound for the 'animals_to_breed' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
                     } catch (final InstructionParseException e) {
                         LOG.reportException(e);
                     }

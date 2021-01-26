@@ -7,7 +7,6 @@ import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,7 +15,6 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 /**
  * Changes the default language for the player
@@ -48,7 +46,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
                 builder.append(lang).append(", ");
             }
             if (builder.length() < 3) {
-                LogUtils.getLogger().log(Level.WARNING, "No translations loaded, somethings wrong!");
+                LOG.warning("No translations loaded, somethings wrong!");
                 return false;
             }
             final String finalMessage = builder.substring(0, builder.length() - 2) + ".";

@@ -14,7 +14,6 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.item.QuestItem;
-import org.betonquest.betonquest.utils.LogUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.inventory.ItemStack;
 
@@ -25,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.logging.Level;
 
 /**
  * Represents an object storing all player-related data, which can load and save it.
@@ -126,7 +124,7 @@ public class PlayerData {
                 }
 
                 // log data to debugger
-                LogUtils.getLogger().log(Level.FINE, "There are " + objectives.size() + " objectives, " + tags.size() + " tags, " + points.size()
+                LOG.debug("There are " + objectives.size() + " objectives, " + tags.size() + " tags, " + points.size()
                         + " points, " + entries.size() + " journal entries and " + backpack.size()
                         + " items loaded for player " + PlayerConverter.getName(playerID));
             }
