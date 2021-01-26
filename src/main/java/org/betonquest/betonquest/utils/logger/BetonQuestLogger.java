@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.utils.logger;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.config.ConfigPackage;
 import org.bukkit.plugin.PluginLogger;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -15,7 +16,6 @@ import java.util.logging.Logger;
  * <p>
  * Therefore, all of BetonQuest's logging needs to be done with the methods of this class.
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public class BetonQuestLogger {
     /**
      * The original logger.
@@ -65,10 +65,12 @@ public class BetonQuestLogger {
      * <p>
      * Use this for normal log information.
      *
-     * @param msg The message to log.
+     * @param configPackage The related {@link ConfigPackage} or null.
+     * @param msg           The message to log.
      */
-    public void info(final String msg) {
-        logger.log(Level.INFO, addTopic(msg));
+    public void info(final ConfigPackage configPackage, final String msg) {
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(resolveConfigPackage(configPackage), Level.INFO, topic + msg);
+        logger.log(record);
     }
 
     /**
@@ -76,12 +78,14 @@ public class BetonQuestLogger {
      * <p>
      * Use this if you can provide useful information how to fix the underlying problem.
      * <p>
-     * If you can provide an exception use {@link BetonQuestLogger#warning(String, Throwable)} instead.
+     * If you can provide an exception use {@link BetonQuestLogger#warning(ConfigPackage, String, Throwable)} instead.
      *
-     * @param msg The message to log.
+     * @param configPackage The related {@link ConfigPackage} or null.
+     * @param msg           The message to log.
      */
-    public void warning(final String msg) {
-        logger.log(Level.WARNING, addTopic(msg));
+    public void warning(final ConfigPackage configPackage, final String msg) {
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(resolveConfigPackage(configPackage), Level.WARNING, topic + msg);
+        logger.log(record);
     }
 
     /**
@@ -90,17 +94,23 @@ public class BetonQuestLogger {
      * <p>
      * Use this if you can provide useful information how to fix the underlying problem.
      * <p>
-     * If you cannot provide an exception use {@link BetonQuestLogger#warning(String)} instead.
+     * If you cannot provide an exception use {@link BetonQuestLogger#warning(ConfigPackage, String)} instead.
      *
-     * @param msg    The message to log.
-     * @param thrown The throwable to log.
+     * @param configPackage The related {@link ConfigPackage} or null.
+     * @param msg           The message to log.
+     * @param thrown        The throwable to log.
      */
-    public void warning(final String msg, final Throwable thrown) {
-        logger.log(Level.WARNING, addTopic(msg));
+    public void warning(final ConfigPackage configPackage, final String msg, final Throwable thrown) {
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(resolveConfigPackage(configPackage), Level.WARNING, topic + msg);
+        logger.log(record);
 
+        final BetonQuestLogRecord recordThrowable = new BetonQuestLogRecord(resolveConfigPackage(configPackage), Level.FINE, topic + "Additional stacktrace:");
         final int stackSize = thrown.getStackTrace().length;
         final StackTraceElement element = thrown.getStackTrace()[stackSize - 1];
-        logger.throwing(element.getClassName(), element.getMethodName(), thrown);
+        recordThrowable.setSourceClassName(element.getClassName());
+        recordThrowable.setSourceMethodName(element.getMethodName());
+        recordThrowable.setThrown(thrown);
+        logger.log(recordThrowable);
     }
 
     /**
@@ -109,12 +119,14 @@ public class BetonQuestLogger {
      * Use this if the underlying problem affects the servers security or functionality.
      * Usage is also allowed if you don't know how the user can fix the underlying problem.
      * <p>
-     * If you can provide an exception use {@link BetonQuestLogger#error(String, Throwable)} instead.
+     * If you can provide an exception use {@link BetonQuestLogger#error(ConfigPackage, String, Throwable)} instead.
      *
-     * @param msg The message to log.
+     * @param configPackage The related {@link ConfigPackage} or null.
+     * @param msg           The message to log.
      */
-    public void error(final String msg) {
-        logger.log(Level.SEVERE, addTopic(msg));
+    public void error(final ConfigPackage configPackage, final String msg) {
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(resolveConfigPackage(configPackage), Level.SEVERE, topic + msg);
+        logger.log(record);
     }
 
     /**
@@ -124,13 +136,16 @@ public class BetonQuestLogger {
      * Use this if the underlying problem affects the servers security or functionality.
      * Usage is also allowed if you don't know how the user can fix the underlying problem.
      * <p>
-     * If you cannot provide an exception use {@link BetonQuestLogger#error(String)} instead.
+     * If you cannot provide an exception use {@link BetonQuestLogger#error(ConfigPackage, String)} instead.
      *
-     * @param msg    The message to log.
-     * @param thrown The throwable to log.
+     * @param configPackage The related {@link ConfigPackage} or null.
+     * @param msg           The message to log.
+     * @param thrown        The throwable to log.
      */
-    public void error(final String msg, final Throwable thrown) {
-        logger.log(Level.SEVERE, addTopic(msg), thrown);
+    public void error(final ConfigPackage configPackage, final String msg, final Throwable thrown) {
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(resolveConfigPackage(configPackage), Level.SEVERE, topic + msg);
+        record.setThrown(thrown);
+        logger.log(record);
     }
 
     /**
@@ -138,12 +153,14 @@ public class BetonQuestLogger {
      * <p>
      * Use this for additional debug log information.
      * <p>
-     * If you can provide an exception use {@link BetonQuestLogger#debug(String, Throwable)} instead.
+     * If you can provide an exception use {@link BetonQuestLogger#debug(ConfigPackage, String, Throwable)} instead.
      *
-     * @param msg The message to log.
+     * @param configPackage The related {@link ConfigPackage} or null.
+     * @param msg           The message to log.
      */
-    public void debug(final String msg) {
-        logger.log(Level.FINE, addTopic(msg));
+    public void debug(final ConfigPackage configPackage, final String msg) {
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(resolveConfigPackage(configPackage), Level.FINE, topic + msg);
+        logger.log(record);
     }
 
     /**
@@ -152,13 +169,16 @@ public class BetonQuestLogger {
      * <p>
      * Use this for additional debug log information.
      * <p>
-     * If you cannot provide an exception use {@link BetonQuestLogger#debug(String)} instead.
+     * If you cannot provide an exception use {@link BetonQuestLogger#debug(ConfigPackage, String)} instead.
      *
-     * @param msg    The message to log.
-     * @param thrown The throwable to log.
+     * @param configPackage The related {@link ConfigPackage} or null.
+     * @param msg           The message to log.
+     * @param thrown        The throwable to log.
      */
-    public void debug(final String msg, final Throwable thrown) {
-        logger.log(Level.FINE, addTopic(msg), thrown);
+    public void debug(final ConfigPackage configPackage, final String msg, final Throwable thrown) {
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(resolveConfigPackage(configPackage), Level.FINE, topic + msg);
+        record.setThrown(thrown);
+        logger.log(record);
     }
 
     /**
@@ -167,15 +187,18 @@ public class BetonQuestLogger {
      * and a message that informs the user that the error needs to be reported to the issue tracker.
      * Only use this in cases that should never occur and indicate an error that must be reported.
      *
-     * @param thrown The throwable to log.
+     * @param configPackage The related {@link ConfigPackage} or null.
+     * @param thrown        The throwable to log.
      */
-    public void reportException(final Throwable thrown) {
-        logger.log(Level.SEVERE,
-                addTopic("This is an exception that should never occur. If you don't know why this occurs please report it to <https://github.com/BetonQuest/BetonQuest/issues>."),
-                thrown);
+    public void reportException(final ConfigPackage configPackage, final Throwable thrown) {
+        final String msg = "This is an exception that should never occur. "
+                + "If you don't know why this occurs please report it to <https://github.com/BetonQuest/BetonQuest/issues>.";
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(resolveConfigPackage(configPackage), Level.SEVERE, topic + msg);
+        record.setThrown(thrown);
+        logger.log(record);
     }
 
-    private String addTopic(final String msg) {
-        return topic + msg;
+    private String resolveConfigPackage(final ConfigPackage configPackage) {
+        return configPackage == null ? null : configPackage.getName();
     }
 }
