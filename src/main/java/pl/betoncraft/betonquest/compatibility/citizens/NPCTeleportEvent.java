@@ -1,6 +1,7 @@
 package pl.betoncraft.betonquest.compatibility.citizens;
 
 import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.event.SpawnReason;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -35,12 +36,13 @@ public class NPCTeleportEvent extends QuestEvent implements Listener {
         if (npc == null) {
             throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
         }
-        if (!npc.isSpawned()) {
-            return null;
-        }
         NPCMoveEvent.stopNPCMoving(npc);
         npc.getNavigator().cancelNavigation();
-        npc.teleport(location.getLocation(playerID), PlayerTeleportEvent.TeleportCause.PLUGIN);
+        if (npc.isSpawned()) {
+            npc.teleport(location.getLocation(playerID), PlayerTeleportEvent.TeleportCause.PLUGIN);
+        } else {
+            npc.spawn(location.getLocation(playerID), SpawnReason.PLUGIN);
+        }
         return null;
     }
 }

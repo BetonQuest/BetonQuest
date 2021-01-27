@@ -5,6 +5,7 @@ import net.citizensnpcs.api.ai.event.NavigationCancelEvent;
 import net.citizensnpcs.api.ai.event.NavigationCompleteEvent;
 import net.citizensnpcs.api.ai.event.NavigationEvent;
 import net.citizensnpcs.api.ai.event.NavigationStuckEvent;
+import net.citizensnpcs.api.event.SpawnReason;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -37,12 +38,12 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
 
     private final List<CompoundLocation> locations;
     private final int npcId;
-    private ListIterator<CompoundLocation> locationsIterator;
     private final int waitTicks;
     private final EventID[] doneEvents;
     private final EventID[] failEvents;
-    private String currentPlayer;
     private final boolean blockConversations;
+    private ListIterator<CompoundLocation> locationsIterator;
+    private String currentPlayer;
 
     public NPCMoveEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
@@ -108,15 +109,16 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
         if (npc == null) {
             throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
         }
-        if (!npc.isSpawned()) {
-            return null;
-        }
         locationsIterator = locations.listIterator(0);
-        final CompoundLocation firstLocation = locationsIterator.next();
-        if (CitizensWalkingListener.getInstance().isMovementPaused(npc)) {
-            CitizensWalkingListener.getInstance().setNewTargetLocation(npc, firstLocation.getLocation(playerID));
+        final Location firstLocation = locationsIterator.next().getLocation(playerID);
+        if (npc.isSpawned()) {
+            if (CitizensWalkingListener.getInstance().isMovementPaused(npc)) {
+                CitizensWalkingListener.getInstance().setNewTargetLocation(npc, firstLocation);
+            } else {
+                npc.getNavigator().setTarget(firstLocation);
+            }
         } else {
-            npc.getNavigator().setTarget(firstLocation.getLocation(playerID));
+            npc.spawn(firstLocation, SpawnReason.PLUGIN);
         }
         currentPlayer = playerID;
         MOVING_NPCS.put(npc.getId(), this);
@@ -159,7 +161,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
                 } else {
                     npc.getNavigator().setTarget(next);
                 }
-            } catch (QuestRuntimeException e) {
+            } catch (final QuestRuntimeException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Error while NPC " + npc.getId() + " navigation: " + e.getMessage());
                 LogUtils.logThrowable(e);
             }
@@ -167,7 +169,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
         }
         try {
             npc.getNavigator().setTarget(locationsIterator.previous().getLocation(currentPlayer));
-        } catch (QuestRuntimeException e) {
+        } catch (final QuestRuntimeException e) {
             LogUtils.getLogger().log(Level.WARNING, "Error while finishing NPC " + npc.getId() + " navigation: " + e.getMessage());
             LogUtils.logThrowable(e);
         }

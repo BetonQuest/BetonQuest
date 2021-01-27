@@ -2,6 +2,7 @@ package pl.betoncraft.betonquest.compatibility.citizens;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.citizensnpcs.api.ai.Navigator;
+import net.citizensnpcs.api.event.SpawnReason;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -91,6 +92,8 @@ public class CitizensWalkingListener implements Listener {
                             final Navigator nav = npc.getNavigator();
                             nav.setPaused(false);
                             nav.setTarget(locs.remove(npc));
+                        } else {
+                            npc.spawn(locs.remove(npc), SpawnReason.PLUGIN);
                         }
                     } else {
                         npcs.put(npc, npcId);
