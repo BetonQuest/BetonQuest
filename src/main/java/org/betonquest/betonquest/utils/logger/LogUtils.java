@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.utils;
+package org.betonquest.betonquest.utils.logger;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
@@ -10,7 +10,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.logging.*;
 
@@ -24,7 +23,10 @@ public final class LogUtils {
      */
     private static final File LOG_FILE = new File(BetonQuest.getInstance().getDataFolder(),
             "/logs/latest.log");
-
+    /**
+     * The {@link LogHistory}.
+     */
+    private static final LogHistory HISTORY = new LogHistory();
     /**
      * Is debugging enabled
      */
@@ -46,7 +48,7 @@ public final class LogUtils {
                 debugging = true;
                 BetonQuest.getInstance().getConfig().set("debug", "true");
                 BetonQuest.getInstance().saveConfig();
-                History.writeHistory();
+                HISTORY.writeHistory(fileHandler);
             }
         }
     }
@@ -116,7 +118,7 @@ public final class LogUtils {
             if (debugging) {
                 return true;
             }
-            History.logToHistory(record);
+            HISTORY.logToHistory(record);
             return false;
         };
     }
@@ -149,60 +151,6 @@ public final class LogUtils {
     private static void createLogFile() throws IOException {
         LOG_FILE.getParentFile().mkdirs();
         LOG_FILE.createNewFile();
-    }
-
-    /**
-     * A history of {@link LogRecord}
-     */
-    private static class History {
-
-        /**
-         * The size of the log history
-         */
-        private static final int SIZE = 1000;
-        /**
-         * The log history
-         */
-        private static final LogRecord[] RECORDS = new LogRecord[SIZE];
-        /**
-         * The index of the current history position
-         */
-        private static int index;
-
-        private static void writeHistory() {
-            synchronized (History.class) {
-                int currentIndex = index;
-                boolean hasHistory = false;
-                do {
-                    if (RECORDS[currentIndex] != null) {
-                        if (!hasHistory) {
-                            fileHandler.publish(new LogRecord(Level.INFO, "=====START OF HISTORY====="));
-                            hasHistory = true;
-                        }
-                        fileHandler.publish(RECORDS[currentIndex]);
-                    }
-                    currentIndex++;
-                    if (currentIndex == SIZE) {
-                        currentIndex = 0;
-                    }
-                } while (currentIndex != index);
-                if (hasHistory) {
-                    fileHandler.publish(new LogRecord(Level.INFO, "=====END OF HISTORY====="));
-                }
-                Arrays.fill(RECORDS, null);
-                index = 0;
-            }
-        }
-
-        private static void logToHistory(final LogRecord record) {
-            synchronized (History.class) {
-                if (index == SIZE) {
-                    index = 0;
-                }
-                RECORDS[index] = record;
-                index++;
-            }
-        }
     }
 
     /**
