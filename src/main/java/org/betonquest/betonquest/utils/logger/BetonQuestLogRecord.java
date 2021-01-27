@@ -5,8 +5,12 @@ import lombok.Getter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
+/**
+ * Custom {@link LogRecord} for BetonQuest to add a additional package name.
+ */
 class BetonQuestLogRecord extends LogRecord {
 
+    private static final long serialVersionUID = -7094531905051980356L;
     /**
      * The quest packages name.
      * -- GETTER --
@@ -15,7 +19,7 @@ class BetonQuestLogRecord extends LogRecord {
      * @return Returns the quest package name.
      */
     @Getter
-    private final String questPackage;
+    private final String pack;
 
     /**
      * Construct a LogRecord with the given level and message values.
@@ -36,6 +40,6 @@ class BetonQuestLogRecord extends LogRecord {
      */
     public BetonQuestLogRecord(final String configPackage, final Level level, final String msg) {
         super(level, msg);
-        this.questPackage = configPackage;
+        this.pack = configPackage;
     }
 }

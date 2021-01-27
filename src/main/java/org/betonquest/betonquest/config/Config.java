@@ -209,6 +209,7 @@ public class Config {
         }
         if (result != null) {
             if (variables != null) {
+                LOG.warning(null, result);
                 for (int i = 0; i < variables.length; i++) {
                     result = result.replace("{" + (i + 1) + "}", variables[i]);
                 }

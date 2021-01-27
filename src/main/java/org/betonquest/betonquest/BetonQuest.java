@@ -135,7 +135,7 @@ public class BetonQuest extends JavaPlugin {
     public static boolean condition(final String playerID, final ConditionID conditionID) {
         // null check
         if (conditionID == null) {
-            getInstance().log.debug(conditionID.getPackage(), "Null condition ID!");
+            getInstance().log.debug(null, "Null condition ID!");
             return false;
         }
         // get the condition
@@ -184,7 +184,7 @@ public class BetonQuest extends JavaPlugin {
     public static void event(final String playerID, final EventID eventID) {
         // null check
         if (eventID == null) {
-            getInstance().log.debug(eventID.getPackage(), "Null event ID!");
+            getInstance().log.debug(null, "Null event ID!");
             return;
         }
         // get the event
@@ -252,7 +252,7 @@ public class BetonQuest extends JavaPlugin {
     public static void resumeObjective(final String playerID, final ObjectiveID objectiveID, final String instruction) {
         // null check
         if (playerID == null || objectiveID == null || instruction == null) {
-            getInstance().log.debug(objectiveID.getPackage(), "Null arguments for the objective!");
+            getInstance().log.debug(null, "Null arguments for the objective!");
             return;
         }
         Objective objective = null;
