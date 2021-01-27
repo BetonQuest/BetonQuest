@@ -31,9 +31,6 @@ public class NPCStopEvent extends QuestEvent implements Listener {
         if (npc == null) {
             throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
         }
-        if (!npc.isSpawned()) {
-            return null;
-        }
         NPCMoveEvent.stopNPCMoving(npc);
         npc.getNavigator().cancelNavigation();
         return null;
