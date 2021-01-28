@@ -8,6 +8,8 @@ import pl.betoncraft.betonquest.api.Variable;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.Locale;
 
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition"})
@@ -29,7 +31,7 @@ public class LocationVariable extends Variable {
         if (splitInstruction.length >= 3) {
             try {
                 decimalPlaces = Integer.parseInt(splitInstruction[2]);
-            } catch (NumberFormatException exception) {
+            } catch (final NumberFormatException exception) {
                 throw new InstructionParseException(exception);
             }
         } else {
@@ -67,17 +69,34 @@ public class LocationVariable extends Variable {
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private String buildFormattedLocation(final Location playerLocation, final String format) {
-        return String.format(Locale.US, format,
-                playerLocation.getX(),
-                playerLocation.getY(),
-                playerLocation.getZ(),
-                playerLocation.getWorld().getName(),
-                playerLocation.getYaw(),
-                playerLocation.getPitch());
+        final double posX = playerLocation.getX();
+        final double posY = playerLocation.getY();
+        final double posZ = playerLocation.getZ();
+        final float yaw = playerLocation.getYaw();
+        final float pitch = playerLocation.getPitch();
+        final String world = playerLocation.getWorld().getName();
+
+        if (decimalPlaces == 0) {
+            final DecimalFormat formatter = new DecimalFormat("#");
+            formatter.setRoundingMode(RoundingMode.DOWN);
+            return String.format(Locale.US, format,
+                    formatter.format(posX),
+                    formatter.format(posY),
+                    formatter.format(posZ),
+                    world,
+                    formatter.format(yaw),
+                    formatter.format(pitch));
+        } else {
+            return String.format(Locale.US, format, posX, posY, posZ, world, yaw, pitch);
+        }
     }
 
     private String buildPart(final int index) {
-        return "%" + index + "$." + decimalPlaces + "f";
+        if (decimalPlaces == 0) {
+            return "%" + index + "$s";
+        } else {
+            return "%" + index + "$." + decimalPlaces + "f";
+        }
     }
 
     private enum MODE {
