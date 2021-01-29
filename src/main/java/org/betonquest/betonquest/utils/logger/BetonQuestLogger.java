@@ -2,6 +2,8 @@ package org.betonquest.betonquest.utils.logger;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.config.ConfigPackage;
+import org.betonquest.betonquest.utils.logger.custom.PackageLogRecord;
+import org.betonquest.betonquest.utils.logger.custom.TopicLogger;
 import org.bukkit.plugin.PluginLogger;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -11,38 +13,33 @@ import java.util.logging.Logger;
 /**
  * This is the BetonQuest log decorator for usage with Lombok's {@link lombok.CustomLog} annotation.
  * <p>
- * This decorator uses the {@link PluginLogger} from the {@link JavaPlugin#getLogger()} method
- * to log messages with an optional topic to the log.
+ * This decorator uses the {@link PluginLogger} from the {@link JavaPlugin#getLogger()} method.
+ * It registers a new child {@link TopicLogger} for each class it's used in.
  * <p>
  * Therefore, all of BetonQuest's logging needs to be done with the methods of this class.
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public class BetonQuestLogger {
     /**
      * The original logger.
      */
     private final Logger logger;
-    /**
-     * The topic of the logger.
-     */
-    private final String topic;
 
     /**
-     * Create a decorator for the {@link JavaPlugin#getLogger()}.
+     * Creates a decorator for the {@link TopicLogger}.
      *
      * @param plugin The instance of a {@link JavaPlugin}.
+     * @param clazz  The calling class.
      * @param topic  The topic of the logger.
      */
-    public BetonQuestLogger(final JavaPlugin plugin, final String topic) {
-        this.logger = plugin.getLogger();
-        this.topic = topic == null ? "" : "(" + topic + ") ";
+    public BetonQuestLogger(final JavaPlugin plugin, final Class<?> clazz, final String topic) {
+        this.logger = new TopicLogger(plugin, clazz, topic);
     }
 
     /**
      * Creates a logger.<p>
-     * This method should only be called by lombok with the @{@link lombok.CustomLog} annotation.
+     * This method should only be called with lombok using the @{@link lombok.CustomLog} annotation.
      *
-     * @param clazz The clazz that is passed by lombok.
+     * @param clazz The class that is passed by lombok.
      * @return The decorated Logger.
      */
     public static BetonQuestLogger create(final Class<?> clazz) {
@@ -51,14 +48,14 @@ public class BetonQuestLogger {
 
     /**
      * Creates a logger.<p>
-     * This method should only be called by lombok with the @{@link lombok.CustomLog} annotation.
+     * This method should only be called with lombok using the @{@link lombok.CustomLog} annotation.
      *
-     * @param clazz The clazz that is passed by lombok.
+     * @param clazz The class that is passed by lombok.
      * @param topic The optional topic of the logger passed by lombok.
      * @return The decorated Logger.
      */
     public static BetonQuestLogger create(final Class<?> clazz, final String topic) {
-        return new BetonQuestLogger(BetonQuest.getInstance(), topic);
+        return new BetonQuestLogger(BetonQuest.getInstance(), clazz, topic);
     }
 
     /**
@@ -70,7 +67,7 @@ public class BetonQuestLogger {
      * @param msg  The message to log.
      */
     public void info(final ConfigPackage pack, final String msg) {
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(resolvePack(pack), Level.INFO, topic + msg);
+        final PackageLogRecord record = new PackageLogRecord(pack, Level.INFO, msg);
         logger.log(record);
     }
 
@@ -85,13 +82,13 @@ public class BetonQuestLogger {
      * @param msg  The message to log.
      */
     public void warning(final ConfigPackage pack, final String msg) {
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(resolvePack(pack), Level.WARNING, topic + msg);
+        final PackageLogRecord record = new PackageLogRecord(pack, Level.WARNING, msg);
         logger.log(record);
     }
 
     /**
      * Logs a warning message with the {@link Level#WARNING} level to the log.
-     * The {@link Throwable} is logged with the {@link Level#FINER} level to the log.
+     * The {@link Throwable} is logged with the {@link Level#FINE} level to the log.
      * <p>
      * Use this if you can provide useful information how to fix the underlying problem.
      * <p>
@@ -102,11 +99,11 @@ public class BetonQuestLogger {
      * @param thrown The throwable to log.
      */
     public void warning(final ConfigPackage pack, final String msg, final Throwable thrown) {
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(resolvePack(pack), Level.WARNING, topic + msg);
+        final PackageLogRecord record = new PackageLogRecord(pack, Level.WARNING, msg);
         logger.log(record);
 
-        final BetonQuestLogRecord recordThrowable = new BetonQuestLogRecord(resolvePack(pack), Level.FINE,
-                topic + "Additional stacktrace:");
+        final PackageLogRecord recordThrowable = new PackageLogRecord(pack, Level.FINE,
+                "Additional stacktrace:");
         final int stackSize = thrown.getStackTrace().length;
         final StackTraceElement element = thrown.getStackTrace()[stackSize - 1];
         recordThrowable.setSourceClassName(element.getClassName());
@@ -127,7 +124,7 @@ public class BetonQuestLogger {
      * @param msg  The message to log.
      */
     public void error(final ConfigPackage pack, final String msg) {
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(resolvePack(pack), Level.SEVERE, topic + msg);
+        final PackageLogRecord record = new PackageLogRecord(pack, Level.SEVERE, msg);
         logger.log(record);
     }
 
@@ -145,7 +142,7 @@ public class BetonQuestLogger {
      * @param thrown The throwable to log.
      */
     public void error(final ConfigPackage pack, final String msg, final Throwable thrown) {
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(resolvePack(pack), Level.SEVERE, topic + msg);
+        final PackageLogRecord record = new PackageLogRecord(pack, Level.SEVERE, msg);
         record.setThrown(thrown);
         logger.log(record);
     }
@@ -161,7 +158,7 @@ public class BetonQuestLogger {
      * @param msg  The message to log.
      */
     public void debug(final ConfigPackage pack, final String msg) {
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(resolvePack(pack), Level.FINE, topic + msg);
+        final PackageLogRecord record = new PackageLogRecord(pack, Level.FINE, msg);
         logger.log(record);
     }
 
@@ -178,7 +175,7 @@ public class BetonQuestLogger {
      * @param thrown The throwable to log.
      */
     public void debug(final ConfigPackage pack, final String msg, final Throwable thrown) {
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(resolvePack(pack), Level.FINE, topic + msg);
+        final PackageLogRecord record = new PackageLogRecord(pack, Level.FINE, msg);
         record.setThrown(thrown);
         logger.log(record);
     }
@@ -195,12 +192,8 @@ public class BetonQuestLogger {
     public void reportException(final ConfigPackage pack, final Throwable thrown) {
         final String msg = "This is an exception that should never occur. "
                 + "If you don't know why this occurs please report it to <https://github.com/BetonQuest/BetonQuest/issues>.";
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(resolvePack(pack), Level.SEVERE, topic + msg);
+        final PackageLogRecord record = new PackageLogRecord(pack, Level.SEVERE, msg);
         record.setThrown(thrown);
         logger.log(record);
-    }
-
-    private String resolvePack(final ConfigPackage pack) {
-        return pack == null ? null : pack.getName();
     }
 }

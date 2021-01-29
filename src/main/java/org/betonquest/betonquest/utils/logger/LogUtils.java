@@ -11,7 +11,10 @@ import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Date;
-import java.util.logging.*;
+import java.util.logging.FileHandler;
+import java.util.logging.Filter;
+import java.util.logging.Formatter;
+import java.util.logging.LogRecord;
 
 /**
  * Setup the log for the plugin.
@@ -82,7 +85,6 @@ public final class LogUtils {
             LOG.warning(null, "The logger was already registered!");
             return;
         }
-        BetonQuest.getInstance().getLogger().setLevel(Level.ALL);
 
         try {
             renameLogFile();

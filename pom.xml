@@ -679,6 +679,7 @@
           <artifactId>maven-javadoc-plugin</artifactId>
           <version>3.2.0</version>
           <configuration>
+            <failOnWarnings>true</failOnWarnings>
             <show>public</show>
             <quiet>true</quiet>
           </configuration>

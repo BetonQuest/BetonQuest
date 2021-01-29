@@ -74,7 +74,7 @@ public class BetonQuest extends JavaPlugin {
     @Getter
     private static BetonQuest instance;
     private final ConcurrentHashMap<String, PlayerData> playerDataMap = new ConcurrentHashMap<>();
-    private final BetonQuestLogger log = new BetonQuestLogger(this, null);
+    private final BetonQuestLogger log = new BetonQuestLogger(this, this.getClass(), null);
     private String pluginTag;
     private Database database;
     private boolean isMySQLUsed;
