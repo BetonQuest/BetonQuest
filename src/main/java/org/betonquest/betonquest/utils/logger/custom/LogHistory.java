@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.utils.logger;
+package org.betonquest.betonquest.utils.logger.custom;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -9,21 +9,22 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 /**
- * This class can hold a history of 10 minutes of {@link LogRecord}'s
- * and write them in to a {@link FileHandler} at any time.
+ * This class holds a 10 minute history of {@link LogRecord}'s
+ * and is able to write them into a {@link FileHandler} at any time.
  */
 public class LogHistory {
+
     /**
-     * The index of the current history position
+     * The index of the current history position.
      */
     private static int index;
     /**
-     * A cache of the last 10 minutes of {@link LogRecord}'s
+     * A cache of the last 10 minutes of {@link LogRecord}'s.
      */
     private final Cache<Integer, LogRecord> records = CacheBuilder.newBuilder().expireAfterWrite(10, TimeUnit.MINUTES).build();
 
     /**
-     * Create a new {@link LogHistory}
+     * Creates a new {@link LogHistory}.
      */
     public LogHistory() {
     }
@@ -34,9 +35,7 @@ public class LogHistory {
      * @param record The record to log to the history.
      */
     public void logToHistory(final LogRecord record) {
-        synchronized (LogHistory.class) {
-            records.put(index++, record);
-        }
+        records.put(index++, record);
     }
 
     /**
@@ -45,19 +44,14 @@ public class LogHistory {
      * @param fileHandler The {@link FileHandler} to write the history to.
      */
     public void writeHistory(final FileHandler fileHandler) {
-        synchronized (LogHistory.class) {
-            final boolean hasHistory = records.size() > 0;
-            if (hasHistory) {
-                fileHandler.publish(new LogRecord(Level.INFO, "=====START OF HISTORY====="));
-            }
+        if (records.size() > 0) {
+            fileHandler.publish(new LogRecord(Level.INFO, "=====START OF HISTORY====="));
             for (final LogRecord record : records.asMap().values()) {
                 fileHandler.publish(record);
             }
-            if (hasHistory) {
-                fileHandler.publish(new LogRecord(Level.INFO, "=====END OF HISTORY====="));
-                records.cleanUp();
-                index = 0;
-            }
+            fileHandler.publish(new LogRecord(Level.INFO, "=====END OF HISTORY====="));
+            records.cleanUp();
+            index = 0;
         }
     }
 }

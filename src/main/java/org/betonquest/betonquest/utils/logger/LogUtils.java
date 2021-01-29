@@ -1,25 +1,22 @@
 package org.betonquest.betonquest.utils.logger;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.utils.logger.custom.DebugLogFormatter;
+import org.betonquest.betonquest.utils.logger.custom.LogHistory;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Date;
 import java.util.logging.FileHandler;
 import java.util.logging.Filter;
-import java.util.logging.Formatter;
-import java.util.logging.LogRecord;
 
 /**
  * Setup the log for the plugin.
  */
-@CustomLog
+@CustomLog(topic = "LogUtils")
 public final class LogUtils {
     /**
      * The file of the latest log
@@ -79,7 +76,6 @@ public final class LogUtils {
     /**
      * Create a latest.log file, rename the old latest.log and register the LogHandler
      */
-    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public static void setupLogger() {
         if (fileHandler != null) {
             LOG.warning(null, "The logger was already registered!");
@@ -107,11 +103,10 @@ public final class LogUtils {
         }
     }
 
-    private static void setupLoggerHandler()
-            throws IOException {
+    private static void setupLoggerHandler() throws IOException {
         fileHandler = new FileHandler(LOG_FILE.getAbsolutePath());
         BetonQuest.getInstance().getLogger().addHandler(fileHandler);
-        fileHandler.setFormatter(new LogFormatter());
+        fileHandler.setFormatter(new DebugLogFormatter());
         fileHandler.setFilter(getLogFilter());
     }
 
@@ -145,50 +140,12 @@ public final class LogUtils {
                 return;
             }
             createLogFile();
-            LOG.info(null, "A new log file was created, and the old one was renamed to '" + newFile.getName() + "'.");
         }
     }
 
-    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     private static void createLogFile() throws IOException {
         LOG_FILE.getParentFile().mkdirs();
         LOG_FILE.createNewFile();
     }
 
-    /**
-     * This is a simple log formatting class
-     */
-    private static class LogFormatter extends Formatter {
-
-        /**
-         * The date, to print the time for a log report
-         */
-        private final Date dat = new Date();
-
-        @Override
-        public String format(final LogRecord record) {
-            dat.setTime(record.getMillis());
-            final String message = formatMessage(record);
-            final String throwable = formatThrowable(record);
-
-            return String.format("[%1$ty.%1$tm.%1$td %tT %2$s]: %3$s%4$s%n",
-                    dat,
-                    record.getLevel().getName(),
-                    message,
-                    throwable);
-        }
-
-        private String formatThrowable(final LogRecord record) {
-            String throwable = "";
-            if (record.getThrown() != null) {
-                final StringWriter sWriter = new StringWriter();
-                final PrintWriter pWriter = new PrintWriter(sWriter);
-                pWriter.println();
-                record.getThrown().printStackTrace(pWriter);
-                pWriter.close();
-                throwable = sWriter.toString();
-            }
-            return throwable;
-        }
-    }
 }
