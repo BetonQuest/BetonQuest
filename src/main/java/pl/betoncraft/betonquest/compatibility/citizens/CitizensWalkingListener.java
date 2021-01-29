@@ -86,8 +86,8 @@ public class CitizensWalkingListener implements Listener {
                     final CitizensConversation conv = (CitizensConversation) event.getConversation();
                     final NPC npc = conv.getNPC();
                     final Pair<Integer, Location> pair = npcs.get(npc);
-                    final int npcId = pair.getKey() - 1;
-                    if (npcId == 0) {
+                    final int conversationsAmount = pair.getKey() - 1;
+                    if (conversationsAmount == 0) {
                         npcs.remove(npc);
                         if (npc.isSpawned()) {
                             final Navigator nav = npc.getNavigator();
@@ -97,7 +97,7 @@ public class CitizensWalkingListener implements Listener {
                             npc.spawn(pair.getValue(), SpawnReason.PLUGIN);
                         }
                     } else {
-                        npcs.put(npc, Pair.of(npcId, pair.getValue()));
+                        npcs.put(npc, Pair.of(conversationsAmount, pair.getValue()));
                     }
                 }
             }.runTask(BetonQuest.getInstance());
