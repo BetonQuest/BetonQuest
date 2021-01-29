@@ -18,7 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fixed notify enabled by default for some objectives
 - fixed some grammar mistakes in debug messages
 - fixed npc teleport and walk operations in unloaded chunks
-- fixed inaccurate location variable decimal rounding  
+- fixed inaccurate location variable decimal rounding
+- fixed NullPointerException for walking NPCs with conversation
 ### Security
 
 ## [1.12.0] - 2021-01-10
