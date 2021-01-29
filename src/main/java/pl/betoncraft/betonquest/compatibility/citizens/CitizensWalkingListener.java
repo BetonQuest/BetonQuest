@@ -4,6 +4,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.citizensnpcs.api.ai.Navigator;
 import net.citizensnpcs.api.event.SpawnReason;
 import net.citizensnpcs.api.npc.NPC;
+import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -25,8 +26,7 @@ public class CitizensWalkingListener implements Listener {
 
     private static CitizensWalkingListener instance;
 
-    private final Map<NPC, Integer> npcs = new HashMap<>();
-    private final Map<NPC, Location> locs = new HashMap<>();
+    private final Map<NPC, Pair<Integer, Location>> npcs = new HashMap<>();
 
     /**
      * Creates new listener which prevents Citizens NPCs from walking around
@@ -60,11 +60,11 @@ public class CitizensWalkingListener implements Listener {
                     final CitizensConversation conv = (CitizensConversation) event.getConversation();
                     final NPC npc = conv.getNPC();
                     if (npcs.containsKey(npc)) {
-                        npcs.put(npc, npcs.get(npc) + 1);
+                        final Pair<Integer, Location> pair = npcs.get(npc);
+                        npcs.put(npc, Pair.of(pair.getKey() + 1, pair.getValue()));
                     } else {
                         final Navigator nav = npc.getNavigator();
-                        npcs.put(npc, 1);
-                        locs.put(npc, nav.getTargetAsLocation());
+                        npcs.put(npc, Pair.of(1, nav.getTargetAsLocation()));
                         nav.setPaused(true);
                         nav.cancelNavigation();
                         nav.setTarget(conv.getNPC().getEntity().getLocation());
@@ -85,18 +85,19 @@ public class CitizensWalkingListener implements Listener {
                 public void run() {
                     final CitizensConversation conv = (CitizensConversation) event.getConversation();
                     final NPC npc = conv.getNPC();
-                    final int npcId = npcs.get(npc) - 1;
-                    if (npcId == 0) {
+                    final Pair<Integer, Location> pair = npcs.get(npc);
+                    final int conversationsAmount = pair.getKey() - 1;
+                    if (conversationsAmount == 0) {
                         npcs.remove(npc);
                         if (npc.isSpawned()) {
                             final Navigator nav = npc.getNavigator();
                             nav.setPaused(false);
-                            nav.setTarget(locs.remove(npc));
+                            nav.setTarget(pair.getValue());
                         } else {
-                            npc.spawn(locs.remove(npc), SpawnReason.PLUGIN);
+                            npc.spawn(pair.getValue(), SpawnReason.PLUGIN);
                         }
                     } else {
-                        npcs.put(npc, npcId);
+                        npcs.put(npc, Pair.of(conversationsAmount, pair.getValue()));
                     }
                 }
             }.runTask(BetonQuest.getInstance());
@@ -120,7 +121,8 @@ public class CitizensWalkingListener implements Listener {
      * @param location the location to which the npc should move
      */
     public void setNewTargetLocation(final NPC npc, final Location location) {
-        locs.put(npc, location);
+        final Pair<Integer, Location> pair = npcs.get(npc);
+        npcs.put(npc, Pair.of(pair.getKey(), location));
     }
 
 }
