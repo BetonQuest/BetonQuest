@@ -81,4 +81,4 @@ conversation_colors:
   number: yellow
   option: aqua
 date_format: dd.MM.yyyy HH:mm
-debug: 'false'
+debug: false

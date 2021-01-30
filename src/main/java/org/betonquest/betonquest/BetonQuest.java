@@ -29,7 +29,7 @@ import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Updater;
 import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.utils.logger.BetonQuestLogger;
-import org.betonquest.betonquest.utils.logger.LogUtils;
+import org.betonquest.betonquest.utils.logger.LogWatcher;
 import org.betonquest.betonquest.variables.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -83,6 +83,14 @@ public class BetonQuest extends JavaPlugin {
     private Updater updater;
     private GlobalData globalData;
     private PlayerHider playerHider;
+    /**
+     * -- GETTER --
+     * Get the LogWatcher instance.
+     *
+     * @return The LogWatcher instance.
+     */
+    @Getter
+    private LogWatcher logWatcher;
 
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
@@ -367,7 +375,7 @@ public class BetonQuest extends JavaPlugin {
         pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
 
         // initialize debugger
-        LogUtils.setupLogger();
+        logWatcher = new LogWatcher();
 
         // load configuration
         new Config();

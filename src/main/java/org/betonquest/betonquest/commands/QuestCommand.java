@@ -26,7 +26,7 @@ import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Updater;
 import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.utils.location.VectorData;
-import org.betonquest.betonquest.utils.logger.LogUtils;
+import org.betonquest.betonquest.utils.logger.LogWatcher;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -1783,28 +1783,29 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     }
 
     private void handleDebug(final CommandSender sender, final String... args) {
+        final LogWatcher logWatcher = BetonQuest.getInstance().getLogWatcher();
         if (args.length == 1) {
             sender.sendMessage(
-                    "§2Debugging mode is currently " + (LogUtils.isDebugging() ? "enabled" : "disabled") + "!");
+                    "§2Debugging mode is currently " + (logWatcher.isDebugging() ? "enabled" : "disabled") + "!");
             return;
         }
         final Boolean input = "true".equalsIgnoreCase(args[1]) ? Boolean.TRUE
                 : "false".equalsIgnoreCase(args[1]) ? Boolean.FALSE : null;
         if (input != null && args.length == 2) {
 
-            if (LogUtils.isDebugging() && input || !LogUtils.isDebugging() && !input) {
+            if (logWatcher.isDebugging() && input || !logWatcher.isDebugging() && !input) {
                 sender.sendMessage(
-                        "§2Debugging mode is already " + (LogUtils.isDebugging() ? "enabled" : "disabled") + "!");
+                        "§2Debugging mode is already " + (logWatcher.isDebugging() ? "enabled" : "disabled") + "!");
                 return;
             }
             if (input) {
-                LogUtils.startDebug();
+                logWatcher.startDebug();
             } else {
-                LogUtils.endDebug();
+                logWatcher.endDebug();
             }
-            sender.sendMessage("§2Debugging mode was " + (LogUtils.isDebugging() ? "enabled" : "disabled") + "!");
+            sender.sendMessage("§2Debugging mode was " + (logWatcher.isDebugging() ? "enabled" : "disabled") + "!");
             LOG.info(null,
-                    "Debuging mode was " + (LogUtils.isDebugging() ? "enabled" : "disabled") + "!");
+                    "Debuging mode was " + (logWatcher.isDebugging() ? "enabled" : "disabled") + "!");
             return;
         }
         sendMessage(sender, "unknown_argument");
