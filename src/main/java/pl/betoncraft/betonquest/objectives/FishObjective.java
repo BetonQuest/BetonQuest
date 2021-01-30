@@ -44,7 +44,7 @@ public class FishObjective extends Objective implements Listener {
             throw new InstructionParseException("Fish amount cannot be less than 0");
         }
         notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
-        notify = instruction.hasArgument("notify");
+        notify = instruction.hasArgument("notify") || notifyInterval > 1;
     }
 
     @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
@@ -65,7 +65,7 @@ public class FishObjective extends Objective implements Listener {
             return;
         }
         final ItemStack item = ((Item) event.getCaught()).getItemStack();
-        if(!blockSelector.match(item.getType())) {
+        if (!blockSelector.match(item.getType())) {
             return;
         }
         final FishData data = (FishData) dataMap.get(playerID);

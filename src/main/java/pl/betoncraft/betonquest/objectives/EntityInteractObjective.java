@@ -42,6 +42,8 @@ import java.util.logging.Level;
 public class EntityInteractObjective extends Objective {
 
     private final int notifyInterval;
+    private final CompoundLocation loc;
+    private final VariableNumber range;
     protected EntityType mobType;
     protected int amount;
     protected String name;
@@ -49,9 +51,6 @@ public class EntityInteractObjective extends Objective {
     protected boolean notify;
     protected Interaction interaction;
     protected boolean cancel;
-    private final CompoundLocation loc;
-    private final VariableNumber range;
-
     private RightClickListener rightClickListener;
     private LeftClickListener leftClickListener;
 
@@ -71,7 +70,7 @@ public class EntityInteractObjective extends Objective {
             marked = Utils.addPackage(instruction.getPackage(), marked);
         }
         notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
-        notify = instruction.hasArgument("notify");
+        notify = instruction.hasArgument("notify") || notifyInterval > 1;
         cancel = instruction.hasArgument("cancel");
         loc = instruction.getLocation(instruction.getOptional("loc"));
         final String stringRange = instruction.getOptional("range");
@@ -131,7 +130,7 @@ public class EntityInteractObjective extends Objective {
                         || entity.getLocation().distance(location) > pRange) {
                     return false;
                 }
-            } catch (QuestRuntimeException e) {
+            } catch (final QuestRuntimeException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
                 LogUtils.logThrowable(e);
             }
@@ -196,8 +195,8 @@ public class EntityInteractObjective extends Objective {
 
     public static class EntityInteractData extends ObjectiveData {
 
-        private int amount;
         private final Set<UUID> entitys;
+        private int amount;
 
         public EntityInteractData(final String instruction, final String playerID, final String objID) {
             super(instruction, playerID, objID);

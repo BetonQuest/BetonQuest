@@ -47,7 +47,7 @@ public class BrewObjective extends Objective implements Listener {
         potion = instruction.getQuestItem();
         amount = instruction.getInt();
         notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
-        notify = instruction.hasArgument("notify");
+        notify = instruction.hasArgument("notify") || notifyInterval > 1;
     }
 
     @EventHandler(ignoreCancelled = false)

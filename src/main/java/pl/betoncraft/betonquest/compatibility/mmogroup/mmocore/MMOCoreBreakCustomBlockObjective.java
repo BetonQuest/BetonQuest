@@ -37,7 +37,7 @@ public class MMOCoreBreakCustomBlockObjective extends Objective implements Liste
         neededAmount = instruction.getInt();
 
         notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
-        notify = instruction.hasArgument("notify");
+        notify = instruction.hasArgument("notify") || notifyInterval > 1;
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -74,7 +74,7 @@ public class MMOCoreBreakCustomBlockObjective extends Objective implements Liste
             try {
                 LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to send a notification for the 'blocks_to_break' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
                 LogUtils.logThrowableIgnore(exception);
-            } catch (InstructionParseException exep) {
+            } catch (final InstructionParseException exep) {
                 LogUtils.logThrowableReport(exep);
             }
         }
