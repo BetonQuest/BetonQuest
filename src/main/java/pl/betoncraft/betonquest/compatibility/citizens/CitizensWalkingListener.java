@@ -64,12 +64,14 @@ public class CitizensWalkingListener implements Listener {
                         npcs.put(npc, Pair.of(pair.getKey() + 1, pair.getValue()));
                     } else {
                         final Navigator nav = npc.getNavigator();
-                        npcs.put(npc, Pair.of(1, nav.getTargetAsLocation()));
-                        nav.setPaused(true);
-                        nav.cancelNavigation();
-                        nav.setTarget(conv.getNPC().getEntity().getLocation());
-                        nav.setPaused(true);
-                        nav.cancelNavigation();
+                        if (nav.isNavigating()) {
+                            npcs.put(npc, Pair.of(1, nav.getTargetAsLocation()));
+                            nav.setPaused(true);
+                            nav.cancelNavigation();
+                            nav.setTarget(conv.getNPC().getEntity().getLocation());
+                            nav.setPaused(true);
+                            nav.cancelNavigation();
+                        }
                     }
                 }
             }.runTask(BetonQuest.getInstance());
@@ -85,19 +87,21 @@ public class CitizensWalkingListener implements Listener {
                 public void run() {
                     final CitizensConversation conv = (CitizensConversation) event.getConversation();
                     final NPC npc = conv.getNPC();
-                    final Pair<Integer, Location> pair = npcs.get(npc);
-                    final int conversationsAmount = pair.getKey() - 1;
-                    if (conversationsAmount == 0) {
-                        npcs.remove(npc);
-                        if (npc.isSpawned()) {
-                            final Navigator nav = npc.getNavigator();
-                            nav.setPaused(false);
-                            nav.setTarget(pair.getValue());
+                    if (npcs.containsKey(npc)) {
+                        final Pair<Integer, Location> pair = npcs.get(npc);
+                        final int conversationsAmount = pair.getKey() - 1;
+                        if (conversationsAmount == 0) {
+                            npcs.remove(npc);
+                            if (npc.isSpawned()) {
+                                final Navigator nav = npc.getNavigator();
+                                nav.setPaused(false);
+                                nav.setTarget(pair.getValue());
+                            } else {
+                                npc.spawn(pair.getValue(), SpawnReason.PLUGIN);
+                            }
                         } else {
-                            npc.spawn(pair.getValue(), SpawnReason.PLUGIN);
+                            npcs.put(npc, Pair.of(conversationsAmount, pair.getValue()));
                         }
-                    } else {
-                        npcs.put(npc, Pair.of(conversationsAmount, pair.getValue()));
                     }
                 }
             }.runTask(BetonQuest.getInstance());
