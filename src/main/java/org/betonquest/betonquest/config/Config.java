@@ -209,7 +209,6 @@ public class Config {
         }
         if (result != null) {
             if (variables != null) {
-                LOG.warning(null, result);
                 for (int i = 0; i < variables.length; i++) {
                     result = result.replace("{" + (i + 1) + "}", variables[i]);
                 }
@@ -228,7 +227,7 @@ public class Config {
      * does not exist
      */
     public static String getMessage(final String lang, final String message) {
-        return getMessage(lang, message, (String) null);
+        return getMessage(lang, message, (String[]) null);
     }
 
     /**

@@ -2,8 +2,10 @@ package org.betonquest.betonquest.utils.logger;
 
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.utils.logger.custom.ChatLogFormatter;
 import org.betonquest.betonquest.utils.logger.custom.DebugLogFormatter;
 import org.betonquest.betonquest.utils.logger.custom.HistoryHandler;
+import org.betonquest.betonquest.utils.logger.custom.PlayerHandler;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Date;
 import java.util.logging.FileHandler;
+import java.util.logging.Level;
 
 /**
  * Setup the log for the plugin.
@@ -39,6 +42,7 @@ public final class LogWatcher {
      */
     public LogWatcher() {
         setupDebugLogHandler();
+        setupPlayerLogHandler();
     }
 
     private void setupDebugLogHandler() {
@@ -59,6 +63,13 @@ public final class LogWatcher {
                     + "This is not critical, the server can still run, but it is not possible to use the '/q debug true' command. "
                     + "Reason: " + e.getMessage(), e);
         }
+    }
+
+    private void setupPlayerLogHandler() {
+        final PlayerHandler playerHandler = new PlayerHandler();
+        playerHandler.setFormatter(new ChatLogFormatter());
+        playerHandler.setFilter((record -> record.getLevel().intValue() >= Level.INFO.intValue()));
+        BetonQuest.getInstance().getLogger().addHandler(playerHandler);
     }
 
     /**
