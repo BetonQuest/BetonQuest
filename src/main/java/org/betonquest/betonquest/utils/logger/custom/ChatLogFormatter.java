@@ -22,7 +22,7 @@ public class ChatLogFormatter extends Formatter {
     @Override
     public String format(final LogRecord record) {
         final String color = formatColor(record);
-        final String message = ChatColor.translateAlternateColorCodes('&', record.getMessage());
+        final String message = record.getMessage();
         final String throwable = formatThrowable(record);
 
         return BetonQuest.getInstance().getPluginTag() + color + message + throwable;
@@ -37,17 +37,17 @@ public class ChatLogFormatter extends Formatter {
             return ChatColor.RED.toString();
         }
         if (level >= Level.INFO.intValue()) {
-            return ChatColor.DARK_GRAY.toString();
+            return ChatColor.GRAY.toString();
         }
-        return ChatColor.GRAY.toString();
+        return ChatColor.WHITE.toString();
     }
 
     private String formatThrowable(final LogRecord record) {
         final StringBuilder throwable = new StringBuilder();
         if (record.getThrown() != null) {
-            throwable.append("\nAn additional stacktrace is the log or debug log.");
-            if (record.getThrown().getMessage() != null) {
-                throwable.append(" ").append(ChatColor.translateAlternateColorCodes('&', record.getThrown().getMessage()));
+            throwable.append("\n").append("Full error in the log or debug log.");
+            if (record.getThrown().getMessage() != null && record.getLevel() == Level.SEVERE) {
+                throwable.append(" ").append(record.getThrown().getMessage());
             }
         }
         return throwable.toString();
