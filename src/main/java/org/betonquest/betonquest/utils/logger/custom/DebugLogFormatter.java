@@ -36,7 +36,13 @@ public class DebugLogFormatter extends Formatter {
                 throwable);
     }
 
-    private String formatThrowable(final LogRecord record) {
+    /**
+     * Formats a {@link LogRecord} to a readable string.
+     *
+     * @param record The record to format.
+     * @return The formatted string.
+     */
+    protected String formatThrowable(final LogRecord record) {
         String throwable = "";
         if (record.getThrown() != null) {
             final StringWriter sWriter = new StringWriter();

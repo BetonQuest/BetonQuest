@@ -2,6 +2,10 @@ package org.betonquest.betonquest.commands;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.*;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.compatibility.Compatibility;
@@ -21,7 +25,6 @@ import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.item.QuestItem;
-import org.betonquest.betonquest.utils.ComponentBuilder;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Updater;
 import org.betonquest.betonquest.utils.Utils;
@@ -44,6 +47,7 @@ import org.bukkit.util.Vector;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Level;
 
 /**
  * Main admin command for quest editing.
@@ -246,8 +250,17 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 case "reload":
                     // just reloading
                     defaultPack = Config.getString("config.default_package");
+                    final LogWatcher logWatcher = BetonQuest.getInstance().getLogWatcher();
+                    final UUID uuid = sender instanceof Player ? ((Player) sender).getUniqueId() : null;
+                    final boolean hasFilters = uuid != null && !logWatcher.getFilters(uuid).isEmpty();
+                    if (!hasFilters) {
+                        logWatcher.addFilter(uuid, "*", Level.INFO);
+                    }
                     instance.reload();
                     sendMessage(sender, "reloaded");
+                    if (!hasFilters) {
+                        logWatcher.removeFilter(uuid, "*");
+                    }
                     break;
                 case "backup":
                     // do a full plugin backup
@@ -1707,79 +1720,82 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
     }
 
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private void displayVersionInfo(final CommandSender sender) {
+        final Updater updater = BetonQuest.getInstance().getUpdater();
+        final String updateCommand = "/q update";
 
-        // build clickable tellraw-like message by using bugee api or fall back
-        // on unclickable messages
-        final ComponentBuilder builder = ComponentBuilder.BugeeCordAPIBuilder.create();
-
-        // get versions
-        final String betonquestVersion = BetonQuest.getInstance().getDescription().getVersion();
-        final String spigotVersion = Bukkit.getServer().getVersion();
-
-        // get internal messages
         final String lang = sender instanceof Player
                 ? BetonQuest.getInstance().getPlayerData(PlayerConverter.getID((Player) sender)).getLanguage()
                 : Config.getLanguage();
-        final String clickToDownload = "§b" + Config.getMessage(lang, "click_to_download");
-        final String clickToCopy = "§b" + Config.getMessage(lang, "click_to_copy");
 
-        // get available updates
-        final Updater updater = BetonQuest.getInstance().getUpdater();
-        String updatesString = "";
-        String updatesCommand = null;
-        if (updater.isUpdateAvailable()) {
-            updatesCommand = "/q update";
-            updatesString = " (version '" + updater.getUpdateVersion() + "' is " + "avialable!)";
-        }
+        final String key = "command_version_context.";
+        final String versionInfo = Config.getMessage(lang, key + "version_info");
+        final String clickToCopyAll = Config.getMessage(lang, key + "click_to_copy_all");
+        final String clickToCopy = Config.getMessage(lang, key + "click_to_copy");
+        final String clickToDownloadHint = Config.getMessage(lang, key + "click_to_download_hint");
+        final String colorValue = Config.getMessage(lang, key + "color_value");
+        final String colorKey = Config.getMessage(lang, key + "color_key");
+        final String colorValueVersion = Config.getMessage(lang, key + "color_value_version");
+        final String versionBetonQuest = Config.getMessage(lang, key + "version_betonquest");
+        final String versionServer = Config.getMessage(lang, key + "version_server");
+        final String hookedInto = Config.getMessage(lang, key + "hooked_into");
 
-        // get hooked Plugins
-        final TreeMap<String, String> hooked = new TreeMap<>();
+        final String versionBetonQuestValue = colorValue + BetonQuest.getInstance().getDescription().getVersion();
+        final String versionServerValue = colorValue + Bukkit.getServer().getVersion();
+
+        final TextComponent clickToDownload = updater.isUpdateAvailable() ?
+                Component.newline().append(Component.text("    "))
+                        .append(Component.text(Config.getMessage(lang, key + "click_to_download", updater.getUpdateVersion())))
+                        .hoverEvent(Component.text(clickToDownloadHint)).clickEvent(ClickEvent.runCommand(updateCommand))
+                : Component.empty();
+
+        final TreeMap<String, String> hookedTree = new TreeMap<>();
         for (final String plugin : Compatibility.getHooked()) {
             final Plugin plug = Bukkit.getPluginManager().getPlugin(plugin);
             if (plug != null) {
-                hooked.put(plugin, plug.getDescription().getVersion());
+                hookedTree.put(plugin, plug.getDescription().getVersion());
             }
         }
-        final StringJoiner hookedRaw = new StringJoiner(", ");
-        for (final String key : hooked.navigableKeySet()) {
-            hookedRaw.add(key + " (" + hooked.get(key) + ")");
+        final StringJoiner hookedJoiner = new StringJoiner(", ");
+        for (final Map.Entry<String, String> entry : hookedTree.entrySet()) {
+            hookedJoiner.add(colorValue + entry.getKey() + colorValueVersion + " (" + entry.getValue() + ")");
         }
+        final String hooked = hookedJoiner.toString();
 
-        // build version info message
-        builder.append("- - - - - - - - - - - - - - -\n", ChatColor.YELLOW);
-        builder.append("BetonQuest version: ", ChatColor.AQUA).append(betonquestVersion, ChatColor.GRAY)
-                .hover(clickToCopy).click(
-                ComponentBuilder.ClickEvent.SUGGEST_COMMAND, betonquestVersion);
-        if (updatesCommand != null) {
-            builder.append("\n        " + updatesString, ChatColor.YELLOW).hover(clickToDownload)
-                    .click(ComponentBuilder.ClickEvent.RUN_COMMAND, updatesCommand);
-        }
-        builder.append("\n", ChatColor.RESET).append("Server version: ", ChatColor.GOLD)
-                .append(spigotVersion, ChatColor.GRAY).hover(clickToCopy).click(
-                ComponentBuilder.ClickEvent.SUGGEST_COMMAND, spigotVersion)
-                .append("\n\n", ChatColor.RESET).append("Hooked into:\n", ChatColor.GREEN);
-        if (hooked.isEmpty()) {
-            builder.append("  ---", ChatColor.GRAY);
-        } else {
-            boolean first = true;
-            for (final String key : hooked.navigableKeySet()) {
-                if (first) {
-                    first = false;
-                } else {
-                    builder.append(", ", ChatColor.RESET).hover(clickToCopy)
-                            .click(ComponentBuilder.ClickEvent.SUGGEST_COMMAND, hookedRaw.toString());
-                }
-                builder.append(key, ChatColor.RESET).hover(clickToCopy)
-                        .click(ComponentBuilder.ClickEvent.SUGGEST_COMMAND, hookedRaw.toString()).append(" (" + hooked
-                        .get(key) + ")", ChatColor.GRAY)
-                        .hover(clickToCopy).click(ComponentBuilder.ClickEvent.SUGGEST_COMMAND, hookedRaw.toString());
+        final Component compHeader = Component.text(BetonQuest.getInstance().getPluginTag() + versionInfo);
+        final Component compVersionBetonQuestKey = Component.text(colorKey + versionBetonQuest)
+                .hoverEvent(Component.text(clickToCopy))
+                .clickEvent(ClickEvent.suggestCommand(ChatColor.stripColor(versionBetonQuest + versionBetonQuestValue)));
+        final Component compVersionBetonQuestValue = Component.text(versionBetonQuestValue)
+                .hoverEvent(Component.text(clickToCopy))
+                .clickEvent(ClickEvent.suggestCommand(ChatColor.stripColor(versionBetonQuestValue)));
+        final Component compVersionServerKey = Component.text(colorKey + versionServer)
+                .hoverEvent(Component.text(clickToCopy))
+                .clickEvent(ClickEvent.suggestCommand(ChatColor.stripColor(versionServer + versionServerValue)));
+        final Component compVersionServerValue = Component.text(versionServerValue)
+                .hoverEvent(Component.text(clickToCopy))
+                .clickEvent(ClickEvent.suggestCommand(ChatColor.stripColor(versionServerValue)));
+        final Component compHookedKey = Component.text(colorKey + hookedInto)
+                .hoverEvent(Component.text(clickToCopy))
+                .clickEvent(ClickEvent.suggestCommand(ChatColor.stripColor(hookedInto + hooked)));
+        final Component compHookedValue = Component.text(hooked)
+                .hoverEvent(Component.text(clickToCopy))
+                .clickEvent(ClickEvent.suggestCommand(ChatColor.stripColor(hooked)));
+        final Component compCopyAll = Component.text(clickToCopyAll)
+                .hoverEvent(Component.text(clickToCopy))
+                .clickEvent(ClickEvent.copyToClipboard(ChatColor.stripColor(versionBetonQuest
+                        + versionBetonQuestValue + "\n" + versionServer + versionServerValue + "\n" + "\n"
+                        + hookedInto + hooked)));
 
-            }
-        }
-
-        // send the message
-        builder.send(sender);
+        final TextComponent version = Component.empty().append(compHeader)
+                .append(Component.newline()).append(compVersionBetonQuestKey).append(compVersionBetonQuestValue)
+                .append(clickToDownload.clickEvent(ClickEvent.runCommand(updateCommand)))
+                .append(Component.newline()).append(compVersionServerKey).append(compVersionServerValue)
+                .append(Component.newline())
+                .append(Component.newline()).append(compHookedKey).append(compHookedValue)
+                .append(Component.newline()).append(compCopyAll);
+        BetonQuest.getInstance().getAdventure().sender(sender).sendMessage(version);
     }
 
     private void handleDebug(final CommandSender sender, final String... args) {
@@ -1787,6 +1803,32 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         if (args.length == 1) {
             sender.sendMessage(
                     "§2Debugging mode is currently " + (logWatcher.isDebugging() ? "enabled" : "disabled") + "!");
+            return;
+        }
+        if ("ingame".equalsIgnoreCase(args[1])) {
+            if (!(sender instanceof Player)) {
+                LOG.debug(null, "Cannot continue, sender must be player");
+                return;
+            }
+            final UUID uuid = ((Player) sender).getUniqueId();
+            if (args.length < 3) {
+                sender.sendMessage("§2Active Filters: " + StringUtils.joinWith(", ", logWatcher.getFilters(uuid)));
+                return;
+            }
+            final String filter = args[2];
+            final boolean exist = logWatcher.getFilters(uuid).contains(filter);
+            if (exist && args.length == 3) {
+                if (!logWatcher.removeFilter(uuid, filter)) {
+                    sender.sendMessage("§2Filter could not be removed!");
+                }
+                sender.sendMessage("§2Filter removed!");
+                return;
+            }
+            final Level level = getLogLevel(args.length > 3 ? args[3] : null);
+            if (!logWatcher.addFilter(uuid, filter, level)) {
+                sender.sendMessage("§2Filter could not be added!");
+            }
+            sender.sendMessage("§2Filter added!");
             return;
         }
         final Boolean input = "true".equalsIgnoreCase(args[1]) ? Boolean.TRUE
@@ -1811,9 +1853,25 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         sendMessage(sender, "unknown_argument");
     }
 
+    private Level getLogLevel(final String arg) {
+        if ("info".equalsIgnoreCase(arg)) {
+            return Level.INFO;
+        }
+        if ("debug".equalsIgnoreCase(arg)) {
+            return Level.ALL;
+        }
+        return Level.WARNING;
+    }
+
     private List<String> completeDebug(final String... args) {
         if (args.length == 2) {
-            return Arrays.asList("true", "false");
+            return Arrays.asList("true", "false", "ingame");
+        }
+        if (args.length == 3) {
+            return completePackage();
+        }
+        if (args.length == 4) {
+            return Arrays.asList("error", "info", "debug");
         }
         return null;
     }

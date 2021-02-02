@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - ${current-date}
 ### Added
+- Logging
+  - Ingame logging
+    - Log during `/q reload`
+    - New command `/q debug ingame`
+  - Debug logging
+    - now with 10 minutes history
 ### Changed
 ### Deprecated
 ### Removed

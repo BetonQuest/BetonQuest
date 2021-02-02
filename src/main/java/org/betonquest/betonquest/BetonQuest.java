@@ -2,6 +2,7 @@ package org.betonquest.betonquest;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.Getter;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.betonquest.betonquest.api.*;
@@ -65,16 +66,25 @@ public class BetonQuest extends JavaPlugin {
     private static final Map<String, ConversationData> CONVERSATIONS = new HashMap<>();
     private static final Map<VariableID, Variable> VARIABLES = new HashMap<>();
     /**
-     * The BetonQuest Plugin instance
+     * The BetonQuest Plugin instance.
      * -- GETTER --
-     * Returns the plugin's instance
+     * Get the plugin's instance.
      *
-     * @return the plugin's instance
+     * @return The plugin's instance.
      */
     @Getter
     private static BetonQuest instance;
     private final ConcurrentHashMap<String, PlayerData> playerDataMap = new ConcurrentHashMap<>();
     private final BetonQuestLogger log = new BetonQuestLogger(this, this.getClass(), null);
+    /**
+     * The adventure instance.
+     * -- GETTER --
+     * Get the adventure instance.
+     *
+     * @return The adventure instance.
+     */
+    @Getter
+    private BukkitAudiences adventure;
     private String pluginTag;
     private Database database;
     private boolean isMySQLUsed;
@@ -376,6 +386,8 @@ public class BetonQuest extends JavaPlugin {
 
         // initialize debugger
         logWatcher = new LogWatcher();
+
+        adventure = BukkitAudiences.create(this);
 
         // load configuration
         new Config();
@@ -895,8 +907,16 @@ public class BetonQuest extends JavaPlugin {
         // won't happen automatically)
         StaticEvents.stop();
         playerHider.stop();
+
+
         // done
         log.info(null, "BetonQuest succesfully disabled!");
+
+        if (this.adventure != null) {
+            this.adventure.close();
+            this.adventure = null;
+        }
+
     }
 
     /**

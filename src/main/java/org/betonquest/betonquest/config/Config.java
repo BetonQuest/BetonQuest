@@ -9,6 +9,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.utils.PlayerConverter;
+import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -71,7 +72,7 @@ public class Config {
         // load messages
         messages = new ConfigAccessor(new File(root, "messages.yml"), "messages.yml", AccessorType.OTHER);
         messages.saveDefaultConfig();
-        internal = new ConfigAccessor(null, "internal-messages.yml", AccessorType.OTHER);
+        internal = new ConfigAccessor(null, "messages-internal.yml", AccessorType.OTHER);
         for (final String key : messages.getConfig().getKeys(false)) {
             if (!"global".equals(key)) {
                 if (verboose) {
@@ -213,7 +214,7 @@ public class Config {
                     result = result.replace("{" + (i + 1) + "}", variables[i]);
                 }
             }
-            result = result.replace('&', '§');
+            result = ChatColor.translateAlternateColorCodes('&', result);
         }
         return result;
     }

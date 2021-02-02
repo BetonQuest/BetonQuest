@@ -4,14 +4,14 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.utils.logger.custom.ChatLogFormatter;
 import org.betonquest.betonquest.utils.logger.custom.DebugLogFormatter;
-import org.betonquest.betonquest.utils.logger.custom.HistoryHandler;
-import org.betonquest.betonquest.utils.logger.custom.PlayerHandler;
+import org.betonquest.betonquest.utils.logger.custom.HistoryLogHandler;
+import org.betonquest.betonquest.utils.logger.custom.PlayerLogHandler;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.Date;
+import java.util.*;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 
@@ -29,16 +29,20 @@ public final class LogWatcher {
      */
     private static final File LOG_FILE = new File(BetonQuest.getInstance().getDataFolder(), "/logs/latest.log");
     /**
+     * All active log filters for the ingame log.
+     */
+    private final Map<UUID, Map<String, Level>> playerFilters = new HashMap<>();
+    /**
      * Is debugging enabled.
      */
     private boolean debugging;
     /**
-     * The {@link HistoryHandler} that hold old LogRecords.
+     * The {@link HistoryLogHandler} that hold old LogRecords.
      */
-    private HistoryHandler historyHandler;
+    private HistoryLogHandler historyHandler;
 
     /**
-     * Setup the debug log.
+     * Setup the debug log and ingame chat log.
      */
     public LogWatcher() {
         setupDebugLogHandler();
@@ -51,7 +55,7 @@ public final class LogWatcher {
 
             final FileHandler fileHandler = new FileHandler(LOG_FILE.getAbsolutePath());
             fileHandler.setFormatter(new DebugLogFormatter());
-            historyHandler = new HistoryHandler(fileHandler);
+            historyHandler = new HistoryLogHandler(fileHandler);
             historyHandler.setFilter((record) -> debugging);
             BetonQuest.getInstance().getLogger().addHandler(historyHandler);
 
@@ -66,9 +70,8 @@ public final class LogWatcher {
     }
 
     private void setupPlayerLogHandler() {
-        final PlayerHandler playerHandler = new PlayerHandler();
+        final PlayerLogHandler playerHandler = new PlayerLogHandler(playerFilters);
         playerHandler.setFormatter(new ChatLogFormatter());
-        playerHandler.setFilter((record -> record.getLevel().intValue() >= Level.INFO.intValue()));
         BetonQuest.getInstance().getLogger().addHandler(playerHandler);
     }
 
@@ -126,5 +129,56 @@ public final class LogWatcher {
 
     private boolean createDebugLogFile() throws IOException {
         return (LOG_FILE.getParentFile().exists() || LOG_FILE.getParentFile().mkdirs()) && LOG_FILE.createNewFile();
+    }
+
+    /**
+     * Add a filter to a player.
+     *
+     * @param uuid   The {@link UUID} of the player.
+     * @param filter The filter pattern.
+     * @param level  The Level of the filter.
+     * @return True if the filter was successfully added.
+     */
+    public boolean addFilter(final UUID uuid, final String filter, final Level level) {
+        if (!playerFilters.containsKey(uuid)) {
+            playerFilters.put(uuid, new HashMap<>());
+        }
+        final Map<String, Level> filters = playerFilters.get(uuid);
+        if (filters.containsKey(filter) && filters.get(filter) == level) {
+            return false;
+        }
+        filters.put(filter, level);
+        return true;
+    }
+
+    /**
+     * Remove a filter from a player.
+     *
+     * @param uuid   The {@link UUID} of the player.
+     * @param filter The filter pattern.
+     * @return True if the filter was successfully removed.
+     */
+    public boolean removeFilter(final UUID uuid, final String filter) {
+        if (playerFilters.containsKey(uuid)) {
+            final boolean removed = playerFilters.get(uuid).remove(filter) != null;
+            if (playerFilters.get(uuid).isEmpty()) {
+                playerFilters.remove(uuid);
+            }
+            return removed;
+        }
+        return false;
+    }
+
+    /**
+     * Get the filters from a player.
+     *
+     * @param uuid The {@link UUID} of the player.
+     * @return A list of filters.
+     */
+    public List<String> getFilters(final UUID uuid) {
+        if (playerFilters.containsKey(uuid)) {
+            return new ArrayList<>(playerFilters.get(uuid).keySet());
+        }
+        return new ArrayList<>();
     }
 }

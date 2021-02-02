@@ -16,7 +16,7 @@ import java.util.logging.LogRecord;
  * The history can then be pushed to the target Handler at any time and it is automatically pushed
  * if the next LogRecord is logged and the filter returns true.
  */
-public class HistoryHandler extends Handler {
+public class HistoryLogHandler extends Handler {
     /**
      * The history of the last 10 minutes of LogRecords.
      */
@@ -31,11 +31,11 @@ public class HistoryHandler extends Handler {
     private final Handler target;
 
     /**
-     * Create a  new {@link HistoryHandler}.
+     * Create a  new {@link HistoryLogHandler}.
      *
      * @param target The Handler to log the history to.
      */
-    public HistoryHandler(final Handler target) {
+    public HistoryLogHandler(final Handler target) {
         super();
         this.target = target;
     }

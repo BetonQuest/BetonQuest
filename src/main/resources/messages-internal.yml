@@ -54,13 +54,23 @@ en:
   command_delete: deletes all specified objects from the database
   command_config: reads, sets or appends strings to config files
   command_version: displays version information
+  command_version_context:
+    version_info: '&eVersion Information'
+    click_to_download: '&a (Version ''&2{1}&a'' is available. Click to download!)'
+    click_to_copy_all: '&eClick to copy everything to clipboard!'
+    click_to_copy: 'Click to copy!'
+    click_to_download_hint: 'Click to download!'
+    color_value: '&7'
+    color_key: '&6'
+    color_value_version: '&f'
+    version_betonquest: 'BetonQuest version: '
+    version_server: 'Server version: '
+    hooked_into: 'Hooked into: '
   command_vector: calculates a vector from first variable and saves it to the second
   command_purge: deletes all data about the player
   command_backup: creates configuration and database backup. Use only from console on empty server!
   command_globaltags: displays global tags
   command_globalpoints: displays global points
-  click_to_download: click to download
-  click_to_copy: click to copy
   offline: '&4All players must be offline in order to make a backup!'
   default_language_changed: '&2Default language changed!'
   error: '&cThere has been an error: {1}'

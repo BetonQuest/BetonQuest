@@ -264,6 +264,31 @@
     </profile>
 
     <profile>
+      <id>from-sonatype</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <repositories>
+        <repository>
+          <id>sonatype-repo</id>
+          <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
+      </repositories>
+      <dependencies>
+        <dependency>
+          <groupId>net.kyori</groupId>
+          <artifactId>adventure-api</artifactId>
+          <version>4.4.0</version>
+        </dependency>
+        <dependency>
+          <groupId>net.kyori</groupId>
+          <artifactId>adventure-platform-bukkit</artifactId>
+          <version>4.0.0-SNAPSHOT</version>
+        </dependency>
+      </dependencies>
+    </profile>
+
+    <profile>
       <id>from-jitpack</id>
       <activation>
         <activeByDefault>true</activeByDefault>
@@ -462,6 +487,7 @@
                   <include>com.google.guava</include>
                   <include>commons-io</include>
                   <include>org.json</include>
+                  <incluse>net.kyori</incluse>
                 </includes>
               </artifactSet>
               <filters>
@@ -498,6 +524,10 @@
                 <relocation>
                   <pattern>org.json</pattern>
                   <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.org.json</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>net.kyori</pattern>
+                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.net.kyori</shadedPattern>
                 </relocation>
               </relocations>
             </configuration>

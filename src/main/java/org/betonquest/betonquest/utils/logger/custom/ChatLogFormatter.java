@@ -1,16 +1,20 @@
 package org.betonquest.betonquest.utils.logger.custom;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.bukkit.ChatColor;
 
-import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 /**
  * This is a simple log formatting class for the ingame chat.
  */
-public class ChatLogFormatter extends Formatter {
+public class ChatLogFormatter extends DebugLogFormatter {
 
     /**
      * Default constructor.
@@ -23,9 +27,11 @@ public class ChatLogFormatter extends Formatter {
     public String format(final LogRecord record) {
         final String color = formatColor(record);
         final String message = record.getMessage();
-        final String throwable = formatThrowable(record);
+        final Component throwable = formatComponentThrowable(record);
 
-        return BetonQuest.getInstance().getPluginTag() + color + message + throwable;
+        final TextComponent formattedRecord = Component.text(BetonQuest.getInstance().getPluginTag() + color + message)
+                .append(throwable);
+        return GsonComponentSerializer.gson().serialize(formattedRecord);
     }
 
     private String formatColor(final LogRecord record) {
@@ -42,14 +48,21 @@ public class ChatLogFormatter extends Formatter {
         return ChatColor.WHITE.toString();
     }
 
-    private String formatThrowable(final LogRecord record) {
-        final StringBuilder throwable = new StringBuilder();
-        if (record.getThrown() != null) {
-            throwable.append("\n").append("Full error in the log or debug log.");
-            if (record.getThrown().getMessage() != null && record.getLevel() == Level.SEVERE) {
-                throwable.append(" ").append(record.getThrown().getMessage());
-            }
+    /**
+     * Formats a {@link LogRecord} to a readable chat {@link Component}.
+     *
+     * @param record The record to format.
+     * @return The formatted component.
+     */
+    protected Component formatComponentThrowable(final LogRecord record) {
+        if (record.getThrown() == null) {
+            return Component.empty();
         }
-        return throwable.toString();
+        final String throwable = formatThrowable(record);
+        return Component.text(" Hover for Stacktrace!", NamedTextColor.RED)
+                .hoverEvent(Component.text(throwable.replace("\t", "  ").replace("\r", ""))
+                        .append(Component.newline()).append(Component.newline())
+                        .append(Component.text("Click to copy!", NamedTextColor.DARK_GREEN)))
+                .clickEvent(ClickEvent.copyToClipboard(throwable));
     }
 }
