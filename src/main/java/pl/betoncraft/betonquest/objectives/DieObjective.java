@@ -2,6 +2,7 @@ package pl.betoncraft.betonquest.objectives;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -70,17 +71,22 @@ public class DieObjective extends Objective implements Listener {
             for (final PotionEffect effect : player.getActivePotionEffects()) {
                 player.removePotionEffect(effect.getType());
             }
-            if (location != null) {
-                try {
-                    player.teleport(location.getLocation(playerID));
-                } catch (QuestRuntimeException e) {
-                    LogUtils.getLogger().log(Level.SEVERE, "Couldn't execute onLastDamage in DieObjective");
-                    LogUtils.logThrowable(e);
+            Location targetLocation = null;
+            try {
+                if (location != null) {
+                    targetLocation = location.getLocation(playerID);
                 }
+            } catch (final QuestRuntimeException e) {
+                LogUtils.getLogger().log(Level.SEVERE, "Couldn't execute onLastDamage in DieObjective");
+                LogUtils.logThrowable(e);
             }
+            final Location finaltagetLocation = targetLocation;
             new BukkitRunnable() {
                 @Override
                 public void run() {
+                    if (finaltagetLocation != null) {
+                        player.teleport(finaltagetLocation);
+                    }
                     player.setFireTicks(0);
 
                 }

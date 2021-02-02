@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixes
 - The Autoupdater got a small fix, and the fail safety for broken downloads was improved
 - `npcrange` objective does not throw errors when the player is in a different world than the NPC
-- The block objectives notify could not be disabled.
+- The block objectives notify could not be disabled
 - fixed ConcurrentModificationException in EntityHider
 - fixed notify enabled by default for some objectives
 - fixed some grammar mistakes in debug messages
@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fixed inaccurate location variable decimal rounding
 - fixed NullPointerException for NPCs with conversation
 - fixed resuming to path finding when conversation interrupt movement
+- fixes Die objective teleporting player during the tick
 ### Security
 
 ## [1.12.0] - 2021-01-10
