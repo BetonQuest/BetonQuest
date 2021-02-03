@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Debug logging
     - now with 10 minutes history
 ### Changed
+- changed package names from `pl.betoncraft.betonquest` to `org.betonquest.betonquest`
 ### Deprecated
 ### Removed
 - `message` event
