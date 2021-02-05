@@ -13,8 +13,8 @@ import java.util.logging.LogRecord;
  * This is a {@link Handler} that can hold the last 10 minutes of {@link LogRecord}s.
  * If the filter returns true, the LogRecords will be passed to the target logger
  * otherwise they will be written to the history.
- * The history can then be pushed to the target Handler at any time and it is automatically pushed
- * if the next LogRecord is logged and the filter returns true.
+ * The history can then be pushed to the target handler at any time.
+ * It is automatically pushed if the next LogRecord is logged and the filter returns true.
  */
 public class HistoryLogHandler extends Handler {
     /**
@@ -31,7 +31,7 @@ public class HistoryLogHandler extends Handler {
     private final Handler target;
 
     /**
-     * Create a  new {@link HistoryLogHandler}.
+     * Creates a new {@link HistoryLogHandler}.
      *
      * @param target The Handler to log the history to.
      */
@@ -41,7 +41,7 @@ public class HistoryLogHandler extends Handler {
     }
 
     /**
-     * Log a LogRecord to the history or the target Handler.
+     * Logs a LogRecord to the history or the target handler.
      *
      * @param record The LogRecord to log.
      */
@@ -61,7 +61,7 @@ public class HistoryLogHandler extends Handler {
     }
 
     /**
-     * Publish the history to the target Handler if history is available.
+     * Publishes the history to the target handler if history is available.
      */
     public void push() {
         lock.readLock().lock();
@@ -80,7 +80,7 @@ public class HistoryLogHandler extends Handler {
     }
 
     /**
-     * Flush the target handler.
+     * Flushes the target handler.
      */
     @Override
     public void flush() {
@@ -88,7 +88,7 @@ public class HistoryLogHandler extends Handler {
     }
 
     /**
-     * Close the target Handler.
+     * Closes the target Handler.
      */
     @Override
     public void close() {

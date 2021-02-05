@@ -16,12 +16,13 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 
 /**
- * Setup the log for the plugin.
+ * Setups the log for the plugin.
  */
 @CustomLog(topic = "LogWatcher")
 public final class LogWatcher {
+
     /**
-     * The path in the config for the debug state.
+     * The config path that holds the debug state.
      */
     private static final String CONFIG_PATH = "debug";
     /**
@@ -33,16 +34,16 @@ public final class LogWatcher {
      */
     private final Map<UUID, Map<String, Level>> playerFilters = new HashMap<>();
     /**
-     * Is debugging enabled.
+     * Whether debugging is enabled.
      */
     private boolean debugging;
     /**
-     * The {@link HistoryLogHandler} that hold old LogRecords.
+     * The {@link HistoryLogHandler} that holds old LogRecords.
      */
     private HistoryLogHandler historyHandler;
 
     /**
-     * Setup the debug log and ingame chat log.
+     * Setups the debug and ingame chat log.
      */
     public LogWatcher() {
         setupDebugLogHandler();
@@ -76,7 +77,7 @@ public final class LogWatcher {
     }
 
     /**
-     * Start writing the latest.log file
+     * Starts writing the latest.log file.
      */
     public void startDebug() {
         synchronized (LogWatcher.class) {
@@ -90,7 +91,7 @@ public final class LogWatcher {
     }
 
     /**
-     * Stop writing the latest.log file
+     * Stops writing the latest.log file.
      */
     public void endDebug() {
         synchronized (LogWatcher.class) {
@@ -103,7 +104,7 @@ public final class LogWatcher {
     }
 
     /**
-     * @return True, if debugging is enabled
+     * @return True, if debugging is enabled.
      */
     public boolean isDebugging() {
         return debugging;
@@ -132,7 +133,7 @@ public final class LogWatcher {
     }
 
     /**
-     * Add a filter to a player.
+     * Adds a filter to a player.
      *
      * @param uuid   The {@link UUID} of the player.
      * @param filter The filter pattern.
@@ -152,7 +153,7 @@ public final class LogWatcher {
     }
 
     /**
-     * Remove a filter from a player.
+     * Removes a filter from a player.
      *
      * @param uuid   The {@link UUID} of the player.
      * @param filter The filter pattern.
@@ -170,7 +171,7 @@ public final class LogWatcher {
     }
 
     /**
-     * Get the filters from a player.
+     * Gets a players filters.
      *
      * @param uuid The {@link UUID} of the player.
      * @return A list of filters.

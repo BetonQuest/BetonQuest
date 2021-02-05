@@ -19,6 +19,7 @@ import java.util.logging.Logger;
  * Therefore, all of BetonQuest's logging needs to be done with the methods of this class.
  */
 public class BetonQuestLogger {
+
     /**
      * The original logger.
      */
@@ -113,7 +114,7 @@ public class BetonQuestLogger {
     }
 
     /**
-     * Logs a error message with the {@link Level#SEVERE} level to the log.
+     * Logs an error message with the {@link Level#SEVERE} level to the log.
      * <p>
      * Use this if the underlying problem affects the servers security or functionality.
      * Usage is also allowed if you don't know how the user can fix the underlying problem.
@@ -129,7 +130,7 @@ public class BetonQuestLogger {
     }
 
     /**
-     * Logs a error message with the {@link Level#SEVERE} level to the log.
+     * Logs an error message with the {@link Level#SEVERE} level to the log.
      * The {@link Throwable} is logged together with the message.
      * <p>
      * Use this if the underlying problem affects the servers security or functionality.
@@ -181,9 +182,10 @@ public class BetonQuestLogger {
     }
 
     /**
-     * The {@link Throwable} is logged using the {@link Level#SEVERE} level
+     * Logs a {@link Throwable} with the {@link Level#SEVERE} level to the log.
+     * The Throwable is logged together with a message that informs the user that the error
+     * needs to be reported to the issue tracker.
      * <p>
-     * and a message that informs the user that the error needs to be reported to the issue tracker.
      * Only use this in cases that should never occur and indicate an error that must be reported.
      *
      * @param pack   The related {@link ConfigPackage} or null.

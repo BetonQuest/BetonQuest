@@ -21,7 +21,7 @@ public class PlayerLogHandler extends Handler {
     private final Map<UUID, Map<String, Level>> playerFilters;
 
     /**
-     * Create a new {@link PlayerLogHandler}.
+     * Creates a new {@link PlayerLogHandler}.
      *
      * @param playerFilters The map pointer with the filters.
      */
@@ -31,7 +31,7 @@ public class PlayerLogHandler extends Handler {
     }
 
     /**
-     * Log a LogRecord to the history or the target Handler.
+     * Log a LogRecord to the history or the target handler.
      * Also compare to the code of the {@link java.util.logging.Logger}.publish
      *
      * @param record The LogRecord to log.
