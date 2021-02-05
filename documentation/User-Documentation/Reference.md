@@ -360,7 +360,17 @@ _This applies to firework charges._
 
 ## Backpack
 
-Sometimes you'll want some items to be persistent over death. If the player has lost them the quest would be broken. You can add a apecific line to item's lore to make it persistent (`&2Quest_Item` by default, `_` is a space in item's definition). Note that this must be a whole new line in the lore! Such item wouldn't be dropped on death, instead it would be placed in player's backpack. **Example**: `:::YAML important_sword: 'DIAMOND_SWORD name:Sword_for_destroying__The_Concrete lore:Made_of_pure_Mithril;&2Quest_Item'`
+Sometimes you'll want some items to be persistent over death. The quest could be broken if the player loses them.
+Such an item wouldn't be dropped (on death), instead it would be placed in the player's backpack.
+
+You can add a specific line to an item's lore to make it persistent. It's `&2Quest_Item` (`_` is a space in an item's definition) if your default language is english.
+The translation of the line can be found in *messages.yml* if a different default language is configured. It's also possible to change the translation. 
+
+Note that this must be an entirely new line in the lore!    
+**Example**:
+```YAML 
+important_sword: "DIAMOND_SWORD name:Sword_for_destroying__The_Concrete lore:Made_of_pure_Mithril;&2Quest_Item"
+```
 
 To open your backpack just type **/j** command. The inventory window will open, displaying your stored items. The first slot is always the journal, and if you get it, the slot will stay empty. You can transfer quest items back and forth between inventories by clicking on them. Left click will transfer just one item, right click will try to transfer all items. Normal items cannot be stored into the backpack, so it's not an infinite inventory.
 

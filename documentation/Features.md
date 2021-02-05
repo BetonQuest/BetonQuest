@@ -1,6 +1,7 @@
 #Feature List
 
-<h4>This page is unfinished and only shows some of our features.</h4>
+<u><h4>This page is unfinished and only shows some of our features.</h4></u>
+<h4> All other features can be found in the "User Documentation" tab.</h4>
 
 
 ##Beautiful multi-threaded Conversations
