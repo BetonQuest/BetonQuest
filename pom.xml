@@ -239,6 +239,11 @@
           <version>4.5.1</version>
           <scope>provided</scope>
         </dependency>
+        <dependency>
+          <groupId>com.comphenix.packetwrapper</groupId>
+          <artifactId>PacketWrapper</artifactId>
+          <version>1.13-R0.1-20180825.172109-2</version>
+        </dependency>
       </dependencies>
     </profile>
 
@@ -295,7 +300,7 @@
       </activation>
       <repositories>
         <repository>
-          <id>jitpack.io</id>
+          <id>jitpack-repo</id>
           <url>https://jitpack.io</url>
         </repository>
       </repositories>
@@ -483,11 +488,11 @@
                 <includes>
                   <include>org.bstats</include>
                   <include>org.apache.maven</include>
-                  <include>org.apache.commons</include>
                   <include>com.google.guava</include>
                   <include>commons-io</include>
                   <include>org.json</include>
-                  <incluse>net.kyori</incluse>
+                  <include>net.kyori</include>
+                  <include>com.comphenix:packetwrapper</include>
                 </includes>
               </artifactSet>
               <filters>
@@ -510,12 +515,12 @@
                   <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.org.bstats</shadedPattern>
                 </relocation>
                 <relocation>
-                  <pattern>com.google.common</pattern>
-                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.com.google.common</shadedPattern>
-                </relocation>
-                <relocation>
                   <pattern>org.apache.maven</pattern>
                   <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.org.apache.maven</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.google.common</pattern>
+                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.com.google.common</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>org.apache.commons</pattern>
@@ -528,6 +533,10 @@
                 <relocation>
                   <pattern>net.kyori</pattern>
                   <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.net.kyori</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.comphenix.packetwrapper</pattern>
+                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.com.comphenix.packetwrapper</shadedPattern>
                 </relocation>
               </relocations>
             </configuration>

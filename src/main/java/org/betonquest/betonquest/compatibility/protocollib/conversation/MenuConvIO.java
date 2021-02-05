@@ -1,5 +1,8 @@
 package org.betonquest.betonquest.compatibility.protocollib.conversation;
 
+import com.comphenix.packetwrapper.WrapperPlayClientSteerVehicle;
+import com.comphenix.packetwrapper.WrapperPlayServerAnimation;
+import com.comphenix.packetwrapper.WrapperPlayServerMount;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.ListenerPriority;
@@ -12,9 +15,6 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.compatibility.protocollib.wrappers.WrapperPlayClientSteerVehicle;
-import org.betonquest.betonquest.compatibility.protocollib.wrappers.WrapperPlayServerAnimation;
-import org.betonquest.betonquest.compatibility.protocollib.wrappers.WrapperPlayServerMount;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.conversation.ChatConvIO;

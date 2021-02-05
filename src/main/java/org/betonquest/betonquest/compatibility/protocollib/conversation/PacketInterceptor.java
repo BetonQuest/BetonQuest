@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.protocollib.conversation;
 
+import com.comphenix.packetwrapper.WrapperPlayServerChat;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.ListenerPriority;
@@ -10,7 +11,6 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.ArrayUtils;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.compatibility.protocollib.wrappers.WrapperPlayServerChat;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.Interceptor;
 import org.betonquest.betonquest.utils.PlayerConverter;

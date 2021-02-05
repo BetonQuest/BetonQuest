@@ -100,6 +100,24 @@ Shows the notification using a subtitle.
 | fadeOut | Ticks to fade the title out. Default 20 |
 | [SoundIO](#soundio) | Any option from the [SoundIO](#soundio). |
 
+### TotemIO
+Shows a totem with a "customModelData" NBT tag. This allows you to replace the totem with a custom texture or model 
+during the animation.
+
+??? info "Preview"
+    <div style="text-align: center">
+        <video controls loop
+        src="../../media/content/User-Documentation/Notifications/TotemIO.mp4"
+        width="780" height="500">
+        Sorry, your browser doesn't support embedded videos.
+    </video>
+    </div>
+
+| Option | Description |
+|--------|-------------|
+| custommodeldata | This CustomModelData will be used. |
+| [SoundIO](#soundio) | Any option from the [SoundIO](#soundio). |
+
 ### SoundIO
 This IO just plays a sound. You can use it's options in any other IO.
 You should read the <a href="https://minecraft.gamepedia.com/Commands/playsound" target="_blank">wiki page</a> of the playsound command
