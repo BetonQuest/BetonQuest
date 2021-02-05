@@ -6,12 +6,12 @@
 
 Please describe what you did and what happened. The more details you give the better. Don't worry though, we'll ask questions if we need more information :smile:
 
-If you had any errors in the console with a line containing `pl.betoncraft.betonquest`, post it **inside the Issue**. Simply use three backtick characters (` ``` `) to surround the error (known as a _stack trace_), like this:
+If you had any errors in the console with a line containing `com.betonquest.betonquest`, post it **inside the Issue**. Simply use three backtick characters (` ``` `) to surround the error (known as a _stack trace_), like this:
 
     ```
     [today] [Server thread/ERROR]: Some error in BetonQuest
     org.bukkit.event.EventException: null
-        at pl.betoncraft.betonquest.BetonQuest.method(BetonQuest.java:123) ~[?:?]
+        at com.betonquest.betonquest.BetonQuest.method(BetonQuest.java:123) ~[?:?]
         at some.more.lines...
     ```
 

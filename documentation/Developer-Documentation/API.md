@@ -16,9 +16,9 @@ Add this to your pom.yml.
 
 <dependencies>
     <dependency>
-        <groupId>pl.betoncraft</groupId>
+        <groupId>org.betonquest</groupId>
         <artifactId>betonquest</artifactId>
-        <version>1.12.0</version>
+        <version>2.0.0-SNAPSHOT</version>
     </dependency>
 </dependencies>
 ```
@@ -95,7 +95,7 @@ Registering the conversation inputs/outputs is done in the same way as objective
 
 ## Listening to BetonQuest (Bukkit) events
 
-BetonQuest calls Bukkit events on a few occasions: when a conversation is started, finished and when an option is selected. You can find these events in `pl.betoncraft.betonquest.api` package and use them in your plugins. If you need any additional events just open and issue on GitHub or send me a pull request.
+BetonQuest calls Bukkit events on a few occasions: when a conversation is started, finished and when an option is selected. You can find these events in `org.betonquest.betonquest.api` package and use them in your plugins. If you need any additional events just open and issue on GitHub or send me a pull request.
 
 ## Debugging
 

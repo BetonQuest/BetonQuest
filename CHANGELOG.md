@@ -6,6 +6,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - ${current-date}
 ### Added
+- Logging
+  - Ingame logging
+    - Log during `/q reload`
+    - New command `/q debug ingame`
+  - Debug logging
+    - now with 10 minutes history
+- NotifyIO "totemIO" 
+### Changed
+- changed package names from `pl.betoncraft.betonquest` to `org.betonquest.betonquest`
+### Deprecated
+### Removed
+- `message` event
+- `title` event
+- `playsound` event
+- more deprecated stuff
+### Fixes
+### Security
+
+## [1.12.1] - 2021-02-05
+### Added
 - Ingame update notification if the updater found an update
 ### Changed
 ### Deprecated
