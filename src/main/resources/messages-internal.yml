@@ -1,6 +1,6 @@
 en:
   unknown_argument: '&cWrong argument.'
-  reloaded: '&cConfiguration reloaded!'
+  reloaded: '&aConfiguration reloaded!'
   arguments: '&cNot enough arguments.'
   specify_condition: '&cSpecify correct condition name.'
   specify_event: '&cSpecify correct event name.'
