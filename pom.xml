@@ -488,6 +488,7 @@
                 <includes>
                   <include>org.bstats</include>
                   <include>org.apache.maven</include>
+                  <include>org.apache.commons</include>
                   <include>com.google.guava</include>
                   <include>commons-io</include>
                   <include>org.json</include>
