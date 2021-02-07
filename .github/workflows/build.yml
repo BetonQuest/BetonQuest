@@ -196,8 +196,8 @@ jobs:
 
   deploy-artifacts:
     name: Deploy Artifacts
-    if: "( needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'developement' ) && needs.prepare.outputs.CHANGES_IN_DOCS_ONLY != 'true'"
-    needs: [ build-artifacts, build-documentation ]
+    if: "needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'developement' && needs.prepare.outputs.CHANGES_IN_DOCS_ONLY == 'false'"
+    needs: [ prepare, build-artifacts, build-documentation ]
     runs-on: ubuntu-latest
 
     steps:
@@ -245,8 +245,8 @@ jobs:
 
   deploy-documentation:
     name: Deploy Documentation
-    if: "( needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'developement' )"
-    needs: [ build-artifacts, build-documentation ]
+    if: "needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'developement'"
+    needs: [ prepare, build-artifacts, build-documentation ]
     runs-on: ubuntu-latest
 
     steps:
@@ -323,7 +323,7 @@ jobs:
   create-release:
     name: Create Release Build
     if: "always() && !cancelled() && needs.prepare.outputs.VERSION_TYPE == 'release'"
-    needs: [ deploy-artifacts, deploy-documentation ]
+    needs: [ prepare, deploy-artifacts, deploy-documentation ]
     runs-on: ubuntu-latest
 
     steps:
@@ -397,7 +397,7 @@ jobs:
   create-developement:
     name: Create Developement Build
     if: "always() && !cancelled() && needs.prepare.outputs.VERSION_TYPE == 'developement' && needs.prepare.outputs.CHANGES_IN_DOCS_ONLY != 'true'"
-    needs: [ deploy-artifacts, deploy-documentation ]
+    needs: [ prepare, deploy-artifacts, deploy-documentation ]
     runs-on: ubuntu-latest
 
     steps:
