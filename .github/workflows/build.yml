@@ -169,6 +169,8 @@ jobs:
         run: |
           [ -z $MKDOCS_MATERIAL_INSIDERS ] && TXT=docs-requirements.txt || TXT=docs-requirements-insiders.txt
           echo "TXT=$TXT" >> $GITHUB_ENV
+        env:
+          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
       - name: Cache dependencies
         uses: actions/cache@v2
         with:
@@ -288,6 +290,8 @@ jobs:
         run: |
           [ -z $MKDOCS_MATERIAL_INSIDERS ] && TXT=docs-requirements.txt || TXT=docs-requirements-insiders.txt
           echo "TXT=$TXT" >> $GITHUB_ENV
+        env:
+          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
       - name: Cache dependencies
         uses: actions/cache@v2
         with:
