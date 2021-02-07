@@ -167,7 +167,7 @@ jobs:
           architecture: 'x64'
       - name: Select mkDocs requirements
         run: |
-          [ -z ${{ env.MKDOCS_MATERIAL_INSIDERS }} ] && TXT=docs-requirements.txt || TXT=docs-requirements-insiders.txt
+          [ -z $MKDOCS_MATERIAL_INSIDERS ] && TXT=docs-requirements.txt || TXT=docs-requirements-insiders.txt
           echo "TXT=$TXT" >> $GITHUB_ENV
       - name: Cache dependencies
         uses: actions/cache@v2
@@ -286,7 +286,7 @@ jobs:
           path: build/documentation/
       - name: Select mkDocs requirements
         run: |
-          [ -z ${{ env.MKDOCS_MATERIAL_INSIDERS }} ] && TXT=docs-requirements.txt || TXT=docs-requirements-insiders.txt
+          [ -z $MKDOCS_MATERIAL_INSIDERS ] && TXT=docs-requirements.txt || TXT=docs-requirements-insiders.txt
           echo "TXT=$TXT" >> $GITHUB_ENV
       - name: Cache dependencies
         uses: actions/cache@v2
