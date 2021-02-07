@@ -41,7 +41,7 @@ jobs:
         run: |
           DIFF_OUTSIDE=$(git diff --quiet ${PREVIOUS_VERSION_TAG} -- . ':(exclude)documentation/' && echo Nothing || echo Changes)
           DIFF_INSIDE=$(git diff --quiet ${PREVIOUS_VERSION_TAG} -- documentation/ && echo Nothing || echo Changes)
-          if [[ $DIFF_OUTSIDE == Nothing && $DIFF_INSIDE == Changes ]]; then CHANGES_IN_DOCS_ONLY=true; else CHANGES_IN_DOCS_ONLY=false; fi
+          [ $DIFF_OUTSIDE == Nothing && $DIFF_INSIDE == Changes ] CHANGES_IN_DOCS_ONLY=true || CHANGES_IN_DOCS_ONLY=false
           echo "CHANGES_IN_DOCS_ONLY=$CHANGES_IN_DOCS_ONLY" >> $GITHUB_ENV
           echo ::set-output name=changes_in_docs_only::$CHANGES_IN_DOCS_ONLY
           echo "Check for difference in documentation only. The value is '$CHANGES_IN_DOCS_ONLY'"
@@ -167,7 +167,7 @@ jobs:
           architecture: 'x64'
       - name: Select mkDocs requirements
         run: |
-          if [[ -z "${{ env.MKDOCS_MATERIAL_INSIDERS }}" ]]; then TXT=docs-requirements.txt; else TXT=docs-requirements-insiders.txt; fi
+          [ -z ${{ env.MKDOCS_MATERIAL_INSIDERS }} ] && TXT=docs-requirements.txt || TXT=docs-requirements-insiders.txt
           echo "TXT=$TXT" >> $GITHUB_ENV
       - name: Cache dependencies
         uses: actions/cache@v2
@@ -286,7 +286,7 @@ jobs:
           path: build/documentation/
       - name: Select mkDocs requirements
         run: |
-          if [[ -z "${{ env.MKDOCS_MATERIAL_INSIDERS }}" ]]; then TXT=docs-requirements.txt; else TXT=docs-requirements-insiders.txt; fi
+          [ -z ${{ env.MKDOCS_MATERIAL_INSIDERS }} ] && TXT=docs-requirements.txt || TXT=docs-requirements-insiders.txt
           echo "TXT=$TXT" >> $GITHUB_ENV
       - name: Cache dependencies
         uses: actions/cache@v2
@@ -322,7 +322,7 @@ jobs:
           git config --global user.email "contact@betonquest.org"
 
           IFS='-' read -r -a array <<< "$VERSION"
-          if [[ ${{ github.ref }} == 'refs/heads/master' ]]; then mike deploy --push --update-aliases ${array[0]}-DEV DEV; else mike deploy --push --update-aliases ${array[0]}-DEV; fi
+          [ ${{ github.ref }} == 'refs/heads/master' ] mike deploy --push --update-aliases ${array[0]}-DEV DEV || mike deploy --push --update-aliases ${array[0]}-DEV
 
   create-release:
     name: Create Release Build
