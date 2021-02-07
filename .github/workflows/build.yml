@@ -8,7 +8,7 @@ jobs:
 
     outputs:
       VERSION: ${{ steps.save_version.outputs.version }}
-      VERSION_TYPE: ${{ steps.save_version.outputs.version_type }}
+      VERSION_TYPE: ${{ steps.save_type.outputs.version_type }}
       PREVIOUS_VERSION_TAG: ${{ steps.save_tag.outputs.previous_version_tag }}
       CHANGES_IN_DOCS_ONLY: ${{ steps.save_changes.outputs.changes_in_docs_only }}
 
@@ -77,6 +77,10 @@ jobs:
         run: |
           echo "The version is '$MAVEN_VERSION'"
           echo ::set-output name=version::$MAVEN_VERSION
+      - name: Save version type to output variable
+        id: save_type
+        run: |
+          echo "The version type is '$VERSION_TYPE'"
           echo ::set-output name=version_type::$VERSION_TYPE
 
   build-artifacts:
