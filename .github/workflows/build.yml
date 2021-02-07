@@ -58,20 +58,20 @@ jobs:
           echo "Collected the tag version. The version is '$TAG_VERSION'"
           if [ $TAG_VERSION != $MAVEN_VERSION ]; then echo "::error::The version of the tag and the version of the pom are not equal! Tag is '$TAG_VERSION' and pom is '$MAVEN_VERSION'."; exit 1; fi
           echo "MAVEN_VERSION=$MAVEN_VERSION" >> $GITHUB_ENV
-          VERSION_TYPE=release
+          echo "VERSION_TYPE=release" >> $GITHUB_ENV
       - name: Set version for 'Development Build'
         if: "github.repository == 'BetonQuest/BetonQuest' && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v') )"
         run: |
           if [ $CHANGES_IN_DOCS_ONLY == true ]; then MAVEN_VERSION=${PREVIOUS_VERSION_TAG/build-number/DEV}; else MAVEN_VERSION=${MAVEN_VERSION}-DEV-${BUILD_NUMBER}; fi
           echo "MAVEN_VERSION=$MAVEN_VERSION" >> $GITHUB_ENV
-          VERSION_TYPE=developement
+          echo "VERSION_TYPE=developement" >> $GITHUB_ENV
       - name: Set version for 'Artifact Build'
         if: "github.repository != 'BetonQuest/BetonQuest' || !startsWith(github.ref,'refs/tags/v') && github.ref != 'refs/heads/master' && !startsWith(github.ref,'refs/heads/master_v')"
         run: |
           if [ ${{ github.repository }} != 'BetonQuest/BetonQuest' ]; then REPO=${{ github.repository }}-; fi
           MAVEN_VERSION=${MAVEN_VERSION}-DEV-ARTIFACT-${REPO}${{ github.run_number }}
           echo "MAVEN_VERSION=$MAVEN_VERSION" >> $GITHUB_ENV
-          VERSION_TYPE=artifact
+          echo "VERSION_TYPE=artifact" >> $GITHUB_ENV
       - name: Save version to output variable
         id: save_version
         run: |
