@@ -39,18 +39,18 @@ ADDITIONAL_INFORMATION="$LINEBREAK${COMMIT_MESSAGE//$\\n/ }$LINEBREAK\\n$CREDITS
 if [ "$RELEASE" = "release" ]; then
   RELEASE_NAME="RELEASE"
   RELEASE_DOWNLOAD_URL="https://github.com/BetonQuest/BetonQuest/releases"
-  RELEASE_DOWNLOAD_URL_DIRECT="https://github.com/BetonQuest/BetonQuest/releases/tag/v$POM_MAVEN_VERSION/BetonQuest.jar"
+  RELEASE_DOWNLOAD_URL_DIRECT="https://github.com/BetonQuest/BetonQuest/releases/tag/v$POM_MAVEN_VERSION_KEY/BetonQuest.jar"
   RELEASE_COMMIT_ICON_SUCCESS=$COMMIT_ICON_RELEASE
 else
   RELEASE_NAME="Dev-Build"
   RELEASE_DOWNLOAD_URL="https://betonquest.org"
-  RELEASE_DOWNLOAD_URL_DIRECT="https://betonquest.org/api/v1/builds/download/$VERSION/$VERSION_NUMBER/BetonQuest.jar"
+  RELEASE_DOWNLOAD_URL_DIRECT="https://betonquest.org/api/v1/builds/download/$VERSION_KEY/$VERSION_NUMBER/BetonQuest.jar"
   RELEASE_COMMIT_ICON_SUCCESS=$COMMIT_ICON_SUCCESS
 fi
 case "$JOB_STATUS" in
   "success" )
     EMBED_COLOR=3066993
-    DEV_BUILD_DOWNLOAD="Click to Download $POM_MAVEN_VERSION!"
+    DEV_BUILD_DOWNLOAD="Click to Download $VERSION!"
     STATUS_MESSAGE="${RELEASE_NAME} is now available"
     BUILD_DOWNLOAD_URL=$RELEASE_DOWNLOAD_URL_DIRECT
     DESCRIPTION="${RELEASE_NAME}s available [HERE](${RELEASE_DOWNLOAD_URL}). Report bugs [HERE](https://github.com/BetonQuest/BetonQuest/issues)"
@@ -60,7 +60,7 @@ case "$JOB_STATUS" in
   "failure"|"cancelled" )
     EMBED_COLOR=15158332
     STATUS_MESSAGE="There was an error building a $RELEASE_NAME!"
-    DEV_BUILD_DOWNLOAD="Inspect the failure on $POM_MAVEN_VERSION!"
+    DEV_BUILD_DOWNLOAD="Inspect the failure on $VERSION!"
     BUILD_DOWNLOAD_URL=$COMMIT_URL
     DESCRIPTION=""
     COMMIT_ICON=$COMMIT_ICON_FAILURE

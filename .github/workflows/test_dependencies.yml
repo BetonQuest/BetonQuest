@@ -50,21 +50,18 @@ jobs:
           python-version: '3.6'
           architecture: 'x64'
 
+      - name: Select mkDocs requirements
+        run: |
+          [ -z $MKDOCS_MATERIAL_INSIDERS ] && TXT=docs-requirements.txt || TXT=docs-requirements-insiders.txt
+          echo "TXT=$TXT" >> $GITHUB_ENV
+        env:
+          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
       - name: Install dependencies
-        env:
-          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
-        if: "env.MKDOCS_MATERIAL_INSIDERS == null"
         run: |
           python3 -m pip install --upgrade pip
-          pip install -r ./config/docs-requirements.txt
-
-      - name: Install dependencies insiders
+          pip install -r ./config/$TXT
         env:
           MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
-        if: "env.MKDOCS_MATERIAL_INSIDERS != null"
-        run: |
-          python3 -m pip install --upgrade pip
-          pip install -r ./config/docs-requirements-insiders.txt
 
       - name: Build with mkdocs
         run: |
