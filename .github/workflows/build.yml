@@ -182,6 +182,8 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           pip install -r ./config/$TXT
+        env:
+          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
       - name: Set CHANGELOG.md version
         run: |
           sed -i "s~## \[Unreleased\]~## \[${VERSION}\]~g" ./CHANGELOG.md
@@ -303,6 +305,8 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           pip install -r ./config/$TXT
+        env:
+          MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
       - name: Load target folder and patch file
         run: |
           mkdir -p target/documentation
