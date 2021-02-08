@@ -252,13 +252,13 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     defaultPack = Config.getString("config.default_package");
                     final LogWatcher logWatcher = BetonQuest.getInstance().getLogWatcher();
                     final UUID uuid = sender instanceof Player ? ((Player) sender).getUniqueId() : null;
-                    final boolean hasFilters = uuid != null && !logWatcher.getFilters(uuid).isEmpty();
-                    if (!hasFilters) {
+                    final boolean noFilters = uuid != null && logWatcher.getFilters(uuid).isEmpty();
+                    if (noFilters) {
                         logWatcher.addFilter(uuid, "*", Level.WARNING);
                     }
                     instance.reload();
                     sendMessage(sender, "reloaded");
-                    if (!hasFilters) {
+                    if (noFilters) {
                         logWatcher.removeFilter(uuid, "*");
                     }
                     break;
