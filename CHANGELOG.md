@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated
 ### Removed
 ### Fixes
+- `npcrange` objective is triggered at wrong time
 ### Security
 
 ## [1.12.1] - 2021-02-05
