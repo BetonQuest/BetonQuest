@@ -10,6 +10,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -41,21 +42,24 @@ public class NPCRangeObjective extends Objective {
         }
         trigger = instruction.getEnum(Trigger.class);
         radius = instruction.getVarNum();
-        playersInRange = new HashMap<>();
+        playersInRange = trigger == Trigger.ENTER || trigger == Trigger.LEAVE ? new HashMap<>() : null;
     }
 
     @Override
     public void start() {
-        npcMoveTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(BetonQuest.getInstance(), () -> qreHandler.handle(this::loopNPCs), 0, 20);
+        npcMoveTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(BetonQuest.getInstance(), () -> qreHandler.handle(this::loop), 0, 20);
     }
 
     @Override
     public void stop() {
         Bukkit.getScheduler().cancelTask(npcMoveTask);
-        playersInRange.clear();
+        if (playersInRange != null) {
+            playersInRange.clear();
+        }
     }
 
-    private void loopNPCs() throws QuestRuntimeException {
+    private void loop() throws QuestRuntimeException {
+        final ArrayList<UUID> playersInside = new ArrayList<>();
         for (final int npcId : npcIds) {
             final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
             if (npc == null) {
@@ -65,58 +69,50 @@ public class NPCRangeObjective extends Objective {
             if (npcEntity == null) {
                 return;
             }
-            loopPlayers(npcEntity);
+            for (final Player player : Bukkit.getOnlinePlayers()) {
+                if (!playersInside.contains(player.getUniqueId()) && isInside(player, npcEntity.getLocation())) {
+                    playersInside.add(player.getUniqueId());
+                }
+            }
+        }
+        for (final Player player : Bukkit.getOnlinePlayers()) {
+            checkPlayer(player.getUniqueId(), PlayerConverter.getID(player), playersInside.contains(player.getUniqueId()));
         }
     }
 
-    private void loopPlayers(final Entity npcEntity) throws QuestRuntimeException {
-        for (final Player player : Bukkit.getOnlinePlayers()) {
-            final String playerID = PlayerConverter.getID(player);
-            if (!containsPlayer(playerID)) {
-                continue;
-            }
-            if (npcEntity.getWorld() != player.getWorld()) {
-                continue;
-            }
-            final double radius = this.radius.getDouble(playerID);
-            final double distanceSqrd = npcEntity.getLocation().distanceSquared(player.getLocation());
-            final double radiusSqrd = radius * radius;
-
-            checkPlayer(player, playerID, distanceSqrd <= radiusSqrd);
+    private boolean isInside(final Player player, final Location location) throws QuestRuntimeException {
+        final String playerID = PlayerConverter.getID(player);
+        if (!containsPlayer(playerID) || location.getWorld() != player.getWorld()) {
+            return false;
         }
+        final double radius = this.radius.getDouble(playerID);
+        final double distanceSqrd = location.distanceSquared(player.getLocation());
+        final double radiusSqrd = radius * radius;
+
+        return distanceSqrd <= radiusSqrd;
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
-    private void checkPlayer(final Player player, final String playerID, final boolean inside) {
-        if (inside) {
-            if (trigger == Trigger.ENTER || trigger == Trigger.LEAVE) {
-                if (playersInRange.containsKey(player.getUniqueId()) && trigger == Trigger.ENTER) {
-                    if (playersInRange.get(player.getUniqueId())) {
-                        return;
-                    }
-                } else {
-                    playersInRange.put(player.getUniqueId(), true);
+    private void checkPlayer(final UUID uuid, final String playerID, final boolean inside) {
+        if (trigger == Trigger.INSIDE && !inside || trigger == Trigger.OUTSIDE && inside) {
+            return;
+        } else if (trigger == Trigger.ENTER || trigger == Trigger.LEAVE) {
+            if (playersInRange.containsKey(uuid)) {
+                if (trigger == Trigger.ENTER && (playersInRange.get(uuid) || !inside)
+                        || trigger == Trigger.LEAVE && (!playersInRange.get(uuid) || inside)) {
+                    playersInRange.put(uuid, inside);
                     return;
                 }
-            } else if (trigger != Trigger.INSIDE) {
-                return;
-            }
-        } else {
-            if (trigger == Trigger.LEAVE || trigger == Trigger.ENTER) {
-                if (playersInRange.containsKey(player.getUniqueId()) && trigger == Trigger.LEAVE) {
-                    if (!playersInRange.get(player.getUniqueId())) {
-                        return;
-                    }
-                } else {
-                    playersInRange.put(player.getUniqueId(), false);
-                    return;
-                }
-            } else if (trigger != Trigger.OUTSIDE) {
+            } else {
+                playersInRange.put(uuid, inside);
                 return;
             }
         }
 
         if (checkConditions(playerID)) {
+            if (playersInRange != null) {
+                playersInRange.remove(uuid);
+            }
             completeObjective(playerID);
         }
     }
