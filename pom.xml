@@ -493,7 +493,7 @@
                   <include>commons-io</include>
                   <include>org.json</include>
                   <include>net.kyori</include>
-                  <include>com.comphenix:packetwrapper</include>
+                  <include>com.comphenix.packetwrapper</include>
                 </includes>
               </artifactSet>
               <filters>
