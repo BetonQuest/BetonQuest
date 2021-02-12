@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmolib;
 
-
-import net.mmogroup.mmolib.api.player.MMOPlayerData;
+import io.lumine.mythic.lib.api.player.MMOPlayerData;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.exceptions.InstructionParseException;

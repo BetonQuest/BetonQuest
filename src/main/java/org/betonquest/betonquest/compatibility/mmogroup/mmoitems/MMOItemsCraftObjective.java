@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 
+import io.lumine.mythic.lib.api.item.NBTItem;
 import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
 import net.Indyuce.mmoitems.api.crafting.ConfigMMOItem;
@@ -8,7 +9,6 @@ import net.Indyuce.mmoitems.api.crafting.recipe.Recipe;
 import net.Indyuce.mmoitems.api.event.CraftMMOItemEvent;
 import net.Indyuce.mmoitems.api.event.PlayerUseCraftingStationEvent;
 import net.Indyuce.mmoitems.manager.TypeManager;
-import net.mmogroup.mmolib.api.item.NBTItem;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
