@@ -459,7 +459,7 @@ width="780">
 Sorry, your browser doesn't support embedded videos.
 </video>
 
-You can also hide players for specific players. If the `source_player` meets the conditions
+You can also hide players for specific players in the `custom.yml`. If the `source_player` meets the conditions
 every player that meets the `target_player` conditions is completely hidden for him.
 This is really helpful if you want a lonely place on your server,
 or your quests break when multiple players can see or affect each other.
