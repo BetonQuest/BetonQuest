@@ -45,10 +45,10 @@ hasbrew MY_BREW 2
 ### Events
 
 #### Give Brew: `givebrew`
-Gives the player the specified drink. An amount needs to be specified.
+Gives the player the specified drink. The first number is the amount, and the second number is the quality of the drink.
 
 ``` YAML linenums="1"
-givebrew MY_BREW 2
+givebrew 1 10 MY_BREW
 ```
 
 #### Take Brew: `takebrew`
