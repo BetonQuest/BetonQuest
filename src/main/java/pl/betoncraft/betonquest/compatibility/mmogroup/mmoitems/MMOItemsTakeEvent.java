@@ -22,8 +22,8 @@ public class MMOItemsTakeEvent extends QuestEvent {
 
     private final Type itemType;
     private final String itemID;
-    private VariableNumber deleteAmountVar = new VariableNumber(1);
     private final boolean notify;
+    private VariableNumber deleteAmountVar = new VariableNumber(1);
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public MMOItemsTakeEvent(final Instruction instruction) throws InstructionParseException {

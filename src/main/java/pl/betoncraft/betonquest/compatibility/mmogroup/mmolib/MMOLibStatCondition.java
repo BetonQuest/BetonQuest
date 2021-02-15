@@ -1,6 +1,5 @@
 package pl.betoncraft.betonquest.compatibility.mmogroup.mmolib;
 
-
 import net.mmogroup.mmolib.api.player.MMOPlayerData;
 import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.Instruction;

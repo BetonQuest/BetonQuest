@@ -19,8 +19,8 @@ public class MMOItemsHandCondition extends Condition {
 
     private final Type itemType;
     private final String itemID;
-    private int amount = 1;
     private final boolean offhand;
+    private int amount = 1;
 
     public MMOItemsHandCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
