@@ -1687,7 +1687,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         cmds.put("vector", "vector <pack.varname> <vectorname>");
         cmds.put("version", "version");
         cmds.put("purge", "purge <player>");
-        cmds.put("debug", "[true/false]");
+        cmds.put("debug", "debug [true/false]");
         if (!(sender instanceof Player)) {
             cmds.put("backup", "backup");
         }
