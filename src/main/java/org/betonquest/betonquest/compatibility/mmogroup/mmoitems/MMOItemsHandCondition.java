@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 
+import io.lumine.mythic.lib.api.item.NBTItem;
 import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
 import net.Indyuce.mmoitems.manager.TypeManager;
-import net.mmogroup.mmolib.api.item.NBTItem;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -19,8 +19,8 @@ public class MMOItemsHandCondition extends Condition {
 
     private final Type itemType;
     private final String itemID;
-    private int amount = 1;
     private final boolean offhand;
+    private int amount = 1;
 
     public MMOItemsHandCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

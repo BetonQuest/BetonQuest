@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.lumine.mythic.lib.api.item.NBTItem;
 import lombok.CustomLog;
 import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
-import net.mmogroup.mmolib.api.item.NBTItem;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.QuestEvent;
