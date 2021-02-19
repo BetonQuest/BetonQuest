@@ -1,6 +1,6 @@
 package pl.betoncraft.betonquest.compatibility.mmogroup.mmolib;
 
-import net.mmogroup.mmolib.api.player.MMOPlayerData;
+import io.lumine.mythic.lib.api.player.MMOPlayerData;
 import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Condition;
