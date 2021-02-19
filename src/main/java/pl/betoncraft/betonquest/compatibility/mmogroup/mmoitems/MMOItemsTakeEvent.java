@@ -1,9 +1,9 @@
 package pl.betoncraft.betonquest.compatibility.mmogroup.mmoitems;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.lumine.mythic.lib.api.item.NBTItem;
 import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
-import net.mmogroup.mmolib.api.item.NBTItem;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.Instruction;
