@@ -4,7 +4,6 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
@@ -65,12 +64,8 @@ public class NPCRangeObjective extends Objective {
             if (npc == null) {
                 throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
             }
-            final Entity npcEntity = npc.getEntity();
-            if (npcEntity == null) {
-                return;
-            }
             for (final Player player : Bukkit.getOnlinePlayers()) {
-                if (!playersInside.contains(player.getUniqueId()) && isInside(player, npcEntity.getLocation())) {
+                if (!playersInside.contains(player.getUniqueId()) && isInside(player, npc.getStoredLocation())) {
                     playersInside.add(player.getUniqueId());
                 }
             }
