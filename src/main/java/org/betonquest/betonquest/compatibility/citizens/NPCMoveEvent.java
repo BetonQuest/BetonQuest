@@ -155,11 +155,17 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
                     + "This is a Citizens behavior, your NPC was teleported by Citizens, we continue the movement from this location.");
         }
         if (locationsIterator.hasNext()) {
+            final Location next;
             try {
-                final Location next = locationsIterator.next().getLocation(currentPlayer);
-                npc.getNavigator().setTarget(next);
+                next = locationsIterator.next().getLocation(currentPlayer);
             } catch (final QuestRuntimeException e) {
                 LOG.warning(instruction.getPackage(), "Error while NPC " + npc.getId() + " navigation: " + e.getMessage(), e);
+                return;
+            }
+            if (npc.isSpawned()) {
+                npc.getNavigator().setTarget(next);
+            } else {
+                npc.spawn(next, SpawnReason.PLUGIN);
             }
             return;
         }
