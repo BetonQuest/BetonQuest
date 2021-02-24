@@ -33,7 +33,7 @@ public class CitizensVariable extends Variable {
         npcId = instruction.getInt();
         try {
             key = TYPE.valueOf(instruction.next().toUpperCase(Locale.ROOT));
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             throw new InstructionParseException("Invalid Type: " + instruction.current(), e);
         }
     }
@@ -52,17 +52,14 @@ public class CitizensVariable extends Variable {
             case FULL_NAME:
                 return npc.getFullName();
             case LOCATION:
-                if (npc.getEntity() != null) {
-                    final Location loc = npc.getEntity().getLocation();
-                    return String.format("%.2f;%.2f;%.2f;%s;%.2f;%.2f",
-                            loc.getX(),
-                            loc.getY(),
-                            loc.getZ(),
-                            loc.getWorld().getName(),
-                            loc.getYaw(),
-                            loc.getPitch());
-                }
-                break;
+                final Location loc = npc.getStoredLocation();
+                return String.format("%.2f;%.2f;%.2f;%s;%.2f;%.2f",
+                        loc.getX(),
+                        loc.getY(),
+                        loc.getZ(),
+                        loc.getWorld().getName(),
+                        loc.getYaw(),
+                        loc.getPitch());
         }
         return "";
     }

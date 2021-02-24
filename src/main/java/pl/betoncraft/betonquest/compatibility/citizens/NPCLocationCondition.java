@@ -4,7 +4,6 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.Condition;
@@ -43,15 +42,11 @@ public class NPCLocationCondition extends Condition {
         if (npc == null) {
             throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
         }
-        final Entity npcEntity = npc.getEntity();
-        if (npcEntity == null) {
-            return false;
-        }
         final Location location = this.location.getLocation(playerID);
-        if (!location.getWorld().equals(npcEntity.getWorld())) {
+        if (!location.getWorld().equals(npc.getStoredLocation().getWorld())) {
             return false;
         }
         final double radius = this.radius.getDouble(playerID);
-        return npcEntity.getLocation().distanceSquared(location) <= radius * radius;
+        return npc.getStoredLocation().distanceSquared(location) <= radius * radius;
     }
 }

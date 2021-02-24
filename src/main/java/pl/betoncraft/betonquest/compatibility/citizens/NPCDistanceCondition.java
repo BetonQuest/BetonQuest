@@ -3,7 +3,6 @@ package pl.betoncraft.betonquest.compatibility.citizens;
 
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.VariableNumber;
@@ -38,15 +37,11 @@ public class NPCDistanceCondition extends Condition {
         if (npc == null) {
             throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
         }
-        final Entity npcEntity = npc.getEntity();
-        if (npcEntity == null) {
-            return false;
-        }
         final Player player = PlayerConverter.getPlayer(playerID);
-        if (!npcEntity.getWorld().equals(player.getWorld())) {
+        if (!player.getWorld().equals(npc.getStoredLocation().getWorld())) {
             return false;
         }
         final double distance = this.distance.getDouble(playerID);
-        return npcEntity.getLocation().distanceSquared(player.getLocation()) <= distance * distance;
+        return npc.getStoredLocation().distanceSquared(player.getLocation()) <= distance * distance;
     }
 }

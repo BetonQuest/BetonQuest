@@ -32,9 +32,9 @@ public class CitizensParticle extends BukkitRunnable {
     private static CitizensParticle instance;
     private final Map<UUID, Map<Integer, Effect>> players = new HashMap<>();
     private final List<Effect> effects = new ArrayList<>();
+    private final boolean enabled;
     private int interval = 100;
     private int tick;
-    private final boolean enabled;
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AssignmentToNonFinalStatic"})
     @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
@@ -101,7 +101,7 @@ public class CitizensParticle extends BukkitRunnable {
                         for (final String npcID : npcs.getKeys(false)) {
                             try {
                                 effect.npcs.add(Integer.parseInt(npcID));
-                            } catch (NumberFormatException e) {
+                            } catch (final NumberFormatException e) {
                                 LogUtils.logThrowableIgnore(e);
                             }
                         }
@@ -113,7 +113,7 @@ public class CitizensParticle extends BukkitRunnable {
                 for (final String cond : settings.getStringList("conditions")) {
                     try {
                         effect.conditions.add(new ConditionID(pack, cond));
-                    } catch (ObjectNotFoundException e) {
+                    } catch (final ObjectNotFoundException e) {
                         LogUtils.logThrowableIgnore(e);
                     }
                 }
@@ -216,7 +216,7 @@ public class CitizensParticle extends BukkitRunnable {
                 final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
 
                 // skip if there are no such NPC or it's not spawned or not visible
-                if (npc == null || !npc.isSpawned() || npc.getEntity().getWorld() != player.getWorld() ||
+                if (npc == null || npc.getStoredLocation().getWorld() != player.getWorld() ||
                         NPCHider.getInstance() != null && NPCHider.getInstance().isInvisible(player, npc)) {
                     continue;
                 }
