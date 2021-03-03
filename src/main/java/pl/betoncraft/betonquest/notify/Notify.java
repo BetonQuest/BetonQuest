@@ -91,6 +91,7 @@ public final class Notify {
             ios.addAll(Arrays.asList(
                     Arrays.stream(categoryData.get("io").split(","))
                             .map(String::trim)
+                            .map(o -> o.toLowerCase(Locale.ROOT))
                             .toArray(String[]::new)));
         }
         return ios;
