@@ -19,7 +19,9 @@ Therefore, you can play a sound whenever a notification is shown.
 The actual message is either defined in the event that triggers the NotifyIO or
 in the *messages.yml* for all built-in notifications. 
 
-### ChatIO
+**Check the [notification event documentation ](/User-Documentation/Events-List/#notification-notify) on how to use the notify event!**
+
+### Chat
 Writes the notification in the players chat.
 
 ??? info "Preview"
@@ -29,7 +31,7 @@ Writes the notification in the players chat.
 |---------|-----------------------------|
 | [SoundIO](#soundio) | Any option from the [SoundIO](#soundio). |
 
-### AdvancementIO
+### Advancement
 Shows the notification using an achievement popup. Unfortunately Minecraft does play the default advancement sound here. 
 It's not possible to stop this sound from playing - if you want to get rid of it you would have to override / remove
 that sound from your server's ressource pack.
@@ -45,7 +47,7 @@ It will then be played together with the default advancement sound.
 | icon | What icon to show. Must be the vanilla name of an item. Example: minecraft:map |
 | [SoundIO](#soundio) | Any option from the [SoundIO](#soundio). |
 
-### ActionbarIO
+### Actionbar
 Shows the notification using the actionbar.
 
 ??? info "Preview"
@@ -55,7 +57,7 @@ Shows the notification using the actionbar.
 |--------|-------------|
 | [SoundIO](#soundio) | Any option from the [SoundIO](#soundio). |
 
-### BossbarIO
+### Bossbar
 Shows the notification using a bossbar at the top of the players screen.
 
 ??? info "Preview"
@@ -72,8 +74,9 @@ Shows the notification using a bossbar at the top of the players screen.
 | countdown | If set, will step the progress of the bar by countdown steps. For example, if set to 10, then 10 times during the time it is on the screen the progress will drop by 1/10 |
 | [SoundIO](#soundio) | Any option from the [SoundIO](#soundio). |
 
-### TitleIO
-Shows the notification using a title. A subtitle can be played simultaneously by adding `\n` to the notification text.
+### Title
+Shows the notification using a title.
+A subtitle can be played simultaneously by adding `\n` to the notification text.
 Anything after these characters will be shown in the subtitle.
 
 ??? info "Preview"     
@@ -84,10 +87,9 @@ Anything after these characters will be shown in the subtitle.
 | fadeIn | Ticks to fade the title in. Default 10 |
 | stay | Ticks to keep title on screen. Default 70 |
 | fadeOut | Ticks to fade the title out. Default 20 |
-| subTitle | Optional subtitle to show. All _'s are replaced with spaces |
 | [SoundIO](#soundio) | Any option from the [SoundIO](#soundio). |
 
-### SubTitleIO
+### SubTitle
 Shows the notification using a subtitle.
 
 ??? info "Preview"
@@ -100,7 +102,7 @@ Shows the notification using a subtitle.
 | fadeOut | Ticks to fade the title out. Default 20 |
 | [SoundIO](#soundio) | Any option from the [SoundIO](#soundio). |
 
-### SoundIO
+### Sound
 This IO just plays a sound. You can use it's options in any other IO.
 You should read the <a href="https://minecraft.gamepedia.com/Commands/playsound" target="_blank">wiki page</a> of the playsound command
 as Minecraft's sound system is kinda strange. Just one example: Sound never moves in Minecraft. It's totally static.
@@ -172,7 +174,7 @@ Here is a small example:
     </div>
     The sound is always played 5 block away from the soundlocation. The direction is however based on where the player is looking.
 
-### SuppressIO
+### Suppress
 Does not output any sound or text 🔕. Can be used to remove built-in notifications.
 
 

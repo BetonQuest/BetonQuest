@@ -336,35 +336,43 @@ Displays a notification using the NotifyIO system.
 The fallback NotifyIO is `chat` if no argument other than `message` is specified.    
 `message` is the only argument of this event that is not `key:value` based. You can freely add any text with spaces there. 
 
+<h3>Examples:</h3>
+
+Check out the documentation about [Notify Categories](Notification-IO's-&-Categories.md#categories) and 
+[Notify IO options](Notification-IO's-&-Categories.md#notify-ios) if you haven't yet. You must understand these two if
+you want to use the Notify system to it's full extend.
+```YAML
+#The simplest of all notify events. Just a chat message:
+customEvent: "notify Hello %player%!"  
+
+#It's the same as this one since 'chat' is the default IO.
+theSame: "notify Hello %player%! io:chat"
+
+#This one displays a title and a subtile:
+myTitle: "notify This is a title.\nThis is a subtitle. io:title"
+
+#Plays a sound:
+mySound: "notify io:sound sound:x.y.z"
+
+#This one explicitly defines an io (bossbar) and adds one bossbarIO option + one soundIO option:
+myBar: "notify This is a custom message. io:bossbar barColor:red sound:block.anvil.use"
+
+#Some events with categories.
+myEvent1: "notify This is a custom message! category:info"
+myEvent2: "notify This is a custom message! category:firstChoice,secondChoice"
+
+#You can also override category settings:
+myEvent3: "notify Another message! category:info io:advancement frame:challenge"
+```
 
 !!! warning
     All colons (`:`) in the message part of the notification need to be escaped, including those inside variables, with one backslash (`\`) when using single quotes
-    (`'...'`) or no quoting at all (`...`) and with two backslashes (`\\`) when using double quotes (`"..."`).
+    (`'...'`) or no quoting at all (`...`) and with two backslashes (`\\`) when using double quotes (`"..."`).    
     Example:  
     `eventName: 'notify Peter:Heya %player%!'` -> `eventName: 'notify Peter{++\++}:Heya %player%!'`    
     `eventName: notify Peter:Heya %player%!` -> `eventName: notify Peter{++\++}:Heya %player%!`
     `eventName: "notify Peter:Heya %player%!"` -> `eventName: "notify Peter{++\\++}:Heya %player%!"`
     `otherEvent: notify You own %math.calc:5% fish!` -> `otherEvent: You own %math.calc{++\++}:5% fish!`
-
-<h3>Examples:</h3>
-
-Check out the documentation about [Notify Categories](Notification-IO's-&-Categories.md#categories) and 
-[Notify IO options](Notification-IO's-&-Categories.md#notify-ios) if you haven't yet! You must understand these two to be
-able to use the Notify system to it's full extend.
-```YAML
-#The simplest of all notify events. Just a chat message:
-customEvent: "notify Hello %player%!"  
-
-#This one explicitly defines an io (bossbar) and adds one bossbarIO option + one soundIO option:
-myEvent1: "notify This is a custom message. io:bossbar barColor:red sound:block.anvil.use"
-
-#Some events with categories.
-myEvent2: "notify This is a custom message! category:info"
-myEvent3: "notify This is a custom message! category:firstChoice,secondChoice"
-
-#You can also override category settings:
-myEvent: "notify Another message! category:info io:advancement frame:challenge"
-```
 
 ## Broadcast: `notifyall`
 
