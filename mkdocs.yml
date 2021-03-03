@@ -84,7 +84,7 @@ plugins:
 
 extra:
   version:
-    method: mike
+    provider: mike
   social:
     - icon: fontawesome/brands/discord
       link: https://discord.gg/rK6mfHq
