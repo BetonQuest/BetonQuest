@@ -91,6 +91,7 @@ public final class Notify {
             ios.addAll(Arrays.asList(
                     Arrays.stream(categoryData.get("io").split(","))
                             .map(String::trim)
+                            .map(o -> o.toLowerCase(Locale.ROOT))
                             .toArray(String[]::new)));
         }
         return ios;
@@ -113,7 +114,7 @@ public final class Notify {
     /**
      * The Notifications should be in a separate configuration in the main folder
      */
-    // TODO Replace with new new method
+    // TODO Replace with new method
     private static void loadCategorySettings() {
         final Map<String, Map<String, String>> settings = new HashMap<>();
         for (final String packName : Config.getPackages().keySet()) {
