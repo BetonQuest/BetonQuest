@@ -4,7 +4,7 @@
 BetonQuest hooks into other plugins by itself to provide more events, conditions and objectives or other features. 
 22 plugins are supported right now:    
 _Brewery, Citizens, Denizen, EffectLib, Heroes, HolographicDisplays, JobsReborn, Magic,
-mcMMO, MMOLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, ProtocolLib, Quests,
+mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, ProtocolLib, Quests,
 Shopkeepers, SkillAPI, Skript, Vault, WorldEdit and WorldGuard._
 
 Some plugins also hook into BetonQuest and provide support by themselves:  
@@ -471,7 +471,7 @@ This event adds experience points in a specified skill. The first argument is th
     mcmmoexp swords 1500
     ```
 
-## TeamRequiem ([MMOCore](https://www.spigotmc.org/resources/mmocore.70575/), [MMOItem](https://www.spigotmc.org/resources/mmoitems-premium.39267/), [MMOLib](https://www.spigotmc.org/resources/mmolib.73855/))
+## TeamRequiem ([MMOCore](https://www.spigotmc.org/resources/mmocore.70575/), [MMOItem](https://www.spigotmc.org/resources/mmoitems-premium.39267/), [MythicLib](https://www.spigotmc.org/resources/mmolib.73855/))
 
 
 ### Conditions
@@ -516,7 +516,7 @@ mmohand ARMOR SKELETON_CROWN
 mmohand GEMS SPEED_GEM 3 offhand
 ```
 
-#### MMOLib stat: `mmostat`
+#### MythicLib stat: `mmostat`
 Checks <a href="https://github.com/mmopluginteam/mmolib/blob/master/src/main/java/net/mmogroup/mmolib/api/stat/SharedStat.java" target="_blank">these</a>
 stats that combine all sorts of stats from MMOCore and MMOItems.
 The player needs to be on the specified level or higher in order to meet this condition.

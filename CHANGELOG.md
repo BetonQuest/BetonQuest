@@ -12,7 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - New command `/q debug ingame`
   - Debug logging
     - now with 10 minutes history
-- NotifyIO "totemIO" 
+- NotifyIO "totemIO"
+- Support for MythicLib
 ### Changed
 - changed package names from `pl.betoncraft.betonquest` to `org.betonquest.betonquest`
 ### Deprecated
@@ -21,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `title` event
 - `playsound` event
 - more deprecated stuff
+- Support for MMOLib
 ### Fixes
 - `npcrange` objective is triggered at wrong time
 - Citizens compatibility for not spawned NPCs
