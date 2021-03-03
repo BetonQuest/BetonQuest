@@ -9,13 +9,13 @@ import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("PMD.CommentRequired")
-public class MMOLibStatCondition extends Condition {
+public class MythicLibStatCondition extends Condition {
 
     private final String statName;
     private final double targetLevel;
     private boolean mustBeEqual;
 
-    public MMOLibStatCondition(final Instruction instruction) throws InstructionParseException {
+    public MythicLibStatCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
 
         statName = instruction.next();

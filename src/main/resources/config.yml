@@ -57,7 +57,7 @@ hook:
   protocollib: 'true'
   brewery: 'true'
   jobs: 'true'
-  mmolib: 'true'
+  mythiclib: 'true'
   mmocore: 'true'
   mmoitems: 'true'
 journal:

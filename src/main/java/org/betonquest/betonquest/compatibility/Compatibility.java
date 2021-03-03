@@ -14,7 +14,7 @@ import org.betonquest.betonquest.compatibility.magic.MagicIntegrator;
 import org.betonquest.betonquest.compatibility.mcmmo.McMMOIntegrator;
 import org.betonquest.betonquest.compatibility.mmogroup.mmocore.MMOCoreIntegrator;
 import org.betonquest.betonquest.compatibility.mmogroup.mmoitems.MMOItemsIntegrator;
-import org.betonquest.betonquest.compatibility.mmogroup.mmolib.MMOLibIntegrator;
+import org.betonquest.betonquest.compatibility.mmogroup.mmolib.MythicLibIntegrator;
 import org.betonquest.betonquest.compatibility.mythicmobs.MythicMobsIntegrator;
 import org.betonquest.betonquest.compatibility.placeholderapi.PlaceholderAPIIntegrator;
 import org.betonquest.betonquest.compatibility.protocollib.ProtocolLibIntegrator;
@@ -59,7 +59,7 @@ public class Compatibility implements Listener {
         integrators.put("WorldGuard", new WorldGuardIntegrator());
         integrators.put("WorldEdit", new WorldEditIntegrator());
         integrators.put("mcMMO", new McMMOIntegrator());
-        integrators.put("MMOLib", new MMOLibIntegrator());
+        integrators.put("MythicLib", new MythicLibIntegrator());
         integrators.put("MMOCore", new MMOCoreIntegrator());
         integrators.put("MMOItems", new MMOItemsIntegrator());
         integrators.put("EffectLib", new EffectLibIntegrator());
