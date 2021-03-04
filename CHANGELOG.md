@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `npcrange` objective is triggered at wrong time
 - Citizens compatibility for not spawned NPCs
 - NotifyIOs are case-sensitive
+- MMOCoreCastSkillObjective fires for all skills instead of just the one specified
 ### Security
 
 ## [1.12.1] - 2021-02-05
