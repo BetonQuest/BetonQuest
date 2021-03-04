@@ -26,7 +26,7 @@ public class MMOCoreCastSkillObjective extends Objective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onSkillCast(final PlayerPostCastSkillEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(playerID) && !checkConditions(playerID)) {
+        if (!containsPlayer(playerID) || !checkConditions(playerID)) {
             return;
         }
         final String skillName = event.getCast().getSkill().getId();

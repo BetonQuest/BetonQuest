@@ -29,7 +29,7 @@ public class MMOCoreProfessionObjective extends Objective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onLevelUp(final PlayerLevelUpEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(playerID) && !checkConditions(playerID)) {
+        if (!containsPlayer(playerID) || !checkConditions(playerID)) {
             return;
         }
         if (!event.getProfession().getName().equalsIgnoreCase(professionName) || event.getNewLevel() < targetLevel) {

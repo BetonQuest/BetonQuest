@@ -58,7 +58,7 @@ public class MMOItemsCraftObjective extends Objective implements Listener {
         }
 
         final String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
-        if (!containsPlayer(playerID) && !checkConditions(playerID)) {
+        if (!containsPlayer(playerID) || !checkConditions(playerID)) {
             return;
         }
         final ItemStack craftedItem = event.getRecipe().getResult();
@@ -82,7 +82,7 @@ public class MMOItemsCraftObjective extends Objective implements Listener {
     public void onRecipeUse(final CraftMMOItemEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
 
-        if (!containsPlayer(playerID) && !checkConditions(playerID)) {
+        if (!containsPlayer(playerID) || !checkConditions(playerID)) {
             return;
         }
 
@@ -106,7 +106,7 @@ public class MMOItemsCraftObjective extends Objective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onRecipeUse(final PlayerUseCraftingStationEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(playerID) && !checkConditions(playerID)) {
+        if (!containsPlayer(playerID) || !checkConditions(playerID)) {
             return;
         }
 

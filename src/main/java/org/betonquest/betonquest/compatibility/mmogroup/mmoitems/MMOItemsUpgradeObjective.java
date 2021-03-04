@@ -33,7 +33,7 @@ public class MMOItemsUpgradeObjective extends Objective implements Listener {
             return;
         }
         final String playerID = event.getPlayer().getUniqueId().toString();
-        if (!containsPlayer(playerID) && !checkConditions(playerID)) {
+        if (!containsPlayer(playerID) || !checkConditions(playerID)) {
             return;
         }
         completeObjective(playerID);
