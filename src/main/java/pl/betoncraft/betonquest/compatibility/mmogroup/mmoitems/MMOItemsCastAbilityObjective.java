@@ -30,7 +30,7 @@ public class MMOItemsCastAbilityObjective extends Objective implements Listener 
         }
         final String playerID = PlayerConverter.getID(event.getPlayer());
 
-        if (!containsPlayer(playerID) && !checkConditions(playerID)) {
+        if (!containsPlayer(playerID) || !checkConditions(playerID)) {
             return;
         }
         completeObjective(playerID);
