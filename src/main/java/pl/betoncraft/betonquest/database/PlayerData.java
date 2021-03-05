@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.database;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Journal;
@@ -31,6 +32,7 @@ import java.util.logging.Level;
  * Represents an object storing all player-related data, which can load and save it.
  */
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.CommentRequired"})
+@SuppressFBWarnings("JLM_JSR166_UTILCONCURRENT_MONITORENTER")
 public class PlayerData {
 
     @SuppressWarnings("PMD.DoNotUseThreads")
@@ -142,7 +144,7 @@ public class PlayerData {
      * @return the List of Tags
      */
     public List<String> getTags() {
-        return tags;
+        return Collections.unmodifiableList(tags);
     }
 
     /**
@@ -161,9 +163,11 @@ public class PlayerData {
      * @param tag tag to add
      */
     public void addTag(final String tag) {
-        if (!tags.contains(tag)) {
-            tags.add(tag);
-            saver.add(new Record(UpdateType.ADD_TAGS, new String[]{playerID, tag}));
+        synchronized (tags) {
+            if (!tags.contains(tag)) {
+                tags.add(tag);
+                saver.add(new Record(UpdateType.ADD_TAGS, new String[]{playerID, tag}));
+            }
         }
     }
 
@@ -174,8 +178,10 @@ public class PlayerData {
      * @param tag tag to remove
      */
     public void removeTag(final String tag) {
-        tags.remove(tag);
-        saver.add(new Record(UpdateType.REMOVE_TAGS, new String[]{playerID, tag}));
+        synchronized (tags) {
+            tags.remove(tag);
+            saver.add(new Record(UpdateType.REMOVE_TAGS, new String[]{playerID, tag}));
+        }
     }
 
     /**
@@ -184,7 +190,7 @@ public class PlayerData {
      * @return the List of Points
      */
     public List<Point> getPoints() {
-        return points;
+        return Collections.unmodifiableList(points);
     }
 
     /**
@@ -196,12 +202,14 @@ public class PlayerData {
      */
     @SuppressWarnings("PMD.LinguisticNaming")
     public int hasPointsFromCategory(final String category) {
-        for (final Point p : points) {
-            if (p.getCategory().equals(category)) {
-                return p.getCount();
+        synchronized (points) {
+            for (final Point p : points) {
+                if (p.getCategory().equals(category)) {
+                    return p.getCount();
+                }
             }
+            return 0;
         }
-        return 0;
     }
 
     /**
@@ -212,20 +220,22 @@ public class PlayerData {
      * @param count    how much points will be added (or subtracted if negative)
      */
     public void modifyPoints(final String category, final int count) {
-        saver.add(new Record(UpdateType.REMOVE_POINTS, new String[]{playerID, category}));
-        // check if the category already exists
-        for (final Point point : points) {
-            if (point.getCategory().equalsIgnoreCase(category)) {
-                // if it does, add points to it
-                saver.add(new Record(UpdateType.ADD_POINTS,
-                        new String[]{playerID, category, String.valueOf(point.getCount() + count)}));
-                point.addPoints(count);
-                return;
+        synchronized (points) {
+            saver.add(new Record(UpdateType.REMOVE_POINTS, new String[]{playerID, category}));
+            // check if the category already exists
+            for (final Point point : points) {
+                if (point.getCategory().equalsIgnoreCase(category)) {
+                    // if it does, add points to it
+                    saver.add(new Record(UpdateType.ADD_POINTS,
+                            new String[]{playerID, category, String.valueOf(point.getCount() + count)}));
+                    point.addPoints(count);
+                    return;
+                }
             }
+            // if not then create new point category with given amount of points
+            points.add(new Point(category, count));
+            saver.add(new Record(UpdateType.ADD_POINTS, new String[]{playerID, category, String.valueOf(count)}));
         }
-        // if not then create new point category with given amount of points
-        points.add(new Point(category, count));
-        saver.add(new Record(UpdateType.ADD_POINTS, new String[]{playerID, category, String.valueOf(count)}));
     }
 
     /**
@@ -234,16 +244,18 @@ public class PlayerData {
      * @param category name of a point category
      */
     public void removePointsCategory(final String category) {
-        Point pointToRemove = null;
-        for (final Point point : points) {
-            if (point.getCategory().equalsIgnoreCase(category)) {
-                pointToRemove = point;
+        synchronized (points) {
+            Point pointToRemove = null;
+            for (final Point point : points) {
+                if (point.getCategory().equalsIgnoreCase(category)) {
+                    pointToRemove = point;
+                }
             }
+            if (pointToRemove != null) {
+                points.remove(pointToRemove);
+            }
+            saver.add(new Record(UpdateType.REMOVE_POINTS, new String[]{playerID, category}));
         }
-        if (pointToRemove != null) {
-            points.remove(pointToRemove);
-        }
-        saver.add(new Record(UpdateType.REMOVE_POINTS, new String[]{playerID, category}));
     }
 
     /**
