@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - NotifyIOs are case-sensitive
 - all mmo objectives trigger for everyone
 - command event includes 'conditions:...' into the command
+- tags and points are now thread safe
 ### Security
 
 ## [1.12.1] - 2021-02-05
