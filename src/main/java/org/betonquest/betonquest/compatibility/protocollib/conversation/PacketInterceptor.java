@@ -39,6 +39,7 @@ public class PacketInterceptor implements Interceptor, Listener {
     protected final Player player;
     private final List<WrapperPlayServerChat> messages = new ArrayList<>();
     private final PacketAdapter packetAdapter;
+    private int baseComponentIndex = -1;
 
     public PacketInterceptor(final Conversation conv, final String playerID) {
         this.conv = conv;
@@ -57,9 +58,16 @@ public class PacketInterceptor implements Interceptor, Listener {
 
                 if (event.getPacketType().equals(PacketType.Play.Server.CHAT)) {
                     final PacketContainer packet = event.getPacket();
-                    final BaseComponent[] components = (BaseComponent[]) packet.getModifier().read(1);
+                    if (baseComponentIndex == -1) {
+                        if (packet.getModifier().read(1) instanceof BaseComponent[]) {
+                            baseComponentIndex = 1;
+                        } else {
+                            baseComponentIndex = 2;
+                        }
+                    }
+                    final BaseComponent[] components = (BaseComponent[]) packet.getModifier().read(baseComponentIndex);
                     if (components != null && components.length > 0 && ((TextComponent) components[0]).getText().contains(MESSAGE_PASSTHROUGH_TAG)) {
-                        packet.getModifier().write(1, Arrays.copyOfRange(components, 1, components.length));
+                        packet.getModifier().write(baseComponentIndex, Arrays.copyOfRange(components, 1, components.length));
                         event.setPacket(packet);
                         return;
                     }
