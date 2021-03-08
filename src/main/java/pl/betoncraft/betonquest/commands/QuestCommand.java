@@ -1044,7 +1044,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         // if there are no arguments then list player's tags
         if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
-            final List<String> tags = playerData.getTags();
+            final List<String> tags = new ArrayList<>(playerData.getTags());
             LogUtils.getLogger().log(Level.FINE, "Listing tags");
             sendMessage(sender, "player_tags");
             Collections.sort(tags);
