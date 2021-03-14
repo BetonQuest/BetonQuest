@@ -320,8 +320,6 @@ jobs:
           git config --global user.email "contact@betonquest.org"
 
           mike deploy --push --update-aliases ${VERSION} RELEASE
-
-          mike delete --push DEV
           mike delete --push ${VERSION}-DEV
       - name: Deploy Developement to Github Pages
         if: "env.VERSION_TYPE == 'developement'"
