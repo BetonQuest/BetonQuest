@@ -477,9 +477,13 @@ This event adds experience points in a specified skill. The first argument is th
 ### Conditions
 
 #### MMOCore class: `mmoclass` 
-Checks if a player has the given MMOCore class. If a level has been specified the player needs to be on that level or higher to meet the condition.
+Checks if a player has the given MMOCore class. You can check for any class that is not the default class by writing `*`
+instead of a class name.
+If a level has been specified the player needs to be on that level
+or higher to meet the condition.
 You can disable this behaviour by adding the `equal` argument. 
 ```YAML linenums="1"
+mmoclass * 5
 mmoclass WARRIOR
 mmoclass MAGE 5
 mmoclass MAGE 5 equal

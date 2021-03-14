@@ -39,7 +39,7 @@ public class MMOCoreClassCondition extends Condition {
         final String actualClassName = data.getProfess().getName();
         final int actualClassLevel = data.getLevel();
 
-        if (actualClassName.equalsIgnoreCase(targetClassName)) {
+        if (actualClassName.equalsIgnoreCase(targetClassName) || "*".equals(targetClassName) && !"HUMAN".equalsIgnoreCase(actualClassName)) {
             if (targetClassLevel == -1) {
                 return true;
             }
