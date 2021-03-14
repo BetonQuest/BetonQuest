@@ -10,6 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated
 ### Removed
 ### Fixes
+### Security
+
+## [1.12.2] - 2021-03-14
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixes
 - `npcrange` objective is triggered at wrong time
 - Citizens compatibility for not spawned NPCs
 - NotifyIOs are case-sensitive
