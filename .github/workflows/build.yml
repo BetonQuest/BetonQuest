@@ -328,7 +328,7 @@ jobs:
           git config --global user.email "contact@betonquest.org"
 
           IFS='-' read -r -a array <<< "$VERSION"
-          [ ${{ github.ref }} == 'refs/heads/master' ] mike deploy --push --update-aliases ${array[0]}-DEV DEV || mike deploy --push --update-aliases ${array[0]}-DEV
+          [ ${{ github.ref }} == 'refs/heads/master' ] && mike deploy --push --update-aliases ${array[0]}-DEV DEV || mike deploy --push --update-aliases ${array[0]}-DEV
 
   create-release:
     name: Create Release Build
