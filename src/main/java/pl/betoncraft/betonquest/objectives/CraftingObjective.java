@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.objectives;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -53,6 +54,7 @@ public class CraftingObjective extends Objective implements Listener {
         }
     }
 
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private int countPossibleCrafts(final CraftItemEvent event) {
         int possibleCreations = 1;
         if (event.isShiftClick()) {
@@ -63,7 +65,10 @@ public class CraftingObjective extends Objective implements Listener {
                 }
             }
         }
-        return possibleCreations * event.getRecipe().getResult().getAmount();
+        if (event.getCursor() == null || event.getCursor().getType().equals(Material.AIR)) {
+            return possibleCreations * event.getRecipe().getResult().getAmount();
+        }
+        return 0;
     }
 
     private int countRemainingSpace(final Player player) {
