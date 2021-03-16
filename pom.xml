@@ -287,7 +287,7 @@
         <dependency>
           <groupId>net.kyori</groupId>
           <artifactId>adventure-api</artifactId>
-          <version>4.5.0</version>
+          <version>4.7.0</version>
         </dependency>
         <dependency>
           <groupId>net.kyori</groupId>
