@@ -79,7 +79,7 @@ public final class NPCHider extends BukkitRunnable implements Listener {
                 final int npcId;
                 try {
                     npcId = Integer.parseInt(npcIds);
-                } catch (NumberFormatException e) {
+                } catch (final NumberFormatException e) {
                     LogUtils.getLogger().log(Level.WARNING, "NPC ID '" + npcIds + "' is not a valid number, in custom.yml hide_npcs");
                     LogUtils.logThrowable(e);
                     continue npcs;
@@ -90,7 +90,7 @@ public final class NPCHider extends BukkitRunnable implements Listener {
                 for (final String condition : conditionsString.split(",")) {
                     try {
                         conditions.add(new ConditionID(cfgPackage, condition));
-                    } catch (ObjectNotFoundException e) {
+                    } catch (final ObjectNotFoundException e) {
                         LogUtils.getLogger().log(Level.WARNING, "Condition '" + condition +
                                 "' does not exist, in custom.yml hide_npcs with ID " + npcIds);
                         LogUtils.logThrowable(e);
@@ -189,6 +189,9 @@ public final class NPCHider extends BukkitRunnable implements Listener {
      * @return true if the NPC is visible to that player, false otherwise
      */
     public boolean isInvisible(final Player player, final NPC npc) {
+        if (npc.getEntity() == null) {
+            return false;
+        }
         return !hider.isVisible(player, npc.getEntity().getEntityId());
     }
 
