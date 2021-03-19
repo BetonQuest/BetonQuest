@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - compatibility for packet interceptor on papermc
 - craft objective when item on courser
 - q version now works again
+- NPC hider for not spawned NPCs
 ### Security
 
 ## [1.12.1] - 2021-02-05

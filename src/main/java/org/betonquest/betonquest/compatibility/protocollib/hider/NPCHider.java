@@ -186,6 +186,9 @@ public final class NPCHider extends BukkitRunnable implements Listener {
      * @return true if the NPC is visible to that player, false otherwise
      */
     public boolean isInvisible(final Player player, final NPC npc) {
+        if (npc.getEntity() == null) {
+            return false;
+        }
         return !hider.isVisible(player, npc.getEntity().getEntityId());
     }
 
