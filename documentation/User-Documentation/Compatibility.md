@@ -1,11 +1,11 @@
 # Compatibility
-**In total 27 plugins have dedicated support for BetonQuest.**
+**In total 28 plugins have dedicated support for BetonQuest.**
 
 BetonQuest hooks into other plugins by itself to provide more events, conditions and objectives or other features. 
-22 plugins are supported right now:    
+23 plugins are supported right now:    
 _Brewery, Citizens, Denizen, EffectLib, Heroes, HolographicDisplays, JobsReborn, Magic,
 mcMMO, MMOLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, ProtocolLib, Quests,
-Shopkeepers, SkillAPI, Skript, Vault, WorldEdit and WorldGuard._
+Shopkeepers, SkillAPI, Skript, Vault, WorldEdit, FastAsyncWorldEdit and WorldGuard._
 
 Some plugins also hook into BetonQuest and provide support by themselves:  
 [_nuNPCDestinations_](https://www.spigotmc.org/resources/npcdestinations-create-living-npcs.13863/),
@@ -988,13 +988,13 @@ There is only one argument in this variable, `amount` for showing money amount o
     %money.left:500%
     ```
 
-## [WorldEdit](http://dev.bukkit.org/bukkit-plugins/worldedit/)
+## [WorldEdit](http://dev.bukkit.org/bukkit-plugins/worldedit/) or [FastAsyncWorldEdit](https://www.spigotmc.org/resources/fast-async-worldedit.13932/)
 
 ### Events
 
 #### Paste schematic: `paste`
 
-This event will paste a schematic at the given location. The first argument is a location and the second one is the name of schematic file. The file must be located in `WorldEdit/schematics` and have a name like `some_building.schematic`. An optional `noair` can be added to paste ignoring air blocks.
+This event will paste a schematic at the given location. The first argument is a location and the second one is the name of schematic file. The file must be located in `WorldEdit/schematics` or `FastAsyncWorldEdit/schematics` and have a name like `some_building.schematic`. An optional `noair` can be added to paste ignoring air blocks.
 If you have only a `.schem` schematic, simply append `.schem` to the schematic name.
 
 !!! example

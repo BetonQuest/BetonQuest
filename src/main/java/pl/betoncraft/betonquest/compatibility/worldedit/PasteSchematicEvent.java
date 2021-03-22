@@ -33,9 +33,9 @@ import java.util.logging.Level;
 @SuppressWarnings("PMD.CommentRequired")
 public class PasteSchematicEvent extends QuestEvent {
 
-    private File file;
     private final CompoundLocation loc;
     private final boolean noAir;
+    private File file;
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public PasteSchematicEvent(final Instruction instruction) throws InstructionParseException {
@@ -47,10 +47,9 @@ public class PasteSchematicEvent extends QuestEvent {
             throw new InstructionParseException("Schematic folder does not exist");
         }
         final String schemName = instruction.next();
-        file = new File(folder, schemName + ".schematic");
+        file = new File(folder, schemName);
         if (!file.exists()) {
-            file = new File(folder, schemName);
-
+            file = new File(folder, schemName + ".schematic");
             if (!file.exists()) {
                 throw new InstructionParseException("Schematic " + schemName + " does not exist (" + folder.toPath().resolve(schemName + ".schematic") + ")");
             }
