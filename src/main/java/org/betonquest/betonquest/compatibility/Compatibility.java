@@ -33,7 +33,11 @@ import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * Compatibility with other plugins
@@ -58,6 +62,7 @@ public class Compatibility implements Listener {
         integrators.put("Skript", new SkriptIntegrator());
         integrators.put("WorldGuard", new WorldGuardIntegrator());
         integrators.put("WorldEdit", new WorldEditIntegrator());
+        integrators.put("FastAsyncWorldEdit", new WorldEditIntegrator());
         integrators.put("mcMMO", new McMMOIntegrator());
         integrators.put("MythicLib", new MythicLibIntegrator());
         integrators.put("MMOCore", new MMOCoreIntegrator());

@@ -47,10 +47,9 @@ public class PasteSchematicEvent extends QuestEvent {
             throw new InstructionParseException("Schematic folder does not exist");
         }
         final String schemName = instruction.next();
-        file = new File(folder, schemName + ".schematic");
+        file = new File(folder, schemName);
         if (!file.exists()) {
-            file = new File(folder, schemName);
-
+            file = new File(folder, schemName + ".schematic");
             if (!file.exists()) {
                 throw new InstructionParseException("Schematic " + schemName + " does not exist (" + folder.toPath().resolve(schemName + ".schematic") + ")");
             }

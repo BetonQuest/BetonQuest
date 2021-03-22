@@ -54,6 +54,7 @@ hook:
   placeholderapi: 'true'
   holographicdisplays: 'true'
   worldedit: 'true'
+  fastasyncworldedit: 'true'
   protocollib: 'true'
   brewery: 'true'
   jobs: 'true'
