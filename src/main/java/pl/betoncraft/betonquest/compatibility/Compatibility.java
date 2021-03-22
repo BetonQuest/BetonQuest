@@ -33,7 +33,11 @@ import pl.betoncraft.betonquest.compatibility.worldguard.WorldGuardIntegrator;
 import pl.betoncraft.betonquest.exceptions.HookException;
 import pl.betoncraft.betonquest.utils.LogUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Level;
 
 /**
@@ -58,6 +62,7 @@ public class Compatibility implements Listener {
         integrators.put("Skript", new SkriptIntegrator());
         integrators.put("WorldGuard", new WorldGuardIntegrator());
         integrators.put("WorldEdit", new WorldEditIntegrator());
+        integrators.put("FastAsyncWorldEdit", new WorldEditIntegrator());
         integrators.put("mcMMO", new McMMOIntegrator());
         integrators.put("MMOLib", new MMOLibIntegrator());
         integrators.put("MMOCore", new MMOCoreIntegrator());
@@ -104,11 +109,6 @@ public class Compatibility implements Listener {
 
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void onPluginEnable(final PluginEnableEvent event) {
-        hook(event.getPlugin());
-    }
-
     /**
      * @return the list of hooked plugins
      */
@@ -126,6 +126,11 @@ public class Compatibility implements Listener {
         for (final String hooked : getHooked()) {
             instance.integrators.get(hooked).close();
         }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPluginEnable(final PluginEnableEvent event) {
+        hook(event.getPlugin());
     }
 
     private void hook(final Plugin hook) {
@@ -156,7 +161,7 @@ public class Compatibility implements Listener {
             try {
                 integrator.hook();
                 hooked.add(name);
-            } catch (HookException exception) {
+            } catch (final HookException exception) {
                 final String message = String.format("There was an error while hooking into %s %s (BetonQuest %s, Spigot %s)! %s",
                         exception.getPluginName(),
                         exception.getPluginVersion(),
