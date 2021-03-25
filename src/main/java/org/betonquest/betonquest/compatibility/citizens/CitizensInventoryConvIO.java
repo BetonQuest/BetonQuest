@@ -2,13 +2,16 @@ package org.betonquest.betonquest.compatibility.citizens;
 
 import lombok.CustomLog;
 import net.citizensnpcs.trait.SkinTrait;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.InventoryConvIO;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 @SuppressWarnings("PMD.CommentRequired")
 @CustomLog
@@ -22,13 +25,17 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
     protected SkullMeta updateSkullMeta(final SkullMeta meta) {
         // this only applied to Citizens NPC conversations
         if (conv instanceof CitizensConversation) {
-            final CitizensConversation citizensConv = (CitizensConversation) conv;
-            // read the texture from the NPC
-            final SkinTrait skinTrait = citizensConv.getNPC().getTrait(SkinTrait.class);
-            final String texture = skinTrait.getTexture();
+            if (Bukkit.isPrimaryThread()) {
+                throw new IllegalStateException("Must be called async!");
+            }
 
-            if (texture != null) { // Can be null if not cached yet
-                try {
+            final CitizensConversation citizensConv = (CitizensConversation) conv;
+            try {
+                // read the texture from the NPC
+                final SkinTrait skinTrait = Bukkit.getScheduler().callSyncMethod(BetonQuest.getInstance(), () -> citizensConv.getNPC().getOrAddTrait(SkinTrait.class)).get();
+                final String texture = skinTrait.getTexture();
+
+                if (texture != null) { // Can be null if not cached yet
                     // prepare reflection magics
                     final Class<?> profileClass = Class.forName("com.mojang.authlib.GameProfile");
                     final Class<?> propertyClass = Class.forName("com.mojang.authlib.properties.Property");
@@ -51,11 +58,11 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
                     field.setAccessible(true);
                     field.set(meta, profile);
                     return meta;
-                } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
-                        | InstantiationException | InvocationTargetException | NoSuchMethodException
-                        | ClassNotFoundException e) {
-                    LOG.debug(citizensConv.getPackage(), "Could not resolve a skin Texture!", e);
                 }
+            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
+                    | InstantiationException | InvocationTargetException | NoSuchMethodException
+                    | ClassNotFoundException | InterruptedException | ExecutionException e) {
+                LOG.debug(citizensConv.getPackage(), "Could not resolve a skin Texture!", e);
             }
         }
         return super.updateSkullMeta(meta);
