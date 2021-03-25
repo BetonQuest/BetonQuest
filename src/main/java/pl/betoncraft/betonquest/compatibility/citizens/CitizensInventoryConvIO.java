@@ -1,7 +1,9 @@
 package pl.betoncraft.betonquest.compatibility.citizens;
 
 import net.citizensnpcs.trait.SkinTrait;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.meta.SkullMeta;
+import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.conversation.Conversation;
 import pl.betoncraft.betonquest.conversation.InventoryConvIO;
 import pl.betoncraft.betonquest.utils.LogUtils;
@@ -9,6 +11,7 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class CitizensInventoryConvIO extends InventoryConvIO {
@@ -21,13 +24,17 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
     protected SkullMeta updateSkullMeta(final SkullMeta meta) {
         // this only applied to Citizens NPC conversations
         if (conv instanceof CitizensConversation) {
-            final CitizensConversation citizensConv = (CitizensConversation) conv;
-            // read the texture from the NPC
-            final SkinTrait skinTrait = citizensConv.getNPC().getTrait(SkinTrait.class);
-            final String texture = skinTrait.getTexture();
+            if (Bukkit.isPrimaryThread()) {
+                throw new IllegalStateException("Must be called async!");
+            }
 
-            if (texture != null) { // Can be null if not cached yet
-                try {
+            final CitizensConversation citizensConv = (CitizensConversation) conv;
+            try {
+                // read the texture from the NPC
+                final SkinTrait skinTrait = Bukkit.getScheduler().callSyncMethod(BetonQuest.getInstance(), () -> citizensConv.getNPC().getOrAddTrait(SkinTrait.class)).get();
+                final String texture = skinTrait.getTexture();
+
+                if (texture != null) { // Can be null if not cached yet
                     // prepare reflection magics
                     final Class<?> profileClass = Class.forName("com.mojang.authlib.GameProfile");
                     final Class<?> propertyClass = Class.forName("com.mojang.authlib.properties.Property");
@@ -50,11 +57,11 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
                     field.setAccessible(true);
                     field.set(meta, profile);
                     return meta;
-                } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
-                        | InstantiationException | InvocationTargetException | NoSuchMethodException
-                        | ClassNotFoundException e) {
-                    LogUtils.logThrowableIgnore(e);
                 }
+            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
+                    | InstantiationException | InvocationTargetException | NoSuchMethodException
+                    | ClassNotFoundException | InterruptedException | ExecutionException e) {
+                LogUtils.logThrowableIgnore(e);
             }
         }
         return super.updateSkullMeta(meta);
