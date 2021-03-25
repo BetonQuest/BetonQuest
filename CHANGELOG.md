@@ -35,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - craft objective when item on courser
 - q version now works again
 - NPC hider for not spawned NPCs
+- Conversation IO Chest load NPC skull async from Citizens instead of sync
 ### Security
 
 ## [1.12.1] - 2021-02-05
