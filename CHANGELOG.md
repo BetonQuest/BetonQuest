@@ -37,6 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - NPC hider for not spawned NPCs
 - Conversation IO Chest load NPC skull async from Citizens instead of sync
 ### Security
+- it was possible to put a QuestItem into a chest
 
 ## [1.12.1] - 2021-02-05
 ### Added

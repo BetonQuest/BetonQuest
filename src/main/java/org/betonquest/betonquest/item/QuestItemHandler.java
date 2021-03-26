@@ -19,7 +19,15 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
+import org.bukkit.event.player.PlayerBucketEvent;
+import org.bukkit.event.player.PlayerBucketFillEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemBreakEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -41,6 +49,10 @@ public class QuestItemHandler implements Listener {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onItemDrop(final PlayerDropItemEvent event) {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
@@ -56,7 +68,7 @@ public class QuestItemHandler implements Listener {
         }
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @EventHandler(ignoreCancelled = true)
     public void onItemMove(final InventoryClickEvent event) {
@@ -87,7 +99,11 @@ public class QuestItemHandler implements Listener {
                 if (event.getClickedInventory().getType() == InventoryType.PLAYER) {
                     item = null;
                 } else {
-                    item = event.getWhoClicked().getInventory().getItem(event.getHotbarButton());
+                    if (event.getHotbarButton() == -1 && "SWAP_OFFHAND".equals(event.getClick().name())) {
+                        item = event.getWhoClicked().getInventory().getItemInOffHand();
+                    } else {
+                        item = event.getWhoClicked().getInventory().getItem(event.getHotbarButton());
+                    }
                 }
                 break;
             default:
@@ -249,10 +265,6 @@ public class QuestItemHandler implements Listener {
         if (Utils.isQuestItem(itemMain) || Utils.isQuestItem(itemOff)) {
             event.setCancelled(true);
         }
-    }
-
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
     }
 
     public HandlerList getHandlers() {
