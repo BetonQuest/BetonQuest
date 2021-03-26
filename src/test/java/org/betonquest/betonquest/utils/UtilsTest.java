@@ -2,7 +2,7 @@ package org.betonquest.betonquest.utils;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.config.Config;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class UtilsTest {
