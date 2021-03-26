@@ -420,6 +420,11 @@
       <artifactId>json</artifactId>
       <version>20160212</version>
     </dependency>
+    <dependency>
+      <groupId>com.github.spotbugs</groupId>
+      <artifactId>spotbugs-annotations</artifactId>
+      <version>4.2.2</version>
+    </dependency>
     <!-- only dependencies from maven central that are for testing-->
     <dependency>
       <groupId>org.junit.platform</groupId>
