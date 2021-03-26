@@ -1,6 +1,6 @@
 package pl.betoncraft.betonquest.utils;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import pl.betoncraft.betonquest.config.Config;
@@ -8,7 +8,7 @@ import pl.betoncraft.betonquest.config.Config;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class UtilsTest {

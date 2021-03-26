@@ -1,9 +1,9 @@
 package pl.betoncraft.betonquest.utils.updater;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import pl.betoncraft.betonquest.utils.Updater;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * This test should only ensure, that the {@link Updater.Version} dose not break anything or select wrong versions
