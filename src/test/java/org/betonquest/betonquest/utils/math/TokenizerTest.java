@@ -358,6 +358,36 @@ public class TokenizerTest {
     }
 
     @Test
+        /* default */ void testTokenizeRoundPower() throws InstructionParseException, QuestRuntimeException {
+        final Tokenizer tokenizer = createTokenizer();
+        final String calculation = "2.5^3~2";
+        final double expectedResult = 15.63;
+
+        final Token result = tokenizer.tokenize(calculation);
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "round operator should have lower priority then power operator");
+    }
+
+    @Test
+        /* default */ void testTokenizeRoundNegativeDigits() throws InstructionParseException, QuestRuntimeException {
+        final Tokenizer tokenizer = createTokenizer();
+        final String calculation = "1234~-2";
+        final double expectedResult = 1200;
+
+        final Token result = tokenizer.tokenize(calculation);
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "round operator should work with negative number of decimal digits");
+    }
+
+    @Test
+        /* default */ void testTokenizeRoundMinus() throws InstructionParseException, QuestRuntimeException {
+        final Tokenizer tokenizer = createTokenizer();
+        final String calculation = "13.243~7-5";
+        final double expectedResult = 13.24;
+
+        final Token result = tokenizer.tokenize(calculation);
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "round operator should work if a mathematical expression is given as number of decimal digits");
+    }
+
+    @Test
     /* default */ void testTokenizeSimpleParenthesis() throws InstructionParseException, QuestRuntimeException {
         final Tokenizer tokenizer = createTokenizer();
         final String calculation = "(4123)";
@@ -515,20 +545,6 @@ public class TokenizerTest {
         withVariables(() -> {
             final Token result = tokenizer.tokenize(variable);
             assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing an underscore should work");
-        }, new ProtoVariable(variable, String.valueOf(value)));
-    }
-
-    @Disabled("tilde operator is for rounding numbers")
-    @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
-    /* default */ void testTokenizeVariableWithTilde() throws Throwable {
-        final Tokenizer tokenizer = createTokenizer();
-        final String variable = "var~de";
-        final double value = 46;
-
-        withVariables(() -> {
-            final Token result = tokenizer.tokenize(variable);
-            assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing a tilde should work");
         }, new ProtoVariable(variable, String.valueOf(value)));
     }
 
