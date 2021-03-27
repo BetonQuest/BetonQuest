@@ -305,6 +305,56 @@ public class TokenizerTest {
     }
 
     @Test
+    /* default */ void testTokenizeRoundToInteger() throws InstructionParseException, QuestRuntimeException {
+        final Tokenizer tokenizer = createTokenizer();
+        final String calculation = "2.2~0";
+        final double expectedResult = 2;
+
+        final Token result = tokenizer.tokenize(calculation);
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "the round operator should round the first value to the given number of decimal digits when tokenized");
+    }
+
+    @Test
+    /* default */ void testTokenizeRoundEdgeCase() throws InstructionParseException, QuestRuntimeException {
+        final Tokenizer tokenizer = createTokenizer();
+        final String calculation = "3.05~1";
+        final double expectedResult = 3.1;
+
+        final Token result = tokenizer.tokenize(calculation);
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenized round operator should also properly round edge cases like 0.5");
+    }
+
+    @Test
+    /* default */ void testTokenizeRoundResult() throws InstructionParseException, QuestRuntimeException {
+        final Tokenizer tokenizer = createTokenizer();
+        final String calculation = "10-3.03*4~1";
+        final double expectedResult = -2.1;
+
+        final Token result = tokenizer.tokenize(calculation);
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "round operator should have lowest priority when tokenized");
+    }
+
+    @Test
+    /* default */ void testTokenizeRoundInParenthesis() throws InstructionParseException, QuestRuntimeException {
+        final Tokenizer tokenizer = createTokenizer();
+        final String calculation = "(4.0345~2)*4";
+        final double expectedResult = 16.12;
+
+        final Token result = tokenizer.tokenize(calculation);
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "rounding inside parenthesis should work to when tokenized");
+    }
+
+    @Test
+    /* default */ void testTokenizeRoundParenthesis() throws InstructionParseException, QuestRuntimeException {
+        final Tokenizer tokenizer = createTokenizer();
+        final String calculation = "(4.0345*4)~2";
+        final double expectedResult = 16.14;
+
+        final Token result = tokenizer.tokenize(calculation);
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "rounding the content of a parenthesis should also tokenize");
+    }
+
+    @Test
     /* default */ void testTokenizeSimpleParenthesis() throws InstructionParseException, QuestRuntimeException {
         final Tokenizer tokenizer = createTokenizer();
         final String calculation = "(4123)";
@@ -465,6 +515,7 @@ public class TokenizerTest {
         }, new ProtoVariable(variable, String.valueOf(value)));
     }
 
+    @Disabled("tilde operator is for rounding numbers")
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     /* default */ void testTokenizeVariableWithTilde() throws Throwable {
