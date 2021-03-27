@@ -71,12 +71,20 @@
           <artifactId>worldguard-bukkit</artifactId>
           <version>7.0.3</version>
           <scope>provided</scope>
+          <optional>true</optional>
         </dependency>
         <dependency>
           <groupId>com.sk89q.worldedit</groupId>
           <artifactId>worldedit-bukkit</artifactId>
           <version>7.1.0</version>
           <scope>provided</scope>
+          <optional>true</optional>
+          <exclusions>
+            <exclusion>
+              <groupId>com.google.code.findbugs</groupId>
+              <artifactId>annotations</artifactId>
+            </exclusion>
+          </exclusions>
         </dependency>
       </dependencies>
     </profile>
@@ -98,6 +106,7 @@
           <artifactId>heroes-stripped</artifactId>
           <version>4dd3dd85</version>
           <scope>provided</scope>
+          <optional>true</optional>
         </dependency>
       </dependencies>
     </profile>
@@ -119,24 +128,28 @@
           <artifactId>MythicMobs</artifactId>
           <version>4.11.0-SNAPSHOT</version>
           <scope>provided</scope>
+          <optional>true</optional>
         </dependency>
         <dependency>
           <groupId>io.lumine</groupId>
           <artifactId>MythicLib</artifactId>
           <version>1.0.8-SNAPSHOT</version>
           <scope>provided</scope>
+          <optional>true</optional>
         </dependency>
         <dependency>
           <groupId>net.Indyuce</groupId>
           <artifactId>MMOCore</artifactId>
           <version>1.7.0</version>
           <scope>provided</scope>
+          <optional>true</optional>
         </dependency>
         <dependency>
           <groupId>net.Indyuce</groupId>
           <artifactId>MMOItems</artifactId>
           <version>6.5.1-SNAPSHOT</version>
           <scope>provided</scope>
+          <optional>true</optional>
         </dependency>
       </dependencies>
     </profile>
@@ -158,6 +171,7 @@
           <artifactId>citizens</artifactId>
           <version>2.0.27-SNAPSHOT</version>
           <scope>provided</scope>
+          <optional>true</optional>
           <exclusions>
             <exclusion>
               <groupId>junit</groupId>
@@ -170,6 +184,7 @@
           <artifactId>denizen</artifactId>
           <version>1.1.4-SNAPSHOT</version>
           <scope>provided</scope>
+          <optional>true</optional>
         </dependency>
       </dependencies>
     </profile>
@@ -196,12 +211,14 @@
           <artifactId>holographicdisplays-api</artifactId>
           <version>2.4.0</version>
           <scope>provided</scope>
+          <optional>true</optional>
         </dependency>
         <dependency>
           <groupId>com.gmail.nossr50.mcMMO</groupId>
           <artifactId>mcMMO</artifactId>
           <version>2.1.128</version>
           <scope>provided</scope>
+          <optional>true</optional>
         </dependency>
       </dependencies>
     </profile>
@@ -223,6 +240,7 @@
           <artifactId>placeholderapi</artifactId>
           <version>2.10.9</version>
           <scope>provided</scope>
+          <optional>true</optional>
         </dependency>
       </dependencies>
     </profile>
@@ -244,6 +262,7 @@
           <artifactId>ProtocolLib</artifactId>
           <version>4.5.1</version>
           <scope>provided</scope>
+          <optional>true</optional>
         </dependency>
       </dependencies>
     </profile>
@@ -292,42 +311,55 @@
           <artifactId>VaultAPI</artifactId>
           <version>1.7</version>
           <scope>provided</scope>
+          <optional>true</optional>
         </dependency>
         <dependency>
           <groupId>com.github.SkriptLang</groupId>
           <artifactId>Skript</artifactId>
           <version>2.4</version>
           <scope>provided</scope>
+          <optional>true</optional>
+          <exclusions>
+            <exclusion>
+              <groupId>com.google.code.findbugs</groupId>
+              <artifactId>findbugs</artifactId>
+            </exclusion>
+          </exclusions>
         </dependency>
         <dependency>
           <groupId>com.github.PikaMug</groupId>
           <artifactId>Quests</artifactId>
           <version>39a1c3edc7</version>
           <scope>provided</scope>
+          <optional>true</optional>
         </dependency>
         <dependency>
           <groupId>com.github.Zrips</groupId>
           <artifactId>Jobs</artifactId>
           <version>d08dbedb56</version>
           <scope>provided</scope>
+          <optional>true</optional>
         </dependency>
         <dependency>
           <groupId>com.github.Shopkeepers</groupId>
           <artifactId>Shopkeepers</artifactId>
           <version>d05e051348</version>
           <scope>provided</scope>
+          <optional>true</optional>
         </dependency>
         <dependency>
           <groupId>com.github.Sentropic</groupId>
           <artifactId>SkillAPI-s</artifactId>
           <version>1.96</version>
           <scope>provided</scope>
+          <optional>true</optional>
         </dependency>
         <dependency>
           <groupId>com.github.DieReicheErethons</groupId>
           <artifactId>Brewery</artifactId>
           <version>3.0</version>
           <scope>provided</scope>
+          <optional>true</optional>
         </dependency>
       </dependencies>
     </profile>
@@ -340,12 +372,14 @@
       <artifactId>EffectLib</artifactId>
       <version>8.0</version>
       <scope>provided</scope>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.elmakers.mine.bukkit</groupId>
       <artifactId>MagicAPI</artifactId>
       <version>8.2</version>
       <scope>provided</scope>
+      <optional>true</optional>
     </dependency>
     <!-- only dependencies from maven central that are no MC Plugins-->
     <dependency>
@@ -379,6 +413,11 @@
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
       <version>20160212</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.spotbugs</groupId>
+      <artifactId>spotbugs-annotations</artifactId>
+      <version>4.2.2</version>
     </dependency>
     <dependency>
       <groupId>org.junit.platform</groupId>
@@ -430,7 +469,35 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version>
+        <executions>
+          <execution>
+            <id>enforce-banned-dependencies</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <bannedDependencies>
+                  <excludes>
+                    <exclude>com.google.code.findbugs</exclude>
+                    <exclude>junit</exclude>
+                  </excludes>
+                  <includes>
+                    <include>com.google.code.findbugs:jsr305</include>
+                  </includes>
+                </bannedDependencies>
+              </rules>
+              <fail>true</fail>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
+        <version>3.2.4</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -456,6 +523,7 @@
                   <artifact>*</artifact>
                   <excludes>
                     <exclude>META-INF/**</exclude>
+                    <exclude>plugin.yml</exclude>
                   </excludes>
                 </filter>
                 <filter>
