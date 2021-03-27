@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.utils.math;
 
+import org.betonquest.betonquest.utils.logger.BetonQuestLogger;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
@@ -44,8 +45,10 @@ public class TokenizerTest {
     }
 
     private static void withVariables(final Executable executable, final ProtoVariable... variables) throws Throwable {
-        try (MockedStatic<Config> config = mockStatic(Config.class);
+        try (MockedStatic<BetonQuestLogger> logger = mockStatic(BetonQuestLogger.class);
+             MockedStatic<Config> config = mockStatic(Config.class);
              MockedStatic<BetonQuest> betonQuest = mockStatic(BetonQuest.class)) {
+            logger.when(() -> BetonQuestLogger.create(ConfigPackage.class)).thenReturn(null);
             final ConfigPackage configPackage = mock(ConfigPackage.class);
             final Map<String, ConfigPackage> packageMap = Collections.singletonMap(TEST_PACKAGE, configPackage);
             //noinspection ResultOfMethodCallIgnored
