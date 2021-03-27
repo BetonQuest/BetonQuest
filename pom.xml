@@ -523,7 +523,6 @@
                   <artifact>*</artifact>
                   <excludes>
                     <exclude>META-INF/**</exclude>
-                    <exclude>plugin.yml</exclude>
                   </excludes>
                 </filter>
                 <filter>
@@ -531,6 +530,12 @@
                   <includes>
                     <include>org/bstats/**</include>
                   </includes>
+                </filter>
+                <filter>
+                  <artifact>com.comphenix.packetwrapper</artifact>
+                  <excludes>
+                    <exclude>plugin.yml</exclude>
+                  </excludes>
                 </filter>
               </filters>
               <relocations>
