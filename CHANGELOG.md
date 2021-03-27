@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for MythicLib
 - FastAsyncWorldEdit compatibility
 ### Changed
+- math variable now allows rounding output with the ~ operator
 - changed package names from `pl.betoncraft.betonquest` to `org.betonquest.betonquest`
 ### Deprecated
 ### Removed
@@ -25,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - more deprecated stuff
 - Support for MMOLib
 ### Fixes
+- parsing of math variable
 - `npcrange` objective is triggered at wrong time
 - Citizens compatibility for not spawned NPCs
 - NotifyIOs are case-sensitive
