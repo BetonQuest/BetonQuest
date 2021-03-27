@@ -42,6 +42,7 @@ public enum Operator {
             return val1 * val2;
         }
     },
+
     /**
      * <b>/</b> Operator, divides a value by another
      */
@@ -51,6 +52,7 @@ public enum Operator {
             return val1 / val2;
         }
     },
+
     /**
      * <b>%</b> Operator, returns the modulo of two values
      */
@@ -68,6 +70,19 @@ public enum Operator {
         @Override
         public double calculate(final double val1, final double val2) {
             return Math.pow(val1, val2);
+        }
+    },
+
+    /**
+     * <b>~</b> Operator, rounds the first value to the number of decimal digits given by the second value
+     */
+    ROUND('~', 0) {
+        @Override
+        public double calculate(final double val1, final double val2) {
+            //Make sure that edge cases (like 0.5) are always rounded up, not down:
+            final double corrected = Double.longBitsToDouble(Double.doubleToLongBits(val1) + 1);
+            final double exp = Math.pow(10, Math.round(val2));
+            return Math.round(corrected * exp) / exp;
         }
     };
 
