@@ -497,6 +497,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
+        <version>3.2.4</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -522,6 +523,7 @@
                   <artifact>*</artifact>
                   <excludes>
                     <exclude>META-INF/**</exclude>
+                    <exclude>plugin.yml</exclude>
                   </excludes>
                 </filter>
                 <filter>
