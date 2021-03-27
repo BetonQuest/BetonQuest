@@ -9,8 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - FastAsyncWorldEdit compatibility
 ### Changed
 ### Deprecated
+- math variable now allows rounding output with the ~ operator
 ### Removed
 ### Fixes
+- parsing of math variable
 - craft objective when item on courser
 - NPC hider for not spawned NPCs
 - Conversation IO Chest load NPC skull async from Citizens instead of sync
