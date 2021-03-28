@@ -29,7 +29,7 @@ jobs:
           echo "Collected the pom.xml version. The version is '$MAVEN_VERSION'"
       - name: Get the previous build-number tag from Development Build
         id: save_tag
-        if: "github.repository == 'BetonQuest/BetonQuest' && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v') )"
+        if: "github.repository == 'BetonQuest/BetonQuest' && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v') || startsWith(github.ref,'refs/tags/v') )"
         run: |
           PREVIOUS_VERSION_TAG=$(git tag -l ${MAVEN_VERSION}-build-number-* | head -n 1)
           echo "PREVIOUS_VERSION_TAG=$PREVIOUS_VERSION_TAG" >> $GITHUB_ENV
