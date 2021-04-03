@@ -81,20 +81,37 @@ You can also translate journal entries, quest cancelers and `message` events, mo
 
 ## Conversation displaying
 
-By default BetonQuest uses the most native and safe way of displaying a conversation, which is the Minecraft chat. You choose the option by typing their number in. You can however change it with `default_conversation_IO` option in _config.yml_ file. Default value is `simple`. By changing it to `tellraw` you will add a possibility to click on options. Keep in mind that if the chat is quickly flowing, players will sometimes "miss" an option and click another one. There is a display type that doesn't suffer from this problem at all, it's called `chest`. It will display the conversation in an inventory GUI, where the NPC's text and options will be shown as item lore. Alternatively use `slowtellraw` which provides the npc responses line by line delayed by 0.5 seconds. If you have `protocollib` then you can use `menu`.
-It's one of our coolest IO's! This is a video of it in action:
+BetonQuest provides different conversation styles, so called "conversationIO's". They all look different but the biggest difference
+is the way the user interacts with them.
 
-<video controls loop
-     src="../../media/content/User-Documentation/Conversations/MenuConvIO.mp4"
-     width="780" height="500">
- Sorry, your browser doesn't support embedded videos.
- </video>
+!!! note ""
+    === "menu"
+        A modern conversation style that works with some of Minecraft's native controls. This is a video of it in action:
+        <video controls loop
+             src="../../media/content/User-Documentation/Conversations/MenuConvIO.mp4"
+            width="780" height="500">
+        Sorry, your browser doesn't support embedded videos.
+        </video>
+    === "simple"
+        A chat output. The user has to write a number into their chat to select an option.
+    === "tellraw"
+        Also a chat output. The user can click on the options instead of typing them.
+    === "slowtellraw"
+        The same as `tellraw` but the NPC`s text is printed line by line, delayed by 0.5 seconds.
+    === "chest"
+        A chest GUI with clickable buttons where the NPC's text and options will be shown as item lore.
+
+        You can change the option's item to something else than ender pearls by adding a prefix to that option's text.
+        The prefix is a name of the material (like in _items.yml_) inside curly brackets, with an optional damage value after a colon.
+        Example of such option text: `{diamond_sword}I want to start a quest!`.
 
 You can control the colors of conversation elements in the _config.yml_ file, in `conversation_colors` section. Here you must use names of the colors.
 
-If you're using the `chest` display method you can change the option's item to something else than Ender Pearl by adding a prefix to that option's text. The prefix is a name of the material (like in _items.yml_) inside curly brackets, with optional damage value after a colon. Example of such option text: `{diamond_sword}I want to start a quest!` or `{wool:10}Purple!`
+BetonQuest uses the `menu` conversationIO by default. If ProtocolLib is not installed, the `chest` IO will be used.
+You can however change the utilized conversationIO by setting the `default_conversation_IO` option in the _config.yml_ file.
 
-In case you want to use a different type of conversation display for a specific conversation you can add `conversationIO: <type>` setting to the conversation file at the top of the YAML hierarchy, which is the same level as `quester` or `first` options).
+In case you want to use a different type of conversation display for just one specific conversation you can add a `conversationIO:
+<type>` setting to the conversation file at the top of the YAML hierarchy (which is the same level as `quester` or `first` options).
 
 ## Chat Interceptors
 While engaged in a conversation, it can be distracting when messages from other players or system messages interfere with the dialogue.

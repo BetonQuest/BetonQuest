@@ -22,7 +22,7 @@ To complete this objective the player needs to shoot the arrow into the target. 
 
 ## Block: `block`
 
-To complete this objective player must break or place specified amount of blocks. First argument after name is a `block selector`. Next is amount. It can be more than 0 for placing and less than 0 for destroying. You can also use `notify` keyword to display messages to the player each time he updates amount of blocks, optionally with the notification interval after colon.
+To complete this objective player must break or place specified amount of blocks. The first argument is a [Block Selector](/User-Documentation/Reference/#block-selectors). Next is amount. It can be more than 0 for placing and less than 0 for destroying. You can also use `notify` keyword to display messages to the player each time he updates amount of blocks, optionally with the notification interval after colon.
 
 This objective has two properties, `amount` and `left`. Amount is current amount of blocks in the objective, left is amount needed to complete the objective. Note that it may sometimes be negative!
 

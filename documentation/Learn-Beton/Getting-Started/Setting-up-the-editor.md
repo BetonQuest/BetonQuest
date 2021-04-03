@@ -28,10 +28,11 @@ A full guide on extensions can be found <a href="https://code.visualstudio.com/d
 
 ### Setup
 
-Open up any of your quests using *File > Open Folder...*. Then click on any file to open it.
+Open up any of your quests using *File > Open Folder...* (if you haven't made any yet, select the default quest in *plugin/BetonQuest/default*).
+Then click on any file to open it.
 There are a few general things to keep in mind when editing files.
 VSCode does a really nice job at exposing these directly to the user. They are all listed in the bottom right corner 
-of the editor window.
+of the editor window:
 
 !!! caution
     **Make sure to set these settings in the bottom right corner of VSCode**:
@@ -47,9 +48,8 @@ of the editor window.
 ![Shows the location of the settings](../../media/content/LearnBeton/vscode.png){width=60%}
 
 These ensure that the extension is activated.
-
 Additionally, your configuration works with all unique language characters (a german example: ä, ü, ö)
-and that the file can be read on any linux server.
+and the file can be read on any server running on Linux.
 
 ### Snippets 
 The main feature of our extension are so called "code snippets". These are basically pre-defined events, conditions etc.
