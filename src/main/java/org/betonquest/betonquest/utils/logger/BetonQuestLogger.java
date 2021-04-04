@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.utils.logger;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.utils.logger.custom.PackageLogRecord;
@@ -11,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This is the BetonQuest log decorator for usage with Lombok's {@link lombok.CustomLog} annotation.
+ * This is the BetonQuest log decorator for usage with Lombok's {@link CustomLog} annotation.
  * <p>
  * This decorator uses the {@link PluginLogger} from the {@link JavaPlugin#getLogger()} method.
  * It registers a new child {@link TopicLogger} for each class it's used in.
@@ -38,7 +39,7 @@ public class BetonQuestLogger {
 
     /**
      * Creates a logger.<p>
-     * This method should only be called with lombok using the @{@link lombok.CustomLog} annotation.
+     * This method should only be called with lombok using the @{@link CustomLog} annotation.
      *
      * @param clazz The class that is passed by lombok.
      * @return The decorated Logger.
@@ -49,7 +50,7 @@ public class BetonQuestLogger {
 
     /**
      * Creates a logger.<p>
-     * This method should only be called with lombok using the @{@link lombok.CustomLog} annotation.
+     * This method should only be called with lombok using the @{@link CustomLog} annotation.
      *
      * @param clazz The class that is passed by lombok.
      * @param topic The optional topic of the logger passed by lombok.
