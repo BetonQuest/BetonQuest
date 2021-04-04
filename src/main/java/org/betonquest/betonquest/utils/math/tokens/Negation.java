@@ -12,14 +12,14 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 public class Negation implements Token {
 
     /**
-     * Token that is inside these parenthesis.
+     * Token that is negated.
      */
     private final Token inside;
 
     /**
-     * Creates new parenthesis around a token.
+     * Creates negation of a token.
      *
-     * @param inside token that is inside
+     * @param inside token that is negated
      */
     public Negation(final Token inside) {
         this.inside = inside;
