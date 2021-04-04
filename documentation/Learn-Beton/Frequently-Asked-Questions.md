@@ -110,7 +110,7 @@ hasAnyPotato: "item anyPotato"
 1. Start a variable objective for the player. It serves as a variable storage:
 ```YAML
 #objectives.yml
- myVariableStorage: "variable no-chat"`
+ myVariableStorage: "variable no-chat"
 ```
 
 2. Assign values to that storage using a key and a value. Both can be any text you like:
