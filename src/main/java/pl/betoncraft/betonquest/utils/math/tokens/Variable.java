@@ -4,7 +4,7 @@ import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 
 /**
- * A token that is a Variable
+ * A token that is a Variable.
  *
  * @deprecated This should be replaced in BQ 2.0 with a real expression parsing lib like
  * https://github.com/fasseg/exp4j
@@ -13,12 +13,12 @@ import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 public class Variable implements Token {
 
     /**
-     * Underlying variable
+     * Underlying variable.
      */
     private final VariableNumber variableNumber;
 
     /**
-     * Creates a new variable token from a variable number
+     * Creates a new variable token from a variable number.
      *
      * @param variableNumber underlying variable
      */

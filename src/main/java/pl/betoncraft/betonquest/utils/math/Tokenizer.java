@@ -3,6 +3,7 @@ package pl.betoncraft.betonquest.utils.math;
 import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.math.tokens.AbsoluteValue;
+import pl.betoncraft.betonquest.utils.math.tokens.Negation;
 import pl.betoncraft.betonquest.utils.math.tokens.Number;
 import pl.betoncraft.betonquest.utils.math.tokens.Operation;
 import pl.betoncraft.betonquest.utils.math.tokens.Parenthesis;
@@ -23,17 +24,17 @@ import java.text.DecimalFormat;
 public class Tokenizer {
 
     /**
-     * Decimal separator allowed in numbers
+     * Decimal separator allowed in numbers.
      */
     private final char decimalSeparator;
 
     /**
-     * Name of the package in which the tokenizer is operating
+     * Name of the package in which the tokenizer is operating.
      */
     private final String packageName;
 
     /**
-     * Create a new Tokenizer in given package with given decimal separator
+     * Create a new Tokenizer in given package with given decimal separator.
      *
      * @param packageName      name of the package
      * @param decimalSeparator decimal separator char (, or .)
@@ -44,7 +45,7 @@ public class Tokenizer {
     }
 
     /**
-     * Create a new Tokenizer in given package with system default decimal separator
+     * Create a new Tokenizer in given package with system default decimal separator.
      *
      * @param packageName name of the package
      */
@@ -91,11 +92,20 @@ public class Tokenizer {
 
         //Parse next token in line (from left to right)
         Token nextInLine = null;
-        int index = 0;
+        int start = 0;
+        int index = start;
         char chr = val2.charAt(index++);
+        boolean isNegated = false;
+
+        if (chr == '-') {
+            chr = val2.charAt(index++);
+            isNegated = true;
+            start++;
+        }
 
         if (chr == '(' || chr == '[') { //tokenize parenthesis
             int depth = 1;
+            final char opening = chr;
             for (; index < val2.length(); index++) {
                 chr = val2.charAt(index);
                 if (chr == '(' || chr == '[') {
@@ -105,11 +115,14 @@ public class Tokenizer {
                 }
 
                 if (depth == 0) {
-                    if (index == 1) {
+                    if (index == start + 1) {
                         throw new InstructionParseException("invalid calculation (empty parenthesis)");
                     }
+                    if (opening == '(' && chr != ')' || opening == '[' && chr != ']') {
+                        throw new InstructionParseException("invalid calculation (parenthesis / brackets mismatch)");
+                    }
 
-                    nextInLine = new Parenthesis(tokenize(null, null, val2.substring(1, index)));
+                    nextInLine = new Parenthesis(tokenize(null, null, val2.substring(start + 1, index)), opening, chr);
                     break;
                 }
             }
@@ -129,11 +142,11 @@ public class Tokenizer {
                 }
 
                 if (depth == 0 && chr == '|') {
-                    if (index == 1) {
+                    if (index == start + 1) {
                         throw new InstructionParseException("invalid calculation (empty absolute value)");
                     }
 
-                    nextInLine = new AbsoluteValue(tokenize(null, null, val2.substring(1, index)));
+                    nextInLine = new AbsoluteValue(tokenize(null, null, val2.substring(start + 1, index)));
                     break;
                 }
             }
@@ -141,7 +154,7 @@ public class Tokenizer {
                 throw new InstructionParseException("invalid calculation (unbalanced absolute value)");
             }
 
-        } else if (Character.isDigit(chr) || chr == '-') { //tokenize numbers
+        } else if (Character.isDigit(chr)) { //tokenize numbers
             for (; index < val2.length(); index++) {
                 chr = val2.charAt(index);
                 if (!Character.isDigit(chr) && chr != decimalSeparator) {
@@ -149,6 +162,7 @@ public class Tokenizer {
                 }
             }
             try {
+                isNegated = false;
                 nextInLine = new Number(Double.parseDouble(val2.substring(0, index--)));
             } catch (NumberFormatException e) {
                 throw new InstructionParseException("invalid calculation (invalid number)", e);
@@ -163,7 +177,7 @@ public class Tokenizer {
                 }
             }
             try {
-                nextInLine = new Variable(new VariableNumber(packageName, "%" + val2.substring(0, index--) + "%"));
+                nextInLine = new Variable(new VariableNumber(packageName, "%" + val2.substring(start, index--) + "%"));
             } catch (InstructionParseException e) {
                 throw new InstructionParseException("invalid calculation (" + e.getMessage() + ")", e);
             }
@@ -180,31 +194,30 @@ public class Tokenizer {
             }
         }
 
+        if (isNegated) {
+            nextInLine = new Negation(nextInLine);
+        }
+
         if (index < val2.length() - 1) {
-            try {
-                chr = val2.charAt(++index);
-                if (!Operator.isOperator(chr)) {
-                    throw new InstructionParseException("invalid calculation (missing operator)");
-                }
-                final Operator nextOperator = Operator.valueOf(chr);
-                final String newVal = val2.substring(++index);
-
-                //no token left of this token, parse next
-                if (operator == null) {
-                    return tokenize(nextInLine, nextOperator, newVal);
-                }
-
-                //next operation has higher priority, tokenize it first
-                if (nextOperator.getPriority() > operator.getPriority()) {
-                    return new Operation(val1, operator, tokenize(nextInLine, nextOperator, newVal));
-                }
-
-                //next operation has lower priority, tokenize this first
-                return tokenize(new Operation(val1, operator, nextInLine), nextOperator, newVal);
-
-            } catch (InstructionParseException e) {
-                throw new InstructionParseException(e.getMessage(), e);
+            chr = val2.charAt(++index);
+            if (!Operator.isOperator(chr)) {
+                throw new InstructionParseException("invalid calculation (missing operator)");
             }
+            final Operator nextOperator = Operator.valueOf(chr);
+            final String newVal = val2.substring(++index);
+
+            //no token left of this token, parse next
+            if (operator == null) {
+                return tokenize(nextInLine, nextOperator, newVal);
+            }
+
+            //next operation has higher priority, tokenize it first
+            if (nextOperator.getPriority() > operator.getPriority()) {
+                return new Operation(val1, operator, tokenize(nextInLine, nextOperator, newVal));
+            }
+
+            //next operation has lower priority, tokenize this first
+            return tokenize(new Operation(val1, operator, nextInLine), nextOperator, newVal);
         } else {
             if (operator == null) {
                 return nextInLine;
