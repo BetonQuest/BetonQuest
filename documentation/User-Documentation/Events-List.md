@@ -2,7 +2,7 @@
 
 ## Cancel quest: `cancel`
 
-This event works in the same way as a quest canceler in the backpack. Running it is equal to the player clicking on the bone. The only argument is a name of a quest canceler, as defined in _main.yml_
+This event works in the same way as a [quest canceler in the backpack](/User-Documentation/Reference/#canceling-quests). Running it is equal to the player clicking on the bone. The only argument is a name of a quest canceler, as defined in _main.yml_
 
 !!! example
     ```YAML
@@ -323,8 +323,18 @@ Strikes a lightning at given location. The only argument is the location.
 
 ## Notification: `notify`
 
-Displays a notification using the NotifyIO system. 
+Displays a notification using the NotifyIO system.
 
+!!! warning
+    All colons (`:`) in the message part of the notification need to be escaped, including those inside variables.
+    One backslash (`\`) is required when using no quoting at all (`...`) or single quotes
+    (`'...'`). Two backslashes are required (`\\`) when using double quotes (`"..."`).
+
+    Examples:<br>
+    `eventName: notify Peter:Heya %player%!` :arrow_right: `eventName: notify Peter{++\++}:Heya %player%!`<br>
+    `eventName: {=='==}notify Peter:Heya %player%!{=='==}` :arrow_right: `eventName: {=='==}notify Peter{++\++}:Heya %player%!{=='==}`<br>
+    `eventName: {=="==}notify Peter:Heya %player%!{=="==}` :arrow_right: `eventName: {=="==}notify Peter{++\\++}:Heya %player%!{=="==}`<br>
+    `otherEvent: notify You own %math.calc:5% fish!` :arrow_right: `otherEvent: You own %math.calc{++\++}:5% fish!`
 
 | Option                                                             | Description                                                                                                                                     |
 |--------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -365,14 +375,7 @@ myEvent2: "notify This is a custom message! category:firstChoice,secondChoice"
 myEvent3: "notify Another message! category:info io:advancement frame:challenge"
 ```
 
-!!! warning
-    All colons (`:`) in the message part of the notification need to be escaped, including those inside variables, with one backslash (`\`) when using single quotes
-    (`'...'`) or no quoting at all (`...`) and with two backslashes (`\\`) when using double quotes (`"..."`).    
-    Example:  
-    `eventName: 'notify Peter:Heya %player%!'` -> `eventName: 'notify Peter{++\++}:Heya %player%!'`    
-    `eventName: notify Peter:Heya %player%!` -> `eventName: notify Peter{++\++}:Heya %player%!`
-    `eventName: "notify Peter:Heya %player%!"` -> `eventName: "notify Peter{++\\++}:Heya %player%!"`
-    `otherEvent: notify You own %math.calc:5% fish!` -> `otherEvent: You own %math.calc{++\++}:5% fish!`
+
 
 ## Broadcast: `notifyall`
 

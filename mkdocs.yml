@@ -24,7 +24,7 @@ theme:
     - navigation.tabs.sticky
     - navigation.sections
     - navigation.expand
-    - search.highlight
+    - search.share
     - search.suggest
   palette:
     - scheme: slate
