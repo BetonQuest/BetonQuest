@@ -183,9 +183,7 @@ public class Tokenizer {
             }
 
         } else { //error handling
-            if (chr == ')' || chr == ']') {
-                throw new InstructionParseException("invalid calculation (unbalanced parenthesis)");
-            } else if (Operator.isOperator(chr) && operator != null) {
+            if (Operator.isOperator(chr) && operator != null) {
                 throw new InstructionParseException("invalid calculation (doubled operators)");
             } else if (Operator.isOperator(chr) && operator == null) {
                 throw new InstructionParseException("invalid calculation (operator missing first value)");
