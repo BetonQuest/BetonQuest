@@ -171,11 +171,14 @@ This requires a specific global tag to be set and works the same as normal tag c
 
 ## Item in Hand: `hand`
 
-This event is met only when player is holding a specified item in his hand. Amount cannot be set here, though it may be checked with `item` condition.
+This condition is met only when the player holds the specified quest item in their hand.
+The offhand will be checked instead of the main hand if the `offhand` keyword is added.
+Amount cannot be set here, though it may be checked with the `item` condition.
 
 !!! example
     ```YAML
-    hand sword
+    hand SpecialSword
+    hand QuestShield offhand
     ```
 
 ## Health: `health`
@@ -202,7 +205,7 @@ This condition requires the player to have all specified items in his inventory 
 
 !!! example
     ```YAML
-    item emerald:5,gold:10`
+    item emerald:5,gold:10
     ```
 
 ## Journal entry: `journal`
