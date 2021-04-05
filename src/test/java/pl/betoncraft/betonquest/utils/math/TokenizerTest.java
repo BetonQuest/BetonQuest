@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 /**
  * Test the {@link Tokenizer}.
  */
-@SuppressWarnings({"deprecation", "PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals"})
+@SuppressWarnings({"deprecation", "PMD.AvoidDuplicateLiterals", "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength", "PMD.TooManyMethods"})
 public class TokenizerTest {
 
     /**
@@ -37,10 +37,6 @@ public class TokenizerTest {
      * The player name to use for variable resolution.
      */
     public static final String TEST_PLAYER_ID = "player";
-
-    private static Tokenizer createTokenizer() {
-        return new Tokenizer(TEST_PACKAGE, '.');
-    }
 
     private static void withVariables(final Executable executable, final ProtoVariable... variables) throws Throwable {
         try (MockedStatic<Config> config = mockStatic(Config.class);
@@ -68,20 +64,30 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeNull() {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         //noinspection ConstantConditions
         assertThrows(NullPointerException.class, () -> tokenizer.tokenize(null), "tokenizing null should fail (NPE)");
     }
 
     @Test
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     /* default */ void testTokenizeEmpty() {
-        final Tokenizer tokenizer = createTokenizer();
-        assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(""), "an empty string should not be parsable");
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(""), "an empty string should not be parsable");
+        assertEquals("missing calculation", exception.getMessage(), "exception should be about missing a calculation");
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    /* default */ void testTokenizeNegationOnly() {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize("-"), "a string containing only a negation should throw an exception");
+        assertEquals("invalid calculation (negation missing value)", exception.getMessage(), "exception should be about missing something to negate");
     }
 
     @Test
     /* default */ void testTokenizeDigit() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
 
         final Token result = tokenizer.tokenize("1");
         assertEquals(1, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a single letter integer should work");
@@ -89,7 +95,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeInteger() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final double number = 2_134_671;
 
         final Token result = tokenizer.tokenize(String.valueOf(number));
@@ -98,7 +104,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeNegativeInteger() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final double number = -56_234;
 
         final Token result = tokenizer.tokenize(String.valueOf(number));
@@ -107,7 +113,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeDecimal() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final double number = 45_213.234_5;
 
         final Token result = tokenizer.tokenize(String.valueOf(number));
@@ -116,7 +122,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeNegativeDecimal() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final double number = -7_342.634;
 
         final Token result = tokenizer.tokenize(String.valueOf(number));
@@ -124,16 +130,18 @@ public class TokenizerTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     /* default */ void testTokenizeTwoDecimalPoints() {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String number = "43.654.123";
 
-        assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(number), "tokenizing a string with digits that contain two decimal point symbols should throw an exception");
+        final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(number), "tokenizing a string with digits that contain two decimal point symbols should throw an exception");
+        assertEquals("invalid calculation (missing operator)", exception.getMessage(), "exception should be about missing operator");
     }
 
     @Test
     /* default */ void testTokenizeIntegerAddition() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "1+2";
         final double expectedResult = 3;
 
@@ -143,7 +151,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeIntegerSubtraction() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "1-2";
         final double expectedResult = -1;
 
@@ -153,7 +161,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeIntegerMultiplication() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "2*3";
         final double expectedResult = 6;
 
@@ -163,7 +171,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeIntegerDivision() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "6/3";
         final double expectedResult = 2;
 
@@ -173,7 +181,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeDecimalAddition() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "1.7+3.5";
         final double expectedResult = 5.2;
 
@@ -183,7 +191,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeDecimalSubtraction() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "4.6-5.3";
         final double expectedResult = -0.7;
 
@@ -193,7 +201,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeDecimalMultiplication() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "2.4*5.3";
         final double expectedResult = 12.72;
 
@@ -203,7 +211,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeDecimalDivision() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "7.8/3.2";
         final double expectedResult = 2.4375;
 
@@ -213,7 +221,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeAddNegativeNumber() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "18.3+-23.4";
         final double expectedResult = -5.1;
 
@@ -223,7 +231,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeSubtractNegativeNumber() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "7--5";
         final double expectedResult = 12;
 
@@ -233,7 +241,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeMultiplyNegativeNumber() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "1.3*-2";
         final double expectedResult = -2.6;
 
@@ -243,7 +251,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeDotRuleAddThenMultiple() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "13+2*4";
         final double expectedResult = 21;
 
@@ -253,7 +261,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeDotRuleMultipleThenAdd() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "8*3+14";
         final double expectedResult = 38;
 
@@ -263,7 +271,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeDotRuleMinusThenDivide() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "3.7-12/24";
         final double expectedResult = 3.2;
 
@@ -273,7 +281,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeDotRuleDivideThenMinus() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "14/4-0.7";
         final double expectedResult = 2.8;
 
@@ -283,7 +291,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeDotRuleModulo() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "5+13%7-2";
         final double expectedResult = 9;
 
@@ -293,7 +301,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizePowerRuleExponentThenMultiply() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "3^4*2";
         final double expectedResult = 162;
 
@@ -303,7 +311,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizePowerRuleMultiplyThenExponent() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "0.3*2^5";
         final double expectedResult = 9.6;
 
@@ -313,7 +321,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeRoundToInteger() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "2.2~0";
         final double expectedResult = 2;
 
@@ -323,7 +331,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeRoundEdgeCase() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "3.05~1";
         final double expectedResult = 3.1;
 
@@ -333,7 +341,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeRoundResult() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "10-3.03*4~1";
         final double expectedResult = -2.1;
 
@@ -343,7 +351,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeRoundInParenthesis() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "(4.0345~2)*4";
         final double expectedResult = 16.12;
 
@@ -353,7 +361,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeRoundParenthesis() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "(4.0345*4)~2";
         final double expectedResult = 16.14;
 
@@ -362,8 +370,8 @@ public class TokenizerTest {
     }
 
     @Test
-        /* default */ void testTokenizeRoundPower() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+    /* default */ void testTokenizeRoundPower() throws InstructionParseException, QuestRuntimeException {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "2.5^3~2";
         final double expectedResult = 15.63;
 
@@ -372,8 +380,8 @@ public class TokenizerTest {
     }
 
     @Test
-        /* default */ void testTokenizeRoundNegativeDigits() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+    /* default */ void testTokenizeRoundNegativeDigits() throws InstructionParseException, QuestRuntimeException {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "1234~-2";
         final double expectedResult = 1200;
 
@@ -382,8 +390,8 @@ public class TokenizerTest {
     }
 
     @Test
-        /* default */ void testTokenizeRoundMinus() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+    /* default */ void testTokenizeRoundMinus() throws InstructionParseException, QuestRuntimeException {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "13.243~7-5";
         final double expectedResult = 13.24;
 
@@ -392,8 +400,38 @@ public class TokenizerTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    /* default */ void testTokenizeNothingTimesSomething() {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String calculation = "*64";
+
+        final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string without value before the first operator should throw an exception");
+        assertEquals("invalid calculation (operator missing first value)", exception.getMessage(), "exception should be about parenthesis / brackets mismatch");
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    /* default */ void testTokenizeSomethingTimesNothing() {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String calculation = "423*";
+
+        final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string without value after the last operator should throw an exception");
+        assertEquals("invalid calculation (operator missing second value)", exception.getMessage(), "exception should be about parenthesis / brackets mismatch");
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    /* default */ void testTokenizeDoubleTimesOperator() {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String calculation = "423**64";
+
+        final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with two adjacent plus operators should throw an exception");
+        assertEquals("invalid calculation (doubled operators)", exception.getMessage(), "exception should be about parenthesis / brackets mismatch");
+    }
+
+    @Test
     /* default */ void testTokenizeSimpleParenthesis() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "(4123)";
         final double expectedResult = 4123;
 
@@ -403,7 +441,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeSimpleDoubleParenthesis() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "((4123))";
         final double expectedResult = 4123;
 
@@ -413,7 +451,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeCalculationInParenthesis() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "(423+543)";
         final double expectedResult = 966;
 
@@ -423,7 +461,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeMultipleOfSum() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "2.3*(32+12+65)";
         final double expectedResult = 250.7;
 
@@ -433,7 +471,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeDeepParenthesis() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "1-(45+((23-5)*4))/6";
         final double expectedResult = -18.5;
 
@@ -443,7 +481,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeChainedParenthesis() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "(14+6)*(4-1)/(8*2)+(12/3)";
         final double expectedResult = 7.75;
 
@@ -453,7 +491,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeDeepAndChainedParenthesis() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "((1-1)*2)/1.5+(3/4)";
         final double expectedResult = 0.75;
 
@@ -463,7 +501,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeNegativeParenthesis() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "-(15.4-32.9)";
         final double expectedResult = 17.5;
 
@@ -472,56 +510,88 @@ public class TokenizerTest {
     }
 
     @Test
-        /* default */ void testTokenizeMissingOpeningParenthesis() {
-        final Tokenizer tokenizer = createTokenizer();
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    /* default */ void testTokenizeMissingOpeningParenthesis() {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "865)";
 
-        assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with a missing opening parenthesis should throw an exception");
+        final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with a missing opening parenthesis should throw an exception");
+        assertEquals("invalid calculation (unbalanced parenthesis)", exception.getMessage(), "exception should be about parenthesis imbalance");
     }
 
     @Test
-        /* default */ void testTokenizeMissingClosingParenthesis() {
-        final Tokenizer tokenizer = createTokenizer();
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    /* default */ void testTokenizeMissingClosingParenthesis() {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "(846";
 
-        assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with a missing closing parenthesis should throw an exception");
+        final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with a missing closing parenthesis should throw an exception");
+        assertEquals("invalid calculation (unbalanced parenthesis)", exception.getMessage(), "exception should be about parenthesis imbalance");
     }
 
     @Test
-        /* default */ void testTokenizeEmptyParenthesis() {
-        final Tokenizer tokenizer = createTokenizer();
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    /* default */ void testTokenizeEmptyParenthesis() {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "()";
 
-        assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with an empty parenthesis should throw an exception");
+        final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with an empty parenthesis should throw an exception");
+        assertEquals("invalid calculation (empty parenthesis)", exception.getMessage(), "exception should be about empty parenthesis");
     }
 
     @Test
-        /* default */ void testTokenizeNegatedEmptyParenthesis() {
-        final Tokenizer tokenizer = createTokenizer();
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    /* default */ void testTokenizeNegatedEmptyParenthesis() {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "-()";
 
-        assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with a negated empty parenthesis should throw an exception");
+        final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with a negated empty parenthesis should throw an exception");
+        assertEquals("invalid calculation (empty parenthesis)", exception.getMessage(), "exception should be about empty parenthesis");
     }
 
     @Test
-        /* default */ void testTokenizeNestedEmptyParenthesis() {
-        final Tokenizer tokenizer = createTokenizer();
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    /* default */ void testTokenizeNestedEmptyParenthesis() {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "(())";
 
-        assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with a nested empty parenthesis should throw an exception");
+        final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with a nested empty parenthesis should throw an exception");
+        assertEquals("invalid calculation (empty parenthesis)", exception.getMessage(), "exception should be about empty parenthesis");
     }
 
     @Test
-        /* default */ void testTokenizeNestedEmptyParenthesisWithCalculation() {
-        final Tokenizer tokenizer = createTokenizer();
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    /* default */ void testTokenizeNestedEmptyParenthesisWithCalculation() {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "(()+5)";
 
-        assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with a nested empty parenthesis followed by a calculation should throw an exception");
+        final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with a nested empty parenthesis followed by a calculation should throw an exception");
+        assertEquals("invalid calculation (empty parenthesis)", exception.getMessage(), "exception should be about empty parenthesis");
     }
 
     @Test
-        /* default */ void testTokenizeSimpleBrackets() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    /* default */ void testTokenizeNumberThenParenthesisWithoutOperator() {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String calculation = "7(2+4)";
+
+        final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string that connects a number with a parenthesis without operator should throw an exception");
+        assertEquals("invalid calculation (missing operator)", exception.getMessage(), "exception should be about missing operator");
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    /* default */ void testTokenizeParenthesisThenNumberWithoutOperator() {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String calculation = "(2+4)7";
+
+        final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string that connects a parenthesis with a number without operator should throw an exception");
+        assertEquals("invalid calculation (missing operator)", exception.getMessage(), "exception should be about missing operator");
+    }
+
+    @Test
+    /* default */ void testTokenizeSimpleBrackets() throws InstructionParseException, QuestRuntimeException {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "[546]";
         final double expectedResult = 546;
 
@@ -530,8 +600,8 @@ public class TokenizerTest {
     }
 
     @Test
-        /* default */ void testTokenizeSimpleDoubleBrackets() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+    /* default */ void testTokenizeSimpleDoubleBrackets() throws InstructionParseException, QuestRuntimeException {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "[[546]]";
         final double expectedResult = 546;
 
@@ -540,8 +610,8 @@ public class TokenizerTest {
     }
 
     @Test
-        /* default */ void testTokenizeCalculationInBrackets() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+    /* default */ void testTokenizeCalculationInBrackets() throws InstructionParseException, QuestRuntimeException {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "[329+603]";
         final double expectedResult = 932;
 
@@ -550,8 +620,8 @@ public class TokenizerTest {
     }
 
     @Test
-        /* default */ void testTokenizeParenthesisInBrackets() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+    /* default */ void testTokenizeParenthesisInBrackets() throws InstructionParseException, QuestRuntimeException {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "[(8345)]";
         final double expectedResult = 8345;
 
@@ -560,8 +630,8 @@ public class TokenizerTest {
     }
 
     @Test
-        /* default */ void testTokenizeBracketsInParenthesis() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+    /* default */ void testTokenizeBracketsInParenthesis() throws InstructionParseException, QuestRuntimeException {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "([8345])";
         final double expectedResult = 8345;
 
@@ -570,16 +640,18 @@ public class TokenizerTest {
     }
 
     @Test
-        /* default */ void testTokenizeInvalidParenthesisAndBracketsMix() {
-        final Tokenizer tokenizer = createTokenizer();
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    /* default */ void testTokenizeInvalidParenthesisAndBracketsMix() {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "[(653])";
 
-        assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with interleaved brackets and parenthesis should throw an exception");
+        final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with interleaved brackets and parenthesis should throw an exception");
+        assertEquals("invalid calculation (parenthesis / brackets mismatch)", exception.getMessage(), "exception should be about parenthesis / brackets mismatch");
     }
 
     @Test
     /* default */ void testTokenizeAbsoluteOfPositive() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "|5|";
         final double expectedResult = 5;
 
@@ -589,7 +661,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeAbsoluteOfNegative() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "|-7|";
         final double expectedResult = 7;
 
@@ -599,7 +671,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeAbsoluteOfNegativeDecimal() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "|-32.65|";
         final double expectedResult = 32.65;
 
@@ -609,7 +681,7 @@ public class TokenizerTest {
 
     @Test
     /* default */ void testTokenizeNegativeAbsolute() throws InstructionParseException, QuestRuntimeException {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "-|-23.5|";
         final double expectedResult = -23.5;
 
@@ -618,9 +690,89 @@ public class TokenizerTest {
     }
 
     @Test
+    /* default */ void testTokenizeDifferenceOfAbsolutes() throws InstructionParseException, QuestRuntimeException {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String calculation = "|-3|-|-7|";
+        final double expectedResult = -4;
+
+        final Token result = tokenizer.tokenize(calculation);
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the difference of two absolutes should work");
+    }
+
+    @Test
+    /* default */ void testTokenizeAbsoluteOfAbsoluteInParenthesis() throws InstructionParseException, QuestRuntimeException {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String calculation = "|1-(|3|)|";
+        final double expectedResult = 2;
+
+        final Token result = tokenizer.tokenize(calculation);
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the absolute another absolute wrapped in parenthesis should work");
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+        /* default */ void testTokenizeEmptyAbsolute() {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String calculation = "||";
+
+        final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing an empty absolute value should throw an exception");
+        assertEquals("invalid calculation (empty absolute value)", exception.getMessage(), "exception should be about empty absolute value");
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+        /* default */ void testTokenizeNegatedEmptyAbsolute() {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String calculation = "-||";
+
+        final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a negated empty absolute value should throw an exception");
+        assertEquals("invalid calculation (empty absolute value)", exception.getMessage(), "exception should be about empty absolute value");
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+        /* default */ void testTokenizeNumberThenAbsoluteWithoutOperator() {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String calculation = "7|2+4|";
+
+        final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string that connects a number with an absolute without operator should throw an exception");
+        assertEquals("invalid calculation (missing operator)", exception.getMessage(), "exception should be about missing operator");
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+        /* default */ void testTokenizeAbsoluteThenNumberWithoutOperator() {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String calculation = "|2+4|7";
+
+        final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string that connects an absolute with a number without operator should throw an exception");
+        assertEquals("invalid calculation (missing operator)", exception.getMessage(), "exception should be about missing operator");
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+        /* default */ void testTokenizeInvalidAbsoluteAndParenthesisMix() {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String calculation = "|(653|)";
+
+        final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with interleaved brackets and parenthesis should throw an exception");
+        assertEquals("invalid calculation (unbalanced absolute value)", exception.getMessage(), "exception should be about parenthesis / absolute mismatch");
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+        /* default */ void testTokenizeInvalidParenthesisAndAbsoluteMix() {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String calculation = "(|653)|";
+
+        final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with interleaved brackets and parenthesis should throw an exception");
+        assertEquals("invalid calculation (unbalanced absolute value)", exception.getMessage(), "exception should be about parenthesis / absolute mismatch");
+    }
+
+    @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     /* default */ void testTokenizeVariable() throws Throwable {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String variable = "var";
         final double value = 43;
 
@@ -633,7 +785,7 @@ public class TokenizerTest {
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     /* default */ void testTokenizeVariableWithNumber() throws Throwable {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String variable = "var2";
         final double value = 44;
 
@@ -646,7 +798,7 @@ public class TokenizerTest {
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     /* default */ void testTokenizeVariableWithUnderscore() throws Throwable {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String variable = "var_able";
         final double value = 45;
 
@@ -659,7 +811,7 @@ public class TokenizerTest {
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     /* default */ void testTokenizeVariableWithBang() throws Throwable {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String variable = "var!bang";
         final double value = 47;
 
@@ -672,7 +824,7 @@ public class TokenizerTest {
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     /* default */ void testTokenizeVariableWithEquals() throws Throwable {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String variable = "var=qu";
         final double value = 48;
 
@@ -685,7 +837,7 @@ public class TokenizerTest {
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     /* default */ void testTokenizeVariableWithNumberSign() throws Throwable {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String variable = "var#rav";
         final double value = 49;
 
@@ -698,7 +850,7 @@ public class TokenizerTest {
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     /* default */ void testTokenizeVariableWithAmpersand() throws Throwable {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String variable = "var&more";
         final double value = 50;
 
@@ -711,7 +863,7 @@ public class TokenizerTest {
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     /* default */ void testTokenizeVariableWithApostrophe() throws Throwable {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String variable = "variable's";
         final double value = 51;
 
@@ -724,7 +876,7 @@ public class TokenizerTest {
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     /* default */ void testTokenizeVariableWithQuestionMark() throws Throwable {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String variable = "var?not";
         final double value = 52;
 
@@ -737,7 +889,7 @@ public class TokenizerTest {
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     /* default */ void testTokenizeVariableWithDot() throws Throwable {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String variable = "var.net";
         final double value = 53;
 
@@ -750,7 +902,7 @@ public class TokenizerTest {
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     /* default */ void testTokenizeVariableWithColon() throws Throwable {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String variable = "var:res";
         final double value = 54;
 
@@ -763,7 +915,7 @@ public class TokenizerTest {
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     /* default */ void testTokenizeVariableEndingWithNumber() throws Throwable {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String variable = "var123";
         final double value = 53;
 
@@ -776,7 +928,7 @@ public class TokenizerTest {
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     /* default */ void testTokenizeNegateVariable() throws Throwable {
-        final Tokenizer tokenizer = createTokenizer();
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String variable = "var";
         final String calculation = '-' + variable;
         final double value = 23;
@@ -785,6 +937,121 @@ public class TokenizerTest {
             final Token result = tokenizer.tokenize(calculation);
             assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the negation of a variable should work");
         }, new ProtoVariable(variable, String.valueOf(-value)));
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    /* default */ void testTokenizeNumberPlusVariable() throws Throwable {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String variable = "var";
+        final String calculation = "5+" + variable;
+        final double value = 7;
+        final double expectedResult = 12;
+
+        withVariables(() -> {
+            final Token result = tokenizer.tokenize(calculation);
+            assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the addition of a number to a variable should work");
+        }, new ProtoVariable(variable, String.valueOf(value)));
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    /* default */ void testTokenizeVariablePlusNumber() throws Throwable {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String variable = "var";
+        final String calculation = variable + "+7";
+        final double value = 5;
+        final double expectedResult = 12;
+
+        withVariables(() -> {
+            final Token result = tokenizer.tokenize(calculation);
+            assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the addition of a variable to a number should work");
+        }, new ProtoVariable(variable, String.valueOf(value)));
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    /* default */ void testTokenizeAdditionOfVariables() throws Throwable {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String firstVariable = "var1";
+        final String secondVariable = "var2";
+        final String calculation = firstVariable + '+' + secondVariable;
+        final double firstValue = 64;
+        final double secondValue = 32;
+        final double expectedResult = 96;
+
+        withVariables(() -> {
+            final Token result = tokenizer.tokenize(calculation);
+            assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the addition of two variables should work");
+        }, new ProtoVariable(firstVariable, String.valueOf(firstValue)), new ProtoVariable(secondVariable, String.valueOf(secondValue)));
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+        /* default */ void testTokenizeVariableInParenthesis() throws Throwable {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String variable = "var";
+        final String calculation = "(" + variable + ")";
+        final double value = 6354.6;
+
+        withVariables(() -> {
+            final Token result = tokenizer.tokenize(calculation);
+            assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the a variable inside parenthesis should work");
+        }, new ProtoVariable(variable, String.valueOf(value)));
+    }
+
+    @Test
+    @SuppressWarnings({"PMD.JUnitTestContainsTooManyAsserts", "PMD.JUnitTestsShouldIncludeAssert"})
+    /* default */ void testTokenizeNonexistentVariable() throws Throwable {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String variable = "var";
+
+        withVariables(() -> {
+            final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(variable), "tokenizing a nonexistent variable should throw an exception");
+            assertEquals("invalid calculation (Could not create variable)", exception.getMessage(), "exception should be about not being able to create the variable");
+        });
+    }
+
+    @Test
+    @SuppressWarnings({"PMD.JUnitTestContainsTooManyAsserts", "PMD.JUnitTestsShouldIncludeAssert"})
+    /* default */ void testTokenizeNumberThenVariableWithoutOperator() throws Throwable {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String variable = "var";
+        final String calculation = "756.39" + variable;
+        final double value = 57.1;
+
+        withVariables(() -> {
+            final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string that connects a number with a variable without operator should throw an exception");
+            assertEquals("invalid calculation (missing operator)", exception.getMessage(), "exception should be about missing operator");
+        }, new ProtoVariable(variable, String.valueOf(value)));
+    }
+
+    @Test
+    @SuppressWarnings({"PMD.JUnitTestContainsTooManyAsserts", "PMD.JUnitTestsShouldIncludeAssert"})
+    /* default */ void testTokenizeVariableThenParenthesisWithoutOperator() throws Throwable {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String variable = "var";
+        final String calculation = variable + "(1+3)";
+        final double value = 5;
+
+        withVariables(() -> {
+            final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string that connects a variable with a parenthesis without operator should throw an exception");
+            assertEquals("invalid calculation (missing operator)", exception.getMessage(), "exception should be about missing operator");
+        }, new ProtoVariable(variable, String.valueOf(value)));
+    }
+
+    @Test
+    @SuppressWarnings({"PMD.JUnitTestContainsTooManyAsserts", "PMD.JUnitTestsShouldIncludeAssert"})
+    /* default */ void testTokenizeParenthesisThenVariableWithoutOperator() throws Throwable {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String variable = "var";
+        final String calculation = "(1+3)" + variable;
+        final double value = 8;
+
+        withVariables(() -> {
+            final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string that connects a parenthesis with a variable without operator should throw an exception");
+            assertEquals("invalid calculation (missing operator)", exception.getMessage(), "exception should be about missing operator");
+        }, new ProtoVariable(variable, String.valueOf(value)));
     }
 
     /**

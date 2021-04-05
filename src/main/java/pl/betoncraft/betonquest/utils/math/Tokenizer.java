@@ -11,7 +11,8 @@ import pl.betoncraft.betonquest.utils.math.tokens.Token;
 import pl.betoncraft.betonquest.utils.math.tokens.Variable;
 import pl.betoncraft.betonquest.variables.MathVariable;
 
-import java.text.DecimalFormat;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Helps the {@link MathVariable} with parsing mathematical expressions.
@@ -24,9 +25,10 @@ import java.text.DecimalFormat;
 public class Tokenizer {
 
     /**
-     * Decimal separator allowed in numbers.
+     * Floating point regular expression. It matches only if the tested string immediately starts with the number and
+     * will not match any characters at the end that aren't part of the number.
      */
-    private final char decimalSeparator;
+    private static final Pattern FP_REGEX = Pattern.compile("^[+-]?(?:NaN|Infinity|(?:0[xX](?:\\p{XDigit}+(?:\\.\\p{XDigit}*)?|\\.\\p{XDigit}+)[pP][+-]?\\p{Digit}+|(?:\\p{Digit}+(?:\\.\\p{Digit}*)?|\\.\\p{Digit}+)(?:[eE][+-]?\\p{Digit}+)?)[fFdD]?)");
 
     /**
      * Name of the package in which the tokenizer is operating.
@@ -34,26 +36,12 @@ public class Tokenizer {
     private final String packageName;
 
     /**
-     * Create a new Tokenizer in given package with given decimal separator.
-     *
-     * @param packageName      name of the package
-     * @param decimalSeparator decimal separator char (, or .)
-     */
-    public Tokenizer(final String packageName, final char decimalSeparator) {
-        this.packageName = packageName;
-        this.decimalSeparator = decimalSeparator;
-    }
-
-    /**
-     * Create a new Tokenizer in given package with system default decimal separator.
+     * Create a new Tokenizer in given package.
      *
      * @param packageName name of the package
      */
     public Tokenizer(final String packageName) {
-        this(
-                packageName,
-                ((DecimalFormat) DecimalFormat.getInstance()).getDecimalFormatSymbols().getDecimalSeparator()
-        );
+        this.packageName = packageName;
     }
 
     /**
@@ -81,28 +69,33 @@ public class Tokenizer {
      * @return parsed token
      * @throws InstructionParseException if the expression is invalid and therefore couldn't be parsed
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition",
+    @SuppressWarnings({"PMD.AssignmentInOperand", "PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition",
             "PMD.NcssCount", "PMD.ExcessiveMethodLength"})
     private Token tokenize(final Token val1, final Operator operator, final String val2) throws InstructionParseException {
-        if (val2.isEmpty() && operator != null) {
-            throw new InstructionParseException("invalid calculation (operator missing second value)");
-        } else if (val2.isEmpty()) {
+        if (val2.isEmpty()) {
+            if (operator != null) {
+                throw new InstructionParseException("invalid calculation (operator missing second value)");
+            }
             throw new InstructionParseException("missing calculation");
         }
 
         //Parse next token in line (from left to right)
-        Token nextInLine = null;
         int start = 0;
         int index = start;
         char chr = val2.charAt(index++);
         boolean isNegated = false;
 
         if (chr == '-') {
+            if (val2.length() == 1) {
+                throw new InstructionParseException("invalid calculation (negation missing value)");
+            }
             chr = val2.charAt(index++);
             isNegated = true;
             start++;
         }
 
+        Token nextInLine = null;
+        final Matcher numberMatcher;
         if (chr == '(' || chr == '[') { //tokenize parenthesis
             int depth = 1;
             final char opening = chr;
@@ -154,22 +147,18 @@ public class Tokenizer {
                 throw new InstructionParseException("invalid calculation (unbalanced absolute value)");
             }
 
-        } else if (Character.isDigit(chr)) { //tokenize numbers
-            for (; index < val2.length(); index++) {
-                chr = val2.charAt(index);
-                if (!Character.isDigit(chr) && chr != decimalSeparator) {
-                    break;
-                }
-            }
-            try {
-                isNegated = false;
-                nextInLine = new Number(Double.parseDouble(val2.substring(0, index--)));
-            } catch (NumberFormatException e) {
-                throw new InstructionParseException("invalid calculation (invalid number)", e);
-            }
+        } else if ((numberMatcher = FP_REGEX.matcher(val2)).find()) { //tokenize numbers
+            isNegated = false;
+            index = numberMatcher.end() - 1;
+            nextInLine = new Number(Double.parseDouble(numberMatcher.group()));
 
-        } else if (Character.isAlphabetic(chr)) { //tokenize variables
-            //FIXME this assumes all variables start with an alphabetic character
+        } else if (Operator.isOperator(chr)) { //error handling
+            if (operator == null) {
+                throw new InstructionParseException("invalid calculation (operator missing first value)");
+            }
+            throw new InstructionParseException("invalid calculation (doubled operators)");
+
+        } else { //tokenize variables
             for (; index < val2.length(); index++) {
                 chr = val2.charAt(index);
                 if (Operator.isOperator(chr) || "([|])".contains(String.valueOf(chr))) {
@@ -181,15 +170,6 @@ public class Tokenizer {
             } catch (InstructionParseException e) {
                 throw new InstructionParseException("invalid calculation (" + e.getMessage() + ")", e);
             }
-
-        } else { //error handling
-            if (Operator.isOperator(chr) && operator != null) {
-                throw new InstructionParseException("invalid calculation (doubled operators)");
-            } else if (Operator.isOperator(chr) && operator == null) {
-                throw new InstructionParseException("invalid calculation (operator missing first value)");
-            } else {
-                throw new InstructionParseException("invalid calculation (unknown reason)");
-            }
         }
 
         if (isNegated) {
@@ -199,6 +179,9 @@ public class Tokenizer {
         if (index < val2.length() - 1) {
             chr = val2.charAt(++index);
             if (!Operator.isOperator(chr)) {
+                if (chr == ')' || chr == ']') {
+                    throw new InstructionParseException("invalid calculation (unbalanced parenthesis)");
+                }
                 throw new InstructionParseException("invalid calculation (missing operator)");
             }
             final Operator nextOperator = Operator.valueOf(chr);
