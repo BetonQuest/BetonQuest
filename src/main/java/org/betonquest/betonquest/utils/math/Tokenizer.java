@@ -64,7 +64,7 @@ public class Tokenizer {
     }
 
     /**
-     * Internal method for recursive token parsing
+     * Internal method for recursive token parsing.
      * <p>
      * The method will walk through the expression from the left side to the right side.
      * Depending on the first character the type of the left token will be determined.
