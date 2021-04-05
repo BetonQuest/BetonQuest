@@ -5,7 +5,7 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import java.util.Arrays;
 
 /**
- * Operators that can be used between two tokens for performing an arithmetic expression
+ * Operators that can be used between two tokens for performing an arithmetic expression.
  *
  * @deprecated This should be replaced in BQ 2.0 with a real expression parsing lib like
  * https://github.com/fasseg/exp4j
@@ -14,7 +14,7 @@ import java.util.Arrays;
 public enum Operator {
 
     /**
-     * <b>+</b> Operator, adds two values
+     * <b>+</b> Operator, adds two values.
      */
     PLUS('+', 1) {
         @Override
@@ -24,7 +24,7 @@ public enum Operator {
     },
 
     /**
-     * <b>-</b> Operator, subtracts two values
+     * <b>-</b> Operator, subtracts two values.
      */
     MINUS('-', 1) {
         @Override
@@ -34,7 +34,7 @@ public enum Operator {
     },
 
     /**
-     * <b>*</b> Operator, multiplies two values
+     * <b>*</b> Operator, multiplies two values.
      */
     MULTIPLY('*', 2) {
         @Override
@@ -44,7 +44,7 @@ public enum Operator {
     },
 
     /**
-     * <b>/</b> Operator, divides a value by another
+     * <b>/</b> Operator, divides a value by another.
      */
     DIVIDE('/', 2) {
         @Override
@@ -54,7 +54,7 @@ public enum Operator {
     },
 
     /**
-     * <b>%</b> Operator, returns the modulo of two values
+     * <b>%</b> Operator, returns the modulo of two values.
      */
     MODULO('%', 2) {
         @Override
@@ -64,7 +64,7 @@ public enum Operator {
     },
 
     /**
-     * <b>^</b> Operator, returns the power of a value
+     * <b>^</b> Operator, returns the power of a value.
      */
     POW('^', 3) {
         @Override
@@ -74,7 +74,7 @@ public enum Operator {
     },
 
     /**
-     * <b>~</b> Operator, rounds the first value to the number of decimal digits given by the second value
+     * <b>~</b> Operator, rounds the first value to the number of decimal digits given by the second value.
      */
     ROUND('~', 0) {
         @Override
@@ -87,12 +87,12 @@ public enum Operator {
     };
 
     /**
-     * Symbol representing the operator
+     * Symbol representing the operator.
      */
     private final char symbol;
 
     /**
-     * Priority of the operation (power before point before line)
+     * Priority of the operation (power before point before line).
      */
     private final int priority;
 
@@ -102,7 +102,7 @@ public enum Operator {
     }
 
     /**
-     * Finds the Operator represented by the given symbol
+     * Finds the Operator represented by the given symbol.
      *
      * @param chr the symbol representing an operator
      * @return the operator of the symbol
@@ -114,7 +114,7 @@ public enum Operator {
     }
 
     /**
-     * Checks if the given character represents an Operator
+     * Checks if the given character represents an Operator.
      *
      * @param chr character to check
      * @return true if the character is an operator, false otherwise
@@ -124,7 +124,7 @@ public enum Operator {
     }
 
     /**
-     * Returns the Symbol representing the operator
+     * Returns the Symbol representing the operator.
      *
      * @return the symbol character
      */
@@ -133,7 +133,7 @@ public enum Operator {
     }
 
     /**
-     * Returns the priority of the operator (power before point before line)
+     * Returns the priority of the operator (power before point before line).
      *
      * @return the priority (higher should be calculated first)
      */
@@ -147,7 +147,7 @@ public enum Operator {
     }
 
     /**
-     * Performs the operation on two values
+     * Performs the operation on two values.
      *
      * @param val1 first value
      * @param val2 second value

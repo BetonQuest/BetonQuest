@@ -1,6 +1,5 @@
 package pl.betoncraft.betonquest.utils.math;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.MockedStatic;
@@ -25,7 +24,7 @@ import static org.mockito.Mockito.*;
 public class TokenizerTest {
 
     /**
-     * Precision up to which to check equality of floating point numbers
+     * Precision up to which to check equality of floating point numbers.
      */
     public static final double REQUIRED_DOUBLE_PRECISION = 1E-7;
 
@@ -122,6 +121,14 @@ public class TokenizerTest {
 
         final Token result = tokenizer.tokenize(String.valueOf(number));
         assertEquals(number, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a negative decimal should work");
+    }
+
+    @Test
+    /* default */ void testTokenizeTwoDecimalPoints() {
+        final Tokenizer tokenizer = createTokenizer();
+        final String number = "43.654.123";
+
+        assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(number), "tokenizing a string with digits that contain two decimal point symbols should throw an exception");
     }
 
     @Test
@@ -454,7 +461,6 @@ public class TokenizerTest {
         assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a mix of parenthesis inside and sequential should work; issue #1421");
     }
 
-    @Disabled("negating parenthesis is not a supported feature")
     @Test
     /* default */ void testTokenizeNegativeParenthesis() throws InstructionParseException, QuestRuntimeException {
         final Tokenizer tokenizer = createTokenizer();
@@ -463,6 +469,112 @@ public class TokenizerTest {
 
         final Token result = tokenizer.tokenize(calculation);
         assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the negation of the result of a calculation inside parenthesis should work");
+    }
+
+    @Test
+        /* default */ void testTokenizeMissingOpeningParenthesis() {
+        final Tokenizer tokenizer = createTokenizer();
+        final String calculation = "865)";
+
+        assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with a missing opening parenthesis should throw an exception");
+    }
+
+    @Test
+        /* default */ void testTokenizeMissingClosingParenthesis() {
+        final Tokenizer tokenizer = createTokenizer();
+        final String calculation = "(846";
+
+        assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with a missing closing parenthesis should throw an exception");
+    }
+
+    @Test
+        /* default */ void testTokenizeEmptyParenthesis() {
+        final Tokenizer tokenizer = createTokenizer();
+        final String calculation = "()";
+
+        assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with an empty parenthesis should throw an exception");
+    }
+
+    @Test
+        /* default */ void testTokenizeNegatedEmptyParenthesis() {
+        final Tokenizer tokenizer = createTokenizer();
+        final String calculation = "-()";
+
+        assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with a negated empty parenthesis should throw an exception");
+    }
+
+    @Test
+        /* default */ void testTokenizeNestedEmptyParenthesis() {
+        final Tokenizer tokenizer = createTokenizer();
+        final String calculation = "(())";
+
+        assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with a nested empty parenthesis should throw an exception");
+    }
+
+    @Test
+        /* default */ void testTokenizeNestedEmptyParenthesisWithCalculation() {
+        final Tokenizer tokenizer = createTokenizer();
+        final String calculation = "(()+5)";
+
+        assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with a nested empty parenthesis followed by a calculation should throw an exception");
+    }
+
+    @Test
+        /* default */ void testTokenizeSimpleBrackets() throws InstructionParseException, QuestRuntimeException {
+        final Tokenizer tokenizer = createTokenizer();
+        final String calculation = "[546]";
+        final double expectedResult = 546;
+
+        final Token result = tokenizer.tokenize(calculation);
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with a number inside a bracket should work");
+    }
+
+    @Test
+        /* default */ void testTokenizeSimpleDoubleBrackets() throws InstructionParseException, QuestRuntimeException {
+        final Tokenizer tokenizer = createTokenizer();
+        final String calculation = "[[546]]";
+        final double expectedResult = 546;
+
+        final Token result = tokenizer.tokenize(calculation);
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with a number inside multiple brackets should work");
+    }
+
+    @Test
+        /* default */ void testTokenizeCalculationInBrackets() throws InstructionParseException, QuestRuntimeException {
+        final Tokenizer tokenizer = createTokenizer();
+        final String calculation = "[329+603]";
+        final double expectedResult = 932;
+
+        final Token result = tokenizer.tokenize(calculation);
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with a calculation inside a bracket should work");
+    }
+
+    @Test
+        /* default */ void testTokenizeParenthesisInBrackets() throws InstructionParseException, QuestRuntimeException {
+        final Tokenizer tokenizer = createTokenizer();
+        final String calculation = "[(8345)]";
+        final double expectedResult = 8345;
+
+        final Token result = tokenizer.tokenize(calculation);
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with a number inside a parenthesis and then a bracket should work");
+    }
+
+    @Test
+        /* default */ void testTokenizeBracketsInParenthesis() throws InstructionParseException, QuestRuntimeException {
+        final Tokenizer tokenizer = createTokenizer();
+        final String calculation = "([8345])";
+        final double expectedResult = 8345;
+
+        final Token result = tokenizer.tokenize(calculation);
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with a number inside a bracket and then a parenthesis should work");
+    }
+
+    @Test
+        /* default */ void testTokenizeInvalidParenthesisAndBracketsMix() {
+        final Tokenizer tokenizer = createTokenizer();
+        final String calculation = "[(653])";
+
+        assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with interleaved brackets and parenthesis should throw an exception");
     }
 
     @Test
@@ -495,7 +607,6 @@ public class TokenizerTest {
         assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the calculation of the absolute of a negative decimal should work");
     }
 
-    @Disabled("negating absolute is not a supported feature")
     @Test
     /* default */ void testTokenizeNegativeAbsolute() throws InstructionParseException, QuestRuntimeException {
         final Tokenizer tokenizer = createTokenizer();
@@ -660,6 +771,20 @@ public class TokenizerTest {
             final Token result = tokenizer.tokenize(variable);
             assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable ending with a digit should work");
         }, new ProtoVariable(variable, String.valueOf(value)));
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    /* default */ void testTokenizeNegateVariable() throws Throwable {
+        final Tokenizer tokenizer = createTokenizer();
+        final String variable = "var";
+        final String calculation = '-' + variable;
+        final double value = 23;
+
+        withVariables(() -> {
+            final Token result = tokenizer.tokenize(calculation);
+            assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the negation of a variable should work");
+        }, new ProtoVariable(variable, String.valueOf(-value)));
     }
 
     /**
