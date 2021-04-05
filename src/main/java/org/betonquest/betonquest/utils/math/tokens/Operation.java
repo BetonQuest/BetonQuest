@@ -4,7 +4,7 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.math.Operator;
 
 /**
- * An operation performed on two tokens
+ * An operation performed on two tokens.
  *
  * @deprecated This should be replaced in BQ 2.0 with a real expression parsing lib like
  * https://github.com/fasseg/exp4j
@@ -13,22 +13,22 @@ import org.betonquest.betonquest.utils.math.Operator;
 public class Operation implements Token {
 
     /**
-     * First value, left of the operator
+     * First value, left of the operator.
      */
     private final Token val1;
 
     /**
-     * The operator
+     * The operator.
      */
     private final Operator operator;
 
     /**
-     * Second value, right of the operator
+     * Second value, right of the operator.
      */
     private final Token val2;
 
     /**
-     * Creates a new operation
+     * Creates a new operation.
      *
      * @param val1     left token
      * @param operator operator

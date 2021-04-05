@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.utils.math.tokens;
 
 /**
- * Token that is just any number
+ * Token that is just any number.
  *
  * @deprecated This should be replaced in BQ 2.0 with a real expression parsing lib like
  * https://github.com/fasseg/exp4j
@@ -10,12 +10,12 @@ package org.betonquest.betonquest.utils.math.tokens;
 public class Number implements Token {
 
     /**
-     * The value
+     * The value.
      */
     private final double value;
 
     /**
-     * Creates a new number
+     * Creates a new number.
      *
      * @param value value of the number
      */
