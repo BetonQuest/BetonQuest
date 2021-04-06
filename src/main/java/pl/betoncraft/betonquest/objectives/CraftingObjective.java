@@ -1,13 +1,14 @@
 package pl.betoncraft.betonquest.objectives;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.BetonQuest;
@@ -17,10 +18,14 @@ import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
+import java.util.Arrays;
+import java.util.Locale;
+import java.util.Objects;
+
 /**
- * Player has to craft specified amount of items
+ * Player has to craft specified amount of items.
  */
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods"})
 public class CraftingObjective extends Objective implements Listener {
 
     private final QuestItem item;
@@ -45,42 +50,95 @@ public class CraftingObjective extends Objective implements Listener {
         final String playerID = PlayerConverter.getID(player);
         final CraftData playerData = (CraftData) dataMap.get(playerID);
         if (containsPlayer(playerID) && item.compare(event.getRecipe().getResult()) && checkConditions(playerID)) {
-            final int absoluteCreations = countPossibleCrafts(event);
-            final int remainingSpace = countRemainingSpace(player);
-            playerData.subtract(Math.min(remainingSpace, absoluteCreations));
+            final int crafted = calculateCraftAmount(event);
+            playerData.subtract(crafted);
             if (playerData.isZero()) {
                 completeObjective(playerID);
             }
         }
     }
 
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    private int countPossibleCrafts(final CraftItemEvent event) {
-        int possibleCreations = 1;
-        if (event.isShiftClick()) {
-            possibleCreations = Integer.MAX_VALUE;
-            for (final ItemStack item : event.getInventory().getMatrix()) {
-                if (item != null && !item.getType().equals(Material.AIR)) {
-                    possibleCreations = Math.min(possibleCreations, item.getAmount());
-                }
+    private static int calculateCraftAmount(final CraftItemEvent event) {
+        switch (event.getClick()) {
+            case SHIFT_LEFT:
+            case SHIFT_RIGHT:
+                return calculateShiftCraftAmount(event);
+            case CONTROL_DROP:
+                return calculateMaximumCraftAmount(event);
+            case NUMBER_KEY:
+                return calculateHotbarCraftAmount(event);
+            case SWAP_OFFHAND:
+                return calculateOffhandCraftAmount(event);
+            case DROP:
+                return event.getRecipe().getResult().getAmount();
+            case LEFT:
+            case RIGHT:
+                return calculateSimpleCraftAmount(event);
+            default:
+                return 0;
+        }
+    }
+
+    private static int calculateShiftCraftAmount(final CraftItemEvent event) {
+        final ItemStack craftResult = event.getRecipe().getResult();
+        final int remainingSpace = calculateRemainingSpace(event.getWhoClicked(), craftResult);
+        final int itemsPerCraft = craftResult.getAmount();
+        final int spaceForCrafts = remainingSpace / itemsPerCraft;
+        return Math.min(calculateMaximumCraftActions(event), spaceForCrafts) * itemsPerCraft;
+    }
+
+    private static int calculateMaximumCraftAmount(final CraftItemEvent event) {
+        final int itemsPerCraft = event.getRecipe().getResult().getAmount();
+        return calculateMaximumCraftActions(event) * itemsPerCraft;
+    }
+
+    private static int calculateMaximumCraftActions(final CraftItemEvent event) {
+        return Arrays.stream(event.getInventory().getMatrix())
+                .filter(Objects::nonNull)
+                .filter(item -> item.getType() != Material.AIR)
+                .mapToInt(ItemStack::getAmount)
+                .min()
+                .orElse(Integer.MAX_VALUE);
+    }
+
+    private static int calculateRemainingSpace(final HumanEntity player, final ItemStack crafted) {
+        int remainingSpace = 0;
+        for (final ItemStack i : player.getInventory().getStorageContents()) {
+            if (isEmptySlot(i)) {
+                remainingSpace += crafted.getMaxStackSize();
+            } else if (i.isSimilar(crafted)) {
+                remainingSpace += crafted.getMaxStackSize() - i.getAmount();
             }
         }
-        if (event.getCursor() == null || event.getCursor().getType().equals(Material.AIR)) {
-            return possibleCreations * event.getRecipe().getResult().getAmount();
+        return remainingSpace;
+    }
+
+    private static int calculateHotbarCraftAmount(final CraftItemEvent event) {
+        assert event.getClick() == ClickType.NUMBER_KEY;
+        final int hotbarSlot = event.getHotbarButton();
+        final ItemStack hotbarItem = event.getWhoClicked().getInventory().getItem(hotbarSlot);
+        return isEmptySlot(hotbarItem) ? event.getRecipe().getResult().getAmount() : 0;
+    }
+
+    private static int calculateOffhandCraftAmount(final CraftItemEvent event) {
+        assert event.getClick() == ClickType.SWAP_OFFHAND;
+        final ItemStack offhand = event.getWhoClicked().getInventory().getItemInOffHand();
+        return isEmptySlot(offhand) ? event.getRecipe().getResult().getAmount() : 0;
+    }
+
+
+    private static int calculateSimpleCraftAmount(final CraftItemEvent event) {
+        final ItemStack cursor = event.getCursor();
+        final ItemStack result = event.getRecipe().getResult();
+        if (isEmptySlot(cursor)
+                || cursor.isSimilar(result) && cursor.getAmount() + result.getAmount() <= cursor.getMaxStackSize()) {
+            return result.getAmount();
         }
         return 0;
     }
 
-    private int countRemainingSpace(final Player player) {
-        int remainingSpace = 0;
-        for (final ItemStack i : player.getInventory().getStorageContents()) {
-            if (i == null || i.getType().equals(Material.AIR)) {
-                remainingSpace += item.getMaterial().getMaxStackSize();
-            } else if (i.equals(item.generate(i.getAmount()))) {
-                remainingSpace += item.getMaterial().getMaxStackSize() - i.getAmount();
-            }
-        }
-        return remainingSpace;
+    private static boolean isEmptySlot(final ItemStack slotItem) {
+        return slotItem == null || slotItem.getType().equals(Material.AIR);
     }
 
     @Override
@@ -100,12 +158,16 @@ public class CraftingObjective extends Objective implements Listener {
 
     @Override
     public String getProperty(final String name, final String playerID) {
-        if ("left".equalsIgnoreCase(name)) {
-            return Integer.toString(amount - ((CraftData) dataMap.get(playerID)).getAmount());
-        } else if ("amount".equalsIgnoreCase(name)) {
-            return Integer.toString(((CraftData) dataMap.get(playerID)).getAmount());
+        switch (name.toLowerCase(Locale.ROOT)) {
+            case "amount":
+                return Integer.toString(amount - ((CraftData) dataMap.get(playerID)).getAmount());
+            case "left":
+                return Integer.toString(((CraftData) dataMap.get(playerID)).getAmount());
+            case "total":
+                return Integer.toString(amount);
+            default:
+                return "";
         }
-        return "";
     }
 
     public static class CraftData extends ObjectiveData {
