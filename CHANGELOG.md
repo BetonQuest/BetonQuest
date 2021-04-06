@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - NotifyIO "totemIO"
 - Support for MythicLib
 - FastAsyncWorldEdit compatibility
+- craft objective variable `total`
 ### Changed
 - math variable now allows rounding output with the ~ operator
 - changed package names from `pl.betoncraft.betonquest` to `org.betonquest.betonquest`
@@ -34,7 +35,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - command event includes 'conditions:...' into the command
 - tags and points are now thread safe
 - compatibility for packet interceptor on papermc
-- craft objective when item on courser
+- craft objective: multi-craft, drop-craft, hotbar/offhand-craft, shift-Q-craft and any illegal crafting is correctly detected, 
+- craft objective variables `left` and `amount` were swapped
 - q version now works again
 - NPC hider for not spawned NPCs
 - Conversation IO Chest load NPC skull async from Citizens instead of sync
