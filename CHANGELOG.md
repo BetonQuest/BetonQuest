@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased] - ${current-date}
 ### Added
 - FastAsyncWorldEdit compatibility
+- craft objective variable `total`
 ### Changed
 ### Deprecated
 - math variable now allows rounding output with the ~ operator
@@ -14,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixes
 - parsing of math variable
 - craft objective: multi-craft, drop-craft, hotbar/offhand-craft, shift-Q-craft and any illegal crafting is correctly detected,
+- craft objective variables `left` and `amount` were swapped
 - NPC hider for not spawned NPCs
 - Conversation IO Chest load NPC skull async from Citizens instead of sync
 ### Security
