@@ -13,6 +13,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * A method of selecting blocks using regex and block states.
@@ -216,8 +217,8 @@ public class BlockSelector {
         return -1;
     }
 
-    @SuppressWarnings("deprecation")
-    private List<Material> getMaterials(final String namespaceString, final String keyString) {
+    @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity"})
+    private List<Material> getMaterials(final String namespaceString, final String keyString) throws InstructionParseException {
         final List<Material> materials = new ArrayList<>();
         final Material fullMatch = Material.getMaterial(namespaceString + ":" + keyString);
         if (fullMatch != null) {
@@ -235,21 +236,25 @@ public class BlockSelector {
             return materials;
         }
 
-        final Pattern namespacePattern = Pattern.compile("^" + namespaceString + "$");
-        final Pattern keyPattern = Pattern.compile("^" + keyString + "$");
+        final Pattern namespacePattern;
+        final Pattern keyPattern;
+        try {
+            namespacePattern = Pattern.compile("^" + namespaceString + "$");
+            keyPattern = Pattern.compile("^" + keyString + "$");
+        } catch (PatternSyntaxException exception) {
+            throw new InstructionParseException("Invalid Regex: " + exception.getMessage(), exception);
+        }
         for (final Material m : Material.values()) {
-            final NamespacedKey namespacedKey;
-            try {
-                namespacedKey = m.getKey();
-            } catch (final IllegalArgumentException e) {
+            if (m.isLegacy()) {
                 continue;
             }
+            final NamespacedKey namespacedKey = m.getKey();
             final Matcher namespaceMatcher = namespacePattern.matcher(namespacedKey.getNamespace());
-            if (!namespaceMatcher.find()) {
+            if (!namespaceMatcher.matches()) {
                 continue;
             }
             final Matcher keyMatcher = keyPattern.matcher(namespacedKey.getKey());
-            if (!keyMatcher.find()) {
+            if (!keyMatcher.matches()) {
                 continue;
             }
             materials.add(m);
