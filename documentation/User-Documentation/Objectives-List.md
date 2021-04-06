@@ -62,7 +62,8 @@ This objective is completed by eating specified food or drinking specified potio
 
 To complete this objective the player must craft specified item. First argument is ID of the item, as in _items.yml_. Next is amount (integer).
 
-Crafting objective has two properties, `amount` and `left`. Amount is current amount of crafted items and left is amount needed to complete the objective.
+The crafting objective has three properties: `left` is the amount of items left to craft, `amount` is the current amount of
+already crafted items and `total` is the initially required amount of items to be crafted.
 
 !!! example
     ```YAML
@@ -144,7 +145,7 @@ You can also specify additional arguments: `name:` followed by the name will onl
 and `notify` will display notifications when a player is killed, optionally with the notification interval after a colon.
 
 The kill objective has three properties: `left` is the amount of players still left to kill, `amount` is the amount of
-already killed players and `total`is the initially required amount to kill.
+already killed players and `total` is the initially required amount to kill.
 
 !!! example
     ```YAML
@@ -241,7 +242,7 @@ This objective has two variable properties: `amount` (shows how much the player 
 
 The player must kill specified amount of mobs You must specify mob type first and then amount. You can find possible mob types here: [mob types](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html). Additionally you can specify names for mobs with `name:Uber_Zombie`, so only killing properly named mobs counts. All `_` are replaced with spaces, so in this example you would have to kill 5 zombies with "Uber Zombie" above their heads. You can also specify `notify` keyword to display messages to the player each time he kills a mob, optionally with the notification interval after colon. If you want to accept only mobs marked with `spawn` event, use `marked:` argument followed by the keyword used in that event.
 
-This objective also has two properties, `amount` and `left`. Amount is current amount of killed mobs, left is amount needed to complete the objective.
+This objective also has two properties, `amount` and `left`. Amount is the current amount of killed mobs, left is amount needed to complete the objective.
 
 !!! example
     ```YAML
