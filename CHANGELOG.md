@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Conversation IO Chest load NPC skull async from Citizens instead of sync
 - block selector didn't respect regex boundary
 - block selector regex errors are now properly handled
+- `default_journal_slot: -1` now use the first free slot instead of the last hotbar slot
 ### Security
 - it was possible to put a QuestItem into a chest
 
