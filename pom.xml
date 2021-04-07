@@ -34,27 +34,6 @@
 
   <profiles>
     <profile>
-      <id>from-spigot</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <repositories>
-        <repository>
-          <id>spigot-repo</id>
-          <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
-        </repository>
-      </repositories>
-      <dependencies>
-        <dependency>
-          <groupId>org.spigotmc</groupId>
-          <artifactId>spigot-api</artifactId>
-          <version>1.16.4-R0.1-SNAPSHOT</version>
-          <scope>provided</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-
-    <profile>
       <id>from-enginehub</id>
       <activation>
         <activeByDefault>true</activeByDefault>
@@ -72,6 +51,12 @@
           <version>7.0.3</version>
           <scope>provided</scope>
           <optional>true</optional>
+          <exclusions>
+            <exclusion>
+              <groupId>org.bukkit</groupId>
+              <artifactId>bukkit</artifactId>
+            </exclusion>
+          </exclusions>
         </dependency>
         <dependency>
           <groupId>com.sk89q.worldedit</groupId>
@@ -80,6 +65,10 @@
           <scope>provided</scope>
           <optional>true</optional>
           <exclusions>
+            <exclusion>
+              <groupId>org.bukkit</groupId>
+              <artifactId>bukkit</artifactId>
+            </exclusion>
             <exclusion>
               <groupId>com.google.code.findbugs</groupId>
               <artifactId>annotations</artifactId>
@@ -282,7 +271,7 @@
         <dependency>
           <groupId>com.destroystokyo.paper</groupId>
           <artifactId>paper-api</artifactId>
-          <version>1.16.4-R0.1-SNAPSHOT</version>
+          <version>1.16.5-R0.1-SNAPSHOT</version>
           <scope>provided</scope>
           <exclusions>
             <exclusion>
@@ -290,6 +279,12 @@
               <artifactId>junit</artifactId>
             </exclusion>
           </exclusions>
+        </dependency>
+        <dependency>
+          <groupId>io.papermc</groupId>
+          <artifactId>paperlib</artifactId>
+          <version>1.0.6</version>
+          <scope>compile</scope>
         </dependency>
       </dependencies>
     </profile>
@@ -312,6 +307,12 @@
           <version>1.7</version>
           <scope>provided</scope>
           <optional>true</optional>
+          <exclusions>
+            <exclusion>
+              <groupId>org.bukkit</groupId>
+              <artifactId>bukkit</artifactId>
+            </exclusion>
+          </exclusions>
         </dependency>
         <dependency>
           <groupId>com.github.SkriptLang</groupId>
@@ -483,6 +484,8 @@
                   <excludes>
                     <exclude>com.google.code.findbugs</exclude>
                     <exclude>junit</exclude>
+                    <exclude>org.spigotmc</exclude>
+                    <exclude>org.bukkit</exclude>
                   </excludes>
                   <includes>
                     <include>com.google.code.findbugs:jsr305</include>
@@ -516,6 +519,7 @@
                   <include>com.google.guava</include>
                   <include>commons-io</include>
                   <include>org.json</include>
+                  <include>io.papermc:paperlib</include>
                 </includes>
               </artifactSet>
               <filters>
@@ -558,6 +562,10 @@
                 <relocation>
                   <pattern>org.json</pattern>
                   <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.org.json</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>io.papermc.lib</pattern>
+                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.io.papermc.lib</shadedPattern>
                 </relocation>
               </relocations>
             </configuration>
