@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.conditions;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Instruction.Item;
@@ -25,6 +26,7 @@ public class ItemCondition extends Condition {
     }
 
     @Override
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
         int successfulChecks = 0; // Count of successful checks
 

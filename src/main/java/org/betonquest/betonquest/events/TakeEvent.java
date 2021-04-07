@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.events;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
@@ -36,6 +37,7 @@ public class TakeEvent extends QuestEvent {
 
     @SuppressWarnings("PMD.PreserveStackTrace")
     @Override
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final Player player = PlayerConverter.getPlayer(playerID);
         for (final Item item : questItems) {

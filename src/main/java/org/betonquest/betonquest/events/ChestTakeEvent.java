@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.events;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.QuestEvent;
@@ -29,6 +30,7 @@ public class ChestTakeEvent extends QuestEvent {
     }
 
     @Override
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final Block block = loc.getLocation(playerID).getBlock();
         final InventoryHolder chest;
