@@ -1,16 +1,14 @@
 package org.betonquest.betonquest.conversation;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.papermc.lib.PaperLib;
 import lombok.CustomLog;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.utils.LocalChatPaginator;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,12 +20,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
 /**
- * Inventory GUI for conversations
+ * Inventory GUI for conversations.
  */
 @SuppressWarnings({"PMD.TooManyFields", "PMD.CommentRequired", "PMD.AvoidFieldNameMatchingMethodName",
         "PMD.AvoidLiteralsInIfCondition"})
@@ -143,9 +140,11 @@ public class InventoryConvIO implements Listener, ConversationIO {
         final ItemStack[] buttons = new ItemStack[9 * rows];
         // set the NPC head
         final ItemStack npc;
-        if (SKULL_CACHE.containsKey(npcName) && false) {
+        if (SKULL_CACHE.containsKey(npcName)) {
+            LOG.debug(conv.getPackage(), "skull cache hit");
             npc = SKULL_CACHE.get(npcName);
         } else {
+            LOG.debug(conv.getPackage(), "skull cache miss");
             npc = new ItemStack(Material.PLAYER_HEAD);
             npc.setDurability((short) 3);
             final SkullMeta npcMeta = (SkullMeta) npc.getItemMeta();
@@ -188,13 +187,13 @@ public class InventoryConvIO implements Listener, ConversationIO {
             Material material = Material.ENDER_PEARL;
             short data = 0;
             // get the custom material
-            if (option.matches("^\\{[a-zA-Z0-9_: ]+\\}(?s:.*)$")) {
+            if (option.matches("^\\{[a-zA-Z0-9_: ]+}(?s:.*)$")) {
                 final String fullMaterial = option.substring(1, option.indexOf('}'));
                 String materialName = fullMaterial;
                 if (materialName.contains(":")) {
                     final int colonIndex = materialName.indexOf(':');
                     try {
-                        data = Short.valueOf(materialName.substring(colonIndex + 1));
+                        data = Short.parseShort(materialName.substring(colonIndex + 1));
                     } catch (final NumberFormatException e) {
                         LOG.warning(conv.getPackage(), "Could not read material data: " + e.getMessage(), e);
                         data = 0;
@@ -252,20 +251,23 @@ public class InventoryConvIO implements Listener, ConversationIO {
         if (printMessages) {
             conv.sendMessage(npcNameColor + npcName + ChatColor.RESET + ": " + npcTextColor + response);
         }
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                inv.setContents(buttons);
-                switching = true;
-                player.openInventory(inv);
-                switching = false;
-                processingLastClick = false;
-            }
-        }.runTask(BetonQuest.getInstance());
+        Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
+            inv.setContents(buttons);
+            switching = true;
+            player.openInventory(inv);
+            switching = false;
+            processingLastClick = false;
+        });
     }
 
     @SuppressWarnings("deprecation")
     protected SkullMeta updateSkullMeta(final SkullMeta meta) {
+        if (Bukkit.isPrimaryThread()) {
+            throw new IllegalStateException("Must be called async!");
+        }
+        if (PaperLib.isPaper()) {
+            Bukkit.createProfile(npcName).complete();
+        }
         meta.setOwner(npcName);
         return meta;
     }
@@ -321,13 +323,10 @@ public class InventoryConvIO implements Listener, ConversationIO {
             return;
         }
         if (conv.isMovementBlock()) {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    player.teleport(loc);
-                    player.openInventory(inv);
-                }
-            }.runTask(BetonQuest.getInstance());
+            Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
+                player.teleport(loc);
+                player.openInventory(inv);
+            });
         } else {
             conv.endConversation();
             HandlerList.unregisterAll(this);
@@ -391,7 +390,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
     }
 
     /**
-     * Inventory GUI that also outputs the conversation to chat
+     * Inventory GUI that also outputs the conversation to chat.
      */
     public static class Combined extends InventoryConvIO {
 
