@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.variables;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.BetonQuest;
@@ -42,6 +43,7 @@ public class ItemAmountVariable extends Variable {
     }
 
     @Override
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public String getValue(final String playerID) {
         final Player player = PlayerConverter.getPlayer(playerID);
         int playersAmount = 0;

@@ -1,5 +1,6 @@
 package pl.betoncraft.betonquest.events;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.BetonQuest;
@@ -36,6 +37,7 @@ public class TakeEvent extends QuestEvent {
 
     @SuppressWarnings("PMD.PreserveStackTrace")
     @Override
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final Player player = PlayerConverter.getPlayer(playerID);
         for (final Item item : questItems) {
