@@ -40,6 +40,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - q version now works again
 - NPC hider for not spawned NPCs
 - Conversation IO Chest load NPC skull async from Citizens instead of sync
+- block selector didn't respect regex boundary
+- block selector regex errors are now properly handled
 ### Security
 - it was possible to put a QuestItem into a chest
 
