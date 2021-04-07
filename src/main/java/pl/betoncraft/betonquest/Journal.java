@@ -22,7 +22,14 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 
 /**
@@ -353,26 +360,21 @@ public class Journal {
      * @param slot slot number for adding the journal
      */
     public void addToInv(final int slot) {
-        int targetSlot = hasJournal(playerID) ? removeFromInv() : slot;
-        if (targetSlot < 0) {
-            targetSlot = 8;
-        }
-
-        // update the texts
+        final int targetSlot = hasJournal(playerID) ? removeFromInv() : slot;
         generateTexts(lang);
         final Inventory inventory = PlayerConverter.getPlayer(playerID).getInventory();
-        // if the slot is less than 0 then use default slot
-        // generate journal and place it in the slot
         final ItemStack item = getAsItem();
         if (inventory.firstEmpty() >= 0) {
-            final ItemStack oldItem = inventory.getItem(targetSlot);
-            inventory.setItem(targetSlot, item);
-            // move the item that was previously there
-            if (oldItem != null) {
-                inventory.addItem(oldItem);
+            if (targetSlot < 0) {
+                inventory.addItem(item);
+            } else {
+                final ItemStack oldItem = inventory.getItem(targetSlot);
+                inventory.setItem(targetSlot, item);
+                if (oldItem != null) {
+                    inventory.addItem(oldItem);
+                }
             }
         } else {
-            // if there is no place for the item then print a message about it
             try {
                 Config.sendNotify(null, playerID, "inventory_full", null, "inventory_full,error");
             } catch (final QuestRuntimeException exception) {
