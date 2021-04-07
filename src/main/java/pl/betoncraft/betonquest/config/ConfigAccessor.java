@@ -47,6 +47,7 @@ public class ConfigAccessor {
      * try to load defaults, and if that fails it will create an empty yaml configuration.
      */
     @SuppressWarnings("PMD.EmptyCatchBlock")
+    @SuppressFBWarnings("RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE")
     public void reloadConfig() {
         if (configFile == null) {
             try (InputStream str = plugin.getResource(fileName)) {
@@ -114,7 +115,7 @@ public class ConfigAccessor {
     /**
      * Saves the default configuration to a file. It won't do anything if the file is null.
      */
-    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
+    @SuppressFBWarnings({"RV_RETURN_VALUE_IGNORED_BAD_PRACTICE", "RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE", "NP_LOAD_OF_KNOWN_NULL_VALUE"})
     public void saveDefaultConfig() {
         if (configFile == null) {
             return;
