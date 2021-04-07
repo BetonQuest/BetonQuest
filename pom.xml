@@ -19,6 +19,14 @@
   <version>${version}-SNAPSHOT</version>
   <description>All Your Adventure Supplies</description>
 
+  <licenses>
+    <license>
+      <name>GNU General Public License v3.0</name>
+      <url>https://www.gnu.org/licenses/gpl-3.0-standalone.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
   <organization>
     <name>BetonQuest Organisation</name>
     <url>https://www.betonquest.org</url>
@@ -797,6 +805,7 @@
     </pluginManagement>
   </build>
   <reporting>
+    <outputDirectory>${basedir}/target/site</outputDirectory>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -818,7 +827,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
-          <doclint>none</doclint>
+          <sourcepath>${project.build.directory}/delombok</sourcepath>
         </configuration>
       </plugin>
       <plugin>
