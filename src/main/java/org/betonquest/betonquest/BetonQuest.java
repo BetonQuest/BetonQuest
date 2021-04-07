@@ -1,6 +1,7 @@
 package org.betonquest.betonquest;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.apache.logging.log4j.LogManager;
@@ -587,7 +588,9 @@ public class BetonQuest extends JavaPlugin {
         registerObjectives("interact", EntityInteractObjective.class);
         registerObjectives("respawn", RespawnObjective.class);
         registerObjectives("breed", BreedObjective.class);
-        registerObjectives("jump", JumpObjective.class);
+        if (PaperLib.isPaper()) {
+            registerObjectives("jump", JumpObjective.class);
+        }
 
         // register conversation IO types
         registerConversationIO("simple", SimpleConvIO.class);
