@@ -8,7 +8,10 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.utils.LocalChatPaginator;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,7 +24,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Inventory GUI for conversations.
@@ -265,8 +272,8 @@ public class InventoryConvIO implements Listener, ConversationIO {
         if (Bukkit.isPrimaryThread()) {
             throw new IllegalStateException("Must be called async!");
         }
-        if (PaperLib.isPaper()) {
-            Bukkit.createProfile(npcName).complete();
+        if (PaperLib.isPaper() && !Bukkit.createProfile(npcName).complete()) {
+            return meta;
         }
         meta.setOwner(npcName);
         return meta;
