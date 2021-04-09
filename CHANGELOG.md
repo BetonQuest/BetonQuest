@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for MythicLib
 - FastAsyncWorldEdit compatibility
 - craft objective variable `total`
+- curly braces in math.calc variables for using variables with math symbols
 ### Changed
 - math variable now allows rounding output with the ~ operator
 - changed package names from `pl.betoncraft.betonquest` to `org.betonquest.betonquest`
