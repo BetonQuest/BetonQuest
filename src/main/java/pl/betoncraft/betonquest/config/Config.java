@@ -543,7 +543,7 @@ public class Config {
     }
 
     /**
-     * @return the default package, as specified in the config
+     * @return the default package, as specified in the config or null if default package was deleted
      */
     public static ConfigPackage getDefaultPackage() {
         return getPackages().get(defaultPackage);
