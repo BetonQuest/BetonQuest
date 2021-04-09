@@ -714,7 +714,7 @@ public class TokenizerTest {
 
     @Test
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
-        /* default */ void testTokenizeEmptyAbsolute() {
+    /* default */ void testTokenizeEmptyAbsolute() {
         final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "||";
 
@@ -724,7 +724,7 @@ public class TokenizerTest {
 
     @Test
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
-        /* default */ void testTokenizeNegatedEmptyAbsolute() {
+    /* default */ void testTokenizeNegatedEmptyAbsolute() {
         final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "-||";
 
@@ -734,7 +734,7 @@ public class TokenizerTest {
 
     @Test
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
-        /* default */ void testTokenizeNumberThenAbsoluteWithoutOperator() {
+    /* default */ void testTokenizeNumberThenAbsoluteWithoutOperator() {
         final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "7|2+4|";
 
@@ -744,7 +744,7 @@ public class TokenizerTest {
 
     @Test
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
-        /* default */ void testTokenizeAbsoluteThenNumberWithoutOperator() {
+    /* default */ void testTokenizeAbsoluteThenNumberWithoutOperator() {
         final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "|2+4|7";
 
@@ -754,21 +754,21 @@ public class TokenizerTest {
 
     @Test
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
-        /* default */ void testTokenizeInvalidAbsoluteAndParenthesisMix() {
+    /* default */ void testTokenizeInvalidAbsoluteAndParenthesisMix() {
         final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "|(653|)";
 
-        final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with interleaved brackets and parenthesis should throw an exception");
+        final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with interleaved absolutes and parenthesis should throw an exception");
         assertEquals("invalid calculation (unbalanced absolute value)", exception.getMessage(), "exception should be about parenthesis / absolute mismatch");
     }
 
     @Test
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
-        /* default */ void testTokenizeInvalidParenthesisAndAbsoluteMix() {
+    /* default */ void testTokenizeInvalidParenthesisAndAbsoluteMix() {
         final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String calculation = "(|653)|";
 
-        final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with interleaved brackets and parenthesis should throw an exception");
+        final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string with interleaved absolutes and parenthesis should throw an exception");
         assertEquals("invalid calculation (unbalanced absolute value)", exception.getMessage(), "exception should be about parenthesis / absolute mismatch");
     }
 
@@ -991,7 +991,7 @@ public class TokenizerTest {
 
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
-        /* default */ void testTokenizeVariableInParenthesis() throws Throwable {
+    /* default */ void testTokenizeVariableInParenthesis() throws Throwable {
         final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
         final String variable = "var";
         final String calculation = "(" + variable + ")";
@@ -1055,6 +1055,117 @@ public class TokenizerTest {
             final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string that connects a parenthesis with a variable without operator should throw an exception");
             assertEquals("invalid calculation (missing operator)", exception.getMessage(), "exception should be about missing operator");
         }, new ProtoVariable(variable, String.valueOf(value)));
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    /* default */ void testTokenizeCurlyBracesVariable() throws Throwable {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String variable = "var";
+        final String calculation = "{" + variable + "}";
+        final double value = 65;
+
+        withVariables(() -> {
+            final Token result = tokenizer.tokenize(calculation);
+            assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the a curly braces variable should work");
+        }, new ProtoVariable(variable, String.valueOf(value)));
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    /* default */ void testTokenizeNegatedCurlyBracesVariable() throws Throwable {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String variable = "var";
+        final String calculation = "-{" + variable + "}";
+        final double value = 66;
+        final double expected = -value;
+
+        withVariables(() -> {
+            final Token result = tokenizer.tokenize(calculation);
+            assertEquals(expected, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the a curly braces variable should work");
+        }, new ProtoVariable(variable, String.valueOf(value)));
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    /* default */ void testTokenizeCurlyBracesVariableWithEscapedBackslash() throws Throwable {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String variable = "back\\slash";
+        final String calculation = "{back\\\\slash}";
+        final double value = 17;
+
+        withVariables(() -> {
+            final Token result = tokenizer.tokenize(calculation);
+            assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the a curly braces variable with escaped backslash should work");
+        }, new ProtoVariable(variable, String.valueOf(value)));
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    /* default */ void testTokenizeCurlyBracesVariableWithEscapedClosingBrace() throws Throwable {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String variable = "closing{curly}brace";
+        final String calculation = "{closing{curly\\}brace}";
+        final double value = 27;
+
+        withVariables(() -> {
+            final Token result = tokenizer.tokenize(calculation);
+            assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the a curly braces variable with escaped closing curly brace should work");
+        }, new ProtoVariable(variable, String.valueOf(value)));
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    /* default */ void testTokenizeCurlyBracesVariableContainingMathExpression() throws Throwable {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String variable = "math:5+(7-9*var+|[|-3|+(8)]|)";
+        final String calculation = "{" + variable + "}";
+        final double value = 32;
+
+        withVariables(() -> {
+            final Token result = tokenizer.tokenize(calculation);
+            assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the a curly braces variable with escaped closing curly brace should work");
+        }, new ProtoVariable(variable, String.valueOf(value)));
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    /* default */ void testTokenizeCurlyBracesVariableContainingDoubleEscapedBackslash() throws Throwable {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String variable = "\\\\";
+        final String calculation = "{\\\\\\\\}";
+        final double value = 87;
+
+        withVariables(() -> {
+            final Token result = tokenizer.tokenize(calculation);
+            assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the a curly braces variable with two backslashes in a row should work");
+        }, new ProtoVariable(variable, String.valueOf(value)));
+    }
+
+    @Test
+    @SuppressWarnings({"PMD.JUnitTestContainsTooManyAsserts", "PMD.JUnitTestsShouldIncludeAssert"})
+    /* default */ void testTokenizeMissingOpeningCurlyBrace() throws Throwable {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String variable = "invalid";
+        final String calculation = variable + "}";
+
+        withVariables(() -> {
+            final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string that connects a parenthesis with a variable without operator should throw an exception");
+            assertEquals("invalid calculation (unbalanced curly brace)", exception.getMessage(), "exception should be about missing operator");
+        }, new ProtoVariable(variable, "83"));
+    }
+
+    @Test
+    @SuppressWarnings({"PMD.JUnitTestContainsTooManyAsserts", "PMD.JUnitTestsShouldIncludeAssert"})
+    /* default */ void testTokenizeMissingClosingCurlyBrace() throws Throwable {
+        final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
+        final String variable = "invalid";
+        final String calculation = "{" + variable;
+
+        withVariables(() -> {
+            final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> tokenizer.tokenize(calculation), "tokenizing a string that connects a parenthesis with a variable without operator should throw an exception");
+            assertEquals("invalid calculation (unbalanced curly brace)", exception.getMessage(), "exception should be about missing operator");
+        }, new ProtoVariable(variable, "83"));
     }
 
     /**
