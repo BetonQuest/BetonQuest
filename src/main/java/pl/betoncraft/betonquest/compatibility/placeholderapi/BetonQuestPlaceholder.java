@@ -4,6 +4,8 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
+import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
+import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 @SuppressWarnings("PMD.CommentRequired")
@@ -76,6 +78,10 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
         final String placeholderIdentifier;
         final int index = identifier.indexOf(':');
         if (index == -1) {
+            if (Config.getDefaultPackage() == null) {
+                LogUtils.logThrowableIgnore(new QuestRuntimeException("A variable contains no package and default package is missing!"));
+                return "&cCould not resolve variable because it specifies no package and default package is missing.";
+            }
             pack = Config.getDefaultPackage().getName();
             placeholderIdentifier = identifier;
         } else {
