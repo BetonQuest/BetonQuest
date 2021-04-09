@@ -104,12 +104,7 @@ public class BetonQuestLogger {
         final PackageLogRecord record = new PackageLogRecord(pack, Level.WARNING, msg);
         logger.log(record);
 
-        final PackageLogRecord recordThrowable = new PackageLogRecord(pack, Level.FINE,
-                "Additional stacktrace:");
-        final int stackSize = thrown.getStackTrace().length;
-        final StackTraceElement element = thrown.getStackTrace()[stackSize - 1];
-        recordThrowable.setSourceClassName(element.getClassName());
-        recordThrowable.setSourceMethodName(element.getMethodName());
+        final PackageLogRecord recordThrowable = new PackageLogRecord(pack, Level.FINE, "Additional stacktrace:");
         recordThrowable.setThrown(thrown);
         logger.log(recordThrowable);
     }
