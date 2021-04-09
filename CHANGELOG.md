@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - block selector didn't respect regex boundary
 - block selector regex errors are now properly handled
 - `default_journal_slot: -1` now uses the first free slot instead of the last hotbar slot
+- mmobkill objective notify argument not working correctly
 ### Security
 - it was possible to put a QuestItem into a chest
 
