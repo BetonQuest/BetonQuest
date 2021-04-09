@@ -29,6 +29,7 @@ public class Tokenizer {
      * will not match any characters at the end that aren't part of the number.
      */
     private static final Pattern FP_REGEX = Pattern.compile("^[+-]?(?:NaN|Infinity|(?:0[xX](?:\\p{XDigit}+(?:\\.\\p{XDigit}*)?|\\.\\p{XDigit}+)[pP][+-]?\\p{Digit}+|(?:\\p{Digit}+(?:\\.\\p{Digit}*)?|\\.\\p{Digit}+)(?:[eE][+-]?\\p{Digit}+)?)[fFdD]?)");
+    private static final Pattern ESCAPE_REGEX = Pattern.compile("\\\\(.)");
 
     /**
      * Name of the package in which the tokenizer is operating.
@@ -96,56 +97,39 @@ public class Tokenizer {
 
         Token nextInLine = null;
         final Matcher numberMatcher;
-        if (chr == '(' || chr == '[') { //tokenize parenthesis
-            int depth = 1;
+        if (chr == '{') {
+            index = findCurlyBraceVariableEnd(val2, index);
+            final String rawVariableName = val2.substring(start + 1, index);
+            final String variableName = ESCAPE_REGEX.matcher(rawVariableName).replaceAll("$1");
+
+            try {
+                nextInLine = new Variable(new VariableNumber(packageName, "%" + variableName + "%"));
+            } catch (InstructionParseException e) {
+                throw new InstructionParseException("invalid calculation (" + e.getMessage() + ")", e);
+            }
+        } else if (chr == '(' || chr == '[') { //tokenize parenthesis
             final char opening = chr;
-            for (; index < val2.length(); index++) {
-                chr = val2.charAt(index);
-                if (chr == '(' || chr == '[') {
-                    depth++;
-                } else if (chr == ')' || chr == ']') {
-                    depth--;
-                }
+            index = findParenthesisEnd(val2, index);
 
-                if (depth == 0) {
-                    if (index == start + 1) {
-                        throw new InstructionParseException("invalid calculation (empty parenthesis)");
-                    }
-                    if (opening == '(' && chr != ')' || opening == '[' && chr != ']') {
-                        throw new InstructionParseException("invalid calculation (parenthesis / brackets mismatch)");
-                    }
-
-                    nextInLine = new Parenthesis(tokenize(null, null, val2.substring(start + 1, index)), opening, chr);
-                    break;
-                }
-            }
-            if (nextInLine == null) {
-                throw new InstructionParseException("invalid calculation (unbalanced parenthesis)");
+            if (index == start + 1) {
+                throw new InstructionParseException("invalid calculation (empty parenthesis)");
             }
 
+            chr = val2.charAt(index);
+            if (opening == '(' && chr != ')' || opening == '[' && chr != ']') {
+                throw new InstructionParseException("invalid calculation (parenthesis / brackets mismatch)");
+            }
+
+            nextInLine = new Parenthesis(tokenize(null, null, val2.substring(start + 1, index)), opening, chr);
 
         } else if (chr == '|') { //tokenize absolute values
-            int depth = 0;
-            for (; index < val2.length(); index++) {
-                chr = val2.charAt(index);
-                if (chr == '(' || chr == '[') {
-                    depth++;
-                } else if (chr == ')' || chr == ']') {
-                    depth--;
-                }
+            index = findAbsoluteEnd(val2, index);
 
-                if (depth == 0 && chr == '|') {
-                    if (index == start + 1) {
-                        throw new InstructionParseException("invalid calculation (empty absolute value)");
-                    }
+            if (index == start + 1) {
+                throw new InstructionParseException("invalid calculation (empty absolute value)");
+            }
 
-                    nextInLine = new AbsoluteValue(tokenize(null, null, val2.substring(start + 1, index)));
-                    break;
-                }
-            }
-            if (nextInLine == null) {
-                throw new InstructionParseException("invalid calculation (unbalanced absolute value)");
-            }
+            nextInLine = new AbsoluteValue(tokenize(null, null, val2.substring(start + 1, index)));
 
         } else if ((numberMatcher = FP_REGEX.matcher(val2)).find()) { //tokenize numbers
             isNegated = false;
@@ -161,7 +145,7 @@ public class Tokenizer {
         } else { //tokenize variables
             for (; index < val2.length(); index++) {
                 chr = val2.charAt(index);
-                if (Operator.isOperator(chr) || "([|])".contains(String.valueOf(chr))) {
+                if (Operator.isOperator(chr) || "{([|])}".contains(String.valueOf(chr))) {
                     break;
                 }
             }
@@ -181,6 +165,9 @@ public class Tokenizer {
             if (!Operator.isOperator(chr)) {
                 if (chr == ')' || chr == ']') {
                     throw new InstructionParseException("invalid calculation (unbalanced parenthesis)");
+                }
+                if (chr == '}') {
+                    throw new InstructionParseException("invalid calculation (unbalanced curly brace)");
                 }
                 throw new InstructionParseException("invalid calculation (missing operator)");
             }
@@ -206,5 +193,65 @@ public class Tokenizer {
                 return new Operation(val1, operator, nextInLine);
             }
         }
+    }
+
+    private int findAbsoluteEnd(final String val, final int startIndex) throws InstructionParseException {
+        int index = startIndex;
+        for (; index < val.length(); index++) {
+            switch (val.charAt(index)) {
+                case '{':
+                    index = findCurlyBraceVariableEnd(val, index + 1);
+                case '(':
+                case '[':
+                    index = findParenthesisEnd(val, index + 1);
+                    break;
+                case '|':
+                    return index;
+                default:
+                    break;
+            }
+        }
+        throw new InstructionParseException("invalid calculation (unbalanced absolute value)");
+    }
+
+    private int findParenthesisEnd(final String val, final int startIndex) throws InstructionParseException {
+        int index = startIndex;
+        int depth = 1;
+        for (; index < val.length(); index++) {
+            switch (val.charAt(index)) {
+                case '{':
+                    index = findCurlyBraceVariableEnd(val, index + 1);
+                case '(':
+                case '[':
+                    depth++;
+                    break;
+                case ')':
+                case ']':
+                    depth--;
+                    if (depth == 0) {
+                        return index;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        throw new InstructionParseException("invalid calculation (unbalanced parenthesis)");
+    }
+
+    private int findCurlyBraceVariableEnd(final String val, final int startIndex) throws InstructionParseException {
+        int index = startIndex;
+        for (; index < val.length(); index++) {
+            switch (val.charAt(index)) {
+                case '\\':
+                    index++;
+                    break;
+                case '}':
+                    return index;
+                default:
+                    break;
+            }
+        }
+        throw new InstructionParseException("invalid calculation (unbalanced curly brace)");
     }
 }
