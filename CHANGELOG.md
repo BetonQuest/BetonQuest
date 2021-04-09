@@ -10,10 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - craft objective variable `total`
 - curly braces in math.calc variables for using variables with math symbols
 ### Changed
+- `/q create package` command does now create an empty package
 ### Deprecated
 - math variable now allows rounding output with the ~ operator
 ### Removed
 ### Fixes
+- only generate default package if BetonQuest folder is empty
 - parsing of math variable
 - craft objective: multi-craft, drop-craft, hotbar/offhand-craft, shift-Q-craft and any illegal crafting is correctly detected,
 - craft objective variables `left` and `amount` were swapped
