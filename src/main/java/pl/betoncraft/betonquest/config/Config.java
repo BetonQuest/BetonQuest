@@ -59,6 +59,8 @@ public class Config {
         root = plugin.getDataFolder();
         lang = plugin.getConfig().getString("language");
 
+        final boolean isVirgin = Optional.ofNullable(root.listFiles(File::isFile)).map(files -> files.length == 0).orElse(true);
+
         // save default config
         plugin.saveDefaultConfig();
         // need to be sure everything is saved
@@ -81,7 +83,7 @@ public class Config {
         defaultPackage = plugin.getConfig().getString("default_package", defaultPackage);
 
         // save example package
-        createDefaultPackage(defaultPackage);
+        if (isVirgin) createDefaultPackage(defaultPackage);
 
         // load packages
         for (final File file : plugin.getDataFolder().listFiles()) {
