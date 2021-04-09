@@ -24,6 +24,11 @@ public class Tokenizer {
      * will not match any characters at the end that aren't part of the number.
      */
     private static final Pattern FP_REGEX = Pattern.compile("^[+-]?(?:NaN|Infinity|(?:0[xX](?:\\p{XDigit}+(?:\\.\\p{XDigit}*)?|\\.\\p{XDigit}+)[pP][+-]?\\p{Digit}+|(?:\\p{Digit}+(?:\\.\\p{Digit}*)?|\\.\\p{Digit}+)(?:[eE][+-]?\\p{Digit}+)?)[fFdD]?)");
+
+    /**
+     * Backslash escapement regular expression for removing escaping. Use {@link Matcher#replaceAll(String)} with
+     * {@code "$1"} as argument.
+     */
     private static final Pattern ESCAPE_REGEX = Pattern.compile("\\\\(.)");
 
     /**
@@ -90,7 +95,7 @@ public class Tokenizer {
             start++;
         }
 
-        Token nextInLine = null;
+        Token nextInLine;
         final Matcher numberMatcher;
         if (chr == '{') {
             index = findCurlyBraceVariableEnd(val2, index);
@@ -103,13 +108,13 @@ public class Tokenizer {
                 throw new InstructionParseException("invalid calculation (" + e.getMessage() + ")", e);
             }
         } else if (chr == '(' || chr == '[') { //tokenize parenthesis
-            final char opening = chr;
             index = findParenthesisEnd(val2, index);
 
             if (index == start + 1) {
                 throw new InstructionParseException("invalid calculation (empty parenthesis)");
             }
 
+            final char opening = chr;
             chr = val2.charAt(index);
             if (opening == '(' && chr != ')' || opening == '[' && chr != ']') {
                 throw new InstructionParseException("invalid calculation (parenthesis / brackets mismatch)");
@@ -196,6 +201,7 @@ public class Tokenizer {
             switch (val.charAt(index)) {
                 case '{':
                     index = findCurlyBraceVariableEnd(val, index + 1);
+                    break;
                 case '(':
                 case '[':
                     index = findParenthesisEnd(val, index + 1);
@@ -216,6 +222,7 @@ public class Tokenizer {
             switch (val.charAt(index)) {
                 case '{':
                     index = findCurlyBraceVariableEnd(val, index + 1);
+                    break;
                 case '(':
                 case '[':
                     depth++;
