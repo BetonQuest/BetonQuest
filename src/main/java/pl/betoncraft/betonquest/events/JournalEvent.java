@@ -18,10 +18,11 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
 import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Level;
 
 /**
- * Adds the entry to player's journal
+ * Adds the entry to player's journal.
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class JournalEvent extends QuestEvent {
@@ -29,16 +30,31 @@ public class JournalEvent extends QuestEvent {
     private final String name;
     private final boolean add;
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public JournalEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         staticness = true;
-        final String first = instruction.next();
-        if ("update".equalsIgnoreCase(first)) {
-            name = null;
-            add = false;
-        } else {
-            add = "add".equalsIgnoreCase(first);
-            name = Utils.addPackage(instruction.getPackage(), instruction.next());
+        final String action = instruction.next();
+        switch (action.toLowerCase(Locale.ROOT)) {
+            case "update":
+            case "refresh":
+            case "reload":
+                name = null;
+                add = false;
+                break;
+            case "add":
+                name = Utils.addPackage(instruction.getPackage(), instruction.next());
+                add = true;
+                break;
+            case "delete":
+            case "remove":
+            case "del":
+            case "rm":
+                name = Utils.addPackage(instruction.getPackage(), instruction.next());
+                add = false;
+                break;
+            default:
+                throw new InstructionParseException("Unknown journal action: " + action);
         }
     }
 
@@ -53,9 +69,7 @@ public class JournalEvent extends QuestEvent {
                     journal.removePointer(name);
                     journal.update();
                 }
-                BetonQuest.getInstance().getSaver().add(new Saver.Record(Connector.UpdateType.REMOVE_ALL_ENTRIES, new String[]{
-                        name
-                }));
+                BetonQuest.getInstance().getSaver().add(new Saver.Record(Connector.UpdateType.REMOVE_ALL_ENTRIES, name));
             }
         } else {
             final PlayerData playerData = PlayerConverter.getPlayer(playerID) == null ? new PlayerData(playerID) : BetonQuest.getInstance().getPlayerData(playerID);
