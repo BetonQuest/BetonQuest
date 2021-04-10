@@ -167,8 +167,9 @@ The player must click on an entity to complete this objective. The first argumen
 Available values are `right`, `left` and `any`.
 Second required argument is the [mob type](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html).
 Next is an amount of mobs required to click on. These must be unique, so the player can't simply click twenty times on
-the same zombie to complete it. There is also an optional `name:` parameter which specifies what name the entity must have
-(you need to write `_` instead of the space character).
+the same zombie to complete it. There is also an optional `name:` parameter which specifies what custom name the entity must have
+(you need to write `_` instead of the space character). To check for the real name (e.g. if you renamed players to include
+their rank) you can also use `realname:` instead.
 Add `marked:` if the clicked entity needs to be marked by the `spawn` event (see its description for marking explanation). 
 You can also add `notify` argument to make the objective notify players whenever they click a correct entity,
 optionally with the notification interval after colon and `cancel` if the click shouldn't do what it usually does
