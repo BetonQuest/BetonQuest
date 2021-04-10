@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `default_journal_slot: -1` now uses the first free slot instead of the last hotbar slot
 - mmobkill objective notify argument not working correctly
 - `fish` objective didn't count the amount of fish caught in one go (if modified by e.g. mcMMO)
+- fixed smelt objective: only taking out normally did count, shift-extract got canceled
 ### Security
 - it was possible to put a QuestItem into a chest
 
