@@ -282,7 +282,9 @@ Sheep shearing has the same properties as mob kill objective.
 
 ## Smelting: `smelt`
 
-To complete this objective player must smelt specified item. Note that you must define item as output from furnace, not the ingredient. This one does not support data values (it doesn’t have to). First argument is a `block selector`. Next is amount (integer).
+To complete this objective the player must smelt a specified item. Note that you must define the output item, not the
+ingredient. The first argument is a [Block Selector](/User-Documentation/Reference/#block-selectors) for the output
+item. The second is the amount (integer).
 
 Smelting has the same properties as crafting objective.
 
