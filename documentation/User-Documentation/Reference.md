@@ -429,15 +429,15 @@ Examples:
   
   - `redstone_wire[power=5,facing=1]` - Matches all blocks of type REDSTONE_WIRE and which have both a power of 5 and are facing 1
   
-  - `*_LOG` - Matches all LOGS
+  - `.*_LOG` - Matches all LOGS
   
-  - `*` - Matches everything
+  - `.*` - Matches everything
   
-  - `*[waterlogged=true]` - Matches all waterlogged blocks
+  - `.*[waterlogged=true]` - Matches all waterlogged blocks
   
   - `minecraft:blocks:flowers` - Matches all flowers
   
-  - `:blocks:crops[age=0]` - Matches all crops with a age of 0 meaning, not grown or just planted
+  - `:blocks:crops[age=0]` - Matches all crops with an age of 0 meaning, not grown / just planted
 
 ###Setting behaviour
 
