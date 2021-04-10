@@ -14,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerFishEvent;
@@ -47,9 +48,9 @@ public class FishObjective extends Objective implements Listener {
         notify = instruction.hasArgument("notify") || notifyInterval > 1;
     }
 
-    @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onFishCatch(final PlayerFishEvent event) {
         if (event.getState() != State.CAUGHT_FISH) {
             return;
@@ -70,7 +71,7 @@ public class FishObjective extends Objective implements Listener {
         }
         final FishData data = (FishData) dataMap.get(playerID);
         if (checkConditions(playerID)) {
-            data.catchFish();
+            data.catchFish(item.getAmount());
         }
         if (data.getAmount() <= 0) {
             completeObjective(playerID);
@@ -91,9 +92,11 @@ public class FishObjective extends Objective implements Listener {
     @Override
     public String getProperty(final String name, final String playerID) {
         switch (name.toLowerCase(Locale.ROOT)) {
+            case "amount":
+                return Integer.toString(amount - ((FishData) dataMap.get(playerID)).getAmount());
             case "left":
                 return Integer.toString(((FishData) dataMap.get(playerID)).getAmount());
-            case "amount":
+            case "total":
                 return Integer.toString(amount);
             default:
                 return "";
@@ -124,8 +127,8 @@ public class FishObjective extends Objective implements Listener {
             amount = Integer.parseInt(instruction);
         }
 
-        public void catchFish() {
-            amount--;
+        public void catchFish(final int caughtAmount) {
+            amount -= caughtAmount;
             update();
         }
 
