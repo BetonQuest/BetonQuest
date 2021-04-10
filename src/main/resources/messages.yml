@@ -15,9 +15,15 @@ pl:
   pullback: '&cMusisz dokonczyc swoja rozmowe!'
   items_given: '&2Otrzymano {1}&2 x{2}'
   items_taken: '&2Utracono {1}&2 x{2}'
+  money_given: '&2Received {1} {2}' # TODO: missing translation
+  money_taken: '&2Lost {1} {2}' # TODO: missing translation
+  point_given: '&2You received {1} points to {2}' # TODO: missing translation
+  point_taken: '&2You lost {1} points to {2}' # TODO: missing translation
+  point_multiplied: '&2Your points {2} are multiplied by {1}' # TODO: missing translation
   blocks_to_break: '&2Pozostalo {1} blokow do zniszczenia'
   blocks_to_place: '&2Pozostalo {1} blokow do postawienia'
   mobs_to_kill: '&2Pozostalo {1} stworzen do zabicia'
+  mobs_to_click: '&2{1} mobs left to click' # TODO: missing translation
   players_to_kill: '&2Pozostalo {1} graczy do zabicia'
   fish_to_catch: '&2Pozostalo {1} ryb do zlowienia'
   sheep_to_shear: '&2Pozostalo {1} owiec do ogolenia'
@@ -42,8 +48,8 @@ pl:
   seconds: 'sekund'
   and: 'i'
   password: 'haslo: '
-  condition_variable_met: 'yes'
-  condition_variable_not_met: 'no'
+  condition_variable_met: 'yes' # TODO: missing translation
+  condition_variable_not_met: 'no' # TODO: missing translation
 en:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bConversation with {1}&b started!&e===='
@@ -115,6 +121,9 @@ de:
   items_taken: '&2{1}&2 x{2} weggenommen.'
   money_given: '&2{1} {2} erhalten.'
   money_taken: '&2{1} {2} weggenommen.'
+  point_given: '&2Du hast {1} Punkte für {2} erhalten'
+  point_taken: '&2Du hast {1} Punkte von {2} verloren'
+  point_multiplied: '&2Deine Punkte in {2} wurden mit {1} multipliziert'
   blocks_to_break: '&2Noch {1} Blöcke abzubauen.'
   blocks_to_place: '&2Noch {1} Blöcke zu setzen.'
   mobs_to_kill: '&2Noch {1} Monster zu töten.'
@@ -124,6 +133,7 @@ de:
   sheep_to_shear: '&2Noch {1} Schafe zu scheren.'
   potions_to_brew: '&2Noch {1} Tränke zu brauen.'
   animals_to_breed: '&2Noch {1} Tiere zu züchten.'
+  items_to_pickup: '&2Noch {1} Dinge einzusammeln'
   items_to_smelt: '&2Noch {1} Dinge zu schmelzen'
   items_to_craft: '&2Noch {1} Dinge herzustellen'
   busy: '&cDu kannst dich nicht während eines Kampfes unterhalten.'
@@ -142,8 +152,8 @@ de:
   seconds: 'Sekunden'
   and: 'und'
   password: 'Passwort: '
-  condition_variable_met: 'yes'
-  condition_variable_not_met: 'no'
+  condition_variable_met: 'ja'
+  condition_variable_not_met: 'nein'
 fr:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bLa conversation avec {1}&b est engagee!&e===='
@@ -161,6 +171,11 @@ fr:
   pullback: '&cVous devez terminer la conversation!'
   items_given: '&2Vous recevez {1}&2 x{2}'
   items_taken: '&2Vous redonnez {1}&2 x{2}'
+  money_given: '&2Received {1} {2}' # TODO: missing translation
+  money_taken: '&2Lost {1} {2}' # TODO: missing translation
+  point_given: '&2You received {1} points to {2}' # TODO: missing translation
+  point_taken: '&2You lost {1} points to {2}' # TODO: missing translation
+  point_multiplied: '&2Your points {2} are multiplied by {1}' # TODO: missing translation
   blocks_to_break: '&2Encore {1} blocs a casser'
   blocks_to_place: '&2Encore {1} blocs a poser'
   mobs_to_kill: '&2Encore {1} mobs a tuer'
@@ -169,7 +184,8 @@ fr:
   fish_to_catch: '&2Il vous reste {1} poisson(s) a attraper!'
   sheep_to_shear: '&2Encore {1} mouton(s) a tondre.'
   potions_to_brew: '&2Encore {1} potion(s) a preparer.'
-  animals_to_breed: '&2{1} animals left to breed'
+  animals_to_breed: '&2{1} animals left to breed' # TODO: missing translation
+  items_to_pickup: '&2{1} items left to pickup' # TODO: missing translation
   items_to_smelt: '&2{1} items left to smelt' # TODO: missing translation
   items_to_craft: '&2{1} items left to craft' # TODO: missing translation
   busy: '&cVous ne pouvez pas parler pendant un combat.'
@@ -188,8 +204,8 @@ fr:
   seconds: 'secondes'
   and: 'et'
   password: 'mot de passe : '
-  condition_variable_met: 'yes'
-  condition_variable_not_met: 'no'
+  condition_variable_met: 'yes' # TODO: missing translation
+  condition_variable_not_met: 'no' # TODO: missing translation
 cn:
   conversation_prefix: "&2[&9{1}&2] "
   conversation_start: "&e====&b\u4e0e{1}&b\u5bf9\u8bdd\u4e2d&e===="
@@ -207,14 +223,21 @@ cn:
   pullback: "&c\u4f60\u8fd8\u5728\u5bf9\u8bdd\u4e2d!&a(\u8f93\u51651\u770b\u770b\u804a\u5929\u680f\u6709\u6ca1\u6709\u53cd\u5e94\u5427)"
   items_given: "&2\u4f60\u83b7\u5f97\u4e86 {2}\u4e2a{1}"
   items_taken: "&2\u4f60\u5931\u53bb\u4e86 {2}\u4e2a{1}"
+  money_given: '&2Received {1} {2}' # TODO: missing translation
+  money_taken: '&2Lost {1} {2}' # TODO: missing translation
+  point_given: '&2You received {1} points to {2}' # TODO: missing translation
+  point_taken: '&2You lost {1} points to {2}' # TODO: missing translation
+  point_multiplied: '&2Your points {2} are multiplied by {1}' # TODO: missing translation
   blocks_to_break: "&2\u8fd8\u9700\u8981\u518d\u7834\u574f{1}\u4e2a\u65b9\u5757"
   blocks_to_place: "&2\u8fd8\u9700\u8981\u518d\u653e\u7f6e{1}\u4e2a\u65b9\u5757"
   mobs_to_kill: "&2\u8fd8\u9700\u8981\u6740\u6b7b{1}\u4e2a\u602a\u7269"
+  mobs_to_click: '&2{1} mobs left to click' # TODO: missing translation
   players_to_kill: "&2{1} players left to kill"
   fish_to_catch: "&2\u8fd8\u9700\u8981\u9493 {1} \u6761\u9c7c"
   sheep_to_shear: "&2\u8fd8\u9700\u8981\u526a {1} \u53ea\u7f8a\u7684\u7f8a\u6bdb"
   potions_to_brew: "&2\u8fd8\u9700\u8981\u5236\u4f5c {1} \u679a\u836f\u6c34"
   animals_to_breed: "&2{1} animals left to breed"
+  items_to_pickup: '&2{1} items left to pickup' # TODO: missing translation
   items_to_smelt: '&2{1} items left to smelt' # TODO: missing translation
   items_to_craft: '&2{1} items left to craft' # TODO: missing translation
   busy: "&c\u4f60\u8fd8\u5728\u6218\u6597\u4e2d"
@@ -233,8 +256,8 @@ cn:
   seconds: "\u79d2"
   and: "\u548c"
   password: "\u5bc6\u7801: "
-  condition_variable_met: 'yes'
-  condition_variable_not_met: 'no'
+  condition_variable_met: 'yes' # TODO: missing translation
+  condition_variable_not_met: 'no' # TODO: missing translation
 es:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bLa conversacion con {1}&b ha comenzado.&e===='
@@ -252,14 +275,21 @@ es:
   pullback: '&cDebes finalizar la conversacion.'
   items_given: '&2Recibido {1}&2 x{2}'
   items_taken: '&2Perdido {1}&2 x{2}'
+  money_given: '&2Received {1} {2}' # TODO: missing translation
+  money_taken: '&2Lost {1} {2}' # TODO: missing translation
+  point_given: '&2You received {1} points to {2}' # TODO: missing translation
+  point_taken: '&2You lost {1} points to {2}' # TODO: missing translation
+  point_multiplied: '&2Your points {2} are multiplied by {1}' # TODO: missing translation
   blocks_to_break: '&2{1} bloques restantes que romper'
   blocks_to_place: '&2{1} bloques restantes que colocar'
   mobs_to_kill: '&2{1} jugadores restantes que matar'
+  mobs_to_click: '&2{1} mobs left to click' # TODO: missing translation
   players_to_kill: '&2{1} restantes que matar'
   fish_to_catch: '&2{1} peces restantes que pescar'
   sheep_to_shear: '&2{1} ovejas restantes que esquilar'
   potions_to_brew: '&2{1} pociones que crear'
-  animals_to_breed: '&2{1} animals left to breed'
+  animals_to_breed: '&2{1} animals left to breed' # TODO: missing translation
+  items_to_pickup: '&2{1} items left to pickup' # TODO: missing translation
   items_to_smelt: '&2{1} items left to smelt' # TODO: missing translation
   items_to_craft: '&2{1} items left to craft' # TODO: missing translation
   busy: '&cNo puedes hablar mientras luchas!'
@@ -278,8 +308,8 @@ es:
   seconds: 'segundos'
   and: 'y'
   password: 'clave: '
-  condition_variable_met: 'yes'
-  condition_variable_not_met: 'no'
+  condition_variable_met: 'yes' # TODO: missing translation
+  condition_variable_not_met: 'no' # TODO: missing translation
 nl:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bGesprek met {1}&b begonnen!&e===='
@@ -297,14 +327,21 @@ nl:
   pullback: '&cRondt eerst je gesprek af!'
   items_given: '&2Ontvangen {1}&2 x{2}'
   items_taken: '&2Afgegeven {1}&2 x{2}'
+  money_given: '&2Received {1} {2}' # TODO: missing translation
+  money_taken: '&2Lost {1} {2}' # TODO: missing translation
+  point_given: '&2You received {1} points to {2}' # TODO: missing translation
+  point_taken: '&2You lost {1} points to {2}' # TODO: missing translation
+  point_multiplied: '&2Your points {2} are multiplied by {1}' # TODO: missing translation
   blocks_to_break: '&2{1} blokken over om te breken.'
   blocks_to_place: '&2{1} blokken over om te plaatsen.'
   mobs_to_kill: '&2{1} monsters over om te doden.'
+  mobs_to_click: '&2{1} mobs left to click' # TODO: missing translation
   players_to_kill: '&2{1} spelers over om te doden.'
   fish_to_catch: '&2{1} vissen over om te vangen.'
   sheep_to_shear: '&2{1} schapen over om te scheren.'
   potions_to_brew: '&2{1} drankjes over om te brouwen.'
-  animals_to_breed: '&2{1} animals left to breed'
+  animals_to_breed: '&2{1} animals left to breed' # TODO: missing translation
+  items_to_pickup: '&2{1} items left to pickup' # TODO: missing translation
   items_to_smelt: '&2{1} items left to smelt' # TODO: missing translation
   items_to_craft: '&2{1} items left to craft' # TODO: missing translation
   busy: '&cJe kunt niet praten tijdens het vechten.'
@@ -323,8 +360,8 @@ nl:
   seconds: 'seconden'
   and: 'en'
   password: 'wachtwoord: '
-  condition_variable_met: 'yes'
-  condition_variable_not_met: 'no'
+  condition_variable_met: 'yes' # TODO: missing translation
+  condition_variable_not_met: 'no' # TODO: missing translation
 it:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bConversazione con {1}&b iniziata!&e===='
@@ -338,19 +375,25 @@ it:
   previous: '&2Precedente'
   next: '&2Successivo'
   inventory_full: '&e*&bIl tuo inventario è pieno!&e*'
-  changelog: '&f[BetonQuest]: &e*&bNew changelog is available in the plugin''s directory. Read the
-    changes and delete or rename the file to dismiss this message!&e*'
+  changelog: '&f[BetonQuest]: &e*&bNew changelog is available in the plugin''s directory. Read the changes and delete or rename the file to dismiss this message!&e*' # TODO: missing translation
   pullback: '&cDevi finire la conversazione!'
   items_given: '&2Hai ricevuto {1}&2 x{2}'
   items_taken: '&2Hai perso {1}&2 x{2}'
+  money_given: '&2Received {1} {2}' # TODO: missing translation
+  money_taken: '&2Lost {1} {2}' # TODO: missing translation
+  point_given: '&2You received {1} points to {2}' # TODO: missing translation
+  point_taken: '&2You lost {1} points to {2}' # TODO: missing translation
+  point_multiplied: '&2Your points {2} are multiplied by {1}' # TODO: missing translation
   blocks_to_break: '&2{1} blocchi rimasti da rompere'
   blocks_to_place: '&2{1} blocchi rimasti da piazzare'
   mobs_to_kill: '&2{1} nemici rimasti da uccidere'
+  mobs_to_click: '&2{1} mobs left to click' # TODO: missing translation
   players_to_kill: '&2{1} giocatori rimasti da uccidere'
   fish_to_catch: '&2{1} pesci rimasti da pescare'
   sheep_to_shear: '&2{1} pecore rimaste da tosare'
   potions_to_brew: '&2{1} pozioni da preparare'
   animals_to_breed: '&2{1} animali rimasti da far accoppiare'
+  items_to_pickup: '&2{1} items left to pickup' # TODO: missing translation
   items_to_smelt: '&2{1} items left to smelt' # TODO: missing translation
   items_to_craft: '&2{1} items left to craft' # TODO: missing translation
   busy: '&cNon puoi parlare mentre stai combattendo.'
@@ -360,17 +403,17 @@ it:
   compass: '&cObiettivi bussola'
   compass_page: Scegli l'obiettivo
   command_blocked: '&cNon puoi usare questo comando mentre stai parlando.'
-  language_changed: '&2Language changed!'
-  language_missing: '&cSpecify language'
-  language_not_exist: '&cThis language is not defined, possible options: '
+  language_changed: '&2Language changed!' # TODO: missing translation
+  language_missing: '&cSpecify language' # TODO: missing translation
+  language_not_exist: '&cThis language is not defined, possible options: ' # TODO: missing translation
   days: giorni
   hours: ore
   minutes: minuti
   seconds: secondi
   and: e
-  password: 'password: '
-  condition_variable_met: 'yes'
-  condition_variable_not_met: 'no'
+  password: 'password: ' # TODO: missing translation
+  condition_variable_met: 'yes' # TODO: missing translation
+  condition_variable_not_met: 'no' # TODO: missing translation
 hu:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bBeszélgetés a következővel {1}&b elkezdve!&e===='
@@ -388,14 +431,21 @@ hu:
   pullback: '&cBe kell fejeznie a beszélgetést!'
   items_given: '&2Kapott {1}&2 x{2}'
   items_taken: '&2Veszített {1}&2 x{2}'
+  money_given: '&2Received {1} {2}' # TODO: missing translation
+  money_taken: '&2Lost {1} {2}' # TODO: missing translation
+  point_given: '&2You received {1} points to {2}' # TODO: missing translation
+  point_taken: '&2You lost {1} points to {2}' # TODO: missing translation
+  point_multiplied: '&2Your points {2} are multiplied by {1}' # TODO: missing translation
   blocks_to_break: '&2{1} blokkot hagyott kitörni'
   blocks_to_place: '&2{1} blokkot hagyott lerakni'
   mobs_to_kill: '&2{1} a szörnyek megmaradtak'
+  mobs_to_click: '&2{1} mobs left to click' # TODO: missing translation
   players_to_kill: '&2{1} a játékosok ölni hagytak'
   fish_to_catch: '&2{1} a halak elkaptak'
   sheep_to_shear: '&2{1} juhok nyírni'
   potions_to_brew: '&2{1} italokat főzni'
   animals_to_breed: '&2{1} állatokat hagytak szaporodni'
+  items_to_pickup: '&2{1} items left to pickup' # TODO: missing translation
   items_to_smelt: '&2{1} items left to smelt' # TODO: missing translation
   items_to_craft: '&2{1} items left to craft' # TODO: missing translation
   busy: '&cNem harcolhat harc közben.'
@@ -414,5 +464,5 @@ hu:
   seconds: 'másodperc'
   and: 'és'
   password: 'jelszó: '
-  condition_variable_met: 'yes'
-  condition_variable_not_met: 'no'
+  condition_variable_met: 'yes' # TODO: missing translation
+  condition_variable_not_met: 'no' # TODO: missing translation
