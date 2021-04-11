@@ -37,8 +37,6 @@ public class JournalEvent extends QuestEvent {
         final String action = instruction.next();
         switch (action.toLowerCase(Locale.ROOT)) {
             case "update":
-            case "refresh":
-            case "reload":
                 name = null;
                 add = false;
                 break;
@@ -47,14 +45,14 @@ public class JournalEvent extends QuestEvent {
                 add = true;
                 break;
             case "delete":
-            case "remove":
-            case "del":
-            case "rm":
                 name = Utils.addPackage(instruction.getPackage(), instruction.next());
                 add = false;
                 break;
             default:
-                throw new InstructionParseException("Unknown journal action: " + action);
+                LogUtils.getLogger().log(Level.WARNING, "Jounal event will only allow 'delete' as argument for deleting journal pages, but '" + action + "' was used in event: " + getFullId());
+                name = Utils.addPackage(instruction.getPackage(), instruction.next());
+                add = false;
+                break;
         }
     }
 
