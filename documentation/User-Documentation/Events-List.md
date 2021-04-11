@@ -243,15 +243,19 @@ This event will check a condition, and based on the outcome it will run the firs
 
 **static**
 
-Adds or deletes an entry to/from player’s journal. Entries are defined in `journal.yml` The first argument is action (add/del), the second one is name of the entry. You can also use only one argument, `update`, it will simply update the journal without addin any entries. It's useful when you need to update the main page.
+Adds or deletes an entry to/from a player's journal. Journal entries have to be defined in `journal.yml`. The first
+argument is the action to perform, the second one is the name of the entry if required. Changing journal entries will
+also reload the journal.
+
+Possible actions are:
+- `add`: Adds a page to the journal.
+- `delete`: Deletes a page from the journal.
+- `update`: Refreshes the journal. This is especially useful when you need to update the main page.
 
 !!! example
     ```YAML
     journal add quest_started
-    ```
-    
-!!! example
-    ```YAML
+    journal delete quest_available
     journal update
     ```
 

@@ -1605,7 +1605,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     objectiveID = new ObjectiveID(null, name);
                 } catch (final ObjectNotFoundException e) {
                     sendMessage(sender, "error", e.getMessage());
-                    LOG.warning(null, "Could not fine objective: " + e.getMessage(), e);
+                    LOG.warning(null, "Could not find objective: " + e.getMessage(), e);
                     return;
                 }
                 for (final Player player : Bukkit.getOnlinePlayers()) {

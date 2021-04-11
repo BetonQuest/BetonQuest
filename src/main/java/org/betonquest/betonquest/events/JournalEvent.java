@@ -18,9 +18,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Date;
+import java.util.Locale;
 
 /**
- * Adds the entry to player's journal
+ * Adds the entry to player's journal.
  */
 @SuppressWarnings("PMD.CommentRequired")
 @CustomLog
@@ -29,16 +30,26 @@ public class JournalEvent extends QuestEvent {
     private final String name;
     private final boolean add;
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public JournalEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         staticness = true;
-        final String first = instruction.next();
-        if ("update".equalsIgnoreCase(first)) {
-            name = null;
-            add = false;
-        } else {
-            add = "add".equalsIgnoreCase(first);
-            name = Utils.addPackage(instruction.getPackage(), instruction.next());
+        final String action = instruction.next();
+        switch (action.toLowerCase(Locale.ROOT)) {
+            case "update":
+                name = null;
+                add = false;
+                break;
+            case "add":
+                name = Utils.addPackage(instruction.getPackage(), instruction.next());
+                add = true;
+                break;
+            case "delete":
+                name = Utils.addPackage(instruction.getPackage(), instruction.next());
+                add = false;
+                break;
+            default:
+                throw new InstructionParseException("Unknown journal action: " + action);
         }
     }
 
@@ -53,9 +64,7 @@ public class JournalEvent extends QuestEvent {
                     journal.removePointer(name);
                     journal.update();
                 }
-                BetonQuest.getInstance().getSaver().add(new Saver.Record(Connector.UpdateType.REMOVE_ALL_ENTRIES, new String[]{
-                        name
-                }));
+                BetonQuest.getInstance().getSaver().add(new Saver.Record(Connector.UpdateType.REMOVE_ALL_ENTRIES, name));
             }
         } else {
             final PlayerData playerData = PlayerConverter.getPlayer(playerID) == null ? new PlayerData(playerID) : BetonQuest.getInstance().getPlayerData(playerID);
