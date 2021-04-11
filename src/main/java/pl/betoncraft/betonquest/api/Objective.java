@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.GlobalObjectives;
 import pl.betoncraft.betonquest.Instruction;
+import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.database.Connector;
 import pl.betoncraft.betonquest.database.Saver;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
@@ -16,6 +17,7 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -42,11 +44,11 @@ public abstract class Objective {
     protected QREHandler qreHandler = new QREHandler();
 
     /**
-     * Contains all data objects of the players with this objective active
+     * Contains all data objects of the players with this objective active.
      */
     protected Map<String, ObjectiveData> dataMap = new HashMap<>();
     /**
-     * Should be set with the data class used to hold players' information
+     * Should be set with the data class used to hold players' information.
      */
     protected Class<? extends ObjectiveData> template;
 
@@ -181,6 +183,28 @@ public abstract class Objective {
     }
 
     /**
+     * Send notification for progress with the objective.
+     *
+     * @param messageName meessage name to use in messages.yml
+     * @param playerID player to send notification to
+     * @param variables variables for putting into the message
+     */
+    protected void sendNotify(final String playerID, final String messageName, final Object... variables) {
+        try {
+            final String[] stringVariables = Arrays.stream(variables)
+                    .map(String::valueOf)
+                    .toArray(String[]::new);
+            Config.sendNotify(instruction.getPackage().getName(), playerID, messageName, stringVariables, messageName + ",info");
+        } catch (final QuestRuntimeException exception) {
+            try {
+                LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the '" + messageName + "' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+            } catch (final InstructionParseException e) {
+                LogUtils.logThrowableReport(e);
+            }
+        }
+    }
+
+    /**
      * Adds this new objective to the player. Also updates the database with the
      * objective.
      *
@@ -238,7 +262,7 @@ public abstract class Objective {
     }
 
     /**
-     * Checks if the player has this objective
+     * Checks if the player has this objective.
      *
      * @param playerID ID of the player
      * @return true if the player has this objective
@@ -248,7 +272,7 @@ public abstract class Objective {
     }
 
     /**
-     * Returns the data of the specified player
+     * Returns the data of the specified player.
      *
      * @param playerID ID of the player
      * @return the data string for this objective
@@ -295,14 +319,16 @@ public abstract class Objective {
     }
 
     /**
-     * @return if the objective is a global objective
+     * Returns whether the objective is global.
+     *
+     * @return true if the objective is global, false otherwise
      */
     public boolean isGlobal() {
         return global;
     }
 
     /**
-     * A task that may throw a {@link QuestRuntimeException}
+     * A task that may throw a {@link QuestRuntimeException}.
      */
     protected interface QREThrowing {
 
@@ -310,7 +336,7 @@ public abstract class Objective {
     }
 
     /**
-     * Stores player's data for the objective
+     * Stores player's data for the objective.
      */
     protected static class ObjectiveData {
 
@@ -364,8 +390,8 @@ public abstract class Objective {
         @SuppressWarnings("PMD.DoNotUseThreads")
         protected void update() {
             final Saver saver = BetonQuest.getInstance().getSaver();
-            saver.add(new Saver.Record(Connector.UpdateType.REMOVE_OBJECTIVES, new String[]{playerID, objID}));
-            saver.add(new Saver.Record(Connector.UpdateType.ADD_OBJECTIVES, new String[]{playerID, objID, toString()}));
+            saver.add(new Saver.Record(Connector.UpdateType.REMOVE_OBJECTIVES, playerID, objID));
+            saver.add(new Saver.Record(Connector.UpdateType.ADD_OBJECTIVES, playerID, objID, toString()));
             final QuestDataUpdateEvent event = new QuestDataUpdateEvent(playerID, objID, toString());
             Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> Bukkit.getPluginManager().callEvent(event));
             // update the journal so all possible variables display correct
@@ -377,12 +403,12 @@ public abstract class Objective {
 
     /**
      * Can handle thrown{@link QuestRuntimeException} and rate limits them so
-     * they don't spam console that hard
+     * they don't spam console that hard.
      */
     protected class QREHandler {
 
         /**
-         * Interval in which errors are logged
+         * Interval in which errors are logged.
          */
         public static final int ERROR_RATE_LIMIT_MILLIS = 5000;
 
@@ -393,7 +419,7 @@ public abstract class Objective {
 
         /**
          * Runs a task and logs occurring quest runtime exceptions with a rate
-         * limit
+         * limit.
          *
          * @param qreThrowing a task that may throw a quest runtime exception
          */

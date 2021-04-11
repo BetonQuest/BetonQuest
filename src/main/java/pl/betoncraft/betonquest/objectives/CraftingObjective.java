@@ -1,35 +1,34 @@
 package pl.betoncraft.betonquest.objectives;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.item.QuestItem;
+import pl.betoncraft.betonquest.utils.InventoryUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-import java.util.Arrays;
 import java.util.Locale;
-import java.util.Objects;
 
 /**
  * Player has to craft specified amount of items.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods"})
+@SuppressWarnings({"PMD.CommentRequired"})
 public class CraftingObjective extends Objective implements Listener {
 
     private final QuestItem item;
     private final int amount;
+    private final boolean notify;
+    private final int notifyInterval;
 
     public CraftingObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
@@ -39,6 +38,8 @@ public class CraftingObjective extends Objective implements Listener {
         if (amount <= 0) {
             throw new InstructionParseException("Amount cannot be less than 1");
         }
+        notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
+        notify = instruction.hasArgument("notify") || notifyInterval > 1;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -48,97 +49,44 @@ public class CraftingObjective extends Objective implements Listener {
         }
         final Player player = (Player) event.getWhoClicked();
         final String playerID = PlayerConverter.getID(player);
-        final CraftData playerData = (CraftData) dataMap.get(playerID);
         if (containsPlayer(playerID) && item.compare(event.getRecipe().getResult()) && checkConditions(playerID)) {
-            final int crafted = calculateCraftAmount(event);
-            playerData.subtract(crafted);
-            if (playerData.isZero()) {
-                completeObjective(playerID);
-            }
+            progressCraftObjective(event, playerID);
+        }
+    }
+
+    private void progressCraftObjective(final CraftItemEvent event, final String playerID) {
+        final int crafted = calculateCraftAmount(event);
+        final CraftData playerData = (CraftData) dataMap.get(playerID);
+        playerData.subtract(crafted);
+        if (playerData.isZero()) {
+            completeObjective(playerID);
+        } else if (notify && playerData.getAmount() % notifyInterval == 0) {
+            sendNotify(playerID, "items_to_craft", playerData);
         }
     }
 
     private static int calculateCraftAmount(final CraftItemEvent event) {
+        final ItemStack result = event.getRecipe().getResult();
+        final PlayerInventory inventory = event.getWhoClicked().getInventory();
+        final ItemStack[] ingredients = event.getInventory().getMatrix();
         switch (event.getClick()) {
             case SHIFT_LEFT:
             case SHIFT_RIGHT:
-                return calculateShiftCraftAmount(event);
+                return InventoryUtils.calculateShiftCraftAmount(result, inventory, ingredients);
             case CONTROL_DROP:
-                return calculateMaximumCraftAmount(event);
+                return InventoryUtils.calculateMaximumCraftAmount(result, ingredients);
             case NUMBER_KEY:
-                return calculateHotbarCraftAmount(event);
+                return InventoryUtils.calculateSwapCraftAmount(result, inventory.getItem(event.getHotbarButton()));
             case SWAP_OFFHAND:
-                return calculateOffhandCraftAmount(event);
+                return InventoryUtils.calculateSwapCraftAmount(result, inventory.getItemInOffHand());
             case DROP:
-                return event.getRecipe().getResult().getAmount();
+                return result.getAmount();
             case LEFT:
             case RIGHT:
-                return calculateSimpleCraftAmount(event);
+                return InventoryUtils.calculateSimpleCraftAmount(result, event.getCursor());
             default:
                 return 0;
         }
-    }
-
-    private static int calculateShiftCraftAmount(final CraftItemEvent event) {
-        final ItemStack craftResult = event.getRecipe().getResult();
-        final int remainingSpace = calculateRemainingSpace(event.getWhoClicked(), craftResult);
-        final int itemsPerCraft = craftResult.getAmount();
-        final int spaceForCrafts = remainingSpace / itemsPerCraft;
-        return Math.min(calculateMaximumCraftActions(event), spaceForCrafts) * itemsPerCraft;
-    }
-
-    private static int calculateMaximumCraftAmount(final CraftItemEvent event) {
-        final int itemsPerCraft = event.getRecipe().getResult().getAmount();
-        return calculateMaximumCraftActions(event) * itemsPerCraft;
-    }
-
-    private static int calculateMaximumCraftActions(final CraftItemEvent event) {
-        return Arrays.stream(event.getInventory().getMatrix())
-                .filter(Objects::nonNull)
-                .filter(item -> item.getType() != Material.AIR)
-                .mapToInt(ItemStack::getAmount)
-                .min()
-                .orElse(Integer.MAX_VALUE);
-    }
-
-    private static int calculateRemainingSpace(final HumanEntity player, final ItemStack crafted) {
-        int remainingSpace = 0;
-        for (final ItemStack i : player.getInventory().getStorageContents()) {
-            if (isEmptySlot(i)) {
-                remainingSpace += crafted.getMaxStackSize();
-            } else if (i.isSimilar(crafted)) {
-                remainingSpace += crafted.getMaxStackSize() - i.getAmount();
-            }
-        }
-        return remainingSpace;
-    }
-
-    private static int calculateHotbarCraftAmount(final CraftItemEvent event) {
-        assert event.getClick() == ClickType.NUMBER_KEY;
-        final int hotbarSlot = event.getHotbarButton();
-        final ItemStack hotbarItem = event.getWhoClicked().getInventory().getItem(hotbarSlot);
-        return isEmptySlot(hotbarItem) ? event.getRecipe().getResult().getAmount() : 0;
-    }
-
-    private static int calculateOffhandCraftAmount(final CraftItemEvent event) {
-        assert event.getClick() == ClickType.SWAP_OFFHAND;
-        final ItemStack offhand = event.getWhoClicked().getInventory().getItemInOffHand();
-        return isEmptySlot(offhand) ? event.getRecipe().getResult().getAmount() : 0;
-    }
-
-
-    private static int calculateSimpleCraftAmount(final CraftItemEvent event) {
-        final ItemStack cursor = event.getCursor();
-        final ItemStack result = event.getRecipe().getResult();
-        if (isEmptySlot(cursor)
-                || cursor.isSimilar(result) && cursor.getAmount() + result.getAmount() <= cursor.getMaxStackSize()) {
-            return result.getAmount();
-        }
-        return 0;
-    }
-
-    private static boolean isEmptySlot(final ItemStack slotItem) {
-        return slotItem == null || slotItem.getType().equals(Material.AIR);
     }
 
     @Override
