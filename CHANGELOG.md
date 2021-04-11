@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - mmobkill objective notify argument not working correctly
 - `fish` objective didn't count the amount of fish caught in one go (if modified by e.g. mcMMO)
 - fixed smelt objective: only taking out normally did count, shift-extract got canceled
+- empty values in `variable` objective now don't break on player join 
 ### Security
 - it was possible to put a QuestItem into a chest
 
