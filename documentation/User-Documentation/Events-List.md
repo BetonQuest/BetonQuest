@@ -249,13 +249,13 @@ also reload the journal.
 
 Possible actions are:
 - `add`: Adds a page to the journal.
-- `remove` / `delete` / `del` / `rm`: Deletes a page from the journal.
-- `update` / `refresh` / `reload`: Refreshes the journal. This is especially useful when you need to update the main page.
+- `delete`: Deletes a page from the journal.
+- `update`: Refreshes the journal. This is especially useful when you need to update the main page.
 
 !!! example
     ```YAML
     journal add quest_started
-    journal del quest_available
+    journal delete quest_available
     journal update
     ```
 

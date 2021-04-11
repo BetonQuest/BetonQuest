@@ -37,8 +37,6 @@ public class JournalEvent extends QuestEvent {
         final String action = instruction.next();
         switch (action.toLowerCase(Locale.ROOT)) {
             case "update":
-            case "refresh":
-            case "reload":
                 name = null;
                 add = false;
                 break;
@@ -47,9 +45,6 @@ public class JournalEvent extends QuestEvent {
                 add = true;
                 break;
             case "delete":
-            case "remove":
-            case "del":
-            case "rm":
                 name = Utils.addPackage(instruction.getPackage(), instruction.next());
                 add = false;
                 break;
