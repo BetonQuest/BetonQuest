@@ -2,11 +2,11 @@
 
 ## Action: `action`
 
-This objective completes when player clicks on given block type. This can be further limited by location condition and
-item in hand condition. First argument is type of the click, it can be right, left or any. Next is a
-[Block Selector](/User-Documentation/Reference/#block-selectors). You can also specify `loc:` argument, followed by
-standard location format and `range:` followed by a number (or variable). It will define where the clicked block needs
-to be, as opposed to "where you must be" in location condition. If you add argument `cancel`, the click will be canceled
+This objective completes when the player clicks on the given block type. This can be further limited by the location condition and
+the item in hand condition. The first argument is the type of the click, it can be right, left or any. Next is a
+[Block Selector](/User-Documentation/Reference/#block-selectors). You can also specify the `loc:` argument, followed by
+the standard location format and the `range:` followed by a number (or variable). It will define where the clicked block needs
+to be, as opposed to "where you must be" in location condition. If you add the argument `cancel`, the click will be canceled
 (chest will not open, button will not be pressed etc.)
 
 Action objective contains one property, `location`. It's a string formatted like `X: 100, Y: 200, Z:300`. It does not
@@ -31,9 +31,9 @@ give accurate results. Experiment with this objective a bit to make sure you've 
 
 ## Block: `block`
 
-To complete this objective player must break or place specified amount of blocks. The first argument is a
+To complete this objective the player must break or place the specified amount of blocks. The first argument is a
 [Block Selector](/User-Documentation/Reference/#block-selectors). Next is amount. It can be more than 0 for placing and
-less than 0 for destroying. You can also use `notify` keyword to display messages to the player each time he updates
+less than 0 for destroying. You can also use the `notify` keyword to display messages to the player each time he updates
 amount of blocks, optionally with the notification interval after colon.
 
 This objective has two properties, `amount` and `left`. Amount is current amount of blocks in the objective, left is
@@ -47,10 +47,10 @@ amount needed to complete the objective. Note that it may sometimes be negative!
 ## Breed animals: `breed`
 
 This objective is completed by breeding animals of specified type. The first argument is the
-[animal type](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html) and second is amount (positive
-integer). You can add `notify` argument to display a message with remaining amount each time the animal is bred,
-optionally with the notification interval after colon. While you can specify any entity, the objective will be
-completable only for breedable ones.
+[animal type](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html) and the second argument is the
+amount (positive integer). You can add the `notify` argument to display a message with the remaining amount each time
+the animal is bred, optionally with the notification interval after a colon. While you can specify any entity, the
+objective will be completable only for breedabgle ones.
 
 !!! example
     ```YAML
@@ -346,7 +346,7 @@ Smelting has the same properties as crafting objective.
 
 ## Step on pressure plate: `step`
 
-To complete this objective the player has to step on a pressure plate at given location. The type of plate does not
+To complete this objective the player has to step on a pressure plate at a given location. The type of plate does not
 matter. The first and only required argument is a location. If the pressure plate is not present at that location, the
 objective will not be completable and will log errors in the console.
 
