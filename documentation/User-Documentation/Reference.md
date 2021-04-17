@@ -167,6 +167,7 @@ journal_main_page:
 Each string can have text in different languages, list of conditions separated by commas (these must be met for the text to show in the journal) and `priority`, which controls the order of texts. You can use conversation variables in the texts, but they will only be updated when the player gets his journal with the **/journal** command. Color codes are supported.
 
 If you want your main page take a separate page (so entries will be displayed on next free page), set `full_main_page` in _config.yml_ to "true".
+If you want to manually wrap the page, use the pipe `|` character. Use \n to go to a new line.
 
 ## Tags
 
