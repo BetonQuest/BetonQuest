@@ -156,11 +156,6 @@ public class InventoryConvIO implements Listener, ConversationIO {
             npc.setDurability((short) 3);
             final SkullMeta npcMeta = (SkullMeta) npc.getItemMeta();
             npcMeta.setDisplayName(npcNameColor + npcName);
-            // NPC Text
-            npcMeta.setLore(Arrays.asList(LocalChatPaginator.wordWrap(
-                    Utils.replaceReset(response, npcTextColor),
-                    45)));
-
             npc.setItemMeta(npcMeta);
             Bukkit.getScheduler().runTaskAsynchronously(BetonQuest.getInstance(), () -> {
                 try {
@@ -174,6 +169,12 @@ public class InventoryConvIO implements Listener, ConversationIO {
                 }
             });
         }
+
+        final SkullMeta npcMeta = (SkullMeta) npc.getItemMeta();
+        npcMeta.setLore(Arrays.asList(LocalChatPaginator.wordWrap(
+                Utils.replaceReset(response, npcTextColor), 45)));
+        npc.setItemMeta(npcMeta);
+
         buttons[0] = npc;
         // this is the number of an option
         int next = 0;
