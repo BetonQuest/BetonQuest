@@ -41,6 +41,8 @@ public abstract class Objective {
     protected EventID[] events;
     protected boolean persistent;
     protected boolean global;
+    protected final int notifyInterval;
+    protected final boolean notify;
     protected QREHandler qreHandler = new QREHandler();
 
     /**
@@ -102,6 +104,8 @@ public abstract class Objective {
                 throw new InstructionParseException("Error while parsing objective conditions: " + e.getMessage(), e);
             }
         }
+        notifyInterval = instruction.getInt(instruction.getOptional("notify"), 0);
+        notify = notifyInterval > 0 || instruction.hasArgument("notify");
     }
 
     /**
