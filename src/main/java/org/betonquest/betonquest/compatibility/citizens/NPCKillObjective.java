@@ -4,8 +4,8 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.MobKillNotifier.MobKilledEvent;
-import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -14,23 +14,21 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
 /**
- * Player has to kill an NPC
+ * Player has to kill an NPC.
  */
 @SuppressWarnings("PMD.CommentRequired")
-public class NPCKillObjective extends Objective implements Listener {
+public class NPCKillObjective extends CountingObjective implements Listener {
 
     private final int npcId;
-    private final int amount;
 
     public NPCKillObjective(final Instruction instruction) throws InstructionParseException {
-        super(instruction);
-        template = NPCData.class;
+        super(instruction, "mobs_to_kill");
         npcId = instruction.getInt();
         if (npcId < 0) {
             throw new InstructionParseException("NPC ID cannot be less than 0");
         }
-        amount = instruction.getInt(instruction.getOptional("amount"), 1);
-        if (amount <= 0) {
+        targetAmount = instruction.getInt(instruction.getOptional("amount"), 1);
+        if (targetAmount <= 0) {
             throw new InstructionParseException("Amount cannot be less than 1");
         }
     }
@@ -45,12 +43,9 @@ public class NPCKillObjective extends Objective implements Listener {
             return;
         }
         final String playerID = PlayerConverter.getID(event.getPlayer());
-        final NPCData playerData = (NPCData) dataMap.get(playerID);
         if (containsPlayer(playerID) && checkConditions(playerID)) {
-            playerData.kill();
-            if (playerData.killed()) {
-                completeObjective(playerID);
-            }
+            getCountingData(playerID).progress();
+            completeIfDoneOrNotify(playerID);
         }
     }
 
@@ -63,44 +58,4 @@ public class NPCKillObjective extends Objective implements Listener {
     public void stop() {
         HandlerList.unregisterAll(this);
     }
-
-    @Override
-    public String getDefaultDataInstruction() {
-        return Integer.toString(amount);
-    }
-
-    @Override
-    public String getProperty(final String name, final String playerID) {
-        if ("left".equalsIgnoreCase(name)) {
-            return Integer.toString(amount - ((NPCData) dataMap.get(playerID)).getAmount());
-        } else if ("amount".equalsIgnoreCase(name)) {
-            return Integer.toString(((NPCData) dataMap.get(playerID)).getAmount());
-        }
-        return "";
-    }
-
-    public static class NPCData extends ObjectiveData {
-
-        private int amount;
-
-        public NPCData(final String instruction, final String playerID, final String objID) {
-            super(instruction, playerID, objID);
-            amount = Integer.parseInt(instruction);
-        }
-
-        private void kill() {
-            amount--;
-            update();
-        }
-
-        private boolean killed() {
-            return amount <= 0;
-        }
-
-        private int getAmount() {
-            return amount;
-        }
-
-    }
-
 }
