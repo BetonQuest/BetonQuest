@@ -52,7 +52,7 @@ public abstract class Objective {
     /**
      * Should be set with the data class used to hold players' information.
      */
-    protected Class<? extends ObjectiveData> template;
+    protected Class<? extends ObjectiveData> template = ObjectiveData.class;
 
     /**
      * <p>

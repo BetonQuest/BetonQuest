@@ -1,8 +1,10 @@
 package org.betonquest.betonquest.utils;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -20,7 +22,7 @@ public final class PlayerConverter {
      * @param player - Player object from which playerID needs to be extracted
      * @return playerID of the player
      */
-    public static String getID(final Player player) {
+    public static String getID(final OfflinePlayer player) {
         return player.getUniqueId().toString();
     }
 
@@ -36,13 +38,23 @@ public final class PlayerConverter {
     }
 
     /**
-     * Returns the Player object described by passed playerID.
+     * Returns the online Player object described by passed playerID.
      *
      * @param playerID - playerID
-     * @return the Player object
+     * @return the Player object or null if the player is not online
      */
     public static Player getPlayer(final String playerID) {
         return Bukkit.getPlayer(UUID.fromString(playerID));
+    }
+
+    /**
+     * Returns the online Player object described by passed playerID.
+     *
+     * @param playerID player uuid as String
+     * @return the Player object, wrapped in an optional
+     */
+    public static Optional<Player> getOptionalPlayer(final String playerID) {
+        return Optional.ofNullable(getPlayer(playerID));
     }
 
     public static String getName(final String playerID) {
