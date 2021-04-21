@@ -94,6 +94,9 @@ public class ExperienceObjective extends Objective implements Listener {
     }
 
     private class LevelChangeListener implements Listener {
+        public LevelChangeListener() {
+        }
+
         @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
         public void onLevelChangeEvent(final PlayerLevelChangeEvent event) {
             onExperienceChange(event.getPlayer(), event.getNewLevel(), event.getOldLevel());
@@ -101,6 +104,9 @@ public class ExperienceObjective extends Objective implements Listener {
     }
 
     private class ExperienceChangeListener implements Listener {
+        public ExperienceChangeListener() {
+        }
+
         @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
         public void onExpChangeEvent(final PlayerExpChangeEvent event) {
             final int oldExperience = event.getPlayer().getTotalExperience();
