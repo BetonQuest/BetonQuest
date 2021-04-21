@@ -38,7 +38,7 @@ public class ObjectiveLevelUpEvent extends Objective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onJobsLevelUpEvent(final JobsLevelUpEvent event) {
         if (event.getJobName().equalsIgnoreCase(this.sJobName)) {
-            final String playerID = PlayerConverter.getID(event.getPlayer().getPlayer().getPlayer());
+            final String playerID = PlayerConverter.getID(event.getPlayer().getPlayer());
             if (containsPlayer(playerID) && checkConditions(playerID)) {
                 completeObjective(playerID);
             }
