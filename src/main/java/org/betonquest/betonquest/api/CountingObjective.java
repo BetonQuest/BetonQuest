@@ -239,7 +239,7 @@ public abstract class CountingObjective extends Objective {
          * @return self for chaining statements
          */
         public CountingData progress(final int amount) {
-            return subtract(amount * directionFactor);
+            return add(amount * directionFactor);
         }
 
         /**
@@ -258,30 +258,12 @@ public abstract class CountingObjective extends Objective {
          * @return self for chaining statements
          */
         public CountingData regress(final int amount) {
-            return add(amount * directionFactor);
+            return subtract(amount * directionFactor);
         }
 
         /**
-         * Move one unit in negative direction. This is <b>not</b> direction-aware.
-         *
-         * @return self for chaining statements
-         */
-        public CountingData subtract() {
-            return subtract(1);
-        }
-
-        /**
-         * Move the given amount of units in negative direction. This is <b>not</b> direction-aware.
-         *
-         * @param amount units to progress
-         * @return self for chaining statements
-         */
-        public CountingData subtract(final int amount) {
-            return change(-amount);
-        }
-
-        /**
-         * Move one unit in positive direction. This is <b>not</b> direction-aware.
+         * Move one unit in positive direction. Same as {@link #progress()} when the target unit amount is positive.
+         * This is <b>not</b> direction-aware.
          *
          * @return self for chaining statements
          */
@@ -290,12 +272,34 @@ public abstract class CountingObjective extends Objective {
         }
 
         /**
-         * Move the given amount of units in positive direction. This is <b>not</b> direction-aware.
+         * Move the given amount of units in positive direction. Same as {@link #progress(int)} when the target unit
+         * amount is positive. This is <b>not</b> direction-aware.
          *
          * @param amount units to progress
          * @return self for chaining statements
          */
         public CountingData add(final int amount) {
+            return change(-amount);
+        }
+
+        /**
+         * Move one unit in negative direction. Same as {@link #regress()} when the target unit amount is negative. This
+         * is <b>not</b> direction-aware.
+         *
+         * @return self for chaining statements
+         */
+        public CountingData subtract() {
+            return subtract(1);
+        }
+
+        /**
+         * Move the given amount of units in negative direction. Same as {@link #regress(int)} when the target unit
+         * amount is negative. This is <b>not</b> direction-aware.
+         *
+         * @param amount units to progress
+         * @return self for chaining statements
+         */
+        public CountingData subtract(final int amount) {
             return change(amount);
         }
 
