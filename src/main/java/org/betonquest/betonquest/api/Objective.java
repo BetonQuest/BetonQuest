@@ -104,8 +104,9 @@ public abstract class Objective {
                 throw new InstructionParseException("Error while parsing objective conditions: " + e.getMessage(), e);
             }
         }
-        notifyInterval = instruction.getInt(instruction.getOptional("notify"), 0);
-        notify = notifyInterval > 0 || instruction.hasArgument("notify");
+        final int customNotifyInterval = instruction.getInt(instruction.getOptional("notify"), 0);
+        notify = customNotifyInterval > 0 || instruction.hasArgument("notify");
+        notifyInterval = Math.max(1, customNotifyInterval);
     }
 
     /**
