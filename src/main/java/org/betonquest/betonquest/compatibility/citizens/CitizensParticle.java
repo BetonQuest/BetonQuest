@@ -19,8 +19,14 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * Displays a particle above NPCs with conversations.
@@ -222,7 +228,7 @@ public class CitizensParticle extends BukkitRunnable {
                 }
 
                 // prepare effect location
-                final Location loc = npc.getStoredLocation().clone();
+                final Location loc = npc.getStoredLocation();
                 loc.setPitch(-90);
 
                 // fire the effect

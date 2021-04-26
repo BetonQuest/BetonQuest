@@ -228,7 +228,7 @@ public class CitizensHologram extends BukkitRunnable {
                 if (npcHologram.hologram != null) {
                     final NPC npc = CitizensAPI.getNPCRegistry().getById(entry.getKey());
                     if (npc != null) {
-                        npcHologram.hologram.teleport(npc.getStoredLocation().clone().add(npcHologram.vector));
+                        npcHologram.hologram.teleport(npc.getStoredLocation().add(npcHologram.vector));
                     }
                 }
             }
@@ -241,7 +241,7 @@ public class CitizensHologram extends BukkitRunnable {
             if (BetonQuest.conditions(PlayerConverter.getID(player), npcHologram.conditions)) {
                 hologramEnabled = true;
                 if (npcHologram.hologram == null) {
-                    final Hologram hologram = HologramsAPI.createHologram(BetonQuest.getInstance(), npc.getStoredLocation().clone().add(npcHologram.vector));
+                    final Hologram hologram = HologramsAPI.createHologram(BetonQuest.getInstance(), npc.getStoredLocation().add(npcHologram.vector));
                     hologram.getVisibilityManager().setVisibleByDefault(false);
                     updateHologramForPlayersLines(npcHologram, hologram);
                     npcHologram.hologram = hologram;
