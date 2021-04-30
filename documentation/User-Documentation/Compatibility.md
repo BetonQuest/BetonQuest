@@ -772,7 +772,7 @@ menu_conv_io:
 
   npc_name_type: chat
   npc_name_align: center
-  npc_name_format: '&e{npc_name}&r
+  npc_name_format: '&e{npc_name}&r'
 ```
 
 Where:
