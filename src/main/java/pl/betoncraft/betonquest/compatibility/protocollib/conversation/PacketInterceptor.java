@@ -2,6 +2,7 @@ package pl.betoncraft.betonquest.compatibility.protocollib.conversation;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.async.AsyncListenerHandler;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
@@ -11,7 +12,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.protocollib.wrappers.WrapperPlayServerChat;
 import pl.betoncraft.betonquest.conversation.Conversation;
@@ -80,7 +80,8 @@ public class PacketInterceptor implements Interceptor, Listener {
             }
         };
 
-        ProtocolLibrary.getProtocolManager().addPacketListener(packetAdapter);
+        final AsyncListenerHandler handler = ProtocolLibrary.getProtocolManager().getAsynchronousManager().registerAsyncHandler(packetAdapter);
+        handler.start();
     }
 
     /**
@@ -93,7 +94,7 @@ public class PacketInterceptor implements Interceptor, Listener {
 
     @Override
     public void sendMessage(final BaseComponent... message) {
-        final BaseComponent[] components = (BaseComponent[]) ArrayUtils.addAll(new TextComponent[]{new TextComponent(MESSAGE_PASSTHROUGH_TAG)}, message);
+        final BaseComponent[] components = ArrayUtils.addAll(new TextComponent[]{new TextComponent(MESSAGE_PASSTHROUGH_TAG)}, message);
         player.spigot().sendMessage(components);
     }
 
@@ -101,16 +102,11 @@ public class PacketInterceptor implements Interceptor, Listener {
     @Override
     public void end() {
         // Stop Listening for Packets
-        ProtocolLibrary.getProtocolManager().removePacketListener(packetAdapter);
+        ProtocolLibrary.getProtocolManager().getAsynchronousManager().unregisterAsyncHandler(packetAdapter);
 
         //Send all messages to player
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                for (final WrapperPlayServerChat message : messages) {
-                    message.sendPacket(player);
-                }
-            }
-        }.runTaskLater(BetonQuest.getInstance(), 20);
+        for (final WrapperPlayServerChat message : messages) {
+            message.sendPacket(player);
+        }
     }
 }
