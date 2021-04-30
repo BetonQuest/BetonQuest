@@ -337,10 +337,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check previous Jobs
-        if: "needs.deploy-artifacts.result != 'success' || needs.deploy-documentation.result != 'success'"
-        run: |
-          exit 1
       - name: Set variables from 'Prepare Build Variables'
         run: |
           echo "VERSION=${{ needs.prepare.outputs.VERSION }}" >> $GITHUB_ENV
@@ -349,6 +345,10 @@ jobs:
           echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
       - name: Checkout source code
         uses: actions/checkout@v2
+      - name: Check previous Jobs
+        if: "needs.deploy-artifacts.result != 'success' || needs.deploy-documentation.result != 'success'"
+        run: |
+          exit 1
       - name: Download Artifacts
         uses: actions/download-artifact@v2
         with:
@@ -411,10 +411,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check previous Jobs
-        if: "needs.deploy-artifacts.result != 'success' || needs.deploy-documentation.result != 'success'"
-        run: |
-          exit 1
       - name: Set variables from 'Prepare Build Variables'
         run: |
           echo "VERSION=${{ needs.prepare.outputs.VERSION }}" >> $GITHUB_ENV
@@ -423,6 +419,10 @@ jobs:
           echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
       - name: Checkout source code
         uses: actions/checkout@v2
+      - name: Check previous Jobs
+        if: "needs.deploy-artifacts.result != 'success' || needs.deploy-documentation.result != 'success'"
+        run: |
+          exit 1
       - name: Download Artifacts
         uses: actions/download-artifact@v2
         with:
