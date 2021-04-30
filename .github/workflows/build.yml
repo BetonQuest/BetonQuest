@@ -41,7 +41,7 @@ jobs:
         run: |
           DIFF_OUTSIDE=$(git diff --quiet ${PREVIOUS_VERSION_TAG} -- . ':(exclude)documentation/' && echo Nothing || echo Changes)
           DIFF_INSIDE=$(git diff --quiet ${PREVIOUS_VERSION_TAG} -- documentation/ && echo Nothing || echo Changes)
-          [ $DIFF_OUTSIDE == Nothing && $DIFF_INSIDE == Changes ] CHANGES_IN_DOCS_ONLY=true || CHANGES_IN_DOCS_ONLY=false
+          if [[ $DIFF_OUTSIDE == Nothing && $DIFF_INSIDE == Changes ]]; then CHANGES_IN_DOCS_ONLY=true; else CHANGES_IN_DOCS_ONLY=false; fi
           echo "CHANGES_IN_DOCS_ONLY=$CHANGES_IN_DOCS_ONLY" >> $GITHUB_ENV
           echo ::set-output name=changes_in_docs_only::$CHANGES_IN_DOCS_ONLY
           echo "Check for difference in documentation only. The value is '$CHANGES_IN_DOCS_ONLY'"
@@ -337,10 +337,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check previous Jobs
-        if: "needs.deploy-artifacts.result != 'success' || needs.deploy-documentation.result != 'success'"
-        run: |
-          exit 1
       - name: Set variables from 'Prepare Build Variables'
         run: |
           echo "VERSION=${{ needs.prepare.outputs.VERSION }}" >> $GITHUB_ENV
@@ -349,6 +345,10 @@ jobs:
           echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
       - name: Checkout source code
         uses: actions/checkout@v2
+      - name: Check previous Jobs
+        if: "needs.deploy-artifacts.result != 'success' || needs.deploy-documentation.result != 'success'"
+        run: |
+          exit 1
       - name: Download Artifacts
         uses: actions/download-artifact@v2
         with:
@@ -411,10 +411,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check previous Jobs
-        if: "needs.deploy-artifacts.result != 'success' || needs.deploy-documentation.result != 'success'"
-        run: |
-          exit 1
       - name: Set variables from 'Prepare Build Variables'
         run: |
           echo "VERSION=${{ needs.prepare.outputs.VERSION }}" >> $GITHUB_ENV
@@ -423,6 +419,10 @@ jobs:
           echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
       - name: Checkout source code
         uses: actions/checkout@v2
+      - name: Check previous Jobs
+        if: "needs.deploy-artifacts.result != 'success' || needs.deploy-documentation.result != 'success'"
+        run: |
+          exit 1
       - name: Download Artifacts
         uses: actions/download-artifact@v2
         with:
