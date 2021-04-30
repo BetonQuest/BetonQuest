@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - FastAsyncWorldEdit compatibility
 - craft objective variable `total`
 - curly braces in math.calc variables for using variables with math symbols
+- player attribute to QuestCompassTargetChangeEvent
 ### Changed
 ### Deprecated
 - math variable now allows rounding output with the ~ operator
