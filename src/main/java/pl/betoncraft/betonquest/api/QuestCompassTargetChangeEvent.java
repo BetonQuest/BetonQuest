@@ -1,6 +1,5 @@
 package pl.betoncraft.betonquest.api;
 
-import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -15,9 +14,7 @@ public class QuestCompassTargetChangeEvent extends Event implements Cancellable 
 
     private static final HandlerList HANDLERS = new HandlerList();
 
-    @Getter
     private final Player player;
-    @Getter
     private final Location location;
     private boolean cancelled;
 
@@ -44,5 +41,13 @@ public class QuestCompassTargetChangeEvent extends Event implements Cancellable 
     @Override
     public void setCancelled(final boolean cancel) {
         cancelled = cancel;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public Location getLocation() {
+        return location;
     }
 }
