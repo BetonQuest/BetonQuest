@@ -95,9 +95,16 @@ public abstract class CountingObjective extends Objective {
         final CountingData data = getCountingData(playerId);
         if (data.isComplete()) {
             completeObjective(playerId);
-        } else if (notify && notifyMessageName != null && data.getAmountLeft() / notifyInterval != data.getPreviousAmountLeft() / notifyInterval) {
+        } else if (notify && notifyMessageName != null && shouldNotify(data)) {
             sendNotify(playerId, notifyMessageName, Math.abs(data.getAmountLeft()));
         }
+    }
+
+    private boolean shouldNotify(final CountingData data) {
+        final int newAmount = Math.abs(data.getAmountLeft());
+        final int oldAmount = Math.abs(data.getPreviousAmountLeft());
+        return newAmount > oldAmount &&  newAmount      / notifyInterval !=  oldAmount      / notifyInterval
+            || newAmount < oldAmount && (newAmount - 1) / notifyInterval != (oldAmount - 1) / notifyInterval;
     }
 
     /**
