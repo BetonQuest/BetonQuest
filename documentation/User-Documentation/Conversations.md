@@ -94,6 +94,7 @@ is the way the user interacts with them.
             width="780" height="500">
         Sorry, your browser doesn't support embedded videos.
         </video>
+        All options can be found in the [compatibility](/User-Documentation/Compatibility) section.
     === "simple"
         A chat output. The user has to write a number into their chat to select an option.
     === "tellraw"
