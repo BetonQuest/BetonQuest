@@ -157,17 +157,17 @@ The first argument is number (ID of the NPC), and the second is optional `cancel
 
 #### NPC Kill: `npckill`
 
-NPC Kill objective requires the player to kill an NPC with the given ID. You can also define how many times an NPC has
-to be killed. Right after objective's name there must be na ID of the NPC. You can also add an amount by `amount:`. You
-can use the `notify` keyword to display a message each time the player advances the objective, optionally with the
-notification interval after a colon.
+The NPC kill objective requires the player to kill a NPC with the given ID. You can also define how many times the NPC
+has to be killed. Right after the objective's name there must be the ID of the NPC. You can also add an amount with the
+`amount` keyword. You can use the `notify` keyword to display a message each time the player advances the objective,
+optionally with the notification interval after a colon.
 
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of NPCs already killed,
 `left` is the amount of NPCs still needed to kill and `total` is the amount of NPCs initially required.
 
 !!! example
     ```YAML
-    npckill 16 amount:3 events:reward
+    npckill 16 amount:3 events:reward notify
     ```
 
 #### NPC Range: `npcrange`
