@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - math variable now allows rounding output with the ~ operator
 - changed package names from `pl.betoncraft.betonquest` to `org.betonquest.betonquest`
+- all objectives that can be advanced without directly completing now support notify
+- all objectives that can be advanced without directly completing now support `left`, `amount` and `total` variables
 ### Deprecated
 ### Removed
 - `message` event
@@ -38,7 +40,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - tags and points are now thread safe
 - compatibility for packet interceptor on papermc
 - craft objective: multi-craft, drop-craft, hotbar/offhand-craft, shift-Q-craft and any illegal crafting is correctly detected, 
-- craft objective variables `left` and `amount` were swapped
 - q version now works again
 - NPC hider for not spawned NPCs
 - Conversation IO Chest load NPC skull async from Citizens instead of sync
@@ -50,6 +51,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fixed smelt objective: only taking out normally did count, shift-extract got canceled
 - empty values in `variable` objective now don't break on player join
 - PacketInterceptor sync wait lag
+- the `left` and `amount` variables of some objectives were swapped and have been corrected: `left` is the amount left, `amount` is the amount done
+- brew objective now counts newly brewed potions even if there were already some potions of the desired type in other slots present
 ### Security
 - it was possible to put a QuestItem into a chest
 

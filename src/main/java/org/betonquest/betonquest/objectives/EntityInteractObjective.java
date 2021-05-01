@@ -5,8 +5,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
-import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -26,6 +25,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.metadata.MetadataValue;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Player has to interact with specified amount of specified mobs. It can also
@@ -36,36 +36,31 @@ import java.util.*;
  */
 @SuppressWarnings("PMD.CommentRequired")
 @CustomLog
-public class EntityInteractObjective extends Objective {
+public class EntityInteractObjective extends CountingObjective {
 
-    private final int notifyInterval;
     private final CompoundLocation loc;
     private final VariableNumber range;
     protected EntityType mobType;
-    protected int amount;
     private final String customName;
     private final String realName;
     protected String marked;
-    protected boolean notify;
     protected Interaction interaction;
     protected boolean cancel;
     private RightClickListener rightClickListener;
     private LeftClickListener leftClickListener;
 
     public EntityInteractObjective(final Instruction instruction) throws InstructionParseException {
-        super(instruction);
+        super(instruction, "mobs_to_click");
         template = EntityInteractData.class;
         interaction = instruction.getEnum(Interaction.class);
         mobType = instruction.getEnum(EntityType.class);
-        amount = instruction.getPositive();
+        targetAmount = instruction.getPositive();
         customName = parseName(instruction.getOptional("name"));
         realName = parseName(instruction.getOptional("realname"));
         marked = instruction.getOptional("marked");
         if (marked != null) {
             marked = Utils.addPackage(instruction.getPackage(), marked);
         }
-        notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
-        notify = instruction.hasArgument("notify") || notifyInterval > 1;
         cancel = instruction.hasArgument("cancel");
         loc = instruction.getLocation(instruction.getOptional("loc"));
         final String stringRange = instruction.getOptional("range");
@@ -139,32 +134,11 @@ public class EntityInteractObjective extends Objective {
             }
         }
 
-
-        // get data off the player
-        final EntityInteractData playerData = (EntityInteractData) dataMap.get(playerID);
-        // check if player already interacted with entity
-        if (playerData.containsEntity(entity)) {
-            return false;
+        final boolean success = ((EntityInteractData) dataMap.get(playerID)).tryProgressWithEntity(entity);
+        if (success) {
+            completeIfDoneOrNotify(playerID);
         }
-        // right mob is interacted with, handle data update
-        playerData.subtract();
-        playerData.addEntity(entity);
-        if (playerData.isZero()) {
-            completeObjective(playerID);
-        } else if (notify && playerData.getAmount() % notifyInterval == 0) {
-            // send a notification
-            try {
-                Config.sendNotify(instruction.getPackage().getName(), playerID, "mobs_to_click", new String[]{String.valueOf(playerData.getAmount())},
-                        "mobs_to_click,info");
-            } catch (final QuestRuntimeException exception) {
-                try {
-                    LOG.warning(instruction.getPackage(), "The notify system was unable to play a sound for the 'mobs_to_click' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
-                } catch (final InstructionParseException e) {
-                    LOG.reportException(instruction.getPackage(), e);
-                }
-            }
-        }
-        return true;
+        return success;
     }
 
     @Override
@@ -177,73 +151,40 @@ public class EntityInteractObjective extends Objective {
         }
     }
 
-    @Override
-    public String getDefaultDataInstruction() {
-        return Integer.toString(amount);
-    }
-
-    @Override
-    public String getProperty(final String name, final String playerID) {
-        switch (name.toLowerCase(Locale.ROOT)) {
-            case "amount":
-                return Integer.toString(amount - ((EntityInteractData) dataMap.get(playerID)).getAmount());
-            case "left":
-                return Integer.toString(((EntityInteractData) dataMap.get(playerID)).getAmount());
-            case "total":
-                return Integer.toString(amount);
-            default:
-                return "";
-        }
-    }
-
     public enum Interaction {
         RIGHT, LEFT, ANY
     }
 
-    public static class EntityInteractData extends ObjectiveData {
+    public static class EntityInteractData extends CountingData {
 
-        private final Set<UUID> entitys;
-        private int amount;
+        private final Set<UUID> entities;
 
+        @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
         public EntityInteractData(final String instruction, final String playerID, final String objID) {
             super(instruction, playerID, objID);
-            final String[] args = instruction.split(" ");
-            amount = Integer.parseInt(args[0].trim());
-            entitys = new HashSet<>();
-            for (int i = 1; i < args.length; i++) {
-                entitys.add(UUID.fromString(args[i]));
+            entities = new HashSet<>();
+            final String[] entityInstruction = instruction.split(";", 3);
+            if (entityInstruction.length >= 2) {
+                Arrays.stream(entityInstruction[2].split("/"))
+                        .map(UUID::fromString)
+                        .forEach(entities::add);
             }
         }
 
-        public void addEntity(final Entity entity) {
-            entitys.add(entity.getUniqueId());
-            update();
-        }
-
-        public boolean containsEntity(final Entity entity) {
-            return entitys.contains(entity.getUniqueId());
-        }
-
-        public int getAmount() {
-            return amount;
-        }
-
-        public void subtract() {
-            amount--;
-            update();
-        }
-
-        public boolean isZero() {
-            return amount <= 0;
+        public boolean tryProgressWithEntity(final Entity entity) {
+            final boolean success = entities.add(entity.getUniqueId());
+            if (success) {
+                progress();
+            }
+            return success;
         }
 
         @Override
         public String toString() {
-            final StringBuilder string = new StringBuilder(Integer.toString(amount));
-            for (final UUID uuid : entitys) {
-                string.append(" ").append(uuid.toString());
-            }
-            return string.toString();
+            return super.toString() + ";" +
+                    entities.stream()
+                            .map(UUID::toString)
+                            .collect(Collectors.joining("/"));
         }
 
     }
@@ -262,8 +203,8 @@ public class EntityInteractObjective extends Objective {
             } else {
                 return;
             }
-            final boolean succes = onInteract(player, event.getEntity());
-            if (succes && cancel) {
+            final boolean success = onInteract(player, event.getEntity());
+            if (success && cancel) {
                 event.setCancelled(true);
             }
         }

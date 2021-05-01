@@ -38,7 +38,7 @@ public class ObjectiveJoinJob extends Objective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onJobsJoinEvent(final JobsJoinEvent event) {
         if (event.getJob().getName().equalsIgnoreCase(this.sJobName)) {
-            final String playerID = PlayerConverter.getID(event.getPlayer().getPlayer().getPlayer());
+            final String playerID = PlayerConverter.getID(event.getPlayer().getPlayer());
             if (containsPlayer(playerID) && checkConditions(playerID)) {
                 completeObjective(playerID);
             }

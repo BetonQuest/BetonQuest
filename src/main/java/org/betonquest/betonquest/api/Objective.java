@@ -41,6 +41,8 @@ public abstract class Objective {
     protected EventID[] events;
     protected boolean persistent;
     protected boolean global;
+    protected final int notifyInterval;
+    protected final boolean notify;
     protected QREHandler qreHandler = new QREHandler();
 
     /**
@@ -50,7 +52,7 @@ public abstract class Objective {
     /**
      * Should be set with the data class used to hold players' information.
      */
-    protected Class<? extends ObjectiveData> template;
+    protected Class<? extends ObjectiveData> template = ObjectiveData.class;
 
     /**
      * <p>
@@ -102,6 +104,9 @@ public abstract class Objective {
                 throw new InstructionParseException("Error while parsing objective conditions: " + e.getMessage(), e);
             }
         }
+        final int customNotifyInterval = instruction.getInt(instruction.getOptional("notify"), 0);
+        notify = customNotifyInterval > 0 || instruction.hasArgument("notify");
+        notifyInterval = Math.max(1, customNotifyInterval);
     }
 
     /**

@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.jobsreborn;
 
 import com.gamingmesh.jobs.api.JobsPaymentEvent;
+import com.gamingmesh.jobs.container.CurrencyType;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
@@ -11,6 +12,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+
+import java.util.Locale;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class ObjectivePaymentEvent extends Objective implements Listener {
@@ -36,14 +39,16 @@ public class ObjectivePaymentEvent extends Objective implements Listener {
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @EventHandler(ignoreCancelled = true)
     public void onJobsPaymentEvent(final JobsPaymentEvent event) {
-        final String playerID = PlayerConverter.getID(event.getPlayer().getPlayer().getPlayer());
+        final String playerID = PlayerConverter.getID(event.getPlayer());
         if (containsPlayer(playerID) && checkConditions(playerID)) {
             final PaymentData playerData = (PaymentData) dataMap.get(playerID);
-            Bukkit.getServer().broadcastMessage("Amount: " + playerData.getAmount());
-            playerData.subtract(event.getAmount());
+            final double previousAmount = playerData.getAmount();
+            playerData.subtract(event.get(CurrencyType.MONEY));
 
             if (playerData.isZero()) {
                 completeObjective(playerID);
+            } else if (notify && ((int) playerData.getAmount()) / notifyInterval != ((int) previousAmount) / notifyInterval) {
+                sendNotify(playerID, "payment_to_receive", playerData.getAmount());
             }
         }
     }
@@ -65,24 +70,28 @@ public class ObjectivePaymentEvent extends Objective implements Listener {
 
     @Override
     public String getProperty(final String name, final String playerID) {
-        if ("left".equalsIgnoreCase(name)) {
-            return Double.toString(nAmount - ((PaymentData) dataMap.get(playerID)).getAmount());
-        } else if ("amount".equalsIgnoreCase(name)) {
-            return Double.toString(((PaymentData) dataMap.get(playerID)).getAmount());
+        switch (name.toLowerCase(Locale.ROOT)) {
+            case "amount":
+                return Double.toString(nAmount - ((PaymentData) dataMap.get(playerID)).getAmount());
+            case "left":
+                return Double.toString(((PaymentData) dataMap.get(playerID)).getAmount());
+            case "total":
+                return Double.toString(nAmount);
+            default:
+                return "";
         }
-        return "";
     }
 
     public static class PaymentData extends ObjectiveData {
 
-        private Double amount;
+        private double amount;
 
         public PaymentData(final String instruction, final String playerID, final String objID) {
             super(instruction, playerID, objID);
             amount = Double.parseDouble(instruction);
         }
 
-        private Double getAmount() {
+        private double getAmount() {
             return amount;
         }
 

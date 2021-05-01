@@ -157,11 +157,17 @@ The first argument is number (ID of the NPC), and the second is optional `cancel
 
 #### NPC Kill: `npckill`
 
-NPC Kill objective requires the player to kill an NPC with the given ID. You can also define how many times an NPC has to be killed. Right after objective's name there must be na ID of the NPC. You can also add an amount by `amount:`.
+The NPC kill objective requires the player to kill a NPC with the given ID. You can also define how many times the NPC
+has to be killed. Right after the objective's name there must be the ID of the NPC. You can also add an amount with the
+`amount` keyword. You can use the `notify` keyword to display a message each time the player advances the objective,
+optionally with the notification interval after a colon.
+
+This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of NPCs already killed,
+`left` is the amount of NPCs still needed to kill and `total` is the amount of NPCs initially required.
 
 !!! example
     ```YAML
-    npckill 16 amount:3 events:reward
+    npckill 16 amount:3 events:reward notify
     ```
 
 #### NPC Range: `npcrange`
@@ -431,7 +437,11 @@ Triggers when player levels up.
 
 #### Jobs Job Payment: `nujobs_payment {amount}`
 
-Triggers when player makes {amount} of money from jobs.
+Triggers when player makes {amount} of money from jobs. You can use the `notify` keyword to display a message each time
+the player advances the objective, optionally with the notification interval after a colon.
+
+This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of money already received,
+`left` is the amount of money still needed to receive and `total` is the amount of money initially required.
 
 
 ## [Magic](http://dev.bukkit.org/bukkit-plugins/magic/)
@@ -535,7 +545,12 @@ mmostat DAMAGE_REDUCTION 3
 ####Break Special Blocks: `mmocorebreakblock`
 This objective requires the player to break 
 <a href="https://git.lumine.io/mythiccraft/mmocore/-/wikis/Mining%20and%20Block%20Regen" target="_blank">special blocks from MMOCore</a>.
-All three different block types and an amount can be defined. You can also send notifications to the player by appending the `notify` keyword.
+All three different block types and an amount can be defined. You can also send notifications to the player by appending
+the `notify` keyword optionally with the notification interval after a colon.
+
+This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of blocks already broken,
+`left` is the amount of blocks still left to break and `total` is the amount of blocks initially required.
+
 ```YAML linenums="1"
 mmocorebreakblock 5 block:1      #A custom block's block ID
 mmocorebreakblock 64 block:STONE  #vanilla material
@@ -553,8 +568,12 @@ This objective requires the player to craft the item with the given type and id.
 It supports any MMOItem that was crafted using vanilla crafting methods, MMOItems "recipe-amounts" crafting and MMOItems station crafting.
 An amount can also be set if it shall differ from the default (which is one) by adding the `amount:` argument.
 The amount is based on how many items have actually been crafted, not how often a specific recipe has been used! Therefore,
-a recipe that makes four items at once will let the objective progress by four steps.  
+a recipe that makes four items at once will let the objective progress by four steps. You can use the `notify` keyword
+to display a message each time the player advances the objective, optionally with the notification interval after a
+colon.
 
+This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of items already crafted,
+`left` is the amount of items still needed to craft and `total` is the amount of items initially required.
 
 ```YAML linenums="1"
 mmoitemcraft SWORD STEEL_SWORD
@@ -661,9 +680,10 @@ the mob's internal name (the one defined in your MythicMobs configuration). You 
 argument to specify how many of these mobs need to be killed. It's also possible to add the optional arguments
 `minLevel` and `maxLevel` to further customize what mobs need to be killed.
 You can also add an optional `neutralDeathRadiusAllPlayers` argument to complete the objective for each nearby player within the defined radius when the mob is killed by any source.
-You can add a "notify" keyword if you want to send a notification to players whenever the objective
-progresses.
+You can add a `notify` keyword if you want to send a notification to players whenever the objective progresses.
 
+This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of mythic mobs already killed,
+`left` is the amount of mythic mobs still needed to kill and `total` is the amount of mythic mobs initially required.
 
 !!! example
     ```YAML

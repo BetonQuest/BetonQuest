@@ -3,7 +3,7 @@ package org.betonquest.betonquest.objectives;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.BlockSelector;
 import org.betonquest.betonquest.utils.InventoryUtils;
@@ -18,30 +18,19 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import java.util.Locale;
-
 /**
  * Requires the player to smelt some amount of items.
  */
 @SuppressWarnings("PMD.CommentRequired")
 @CustomLog
-public class SmeltingObjective extends Objective implements Listener {
+public class SmeltingObjective extends CountingObjective implements Listener {
 
     private final BlockSelector blockSelector;
-    private final int amount;
-    private final boolean notify;
-    private final int notifyInterval;
 
     public SmeltingObjective(final Instruction instruction) throws InstructionParseException {
-        super(instruction);
-        template = SmeltData.class;
+        super(instruction, "items_to_smelt");
         blockSelector = new BlockSelector(instruction.next());
-        amount = instruction.getInt();
-        if (amount <= 0) {
-            throw new InstructionParseException("Amount cannot be less than 1");
-        }
-        notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
-        notify = instruction.hasArgument("notify") || notifyInterval > 1;
+        targetAmount = instruction.getPositive();
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -51,7 +40,9 @@ public class SmeltingObjective extends Objective implements Listener {
             final String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
             assert event.getCurrentItem() != null;
             if (containsPlayer(playerID) && blockSelector.match(event.getCurrentItem().getType()) && checkConditions(playerID)) {
-                progressSmeltingObjective(event, playerID);
+                final int taken = calculateTakeAmount(event);
+                getCountingData(playerID).progress(taken);
+                completeIfDoneOrNotify(playerID);
             }
         }
     }
@@ -63,17 +54,6 @@ public class SmeltingObjective extends Objective implements Listener {
                 && event.getWhoClicked() instanceof Player
                 && event.getRawSlot() == 2
                 && !InventoryUtils.isEmptySlot(event.getCurrentItem());
-    }
-
-    private void progressSmeltingObjective(final InventoryClickEvent event, final String playerID) {
-        final int taken = calculateTakeAmount(event);
-        final SmeltData playerData = (SmeltData) dataMap.get(playerID);
-        playerData.subtract(taken);
-        if (playerData.isZero()) {
-            completeObjective(playerID);
-        } else if (notify && playerData.getAmount() % notifyInterval == 0) {
-            sendNotify(playerID, "items_to_smelt", playerData);
-        }
     }
 
 
@@ -114,53 +94,4 @@ public class SmeltingObjective extends Objective implements Listener {
     public void stop() {
         HandlerList.unregisterAll(this);
     }
-
-    @Override
-    public String getDefaultDataInstruction() {
-        return Integer.toString(amount);
-    }
-
-    @Override
-    public String getProperty(final String name, final String playerID) {
-        switch (name.toLowerCase(Locale.ROOT)) {
-            case "amount":
-                return Integer.toString(amount - ((SmeltData) dataMap.get(playerID)).getAmount());
-            case "left":
-                return Integer.toString(((SmeltData) dataMap.get(playerID)).getAmount());
-            case "total":
-                return Integer.toString(amount);
-            default:
-                return "";
-        }
-    }
-
-    public static class SmeltData extends ObjectiveData {
-
-        private int amount;
-
-        public SmeltData(final String instruction, final String playerID, final String objID) {
-            super(instruction, playerID, objID);
-            amount = Integer.parseInt(instruction);
-        }
-
-        private int getAmount() {
-            return amount;
-        }
-
-        private void subtract(final int amount) {
-            this.amount -= amount;
-            update();
-        }
-
-        private boolean isZero() {
-            return amount <= 0;
-        }
-
-        @Override
-        public String toString() {
-            return Integer.toString(amount);
-        }
-
-    }
-
 }
