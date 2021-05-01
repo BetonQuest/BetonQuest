@@ -24,6 +24,8 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Requires the player to manually brew a potion.
@@ -98,7 +100,14 @@ public class BrewObjective extends CountingObjective implements Listener {
 
             if (progress > 0 && checkConditions(playerID)) {
                 getCountingData(playerID).progress(progress);
-                completeIfDoneOrNotify(playerID);
+                final boolean completed = completeIfDoneOrNotify(playerID);
+                if (completed) {
+                    final Set<Location> removals = locations.entrySet().stream()
+                            .filter(location -> playerID.equals(location.getValue()))
+                            .map(Map.Entry::getKey)
+                            .collect(Collectors.toSet());
+                    removals.forEach(locations::remove);
+                }
             }
         });
     }

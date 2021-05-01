@@ -77,10 +77,12 @@ public abstract class CountingObjective extends Objective {
      * Complete the objective if fulfilled or else notify the player if required. It will use the
      * {@link #defaultNotifyMessageName} if set, otherwise no notification will be sent, even if {@link #notify} is
      * {@code true}.
+     *
      * @param playerId player UUID as string
+     * @return {@code true} if the objective is completed; {@code false} otherwise
      */
-    protected final void completeIfDoneOrNotify(final String playerId) {
-        completeIfDoneOrNotify(playerId, defaultNotifyMessageName);
+    protected final boolean completeIfDoneOrNotify(final String playerId) {
+        return completeIfDoneOrNotify(playerId, defaultNotifyMessageName);
     }
 
     /**
@@ -90,14 +92,18 @@ public abstract class CountingObjective extends Objective {
      *
      * @param playerId player UUID as string
      * @param notifyMessageName message name for notification message
+     * @return {@code true} if the objective is completed; {@code false} otherwise
      */
-    protected final void completeIfDoneOrNotify(final String playerId, final String notifyMessageName) {
+    protected final boolean completeIfDoneOrNotify(final String playerId, final String notifyMessageName) {
         final CountingData data = getCountingData(playerId);
         if (data.isComplete()) {
             completeObjective(playerId);
-        } else if (notify && notifyMessageName != null && shouldNotify(data)) {
+            return true;
+        }
+        if (notify && notifyMessageName != null && shouldNotify(data)) {
             sendNotify(playerId, notifyMessageName, Math.abs(data.getAmountLeft()));
         }
+        return false;
     }
 
     private boolean shouldNotify(final CountingData data) {
