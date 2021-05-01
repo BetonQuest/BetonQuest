@@ -36,8 +36,10 @@ To complete this objective the player must break or place the specified amount o
 less than 0 for destroying. You can also use the `notify` keyword to display messages to the player each time he updates
 amount of blocks, optionally with the notification interval after colon.
 
-This objective has two properties, `amount` and `left`. Amount is current amount of blocks in the objective, left is
-amount needed to complete the objective. Note that it may sometimes be negative!
+This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of blocks already done,
+`left` is the amount of blocks still needed to complete the objective and `total` is the amount of blocks initially
+needed.
+Note that it follows the same rules as the amount argument, meaning that blocks to break are a negative number!
 
 !!! example
     ```YAML
@@ -50,7 +52,10 @@ This objective is completed by breeding animals of specified type. The first arg
 [animal type](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html) and the second argument is the
 amount (positive integer). You can add the `notify` argument to display a message with the remaining amount each time
 the animal is bred, optionally with the notification interval after a colon. While you can specify any entity, the
-objective will be completable only for breedabgle ones.
+objective will be completable only for breedable ones.
+
+This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of animals already breed,
+`left` is the amount of animals still needed to breed and `total` is the amount of animals initially required.
 
 !!! example
     ```YAML
@@ -81,10 +86,12 @@ of an item from _items.yml_.
 
 ## Crafting: `craft`
 
-To complete this objective the player must craft specified item. First argument is ID of the item, as in _items.yml_. Next is amount (integer).
+To complete this objective the player must craft specified item. First argument is ID of the item, as in _items.yml_.
+Next is amount (integer). You can use the `notify` keyword to display a message each time the player advances the
+objective, optionally with the notification interval after a colon.
 
-The crafting objective has three properties: `left` is the amount of items left to craft, `amount` is the current amount of
-already crafted items and `total` is the initially required amount of items to be crafted.
+This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of items already crafted,
+`left` is the amount of items still needed to craft and `total` is the amount of items initially required.
 
 !!! example
     ```YAML
@@ -107,7 +114,11 @@ with a colon. If you need to check for multiple enchantments you can add a list 
 
 This objective can by completed by reaching specified amount of experience points. You can check for whole levels by
 adding the `level` argument. The conditions are checked when the player levels up, so if they are not met the first
-time, the player will have to meet them and levelup again.
+time, the player will have to meet them and levelup again. You can use the `notify` keyword to display a message each
+time the player advances the objective, optionally with the notification interval after a colon.
+
+This objective has three properties: `amount`, `left` and `total`. `amount` is the current amount of experience,
+`left` is the amount of experience still needed and `total` is the amount of experience required.
 
 !!! example
     ```YAML
@@ -174,6 +185,10 @@ Add `marked:` if the clicked entity needs to be marked by the `spawn` event (see
 You can also add `notify` argument to make the objective notify players whenever they click a correct entity,
 optionally with the notification interval after colon and `cancel` if the click shouldn't do what it usually does
 (i.e. left click won't hurt the entity). This can be limited with an optional `loc` and `range` attribute to limit within a range of a location.
+
+This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of entities already interacted
+with, `left` is the amount of entities still needed to be interacted with and `total` is the amount of entities
+initially required.
 
 !!! example
     ```YAML
@@ -272,16 +287,19 @@ The objective's instruction string is defined as follows:
 To complete this objective you need to pickup the specified amount of items. 
 The first argument must be the internal name of an item defined in `items.yml`. This can also be a comma-separated list of multiple items.
 You can optionally add the `amount:` argument to specify how many of these items the player needs to pickup. 
-This amount is a total amount though, it does not count per each individual item. 
+This amount is a total amount though, it does not count per each individual item. You can use the `notify` keyword to
+display a message each time the player advances the objective, optionally with the notification interval after a colon.
 
 You can also add the `notify` keyword to display how many items are left to pickup.
+
+This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of items already picked up,
+`left` is the amount of items still needed to pick up and `total` is the amount of items initially required.
 
 !!! example
     ```YAML
     pickup emerald amount:3 events:reward notify
     pickup emerald,diamond amount:6 events:reward notify
     ```
-This objective has two variable properties: `amount` (shows how much the player already collected) and `left` (displays how much is left to pickup).
 
 ## Mob Kill: `mobkill`
 
@@ -293,8 +311,8 @@ specify `notify` keyword to display messages to the player each time he kills a 
 interval after colon. If you want to accept only mobs marked with `spawn` event, use `marked:` argument followed by the
 keyword used in that event.
 
-This objective also has two properties, `amount` and `left`. Amount is the current amount of killed mobs, left is amount
-needed to complete the objective.
+This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of mob already killed,
+`left` is the amount of mobs still needed to kill and `total` is the amount of mobs initially required.
 
 !!! example
     ```YAML
@@ -308,10 +326,11 @@ The first argument is a potion ID from _items.yml_. Second argument is amount of
 You can optionally add `notify` argument to make the objective display progress to players,
 optionally with the notification interval after a colon.
 
-The brewing will be accepted if the player was the last one to click the ingredient slot in the brewing stand and there
-were no matching potions there already.
+Progress will be counted for the player who last added or changed an item before the brew process completed. Only newly
+created potions are counted.
 
-Potion objective has `amount` and `left:` properties.
+This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of potions already brewed,
+`left` is the amount of potions still needed to brew and `total` is the amount of potions initially required.
 
 !!! example
     ```YAML
@@ -322,9 +341,12 @@ Potion objective has `amount` and `left:` properties.
 
 To complete this objective the player has to shear specified amount of sheep, optionally with specified color and/or
 name. The first, required argument is amount (integer). Optionally, you can add `name:` argument with the name and
-`color:` with [color name](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/DyeColor.html).
+`color:` with [color name](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/DyeColor.html). You can use the `notify`
+keyword to display a message each time the player advances the objective, optionally with the notification interval
+after a colon.
 
-Sheep shearing has the same properties as mob kill objective.
+This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of sheep already sheared,
+`left` is the amount of sheep still needed to shear and `total` is the amount of sheep initially required.
 
 !!! example
     ```YAML
@@ -335,9 +357,11 @@ Sheep shearing has the same properties as mob kill objective.
 
 To complete this objective the player must smelt a specified item. Note that you must define the output item, not the
 ingredient. The first argument is a [Block Selector](/User-Documentation/Reference/#block-selectors) for the output
-item. The second is the amount (integer).
+item. The second is the amount (integer). You can use the `notify` keyword to display a message each time the player
+advances the objective, optionally with the notification interval after a colon.
 
-Smelting has the same properties as crafting objective.
+This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of items already smelted,
+`left` is the amount of items still needed to smelt and `total` is the amount of items initially required.
 
 !!! example
     ```YAML
@@ -360,10 +384,13 @@ formatted like `X: 100, Y: 200, Z:300`.
 
 ## Taming: `tame`
 
-To complete this objective player must tame some amount of mobs. First argument is type, second is amount.
-The mob must be tameable for the objective to be valid, e.g. on 1.16.1: `CAT`, `DONKEY`, `HORSE`, `LLAMA`, `PARROT` or `WOLF`
+To complete this objective player must tame some amount of mobs. First argument is type, second is amount. The mob must
+be tameable for the objective to be valid, e.g. on 1.16.5: `CAT`, `DONKEY`, `HORSE`, `LLAMA`, `PARROT` or `WOLF`. You
+can use the `notify` keyword to display a message each time the player advances the objective, optionally with the
+notification interval after a colon.
 
-Taming has the same properties as mob kill objective.
+This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of animals already tamed,
+`left` is the amount of animals still needed to tame and `total` is the amount of animals initially required.
 
 !!! example
     ```YAML
@@ -373,8 +400,11 @@ Taming has the same properties as mob kill objective.
 
 ## Jump!: `jump`
 
-To complete this objective player must jump. The only argument is amount.
-`amount` and `left` are supported as objective variable properties. 
+To complete this objective player must jump. The only argument is amount. You can use the `notify` keyword to display a
+message each time the player advances the objective, optionally with the notification interval after a colon.
+
+This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of jumps already done,
+`left` is the amount of jumps still needed and `total` is the amount of jumps initially required.
 
 !!! example
     ```YAML
