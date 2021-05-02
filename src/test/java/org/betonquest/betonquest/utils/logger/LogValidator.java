@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.utils.logger.custom;
+package org.betonquest.betonquest.utils.logger;
 
 import org.junit.jupiter.api.Assertions;
 

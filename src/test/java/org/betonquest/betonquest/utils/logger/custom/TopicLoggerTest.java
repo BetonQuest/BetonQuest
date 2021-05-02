@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.utils.logger.custom;
 
+import org.betonquest.betonquest.utils.logger.LogValidator;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
