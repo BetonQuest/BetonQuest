@@ -1,6 +1,8 @@
 package org.betonquest.betonquest.notify;
 
+import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
@@ -14,6 +16,11 @@ public class ChatNotifyIO extends NotifyIO {
 
     @Override
     protected void notifyPlayer(final String message, final Player player) {
-        player.sendMessage(message);
+        final Conversation conversation = Conversation.getConversation(PlayerConverter.getID(player));
+        if (conversation == null || conversation.getInterceptor() == null) {
+            player.sendMessage(message);
+        } else {
+            conversation.getInterceptor().sendMessage(message);
+        }
     }
 }
