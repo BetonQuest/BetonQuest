@@ -8,6 +8,8 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 /**
  * This class an be attached to any {@link java.util.logging.Logger} as handler.
  * Then it is possible to check for {@link LogRecord}s to assert that the right things are logged.
@@ -58,6 +60,7 @@ public class LogValidator extends Handler {
      */
     public void assertLogEntry(final Level level, final String message, final Class<? extends Throwable> throwable, final String throwableMessage) {
         final LogRecord record = records.pop();
+        assertNotNull(record, "The record is unexpected null!");
         assertEntry(record, level, message);
         assertEntry(record, throwable);
         assertEntry(record, throwableMessage);
@@ -72,6 +75,7 @@ public class LogValidator extends Handler {
      */
     public void assertLogEntry(final Level level, final String message, final Class<? extends Throwable> throwable) {
         final LogRecord record = records.pop();
+        assertNotNull(record, "The record is unexpected null!");
         assertEntry(record, level, message);
         assertEntry(record, throwable);
     }
@@ -84,6 +88,7 @@ public class LogValidator extends Handler {
      */
     public void assertLogEntry(final Level level, final String message) {
         final LogRecord record = records.pop();
+        assertNotNull(record, "The record is unexpected null!");
         assertEntry(record, level, message);
     }
 
@@ -92,6 +97,7 @@ public class LogValidator extends Handler {
     }
 
     private void assertEntry(final LogRecord record, final Class<? extends Throwable> throwable) {
+        Assertions.assertNotNull(record.getThrown(), "Expected log throwable is null!");
         Assertions.assertEquals(throwable, record.getThrown().getClass(), "Expected log throwable does not equal!");
     }
 

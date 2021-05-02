@@ -1,12 +1,15 @@
 package org.betonquest.betonquest.utils.logger;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.utils.logger.custom.PackageLogRecord;
 import org.betonquest.betonquest.utils.logger.custom.TopicLogger;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginLogger;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -56,8 +59,16 @@ public class BetonQuestLogger {
      * @param topic The optional topic of the logger passed by lombok.
      * @return The decorated Logger.
      */
+    @SuppressWarnings("PMD.UseProperClassLoader")
+    @SuppressFBWarnings("NP_NONNULL_RETURN_VIOLATION")
+    @NotNull
     public static BetonQuestLogger create(final Class<?> clazz, final String topic) {
-        return new BetonQuestLogger(BetonQuest.getInstance(), clazz, topic);
+        for (final Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
+            if (plugin instanceof JavaPlugin && plugin.getClass().getClassLoader().equals(clazz.getClassLoader())) {
+                return new BetonQuestLogger((JavaPlugin) plugin, clazz, topic);
+            }
+        }
+        return null;
     }
 
     /**
