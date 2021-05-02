@@ -53,7 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - PacketInterceptor sync wait lag
 - the `left` and `amount` variables of some objectives were swapped and have been corrected: `left` is the amount left, `amount` is the amount done
 - brew objective now counts newly brewed potions even if there were already some potions of the desired type in other slots present
-- ChatNotify ConversationIO bypass the conversation interceptor
+- notifications using the chatIO were catched by the conversation interceptor
 ### Security
 - it was possible to put a QuestItem into a chest
 
