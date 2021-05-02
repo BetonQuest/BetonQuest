@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fixed smelt objective: only taking out normally did count, shift-extract got canceled
 - empty values in `variable` objective now don't break on player join
 - PacketInterceptor sync wait lag
+- notifications using the chatIO were catched by the conversation interceptor
 ### Security
 - it was possible to put a QuestItem into a chest
 
