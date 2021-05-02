@@ -14,13 +14,13 @@ import java.util.logging.Logger;
 
 import static org.mockito.Mockito.*;
 
-@SuppressWarnings({"PMD.CommentRequired", "PMD.JUnitTestsShouldIncludeAssert"})
+@SuppressWarnings({"PMD.CommentRequired", "PMD.JUnitTestsShouldIncludeAssert", "PMD.TooManyMethods"})
 public class BetonQuestLoggerTest {
     private static final String LOGGER_TOPIC = "Test";
     private static final String LOG_MESSAGE = "Test Message";
     private static final String LOG_MESSAGE_WITH_TOPIC = "(" + LOGGER_TOPIC + ") Test Message";
     private static final String EXCEPTION_MESSAGE = "Test Exception";
-    private static ConfigPackage PACKAGE;
+    private static ConfigPackage configPackage;
     private static MockedStatic<BetonQuestLogger> mockedStaticBetonQuestLogger;
     private static BetonQuestLogger betonQuestLogger;
     private static LogValidator logValidator;
@@ -31,8 +31,8 @@ public class BetonQuestLoggerTest {
     @BeforeAll
     public static void beforeAll() {
         mockedStaticBetonQuestLogger = mockStatic(BetonQuestLogger.class);
-        PACKAGE = mock(ConfigPackage.class);
-        when(PACKAGE.getName()).thenReturn("CustomTestPackage");
+        configPackage = mock(ConfigPackage.class);
+        when(configPackage.getName()).thenReturn("CustomTestPackage");
 
         final JavaPlugin javaPlugin = mock(JavaPlugin.class);
         when(javaPlugin.getLogger()).thenReturn(Logger.getGlobal());
@@ -55,50 +55,50 @@ public class BetonQuestLoggerTest {
 
     @Test
     public void testDebug() {
-        betonQuestLogger.debug(PACKAGE, LOG_MESSAGE);
+        betonQuestLogger.debug(configPackage, LOG_MESSAGE);
         logValidator.assertLogEntry(Level.FINE, LOG_MESSAGE_WITH_TOPIC);
     }
 
     @Test
     public void testDebugException() {
-        betonQuestLogger.debug(PACKAGE, LOG_MESSAGE, new IOException(EXCEPTION_MESSAGE));
+        betonQuestLogger.debug(configPackage, LOG_MESSAGE, new IOException(EXCEPTION_MESSAGE));
         logValidator.assertLogEntry(Level.FINE, LOG_MESSAGE_WITH_TOPIC, IOException.class, EXCEPTION_MESSAGE);
     }
 
     @Test
     public void testInfo() {
-        betonQuestLogger.info(PACKAGE, LOG_MESSAGE);
+        betonQuestLogger.info(configPackage, LOG_MESSAGE);
         logValidator.assertLogEntry(Level.INFO, LOG_MESSAGE_WITH_TOPIC);
     }
 
     @Test
     public void testWarning() {
-        betonQuestLogger.warning(PACKAGE, LOG_MESSAGE);
+        betonQuestLogger.warning(configPackage, LOG_MESSAGE);
         logValidator.assertLogEntry(Level.WARNING, LOG_MESSAGE_WITH_TOPIC);
     }
 
     @Test
     public void testWarningException() {
-        betonQuestLogger.warning(PACKAGE, LOG_MESSAGE, new IOException(EXCEPTION_MESSAGE));
+        betonQuestLogger.warning(configPackage, LOG_MESSAGE, new IOException(EXCEPTION_MESSAGE));
         logValidator.assertLogEntry(Level.WARNING, LOG_MESSAGE_WITH_TOPIC);
         logValidator.assertLogEntry(Level.FINE, "(Test) Additional stacktrace:", IOException.class, EXCEPTION_MESSAGE);
     }
 
     @Test
     public void testError() {
-        betonQuestLogger.error(PACKAGE, LOG_MESSAGE);
+        betonQuestLogger.error(configPackage, LOG_MESSAGE);
         logValidator.assertLogEntry(Level.SEVERE, LOG_MESSAGE_WITH_TOPIC);
     }
 
     @Test
     public void testErrorException() {
-        betonQuestLogger.error(PACKAGE, LOG_MESSAGE, new IOException(EXCEPTION_MESSAGE));
+        betonQuestLogger.error(configPackage, LOG_MESSAGE, new IOException(EXCEPTION_MESSAGE));
         logValidator.assertLogEntry(Level.SEVERE, LOG_MESSAGE_WITH_TOPIC, IOException.class, EXCEPTION_MESSAGE);
     }
 
     @Test
     public void testReportException() {
-        betonQuestLogger.reportException(PACKAGE, new IOException(EXCEPTION_MESSAGE));
+        betonQuestLogger.reportException(configPackage, new IOException(EXCEPTION_MESSAGE));
         logValidator.assertLogEntry(Level.SEVERE, "(Test) This is an exception that should never occur. "
                         + "If you don't know why this occurs please report it to "
                         + "<https://github.com/BetonQuest/BetonQuest/issues>.",

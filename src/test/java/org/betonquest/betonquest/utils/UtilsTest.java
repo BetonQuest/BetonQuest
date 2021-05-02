@@ -1,29 +1,22 @@
 package org.betonquest.betonquest.utils;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.utils.logger.LogValidatorResolver;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SuppressWarnings("PMD.CommentRequired")
+@ExtendWith(LogValidatorResolver.class)
 public class UtilsTest {
 
     public UtilsTest() {
-    }
-
-    private MockedStatic<BetonQuest> prepareBetonQuest() {
-        final MockedStatic<BetonQuest> staticBetonQuest = Mockito.mockStatic(BetonQuest.class);
-        final BetonQuest betonQuest = Mockito.mock(BetonQuest.class);
-        staticBetonQuest.when(BetonQuest::getInstance).thenReturn(betonQuest);
-        Mockito.when(betonQuest.getLogger()).thenReturn(Logger.getGlobal());
-        return staticBetonQuest;
     }
 
     public MockedStatic<Config> prepareConfig() {
@@ -35,7 +28,7 @@ public class UtilsTest {
 
     @Test
     public void testPagesFromString() {
-        try (MockedStatic<BetonQuest> beton = prepareBetonQuest(); MockedStatic<Config> config = prepareConfig()) {
+        try (MockedStatic<Config> config = prepareConfig()) {
             final String journalText = "&aActive Quest: &aFlint &1wants you to visit the Farm located at 191, 23, -167!";
 
             final List<String> journalTextFormatted = new ArrayList<>();

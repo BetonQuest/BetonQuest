@@ -8,6 +8,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
@@ -93,16 +94,16 @@ public class LogValidator extends Handler {
     }
 
     private void assertEntry(final LogRecord record, final String throwableMessage) {
-        Assertions.assertEquals(throwableMessage, record.getThrown().getMessage(), "Expected log throwable message does not equal!");
+        assertEquals(throwableMessage, record.getThrown().getMessage(), "Expected log throwable message does not equal!");
     }
 
     private void assertEntry(final LogRecord record, final Class<? extends Throwable> throwable) {
-        Assertions.assertNotNull(record.getThrown(), "Expected log throwable is null!");
-        Assertions.assertEquals(throwable, record.getThrown().getClass(), "Expected log throwable does not equal!");
+        assertNotNull(record.getThrown(), "Expected log throwable is null!");
+        assertEquals(throwable, record.getThrown().getClass(), "Expected log throwable does not equal!");
     }
 
     private void assertEntry(final LogRecord record, final Level level, final String message) {
-        Assertions.assertEquals(level, record.getLevel(), "Expected log level does not equal!");
-        Assertions.assertEquals(message, record.getMessage(), "Expected log message does not equal!");
+        assertEquals(level, record.getLevel(), "Expected log level does not equal!");
+        assertEquals(message, record.getMessage(), "Expected log message does not equal!");
     }
 }
