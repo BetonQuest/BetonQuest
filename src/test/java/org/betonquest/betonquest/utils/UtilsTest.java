@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.utils;
 
+import org.betonquest.betonquest.api.logger.util.BetonQuestLoggerValidationProvider;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.utils.logger.LogValidatorResolver;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockedStatic;
@@ -13,7 +13,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SuppressWarnings("PMD.CommentRequired")
-@ExtendWith(LogValidatorResolver.class)
+@ExtendWith(BetonQuestLoggerValidationProvider.class)
 public class UtilsTest {
 
     public UtilsTest() {

@@ -1,6 +1,5 @@
-package org.betonquest.betonquest.utils.logger.custom;
+package org.betonquest.betonquest.api.logger;
 
-import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,13 +19,13 @@ public class TopicLogger extends Logger {
     /**
      * Creates a new {@link TopicLogger} that adds an optional topic.
      *
-     * @param context A reference to the {@link Plugin} which is used to get the parent logger.
-     * @param clazz   The calling class.
-     * @param topic   The topic to add or null.
+     * @param parentLogger A reference to the parent {@link Logger} which is used as parent for this logger.
+     * @param clazz        The calling class.
+     * @param topic        The topic to add or null.
      */
-    public TopicLogger(@NotNull final Plugin context, @NotNull final Class<?> clazz, @Nullable final String topic) {
+    public TopicLogger(@NotNull final Logger parentLogger, @NotNull final Class<?> clazz, @Nullable final String topic) {
         super(clazz.getCanonicalName(), null);
-        setParent(context.getLogger());
+        setParent(parentLogger);
         setLevel(Level.ALL);
         this.topic = topic == null ? "" : "(" + topic + ") ";
     }

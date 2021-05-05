@@ -2,11 +2,11 @@ package org.betonquest.betonquest.utils.math;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Variable;
+import org.betonquest.betonquest.api.logger.util.BetonQuestLoggerValidationProvider;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.logger.LogValidatorResolver;
 import org.betonquest.betonquest.utils.math.tokens.Token;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.*;
  * Test the {@link Tokenizer}.
  */
 @SuppressWarnings({"deprecation", "PMD.AvoidDuplicateLiterals", "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength", "PMD.TooManyMethods"})
-@ExtendWith(LogValidatorResolver.class)
+@ExtendWith(BetonQuestLoggerValidationProvider.class)
 public class TokenizerTest {
 
     /**
