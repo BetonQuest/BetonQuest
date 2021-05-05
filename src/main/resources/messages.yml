@@ -492,7 +492,7 @@ vi:
   blocks_to_place: '&2{1} khối cần đặt còn lại'
   mobs_to_kill: '&2{1} mobs cần giết còn lại'
   mobs_to_click: '&2{1} mobs cần nhấn vào còn lại'
-  players_to_kill: '&2{1} người chơi cần giết còn laj'
+  players_to_kill: '&2{1} người chơi cần giết còn lại'
   fish_to_catch: '&2{1} cá cần bắt còn lại'
   sheep_to_shear: '&2{1} cừu cần cạo lông còn lại'
   potions_to_brew: '&2{1} lọ thuốc cần pha chế còn lại'
