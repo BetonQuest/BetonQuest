@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - ${current-date}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixes
+### Security
+
+## [1.12.3] - 2021-05-04
+### Added
 - FastAsyncWorldEdit compatibility
 - craft objective variable `total`
 - curly braces in math.calc variables for using variables with math symbols
