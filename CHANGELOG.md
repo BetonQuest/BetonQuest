@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixes
 ### Security
 
-## [1.12.3] - 2021-05-04
+## [1.12.3] - 2021-05-05
 ### Added
 - FastAsyncWorldEdit compatibility
 - craft objective variable `total`
