@@ -20,6 +20,7 @@ import java.util.Random;
 @SuppressWarnings("PMD.CommentRequired")
 public class FolderEvent extends QuestEvent {
 
+    private final Random randomGenerator = new Random();
     private final VariableNumber delay;
     private final VariableNumber period;
     private final VariableNumber random;
@@ -51,7 +52,7 @@ public class FolderEvent extends QuestEvent {
             // remove chosen events from that ArrayList and place them in a new
             // list
             for (int i = randomInt; i > 0; i--) {
-                final int chosen = new Random().nextInt(eventsList.size());
+                final int chosen = randomGenerator.nextInt(eventsList.size());
                 chosenList.add(eventsList.remove(chosen));
             }
         } else {

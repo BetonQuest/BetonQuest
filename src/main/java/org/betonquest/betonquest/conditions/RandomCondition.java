@@ -9,11 +9,12 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import java.util.Random;
 
 /**
- * The condition that is met randomly
+ * The condition that is met randomly.
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class RandomCondition extends Condition {
 
+    private final Random random = new Random();
     private final VariableNumber valueMax;
     private final VariableNumber rangeOfRandom;
 
@@ -37,8 +38,7 @@ public class RandomCondition extends Condition {
 
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        final Random generator = new Random();
-        final int temp = generator.nextInt(rangeOfRandom.getInt(playerID)) + 1;
+        final int temp = random.nextInt(rangeOfRandom.getInt(playerID)) + 1;
         return temp <= valueMax.getInt(playerID);
     }
 

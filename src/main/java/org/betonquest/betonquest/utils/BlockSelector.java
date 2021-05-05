@@ -32,9 +32,10 @@ import java.util.regex.PatternSyntaxException;
 public class BlockSelector {
     private final List<Material> materials;
     private final Map<String, String> states;
+    private final Random random = new Random();
 
     /**
-     * Create a {@link BlockSelector} from a {@link String}
+     * Create a {@link BlockSelector} from a {@link String}.
      *
      * @param block The {@link String} of the {@link BlockSelector} in the format of {@link BlockData#getAsString()}
      * @throws InstructionParseException Is thrown, if no material match that selector string
@@ -50,7 +51,7 @@ public class BlockSelector {
     }
 
     /**
-     * Create a {@link BlockSelector} from a {@link Block}
+     * Create a {@link BlockSelector} from a {@link Block}.
      *
      * @param block The {@link Block} of the {@link BlockSelector}
      * @throws InstructionParseException Is thrown, if no material match that selector string
@@ -66,7 +67,7 @@ public class BlockSelector {
      */
     @Override
     public String toString() {
-        return materials.toString() + (states == null ? "" : "[" + states.toString() + "]");
+        return materials.toString() + (states == null ? "" : "[" + states + "]");
     }
 
     /**
@@ -75,7 +76,6 @@ public class BlockSelector {
      * @return A {@link Material}
      */
     public Material getRandomMaterial() {
-        final Random random = new Random();
         return materials.get(random.nextInt(materials.size()));
     }
 
@@ -120,7 +120,7 @@ public class BlockSelector {
         try {
             state.setBlockData(getBlockData());
         } catch (final IllegalArgumentException exception) {
-            LOG.error(null, "Could not place block '" + toString() + "'! Probably the block has a invalid blockstate: " + exception.getMessage(), exception);
+            LOG.error(null, "Could not place block '" + this + "'! Probably the block has a invalid blockstate: " + exception.getMessage(), exception);
         }
 
         state.update(true, applyPhysics);

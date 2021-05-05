@@ -5,7 +5,6 @@ import lombok.CustomLog;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
-import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.*;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.compatibility.Compatibility;
@@ -61,8 +60,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private String defaultPack = Config.getString("config.default_package");
 
     /**
-     * Registers a new executor and a new tab completer of the /betonquest
-     * command
+     * Registers a new executor and a new tab completer of the /betonquest command.
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public QuestCommand() {
@@ -1812,7 +1810,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             }
             final UUID uuid = ((Player) sender).getUniqueId();
             if (args.length < 3) {
-                sender.sendMessage("§2Active Filters: " + StringUtils.joinWith(", ", logWatcher.getFilters(uuid)));
+                sender.sendMessage("§2Active Filters: " + String.join(", ", logWatcher.getFilters(uuid)));
                 return;
             }
             final String filter = args[2];

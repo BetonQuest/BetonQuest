@@ -1,4 +1,4 @@
-name: Test Dependencies
+name: Daily Dependency Check
 on:
   schedule:
     - cron: "0 0 * * *"
@@ -20,7 +20,7 @@ jobs:
 
       - name: Build with Maven
         run: |
-          mvn -B package
+          mvn -B -P distributed-repositories,-mirrored-repositories package
 
   documentation:
     name: Build Documentation
