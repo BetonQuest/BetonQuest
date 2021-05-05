@@ -68,22 +68,3 @@ Report **Issues** here: https://github.com/BetonQuest/BetonQuest/issues/new/choo
     </dependency>
 </dependencies>
 ```
-
-**Contributing:**
-
-**Make sure to set this git config setting in your project before cloning or touching any code:**
-
-Windows:
-```
-git config --global core.autocrlf true
-```
-MacOS & Linux:
-``` 
-git config --global core.autocrlf input
-```
-
-Clone:
-
-```
-git clone https://github.com/BetonQuest/BetonQuest.git
-```
