@@ -13,18 +13,7 @@ The Build-Pipeline will not accept commits that fail to respect the guidelines.*
 
 ### Setup
 
-**Make sure to set this git config setting in your project before cloning or touching any code:**
-
-Windows:
-```
-git config --global core.autocrlf true
-```
-MacOS & Linux:
-``` 
-git config --global core.autocrlf input
-```
-
-Now you can clone the project from our GitHub repository:
+You can clone the project from our GitHub repository:
 
 ```
 git clone https://github.com/BetonQuest/BetonQuest.git
