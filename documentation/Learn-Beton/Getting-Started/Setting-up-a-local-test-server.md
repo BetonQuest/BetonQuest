@@ -25,7 +25,8 @@ You really want to make sure to have nothing in it because that folder is
 going to get quite a lot of files in it. Move the downloaded file here and rename it to `paper.jar`.
 
 - **Step 3:** You need a start script to start your server.
-Open your text editor and create a file named `start.bat` (For Linux and Mac: Create a `start.sh` file instead). 
+Open your text editor and create a file named `start.bat` (For Linux and Mac: Create a `start.sh` file instead).
+Place it in the freshly created folder.
 Open it and copy this into it:
 ```
 java -Xms1G -Xmx1G -jar paper.jar
@@ -36,9 +37,10 @@ The `1G` setting in both the `-Xms` and `-Xmx` options is how much RAM you want 
 cases though.     
 Make sure to save it as a `.bat` file! If you save it as a `.txt` file it will not work. 
 
-- **Step 4:** Launch the server by double-clicking on the start file. A console window will appear and close after a while. Just wait until its gone.
+- **Step 4:** Start the server by double-clicking on the start file. A console window will appear and close after a while. Just wait until its gone.
 Now check the server's folder. You will find a bunch of new folders and files that have been generated.
 You need to accept the EULA (Minecrafts End-User-License-Agreement)to be able to run a Minecraft server.
 You will find a link in the eula.txt file. After you read it you need to set `eula=false` to `eula=true`.
+The start file now serves as the start button for the server.
 
 **Next step: [Install BetonQuest](Installing-BetonQuest.md).**
