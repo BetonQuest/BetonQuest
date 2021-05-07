@@ -1006,10 +1006,10 @@
           <id>enginehub-repo</id>
           <url>https://maven.enginehub.org/repo/</url>
         </repository>
-        <repository>
+        <repository> <!-- lgtm [java/maven/non-https-url] -->
           <!-- https://github.com/BetonQuest/BetonQuest/issues/1475 -->
           <id>heroes-repo</id>
-          <url>http://nexus.hc.to/content/repositories/pub_releases/</url> <!-- lgtm [java/maven/non-https-url] -->
+          <url>http://nexus.hc.to/content/repositories/pub_releases/</url>
         </repository>
         <repository>
           <id>lumine-repo</id>
