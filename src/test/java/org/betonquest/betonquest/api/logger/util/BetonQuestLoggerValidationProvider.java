@@ -2,9 +2,7 @@ package org.betonquest.betonquest.api.logger.util;
 
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.junit.jupiter.api.extension.AfterAllCallback;
-import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
-import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolver;
@@ -18,38 +16,28 @@ import static org.mockito.Mockito.mockStatic;
 /**
  * Resolves a {@link LogValidator} for JUnit 5 tests.
  */
-public class BetonQuestLoggerValidationProvider implements ParameterResolver, BeforeAllCallback, AfterAllCallback, BeforeEachCallback, AfterEachCallback {
+public class BetonQuestLoggerValidationProvider implements ParameterResolver, BeforeAllCallback, AfterAllCallback {
+    /**
+     * The instance of the parent logger.
+     */
+    private final Logger parentLogger;
     /**
      * The MockedStatic instance of {@link BetonQuestLogger} class.
      */
-    private static MockedStatic<BetonQuestLogger> betonQuestLogger;
-    /**
-     * The {@link LogValidator} instance.
-     */
-    private LogValidator logValidator;
+    private MockedStatic<BetonQuestLogger> betonQuestLogger;
 
     /**
      * Default {@link BetonQuestLoggerValidationProvider} Constructor.
      */
     public BetonQuestLoggerValidationProvider() {
+        parentLogger = Logger.getAnonymousLogger();
     }
 
     @Override
     public void beforeAll(final ExtensionContext context) {
         betonQuestLogger = mockStatic(BetonQuestLogger.class);
         betonQuestLogger.when(() -> BetonQuestLogger.create(any(), any())).thenAnswer(invocation ->
-                new BetonQuestLogger(Logger.getGlobal(), invocation.getArgument(0), invocation.getArgument(1)));
-    }
-
-    @Override
-    public void beforeEach(final ExtensionContext context) {
-        logValidator = new LogValidator();
-        Logger.getGlobal().addHandler(logValidator);
-    }
-
-    @Override
-    public void afterEach(final ExtensionContext context) {
-        logValidator = null;
+                new BetonQuestLogger(parentLogger, invocation.getArgument(0), invocation.getArgument(1)));
     }
 
     @Override
@@ -65,6 +53,6 @@ public class BetonQuestLoggerValidationProvider implements ParameterResolver, Be
 
     @Override
     public Object resolveParameter(final ParameterContext parameterContext, final ExtensionContext extensionContext) {
-        return logValidator;
+        return LogValidator.getForLogger(parentLogger);
     }
 }

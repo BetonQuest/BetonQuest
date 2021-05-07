@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.api.logger;
 
 import org.betonquest.betonquest.api.logger.util.LogValidator;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -12,16 +12,25 @@ import java.util.logging.Logger;
 /**
  * This class test the {@link TopicLogger}.
  */
-@SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+@SuppressWarnings({"PMD.JUnitTestsShouldIncludeAssert", "PMD.MoreThanOneLogger"})
+@Execution(ExecutionMode.CONCURRENT)
 public class TopicLoggerTest {
     /**
-     * The {@link TopicLogger} instance to test.
+     * The logger topic.
      */
-    private TopicLogger logger;
+    private static final String LOGGER_TOPIC = "Test";
     /**
-     * The {@link LogValidator} instance.
+     * The log message.
      */
-    private LogValidator logValidator;
+    private static final String LOG_MESSAGE = "Test Message";
+    /**
+     * The log message with topic.
+     */
+    private static final String LOG_MESSAGE_WITH_TOPIC = "(" + LOGGER_TOPIC + ") " + LOG_MESSAGE;
+    /**
+     * The exception message.
+     */
+    private static final String EXCEPTION_MESSAGE = "Test Exception";
 
     /**
      * Default constructor.
@@ -29,39 +38,25 @@ public class TopicLoggerTest {
     public TopicLoggerTest() {
     }
 
-    /**
-     * Setup the {@link LogValidator}.
-     */
-    @BeforeEach
-    public void beforeEach() {
-        logger = new TopicLogger(Logger.getGlobal(), TopicLoggerTest.class, "TestTopicLogger");
-        logValidator = new LogValidator();
-        logger.addHandler(logValidator);
-    }
-
-    /**
-     * Assert that the {@link LogValidator} is empty.
-     */
-    @AfterEach
-    public void afterEach() {
-        logValidator.assertEmpty();
+    private TopicLogger getTopicLogger() {
+        return new TopicLogger(Logger.getAnonymousLogger(), TopicLoggerTest.class, LOGGER_TOPIC);
     }
 
     @Test
         /* default */ void testLogLevelAndMessage() {
-        logger.log(Level.INFO, "Test Message");
-        logValidator.assertLogEntry(Level.INFO, "(TestTopicLogger) Test Message");
-    }
-
-    @Test
-        /* default */ void testLogLevelMessageAndException() {
-        logger.log(Level.SEVERE, "Test Message", new IOException("Test Exception!"));
-        logValidator.assertLogEntry(Level.SEVERE, "(TestTopicLogger) Test Message", IOException.class);
+        final Logger logger = getTopicLogger();
+        final LogValidator logValidator = LogValidator.getForLogger(logger);
+        logger.log(Level.INFO, LOG_MESSAGE);
+        logValidator.assertLogEntry(Level.INFO, LOG_MESSAGE_WITH_TOPIC);
+        logValidator.assertEmpty();
     }
 
     @Test
         /* default */ void testLogLevelMessageExceptionAndExceptionMessage() {
-        logger.log(Level.SEVERE, "Test Message", new IOException("Test Exception!"));
-        logValidator.assertLogEntry(Level.SEVERE, "(TestTopicLogger) Test Message", IOException.class, "Test Exception!");
+        final Logger logger = getTopicLogger();
+        final LogValidator logValidator = LogValidator.getForLogger(logger);
+        logger.log(Level.SEVERE, LOG_MESSAGE, new IOException(EXCEPTION_MESSAGE));
+        logValidator.assertLogEntry(Level.SEVERE, LOG_MESSAGE_WITH_TOPIC, IOException.class, EXCEPTION_MESSAGE);
+        logValidator.assertEmpty();
     }
 }

@@ -3,10 +3,10 @@ package org.betonquest.betonquest.api.logger;
 import org.betonquest.betonquest.api.logger.util.LogValidator;
 import org.betonquest.betonquest.config.ConfigPackage;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.mockito.MockedStatic;
 
 import java.io.IOException;
@@ -18,8 +18,13 @@ import static org.mockito.Mockito.*;
 /**
  * This class test the {@link BetonQuestLogger}.
  */
-@SuppressWarnings({"PMD.JUnitTestsShouldIncludeAssert", "PMD.TooManyMethods"})
+@SuppressWarnings({"PMD.JUnitTestsShouldIncludeAssert", "PMD.TooManyMethods", "PMD.MoreThanOneLogger"})
+@Execution(ExecutionMode.CONCURRENT)
 public class BetonQuestLoggerTest {
+    /**
+     * The {@link ConfigPackage} name.
+     */
+    public static final String CUSTOM_CONFIG_PACKAGE = "CustomTestPackage";
     /**
      * The logger topic.
      */
@@ -31,27 +36,17 @@ public class BetonQuestLoggerTest {
     /**
      * The log message with topic.
      */
-    private static final String LOG_MESSAGE_WITH_TOPIC = "(" + LOGGER_TOPIC + ") Test Message";
+    private static final String LOG_MESSAGE_WITH_TOPIC = "(" + LOGGER_TOPIC + ") " + LOG_MESSAGE;
     /**
      * The exception message.
      */
     private static final String EXCEPTION_MESSAGE = "Test Exception";
     /**
      * The static mocked {@link BetonQuestLogger} instance.
+     * This is needed, because the {@link ConfigPackage} uses a @{@link lombok.CustomLog} annotation
+     * and we want to mock the {@link ConfigPackage}.
      */
     private static MockedStatic<BetonQuestLogger> betonQuestLoggerMockedStatic;
-    /**
-     * The {@link ConfigPackage} instance.
-     */
-    private ConfigPackage configPackage;
-    /**
-     * The {@link BetonQuestLogger} instance.
-     */
-    private BetonQuestLogger betonQuestLogger;
-    /**
-     * The {@link LogValidator} instance.
-     */
-    private LogValidator logValidator;
 
     /**
      * Default constructor.
@@ -75,77 +70,96 @@ public class BetonQuestLoggerTest {
         betonQuestLoggerMockedStatic.close();
     }
 
-    /**
-     * Setup the {@link BetonQuestLogger} and {@link LogValidator}.
-     */
-    @BeforeEach
-    public void beforeEach() {
-        configPackage = mock(ConfigPackage.class);
-        when(configPackage.getName()).thenReturn("CustomTestPackage");
-
-        betonQuestLogger = new BetonQuestLogger(Logger.getGlobal(), BetonQuestLoggerTest.class, LOGGER_TOPIC);
-
-        final Logger logger = Logger.getGlobal();
-        logValidator = new LogValidator();
-        logger.addHandler(logValidator);
+    private ConfigPackage mockConfigPackage() {
+        final ConfigPackage configPackage = mock(ConfigPackage.class);
+        when(configPackage.getName()).thenReturn(CUSTOM_CONFIG_PACKAGE);
+        return configPackage;
     }
 
-    /**
-     * Assert that the {@link LogValidator} is empty.
-     */
-    @AfterEach
-    public void afterEach() {
-        logValidator.assertEmpty();
+    private BetonQuestLogger getBetonQuestLogger(final Logger logger) {
+        return new BetonQuestLogger(logger, BetonQuestLoggerTest.class, LOGGER_TOPIC);
     }
 
     @Test
         /* default */ void testDebug() {
-        betonQuestLogger.debug(configPackage, LOG_MESSAGE);
+        final Logger logger = Logger.getAnonymousLogger();
+        final BetonQuestLogger betonQuestLogger = getBetonQuestLogger(logger);
+        final LogValidator logValidator = LogValidator.getForLogger(logger);
+        betonQuestLogger.debug(mockConfigPackage(), LOG_MESSAGE);
         logValidator.assertLogEntry(Level.FINE, LOG_MESSAGE_WITH_TOPIC);
+        logValidator.assertEmpty();
     }
 
     @Test
         /* default */ void testDebugException() {
-        betonQuestLogger.debug(configPackage, LOG_MESSAGE, new IOException(EXCEPTION_MESSAGE));
+        final Logger logger = Logger.getAnonymousLogger();
+        final BetonQuestLogger betonQuestLogger = getBetonQuestLogger(logger);
+        final LogValidator logValidator = LogValidator.getForLogger(logger);
+        betonQuestLogger.debug(mockConfigPackage(), LOG_MESSAGE, new IOException(EXCEPTION_MESSAGE));
         logValidator.assertLogEntry(Level.FINE, LOG_MESSAGE_WITH_TOPIC, IOException.class, EXCEPTION_MESSAGE);
+        logValidator.assertEmpty();
     }
 
     @Test
         /* default */ void testInfo() {
-        betonQuestLogger.info(configPackage, LOG_MESSAGE);
+        final Logger logger = Logger.getAnonymousLogger();
+        final BetonQuestLogger betonQuestLogger = getBetonQuestLogger(logger);
+        final LogValidator logValidator = LogValidator.getForLogger(logger);
+        betonQuestLogger.info(mockConfigPackage(), LOG_MESSAGE);
         logValidator.assertLogEntry(Level.INFO, LOG_MESSAGE_WITH_TOPIC);
+        logValidator.assertEmpty();
     }
 
     @Test
         /* default */ void testWarning() {
-        betonQuestLogger.warning(configPackage, LOG_MESSAGE);
+        final Logger logger = Logger.getAnonymousLogger();
+        final BetonQuestLogger betonQuestLogger = getBetonQuestLogger(logger);
+        final LogValidator logValidator = LogValidator.getForLogger(logger);
+        betonQuestLogger.warning(mockConfigPackage(), LOG_MESSAGE);
         logValidator.assertLogEntry(Level.WARNING, LOG_MESSAGE_WITH_TOPIC);
+        logValidator.assertEmpty();
     }
 
     @Test
         /* default */ void testWarningException() {
-        betonQuestLogger.warning(configPackage, LOG_MESSAGE, new IOException(EXCEPTION_MESSAGE));
+        final Logger logger = Logger.getAnonymousLogger();
+        final BetonQuestLogger betonQuestLogger = getBetonQuestLogger(logger);
+        final LogValidator logValidator = LogValidator.getForLogger(logger);
+        betonQuestLogger.warning(mockConfigPackage(), LOG_MESSAGE, new IOException(EXCEPTION_MESSAGE));
         logValidator.assertLogEntry(Level.WARNING, LOG_MESSAGE_WITH_TOPIC);
         logValidator.assertLogEntry(Level.FINE, "(Test) Additional stacktrace:", IOException.class, EXCEPTION_MESSAGE);
+        logValidator.assertEmpty();
     }
 
     @Test
         /* default */ void testError() {
-        betonQuestLogger.error(configPackage, LOG_MESSAGE);
+        final Logger logger = Logger.getAnonymousLogger();
+        final BetonQuestLogger betonQuestLogger = getBetonQuestLogger(logger);
+        final LogValidator logValidator = LogValidator.getForLogger(logger);
+        betonQuestLogger.error(mockConfigPackage(), LOG_MESSAGE);
         logValidator.assertLogEntry(Level.SEVERE, LOG_MESSAGE_WITH_TOPIC);
+        logValidator.assertEmpty();
     }
 
     @Test
         /* default */ void testErrorException() {
-        betonQuestLogger.error(configPackage, LOG_MESSAGE, new IOException(EXCEPTION_MESSAGE));
+        final Logger logger = Logger.getAnonymousLogger();
+        final BetonQuestLogger betonQuestLogger = getBetonQuestLogger(logger);
+        final LogValidator logValidator = LogValidator.getForLogger(logger);
+        betonQuestLogger.error(mockConfigPackage(), LOG_MESSAGE, new IOException(EXCEPTION_MESSAGE));
         logValidator.assertLogEntry(Level.SEVERE, LOG_MESSAGE_WITH_TOPIC, IOException.class, EXCEPTION_MESSAGE);
+        logValidator.assertEmpty();
     }
 
     @Test
         /* default */ void testReportException() {
-        betonQuestLogger.reportException(configPackage, new IOException(EXCEPTION_MESSAGE));
+        final Logger logger = Logger.getAnonymousLogger();
+        final BetonQuestLogger betonQuestLogger = getBetonQuestLogger(logger);
+        final LogValidator logValidator = LogValidator.getForLogger(logger);
+        betonQuestLogger.reportException(mockConfigPackage(), new IOException(EXCEPTION_MESSAGE));
         logValidator.assertLogEntry(Level.SEVERE, "(Test) This is an exception that should never occur. "
                         + "If you don't know why this occurs please report it to the author.",
                 IOException.class, EXCEPTION_MESSAGE);
+        logValidator.assertEmpty();
     }
 }

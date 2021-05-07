@@ -7,17 +7,18 @@ import java.util.LinkedList;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
- * This class an be attached to any {@link java.util.logging.Logger} as handler.
+ * This class can be attached to any {@link java.util.logging.Logger} as handler.
  * Then it is possible to check for {@link LogRecord}s to assert that the right things are logged.
  */
 public class LogValidator extends Handler {
     /**
-     * The que of all left {@link LogRecord}s.
+     * The queue of all left {@link LogRecord}s.
      */
     private final Deque<LogRecord> records;
 
@@ -27,6 +28,18 @@ public class LogValidator extends Handler {
     public LogValidator() {
         super();
         records = new LinkedList<>();
+    }
+
+    /**
+     * Setup and return a {@link LogValidator} for the given logger.
+     *
+     * @param logger The related logger.
+     * @return The LogValidator.
+     */
+    public static LogValidator getForLogger(final Logger logger) {
+        final LogValidator logValidator = new LogValidator();
+        logger.addHandler(logValidator);
+        return logValidator;
     }
 
     @Override
@@ -61,10 +74,7 @@ public class LogValidator extends Handler {
      */
     public void assertLogEntry(final Level level, final String message, final Class<? extends Throwable> throwable, final String throwableMessage) {
         final LogRecord record = records.pop();
-        assertNotNull(record, "The record is unexpected null!");
-        assertEntry(record, level, message);
-        assertEntry(record, throwable);
-        assertEntry(record, throwableMessage);
+        assertEntry(record, level, message, throwable, throwableMessage);
     }
 
     /**
@@ -76,9 +86,7 @@ public class LogValidator extends Handler {
      */
     public void assertLogEntry(final Level level, final String message, final Class<? extends Throwable> throwable) {
         final LogRecord record = records.pop();
-        assertNotNull(record, "The record is unexpected null!");
-        assertEntry(record, level, message);
-        assertEntry(record, throwable);
+        assertEntry(record, level, message, throwable);
     }
 
     /**
@@ -89,20 +97,22 @@ public class LogValidator extends Handler {
      */
     public void assertLogEntry(final Level level, final String message) {
         final LogRecord record = records.pop();
-        assertNotNull(record, "The record is unexpected null!");
         assertEntry(record, level, message);
     }
 
-    private void assertEntry(final LogRecord record, final String throwableMessage) {
+    private void assertEntry(final LogRecord record, final Level level, final String message, final Class<? extends Throwable> throwable, final String throwableMessage) {
+        assertEntry(record, level, message, throwable);
         assertEquals(throwableMessage, record.getThrown().getMessage(), "Expected log throwable message does not equal!");
     }
 
-    private void assertEntry(final LogRecord record, final Class<? extends Throwable> throwable) {
+    private void assertEntry(final LogRecord record, final Level level, final String message, final Class<? extends Throwable> throwable) {
+        assertEntry(record, level, message);
         assertNotNull(record.getThrown(), "Expected log throwable is null!");
         assertEquals(throwable, record.getThrown().getClass(), "Expected log throwable does not equal!");
     }
 
     private void assertEntry(final LogRecord record, final Level level, final String message) {
+        assertNotNull(record, "The record is unexpected null!");
         assertEquals(level, record.getLevel(), "Expected log level does not equal!");
         assertEquals(message, record.getMessage(), "Expected log message does not equal!");
     }
