@@ -14,8 +14,8 @@ import java.util.Arrays;
 import java.util.Random;
 
 /**
- * Folder event is a collection of other events, that can be run after a delay
- * and the events can be randomly chosen to run or not
+ * Folder event is a collection of other events, that can be run after a delay and the events can be randomly chosen to
+ * run or not.
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class FolderEvent extends QuestEvent {

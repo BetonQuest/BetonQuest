@@ -16,7 +16,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 /**
- * Resumes the conversation for the player
+ * Resumes the conversation for the player.
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class ConversationResumer implements Listener {
