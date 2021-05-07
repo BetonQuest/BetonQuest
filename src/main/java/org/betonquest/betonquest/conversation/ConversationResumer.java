@@ -16,7 +16,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 /**
- * Resumes the conversation for the player
+ * Resumes the conversation for the player.
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class ConversationResumer implements Listener {
@@ -44,7 +44,7 @@ public class ConversationResumer implements Listener {
         final String[] locParts = parts[2].split(";");
         this.loc = new Location(Bukkit.getWorld(locParts[3]), Double.parseDouble(locParts[0]),
                 Double.parseDouble(locParts[1]), Double.parseDouble(locParts[2]));
-        this.distance = Double.valueOf(Config.getString("config.max_npc_distance"));
+        this.distance = Double.parseDouble(Config.getString("config.max_npc_distance"));
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
@@ -57,7 +57,7 @@ public class ConversationResumer implements Listener {
         if (event.getTo().getWorld().equals(loc.getWorld()) && event.getTo().distanceSquared(loc) < distance * distance) {
             HandlerList.unregisterAll(this);
             BetonQuest.getInstance().getSaver()
-                    .add(new Record(UpdateType.UPDATE_CONVERSATION, new String[]{"null", playerID}));
+                    .add(new Record(UpdateType.UPDATE_CONVERSATION, "null", playerID));
             new Conversation(playerID, conversationID, loc, option);
         }
     }
@@ -69,6 +69,6 @@ public class ConversationResumer implements Listener {
         }
         HandlerList.unregisterAll(this);
         BetonQuest.getInstance().getSaver()
-                .add(new Record(UpdateType.UPDATE_CONVERSATION, new String[]{original, playerID}));
+                .add(new Record(UpdateType.UPDATE_CONVERSATION, original, playerID));
     }
 }
