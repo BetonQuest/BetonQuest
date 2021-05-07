@@ -14,12 +14,13 @@ import java.util.Arrays;
 import java.util.Random;
 
 /**
- * Folder event is a collection of other events, that can be run after a delay
- * and the events can be randomly chosen to run or not
+ * Folder event is a collection of other events, that can be run after a delay and the events can be randomly chosen to
+ * run or not.
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class FolderEvent extends QuestEvent {
 
+    private final Random randomGenerator = new Random();
     private final VariableNumber delay;
     private final VariableNumber period;
     private final VariableNumber random;
@@ -51,7 +52,7 @@ public class FolderEvent extends QuestEvent {
             // remove chosen events from that ArrayList and place them in a new
             // list
             for (int i = randomInt; i > 0; i--) {
-                final int chosen = new Random().nextInt(eventsList.size());
+                final int chosen = randomGenerator.nextInt(eventsList.size());
                 chosenList.add(eventsList.remove(chosen));
             }
         } else {
