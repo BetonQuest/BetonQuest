@@ -1,10 +1,9 @@
-package org.betonquest.betonquest.utils.logger;
+package org.betonquest.betonquest.api.logger;
 
 import lombok.CustomLog;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.config.ConfigPackage;
-import org.betonquest.betonquest.utils.logger.custom.PackageLogRecord;
-import org.betonquest.betonquest.utils.logger.custom.TopicLogger;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginLogger;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -12,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This is the BetonQuest log decorator for usage with Lombok's {@link CustomLog} annotation.
+ * This is the BetonQuest log facade for usage with Lombok {@link CustomLog} annotation.
  * <p>
  * This decorator uses the {@link PluginLogger} from the {@link JavaPlugin#getLogger()} method.
  * It registers a new child {@link TopicLogger} for each class it's used in.
@@ -29,12 +28,12 @@ public class BetonQuestLogger {
     /**
      * Creates a decorator for the {@link TopicLogger}.
      *
-     * @param plugin The instance of a {@link JavaPlugin}.
-     * @param clazz  The calling class.
-     * @param topic  The topic of the logger.
+     * @param parentLogger The instance of a {@link Plugin}.
+     * @param clazz        The calling class.
+     * @param topic        The topic of the logger.
      */
-    public BetonQuestLogger(final JavaPlugin plugin, final Class<?> clazz, final String topic) {
-        this.logger = new TopicLogger(plugin, clazz, topic);
+    public BetonQuestLogger(final Logger parentLogger, final Class<?> clazz, final String topic) {
+        this.logger = new TopicLogger(parentLogger, clazz, topic);
     }
 
     /**
@@ -56,8 +55,14 @@ public class BetonQuestLogger {
      * @param topic The optional topic of the logger passed by lombok.
      * @return The decorated Logger.
      */
+    @SuppressWarnings("PMD.UseProperClassLoader")
     public static BetonQuestLogger create(final Class<?> clazz, final String topic) {
-        return new BetonQuestLogger(BetonQuest.getInstance(), clazz, topic);
+        for (final Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
+            if (plugin.getClass().getClassLoader().equals(clazz.getClassLoader())) {
+                return new BetonQuestLogger(plugin.getLogger(), clazz, topic);
+            }
+        }
+        return new BetonQuestLogger(Bukkit.getLogger(), clazz, topic);
     }
 
     /**
@@ -69,7 +74,7 @@ public class BetonQuestLogger {
      * @param msg  The message to log.
      */
     public void info(final ConfigPackage pack, final String msg) {
-        final PackageLogRecord record = new PackageLogRecord(pack, Level.INFO, msg);
+        final QuestPackageLogRecord record = new QuestPackageLogRecord(pack, Level.INFO, msg);
         logger.log(record);
     }
 
@@ -84,7 +89,7 @@ public class BetonQuestLogger {
      * @param msg  The message to log.
      */
     public void warning(final ConfigPackage pack, final String msg) {
-        final PackageLogRecord record = new PackageLogRecord(pack, Level.WARNING, msg);
+        final QuestPackageLogRecord record = new QuestPackageLogRecord(pack, Level.WARNING, msg);
         logger.log(record);
     }
 
@@ -101,10 +106,10 @@ public class BetonQuestLogger {
      * @param thrown The throwable to log.
      */
     public void warning(final ConfigPackage pack, final String msg, final Throwable thrown) {
-        final PackageLogRecord record = new PackageLogRecord(pack, Level.WARNING, msg);
+        final QuestPackageLogRecord record = new QuestPackageLogRecord(pack, Level.WARNING, msg);
         logger.log(record);
 
-        final PackageLogRecord recordThrowable = new PackageLogRecord(pack, Level.FINE, "Additional stacktrace:");
+        final QuestPackageLogRecord recordThrowable = new QuestPackageLogRecord(pack, Level.FINE, "Additional stacktrace:");
         recordThrowable.setThrown(thrown);
         logger.log(recordThrowable);
     }
@@ -121,7 +126,7 @@ public class BetonQuestLogger {
      * @param msg  The message to log.
      */
     public void error(final ConfigPackage pack, final String msg) {
-        final PackageLogRecord record = new PackageLogRecord(pack, Level.SEVERE, msg);
+        final QuestPackageLogRecord record = new QuestPackageLogRecord(pack, Level.SEVERE, msg);
         logger.log(record);
     }
 
@@ -139,7 +144,7 @@ public class BetonQuestLogger {
      * @param thrown The throwable to log.
      */
     public void error(final ConfigPackage pack, final String msg, final Throwable thrown) {
-        final PackageLogRecord record = new PackageLogRecord(pack, Level.SEVERE, msg);
+        final QuestPackageLogRecord record = new QuestPackageLogRecord(pack, Level.SEVERE, msg);
         record.setThrown(thrown);
         logger.log(record);
     }
@@ -155,7 +160,7 @@ public class BetonQuestLogger {
      * @param msg  The message to log.
      */
     public void debug(final ConfigPackage pack, final String msg) {
-        final PackageLogRecord record = new PackageLogRecord(pack, Level.FINE, msg);
+        final QuestPackageLogRecord record = new QuestPackageLogRecord(pack, Level.FINE, msg);
         logger.log(record);
     }
 
@@ -172,7 +177,7 @@ public class BetonQuestLogger {
      * @param thrown The throwable to log.
      */
     public void debug(final ConfigPackage pack, final String msg, final Throwable thrown) {
-        final PackageLogRecord record = new PackageLogRecord(pack, Level.FINE, msg);
+        final QuestPackageLogRecord record = new QuestPackageLogRecord(pack, Level.FINE, msg);
         record.setThrown(thrown);
         logger.log(record);
     }
@@ -189,8 +194,8 @@ public class BetonQuestLogger {
      */
     public void reportException(final ConfigPackage pack, final Throwable thrown) {
         final String msg = "This is an exception that should never occur. "
-                + "If you don't know why this occurs please report it to <https://github.com/BetonQuest/BetonQuest/issues>.";
-        final PackageLogRecord record = new PackageLogRecord(pack, Level.SEVERE, msg);
+                + "If you don't know why this occurs please report it to the author.";
+        final QuestPackageLogRecord record = new QuestPackageLogRecord(pack, Level.SEVERE, msg);
         record.setThrown(thrown);
         logger.log(record);
     }
