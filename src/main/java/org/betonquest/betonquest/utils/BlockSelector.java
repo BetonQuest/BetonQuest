@@ -10,7 +10,12 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -242,7 +247,7 @@ public class BlockSelector {
         try {
             namespacePattern = Pattern.compile("^" + namespaceString + "$");
             keyPattern = Pattern.compile("^" + keyString + "$");
-        } catch (PatternSyntaxException exception) {
+        } catch (final PatternSyntaxException exception) {
             throw new InstructionParseException("Invalid Regex: " + exception.getMessage(), exception);
         }
         for (final Material m : Material.values()) {

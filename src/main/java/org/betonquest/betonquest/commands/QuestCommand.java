@@ -5,7 +5,11 @@ import lombok.CustomLog;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
-import org.betonquest.betonquest.*;
+import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.Journal;
+import org.betonquest.betonquest.Point;
+import org.betonquest.betonquest.Pointer;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.config.Config;
@@ -45,7 +49,18 @@ import org.bukkit.util.Vector;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.StringJoiner;
+import java.util.TreeMap;
+import java.util.UUID;
 import java.util.logging.Level;
 
 /**

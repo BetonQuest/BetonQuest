@@ -4,7 +4,12 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
-import org.betonquest.betonquest.id.*;
+import org.betonquest.betonquest.id.ConditionID;
+import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.id.ID;
+import org.betonquest.betonquest.id.ItemID;
+import org.betonquest.betonquest.id.NoID;
+import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.BlockSelector;
 import org.betonquest.betonquest.utils.Utils;
@@ -17,7 +22,11 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

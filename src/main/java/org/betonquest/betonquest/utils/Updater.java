@@ -22,7 +22,12 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * This {@link Updater} checks for new versions on the BeonQuest page and on the GitHub page and download them if wanted.

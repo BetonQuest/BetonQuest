@@ -6,6 +6,9 @@
 <module name="Checker">
   <module name="TreeWalker">
     <property name="tabWidth" value="4"/>
+    <module name="AvoidStarImport">
+      <property name="excludes" value="org.junit.jupiter.api.Assertions,org.mockito.Mockito"/>
+    </module>
     <module name="ImportOrder">
       <property name="groups" value="*,javax,java"/>
       <property name="ordered" value="true"/>

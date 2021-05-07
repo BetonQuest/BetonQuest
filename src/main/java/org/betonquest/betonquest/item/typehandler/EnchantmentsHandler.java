@@ -5,7 +5,11 @@ import org.betonquest.betonquest.item.QuestItem.Existence;
 import org.betonquest.betonquest.item.QuestItem.Number;
 import org.bukkit.enchantments.Enchantment;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class EnchantmentsHandler {

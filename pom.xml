@@ -839,6 +839,7 @@
           <configuration>
             <configLocation>config/checkstyle.xml</configLocation>
             <propertyExpansion>checkstyle.config.path=${basedir}/config</propertyExpansion>
+            <includeTestSourceDirectory>true</includeTestSourceDirectory>
           </configuration>
         </plugin>
         <plugin>

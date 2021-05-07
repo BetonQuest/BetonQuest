@@ -11,7 +11,7 @@ import org.mockito.MockedStatic;
 import java.util.logging.Logger;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.*;
 
 /**
  * Resolves a {@link LogValidator} for JUnit 5 tests.
