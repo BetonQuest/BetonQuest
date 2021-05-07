@@ -123,6 +123,7 @@ jobs:
         run: |
           sed -i "s~#end_of_line = ~end_of_line = ~g" ./.editorconfig
       - name: Build with Maven. Phase 'package'
+        if: "github.event_name == 'pull_request'"
         run: |
           mvn -B package
       - name: Build with Maven. Phase 'verify'
