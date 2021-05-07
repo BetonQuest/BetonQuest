@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated
 ### Removed
 ### Fixes
+- `brew` objective triggers all the time and counts correctly
 ### Security
 
 ## [1.12.3] - 2021-05-05

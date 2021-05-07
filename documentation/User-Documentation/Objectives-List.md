@@ -308,10 +308,11 @@ The first argument is a potion ID from _items.yml_. Second argument is amount of
 You can optionally add `notify` argument to make the objective display progress to players,
 optionally with the notification interval after a colon.
 
-The brewing will be accepted if the player was the last one to click the ingredient slot in the brewing stand and there
-were no matching potions there already.
+The brewing will be accepted if the player was the last one add something to the brewing stand and will only count newly
+brewed potions.
 
-Potion objective has `amount` and `left:` properties.
+This objective has these three properties: `amount` for what is already done, `left:` for what is still left and `total`
+for what was initially required.
 
 !!! example
     ```YAML
