@@ -1009,7 +1009,7 @@
         <repository>
           <!-- https://github.com/BetonQuest/BetonQuest/issues/1475 -->
           <id>heroes-repo</id>
-          <url>http://nexus.hc.to/content/repositories/pub_releases/</url>
+          <url>http://nexus.hc.to/content/repositories/pub_releases/</url> <!-- lgtm [java/maven/non-https-url] -->
         </repository>
         <repository>
           <id>lumine-repo</id>
