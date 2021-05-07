@@ -651,12 +651,12 @@
                   <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.org.apache.maven</shadedPattern>
                 </relocation>
                 <relocation>
-                  <pattern>com.google.common</pattern>
-                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.com.google.common</shadedPattern>
-                </relocation>
-                <relocation>
                   <pattern>org.apache.commons</pattern>
                   <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.org.apache.commons</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.google.common</pattern>
+                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.com.google.common</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>org.json</pattern>
