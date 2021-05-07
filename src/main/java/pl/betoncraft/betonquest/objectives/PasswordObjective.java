@@ -8,7 +8,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Objective;
@@ -18,6 +17,7 @@ import pl.betoncraft.betonquest.id.EventID;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 /**
  * Requires the player to type a password in chat.
@@ -25,16 +25,16 @@ import java.util.Locale;
 @SuppressWarnings("PMD.CommentRequired")
 public class PasswordObjective extends Objective implements Listener {
 
-    private final String regex;
-    private final boolean ignoreCase;
+    private final Pattern regex;
     private final String passwordPrefix;
     private final EventID[] failEvents;
 
     public PasswordObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = ObjectiveData.class;
-        regex = instruction.next().replace('_', ' ');
-        ignoreCase = instruction.hasArgument("ignoreCase");
+        final String pattern = instruction.next().replace('_', ' ');
+        final int regexFlags = instruction.hasArgument("ignoreCase") ? Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE : 0;
+        regex = Pattern.compile(pattern, regexFlags);
         final String prefix = instruction.getOptional("prefix");
         passwordPrefix = prefix == null || prefix.isEmpty() ? prefix : prefix + ": ";
         failEvents = instruction.getList(instruction.getOptional("fail"), instruction::getEvent).toArray(new EventID[0]);
@@ -67,13 +67,8 @@ public class PasswordObjective extends Objective implements Listener {
         }
         final String password = message.substring(prefix.length());
         if (checkConditions(playerID)) {
-            if ((ignoreCase ? password.toLowerCase(Locale.ROOT) : password).matches(regex)) {
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        completeObjective(playerID);
-                    }
-                }.runTask(BetonQuest.getInstance());
+            if (regex.matcher(password).matches()) {
+                Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> completeObjective(playerID));
 
                 if (fromCommand) {
                     return !prefix.isEmpty();
