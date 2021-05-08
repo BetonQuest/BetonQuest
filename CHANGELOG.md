@@ -6,11 +6,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - ${current-date}
 ### Added
+- Vietnamese translation
+### Changed
+- `/q create package` command does now create an empty package
+### Deprecated
+### Removed
+### Fixes
+- `brew` objective triggers all the time and counts correctly
+- only generate default package if BetonQuest folder is empty
+### Security
+
+## [1.12.3] - 2021-05-05
+### Added
 - FastAsyncWorldEdit compatibility
 - craft objective variable `total`
 - curly braces in math.calc variables for using variables with math symbols
+- player attribute to QuestCompassTargetChangeEvent
 ### Changed
-- `/q create package` command does now create an empty package
 ### Deprecated
 - math variable now allows rounding output with the ~ operator
 ### Removed
@@ -23,7 +35,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - block selector didn't respect regex boundary
 - block selector regex errors are now properly handled
 - `default_journal_slot: -1` now uses the first free slot instead of the last hotbar slot
-- only generate default package if BetonQuest folder is empty
+- mmobkill objective notify argument not working correctly
+- `fish` objective didn't count the amount of fish caught in one go (if modified by e.g. mcMMO)
+- fixed smelt objective: only taking out normally did count, shift-extract got canceled
+- empty values in `variable` objective now don't break on player join
+- PacketInterceptor sync wait lag
+- notifications using the chatIO were catched by the conversation interceptor
+- case insensitive `password` objective did not work if the password contained upper case letters
 ### Security
 - it was possible to put a QuestItem into a chest
 

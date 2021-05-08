@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Creates variables based on what player is typing.
@@ -24,6 +26,7 @@ import java.util.Map.Entry;
 @SuppressWarnings("PMD.CommentRequired")
 public class VariableObjective extends Objective implements Listener {
 
+    public static final Pattern CHAT_VARIABLE_PATTERN = Pattern.compile("^(?<key>[a-zA-Z]+): (?<value>.+)$");
     private final boolean noChat;
 
     public VariableObjective(final Instruction instruction) throws InstructionParseException {
@@ -52,14 +55,13 @@ public class VariableObjective extends Objective implements Listener {
         if (!containsPlayer(playerID)) {
             return;
         }
-        if (event.getMessage().matches("[a-zA-Z]*: .*")) {
+        final Matcher chatVariableMatcher = CHAT_VARIABLE_PATTERN.matcher(event.getMessage());
+        if (chatVariableMatcher.matches()) {
             event.setCancelled(true);
-            final String message = event.getMessage();
-            final int index = message.indexOf(':');
-            final String key = message.substring(0, index).trim();
-            final String value = message.substring(index + 1).trim();
+            final String key = chatVariableMatcher.group("key").toLowerCase(Locale.ROOT);
+            final String value = chatVariableMatcher.group("value");
             ((VariableData) dataMap.get(playerID)).add(key, value);
-            event.getPlayer().sendMessage("§2§l\u2713");
+            event.getPlayer().sendMessage("§2§l\u2713"); // send checkmark
         }
     }
 
@@ -77,7 +79,7 @@ public class VariableObjective extends Objective implements Listener {
         if (data == null) {
             return false;
         }
-        data.add(key, value);
+        data.add(key.toLowerCase(Locale.ROOT), value);
         return true;
     }
 
@@ -88,7 +90,8 @@ public class VariableObjective extends Objective implements Listener {
 
     @Override
     public String getProperty(final String name, final String playerID) {
-        final String value = ((VariableData) dataMap.get(playerID)).get(name);
+        final String key = name.toLowerCase(Locale.ROOT);
+        final String value = ((VariableData) dataMap.get(playerID)).get(key);
         return value == null ? "" : value;
     }
 
@@ -101,18 +104,24 @@ public class VariableObjective extends Objective implements Listener {
             final String[] rawVariables = instruction.split("\n");
             for (final String rawVariable : rawVariables) {
                 if (rawVariable.contains(":")) {
-                    final String[] parts = rawVariable.split(":");
-                    variables.put(parts[0], parts[1]);
+                    final String[] parts = rawVariable.split(":", 2);
+                    final String key = parts[0];
+                    final String value = parts[1];
+                    variables.put(key, value);
                 }
             }
         }
 
         public String get(final String key) {
-            return variables.get(key.toLowerCase(Locale.ROOT));
+            return variables.get(key);
         }
 
         public void add(final String key, final String value) {
-            variables.put(key, value);
+            if (value.isEmpty()) {
+                variables.remove(key);
+            } else {
+                variables.put(key, value);
+            }
             update();
         }
 

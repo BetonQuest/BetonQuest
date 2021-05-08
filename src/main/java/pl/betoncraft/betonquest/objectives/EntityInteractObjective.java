@@ -25,10 +25,7 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -46,7 +43,8 @@ public class EntityInteractObjective extends Objective {
     private final VariableNumber range;
     protected EntityType mobType;
     protected int amount;
-    protected String name;
+    private final String customName;
+    private final String realName;
     protected String marked;
     protected boolean notify;
     protected Interaction interaction;
@@ -60,11 +58,8 @@ public class EntityInteractObjective extends Objective {
         interaction = instruction.getEnum(Interaction.class);
         mobType = instruction.getEnum(EntityType.class);
         amount = instruction.getPositive();
-        name = instruction.getOptional("name");
-        if (name != null) {
-            name = name.replace('_', ' ');
-            name = ChatColor.translateAlternateColorCodes('&', name);
-        }
+        customName = parseName(instruction.getOptional("name"));
+        realName = parseName(instruction.getOptional("realname"));
         marked = instruction.getOptional("marked");
         if (marked != null) {
             marked = Utils.addPackage(instruction.getPackage(), marked);
@@ -75,6 +70,13 @@ public class EntityInteractObjective extends Objective {
         loc = instruction.getLocation(instruction.getOptional("loc"));
         final String stringRange = instruction.getOptional("range");
         range = instruction.getVarNum(stringRange == null ? "1" : stringRange);
+    }
+
+    private String parseName(final String rawName) {
+        if (rawName != null) {
+            return ChatColor.translateAlternateColorCodes('&', rawName.replace('_', ' '));
+        }
+        return null;
     }
 
     @Override
@@ -100,8 +102,10 @@ public class EntityInteractObjective extends Objective {
         if (!entity.getType().equals(mobType)) {
             return false;
         }
-        // if the entity should have a name and it does not match, return
-        if (name != null && (entity.getCustomName() == null || !entity.getCustomName().equals(name))) {
+        if (customName != null && (entity.getCustomName() == null || !entity.getCustomName().equals(customName))) {
+            return false;
+        }
+        if (realName != null && !realName.equals(entity.getName())) {
             return false;
         }
         // check if the entity is correctly marked
@@ -181,12 +185,16 @@ public class EntityInteractObjective extends Objective {
 
     @Override
     public String getProperty(final String name, final String playerID) {
-        if ("left".equalsIgnoreCase(name)) {
-            return Integer.toString(((EntityInteractData) dataMap.get(playerID)).getAmount());
-        } else if ("amount".equalsIgnoreCase(name)) {
-            return Integer.toString(amount - ((EntityInteractData) dataMap.get(playerID)).getAmount());
+        switch (name.toLowerCase(Locale.ROOT)) {
+            case "amount":
+                return Integer.toString(amount - ((EntityInteractData) dataMap.get(playerID)).getAmount());
+            case "left":
+                return Integer.toString(((EntityInteractData) dataMap.get(playerID)).getAmount());
+            case "total":
+                return Integer.toString(amount);
+            default:
+                return "";
         }
-        return "";
     }
 
     public enum Interaction {

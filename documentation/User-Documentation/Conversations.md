@@ -86,7 +86,9 @@ is the way the user interacts with them.
 
 !!! note ""
     === "menu"
-        A modern conversation style that works with some of Minecraft's native controls. This is a video of it in action:
+        A modern conversation style that works with some of Minecraft's native controls.
+        All options can be found in the [compatibility](Compatibility.md#conversation-io-menu) section.
+        This is a video of it in action: <br/>
         <video controls loop
              src="../../media/content/User-Documentation/Conversations/MenuConvIO.mp4"
             width="780" height="500">

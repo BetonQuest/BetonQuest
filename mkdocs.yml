@@ -15,6 +15,9 @@ extra_css:
   - 'webCode/css/contentAreaFullWidth.css'
   - 'webCode/css/admonition.css'
 
+extra_javascript:
+  - 'webCode/js/copyLinkToClipboard.js'
+
 # More info on this theme: https://squidfunk.github.io/mkdocs-material
 theme:
   name: material
@@ -22,6 +25,8 @@ theme:
   features:
     - navigation.tabs
     - navigation.tabs.sticky
+    - navigation.tracking
+    - navigation.top
     - navigation.sections
     - navigation.expand
     - search.share

@@ -243,15 +243,19 @@ This event will check a condition, and based on the outcome it will run the firs
 
 **static**
 
-Adds or deletes an entry to/from player’s journal. Entries are defined in `journal.yml` The first argument is action (add/del), the second one is name of the entry. You can also use only one argument, `update`, it will simply update the journal without addin any entries. It's useful when you need to update the main page.
+Adds or deletes an entry to/from a player's journal. Journal entries have to be defined in `journal.yml`. The first
+argument is the action to perform, the second one is the name of the entry if required. Changing journal entries will
+also reload the journal.
+
+Possible actions are:
+- `add`: Adds a page to the journal.
+- `delete`: Deletes a page from the journal.
+- `update`: Refreshes the journal. This is especially useful when you need to update the main page.
 
 !!! example
     ```YAML
     journal add quest_started
-    ```
-    
-!!! example
-    ```YAML
+    journal delete quest_available
     journal update
     ```
 
@@ -597,14 +601,16 @@ if the player has one active.The first and only argument must be location. It's 
 
 ## Variable: `variable`
 
-This event has only one purpose - to change variables stored in `variable` objective.
-The first argument is the ID of a `variable` objective (if you use any other type you will get an error).
-Second one is the key of the variable and the third is the value. Both can use `%...%` variables.
-Refer to `variable` objective documentation for information about storing variables.
+This event has only one purpose: Change values that are stored in `variable` objective variables. The first argument is
+the ID of the `variable` objective. The second argument is the name of the variable to set. The third argument is the
+value to set. Both the name and value can use `%...%` variables. To delete a variable you can use `""`. Refer to the
+[`variable` objective](/User-Documentation/Objectives-List/#variable-variable) documentation for more information about
+storing variables.
 
 !!! example
     ```YAML
     variable some_var_obj name %player%
+    variable other_var_obj desc ""
     ```
 
 ## Weather: `weather`

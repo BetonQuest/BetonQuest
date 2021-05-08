@@ -41,7 +41,7 @@ jobs:
         run: |
           DIFF_OUTSIDE=$(git diff --quiet ${PREVIOUS_VERSION_TAG} -- . ':(exclude)documentation/' && echo Nothing || echo Changes)
           DIFF_INSIDE=$(git diff --quiet ${PREVIOUS_VERSION_TAG} -- documentation/ && echo Nothing || echo Changes)
-          [ $DIFF_OUTSIDE == Nothing && $DIFF_INSIDE == Changes ] CHANGES_IN_DOCS_ONLY=true || CHANGES_IN_DOCS_ONLY=false
+          if [[ $DIFF_OUTSIDE == Nothing && $DIFF_INSIDE == Changes ]]; then CHANGES_IN_DOCS_ONLY=true; else CHANGES_IN_DOCS_ONLY=false; fi
           echo "CHANGES_IN_DOCS_ONLY=$CHANGES_IN_DOCS_ONLY" >> $GITHUB_ENV
           echo ::set-output name=changes_in_docs_only::$CHANGES_IN_DOCS_ONLY
           echo "Check for difference in documentation only. The value is '$CHANGES_IN_DOCS_ONLY'"
@@ -98,9 +98,10 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v2
       - name: Setup JDK 1.8
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v2
         with:
-          java-version: 1.8
+          distribution: 'zulu'
+          java-version: 8
       - name: Cache dependencies
         uses: actions/cache@v2
         with:
@@ -122,6 +123,7 @@ jobs:
         run: |
           sed -i "s~#end_of_line = ~end_of_line = ~g" ./.editorconfig
       - name: Build with Maven. Phase 'package'
+        if: "github.event_name == 'pull_request'"
         run: |
           mvn -B package
       - name: Build with Maven. Phase 'verify'
@@ -218,9 +220,10 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v2
       - name: Setup JDK 1.8
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v2
         with:
-          java-version: 1.8
+          distribution: 'zulu'
+          java-version: 8
           server-id: BetonQuest
           server-username: REPOSITORY_USER
           server-password: REPOSITORY_PASS
@@ -337,10 +340,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check previous Jobs
-        if: "needs.deploy-artifacts.result != 'success' || needs.deploy-documentation.result != 'success'"
-        run: |
-          exit 1
       - name: Set variables from 'Prepare Build Variables'
         run: |
           echo "VERSION=${{ needs.prepare.outputs.VERSION }}" >> $GITHUB_ENV
@@ -349,6 +348,10 @@ jobs:
           echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
       - name: Checkout source code
         uses: actions/checkout@v2
+      - name: Check previous Jobs
+        if: "needs.deploy-artifacts.result != 'success' || needs.deploy-documentation.result != 'success'"
+        run: |
+          exit 1
       - name: Download Artifacts
         uses: actions/download-artifact@v2
         with:
@@ -411,10 +414,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check previous Jobs
-        if: "needs.deploy-artifacts.result != 'success' || needs.deploy-documentation.result != 'success'"
-        run: |
-          exit 1
       - name: Set variables from 'Prepare Build Variables'
         run: |
           echo "VERSION=${{ needs.prepare.outputs.VERSION }}" >> $GITHUB_ENV
@@ -423,6 +422,10 @@ jobs:
           echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
       - name: Checkout source code
         uses: actions/checkout@v2
+      - name: Check previous Jobs
+        if: "needs.deploy-artifacts.result != 'success' || needs.deploy-documentation.result != 'success'"
+        run: |
+          exit 1
       - name: Download Artifacts
         uses: actions/download-artifact@v2
         with:

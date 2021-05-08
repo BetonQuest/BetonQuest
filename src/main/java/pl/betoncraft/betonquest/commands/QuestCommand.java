@@ -1594,7 +1594,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     objectiveID = new ObjectiveID(null, name);
                 } catch (final ObjectNotFoundException e) {
                     sendMessage(sender, "error", e.getMessage());
-                    LogUtils.getLogger().log(Level.WARNING, "Could not fine objective: " + e.getMessage());
+                    LogUtils.getLogger().log(Level.WARNING, "Could not find objective: " + e.getMessage());
                     LogUtils.logThrowable(e);
                     return;
                 }

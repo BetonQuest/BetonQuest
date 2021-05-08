@@ -33,6 +33,7 @@ public class MythicMobKillObjective extends Objective implements Listener {
 
     private final Set<String> names = new HashSet<>();
     private final int amount;
+    private final int notifyInterval;
     private final boolean notify;
     private final double neutralDeathRadiusAllPlayers;
     private final double neutralDeathRadiusAllPlayersSquared;
@@ -42,7 +43,8 @@ public class MythicMobKillObjective extends Objective implements Listener {
     public MythicMobKillObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = MMData.class;
-        notify = instruction.hasArgument("notify");
+        notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
+        notify = instruction.hasArgument("notify") || notifyInterval > 1;
 
         Collections.addAll(names, instruction.getArray());
         amount = instruction.getInt(instruction.getOptional("amount"), 1);
@@ -127,7 +129,7 @@ public class MythicMobKillObjective extends Objective implements Listener {
 
         if (playerData.killed()) {
             completeObjective(playerID);
-        } else if (notify) {
+        } else if (notify && playerData.getAmount() % notifyInterval == 0) {
             // send a notification
             try {
                 Config.sendNotify(instruction.getPackage().getName(), playerID, "mobs_to_kill", new String[]{String.valueOf(playerData.getAmount())}, "mobs_to_kill,info");

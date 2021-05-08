@@ -24,7 +24,11 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 /**
@@ -144,17 +148,14 @@ public class InventoryConvIO implements Listener, ConversationIO {
         // set the NPC head
         final ItemStack npc;
         if (SKULL_CACHE.containsKey(npcName)) {
+            LogUtils.getLogger().log(Level.FINE, "skull cache hit");
             npc = SKULL_CACHE.get(npcName);
         } else {
+            LogUtils.getLogger().log(Level.FINE, "skull cache miss");
             npc = new ItemStack(Material.PLAYER_HEAD);
             npc.setDurability((short) 3);
             final SkullMeta npcMeta = (SkullMeta) npc.getItemMeta();
             npcMeta.setDisplayName(npcNameColor + npcName);
-            // NPC Text
-            npcMeta.setLore(Arrays.asList(LocalChatPaginator.wordWrap(
-                    Utils.replaceReset(response, npcTextColor),
-                    45)));
-
             npc.setItemMeta(npcMeta);
             Bukkit.getScheduler().runTaskAsynchronously(BetonQuest.getInstance(), () -> {
                 try {
@@ -168,6 +169,12 @@ public class InventoryConvIO implements Listener, ConversationIO {
                 }
             });
         }
+
+        final SkullMeta npcMeta = (SkullMeta) npc.getItemMeta();
+        npcMeta.setLore(Arrays.asList(LocalChatPaginator.wordWrap(
+                Utils.replaceReset(response, npcTextColor), 45)));
+        npc.setItemMeta(npcMeta);
+
         buttons[0] = npc;
         // this is the number of an option
         int next = 0;
@@ -267,8 +274,8 @@ public class InventoryConvIO implements Listener, ConversationIO {
         if (Bukkit.isPrimaryThread()) {
             throw new IllegalStateException("Must be called async!");
         }
-        if (PaperLib.isPaper()) {
-            Bukkit.createProfile(npcName).complete();
+        if (PaperLib.isPaper() && !Bukkit.createProfile(npcName).complete()) {
+            return meta;
         }
         meta.setOwner(npcName);
         return meta;
