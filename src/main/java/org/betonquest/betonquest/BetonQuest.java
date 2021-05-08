@@ -1308,18 +1308,20 @@ public class BetonQuest extends JavaPlugin {
      */
     public String getVariableValue(final String packName, final String name, final String playerID) {
         if (!Config.getPackages().containsKey(packName)) {
-            getInstance().log.warning(null, "Could not resolve variable!", new QuestRuntimeException("A variable contains the non-existent package '" + packName + "' !"));
-            return "&cCould not resolve variable because the package '" + packName + "' is invalid.";
+            getInstance().log.warning(null, "Variable '" + name + "' contains the non-existent package '" + packName + "' !");
+            return "";
         }
+        final ConfigPackage pack = Config.getPackages().get(packName);
         try {
-            final Variable var = createVariable(Config.getPackages().get(packName), name);
+            final Variable var = createVariable(pack, name);
             if (var == null) {
-                return "&cCould not resolve variable.";
+                getInstance().log.warning(pack, "Could not resolve variable '" + name + "'.");
+                return "";
             }
             return var.getValue(playerID);
         } catch (final InstructionParseException e) {
-            getInstance().log.warning(null, "&cCould not create variable: " + e.getMessage(), e);
-            return "&cCould not resolve variable. The variable type or the object seems to be invalid.";
+            getInstance().log.warning(pack, "&cCould not create variable '" + name + "': " + e.getMessage(), e);
+            return "";
         }
     }
 
