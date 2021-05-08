@@ -121,7 +121,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
     }
 
     @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.NcssCount",
-            "PMD.NPathComplexity", "PMD.AvoidUsingShortType"})
+            "PMD.NPathComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @Override
     public void display() {

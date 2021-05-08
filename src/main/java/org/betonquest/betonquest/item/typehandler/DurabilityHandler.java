@@ -3,7 +3,7 @@ package org.betonquest.betonquest.item.typehandler;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem.Number;
 
-@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidUsingShortType"})
+@SuppressWarnings("PMD.CommentRequired")
 public class DurabilityHandler {
 
     private short durability;
@@ -25,7 +25,7 @@ public class DurabilityHandler {
         }
         try {
             this.durability = Short.valueOf(inputDurability);
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             throw new InstructionParseException("Could not parse item durability value", e);
         }
     }
