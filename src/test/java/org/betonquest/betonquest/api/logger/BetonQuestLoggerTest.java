@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
 /**
  * This class test the {@link BetonQuestLogger}.
  */
-@SuppressWarnings({"PMD.JUnitTestsShouldIncludeAssert", "PMD.TooManyMethods", "PMD.MoreThanOneLogger"})
+@SuppressWarnings({"PMD.JUnitTestsShouldIncludeAssert", "PMD.MoreThanOneLogger"})
 @Execution(ExecutionMode.CONCURRENT)
 public class BetonQuestLoggerTest {
     /**
@@ -81,7 +81,7 @@ public class BetonQuestLoggerTest {
     }
 
     @Test
-        /* default */ void testDebug() {
+    public void testDebug() {
         final Logger logger = Logger.getAnonymousLogger();
         final BetonQuestLogger betonQuestLogger = getBetonQuestLogger(logger);
         final LogValidator logValidator = LogValidator.getForLogger(logger);
@@ -91,7 +91,7 @@ public class BetonQuestLoggerTest {
     }
 
     @Test
-        /* default */ void testDebugException() {
+    public void testDebugException() {
         final Logger logger = Logger.getAnonymousLogger();
         final BetonQuestLogger betonQuestLogger = getBetonQuestLogger(logger);
         final LogValidator logValidator = LogValidator.getForLogger(logger);
@@ -101,7 +101,7 @@ public class BetonQuestLoggerTest {
     }
 
     @Test
-        /* default */ void testInfo() {
+    public void testInfo() {
         final Logger logger = Logger.getAnonymousLogger();
         final BetonQuestLogger betonQuestLogger = getBetonQuestLogger(logger);
         final LogValidator logValidator = LogValidator.getForLogger(logger);
@@ -111,7 +111,7 @@ public class BetonQuestLoggerTest {
     }
 
     @Test
-        /* default */ void testWarning() {
+    public void testWarning() {
         final Logger logger = Logger.getAnonymousLogger();
         final BetonQuestLogger betonQuestLogger = getBetonQuestLogger(logger);
         final LogValidator logValidator = LogValidator.getForLogger(logger);
@@ -121,7 +121,7 @@ public class BetonQuestLoggerTest {
     }
 
     @Test
-        /* default */ void testWarningException() {
+    public void testWarningException() {
         final Logger logger = Logger.getAnonymousLogger();
         final BetonQuestLogger betonQuestLogger = getBetonQuestLogger(logger);
         final LogValidator logValidator = LogValidator.getForLogger(logger);
@@ -132,7 +132,7 @@ public class BetonQuestLoggerTest {
     }
 
     @Test
-        /* default */ void testError() {
+    public void testError() {
         final Logger logger = Logger.getAnonymousLogger();
         final BetonQuestLogger betonQuestLogger = getBetonQuestLogger(logger);
         final LogValidator logValidator = LogValidator.getForLogger(logger);
@@ -142,7 +142,7 @@ public class BetonQuestLoggerTest {
     }
 
     @Test
-        /* default */ void testErrorException() {
+    public void testErrorException() {
         final Logger logger = Logger.getAnonymousLogger();
         final BetonQuestLogger betonQuestLogger = getBetonQuestLogger(logger);
         final LogValidator logValidator = LogValidator.getForLogger(logger);
@@ -152,7 +152,7 @@ public class BetonQuestLoggerTest {
     }
 
     @Test
-        /* default */ void testReportException() {
+    public void testReportException() {
         final Logger logger = Logger.getAnonymousLogger();
         final BetonQuestLogger betonQuestLogger = getBetonQuestLogger(logger);
         final LogValidator logValidator = LogValidator.getForLogger(logger);

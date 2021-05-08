@@ -64,7 +64,7 @@ public class SimpleInterceptor implements Interceptor, Listener {
     public void onChat(final AsyncPlayerChatEvent event) {
         // store all messages so they can be displayed to the player
         // once the conversation is finished
-        if (event.getPlayer() != player && event.getRecipients().contains(player)) {
+        if (!event.getPlayer().equals(player) && event.getRecipients().contains(player)) {
             event.getRecipients().remove(player);
             addMessage(String.format(event.getFormat(), event.getPlayer().getDisplayName(), event.getMessage()));
         }

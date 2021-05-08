@@ -86,14 +86,14 @@ public class BlockSelector {
 
     private String getStateAsString() {
         final StringBuilder builder = new StringBuilder();
-        builder.append("[");
+        builder.append('[');
 
         for (final Map.Entry<String, String> entry : states.entrySet()) {
-            builder.append(entry.getKey()).append("=").append(entry.getValue()).append(",");
+            builder.append(entry.getKey()).append('=').append(entry.getValue()).append(',');
         }
 
         builder.deleteCharAt(builder.length() - 1);
-        builder.append("]");
+        builder.append(']');
 
         return builder.toString();
     }

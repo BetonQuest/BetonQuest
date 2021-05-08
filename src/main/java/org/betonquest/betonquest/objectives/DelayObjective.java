@@ -22,8 +22,8 @@ import java.util.Map.Entry;
 public class DelayObjective extends Objective {
 
     private final double delay;
-    private BukkitTask runnable;
     private final int interval;
+    private BukkitTask runnable;
 
     public DelayObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
@@ -111,7 +111,7 @@ public class DelayObjective extends Objective {
                 }
             }
             if (count == 0) {
-                time.append(seconds).append(" ").append(secondsWord);
+                time.append(seconds).append(' ').append(secondsWord);
             } else if (count == 1) {
                 for (final String word : words) {
                     if (word == null) {
@@ -126,14 +126,14 @@ public class DelayObjective extends Objective {
                         continue;
                     }
                     if (second) {
-                        time.append(" ").append(word);
+                        time.append(' ').append(word);
                     } else {
-                        time.append(word).append(" ").append(Config.getMessage(lang, "and"));
+                        time.append(word).append(' ').append(Config.getMessage(lang, "and"));
                         second = true;
                     }
                 }
             } else {
-                time.append(words[0]).append(", ").append(words[1]).append(" ").append(Config.getMessage(lang, "and")).append(" ").append(words[2]);
+                time.append(words[0]).append(", ").append(words[1]).append(' ').append(Config.getMessage(lang, "and")).append(' ').append(words[2]);
             }
             return time.toString();
         } else if ("date".equalsIgnoreCase(name)) {

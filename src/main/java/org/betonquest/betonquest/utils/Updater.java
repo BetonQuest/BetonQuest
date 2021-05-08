@@ -231,7 +231,7 @@ public class Updater {
                 }
                 final Version version = latest.getKey();
                 searchUpdateTask(config);
-                if (version != latest.getKey()) {
+                if (!version.equals(latest.getKey())) {
                     getUpdateNotification(config);
                     throw new QuestRuntimeException("Update aborted! A newer version was found. New version '"
                             + getUpdateVersion() + "'! You can execute '/q update' again to update.");

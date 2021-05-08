@@ -12,14 +12,19 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * This class test some utility class methods.
+ */
 @ExtendWith(BetonQuestLoggerValidationProvider.class)
 public class UtilsTest {
 
+    /**
+     * Default constructor.
+     */
     public UtilsTest() {
     }
 
-    public MockedStatic<Config> prepareConfig() {
+    private MockedStatic<Config> prepareConfig() {
         final MockedStatic<Config> config = Mockito.mockStatic(Config.class);
         config.when(() -> Config.getString("config.journal.lines_per_page")).thenReturn("13");
         config.when(() -> Config.getString("config.journal.chars_per_line")).thenReturn("19");

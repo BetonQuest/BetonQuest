@@ -414,7 +414,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             }
             if (type == null) {
                 final List<String> completations = new ArrayList<>();
-                completations.add(pack + ".");
+                completations.add(pack + '.');
                 return completations;
             }
             final ConfigAccessor accessor;
@@ -440,7 +440,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             final FileConfiguration configuration = accessor.getConfig();
             final List<String> completations = new ArrayList<>();
             for (final String key : configuration.getKeys(false)) {
-                completations.add(pack + "." + key);
+                completations.add(pack + '.' + key);
             }
             return completations;
         }
@@ -546,7 +546,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 }
                 final StringBuilder strBldr = new StringBuilder();
                 for (int i = 3; i < args.length; i++) {
-                    strBldr.append(args[i]).append(" ");
+                    strBldr.append(args[i]).append(' ');
                 }
                 if (strBldr.length() < 2) {
                     LOG.debug(null, "Wrong path!");
@@ -570,7 +570,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 }
                 final StringBuilder strBldr2 = new StringBuilder();
                 for (int i = 3; i < args.length; i++) {
-                    strBldr2.append(args[i]).append(" ");
+                    strBldr2.append(args[i]).append(' ');
                 }
                 if (strBldr2.length() < 2) {
                     LOG.debug(null, "Wrong path!");
@@ -654,7 +654,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_pointer");
             return;
         }
-        final String pointerName = args[3].contains(".") ? args[3] : defaultPack + "." + args[3];
+        final String pointerName = args[3].contains(".") ? args[3] : defaultPack + '.' + args[3];
         // if there are arguments, handle them
         switch (args[2].toLowerCase(Locale.ROOT)) {
             case "add":
@@ -753,7 +753,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_category");
             return;
         }
-        final String category = args[3].contains(".") ? args[3] : defaultPack + "." + args[3];
+        final String category = args[3].contains(".") ? args[3] : defaultPack + '.' + args[3];
         // if there are arguments, handle them
         switch (args[2].toLowerCase(Locale.ROOT)) {
             case "add":
@@ -820,7 +820,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_category");
             return;
         }
-        final String category = args[2].contains(".") ? args[2] : defaultPack + "." + args[2];
+        final String category = args[2].contains(".") ? args[2] : defaultPack + '.' + args[2];
         // if there are arguments, handle them
         switch (args[1].toLowerCase(Locale.ROOT)) {
             case "add":
@@ -1085,7 +1085,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_tag");
             return;
         }
-        final String tag = args[3].contains(".") ? args[3] : defaultPack + "." + args[3];
+        final String tag = args[3].contains(".") ? args[3] : defaultPack + '.' + args[3];
         // if there are arguments, handle them
         switch (args[2].toLowerCase(Locale.ROOT)) {
             case "add":
@@ -1143,7 +1143,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_tag");
             return;
         }
-        final String tag = args[2].contains(".") ? args[2] : defaultPack + "." + args[2];
+        final String tag = args[2].contains(".") ? args[2] : defaultPack + '.' + args[2];
         // if there are arguments, handle them
         switch (args[1].toLowerCase(Locale.ROOT)) {
             case "add":
@@ -1422,10 +1422,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         String name = args[2];
         String rename = args[3];
         if (!name.contains(".")) {
-            name = defaultPack + "." + name;
+            name = defaultPack + '.' + name;
         }
         if (!rename.contains(".")) {
-            rename = defaultPack + "." + rename;
+            rename = defaultPack + '.' + rename;
         }
         final UpdateType updateType;
         switch (type) {
@@ -1587,7 +1587,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final String type = args[1].toLowerCase(Locale.ROOT);
         String name = args[2];
         if (!name.contains(".")) {
-            name = defaultPack + "." + name;
+            name = defaultPack + '.' + name;
         }
         final UpdateType updateType;
         switch (type) {
@@ -1720,14 +1720,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             final String lang = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID((Player) sender)).getLanguage();
             for (final Map.Entry<String, String> entry : cmds.entrySet()) {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
-                        "tellraw " + sender.getName() + " {\"text\":\"\",\"extra\":[{\"text\":\"§c/" + alias + " "
+                        "tellraw " + sender.getName() + " {\"text\":\"\",\"extra\":[{\"text\":\"§c/" + alias + ' '
                                 + entry.getValue()
                                 + "\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"§b"
                                 + Config.getMessage(lang, "command_" + entry.getKey()) + "\"}}]}");
             }
         } else {
             for (final Map.Entry<String, String> entry : cmds.entrySet()) {
-                sender.sendMessage("§c/" + alias + " " + entry.getValue());
+                sender.sendMessage("§c/" + alias + ' ' + entry.getValue());
                 sender.sendMessage("§b- " + Config.getMessage(Config.getLanguage(), "command_" + entry.getKey()));
             }
         }
@@ -1772,7 +1772,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
         final StringJoiner hookedJoiner = new StringJoiner(", ");
         for (final Map.Entry<String, String> entry : hookedTree.entrySet()) {
-            hookedJoiner.add(colorValue + entry.getKey() + colorValueVersion + " (" + entry.getValue() + ")");
+            hookedJoiner.add(colorValue + entry.getKey() + colorValueVersion + " (" + entry.getValue() + ')');
         }
         final String hooked = hookedJoiner.toString();
 
@@ -1798,7 +1798,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final Component compCopyAll = Component.text(clickToCopyAll)
                 .hoverEvent(Component.text(clickToCopy))
                 .clickEvent(ClickEvent.copyToClipboard(ChatColor.stripColor(versionBetonQuest
-                        + versionBetonQuestValue + "\n" + versionServer + versionServerValue + "\n" + "\n"
+                        + versionBetonQuestValue + '\n' + versionServer + versionServerValue + '\n' + '\n'
                         + hookedInto + hooked)));
 
         final TextComponent version = Component.empty().append(compHeader)
@@ -1815,7 +1815,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final LogWatcher logWatcher = BetonQuest.getInstance().getLogWatcher();
         if (args.length == 1) {
             sender.sendMessage(
-                    "§2Debugging mode is currently " + (logWatcher.isDebugging() ? "enabled" : "disabled") + "!");
+                    "§2Debugging mode is currently " + (logWatcher.isDebugging() ? "enabled" : "disabled") + '!');
             return;
         }
         if ("ingame".equalsIgnoreCase(args[1])) {
@@ -1850,7 +1850,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
             if (logWatcher.isDebugging() && input || !logWatcher.isDebugging() && !input) {
                 sender.sendMessage(
-                        "§2Debugging mode is already " + (logWatcher.isDebugging() ? "enabled" : "disabled") + "!");
+                        "§2Debugging mode is already " + (logWatcher.isDebugging() ? "enabled" : "disabled") + '!');
                 return;
             }
             if (input) {
@@ -1858,9 +1858,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             } else {
                 logWatcher.endDebug();
             }
-            sender.sendMessage("§2Debugging mode was " + (logWatcher.isDebugging() ? "enabled" : "disabled") + "!");
+            sender.sendMessage("§2Debugging mode was " + (logWatcher.isDebugging() ? "enabled" : "disabled") + '!');
             LOG.info(null,
-                    "Debuging mode was " + (logWatcher.isDebugging() ? "enabled" : "disabled") + "!");
+                    "Debuging mode was " + (logWatcher.isDebugging() ? "enabled" : "disabled") + '!');
             return;
         }
         sendMessage(sender, "unknown_argument");

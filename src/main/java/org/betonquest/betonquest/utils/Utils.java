@@ -172,7 +172,7 @@ public final class Utils {
                         pages.add(page.toString().trim());
                         page = new StringBuilder();
                     }
-                    page.append(word).append(" ");
+                    page.append(word).append(' ');
                 }
                 pages.add(page.toString().trim().replaceAll("(?<!\\\\)\\\\n", "\n"));
             } else {
@@ -203,7 +203,7 @@ public final class Utils {
                                 lines = 1;
                                 page = new StringBuilder();
                             }
-                            page.append(lineBuilder.toString().trim()).append("\n");
+                            page.append(lineBuilder.toString().trim()).append('\n');
                             lineBuilder = new StringBuilder();
                         }
                         lineBuilder.append(word).append(' ');

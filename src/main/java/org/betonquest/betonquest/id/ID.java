@@ -36,7 +36,7 @@ public abstract class ID {
                 final String[] path = packName.split("-");
                 // count how many packages up we need to go
                 int stepsUp = 0;
-                while (stepsUp < path.length && path[stepsUp].equals(UP_STR)) {
+                while (stepsUp < path.length && UP_STR.equals(path[stepsUp])) {
                     stepsUp++;
                 }
                 // can't go out of BetonQuest folder of course

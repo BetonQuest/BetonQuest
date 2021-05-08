@@ -53,7 +53,7 @@ public class PacketInterceptor implements Interceptor, Listener {
         ) {
             @Override
             public void onPacketSending(final PacketEvent event) {
-                if (event.getPlayer() != player) {
+                if (!event.getPlayer().equals(player)) {
                     return;
                 }
 

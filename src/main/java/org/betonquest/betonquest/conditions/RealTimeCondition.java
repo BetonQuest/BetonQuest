@@ -40,7 +40,7 @@ public class RealTimeCondition extends Condition {
             minutesMin = Integer.parseInt(timeMin[1]);
             hoursMax = Integer.parseInt(timeMax[0]);
             minutesMax = Integer.parseInt(timeMax[1]);
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             throw new InstructionParseException("Could not parse time", e);
         }
         if (hoursMax < 0 || hoursMax > 23) {
@@ -60,8 +60,9 @@ public class RealTimeCondition extends Condition {
         }
     }
 
-
+    // TODO: Use Java 8 java.time API
     @Override
+    @SuppressWarnings("PMD.AvoidCalendarDateCreation")
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
         final Calendar cal = Calendar.getInstance();
         final Date now = cal.getTime();

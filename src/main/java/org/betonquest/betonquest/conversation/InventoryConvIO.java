@@ -212,7 +212,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
                 if (mat == null) {
                     mat = Material.matchMaterial(materialName, true);
                 }
-                option = option.replace("{" + fullMaterial + "}", "");
+                option = option.replace('{' + fullMaterial + '}', "");
                 if (mat == null) {
                     material = Material.ENDER_PEARL;
                 } else {
@@ -385,7 +385,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
                     }
                     line = new StringBuilder();
                 }
-                line.append(s).append(" ");
+                line.append(s).append(' ');
             }
             if (firstLinePrefix) {
                 firstLinePrefix = false;

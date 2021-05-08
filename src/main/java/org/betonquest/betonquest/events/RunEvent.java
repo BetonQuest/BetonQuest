@@ -35,9 +35,9 @@ public class RunEvent extends QuestEvent {
                     internalEvents.add(createEvent(builder.toString().trim()));
                     builder = new StringBuilder();
                 }
-                builder.append(part.substring(1)).append(" ");
+                builder.append(part.substring(1)).append(' ');
             } else {
-                builder.append(part).append(" ");
+                builder.append(part).append(' ');
             }
         }
         internalEvents.add(createEvent(builder.toString().trim()));

@@ -150,7 +150,7 @@ public final class LogWatcher {
             playerFilters.put(uuid, new HashMap<>());
         }
         final Map<String, Level> filters = playerFilters.get(uuid);
-        if (filters.containsKey(filter) && filters.get(filter) == level) {
+        if (filters.containsKey(filter) && filters.get(filter).equals(level)) {
             return false;
         }
         filters.put(filter, level);

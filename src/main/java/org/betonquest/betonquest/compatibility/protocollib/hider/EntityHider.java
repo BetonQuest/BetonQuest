@@ -215,7 +215,7 @@ public class EntityHider implements Listener {
         return new PacketAdapter(plugin, ENTITY_PACKETS) {
             @Override
             public void onPacketSending(final PacketEvent event) {
-                final int index = event.getPacketType() == PacketType.Play.Server.COMBAT_EVENT ? 1 : 0;
+                final int index = event.getPacketType().equals(PacketType.Play.Server.COMBAT_EVENT) ? 1 : 0;
 
                 if (!event.isPlayerTemporary()) {
                     final Integer entityID = event.getPacket().getIntegers().readSafely(index);

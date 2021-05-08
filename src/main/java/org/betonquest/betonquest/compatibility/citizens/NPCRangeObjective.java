@@ -81,7 +81,7 @@ public class NPCRangeObjective extends Objective {
 
     private boolean isInside(final Player player, final Location location) throws QuestRuntimeException {
         final String playerID = PlayerConverter.getID(player);
-        if (!containsPlayer(playerID) || location.getWorld() != player.getWorld()) {
+        if (!containsPlayer(playerID) || !location.getWorld().equals(player.getWorld())) {
             return false;
         }
         final double radius = this.radius.getDouble(playerID);

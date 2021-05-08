@@ -88,7 +88,7 @@ public class EnchantmentsHandler {
         }
 
         @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity", "PMD.NPathComplexity",
-                "PMD.AvoidLiteralsInIfCondition"})
+                "PMD.AvoidLiteralsInIfCondition", "PMD.UnusedPrivateMethod"})
         private void set(final String enchant) throws InstructionParseException {
             if (enchant == null) {
                 throw new InstructionParseException("Enchantment is null!");
@@ -126,7 +126,7 @@ public class EnchantmentsHandler {
             }
             try {
                 level = Integer.parseInt(parts[1]);
-            } catch (NumberFormatException e) {
+            } catch (final NumberFormatException e) {
                 throw new InstructionParseException("Could not parse enchantment level: " + parts[1], e);
             }
             if (level <= 0) {
@@ -134,6 +134,7 @@ public class EnchantmentsHandler {
             }
         }
 
+        @SuppressWarnings("PMD.UnusedPrivateMethod")
         private boolean check(final Integer level) {
             if (existence == Existence.WHATEVER) {
                 return true;
