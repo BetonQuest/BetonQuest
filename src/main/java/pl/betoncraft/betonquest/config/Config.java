@@ -83,8 +83,8 @@ public class Config {
         defaultPackage = plugin.getConfig().getString("default_package", defaultPackage);
 
         // save example package
-        if (isVirgin) {
-            createDefaultPackage(defaultPackage, true);
+        if (isInitialCreation) {
+            createDefaultPackage(defaultPackage);
         }
 
         // load packages
@@ -114,14 +114,21 @@ public class Config {
      * Creates package with the given name and populates it with default quest
      *
      * @param packName name of the new package
+     * @return true if the package was created, false if it already existed
+     */
+    public static boolean createDefaultPackage(final String packName) {
+        return createPackage(packName, true);
+    }
+
+    /**
+     * Creates a package with the given name and optionally populates it with the default quest.
+     *
+     * @param packName  name of the new package
      * @param populate if the files should be populated with the example quest or left empty
      * @return true if the package was created, false if it already existed
      */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
-    public static boolean createDefaultPackage(final String packName) {
-        createPackage(packName, true);
-    }
-
     public static boolean createPackage(final String packName, final boolean populate) {
         final File def = new File(instance.root, packName.replace("-", File.separator));
         if (!def.exists()) {

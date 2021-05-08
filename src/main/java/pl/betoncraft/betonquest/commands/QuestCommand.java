@@ -458,7 +458,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_package");
             return;
         }
-        if (Config.createDefaultPackage(args[1], false)) {
+        if (Config.createPackage(args[1], false)) {
             sendMessage(sender, "package_created");
         } else {
             sendMessage(sender, "package_exists");

@@ -344,7 +344,7 @@ public class ConfigUpdater {
         final ConfigurationSection section = config.getConfigurationSection("effectlib_npc_effect");
         if (section != null) {
             if (Config.getDefaultPackage() == null) {
-                Config.createDefaultPackage(Optional.ofNullable(config.getString("default_package")).orElse("default"), true);
+                Config.createDefaultPackage(Optional.ofNullable(config.getString("default_package")).orElse("default"));
             }
             final ConfigAccessor custom = Config.getDefaultPackage().getCustom();
             final Configuration config = custom.getConfig();
