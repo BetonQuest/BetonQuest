@@ -1157,9 +1157,9 @@ public class BetonQuest extends JavaPlugin {
             }
             return var.getValue(playerID);
         } catch (final InstructionParseException e) {
-            LogUtils.getLogger().log(Level.WARNING, "&cCould not create variable: " + e.getMessage());
+            LogUtils.getLogger().log(Level.WARNING, "&cCould not create variable '" + name + "': " + e.getMessage());
             LogUtils.logThrowable(e);
-            return "&cCould not resolve variable. The variable type or the object seems to be invalid.";
+            return "";
         }
     }
 
