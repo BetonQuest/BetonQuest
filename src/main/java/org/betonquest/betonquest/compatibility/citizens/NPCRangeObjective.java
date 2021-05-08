@@ -13,7 +13,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class NPCRangeObjective extends Objective {
@@ -77,7 +81,7 @@ public class NPCRangeObjective extends Objective {
 
     private boolean isInside(final Player player, final Location location) throws QuestRuntimeException {
         final String playerID = PlayerConverter.getID(player);
-        if (!containsPlayer(playerID) || location.getWorld() != player.getWorld()) {
+        if (!containsPlayer(playerID) || !location.getWorld().equals(player.getWorld())) {
             return false;
         }
         final double radius = this.radius.getDouble(playerID);

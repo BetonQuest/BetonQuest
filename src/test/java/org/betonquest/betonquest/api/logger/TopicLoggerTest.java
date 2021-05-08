@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 /**
  * This class test the {@link TopicLogger}.
  */
-@SuppressWarnings({"PMD.JUnitTestsShouldIncludeAssert", "PMD.MoreThanOneLogger"})
+@SuppressWarnings("PMD.MoreThanOneLogger")
 @Execution(ExecutionMode.CONCURRENT)
 public class TopicLoggerTest {
     /**
@@ -43,7 +43,8 @@ public class TopicLoggerTest {
     }
 
     @Test
-        /* default */ void testLogLevelAndMessage() {
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    public void testLogLevelAndMessage() {
         final Logger logger = getTopicLogger();
         final LogValidator logValidator = LogValidator.getForLogger(logger);
         logger.log(Level.INFO, LOG_MESSAGE);
@@ -52,7 +53,8 @@ public class TopicLoggerTest {
     }
 
     @Test
-        /* default */ void testLogLevelMessageExceptionAndExceptionMessage() {
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    public void testLogLevelMessageExceptionAndExceptionMessage() {
         final Logger logger = getTopicLogger();
         final LogValidator logValidator = LogValidator.getForLogger(logger);
         logger.log(Level.SEVERE, LOG_MESSAGE, new IOException(EXCEPTION_MESSAGE));

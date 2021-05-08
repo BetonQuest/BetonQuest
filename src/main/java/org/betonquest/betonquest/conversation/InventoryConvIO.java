@@ -121,7 +121,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
     }
 
     @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.NcssCount",
-            "PMD.NPathComplexity", "PMD.AvoidUsingShortType"})
+            "PMD.NPathComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @Override
     public void display() {
@@ -212,7 +212,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
                 if (mat == null) {
                     mat = Material.matchMaterial(materialName, true);
                 }
-                option = option.replace("{" + fullMaterial + "}", "");
+                option = option.replace('{' + fullMaterial + '}', "");
                 if (mat == null) {
                     material = Material.ENDER_PEARL;
                 } else {
@@ -385,7 +385,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
                     }
                     line = new StringBuilder();
                 }
-                line.append(s).append(" ");
+                line.append(s).append(' ');
             }
             if (firstLinePrefix) {
                 firstLinePrefix = false;

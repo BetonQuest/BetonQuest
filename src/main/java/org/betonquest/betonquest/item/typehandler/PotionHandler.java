@@ -33,7 +33,7 @@ public class PotionHandler {
         typeE = Existence.REQUIRED;
         try {
             this.type = PotionType.valueOf(type.toUpperCase(Locale.ROOT));
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             throw new InstructionParseException("No such potion type: " + type, e);
         }
     }
@@ -186,7 +186,7 @@ public class PotionHandler {
                 }
                 try {
                     power = Integer.parseInt(parts[1]) - 1;
-                } catch (NumberFormatException e) {
+                } catch (final NumberFormatException e) {
                     throw new InstructionParseException("Could not parse effect power: " + parts[1], e);
                 }
                 if (power < 0) {
@@ -206,7 +206,7 @@ public class PotionHandler {
                 }
                 try {
                     duration = Integer.parseInt(parts[2]) * 20;
-                } catch (NumberFormatException e) {
+                } catch (final NumberFormatException e) {
                     throw new InstructionParseException("Could not parse effect duration: " + parts[2], e);
                 }
             } else {
@@ -224,7 +224,7 @@ public class PotionHandler {
                 case WHATEVER:
                     return true;
                 case REQUIRED:
-                    if (effect.getType() != customType) {
+                    if (!effect.getType().equals(customType)) {
                         return false;
                     }
                     switch (durationE) {

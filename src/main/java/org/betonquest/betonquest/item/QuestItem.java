@@ -4,12 +4,34 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.id.ItemID;
-import org.betonquest.betonquest.item.typehandler.*;
+import org.betonquest.betonquest.item.typehandler.BookHandler;
+import org.betonquest.betonquest.item.typehandler.ColorHandler;
+import org.betonquest.betonquest.item.typehandler.CustomModelDataHandler;
+import org.betonquest.betonquest.item.typehandler.DurabilityHandler;
+import org.betonquest.betonquest.item.typehandler.EnchantmentsHandler;
+import org.betonquest.betonquest.item.typehandler.FireworkHandler;
+import org.betonquest.betonquest.item.typehandler.HeadOwnerHandler;
+import org.betonquest.betonquest.item.typehandler.LoreHandler;
+import org.betonquest.betonquest.item.typehandler.NameHandler;
+import org.betonquest.betonquest.item.typehandler.PotionHandler;
+import org.betonquest.betonquest.item.typehandler.UnbreakableHandler;
 import org.betonquest.betonquest.utils.BlockSelector;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.DyeColor;
+import org.bukkit.FireworkEffect;
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.*;
+import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+import org.bukkit.inventory.meta.FireworkEffectMeta;
+import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 
@@ -167,14 +189,14 @@ public class QuestItem {
         if (meta.hasLore()) {
             final StringBuilder string = new StringBuilder();
             for (final String line : meta.getLore()) {
-                string.append(line).append(";");
+                string.append(line).append(';');
             }
             lore = " lore:" + string.substring(0, string.length() - 1).replace(" ", "_").replace("§", "&");
         }
         if (meta.hasEnchants()) {
             final StringBuilder string = new StringBuilder();
             for (final Enchantment enchant : meta.getEnchants().keySet()) {
-                string.append(enchant.getName()).append(":").append(meta.getEnchants().get(enchant)).append(",");
+                string.append(enchant.getName()).append(':').append(meta.getEnchants().get(enchant)).append(',');
             }
             enchants = " enchants:" + string.substring(0, string.length() - 1);
         }
@@ -201,7 +223,7 @@ public class QuestItem {
                     }
                     // this will remove black color code between lines
                     // Bukkit is adding it for some reason (probably to mess people's code)
-                    strBldr.append(processedPage.replace(" ", "_").replaceAll("(§0)?\\n(§0)?", "\\\\n")).append("|");
+                    strBldr.append(processedPage.replace(" ", "_").replaceAll("(§0)?\\n(§0)?", "\\\\n")).append('|');
                 }
                 text = " text:" + strBldr.substring(0, strBldr.length() - 1);
             }
@@ -216,7 +238,7 @@ public class QuestItem {
                 for (final PotionEffect effect : potionMeta.getCustomEffects()) {
                     final int power = effect.getAmplifier() + 1;
                     final int duration = (effect.getDuration() - (effect.getDuration() % 20)) / 20;
-                    string.append(effect.getType().getName()).append(":").append(power).append(":").append(duration).append(",");
+                    string.append(effect.getType().getName()).append(':').append(power).append(':').append(duration).append(',');
                 }
                 effects += " effects:" + string.substring(0, string.length() - 1);
             }
@@ -233,7 +255,7 @@ public class QuestItem {
             if (storageMeta.hasStoredEnchants()) {
                 final StringBuilder string = new StringBuilder();
                 for (final Enchantment enchant : storageMeta.getStoredEnchants().keySet()) {
-                    string.append(enchant.getName()).append(":").append(storageMeta.getStoredEnchants().get(enchant)).append(",");
+                    string.append(enchant.getName()).append(':').append(storageMeta.getStoredEnchants().get(enchant)).append(',');
                 }
                 enchants = " enchants:" + string.substring(0, string.length() - 1);
             }
@@ -250,20 +272,20 @@ public class QuestItem {
                 final StringBuilder builder = new StringBuilder();
                 builder.append(" firework:");
                 for (final FireworkEffect effect : fireworkMeta.getEffects()) {
-                    builder.append(effect.getType()).append(":");
+                    builder.append(effect.getType()).append(':');
                     for (final Color c : effect.getColors()) {
                         final DyeColor dye = DyeColor.getByFireworkColor(c);
-                        builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(";");
+                        builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(';');
                     }
                     // remove last semicolon
                     builder.setLength(Math.max(builder.length() - 1, 0));
-                    builder.append(":");
+                    builder.append(':');
                     for (final Color c : effect.getFadeColors()) {
                         final DyeColor dye = DyeColor.getByFireworkColor(c);
-                        builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(";");
+                        builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(';');
                     }
                     builder.setLength(Math.max(builder.length() - 1, 0));
-                    builder.append(":").append(effect.hasTrail()).append(":").append(effect.hasFlicker()).append(",");
+                    builder.append(':').append(effect.hasTrail()).append(':').append(effect.hasFlicker()).append(',');
                 }
                 builder.setLength(Math.max(builder.length() - 1, 0));
                 builder.append(" power:").append(fireworkMeta.getPower());
@@ -275,20 +297,20 @@ public class QuestItem {
             if (fireworkMeta.hasEffect()) {
                 final FireworkEffect effect = fireworkMeta.getEffect();
                 final StringBuilder builder = new StringBuilder();
-                builder.append(" firework:").append(effect.getType()).append(":");
+                builder.append(" firework:").append(effect.getType()).append(':');
                 for (final Color c : effect.getColors()) {
                     final DyeColor dye = DyeColor.getByFireworkColor(c);
-                    builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(";");
+                    builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(';');
                 }
                 // remove last semicolon
                 builder.setLength(Math.max(builder.length() - 1, 0));
-                builder.append(":");
+                builder.append(':');
                 for (final Color c : effect.getFadeColors()) {
                     final DyeColor dye = DyeColor.getByFireworkColor(c);
-                    builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(";");
+                    builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(';');
                 }
                 builder.setLength(Math.max(builder.length() - 1, 0));
-                builder.append(":").append(effect.hasTrail()).append(":").append(effect.hasFlicker());
+                builder.append(':').append(effect.hasTrail()).append(':').append(effect.hasFlicker());
             }
         }
         // put it all together in a single string
@@ -302,7 +324,7 @@ public class QuestItem {
             return false;
         }
         final QuestItem item = (QuestItem) other;
-        return item.selector == selector
+        return item.selector.equals(selector)
                 && item.durability.equals(durability)
                 && item.unbreakable.equals(unbreakable)
                 && item.enchants.equals(enchants)
@@ -496,7 +518,6 @@ public class QuestItem {
     /**
      * @return the durability value
      */
-    @SuppressWarnings("PMD.AvoidUsingShortType")
     public short getDurability() {
         return durability.get();
     }

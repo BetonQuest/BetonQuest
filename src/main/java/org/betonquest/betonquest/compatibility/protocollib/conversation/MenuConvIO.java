@@ -35,7 +35,12 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -205,7 +210,7 @@ public class MenuConvIO extends ChatConvIO {
 
                 @Override
                 public void onPacketReceiving(final PacketEvent event) {
-                    if (event.getPlayer() != player || options.size() == 0) {
+                    if (!event.getPlayer().equals(player) || options.size() == 0) {
                         return;
                     }
 
@@ -362,7 +367,7 @@ public class MenuConvIO extends ChatConvIO {
                 return;
             }
 
-            if (event.getPlayer() != player) {
+            if (!event.getPlayer().equals(player)) {
                 return;
             }
 
@@ -407,7 +412,7 @@ public class MenuConvIO extends ChatConvIO {
                 return;
             }
 
-            if (event.getPlayer() != player) {
+            if (!event.getPlayer().equals(player)) {
                 return;
             }
 
@@ -564,19 +569,19 @@ public class MenuConvIO extends ChatConvIO {
             switch (configNpcNameAlign) {
                 case "right":
                     for (int i = 0; i < Math.max(0, configLineLength - npcName.length()); i++) {
-                        displayBuilder.append(" ");
+                        displayBuilder.append(' ');
                     }
                     break;
                 case "center":
                 case "middle":
                     for (int i = 0; i < Math.max(0, configLineLength / 2 - npcName.length() / 2); i++) {
-                        displayBuilder.append(" ");
+                        displayBuilder.append(' ');
                     }
                     break;
                 default:
                     break;
             }
-            displayBuilder.append(formattedNpcName).append("\n");
+            displayBuilder.append(formattedNpcName).append('\n');
         }
 
         // We aim to try have a blank line at the top. It looks better
@@ -585,7 +590,7 @@ public class MenuConvIO extends ChatConvIO {
             linesAvailable--;
         }
 
-        displayBuilder.append(String.join("\n", npcLines)).append("\n");
+        displayBuilder.append(String.join("\n", npcLines)).append('\n');
 
         // Put clear lines between NPC text and Options
         for (int i = 0; i < linesAvailable; i++) {
@@ -596,7 +601,7 @@ public class MenuConvIO extends ChatConvIO {
             // Show up arrow if options exist above our view
             if (topOption > 0) {
                 for (int i = 0; i < 8; i++) {
-                    displayBuilder.append(ChatColor.BOLD).append(" ");
+                    displayBuilder.append(ChatColor.BOLD).append(' ');
                 }
                 displayBuilder.append(ChatColor.WHITE).append("↑\n");
             } else {
@@ -604,12 +609,12 @@ public class MenuConvIO extends ChatConvIO {
             }
 
             // Display Options
-            displayBuilder.append(String.join("\n", optionsSelected)).append("\n");
+            displayBuilder.append(String.join("\n", optionsSelected)).append('\n');
 
             // Show down arrow if options exist below our view
             if (topOption + optionsSelected.size() < options.size()) {
                 for (int i = 0; i < 8; i++) {
-                    displayBuilder.append(ChatColor.BOLD).append(" ");
+                    displayBuilder.append(ChatColor.BOLD).append(' ');
                 }
                 displayBuilder.append(ChatColor.WHITE).append("↓\n");
             } else {
@@ -697,7 +702,7 @@ public class MenuConvIO extends ChatConvIO {
                 return;
             }
 
-            if (event.getDamager() != player) {
+            if (!event.getDamager().equals(player)) {
                 return;
             }
 
@@ -743,7 +748,7 @@ public class MenuConvIO extends ChatConvIO {
                 return;
             }
 
-            if (event.getPlayer() != player) {
+            if (!event.getPlayer().equals(player)) {
                 return;
             }
 

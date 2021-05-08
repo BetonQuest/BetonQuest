@@ -1,7 +1,5 @@
 package org.betonquest.betonquest.api.logger.util;
 
-import org.junit.jupiter.api.Assertions;
-
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.logging.Handler;
@@ -9,8 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * This class can be attached to any {@link java.util.logging.Logger} as handler.
@@ -61,7 +58,7 @@ public class LogValidator extends Handler {
      * Assert that the {@link LogValidator} does not have any LogRecord left to check.
      */
     public void assertEmpty() {
-        Assertions.assertTrue(records.isEmpty(), "The records list should be empty!");
+        assertTrue(records.isEmpty(), "The records list should be empty!");
     }
 
     /**

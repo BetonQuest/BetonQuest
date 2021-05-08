@@ -2,8 +2,13 @@ package org.betonquest.betonquest.utils.math;
 
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.math.tokens.*;
+import org.betonquest.betonquest.utils.math.tokens.AbsoluteValue;
+import org.betonquest.betonquest.utils.math.tokens.Negation;
 import org.betonquest.betonquest.utils.math.tokens.Number;
+import org.betonquest.betonquest.utils.math.tokens.Operation;
+import org.betonquest.betonquest.utils.math.tokens.Parenthesis;
+import org.betonquest.betonquest.utils.math.tokens.Token;
+import org.betonquest.betonquest.utils.math.tokens.Variable;
 import org.betonquest.betonquest.variables.MathVariable;
 
 import java.util.regex.Matcher;
@@ -104,7 +109,7 @@ public class Tokenizer {
 
             try {
                 nextInLine = new Variable(new VariableNumber(packageName, "%" + variableName + "%"));
-            } catch (InstructionParseException e) {
+            } catch (final InstructionParseException e) {
                 throw new InstructionParseException("invalid calculation (" + e.getMessage() + ")", e);
             }
         } else if (chr == '(' || chr == '[') { //tokenize parenthesis
@@ -151,7 +156,7 @@ public class Tokenizer {
             }
             try {
                 nextInLine = new Variable(new VariableNumber(packageName, "%" + val2.substring(start, index--) + "%"));
-            } catch (InstructionParseException e) {
+            } catch (final InstructionParseException e) {
                 throw new InstructionParseException("invalid calculation (" + e.getMessage() + ")", e);
             }
         }
