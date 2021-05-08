@@ -59,7 +59,7 @@ public class Config {
         root = plugin.getDataFolder();
         lang = plugin.getConfig().getString("language");
 
-        final boolean isVirgin = Optional.ofNullable(root.listFiles(File::isFile)).map(files -> files.length == 0).orElse(true);
+        final boolean isInitialCreation = Optional.ofNullable(root.listFiles(File::isFile)).map(files -> files.length == 0).orElse(true);
 
         // save default config
         plugin.saveDefaultConfig();
@@ -118,7 +118,11 @@ public class Config {
      * @return true if the package was created, false if it already existed
      */
     @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
-    public static boolean createDefaultPackage(final String packName, final boolean populate) {
+    public static boolean createDefaultPackage(final String packName) {
+        createPackage(packName, true);
+    }
+
+    public static boolean createPackage(final String packName, final boolean populate) {
         final File def = new File(instance.root, packName.replace("-", File.separator));
         if (!def.exists()) {
             LogUtils.getLogger().log(Level.INFO, "Deploying " + packName + " package!");

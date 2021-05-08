@@ -79,8 +79,8 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
         final int index = identifier.indexOf(':');
         if (index == -1) {
             if (Config.getDefaultPackage() == null) {
-                LogUtils.logThrowableIgnore(new QuestRuntimeException("A variable contains no package and default package is missing!"));
-                return "&cCould not resolve variable because it specifies no package and default package is missing.";
+                LogUtils.getLogger().warn("Could not resolve placeholder value as variable '" + identifier + "' is specified without package and the default package is disabled.");
+                return "";
             }
             pack = Config.getDefaultPackage().getName();
             placeholderIdentifier = identifier;
