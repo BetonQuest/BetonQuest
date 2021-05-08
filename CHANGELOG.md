@@ -15,7 +15,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - math variable now allows rounding output with the ~ operator
 ### Removed
 ### Fixes
-- only generate default package if BetonQuest folder is empty
 - parsing of math variable
 - craft objective: multi-craft, drop-craft, hotbar/offhand-craft, shift-Q-craft and any illegal crafting is correctly detected,
 - craft objective variables `left` and `amount` were swapped
@@ -24,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - block selector didn't respect regex boundary
 - block selector regex errors are now properly handled
 - `default_journal_slot: -1` now uses the first free slot instead of the last hotbar slot
+- only generate default package if BetonQuest folder is empty
 ### Security
 - it was possible to put a QuestItem into a chest
 

@@ -131,9 +131,11 @@ public class Config {
     @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     public static boolean createPackage(final String packName, final boolean populate) {
         final File def = new File(instance.root, packName.replace("-", File.separator));
+        final File conversations = new File(def, "conversations");
         if (!def.exists()) {
             LogUtils.getLogger().log(Level.INFO, "Deploying " + packName + " package!");
             def.mkdirs();
+            conversations.mkdir();
             if (populate) {
                 saveResource(def, "default/main.yml", "main.yml");
                 saveResource(def, "default/events.yml", "events.yml");
@@ -142,6 +144,7 @@ public class Config {
                 saveResource(def, "default/items.yml", "items.yml");
                 saveResource(def, "default/objectives.yml", "objectives.yml");
                 saveResource(def, "default/custom.yml", "custom.yml");
+                saveResource(conversations, "default/conversations/innkeeper.yml", "innkeeper.yml");
             } else {
                 try {
                     new File(def, "main.yml").createNewFile();
@@ -155,11 +158,6 @@ public class Config {
                     LogUtils.getLogger().log(Level.WARNING, "Could not create file: " + e.getMessage());
                     LogUtils.logThrowable(e);
                 }
-            }
-            final File conversations = new File(def, "conversations");
-            conversations.mkdir();
-            if (populate) {
-                saveResource(conversations, "default/conversations/innkeeper.yml", "innkeeper.yml");
             }
             plugin.saveConfig();
             return true;
