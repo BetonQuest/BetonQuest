@@ -42,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - PacketInterceptor sync wait lag
 - notifications using the chatIO were catched by the conversation interceptor
 - case insensitive `password` objective did not work if the password contained upper case letters
+- global variables didn't work in quester names
 ### Security
 - it was possible to put a QuestItem into a chest
 
