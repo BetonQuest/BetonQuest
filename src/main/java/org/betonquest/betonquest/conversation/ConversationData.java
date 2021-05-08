@@ -66,7 +66,7 @@ public class ConversationData {
                 quester.put(lang, ChatColor.translateAlternateColorCodes('&', pack.getString("conversations." + name + ".quester." + lang)));
             }
         } else {
-            quester.put(Config.getLanguage(), ChatColor.translateAlternateColorCodes('&', conv.getString("quester")));
+            quester.put(Config.getLanguage(), ChatColor.translateAlternateColorCodes('&', pack.getString("conversations." + name + ".quester")));
         }
         if (conv.isConfigurationSection("prefix")) {
             //noinspection ConstantConditions
