@@ -46,7 +46,7 @@ public class Config {
      *
      * @param verboose controls if this object should log it's actions to the file
      */
-    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
+    @SuppressWarnings({"PMD.AssignmentToNonFinalStatic"})
     @SuppressFBWarnings({"ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"})
     public Config(final boolean verboose) {
 
@@ -58,6 +58,8 @@ public class Config {
         plugin = BetonQuest.getInstance();
         root = plugin.getDataFolder();
         lang = plugin.getConfig().getString("language");
+
+        final boolean isInitialCreation = Optional.ofNullable(root.listFiles(File::isFile)).map(files -> files.length == 0).orElse(true);
 
         // save default config
         plugin.saveDefaultConfig();
@@ -81,7 +83,9 @@ public class Config {
         defaultPackage = plugin.getConfig().getString("default_package", defaultPackage);
 
         // save example package
-        createDefaultPackage(defaultPackage);
+        if (isInitialCreation) {
+            createDefaultPackage(defaultPackage);
+        }
 
         // load packages
         for (final File file : plugin.getDataFolder().listFiles()) {
@@ -112,22 +116,49 @@ public class Config {
      * @param packName name of the new package
      * @return true if the package was created, false if it already existed
      */
-    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     public static boolean createDefaultPackage(final String packName) {
+        return createPackage(packName, true);
+    }
+
+    /**
+     * Creates a package with the given name and optionally populates it with the default quest.
+     *
+     * @param packName  name of the new package
+     * @param populate if the files should be populated with the example quest or left empty
+     * @return true if the package was created, false if it already existed
+     */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
+    public static boolean createPackage(final String packName, final boolean populate) {
         final File def = new File(instance.root, packName.replace("-", File.separator));
+        final File conversations = new File(def, "conversations");
         if (!def.exists()) {
             LogUtils.getLogger().log(Level.INFO, "Deploying " + packName + " package!");
             def.mkdirs();
-            saveResource(def, "default/main.yml", "main.yml");
-            saveResource(def, "default/events.yml", "events.yml");
-            saveResource(def, "default/conditions.yml", "conditions.yml");
-            saveResource(def, "default/journal.yml", "journal.yml");
-            saveResource(def, "default/items.yml", "items.yml");
-            saveResource(def, "default/objectives.yml", "objectives.yml");
-            saveResource(def, "default/custom.yml", "custom.yml");
-            final File conversations = new File(def, "conversations");
             conversations.mkdir();
-            saveResource(conversations, "default/conversations/innkeeper.yml", "innkeeper.yml");
+            if (populate) {
+                saveResource(def, "default/main.yml", "main.yml");
+                saveResource(def, "default/events.yml", "events.yml");
+                saveResource(def, "default/conditions.yml", "conditions.yml");
+                saveResource(def, "default/journal.yml", "journal.yml");
+                saveResource(def, "default/items.yml", "items.yml");
+                saveResource(def, "default/objectives.yml", "objectives.yml");
+                saveResource(def, "default/custom.yml", "custom.yml");
+                saveResource(conversations, "default/conversations/innkeeper.yml", "innkeeper.yml");
+            } else {
+                try {
+                    new File(def, "main.yml").createNewFile();
+                    new File(def, "events.yml").createNewFile();
+                    new File(def, "conditions.yml").createNewFile();
+                    new File(def, "journal.yml").createNewFile();
+                    new File(def, "items.yml").createNewFile();
+                    new File(def, "objectives.yml").createNewFile();
+                    new File(def, "custom.yml").createNewFile();
+                } catch (IOException e) {
+                    LogUtils.getLogger().log(Level.WARNING, "Could not create file: " + e.getMessage());
+                    LogUtils.logThrowable(e);
+                }
+            }
             plugin.saveConfig();
             return true;
         }
@@ -521,7 +552,7 @@ public class Config {
     }
 
     /**
-     * @return the default package, as specified in the config
+     * @return the default package, as specified in the config or null if default package was deleted
      */
     public static ConfigPackage getDefaultPackage() {
         return getPackages().get(defaultPackage);

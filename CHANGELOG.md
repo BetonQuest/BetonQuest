@@ -8,10 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Vietnamese translation
 ### Changed
+- `/q create package` command does now create an empty package
 ### Deprecated
 ### Removed
 ### Fixes
 - `brew` objective triggers all the time and counts correctly
+- only generate default package if BetonQuest folder is empty
 ### Security
 
 ## [1.12.3] - 2021-05-05

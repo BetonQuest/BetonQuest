@@ -20,7 +20,7 @@
 * **/q delete {tag/point/objective/entry} {name}** - deletes all specified things in the database
 * **/q backup** - creates a backup of configuration files and database
 * **/q update** - updates the plugin to the newest version.
-* **/q create {package}**: creates new package with given name, filled with default quest
+* **/q create {package}**: creates new package with given name and fills it with empty files
 * **/q vector {packname.variable} {newvariable}**: calculates the vector from first location variable to you position and saves it as second variable
 * **/q version**: displays the versions of BetonQuest, the server and all hooked plugins
 * **/q debug [true/false]**: enable debug mode and write all down in a log file or disable the debug mode
