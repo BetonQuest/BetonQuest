@@ -4,9 +4,10 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.config.Config;
-import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+
+import java.util.logging.Level;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class BetonQuestPlaceholder extends PlaceholderExpansion {
@@ -79,7 +80,8 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
         final int index = identifier.indexOf(':');
         if (index == -1) {
             if (Config.getDefaultPackage() == null) {
-                LogUtils.getLogger().warn("Could not resolve placeholder value as variable '" + identifier + "' is specified without package and the default package is disabled.");
+                LogUtils.getLogger().log(Level.WARNING, "Could not resolve placeholder value as variable '"
+                        + identifier + "' is specified without package and the default package is disabled.");
                 return "";
             }
             pack = Config.getDefaultPackage().getName();

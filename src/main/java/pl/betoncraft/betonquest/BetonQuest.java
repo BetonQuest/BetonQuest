@@ -1146,13 +1146,14 @@ public class BetonQuest extends JavaPlugin {
      */
     public String getVariableValue(final String packName, final String name, final String playerID) {
         if (!Config.getPackages().containsKey(packName)) {
-            LogUtils.logThrowableIgnore(new QuestRuntimeException("A variable contains the non-existent package '" + packName + "' !"));
-            return "&cCould not resolve variable because the package '" + packName + "' is invalid.";
+            LogUtils.getLogger().log(Level.WARNING, "Variable '" + name + "' contains the non-existent package '" + packName + "' !");
+            return "";
         }
         try {
             final Variable var = createVariable(Config.getPackages().get(packName), name);
             if (var == null) {
-                return "&cCould not resolve variable.";
+                LogUtils.getLogger().log(Level.WARNING, "Could not resolve variable '" + name + "'.");
+                return "";
             }
             return var.getValue(playerID);
         } catch (final InstructionParseException e) {
