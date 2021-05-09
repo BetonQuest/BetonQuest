@@ -16,12 +16,12 @@ import org.bukkit.event.vehicle.VehicleEnterEvent;
 import java.util.Locale;
 
 @SuppressWarnings("PMD.CommentRequired")
-public class VehicleObjective extends Objective implements Listener {
+public class RideObjective extends Objective implements Listener {
 
     private EntityType vehicle;
     private boolean any;
 
-    public VehicleObjective(final Instruction instruction) throws InstructionParseException {
+    public RideObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = ObjectiveData.class;
         final String name = instruction.next();
@@ -30,7 +30,7 @@ public class VehicleObjective extends Objective implements Listener {
         } else {
             try {
                 vehicle = EntityType.valueOf(name.toUpperCase(Locale.ROOT));
-            } catch (IllegalArgumentException e) {
+            } catch (final IllegalArgumentException e) {
                 throw new InstructionParseException("Entity type " + name + " does not exist.", e);
             }
         }

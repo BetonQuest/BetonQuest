@@ -300,14 +300,17 @@ Requires the player to have amount of points equal to the specified category or 
     point beton 20
     ```
 
-## Riding: `riding`
+## Ride an entity: `ride`
 
-This condition checks if the player rides the specified entity.
+This condition checks if the player rides the specified
+<a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html" target="_blank_">entity</a>.
 `any` is also a valid input and matches any entity.
 
-```YAML
-riding horse
-```
+!!! example
+    ```YAML
+    ride horse
+    ride any
+    ```
 
 ## Random: `random`
 

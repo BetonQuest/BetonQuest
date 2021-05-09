@@ -411,14 +411,16 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
     jump 15 events:legExerciseDone
     ```
 
-## Riding: `riding`
+## Ride an entity: `ride`
 
-This objective can be completed by riding the specified entity.
+This objective can be completed by riding the specified
+<a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html" target="_blank_">entity</a>.
 `any` is also a valid input and matches any entity.
 
 !!! example
     ```YAML
-    riding horse
+    ride horse
+    ride any
     ```
 
 ## Variable: `variable`
