@@ -39,7 +39,7 @@ public class TopicLoggerTest {
     }
 
     private TopicLogger getTopicLogger() {
-        return new TopicLogger(Logger.getAnonymousLogger(), TopicLoggerTest.class, LOGGER_TOPIC);
+        return new TopicLogger(LogValidator.getSilentLogger(), TopicLoggerTest.class, LOGGER_TOPIC);
     }
 
     @Test

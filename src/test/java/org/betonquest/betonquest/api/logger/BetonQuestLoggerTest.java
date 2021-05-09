@@ -82,7 +82,7 @@ public class BetonQuestLoggerTest {
 
     @Test
     public void testDebug() {
-        final Logger logger = Logger.getAnonymousLogger();
+        final Logger logger = LogValidator.getSilentLogger();
         final BetonQuestLogger betonQuestLogger = getBetonQuestLogger(logger);
         final LogValidator logValidator = LogValidator.getForLogger(logger);
         betonQuestLogger.debug(mockConfigPackage(), LOG_MESSAGE);
@@ -92,7 +92,7 @@ public class BetonQuestLoggerTest {
 
     @Test
     public void testDebugException() {
-        final Logger logger = Logger.getAnonymousLogger();
+        final Logger logger = LogValidator.getSilentLogger();
         final BetonQuestLogger betonQuestLogger = getBetonQuestLogger(logger);
         final LogValidator logValidator = LogValidator.getForLogger(logger);
         betonQuestLogger.debug(mockConfigPackage(), LOG_MESSAGE, new IOException(EXCEPTION_MESSAGE));
@@ -102,7 +102,7 @@ public class BetonQuestLoggerTest {
 
     @Test
     public void testInfo() {
-        final Logger logger = Logger.getAnonymousLogger();
+        final Logger logger = LogValidator.getSilentLogger();
         final BetonQuestLogger betonQuestLogger = getBetonQuestLogger(logger);
         final LogValidator logValidator = LogValidator.getForLogger(logger);
         betonQuestLogger.info(mockConfigPackage(), LOG_MESSAGE);
@@ -112,7 +112,7 @@ public class BetonQuestLoggerTest {
 
     @Test
     public void testWarning() {
-        final Logger logger = Logger.getAnonymousLogger();
+        final Logger logger = LogValidator.getSilentLogger();
         final BetonQuestLogger betonQuestLogger = getBetonQuestLogger(logger);
         final LogValidator logValidator = LogValidator.getForLogger(logger);
         betonQuestLogger.warning(mockConfigPackage(), LOG_MESSAGE);
@@ -122,7 +122,7 @@ public class BetonQuestLoggerTest {
 
     @Test
     public void testWarningException() {
-        final Logger logger = Logger.getAnonymousLogger();
+        final Logger logger = LogValidator.getSilentLogger();
         final BetonQuestLogger betonQuestLogger = getBetonQuestLogger(logger);
         final LogValidator logValidator = LogValidator.getForLogger(logger);
         betonQuestLogger.warning(mockConfigPackage(), LOG_MESSAGE, new IOException(EXCEPTION_MESSAGE));
@@ -133,7 +133,7 @@ public class BetonQuestLoggerTest {
 
     @Test
     public void testError() {
-        final Logger logger = Logger.getAnonymousLogger();
+        final Logger logger = LogValidator.getSilentLogger();
         final BetonQuestLogger betonQuestLogger = getBetonQuestLogger(logger);
         final LogValidator logValidator = LogValidator.getForLogger(logger);
         betonQuestLogger.error(mockConfigPackage(), LOG_MESSAGE);
@@ -143,7 +143,7 @@ public class BetonQuestLoggerTest {
 
     @Test
     public void testErrorException() {
-        final Logger logger = Logger.getAnonymousLogger();
+        final Logger logger = LogValidator.getSilentLogger();
         final BetonQuestLogger betonQuestLogger = getBetonQuestLogger(logger);
         final LogValidator logValidator = LogValidator.getForLogger(logger);
         betonQuestLogger.error(mockConfigPackage(), LOG_MESSAGE, new IOException(EXCEPTION_MESSAGE));
@@ -153,7 +153,7 @@ public class BetonQuestLoggerTest {
 
     @Test
     public void testReportException() {
-        final Logger logger = Logger.getAnonymousLogger();
+        final Logger logger = LogValidator.getSilentLogger();
         final BetonQuestLogger betonQuestLogger = getBetonQuestLogger(logger);
         final LogValidator logValidator = LogValidator.getForLogger(logger);
         betonQuestLogger.reportException(mockConfigPackage(), new IOException(EXCEPTION_MESSAGE));
