@@ -28,6 +28,17 @@ public class LogValidator extends Handler {
     }
 
     /**
+     * Creates an anonymous and silent logger. This is an optimal way to obtain a logger for testing.
+     *
+     * @return a silent logger
+     */
+    public static Logger getSilentLogger() {
+        final Logger logger = Logger.getAnonymousLogger();
+        logger.setUseParentHandlers(false);
+        return logger;
+    }
+
+    /**
      * Setup and return a {@link LogValidator} for the given logger.
      *
      * @param logger The related logger.
