@@ -28,7 +28,7 @@ public class BetonQuestLogger {
     /**
      * Creates a decorator for the {@link TopicLogger}.
      *
-     * @param parentLogger The instance of a {@link Plugin}.
+     * @param parentLogger The instance of the parent {@link Logger}.
      * @param clazz        The calling class.
      * @param topic        The topic of the logger.
      */

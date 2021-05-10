@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * This class can be attached to any {@link java.util.logging.Logger} as handler.
  * Then it is possible to check for {@link LogRecord}s to assert that the right things are logged.
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public class LogValidator extends Handler {
     /**
      * The queue of all left {@link LogRecord}s.
@@ -81,8 +82,7 @@ public class LogValidator extends Handler {
      * @param throwableMessage The expected throwable message.
      */
     public void assertLogEntry(final Level level, final String message, final Class<? extends Throwable> throwable, final String throwableMessage) {
-        final LogRecord record = records.pop();
-        assertEntry(record, level, message, throwable, throwableMessage);
+        assertEntry(popLogRecord(), level, message, throwable, throwableMessage);
     }
 
     /**
@@ -93,8 +93,7 @@ public class LogValidator extends Handler {
      * @param throwable The expected throwable class.
      */
     public void assertLogEntry(final Level level, final String message, final Class<? extends Throwable> throwable) {
-        final LogRecord record = records.pop();
-        assertEntry(record, level, message, throwable);
+        assertEntry(popLogRecord(), level, message, throwable);
     }
 
     /**
@@ -104,8 +103,12 @@ public class LogValidator extends Handler {
      * @param message The expected message.
      */
     public void assertLogEntry(final Level level, final String message) {
-        final LogRecord record = records.pop();
-        assertEntry(record, level, message);
+        assertEntry(popLogRecord(), level, message);
+    }
+
+    private LogRecord popLogRecord() {
+        assertFalse(records.isEmpty(), "There is no left LogRecord to query for assertion!");
+        return records.pop();
     }
 
     private void assertEntry(final LogRecord record, final Level level, final String message, final Class<? extends Throwable> throwable, final String throwableMessage) {
