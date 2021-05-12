@@ -231,7 +231,7 @@ public class QuestItemHandler implements Listener {
             event.getPlayer().getInventory().addItem(copy);
         }
     }
-
+@SuppressFBWarnings
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     @EventHandler(ignoreCancelled = true)
     public void onInteractEvent(final PlayerInteractEvent event) {
