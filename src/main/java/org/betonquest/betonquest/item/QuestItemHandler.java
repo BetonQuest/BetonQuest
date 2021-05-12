@@ -232,14 +232,24 @@ public class QuestItemHandler implements Listener {
         }
     }
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     @EventHandler(ignoreCancelled = true)
     public void onInteractEvent(final PlayerInteractEvent event) {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
             return;
         }
-        final ItemStack item = event.getItem();
-        if (event.getClickedBlock() != null) {
+
+        if (event.getClickedBlock() == null) {
+            return;
+        }
+
+        final String clickedBlock = event.getClickedBlock().getType().toString();
+        if ("LECTERN".equals(clickedBlock)
+                || "CAMPFIRE".equals(clickedBlock)
+                || "COMPOSTER".equals(clickedBlock)
+                || "RESPAWN_ANCHOR".equals(clickedBlock)) {
             final String playerID = PlayerConverter.getID(event.getPlayer());
+            final ItemStack item = event.getItem();
             if (Journal.isJournal(playerID, item) || Utils.isQuestItem(item)) {
                 event.setCancelled(true);
             }
