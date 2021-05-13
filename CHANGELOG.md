@@ -57,6 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - notifications using the chatIO were catched by the conversation interceptor
 - case insensitive `password` objective did not work if the password contained upper case letters
 - global variables didn't work in quester names
+- quest items couldn't interact with any blocks, which also prevented them from mining blocks
 ### Security
 - it was possible to put a QuestItem into a chest
 
