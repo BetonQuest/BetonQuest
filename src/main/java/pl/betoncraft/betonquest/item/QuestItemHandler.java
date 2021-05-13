@@ -3,6 +3,7 @@ package pl.betoncraft.betonquest.item;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -232,17 +233,24 @@ public class QuestItemHandler implements Listener {
         }
     }
 
+    @SuppressFBWarnings
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     @EventHandler(ignoreCancelled = true)
     public void onInteractEvent(final PlayerInteractEvent event) {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
             return;
         }
         final ItemStack item = event.getItem();
-        if (event.getClickedBlock() != null) {
+        if (item == null) {
+            return;
+        }
+
+        if (!EnchantmentTarget.TOOL.includes(item.getType())) {
             final String playerID = PlayerConverter.getID(event.getPlayer());
             if (Journal.isJournal(playerID, item) || Utils.isQuestItem(item)) {
                 event.setCancelled(true);
             }
+
         }
     }
 
