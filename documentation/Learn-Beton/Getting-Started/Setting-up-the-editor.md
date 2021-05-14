@@ -71,8 +71,8 @@ if they do. An example might be provided after the colon (`:`). Just replace it 
 
 * You will automatically jump to the next line if you press tab one last time after any option.
 * The snippet automatically surrounds the event/condition... with `""`.
-* Next to the `conversation` event and condition snippets is another one that creates a whole conversation template.
-* Pressing ++shift++ + ++space++ creates a new conversationOption.
+* There are not only snippets for `events`, `objectives` and `conditions` but also for conversations!
+* Pressing ++alt++ + ++b++ creates a new conversationOption.
 
 
 **Take a look at this short video or play around with it yourself until you understand how it works:**
