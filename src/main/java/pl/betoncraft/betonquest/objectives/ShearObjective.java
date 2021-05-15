@@ -18,6 +18,7 @@ import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.logging.Level;
+import java.util.regex.Pattern;
 
 /**
  * Requires the player to shear a sheep.
@@ -26,17 +27,25 @@ import java.util.logging.Level;
 public class ShearObjective extends Objective implements Listener {
 
     private final String color;
-    private final String name;
     private final int amount;
     private final boolean notify;
     private final int notifyInterval;
+    private final Pattern underscore = Pattern.compile("(?<!\\\\)_");
+    private final Pattern escapedUnderscore = Pattern.compile("(\\\\)_");
+    private String name;
 
     public ShearObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = SheepData.class;
+
         amount = instruction.getPositive();
+
         final String rawName = instruction.getOptional("name");
-        name = rawName == null ? null : rawName.replace('_', ' ');
+        if (rawName != null) {
+            name = underscore.matcher(rawName).replaceAll(" ");
+            name = escapedUnderscore.matcher(name).replaceAll("_");
+        }
+
         color = instruction.getOptional("color");
         notifyInterval = instruction.getInt(instruction.getOptional("notify"), 1);
         notify = instruction.hasArgument("notify") || notifyInterval > 1;

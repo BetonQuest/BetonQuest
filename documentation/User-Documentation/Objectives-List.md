@@ -322,14 +322,17 @@ for what was initially required.
 ## Sheep shearing: `shear`
 
 To complete this objective the player has to shear specified amount of sheep, optionally with specified color and/or
-name. The first, required argument is amount (integer). Optionally, you can add `name:` argument with the name and
-`color:` with [color name](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/DyeColor.html).
+name. The first, required argument is amount (integer). Optionally, you can add a `name:` argument to only count specific sheep.
+All underscores will be replaced by spaces - if you want to use underscores, put a `\` before them.
+You can also check for the sheep's `color:` using these [color names](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/DyeColor.html).
 
 Sheep shearing has the same properties as mob kill objective.
 
 !!! example
     ```YAML
     shear 1 name:Bob color:black
+    shear 1 name:jeb\_
+    "shear 1 name:jeb\\_" #Use two backslashes if quoted
     ```
 
 ## Smelting: `smelt`
