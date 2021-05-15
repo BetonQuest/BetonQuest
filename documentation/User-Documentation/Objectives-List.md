@@ -340,10 +340,11 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 ## Sheep shearing: `shear`
 
 To complete this objective the player has to shear specified amount of sheep, optionally with specified color and/or
-name. The first, required argument is amount (integer). Optionally, you can add `name:` argument with the name and
-`color:` with [color name](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/DyeColor.html). You can use the `notify`
-keyword to display a message each time the player advances the objective, optionally with the notification interval
-after a colon.
+name. The first, required argument is amount (integer). Optionally, you can add a `name:` argument to only count specific sheep.
+All underscores will be replaced by spaces - if you want to use underscores, put a `\` before them.
+You can also check for the sheep's `color:` using these [color names](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/DyeColor.html).
+You can use the `notify` keyword to display a message each time the player advances the objective,
+optionally with the notification interval after a colon.
 
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of sheep already sheared,
 `left` is the amount of sheep still needed to shear and `total` is the amount of sheep initially required.
@@ -351,6 +352,8 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 !!! example
     ```YAML
     shear 1 name:Bob color:black
+    shear 1 name:jeb\_
+    "shear 1 name:jeb\\_" #Use two backslashes if quoted
     ```
 
 ## Smelting: `smelt`
