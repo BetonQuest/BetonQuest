@@ -15,6 +15,8 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 
+import java.util.regex.Pattern;
+
 /**
  * Requires the player to shear a sheep.
  */
@@ -23,13 +25,18 @@ import org.bukkit.event.player.PlayerShearEntityEvent;
 public class ShearObjective extends CountingObjective implements Listener {
 
     private final String color;
-    private final String name;
+    private final Pattern underscore = Pattern.compile("(?<!\\\\)_");
+    private final Pattern escapedUnderscore = Pattern.compile("(\\\\)_");
+    private String name;
 
     public ShearObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "sheep_to_shear");
         targetAmount = instruction.getPositive();
         final String rawName = instruction.getOptional("name");
-        name = rawName == null ? null : rawName.replace('_', ' ');
+        if (rawName != null) {
+            name = underscore.matcher(rawName).replaceAll(" ");
+            name = escapedUnderscore.matcher(name).replaceAll("_");
+        }
         color = instruction.getOptional("color");
     }
 
