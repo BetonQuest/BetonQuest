@@ -11,6 +11,7 @@ import org.bukkit.command.ConsoleCommandSender;
  *
  * @author Jonas Blocher
  */
+//TODO: Remove?
 public class Log {
 
     private static final ConsoleCommandSender console = Bukkit.getConsoleSender();

@@ -136,7 +136,7 @@ public class MenuItem extends SimpleYMLSection {
             } catch (final Missing e) {
             }
             //load if menu should close when item is clicked
-            this.close = new DefaultSetting<Boolean>(RPGMenu.getConfiguration().defaultCloseOnClick) {
+            this.close = new DefaultSetting<Boolean>(BetonQuest.getInstance().getRpgMenu().getConfiguration().defaultCloseOnClick) {
                 @Override
                 protected Boolean of() throws Missing, Invalid {
                     return getBoolean("close");

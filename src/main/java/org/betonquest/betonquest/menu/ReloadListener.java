@@ -19,6 +19,6 @@ public class ReloadListener implements Listener {
 
     @EventHandler
     public void onReload(final LoadDataEvent event) {
-        RPGMenu.getInstance().reloadData();
+        BetonQuest.getInstance().getRpgMenu().reloadData();
     }
 }

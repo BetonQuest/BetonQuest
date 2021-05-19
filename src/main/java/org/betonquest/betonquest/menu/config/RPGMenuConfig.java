@@ -2,7 +2,6 @@ package org.betonquest.betonquest.menu.config;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.menu.utils.Utils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.command.CommandSender;
@@ -90,7 +89,7 @@ public class RPGMenuConfig extends SimpleYMLConfig {
      * @return the predefined message with all args replaced
      */
     public static String getMessage(String lang, final String key, final String... replace) {
-        final RPGMenuConfig instance = RPGMenu.getConfiguration();
+        final RPGMenuConfig instance = BetonQuest.getInstance().getRpgMenu().getConfiguration();
         if (instance == null) return "null";
         String message;
         if (lang == null) lang = Config.getLanguage();

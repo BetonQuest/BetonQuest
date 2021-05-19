@@ -34,50 +34,9 @@ import java.util.List;
  */
 public class RPGMenu {
 
-    private static RPGMenu instance;
     private RPGMenuConfig config = null;
     private HashMap<MenuID, Menu> menus;
     private RPGMenuCommand pluginCommand;
-
-    public RPGMenu() {
-        instance = this;
-    }
-
-    /**
-     * @return the config of the plugin
-     */
-    public static RPGMenuConfig getConfiguration() {
-        return instance.config;
-    }
-
-    /**
-     * @return the instance of the plugin
-     */
-    public static RPGMenu getInstance() {
-        return instance;
-    }
-
-    /**
-     * Open a menu for a player
-     *
-     * @param player the player for which the menu should be opened
-     * @param id     id of the menu
-     */
-    public static void openMenu(final Player player, final MenuID id) {
-        final Menu menu = instance.menus.get(id);
-        if (menu == null) {
-            Log.error("Could not open menu §7" + id + "§4: §cUnknown menu");
-            return;
-        }
-        final MenuOpenEvent openEvent = new MenuOpenEvent(player, id);
-        Bukkit.getPluginManager().callEvent(openEvent);
-        if (openEvent.isCancelled()) {
-            Log.debug("A Bukkit listener canceled opening of menu " + id + " for " + player.getName());
-            return;
-        }
-        new OpenedMenu(player, menu);
-        Log.debug("opening menu " + id + " for " + player.getName());
-    }
 
     /**
      * If the player has a open menu it closes it
@@ -110,6 +69,35 @@ public class RPGMenu {
      */
     public static boolean hasOpenedMenu(final Player player) {
         return RPGMenu.hasOpenedMenu(player, null);
+    }
+
+    /**
+     * @return the config of the plugin
+     */
+    public RPGMenuConfig getConfiguration() {
+        return config;
+    }
+
+    /**
+     * Open a menu for a player
+     *
+     * @param player the player for which the menu should be opened
+     * @param id     id of the menu
+     */
+    public void openMenu(final Player player, final MenuID id) {
+        final Menu menu = menus.get(id);
+        if (menu == null) {
+            Log.error("Could not open menu §7" + id + "§4: §cUnknown menu");
+            return;
+        }
+        final MenuOpenEvent openEvent = new MenuOpenEvent(player, id);
+        Bukkit.getPluginManager().callEvent(openEvent);
+        if (openEvent.isCancelled()) {
+            Log.debug("A Bukkit listener canceled opening of menu " + id + " for " + player.getName());
+            return;
+        }
+        new OpenedMenu(player, menu);
+        Log.debug("opening menu " + id + " for " + player.getName());
     }
 
     public void onEnable() {

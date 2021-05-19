@@ -7,7 +7,6 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.menu.Menu;
 import org.betonquest.betonquest.menu.MenuID;
-import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.menu.events.MenuOpenEvent;
 import org.betonquest.betonquest.menu.utils.Log;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -64,7 +63,7 @@ public class MenuObjective extends Objective implements Listener {
     @Override
     public String getProperty(final String name, final String playerID) {
         if (name.equalsIgnoreCase("menu")) {
-            final Menu menuData = RPGMenu.getInstance().getMenu(menuID);
+            final Menu menuData = BetonQuest.getInstance().getRpgMenu().getMenu(menuID);
             if (menuData == null) {
                 Log.debug("Error while getting menu property in '" + instruction.getID() + "' objective: "
                         + "menu with id " + menuID + " isn't loaded");

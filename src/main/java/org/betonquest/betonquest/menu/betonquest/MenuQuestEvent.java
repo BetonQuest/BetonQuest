@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.menu.betonquest;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -38,7 +39,7 @@ public class MenuQuestEvent extends QuestEvent {
     public Void execute(final String playerID) throws QuestRuntimeException {
         final Player player = PlayerConverter.getPlayer(playerID);
         if (operation == Operation.OPEN) {
-            RPGMenu.openMenu(player, menu);
+            BetonQuest.getInstance().getRpgMenu().openMenu(player, menu);
         } else {
             RPGMenu.closeMenu(player);
         }

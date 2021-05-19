@@ -5,6 +5,7 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -30,6 +31,8 @@ import java.util.List;
  * @author Jonas Blocher
  */
 public class RPGMenuCommand extends SimpleCommand {
+
+    RPGMenu menu = BetonQuest.getInstance().getRpgMenu();
 
     public RPGMenuCommand() {
         super("rpgmenu", new Permission("betonquest.admin"), 0, "qm", "menu", "menus", "rpgmenus", "rpgm");
@@ -61,7 +64,7 @@ public class RPGMenuCommand extends SimpleCommand {
                 Log.debug(pack);
                 if (configPack == null) return new ArrayList<>();
                 final List<String> completations = new ArrayList<>();
-                for (final MenuID id : RPGMenu.getInstance().getMenus()) {
+                for (final MenuID id : menu.getMenus()) {
                     if (id.getPackage().equals(configPack)) completations.add(id.toString());
                     Log.debug(id);
                 }
@@ -107,7 +110,7 @@ public class RPGMenuCommand extends SimpleCommand {
                 final ComponentBuilder builder = new ComponentBuilder("");
                 builder
                         .append(TextComponent.fromLegacyText(RPGMenuConfig.getMessage(sender, "command_list")));
-                final Collection<MenuID> ids = RPGMenu.getInstance().getMenus();
+                final Collection<MenuID> ids = menu.getMenus();
                 if (ids.isEmpty()) builder.append("\n - ").color(ChatColor.GRAY);
                 else for (final MenuID menuID : ids) {
                     builder
@@ -143,8 +146,8 @@ public class RPGMenuCommand extends SimpleCommand {
                     RPGMenuConfig.sendMessage(sender, "command_no_menu");
                     return false;
                 }
-                //open the menu and sen feedback
-                RPGMenu.openMenu(player, id);
+                //open the menu and send feedback
+                menu.openMenu(player, id);
                 RPGMenuConfig.sendMessage(sender, "command_open_successful", id.toString());
                 break;
             case "reload":
@@ -152,10 +155,10 @@ public class RPGMenuCommand extends SimpleCommand {
                 ChatColor color = ChatColor.GRAY;
                 if (id == null) {
                     //reload all data
-                    info = RPGMenu.getInstance().reloadData();
+                    info = menu.reloadData();
                 } else {
                     // reload one menu
-                    info = RPGMenu.getInstance().reloadMenu(id);
+                    info = menu.reloadMenu(id);
                 }
                 //notify player, console gets automatically informed
                 if (sender instanceof Player) {

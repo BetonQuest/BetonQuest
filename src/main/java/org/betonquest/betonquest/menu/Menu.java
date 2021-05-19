@@ -92,6 +92,8 @@ public class Menu extends SimpleYMLConfig implements Listener {
      */
     private final Optional<MenuBoundCommand> boundCommand;
 
+    RPGMenu menu = BetonQuest.getInstance().getRpgMenu();
+
     public Menu(final MenuID id) throws InvalidConfigurationException {
         super(id.getFullID(), id.getFile());
         this.ID = id;
@@ -219,7 +221,7 @@ public class Menu extends SimpleYMLConfig implements Listener {
         }
         //open the menu
         Log.debug(event.getPlayer().getName() + " used bound item of menu " + this.ID);
-        RPGMenu.openMenu(event.getPlayer(), this.ID);
+        menu.openMenu(event.getPlayer(), this.ID);
     }
 
     /**
@@ -352,7 +354,7 @@ public class Menu extends SimpleYMLConfig implements Listener {
             final Player player = (Player) sender;
             if (mayOpen(player)) {
                 Log.debug(player.getName() + " run bound command of " + ID);
-                RPGMenu.openMenu(player, ID);
+                menu.openMenu(player, ID);
                 return true;
             } else {
                 player.sendMessage(this.noPermissionMessage(sender));
