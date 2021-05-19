@@ -30,7 +30,7 @@ public class BetonQuestLoggerValidationProvider implements ParameterResolver, Be
      * Default {@link BetonQuestLoggerValidationProvider} Constructor.
      */
     public BetonQuestLoggerValidationProvider() {
-        parentLogger = Logger.getAnonymousLogger();
+        parentLogger = LogValidator.getSilentLogger();
     }
 
     @Override
@@ -48,11 +48,18 @@ public class BetonQuestLoggerValidationProvider implements ParameterResolver, Be
 
     @Override
     public boolean supportsParameter(final ParameterContext parameterContext, final ExtensionContext extensionContext) {
-        return parameterContext.getParameter().getType() == LogValidator.class;
+        return parameterContext.getParameter().getType() == LogValidator.class
+                || parameterContext.getParameter().getType() == Logger.class;
     }
 
     @Override
     public Object resolveParameter(final ParameterContext parameterContext, final ExtensionContext extensionContext) {
-        return LogValidator.getForLogger(parentLogger);
+        if (parameterContext.getParameter().getType() == LogValidator.class) {
+            return LogValidator.getForLogger(parentLogger);
+        }
+        if (parameterContext.getParameter().getType() == Logger.class) {
+            return parentLogger;
+        }
+        return null;
     }
 }
