@@ -28,7 +28,8 @@ going to get quite a lot of files in it. Move the downloaded file here and renam
 Open your text editor and create a file named `start.bat` (For Linux and Mac: Create a `start.sh` file instead). 
 Open it and copy this into it:
 ```
-java -Xms1G -Xmx1G -jar paper.jar
+java -Xms1G -Xmx1G -jar paper.jar --nogui
+pause
 ```
 This script tells java to search for a file named `paper.jar`.
 The `1G` setting in both the `-Xms` and `-Xmx` options is how much RAM you want to give to the server 
