@@ -1,10 +1,12 @@
 package org.betonquest.betonquest.utils;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.compatibility.Compatibility;
+import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ID;
@@ -44,6 +46,7 @@ public class BStatsMetrics {
         listUsage("objectives", objectives, objectiveTypes);
         listUsage("variables", variables, variableTypes);
         hookedPlugins();
+        rpgMenuMetrics();
     }
 
     private void versionMcBq() {
@@ -108,5 +111,11 @@ public class BStatsMetrics {
             }
             return map;
         }));
+    }
+
+    private void rpgMenuMetrics() {
+        final int menuAmount = BetonQuest.getInstance().getRpgMenu().getMenus().size();
+        metrics.addCustomChart(new Metrics.SimplePie("language", Config::getLanguage));
+        metrics.addCustomChart(new Metrics.SingleLineChart("menus", () -> menuAmount));
     }
 }
