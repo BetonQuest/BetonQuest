@@ -29,7 +29,8 @@ Open your text editor and create a file named `start.bat` (For Linux and Mac: Cr
 Place it in the freshly created folder.
 Open it and copy this into it:
 ```
-java -Xms1G -Xmx1G -jar paper.jar
+java -Xms1G -Xmx1G -jar paper.jar --nogui
+pause
 ```
 This script tells java to search for a file named `paper.jar`.
 The `1G` setting in both the `-Xms` and `-Xmx` options is how much RAM you want to give to the server 
