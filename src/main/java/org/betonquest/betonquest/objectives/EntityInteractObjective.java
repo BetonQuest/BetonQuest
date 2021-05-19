@@ -169,7 +169,7 @@ public class EntityInteractObjective extends CountingObjective {
             entities = new HashSet<>();
             final String[] entityInstruction = instruction.split(";", 3);
             if (entityInstruction.length >= 2) {
-                Arrays.stream(entityInstruction[2].split("/"))
+                Arrays.stream(entityInstruction[1].split("/"))
                         .map(UUID::fromString)
                         .forEach(entities::add);
             }
