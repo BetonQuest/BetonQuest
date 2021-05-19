@@ -39,8 +39,11 @@ public abstract class SimpleYMLSection {
      */
     protected String getString(final String key) throws Missing {
         final String s = config.getString(key);
-        if (s != null) return s;
-        else throw new Missing(key);
+        if (s == null) {
+            throw new Missing(key);
+        } else {
+            return s;
+        }
     }
 
     /********************************************************
@@ -57,8 +60,11 @@ public abstract class SimpleYMLSection {
      */
     protected List<String> getStringList(final String key) throws Missing {
         final List<String> list = config.getStringList(key);
-        if (list != null && list.size() != 0) return list;
-        else throw new Missing(key);
+        if (list == null || list.size() == 0) {
+            throw new Missing(key);
+        } else {
+            return list;
+        }
     }
 
     /**
@@ -193,8 +199,11 @@ public abstract class SimpleYMLSection {
             //pre 1.13
             m = Material.getMaterial(s.toUpperCase().replace(" ", "_"));
         }
-        if (m != null) return m;
-        else throw new Invalid(key, "'" + s + "' isn't a material");
+        if (m == null) {
+            throw new Invalid(key, "'" + s + "' isn't a material");
+        } else {
+            return m;
+        }
     }
 
     /**
@@ -292,15 +301,18 @@ public abstract class SimpleYMLSection {
      */
     public class InvalidSimpleConfigException extends InvalidConfigurationException {
 
+        private static final long serialVersionUID = 5231741827329435199L;
         private final String message;
         private final String cause;
 
         public InvalidSimpleConfigException(final String cause) {
+            super();
             this.cause = "  §c" + cause;
             this.message = "§4Could not load §7" + getName() + "§4:\n" + this.cause;
         }
 
         public InvalidSimpleConfigException(final InvalidSimpleConfigException e) {
+            super();
             this.cause = "  §4Error in §7" + e.getName() + "§4:\n" + e.cause;
             this.message = "Could not load §7" + getName() + "§4\n" + this.cause;
         }
@@ -320,6 +332,8 @@ public abstract class SimpleYMLSection {
      */
     public class Missing extends InvalidSimpleConfigException {
 
+        private static final long serialVersionUID = 1827433702663413827L;
+
         public Missing(final String missingSetting) {
             super("RPGMenuConfig setting §7" + missingSetting + "§c is missing!");
         }
@@ -329,6 +343,8 @@ public abstract class SimpleYMLSection {
      * Thrown when a setting is invalid
      */
     public class Invalid extends InvalidSimpleConfigException {
+
+        private static final long serialVersionUID = -4898301219445719212L;
 
         public Invalid(final String invalidSetting) {
             super("RPGMenuConfig setting §7" + invalidSetting + "§c is invalid!");

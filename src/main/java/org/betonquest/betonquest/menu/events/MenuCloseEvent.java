@@ -13,18 +13,18 @@ import org.bukkit.event.HandlerList;
  */
 public class MenuCloseEvent extends MenuEvent {
 
-    private static final HandlerList handlers = new HandlerList();
+    private static final HandlerList HANDLER_LIST = new HandlerList();
 
     public MenuCloseEvent(final Player who, final MenuID menu) {
         super(who, menu);
     }
 
     public static HandlerList getHandlerList() {
-        return handlers;
+        return HANDLER_LIST;
     }
 
     @Override
     public HandlerList getHandlers() {
-        return handlers;
+        return HANDLER_LIST;
     }
 }

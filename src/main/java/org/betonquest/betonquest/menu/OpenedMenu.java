@@ -140,7 +140,7 @@ public class OpenedMenu implements Listener {
         final ItemStack[] content = new ItemStack[items.length];
         //add the items if display conditions are matched
         for (int i = 0; i < items.length; i++) {
-            content[i] = (items[i] != null) ? items[i].generateItem(player) : new ItemStack(Material.AIR);
+            content[i] = (items[i] == null) ? new ItemStack(Material.AIR) : items[i].generateItem(player);
         }
         LOG.debug(getId().getPackage(), "updated contents of menu " + getId() + " for " + player.getName());
         inventory.setContents(content);

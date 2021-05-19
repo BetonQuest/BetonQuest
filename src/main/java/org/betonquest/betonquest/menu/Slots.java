@@ -206,6 +206,7 @@ public class Slots {
 
     public static class SlotException extends Exception {
 
+        private static final long serialVersionUID = 2796975671139425046L;
         private final int slot;
         private final String slots;
 

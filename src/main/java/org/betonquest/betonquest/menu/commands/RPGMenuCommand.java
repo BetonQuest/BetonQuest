@@ -134,11 +134,11 @@ public class RPGMenuCommand extends SimpleCommand {
                 }
                 //handle unspecified players
                 if (player == null) {
-                    if (!(sender instanceof Player)) {
+                    if (sender instanceof Player) {
+                        player = (Player) sender;
+                    } else {
                         RPGMenuConfig.sendMessage(sender, "command_no_player");
                         return false;
-                    } else {
-                        player = (Player) sender;
                     }
                 }
                 //handle unspecified ids

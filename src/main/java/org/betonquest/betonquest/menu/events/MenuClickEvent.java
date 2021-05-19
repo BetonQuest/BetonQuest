@@ -13,14 +13,15 @@ import org.bukkit.event.inventory.ClickType;
  *
  * @author Jonas Blocher
  */
+@SuppressWarnings("PMD.DataClass")
 public class MenuClickEvent extends MenuEvent implements Cancellable {
 
-    private static final HandlerList handlers = new HandlerList();
+    private static final HandlerList HANDLER_LIST = new HandlerList();
 
     private final int slot;
     private final String itemId;
     private final ClickType clickType;
-    private boolean cancelled = false;
+    private boolean cancelled;
 
     public MenuClickEvent(final Player who, final MenuID menu, final int slot, final String itemId, final ClickType clickType) {
         super(who, menu);
@@ -30,7 +31,7 @@ public class MenuClickEvent extends MenuEvent implements Cancellable {
     }
 
     public static HandlerList getHandlerList() {
-        return handlers;
+        return HANDLER_LIST;
     }
 
     /**
@@ -56,7 +57,7 @@ public class MenuClickEvent extends MenuEvent implements Cancellable {
 
     @Override
     public HandlerList getHandlers() {
-        return handlers;
+        return HANDLER_LIST;
     }
 
     @Override
@@ -65,7 +66,7 @@ public class MenuClickEvent extends MenuEvent implements Cancellable {
     }
 
     @Override
-    public void setCancelled(final boolean b) {
-        cancelled = b;
+    public void setCancelled(final boolean cancelled) {
+        this.cancelled = cancelled;
     }
 }

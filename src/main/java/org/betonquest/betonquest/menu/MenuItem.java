@@ -184,11 +184,11 @@ public class MenuItem extends SimpleYMLSection {
      */
     public boolean display(final Player player) {
         for (final ConditionID condition : this.conditions) {
-            if (!BetonQuest.condition(PlayerConverter.getID(player), condition)) {
+            if (BetonQuest.condition(PlayerConverter.getID(player), condition)) {
+                LOG.debug(pack, "Item " + name + ": condition " + condition + " returned true");
+            } else {
                 LOG.debug(pack, "Item " + name + " wont be displayed: condition" + condition + " returned false.");
                 return false;
-            } else {
-                LOG.debug(pack, "Item " + name + ": condition " + condition + " returned true");
             }
         }
         return true;

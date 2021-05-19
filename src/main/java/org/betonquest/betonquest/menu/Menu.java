@@ -158,9 +158,11 @@ public class Menu extends SimpleYMLConfig implements Listener {
             final List<MenuItem> itemsList = new ArrayList<>();
             //check if items from list are all valid
             for (final String item : getStrings("slots." + key)) {
-                if (!itemsMap.containsKey(item))
+                if (itemsMap.containsKey(item)) {
+                    itemsList.add(itemsMap.get(item));
+                } else {
                     throw new Invalid("slots." + key, "item " + item + " not found");
-                else itemsList.add(itemsMap.get(item));
+                }
             }
             // create a new slots object and add it to list
             try {

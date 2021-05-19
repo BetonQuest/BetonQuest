@@ -14,21 +14,21 @@ import org.bukkit.event.HandlerList;
  */
 public class MenuOpenEvent extends MenuEvent implements Cancellable {
 
-    private static final HandlerList handlers = new HandlerList();
+    private static final HandlerList HANDLER_LIST = new HandlerList();
 
-    private boolean cancelled = false;
+    private boolean cancelled;
 
     public MenuOpenEvent(final Player who, final MenuID menu) {
         super(who, menu);
     }
 
     public static HandlerList getHandlerList() {
-        return handlers;
+        return HANDLER_LIST;
     }
 
     @Override
     public HandlerList getHandlers() {
-        return handlers;
+        return HANDLER_LIST;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class MenuOpenEvent extends MenuEvent implements Cancellable {
     }
 
     @Override
-    public void setCancelled(final boolean b) {
-        cancelled = b;
+    public void setCancelled(final boolean cancelled) {
+        this.cancelled = cancelled;
     }
 }
