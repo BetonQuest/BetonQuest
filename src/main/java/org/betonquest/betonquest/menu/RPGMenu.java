@@ -57,8 +57,12 @@ public class RPGMenu {
      */
     public static boolean hasOpenedMenu(final Player player, final MenuID id) {
         final OpenedMenu menu = OpenedMenu.getMenu(player);
-        if (menu == null) return false;
-        if (id == null) return true;
+        if (menu == null) {
+            return false;
+        }
+        if (id == null) {
+            return true;
+        }
         return menu.getId().equals(id);
     }
 
@@ -157,9 +161,13 @@ public class RPGMenu {
         //load files for all packages
         for (final ConfigPackage pack : Config.getPackages().values()) {
             final File menusFolder = new File(pack.getFolder(), "menus");
-            if (!menusFolder.exists()) menusFolder.mkdir();
+            if (!menusFolder.exists()) {
+                menusFolder.mkdir();
+            }
             final File[] files = menusFolder.listFiles((dir, name) -> name.endsWith(".yml"));
-            if (files == null) continue;
+            if (files == null) {
+                continue;
+            }
             for (final File f : files) {
                 try {
                     final MenuID id = new MenuID(pack, f.getName().substring(0, f.getName().length() - 4));

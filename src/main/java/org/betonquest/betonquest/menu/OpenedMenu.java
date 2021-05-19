@@ -71,7 +71,9 @@ public class OpenedMenu implements Listener {
      */
     protected static void closeMenu(final Player player) {
         final OpenedMenu menu = openedMenus.get(player.getUniqueId());
-        if (menu == null) return;
+        if (menu == null) {
+            return;
+        }
         menu.close();
     }
 
@@ -155,16 +157,24 @@ public class OpenedMenu implements Listener {
 
     @EventHandler
     public void onClick(final InventoryClickEvent event) {
-        if (!(event.getWhoClicked() instanceof Player)) return;
+        if (!(event.getWhoClicked() instanceof Player)) {
+            return;
+        }
         final Player player = (Player) event.getWhoClicked();
-        if (!player.getUniqueId().equals(playerId)) return;
+        if (!player.getUniqueId().equals(playerId)) {
+            return;
+        }
         event.setCancelled(true);
         final Inventory inventory = event.getClickedInventory();
         //only continue if menu is clicked
-        if (inventory == null || inventory instanceof PlayerInventory) return;
+        if (inventory == null || inventory instanceof PlayerInventory) {
+            return;
+        }
         final MenuItem item = this.items[event.getSlot()];
         //only continue if a displayed item was clicked
-        if (item == null) return;
+        if (item == null) {
+            return;
+        }
         //only continue if click type is valid
         switch (event.getClick()) {
             case SHIFT_RIGHT:
@@ -191,16 +201,24 @@ public class OpenedMenu implements Listener {
         }
 
         //if close was set close the menu
-        if (close) this.close();
-            // otherwise update the contents
-        else this.update();
+        if (close) {
+            this.close();
+        }
+        // otherwise update the contents
+        else {
+            this.update();
+        }
     }
 
     @EventHandler
     public void onClose(final InventoryCloseEvent event) {
-        if (!(event.getPlayer() instanceof Player)) return;
+        if (!(event.getPlayer() instanceof Player)) {
+            return;
+        }
         final Player player = (Player) event.getPlayer();
-        if (!player.getUniqueId().equals(playerId)) return;
+        if (!player.getUniqueId().equals(playerId)) {
+            return;
+        }
         //call event
         final MenuCloseEvent closeEvent = new MenuCloseEvent(player, getId());
         Bukkit.getPluginManager().callEvent(closeEvent);

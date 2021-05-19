@@ -29,18 +29,23 @@ public class Slots {
             final int index = slots.indexOf("-");
             this.start = Integer.parseInt(slots.substring(0, index));
             this.end = Integer.parseInt(slots.substring(index + 1));
-            if (this.end < this.start)
+            if (this.end < this.start) {
                 throw new IllegalArgumentException(slots + ": slot " + end + " must be after " + start);
+            }
         } else if (slots.matches("\\d+\\*\\d+")) {
             this.type = Type.RECTANGLE;
             final int index = slots.indexOf("*");
             this.start = Integer.parseInt(slots.substring(0, index));
             this.end = Integer.parseInt(slots.substring(index + 1));
-            if (this.end < this.start)
+            if (this.end < this.start) {
                 throw new IllegalArgumentException(slots + ": slot " + end + " must be after " + start);
-            if ((start % 9) > (end % 9))
+            }
+            if ((start % 9) > (end % 9)) {
                 throw new IllegalArgumentException(slots + ": invalid rectangle ");
-        } else throw new IllegalArgumentException(slots + " is not a valid slot identifier");
+            }
+        } else {
+            throw new IllegalArgumentException(slots + " is not a valid slot identifier");
+        }
         this.items = items;
     }
 
@@ -56,9 +61,11 @@ public class Slots {
         for (final Slots s : slots) {
             for (final int slot : s.getSlots()) {
                 try {
-                    if (isContained[slot])
+                    if (isContained[slot]) {
                         throw new SlotException(slot, s.toString(), "slot " + slot + " was already specified");
-                    else isContained[slot] = true;
+                    } else {
+                        isContained[slot] = true;
+                    }
                 } catch (final IndexOutOfBoundsException e) {
                     throw new SlotException(slot, s.toString(), "slot " + slot + " exceeds inventory size");
                 }
@@ -85,8 +92,11 @@ public class Slots {
                 while (i <= end) {
                     slots.add(i);
                     //set i to next slot of rectangle
-                    if ((i % 9) < (end % 9)) i++;
-                    else i += 8 - (i % 9) + (start % 9) + 1;
+                    if ((i % 9) < (end % 9)) {
+                        i++;
+                    } else {
+                        i += 8 - (i % 9) + (start % 9) + 1;
+                    }
                 }
                 break;
         }
@@ -126,7 +136,9 @@ public class Slots {
     public List<MenuItem> getItems(final Player player) {
         final List<MenuItem> items = new ArrayList<>();
         for (final MenuItem item : this.items) {
-            if (item.display(player)) items.add(item);
+            if (item.display(player)) {
+                items.add(item);
+            }
         }
         return items;
     }
@@ -136,7 +148,9 @@ public class Slots {
      * @return the index of the given slot within this collection of slots, -1 if slot is not within this collection
      */
     public int getIndex(final int slot) {
-        if (!containsSlot(slot)) return -1;
+        if (!containsSlot(slot)) {
+            return -1;
+        }
         switch (type) {
             case SINGLE:
                 return 0;
@@ -158,7 +172,9 @@ public class Slots {
      */
     public MenuItem getItem(final Player player, final int slot) {
         final int index = this.getIndex(slot);
-        if (index == -1) throw new RuntimeException("Invalid slot for Slots '" + toString() + "': " + slot);
+        if (index == -1) {
+            throw new RuntimeException("Invalid slot for Slots '" + toString() + "': " + slot);
+        }
         try {
             return this.getItems(player).get(index);
         } catch (final IndexOutOfBoundsException e) {

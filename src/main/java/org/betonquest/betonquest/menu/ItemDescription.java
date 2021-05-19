@@ -37,7 +37,9 @@ public class ItemDescription {
      */
     public String getDisplayName(final String playerID) {
         final Line displayName = this.lines.get(0);
-        if (displayName == null) return null;
+        if (displayName == null) {
+            return null;
+        }
         return displayName.resolve(playerID);
     }
 
@@ -49,7 +51,9 @@ public class ItemDescription {
      */
     public List<String> getLore(final String playerID) {
         final List<Line> lines = this.lines.subList(1, this.lines.size());
-        if (lines.isEmpty()) return new ArrayList<>();
+        if (lines.isEmpty()) {
+            return new ArrayList<>();
+        }
         final List<String> lore = new ArrayList<>(lines.size());
         for (final Line line : lines) {
             lore.add(line.resolve(playerID));
@@ -76,8 +80,9 @@ public class ItemDescription {
                 } catch (final InstructionParseException e) {
                     throw new InstructionParseException("Could not create '" + variable + "' variable: " + e.getMessage());
                 }
-                if (!variables.contains(variable))
+                if (!variables.contains(variable)) {
                     variables.add(variable);
+                }
             }
             lines.add(this);
         }

@@ -27,8 +27,9 @@ public abstract class SimpleYMLSection {
     public SimpleYMLSection(final String name, final ConfigurationSection config) throws InvalidConfigurationException {
         this.config = config;
         this.name = name;
-        if (config == null || config.getKeys(false) == null || config.getKeys(false).size() == 0)
+        if (config == null || config.getKeys(false) == null || config.getKeys(false).size() == 0) {
             throw new InvalidSimpleConfigException("RPGMenuConfig is invalid or empty!");
+        }
     }
 
     /**
@@ -154,9 +155,13 @@ public abstract class SimpleYMLSection {
      */
     protected boolean getBoolean(final String key) throws Missing, Invalid {
         final String s = this.getString(key);
-        if (s.trim().equalsIgnoreCase("true")) return true;
-        else if (s.trim().equalsIgnoreCase("false")) return false;
-        else throw new Invalid(key);
+        if (s.trim().equalsIgnoreCase("true")) {
+            return true;
+        } else if (s.trim().equalsIgnoreCase("false")) {
+            return false;
+        } else {
+            throw new Invalid(key);
+        }
     }
 
     /**

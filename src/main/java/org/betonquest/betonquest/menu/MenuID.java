@@ -23,7 +23,9 @@ public class MenuID extends ID {
         super.rawInstruction = null;
         //find file
         file = new File(super.pack.getFolder(), "menus" + File.separator + super.getBaseID() + ".yml");
-        if (!file.exists()) throw new ObjectNotFoundException("Menu '" + getFullID() + "' is not defined");
+        if (!file.exists()) {
+            throw new ObjectNotFoundException("Menu '" + getFullID() + "' is not defined");
+        }
     }
 
     /**

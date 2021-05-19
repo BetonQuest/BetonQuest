@@ -24,7 +24,9 @@ public class MenuVariable extends Variable {
     public String getValue(final String playerID) {
         final Player player = PlayerConverter.getPlayer(playerID);
         final OpenedMenu menu = OpenedMenu.getMenu(player);
-        if (menu == null) return "";
+        if (menu == null) {
+            return "";
+        }
         return menu.getData().getTitle();
     }
 }

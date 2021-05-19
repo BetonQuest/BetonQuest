@@ -99,7 +99,9 @@ public class Menu extends SimpleYMLConfig implements Listener {
         this.ID = id;
         //load size
         this.height = getInt("height");
-        if (this.height < 1 || this.height > 6) throw new Invalid("height");
+        if (this.height < 1 || this.height > 6) {
+            throw new Invalid("height");
+        }
         //load title
         this.title = ChatColor.translateAlternateColorCodes('&', getString("title"));
         //load opening conditions
@@ -136,14 +138,20 @@ public class Menu extends SimpleYMLConfig implements Listener {
             @Override
             protected MenuBoundCommand of() throws Missing, Invalid {
                 String command = getString("command").trim();
-                if (!command.matches("/*[0-9A-Za-z\\-]+")) throw new Invalid("command");
-                if (command.startsWith("/")) command = command.substring(1);
+                if (!command.matches("/*[0-9A-Za-z\\-]+")) {
+                    throw new Invalid("command");
+                }
+                if (command.startsWith("/")) {
+                    command = command.substring(1);
+                }
                 return new MenuBoundCommand(command);
             }
         }.get();
         // load items
         final HashMap<String, MenuItem> itemsMap = new HashMap<>();
-        if (!config.isConfigurationSection("items")) throw new Missing("items");
+        if (!config.isConfigurationSection("items")) {
+            throw new Missing("items");
+        }
         for (final String key : config.getConfigurationSection("items").getKeys(false)) {
             try {
                 itemsMap.put(key, new MenuItem(this.ID.getPackage(), key, config.getConfigurationSection("items." + key)));
@@ -153,7 +161,9 @@ public class Menu extends SimpleYMLConfig implements Listener {
         }
         //load slots
         this.slots = new ArrayList<>();
-        if (!config.isConfigurationSection("slots")) throw new Missing("slots");
+        if (!config.isConfigurationSection("slots")) {
+            throw new Missing("slots");
+        }
         for (final String key : config.getConfigurationSection("slots").getKeys(false)) {
             final List<MenuItem> itemsList = new ArrayList<>();
             //check if items from list are all valid
@@ -180,7 +190,9 @@ public class Menu extends SimpleYMLConfig implements Listener {
 
         //load command and register listener
         this.boundCommand.ifPresent(SimpleCommand::register);
-        if (this.boundItem.isPresent()) Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        if (this.boundItem.isPresent()) {
+            Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        }
     }
 
     /**
@@ -207,15 +219,23 @@ public class Menu extends SimpleYMLConfig implements Listener {
      */
     public void unregister() {
         boundCommand.ifPresent(SimpleCommand::unregister);
-        if (boundItem.isPresent()) HandlerList.unregisterAll(this);
+        if (boundItem.isPresent()) {
+            HandlerList.unregisterAll(this);
+        }
     }
 
     @EventHandler
     public void onItemClick(final PlayerInteractEvent event) {
-        if (event.isCancelled()) return;
-        if (event.getAction() == Action.PHYSICAL) return;
+        if (event.isCancelled()) {
+            return;
+        }
+        if (event.getAction() == Action.PHYSICAL) {
+            return;
+        }
         //check if item is bound item
-        if (!boundItem.get().compare(event.getItem())) return;
+        if (!boundItem.get().compare(event.getItem())) {
+            return;
+        }
         event.setCancelled(true);
         if (!mayOpen(event.getPlayer())) {
             RPGMenuConfig.sendMessage(event.getPlayer(), "menu_do_not_open");

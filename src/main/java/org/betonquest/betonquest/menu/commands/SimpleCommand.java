@@ -103,9 +103,13 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
 
     @Override
     public List<String> tabComplete(final CommandSender sender, final String alias, final String[] args) throws IllegalArgumentException {
-        if (sender == null || alias == null || args == null) return super.tabComplete(sender, alias, args);
+        if (sender == null || alias == null || args == null) {
+            return super.tabComplete(sender, alias, args);
+        }
         final List<String> completations = this.simpleTabComplete(sender, alias, args);
-        if (completations == null) return null;
+        if (completations == null) {
+            return null;
+        }
         final List<String> out = new ArrayList<>();
         final String lastArg = args[args.length - 1];
         for (final String completation : completations) {
@@ -151,7 +155,9 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
      */
     @SuppressWarnings("unchecked")
     public boolean unregister() {
-        if (this.commandMap == null) return false;
+        if (this.commandMap == null) {
+            return false;
+        }
         try {
             this.unregister(commandMap);
             final Collection<Command> commands = (Collection<Command>) Utils

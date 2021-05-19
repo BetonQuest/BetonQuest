@@ -40,9 +40,15 @@ public class MenuObjective extends Objective implements Listener {
     @EventHandler
     public void onMenuOpen(final MenuOpenEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(playerID)) return;
-        if (!event.getMenu().equals(menuID)) return;
-        if (!checkConditions(playerID)) return;
+        if (!containsPlayer(playerID)) {
+            return;
+        }
+        if (!event.getMenu().equals(menuID)) {
+            return;
+        }
+        if (!checkConditions(playerID)) {
+            return;
+        }
         this.completeObjective(playerID);
     }
 

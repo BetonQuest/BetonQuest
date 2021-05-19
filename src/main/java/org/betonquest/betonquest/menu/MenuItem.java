@@ -98,8 +98,9 @@ public class MenuItem extends SimpleYMLSection {
                     for (final String lang : section.getConfigurationSection("text").getKeys(false)) {
                         this.descriptions.put(lang, new ItemDescription(this.pack, getStringList("text." + lang)));
                     }
-                    if (!this.descriptions.containsKey(Config.getLanguage()))
+                    if (!this.descriptions.containsKey(Config.getLanguage())) {
                         throw new Missing("text." + Config.getLanguage());
+                    }
                 } else {
                     this.descriptions.put(Config.getLanguage(),
                             new ItemDescription(this.pack, getStringList("text")));
@@ -208,7 +209,9 @@ public class MenuItem extends SimpleYMLSection {
             final ItemMeta meta = item.getItemMeta();
             if (!descriptions.isEmpty()) {
                 ItemDescription description = this.descriptions.get(lang);
-                if (description == null) description = this.descriptions.get(Config.getLanguage());
+                if (description == null) {
+                    description = this.descriptions.get(Config.getLanguage());
+                }
                 try {
                     meta.setDisplayName(description.getDisplayName(playerId));
                     meta.setLore(description.getLore(playerId));

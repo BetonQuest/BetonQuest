@@ -45,8 +45,9 @@ public class RPGMenuConfig extends SimpleYMLConfig {
     public RPGMenuConfig() throws InvalidConfigurationException {
         super(new File(BetonQuest.getInstance().getDataFolder(), "menuConfig.yml"));
         //load languages
-        if (!config.contains("messages") || !config.isConfigurationSection("messages"))
+        if (!config.contains("messages") || !config.isConfigurationSection("messages")) {
             throw new Missing("messages");
+        }
         this.messages = new HashMap<>();
         this.languages = new ArrayList<>();
         for (final String key : config.getConfigurationSection("messages").getKeys(false)) {
@@ -84,16 +85,24 @@ public class RPGMenuConfig extends SimpleYMLConfig {
      */
     public static String getMessage(String lang, final String key, final String... replace) {
         final RPGMenuConfig instance = BetonQuest.getInstance().getRpgMenu().getConfiguration();
-        if (instance == null) return "null";
+        if (instance == null) {
+            return "null";
+        }
         String message;
-        if (lang == null) lang = Config.getLanguage();
+        if (lang == null) {
+            lang = Config.getLanguage();
+        }
         try {
             message = instance.messages.get(lang).get(key);
-            if (message == null) throw new NullPointerException();
+            if (message == null) {
+                throw new NullPointerException();
+            }
         } catch (final NullPointerException e) {
             try {
                 message = instance.messages.get(Config.getLanguage()).get(key);
-                if (message == null) throw new NullPointerException();
+                if (message == null) {
+                    throw new NullPointerException();
+                }
             } catch (final NullPointerException ex) {
                 return "null";
             }
@@ -143,11 +152,15 @@ public class RPGMenuConfig extends SimpleYMLConfig {
         for (final String lang : this.languages) {
             try {
                 HashMap<String, String> msgs = messages.get(lang);
-                if (msgs == null) msgs = new HashMap<>();
+                if (msgs == null) {
+                    msgs = new HashMap<>();
+                }
                 msgs.put(key, ChatColor.translateAlternateColorCodes('&', getString("messages." + lang + "." + key)).replace("\\n", "\n"));
                 this.messages.put(lang, msgs);
             } catch (final Missing e) {
-                if (lang.equals(Config.getLanguage())) throw e;
+                if (lang.equals(Config.getLanguage())) {
+                    throw e;
+                }
             }
         }
     }

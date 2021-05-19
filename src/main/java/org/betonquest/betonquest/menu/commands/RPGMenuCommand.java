@@ -44,12 +44,16 @@ public class RPGMenuCommand extends SimpleCommand {
 
     @Override
     public List<String> simpleTabComplete(final CommandSender sender, final String alias, final String[] args) {
-        if (args.length == 1) return Arrays.asList("reload", "open", "list");
+        if (args.length == 1) {
+            return Arrays.asList("reload", "open", "list");
+        }
         if (args.length > 2) {
-            if (args[0].equalsIgnoreCase("open") || args[0].equalsIgnoreCase("o"))
+            if (args[0].equalsIgnoreCase("open") || args[0].equalsIgnoreCase("o")) {
                 //return player names
                 return null;
-            else return new ArrayList<>();
+            } else {
+                return new ArrayList<>();
+            }
         }
         switch (args[0].toLowerCase()) {
             //complete menu ids
@@ -61,7 +65,9 @@ public class RPGMenuCommand extends SimpleCommand {
                 }
                 final String pack = args[1].substring(0, args[1].indexOf("."));
                 final ConfigPackage configPack = Config.getPackages().get(pack);
-                if (configPack == null) return new ArrayList<>();
+                if (configPack == null) {
+                    return new ArrayList<>();
+                }
                 final List<String> completions = new ArrayList<>();
                 for (final MenuID id : menu.getMenus()) {
                     if (id.getPackage().equals(configPack)) {
@@ -111,13 +117,16 @@ public class RPGMenuCommand extends SimpleCommand {
                 builder
                         .append(TextComponent.fromLegacyText(RPGMenuConfig.getMessage(sender, "command_list")));
                 final Collection<MenuID> ids = menu.getMenus();
-                if (ids.isEmpty()) builder.append("\n - ").color(ChatColor.GRAY);
-                else for (final MenuID menuID : ids) {
-                    builder
-                            .append("\n" + menuID, ComponentBuilder.FormatRetention.FORMATTING)
-                            .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                                    TextComponent.fromLegacyText(RPGMenuConfig.getMessage(sender, "click_to_open"))))
-                            .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + getName() + " open " + menuID));
+                if (ids.isEmpty()) {
+                    builder.append("\n - ").color(ChatColor.GRAY);
+                } else {
+                    for (final MenuID menuID : ids) {
+                        builder
+                                .append("\n" + menuID, ComponentBuilder.FormatRetention.FORMATTING)
+                                .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                                        TextComponent.fromLegacyText(RPGMenuConfig.getMessage(sender, "click_to_open"))))
+                                .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + getName() + " open " + menuID));
+                    }
                 }
                 sender.spigot().sendMessage(builder.create());
                 return true;
