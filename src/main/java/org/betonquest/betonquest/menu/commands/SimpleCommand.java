@@ -126,6 +126,8 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
 
     /**
      * Method to register the command
+     *
+     * @return Whether the command was successfully registered
      */
     public boolean register() {
         try {
@@ -144,6 +146,8 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
 
     /**
      * Method to unregister the command
+     *
+     * @return Whether the command was successfully unregistered
      */
     @SuppressWarnings("unchecked")
     public boolean unregister() {

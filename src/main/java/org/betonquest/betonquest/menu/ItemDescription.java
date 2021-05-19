@@ -33,7 +33,7 @@ public class ItemDescription {
      * Receive display name of item for specific player
      *
      * @param playerID id of the player
-     * @return
+     * @return the item's display name for the specified player.
      */
     public String getDisplayName(final String playerID) {
         final Line displayName = this.lines.get(0);
@@ -45,7 +45,7 @@ public class ItemDescription {
      * Receive lore of the item for specific player
      *
      * @param playerID id of the player
-     * @return
+     * @return the item's lore for the specified player.
      */
     public List<String> getLore(final String playerID) {
         final List<Line> lines = this.lines.subList(1, this.lines.size());

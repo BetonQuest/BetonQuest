@@ -28,6 +28,8 @@ public class MenuID extends ID {
 
     /**
      * File where the menus config is located on disk
+     *
+     * @return The menu's config file
      */
     public File getFile() {
         return file;
