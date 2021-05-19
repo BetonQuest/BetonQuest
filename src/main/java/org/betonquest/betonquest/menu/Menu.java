@@ -12,9 +12,9 @@ import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.menu.commands.SimpleCommand;
 import org.betonquest.betonquest.menu.config.RPGMenuConfig;
 import org.betonquest.betonquest.menu.config.SimpleYMLConfig;
-import org.betonquest.betonquest.menu.utils.Utils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
@@ -101,7 +101,7 @@ public class Menu extends SimpleYMLConfig implements Listener {
         this.height = getInt("height");
         if (this.height < 1 || this.height > 6) throw new Invalid("height");
         //load title
-        this.title = Utils.translateAlternateColorcodes('&', getString("title"));
+        this.title = ChatColor.translateAlternateColorCodes('&', getString("title"));
         //load opening conditions
         this.openConditions = new ArrayList<>();
         try {

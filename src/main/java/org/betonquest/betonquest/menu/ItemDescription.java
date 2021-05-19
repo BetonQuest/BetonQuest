@@ -3,7 +3,7 @@ package org.betonquest.betonquest.menu;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.menu.utils.Utils;
+import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -67,7 +67,7 @@ public class ItemDescription {
 
         public Line(final String line) throws InstructionParseException {
             //set line
-            this.line = Utils.translateAlternateColorcodes('&', line);
+            this.line = ChatColor.translateAlternateColorCodes('&', line);
             //find variables
             this.variables = new ArrayList<>();
             for (final String variable : BetonQuest.resolveVariables(line)) {

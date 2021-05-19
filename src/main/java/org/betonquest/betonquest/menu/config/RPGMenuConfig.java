@@ -2,8 +2,8 @@ package org.betonquest.betonquest.menu.config;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.menu.utils.Utils;
 import org.betonquest.betonquest.utils.PlayerConverter;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
@@ -144,7 +144,7 @@ public class RPGMenuConfig extends SimpleYMLConfig {
             try {
                 HashMap<String, String> msgs = messages.get(lang);
                 if (msgs == null) msgs = new HashMap<>();
-                msgs.put(key, Utils.translateAlternateColorcodes('&', getString("messages." + lang + "." + key)).replace("\\n", "\n"));
+                msgs.put(key, ChatColor.translateAlternateColorCodes('&', getString("messages." + lang + "." + key)).replace("\\n", "\n"));
                 this.messages.put(lang, msgs);
             } catch (final Missing e) {
                 if (lang.equals(Config.getLanguage())) throw e;
