@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.menu.betonquest;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
@@ -8,7 +9,6 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.menu.Menu;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.events.MenuOpenEvent;
-import org.betonquest.betonquest.menu.utils.Log;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -22,6 +22,7 @@ import org.bukkit.event.Listener;
  *
  * @author Jonas Blocher
  */
+@CustomLog
 public class MenuObjective extends Objective implements Listener {
 
     private final MenuID menuID;
@@ -65,7 +66,7 @@ public class MenuObjective extends Objective implements Listener {
         if (name.equalsIgnoreCase("menu")) {
             final Menu menuData = BetonQuest.getInstance().getRpgMenu().getMenu(menuID);
             if (menuData == null) {
-                Log.debug("Error while getting menu property in '" + instruction.getID() + "' objective: "
+                LOG.debug(instruction.getPackage(), "Error while getting menu property in '" + instruction.getID() + "' objective: "
                         + "menu with id " + menuID + " isn't loaded");
                 return "";
             }

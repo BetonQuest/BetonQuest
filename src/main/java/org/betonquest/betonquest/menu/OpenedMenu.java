@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.menu;
 
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.menu.events.MenuClickEvent;
 import org.betonquest.betonquest.menu.events.MenuCloseEvent;
-import org.betonquest.betonquest.menu.utils.Log;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -27,6 +27,7 @@ import java.util.UUID;
  *
  * @author Jonas Blocher
  */
+@CustomLog
 public class OpenedMenu implements Listener {
 
     /**
@@ -141,7 +142,7 @@ public class OpenedMenu implements Listener {
         for (int i = 0; i < items.length; i++) {
             content[i] = (items[i] != null) ? items[i].generateItem(player) : new ItemStack(Material.AIR);
         }
-        Log.debug("updated contents of menu " + getId() + " for " + player.getName());
+        LOG.debug(getId().getPackage(), "updated contents of menu " + getId() + " for " + player.getName());
         inventory.setContents(content);
     }
 
@@ -177,9 +178,9 @@ public class OpenedMenu implements Listener {
         //call event
         final MenuClickEvent clickEvent = new MenuClickEvent(player, getId(), event.getSlot(), item.getId(), event.getClick());
         Bukkit.getPluginManager().callEvent(clickEvent);
-        Log.debug(player.getName() + " clicked on slot " + event.getSlot() + " with item " + item.getId() + " in menu " + getId());
+        LOG.debug(getId().getPackage(), player.getName() + " clicked on slot " + event.getSlot() + " with item " + item.getId() + " in menu " + getId());
         if (clickEvent.isCancelled()) {
-            Log.debug("click of " + player.getName() + " in menu " + getId() + " was cancelled by a bukkit event listener");
+            LOG.debug(getId().getPackage(), "click of " + player.getName() + " in menu " + getId() + " was cancelled by a bukkit event listener");
             return;
         }
         //handle click
@@ -203,7 +204,7 @@ public class OpenedMenu implements Listener {
         //call event
         final MenuCloseEvent closeEvent = new MenuCloseEvent(player, getId());
         Bukkit.getPluginManager().callEvent(closeEvent);
-        Log.debug(player.getName() + " closed menu " + getId());
+        LOG.debug(getId().getPackage(), player.getName() + " closed menu " + getId());
         //clean up
         HandlerList.unregisterAll(this);
         openedMenus.remove(playerId);

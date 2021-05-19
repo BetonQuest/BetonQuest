@@ -28,11 +28,6 @@ public class RPGMenuConfig extends SimpleYMLConfig {
     public final boolean ingameUpdateNotifications;
 
     /**
-     * If debugging is turned on
-     */
-    public final boolean debug;
-
-    /**
      * Default value if menus close when a item was clicked
      */
     public final boolean defaultCloseOnClick;
@@ -59,7 +54,6 @@ public class RPGMenuConfig extends SimpleYMLConfig {
         }
         //load configuration settings
         this.ingameUpdateNotifications = getBoolean("ingame_update_notifications");
-        this.debug = getBoolean("debug");
         this.defaultCloseOnClick = getBoolean("default_close");
 
         //load all messages

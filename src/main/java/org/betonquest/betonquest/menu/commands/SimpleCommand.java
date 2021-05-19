@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.menu.commands;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.menu.config.RPGMenuConfig;
-import org.betonquest.betonquest.menu.utils.Log;
 import org.betonquest.betonquest.menu.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -27,6 +27,7 @@ import java.util.List;
  *
  * @author Jonas Blocher
  */
+@CustomLog
 public abstract class SimpleCommand extends Command implements PluginIdentifiableCommand {
 
     public final int minimalArgs;
@@ -132,10 +133,10 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
             final Class<? extends PluginManager> managerClass = manager.getClass();
             this.commandMap = (CommandMap) Utils.getField(managerClass, "commandMap").get(manager);
             this.commandMap.register("rpgmenu", this);
-            Log.debug("Registered command " + getName() + "!");
+            LOG.debug(null, "Registered command " + getName() + "!");
             return true;
         } catch (final Exception e) {
-            Log.error("Could not register command " + getName() + ":");
+            LOG.error(null, "Could not register command " + getName() + ":");
             e.printStackTrace();
             return false;
         }
@@ -160,10 +161,10 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
             } else {
                 commands.remove(this);
             }
-            Log.debug("Unregistered command " + getName() + "!");
+            LOG.debug(null, "Unregistered command " + getName() + "!");
             return true;
         } catch (final Exception e) {
-            Log.error("Could not unregister command §7" + getName() + "§4:");
+            LOG.error(null, "Could not unregister command §7" + getName() + "§4:");
             e.printStackTrace();
             return false;
         }

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.menu;
 
-
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -12,7 +12,6 @@ import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.menu.commands.SimpleCommand;
 import org.betonquest.betonquest.menu.config.RPGMenuConfig;
 import org.betonquest.betonquest.menu.config.SimpleYMLConfig;
-import org.betonquest.betonquest.menu.utils.Log;
 import org.betonquest.betonquest.menu.utils.Utils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -38,6 +37,7 @@ import java.util.Optional;
  *
  * @author Jonas Blocher
  */
+@CustomLog
 public class Menu extends SimpleYMLConfig implements Listener {
 
     /**
@@ -191,7 +191,7 @@ public class Menu extends SimpleYMLConfig implements Listener {
         final String playerId = PlayerConverter.getID(player);
         for (final ConditionID conditionID : openConditions) {
             if (!BetonQuest.condition(playerId, conditionID)) {
-                Log.debug("Denied opening of " + name + ": Condition " + conditionID + "returned false.");
+                LOG.debug(getPackage(), "Denied opening of " + name + ": Condition " + conditionID + "returned false.");
                 return false;
             }
         }
@@ -220,7 +220,7 @@ public class Menu extends SimpleYMLConfig implements Listener {
             return;
         }
         //open the menu
-        Log.debug(event.getPlayer().getName() + " used bound item of menu " + this.ID);
+        LOG.debug(getPackage(), event.getPlayer().getName() + " used bound item of menu " + this.ID);
         menu.openMenu(event.getPlayer(), this.ID);
     }
 
@@ -230,10 +230,10 @@ public class Menu extends SimpleYMLConfig implements Listener {
      * @param player the player to run the events for
      */
     public void runOpenEvents(final Player player) {
-        Log.debug("Menu " + ID + ": Running open events");
+        LOG.debug(getPackage(), "Menu " + ID + ": Running open events");
         for (final EventID event : this.openEvents) {
             BetonQuest.event(PlayerConverter.getID(player), event);
-            Log.debug("Menu " + ID + ": Run event " + event);
+            LOG.debug(getPackage(), "Menu " + ID + ": Run event " + event);
         }
     }
 
@@ -243,10 +243,10 @@ public class Menu extends SimpleYMLConfig implements Listener {
      * @param player the player to run the events for
      */
     public void runCloseEvents(final Player player) {
-        Log.debug("Menu " + ID + ": Running close events");
+        LOG.debug(getPackage(), "Menu " + ID + ": Running close events");
         for (final EventID event : this.closeEvents) {
             BetonQuest.event(PlayerConverter.getID(player), event);
-            Log.debug("Menu " + ID + ": Run event " + event);
+            LOG.debug(getPackage(), "Menu " + ID + ": Run event " + event);
         }
     }
 
@@ -353,7 +353,7 @@ public class Menu extends SimpleYMLConfig implements Listener {
             }
             final Player player = (Player) sender;
             if (mayOpen(player)) {
-                Log.debug(player.getName() + " run bound command of " + ID);
+                LOG.debug(getPackage(), player.getName() + " run bound command of " + ID);
                 menu.openMenu(player, ID);
                 return true;
             } else {

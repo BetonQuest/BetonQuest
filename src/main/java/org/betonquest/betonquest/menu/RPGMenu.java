@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.menu;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.ConfigPackage;
@@ -11,7 +12,6 @@ import org.betonquest.betonquest.menu.betonquest.MenuVariable;
 import org.betonquest.betonquest.menu.commands.RPGMenuCommand;
 import org.betonquest.betonquest.menu.config.RPGMenuConfig;
 import org.betonquest.betonquest.menu.events.MenuOpenEvent;
-import org.betonquest.betonquest.menu.utils.Log;
 import org.betonquest.betonquest.menu.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -32,6 +32,7 @@ import java.util.List;
  *
  * @author Jonas Blocher
  */
+@CustomLog
 public class RPGMenu {
 
     private RPGMenuConfig config = null;
@@ -87,17 +88,17 @@ public class RPGMenu {
     public void openMenu(final Player player, final MenuID id) {
         final Menu menu = menus.get(id);
         if (menu == null) {
-            Log.error("Could not open menu §7" + id + "§4: §cUnknown menu");
+            LOG.error(id.getPackage(), "Could not open menu §7" + id + "§4: §cUnknown menu");
             return;
         }
         final MenuOpenEvent openEvent = new MenuOpenEvent(player, id);
         Bukkit.getPluginManager().callEvent(openEvent);
         if (openEvent.isCancelled()) {
-            Log.debug("A Bukkit listener canceled opening of menu " + id + " for " + player.getName());
+            LOG.debug(menu.getPackage(), "A Bukkit listener canceled opening of menu " + id + " for " + player.getName());
             return;
         }
         new OpenedMenu(player, menu);
-        Log.debug("opening menu " + id + " for " + player.getName());
+        LOG.debug(menu.getPackage(), "opening menu " + id + " for " + player.getName());
     }
 
     public void onEnable() {
@@ -114,7 +115,7 @@ public class RPGMenu {
             try {
                 Utils.saveResource(config, "menuConfig.yml");
             } catch (final IOException e) {
-                Log.error("Could not create default config: §c" + e.getMessage());
+                LOG.error(null, "Could not create default config: §c" + e.getMessage());
             }
         }
         new ReloadListener();
@@ -148,13 +149,11 @@ public class RPGMenu {
         try {
             this.config = new RPGMenuConfig();
         } catch (final InvalidConfigurationException e) {
-            Log.error(e);
+            LOG.warning(null, "Invalid Configuration.", e);
             info.addError(e);
             info.result = ReloadResult.FAILED;
             return info;
         }
-        //enable debugging if enabled in config
-        Log.setDebug(this.config.debug);
         //load files for all packages
         for (final ConfigPackage pack : Config.getPackages().values()) {
             final File menusFolder = new File(pack.getFolder(), "menus");
@@ -167,18 +166,18 @@ public class RPGMenu {
                     this.menus.put(id, new Menu(id));
                     info.loaded++;
                 } catch (final InvalidConfigurationException e) {
-                    Log.error(e);
+                    LOG.warning(pack, "Invalid configuration.", e);
                     info.addError(e);
                     info.result = ReloadResult.SUCCESS;
                 } catch (final ObjectNotFoundException e) {
-                    Log.error("Strange unhandled exception during loading: " + e);
+                    LOG.error(pack, "Strange unhandled exception during loading: " + e);
                     info.result = ReloadResult.FAILED;
                     return info;
                 }
             }
         }
         final ChatColor color = (info.result == ReloadResult.FULL_SUCCESS) ? ChatColor.GREEN : ChatColor.YELLOW;
-        Log.info(color + "Reloaded §7" + info.loaded + color + " menus");
+        LOG.info(null, color + "Reloaded §7" + info.loaded + color + " menus");
         return info;
     }
 
@@ -199,9 +198,9 @@ public class RPGMenu {
             this.menus.put(id, new Menu(id));
             info.result = ReloadResult.FULL_SUCCESS;
             info.loaded = 1;
-            Log.info("§aReloaded menu " + id);
+            LOG.info(id.getPackage(), "§aReloaded menu " + id);
         } catch (final InvalidConfigurationException e) {
-            Log.error(e);
+            LOG.error(id.getPackage(), "Invalid configuration:", e);
             info.result = ReloadResult.FAILED;
             info.addError(e);
         }

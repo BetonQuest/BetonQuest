@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.menu;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.config.Config;
@@ -12,7 +13,6 @@ import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.menu.config.SimpleYMLSection;
-import org.betonquest.betonquest.menu.utils.Log;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -33,6 +33,7 @@ import java.util.List;
  *
  * @author Jonas Blocher
  */
+@CustomLog
 public class MenuItem extends SimpleYMLSection {
 
     /**
@@ -159,14 +160,14 @@ public class MenuItem extends SimpleYMLSection {
             case RIGHT:
             case SHIFT_RIGHT:
                 for (final EventID eventID : this.right_click) {
-                    Log.debug("Item " + name + ": Run event " + eventID);
+                    LOG.debug(pack, "Item " + name + ": Run event " + eventID);
                     BetonQuest.event(PlayerConverter.getID(player), eventID);
                 }
                 return this.close;
             case LEFT:
             case SHIFT_LEFT:
                 for (final EventID eventID : this.left_click) {
-                    Log.debug("Item " + name + ": Run event " + eventID);
+                    LOG.debug(pack, "Item " + name + ": Run event " + eventID);
                     BetonQuest.event(PlayerConverter.getID(player), eventID);
                 }
                 return this.close;
@@ -184,10 +185,10 @@ public class MenuItem extends SimpleYMLSection {
     public boolean display(final Player player) {
         for (final ConditionID condition : this.conditions) {
             if (!BetonQuest.condition(PlayerConverter.getID(player), condition)) {
-                Log.debug("Item " + name + " wont be displayed: condition" + condition + " returned false.");
+                LOG.debug(pack, "Item " + name + " wont be displayed: condition" + condition + " returned false.");
                 return false;
             } else {
-                Log.debug("Item " + name + ": condition " + condition + " returned true");
+                LOG.debug(pack, "Item " + name + ": condition " + condition + " returned true");
             }
         }
         return true;
@@ -213,13 +214,13 @@ public class MenuItem extends SimpleYMLSection {
                     meta.setLore(description.getLore(playerId));
                     item.setItemMeta(meta);
                 } catch (final NullPointerException npe) {
-                    Log.error("Couldn't add custom text to §7" + id + "§4: No text for language §7" + Config.getLanguage() + "§4 " +
+                    LOG.error(pack, "Couldn't add custom text to §7" + id + "§4: No text for language §7" + Config.getLanguage() + "§4 " +
                             "specified");
                 }
             }
             return item;
         } catch (final QuestRuntimeException qre) {
-            Log.error("QuestRuntimeException while creating §7" + id + "§4: " + qre.getMessage());
+            LOG.error(pack, "QuestRuntimeException while creating §7" + id + "§4: " + qre.getMessage());
             return new ItemStack(Material.AIR);
         }
     }

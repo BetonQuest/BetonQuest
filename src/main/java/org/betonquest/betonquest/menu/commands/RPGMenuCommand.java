@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.menu.commands;
 
+import lombok.CustomLog;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -12,7 +13,6 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.menu.config.RPGMenuConfig;
-import org.betonquest.betonquest.menu.utils.Log;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -30,6 +30,7 @@ import java.util.List;
  *
  * @author Jonas Blocher
  */
+@CustomLog
 public class RPGMenuCommand extends SimpleCommand {
 
     RPGMenu menu = BetonQuest.getInstance().getRpgMenu();
@@ -59,16 +60,15 @@ public class RPGMenuCommand extends SimpleCommand {
                     return new ArrayList<>(Config.getPackages().keySet());
                 }
                 final String pack = args[1].substring(0, args[1].indexOf("."));
-                Log.debug(pack);
                 final ConfigPackage configPack = Config.getPackages().get(pack);
-                Log.debug(pack);
                 if (configPack == null) return new ArrayList<>();
-                final List<String> completations = new ArrayList<>();
+                final List<String> completions = new ArrayList<>();
                 for (final MenuID id : menu.getMenus()) {
-                    if (id.getPackage().equals(configPack)) completations.add(id.toString());
-                    Log.debug(id);
+                    if (id.getPackage().equals(configPack)) {
+                        completions.add(id.toString());
+                    }
                 }
-                return completations;
+                return completions;
             default:
                 return new ArrayList<>();
         }

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.menu.config;
 
-import org.betonquest.betonquest.menu.utils.Log;
+import lombok.CustomLog;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -13,6 +13,7 @@ import java.io.IOException;
  *
  * @author Jonas Blocher
  */
+@CustomLog
 public abstract class SimpleYMLConfig extends SimpleYMLSection {
 
     protected final File file;
@@ -39,7 +40,7 @@ public abstract class SimpleYMLConfig extends SimpleYMLSection {
             ((FileConfiguration) super.config).save(this.file);
             return true;
         } catch (final IOException e) {
-            Log.debug(e.getMessage());
+            LOG.debug(null, e.getMessage());
             return false;
         }
     }
