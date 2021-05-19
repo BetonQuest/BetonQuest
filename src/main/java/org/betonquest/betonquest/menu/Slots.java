@@ -112,11 +112,11 @@ public class Slots {
             case SINGLE:
                 return start == slot;
             case ROW:
-                return (slot <= end && slot >= start);
+                return slot <= end && slot >= start;
             case RECTANGLE:
-                return (slot <= end && slot >= start)
-                        && (slot % 9 >= start % 9)
-                        && (slot % 9 <= end % 9);
+                return slot <= end && slot >= start
+                        && slot % 9 >= start % 9
+                        && slot % 9 <= end % 9;
             default:
                 return false;
         }
@@ -157,9 +157,9 @@ public class Slots {
             case ROW:
                 return slot - start;
             case RECTANGLE:
-                final int rectangleLength = (end % 9) - (start % 9) + 1;
-                final int rows = (slot / 9) - (start / 9);
-                return rectangleLength * rows + ((slot % 9) - (start % 9));
+                final int rectangleLength = end % 9 - start % 9 + 1;
+                final int rows = slot / 9 - start / 9;
+                return rectangleLength * rows + slot % 9 - start % 9;
             default:
                 return -1;
         }
