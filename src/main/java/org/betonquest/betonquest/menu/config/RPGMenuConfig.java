@@ -12,6 +12,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The plugins config file
@@ -35,13 +36,14 @@ public class RPGMenuConfig extends SimpleYMLConfig {
     /**
      * Hashmap containing all messages for each language
      */
-    private final HashMap<String, HashMap<String, String>> messages;
+    private final Map<String, HashMap<String, String>> messages;
 
     /**
      * List containing all languages
      */
     private final List<String> languages;
 
+    @SuppressWarnings("PMD.AvoidDuplicateLiterals")
     public RPGMenuConfig() throws InvalidConfigurationException {
         super(new File(BetonQuest.getInstance().getDataFolder(), "menuConfig.yml"));
         //load languages
@@ -83,27 +85,16 @@ public class RPGMenuConfig extends SimpleYMLConfig {
      * @param replace arguments in the message that should be replaced
      * @return the predefined message with all args replaced
      */
-    public static String getMessage(String lang, final String key, final String... replace) {
+    public static String getMessage(final String lang, final String key, final String... replace) {
         final RPGMenuConfig instance = BetonQuest.getInstance().getRpgMenu().getConfiguration();
         if (instance == null) {
             return "null";
         }
         String message;
-        if (lang == null) {
-            lang = Config.getLanguage();
-        }
-        try {
-            message = instance.messages.get(lang).get(key);
+        message = instance.messages.get(lang == null ? Config.getLanguage() : lang).get(key);
+        if (message == null) {
+            message = instance.messages.get(Config.getLanguage()).get(key);
             if (message == null) {
-                throw new NullPointerException();
-            }
-        } catch (final NullPointerException e) {
-            try {
-                message = instance.messages.get(Config.getLanguage()).get(key);
-                if (message == null) {
-                    throw new NullPointerException();
-                }
-            } catch (final NullPointerException ex) {
                 return "null";
             }
         }
