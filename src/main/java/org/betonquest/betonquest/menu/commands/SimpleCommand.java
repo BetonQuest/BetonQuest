@@ -28,11 +28,12 @@ import java.util.List;
  * @author Jonas Blocher
  */
 @CustomLog
+@SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.AvoidUncheckedExceptionsInSignatures"})
 public abstract class SimpleCommand extends Command implements PluginIdentifiableCommand {
 
     public final int minimalArgs;
     private final Permission perimssion;
-    private CommandMap commandMap = null;
+    private CommandMap commandMap;
     private String usage = "null";
 
     public SimpleCommand(final String name, final int minimalArgs) {
@@ -55,20 +56,20 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
      * @param args   the arguments specified
      * @return must be a list of all possible competitions for the current arg, ignoring already typed chars
      */
-    public List<String> simpleTabComplete(final CommandSender sender, final String alias, final String[] args) {
+    public List<String> simpleTabComplete(final CommandSender sender, final String alias, final String... args) {
         return new ArrayList<>();
     }
 
     /**
-     * Override this method to handle what happens if the command gets executed, all permissions are met and required arguments are
-     * given
+     * Override this method to handle what happens if the command gets executed, all permissions are met and required
+     * arguments are given
      *
      * @param sender the CommandSender performing the command
      * @param alias  the command alias used
      * @param args   the arguments specified
      * @return whether the command could be successfully executed or not
      */
-    public abstract boolean simpleCommand(CommandSender sender, String alias, String[] args);
+    public abstract boolean simpleCommand(CommandSender sender, String alias, String... args);
 
     /**
      * Override this method to specify the message which is send when the command sender doesn't has the required Permission
@@ -92,11 +93,9 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
             RPGMenuConfig.sendMessage(sender, "command_usage", usage);
             return false;
         }
-        if (perimssion != null) {
-            if (!sender.hasPermission(perimssion)) {
-                sender.sendMessage(noPermissionMessage(sender));
-                return false;
-            }
+        if (perimssion != null && !sender.hasPermission(perimssion)) {
+            sender.sendMessage(noPermissionMessage(sender));
+            return false;
         }
         return simpleCommand(sender, label, args);
     }
@@ -142,8 +141,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
             LOG.debug(null, "Registered command " + getName() + "!");
             return true;
         } catch (final Exception e) {
-            LOG.error(null, "Could not register command " + getName() + ":");
-            e.printStackTrace();
+            LOG.warning(null, "Could not register command " + getName() + ":", e);
             return false;
         }
     }
@@ -163,7 +161,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
             final Collection<Command> commands = (Collection<Command>) Utils
                     .getMethod(commandMap.getClass(), "getCommands", 0)
                     .invoke(commandMap);
-            if (commands.getClass().getSimpleName().equals("UnmodifiableCollection")) {
+            if ("UnmodifiableCollection".equals(commands.getClass().getSimpleName())) {
                 final Field originalField = commands.getClass().getDeclaredField("c");
                 originalField.setAccessible(true);
                 final Collection<Command> original = (Collection<Command>) originalField.get(commands);
@@ -174,8 +172,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
             LOG.debug(null, "Unregistered command " + getName() + "!");
             return true;
         } catch (final Exception e) {
-            LOG.error(null, "Could not unregister command §7" + getName() + "§4:");
-            e.printStackTrace();
+            LOG.warning(null, "Could not unregister command §7" + getName() + "§4:", e);
             return false;
         }
     }
