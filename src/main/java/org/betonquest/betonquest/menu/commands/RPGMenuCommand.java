@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * The plugins main command
@@ -33,7 +34,7 @@ import java.util.List;
 @CustomLog
 public class RPGMenuCommand extends SimpleCommand {
 
-    RPGMenu menu = BetonQuest.getInstance().getRpgMenu();
+    private final RPGMenu menu = BetonQuest.getInstance().getRpgMenu();
 
     public RPGMenuCommand() {
         super("rpgmenu", new Permission("betonquest.admin"), 0, "qm", "menu", "menus", "rpgmenus", "rpgm");
@@ -43,19 +44,20 @@ public class RPGMenuCommand extends SimpleCommand {
     }
 
     @Override
+    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition", "PMD.CyclomaticComplexity"})
     public List<String> simpleTabComplete(final CommandSender sender, final String alias, final String[] args) {
         if (args.length == 1) {
             return Arrays.asList("reload", "open", "list");
         }
         if (args.length > 2) {
-            if (args[0].equalsIgnoreCase("open") || args[0].equalsIgnoreCase("o")) {
+            if ("open".equalsIgnoreCase(args[0]) || "o".equalsIgnoreCase(args[0])) {
                 //return player names
                 return null;
             } else {
                 return new ArrayList<>();
             }
         }
-        switch (args[0].toLowerCase()) {
+        switch (args[0].toLowerCase(Locale.ROOT)) {
             //complete menu ids
             case "open":
             case "o":
@@ -63,7 +65,7 @@ public class RPGMenuCommand extends SimpleCommand {
                 if (!args[1].contains(".")) {
                     return new ArrayList<>(Config.getPackages().keySet());
                 }
-                final String pack = args[1].substring(0, args[1].indexOf("."));
+                final String pack = args[1].substring(0, args[1].indexOf('.'));
                 final ConfigPackage configPack = Config.getPackages().get(pack);
                 if (configPack == null) {
                     return new ArrayList<>();
@@ -81,14 +83,15 @@ public class RPGMenuCommand extends SimpleCommand {
     }
 
     @Override
+    @SuppressWarnings({"PMD.SwitchDensity", "PMD.NPathComplexity", "PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.SwitchStmtsShouldHaveDefault", "PMD.ExcessiveMethodLength", "PMD.AvoidLiteralsInIfCondition"})
     public boolean simpleCommand(final CommandSender sender, final String alias, final String[] args) {
         if (args == null || args.length == 0) {
             //display command help
             showHelp(sender);
             return false;
         }
-        MenuID id = null;
-        switch (args[0].toLowerCase()) {
+        MenuID menu = null;
+        switch (args[0].toLowerCase(Locale.ROOT)) {
             case "l":
             case "list":
                 break;
@@ -98,7 +101,7 @@ public class RPGMenuCommand extends SimpleCommand {
                 //parse menu id
                 if (args.length >= 2) {
                     try {
-                        id = new MenuID(null, args[1]);
+                        menu = new MenuID(null, args[1]);
                     } catch (final ObjectNotFoundException e) {
                         RPGMenuConfig.sendMessage(sender, "command_invalid_menu", args[1]);
                         return false;
@@ -110,13 +113,13 @@ public class RPGMenuCommand extends SimpleCommand {
                 showHelp(sender);
                 return false;
         }
-        switch (args[0].toLowerCase()) {
+        switch (args[0].toUpperCase(Locale.ROOT)) {
             case "l":
             case "list":
                 final ComponentBuilder builder = new ComponentBuilder("");
                 builder
                         .append(TextComponent.fromLegacyText(RPGMenuConfig.getMessage(sender, "command_list")));
-                final Collection<MenuID> ids = menu.getMenus();
+                final Collection<MenuID> ids = this.menu.getMenus();
                 if (ids.isEmpty()) {
                     builder.append("\n - ").color(ChatColor.GRAY);
                 } else {
@@ -151,23 +154,23 @@ public class RPGMenuCommand extends SimpleCommand {
                     }
                 }
                 //handle unspecified ids
-                if (id == null) {
+                if (menu == null) {
                     RPGMenuConfig.sendMessage(sender, "command_no_menu");
                     return false;
                 }
                 //open the menu and send feedback
-                menu.openMenu(player, id);
-                RPGMenuConfig.sendMessage(sender, "command_open_successful", id.toString());
+                this.menu.openMenu(player, menu);
+                RPGMenuConfig.sendMessage(sender, "command_open_successful", menu.toString());
                 break;
             case "reload":
                 final RPGMenu.ReloadInformation info;
                 ChatColor color = ChatColor.GRAY;
-                if (id == null) {
+                if (menu == null) {
                     //reload all data
-                    info = menu.reloadData();
+                    info = this.menu.reloadData();
                 } else {
                     // reload one menu
-                    info = menu.reloadMenu(id);
+                    info = this.menu.reloadMenu(menu);
                 }
                 //notify player, console gets automatically informed
                 if (sender instanceof Player) {
