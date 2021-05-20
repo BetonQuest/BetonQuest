@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created on 12.01.2018
@@ -35,9 +36,12 @@ import java.util.List;
 @CustomLog
 public class RPGMenu {
 
-    private RPGMenuConfig config = null;
-    private HashMap<MenuID, Menu> menus;
+    private RPGMenuConfig config;
+    private Map<MenuID, Menu> menus;
     private RPGMenuCommand pluginCommand;
+
+    public RPGMenu() {
+    }
 
     /**
      * If the player has a open menu it closes it
@@ -52,18 +56,18 @@ public class RPGMenu {
      * Returns if the player has opened the specified menu
      *
      * @param player the player for which should be checked
-     * @param id     the id of the menu the player should has opened, null will return true if the player has any menu opened
+     * @param menuID the id of the menu the player should has opened, null will return true if the player has any menu opened
      * @return true if the player has opened the specified menu, false otherwise
      */
-    public static boolean hasOpenedMenu(final Player player, final MenuID id) {
+    public static boolean hasOpenedMenu(final Player player, final MenuID menuID) {
         final OpenedMenu menu = OpenedMenu.getMenu(player);
         if (menu == null) {
             return false;
         }
-        if (id == null) {
+        if (menuID == null) {
             return true;
         }
-        return menu.getId().equals(id);
+        return menu.getId().equals(menuID);
     }
 
     /**
@@ -87,24 +91,25 @@ public class RPGMenu {
      * Open a menu for a player
      *
      * @param player the player for which the menu should be opened
-     * @param id     id of the menu
+     * @param menuID id of the menu
      */
-    public void openMenu(final Player player, final MenuID id) {
-        final Menu menu = menus.get(id);
+    public void openMenu(final Player player, final MenuID menuID) {
+        final Menu menu = menus.get(menuID);
         if (menu == null) {
-            LOG.error(id.getPackage(), "Could not open menu §7" + id + "§4: §cUnknown menu");
+            LOG.error(menuID.getPackage(), "Could not open menu §7" + menuID + "§4: §cUnknown menu");
             return;
         }
-        final MenuOpenEvent openEvent = new MenuOpenEvent(player, id);
+        final MenuOpenEvent openEvent = new MenuOpenEvent(player, menuID);
         Bukkit.getPluginManager().callEvent(openEvent);
         if (openEvent.isCancelled()) {
-            LOG.debug(menu.getPackage(), "A Bukkit listener canceled opening of menu " + id + " for " + player.getName());
+            LOG.debug(menu.getPackage(), "A Bukkit listener canceled opening of menu " + menuID + " for " + player.getName());
             return;
         }
         new OpenedMenu(player, menu);
-        LOG.debug(menu.getPackage(), "opening menu " + id + " for " + player.getName());
+        LOG.debug(menu.getPackage(), "opening menu " + menuID + " for " + player.getName());
     }
 
+    @SuppressWarnings("PMD.AvoidDuplicateLiterals")
     public void onEnable() {
         //register events, objectives and conditions
         BetonQuest.getInstance().registerConditions("menu", MenuCondition.class);
@@ -138,6 +143,7 @@ public class RPGMenu {
      *
      * @return information if the reload was successful
      */
+    @SuppressWarnings({"PMD.NPathComplexity", "PMD.CyclomaticComplexity"})
     public ReloadInformation reloadData() {
         //unregister old menus
         if (menus != null) {
@@ -170,8 +176,8 @@ public class RPGMenu {
             }
             for (final File f : files) {
                 try {
-                    final MenuID id = new MenuID(pack, f.getName().substring(0, f.getName().length() - 4));
-                    this.menus.put(id, new Menu(id));
+                    final MenuID menuID = new MenuID(pack, f.getName().substring(0, f.getName().length() - 4));
+                    this.menus.put(menuID, new Menu(menuID));
                     info.loaded++;
                 } catch (final InvalidConfigurationException e) {
                     LOG.warning(pack, "Invalid configuration.", e);
@@ -190,25 +196,25 @@ public class RPGMenu {
     }
 
     /**
-     * Reloads only one menu with the given id
+     * Reloads only one menu with the given menuID
      *
-     * @param id id of the menu which should be reloaded
+     * @param menuID menuID of the menu which should be reloaded
      * @return information if the reload was successful
      */
-    public ReloadInformation reloadMenu(final MenuID id) {
+    public ReloadInformation reloadMenu(final MenuID menuID) {
         //unregister old menu if it exists
-        if (this.menus.containsKey(id)) {
-            this.menus.get(id).unregister();
-            this.menus.remove(id);
+        if (this.menus.containsKey(menuID)) {
+            this.menus.get(menuID).unregister();
+            this.menus.remove(menuID);
         }
         final ReloadInformation info = new ReloadInformation();
         try {
-            this.menus.put(id, new Menu(id));
+            this.menus.put(menuID, new Menu(menuID));
             info.result = ReloadResult.FULL_SUCCESS;
             info.loaded = 1;
-            LOG.info(id.getPackage(), "§aReloaded menu " + id);
+            LOG.info(menuID.getPackage(), "§aReloaded menu " + menuID);
         } catch (final InvalidConfigurationException e) {
-            LOG.error(id.getPackage(), "Invalid configuration:", e);
+            LOG.error(menuID.getPackage(), "Invalid configuration:", e);
             info.result = ReloadResult.FAILED;
             info.addError(e);
         }
@@ -223,11 +229,11 @@ public class RPGMenu {
     }
 
     /**
-     * @param id id of the menu
-     * @return menu with the given id
+     * @param menuID menuID of the menu
+     * @return menu with the given menuID
      */
-    public Menu getMenu(final MenuID id) {
-        return menus.get(id);
+    public Menu getMenu(final MenuID menuID) {
+        return menus.get(menuID);
     }
 
     /**
@@ -254,11 +260,11 @@ public class RPGMenu {
     public static class ReloadInformation {
 
         private final List<String> errorMessages = new ArrayList<>();
-        private int loaded = 0;
+        private int loaded;
         private ReloadResult result = ReloadResult.FULL_SUCCESS;
 
-        private void addError(final Throwable e) {
-            errorMessages.add("§4" + e.getMessage());
+        private void addError(final Throwable throwable) {
+            errorMessages.add("§4" + throwable.getMessage());
         }
 
         /**

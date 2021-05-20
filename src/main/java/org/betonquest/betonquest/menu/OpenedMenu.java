@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -33,11 +34,11 @@ public class OpenedMenu implements Listener {
     /**
      * Hashmap containing all currently opened menus
      */
-    private static final HashMap<UUID, OpenedMenu> openedMenus = new HashMap<>();
+    private static final Map<UUID, OpenedMenu> OPENED_MENUS = new HashMap<>();
     private final UUID playerId;
     private final Menu data;
     private MenuItem[] items;
-    private boolean closed = false;
+    private boolean closed;
 
     public OpenedMenu(final Player player, final Menu menu) {
         // If player already has an open menu we close it first
@@ -52,7 +53,7 @@ public class OpenedMenu implements Listener {
         this.update(player, inventory);
         player.openInventory(inventory);
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-        openedMenus.put(playerId, this);
+        OPENED_MENUS.put(playerId, this);
         this.data.runOpenEvents(player);
     }
 
@@ -63,14 +64,14 @@ public class OpenedMenu implements Listener {
      * @return the menu the player has opened or null if he has no open menus
      */
     public static OpenedMenu getMenu(final Player player) {
-        return openedMenus.get(player.getUniqueId());
+        return OPENED_MENUS.get(player.getUniqueId());
     }
 
     /**
      * Closes the players menu if he has one open
      */
     protected static void closeMenu(final Player player) {
-        final OpenedMenu menu = openedMenus.get(player.getUniqueId());
+        final OpenedMenu menu = OPENED_MENUS.get(player.getUniqueId());
         if (menu == null) {
             return;
         }
@@ -83,7 +84,7 @@ public class OpenedMenu implements Listener {
      * Called when the plugin unloads to prevent glitching menus
      */
     public static void closeAll() {
-        for (final OpenedMenu openedMenu : openedMenus.values()) {
+        for (final OpenedMenu openedMenu : OPENED_MENUS.values()) {
             openedMenu.close();
         }
     }
@@ -98,8 +99,8 @@ public class OpenedMenu implements Listener {
     /**
      * @return the id of this menu
      */
-    public MenuID getId() {
-        return this.data.getID();
+    public final MenuID getId() {
+        return this.data.getMenuID();
     }
 
     /**
@@ -137,7 +138,7 @@ public class OpenedMenu implements Listener {
      * @param player    the player the menu is displayed to
      * @param inventory the inventory showing the menu
      */
-    public void update(final Player player, final Inventory inventory) {
+    public final void update(final Player player, final Inventory inventory) {
         this.items = data.getItems(player);
         final ItemStack[] content = new ItemStack[items.length];
         //add the items if display conditions are matched
@@ -156,6 +157,7 @@ public class OpenedMenu implements Listener {
     }
 
     @EventHandler
+    @SuppressWarnings({"PMD.NPathComplexity", "PMD.CyclomaticComplexity"})
     public void onClick(final InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player)) {
             return;
@@ -193,13 +195,13 @@ public class OpenedMenu implements Listener {
             LOG.debug(getId().getPackage(), "click of " + player.getName() + " in menu " + getId() + " was cancelled by a bukkit event listener");
             return;
         }
-        //handle click
-        final boolean close = item.onClick(player, event.getClick());
         // If we are already closed then we are done
         if (closed) {
             return;
         }
 
+        //handle click
+        final boolean close = item.onClick(player, event.getClick());
         //if close was set close the menu
         if (close) {
             this.close();
@@ -225,7 +227,7 @@ public class OpenedMenu implements Listener {
         LOG.debug(getId().getPackage(), player.getName() + " closed menu " + getId());
         //clean up
         HandlerList.unregisterAll(this);
-        openedMenus.remove(playerId);
+        OPENED_MENUS.remove(playerId);
         //run close events
         this.data.runCloseEvents(player);
     }

@@ -38,12 +38,13 @@ import java.util.Optional;
  * @author Jonas Blocher
  */
 @CustomLog
+@SuppressWarnings({"PMD.GodClass", "PMD.ShortClassName"})
 public class Menu extends SimpleYMLConfig implements Listener {
 
     /**
      * The internal id of the menu
      */
-    private final MenuID ID;
+    private final MenuID menuID;
 
     /**
      * The height of the menu in slots
@@ -92,11 +93,13 @@ public class Menu extends SimpleYMLConfig implements Listener {
      */
     private final Optional<MenuBoundCommand> boundCommand;
 
-    RPGMenu menu = BetonQuest.getInstance().getRpgMenu();
+    @SuppressWarnings("PMD.AvoidFieldNameMatchingTypeName")
+    private final RPGMenu menu = BetonQuest.getInstance().getRpgMenu();
 
-    public Menu(final MenuID id) throws InvalidConfigurationException {
-        super(id.getFullID(), id.getFile());
-        this.ID = id;
+    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.EmptyCatchBlock", "PMD.NPathComplexity", "PMD.CyclomaticComplexity"})
+    public Menu(final MenuID menuID) throws InvalidConfigurationException {
+        super(menuID.getFullID(), menuID.getFile());
+        this.menuID = menuID;
         //load size
         this.height = getInt("height");
         if (this.height < 1 || this.height > 6) {
@@ -107,27 +110,28 @@ public class Menu extends SimpleYMLConfig implements Listener {
         //load opening conditions
         this.openConditions = new ArrayList<>();
         try {
-            this.openConditions.addAll(getConditions("open_conditions", this.ID.getPackage()));
+            this.openConditions.addAll(getConditions("open_conditions", this.menuID.getPackage()));
         } catch (final Missing e) {
         }
         //load opening events
         this.openEvents = new ArrayList<>();
         try {
-            this.openEvents.addAll(getEvents("open_events", this.ID.getPackage()));
+            this.openEvents.addAll(getEvents("open_events", this.menuID.getPackage()));
         } catch (final Missing e) {
         }
         //load closing events
         this.closeEvents = new ArrayList<>();
         try {
-            this.closeEvents.addAll(getEvents("close_events", this.ID.getPackage()));
+            this.closeEvents.addAll(getEvents("close_events", this.menuID.getPackage()));
         } catch (final Missing e) {
         }
         //load bound item
         this.boundItem = new OptionalSetting<QuestItem>() {
             @Override
+            @SuppressWarnings("PMD.ShortMethodName")
             protected QuestItem of() throws Missing, Invalid {
                 try {
-                    return new QuestItem(new ItemID(ID.getPackage(), getString("bind")));
+                    return new QuestItem(new ItemID(Menu.this.menuID.getPackage(), getString("bind")));
                 } catch (ObjectNotFoundException | InstructionParseException e) {
                     throw new Invalid("bind", e);
                 }
@@ -136,6 +140,7 @@ public class Menu extends SimpleYMLConfig implements Listener {
         //load bound command
         this.boundCommand = new OptionalSetting<MenuBoundCommand>() {
             @Override
+            @SuppressWarnings("PMD.ShortMethodName")
             protected MenuBoundCommand of() throws Missing, Invalid {
                 String command = getString("command").trim();
                 if (!command.matches("/*[0-9A-Za-z\\-]+")) {
@@ -148,16 +153,12 @@ public class Menu extends SimpleYMLConfig implements Listener {
             }
         }.get();
         // load items
-        final HashMap<String, MenuItem> itemsMap = new HashMap<>();
         if (!config.isConfigurationSection("items")) {
             throw new Missing("items");
         }
+        final HashMap<String, MenuItem> itemsMap = new HashMap<>();
         for (final String key : config.getConfigurationSection("items").getKeys(false)) {
-            try {
-                itemsMap.put(key, new MenuItem(this.ID.getPackage(), key, config.getConfigurationSection("items." + key)));
-            } catch (final InvalidSimpleConfigException e) {
-                throw new InvalidSimpleConfigException(e);
-            }
+            itemsMap.put(key, new MenuItem(this.menuID.getPackage(), key, config.getConfigurationSection("items." + key)));
         }
         //load slots
         this.slots = new ArrayList<>();
@@ -242,8 +243,8 @@ public class Menu extends SimpleYMLConfig implements Listener {
             return;
         }
         //open the menu
-        LOG.debug(getPackage(), event.getPlayer().getName() + " used bound item of menu " + this.ID);
-        menu.openMenu(event.getPlayer(), this.ID);
+        LOG.debug(getPackage(), event.getPlayer().getName() + " used bound item of menu " + this.menuID);
+        menu.openMenu(event.getPlayer(), this.menuID);
     }
 
     /**
@@ -251,11 +252,12 @@ public class Menu extends SimpleYMLConfig implements Listener {
      *
      * @param player the player to run the events for
      */
+    @SuppressWarnings("PMD.AvoidDuplicateLiterals")
     public void runOpenEvents(final Player player) {
-        LOG.debug(getPackage(), "Menu " + ID + ": Running open events");
+        LOG.debug(getPackage(), "Menu " + menuID + ": Running open events");
         for (final EventID event : this.openEvents) {
             BetonQuest.event(PlayerConverter.getID(player), event);
-            LOG.debug(getPackage(), "Menu " + ID + ": Run event " + event);
+            LOG.debug(getPackage(), "Menu " + menuID + ": Run event " + event);
         }
     }
 
@@ -265,25 +267,25 @@ public class Menu extends SimpleYMLConfig implements Listener {
      * @param player the player to run the events for
      */
     public void runCloseEvents(final Player player) {
-        LOG.debug(getPackage(), "Menu " + ID + ": Running close events");
+        LOG.debug(getPackage(), "Menu " + menuID + ": Running close events");
         for (final EventID event : this.closeEvents) {
             BetonQuest.event(PlayerConverter.getID(player), event);
-            LOG.debug(getPackage(), "Menu " + ID + ": Run event " + event);
+            LOG.debug(getPackage(), "Menu " + menuID + ": Run event " + event);
         }
     }
 
     /**
      * @return the menu id of this menu
      */
-    public MenuID getID() {
-        return ID;
+    public MenuID getMenuID() {
+        return menuID;
     }
 
     /**
      * @return the package this menu is located in
      */
     public ConfigPackage getPackage() {
-        return this.ID.getPackage();
+        return this.menuID.getPackage();
     }
 
     /**
@@ -297,7 +299,7 @@ public class Menu extends SimpleYMLConfig implements Listener {
     /**
      * @return the size of the menu in slots
      */
-    public int getSize() {
+    public final int getSize() {
         return height * 9;
     }
 
@@ -375,8 +377,8 @@ public class Menu extends SimpleYMLConfig implements Listener {
             }
             final Player player = (Player) sender;
             if (mayOpen(player)) {
-                LOG.debug(getPackage(), player.getName() + " run bound command of " + ID);
-                menu.openMenu(player, ID);
+                LOG.debug(getPackage(), player.getName() + " run bound command of " + menuID);
+                menu.openMenu(player, menuID);
                 return true;
             } else {
                 player.sendMessage(this.noPermissionMessage(sender));

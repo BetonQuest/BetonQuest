@@ -19,6 +19,7 @@ public class Slots {
     private final List<MenuItem> items;
     private final Type type;
 
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidUncheckedExceptionsInSignatures"})
     public Slots(final String slots, final List<MenuItem> items) throws IllegalArgumentException {
         if (slots.matches("\\d+")) {
             this.type = Type.SINGLE;
@@ -26,7 +27,7 @@ public class Slots {
             this.end = start;
         } else if (slots.matches("\\d+-\\d+")) {
             this.type = Type.ROW;
-            final int index = slots.indexOf("-");
+            final int index = slots.indexOf('-');
             this.start = Integer.parseInt(slots.substring(0, index));
             this.end = Integer.parseInt(slots.substring(index + 1));
             if (this.end < this.start) {
@@ -34,7 +35,7 @@ public class Slots {
             }
         } else if (slots.matches("\\d+\\*\\d+")) {
             this.type = Type.RECTANGLE;
-            final int index = slots.indexOf("*");
+            final int index = slots.indexOf('*');
             this.start = Integer.parseInt(slots.substring(0, index));
             this.end = Integer.parseInt(slots.substring(index + 1));
             if (this.end < this.start) {
@@ -56,6 +57,7 @@ public class Slots {
      * @param inventorySize the size of the inventory in which the slots should be
      * @throws SlotException if a defined list of slots is invalid
      */
+    @SuppressWarnings("PMD.PreserveStackTrace")
     public static void checkSlots(final Iterable<Slots> slots, final int inventorySize) throws SlotException {
         final boolean[] isContained = new boolean[inventorySize]; //initialized with 'false'
         for (final Slots s : slots) {
@@ -88,14 +90,14 @@ public class Slots {
                 }
                 break;
             case RECTANGLE:
-                int i = start;
-                while (i <= end) {
-                    slots.add(i);
+                int index = start;
+                while (index <= end) {
+                    slots.add(index);
                     //set i to next slot of rectangle
-                    if ((i % 9) < (end % 9)) {
-                        i++;
+                    if ((index % 9) < (end % 9)) {
+                        index++;
                     } else {
-                        i += 8 - (i % 9) + (start % 9) + 1;
+                        index += 8 - (index % 9) + (start % 9) + 1;
                     }
                 }
                 break;
@@ -170,6 +172,7 @@ public class Slots {
      * @param slot   the slot which should contain this item
      * @return the menu item which should be displayed in the given slot to the player
      */
+    @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
     public MenuItem getItem(final Player player, final int slot) {
         final int index = this.getIndex(slot);
         if (index == -1) {

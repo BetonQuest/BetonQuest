@@ -64,8 +64,9 @@ public class ItemDescription {
     /**
      * Helper class that simplifies parsing variables for a line
      */
+    @SuppressWarnings("PMD.ShortClassName")
     private class Line {
-
+        @SuppressWarnings("PMD.AvoidFieldNameMatchingTypeName")
         private final String line;
         private final List<String> variables;
 
@@ -78,7 +79,7 @@ public class ItemDescription {
                 try {
                     BetonQuest.createVariable(pack, variable);
                 } catch (final InstructionParseException e) {
-                    throw new InstructionParseException("Could not create '" + variable + "' variable: " + e.getMessage());
+                    throw new InstructionParseException("Could not create '" + variable + "' variable: " + e.getMessage(), e);
                 }
                 if (!variables.contains(variable)) {
                     variables.add(variable);

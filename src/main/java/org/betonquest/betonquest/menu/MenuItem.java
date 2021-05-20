@@ -25,6 +25,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A Item which Is displayed as option in a menu and has some events that are fired when item is clicked
@@ -49,17 +50,17 @@ public class MenuItem extends SimpleYMLSection {
     /**
      * HashMap with a language as key and the corresponding description as value
      */
-    private final HashMap<String, ItemDescription> descriptions;
+    private final Map<String, ItemDescription> descriptions;
 
     /**
      * Ids of all events that should be run on left click
      */
-    private final List<EventID> left_click;
+    private final List<EventID> leftClick;
 
     /**
      * Ids of all events that should be run on right click
      */
-    private final List<EventID> right_click;
+    private final List<EventID> rightClick;
 
     /**
      * Conditions that have to be matched to view the item
@@ -71,21 +72,17 @@ public class MenuItem extends SimpleYMLSection {
      */
     private final boolean close;
 
-    /**
-     * Id of the item
-     */
-    private final String id;
-
-    public MenuItem(final ConfigPackage pack, final String id, final ConfigurationSection section) throws InvalidConfigurationException {
-        super(id, section);
+    @SuppressWarnings({"PMD.ExceptionAsFlowControl", "PMD.EmptyCatchBlock", "PMD.CyclomaticComplexity"})
+    public MenuItem(final ConfigPackage pack, final String name, final ConfigurationSection section) throws InvalidConfigurationException {
+        super(name, section);
         try {
-            this.id = id;
             this.pack = pack;
             //load item
             final ItemID itemID = new ItemID(pack, getString("item").trim());
             final VariableNumber amount;
             amount = new VariableNumber(pack.getName(), new DefaultSetting<String>("1") {
                 @Override
+                @SuppressWarnings("PMD.ShortMethodName")
                 protected String of() throws Missing {
                     return getString("amount");
                 }
@@ -108,22 +105,22 @@ public class MenuItem extends SimpleYMLSection {
             } catch (final Missing missing) {
             }
             //load events
-            this.left_click = new ArrayList<>();
-            this.right_click = new ArrayList<>();
+            this.leftClick = new ArrayList<>();
+            this.rightClick = new ArrayList<>();
             if (config.isConfigurationSection("click")) {
                 try {
-                    this.left_click.addAll(getEvents("click.left", pack));
+                    this.leftClick.addAll(getEvents("click.left", pack));
                 } catch (final Missing e) {
                 }
                 try {
-                    this.right_click.addAll(getEvents("click.right", pack));
+                    this.rightClick.addAll(getEvents("click.right", pack));
                 } catch (final Missing e) {
                 }
             } else {
                 try {
-                    final List<EventID> l = getEvents("click", pack);
-                    this.left_click.addAll(l);
-                    this.right_click.addAll(l);
+                    final List<EventID> list = getEvents("click", pack);
+                    this.leftClick.addAll(list);
+                    this.rightClick.addAll(list);
                 } catch (final Missing e) {
                 }
             }
@@ -140,12 +137,13 @@ public class MenuItem extends SimpleYMLSection {
             //load if menu should close when item is clicked
             this.close = new DefaultSetting<Boolean>(BetonQuest.getInstance().getRpgMenu().getConfiguration().defaultCloseOnClick) {
                 @Override
+                @SuppressWarnings("PMD.ShortMethodName")
                 protected Boolean of() throws Missing, Invalid {
                     return getBoolean("close");
                 }
             }.get();
         } catch (ObjectNotFoundException | InstructionParseException e) {
-            throw new InvalidConfigurationException(e.getMessage());
+            throw new InvalidConfigurationException(e.getMessage(), e);
         }
     }
 
@@ -156,18 +154,19 @@ public class MenuItem extends SimpleYMLSection {
      * @param type   type of the click action
      * @return if the menu should be closed after this operation
      */
+    @SuppressWarnings("PMD.AvoidDuplicateLiterals")
     public boolean onClick(final Player player, final ClickType type) {
         switch (type) {
             case RIGHT:
             case SHIFT_RIGHT:
-                for (final EventID eventID : this.right_click) {
+                for (final EventID eventID : this.rightClick) {
                     LOG.debug(pack, "Item " + name + ": Run event " + eventID);
                     BetonQuest.event(PlayerConverter.getID(player), eventID);
                 }
                 return this.close;
             case LEFT:
             case SHIFT_LEFT:
-                for (final EventID eventID : this.left_click) {
+                for (final EventID eventID : this.leftClick) {
                     LOG.debug(pack, "Item " + name + ": Run event " + eventID);
                     BetonQuest.event(PlayerConverter.getID(player), eventID);
                 }
@@ -201,6 +200,7 @@ public class MenuItem extends SimpleYMLSection {
      * @param player the player this item will be displayed to
      * @return the item as a bukkit item stack
      */
+    @SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.AvoidCatchingNPE"})
     public ItemStack generateItem(final Player player) {
         try {
             final String playerId = PlayerConverter.getID(player);
@@ -217,13 +217,13 @@ public class MenuItem extends SimpleYMLSection {
                     meta.setLore(description.getLore(playerId));
                     item.setItemMeta(meta);
                 } catch (final NullPointerException npe) {
-                    LOG.error(pack, "Couldn't add custom text to §7" + id + "§4: No text for language §7" + Config.getLanguage() + "§4 " +
+                    LOG.error(pack, "Couldn't add custom text to §7" + name + "§4: No text for language §7" + Config.getLanguage() + "§4 " +
                             "specified");
                 }
             }
             return item;
         } catch (final QuestRuntimeException qre) {
-            LOG.error(pack, "QuestRuntimeException while creating §7" + id + "§4: " + qre.getMessage());
+            LOG.error(pack, "QuestRuntimeException while creating §7" + name + "§4: " + qre.getMessage());
             return new ItemStack(Material.AIR);
         }
     }
@@ -232,12 +232,13 @@ public class MenuItem extends SimpleYMLSection {
      * @return the items internal id
      */
     public String getId() {
-        return id;
+        return name;
     }
 
     /**
      * Extended, static copy of org.betonquest.betonquest.Instruction.Item for easier quest item handling
      */
+    @SuppressWarnings("PMD.ShortClassName")
     public static class Item {
 
         private final ItemID itemID;
