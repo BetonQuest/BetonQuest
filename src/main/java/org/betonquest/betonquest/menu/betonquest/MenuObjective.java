@@ -33,7 +33,7 @@ public class MenuObjective extends Objective implements Listener {
         try {
             this.menuID = new MenuID(instruction.getPackage(), instruction.next());
         } catch (final ObjectNotFoundException e) {
-            throw new InstructionParseException("Error while parsing 1 argument: Error while loading menu: " + e.getMessage());
+            throw new InstructionParseException("Error while parsing 1 argument: Error while loading menu: " + e.getMessage(), e);
         }
     }
 
@@ -69,7 +69,7 @@ public class MenuObjective extends Objective implements Listener {
 
     @Override
     public String getProperty(final String name, final String playerID) {
-        if (name.equalsIgnoreCase("menu")) {
+        if ("menu".equalsIgnoreCase(name)) {
             final Menu menuData = BetonQuest.getInstance().getRpgMenu().getMenu(menuID);
             if (menuData == null) {
                 LOG.debug(instruction.getPackage(), "Error while getting menu property in '" + instruction.getID() + "' objective: "

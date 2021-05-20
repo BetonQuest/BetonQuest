@@ -30,7 +30,7 @@ public class MenuQuestEvent extends QuestEvent {
             try {
                 this.menu = new MenuID(instruction.getPackage(), instruction.next());
             } catch (final ObjectNotFoundException e) {
-                throw new InstructionParseException("Error while parsing 2 argument: Error while loading menu: " + e.getMessage());
+                throw new InstructionParseException("Error while parsing 2 argument: Error while loading menu: " + e.getMessage(), e);
             }
         }
     }

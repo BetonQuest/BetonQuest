@@ -19,21 +19,21 @@ import org.bukkit.entity.Player;
  */
 public class MenuCondition extends Condition {
 
-    private final MenuID menuID;
+    private final MenuID menu;
 
     public MenuCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        final String id = instruction.getOptional("id");
+        final String menuID = instruction.getOptional("id");
         try {
-            this.menuID = (id == null) ? null : new MenuID(instruction.getPackage(), id);
+            this.menu = (menuID == null) ? null : new MenuID(instruction.getPackage(), menuID);
         } catch (final ObjectNotFoundException e) {
-            throw new InstructionParseException("Error while parsing id optional: Error while loading menu: " + e.getMessage());
+            throw new InstructionParseException("Error while parsing id optional: Error while loading menu: " + e.getMessage(), e);
         }
     }
 
     @Override
     public Boolean execute(final String playerId) throws QuestRuntimeException {
         final Player player = PlayerConverter.getPlayer(playerId);
-        return BetonQuest.getInstance().getRpgMenu().hasOpenedMenu(player, menuID);
+        return BetonQuest.getInstance().getRpgMenu().hasOpenedMenu(player, menu);
     }
 }
