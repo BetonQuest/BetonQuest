@@ -10,6 +10,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 /**
@@ -19,7 +20,10 @@ import java.util.Optional;
  *
  * @author Jonas Blocher
  */
+@SuppressWarnings({"PMD.PreserveStackTrace", "PMD.AbstractClassWithoutAbstractMethod"})
 public abstract class SimpleYMLSection {
+
+    public static final String RPG_MENU_CONFIG_SETTING = "RPGMenuConfig setting §7";
 
     protected final ConfigurationSection config;
     protected final String name;
@@ -39,11 +43,11 @@ public abstract class SimpleYMLSection {
      * @throws Missing if string is not given
      */
     protected String getString(final String key) throws Missing {
-        final String s = config.getString(key);
-        if (s == null) {
+        final String string = config.getString(key);
+        if (string == null) {
             throw new Missing(key);
         } else {
-            return s;
+            return string;
         }
     }
 
@@ -61,7 +65,7 @@ public abstract class SimpleYMLSection {
      */
     protected List<String> getStringList(final String key) throws Missing {
         final List<String> list = config.getStringList(key);
-        if (list == null || list.size() == 0) {
+        if (list.isEmpty()) {
             throw new Missing(key);
         } else {
             return list;
@@ -77,10 +81,10 @@ public abstract class SimpleYMLSection {
     protected List<String> getStrings(final String key) throws Missing {
         final List<String> list = new ArrayList<>();
         final String[] args = getString(key).split(",");
-        for (String arg : args) {
-            arg = arg.trim();
-            if (arg.length() != 0) {
-                list.add(arg);
+        for (final String arg : args) {
+            final String argTrim = arg.trim();
+            if (argTrim.length() != 0) {
+                list.add(argTrim);
             }
         }
         return list;
@@ -100,11 +104,11 @@ public abstract class SimpleYMLSection {
      * @throws Invalid if given string is not an integer
      */
     protected int getInt(final String key) throws Missing, Invalid {
-        final String s = this.getString(key);
+        final String stringInt = this.getString(key);
         try {
-            return Integer.parseInt(s);
+            return Integer.parseInt(stringInt);
         } catch (final NumberFormatException e) {
-            throw new Invalid(key, "Invalid number format for '" + s + "'");
+            throw new Invalid(key, "Invalid number format for '" + stringInt + "'");
         }
     }
 
@@ -116,11 +120,11 @@ public abstract class SimpleYMLSection {
      * @throws Invalid if given string is not a double
      */
     protected double getDouble(final String key) throws Missing, Invalid {
-        final String s = this.getString(key);
+        final String stringDouble = this.getString(key);
         try {
-            return Double.parseDouble(s);
+            return Double.parseDouble(stringDouble);
         } catch (final NumberFormatException e) {
-            throw new Invalid(key, "Invalid number format for '" + s + "'");
+            throw new Invalid(key, "Invalid number format for '" + stringDouble + "'");
         }
     }
 
@@ -132,11 +136,11 @@ public abstract class SimpleYMLSection {
      * @throws Invalid if given string is not a long
      */
     protected long getLong(final String key) throws Missing, Invalid {
-        final String s = this.getString(key);
+        final String stringLong = this.getString(key);
         try {
-            return Long.parseLong(s);
+            return Long.parseLong(stringLong);
         } catch (final NumberFormatException e) {
-            throw new Invalid(key, "Invalid number format for '" + s + "'");
+            throw new Invalid(key, "Invalid number format for '" + stringLong + "'");
         }
     }
 
@@ -154,10 +158,10 @@ public abstract class SimpleYMLSection {
      * @throws Invalid if given string is not a boolean
      */
     protected boolean getBoolean(final String key) throws Missing, Invalid {
-        final String s = this.getString(key);
-        if (s.trim().equalsIgnoreCase("true")) {
+        final String stringBoolean = this.getString(key).trim();
+        if ("true".equalsIgnoreCase(stringBoolean)) {
             return true;
-        } else if (s.trim().equalsIgnoreCase("false")) {
+        } else if ("false".equalsIgnoreCase(stringBoolean)) {
             return false;
         } else {
             throw new Invalid(key);
@@ -173,11 +177,11 @@ public abstract class SimpleYMLSection {
      * @throws Invalid if given string is not of given type
      */
     protected <T extends Enum<T>> T getEnum(final String key, final Class<T> enumType) throws Missing, Invalid {
-        final String s = this.getString(key).toUpperCase().replace(" ", "_");
+        final String stringEnum = this.getString(key).toUpperCase(Locale.ROOT).replace(" ", "_");
         try {
-            return Enum.valueOf(enumType, s);
+            return Enum.valueOf(enumType, stringEnum);
         } catch (final IllegalArgumentException e) {
-            throw new Invalid(key, "'" + s + "' isn't a " + enumType.getName());
+            throw new Invalid(key, "'" + stringEnum + "' isn't a " + enumType.getName());
         }
     }
 
@@ -190,24 +194,24 @@ public abstract class SimpleYMLSection {
      * @throws Invalid if given string is not a material
      */
     protected Material getMaterial(final String key) throws Missing, Invalid {
-        final String s = this.getString(key);
         if (key.trim().matches("\\d+")) {
             throw new Invalid(key, "Material numbers can no longer be supported! Please use the names instead.");
         }
-        Material m;
+        final String stringMaterial = this.getString(key);
+        Material material;
         try {
-            m = Material.matchMaterial(s.replace(" ", "_"));
-            if (m == null) {
-                m = Material.matchMaterial(s.replace(" ", "_"), true);
+            material = Material.matchMaterial(stringMaterial.replace(" ", "_"));
+            if (material == null) {
+                material = Material.matchMaterial(stringMaterial.replace(" ", "_"), true);
             }
         } catch (final LinkageError error) {
             //pre 1.13
-            m = Material.getMaterial(s.toUpperCase().replace(" ", "_"));
+            material = Material.getMaterial(stringMaterial.toUpperCase(Locale.ROOT).replace(" ", "_"));
         }
-        if (m == null) {
-            throw new Invalid(key, "'" + s + "' isn't a material");
+        if (material == null) {
+            throw new Invalid(key, "'" + stringMaterial + "' isn't a material");
         } else {
-            return m;
+            return material;
         }
     }
 
@@ -270,6 +274,7 @@ public abstract class SimpleYMLSection {
             }
         }
 
+        @SuppressWarnings("PMD.ShortMethodName")
         protected abstract T of() throws Missing, Invalid;
 
         public final T get() {
@@ -294,6 +299,7 @@ public abstract class SimpleYMLSection {
             }
         }
 
+        @SuppressWarnings("PMD.ShortMethodName")
         protected abstract T of() throws Missing, Invalid;
 
         public final Optional<T> get() {
@@ -313,12 +319,12 @@ public abstract class SimpleYMLSection {
         public InvalidSimpleConfigException(final String cause) {
             super();
             this.cause = "  §c" + cause;
-            this.message = "§4Could not load §7" + getName() + "§4:\n" + this.cause;
+            this.message = "§4Could not load §7" + name + "§4:\n" + this.cause;
         }
 
-        public InvalidSimpleConfigException(final InvalidSimpleConfigException e) {
+        public InvalidSimpleConfigException(final InvalidSimpleConfigException exception) {
             super();
-            this.cause = "  §4Error in §7" + e.getName() + "§4:\n" + e.cause;
+            this.cause = "  §4Error in §7" + exception.getName() + "§4:\n" + exception.cause;
             this.message = "Could not load §7" + getName() + "§4\n" + this.cause;
         }
 
@@ -327,7 +333,7 @@ public abstract class SimpleYMLSection {
             return this.message;
         }
 
-        public String getName() {
+        public final String getName() {
             return name;
         }
     }
@@ -336,11 +342,10 @@ public abstract class SimpleYMLSection {
      * Thrown when a setting is missing
      */
     public class Missing extends InvalidSimpleConfigException {
-
         private static final long serialVersionUID = 1827433702663413827L;
 
         public Missing(final String missingSetting) {
-            super("RPGMenuConfig setting §7" + missingSetting + "§c is missing!");
+            super(RPG_MENU_CONFIG_SETTING + missingSetting + "§c is missing!");
         }
     }
 
@@ -352,15 +357,15 @@ public abstract class SimpleYMLSection {
         private static final long serialVersionUID = -4898301219445719212L;
 
         public Invalid(final String invalidSetting) {
-            super("RPGMenuConfig setting §7" + invalidSetting + "§c is invalid!");
+            super(RPG_MENU_CONFIG_SETTING + invalidSetting + "§c is invalid!");
         }
 
         public Invalid(final String invalidSetting, final String cause) {
-            super("RPGMenuConfig setting §7" + invalidSetting + "§c is invalid: §7" + cause);
+            super(RPG_MENU_CONFIG_SETTING + invalidSetting + "§c is invalid: §7" + cause);
         }
 
         public Invalid(final String invalidSetting, final Throwable cause) {
-            super("RPGMenuConfig setting §7" + invalidSetting + "§c is invalid: §7" + cause.getMessage());
+            super(RPG_MENU_CONFIG_SETTING + invalidSetting + "§c is invalid: §7" + cause.getMessage());
         }
     }
 }
