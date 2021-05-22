@@ -22,10 +22,10 @@ mysql:
   enabled: true   #Set this to true.
   host: ''        #This is the IP of your MySQL server. If it runs on the same machine as your server use localhost or 127.0.0.1 
   port: ''        #This is the port your MySQL server runs on.
-  user: ''        #The name of the database user that BetonQuest will use.
+  user: ''        #The name of the database user that is used to connect to the database server.
   pass: ''        #The password of that user.
-  base: ''        #The database that BetonQuest will write to.
-  prefix: betonquest_  #The table prefix of BetonQuests data in the database.
+  base: ''        #The database that BetonQuest will write to. You need to create it in your database server.
+  prefix: betonquest_  #The table prefix of BetonQuest's data in the database.
 ```
 
 
