@@ -274,8 +274,9 @@ public class Backpack implements Listener {
                 final int slotId = page * 45 + slot - 1;
                 ItemStack item = null;
                 // get the item if it exists
-                if (playerData.getBackpack().size() > slotId) {
-                    item = playerData.getBackpack().get(slotId);
+                List<ItemStack> backpackItems = playerData.getBackpack();
+                if (backpackItems.size() > slotId) {
+                    item = backpackItems.get(slotId);
                 }
                 if (item != null) {
                     // if the item exists, put it in player's inventory
@@ -305,10 +306,9 @@ public class Backpack implements Listener {
                         }
                         item.setAmount(backpackAmount - getAmount + leftAmount);
                         if (backpackAmount - getAmount + leftAmount == 0) {
-                            final List<ItemStack> backpackItems = playerData.getBackpack();
                             backpackItems.remove(slotId);
-                            playerData.setBackpack(backpackItems);
                         }
+                        playerData.setBackpack(backpackItems);
                     }
                     display = new Page(page);
                 }

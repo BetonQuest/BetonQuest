@@ -1,12 +1,12 @@
 package pl.betoncraft.betonquest.events;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.Instruction.Item;
-import pl.betoncraft.betonquest.VariableNumber;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.config.Config;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
@@ -15,7 +15,13 @@ import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 /**
@@ -25,14 +31,31 @@ import java.util.logging.Level;
 public class TakeEvent extends QuestEvent {
 
     private final Item[] questItems;
+    private final List<CHECK_TYPE> checkOrder = new ArrayList<>();
     private final boolean notify;
 
-    private int counter;
+    private final Map<UUID, Pair<QuestItem, Integer>> neededDeletions = new ConcurrentHashMap<>();
 
     public TakeEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         questItems = instruction.getItemList();
         notify = instruction.hasArgument("notify");
+
+        String order = instruction.getOptional("invOrder");
+        if (order == null) {
+            checkOrder.add(CHECK_TYPE.INVENTORY);
+            checkOrder.add(CHECK_TYPE.ARMOR);
+            checkOrder.add(CHECK_TYPE.BACKPACK);
+        } else {
+            String[] enumNames = order.split(",");
+            for (String s : enumNames) {
+                try {
+                    checkOrder.add(Enum.valueOf(CHECK_TYPE.class, s.toUpperCase(Locale.ROOT)));
+                } catch (IllegalArgumentException e) {
+                    throw new InstructionParseException("There is no such check type: " + s, e);
+                }
+            }
+        }
     }
 
     @SuppressWarnings("PMD.PreserveStackTrace")
@@ -40,65 +63,92 @@ public class TakeEvent extends QuestEvent {
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final Player player = PlayerConverter.getPlayer(playerID);
+        final UUID uuid = UUID.fromString(playerID);
+
         for (final Item item : questItems) {
             final QuestItem questItem = item.getItem();
-            final VariableNumber amount = item.getAmount();
+            final int deleteAmount = item.getAmount().getInt(playerID);
+            neededDeletions.put(uuid, Pair.of(questItem, deleteAmount));
 
-            // cache the amount
-            counter = amount.getInt(playerID);
-
-            // notify the player
-            if (notify) {
-                try {
-                    Config.sendNotify(instruction.getPackage().getName(), playerID, "items_taken",
-                            new String[]{
-                                    questItem.getName() == null ? questItem.getMaterial().toString().toLowerCase(Locale.ROOT).replace("_", " ") : questItem.getName(),
-                                    String.valueOf(counter)},
-                            "items_taken,info");
-                } catch (final QuestRuntimeException exception) {
-                    LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'items_taken' category in '" + getFullId() + "'. Error was: '" + exception.getMessage() + "'");
-                    LogUtils.logThrowable(exception);
+            for (CHECK_TYPE type : checkOrder) {
+                switch (type) {
+                    case INVENTORY:
+                        checkInventory(player);
+                    case ARMOR:
+                        checkArmor(player);
+                    case BACKPACK:
+                        checkBackpack(playerID);
                 }
             }
-
-            // Remove Quest items from player's inventory
-            player.getInventory().setContents(removeItems(player.getInventory().getContents(), questItem));
-
-            // Remove Quest items from player's armor slots
-            if (counter > 0) {
-                player.getInventory()
-                        .setArmorContents(removeItems(player.getInventory().getArmorContents(), questItem));
-            }
-
-            // Remove Quest items from player's backpack
-            if (counter > 0) {
-                final List<ItemStack> backpack = BetonQuest.getInstance().getPlayerData(playerID).getBackpack();
-                ItemStack[] array = {};
-                array = backpack.toArray(array);
-                final LinkedList<ItemStack> list = new LinkedList<>(Arrays.asList(removeItems(array, questItem)));
-                list.removeAll(Collections.singleton(null));
-                BetonQuest.getInstance().getPlayerData(playerID).setBackpack(list);
-            }
+            notifyPlayer(playerID, questItem, deleteAmount);
         }
         return null;
     }
 
-    private ItemStack[] removeItems(final ItemStack[] items, final QuestItem questItem) {
-        for (int i = 0; i < items.length; i++) {
-            final ItemStack item = items[i];
-            if (questItem.compare(item)) {
-                if (item.getAmount() - counter <= 0) {
-                    counter -= item.getAmount();
-                    items[i] = null;
-                } else {
-                    item.setAmount(item.getAmount() - counter);
-                    counter = 0;
-                }
-                if (counter <= 0) {
-                    break;
-                }
+    private void checkInventory(final Player player) {
+        final List<ItemStack> inv = new ArrayList<>(Arrays.asList(player.getInventory().getContents()));
+        ItemStack[] newInv = removeDesiredAmount(player, inv);
+        player.getInventory().setContents(newInv);
+    }
+
+    private void checkArmor(final Player player) {
+        final List<ItemStack> armor = Arrays.asList(player.getInventory().getArmorContents());
+        final ItemStack[] newArmor = removeDesiredAmount(player, armor);
+        player.getInventory().setArmorContents(newArmor);
+    }
+
+    private void checkBackpack(final String playerID) {
+        final List<ItemStack> backpack = BetonQuest.getInstance().getPlayerData(playerID).getBackpack();
+        final ItemStack[] newBackpack = removeDesiredAmount(PlayerConverter.getPlayer(playerID), backpack);
+        BetonQuest.getInstance().getPlayerData(playerID).setBackpack(Arrays.asList(newBackpack));
+    }
+
+
+    private void notifyPlayer(final String playerID, final QuestItem questItem, int amount) {
+        if (notify) {
+            try {
+                Config.sendNotify(instruction.getPackage().getName(), playerID, "items_taken",
+                        new String[]{
+                                questItem.getName() == null ? questItem.getMaterial().toString().toLowerCase(Locale.ROOT).replace("_", " ") : questItem.getName(),
+                                String.valueOf(amount)},
+                        "items_taken,info");
+            } catch (final QuestRuntimeException exception) {
+                LogUtils.getLogger().log(Level.WARNING, "The notify system was unable to play a sound for the 'items_taken' category in '" + getFullId() + "'. Error was: '" + exception.getMessage() + "'");
+                LogUtils.logThrowable(exception);
             }
         }
-        return items;
+    }
+
+    private ItemStack[] removeDesiredAmount(Player p, final List<ItemStack> items) {
+        QuestItem questItem = neededDeletions.get(p.getUniqueId()).getLeft();
+        int desiredDeletions = neededDeletions.get(p.getUniqueId()).getRight();
+
+        int index = 0;
+        while (index < items.size()) {
+            final ItemStack item = items.get(index);
+            if (item != null && questItem.compare(item)) {
+                if (item.getAmount() - desiredDeletions <= 0) {
+                    desiredDeletions = desiredDeletions - item.getAmount();
+                    items.remove(index);
+                    if (desiredDeletions == 0) {
+                        break;
+                    }
+                } else {
+                    item.setAmount(item.getAmount() - desiredDeletions);
+                    desiredDeletions = 0;
+                    break;
+                }
+            } else {
+                index++;
+            }
+        }
+        neededDeletions.put(p.getUniqueId(), Pair.of(questItem, desiredDeletions));
+        return items.toArray(new ItemStack[0]);
+    }
+
+    private enum CHECK_TYPE {
+        INVENTORY,
+        ARMOR,
+        BACKPACK
     }
 }
