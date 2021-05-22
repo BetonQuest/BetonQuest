@@ -657,13 +657,23 @@ mmoitemgive CONSUMABLE MANA_POTION
 ```
 
 ####Take MMOItem: `mmoitemtake`
+
 Removes the specified item from the players inventory. Optional arguments are an amount and `notify` to send a notification
 to the player.
+
+Which inventory types are checked is defined by the `invOrder:`
+option. You can use `Backpack`, `Inventory` and `Armor` there. One after another will be checked if multiple types are defined.
+The backpack will not work before 2.0's item rework since the current item system does not safe custom NBT data.
+
+You can also specify `notify` keyword to display a simple message to the player about loosing items.
+
 Amount can be a variable.
 ```YAML linenums="1"
 mmoitemtake SWORD STEEL_SWORD
 mmoitemtake SWORD STEEL_SWORD notify
-mmoitemtake CONSUMABLE HEALTH_POTION 5
+mmoitemtake CONSUMABLE HEALTH_POTION amount:5
+mmoitemtake CONSUMABLE BAKED_APPLES amount:2 invOrder:Backpack,Inventory
+mmoitemtake ARMOR KINGS_CHESTPLATE invOrder:Armor,Backpack
 ```
 
 

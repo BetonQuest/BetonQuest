@@ -19,6 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - curly braces in math.calc variables for using variables with math symbols
 - player attribute to QuestCompassTargetChangeEvent
 - Vietnamese translation
+- added invOrder setting to (mmoitem)take event
+- the mmoitemtake event & mmoitem condition now also check the backpack
+  - this will not work until the item rework / until the backpack contains NBT data
 ### Changed
 - math variable now allows rounding output with the ~ operator
 - changed package names from `pl.betoncraft.betonquest` to `org.betonquest.betonquest`
@@ -40,7 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - command event includes 'conditions:...' into the command
 - tags and points are now thread safe
 - compatibility for packet interceptor on papermc
-- craft objective: multi-craft, drop-craft, hotbar/offhand-craft, shift-Q-craft and any illegal crafting is correctly detected, 
+- craft objective: multi-craft, drop-craft, hotbar/offhand-craft, shift-Q-craft and any illegal crafting is correctly detected,
 - q version now works again
 - NPC hider for not spawned NPCs
 - Conversation IO Chest load NPC skull async from Citizens instead of sync
@@ -59,8 +62,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - global variables didn't work in quester names
 - quest items couldn't interact with any blocks, which also prevented them from mining blocks
 - the shear objective's sheep couldn't have underscores in their names
+- fix backpack passing references instead of clones
 ### Security
 - it was possible to put a QuestItem into a chest
+- the take event is now threadsafe
 
 ## [1.12.1] - 2021-02-05
 ### Added

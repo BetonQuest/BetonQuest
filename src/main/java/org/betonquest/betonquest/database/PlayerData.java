@@ -20,6 +20,8 @@ import org.bukkit.inventory.ItemStack;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -121,7 +123,7 @@ public class PlayerData {
                     }
                 } else {
                     lang = Config.getLanguage();
-                    saver.add(new Record(UpdateType.ADD_PLAYER, new String[]{playerID, "default"}));
+                    saver.add(new Record(UpdateType.ADD_PLAYER, playerID, "default"));
                 }
 
                 // log data to debugger
@@ -162,7 +164,7 @@ public class PlayerData {
         synchronized (tags) {
             if (!tags.contains(tag)) {
                 tags.add(tag);
-                saver.add(new Record(UpdateType.ADD_TAGS, new String[]{playerID, tag}));
+                saver.add(new Record(UpdateType.ADD_TAGS, playerID, tag));
             }
         }
     }
@@ -176,7 +178,7 @@ public class PlayerData {
     public void removeTag(final String tag) {
         synchronized (tags) {
             tags.remove(tag);
-            saver.add(new Record(UpdateType.REMOVE_TAGS, new String[]{playerID, tag}));
+            saver.add(new Record(UpdateType.REMOVE_TAGS, playerID, tag));
         }
     }
 
@@ -217,20 +219,20 @@ public class PlayerData {
      */
     public void modifyPoints(final String category, final int count) {
         synchronized (points) {
-            saver.add(new Record(UpdateType.REMOVE_POINTS, new String[]{playerID, category}));
+            saver.add(new Record(UpdateType.REMOVE_POINTS, playerID, category));
             // check if the category already exists
             for (final Point point : points) {
                 if (point.getCategory().equalsIgnoreCase(category)) {
                     // if it does, add points to it
                     saver.add(new Record(UpdateType.ADD_POINTS,
-                            new String[]{playerID, category, String.valueOf(point.getCount() + count)}));
+                            playerID, category, String.valueOf(point.getCount() + count)));
                     point.addPoints(count);
                     return;
                 }
             }
             // if not then create new point category with given amount of points
             points.add(new Point(category, count));
-            saver.add(new Record(UpdateType.ADD_POINTS, new String[]{playerID, category, String.valueOf(count)}));
+            saver.add(new Record(UpdateType.ADD_POINTS, playerID, category, String.valueOf(count)));
         }
     }
 
@@ -250,7 +252,7 @@ public class PlayerData {
             if (pointToRemove != null) {
                 points.remove(pointToRemove);
             }
-            saver.add(new Record(UpdateType.REMOVE_POINTS, new String[]{playerID, category}));
+            saver.add(new Record(UpdateType.REMOVE_POINTS, playerID, category));
         }
     }
 
@@ -306,7 +308,7 @@ public class PlayerData {
         }
         final String data = obj.getDefaultDataInstruction();
         if (addRawObjective(objectiveID.toString(), data)) {
-            saver.add(new Record(UpdateType.ADD_OBJECTIVES, new String[]{playerID, objectiveID.toString(), data}));
+            saver.add(new Record(UpdateType.ADD_OBJECTIVES, playerID, objectiveID.toString(), data));
         }
     }
 
@@ -345,7 +347,7 @@ public class PlayerData {
      * @param data        the data string of this objective (the one associated with ObjectiveData)
      */
     public void addObjToDB(final String objectiveID, final String data) {
-        saver.add(new Record(UpdateType.ADD_OBJECTIVES, new String[]{playerID, objectiveID, data}));
+        saver.add(new Record(UpdateType.ADD_OBJECTIVES, playerID, objectiveID, data));
     }
 
     /**
@@ -354,7 +356,7 @@ public class PlayerData {
      * @param objectiveID the ID of the objective to remove
      */
     public void removeObjFromDB(final String objectiveID) {
-        saver.add(new Record(UpdateType.REMOVE_OBJECTIVES, new String[]{playerID, objectiveID}));
+        saver.add(new Record(UpdateType.REMOVE_OBJECTIVES, playerID, objectiveID));
     }
 
     /**
@@ -363,7 +365,7 @@ public class PlayerData {
      * @return list of itemstacks
      */
     public List<ItemStack> getBackpack() {
-        return backpack;
+        return (List<ItemStack>) copyItemList(backpack, new ArrayList<>());
     }
 
     /**
@@ -372,13 +374,14 @@ public class PlayerData {
      * @param list list of all items in the backpack
      */
     public void setBackpack(final List<ItemStack> list) {
-        this.backpack = list;
+        this.backpack = (List<ItemStack>) copyItemList(list, new CopyOnWriteArrayList<>());
+
         // update the database (quite expensive way, should be changed)
-        saver.add(new Record(UpdateType.DELETE_BACKPACK, new String[]{playerID}));
+        saver.add(new Record(UpdateType.DELETE_BACKPACK, playerID));
         for (final ItemStack itemStack : list) {
             final String instruction = QuestItem.itemToString(itemStack);
             final String amount = String.valueOf(itemStack.getAmount());
-            saver.add(new Record(UpdateType.ADD_BACKPACK, new String[]{playerID, instruction, amount}));
+            saver.add(new Record(UpdateType.ADD_BACKPACK, playerID, instruction, amount));
         }
     }
 
@@ -434,11 +437,11 @@ public class PlayerData {
             backpack.add(newItem);
         }
         // update the database (quite expensive way, should be changed)
-        saver.add(new Record(UpdateType.DELETE_BACKPACK, new String[]{playerID}));
+        saver.add(new Record(UpdateType.DELETE_BACKPACK, playerID));
         for (final ItemStack itemStack : backpack) {
             final String instruction = QuestItem.itemToString(itemStack);
             final String newAmount = String.valueOf(itemStack.getAmount());
-            saver.add(new Record(UpdateType.ADD_BACKPACK, new String[]{playerID, instruction, newAmount}));
+            saver.add(new Record(UpdateType.ADD_BACKPACK, playerID, instruction, newAmount));
         }
     }
 
@@ -472,8 +475,8 @@ public class PlayerData {
         } else {
             this.lang = lang;
         }
-        saver.add(new Record(UpdateType.DELETE_PLAYER, new String[]{playerID}));
-        saver.add(new Record(UpdateType.ADD_PLAYER, new String[]{playerID, lang}));
+        saver.add(new Record(UpdateType.DELETE_PLAYER, playerID));
+        saver.add(new Record(UpdateType.ADD_PLAYER, playerID, lang));
     }
 
     /**
@@ -499,15 +502,22 @@ public class PlayerData {
         getJournal().clear(); // journal can be null, so use a method to get it
         backpack.clear();
         // clear the database
-        saver.add(new Record(UpdateType.DELETE_OBJECTIVES, new String[]{playerID}));
-        saver.add(new Record(UpdateType.DELETE_JOURNAL, new String[]{playerID}));
-        saver.add(new Record(UpdateType.DELETE_POINTS, new String[]{playerID}));
-        saver.add(new Record(UpdateType.DELETE_TAGS, new String[]{playerID}));
-        saver.add(new Record(UpdateType.DELETE_BACKPACK, new String[]{playerID}));
-        saver.add(new Record(UpdateType.UPDATE_CONVERSATION, new String[]{"null", playerID}));
+        saver.add(new Record(UpdateType.DELETE_OBJECTIVES, playerID));
+        saver.add(new Record(UpdateType.DELETE_JOURNAL, playerID));
+        saver.add(new Record(UpdateType.DELETE_POINTS, playerID));
+        saver.add(new Record(UpdateType.DELETE_TAGS, playerID));
+        saver.add(new Record(UpdateType.DELETE_BACKPACK, playerID));
+        saver.add(new Record(UpdateType.UPDATE_CONVERSATION, "null", playerID));
         // update the journal so it's empty
         if (PlayerConverter.getPlayer(playerID) != null) {
             getJournal().update();
         }
+    }
+
+    private Collection<ItemStack> copyItemList(final Collection<ItemStack> source, final Collection<ItemStack> target) {
+        for (final ItemStack itemStack : source) {
+            target.add(itemStack.clone());
+        }
+        return target;
     }
 }
