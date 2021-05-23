@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.menu.commands;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.menu.config.RPGMenuConfig;
@@ -101,6 +102,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     }
 
     @Override
+    @SuppressFBWarnings("NP_NONNULL_RETURN_VIOLATION")
     public List<String> tabComplete(final CommandSender sender, final String alias, final String[] args) throws IllegalArgumentException {
         if (sender == null || alias == null || args == null) {
             return super.tabComplete(sender, alias, args);

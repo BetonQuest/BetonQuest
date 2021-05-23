@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.menu.betonquest;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
@@ -33,6 +34,7 @@ public class MenuCondition extends Condition {
     }
 
     @Override
+    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT")
     public Boolean execute(final String playerId) throws QuestRuntimeException {
         final Player player = PlayerConverter.getPlayer(playerId);
         return BetonQuest.getInstance().getRpgMenu().hasOpenedMenu(player, menu);

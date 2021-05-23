@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.menu.utils;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.bukkit.ChatColor;
 
@@ -92,6 +93,7 @@ public final class Utils {
      * @param resourceName name of the resource
      * @throws IOException If an I/O error occurs
      */
+    @SuppressFBWarnings({"NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", "DM_DEFAULT_ENCODING"})
     public static void saveResource(final File directory, final String resourceName) throws IOException {
         try (
                 BufferedReader reader = new BufferedReader(new InputStreamReader(BetonQuest.getInstance().getResource(resourceName)));

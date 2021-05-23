@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.menu.config;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -45,6 +46,7 @@ public class RPGMenuConfig extends SimpleYMLConfig {
     private final List<String> languages;
 
     @SuppressWarnings("PMD.AvoidDuplicateLiterals")
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public RPGMenuConfig() throws InvalidConfigurationException {
         super(new File(BetonQuest.getInstance().getDataFolder(), "menuConfig.yml"));
         //load languages

@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.menu;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.VariableNumber;
@@ -74,6 +75,7 @@ public class MenuItem extends SimpleYMLSection {
     private final boolean close;
 
     @SuppressWarnings({"PMD.ExceptionAsFlowControl", "PMD.EmptyCatchBlock", "PMD.CyclomaticComplexity"})
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public MenuItem(final ConfigPackage pack, final String name, final ConfigurationSection section) throws InvalidConfigurationException {
         super(name, section);
         try {

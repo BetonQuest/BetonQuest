@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.menu;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.config.ConfigPackage;
@@ -97,6 +98,7 @@ public class Menu extends SimpleYMLConfig implements Listener {
     private final RPGMenu menu = BetonQuest.getInstance().getRpgMenu();
 
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.EmptyCatchBlock", "PMD.NPathComplexity", "PMD.CyclomaticComplexity"})
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public Menu(final MenuID menuID) throws InvalidConfigurationException {
         super(menuID.getFullID(), menuID.getFile());
         this.menuID = menuID;

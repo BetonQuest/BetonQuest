@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.menu;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.config.Config;
@@ -145,6 +146,7 @@ public class RPGMenu {
      * @return information if the reload was successful
      */
     @SuppressWarnings({"PMD.NPathComplexity", "PMD.CyclomaticComplexity"})
+    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     public ReloadInformation reloadData() {
         //unregister old menus
         if (menus != null) {
