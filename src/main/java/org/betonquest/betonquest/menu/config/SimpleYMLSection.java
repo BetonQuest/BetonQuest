@@ -20,7 +20,7 @@ import java.util.Optional;
  *
  * @author Jonas Blocher
  */
-@SuppressWarnings({"PMD.PreserveStackTrace", "PMD.AbstractClassWithoutAbstractMethod"})
+@SuppressWarnings({"PMD.PreserveStackTrace", "PMD.AbstractClassWithoutAbstractMethod", "PMD.CommentRequired"})
 public abstract class SimpleYMLSection {
 
     public static final String RPG_MENU_CONFIG_SETTING = "RPGMenuConfig setting §7";

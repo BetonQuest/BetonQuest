@@ -21,6 +21,7 @@ import java.util.Map;
  *
  * @author Jonas Blocher
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class RPGMenuConfig extends SimpleYMLConfig {
 
     /**

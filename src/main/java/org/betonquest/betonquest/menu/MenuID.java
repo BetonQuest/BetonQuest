@@ -14,6 +14,7 @@ import java.util.Objects;
  *
  * @author Jonas Blocher
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class MenuID extends ID {
 
     private final File file;

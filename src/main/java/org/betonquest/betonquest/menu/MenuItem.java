@@ -35,6 +35,7 @@ import java.util.Map;
  * @author Jonas Blocher
  */
 @CustomLog
+@SuppressWarnings("PMD.CommentRequired")
 public class MenuItem extends SimpleYMLSection {
 
     /**

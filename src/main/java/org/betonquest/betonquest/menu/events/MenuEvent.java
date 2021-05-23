@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerEvent;
  *
  * @author Jonas Blocher
  */
+@SuppressWarnings("PMD.CommentRequired")
 public abstract class MenuEvent extends PlayerEvent {
 
     private final MenuID menu;

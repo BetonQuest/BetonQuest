@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
  *
  * @author Jonas Blocher
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class MenuQuestEvent extends QuestEvent {
 
     private final Operation operation;

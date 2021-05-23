@@ -13,7 +13,7 @@ import org.bukkit.event.inventory.ClickType;
  *
  * @author Jonas Blocher
  */
-@SuppressWarnings("PMD.DataClass")
+@SuppressWarnings({"PMD.DataClass", "PMD.CommentRequired"})
 public class MenuClickEvent extends MenuEvent implements Cancellable {
 
     private static final HandlerList HANDLER_LIST = new HandlerList();

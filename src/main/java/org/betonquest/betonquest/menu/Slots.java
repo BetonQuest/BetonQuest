@@ -12,6 +12,7 @@ import java.util.List;
  *
  * @author Jonas Blocher
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class Slots {
 
     private final int start;

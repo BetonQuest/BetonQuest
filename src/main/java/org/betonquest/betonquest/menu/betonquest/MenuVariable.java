@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
  *
  * @author Jonas Blocher
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class MenuVariable extends Variable {
 
     public MenuVariable(final Instruction instruction) throws InstructionParseException {

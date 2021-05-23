@@ -16,6 +16,7 @@ import java.util.List;
  *
  * @author Jonas Blocher
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ItemDescription {
 
     private final ConfigPackage pack;

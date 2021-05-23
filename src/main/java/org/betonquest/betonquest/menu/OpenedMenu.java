@@ -29,6 +29,7 @@ import java.util.UUID;
  * @author Jonas Blocher
  */
 @CustomLog
+@SuppressWarnings("PMD.CommentRequired")
 public class OpenedMenu implements Listener {
 
     /**

@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
  *
  * @author Jonas Blocher
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class ReloadListener implements Listener {
 
     public ReloadListener() {

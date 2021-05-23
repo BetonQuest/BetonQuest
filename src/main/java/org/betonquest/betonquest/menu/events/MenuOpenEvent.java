@@ -12,6 +12,7 @@ import org.bukkit.event.HandlerList;
  *
  * @author Jonas Blocher
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class MenuOpenEvent extends MenuEvent implements Cancellable {
 
     private static final HandlerList HANDLER_LIST = new HandlerList();

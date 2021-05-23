@@ -32,6 +32,7 @@ import java.util.Locale;
  * @author Jonas Blocher
  */
 @CustomLog
+@SuppressWarnings("PMD.CommentRequired")
 public class RPGMenuCommand extends SimpleCommand {
 
     private final RPGMenu menu = BetonQuest.getInstance().getRpgMenu();

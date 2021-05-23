@@ -38,7 +38,7 @@ import java.util.Optional;
  * @author Jonas Blocher
  */
 @CustomLog
-@SuppressWarnings({"PMD.GodClass", "PMD.ShortClassName"})
+@SuppressWarnings({"PMD.GodClass", "PMD.ShortClassName", "PMD.CommentRequired"})
 public class Menu extends SimpleYMLConfig implements Listener {
 
     /**

@@ -23,6 +23,7 @@ import org.bukkit.event.Listener;
  * @author Jonas Blocher
  */
 @CustomLog
+@SuppressWarnings("PMD.CommentRequired")
 public class MenuObjective extends Objective implements Listener {
 
     private final MenuID menuID;

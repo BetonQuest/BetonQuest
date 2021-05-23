@@ -11,6 +11,7 @@ import org.bukkit.event.HandlerList;
  *
  * @author Jonas Blocher
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class MenuCloseEvent extends MenuEvent {
 
     private static final HandlerList HANDLER_LIST = new HandlerList();

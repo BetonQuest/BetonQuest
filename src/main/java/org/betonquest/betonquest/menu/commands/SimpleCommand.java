@@ -28,7 +28,7 @@ import java.util.List;
  * @author Jonas Blocher
  */
 @CustomLog
-@SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.AvoidUncheckedExceptionsInSignatures"})
+@SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.AvoidUncheckedExceptionsInSignatures", "PMD.CommentRequired"})
 public abstract class SimpleCommand extends Command implements PluginIdentifiableCommand {
 
     public final int minimalArgs;

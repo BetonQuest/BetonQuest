@@ -14,6 +14,7 @@ import java.io.IOException;
  * @author Jonas Blocher
  */
 @CustomLog
+@SuppressWarnings("PMD.CommentRequired")
 public abstract class SimpleYMLConfig extends SimpleYMLSection {
 
     protected final File file;
