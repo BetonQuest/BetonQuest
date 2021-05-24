@@ -5,7 +5,7 @@
 <!-- Issue number if existing. -->
 Closes #XXXX
 
-## Checklists
+## Checklist
 Run maven Verify in your IDE and ensure it SUCCEEDS!
 
 ### Did you...
