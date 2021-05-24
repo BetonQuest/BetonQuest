@@ -152,9 +152,14 @@ Since `folder` event can run `tag` events even for offline players you can creat
 
 Starting the random quest must be blocked with a special tag. If there is no such tag, the conversation option should appear. Create a few quests, each of them started with single `folder` event (they **must** be started by single event!). Now add those events to another `folder` event and make it `random:1`. At the end of every quest add `delay` which will reset the special blocking tag. Now add that `folder` event to the conversation option. When the player chooses it he will start one random quest, and the conversation option will become available after defined in `delay` objective time after completing the quest.
 
-## Each day different quest (same for every player)
+## The same random daily quest for every player
 
-To do this use something called "[Static event](../../User-Documentation/Reference/#static-events)". Using the static event run `folder` event every day at some late hour (for example 4am). The `folder` event should be `random:1` and contain several different `setblock` events. These events will set some specific block to several different material types (for example dirt, stone, wood, sand etc). Now when the player starts the conversation and asks about the daily quest the NPC should check (using `testforblock` condition) which type of block is currently set and give the player different quest, depending on the block type.
+To do this use something called "[Static event](../../User-Documentation/Reference/#static-events)".
+Run a static `folder` event every day at some late hour (for example 4am).
+The `folder` event should be `random:1` and contain several different `globaltag` events.
+These events will set a specific tag. Now when the player starts the conversation and asks about the daily quest the NPC
+should check (using the `globaltag` condition) which tag is currently set and give the player different quests based on that.
+Of course, the static folder event also needs to remove the the current tag before setting a new one.
 
 ## Make the NPC react randomly
 
