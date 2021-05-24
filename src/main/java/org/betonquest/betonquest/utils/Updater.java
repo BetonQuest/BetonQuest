@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
@@ -50,6 +51,10 @@ public class Updater {
      * The API URL path to the real file for download.
      */
     public static final String DEV_API_DOWNLOAD = DEV_API_URL + "/builds/download/:version/:versionNumber/BetonQuest.jar";
+    /**
+     * The response code 403.
+     */
+    public static final int RESPONSE_403 = 403;
     /**
      * The minimum delay when checking for updates, this prevent to api requests when reloading the plugin too often.
      */
@@ -133,17 +138,17 @@ public class Updater {
         try {
             searchUpdateTaskRelease(config);
         } catch (final UnknownHostException e) {
-            LOG.warning(null, "The update url for releases builds is not reachable!");
+            LOG.warning(null, "The update server for release builds is currently not available!");
         } catch (final IOException e) {
-            LOG.warning(null, "Could not get the latest release!", e);
+            LOG.warning(null, "Could not get the latest release! " + e.getMessage(), e);
         }
         if (!(isUpdateAvailable() && config.forcedStrategy) && config.updateStrategy.isDev) {
             try {
                 searchUpdateTaskDev(config);
             } catch (final UnknownHostException e) {
-                LOG.warning(null, "The update url for dev builds is not reachable!");
+                LOG.warning(null, "The update server for dev builds is currently not available!");
             } catch (final IOException e) {
-                LOG.warning(null, "Could not get the latest dev build number!", e);
+                LOG.warning(null, "Could not get the latest dev build! " + e.getMessage(), e);
             }
         }
     }
@@ -299,9 +304,18 @@ public class Updater {
         FileUtils.copyURLToFile(new URL(latest.getValue()), file, 5000, 5000);
     }
 
-    private String readStringFromURL(final String url) throws IOException {
-        try (InputStream inputStream = new URL(url).openStream()) {
-            return IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+    private String readStringFromURL(final String stringUrl) throws IOException {
+        final URL url = new URL(stringUrl);
+        final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.connect();
+        final int code = connection.getResponseCode();
+        if (code == RESPONSE_403) {
+            throw new IOException("It looks like too many requests were made to the update server, please wait until you have been unblocked.");
+        }
+        try (InputStream inputStream = connection.getInputStream()) {
+            final String result = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+            connection.disconnect();
+            return result;
         }
     }
 
