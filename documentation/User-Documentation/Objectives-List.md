@@ -2,19 +2,22 @@
 
 ## Action: `action`
 
-This objective completes when the player clicks on the given block type. This can be further limited by the location condition and
-the item in hand condition. The first argument is the type of the click, it can be right, left or any. Next is a
-[Block Selector](/User-Documentation/Reference/#block-selectors). You can also specify the `loc:` argument, followed by
-the standard location format and the `range:` followed by a number (or variable). It will define where the clicked block needs
-to be, as opposed to "where you must be" in location condition. If you add the argument `cancel`, the click will be canceled
-(chest will not open, button will not be pressed etc.)
+This objective completes when the player clicks on the given block type. The first argument is the type of the click,
+it can be right, left or any. Next is a [Block Selector](./Reference.md#block-selectors) or `any` if you
+want to count all clicks, even into the air. You can also specify the `loc:` argument, followed by the standard location
+format and the `range:` followed by a number (or variable). It will define where the clicked block needs to be, as
+opposed to "where you must be" in location condition. If you add the argument `cancel`, the click will be canceled
+(chest will not open, button will not be pressed etc.).
+This objective works great with the location condition and the item in hand condition to further limit the counted clicks.
+One could make a magic wand using this.
 
-Action objective contains one property, `location`. It's a string formatted like `X: 100, Y: 200, Z:300`. It does not
+The objective contains one property, `location`. It's a string formatted like `X: 100, Y: 200, Z:300`. It does not
 show the radius.
 
 !!! example
     ```YAML
     action right DOOR conditions:holding_key loc:100;200;300;world range:5
+    action any any conditions:holding_magicWand events:fireSpell #Custom click listener for a wand
     ```
 
 ## Arrow Shooting: `arrow`
@@ -32,7 +35,7 @@ give accurate results. Experiment with this objective a bit to make sure you've 
 ## Block: `block`
 
 To complete this objective the player must break or place the specified amount of blocks. The first argument is a
-[Block Selector](/User-Documentation/Reference/#block-selectors). Next is amount. It can be more than 0 for placing and
+[Block Selector](./Reference.md#block-selectors). Next is amount. It can be more than 0 for placing and
 less than 0 for destroying. You can also use the `notify` keyword to display messages to the player each time he updates
 amount of blocks, optionally with the notification interval after colon.
 
@@ -160,7 +163,7 @@ add them right after type of objective.
 ## Fishing: `fish`
 
 Requires the player to catch something with the fishing rod. It doesn't have to be a fish, it can also be a treasure or
-junk. The first argument is a [Block Selector](/User-Documentation/Reference/#block-selectors) of the item to catch.
+junk. The first argument is a [Block Selector](./Reference.md#block-selectors) of the item to catch.
 Second argument must be the amount of fish to catch. You can also add the `notify` argument if you want to display
 progress, optionally with the notification interval after a colon.
 
@@ -359,7 +362,7 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 ## Smelting: `smelt`
 
 To complete this objective the player must smelt a specified item. Note that you must define the output item, not the
-ingredient. The first argument is a [Block Selector](/User-Documentation/Reference/#block-selectors) for the output
+ingredient. The first argument is a [Block Selector](./Reference.md#block-selectors) for the output
 item. The second is the amount (integer). You can use the `notify` keyword to display a message each time the player
 advances the objective, optionally with the notification interval after a colon.
 

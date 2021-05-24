@@ -35,14 +35,14 @@ Let's just open _events.yml_ file inside the _default_ package. Add a new line a
 mega: "notify Hello world!"
 ```
 
-This is an event instruction. BetonQuest will use it to determine what type of event it is and what exactly should it do. 
-`mega` is the name, `notify` is the events type and `Hello world!` tells the message event what it needs to display.
-In this case, if you run `mega` event, it will display to you `Hello world!` message. Now save the file,
+This is an event instruction. BetonQuest will use it to determine what type of event is used and what exactly it should do.
+`mega` is the event's name, `notify` is the events type and `Hello world!` tells the notify event what it needs to display.
+In this case, if you run `mega` event, it will display `Hello world!` as a chat message. Now save the file,
 issue **/q reload** command and run the event with **/q e {name} default.mega** command (`q` is shortcut for `quest`,
 `e` is shortcut for `event`, `{name}` is your Minecraft name without the brackets, `default` is the package/quest
-and `mega` is the name of the event we've just created). It should show you white `Hello world!` message in the chat.
+and `mega` is the name of the event we've just created). It should show you a `Hello world!` notification in the chat.
 
-Let's create another event, more complicated one. `teleport` seems complicated enough.
+Let's create another event, a more complicated one. `teleport` seems complicated enough.
 As you can read in the [Events list](../../User-Documentation/Events-List.md), it needs a single argument, the location.
 Press F3 and check out your current location (it's shown on the left, three numbers, `x`, `y` and `z`).
 Now add in _events.yml_ another line:
@@ -89,10 +89,10 @@ of the event, otherwise it will get confusing really fast. Example:
     ```YAML
     # This is a comment btw
     # Old:
-    mega: "message Hello world!"
+    mega: "notify Hello world!"
     
     # New:
-    sayHello: "message Hello world! conditions:isAtSpawn"
+    sayHello: "notify Hello world! conditions:isAtSpawn"
     ```
     
 === "conditions.yml"
@@ -107,19 +107,19 @@ of the event, otherwise it will get confusing really fast. Example:
 
 Now `sayHello` event will run only if it meets `isAtSpawn` condition. Reload the plugin, walk outside of the 5 block
 radius and try to run `sayHello` event. Puff, nothing happens. It's because you're not meeting `isAtSpawn` condition.
-Walk into the radius again and try to run that event now. It should happily display the `Hello world!` message.
+Walk into the radius again and try to run that event now. It should happily display the `Hello world!` notification.
 
-It's very nice that we can add such conditions, but the problem is: what if you wanted to display the message only if  the
+It's very nice that we can add such conditions, but the problem is: what if you wanted to display the notification only if the
 player is _outside_ the radius? Don't worry, you don't have to specify `inverted_location` condition or anything like that.
 You can simply negate the condition. Negation makes the condition behave in the exact opposite way, in this case it
 `isAtSpawn` will be met only if the player is outside of the 5 block radius, and it won't be met if he's inside.
 Open the _events.yml_ and add an exclamation mark before the `isAtSpawn` condition, so it looks like this:
 
 ```YAML linenums="1"
-sayHello: "message Hello world! conditions:!isAtSpawn"
+sayHello: "notify Hello world! conditions:!isAtSpawn"
 ```
 
-This means "display message `Hello world!` if the `isAtSpawn` condition is _not met_". Save the file, reload the plugin
+This means "display the `Hello world!` notification if the `isAtSpawn` condition is _not met_". Save the file, reload the plugin
 and run the event inside and outside of the radius to see how it works.
 
 ## Basic tags
