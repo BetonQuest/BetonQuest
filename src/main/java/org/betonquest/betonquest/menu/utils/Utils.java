@@ -1,17 +1,9 @@
 package org.betonquest.betonquest.menu.utils;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.betonquest.betonquest.BetonQuest;
 import org.bukkit.ChatColor;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,26 +76,6 @@ public final class Utils {
             }
         } while ((superClazz = superClazz.getSuperclass()) != null);
         throw new NoSuchMethodException("Can't find method " + name + " with " + paramlength + " parameters");
-    }
-
-    /**
-     * Save a resource at a given path
-     *
-     * @param directory    the file where to save the resource
-     * @param resourceName name of the resource
-     * @throws IOException If an I/O error occurs
-     */
-    @SuppressFBWarnings({"NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", "DM_DEFAULT_ENCODING"})
-    public static void saveResource(final File directory, final String resourceName) throws IOException {
-        try (
-                BufferedReader reader = new BufferedReader(new InputStreamReader(BetonQuest.getInstance().getResource(resourceName)));
-                BufferedWriter writer = new BufferedWriter(Files.newBufferedWriter(directory.toPath()))) {
-            int character;
-            do {
-                character = reader.read();
-                writer.write(character);
-            } while (character != -1);
-        }
     }
 
     /**

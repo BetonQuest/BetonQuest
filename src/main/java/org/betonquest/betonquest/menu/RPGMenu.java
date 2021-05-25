@@ -13,7 +13,6 @@ import org.betonquest.betonquest.menu.betonquest.MenuVariable;
 import org.betonquest.betonquest.menu.commands.RPGMenuCommand;
 import org.betonquest.betonquest.menu.config.RPGMenuConfig;
 import org.betonquest.betonquest.menu.events.MenuOpenEvent;
-import org.betonquest.betonquest.menu.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -21,7 +20,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -123,11 +121,7 @@ public class RPGMenu {
         //create config if it doesn't exist
         final File config = new File(BetonQuest.getInstance().getDataFolder(), "menuConfig.yml");
         if (!config.exists()) {
-            try {
-                Utils.saveResource(config, "menuConfig.yml");
-            } catch (final IOException e) {
-                LOG.error(null, "Could not create default config: §c" + e.getMessage());
-            }
+            BetonQuest.getInstance().saveResource("menuConfig.yml", false);
         }
         new ReloadListener();
     }
