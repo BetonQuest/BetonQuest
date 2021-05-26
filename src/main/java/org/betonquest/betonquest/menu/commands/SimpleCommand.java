@@ -139,7 +139,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
             final PluginManager manager = Bukkit.getPluginManager();
             final Class<? extends PluginManager> managerClass = manager.getClass();
             this.commandMap = (CommandMap) Utils.getField(managerClass, "commandMap").get(manager);
-            this.commandMap.register("rpgmenu", this);
+            this.commandMap.register("betonquest", this);
             LOG.debug(null, "Registered command " + getName() + "!");
             return true;
         } catch (final Exception e) {
