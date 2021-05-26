@@ -550,7 +550,7 @@ public class BetonQuest extends JavaPlugin {
         pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
 
         // initialize debugger
-        logWatcher = new LogWatcher();
+        logWatcher = new LogWatcher(this);
 
         adventure = BukkitAudiences.create(this);
 
@@ -590,13 +590,6 @@ public class BetonQuest extends JavaPlugin {
 
         // load database backup
         Utils.loadDatabaseFromBackup();
-
-        // if it's a first start of the plugin, debug option is not there
-        // add it so debug option is turned off after first start
-        if (getConfig().getString("debug", null) == null) {
-            getConfig().set("debug", "false");
-            saveConfig();
-        }
 
         // instantiating of these important things
         new JoinQuitListener();
