@@ -143,7 +143,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
             LOG.debug(null, "Registered command " + getName() + "!");
             return true;
         } catch (final Exception e) {
-            LOG.warning(null, "Could not register command " + getName() + ":", e);
+            LOG.error(null, "Could not register command " + getName() + ":", e);
             return false;
         }
     }
@@ -174,7 +174,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
             LOG.debug(null, "Unregistered command " + getName() + "!");
             return true;
         } catch (final Exception e) {
-            LOG.warning(null, "Could not unregister command §7" + getName() + "§4:", e);
+            LOG.error(null, "Could not unregister command §7" + getName() + "§4:", e);
             return false;
         }
     }

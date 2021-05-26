@@ -156,7 +156,7 @@ public class RPGMenu {
         try {
             this.config = new RPGMenuConfig();
         } catch (final InvalidConfigurationException e) {
-            LOG.warning(null, "Invalid Configuration.", e);
+            LOG.error(null, "Invalid Configuration.", e);
             info.addError(e);
             info.result = ReloadResult.FAILED;
             return info;
@@ -177,7 +177,7 @@ public class RPGMenu {
                     this.menus.put(menuID, new Menu(menuID));
                     info.loaded++;
                 } catch (final InvalidConfigurationException e) {
-                    LOG.warning(pack, "Invalid configuration.", e);
+                    LOG.error(pack, "Invalid configuration.", e);
                     info.addError(e);
                     info.result = ReloadResult.SUCCESS;
                 } catch (final ObjectNotFoundException e) {
