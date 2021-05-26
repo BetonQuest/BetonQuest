@@ -33,7 +33,7 @@ public class HistoryLogHandler extends Handler {
     /**
      * Creates a new {@link HistoryLogHandler}.
      *
-     * @param target The Handler to log the history to.
+     * @param target The Handler to log the history to
      */
     public HistoryLogHandler(final Handler target) {
         super();
@@ -43,7 +43,7 @@ public class HistoryLogHandler extends Handler {
     /**
      * Logs a LogRecord to the history or the target handler.
      *
-     * @param record The LogRecord to log.
+     * @param record The LogRecord to log
      */
     @Override
     public void publish(final LogRecord record) {

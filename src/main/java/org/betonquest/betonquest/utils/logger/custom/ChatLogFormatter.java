@@ -51,8 +51,8 @@ public class ChatLogFormatter extends DebugLogFormatter {
     /**
      * Formats a {@link LogRecord} to a readable chat {@link Component}.
      *
-     * @param record The record to format.
-     * @return The formatted component.
+     * @param record The record to format
+     * @return The formatted component
      */
     protected Component formatComponentThrowable(final LogRecord record) {
         if (record.getThrown() == null) {

@@ -39,8 +39,8 @@ public class DebugLogFormatter extends Formatter {
     /**
      * Formats a {@link LogRecord} to a readable string.
      *
-     * @param record The record to format.
-     * @return The formatted string.
+     * @param record The record to format
+     * @return The formatted string
      */
     protected String formatThrowable(final LogRecord record) {
         String throwable = "";

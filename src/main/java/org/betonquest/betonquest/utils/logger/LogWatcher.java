@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.utils.logger;
 
 import lombok.CustomLog;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.utils.logger.custom.ChatLogFormatter;
 import org.betonquest.betonquest.utils.logger.custom.DebugLogFormatter;
 import org.betonquest.betonquest.utils.logger.custom.HistoryLogHandler;
 import org.betonquest.betonquest.utils.logger.custom.PlayerLogHandler;
+import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,60 +25,75 @@ import java.util.logging.Level;
  */
 @CustomLog(topic = "LogWatcher")
 public final class LogWatcher {
-
     /**
      * The config path that holds the debug state.
      */
     private static final String CONFIG_PATH = "debug";
     /**
+     * The file path where the latest.log is located.
+     */
+    private static final String LOG_FILE_PATH = "/logs/latest.log";
+
+    /**
+     * The related JavaPlugin for that LogWatcher.
+     */
+    private final Plugin plugin;
+    /**
      * The file of the latest log.
      */
-    private static final File LOG_FILE = new File(BetonQuest.getInstance().getDataFolder(), "/logs/latest.log");
+    private final File logFile;
+    /**
+     * The {@link HistoryLogHandler} that holds old LogRecords.
+     */
+    private final HistoryLogHandler historyHandler;
     /**
      * All active log filters for the ingame log.
      */
-    private final Map<UUID, Map<String, Level>> playerFilters = new HashMap<>();
+    private final Map<UUID, Map<String, Level>> playerFilters;
     /**
      * Whether debugging is enabled.
      */
     private boolean debugging;
-    /**
-     * The {@link HistoryLogHandler} that holds old LogRecords.
-     */
-    private HistoryLogHandler historyHandler;
 
     /**
      * Setups the debug and ingame chat log.
+     *
+     * @param plugin The related {@link Plugin} instance
      */
-    public LogWatcher() {
-        setupDebugLogHandler();
+    public LogWatcher(final Plugin plugin) {
+        this.plugin = plugin;
+        this.logFile = new File(plugin.getDataFolder(), LOG_FILE_PATH);
+        playerFilters = new HashMap<>();
+        historyHandler = setupDebugLogHandler();
         setupPlayerLogHandler();
     }
 
-    private void setupDebugLogHandler() {
+    private HistoryLogHandler setupDebugLogHandler() {
         try {
             renameDebugLogFile();
 
-            final FileHandler fileHandler = new FileHandler(LOG_FILE.getAbsolutePath());
+            final FileHandler fileHandler = new FileHandler(logFile.getAbsolutePath());
             fileHandler.setFormatter(new DebugLogFormatter());
-            historyHandler = new HistoryLogHandler(fileHandler);
+            final HistoryLogHandler historyHandler = new HistoryLogHandler(fileHandler);
             historyHandler.setFilter((record) -> debugging);
-            BetonQuest.getInstance().getLogger().addHandler(historyHandler);
+            plugin.getLogger().addHandler(historyHandler);
 
-            if (BetonQuest.getInstance().getConfig().getBoolean(CONFIG_PATH, true)) {
+            if (plugin.getConfig().getBoolean(CONFIG_PATH, false)) {
                 startDebug();
             }
+            return historyHandler;
         } catch (final IOException e) {
-            LOG.error(null, "It was not possible to crate the '" + LOG_FILE.getName() + "' or to register the plugin internal logger. "
+            LOG.error(null, "It was not possible to crate the '" + logFile.getName() + "' or to register the plugin internal logger. "
                     + "This is not critical, the server can still run, but it is not possible to use the '/q debug true' command. "
                     + "Reason: " + e.getMessage(), e);
         }
+        return null;
     }
 
     private void setupPlayerLogHandler() {
         final PlayerLogHandler playerHandler = new PlayerLogHandler(playerFilters);
         playerHandler.setFormatter(new ChatLogFormatter());
-        BetonQuest.getInstance().getLogger().addHandler(playerHandler);
+        plugin.getLogger().addHandler(playerHandler);
     }
 
     /**
@@ -88,8 +103,8 @@ public final class LogWatcher {
         synchronized (LogWatcher.class) {
             if (!debugging) {
                 debugging = true;
-                BetonQuest.getInstance().getConfig().set(CONFIG_PATH, true);
-                BetonQuest.getInstance().saveConfig();
+                plugin.getConfig().set(CONFIG_PATH, true);
+                plugin.saveConfig();
                 historyHandler.push();
             }
         }
@@ -102,48 +117,48 @@ public final class LogWatcher {
         synchronized (LogWatcher.class) {
             if (debugging) {
                 debugging = false;
-                BetonQuest.getInstance().getConfig().set(CONFIG_PATH, false);
-                BetonQuest.getInstance().saveConfig();
+                plugin.getConfig().set(CONFIG_PATH, false);
+                plugin.saveConfig();
             }
         }
     }
 
     /**
-     * @return True, if debugging is enabled.
+     * @return True, if debugging is enabled
      */
     public boolean isDebugging() {
         return debugging;
     }
 
     private void renameDebugLogFile() throws IOException {
-        if (LOG_FILE.exists()) {
-            if (LOG_FILE.length() == 0) {
+        if (logFile.exists()) {
+            if (logFile.length() == 0) {
                 return;
             }
             final String newName = String.format("%1$ty-%1$tm-%1$td-%1$tH-%1$tM", new Date());
-            final File newFile = new File(LOG_FILE.getParentFile(), newName + ".log");
+            final File newFile = new File(logFile.getParentFile(), newName + ".log");
             try {
-                Files.move(LOG_FILE.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                Files.move(logFile.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             } catch (final IOException e) {
-                throw new IOException("Could not rename '" + LOG_FILE.getName() + "' file! Continue writing into the same log file.", e);
+                throw new IOException("Could not rename '" + logFile.getName() + "' file! Continue writing into the same log file.", e);
             }
         }
         if (!createDebugLogFile()) {
-            throw new IOException("Could not create new '" + LOG_FILE.getName() + "' file!");
+            throw new IOException("Could not create new '" + logFile.getName() + "' file!");
         }
     }
 
     private boolean createDebugLogFile() throws IOException {
-        return (LOG_FILE.getParentFile().exists() || LOG_FILE.getParentFile().mkdirs()) && LOG_FILE.createNewFile();
+        return (logFile.getParentFile().exists() || logFile.getParentFile().mkdirs()) && logFile.createNewFile();
     }
 
     /**
      * Adds a filter to a player.
      *
-     * @param uuid   The {@link UUID} of the player.
-     * @param filter The filter pattern.
-     * @param level  The Level of the filter.
-     * @return True if the filter was successfully added.
+     * @param uuid   The {@link UUID} of the player
+     * @param filter The filter pattern
+     * @param level  The Level of the filter
+     * @return True if the filter was successfully added
      */
     public boolean addFilter(final UUID uuid, final String filter, final Level level) {
         if (!playerFilters.containsKey(uuid)) {
@@ -160,9 +175,9 @@ public final class LogWatcher {
     /**
      * Removes a filter from a player.
      *
-     * @param uuid   The {@link UUID} of the player.
-     * @param filter The filter pattern.
-     * @return True if the filter was successfully removed.
+     * @param uuid   The {@link UUID} of the player
+     * @param filter The filter pattern
+     * @return True if the filter was successfully removed
      */
     public boolean removeFilter(final UUID uuid, final String filter) {
         if (playerFilters.containsKey(uuid)) {
@@ -178,8 +193,8 @@ public final class LogWatcher {
     /**
      * Gets a players filters.
      *
-     * @param uuid The {@link UUID} of the player.
-     * @return A list of filters.
+     * @param uuid The {@link UUID} of the player
+     * @return A list of filters
      */
     public List<String> getFilters(final UUID uuid) {
         if (playerFilters.containsKey(uuid)) {
