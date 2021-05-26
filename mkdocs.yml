@@ -125,6 +125,7 @@ nav:
       - 'General':
           - '📚   Reference': User-Documentation/Reference.md
           - '💬  Conversations': User-Documentation/Conversations.md
+          - '   📱     Menus': User-Documentation/Menus.md
 
       - 'Types':
           - '✔️ Objectives List': User-Documentation/Objectives-List.md
