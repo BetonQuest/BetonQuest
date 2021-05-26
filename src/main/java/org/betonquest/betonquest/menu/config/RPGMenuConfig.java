@@ -26,11 +26,6 @@ import java.util.Map;
 public class RPGMenuConfig extends SimpleYMLConfig {
 
     /**
-     * If update notifications should be displayed ingame
-     */
-    public final boolean ingameUpdateNotifications;
-
-    /**
      * Default value if menus close when a item was clicked
      */
     public final boolean defaultCloseOnClick;
@@ -59,7 +54,6 @@ public class RPGMenuConfig extends SimpleYMLConfig {
             languages.add(key);
         }
         //load configuration settings
-        this.ingameUpdateNotifications = getBoolean("ingame_update_notifications");
         this.defaultCloseOnClick = getBoolean("default_close");
 
         //load all messages
