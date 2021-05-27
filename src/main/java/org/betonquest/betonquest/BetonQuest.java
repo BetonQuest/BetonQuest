@@ -138,6 +138,7 @@ import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.id.VariableID;
 import org.betonquest.betonquest.item.QuestItemHandler;
 import org.betonquest.betonquest.mechanics.PlayerHider;
+import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.notify.ActionBarNotifyIO;
 import org.betonquest.betonquest.notify.AdvancementNotifyIO;
 import org.betonquest.betonquest.notify.BossBarNotifyIO;
@@ -258,6 +259,8 @@ public class BetonQuest extends JavaPlugin {
     private Updater updater;
     private GlobalData globalData;
     private PlayerHider playerHider;
+    @Getter
+    private RPGMenu rpgMenu;
     /**
      * -- GETTER --
      * Get the LogWatcher instance.
@@ -827,6 +830,10 @@ public class BetonQuest extends JavaPlugin {
         // updater
         updater = new Updater(this.getDescription().getVersion(), this.getFile());
 
+        //RPGMenu integration
+        rpgMenu = new RPGMenu();
+        rpgMenu.onEnable();
+
         // done
         log.info(null, "BetonQuest succesfully enabled!");
     }
@@ -1078,6 +1085,7 @@ public class BetonQuest extends JavaPlugin {
             this.adventure = null;
         }
 
+        rpgMenu.onDisable();
     }
 
     /**
