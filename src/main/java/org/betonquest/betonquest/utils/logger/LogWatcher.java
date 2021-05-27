@@ -66,6 +66,10 @@ public final class LogWatcher {
         playerFilters = new HashMap<>();
         historyHandler = setupDebugLogHandler();
         setupPlayerLogHandler();
+
+        if (historyHandler != null && plugin.getConfig().getBoolean(CONFIG_PATH, false)) {
+            startDebug();
+        }
     }
 
     private HistoryLogHandler setupDebugLogHandler() {
@@ -77,10 +81,6 @@ public final class LogWatcher {
             final HistoryLogHandler historyHandler = new HistoryLogHandler(fileHandler);
             historyHandler.setFilter((record) -> debugging);
             plugin.getLogger().addHandler(historyHandler);
-
-            if (plugin.getConfig().getBoolean(CONFIG_PATH, false)) {
-                startDebug();
-            }
             return historyHandler;
         } catch (final IOException e) {
             LOG.error(null, "It was not possible to create the '" + logFile.getName() + "' or to register the plugin's internal logger. "
