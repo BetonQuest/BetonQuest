@@ -86,3 +86,13 @@ Sorry, your browser doesn't support embedded videos.
 ### Dialog with audio by Bartos13
 
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/Yu3KZLAW7zY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+### Wandering Trader by Ley
+
+The trader appears for a few minutes and then leaves until the next day.
+<video controls loop
+src="../media/content/Home/Features/WanderingTrader.mp4"
+width="780" height="500">
+Sorry, your browser doesn't support embedded videos.
+</video>
+
