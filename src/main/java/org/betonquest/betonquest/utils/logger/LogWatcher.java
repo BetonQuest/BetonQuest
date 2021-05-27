@@ -83,8 +83,8 @@ public final class LogWatcher {
             }
             return historyHandler;
         } catch (final IOException e) {
-            LOG.error(null, "It was not possible to crate the '" + logFile.getName() + "' or to register the plugin internal logger. "
-                    + "This is not critical, the server can still run, but it is not possible to use the '/q debug true' command. "
+            LOG.error(null, "It was not possible to create the '" + logFile.getName() + "' or to register the plugin's internal logger. "
+                    + "This is not a critical error, the server can still run, but it is not possible to use the '/q debug true' command. "
                     + "Reason: " + e.getMessage(), e);
         }
         return null;
