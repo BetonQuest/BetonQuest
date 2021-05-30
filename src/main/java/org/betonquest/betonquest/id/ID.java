@@ -105,7 +105,7 @@ public abstract class ID {
         if (other instanceof ID) {
             final ID identifier = (ID) other;
             return identifier.identifier.equals(this.identifier) &&
-                    identifier.pack.equals(this.pack);
+                    identifier.pack.getName().equals(this.pack.getName());
         }
         return false;
     }

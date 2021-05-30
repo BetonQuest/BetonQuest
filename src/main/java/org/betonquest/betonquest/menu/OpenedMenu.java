@@ -23,10 +23,6 @@ import java.util.UUID;
 
 /**
  * Class representing a menu which is currently displayed to a player
- * <p>
- * Created on 11.03.2018
- *
- * @author Jonas Blocher
  */
 @CustomLog
 @SuppressWarnings("PMD.CommentRequired")

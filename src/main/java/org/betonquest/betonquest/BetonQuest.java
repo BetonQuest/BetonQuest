@@ -1016,6 +1016,9 @@ public class BetonQuest extends JavaPlugin {
         for (final PlayerData playerData : playerDataMap.values()) {
             playerData.startObjectives();
         }
+
+        rpgMenu.reloadData();
+
         // fire LoadDataEvent
         Bukkit.getPluginManager().callEvent(new LoadDataEvent());
     }

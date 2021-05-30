@@ -30,10 +30,6 @@ import java.util.Map;
 
 /**
  * A Item which Is displayed as option in a menu and has some events that are fired when item is clicked
- * <p>
- * Created on 24.01.2018
- *
- * @author Jonas Blocher
  */
 @CustomLog
 @SuppressWarnings("PMD.CommentRequired")

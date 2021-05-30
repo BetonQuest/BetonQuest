@@ -330,8 +330,6 @@ public class EntityHider implements Listener {
 
     /**
      * The current entity visibility policy.
-     *
-     * @author Kristian
      */
     public enum Policy {
         /**

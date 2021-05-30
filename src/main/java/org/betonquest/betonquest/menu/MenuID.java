@@ -9,10 +9,6 @@ import java.util.Objects;
 
 /**
  * Id of a menu
- * <p>
- * Created on 10.02.2018
- *
- * @author Jonas Blocher
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class MenuID extends ID {

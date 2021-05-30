@@ -9,10 +9,6 @@ import java.util.List;
 
 /**
  * Various utilities.
- * <p>
- * Created on 13.01.2018
- *
- * @author Jonas Blocher
  */
 @SuppressWarnings("PMD.ClassNamingConventions")
 public final class Utils {

@@ -6,10 +6,6 @@ import org.bukkit.event.player.PlayerEvent;
 
 /**
  * Every event where a menu was involved
- * <p>
- * Created on 16.03.2018.
- *
- * @author Jonas Blocher
  */
 @SuppressWarnings("PMD.CommentRequired")
 public abstract class MenuEvent extends PlayerEvent {

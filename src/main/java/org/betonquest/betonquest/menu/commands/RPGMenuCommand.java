@@ -26,10 +26,6 @@ import java.util.Locale;
 
 /**
  * The plugins main command
- * <p>
- * Created on 14.01.2018
- *
- * @author Jonas Blocher
  */
 @CustomLog
 @SuppressWarnings("PMD.CommentRequired")

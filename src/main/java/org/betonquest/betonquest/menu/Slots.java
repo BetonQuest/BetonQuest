@@ -7,10 +7,6 @@ import java.util.List;
 
 /**
  * Utility object that handles which items are assigned to which slots
- * <p>
- * Created on 21.03.2018.
- *
- * @author Jonas Blocher
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class Slots {

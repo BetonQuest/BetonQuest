@@ -13,10 +13,6 @@ import org.bukkit.entity.Player;
 
 /**
  * Checks if a player has opened a menu
- * <p>
- * Created on 16.03.2018.
- *
- * @author Jonas Blocher
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class MenuCondition extends Condition {

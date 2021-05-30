@@ -8,10 +8,6 @@ import org.bukkit.event.inventory.ClickType;
 
 /**
  * Called whenever a item in a menu is clicked by a player
- * <p>
- * Created on 16.03.2018.
- *
- * @author Jonas Blocher
  */
 @SuppressWarnings({"PMD.DataClass", "PMD.CommentRequired"})
 public class MenuClickEvent extends MenuEvent implements Cancellable {

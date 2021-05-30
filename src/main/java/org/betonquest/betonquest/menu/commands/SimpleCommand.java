@@ -25,10 +25,6 @@ import java.util.List;
 
 /**
  * Abstract class to simplify creation of commands and implementation of tab complete
- * <p>
- * Created on 06.09.2017
- *
- * @author Jonas Blocher
  */
 @CustomLog
 @SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.AvoidUncheckedExceptionsInSignatures", "PMD.CommentRequired"})

@@ -11,10 +11,6 @@ import java.util.List;
 
 /**
  * Contains the description of a item in a menu. Variables are parsed and color codes are replaced.
- * <p>
- * Created on 27.01.2018
- *
- * @author Jonas Blocher
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class ItemDescription {
