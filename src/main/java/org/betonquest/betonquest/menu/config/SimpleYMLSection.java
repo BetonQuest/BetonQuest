@@ -15,10 +15,6 @@ import java.util.Optional;
 
 /**
  * Abstract class to help parsing of yml config files
- * <p>
- * Created on 06.09.2017
- *
- * @author Jonas Blocher
  */
 @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.AbstractClassWithoutAbstractMethod", "PMD.CommentRequired"})
 public abstract class SimpleYMLSection {

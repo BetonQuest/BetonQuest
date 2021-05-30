@@ -33,10 +33,6 @@ import java.util.Optional;
 
 /**
  * Class representing a menu
- * <p>
- * Created on 11.03.2018
- *
- * @author Jonas Blocher
  */
 @CustomLog
 @SuppressWarnings({"PMD.GodClass", "PMD.ShortClassName", "PMD.CommentRequired"})

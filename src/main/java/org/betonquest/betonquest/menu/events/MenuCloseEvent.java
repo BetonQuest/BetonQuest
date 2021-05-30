@@ -6,10 +6,6 @@ import org.bukkit.event.HandlerList;
 
 /**
  * Called whenever a menu is closed
- * <p>
- * Created on 16.03.2018.
- *
- * @author Jonas Blocher
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class MenuCloseEvent extends MenuEvent {

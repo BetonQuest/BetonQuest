@@ -17,10 +17,6 @@ import java.util.Map;
 
 /**
  * The plugins config file
- * <p>
- * Created on 13.01.2018
- *
- * @author Jonas Blocher
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class RPGMenuConfig extends SimpleYMLConfig {

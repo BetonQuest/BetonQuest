@@ -27,20 +27,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created on 12.01.2018
- *
- * @author Jonas Blocher
- */
 @CustomLog
 @SuppressWarnings("PMD.CommentRequired")
 public class RPGMenu {
 
+    private final Map<MenuID, Menu> menus;
     private RPGMenuConfig config;
-    private Map<MenuID, Menu> menus;
     private RPGMenuCommand pluginCommand;
 
     public RPGMenu() {
+        menus = new HashMap<>();
     }
 
     /**
@@ -123,7 +119,6 @@ public class RPGMenu {
         if (!config.exists()) {
             BetonQuest.getInstance().saveResource("menuConfig.yml", false);
         }
-        new ReloadListener();
     }
 
     public void onDisable() {
@@ -142,8 +137,7 @@ public class RPGMenu {
     @SuppressWarnings({"PMD.NPathComplexity", "PMD.CyclomaticComplexity"})
     @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     public ReloadInformation reloadData() {
-        //unregister old menus
-        if (menus != null) {
+        if (!menus.isEmpty()) {
             final Iterator<Menu> iterator = this.menus.values().iterator();
             while (iterator.hasNext()) {
                 iterator.next().unregister();
@@ -151,8 +145,6 @@ public class RPGMenu {
             }
         }
         final ReloadInformation info = new ReloadInformation();
-        menus = new HashMap<>();
-        //load the plugin config
         try {
             this.config = new RPGMenuConfig();
         } catch (final InvalidConfigurationException e) {

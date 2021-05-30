@@ -9,10 +9,6 @@ import org.bukkit.entity.Player;
 
 /**
  * Returns the title of the players currently opened menu
- * <p>
- * Created on 17.03.2018.
- *
- * @author Jonas Blocher
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class MenuVariable extends Variable {

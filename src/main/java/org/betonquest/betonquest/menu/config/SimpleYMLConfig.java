@@ -8,11 +8,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * Created on 24.01.2018
- *
- * @author Jonas Blocher
- */
 @CustomLog
 @SuppressWarnings("PMD.CommentRequired")
 public abstract class SimpleYMLConfig extends SimpleYMLSection {

@@ -17,10 +17,6 @@ import org.bukkit.event.Listener;
 
 /**
  * Completed if menu with given id is opened
- * <p>
- * Created on 16.03.2018.
- *
- * @author Jonas Blocher
  */
 @CustomLog
 @SuppressWarnings("PMD.CommentRequired")

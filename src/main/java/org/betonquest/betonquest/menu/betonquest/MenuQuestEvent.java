@@ -13,10 +13,6 @@ import org.bukkit.entity.Player;
 
 /**
  * Event to open or close menus
- * <p>
- * Created on 16.03.2018.
- *
- * @author Jonas Blocher
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class MenuQuestEvent extends QuestEvent {
