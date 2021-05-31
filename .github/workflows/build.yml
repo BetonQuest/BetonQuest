@@ -122,6 +122,17 @@ jobs:
       - name: Activate lf line ending check in editorconfig
         run: |
           sed -i "s~#end_of_line = ~end_of_line = ~g" ./.editorconfig
+      - name: Set mirror for all repositories in settings.xml
+        uses: whelk-io/maven-settings-xml-action@v15
+        with:
+          mirrors: |
+            [
+              {
+                "id": "BetonQuest-Mirror",
+                "mirrorOf": "*",
+                "url": "https://betonquest.org/nexus/repository/default/"
+              }
+            ]
       - name: Build with Maven. Phase 'package'
         if: "github.event_name == 'pull_request'"
         run: |
