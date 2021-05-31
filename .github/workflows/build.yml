@@ -134,7 +134,7 @@ jobs:
                 "blocked": "false"
               },
               {
-                "id": "BQ-Mirror",
+                "id": "BetonQuest-Mirror",
                 "mirrorOf": "*",
                 "url": "https://betonquest.org/nexus/repository/default/"
               }
