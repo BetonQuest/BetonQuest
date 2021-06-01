@@ -31,7 +31,7 @@ import java.util.logging.Level;
 public class TakeEvent extends QuestEvent {
 
     private final Item[] questItems;
-    private final List<CHECK_TYPE> checkOrder = new ArrayList<>();
+    private final List<CheckType> checkOrder = new ArrayList<>();
     private final boolean notify;
 
     private final Map<UUID, Pair<QuestItem, Integer>> neededDeletions = new ConcurrentHashMap<>();
@@ -41,16 +41,16 @@ public class TakeEvent extends QuestEvent {
         questItems = instruction.getItemList();
         notify = instruction.hasArgument("notify");
 
-        String order = instruction.getOptional("invOrder");
+        final String order = instruction.getOptional("invOrder");
         if (order == null) {
-            checkOrder.add(CHECK_TYPE.INVENTORY);
-            checkOrder.add(CHECK_TYPE.ARMOR);
-            checkOrder.add(CHECK_TYPE.BACKPACK);
+            checkOrder.add(CheckType.INVENTORY);
+            checkOrder.add(CheckType.ARMOR);
+            checkOrder.add(CheckType.BACKPACK);
         } else {
-            String[] enumNames = order.split(",");
-            for (String s : enumNames) {
+            final String[] enumNames = order.split(",");
+            for (final String s : enumNames) {
                 try {
-                    checkOrder.add(Enum.valueOf(CHECK_TYPE.class, s.toUpperCase(Locale.ROOT)));
+                    checkOrder.add(Enum.valueOf(CheckType.class, s.toUpperCase(Locale.ROOT)));
                 } catch (IllegalArgumentException e) {
                     throw new InstructionParseException("There is no such check type: " + s, e);
                 }
@@ -70,14 +70,14 @@ public class TakeEvent extends QuestEvent {
             final int deleteAmount = item.getAmount().getInt(playerID);
             neededDeletions.put(uuid, Pair.of(questItem, deleteAmount));
 
-            for (CHECK_TYPE type : checkOrder) {
+            for (final CheckType type : checkOrder) {
                 switch (type) {
                     case INVENTORY:
-                        checkInventory(player);
+                        checkInventory(player); break;
                     case ARMOR:
-                        checkArmor(player);
+                        checkArmor(player); break;
                     case BACKPACK:
-                        checkBackpack(playerID);
+                        checkBackpack(playerID); break;
                 }
             }
             notifyPlayer(playerID, questItem, deleteAmount);
@@ -87,7 +87,7 @@ public class TakeEvent extends QuestEvent {
 
     private void checkInventory(final Player player) {
         final List<ItemStack> inv = new ArrayList<>(Arrays.asList(player.getInventory().getContents()));
-        ItemStack[] newInv = removeDesiredAmount(player, inv);
+        final ItemStack[] newInv = removeDesiredAmount(player, inv);
         player.getInventory().setContents(newInv);
     }
 
@@ -104,7 +104,7 @@ public class TakeEvent extends QuestEvent {
     }
 
 
-    private void notifyPlayer(final String playerID, final QuestItem questItem, int amount) {
+    private void notifyPlayer(final String playerID, final QuestItem questItem,final  int amount) {
         if (notify) {
             try {
                 Config.sendNotify(instruction.getPackage().getName(), playerID, "items_taken",
@@ -119,9 +119,9 @@ public class TakeEvent extends QuestEvent {
         }
     }
 
-    private ItemStack[] removeDesiredAmount(Player p, final List<ItemStack> items) {
-        QuestItem questItem = neededDeletions.get(p.getUniqueId()).getLeft();
-        int desiredDeletions = neededDeletions.get(p.getUniqueId()).getRight();
+    private ItemStack[] removeDesiredAmount(final Player player, final List<ItemStack> items) {
+        final QuestItem questItem = neededDeletions.get(player.getUniqueId()).getLeft();
+        int desiredDeletions = neededDeletions.get(player.getUniqueId()).getRight();
 
         int index = 0;
         while (index < items.size()) {
@@ -142,11 +142,11 @@ public class TakeEvent extends QuestEvent {
                 index++;
             }
         }
-        neededDeletions.put(p.getUniqueId(), Pair.of(questItem, desiredDeletions));
+        neededDeletions.put(player.getUniqueId(), Pair.of(questItem, desiredDeletions));
         return items.toArray(new ItemStack[0]);
     }
 
-    private enum CHECK_TYPE {
+    private enum CheckType {
         INVENTORY,
         ARMOR,
         BACKPACK

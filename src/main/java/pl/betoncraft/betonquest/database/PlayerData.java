@@ -519,7 +519,7 @@ public class PlayerData {
         }
     }
 
-    private Collection<ItemStack> copyItemList(Collection<ItemStack> source, Collection<ItemStack> target) {
+    private Collection<ItemStack> copyItemList(final Collection<ItemStack> source, final Collection<ItemStack> target) {
         for (final ItemStack itemStack : source) {
             target.add(itemStack.clone());
         }

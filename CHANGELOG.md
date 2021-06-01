@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased] - ${current-date}
 ### Added
 - Vietnamese translation
+-
 ### Changed
 - `/q create package` command does now create an empty package
 ### Deprecated

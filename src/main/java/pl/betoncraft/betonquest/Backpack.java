@@ -274,7 +274,7 @@ public class Backpack implements Listener {
                 final int slotId = page * 45 + slot - 1;
                 ItemStack item = null;
                 // get the item if it exists
-                List<ItemStack> backpackItems = playerData.getBackpack();
+                final List<ItemStack> backpackItems = playerData.getBackpack();
                 if (backpackItems.size() > slotId) {
                     item = backpackItems.get(slotId);
                 }
