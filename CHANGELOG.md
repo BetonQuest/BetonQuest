@@ -7,7 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased] - ${current-date}
 ### Added
 - Vietnamese translation
--
+- added invOrder setting to (mmoitem)take event
+- the mmoitemtake event & mmoitem condition now also check the backpack
+  - this will not work until the item rework / until the backpack contains NBT data
+
 ### Changed
 - `/q create package` command does now create an empty package
 ### Deprecated
@@ -15,7 +18,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixes
 - `brew` objective triggers all the time and counts correctly
 - only generate default package if BetonQuest folder is empty
+- fix backpack passing references instead of clones
 ### Security
+- the take event is now threadsafe
 
 ## [1.12.3] - 2021-05-05
 ### Added
