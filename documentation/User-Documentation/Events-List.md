@@ -2,7 +2,8 @@
 
 ## Cancel quest: `cancel`
 
-This event works in the same way as a [quest canceler in the backpack](/User-Documentation/Reference/#canceling-quests). Running it is equal to the player clicking on the bone. The only argument is a name of a quest canceler, as defined in _main.yml_
+This event works in the same way as a [quest canceler in the backpack](/User-Documentation/Reference/#canceling-quests).
+Running it is equal to the player clicking on the bone. The only argument is a name of a quest canceler, as defined in _main.yml_
 
 !!! example
     ```YAML
@@ -552,14 +553,24 @@ Next goes the tag name. It can't contain spaces (though `_` is fine). Additional
 
 ## Take Items: `take`
 
-Removes items from player’s inventory or backpack (in that order). If the items aren't quest items don't use `take` event with player options in conversations!
+Removes items from the player’s inventory, armor slots or backpack.
+The items itself must be defined in the items.yml, optionally with an amount after a colon.
+Which inventory types are checked is defined by the `invOrder:`
+option. You can use `Backpack`, `Inventory` and `Armor` there. One after another will be checked if multiple types are defined.
+
+Note: If the items aren't quest items don't use `take`event with player options in conversations!
 The player can drop items before selecting the option and pickup them after the event fires.
-Validate it on NPC’s reaction! Defining instruction string is the same as in give event.
+Validate it on the NPC’s reaction!
+
 You can also specify `notify` keyword to display a simple message to the player about loosing items.
 
 !!! example
     ```YAML
     take emerald:120,sword
+    take nugget:6 notify
+    take wand notify invOrder:Backpack
+    take money:50 invOrder:Backpack,Inventory
+    take armor invOrder:Armor,Inventory,Backpack
     ```
 
 ## Time: `time`
