@@ -9,8 +9,8 @@
     <current-date>${maven.build.timestamp}</current-date>
     <maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>16</maven.compiler.target>
+    <maven.compiler.source>16</maven.compiler.source>
   </properties>
 
   <name>BetonQuest</name>
@@ -574,6 +574,10 @@
       <id>betonquest-sonatype-snapshots-repo</id>
       <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
     </repository>
+    <repository>
+      <id>betonquest-maven-shade-plugin-snapshot-repo</id>
+      <url>https://repository.apache.org/content/repositories/snapshots/</url>
+    </repository>
   </repositories>
 
   <build>
@@ -850,7 +854,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
-          <version>3.2.4</version>
+          <version>3.3.0-SNAPSHOT</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
