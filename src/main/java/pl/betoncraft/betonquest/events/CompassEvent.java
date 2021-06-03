@@ -27,8 +27,7 @@ public class CompassEvent extends QuestEvent {
 
     private final Action action;
     private final String compass;
-    private ConfigurationSection compassSection;
-    private ConfigPackage compassPackage;
+    private CompoundLocation compassLocation;
 
     public CompassEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
@@ -41,12 +40,11 @@ public class CompassEvent extends QuestEvent {
         for (final ConfigPackage pack : Config.getPackages().values()) {
             final ConfigurationSection section = pack.getMain().getConfig().getConfigurationSection("compass");
             if (section != null && section.contains(compass)) {
-                compassSection = section.getConfigurationSection(compass);
-                compassPackage = pack;
+                compassLocation = new CompoundLocation(pack.getName(), pack.getString("main.compass." + compass + ".location"));
                 break;
             }
         }
-        if (compassSection == null) {
+        if (compassLocation == null) {
             throw new InstructionParseException("Invalid compass location: " + compass);
         }
     }
@@ -68,8 +66,8 @@ public class CompassEvent extends QuestEvent {
             case SET:
                 final Location location;
                 try {
-                    location = new CompoundLocation(compassPackage.getName(), compassSection.getString("location")).getLocation(playerID);
-                } catch (QuestRuntimeException | InstructionParseException e) {
+                    location = compassLocation.getLocation(playerID);
+                } catch (final QuestRuntimeException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Failed to set compass: " + compass);
                     LogUtils.logThrowable(e);
                     return null;

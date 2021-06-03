@@ -51,6 +51,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - global variables didn't work in quester names
 - quest items couldn't interact with any blocks, which also prevented them from mining blocks
 - the shear objective's sheep couldn't have underscores in their names
+- backpack passing references instead of clones
+- compass event now allows global variables
 ### Security
 - it was possible to put a QuestItem into a chest
 

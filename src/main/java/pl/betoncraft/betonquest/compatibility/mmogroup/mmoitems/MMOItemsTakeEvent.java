@@ -92,6 +92,7 @@ public class MMOItemsTakeEvent extends QuestEvent {
         return null;
     }
 
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private void checkInventory(final Player player) {
         final List<ItemStack> inv = new ArrayList<>(Arrays.asList(player.getInventory().getContents()));
         final ItemStack[] newInv = removeDesiredAmount(player, inv);
