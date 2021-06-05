@@ -161,6 +161,20 @@ These events will set a specific tag. Now when the player starts the conversatio
 should check (using the `globaltag` condition) which tag is currently set and give the player different quests based on that.
 Of course, the static folder event also needs to remove the the current tag before setting a new one.
 
+## Global Quests (all players work together)
+
+There is no super easy way to do this yet. One would do this:
+Create an objective that is immediately fired upon the first action (this means setting the amount to one for most objectives).
+That objective must be `persistent` so it restarts immediately upon completion.
+It would trigger a `globalpoint` event that increases some globalpoint variable by one.
+That globalpoint variable tracks the players combined progress as it is the same for all of them.
+Therefore, there must also be some sort of `globalpoint`condition that checks whether the "global objective" has been completed.
+It must be checked in a "checkCompletion" event that is run alongside the globalpoint event. It could look like this:
+
+```YAML
+checkCompletion: "run ^objective delete globalQuest ^folder giveRewards,notifyRewards conditions:globalObjectiveDone"
+```
+
 ## Make the NPC react randomly
 
 Imagine you want to lie to NPC and he has 15% chance of believing you completely, 35% of being suspicious and 50% of not believing at all. The common denominator for those percentages is 20, so we can write it as 3/20, 7/20 and 10/20. The NPC will check options one after another until it finds one which meets all conditions. We will use `random` condition with our options. The first one will have `3-20` chance (that's the format used by `random` condition). If this condition fails, the NPC will check next option. But it won't be `7-20`, because we already "used" 3 of 20. If you wrote it like that, the chance would be too low. That's why it will be `7-17`. The third option should have `10-10` (because `17 - 7 = 10` and 50% is 10/20), but as you can see it will always be true. It's because we want the last option to be shown if both previous fail. You don't have to add the last condition at all.
