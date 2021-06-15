@@ -461,7 +461,7 @@ public class BetonQuest extends JavaPlugin {
                     "Player " + PlayerConverter.getName(playerID) + " already has the " + objectiveID + " objective!");
             return;
         }
-        objective.addPlayer(playerID, instruction);
+        objective.addPlayer(playerID, instruction, true);
     }
 
     /**

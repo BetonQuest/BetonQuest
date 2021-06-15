@@ -32,7 +32,7 @@ import java.util.Map;
  * registerObjectives()} method.
  * </p>
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition"})
+@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition", "PMD.TooManyMethods"})
 @CustomLog
 public abstract class Objective {
 
@@ -153,7 +153,7 @@ public abstract class Objective {
      */
     public final void completeObjective(final String playerID) {
         // remove the objective from player's list
-        removePlayer(playerID);
+        removePlayer(playerID, true);
         BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective((ObjectiveID) instruction.getID());
         if (persistent) {
             BetonQuest.getInstance().getPlayerData(playerID).addNewRawObjective((ObjectiveID) instruction.getID());
@@ -228,6 +228,21 @@ public abstract class Objective {
      * @param instructionString instruction string for player's data
      */
     public final void addPlayer(final String playerID, final String instructionString) {
+        addPlayer(playerID, instructionString, false);
+    }
+
+    /**
+     * Adds this objective to the player.
+     *
+     * @param playerID          ID of the player
+     * @param instructionString instruction string for player's data
+     * @param resume            is this resuming objective
+     */
+    public final void addPlayer(final String playerID, final String instructionString, final boolean resume) {
+        if (!resume) {
+            final PlayerObjectiveStartEvent event = new PlayerObjectiveStartEvent(PlayerConverter.getPlayer(playerID), this);
+            Bukkit.getServer().getPluginManager().callEvent(event);
+        }
         synchronized (this) {
             ObjectiveData data = null;
             try {
@@ -257,6 +272,21 @@ public abstract class Objective {
      * @param playerID ID of the player
      */
     public final void removePlayer(final String playerID) {
+        removePlayer(playerID, false);
+    }
+
+    /**
+     * Removes the objective from the player. It does not complete it nor update
+     * the database. In order to complete it, use completeObjective() instead.
+     * In order to remove it from database use PlayerData.deleteObjective()
+     * instead.
+     *
+     * @param playerID ID of the player
+     * @param complete is the player remove because he completed the objective
+     */
+    public final void removePlayer(final String playerID, final boolean complete) {
+        final PlayerObjectiveEndEvent event = new PlayerObjectiveEndEvent(PlayerConverter.getPlayer(playerID),this, complete);
+        Bukkit.getServer().getPluginManager().callEvent(event);
         synchronized (this) {
             dataMap.remove(playerID);
             if (dataMap.isEmpty()) {
