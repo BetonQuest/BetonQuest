@@ -11,6 +11,7 @@ import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.Point;
 import org.betonquest.betonquest.Pointer;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.PlayerObjectiveEndEvent;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.ConfigAccessor;
@@ -1295,7 +1296,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "d":
                 LOG.debug(null,
                         "Deleting objective " + objectiveID + " for player " + PlayerConverter.getName(playerID));
-                objective.removePlayer(playerID);
+                objective.removePlayer(playerID, PlayerObjectiveEndEvent.EndCause.CANCEL);
                 playerData.removeRawObjective(objectiveID);
                 sendMessage(sender, "objective_removed");
                 break;
@@ -1519,7 +1520,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     if (data == null) {
                         data = "";
                     }
-                    BetonQuest.getInstance().getObjective(nameID).removePlayer(playerID);
+                    BetonQuest.getInstance().getObjective(nameID).removePlayer(playerID, PlayerObjectiveEndEvent.EndCause.PAUSE);
                     BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective(nameID);
                     BetonQuest.resumeObjective(PlayerConverter.getID(player), renameID, data);
                 }
@@ -1623,7 +1624,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 }
                 for (final Player player : Bukkit.getOnlinePlayers()) {
                     final String playerID = PlayerConverter.getID(player);
-                    BetonQuest.getInstance().getObjective(objectiveID).removePlayer(playerID);
+                    BetonQuest.getInstance().getObjective(objectiveID).removePlayer(playerID, PlayerObjectiveEndEvent.EndCause.CANCEL);
                     BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective(objectiveID);
                 }
                 break;

@@ -4,29 +4,59 @@ import org.betonquest.betonquest.id.ObjectiveID;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * When player end event.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class PlayerObjectiveEndEvent extends PlayerEvent {
 
+    /**
+     * HandlerList of this event.
+     */
     private static final HandlerList HANDLERS = new HandlerList();
+
+    /**
+     * Objective which is just ended of this event.
+     */
     private final Objective objective;
-    private final boolean complete;
+
+    /**
+     * Reason of why objective end.
+     */
+    private final EndCause endCause;
 
     /**
      * Constructor of PlayerObjectiveEndEvent.
      *
      * @param who player who end the event
      * @param objective the objective which just ended
-     * @param complete is the objective end because it is complete
+     * @param endCause why is the objective end
      */
-    public PlayerObjectiveEndEvent(final Player who, final Objective objective, final boolean complete) {
+    public PlayerObjectiveEndEvent(final Player who, final Objective objective, final EndCause endCause) {
         super(who);
         this.objective = objective;
-        this.complete = complete;
+        this.endCause = endCause;
+    }
+
+    /**
+     * Reason enum of why objective end.
+     */
+    public enum EndCause {
+
+        /**
+         * Objective end because it is completed.
+         */
+        COMPLETE,
+
+        /**
+         * Objective end because it is canceled.
+         */
+        CANCEL,
+
+        /**
+         * Objective end because it is paused.
+         */
+        PAUSE
     }
 
     /**
@@ -48,20 +78,30 @@ public class PlayerObjectiveEndEvent extends PlayerEvent {
     }
 
     /**
-     * Is or not this objective end because it is completed.
+     * Get the EndCause of this event. It indicates why this objective ended.
      *
-     * @return a boolean
+     * @return the EndCause
      */
-    public boolean isObjectiveComplete() {
-        return complete;
+    public EndCause getEndCause() {
+        return endCause;
     }
 
+    /**
+     * Get the HandlerList of this event.
+     *
+     * @return the HandlerList.
+     */
     public static HandlerList getHandlerList() {
         return HANDLERS;
     }
 
+    /**
+     * Get the HandlerList of this event.
+     *
+     * @return the HandlerList.
+     */
     @Override
-    public @NotNull HandlerList getHandlers() {
+    public HandlerList getHandlers() {
         return HANDLERS;
     }
 }

@@ -153,11 +153,11 @@ public abstract class Objective {
      */
     public final void completeObjective(final String playerID) {
         // remove the objective from player's list
-        removePlayer(playerID, true);
+        removePlayer(playerID, PlayerObjectiveEndEvent.EndCause.COMPLETE);
         BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective((ObjectiveID) instruction.getID());
         if (persistent) {
             BetonQuest.getInstance().getPlayerData(playerID).addNewRawObjective((ObjectiveID) instruction.getID());
-            addPlayer(playerID, getDefaultDataInstruction());
+            addPlayer(playerID, getDefaultDataInstruction(), PlayerObjectiveStartEvent.StartCause.START);
         }
         LOG.debug(instruction.getPackage(),
                 "Objective \"" + instruction.getID().getFullID() + "\" has been completed for player "
@@ -217,18 +217,18 @@ public abstract class Objective {
      */
     public final void newPlayer(final String playerID) {
         final String def = getDefaultDataInstruction();
-        addPlayer(playerID, def);
+        addPlayer(playerID, def, PlayerObjectiveStartEvent.StartCause.START);
         BetonQuest.getInstance().getPlayerData(playerID).addObjToDB(instruction.getID().getFullID(), def);
     }
 
     /**
-     * Adds this objective to the player.
+     * Adds this objective to the player. StartCause will be default as "StartCause.START".
      *
      * @param playerID          ID of the player
      * @param instructionString instruction string for player's data
      */
     public final void addPlayer(final String playerID, final String instructionString) {
-        addPlayer(playerID, instructionString, false);
+        addPlayer(playerID, instructionString, PlayerObjectiveStartEvent.StartCause.START);
     }
 
     /**
@@ -236,13 +236,11 @@ public abstract class Objective {
      *
      * @param playerID          ID of the player
      * @param instructionString instruction string for player's data
-     * @param resume            is this resuming objective
+     * @param startCause        why this objective start
      */
-    public final void addPlayer(final String playerID, final String instructionString, final boolean resume) {
-        if (!resume) {
-            final PlayerObjectiveStartEvent event = new PlayerObjectiveStartEvent(PlayerConverter.getPlayer(playerID), this);
-            Bukkit.getServer().getPluginManager().callEvent(event);
-        }
+    public final void addPlayer(final String playerID, final String instructionString, final PlayerObjectiveStartEvent.StartCause startCause) {
+        final PlayerObjectiveStartEvent event = new PlayerObjectiveStartEvent(PlayerConverter.getPlayer(playerID), this, startCause);
+        Bukkit.getServer().getPluginManager().callEvent(event);
         synchronized (this) {
             ObjectiveData data = null;
             try {
@@ -267,12 +265,12 @@ public abstract class Objective {
      * Removes the objective from the player. It does not complete it nor update
      * the database. In order to complete it, use completeObjective() instead.
      * In order to remove it from database use PlayerData.deleteObjective()
-     * instead.
+     * instead. EndCause will be default as "EndCause.CANCEL".
      *
      * @param playerID ID of the player
      */
     public final void removePlayer(final String playerID) {
-        removePlayer(playerID, false);
+        removePlayer(playerID, PlayerObjectiveEndEvent.EndCause.CANCEL);
     }
 
     /**
@@ -282,10 +280,10 @@ public abstract class Objective {
      * instead.
      *
      * @param playerID ID of the player
-     * @param complete is the player remove because he completed the objective
+     * @param endCause why this objective end
      */
-    public final void removePlayer(final String playerID, final boolean complete) {
-        final PlayerObjectiveEndEvent event = new PlayerObjectiveEndEvent(PlayerConverter.getPlayer(playerID),this, complete);
+    public final void removePlayer(final String playerID, final PlayerObjectiveEndEvent.EndCause endCause) {
+        final PlayerObjectiveEndEvent event = new PlayerObjectiveEndEvent(PlayerConverter.getPlayer(playerID),this, endCause);
         Bukkit.getServer().getPluginManager().callEvent(event);
         synchronized (this) {
             dataMap.remove(playerID);

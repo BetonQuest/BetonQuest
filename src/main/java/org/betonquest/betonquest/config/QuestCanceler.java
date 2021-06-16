@@ -4,6 +4,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Journal;
+import org.betonquest.betonquest.api.PlayerObjectiveEndEvent;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -216,7 +217,7 @@ public class QuestCanceler {
         if (objectives != null) {
             for (final ObjectiveID objectiveID : objectives) {
                 LOG.debug(objectiveID.getPackage(), "  Removing objective " + objectiveID);
-                BetonQuest.getInstance().getObjective(objectiveID).removePlayer(playerID);
+                BetonQuest.getInstance().getObjective(objectiveID).removePlayer(playerID, PlayerObjectiveEndEvent.EndCause.CANCEL);
                 playerData.removeRawObjective(objectiveID);
             }
         }

@@ -3,6 +3,7 @@ package org.betonquest.betonquest.events;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.PlayerObjectiveEndEvent;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.PlayerData;
@@ -87,7 +88,7 @@ public class ObjectiveEvent extends QuestEvent {
                     break;
                 case "delete":
                 case "remove":
-                    BetonQuest.getInstance().getObjective(objective).removePlayer(playerID);
+                    BetonQuest.getInstance().getObjective(objective).removePlayer(playerID, PlayerObjectiveEndEvent.EndCause.CANCEL);
                     BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective(objective);
                     break;
                 case "complete":

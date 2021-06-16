@@ -9,11 +9,21 @@ import org.bukkit.event.player.PlayerEvent;
 /**
  * When player journal delete contents.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class PlayerJournalDeleteEvent extends PlayerEvent {
 
+    /**
+     * HandlerList of this event.
+     */
     private static final HandlerList HANDLERS = new HandlerList();
+
+    /**
+     * Journal which is just deleted an entry of this event.
+     */
     private final Journal journal;
+
+    /**
+     * Pointer of journal entry which is just deleted to Journal of this event.
+     */
     private final Pointer pointer;
 
     /**
@@ -48,10 +58,20 @@ public class PlayerJournalDeleteEvent extends PlayerEvent {
         return pointer;
     }
 
+    /**
+     * Get the HandlerList of this event.
+     *
+     * @return the HandlerList.
+     */
     public static HandlerList getHandlerList() {
         return HANDLERS;
     }
 
+    /**
+     * Get the HandlerList of this event.
+     *
+     * @return the HandlerList.
+     */
     @Override
     public HandlerList getHandlers() {
         return HANDLERS;

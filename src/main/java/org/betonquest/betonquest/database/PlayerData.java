@@ -6,6 +6,7 @@ import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.Point;
 import org.betonquest.betonquest.Pointer;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.PlayerObjectiveEndEvent;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.database.Connector.QueryType;
@@ -492,7 +493,7 @@ public class PlayerData {
      */
     public void purgePlayer() {
         for (final Objective obj : BetonQuest.getInstance().getPlayerObjectives(playerID)) {
-            obj.removePlayer(playerID);
+            obj.removePlayer(playerID, PlayerObjectiveEndEvent.EndCause.CANCEL);
         }
         // clear all lists
         objectives.clear();
