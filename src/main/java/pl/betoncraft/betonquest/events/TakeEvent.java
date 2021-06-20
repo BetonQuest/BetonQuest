@@ -73,11 +73,14 @@ public class TakeEvent extends QuestEvent {
             for (final CheckType type : checkOrder) {
                 switch (type) {
                     case INVENTORY:
-                        checkInventory(player); break;
+                        checkInventory(player);
+                        break;
                     case ARMOR:
-                        checkArmor(player); break;
+                        checkArmor(player);
+                        break;
                     case BACKPACK:
-                        checkBackpack(playerID); break;
+                        checkBackpack(playerID);
+                        break;
                 }
             }
             notifyPlayer(playerID, questItem, deleteAmount);
@@ -105,7 +108,7 @@ public class TakeEvent extends QuestEvent {
     }
 
 
-    private void notifyPlayer(final String playerID, final QuestItem questItem,final  int amount) {
+    private void notifyPlayer(final String playerID, final QuestItem questItem, final int amount) {
         if (notify) {
             try {
                 Config.sendNotify(instruction.getPackage().getName(), playerID, "items_taken",
@@ -124,13 +127,12 @@ public class TakeEvent extends QuestEvent {
         final QuestItem questItem = neededDeletions.get(player.getUniqueId()).getLeft();
         int desiredDeletions = neededDeletions.get(player.getUniqueId()).getRight();
 
-        int index = 0;
-        while (index < items.size()) {
-            final ItemStack item = items.get(index);
+        for (int i = 0; i < items.size(); i++) {
+            final ItemStack item = items.get(i);
             if (item != null && questItem.compare(item)) {
                 if (item.getAmount() - desiredDeletions <= 0) {
                     desiredDeletions = desiredDeletions - item.getAmount();
-                    items.remove(index);
+                    items.set(i, null);
                     if (desiredDeletions == 0) {
                         break;
                     }
@@ -139,8 +141,6 @@ public class TakeEvent extends QuestEvent {
                     desiredDeletions = 0;
                     break;
                 }
-            } else {
-                index++;
             }
         }
         neededDeletions.put(player.getUniqueId(), Pair.of(questItem, desiredDeletions));
