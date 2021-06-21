@@ -15,14 +15,10 @@ import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 /**
  * Removes items from player's inventory and/or backpack
@@ -58,7 +54,6 @@ public class TakeEvent extends QuestEvent {
         }
     }
 
-    @SuppressWarnings("PMD.PreserveStackTrace")
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected Void execute(final String playerID) throws QuestRuntimeException {
@@ -88,23 +83,22 @@ public class TakeEvent extends QuestEvent {
         return null;
     }
 
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private void checkInventory(final Player player) {
-        final List<ItemStack> inv = new ArrayList<>(Arrays.asList(player.getInventory().getContents()));
-        final ItemStack[] newInv = removeDesiredAmount(player, inv);
+        final ItemStack[] inventory = player.getInventory().getContents();
+        final ItemStack[] newInv = takeDesiredAmount(player, inventory);
         player.getInventory().setContents(newInv);
     }
 
     private void checkArmor(final Player player) {
-        final List<ItemStack> armor = Arrays.asList(player.getInventory().getArmorContents());
-        final ItemStack[] newArmor = removeDesiredAmount(player, armor);
+        final ItemStack[] armorSlots = player.getInventory().getArmorContents();
+        final ItemStack[] newArmor = takeDesiredAmount(player, armorSlots);
         player.getInventory().setArmorContents(newArmor);
     }
 
     private void checkBackpack(final String playerID) {
         final List<ItemStack> backpack = BetonQuest.getInstance().getPlayerData(playerID).getBackpack();
-        final ItemStack[] newBackpack = removeDesiredAmount(PlayerConverter.getPlayer(playerID), backpack);
-        BetonQuest.getInstance().getPlayerData(playerID).setBackpack(Arrays.asList(newBackpack));
+        final List<ItemStack> newBackpack = removeDesiredAmount(PlayerConverter.getPlayer(playerID), backpack);
+        BetonQuest.getInstance().getPlayerData(playerID).setBackpack(newBackpack);
     }
 
 
@@ -123,28 +117,35 @@ public class TakeEvent extends QuestEvent {
         }
     }
 
-    private ItemStack[] removeDesiredAmount(final Player player, final List<ItemStack> items) {
+    private List<ItemStack> removeDesiredAmount(final Player player, final List<ItemStack> items) {
+        final ItemStack[] itemArray = items.toArray(new ItemStack[0]);
+        final ItemStack[] remainingItems = takeDesiredAmount(player, itemArray);
+        return Arrays.stream(remainingItems)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    private ItemStack[] takeDesiredAmount(final Player player, final ItemStack... items) {
         final QuestItem questItem = neededDeletions.get(player.getUniqueId()).getLeft();
         int desiredDeletions = neededDeletions.get(player.getUniqueId()).getRight();
 
-        for (int i = 0; i < items.size(); i++) {
-            final ItemStack item = items.get(i);
+        for (int i = 0; i < items.length; i++) {
+            final ItemStack item = items[i];
             if (item != null && questItem.compare(item)) {
-                if (item.getAmount() - desiredDeletions <= 0) {
-                    desiredDeletions = desiredDeletions - item.getAmount();
-                    items.set(i, null);
-                    if (desiredDeletions == 0) {
-                        break;
-                    }
+                if (item.getAmount() <= desiredDeletions) {
+                    items[i] = null;
                 } else {
                     item.setAmount(item.getAmount() - desiredDeletions);
-                    desiredDeletions = 0;
+                }
+                desiredDeletions = Math.max(0, desiredDeletions - item.getAmount());
+                if (desiredDeletions <= 0) {
                     break;
                 }
             }
         }
+
         neededDeletions.put(player.getUniqueId(), Pair.of(questItem, desiredDeletions));
-        return items.toArray(new ItemStack[0]);
+        return items;
     }
 
     private enum CheckType {
