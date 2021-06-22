@@ -256,6 +256,17 @@ jobs:
           cp -r build/artifacts/* target/artifacts/
           git apply build/artifacts/changes.patch
           rm build/artifacts/changes.patch
+      - name: Set mirror for all repositories in settings.xml
+        uses: whelk-io/maven-settings-xml-action@v15
+        with:
+          mirrors: |
+            [
+              {
+                "id": "BetonQuest-Mirror",
+                "mirrorOf": "*",
+                "url": "https://betonquest.org/nexus/repository/default/"
+              }
+            ]
       - name: Publish to Maven Repository
         run: |
           mvn -B deploy
