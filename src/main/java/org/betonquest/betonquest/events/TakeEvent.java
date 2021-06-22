@@ -15,47 +15,31 @@ import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 /**
  * Removes items from player's inventory and/or backpack
  */
 @SuppressWarnings("PMD.CommentRequired")
 @CustomLog
-public class TakeEvent extends QuestEvent {
+public class TakeEvent extends AbstractTakeEvent {
 
-    private final Item[] questItems;
-    private final List<CheckType> checkOrder = new ArrayList<>();
-    private final boolean notify;
+    protected Item[] questItems;
 
-    private final Map<UUID, Pair<QuestItem, Integer>> neededDeletions = new ConcurrentHashMap<>();
+    protected final Map<UUID, Pair<QuestItem, Integer>> neededDeletions = new ConcurrentHashMap<>();
 
     public TakeEvent(final Instruction instruction) throws InstructionParseException {
-        super(instruction, true);
+        super(instruction);
         questItems = instruction.getItemList();
-        notify = instruction.hasArgument("notify");
-
-        final String order = instruction.getOptional("invOrder");
-        if (order == null) {
-            checkOrder.add(CheckType.INVENTORY);
-            checkOrder.add(CheckType.ARMOR);
-            checkOrder.add(CheckType.BACKPACK);
-        } else {
-            final String[] enumNames = order.split(",");
-            for (final String s : enumNames) {
-                try {
-                    checkOrder.add(Enum.valueOf(CheckType.class, s.toUpperCase(Locale.ROOT)));
-                } catch (final IllegalArgumentException e) {
-                    throw new InstructionParseException("There is no such check type: " + s, e);
-                }
-            }
-        }
     }
+
 
     @SuppressWarnings("PMD.PreserveStackTrace")
     @Override
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final Player player = PlayerConverter.getPlayer(playerID);
         final UUID uuid = UUID.fromString(playerID);
@@ -65,67 +49,18 @@ public class TakeEvent extends QuestEvent {
             final int deleteAmount = item.getAmount().getInt(playerID);
             neededDeletions.put(uuid, Pair.of(questItem, deleteAmount));
 
-            for (final CheckType type : checkOrder) {
-                switch (type) {
-                    case INVENTORY:
-                        checkInventory(player);
-                        break;
-                    case ARMOR:
-                        checkArmor(player);
-                        break;
-                    case BACKPACK:
-                        checkBackpack(playerID);
-                        break;
-                }
-            }
-            notifyPlayer(playerID, questItem, deleteAmount);
+            checkSelectedTypes(player);
+            final String itemName = questItem.getName() == null
+                    ? new ItemStack(questItem.getMaterial()).getI18NDisplayName()
+                    : questItem.getName();
+            notifyPlayer(playerID, itemName, deleteAmount - neededDeletions.get(uuid).getRight());
         }
         return null;
     }
 
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    private void checkInventory(final Player player) {
-        final ItemStack[] inventory = player.getInventory().getContents();
-        final ItemStack[] newInv = takeDesiredAmount(player, inventory);
-        player.getInventory().setContents(newInv);
-    }
 
-    private void checkArmor(final Player player) {
-        final ItemStack[] armorSlots = player.getInventory().getArmorContents();
-        final ItemStack[] newArmor = takeDesiredAmount(player, armorSlots);
-        player.getInventory().setArmorContents(newArmor);
-    }
-
-    private void checkBackpack(final String playerID) {
-        final List<ItemStack> backpack = BetonQuest.getInstance().getPlayerData(playerID).getBackpack();
-        final List<ItemStack> newBackpack = removeDesiredAmount(PlayerConverter.getPlayer(playerID), backpack);
-        BetonQuest.getInstance().getPlayerData(playerID).setBackpack(newBackpack);
-    }
-
-
-    private void notifyPlayer(final String playerID, final QuestItem questItem, final int amount) {
-        if (notify) {
-            try {
-                Config.sendNotify(instruction.getPackage().getName(), playerID, "items_taken",
-                        new String[]{
-                                questItem.getName() == null ? questItem.getMaterial().toString().toLowerCase(Locale.ROOT).replace("_", " ") : questItem.getName(),
-                                String.valueOf(amount)},
-                        "items_taken,info");
-            } catch (final QuestRuntimeException exception) {
-                LOG.warning(instruction.getPackage(), "The notify system was unable to play a sound for the 'items_taken' category in '" + getFullId() + "'. Error was: '" + exception.getMessage() + "'", exception);
-            }
-        }
-    }
-
-    private List<ItemStack> removeDesiredAmount(final Player player, final List<ItemStack> items) {
-        final ItemStack[] itemArray = items.toArray(new ItemStack[0]);
-        final ItemStack[] remainingItems = takeDesiredAmount(player, itemArray);
-        return Arrays.stream(remainingItems)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toCollection(ArrayList::new));
-    }
-
-    private ItemStack[] takeDesiredAmount(final Player player, final ItemStack... items) {
+    @Override
+    protected ItemStack[] takeDesiredAmount(final Player player, final ItemStack... items) {
         final QuestItem questItem = neededDeletions.get(player.getUniqueId()).getLeft();
         int desiredDeletions = neededDeletions.get(player.getUniqueId()).getRight();
 
@@ -144,11 +79,5 @@ public class TakeEvent extends QuestEvent {
 
         neededDeletions.put(player.getUniqueId(), Pair.of(questItem, desiredDeletions));
         return items;
-    }
-
-    private enum CheckType {
-        INVENTORY,
-        ARMOR,
-        BACKPACK
     }
 }

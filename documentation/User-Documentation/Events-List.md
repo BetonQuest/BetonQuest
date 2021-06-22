@@ -529,7 +529,7 @@ Next goes the tag name. It can't contain spaces (though `_` is fine). Additional
 Removes items from the player’s inventory, armor slots or backpack.
 The items itself must be defined in the items.yml, optionally with an amount after a colon.
 Which inventory types are checked is defined by the `invOrder:`
-option. You can use `Backpack`, `Inventory` and `Armor` there. One after another will be checked if multiple types are defined.
+option. You can use `Backpack`, `Inventory`, `Offhand` and `Armor` there. One after another will be checked if multiple types are defined.
 
 Note: If the items aren't quest items don't use `take`event with player options in conversations!
 The player can drop items before selecting the option and pickup them after the event fires.
@@ -543,7 +543,7 @@ You can also specify `notify` keyword to display a simple message to the player 
     take nugget:6 notify
     take wand notify invOrder:Backpack
     take money:50 invOrder:Backpack,Inventory
-    take armor invOrder:Armor,Inventory,Backpack
+    take armor invOrder:Armor,Offhand,Inventory,Backpack
     ```
 
 ## Time: `time`
