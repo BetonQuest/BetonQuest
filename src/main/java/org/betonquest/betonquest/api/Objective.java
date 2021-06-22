@@ -32,7 +32,7 @@ import java.util.Map;
  * registerObjectives()} method.
  * </p>
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition"})
+@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition", "PMD.TooManyMethods"})
 @CustomLog
 public abstract class Objective {
 
@@ -153,10 +153,16 @@ public abstract class Objective {
      */
     public final void completeObjective(final String playerID) {
         // remove the objective from player's list
+        final PlayerObjectiveChangeEvent objectiveEvent = new PlayerObjectiveChangeEvent(PlayerConverter.getPlayer(playerID), this,
+                ObjectiveState.COMPLETED, ObjectiveState.ACTIVE);
+        Bukkit.getServer().getPluginManager().callEvent(objectiveEvent);
         removePlayer(playerID);
         BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective((ObjectiveID) instruction.getID());
         if (persistent) {
             BetonQuest.getInstance().getPlayerData(playerID).addNewRawObjective((ObjectiveID) instruction.getID());
+            final PlayerObjectiveChangeEvent persistentEvent = new PlayerObjectiveChangeEvent(PlayerConverter.getPlayer(playerID), this,
+                    ObjectiveState.ACTIVE, ObjectiveState.NEW);
+            Bukkit.getServer().getPluginManager().callEvent(persistentEvent);
             addPlayer(playerID, getDefaultDataInstruction());
         }
         LOG.debug(instruction.getPackage(),
@@ -217,6 +223,9 @@ public abstract class Objective {
      */
     public final void newPlayer(final String playerID) {
         final String def = getDefaultDataInstruction();
+        final PlayerObjectiveChangeEvent event = new PlayerObjectiveChangeEvent(PlayerConverter.getPlayer(playerID), this,
+                ObjectiveState.ACTIVE, ObjectiveState.NEW);
+        Bukkit.getServer().getPluginManager().callEvent(event);
         addPlayer(playerID, def);
         BetonQuest.getInstance().getPlayerData(playerID).addObjToDB(instruction.getID().getFullID(), def);
     }
@@ -438,5 +447,36 @@ public abstract class Objective {
                 LOG.warning(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
             }
         }
+    }
+
+    /**
+     * Show the states of the player objectives.
+     */
+    public enum ObjectiveState {
+
+        /**
+         * The objective is new and does not exist before.
+         */
+        NEW,
+
+        /**
+         * The objective is active.
+         */
+        ACTIVE,
+
+        /**
+         * The objective is complete.
+         */
+        COMPLETED,
+
+        /**
+         * The objective is paused.
+         */
+        PAUSED,
+
+        /**
+         * The objective is canceled.
+         */
+        CANCELED,
     }
 }

@@ -9,6 +9,7 @@ import org.apache.logging.log4j.core.Logger;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.LoadDataEvent;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -461,6 +462,9 @@ public class BetonQuest extends JavaPlugin {
                     "Player " + PlayerConverter.getName(playerID) + " already has the " + objectiveID + " objective!");
             return;
         }
+        final PlayerObjectiveChangeEvent event = new PlayerObjectiveChangeEvent(PlayerConverter.getPlayer(playerID), objective,
+                Objective.ObjectiveState.ACTIVE, Objective.ObjectiveState.PAUSED);
+        Bukkit.getServer().getPluginManager().callEvent(event);
         objective.addPlayer(playerID, instruction);
     }
 

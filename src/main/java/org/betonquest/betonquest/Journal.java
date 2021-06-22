@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.apache.commons.lang3.StringUtils;
+import org.betonquest.betonquest.api.PlayerJournalAddEvent;
+import org.betonquest.betonquest.api.PlayerJournalDeleteEvent;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.database.Connector.UpdateType;
@@ -14,6 +16,7 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -116,6 +119,8 @@ public class Journal {
      * @param pointer the pointer to be added
      */
     public void addPointer(final Pointer pointer) {
+        final PlayerJournalAddEvent event = new PlayerJournalAddEvent(PlayerConverter.getPlayer(playerID), this, pointer);
+        Bukkit.getServer().getPluginManager().callEvent(event);
         pointers.add(pointer);
         // SQLite doesn't accept formatted date and MySQL doesn't accept numeric
         // timestamp
@@ -135,6 +140,8 @@ public class Journal {
         for (final Iterator<Pointer> iterator = pointers.iterator(); iterator.hasNext(); ) {
             final Pointer pointer = iterator.next();
             if (pointer.getPointer().equalsIgnoreCase(pointerName)) {
+                final PlayerJournalDeleteEvent event = new PlayerJournalDeleteEvent(PlayerConverter.getPlayer(playerID), this, pointer);
+                Bukkit.getServer().getPluginManager().callEvent(event);
                 final String date = BetonQuest.getInstance().isMySQLUsed()
                         ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date(pointer.getTimestamp()))
                         : Long.toString(pointer.getTimestamp());
