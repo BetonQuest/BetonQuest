@@ -129,17 +129,15 @@ public class TakeEvent extends QuestEvent {
         final QuestItem questItem = neededDeletions.get(player.getUniqueId()).getLeft();
         int desiredDeletions = neededDeletions.get(player.getUniqueId()).getRight();
 
-        for (int i = 0; i < items.length; i++) {
+        for (int i = 0; i < items.length && desiredDeletions > 0; i++) {
             final ItemStack item = items[i];
             if (item != null && questItem.compare(item)) {
                 if (item.getAmount() <= desiredDeletions) {
                     items[i] = null;
+                    desiredDeletions = desiredDeletions - item.getAmount();
                 } else {
                     item.setAmount(item.getAmount() - desiredDeletions);
-                }
-                desiredDeletions = Math.max(0, desiredDeletions - item.getAmount());
-                if (desiredDeletions <= 0) {
-                    break;
+                    desiredDeletions = 0;
                 }
             }
         }
