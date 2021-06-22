@@ -153,11 +153,17 @@ public abstract class Objective {
      */
     public final void completeObjective(final String playerID) {
         // remove the objective from player's list
-        removePlayer(playerID, PlayerObjectiveEndEvent.EndCause.COMPLETE);
+        final PlayerObjectiveChangeEvent objectiveEvent = new PlayerObjectiveChangeEvent(PlayerConverter.getPlayer(playerID), this,
+                ObjectiveState.COMPLETED, ObjectiveState.ACTIVE);
+        Bukkit.getServer().getPluginManager().callEvent(objectiveEvent);
+        removePlayer(playerID);
         BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective((ObjectiveID) instruction.getID());
         if (persistent) {
             BetonQuest.getInstance().getPlayerData(playerID).addNewRawObjective((ObjectiveID) instruction.getID());
-            addPlayer(playerID, getDefaultDataInstruction(), PlayerObjectiveStartEvent.StartCause.START);
+            final PlayerObjectiveChangeEvent persistentEvent = new PlayerObjectiveChangeEvent(PlayerConverter.getPlayer(playerID), this,
+                    ObjectiveState.ACTIVE, ObjectiveState.NEW);
+            Bukkit.getServer().getPluginManager().callEvent(persistentEvent);
+            addPlayer(playerID, getDefaultDataInstruction());
         }
         LOG.debug(instruction.getPackage(),
                 "Objective \"" + instruction.getID().getFullID() + "\" has been completed for player "
@@ -217,18 +223,11 @@ public abstract class Objective {
      */
     public final void newPlayer(final String playerID) {
         final String def = getDefaultDataInstruction();
-        addPlayer(playerID, def, PlayerObjectiveStartEvent.StartCause.START);
+        final PlayerObjectiveChangeEvent event = new PlayerObjectiveChangeEvent(PlayerConverter.getPlayer(playerID), this,
+                ObjectiveState.ACTIVE, ObjectiveState.NEW);
+        Bukkit.getServer().getPluginManager().callEvent(event);
+        addPlayer(playerID, def);
         BetonQuest.getInstance().getPlayerData(playerID).addObjToDB(instruction.getID().getFullID(), def);
-    }
-
-    /**
-     * Adds this objective to the player. StartCause will be default as "StartCause.START".
-     *
-     * @param playerID          ID of the player
-     * @param instructionString instruction string for player's data
-     */
-    public final void addPlayer(final String playerID, final String instructionString) {
-        addPlayer(playerID, instructionString, PlayerObjectiveStartEvent.StartCause.START);
     }
 
     /**
@@ -236,11 +235,8 @@ public abstract class Objective {
      *
      * @param playerID          ID of the player
      * @param instructionString instruction string for player's data
-     * @param startCause        why this objective start
      */
-    public final void addPlayer(final String playerID, final String instructionString, final PlayerObjectiveStartEvent.StartCause startCause) {
-        final PlayerObjectiveStartEvent event = new PlayerObjectiveStartEvent(PlayerConverter.getPlayer(playerID), this, startCause);
-        Bukkit.getServer().getPluginManager().callEvent(event);
+    public final void addPlayer(final String playerID, final String instructionString) {
         synchronized (this) {
             ObjectiveData data = null;
             try {
@@ -265,26 +261,11 @@ public abstract class Objective {
      * Removes the objective from the player. It does not complete it nor update
      * the database. In order to complete it, use completeObjective() instead.
      * In order to remove it from database use PlayerData.deleteObjective()
-     * instead. EndCause will be default as "EndCause.CANCEL".
+     * instead.
      *
      * @param playerID ID of the player
      */
     public final void removePlayer(final String playerID) {
-        removePlayer(playerID, PlayerObjectiveEndEvent.EndCause.CANCEL);
-    }
-
-    /**
-     * Removes the objective from the player. It does not complete it nor update
-     * the database. In order to complete it, use completeObjective() instead.
-     * In order to remove it from database use PlayerData.deleteObjective()
-     * instead.
-     *
-     * @param playerID ID of the player
-     * @param endCause why this objective end
-     */
-    public final void removePlayer(final String playerID, final PlayerObjectiveEndEvent.EndCause endCause) {
-        final PlayerObjectiveEndEvent event = new PlayerObjectiveEndEvent(PlayerConverter.getPlayer(playerID),this, endCause);
-        Bukkit.getServer().getPluginManager().callEvent(event);
         synchronized (this) {
             dataMap.remove(playerID);
             if (dataMap.isEmpty()) {
@@ -466,5 +447,36 @@ public abstract class Objective {
                 LOG.warning(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
             }
         }
+    }
+
+    /**
+     * Show the states of the player objectives.
+     */
+    public enum ObjectiveState {
+
+        /**
+         * The objective is new and does not exist before.
+         */
+        NEW,
+
+        /**
+         * The objective is active.
+         */
+        ACTIVE,
+
+        /**
+         * The objective is complete.
+         */
+        COMPLETED,
+
+        /**
+         * The objective is paused.
+         */
+        PAUSED,
+
+        /**
+         * The objective is canceled.
+         */
+        CANCELED,
     }
 }

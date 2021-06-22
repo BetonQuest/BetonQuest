@@ -6,7 +6,7 @@ import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.Point;
 import org.betonquest.betonquest.Pointer;
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.PlayerObjectiveEndEvent;
+import org.betonquest.betonquest.api.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.database.Connector.QueryType;
@@ -17,6 +17,7 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.PlayerConverter;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
 import java.sql.ResultSet;
@@ -493,7 +494,10 @@ public class PlayerData {
      */
     public void purgePlayer() {
         for (final Objective obj : BetonQuest.getInstance().getPlayerObjectives(playerID)) {
-            obj.removePlayer(playerID, PlayerObjectiveEndEvent.EndCause.CANCEL);
+            final PlayerObjectiveChangeEvent event = new PlayerObjectiveChangeEvent(PlayerConverter.getPlayer(playerID), obj,
+                    Objective.ObjectiveState.CANCELED, Objective.ObjectiveState.ACTIVE);
+            Bukkit.getServer().getPluginManager().callEvent(event);
+            obj.removePlayer(playerID);
         }
         // clear all lists
         objectives.clear();

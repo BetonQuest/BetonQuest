@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - added invOrder setting to (mmoitem)take event
 - the mmoitemtake event & mmoitem condition now also check the backpack
   - this will not work until the item rework / until the backpack contains NBT data
-- added PlayerObjectiveStartEvent, PlayerObjectiveEndEvent, PlayerJournalAddEvent, PlayerJournalDeleteEvent
+- added PlayerObjectiveChangeEvent, PlayerJournalAddEvent, PlayerJournalDeleteEvent
 ### Changed
 - math variable now allows rounding output with the ~ operator
 - changed package names from `pl.betoncraft.betonquest` to `org.betonquest.betonquest`

@@ -2,7 +2,7 @@ package org.betonquest.betonquest;
 
 import lombok.CustomLog;
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.PlayerObjectiveEndEvent;
+import org.betonquest.betonquest.api.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.ConversationResumer;
 import org.betonquest.betonquest.database.PlayerData;
@@ -80,7 +80,10 @@ public class JoinQuitListener implements Listener {
     public void onPlayerQuit(final PlayerQuitEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
         for (final Objective objective : BetonQuest.getInstance().getPlayerObjectives(playerID)) {
-            objective.removePlayer(playerID, PlayerObjectiveEndEvent.EndCause.PAUSE);
+            final PlayerObjectiveChangeEvent objectiveEvent = new PlayerObjectiveChangeEvent(PlayerConverter.getPlayer(playerID), objective,
+                    Objective.ObjectiveState.PAUSED, Objective.ObjectiveState.ACTIVE);
+            Bukkit.getServer().getPluginManager().callEvent(objectiveEvent);
+            objective.removePlayer(playerID);
         }
         BetonQuest.getInstance().removePlayerData(playerID);
     }
