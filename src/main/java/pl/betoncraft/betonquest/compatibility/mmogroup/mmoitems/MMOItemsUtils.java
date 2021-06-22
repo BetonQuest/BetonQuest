@@ -1,7 +1,10 @@
 package pl.betoncraft.betonquest.compatibility.mmogroup.mmoitems;
 
 import io.lumine.mythic.lib.api.item.NBTItem;
+import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
+import net.Indyuce.mmoitems.api.item.mmoitem.MMOItem;
+import net.Indyuce.mmoitems.manager.ItemManager;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -12,7 +15,9 @@ final public class MMOItemsUtils {
     /**
      * Utility classes shouldn't be instantiated.
      */
-    private MMOItemsUtils() {}
+    private MMOItemsUtils() {
+    }
+
     /**
      * Compares an ItemStack and an MMOItem based on the MMOItem's type and ID.
      *
@@ -30,5 +35,19 @@ final public class MMOItemsUtils {
         final String realItemID = realItemNBT.getString("MMOITEMS_ITEM_ID");
 
         return realItemID.equalsIgnoreCase(itemID) && realItemType.equalsIgnoreCase(type.getId());
+    }
+
+    /**
+     * Get's an ItemStack from an MMOItems item type and MMOItems item ID.
+     *
+     * @param type the MMOItems item type
+     * @param mmoItemId the MMOItems item ID
+     * @return ItemStack constructed by MMOItems
+     */
+    @SuppressWarnings("deprecation")
+    public static ItemStack getMMOItemStack(final Type type, final String mmoItemId) {
+        final ItemManager itemManager = MMOItems.plugin.getItems();
+        final MMOItem mmoitem = itemManager.getMMOItem(type, mmoItemId);
+        return mmoitem.newBuilder().build();
     }
 }
