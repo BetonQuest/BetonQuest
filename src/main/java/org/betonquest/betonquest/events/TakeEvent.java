@@ -90,9 +90,9 @@ public class TakeEvent extends QuestEvent {
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private void checkInventory(final Player player) {
-        final List<ItemStack> inv = new ArrayList<>(Arrays.asList(player.getInventory().getContents()));
-        final ItemStack[] newInv = removeDesiredAmount(player, inv);
-        player.getInventory().setContents(newInv);
+        final ItemStack[] inventory = player.getInventory().getStorageContents();
+        final ItemStack[] newInv = takeDesiredAmount(player, inventory);
+        player.getInventory().setStorageContents(newInv);
     }
 
     private void checkArmor(final Player player) {
