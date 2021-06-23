@@ -128,8 +128,8 @@ jobs:
           mirrors: |
             [
               {
-                "id": "BetonQuest-Mirror",
-                "mirrorOf": "*",
+                "id": "betonquest-mirror",
+                "mirrorOf": "*,!betonquest",
                 "url": "https://betonquest.org/nexus/repository/default/"
               }
             ]
@@ -235,7 +235,7 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: 8
-          server-id: BetonQuest
+          server-id: betonquest
           server-username: REPOSITORY_USER
           server-password: REPOSITORY_PASS
       - name: Download Artifacts
@@ -262,8 +262,8 @@ jobs:
           mirrors: |
             [
               {
-                "id": "BetonQuest-Mirror",
-                "mirrorOf": "*",
+                "id": "betonquest-mirror",
+                "mirrorOf": "*,!betonquest",
                 "url": "https://betonquest.org/nexus/repository/default/"
               }
             ]
