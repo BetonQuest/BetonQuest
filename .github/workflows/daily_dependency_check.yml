@@ -19,8 +19,8 @@ jobs:
           mirrors: |
             [
               {
-                "id": "heroes-repo-http",
-                "mirrorOf": "heroes-repo",
+                "id": "betonquest-heroes-repo-http",
+                "mirrorOf": "betonquest-heroes-repo",
                 "url": "http://nexus.hc.to/content/repositories/pub_releases/",
                 "blocked": "false"
               }
