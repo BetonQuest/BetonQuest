@@ -129,7 +129,7 @@ jobs:
             [
               {
                 "id": "betonquest-mirror",
-                "mirrorOf": "*,!betonquest",
+                "mirrorOf": "*",
                 "url": "https://betonquest.org/nexus/repository/default/"
               }
             ]
@@ -263,7 +263,7 @@ jobs:
             [
               {
                 "id": "betonquest-mirror",
-                "mirrorOf": "*,!betonquest",
+                "mirrorOf": "*",
                 "url": "https://betonquest.org/nexus/repository/default/"
               }
             ]
