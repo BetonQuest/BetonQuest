@@ -235,7 +235,7 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: 8
-          server-id: REPOSITORY_ID
+          server-id: betonquest
           server-username: REPOSITORY_USER
           server-password: REPOSITORY_PASS
       - name: Download Artifacts
@@ -271,7 +271,6 @@ jobs:
         run: |
           mvn -B deploy
         env:
-          REPOSITORY_ID: ${{ secrets.REPOSITORY_ID }}
           REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
           REPOSITORY_USER: ${{ secrets.REPOSITORY_USER }}
           REPOSITORY_PASS: ${{ secrets.REPOSITORY_PASS }}
