@@ -34,7 +34,7 @@
 
   <distributionManagement>
     <repository>
-      <id>betonquest</id>
+      <id>${env.REPOSITORY_ID}</id>
       <!--suppress UnresolvedMavenProperty -->
       <url>${env.REPOSITORY_URL}</url>
     </repository>
