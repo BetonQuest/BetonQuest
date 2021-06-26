@@ -235,9 +235,6 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: 8
-          server-id: betonquest
-          server-username: REPOSITORY_USER
-          server-password: REPOSITORY_PASS
       - name: Download Artifacts
         uses: actions/download-artifact@v2
         with:
@@ -259,6 +256,21 @@ jobs:
       - name: Set mirror for all repositories in settings.xml
         uses: whelk-io/maven-settings-xml-action@v15
         with:
+          servers: |
+            [
+              {
+                "id": "betonquest",
+                "username": "${env.REPOSITORY_USER}",
+                "password": "${env.REPOSITORY_PASS}",
+                "configuration": {
+                  "httpConfiguration": {
+                    "all": {
+                      "usePreemptive": "true"
+                    }
+                  }
+                }
+              }
+            ]
           mirrors: |
             [
               {
