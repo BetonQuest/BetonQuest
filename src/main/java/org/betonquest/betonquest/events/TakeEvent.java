@@ -1,13 +1,9 @@
 package org.betonquest.betonquest.events;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.apache.commons.lang3.tuple.Pair;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Instruction.Item;
-import org.betonquest.betonquest.api.QuestEvent;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.item.QuestItem;
@@ -18,8 +14,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 /**
  * Removes items from player's inventory and/or backpack
@@ -28,9 +22,8 @@ import java.util.stream.Collectors;
 @CustomLog
 public class TakeEvent extends AbstractTakeEvent {
 
-    protected Item[] questItems;
-
     protected final Map<UUID, Pair<QuestItem, Integer>> neededDeletions = new ConcurrentHashMap<>();
+    protected Item[] questItems;
 
     public TakeEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction);
