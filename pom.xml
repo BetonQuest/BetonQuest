@@ -34,7 +34,7 @@
 
   <distributionManagement>
     <repository>
-      <id>BetonQuest</id>
+      <id>betonquest</id>
       <!--suppress UnresolvedMavenProperty -->
       <url>${env.REPOSITORY_URL}</url>
     </repository>
@@ -510,6 +510,62 @@
     </dependency>
   </dependencies>
 
+  <repositories>
+    <repository>
+      <id>betonquest-papermc-repo</id>
+      <url>https://papermc.io/repo/repository/maven-public/</url>
+    </repository>
+    <repository>
+      <id>betonquest-enginehub-repo</id>
+      <url>https://maven.enginehub.org/repo/</url>
+    </repository>
+    <repository> <!-- lgtm [java/maven/non-https-url] -->
+      <!-- https://github.com/BetonQuest/BetonQuest/issues/1475 -->
+      <id>betonquest-heroes-repo</id>
+      <url>http://nexus.hc.to/content/repositories/pub_releases/</url>
+    </repository>
+    <repository>
+      <id>betonquest-lumine-repo</id>
+      <url>https://mvn.lumine.io/repository/maven-public/</url>
+    </repository>
+    <repository>
+      <id>betonquest-citizensnpcs-repo</id>
+      <url>https://repo.citizensnpcs.co/</url>
+    </repository>
+    <repository>
+      <id>betonquest-codemc-repo</id>
+      <url>https://repo.codemc.io/repository/maven-public/</url>
+    </repository>
+    <repository>
+      <id>betonquest-placeholderapi-repo</id>
+      <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+    </repository>
+    <repository>
+      <id>betonquest-dmulloy2-repo</id>
+      <url>https://repo.dmulloy2.net/nexus/repository/public/</url>
+    </repository>
+    <repository>
+      <id>betonquest-lichtspiele-repo</id>
+      <url>https://nexus.lichtspiele.org/repository/maven-public/</url>
+    </repository>
+    <repository>
+      <id>betonquest-elmakers-repo</id>
+      <url>https://maven.elmakers.com/repository/</url>
+    </repository>
+    <repository>
+      <id>betonquest-jitpack-repo</id>
+      <url>https://jitpack.io</url>
+    </repository>
+    <repository>
+      <id>betonquest-sonatype-releases-repo</id>
+      <url>https://oss.sonatype.org/content/repositories/releases/</url>
+    </repository>
+    <repository>
+      <id>betonquest-sonatype-snapshots-repo</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    </repository>
+  </repositories>
+
   <build>
     <directory>target/artifacts</directory>
     <sourceDirectory>src/main/java</sourceDirectory>
@@ -935,77 +991,4 @@
       </plugin>
     </plugins>
   </reporting>
-
-  <profiles>
-    <profile>
-      <id>mirrored-repositories</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <repositories>
-        <repository>
-          <id>betonquest-repo</id>
-          <url>https://betonquest.org/nexus/repository/default/</url>
-        </repository>
-      </repositories>
-    </profile>
-    <profile>
-      <id>distributed-repositories</id>
-      <repositories>
-        <repository>
-          <id>papermc-repo</id>
-          <url>https://papermc.io/repo/repository/maven-public/</url>
-        </repository>
-        <repository>
-          <id>enginehub-repo</id>
-          <url>https://maven.enginehub.org/repo/</url>
-        </repository>
-        <repository> <!-- lgtm [java/maven/non-https-url] -->
-          <!-- https://github.com/BetonQuest/BetonQuest/issues/1475 -->
-          <id>heroes-repo</id>
-          <url>http://nexus.hc.to/content/repositories/pub_releases/</url>
-        </repository>
-        <repository>
-          <id>lumine-repo</id>
-          <url>https://mvn.lumine.io/repository/maven-public/</url>
-        </repository>
-        <repository>
-          <id>citizensnpcs-repo</id>
-          <url>https://repo.citizensnpcs.co/</url>
-        </repository>
-        <repository>
-          <id>codemc-repo</id>
-          <url>https://repo.codemc.io/repository/maven-public/</url>
-        </repository>
-        <repository>
-          <id>placeholderapi-repo</id>
-          <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
-        </repository>
-        <repository>
-          <id>dmulloy2-repo</id>
-          <url>https://repo.dmulloy2.net/nexus/repository/public/</url>
-        </repository>
-        <repository>
-          <id>lichtspiele-repo</id>
-          <url>https://nexus.lichtspiele.org/repository/maven-public/</url>
-        </repository>
-        <repository>
-          <id>elmakers-repo</id>
-          <url>https://maven.elmakers.com/repository/</url>
-        </repository>
-        <repository>
-          <id>jitpack-repo</id>
-          <url>https://jitpack.io</url>
-        </repository>
-        <repository>
-          <id>sonatype-releases-repo</id>
-          <url>https://oss.sonatype.org/content/repositories/releases/</url>
-        </repository>
-        <repository>
-          <id>sonatype-snapshots-repo</id>
-          <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        </repository>
-      </repositories>
-    </profile>
-  </profiles>
 </project>

@@ -16,7 +16,15 @@ jobs:
       - name: Set mirror for http repositories in settings.xml
         uses: whelk-io/maven-settings-xml-action@v15
         with:
-          mirrors: '[{"id":"heroes-repo-http","mirrorOf":"heroes-repo","url":"http://nexus.hc.to/content/repositories/pub_releases/","blocked":false}]'
+          mirrors: |
+            [
+              {
+                "id": "betonquest-heroes-repo-http",
+                "mirrorOf": "betonquest-heroes-repo",
+                "url": "http://nexus.hc.to/content/repositories/pub_releases/",
+                "blocked": "false"
+              }
+            ]
 
       - name: Set up JDK 1.8
         uses: actions/setup-java@v2
@@ -27,7 +35,7 @@ jobs:
 
       - name: Build with Maven
         run: |
-          mvn -B -P distributed-repositories,-mirrored-repositories package
+          mvn -B package
 
   documentation:
     name: Build Documentation

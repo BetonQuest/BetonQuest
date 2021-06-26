@@ -122,6 +122,17 @@ jobs:
       - name: Activate lf line ending check in editorconfig
         run: |
           sed -i "s~#end_of_line = ~end_of_line = ~g" ./.editorconfig
+      - name: Set mirror for all repositories in settings.xml
+        uses: whelk-io/maven-settings-xml-action@v15
+        with:
+          mirrors: |
+            [
+              {
+                "id": "betonquest-mirror",
+                "mirrorOf": "*",
+                "url": "https://betonquest.org/nexus/repository/default/"
+              }
+            ]
       - name: Build with Maven. Phase 'package'
         if: "github.event_name == 'pull_request'"
         run: |
@@ -224,9 +235,6 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: 8
-          server-id: BetonQuest
-          server-username: REPOSITORY_USER
-          server-password: REPOSITORY_PASS
       - name: Download Artifacts
         uses: actions/download-artifact@v2
         with:
@@ -245,11 +253,36 @@ jobs:
           cp -r build/artifacts/* target/artifacts/
           git apply build/artifacts/changes.patch
           rm build/artifacts/changes.patch
+      - name: Set mirror for all repositories in settings.xml
+        uses: whelk-io/maven-settings-xml-action@v15
+        with:
+          servers: |
+            [
+              {
+                "id": "betonquest",
+                "username": "${env.REPOSITORY_USER}",
+                "password": "${env.REPOSITORY_PASS}",
+                "configuration": {
+                  "httpConfiguration": {
+                    "all": {
+                      "usePreemptive": "true"
+                    }
+                  }
+                }
+              }
+            ]
+          mirrors: |
+            [
+              {
+                "id": "betonquest-mirror",
+                "mirrorOf": "*",
+                "url": "https://betonquest.org/nexus/repository/default/"
+              }
+            ]
       - name: Publish to Maven Repository
         run: |
           mvn -B deploy
         env:
-          REPOSITORY_ID: ${{ secrets.REPOSITORY_ID }}
           REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
           REPOSITORY_USER: ${{ secrets.REPOSITORY_USER }}
           REPOSITORY_PASS: ${{ secrets.REPOSITORY_PASS }}
