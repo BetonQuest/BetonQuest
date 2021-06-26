@@ -214,7 +214,7 @@ The Miner just said `Hi there, traveler!`, as expected. Now go to the conversati
 NPC_options:
   greeting:
     text: Hi there, traveler!
-    pointers: hello, bye
+    pointers: hello,bye
 player_options:
   hello:
     text: Hello!
@@ -233,7 +233,7 @@ When you save&reload, the Miner should say `Nice weather.` when you tell him `He
 NPC_options:
   greeting:
     text: Hi there, traveler!
-    pointers: hello, bye
+    pointers: hello,bye
   weather:
     text: Nice weather.
 player_options:
@@ -260,7 +260,7 @@ NPC_options:
     text: Hi there, traveler!
     condition: '!has_met_miner'
     event: meet_miner
-    pointers: hello, bye 
+    pointers: hello,bye 
 ```
 
 This means: `first_greeting` should be used if the player **does not** pass `has_met_miner` condition (meaning he
@@ -274,7 +274,7 @@ first: first_greeting,regular_greeting
 NPC_options:
   regular_greeting:
     text: Hi %player%!
-    pointers: hello, bye
+    pointers: hello,bye
 ```
 
 This option does not have any conditions, so if the `first_greeting` fails, the NPC will always choose this one.
@@ -292,10 +292,10 @@ NPC_options:
     text: Hi there, traveler!
     condition: '!has_met_miner'
     event: meet_miner
-    pointers: hello, bye 
+    pointers: hello,bye 
   regular_greeting:
     text: Hi %player%!
-    pointers: hello, bye
+    pointers: hello,bye
   weather:
     text: Nice weather.
 player_options:
