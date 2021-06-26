@@ -8,8 +8,10 @@
 * **/q reload** - reloads the plugin
 * **/q objectives {playerName} [list/add/del/complete] [instruction]** - shows player's currently active objectives
 * **/q tags {playerName} [list/add/del] [tag]** - lists all player's tags
+* **/q globaltags {playerName} [list/add/del] [tag]** - lists all global tags
 * **/q points {playerName} [list/add/del] [category] [amount]** - lists all player's points in all categories
-* **/q journal {playerName} [list/add/del] [package.pointer] [date]** - lists 
+* **/q globalpoints {playerName} [list/add/del] [category] [amount]**
+* **/q journal {playerName} [list/add/del] [package.pointer] [date]**
 * **/q event {playerName} {package.eventID}** - fires an event for the player
 * **/q condition {playerName} {package.conditionID}** - shows if the player meet specified condition or not
 * **/q item {package.itemID}** - creates an item based on what you're holding in hand
