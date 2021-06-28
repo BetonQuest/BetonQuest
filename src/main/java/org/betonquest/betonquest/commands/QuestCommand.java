@@ -11,7 +11,6 @@ import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.Point;
 import org.betonquest.betonquest.Pointer;
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.ConfigAccessor;
@@ -1296,10 +1295,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "d":
                 LOG.debug(null,
                         "Deleting objective " + objectiveID + " for player " + PlayerConverter.getName(playerID));
-                final PlayerObjectiveChangeEvent event = new PlayerObjectiveChangeEvent(PlayerConverter.getPlayer(playerID), objective,
-                        Objective.ObjectiveState.CANCELED, Objective.ObjectiveState.ACTIVE);
-                Bukkit.getServer().getPluginManager().callEvent(event);
-                objective.removePlayer(playerID);
+                objective.cancelObjectiveForPlayer(playerID);
                 playerData.removeRawObjective(objectiveID);
                 sendMessage(sender, "objective_removed");
                 break;
@@ -1524,10 +1520,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         data = "";
                     }
                     final Objective objective = BetonQuest.getInstance().getObjective(nameID);
-                    final PlayerObjectiveChangeEvent event = new PlayerObjectiveChangeEvent(PlayerConverter.getPlayer(playerID), objective,
-                            Objective.ObjectiveState.PAUSED, Objective.ObjectiveState.ACTIVE);
-                    Bukkit.getServer().getPluginManager().callEvent(event);
-                    objective.removePlayer(playerID);
+                    objective.pauseObjectiveForPlayer(playerID);
                     BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective(nameID);
                     BetonQuest.resumeObjective(PlayerConverter.getID(player), renameID, data);
                 }
@@ -1632,10 +1625,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 for (final Player player : Bukkit.getOnlinePlayers()) {
                     final String playerID = PlayerConverter.getID(player);
                     final Objective objective = BetonQuest.getInstance().getObjective(objectiveID);
-                    final PlayerObjectiveChangeEvent event = new PlayerObjectiveChangeEvent(PlayerConverter.getPlayer(playerID), objective,
-                            Objective.ObjectiveState.CANCELED, Objective.ObjectiveState.ACTIVE);
-                    Bukkit.getServer().getPluginManager().callEvent(event);
-                    objective.removePlayer(playerID);
+                    objective.cancelObjectiveForPlayer(playerID);
                     BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective(objectiveID);
                 }
                 break;

@@ -14,12 +14,13 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.utils.PlayerConverter;
-import org.bukkit.Bukkit;
+import org.bukkit.Server;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * <p>
@@ -32,7 +33,7 @@ import java.util.Map;
  * registerObjectives()} method.
  * </p>
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition", "PMD.TooManyMethods"})
+@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition", "PMD.TooManyMethods", "PMD.GodClass"})
 @CustomLog
 public abstract class Objective {
 
@@ -153,17 +154,11 @@ public abstract class Objective {
      */
     public final void completeObjective(final String playerID) {
         // remove the objective from player's list
-        final PlayerObjectiveChangeEvent objectiveEvent = new PlayerObjectiveChangeEvent(PlayerConverter.getPlayer(playerID), this,
-                ObjectiveState.COMPLETED, ObjectiveState.ACTIVE);
-        Bukkit.getServer().getPluginManager().callEvent(objectiveEvent);
-        removePlayer(playerID);
+        completeObjectiveForPlayer(playerID);
         BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective((ObjectiveID) instruction.getID());
         if (persistent) {
             BetonQuest.getInstance().getPlayerData(playerID).addNewRawObjective((ObjectiveID) instruction.getID());
-            final PlayerObjectiveChangeEvent persistentEvent = new PlayerObjectiveChangeEvent(PlayerConverter.getPlayer(playerID), this,
-                    ObjectiveState.ACTIVE, ObjectiveState.NEW);
-            Bukkit.getServer().getPluginManager().callEvent(persistentEvent);
-            addPlayer(playerID, getDefaultDataInstruction());
+            createObjectiveForPlayer(playerID, getDefaultDataInstruction());
         }
         LOG.debug(instruction.getPackage(),
                 "Objective \"" + instruction.getID().getFullID() + "\" has been completed for player "
@@ -222,55 +217,153 @@ public abstract class Objective {
      * @param playerID ID of the player
      */
     public final void newPlayer(final String playerID) {
-        final String def = getDefaultDataInstruction();
-        final PlayerObjectiveChangeEvent event = new PlayerObjectiveChangeEvent(PlayerConverter.getPlayer(playerID), this,
-                ObjectiveState.ACTIVE, ObjectiveState.NEW);
-        Bukkit.getServer().getPluginManager().callEvent(event);
-        addPlayer(playerID, def);
-        BetonQuest.getInstance().getPlayerData(playerID).addObjToDB(instruction.getID().getFullID(), def);
+        final String defaultInstruction = getDefaultDataInstruction();
+        createObjectiveForPlayer(playerID, defaultInstruction);
+        BetonQuest.getInstance().getPlayerData(playerID).addObjToDB(instruction.getID().getFullID(), defaultInstruction);
     }
 
     /**
-     * Adds this objective to the player.
+     * Start a new objective for the player.
      *
-     * @param playerID          ID of the player
-     * @param instructionString instruction string for player's data
+     * @param playerId UUID as string of the player that has the objective
+     * @param instructionString the objective data instruction
+     * @see #resumeObjectiveForPlayer(String, String)
      */
-    public final void addPlayer(final String playerID, final String instructionString) {
+    public final void createObjectiveForPlayer(final String playerId, final String instructionString) {
+        startObjective(playerId, instructionString, ObjectiveState.NEW);
+    }
+
+    /**
+     * Resume a paused objective for the player.
+     *
+     * @param playerId UUID as string of the player that has the objective
+     * @param instructionString the objective data instruction
+     * @see #createObjectiveForPlayer(String, String)
+     */
+    public final void resumeObjectiveForPlayer(final String playerId, final String instructionString) {
+        startObjective(playerId, instructionString, ObjectiveState.PAUSED);
+    }
+
+    /**
+     * Start a objective for the player. This lower level method allows to set the previous state directly. If possible
+     * prefer {@link #createObjectiveForPlayer(String, String)} and {@link #resumeObjectiveForPlayer(String, String)}.
+     *
+     * @param playerID UUID as string of the player that has the objective
+     * @param instructionString the objective data instruction
+     * @param previousState the objective's previous state
+     */
+    public final void startObjective(final String playerID, final String instructionString, final ObjectiveState previousState) {
         synchronized (this) {
-            ObjectiveData data = null;
-            try {
-                data = template.getConstructor(String.class, String.class, String.class).newInstance(instructionString, playerID,
-                        this.instruction.getID().getFullID());
-            } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                if (e.getCause() instanceof InstructionParseException) {
-                    LOG.warning(instruction.getPackage(), "Error while loading " + this.instruction.getID().getFullID() + " objective data for player "
-                            + PlayerConverter.getName(playerID) + ": " + e.getCause().getMessage(), e);
-                } else {
-                    LOG.reportException(instruction.getPackage(), e);
-                }
-            }
-            if (dataMap.isEmpty()) {
-                start();
-            }
-            dataMap.put(playerID, data);
+            createObjectiveData(playerID, instructionString)
+                    .ifPresent(data -> startObjectiveWithEvent(playerID, data, previousState));
         }
     }
 
+    private Optional<ObjectiveData> createObjectiveData(final String playerID, final String instructionString) {
+        try {
+            return Optional.of(constructObjectiveDataUnsafe(playerID, instructionString));
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException exception) {
+            handleObjectiveDataConstructionError(playerID, exception);
+            return Optional.empty();
+        }
+    }
+
+    private void handleObjectiveDataConstructionError(final String playerID, final ReflectiveOperationException exception) {
+        if (exception.getCause() instanceof InstructionParseException) {
+            LOG.warning(instruction.getPackage(), "Error while loading " + this.instruction.getID().getFullID() + " objective data for player "
+                    + PlayerConverter.getName(playerID) + ": " + exception.getCause().getMessage(), exception);
+        } else {
+            LOG.reportException(instruction.getPackage(), exception);
+        }
+    }
+
+    private ObjectiveData constructObjectiveDataUnsafe(final String playerID, final String instructionString)
+            throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        final String fullId = this.instruction.getID().getFullID();
+        return template.getConstructor(String.class, String.class, String.class)
+                .newInstance(instructionString, playerID, fullId);
+    }
+
+    private void startObjectiveWithEvent(final String playerId, final ObjectiveData data, final ObjectiveState previousState) {
+        runObjectiveChangeEvent(playerId, previousState, ObjectiveState.ACTIVE);
+        activateObjective(playerId, data);
+    }
+
     /**
-     * Removes the objective from the player. It does not complete it nor update
-     * the database. In order to complete it, use completeObjective() instead.
-     * In order to remove it from database use PlayerData.deleteObjective()
-     * instead.
+     * Complete an active objective for the player. It will only remove it from the player and not run any completion
+     * events, run {@link #completeObjective(String)} instead! It does also not remove it from the database.
      *
-     * @param playerID ID of the player
+     * @param playerId UUID as string of the player that has the objective
+     * @see #cancelObjectiveForPlayer(String)
+     * @see #pauseObjectiveForPlayer(String)
      */
-    public final void removePlayer(final String playerID) {
+    public final void completeObjectiveForPlayer(final String playerId) {
+        stopObjective(playerId, ObjectiveState.COMPLETED);
+    }
+
+    /**
+     * Cancel an active objective for the player. It will only remove it from the player and not remove it from the
+     * database.
+     *
+     * @param playerId UUID as string of the player that has the objective
+     * @see #completeObjectiveForPlayer(String)
+     * @see #pauseObjectiveForPlayer(String)
+     */
+    public final void cancelObjectiveForPlayer(final String playerId) {
+        stopObjective(playerId, ObjectiveState.CANCELED);
+    }
+
+    /**
+     * Pause an active objective for the player.
+     *
+     * @param playerId UUID as string of the player that has the objective
+     * @see #completeObjectiveForPlayer(String)
+     * @see #cancelObjectiveForPlayer(String)
+     */
+    public final void pauseObjectiveForPlayer(final String playerId) {
+        stopObjective(playerId, ObjectiveState.PAUSED);
+    }
+
+    /**
+     * Stops a objective for the player. This lower level method allows to set the previous state directly. If possible
+     * prefer {@link #completeObjectiveForPlayer(String)}, {@link #cancelObjectiveForPlayer(String)} and
+     * {@link #pauseObjectiveForPlayer(String)}.
+     *
+     * @param playerID UUID as string of the player that has the objective
+     * @param newState the objective's new state
+     */
+    public final void stopObjective(final String playerID, final ObjectiveState newState) {
         synchronized (this) {
-            dataMap.remove(playerID);
-            if (dataMap.isEmpty()) {
-                stop();
-            }
+            stopObjectiveWithEvent(playerID, newState);
+        }
+    }
+
+    private void stopObjectiveWithEvent(final String playerId, final ObjectiveState newState) {
+        runObjectiveChangeEvent(playerId, ObjectiveState.ACTIVE, newState);
+        deactivateObjective(playerId);
+    }
+
+    private void runObjectiveChangeEvent(final String playerId, final ObjectiveState previousState, final ObjectiveState newState) {
+        final PlayerObjectiveChangeEvent event = new PlayerObjectiveChangeEvent(PlayerConverter.getPlayer(playerId), this, newState, previousState);
+        final Server server = BetonQuest.getInstance().getServer();
+        if (server.isPrimaryThread()) {
+            server.getPluginManager().callEvent(event);
+        } else {
+            server.getScheduler().runTask(BetonQuest.getInstance(), () -> server.getPluginManager().callEvent(event));
+        }
+    }
+
+    private void activateObjective(final String playerId, final ObjectiveData data) {
+        if (dataMap.isEmpty()) {
+            start();
+        }
+        dataMap.put(playerId, data);
+    }
+
+    private void deactivateObjective(final String playerId) {
+        dataMap.remove(playerId);
+        if (dataMap.isEmpty()) {
+            stop();
         }
     }
 
@@ -295,7 +388,7 @@ public abstract class Objective {
         if (data == null) {
             return null;
         }
-        return dataMap.get(playerID).toString();
+        return data.toString();
     }
 
     /**
@@ -406,7 +499,8 @@ public abstract class Objective {
             saver.add(new Saver.Record(Connector.UpdateType.REMOVE_OBJECTIVES, playerID, objID));
             saver.add(new Saver.Record(Connector.UpdateType.ADD_OBJECTIVES, playerID, objID, toString()));
             final QuestDataUpdateEvent event = new QuestDataUpdateEvent(playerID, objID, toString());
-            Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> Bukkit.getPluginManager().callEvent(event));
+            final Server server = BetonQuest.getInstance().getServer();
+            server.getScheduler().runTask(BetonQuest.getInstance(), () -> server.getPluginManager().callEvent(event));
             // update the journal so all possible variables display correct
             // information
             BetonQuest.getInstance().getPlayerData(playerID).getJournal().update();

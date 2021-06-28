@@ -3,8 +3,6 @@ package org.betonquest.betonquest.events;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.PlayerData;
@@ -21,7 +19,7 @@ import java.util.Arrays;
 import java.util.Locale;
 
 /**
- * Starts an objective for the player
+ * Starts an objective for the player.
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
 @CustomLog
@@ -89,10 +87,7 @@ public class ObjectiveEvent extends QuestEvent {
                     break;
                 case "delete":
                 case "remove":
-                    final PlayerObjectiveChangeEvent event = new PlayerObjectiveChangeEvent(PlayerConverter.getPlayer(playerID),
-                            BetonQuest.getInstance().getObjective(objective), Objective.ObjectiveState.CANCELED, Objective.ObjectiveState.ACTIVE);
-                    Bukkit.getServer().getPluginManager().callEvent(event);
-                    BetonQuest.getInstance().getObjective(objective).removePlayer(playerID);
+                    BetonQuest.getInstance().getObjective(objective).cancelObjectiveForPlayer(playerID);
                     BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective(objective);
                     break;
                 case "complete":
