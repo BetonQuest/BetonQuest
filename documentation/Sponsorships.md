@@ -2,9 +2,4 @@
 
 [Support us on Patreon!  :heart:](https://patreon.com/betonquest/){: .md-button .md-button--primary }
 
-
 Thanks to all our Patreons for making this project possible!
-This is a list of our major sponsors:
-
-## KGB Edition:
-- finder17
