@@ -13,12 +13,8 @@ such as "Quests" to maintain compatibility with existing Quests on your server.
 
 Please visit the page that fits your needs the most:
 
-[Im a server owner! <span style="font-size:25px">:man_office_worker:</span>](For-Owners.md){: .md-button .md-button--primary }
-&nbsp;&nbsp;&nbsp;
-[Im a quester! <span style="font-size:25px">:memo:</span>](For-Questers.md){: .md-button .md-button--primary }
-&nbsp;&nbsp;&nbsp;
-[I want to contribute! <span style="font-size:25px">:handshake:</span>](Contributing/Contributing.md){: .md-button .md-button--primary }
-&nbsp;&nbsp;&nbsp;
-[Im a developer! <span style="font-size:25px">:man_technologist:</span>](Developer-Documentation/API.md){: .md-button .md-button--primary }
-&nbsp;&nbsp;&nbsp;
-[Sponsor this project! <span style="font-size:25px">:moneybag:</span>](Sponsorships.md){: .md-button .md-button--primary }
+[Im a server owner! <span style="font-size:25px">:man_office_worker:</span>](For-Owners.md){ .md-button .md-button--primary .button-list }
+[Im a quester! <span style="font-size:25px">:memo:</span>](For-Questers.md){ .md-button .md-button--primary .button-list }
+[I want to contribute! <span style="font-size:25px">:handshake:</span>](Contributing/Contributing.md){ .md-button .md-button--primary .button-list }
+[Im a developer! <span style="font-size:25px">:man_technologist:</span>](Developer-Documentation/API.md){ .md-button .md-button--primary .button-list }
+[Sponsor this project! <span style="font-size:25px">:moneybag:</span>](Sponsorships.md){ .md-button .md-button--primary .button-list }

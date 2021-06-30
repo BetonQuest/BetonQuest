@@ -14,6 +14,7 @@ extra_css:
   - 'webCode/css/centered.css'
   - 'webCode/css/contentAreaFullWidth.css'
   - 'webCode/css/admonition.css'
+  - 'webCode/css/button.css'
 
 extra_javascript:
   - 'webCode/js/copyLinkToClipboard.js'
