@@ -10,11 +10,11 @@ We have a [VSCode addon](./Getting-Started/Setting-up-the-editor.md) to make edi
 
 
 ## Can you add particles over NPCs' heads like in "Quests" plugin?
-Yes! Check out the [EffectLib](../User-Documentation/Compatibility/#effectlib) compatibility documentation.
+Yes! Check out the [EffectLib](../Documentation/Compatibility/#effectlib) compatibility documentation.
 
 
 ## Can I assign multiple conversation files to one NPC?
-No. You can use [cross-conversation-pointers](../User-Documentation/Conversations.md#cross-conversation-pointers) though.
+No. You can use [cross-conversation-pointers](../Documentation/Conversations.md#cross-conversation-pointers) though.
 
 ## Can I delete all tags from a player at once?
 No. You either need to run all `/q t del PLAYER PACKAGE.TAG` commands, or you can use `/q purge PLAYER` to reset an entire player profile.
@@ -24,7 +24,7 @@ Or use a `run` event in which you specify all tag-deleting events at once.
 (We will improve this don't worry)
 
 ## How do I start an objective from a conversation?
-Use the [objective event](../User-Documentation/Events-List.md/#objective-objective).
+Use the [objective event](../Documentation/Events-List.md/#objective-objective).
 
 ## Why is X thing not working?
 If something stopped working before asking for help please do /q reload and READ THE OUTPUT IN CONSOLE!
@@ -96,7 +96,7 @@ You can just add them together using `math.calc`.
 ## How to match different items with just one condition?
 If you want a player to have e.g. `potato + poisonous_potato = 64` in his inventory you can make a special item in your 
 items.yml file that matches items based of their names. 
-More specifically, you can have a [*Block Selector*](../User-Documentation/Reference.md#block-selectors) that is a *regex*.
+More specifically, you can have a [*Block Selector*](../Documentation/Reference.md#block-selectors) that is a *regex*.
 It would look like this in the example:
 ```YAML
 #items.yml
@@ -154,7 +154,7 @@ Starting the random quest must be blocked with a special tag. If there is no suc
 
 ## The same random daily quest for every player
 
-To do this use something called "[Static event](../../User-Documentation/Reference/#static-events)".
+To do this use something called "[Static event](../../Documentation/Reference/#static-events)".
 Run a static `folder` event every day at some late hour (for example 4am).
 The `folder` event should be `random:1` and contain several different `globaltag` events.
 These events will set a specific tag. Now when the player starts the conversation and asks about the daily quest the NPC

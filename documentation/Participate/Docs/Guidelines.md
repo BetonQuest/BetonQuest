@@ -9,7 +9,7 @@ Links to internal pages can be opened in the same tab. This works with the norma
 ``` linenums="1"
 Click the [highlighted words](Contributing.md).
 ```
-Result: Click the [highlighted words](../Contributing.md).
+Result: Click the [highlighted words](../Overview.md).
 
 ###External
 Links to external sites must be opened in new tabs using this html code:

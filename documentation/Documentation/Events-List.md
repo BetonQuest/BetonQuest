@@ -2,7 +2,7 @@
 
 ## Cancel quest: `cancel`
 
-This event works in the same way as a [quest canceler in the backpack](/User-Documentation/Reference/#canceling-quests).
+This event works in the same way as a [quest canceler in the backpack](/Documentation/Reference/#canceling-quests).
 Running it is equal to the player clicking on the bone. The only argument is a name of a quest canceler, as defined in _main.yml_
 
 !!! example
@@ -332,7 +332,7 @@ Displays a notification using the NotifyIO system.
 |--------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
 | message  	                                                         | The message that will be displayed. Supports variables. *Required, must be first*             	                                                                     |
 | category 	                                                         | Will load all settings from that Notification Category. Can be a comma-seperated list. The first existent category will be used. *Optional*                  |   
-| io       	                                                         | Any [NotifyIO](https://betonquest.github.io/BetonQuest/RELEASE/User-Documentation/Notification-IO%27s-%26-Categories). Overrides the "category" settings. *Optional*                                                                                     |
+| io       	                                                         | Any [NotifyIO](https://betonquest.github.io/BetonQuest/RELEASE/Documentation/Notification-IO%27s-%26-Categories). Overrides the "category" settings. *Optional*                                                                                     |
 | [NotifyIO](Notification-IO's-&-Categories.md#notify-ios) 	         | Any setting from the defined notifyIO. Can be used multiple times. Overrides the "category" settings. *Optional*                                                                     |
 
 The fallback NotifyIO is `chat` if no argument other than `message` is specified.    
@@ -572,7 +572,7 @@ if the player has one active.The first and only argument must be location. It's 
 This event has only one purpose: Change values that are stored in `variable` objective variables. The first argument is
 the ID of the `variable` objective. The second argument is the name of the variable to set. The third argument is the
 value to set. Both the name and value can use `%...%` variables. To delete a variable you can use `""`. Refer to the
-[`variable` objective](/User-Documentation/Objectives-List/#variable-variable) documentation for more information about
+[`variable` objective](/Documentation/Objectives-List/#variable-variable) documentation for more information about
 storing variables.
 
 !!! example

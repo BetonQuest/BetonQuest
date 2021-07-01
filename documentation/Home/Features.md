@@ -11,7 +11,7 @@ and with multiple endings that affect a player's gameplay.
 Questers can also choose between five different styles to display their conversations.
 
  <video autoplay muted loop
-     src="../media/content/User-Documentation/Conversations/MenuConvIO.mp4"
+     src="../media/content/Documentation/Conversations/MenuConvIO.mp4"
      width="780">
  Sorry, your browser doesn't support embedded videos.
  </video>
@@ -23,7 +23,7 @@ Questers can make use of BetonQuests notifyIO system that provides access to all
 Therefore you can provide information to your players like so:
 
  <video controls loop
-     src="../media/content/User-Documentation/Notifications/NotifySystemOverview.mp4"
+     src="../media/content/Documentation/Notifications/NotifySystemOverview.mp4"
      width="780" height="400">
  Sorry, your browser doesn't support embedded videos.
  </video>
@@ -40,7 +40,7 @@ BetonQuest allows you to hide Players from each other based on whatever conditio
 and HolographicDisplays Holograms.
 
 <video controls loop 
-  src="../media/content/User-Documentation/Compatibility/PlayerHider.mp4"
+  src="../media/content/Documentation/Compatibility/PlayerHider.mp4"
   width="780" height="500">
 Sorry, your browser doesn't support embedded videos.
 </video>
@@ -63,7 +63,7 @@ lines based upon the progress in your old plugin.
 
 If just Beton isn't enough you can always just hook into Skript or Denizen too.
 
-Full list of integrations [here](User-Documentation/Compatibility.md).
+Full list of integrations [here](../Documentation/Compatibility.md).
 
 ##Examples
 
