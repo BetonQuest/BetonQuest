@@ -14,6 +14,7 @@ extra_css:
   - 'webCode/css/centered.css'
   - 'webCode/css/contentAreaFullWidth.css'
   - 'webCode/css/admonition.css'
+  - 'webCode/css/button.css'
 
 extra_javascript:
   - 'webCode/js/copyLinkToClipboard.js'
@@ -110,6 +111,7 @@ nav:
           - '✨ Features': Features.md
           - '👔  For Owners': For-Owners.md
           - '🎨 For Questers': For-Questers.md
+      - '💲 Sponsorships': Sponsorships.md
   - 'Learn Beton':
       - '👋 Welcome!': Learn-Beton/Welcome.md
       - 'Getting Started':
@@ -154,9 +156,6 @@ nav:
       - 'Docs':
           - '🔧 Setup': Contributing/Documentation/Setup.md
           - '📚 Guidelines': Contributing/Documentation/Guidelines.md
-      - 'Sponsorships':
-          - '💲 Patreon': Contributing/Sponsors.md
-
 
 google_analytics:
   - UA-164568470-1
