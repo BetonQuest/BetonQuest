@@ -1,23 +1,20 @@
-package pl.betoncraft.betonquest.utils.updater;
+package org.betonquest.betonquest.utils.updater;
 
 import org.apache.commons.io.FileUtils;
+import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.utils.Updater;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.MockedConstruction;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
-import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.utils.LogUtils;
-import pl.betoncraft.betonquest.utils.Updater;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -66,7 +63,7 @@ public class UpdaterTest {
         super();
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         pluginFile = pluginFolder.newFile("BetonQuest.jar");
         updateFolder = pluginFolder.newFolder("update");
