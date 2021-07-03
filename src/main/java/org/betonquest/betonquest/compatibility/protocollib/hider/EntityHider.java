@@ -10,6 +10,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.papermc.lib.PaperLib;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,7 +33,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class EntityHider implements Listener {
-    // Packets that update remote player entities
+
+    /**
+     * Packets to suppress for hidden entities. It contains all packets that update remote player entities.<br>
+     * This list is used for Minecraft versions 1.13 to 1.16.
+     */
     private static final PacketType[] ENTITY_PACKETS = {
             PacketType.Play.Server.ENTITY_EQUIPMENT,
             PacketType.Play.Server.ANIMATION,
@@ -54,10 +59,42 @@ public class EntityHider implements Listener {
             PacketType.Play.Server.ENTITY_EFFECT,
             PacketType.Play.Server.REMOVE_ENTITY_EFFECT,
             PacketType.Play.Server.BLOCK_BREAK_ANIMATION,
-            PacketType.Play.Server.COMBAT_EVENT
+            PacketType.Play.Server.PLAYER_COMBAT_ENTER,
 
             // We don't handle DESTROY_ENTITY though
     };
+
+    /**
+     * Packets to suppress for hidden entities. It contains all packets that update remote player entities.<br>
+     * This list is used for Minecraft versions 1.13 to 1.16.
+     */
+    @SuppressWarnings("deprecation")
+    private static final PacketType[] ENTITY_PACKETS_PRE_17 = {
+            PacketType.Play.Server.ENTITY_EQUIPMENT,
+            PacketType.Play.Server.ANIMATION,
+            PacketType.Play.Server.NAMED_ENTITY_SPAWN,
+            PacketType.Play.Server.COLLECT,
+            PacketType.Play.Server.SPAWN_ENTITY,
+            PacketType.Play.Server.SPAWN_ENTITY_LIVING,
+            PacketType.Play.Server.SPAWN_ENTITY_PAINTING,
+            PacketType.Play.Server.SPAWN_ENTITY_EXPERIENCE_ORB,
+            PacketType.Play.Server.ENTITY_VELOCITY,
+            PacketType.Play.Server.REL_ENTITY_MOVE,
+            PacketType.Play.Server.ENTITY_LOOK,
+            PacketType.Play.Server.REL_ENTITY_MOVE_LOOK,
+            PacketType.Play.Server.ENTITY_TELEPORT,
+            PacketType.Play.Server.ENTITY_HEAD_ROTATION,
+            PacketType.Play.Server.ENTITY_STATUS,
+            PacketType.Play.Server.ATTACH_ENTITY,
+            PacketType.Play.Server.ENTITY_METADATA,
+            PacketType.Play.Server.ENTITY_EFFECT,
+            PacketType.Play.Server.REMOVE_ENTITY_EFFECT,
+            PacketType.Play.Server.BLOCK_BREAK_ANIMATION,
+            PacketType.Play.Server.COMBAT_EVENT,
+
+            // We don't handle DESTROY_ENTITY though
+    };
+
     // Current policy
     protected final Policy policy;
     // Listeners
@@ -211,11 +248,21 @@ public class EntityHider implements Listener {
      * @param plugin - the parent plugin.
      * @return The packet listener.
      */
+    @SuppressWarnings("deprecation")
     private PacketAdapter constructProtocol(final Plugin plugin) {
-        return new PacketAdapter(plugin, ENTITY_PACKETS) {
+        final PacketType[] packetList;
+        final PacketType combatEvent;
+        if (PaperLib.isVersion(17)) {
+            packetList = ENTITY_PACKETS;
+            combatEvent = PacketType.Play.Server.PLAYER_COMBAT_ENTER;
+        } else {
+            packetList = ENTITY_PACKETS_PRE_17;
+            combatEvent = PacketType.Play.Server.COMBAT_EVENT;
+        }
+        return new PacketAdapter(plugin, packetList) {
             @Override
             public void onPacketSending(final PacketEvent event) {
-                final int index = event.getPacketType().equals(PacketType.Play.Server.COMBAT_EVENT) ? 1 : 0;
+                final int index = event.getPacketType().equals(combatEvent) ? 1 : 0;
 
                 if (!event.isPlayerTemporary()) {
                     final Integer entityID = event.getPacket().getIntegers().readSafely(index);
