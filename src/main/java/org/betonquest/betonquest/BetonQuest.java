@@ -198,6 +198,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.InvocationTargetException;
@@ -545,6 +546,14 @@ public class BetonQuest extends JavaPlugin {
 
     public String getPluginTag() {
         return pluginTag;
+    }
+
+    public void callSyncBukkitEvent(final Event event) {
+        if (getServer().isPrimaryThread()) {
+            getServer().getPluginManager().callEvent(event);
+        } else {
+            getServer().getScheduler().runTask(BetonQuest.getInstance(), () -> getServer().getPluginManager().callEvent(event));
+        }
     }
 
     @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.DoNotUseThreads", "PMD.NPathComplexity"})
