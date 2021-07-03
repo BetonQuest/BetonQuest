@@ -344,13 +344,8 @@ public abstract class Objective {
     }
 
     private void runObjectiveChangeEvent(final String playerId, final ObjectiveState previousState, final ObjectiveState newState) {
-        final PlayerObjectiveChangeEvent event = new PlayerObjectiveChangeEvent(PlayerConverter.getPlayer(playerId), this, newState, previousState);
-        final Server server = BetonQuest.getInstance().getServer();
-        if (server.isPrimaryThread()) {
-            server.getPluginManager().callEvent(event);
-        } else {
-            server.getScheduler().runTask(BetonQuest.getInstance(), () -> server.getPluginManager().callEvent(event));
-        }
+        BetonQuest.getInstance()
+                .callSyncBukkitEvent(new PlayerObjectiveChangeEvent(PlayerConverter.getPlayer(playerId), this, newState, previousState));
     }
 
     private void activateObjective(final String playerId, final ObjectiveData data) {
