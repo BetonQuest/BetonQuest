@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `brew` objective triggers all the time and counts correctly
 - only generate default package if BetonQuest folder is empty
 - fix backpack passing references instead of clones
+- fixed combat event packet that changed with MC 1.17
 ### Security
 - the take event is now threadsafe
 
