@@ -65,6 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - the shear objective's sheep couldn't have underscores in their names
 - backpack passing references instead of clones
 - compass event now allows global variables
+- fixed combat event packet that changed with MC 1.17
 ### Security
 - it was possible to put a QuestItem into a chest
 - the take event is now threadsafe
