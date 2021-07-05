@@ -421,7 +421,6 @@ jobs:
           DRAFT_RELEASE: false
           PRE_RELEASE: false
           CHANGELOG_FILE: CHANGELOG.md
-          ALLOW_TAG_PREFIX: true
           RELEASE_NAME: BetonQuest ${{ env.VERSION }}
         with:
           args: |
