@@ -18,6 +18,7 @@ extra_css:
 
 extra_javascript:
   - 'webCode/js/copyLinkToClipboard.js'
+  - 'webCode/js/matomo.js'
 
 # More info on this theme: https://squidfunk.github.io/mkdocs-material
 theme:
@@ -156,7 +157,3 @@ nav:
       - 'Docs':
           - '🔧 Setup': Contributing/Documentation/Setup.md
           - '📚 Guidelines': Contributing/Documentation/Guidelines.md
-
-google_analytics:
-  - UA-164568470-1
-  - auto
