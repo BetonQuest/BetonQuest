@@ -6,11 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - ${current-date}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixes
+### Security
+
+## [1.12.4] - 2021-07-05
+### Added
 - Vietnamese translation
 - added invOrder setting to (mmoitem)take event
 - the mmoitemtake event & mmoitem condition now also check the backpack
   - this will not work until the item rework / until the backpack contains NBT data
-
 ### Changed
 - `/q create package` command does now create an empty package
 ### Deprecated
