@@ -35,7 +35,7 @@ Feature[^1]               | BetonQuest         | Quests                         
 Free                      | :white_check_mark: | :white_check_mark:                     | :white_check_mark:    | :x:  (20$)               | :white_check_mark:  |
 OpenSource                | :white_check_mark: | :white_check_mark:                     | :white_check_mark:    | :x:                      | :white_check_mark:  |
 API                       | :white_check_mark: | :white_check_mark:                     | :white_check_mark:    | (Private)[^2] :weary:    | :question:          |
-Version Support           | 1.13.2-1.16.5      | 1.7-1.16.5                             | 1.11-1.16.5           | 1.7-1.16.5               | 1.13-1.16.5         | 
+Version Support           | 1.13.2-1.17.0      | 1.7-1.17.0                             | 1.11-1.16.5           | 1.7-1.17.0               | 1.13-1.16.5         | 
 Database Support          | SQL Lite & MySQL   | :x:                                    | MySQL                 | MySQL                    | :question:          |
 Bungee Support            | :white_check_mark: | :x:                                    | :x:                   | :x:                      | :question:          |
 Per Player Language       | :white_check_mark: | :question:                             | :x:                   | :x:                      | :question:          |
