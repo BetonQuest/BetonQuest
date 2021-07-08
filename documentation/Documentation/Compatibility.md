@@ -774,7 +774,7 @@ on large servers if used together with the [npc hider interval](./Configuration.
 ProtocolLib also enables a conversation IO that makes use of a chat menu system.
 
 <video controls loop
-     src="../../media/content/User-Documentation/Conversations/MenuConvIO.mp4"
+     src="../../media/content/Documentation/Conversations/MenuConvIO.mp4"
      width="780" height="500">
  Sorry, your browser doesn't support embedded videos.
  </video>

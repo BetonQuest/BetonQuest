@@ -46,7 +46,7 @@ You need to add your changes to the _Changelog.md_ file that can be found in the
 
 #### Update the documentation
 You also need to document changes or additions to the plugins feature set in our documentation. Please notice that the documentation 
-also has [it's own guidelines](../Contributing/Documentation/Guidelines.md).
+also has [it's own guidelines](../Docs/Guidelines.md).
 
 #### Clean the commit history
 You need to have a clean commit history in order to get you PR accepted.

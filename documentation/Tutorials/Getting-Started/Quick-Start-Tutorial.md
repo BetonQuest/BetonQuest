@@ -24,7 +24,7 @@ You will receive the reward.
 
 Now that you know how a (very) simple quest looks like time to start learning how to write something similar. 
 Let's start with events. We won't do conversations just now, since they heavily use events and conditions, 
-so you need to know them first. You can read complete reference to events in the [Reference chapter](../../User-Documentation/Reference.md#events).
+so you need to know them first. You can read complete reference to events in the [Reference chapter](../../Documentation/Reference.md#events).
 Do that now or just continue with this tutorial.
 
 ### Events
@@ -43,7 +43,7 @@ issue **/q reload** command and run the event with **/q e {name} default.mega** 
 and `mega` is the name of the event we've just created). It should show you a `Hello world!` notification in the chat.
 
 Let's create another event, a more complicated one. `teleport` seems complicated enough.
-As you can read in the [Events list](../../User-Documentation/Events-List.md), it needs a single argument, the location.
+As you can read in the [Events list](../../Documentation/Events-List.md), it needs a single argument, the location.
 Press F3 and check out your current location (it's shown on the left, three numbers, `x`, `y` and `z`).
 Now add in _events.yml_ another line:
 
@@ -56,7 +56,7 @@ current world's name. Save the file, reload the plugin (**/q reload**) and run t
 before. It should teleport you to the location you have specified.
 
 Congratulations, you have just created your first events. Go ahead and do some experiments with other event types. 
-You can find them in [Events list](../../User-Documentation/Events-List.md) chapter.
+You can find them in [Events list](../../Documentation/Events-List.md) chapter.
 Once you're done let's start learning conditions.
 
 ### Conditions
@@ -311,7 +311,7 @@ Now you should experiment some more with this conversation, you can help yoursel
 Try to understand how that conversation works step by step. As the excercise you should complete the Miner NPC, so he
 asks you to mine some iron ore, then smelt it in the furnace, next craft an armor with it and return to him wearing this armor.
 
-You might want to check out the [Reference](../../User-Documentation/Reference.md) chapter to see how to handle items in 
+You might want to check out the [Reference](../../Documentation/Reference.md) chapter to see how to handle items in 
 your quests and how to add entries to the journal. If you want to use Citizens NPCs instead of the ones made with clay 
 you will find information you need in that chapter too. To find out more about events, conditions, objectives and variables,
 take a look at the appropriate lists (after the _Reference_ chapter).

@@ -202,7 +202,7 @@ jobs:
           sed -i "s~## \[Unreleased\]~## \[${VERSION}\]~g" ./CHANGELOG.md
           DATE=$(date +%Y-%m-%d)
           sed -i "s~\${current-date}~$DATE~g" ./CHANGELOG.md
-          cp ./CHANGELOG.md './documentation/User-Documentation/CHANGELOG.md'
+          cp ./CHANGELOG.md './documentation/Documentation/CHANGELOG.md'
       - name: Build with mkdocs
         run: |
           mkdocs build
