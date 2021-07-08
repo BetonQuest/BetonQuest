@@ -42,7 +42,7 @@ public class TakeEvent extends AbstractTakeEvent {
 
             checkSelectedTypes(player);
             final String itemName = questItem.getName() == null
-                    ? new ItemStack(questItem.getMaterial()).getI18NDisplayName()
+                    ? new ItemStack(questItem.getMaterial()).getItemMeta().getDisplayName()
                     : questItem.getName();
             notifyPlayer(playerID, itemName, deleteAmount - neededDeletions.get(uuid).getRight());
         }
