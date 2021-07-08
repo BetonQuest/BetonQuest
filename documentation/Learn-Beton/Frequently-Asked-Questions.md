@@ -161,6 +161,67 @@ These events will set a specific tag. Now when the player starts the conversatio
 should check (using the `globaltag` condition) which tag is currently set and give the player different quests based on that.
 Of course, the static folder event also needs to remove the the current tag before setting a new one.
 
+## Global Quests (all players work together)
+
+There is no easy way to do this (yet). Additionally, every use case differs. Let's assume you have some sort of event
+on your server where your player's need to fish 100 salmons. The quest package is only installed during the event.
+
+Create an objective that is immediately fired upon the first interaction (this means setting the amount to one for most objectives).
+That objective must be `persistent` so it restarts immediately upon completion. It also has to be `global` so every
+player will receive it upon joining the server.
+```YAML
+# fish a salmon to progress the global quest
+gQuest: fish SALMON 1 events:gQuestProgress global persistent
+```
+The objective would trigger a folder event that increases a `globalpoint` variable by one and tries to run the
+events that are fired upon completion. That globalpoint variable tracks the players combined progress.
+The "completion events" must be limited by a `globalpoint` condition that checks whether the `globalpoint` variable has
+reached a certain value.
+
+=== "events.yml"
+    ```YAML
+    # 1. increase the global variable 2. wait one tick for the change to process 3. attempt to run the completion events
+    gQuestProgress: folder gQuestIncrementCounter,gQuestCheckCompletion period:1 ticks
+    # Adds 1 to the global variable
+    gQuestIncrementCounter: globalpoint gQuest 1
+    # Runs completion events only when the condition is met (= the global variable reached X points)
+    gQuestCheckCompletion: folder gQuestNotify,gQuestOnCompletion,gDeleteObjective condition:gQuestComplete
+    # Deletes the objective from everyone that fished a salmon after the goal was met
+    qDeleteObjective: "objective delete gQuest"
+    ```
+=== "conditions.yml"
+    ```YAML
+    # Complete at one hundred collected
+    gquest_complete: globalpoint gquest 100
+
+    ```
+Downsides to this approach:
+
+* Only the player that fished the final salmon (number 100) will get the reward immediately. All other players need to fish an additional
+salmon to trigger the completion logic. Therefore a central NPC that also gives out rewards and shows the
+progress is recommended.
+
+* Since some players logged off during the event while still having the objective, a clean-up package should be installed
+after the event. It will remove the objective from them - this is important as BetonQuest will complain about objectives
+that are still active for a player but are not referenced in any quest package. This will happen since you have to
+remove the event package after the event.
+
+Such a package holds the original objective and clean-up objective:
+
+=== "objectives.yml"
+    ```YAML
+    # Old objective just without global & persistent to make sure no one get's it automatically
+    gQuest: fish SALMON 1 events:gQuestProgress
+    # Cleanup objective that is immediately completed when someone joins
+    login events:deleteOldObjective global
+    ```
+
+=== "events.yml"
+    ```YAML
+    # Deletes the old objective from the current player
+    deleteOldObjective: "objective delete gQuest"
+    ```
+
 ## Make the NPC react randomly
 
 Imagine you want to lie to NPC and he has 15% chance of believing you completely, 35% of being suspicious and 50% of not believing at all. The common denominator for those percentages is 20, so we can write it as 3/20, 7/20 and 10/20. The NPC will check options one after another until it finds one which meets all conditions. We will use `random` condition with our options. The first one will have `3-20` chance (that's the format used by `random` condition). If this condition fails, the NPC will check next option. But it won't be `7-20`, because we already "used" 3 of 20. If you wrote it like that, the chance would be too low. That's why it will be `7-17`. The third option should have `10-10` (because `17 - 7 = 10` and 50% is 10/20), but as you can see it will always be true. It's because we want the last option to be shown if both previous fail. You don't have to add the last condition at all.
