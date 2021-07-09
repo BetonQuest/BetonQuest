@@ -47,7 +47,7 @@ public class Compatibility implements Listener {
 
     private static Compatibility instance;
     private final Map<String, Integrator> integrators = new HashMap<>();
-    private final BetonQuest plugin = BetonQuest.getInstance();
+    private final BetonQuest betonQuest = BetonQuest.getInstance();
     private final List<String> hooked = new ArrayList<>();
 
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
@@ -88,7 +88,7 @@ public class Compatibility implements Listener {
 
         // hook into ProtocolLib
         if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")
-                && "true".equalsIgnoreCase(plugin.getConfig().getString("hook.protocollib"))) {
+                && "true".equalsIgnoreCase(betonQuest.getConfig().getString("hook.protocollib"))) {
             hooked.add("ProtocolLib");
         }
         new BukkitRunnable() {
@@ -133,19 +133,19 @@ public class Compatibility implements Listener {
     }
 
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    private void hook(final Plugin hook) {
+    private void hook(final Plugin hookedPlugin) {
 
         // don't want to hook twice
-        if (hooked.contains(hook.getName())) {
+        if (hooked.contains(hookedPlugin.getName())) {
             return;
         }
 
         // don't want to hook into disabled plugins
-        if (!hook.isEnabled()) {
+        if (!hookedPlugin.isEnabled()) {
             return;
         }
 
-        final String name = hook.getName();
+        final String name = hookedPlugin.getName();
         final Integrator integrator = integrators.get(name);
 
         // this plugin is not an integration
@@ -154,7 +154,7 @@ public class Compatibility implements Listener {
         }
 
         // hook into the plugin if it's enabled in the config
-        if ("true".equalsIgnoreCase(plugin.getConfig().getString("hook." + name.toLowerCase(Locale.ROOT)))) {
+        if ("true".equalsIgnoreCase(betonQuest.getConfig().getString("hook." + name.toLowerCase(Locale.ROOT)))) {
             LogUtils.getLogger().log(Level.INFO, "Hooking into " + name);
 
             // log important information in case of an error
@@ -163,8 +163,8 @@ public class Compatibility implements Listener {
                 hooked.add(name);
             } catch (final Exception | LinkageError exception) {
                 final String message = String.format("There was an error while hooking into %s %s (BetonQuest %s, Spigot %s)! %s",
-                        plugin.getName(),
-                        plugin.getDescription().getVersion(),
+                        hookedPlugin.getName(),
+                        hookedPlugin.getDescription().getVersion(),
                         BetonQuest.getInstance().getDescription().getVersion(),
                         Bukkit.getVersion(),
                         exception.getMessage());
