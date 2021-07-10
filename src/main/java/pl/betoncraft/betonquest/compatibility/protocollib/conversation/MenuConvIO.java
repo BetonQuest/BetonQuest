@@ -35,7 +35,12 @@ import pl.betoncraft.betonquest.utils.LocalChatPaginator;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.Utils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -664,8 +669,10 @@ public class MenuConvIO extends ChatConvIO {
                 ProtocolLibrary.getProtocolManager().removePacketListener(packetAdapter);
 
                 // Destroy Stand
-                stand.remove();
-                stand = null;
+                Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
+                    stand.remove();
+                    stand = null;
+                });
             }
 
             // Stop updating display
