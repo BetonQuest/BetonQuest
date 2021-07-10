@@ -71,7 +71,7 @@ or IntelliJ shows something like `Failed to execute goal`. Here you can read, ho
 
 !!! note ""
     === "PMD"
-        **PMD Page:** <a href="https://pmd.github.io/latest/" target="_blank">https://pmd.github.io/latest/</a><br><br>
+        **<a href="https://pmd.github.io/latest/" target="_blank">PMD Page</a><br><br>**
         PMD will cover the most requirements we have. You notice that you have an issue there when you see the message:
         ````
         [ERROR] Failed to execute goal org.apache.maven.plugins:maven-pmd-plugin:3.14.0:check (default) on project betonquest: You have 1 PMD violation.
@@ -86,7 +86,7 @@ or IntelliJ shows something like `Failed to execute goal`. Here you can read, ho
         Then you get a detailed description, what is wrong.
         If you still don't know how to solve it, ask the developers on Discord for help with PMD.
     === "SpotBugs"
-        **SpotBugs Page:** <a href="https://spotbugs.readthedocs.io/en/stable/bugDescriptions.html#" target="_blank">https://spotbugs.readthedocs.io/en/stable/bugDescriptions.html#</a><br><br>
+        **<a href="https://spotbugs.readthedocs.io/en/stable/bugDescriptions.html" target="_blank">SpotBugs Page</a><br><br>**
         SpotBugs searches for some more problems, the most of them are potential bugs. You notice SpotBugs by a message like this:
         ````
         Failed to execute goal com.github.spotbugs:spotbugs-maven-plugin:4.2.2:check (default) on project betonquest: failed with 1 bugs and 0 errors 
@@ -100,7 +100,7 @@ or IntelliJ shows something like `Failed to execute goal`. Here you can read, ho
         <a href="https://spotbugs.readthedocs.io/en/stable/bugDescriptions.html#" target="_blank">SpotBugs</a> page for it.
         If you have problems solving this issues you can ask on your Discord for help with SpotBugs.
     === "CheckStyle"
-        **CheckStyle Page:** <a href="https://checkstyle.sourceforge.io/checks.html" target="_blank">https://checkstyle.sourceforge.io/checks.html</a><br><br>
+        **<a href="https://checkstyle.sourceforge.io/checks.html" target="_blank">CheckStyle Page</a><br><br>**
         CheckStyle checks the code formatting and style. We have only configured two checks.
         The first check is the import order, and the second check is that you do not use star imports,
         excepting some junit imports.
