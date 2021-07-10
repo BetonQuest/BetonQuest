@@ -276,7 +276,7 @@
     <dependency>
       <groupId>com.comphenix.protocol</groupId>
       <artifactId>ProtocolLib</artifactId>
-      <version>4.7.0-SNAPSHOT</version>
+      <version>4.7.0</version>
       <scope>provided</scope>
       <optional>true</optional>
       <exclusions>
@@ -519,10 +519,9 @@
       <id>betonquest-enginehub-repo</id>
       <url>https://maven.enginehub.org/repo/</url>
     </repository>
-    <repository> <!-- lgtm [java/maven/non-https-url] -->
-      <!-- https://github.com/BetonQuest/BetonQuest/issues/1475 -->
+    <repository>
       <id>betonquest-heroes-repo</id>
-      <url>http://nexus.hc.to/content/repositories/pub_releases/</url>
+      <url>https://nexus.hc.to/content/repositories/pub_releases/</url>
     </repository>
     <repository>
       <id>betonquest-lumine-repo</id>
