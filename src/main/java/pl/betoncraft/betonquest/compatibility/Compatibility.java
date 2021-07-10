@@ -30,6 +30,7 @@ import pl.betoncraft.betonquest.compatibility.skript.SkriptIntegrator;
 import pl.betoncraft.betonquest.compatibility.vault.VaultIntegrator;
 import pl.betoncraft.betonquest.compatibility.worldedit.WorldEditIntegrator;
 import pl.betoncraft.betonquest.compatibility.worldguard.WorldGuardIntegrator;
+import pl.betoncraft.betonquest.exceptions.HookException;
 import pl.betoncraft.betonquest.utils.LogUtils;
 
 import java.util.ArrayList;
@@ -161,7 +162,7 @@ public class Compatibility implements Listener {
             try {
                 integrator.hook();
                 hooked.add(name);
-            } catch (final Exception | LinkageError exception) {
+            } catch (final HookException | RuntimeException | LinkageError exception) {
                 final String message = String.format("There was an error while hooking into %s %s (BetonQuest %s, Spigot %s)! %s",
                         hookedPlugin.getName(),
                         hookedPlugin.getDescription().getVersion(),
