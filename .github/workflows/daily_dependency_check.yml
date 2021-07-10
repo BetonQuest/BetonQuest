@@ -13,19 +13,6 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v2
 
-      - name: Set mirror for http repositories in settings.xml
-        uses: whelk-io/maven-settings-xml-action@v15
-        with:
-          mirrors: |
-            [
-              {
-                "id": "betonquest-heroes-repo-http",
-                "mirrorOf": "betonquest-heroes-repo",
-                "url": "http://nexus.hc.to/content/repositories/pub_releases/",
-                "blocked": "false"
-              }
-            ]
-
       - name: Set up JDK 1.8
         uses: actions/setup-java@v2
         with:
