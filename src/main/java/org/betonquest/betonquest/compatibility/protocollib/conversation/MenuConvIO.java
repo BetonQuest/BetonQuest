@@ -666,8 +666,10 @@ public class MenuConvIO extends ChatConvIO {
                 ProtocolLibrary.getProtocolManager().removePacketListener(packetAdapter);
 
                 // Destroy Stand
-                stand.remove();
-                stand = null;
+                Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
+                    stand.remove();
+                    stand = null;
+                });
             }
 
             // Stop updating display
