@@ -574,11 +574,13 @@
       <id>betonquest-sonatype-snapshots-repo</id>
       <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
     </repository>
-    <repository>
-      <id>betonquest-maven-shade-plugin-snapshot-repo</id>
-      <url>https://repository.apache.org/content/repositories/snapshots/</url>
-    </repository>
   </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>betonquest-apache-snapshot-repo</id>
+      <url>https://repository.apache.org/content/repositories/snapshots/</url>
+    </pluginRepository>
+  </pluginRepositories>
 
   <build>
     <directory>target/artifacts</directory>
