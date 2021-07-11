@@ -101,7 +101,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'zulu'
-          java-version: 8
+          java-version: 16
       - name: Cache dependencies
         uses: actions/cache@v2
         with:
@@ -234,7 +234,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'zulu'
-          java-version: 8
+          java-version: 16
       - name: Download Artifacts
         uses: actions/download-artifact@v2
         with:
