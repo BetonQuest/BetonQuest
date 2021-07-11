@@ -162,15 +162,25 @@ public class Compatibility implements Listener {
             try {
                 integrator.hook();
                 hooked.add(name);
-            } catch (final HookException | RuntimeException | LinkageError exception) {
-                final String message = String.format("There was an error while hooking into %s %s (BetonQuest %s, Spigot %s)! %s",
+            } catch (final HookException exception) {
+                final String message = String.format("Could not hook into %s %s! %s",
+                        hookedPlugin.getName(),
+                        hookedPlugin.getDescription().getVersion(),
+                        exception.getMessage());
+                LOG.warning(null, message);
+                LOG.debug(null, message, exception);
+                LOG.warning(null, "BetonQuest will work correctly, except for that single integration. "
+                        + "You can turn it off by setting 'hook." + name.toLowerCase(Locale.ROOT)
+                        + "' to false in config.yml file.");
+            } catch (final RuntimeException | LinkageError exception) {
+                final String message = String.format("There was an unexpected error while hooking into %s %s (BetonQuest %s, Spigot %s)! %s",
                         hookedPlugin.getName(),
                         hookedPlugin.getDescription().getVersion(),
                         BetonQuest.getInstance().getDescription().getVersion(),
                         Bukkit.getVersion(),
                         exception.getMessage());
                 LOG.warning(null, message, exception);
-                LOG.warning(null, "BetonQuest will work correctly save for that single integration. "
+                LOG.warning(null, "BetonQuest will work correctly, except for that single integration. "
                         + "You can turn it off by setting 'hook." + name.toLowerCase(Locale.ROOT)
                         + "' to false in config.yml file.");
             }
