@@ -167,8 +167,7 @@ public class Compatibility implements Listener {
                         hookedPlugin.getName(),
                         hookedPlugin.getDescription().getVersion(),
                         exception.getMessage());
-                LOG.warning(null, message);
-                LOG.debug(null, message, exception);
+                LOG.warning(null, message, exception);
                 LOG.warning(null, "BetonQuest will work correctly, except for that single integration. "
                         + "You can turn it off by setting 'hook." + name.toLowerCase(Locale.ROOT)
                         + "' to false in config.yml file.");
