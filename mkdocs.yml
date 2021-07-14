@@ -1,6 +1,6 @@
 site_name: BetonQuest
 site_author: BetonQuest Organisation
-site_url: https://betonquest.github.io/BetonQuest/
+site_url: https://docs.betonquest.org/
 site_dir: target/documentation
 docs_dir: documentation
 repo_name: BetonQuest on GitHub
@@ -10,11 +10,11 @@ copyright: '© 2020  BetonQuest Organisation. GPLv3'
 
 
 extra_css:
-  - 'webCode/css/superFences.css'
-  - 'webCode/css/centered.css'
-  - 'webCode/css/contentAreaFullWidth.css'
   - 'webCode/css/admonition.css'
   - 'webCode/css/button.css'
+  - 'webCode/css/centered.css'
+  - 'webCode/css/contentAreaFullWidth.css'
+  - 'webCode/css/superFences.css'
 
 extra_javascript:
   - 'webCode/js/copyLinkToClipboard.js'
@@ -22,6 +22,7 @@ extra_javascript:
 # More info on this theme: https://squidfunk.github.io/mkdocs-material
 theme:
   name: material
+  custom_dir: 'theme/'
   language: en
   features:
     - navigation.instant
@@ -49,8 +50,8 @@ theme:
   font:
     text: Roboto
     code: Roboto Mono
-  logo: media/design/BQIcon1k.png
-  favicon: media/design/favicon.ico
+  logo: media/design/Icon1k.png
+  favicon: media/design/Icon32.ico
 
 
 
@@ -104,15 +105,10 @@ extra:
     - icon: fontawesome/solid/faucet
       link: https://spigotmc.org/resources/betonquest.2117/
 
-#Notice that here are a few strange looking hairspaces in here. They make the space between the emojis and the text look equal
+#Notice that here are a few strange looking hairspaces in here.
+#They make the space between the emojis and the text look equal
 nav:
-  - '🚀 Home':
-      - '👋 Welcome!': index.md
-      - 'Overview':
-          - '✨ Features': Home/Features.md
-          - '👔  For Owners': Home/For-Owners.md
-          - '🎨 For Questers': Home/For-Questers.md
-      - '💲 Sponsorships': Home/Sponsorships.md
+  - '🚀 Home': index.md
   - '🎓 Tutorials':
       - '👋 Welcome!': Tutorials/Welcome.md
       - 'Getting Started':
