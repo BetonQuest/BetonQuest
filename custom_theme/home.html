@@ -1,0 +1,64 @@
+{% extends "main.html" %}
+{% block tabs %}
+
+  {{ super() }}
+
+  <style>
+    .md-main__inner {
+      margin: 0;
+    }
+    .md-content__inner {
+      padding-top: 0;
+      min-width: 30em;
+    }
+    .md-sidebar,.md-sidebar>*,
+    .md-sidebar--primary,.md-sidebar--primary>*,
+    .md-sidebar--secondary,.md-sidebar--secondary>*,
+    .md-content__inner:before{
+      display: none !important;
+    }
+
+    .betonquest-content {
+      margin-left: 10em;
+      margin-right: 10em;
+    }
+
+    .betonquest-flex-container {
+      display: flex;
+      flex-direction: column-reverse;
+      max-width: 100%;
+      margin-bottom: 2em;
+    }
+    @media all and (min-width: 60em) {
+      .betonquest-flex-container {
+        flex-direction: row;
+      }
+    }
+    .betonquest-flex-item {
+      min-width: 50%;
+      flex: auto;
+    }
+  </style>
+
+{% endblock %}
+{% block content %}
+  <div class="betonquest-content">
+    <div class="betonquest-flex-container">
+      <div class="betonquest-flex-item">
+        <h1>Technical documentation</h1>
+        <p>A wall of test and a Set up in 5 minutes.</p>
+        <a href="{{ page.next_page.url | url }}" title="{{ page.next_page.title | e }}" class="md-button md-button--primary">
+          Quick start
+        </a>
+        <a href="{{ 'insiders/' | url }}" title="Material for MkDocs Insiders" class="md-button" >
+          Get Insiders
+        </a>
+      </div>
+      <div class="betonquest-flex-item">
+        <img src="media/brand/Logo/Logo1K.png" alt="" draggable="false">
+      </div>
+    </div>
+
+    {{ page.content }}
+  </div>
+{% endblock %}

@@ -1,8 +1,6 @@
 <p align="center">
-  <a href="https://betonquest.github.io/BetonQuest/"><img src="/documentation/media/design/logo.png" alt="BetonQuest Logo"/></a>
+  <a href="https://betonquest.github.io/BetonQuest/"><img src="/documentation/media/brand/Logo/LogoChainless1K.png" alt="BetonQuest Logo"/></a>
 </p>
-
-<p align="center">Minecraft RPG Questing Plugin</p>
 
 <p align="center">
     <a href="https://bstats.org/plugin/bukkit/BetonQuest/551/" title="See how many servers run this plugin." target="_blank">

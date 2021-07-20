@@ -22,7 +22,7 @@ extra_javascript:
 # More info on this theme: https://squidfunk.github.io/mkdocs-material
 theme:
   name: material
-  custom_dir: 'theme/'
+  custom_dir: 'custom_theme/'
   language: en
   features:
     - navigation.instant
@@ -50,8 +50,8 @@ theme:
   font:
     text: Roboto
     code: Roboto Mono
-  logo: media/design/Icon1k.png
-  favicon: media/design/Icon32.ico
+  logo: media/brand/Icon/Icon1k.png
+  favicon: media/brand/Icon/Icon32.ico
 
 
 
