@@ -25,7 +25,6 @@ theme:
   custom_dir: 'custom_theme/'
   language: en
   features:
-    - navigation.instant
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.tracking
