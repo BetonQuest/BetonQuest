@@ -5,38 +5,73 @@
 
   <style>
     .md-main__inner {
-      margin: 0;
+      margin-top: 0;
     }
     .md-content__inner {
       padding-top: 0;
-      min-width: 30em;
     }
     .md-sidebar,.md-sidebar>*,
-    .md-sidebar--primary,.md-sidebar--primary>*,
-    .md-sidebar--secondary,.md-sidebar--secondary>*,
     .md-content__inner:before{
       display: none !important;
     }
 
+    /* smartphones */
     .betonquest-content {
-      margin-left: 10em;
-      margin-right: 10em;
+      margin-left: 0.3em;
+      margin-right: 0.3em;
     }
-
     .betonquest-flex-container {
       display: flex;
       flex-direction: column-reverse;
       max-width: 100%;
-      margin-bottom: 2em;
-    }
-    @media all and (min-width: 60em) {
-      .betonquest-flex-container {
-        flex-direction: row;
-      }
+      margin-bottom: 1em;
     }
     .betonquest-flex-item {
-      min-width: 50%;
+      min-width: 100%;
       flex: auto;
+    }
+    .betonquest-flex-logo {
+      max-width: 30em;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* tablets */
+    @media (min-width:40em) {
+      .betonquest-content {
+        margin-left: 2em;
+        margin-right: 2em;
+      }
+    }
+    /* desktops low res */
+    @media (min-width:60em) {
+      .betonquest-content {
+        margin-left: 5em;
+        margin-right: 5em;
+      }
+      .betonquest-flex-container {
+        flex-direction: row;
+        margin-bottom: 2em;
+      }
+      .betonquest-flex-item {
+        min-width: 50%;
+      }
+      .betonquest-flex-logo {
+        min-width: 25em;
+        max-width: 40em;
+      }
+    }
+    /* desktops high res */
+    @media (min-width:80em) {
+      .betonquest-content {
+        margin-left: 10em;
+        margin-right: 10em;
+      }
+      .betonquest-flex-logo {
+        min-width: 30em;
+        max-width: 40em;
+      }
     }
   </style>
 
@@ -55,7 +90,9 @@
         </a>
       </div>
       <div class="betonquest-flex-item">
-        <img src="media/brand/Logo/Logo1K.png" alt="" draggable="false">
+        <div class="betonquest-flex-logo">
+          <img src="media/brand/Logo/Logo1K.png" alt="" draggable="false">
+        </div>
       </div>
     </div>
 
