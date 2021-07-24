@@ -1,5 +1,7 @@
-mkdocs-exclude==1.0.2
-mkdocs-material==6.0.1
-mkdocs-git-revision-date-localized-plugin==0.5.0
-mkdocs-awesome-pages-plugin==2.2.1
-mike==0.5.5
+#MkDocs and the MkDocs-material theme
+mkdocs-material==7.2.0
+#Shows git revision date at the bottom of the page
+mkdocs-git-revision-date-localized-plugin
+#Tool for MkDocs versioning
+mike==1.0.1
+
