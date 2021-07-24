@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.utils.versioning;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -166,7 +167,8 @@ public class Updater {
                 final JSONObject asset = assetsArray.getJSONObject(i);
                 if ("BetonQuest.jar".equals(asset.getString("name"))) {
                     final String url = asset.getString("browser_download_url");
-                    if (Version.isNewer(latest.getKey(), version, config.strategy)) {
+                    final VersionComparator comparator = new VersionComparator(config.strategy);
+                    if (comparator.compare(latest.getKey(), version) < 0) {
                         latest = Pair.of(version, url);
                     }
                 }
@@ -182,7 +184,8 @@ public class Updater {
             final String dev = json.getString(key);
             final Version version = new Version(key + "-DEV-" + dev);
             final String url = DEV_API_DOWNLOAD.replace(":versionNumber", dev).replace(":version", key);
-            if (Version.isNewer(latest.getKey(), version, config.strategy)) {
+            final VersionComparator comparator = new VersionComparator(config.strategy, "DEV-");
+            if (comparator.compare(latest.getKey(), version) < 0) {
                 latest = Pair.of(version, url);
             }
         }
@@ -358,6 +361,7 @@ public class Updater {
         /**
          * Reads the configuration file.
          */
+        @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
         public UpdaterConfig() {
             final FileConfiguration config = BetonQuest.getInstance().getConfig();
 

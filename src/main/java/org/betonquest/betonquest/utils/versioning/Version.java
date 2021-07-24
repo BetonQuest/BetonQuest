@@ -2,8 +2,6 @@ package org.betonquest.betonquest.utils.versioning;
 
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,7 +21,7 @@ public class Version {
     /**
      * This is a help object that splits the raw version into MAJOR, MINOR, PATCH and any remaining parts.
      */
-    private final DefaultArtifactVersion version;
+    private final DefaultArtifactVersion artifactVersion;
     /**
      * The qualifier if existent.
      */
@@ -39,12 +37,12 @@ public class Version {
      * @param versionString The raw version string
      */
     public Version(final String versionString) {
-        this.version = new DefaultArtifactVersion(versionString);
+        this.artifactVersion = new DefaultArtifactVersion(versionString);
 
         String qualifier = null;
         Integer buildNumber = null;
-        if (version.getQualifier() != null) {
-            final Matcher qualifierMatcher = BUILD_QUALIFIER_PATTERN.matcher(version.getQualifier());
+        if (artifactVersion.getQualifier() != null) {
+            final Matcher qualifierMatcher = BUILD_QUALIFIER_PATTERN.matcher(artifactVersion.getQualifier());
             if (qualifierMatcher.matches()) {
                 qualifier = qualifierMatcher.group(1);
                 final String buildNumberString = qualifierMatcher.group(2);
@@ -52,91 +50,12 @@ public class Version {
                     buildNumber = Integer.valueOf(buildNumberString);
                 }
             }
-        } else if (version.getBuildNumber() != 0 || versionString.endsWith("-0")) {
-            buildNumber = version.getBuildNumber();
+        } else if (artifactVersion.getBuildNumber() != 0 || versionString.endsWith("-0")) {
+            buildNumber = artifactVersion.getBuildNumber();
             qualifier = "";
         }
         this.qualifier = qualifier;
         this.buildNumber = buildNumber;
-    }
-
-    /**
-     * Checks if the otherVersion is newer than the currentVersion.
-     * <p>
-     * If a qualifier contains a separator before a build number,
-     * you need to add the separator to the qualifier.
-     *
-     * @param currentVersion The current version
-     * @param otherVersion   The other version
-     * @param qualifiers     The list of valid qualifiers in prioritized order
-     * @return True if the otherVersion is newer then the currentVersion
-     */
-    public static boolean isNewer(final Version currentVersion, final Version otherVersion,
-                                  final UpdateStrategy updateStrategy, final String... qualifiers) {
-        final List<String> qualifiersList = Arrays.asList(qualifiers);
-        if (otherVersion.hasQualifier() && !qualifiersList.contains(otherVersion.getQualifier())) {
-            return false;
-        }
-        final int currentQualifier = qualifiersList.contains(currentVersion.getQualifier()) ?
-                qualifiersList.indexOf(currentVersion.getQualifier()) :
-                currentVersion.hasQualifier() ? Integer.MAX_VALUE : Integer.MIN_VALUE;
-        final int otherQualifier = qualifiersList.contains(otherVersion.getQualifier()) ?
-                qualifiersList.indexOf(otherVersion.getQualifier()) :
-                otherVersion.hasQualifier() ? Integer.MAX_VALUE : Integer.MIN_VALUE;
-        final int currentBuildNumber = currentVersion.hasBuildNumber() ?
-                currentVersion.getBuildNumber() : -1;
-        final int otherBuildNumber = otherVersion.hasBuildNumber() ?
-                otherVersion.getBuildNumber() : -1;
-
-        final int majorVersion = Integer.compare(currentVersion.getMajorVersion(), otherVersion.getMajorVersion());
-        final int minorVersion = Integer.compare(currentVersion.getMinorVersion(), otherVersion.getMinorVersion());
-        final int patchVersion = Integer.compare(currentVersion.getPatchVersion(), otherVersion.getPatchVersion());
-        final int qualifierVersion = Integer.compare(currentQualifier, otherQualifier);
-        final int buildNumberVersion = Integer.compare(currentBuildNumber, otherBuildNumber);
-        return isNewerCheckQualifiers(updateStrategy, majorVersion, minorVersion, patchVersion, qualifierVersion, buildNumberVersion);
-    }
-
-    @SuppressWarnings("PMD.CyclomaticComplexity")
-    private static boolean isNewerCheckQualifiers(final UpdateStrategy updateStrategy,
-                                                  final int majorVersion, final int minorVersion, final int patchVersion,
-                                                  final int qualifierVersion, final int buildNumberVersion) {
-        switch (updateStrategy) {
-            case MAJOR:
-                if (majorVersion > 0) {
-                    return false;
-                } else if (majorVersion < 0) {
-                    return true;
-                }
-            case MINOR:
-                if (majorVersion == 0) {
-                    if (minorVersion > 0) {
-                        return false;
-                    } else if (minorVersion < 0) {
-                        return true;
-                    }
-                }
-            case PATCH:
-                if (majorVersion == 0 && minorVersion == 0) {
-                    if (patchVersion > 0) {
-                        return false;
-                    } else if (patchVersion < 0) {
-                        return true;
-                    }
-                    return isNewerQualifier(qualifierVersion, buildNumberVersion);
-                }
-            default:
-                return false;
-        }
-    }
-
-    private static boolean isNewerQualifier(final int qualifierVersion, final int buildNumberVersion) {
-        if (qualifierVersion < 0) {
-            return false;
-        } else if (qualifierVersion > 0) {
-            return true;
-        } else {
-            return buildNumberVersion < 0;
-        }
     }
 
     /**
@@ -145,33 +64,68 @@ public class Version {
      * @return The string of this version.
      */
     public String getVersion() {
-        return version.toString();
+        return artifactVersion.toString();
     }
 
+    /**
+     * Get the major version digit.
+     *
+     * @return The major digit
+     */
     public int getMajorVersion() {
-        return version.getMajorVersion();
+        return artifactVersion.getMajorVersion();
     }
 
+    /**
+     * Get the minor version digit.
+     *
+     * @return The minor digit
+     */
     public int getMinorVersion() {
-        return version.getMinorVersion();
+        return artifactVersion.getMinorVersion();
     }
 
+    /**
+     * Get the patch version digit.
+     *
+     * @return The patch digit
+     */
     public int getPatchVersion() {
-        return version.getIncrementalVersion();
+        return artifactVersion.getIncrementalVersion();
     }
 
+    /**
+     * Get the qualifier.
+     *
+     * @return The qualifier
+     */
     public String getQualifier() {
         return qualifier;
     }
 
+    /**
+     * Get the build number.
+     *
+     * @return The build number
+     */
     public Integer getBuildNumber() {
         return buildNumber;
     }
 
+    /**
+     * Check if the version has a qualifier.
+     *
+     * @return True if qualifier exist
+     */
     public boolean hasQualifier() {
         return qualifier != null;
     }
 
+    /**
+     * Check if the version has a build number.
+     *
+     * @return True if build number exist
+     */
     public boolean hasBuildNumber() {
         return buildNumber != null;
     }
