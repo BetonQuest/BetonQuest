@@ -94,11 +94,23 @@ extra:
     provider: mike
   consent:
     title: Cookie consent
-    description:
-      We use cookies to recognize your repeated visits and preferences, as well
-      as to measure the effectiveness of our documentation and whether users
-      find what they're searching for. With your consent, you're helping us to
-      make our documentation better.
+    cookies:
+      analytics: Google Analytics
+    description: >
+      <p style="margin-top: 0px; margin-bottom: 0px;">We use cookies to:</p>
+      <ul style="margin-top: 0px; margin-bottom: 0px;">
+        <li>
+          <p>Save your preferences (light / dark mode etc.)</p>
+        </li>
+        <p style="margin-top: 0px; margin-bottom: 0px;">Additionally, you can allow us to:</p>
+        <li>
+          <p>Measure the effectiveness of our documentation</p>
+        </li>
+        <li>
+          <p>See if users find what they're searching for.</p>
+        </li>
+      </ul>
+      <b>With your consent, you're helping us to make this documentation better for everyone.</b>
   social:
     - icon: fontawesome/brands/discord
       link: https://discord.gg/rK6mfHq
