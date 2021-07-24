@@ -1,5 +1,8 @@
 package pl.betoncraft.betonquest.compatibility.protocollib;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.compatibility.Integrator;
@@ -7,6 +10,8 @@ import pl.betoncraft.betonquest.compatibility.protocollib.conversation.MenuConvI
 import pl.betoncraft.betonquest.compatibility.protocollib.conversation.PacketInterceptor;
 import pl.betoncraft.betonquest.compatibility.protocollib.hider.NPCHider;
 import pl.betoncraft.betonquest.compatibility.protocollib.hider.UpdateVisibilityNowEvent;
+import pl.betoncraft.betonquest.exceptions.HookException;
+import pl.betoncraft.betonquest.exceptions.UnsupportedVersionException;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class ProtocolLibIntegrator implements Integrator {
@@ -18,7 +23,20 @@ public class ProtocolLibIntegrator implements Integrator {
     }
 
     @Override
-    public void hook() {
+    @SuppressWarnings("PMD.PreserveStackTrace")
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
+    public void hook() throws HookException {
+        final Plugin protocolLib = Bukkit.getPluginManager().getPlugin("ProtocolLib");
+        final String[] versionParts = protocolLib.getDescription().getVersion().split("\\.");
+        try {
+            final int part1 = Integer.parseInt(versionParts[0]);
+            final int part2 = Integer.parseInt(versionParts[1]);
+            if (part1 < 4 || part1 == 4 && part2 < 7) {
+                throw new UnsupportedVersionException(protocolLib, "4.7.0");
+            }
+        } catch (final NumberFormatException e) {
+            throw new UnsupportedVersionException(protocolLib, "4.7.0");
+        }
         // if Citizens is hooked, start NPCHider
         if (Compatibility.getHooked().contains("Citizens")) {
             NPCHider.start();

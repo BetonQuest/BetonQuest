@@ -19,10 +19,18 @@ public class ShopkeepersIntegrator implements Integrator {
     }
 
     @Override
+    @SuppressWarnings("PMD.PreserveStackTrace")
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public void hook() throws HookException {
         final Plugin shopkeepers = Bukkit.getPluginManager().getPlugin("Shopkeepers");
-        if (shopkeepers.getDescription().getVersion().startsWith("1.")) {
+        final String[] versionParts = shopkeepers.getDescription().getVersion().split("\\.");
+        try {
+            final int part1 = Integer.parseInt(versionParts[0]);
+            final int part2 = Integer.parseInt(versionParts[1]);
+            if (part1 < 2 || part1 == 2 && part2 < 2) {
+                throw new UnsupportedVersionException(shopkeepers, "2.2.0");
+            }
+        } catch (final NumberFormatException e) {
             throw new UnsupportedVersionException(shopkeepers, "2.2.0");
         }
         plugin.registerEvents("shopkeeper", OpenShopEvent.class);
