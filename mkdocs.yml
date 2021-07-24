@@ -42,7 +42,7 @@ theme:
         name: Switch to dark mode
     - scheme: default
       primary: blue
-      accent: blue
+      accent: teal
       toggle:
         icon: material/lightbulb
         name: Switch to light mode
