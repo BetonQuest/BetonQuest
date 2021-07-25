@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Compared two {@link Version}s. This comparator can also be used to sort lists of {@link Version}s.
+ * Compares two {@link Version}s. This comparator can also be used to sort lists of {@link Version}s.
  */
 public class VersionComparator {
     /**
@@ -19,8 +19,7 @@ public class VersionComparator {
     private final List<String> qualifiers;
 
     /**
-     * Provide a {@link UpdateStrategy}.
-     * The chosen update strategy determines what digits of the version is allowed to change,
+     * The provided {@link UpdateStrategy} determines which digits of the version are allowed to change.
      * <p>
      * Also a list of allowed qualifiers can be provided. If not, no qualifiers are allowed.
      * An empty String represent a version without a qualifier but with a build number.
