@@ -3,7 +3,7 @@ template: home.html
 title: Home
 ---
 <div style="text-align: center;">
-  <video autoplay muted loop poster="media/content/Home/OverviewVideoPreview.jpg" src="media/content/Documentation/Conversations/MenuConvIO.mp4" width="100%">
+  <video autoplay muted loop poster="media/content/Home/OverviewVideoPreview.jpg" src="media/content/Documentation/Conversations/MenuConvIO.mp4" width="100%" style="box-shadow: 0px 0px 30px black;">
     Sorry, your browser doesn't support embedded videos.
   </video>
 </div>
