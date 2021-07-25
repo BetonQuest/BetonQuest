@@ -1,12 +1,12 @@
-BetonQuest recommend to use IntelliJ as IDE, but you can still use your preferred IDE.
-The advantage of using IntelliJ is that the setup contains some steps that helps fully fill our requirements.
-If you still want to use your own IDE, you need to check by our own, that you fully fill our requirements.
-You can adopt some steps to your preferred IDE to get a similar setup.
+The BetonQuest organisation recommends <a href="https://www.jetbrains.com/idea/" target="_blank">IntelliJ Community Edition</a> (Community Edition) as the preferred IDE.
+The advantage of using IntelliJ is that this guide contains some steps that help to fulfill our requirements.
+Additionally, the project contains a few config files that automatically setup IntelliJ to meet some of our requirements.
+You can still use your preferred IDE but then you need to check on your own that your changes fulfill our requirements.
 
 ##Installing IntelliJ 
 First download <a href="https://www.jetbrains.com/idea/download/" target="_blank">IntelliJ</a> and install it.
 
-After you have installed IntelliJ, we recommend to installing the plugin
+After you installed IntelliJ, we recommend to installing the plugin
 <a href="https://plugins.jetbrains.com/plugin/7642-save-actions" target="_blank">Save Actions</a>.
 The plugin helps to auto format code, organize imports, add final modifiers, and some other requirements we have.
 You don't need to configure that plugin, the project contains the configuration file.
@@ -71,8 +71,8 @@ or IntelliJ shows something like `Failed to execute goal`. Here you can read, ho
 
 !!! note ""
     === "PMD"
-        **<a href="https://pmd.github.io/latest/" target="_blank">PMD Page</a><br><br>**
-        PMD will cover the most requirements we have. You notice that you have an issue there when you see the message:
+        Visit the <a href="https://pmd.github.io/latest/" target="_blank">**PMD Page**</a> for general info.
+        <br><br>
         ````
         [ERROR] Failed to execute goal org.apache.maven.plugins:maven-pmd-plugin:3.14.0:check (default) on project betonquest: You have 1 PMD violation.
         ````
@@ -86,21 +86,23 @@ or IntelliJ shows something like `Failed to execute goal`. Here you can read, ho
         Then you get a detailed description, what is wrong.
         If you still don't know how to solve it, ask the developers on Discord for help with PMD.
     === "SpotBugs"
-        **<a href="https://spotbugs.readthedocs.io/en/stable/bugDescriptions.html" target="_blank">SpotBugs Page</a><br><br>**
-        SpotBugs searches for some more problems, the most of them are potential bugs. You notice SpotBugs by a message like this:
+        Visit the <a href="https://spotbugs.readthedocs.io/en/stable/index.html" target="_blank">**SpotBugs Page**</a> for general info.
+        <br><br>
+        SpotBugs searches for additional problems, most of them are potential bugs. SpotBugs' errors look like this:
         ````
         Failed to execute goal com.github.spotbugs:spotbugs-maven-plugin:4.2.2:check (default) on project betonquest: failed with 1 bugs and 0 errors 
         ````
-        If you have this message you also have messages, that looks like this:
+        If your log contains such a message, it will also contain another message that looks like this:
         ````
         [ERROR] Medium: Null passed for non-null parameter of org.betonquest.betonquest.utils.PlayerConverter.getPlayer(String) in org.betonquest.betonquest.BetonQuest.condition(String, ConditionID) [org.betonquest.betonquest.BetonQuest, org.betonquest.betonquest.BetonQuest] Method invoked at BetonQuest.java:[line 349]Known null at BetonQuest.java:[line 344] NP_NULL_PARAM_DEREF
         ````
-        SpotBugs errors are a little more complicated to read,
-        but you find e.g. `NP_NULL_PARAM_DEREF` at the end of the line, and you can search on the
-        <a href="https://spotbugs.readthedocs.io/en/stable/bugDescriptions.html#" target="_blank">SpotBugs</a> page for it.
-        If you have problems solving this issues you can ask on your Discord for help with SpotBugs.
+        SpotBugs errors are a little bit complicated to read,
+        but if you find e.g. `NP_NULL_PARAM_DEREF` at the end of the line you can simply search it on the
+        <a href="https://spotbugs.readthedocs.io/en/stable/bugDescriptions.html" target="_blank">SpotBugs page</a> page.
+        If you have problems solving these kinds of issues you can ask on our Discord for help with SpotBugs.
     === "CheckStyle"
-        **<a href="https://checkstyle.sourceforge.io/checks.html" target="_blank">CheckStyle Page</a><br><br>**
+        Visit the <a href="https://checkstyle.sourceforge.io/checks.html" target="_blank">**CheckStyle Page**</a> for general info.
+        <br><br>
         CheckStyle checks the code formatting and style. We have only configured two checks.
         The first check is the import order, and the second check is that you do not use star imports,
         excepting some junit imports.
@@ -153,3 +155,10 @@ Execute this to see a preview of the webpage on <a href="http://127.0.0.1:8000" 
 ```BASH
 mkdocs serve
 ```
+??? info "Hosting on your entire local network"
+    You can also execute this variation to host the website in your local network.
+    This can be useful for testing changes on different devices but is not needed for most tasks.
+    Make sure the hosting device's firewall exposes the port 8000.
+    ```BASH
+    mkdocs serve -a 0.0.0.0:8000
+    ```
