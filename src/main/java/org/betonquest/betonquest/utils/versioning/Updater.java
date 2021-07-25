@@ -1,10 +1,10 @@
-package org.betonquest.betonquest.utils;
+package org.betonquest.betonquest.utils.versioning;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.Bukkit;
@@ -63,6 +63,10 @@ public class Updater {
      * The minimum delay when we send a player a notification about a new update.
      */
     private static final long NOTIFICATION_DELAY = 1000 * 60 * 60 * 20;
+    /**
+     * The indicator for dev versions.
+     */
+    private static final String DEV_INDICATOR = "DEV-";
     /**
      * The file name of the plugin in the plugins folder.
      */
@@ -142,7 +146,7 @@ public class Updater {
         } catch (final IOException e) {
             LOG.warning(null, "Could not get the latest release! " + e.getMessage(), e);
         }
-        if (!(isUpdateAvailable() && config.forcedStrategy) && config.updateStrategy.isDev) {
+        if (!(isUpdateAvailable() && config.forcedStrategy) && config.downloadDev) {
             try {
                 searchUpdateTaskDev(config);
             } catch (final UnknownHostException e) {
@@ -163,7 +167,8 @@ public class Updater {
                 final JSONObject asset = assetsArray.getJSONObject(i);
                 if ("BetonQuest.jar".equals(asset.getString("name"))) {
                     final String url = asset.getString("browser_download_url");
-                    if (latest.getKey().isNewer(version, config.updateStrategy)) {
+                    final VersionComparator comparator = new VersionComparator(config.strategy);
+                    if (comparator.isOtherNewerThanCurrent(latest.getKey(), version)) {
                         latest = Pair.of(version, url);
                     }
                 }
@@ -179,7 +184,8 @@ public class Updater {
             final String dev = json.getString(key);
             final Version version = new Version(key + "-DEV-" + dev);
             final String url = DEV_API_DOWNLOAD.replace(":versionNumber", dev).replace(":version", key);
-            if (latest.getKey().isNewer(version, config.updateStrategy)) {
+            final VersionComparator comparator = new VersionComparator(config.strategy, "DEV-");
+            if (comparator.isOtherNewerThanCurrent(latest.getKey(), version)) {
                 latest = Pair.of(version, url);
             }
         }
@@ -320,199 +326,13 @@ public class Updater {
     }
 
     /**
-     * Represent different strategies to select witch versions are valid to update to them.
-     */
-    public enum UpdateStrategy {
-        MAJOR(false),
-        MINOR(false),
-        PATCH(false),
-        MAJOR_DEV(true),
-        MINOR_DEV(true),
-        PATCH_DEV(true);
-
-        /**
-         * Trie, if the {@link UpdateStrategy} is a DEV Strategy.
-         */
-        public final boolean isDev;
-
-        UpdateStrategy(final boolean isDev) {
-            this.isDev = isDev;
-        }
-
-        /**
-         * Convert the current {@link UpdateStrategy} to the equivalent DEV {@link UpdateStrategy}.
-         *
-         * @return The DEV {@link UpdateStrategy}.
-         */
-        public UpdateStrategy toDev() {
-            switch (this) {
-                case MAJOR:
-                    return MAJOR_DEV;
-                case MINOR:
-                    return MINOR_DEV;
-                case PATCH:
-                    return PATCH_DEV;
-                default:
-                    return this;
-            }
-        }
-    }
-
-    /**
-     * This is an abstract representation of a version.
-     */
-    public static class Version {
-        /**
-         * This is the BetonQuest related TAG for DEV-Builds in versions.
-         */
-        public static final String DEV_TAG = "DEV-";
-
-        /**
-         * The raw version string.
-         */
-        private final String versionString;
-        /**
-         * This is a help object that split the versionString into MAJOR, MINOR and PATCH.
-         */
-        private final DefaultArtifactVersion artifactVersion;
-        /**
-         * If the version is in a official DEV format, this is true.
-         */
-        private final Integer dev;
-        /**
-         * If the version is not a RELEASE or a DEV version this is true.
-         */
-        private final boolean unofficial;
-
-        /**
-         * Create a new Version.
-         *
-         * @param versionString The raw version string.
-         */
-        public Version(final String versionString) {
-            this.versionString = versionString;
-            this.artifactVersion = new DefaultArtifactVersion(versionString);
-
-            Integer dev = null;
-            boolean unofficial = false;
-            final String qualifier = artifactVersion.getQualifier();
-            try {
-                if (qualifier != null) {
-                    dev = Integer.valueOf(qualifier.substring(DEV_TAG.length()));
-                }
-            } catch (final NumberFormatException e) {
-                unofficial = true;
-            }
-            this.dev = dev;
-            this.unofficial = unofficial;
-        }
-
-        /**
-         * Create a new Version.
-         *
-         * @param versionString The Version that should be copied.
-         */
-        public Version(final Version versionString) {
-            this.versionString = versionString.versionString;
-            this.artifactVersion = versionString.artifactVersion;
-            this.dev = versionString.dev;
-            this.unofficial = versionString.unofficial;
-        }
-
-        /**
-         * Check if a other Version is newer than this Version.
-         *
-         * @param version        The {@link Version} to check for.
-         * @param updateStrategy The {@link UpdateStrategy} for checking.
-         * @return True if version is newer then this version.
-         */
-        public boolean isNewer(final Version version, final UpdateStrategy updateStrategy) {
-            if (version.isUnofficial() || !updateStrategy.isDev && version.isDev()) {
-                return false;
-            }
-            final int majorVersion = Integer.compare(artifactVersion.getMajorVersion(), version.artifactVersion.getMajorVersion());
-            final int minorVersion = Integer.compare(artifactVersion.getMinorVersion(), version.artifactVersion.getMinorVersion());
-            final int patchVersion = Integer.compare(artifactVersion.getIncrementalVersion(), version.artifactVersion.getIncrementalVersion());
-            return isNewerCheckStrategy(version, updateStrategy, majorVersion, minorVersion, patchVersion);
-        }
-
-        @SuppressWarnings("PMD.CyclomaticComplexity")
-        private boolean isNewerCheckStrategy(final Version version, final UpdateStrategy updateStrategy, final int majorVersion, final int minorVersion, final int patchVersion) {
-            switch (updateStrategy) {
-                case MAJOR:
-                case MAJOR_DEV:
-                    if (majorVersion > 0) {
-                        return false;
-                    } else if (majorVersion < 0) {
-                        return true;
-                    }
-                case MINOR:
-                case MINOR_DEV:
-                    if (majorVersion == 0) {
-                        if (minorVersion > 0) {
-                            return false;
-                        } else if (minorVersion < 0) {
-                            return true;
-                        }
-                    }
-                case PATCH:
-                case PATCH_DEV:
-                    if (majorVersion == 0 && minorVersion == 0) {
-                        return isNewerPatch(version, patchVersion);
-                    }
-                default:
-                    return false;
-            }
-        }
-
-        private boolean isNewerPatch(final Version version, final int patchVersion) {
-            if (patchVersion > 0) {
-                return false;
-            } else if (patchVersion < 0) {
-                return true;
-            } else {
-                final Integer thisDev = isDev() ? dev : isUnofficial() ? 0 : null;
-                final Integer targetDev = version.isDev() ? version.dev : version.isUnofficial() ? 0 : null;
-                if (thisDev == null || targetDev == null) {
-                    return thisDev != null;
-                } else {
-                    return thisDev.compareTo(targetDev) < 0;
-                }
-            }
-        }
-
-        /**
-         * Get the version string.
-         *
-         * @return The string of this version.
-         */
-        public String getVersion() {
-            return versionString;
-        }
-
-        /**
-         * Returns whether this is an DEV version or not.
-         *
-         * @return True, if this version is an DEV version.
-         */
-        public boolean isDev() {
-            return dev != null;
-        }
-
-        /**
-         * Returns whether this version is official or not.
-         *
-         * @return True, if this version is not an official version.
-         */
-        public boolean isUnofficial() {
-            return unofficial;
-        }
-    }
-
-    /**
      * Represent the Updater related configuration.
      */
     private class UpdaterConfig {
+        /**
+         * Indicator for dev {@link UpdateStrategy}.
+         */
+        private static final String DEV_INDICATOR = "_DEV";
         /**
          * True, if the updater is enabled.
          */
@@ -520,7 +340,11 @@ public class Updater {
         /**
          * The selected {@link UpdateStrategy}.
          */
-        private final UpdateStrategy updateStrategy;
+        private final UpdateStrategy strategy;
+        /**
+         * True if dev versions should be downloaded.
+         */
+        private final boolean downloadDev;
         /**
          * True, if updated should be downloaded automatic.
          */
@@ -537,31 +361,37 @@ public class Updater {
         /**
          * Reads the configuration file.
          */
+        @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
         public UpdaterConfig() {
             final FileConfiguration config = BetonQuest.getInstance().getConfig();
 
             enabled = config.getBoolean("update.enabled", true);
             ingameNotification = config.getBoolean("update.ingameNotification", true);
 
-            final String stringUpdateStrategy = config.getString("update.strategy");
+            String updateStrategy = config.getString("update.strategy", "MINOR").toUpperCase(Locale.ROOT);
+            boolean downloadDev = updateStrategy.endsWith(DEV_INDICATOR);
+            if (downloadDev) {
+                updateStrategy = updateStrategy.substring(0, updateStrategy.length() - DEV_INDICATOR.length());
+            }
             UpdateStrategy strategy;
             try {
-                strategy = stringUpdateStrategy == null ? UpdateStrategy.MINOR :
-                        UpdateStrategy.valueOf(stringUpdateStrategy.toUpperCase(Locale.ROOT));
+                strategy = UpdateStrategy.valueOf(updateStrategy);
             } catch (final IllegalArgumentException exception) {
-                LOG.error(null, "Could not read 'update.strategy' in 'config.yml'!", exception);
+                LOG.error(null, "Could not parse 'update.strategy' in 'config.yml'!", exception);
                 strategy = UpdateStrategy.MINOR;
             }
+            this.strategy = strategy;
 
-            if (latest.getKey().isDev() && !strategy.isDev || latest.getKey().isUnofficial()) {
-                updateStrategy = strategy.toDev();
+            final boolean isDev = Updater.DEV_INDICATOR.equals(latest.getKey().getQualifier());
+            if (isDev && !downloadDev || !isDev && latest.getKey().hasQualifier()) {
+                downloadDev = true;
                 automatic = false;
                 forcedStrategy = true;
             } else {
-                updateStrategy = strategy;
                 automatic = config.getBoolean("update.automatic", false);
                 forcedStrategy = false;
             }
+            this.downloadDev = downloadDev;
         }
     }
 }

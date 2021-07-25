@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.protocollib;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
@@ -7,6 +8,13 @@ import org.betonquest.betonquest.compatibility.protocollib.conversation.MenuConv
 import org.betonquest.betonquest.compatibility.protocollib.conversation.PacketInterceptor;
 import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
 import org.betonquest.betonquest.compatibility.protocollib.hider.UpdateVisibilityNowEvent;
+import org.betonquest.betonquest.exceptions.HookException;
+import org.betonquest.betonquest.exceptions.UnsupportedVersionException;
+import org.betonquest.betonquest.utils.versioning.UpdateStrategy;
+import org.betonquest.betonquest.utils.versioning.Version;
+import org.betonquest.betonquest.utils.versioning.VersionComparator;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class ProtocolLibIntegrator implements Integrator {
@@ -18,7 +26,14 @@ public class ProtocolLibIntegrator implements Integrator {
     }
 
     @Override
-    public void hook() {
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
+    public void hook() throws HookException {
+        final Plugin protocolLib = Bukkit.getPluginManager().getPlugin("ProtocolLib");
+        final Version protocolLibVersion = new Version(protocolLib.getDescription().getVersion());
+        final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR);
+        if (comparator.isOtherNewerThanCurrent(protocolLibVersion, new Version("4.7.0"))) {
+            throw new UnsupportedVersionException(protocolLib, "4.7.0");
+        }
         // if Citizens is hooked, start NPCHider
         if (Compatibility.getHooked().contains("Citizens")) {
             NPCHider.start();
