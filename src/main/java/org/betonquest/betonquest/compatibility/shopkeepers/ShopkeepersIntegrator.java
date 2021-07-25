@@ -27,7 +27,7 @@ public class ShopkeepersIntegrator implements Integrator {
         final Plugin shopkeepers = Bukkit.getPluginManager().getPlugin("Shopkeepers");
         final Version shopkeepersVersion = new Version(shopkeepers.getDescription().getVersion());
         final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR);
-        if (comparator.compare(shopkeepersVersion, new Version("2.2.0")) > 0) {
+        if (comparator.isOtherNewerOrEqualThanCurrent(new Version("2.2.0"), shopkeepersVersion)) {
             throw new UnsupportedVersionException(shopkeepers, "2.2.0");
         }
         plugin.registerEvents("shopkeeper", OpenShopEvent.class);

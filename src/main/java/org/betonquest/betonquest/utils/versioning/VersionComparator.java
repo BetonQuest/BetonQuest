@@ -40,6 +40,14 @@ public class VersionComparator {
         return updateStrategy;
     }
 
+    public boolean isOtherNewerThanCurrent(final Version current, final Version other) {
+        return compare(current, other) < 0;
+    }
+
+    public boolean isOtherNewerOrEqualThanCurrent(final Version current, final Version other) {
+        return compare(current, other) <= 0;
+    }
+
     /**
      * Checks if the otherVersion is newer than the currentVersion.
      *

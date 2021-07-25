@@ -168,7 +168,7 @@ public class Updater {
                 if ("BetonQuest.jar".equals(asset.getString("name"))) {
                     final String url = asset.getString("browser_download_url");
                     final VersionComparator comparator = new VersionComparator(config.strategy);
-                    if (comparator.compare(latest.getKey(), version) < 0) {
+                    if (comparator.isOtherNewerThanCurrent(latest.getKey(), version)) {
                         latest = Pair.of(version, url);
                     }
                 }
@@ -185,7 +185,7 @@ public class Updater {
             final Version version = new Version(key + "-DEV-" + dev);
             final String url = DEV_API_DOWNLOAD.replace(":versionNumber", dev).replace(":version", key);
             final VersionComparator comparator = new VersionComparator(config.strategy, "DEV-");
-            if (comparator.compare(latest.getKey(), version) < 0) {
+            if (comparator.isOtherNewerThanCurrent(latest.getKey(), version)) {
                 latest = Pair.of(version, url);
             }
         }

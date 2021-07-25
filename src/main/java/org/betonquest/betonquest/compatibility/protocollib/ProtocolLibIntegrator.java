@@ -31,7 +31,7 @@ public class ProtocolLibIntegrator implements Integrator {
         final Plugin protocolLib = Bukkit.getPluginManager().getPlugin("ProtocolLib");
         final Version protocolLibVersion = new Version(protocolLib.getDescription().getVersion());
         final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR);
-        if (comparator.compare(protocolLibVersion, new Version("4.7.0")) > 0) {
+        if (comparator.isOtherNewerOrEqualThanCurrent(new Version("4.7.0"), protocolLibVersion)) {
             throw new UnsupportedVersionException(protocolLib, "4.7.0");
         }
         // if Citizens is hooked, start NPCHider
