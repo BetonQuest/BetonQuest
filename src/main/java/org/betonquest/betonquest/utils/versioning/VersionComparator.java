@@ -39,10 +39,20 @@ public class VersionComparator {
         return updateStrategy;
     }
 
+    /**
+     * @param current The current version
+     * @param other   The other version
+     * @return true if the other version is newer than current
+     */
     public boolean isOtherNewerThanCurrent(final Version current, final Version other) {
         return compare(current, other) < 0;
     }
 
+    /**
+     * @param current The current version
+     * @param other   The other version
+     * @return true if the other version is newer or equal than current
+     */
     public boolean isOtherNewerOrEqualThanCurrent(final Version current, final Version other) {
         return compare(current, other) <= 0;
     }
