@@ -92,6 +92,9 @@ plugins:
 extra:
   version:
     provider: mike
+  analytics:
+    provider: google
+    property: UA-164568470-1
   consent:
     title: Cookie consent
     cookies:
@@ -167,7 +170,3 @@ nav:
       - 'Docs':
           - '🔧 Setup': Participate/Docs/Setup.md
           - '📚 Guidelines': Participate/Docs/Guidelines.md
-
-google_analytics:
-  - UA-164568470-1
-  - auto
