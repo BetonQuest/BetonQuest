@@ -8,28 +8,29 @@
   .md-main__inner {
     margin-top: 0;
   }
+
   .md-content__inner {
     padding-top: 0;
   }
+
   .md-sidebar, .md-sidebar > *,
   .md-content__inner:before {
     display: none !important;
   }
 </style>
 
-<!-- Extend existing MkDocs (background) -->
+<!-- Customize background -->
 <style>
-  body{
-    background:
-      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1123 258'><path d='M1124,2c0,0 0,256 0,256l-1125,0l0,-48c0,0 16,5 55,5c116,0 197,-92 325,-92c121,0 114,46 254,46c140,0 214,-167 572,-166Z' style='fill: hsla(0, 0%, 100%, 1)' /></svg>")
-    no-repeat fixed bottom,
-      linear-gradient( to bottom, var(--md-primary-fg-color), hsla(280, 67%, 55%, 1) 100%, var(--md-default-bg-color)) fixed;
+  body {
+    background: url(media/content/Home/waveWhite.svg) no-repeat 0 500%,
+    no-repeat linear-gradient(to bottom, var(--md-primary-fg-color), hsla(280, 67%, 55%, 1) 100%, var(--md-default-bg-color));
   }
+
   body[data-md-color-scheme="slate"] {
-    background:
-      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1123 258'><path d='M1124,2c0,0 0,256 0,256l-1125,0l0,-48c0,0 16,5 55,5c116,0 197,-92 325,-92c121,0 114,46 254,46c140,0 214,-167 572,-166Z' style='fill: hsla(232, 15%, 21%, 1)' /></svg>")
-    no-repeat fixed bottom,
-      linear-gradient( to bottom, var(--md-primary-fg-color), hsla(280, 67%, 55%, 1) 100%, var(--md-default-bg-color)) fixed;
+    background: url(media/content/Home/waveDark.svg) 0 500% no-repeat,
+    no-repeat linear-gradient(to bottom, var(--md-primary-fg-color), hsla(280, 67%, 55%, 1) 100%, var(--md-default-bg-color));
+    background-color: var(--md-default-bg-color);
+
   }
 </style>
 
@@ -40,16 +41,19 @@
     margin-left: 0.3em;
     margin-right: 0.3em;
   }
+
   .betonquest-flex-container {
     display: flex;
     flex-direction: column-reverse;
     max-width: 100%;
     margin-bottom: 1em;
   }
+
   .betonquest-flex-item {
     min-width: 100%;
     flex: auto;
   }
+
   .betonquest-flex-logo {
     max-width: 30em;
     display: block;
@@ -71,13 +75,16 @@
       margin-left: 5em;
       margin-right: 5em;
     }
+
     .betonquest-flex-container {
       flex-direction: row;
       margin-bottom: 2em;
     }
+
     .betonquest-flex-item {
       min-width: 50%;
     }
+
     .betonquest-flex-logo {
       min-width: 25em;
       max-width: 40em;
@@ -111,6 +118,10 @@
     padding-right: 4.5em;
   }
 
+  .betonquest-text-color {
+    color: white !important;
+  }
+
 </style>
 
 <!-- Button Customization -->
@@ -127,8 +138,8 @@
 <div class="betonquest-content">
   <div class="betonquest-flex-container">
     <div class="betonquest-flex-item">
-      <h1 class="betonquest-header">Your servers backbone</h1>
-      <p class="betonquest-text">Create unique quests with an easy-to-use scripting language. Includes many tools:
+      <h1 class="betonquest-header betonquest-text-color">Your servers backbone</h1>
+      <p class="betonquest-text betonquest-text-color">Create unique quests with an easy-to-use scripting language. Includes many tools:
         NPC Conversations, Quest Items, Quest Logs, GUI Menus, Notifications and more - customizable, translatable,
         28+ plugin integrations, extensive developer API. All of this free and open source.
       </p>
