@@ -19,6 +19,7 @@ Add this to your pom.yml.
         <groupId>org.betonquest</groupId>
         <artifactId>betonquest</artifactId>
         <version>2.0.0-SNAPSHOT</version>
+        <scope>provided</scope>
     </dependency>
 </dependencies>
 ```
