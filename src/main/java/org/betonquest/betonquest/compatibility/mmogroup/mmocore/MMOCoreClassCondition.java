@@ -36,7 +36,7 @@ public class MMOCoreClassCondition extends Condition {
         final Player player = PlayerConverter.getPlayer(playerID);
         final PlayerData data = PlayerData.get(player);
 
-        final String actualClassName = data.getProfess().getName();
+        final String actualClassName = data.getProfess().getId();
         final int actualClassLevel = data.getLevel();
 
         if (actualClassName.equalsIgnoreCase(targetClassName) || "*".equals(targetClassName) && !"HUMAN".equalsIgnoreCase(actualClassName)) {
