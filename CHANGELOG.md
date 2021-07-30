@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - the mmoitemtake event & mmoitem condition now also check the backpack
   - this will not work until the item rework / until the backpack contains NBT data
 - added PlayerObjectiveChangeEvent, PlayerJournalAddEvent, PlayerJournalDeleteEvent
+- Version checks for ProtocolLib and Shopkeepers support
 ### Changed
 - math variable now allows rounding output with the ~ operator
 - changed package names from `pl.betoncraft.betonquest` to `org.betonquest.betonquest`
@@ -66,6 +67,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - backpack passing references instead of clones
 - compass event now allows global variables
 - fixed combat event packet that changed with MC 1.17
+- MMOCoreClassCondition used the class display name instead of the class ID to compare classes.
 ### Security
 - it was possible to put a QuestItem into a chest
 - the take event is now threadsafe
