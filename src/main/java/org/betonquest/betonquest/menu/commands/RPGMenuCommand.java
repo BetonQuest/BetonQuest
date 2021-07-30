@@ -110,12 +110,11 @@ public class RPGMenuCommand extends SimpleCommand {
                 showHelp(sender);
                 return false;
         }
-        switch (args[0].toUpperCase(Locale.ROOT)) {
+        switch (args[0].toLowerCase(Locale.ROOT)) {
             case "l":
             case "list":
                 final ComponentBuilder builder = new ComponentBuilder("");
-                builder
-                        .append(TextComponent.fromLegacyText(RPGMenuConfig.getMessage(sender, "command_list")));
+                builder.append(TextComponent.fromLegacyText(RPGMenuConfig.getMessage(sender, "command_list")));
                 final Collection<MenuID> ids = this.menu.getMenus();
                 if (ids.isEmpty()) {
                     builder.append("\n - ").color(ChatColor.GRAY);
