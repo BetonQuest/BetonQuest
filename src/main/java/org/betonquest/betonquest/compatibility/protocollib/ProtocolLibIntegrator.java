@@ -30,9 +30,9 @@ public class ProtocolLibIntegrator implements Integrator {
     public void hook() throws HookException {
         final Plugin protocolLib = Bukkit.getPluginManager().getPlugin("ProtocolLib");
         final Version protocolLibVersion = new Version(protocolLib.getDescription().getVersion());
-        final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR);
-        if (comparator.isOtherNewerThanCurrent(protocolLibVersion, new Version("4.7.0"))) {
-            throw new UnsupportedVersionException(protocolLib, "4.7.0");
+        final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR, "SNAPSHOT-b");
+        if (comparator.isOtherNewerThanCurrent(protocolLibVersion, new Version("4.7.1-SNAPSHOT-b531"))) {
+            throw new UnsupportedVersionException(protocolLib, "4.7.1-SNAPSHOT-b531");
         }
         // if Citizens is hooked, start NPCHider
         if (Compatibility.getHooked().contains("Citizens")) {

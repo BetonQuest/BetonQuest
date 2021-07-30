@@ -59,7 +59,7 @@ public class EntityHider implements Listener {
             PacketType.Play.Server.ENTITY_EFFECT,
             PacketType.Play.Server.REMOVE_ENTITY_EFFECT,
             PacketType.Play.Server.BLOCK_BREAK_ANIMATION,
-            PacketType.Play.Server.PLAYER_COMBAT_ENTER,
+            PacketType.Play.Server.PLAYER_COMBAT_KILL,
 
             // We don't handle DESTROY_ENTITY though
     };
@@ -254,7 +254,7 @@ public class EntityHider implements Listener {
         final PacketType combatEvent;
         if (PaperLib.isVersion(17)) {
             packetList = ENTITY_PACKETS;
-            combatEvent = PacketType.Play.Server.PLAYER_COMBAT_ENTER;
+            combatEvent = PacketType.Play.Server.PLAYER_COMBAT_KILL;
         } else {
             packetList = ENTITY_PACKETS_PRE_17;
             combatEvent = PacketType.Play.Server.COMBAT_EVENT;
@@ -262,9 +262,9 @@ public class EntityHider implements Listener {
         return new PacketAdapter(plugin, packetList) {
             @Override
             public void onPacketSending(final PacketEvent event) {
-                final int index = event.getPacketType().equals(combatEvent) ? 1 : 0;
-
                 if (!event.isPlayerTemporary()) {
+                    final int index = event.getPacketType().equals(combatEvent) ? 1 : 0;
+
                     final Integer entityID = event.getPacket().getIntegers().readSafely(index);
                     if (entityID != null && !isVisible(event.getPlayer(), entityID)) {
                         event.setCancelled(true);
@@ -323,7 +323,11 @@ public class EntityHider implements Listener {
 
         if (visibleBefore) {
             final PacketContainer destroyEntity = new PacketContainer(PacketType.Play.Server.ENTITY_DESTROY);
-            destroyEntity.getIntegerArrays().write(0, new int[]{entity.getEntityId()});
+            if (PaperLib.isVersion(17, 1)) {
+                destroyEntity.getIntLists().write(0, Collections.singletonList(entity.getEntityId()));
+            } else {
+                destroyEntity.getIntegerArrays().write(0, new int[]{entity.getEntityId()});
+            }
 
             // Make the entity disappear
             try {
