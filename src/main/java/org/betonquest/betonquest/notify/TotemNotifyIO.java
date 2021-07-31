@@ -2,6 +2,7 @@ package org.betonquest.betonquest.notify;
 
 import com.comphenix.packetwrapper.WrapperPlayServerEntityStatus;
 import com.comphenix.packetwrapper.WrapperPlayServerSetSlot;
+import io.papermc.lib.PaperLib;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -57,7 +58,19 @@ public class TotemNotifyIO extends NotifyIO {
     }
 
     private void sendOffhandPacket(final Player player, final ItemStack offHandItem) {
-        final WrapperPlayServerSetSlot slotPacket = new WrapperPlayServerSetSlot();
+        final WrapperPlayServerSetSlot slotPacket;
+
+        if (PaperLib.isVersion(17, 1)) {
+            slotPacket = new WrapperPlayServerSetSlot() {
+                @Override
+                public void setSlot(final int value) {
+                    handle.getIntegers().write(2, value);
+                }
+            };
+        } else {
+            slotPacket = new WrapperPlayServerSetSlot();
+        }
+
         slotPacket.setSlot(45);
         slotPacket.setSlotData(offHandItem);
         slotPacket.setWindowId(0);
