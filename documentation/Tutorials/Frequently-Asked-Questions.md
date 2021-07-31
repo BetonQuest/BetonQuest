@@ -40,7 +40,7 @@ Usually it's because you started a line with `!` or `&`, forgot colons or made s
 
 ## How to get a formatted version of the BlockObjective's variables?
 The math variable is perfect for this.
-`/papi parse USER %betonquest_BlockVar:math.calc:|objective.test.left|`
+`/papi parse USER %betonquest_BlockVar:math.calc:|objective.test.left|%`
 
 ## How to display "1 / 10" in objective notify
 This problem can be solved by scripting a small custom message system.
