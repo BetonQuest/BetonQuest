@@ -31,13 +31,13 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     protected final String name;
     protected final Player player;
     protected final Map<String, ChatColor[]> colors;
+    private final String npcTextColor;
     protected int optionsCount;
     protected Map<Integer, String> options;
     protected String npcText;
     protected String npcName;
     protected String answerFormat;
     protected String textFormat;
-    private final String npcTextColor;
 
     public ChatConvIO(final Conversation conv, final String playerID) {
         this.options = new HashMap<>();
@@ -122,6 +122,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onReply(final AsyncPlayerChatEvent event) {
         if (!event.getPlayer().equals(player)) {
