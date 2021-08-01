@@ -34,7 +34,7 @@ public abstract class CountingObjective extends Objective {
     /**
      * Create a counting objective with default notify message name.
      *
-     * @param instruction the objective instruction
+     * @param instruction       the objective instruction
      * @param notifyMessageName the message name used for notifying by default
      * @throws InstructionParseException if the syntax is wrong or any error happens while parsing
      */
@@ -90,7 +90,7 @@ public abstract class CountingObjective extends Objective {
      * message name. If it is {@code null}, no notification is sent, even if a {@link #defaultNotifyMessageName} was set
      * and a notification should have been sent.
      *
-     * @param playerId player UUID as string
+     * @param playerId          player UUID as string
      * @param notifyMessageName message name for notification message
      * @return {@code true} if the objective is completed; {@code false} otherwise
      */
@@ -109,8 +109,8 @@ public abstract class CountingObjective extends Objective {
     private boolean shouldNotify(final CountingData data) {
         final int newAmount = Math.abs(data.getAmountLeft());
         final int oldAmount = Math.abs(data.getPreviousAmountLeft());
-        return newAmount > oldAmount &&  newAmount      / notifyInterval !=  oldAmount      / notifyInterval
-            || newAmount < oldAmount && (newAmount - 1) / notifyInterval != (oldAmount - 1) / notifyInterval;
+        return newAmount > oldAmount && newAmount / notifyInterval != oldAmount / notifyInterval
+                || newAmount < oldAmount && (newAmount - 1) / notifyInterval != (oldAmount - 1) / notifyInterval;
     }
 
     /**
@@ -144,8 +144,8 @@ public abstract class CountingObjective extends Objective {
          *
          * @param instruction to {@link Integer} parsable string, containing the units to complete or output from
          *                    {@link #toString()}
-         * @param playerID to {@link java.util.UUID} parsable string, id of the player who has this objective
-         * @param objID id of the objective, used by BetonQuest to store this {@link ObjectiveData} in the database
+         * @param playerID    to {@link java.util.UUID} parsable string, id of the player who has this objective
+         * @param objID       id of the objective, used by BetonQuest to store this {@link ObjectiveData} in the database
          */
         public CountingData(final String instruction, final String playerID, final String objID) {
             super(instruction, playerID, objID);
@@ -160,8 +160,8 @@ public abstract class CountingObjective extends Objective {
                     break;
                 case 4:
                     targetAmount = Integer.parseInt(instructionParts[0]);
-                    amountLeft = Integer.parseInt(instructionParts[2]);
-                    directionFactor = Integer.parseInt(instructionParts[1]);
+                    amountLeft = Integer.parseInt(instructionParts[1]);
+                    directionFactor = Integer.parseInt(instructionParts[2]);
                     lastChange = Integer.parseInt(instructionParts[3]);
                     break;
                 default:
