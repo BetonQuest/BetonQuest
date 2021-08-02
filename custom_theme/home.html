@@ -21,18 +21,25 @@
 
 <!-- Customize background (responsive) -->
 <style>
+  /* Variable image Default and Dark Mode */
+  body {
+    --background-svg-path: url("media/content/Home/waveWhite.svg");
+  }
+
+  body[data-md-color-scheme="slate"] {
+    --background-svg-path: url("media/content/Home/waveDark.svg");
+  }
+
   /* Default */
   body {
-    background: url(media/content/Home/waveWhite.svg) no-repeat 0 500%,
+    background: var(--background-svg-path) no-repeat 0 500%,
     no-repeat linear-gradient(to bottom, var(--md-primary-fg-color), hsla(280, 67%, 55%, 1) 100%, var(--md-default-bg-color));
   }
 
   /* Light Mode responsive design */
-
-
   @media (min-width: 200px) {
     body {
-      background: url(media/content/Home/waveWhite.svg) 0 70em no-repeat,
+      background: var(--background-svg-path) 0 70em no-repeat,
       no-repeat linear-gradient(to bottom, var(--md-primary-fg-color), hsla(280, 67%, 55%, 1) 100%, var(--md-default-bg-color));
       background-color: var(--md-default-bg-color);
       background-size: 100%, 100% 80em;
@@ -41,7 +48,7 @@
 
   @media (min-width: 200px) {
     body {
-      background: url(media/content/Home/waveWhite.svg) 0 70em no-repeat,
+      background: var(--background-svg-path) 0 70em no-repeat,
       no-repeat linear-gradient(to bottom, var(--md-primary-fg-color), hsla(280, 67%, 55%, 1) 100%, var(--md-default-bg-color));
       background-color: var(--md-default-bg-color);
       background-size: 100%, 100% 80em;
@@ -50,7 +57,7 @@
 
   @media (min-width: 400px) {
     body {
-      background: url(media/content/Home/waveWhite.svg) 0 70em no-repeat,
+      background: var(--background-svg-path) 0 70em no-repeat,
       no-repeat linear-gradient(to bottom, var(--md-primary-fg-color), hsla(280, 67%, 55%, 1) 100%, var(--md-default-bg-color));
       background-color: var(--md-default-bg-color);
       background-size: 100%, 100% 88em;
@@ -59,7 +66,7 @@
 
   @media (min-width: 600px) {
     body {
-      background: url(media/content/Home/waveWhite.svg) 0 70em no-repeat,
+      background: var(--background-svg-path) 0 70em no-repeat,
       no-repeat linear-gradient(to bottom, var(--md-primary-fg-color), hsla(280, 67%, 55%, 1) 100%, var(--md-default-bg-color));
       background-color: var(--md-default-bg-color);
       background-size: 100%, 100% 88em;
@@ -68,7 +75,7 @@
 
   @media (min-width: 950px) {
     body {
-      background: url(media/content/Home/waveWhite.svg) 0 50em no-repeat,
+      background: var(--background-svg-path) 0 50em no-repeat,
       no-repeat linear-gradient(to bottom, var(--md-primary-fg-color), hsla(280, 67%, 55%, 1) 100%, var(--md-default-bg-color));
       background-color: var(--md-default-bg-color);
       background-size: 100%, 100% 88em;
@@ -77,7 +84,7 @@
 
   @media (min-width: 2500px) {
     body {
-      background: url(media/content/Home/waveWhite.svg) 0 40em no-repeat,
+      background: var(--background-svg-path) 0 40em no-repeat,
       no-repeat linear-gradient(to bottom, var(--md-primary-fg-color), hsla(280, 67%, 55%, 1) 100%, var(--md-default-bg-color));
       background-color: var(--md-default-bg-color);
       background-size: 100%, 100% 88em;
@@ -86,7 +93,7 @@
 
   @media (min-width: 2500px) {
     body {
-      background: url(media/content/Home/waveWhite.svg) 0 25em no-repeat,
+      background: var(--background-svg-path) 0 25em no-repeat,
       no-repeat linear-gradient(to bottom, var(--md-primary-fg-color), hsla(280, 67%, 55%, 1) 100%, var(--md-default-bg-color));
       background-color: var(--md-default-bg-color);
       background-size: 100%, 100% 88em;
@@ -95,81 +102,7 @@
 
   @media (min-width: 4000px) {
     body {
-      background: url(media/content/Home/waveWhite.svg) 0 10em no-repeat,
-      no-repeat linear-gradient(to bottom, var(--md-primary-fg-color), hsla(280, 67%, 55%, 1) 100%, var(--md-default-bg-color));
-      background-color: var(--md-default-bg-color);
-      background-size: 100%, 100% 88em;
-    }
-  }
-
-  /* Dark Mode responsive design */
-
-  @media (min-width: 200px) {
-    body[data-md-color-scheme="slate"] {
-      background: url(media/content/Home/waveDark.svg) 0 70em no-repeat,
-      no-repeat linear-gradient(to bottom, var(--md-primary-fg-color), hsla(280, 67%, 55%, 1) 100%, var(--md-default-bg-color));
-      background-color: var(--md-default-bg-color);
-      background-size: 100%, 100% 80em;
-    }
-  }
-
-  @media (min-width: 200px) {
-    body[data-md-color-scheme="slate"] {
-      background: url(media/content/Home/waveDark.svg) 0 70em no-repeat,
-      no-repeat linear-gradient(to bottom, var(--md-primary-fg-color), hsla(280, 67%, 55%, 1) 100%, var(--md-default-bg-color));
-      background-color: var(--md-default-bg-color);
-      background-size: 100%, 100% 80em;
-    }
-  }
-
-  @media (min-width: 400px) {
-    body[data-md-color-scheme="slate"] {
-      background: url(media/content/Home/waveDark.svg) 0 70em no-repeat,
-      no-repeat linear-gradient(to bottom, var(--md-primary-fg-color), hsla(280, 67%, 55%, 1) 100%, var(--md-default-bg-color));
-      background-color: var(--md-default-bg-color);
-      background-size: 100%, 100% 88em;
-    }
-  }
-
-  @media (min-width: 600px) {
-    body[data-md-color-scheme="slate"] {
-      background: url(media/content/Home/waveDark.svg) 0 70em no-repeat,
-      no-repeat linear-gradient(to bottom, var(--md-primary-fg-color), hsla(280, 67%, 55%, 1) 100%, var(--md-default-bg-color));
-      background-color: var(--md-default-bg-color);
-      background-size: 100%, 100% 88em;
-    }
-  }
-
-  @media (min-width: 950px) {
-    body[data-md-color-scheme="slate"] {
-      background: url(media/content/Home/waveDark.svg) 0 50em no-repeat,
-      no-repeat linear-gradient(to bottom, var(--md-primary-fg-color), hsla(280, 67%, 55%, 1) 100%, var(--md-default-bg-color));
-      background-color: var(--md-default-bg-color);
-      background-size: 100%, 100% 88em;
-    }
-  }
-
-  @media (min-width: 2500px) {
-    body[data-md-color-scheme="slate"] {
-      background: url(media/content/Home/waveDark.svg) 0 40em no-repeat,
-      no-repeat linear-gradient(to bottom, var(--md-primary-fg-color), hsla(280, 67%, 55%, 1) 100%, var(--md-default-bg-color));
-      background-color: var(--md-default-bg-color);
-      background-size: 100%, 100% 88em;
-    }
-  }
-
-  @media (min-width: 2500px) {
-    body[data-md-color-scheme="slate"] {
-      background: url(media/content/Home/waveDark.svg) 0 25em no-repeat,
-      no-repeat linear-gradient(to bottom, var(--md-primary-fg-color), hsla(280, 67%, 55%, 1) 100%, var(--md-default-bg-color));
-      background-color: var(--md-default-bg-color);
-      background-size: 100%, 100% 88em;
-    }
-  }
-
-  @media (min-width: 4000px) {
-    body[data-md-color-scheme="slate"] {
-      background: url(media/content/Home/waveDark.svg) 0 10em no-repeat,
+      background: var(--background-svg-path) 0 10em no-repeat,
       no-repeat linear-gradient(to bottom, var(--md-primary-fg-color), hsla(280, 67%, 55%, 1) 100%, var(--md-default-bg-color));
       background-color: var(--md-default-bg-color);
       background-size: 100%, 100% 88em;
