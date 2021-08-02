@@ -1,5 +1,5 @@
 #MkDocs and the MkDocs-material theme
-mkdocs-material==7.2.0
+mkdocs-material==7.2.2
 #Shows git revision date at the bottom of the page
 mkdocs-git-revision-date-localized-plugin
 #Tool for MkDocs versioning

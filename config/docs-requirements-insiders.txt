@@ -1,5 +1,5 @@
 #MkDocs and the MkDocs-material theme
-git+https://${MKDOCS_MATERIAL_INSIDERS}@github.com/squidfunk/mkdocs-material-insiders.git@7.1.11-insiders-2.11.1
+git+https://${MKDOCS_MATERIAL_INSIDERS}@github.com/squidfunk/mkdocs-material-insiders.git@7.2.1-insiders-2.12.1
 #Shows git revision date at the bottom of the page
 mkdocs-git-revision-date-localized-plugin
 #Tool for MkDocs versioning
