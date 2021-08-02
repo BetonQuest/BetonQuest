@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg version="1.1" viewBox="0 0 1125 504.08" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+<svg
+   version="1.1"
+   viewBox="0 0 1125 250"
+   preserveAspectRatio="none"
+   width="1125"
+   height="250"
+   xmlns="http://www.w3.org/2000/svg">
   <title>Wave</title>
-  <g transform="translate(-61.598 156.52)" style="hsla(232, 15%, 21%, 1)">
+  <g transform="translate(0,0)">
     <path
-      d="m1186.6-156.51c-289.15 21.977-362.26 163.04-490.97 163.04-140 0-133-46-254-46-128 0-209 92-325 92-39 0-55-5-55-5v300.02c0 1e-3 0.0098 8e-3 0.0098 0.01s59.305 1.0065 59.305 1.0065l300.13 0.0663 409.47 0.47558c101.52-1.0636 356.01-1.4595 356.01-1.4595l0.1351-210.26-0.061-293.88c0-3e-3 -0.01-7e-3 -0.01-0.01v-4e-3c0-2e-3 -0.01-4e-3 -0.01-6e-3z"
-      style="fill: hsla(232, 15%, 21%, 1)"/>
+       d="M 1125,0 C 836,22 763,163 634,163 c -140,0 -133,-46 -254,-46 -128,0 -209,92 -325,92 -39,0 -55,-5 -55,-5 V 250 H 1125 L 1125,0 Z"
+       style="fill: hsla(232, 15%, 21%, 1)"/> />
   </g>
 </svg>
