@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixes
 - MMOCoreClassCondition used the class display name instead of the class ID to compare classes.
 - the take event called Paper's ItemStack.getI18NDisplayName() instead of Spigot's ItemStack.getItemMeta().getDisplayName
+- fixed hooking in ProtocolLib
 ### Security
 
 ## [1.12.4] - 2021-07-05
