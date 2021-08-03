@@ -69,6 +69,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fixed combat event packet that changed with MC 1.17
 - MMOCoreClassCondition used the class display name instead of the class ID to compare classes.
 - fixed TotemIO on 1.17.1
+- fixed hooking in ProtocolLib
 ### Security
 - it was possible to put a QuestItem into a chest
 - the take event is now threadsafe
