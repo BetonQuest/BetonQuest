@@ -32,6 +32,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     protected final Player player;
     protected final Map<String, ChatColor[]> colors;
     private final String npcTextColor;
+    private final double maxNpcDistance;
     protected int optionsCount;
     protected Map<Integer, String> options;
     protected String npcText;
@@ -69,6 +70,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         }
         answerFormat = string.toString();
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        maxNpcDistance = Double.parseDouble(Config.getString("config.max_npc_distance"));
     }
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
@@ -80,7 +82,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         }
         // if player passes max distance
         if (!event.getTo().getWorld().equals(conv.getLocation().getWorld()) || event.getTo()
-                .distance(conv.getLocation()) > Integer.parseInt(Config.getString("config.max_npc_distance"))) {
+                .distance(conv.getLocation()) > maxNpcDistance) {
             // we can stop the player or end conversation
             if (conv.isMovementBlock()) {
                 moveBack(event);
@@ -101,7 +103,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
         // if the player is in other world (he teleported himself), teleport him
         // back to the center of the conversation
         if (!event.getTo().getWorld().equals(conv.getLocation().getWorld()) || event.getTo()
-                .distance(conv.getLocation()) > Integer.parseInt(Config.getString("config.max_npc_distance")) * 2) {
+                .distance(conv.getLocation()) > maxNpcDistance * 2) {
             event.getPlayer().teleport(conv.getLocation());
             return;
         }
