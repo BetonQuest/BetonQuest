@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - MMOCoreClassCondition used the class display name instead of the class ID to compare classes.
 - the take event called Paper's ItemStack.getI18NDisplayName() instead of Spigot's ItemStack.getItemMeta().getDisplayName
 - fixed hooking in ProtocolLib
+- max_npc_distance was set to 5.3 to prevent instant quiting of conversations
 ### Security
 
 ## [1.12.4] - 2021-07-05

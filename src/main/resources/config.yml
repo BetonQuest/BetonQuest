@@ -14,7 +14,7 @@ update:
   automatic: true
   ingameNotification: true
 default_journal_slot: '-1'
-max_npc_distance: '5'
+max_npc_distance: '5.3'
 citizens_npcs_by_name: 'false'
 acceptNPCLeftClick: 'false'
 npcInteractionLimit: 500

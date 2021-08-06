@@ -301,7 +301,7 @@ public class Conversation implements Listener {
                 public void run() {
                     interceptor.end();
                 }
-            }.runTaskLater(BetonQuest.getInstance(), 20);
+            }.runTaskLaterAsynchronously(BetonQuest.getInstance(), 20);
         }
 
         // delete conversation
@@ -309,7 +309,6 @@ public class Conversation implements Listener {
         HandlerList.unregisterAll(this);
 
         new BukkitRunnable() {
-
             @Override
             public void run() {
                 Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationEndEvent(player, Conversation.this));
