@@ -5,6 +5,16 @@ hide:
   - navigation
   - toc
 ---
+<style>
+
+.tester {
+  width: 100%; !important;
+}
+
+.md-grid {
+  max-width: 1440px;
+}
+</style>
 <div style="text-align: center;">
   <video autoplay muted loop poster="media/content/Home/OverviewVideoPreview.jpg" src="media/content/Documentation/Conversations/MenuConvIO.mp4" width="100%" style="box-shadow: 0px 0px 30px black;">
     Sorry, your browser doesn't support embedded videos.
@@ -59,15 +69,21 @@ lines based upon the progress in your old plugin. If just Beton isn't enough you
 See the full list of integrations [here](../Documentation/Compatibility.md).
 
 ## Custom Notification System
+<div class="tester">
 
+!!! info inline end
+    <video controls loop
+    src="../media/content/Documentation/Notifications/NotifySystemOverview.mp4"
+    width="100%">
+    Sorry, your browser doesn't support embedded videos.
+    </video>
+
+
+
+</div>
 Questers can make use of BetonQuests notifyIO system that provides access to all of Minecafts GUI elements to display notifications.
 Therefore you can provide information to your players like so:
 
- <video controls loop
-     src="../media/content/Documentation/Notifications/NotifySystemOverview.mp4"
-     width="780" height="400">
- Sorry, your browser doesn't support embedded videos.
- </video>
 
 BetonQuest makes it possible to provide NPC conversations in any language. Each player
 can set his own language which means that - if translated - all conversations will be in the players native language.
