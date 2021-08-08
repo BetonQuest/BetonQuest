@@ -174,6 +174,7 @@ public class MenuConvIO extends ChatConvIO {
             if (hasStarted()) {
                 return;
             }
+            started.set(true);
 
             // Create something painful looking for the player to sit on and make it invisible.
             stand = player.getWorld().spawn(player.getLocation().clone().add(0, -1.1, 0), ArmorStand.class);
@@ -197,7 +198,6 @@ public class MenuConvIO extends ChatConvIO {
             ProtocolLibrary.getProtocolManager().addPacketListener(packetAdapter);
 
             Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-            started.set(true);
         } finally {
             lock.writeLock().unlock();
         }
@@ -637,14 +637,12 @@ public class MenuConvIO extends ChatConvIO {
             if (hasEnded()) {
                 return;
             }
-
             ended.set(true);
 
-            if (hasStarted()) {
-                // Stop Listening for Packets
+            if (packetAdapter != null) {
                 ProtocolLibrary.getProtocolManager().removePacketListener(packetAdapter);
-
-                // Destroy Stand
+            }
+            if (stand != null) {
                 Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
                     stand.remove();
                     stand = null;
