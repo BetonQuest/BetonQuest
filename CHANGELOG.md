@@ -72,6 +72,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fixed hooking in ProtocolLib
 - max_npc_distance was set to 5.3 to prevent instant quiting of conversations
 - conversation IO menu sometimes leave an armorstand spawned
+- sometimes messages in a conversation are not send when packet interceptor is used  
 ### Security
 - it was possible to put a QuestItem into a chest
 - the take event is now threadsafe
