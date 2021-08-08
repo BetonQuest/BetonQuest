@@ -19,7 +19,6 @@ import pl.betoncraft.betonquest.conversation.Interceptor;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -67,13 +66,11 @@ public class PacketInterceptor implements Interceptor, Listener {
                     }
                     final BaseComponent[] components = (BaseComponent[]) packet.getModifier().read(baseComponentIndex);
                     if (components != null && components.length > 0 && ((TextComponent) components[0]).getText().contains(MESSAGE_PASSTHROUGH_TAG)) {
-                        packet.getModifier().write(baseComponentIndex, Arrays.copyOfRange(components, 1, components.length));
-                        event.setPacket(packet);
                         return;
                     }
 
                     // Else save message to replay later
-                    final WrapperPlayServerChat chat = new WrapperPlayServerChat(event.getPacket());
+                    final WrapperPlayServerChat chat = new WrapperPlayServerChat(packet);
                     event.setCancelled(true);
                     messages.add(chat);
                 }
