@@ -152,7 +152,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
      *
      * @return Whether the command was successfully unregistered
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "PMD.AvoidLiteralsInIfCondition"})
     public boolean unregister() {
         if (this.commandMap == null) {
             return false;
@@ -173,6 +173,11 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
             syncCraftBukkitCommands();
             LOG.debug(null, "Unregistered command " + getName() + "!");
             return true;
+        } catch (final RuntimeException e) {
+            if (!"java.lang.reflect.InaccessibleObjectException".equals(e.getClass().getName())) {
+                throw e;
+            }
+            return false;
         } catch (final Exception e) {
             LOG.error(null, "Could not unregister command §7" + getName() + "§4:", e);
             return false;
