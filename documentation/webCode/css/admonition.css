@@ -27,6 +27,7 @@
 /* Admonition and details */
 .md-typeset .admonition,
 .md-typeset details {
+  font-size: .7rem;
   position: relative;
   box-shadow:
     0   0.2rem  0.5rem rgba(0,0,0,.05),

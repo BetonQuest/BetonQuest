@@ -51,6 +51,9 @@ theme:
     code: Roboto Mono
   logo: media/brand/Icon/Icon1K.png
   favicon: media/brand/Icon/Icon32.ico
+  icon:
+    admonition:
+      example: fontawesome/regular/eye
 
 
 
