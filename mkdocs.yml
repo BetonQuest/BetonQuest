@@ -148,8 +148,7 @@ nav:
       - '🤝 Overview': Participate/Overview.md
       - 'Code':
           - '📚 Contributing Guidelines': Participate/Code/Contributing-Guidelines.md
-          - '🏭 Releasing': Participate/Code/Releasing.md
-          - '🏷️ Versioning': Participate/Code/Versioning.md
+          - '🏭 Versioning & Releasing': Participate/Code/Versioning-and-Releasing.md
       - 'Docs':
           - '🔧 Setup': Participate/Docs/Setup.md
           - '📚 Guidelines': Participate/Docs/Guidelines.md
