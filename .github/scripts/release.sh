@@ -1,5 +1,8 @@
 #!/bin/bash
-cd ../../
+CURRENT_PATH=$(pwd)
+if [[ "${CURRENT_PATH}" == */.github/scripts ]]; then
+  cd ../../
+fi
 
 MAVEN_VERSION=$(mvn help:evaluate -Dexpression=version -q -DforceStdout)
 echo "Release version: ${MAVEN_VERSION}"
