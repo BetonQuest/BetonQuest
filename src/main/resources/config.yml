@@ -19,6 +19,17 @@ citizens_npcs_by_name: 'false'
 acceptNPCLeftClick: 'false'
 npcInteractionLimit: 500
 default_conversation_IO: menu,chest
+conversation_colors:
+  npc: dark_red
+  player: dark_green
+  text: green,italic
+  answer: gray
+  number: yellow
+  option: aqua
+conversation_IO_config:
+  chest:
+    show_number: true
+    show_npc_text: true
 default_interceptor: packet,simple
 display_chat_after_conversation: 'true'
 combat_delay: '10'
@@ -74,12 +85,5 @@ journal_colors:
     hour: '6'
   line: '4'
   text: '0'
-conversation_colors:
-  npc: dark_red
-  player: dark_green
-  text: green,italic
-  answer: gray
-  number: yellow
-  option: aqua
 date_format: dd.MM.yyyy HH:mm
 debug: 'false'
