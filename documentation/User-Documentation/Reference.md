@@ -37,6 +37,11 @@ All the content you create is organized into packages. Each package must contain
 If you want, you can simply ignore the existence of packages and write all your quests in the default one. You will however come to a point, when your files contain hundreds of lines and it gets a little bit confusing. That's why it's better to split your quests into multiple packages, for example "main" for the quests in the main city, "dungeon" for some interesting dungeon story etc.
 
 Each package can be disabled/enabled in the _main.yml_ file, by setting `enabled` to `true` or `false`.
+```YAML
+#Add this to the package main.yml
+enabled: true
+```
+
 
 It would be limiting if you couldn't interact between packages. That's why you can always access stuff from other packages by prefixing its name with package name. If you're writing a conversation in package `village` and you want to fire an event `reward` from package `beton`, you simply name the event as `beton.reward`. The plugin will search for `reward` in `beton` package instead of the one in which the conversation is defined. All events, conditions, objectives, items and conversations behave this way. Note that you can't cross-reference journal entries!
 
