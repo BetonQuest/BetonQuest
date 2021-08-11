@@ -199,13 +199,15 @@ public class OpenedMenu implements Listener {
 
         //handle click
         final boolean close = item.onClick(player, event.getClick());
-        //if close was set close the menu
-        if (close) {
-            this.close();
-        }
-        // otherwise update the contents
-        else {
-            this.update();
+        if (getMenu(player).equals(this)) {
+            //if close was set close the menu
+            if (close) {
+                this.close();
+            }
+            // otherwise update the contents
+            else {
+                this.update();
+            }
         }
     }
 
