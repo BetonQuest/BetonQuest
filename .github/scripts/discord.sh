@@ -39,7 +39,7 @@ ADDITIONAL_INFORMATION="$LINEBREAK${COMMIT_MESSAGE//$\\n/ }$LINEBREAK\\n$CREDITS
 if [ "$RELEASE" = "release" ]; then
   RELEASE_NAME="RELEASE"
   RELEASE_DOWNLOAD_URL="https://github.com/BetonQuest/BetonQuest/releases"
-  RELEASE_DOWNLOAD_URL_DIRECT="https://github.com/BetonQuest/BetonQuest/releases/tag/v$POM_MAVEN_VERSION_KEY/BetonQuest.jar"
+  RELEASE_DOWNLOAD_URL_DIRECT="https://github.com/BetonQuest/BetonQuest/releases/download/v$VERSION_KEY/BetonQuest.jar"
   RELEASE_COMMIT_ICON_SUCCESS=$COMMIT_ICON_RELEASE
 else
   RELEASE_NAME="Dev-Build"
