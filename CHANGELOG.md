@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - ${current-date}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixes
+### Security
+
+## [1.12.5] - 2021-08-11
+### Added
 - Version checks for ProtocolLib and Shopkeepers support
 ### Changed
 ### Deprecated
