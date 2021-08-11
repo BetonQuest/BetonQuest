@@ -1,0 +1,68 @@
+name: "Bug Report"
+description: "Report a bug"
+labels: [ Bug ]
+body:
+  - type: checkboxes
+    attributes:
+      label: "Confirm the following"
+      description: |
+        Please make sure you use the latest version.
+        Also ensure that our problem hasn't already been reported.
+      options:
+        - label: "I use the latest release or dev-build. I also checked that this problem hasn't already been fixed in a newer [dev-build](https://betonquest.org/)."
+          required: true
+        - label: "There are no open or closed issues that are related to my problem."
+          required: true
+
+  - type: textarea
+    id: version
+    attributes:
+      label: "BetonQuest version information"
+      description: "Execute `/betonquest version` and copy the full result here."
+      placeholder: |
+        BetonQuest version: X.X.X
+        Server version: X.X.X
+
+        Hooked into: Plugin-1 (X.X.X), Plugin-2 (X.X.X)
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: "Expected behaviour"
+      description: "Please describe precisely what you'd expect to happen."
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: "Actual behaviour"
+      description: "Please describe precisely what is actually happening."
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: "Steps to reproduce"
+      description: "Please describe the steps to reproduce the bug."
+      placeholder: |-
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: "Error, Warning, Exception or Thread Dump"
+      description: "If you have any console error or other things like a thread dump, you can paste them here."
+      render: Text
+
+  - type: textarea
+    attributes:
+      label: "Additional information"
+      description: |
+        You can add any additional information here, that does not fit in the other boxes.
+        You can also drag and drop a BetonQuest debug log or a `latest.log` file here.
+      placeholder: |
+        If you want to uplaod something, you need to click in this box first!
