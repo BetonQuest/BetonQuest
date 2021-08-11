@@ -161,13 +161,13 @@ talks with an NPC, and if the NPC sees that tag next time they talk, he will tel
 Time to write some objectives! Open the _objectives.yml_ file and add a new line:
 
 ```YAML linenums="1"
-kill_creepers: "mobkill CREEPER 3 events:bar conditions:has_beton_tag"
+kill_creepers: "mobkill CREEPER 3 events:tp conditions:has_beton_tag"
 ```
 
 Now let's analyze it. `kill_creepers` is a name of the objective. `mobkill` is a type. In this case, to complete the
 objective the player will have to kill some mobs. `creeper` is a type of the mob, so we know that these mobs will have
-to be Creepers. `3` is the amount. It means that the player has to kill 3 Creepers. `events:bar` means than once the
-player kills those Creepers, the `bar` event will be run (it's the teleportation event, but we renamed it).
+to be Creepers. `3` is the amount. It means that the player has to kill 3 Creepers. `events:tp` means than once the
+player kills those Creepers, the `tp` event will be run.
 `conditions:has_beton_tag` tells us that the player will have to have `beton` tag while killing Creepers to complete the objective.
 Save it, reload the plugin and issue **/q o {name} add default.kill_creepers** command (`o` is for `objective`, `add`
 tells the plugin to add an objective).
@@ -176,7 +176,7 @@ Now you can check if you actually have this objective with **/q o {name}** comma
 objectives. It should show `default.kill_creepers`. Alright, remove (yes, remove!) the `beton` tag from you and find
 some Creepers to kill. Once you killes 3 of them you will notice that nothing happened. It's because `has_beton_tag`
 condtion is not met, so the objective does not count your progress. Now add the tag again and kill another Creepers.
-When the third is dead you should be teleported to the location defined in `bar` event.
+When the third is dead you should be teleported to the location defined in `tp` event.
 
 Congratulations, now you know how to use objectives. You should experiment with other types now, since objectives will
 be used very often in your quests. Once you're done check out the _Writing your first conversation_ chapter to use your
