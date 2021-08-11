@@ -5,9 +5,9 @@
 This objective completes when the player clicks on the given block type. The first argument is the type of the click,
 it can be right, left or any. Next is a [Block Selector](./Reference.md#block-selectors) or `any` if you
 want to count all clicks, even into the air. You can also specify the `loc:` argument, followed by the standard location
-format and the `range:` followed by a number (or variable). It will define where the clicked block needs to be, as
-opposed to "where you must be" in location condition. If you add the argument `cancel`, the click will be canceled
-(chest will not open, button will not be pressed etc.).
+format and the `range:` followed by a number (or variable). The specified location is the center of a sphere, the range it's radius.
+Therefore, these arguments define where the clicked block needs to be, as opposed to "where you must be" in location condition.
+If you add the argument `cancel`, the click will be canceled (chest will not open, button will not be pressed etc.).
 This objective works great with the location condition and the item in hand condition to further limit the counted clicks.
 One could make a magic wand using this.
 

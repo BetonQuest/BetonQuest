@@ -22,7 +22,7 @@ Conjunction of specified conditions. This means that every condition has to be m
 
 ## Armor: `armor`
 
-The armor condition requires the player to wear specified armor, as an item defined in _s.yml_ file.
+The armor condition requires the player to wear an armor that has been specified in the _items.yml_ file.
 
 !!! example
     ```YAML
