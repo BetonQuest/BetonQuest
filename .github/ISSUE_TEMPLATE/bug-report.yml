@@ -1,5 +1,5 @@
 name: "Bug Report"
-description: "Report a bug"
+description: "Report any issue that seems to be a bug."
 labels: [ Bug ]
 body:
   - type: checkboxes
