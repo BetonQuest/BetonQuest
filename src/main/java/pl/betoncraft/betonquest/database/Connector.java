@@ -38,7 +38,7 @@ public class Connector {
     public final void refresh() {
         try {
             connection.prepareStatement("SELECT 1").executeQuery().close();
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             LogUtils.getLogger().log(Level.WARNING, "Reconnecting to the database");
             LogUtils.logThrowable(e);
             database.closeConnection();
@@ -56,7 +56,7 @@ public class Connector {
     @SuppressWarnings({"PMD.NcssCount", "PMD.CloseResource"})
     @SuppressFBWarnings({"ODR_OPEN_DATABASE_RESOURCE", "OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE"})
     public ResultSet querySQL(final QueryType type, final String... args) {
-        String stringStatement;
+        final String stringStatement;
         switch (type) {
             case SELECT_JOURNAL:
                 stringStatement = "SELECT pointer, date FROM " + prefix + "journal WHERE playerID = ?;";
@@ -120,13 +120,12 @@ public class Connector {
                 break;
         }
 
-        try {
-            final PreparedStatement statement = connection.prepareStatement(stringStatement);
+        try (PreparedStatement statement = connection.prepareStatement(stringStatement)) {
             for (int i = 0; i < args.length; i++) {
                 statement.setString(i + 1, args[i]);
             }
             return statement.executeQuery();
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             LogUtils.getLogger().log(Level.SEVERE, "There was a exception with SQL");
             LogUtils.logThrowable(e);
             return null;
@@ -141,7 +140,7 @@ public class Connector {
      */
     @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
     public void updateSQL(final UpdateType type, final String... args) {
-        String stringStatement;
+        final String stringStatement;
         switch (type) {
             case ADD_OBJECTIVES:
                 stringStatement = "INSERT INTO " + prefix + "objectives (playerID, objective, instructions) VALUES (?, ?, ?);";
@@ -312,7 +311,7 @@ public class Connector {
                 statement.setString(i + 1, args[i]);
             }
             statement.executeUpdate();
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             LogUtils.getLogger().log(Level.SEVERE, "There was an exception with SQL");
             LogUtils.logThrowable(e);
         }

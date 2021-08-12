@@ -10,7 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated
 ### Removed
 ### Fixes
-added missing config options to the default config
+- added missing config options to the default config
+- potential resource leak in mysql
 ### Security
 
 ## [1.12.5] - 2021-08-11
