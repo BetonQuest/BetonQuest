@@ -343,13 +343,21 @@ Displays a notification using the NotifyIO system.
 
 | Option                                                             | Description                                                                                                                                     |
 |--------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
-| message  	                                                         | The message that will be displayed. Supports variables. *Required, must be first*             	                                                                     |
+| message  	                                                         | The message that will be displayed. Supports variables and translations. *Required, must be first*             	                                                                     |
 | category 	                                                         | Will load all settings from that Notification Category. Can be a comma-seperated list. The first existent category will be used. *Optional*                  |   
 | io       	                                                         | Any [NotifyIO](https://betonquest.github.io/BetonQuest/RELEASE/User-Documentation/Notification-IO%27s-%26-Categories). Overrides the "category" settings. *Optional*                                                                                     |
 | [NotifyIO](Notification-IO's-&-Categories.md#notify-ios) 	         | Any setting from the defined notifyIO. Can be used multiple times. Overrides the "category" settings. *Optional*                                                                     |
 
 The fallback NotifyIO is `chat` if no argument other than `message` is specified.    
-`message` is the only argument of this event that is not `key:value` based. You can freely add any text with spaces there. 
+`message` is the only argument of this event that is not `key:value` based. You can freely add any text with spaces there.
+
+It also allows you to provide multiple translations using a special syntax: 
+```YAML
+example: "notify {en} ABC {de} DEF"
+```
+The value in `{}` is a language key from messages.yml. Any text after the language key until the next language key
+belongs to the specified language. There must be a space between the language key and the message.
+In this example, english users would see `ABC` and german ones would see `DEF`.
 
 <h3>Examples:</h3>
 
@@ -378,6 +386,9 @@ myEvent2: "notify This is a custom message! category:firstChoice,secondChoice"
 
 #You can also override category settings:
 myEvent3: "notify Another message! category:info io:advancement frame:challenge"
+
+#Use multiple languages:
+multilanguage: "notify {en} Hello english person! {de} Hello german person! {es} Hello spanish person!"
 ```
 
 
