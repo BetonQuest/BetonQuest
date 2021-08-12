@@ -119,8 +119,7 @@ public class Connector {
                 break;
         }
 
-        try {
-            final PreparedStatement statement = connection.prepareStatement(stringStatement);
+        try (PreparedStatement statement = connection.prepareStatement(stringStatement)) {
             for (int i = 0; i < args.length; i++) {
                 statement.setString(i + 1, args[i]);
             }

@@ -75,6 +75,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - sometimes messages in a conversation are not send when packet interceptor is used
 - added missing config options to the default config
 - `menu open` event does not show the previous menu again anymore
+- potential resource leak in mysql
 ### Security
 - it was possible to put a QuestItem into a chest
 - the take event is now threadsafe
