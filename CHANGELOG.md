@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Version checks for ProtocolLib and Shopkeepers support
 - Allow %player% variable for PLAYER_HEAD quest items
 - allow access to objective variable properties from other packages
+- allow point variables from other packages
 ### Changed
 - math variable now allows rounding output with the ~ operator
 - changed package names from `pl.betoncraft.betonquest` to `org.betonquest.betonquest`
