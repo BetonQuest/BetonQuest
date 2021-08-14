@@ -19,6 +19,7 @@ public class ObjectivePropertyVariable extends Variable {
     private String propertyName;
     private ObjectiveID objective;
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public ObjectivePropertyVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
 

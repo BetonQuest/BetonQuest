@@ -267,7 +267,7 @@ public class MenuItem extends SimpleYMLSection {
         }
 
         public ItemStack generate(final String playerID) throws QuestRuntimeException {
-            return questItem.generate(amount.getInt(playerID));
+            return questItem.generate(amount.getInt(playerID), playerID);
         }
     }
 
