@@ -1,25 +1,44 @@
 package org.betonquest.betonquest.variables;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ObjectiveID;
 
 /**
  * Resolves to a specified property of an objective.
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class ObjectivePropertyVariable extends Variable {
 
-    private final ObjectiveID objective;
-    private final String propertyName;
+    private String propertyName;
+    private ObjectiveID objective;
 
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public ObjectivePropertyVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
-        objective = instruction.getObjective();
-        propertyName = instruction.next();
+
+        final String rawInstruction = instruction.getInstruction();
+        final String[] parts = rawInstruction.split("\\.");
+        String objectiveID = "";
+        if (parts.length == 3) {
+            objectiveID = parts[1];
+            propertyName = parts[2];
+        } else if (parts.length == 4) {
+            objectiveID = parts[1] + "." + parts[2];
+            propertyName = parts[3];
+        }
+
+        try {
+            objective = new ObjectiveID(instruction.getPackage(), objectiveID);
+        } catch (final ObjectNotFoundException e) {
+            LOG.warning(instruction.getPackage(), "Error in objective property variable '" + instruction + "' " + e.getMessage());
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.item.QuestItem.Existence;
+import org.betonquest.betonquest.utils.PlayerConverter;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class HeadOwnerHandler {
@@ -20,7 +21,11 @@ public class HeadOwnerHandler {
         }
     }
 
-    public String get() {
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
+    public String get(final String playerIdOrName) {
+        if (playerIdOrName != null && "%player%".equals(owner)) {
+            return PlayerConverter.getName(playerIdOrName);
+        }
         return owner;
     }
 

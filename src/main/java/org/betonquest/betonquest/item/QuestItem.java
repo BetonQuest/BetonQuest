@@ -231,7 +231,7 @@ public class QuestItem {
         if (meta instanceof PotionMeta) {
             final PotionMeta potionMeta = (PotionMeta) meta;
             final PotionData pData = potionMeta.getBasePotionData();
-            effects = " type:" + pData.getType().toString() + (pData.isExtended() ? " extended" : "")
+            effects = " type:" + pData.getType() + (pData.isExtended() ? " extended" : "")
                     + (pData.isUpgraded() ? " upgraded" : "");
             if (potionMeta.hasCustomEffects()) {
                 final StringBuilder string = new StringBuilder();
@@ -440,11 +440,12 @@ public class QuestItem {
      * Generates this quest item as ItemStack with given amount.
      *
      * @param stackSize size of generated stack
+     * @param playerID  optional playerID parameter
      * @return the ItemStack equal to this quest item
      */
     @SuppressWarnings("PMD.NPathComplexity")
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public ItemStack generate(final int stackSize) {
+    public ItemStack generate(final int stackSize, final String... playerID) {
         // Try resolve material directly
         final Material material = selector.getRandomMaterial();
 
@@ -484,7 +485,8 @@ public class QuestItem {
         }
         if (meta instanceof SkullMeta) {
             final SkullMeta skullMeta = (SkullMeta) meta;
-            skullMeta.setOwner(head.get());
+            final String uuid = playerID.length > 0 ? playerID[0] : null;
+            skullMeta.setOwner(head.get(uuid));
         }
         if (meta instanceof LeatherArmorMeta) {
             final LeatherArmorMeta armorMeta = (LeatherArmorMeta) meta;
@@ -582,7 +584,7 @@ public class QuestItem {
      * @return owner of the head
      */
     public String getOwner() {
-        return head.get();
+        return head.get(null);
     }
 
     /**
