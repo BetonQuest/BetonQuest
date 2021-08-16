@@ -1,6 +1,6 @@
 site_name: BetonQuest
 site_author: BetonQuest Organisation
-site_url: https://betonquest.github.io/BetonQuest/
+site_url: https://docs.betonquest.org/
 site_dir: target/documentation
 docs_dir: documentation
 repo_name: BetonQuest on GitHub
@@ -10,11 +10,11 @@ copyright: '© 2020  BetonQuest Organisation. GPLv3'
 
 
 extra_css:
-  - 'webCode/css/superFences.css'
-  - 'webCode/css/centered.css'
-  - 'webCode/css/contentAreaFullWidth.css'
   - 'webCode/css/admonition.css'
   - 'webCode/css/button.css'
+  - 'webCode/css/centered.css'
+  - 'webCode/css/contentAreaFullWidth.css'
+  - 'webCode/css/superFences.css'
 
 extra_javascript:
   - 'webCode/js/copyLinkToClipboard.js'
@@ -22,9 +22,9 @@ extra_javascript:
 # More info on this theme: https://squidfunk.github.io/mkdocs-material
 theme:
   name: material
+  custom_dir: 'custom_theme/'
   language: en
   features:
-    - navigation.instant
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.tracking
@@ -42,15 +42,18 @@ theme:
         name: Switch to dark mode
     - scheme: default
       primary: blue
-      accent: blue
+      accent: teal
       toggle:
         icon: material/lightbulb
         name: Switch to light mode
   font:
     text: Roboto
     code: Roboto Mono
-  logo: media/design/BQIcon1k.png
-  favicon: media/design/favicon.ico
+  logo: media/brand/Icon/Icon1K.png
+  favicon: media/brand/Icon/Icon32.ico
+  icon:
+    admonition:
+      example: fontawesome/regular/eye
 
 
 
@@ -92,6 +95,28 @@ plugins:
 extra:
   version:
     provider: mike
+  analytics:
+    provider: google
+    property: UA-164568470-1
+  consent:
+    title: Cookie consent
+    cookies:
+      analytics: Google Analytics
+    description: >
+      <p style="margin-top: 0px; margin-bottom: 0px;">We use cookies to:</p>
+      <ul style="margin-top: 0px; margin-bottom: 0px;">
+        <li>
+          <p>Save your preferences (light / dark mode etc.)</p>
+        </li>
+        <p style="margin-top: 0px; margin-bottom: 0px;">Additionally, you can allow us to:</p>
+        <li>
+          <p>Measure the effectiveness of our documentation</p>
+        </li>
+        <li>
+          <p>See if users find what they're searching for.</p>
+        </li>
+      </ul>
+      <b>With your consent, you're helping us to make this documentation better for everyone.</b>
   social:
     - icon: fontawesome/brands/discord
       link: https://discord.gg/rK6mfHq
@@ -104,15 +129,10 @@ extra:
     - icon: fontawesome/solid/faucet
       link: https://spigotmc.org/resources/betonquest.2117/
 
-#Notice that here are a few strange looking hairspaces in here. They make the space between the emojis and the text look equal
+#Notice that here are a few strange looking hairspaces in here.
+#They make the space between the emojis and the text look equal
 nav:
-  - '🚀 Home':
-      - '👋 Welcome!': index.md
-      - 'Overview':
-          - '✨ Features': Home/Features.md
-          - '👔  For Owners': Home/For-Owners.md
-          - '🎨 For Questers': Home/For-Questers.md
-      - '💲 Sponsorships': Home/Sponsorships.md
+  - '🚀 Home': index.md
   - '🎓 Tutorials':
       - '👋 Welcome!': Tutorials/Welcome.md
       - 'Getting Started':
@@ -152,7 +172,3 @@ nav:
       - 'Docs':
           - '🔧 Setup': Participate/Docs/Setup.md
           - '📚 Guidelines': Participate/Docs/Guidelines.md
-
-google_analytics:
-  - UA-164568470-1
-  - auto

@@ -1,0 +1,174 @@
+{% extends "main.html" %}
+{% block tabs %}
+
+{{ super() }}
+
+<!-- Remove some MkDocs content (sidebar, spacing...) -->
+<style>
+  .md-main__inner {
+    margin-top: 0;
+  }
+
+  .md-content__inner {
+    padding-top: 0;
+  }
+
+  .md-sidebar, .md-sidebar > *,
+  .md-content__inner:before {
+    display: none !important;
+  }
+</style>
+
+<!-- Customize background (responsive) -->
+<style>
+  /* Variable image Default and Dark Mode */
+  body {
+    background-repeat: no-repeat, no-repeat;
+    background-color: var(--md-default-bg-color);
+    background-size: 100% 50%, 100% 100%;
+    background-position: 0 100%, 0 100%;
+
+    background-image: url("media/content/Home/waveWhite.svg"),
+    linear-gradient(to bottom, var(--md-primary-fg-color), hsla(280, 67%, 55%, 1) 100%, var(--md-default-bg-color));
+  }
+
+  body[data-md-color-scheme="slate"] {
+    background-image: url("media/content/Home/waveDark.svg"),
+    linear-gradient(to bottom, var(--md-primary-fg-color), hsla(280, 67%, 55%, 1) 100%, var(--md-default-bg-color));
+  }
+</style>
+
+<!-- Flex content for responsive design -->
+<style>
+  /* smartphones */
+  .betonquest-content {
+    margin-left: 0.3em;
+    margin-right: 0.3em;
+  }
+
+  .betonquest-flex-container {
+    display: flex;
+    flex-direction: column-reverse;
+    max-width: 100%;
+    margin-bottom: 1em;
+  }
+
+  .betonquest-flex-item {
+    min-width: 100%;
+    flex: auto;
+  }
+
+  .betonquest-flex-logo {
+    max-width: 30em;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* tablets */
+  @media (min-width: 40em) {
+    .betonquest-content {
+      margin-left: 2em;
+      margin-right: 2em;
+    }
+  }
+
+  /* desktops low res */
+  @media (min-width: 60em) {
+    .betonquest-content {
+      margin-left: 5em;
+      margin-right: 5em;
+    }
+
+    .betonquest-flex-container {
+      flex-direction: row;
+      margin-bottom: 2em;
+    }
+
+    .betonquest-flex-item {
+      min-width: 50%;
+    }
+
+    .betonquest-flex-logo {
+      min-width: 25em;
+      max-width: 40em;
+    }
+  }
+
+  /* desktops high res */
+  @media (min-width: 80em) {
+    .betonquest-content {
+      margin-left: 10em;
+      margin-right: 10em;
+    }
+
+    .betonquest-flex-logo {
+      min-width: 30em;
+      max-width: 40em;
+    }
+  }
+</style>
+
+<!-- Header Customization -->
+<style>
+  .betonquest-header {
+    margin-top: 1.1em !important;
+    margin-bottom: 1rem !important;
+    color: currentColor !important;
+    font-weight: 700 !important;
+  }
+
+  .betonquest-text {
+    padding-right: 4.5em;
+  }
+
+  .betonquest-list {
+    margin-bottom: .2em;
+  }
+
+  .betonquest-text-color {
+    color: white !important;
+  }
+
+</style>
+
+<!-- Button Customization -->
+<style>
+
+  .betonquest-buttons {
+    color: #ffffff !important;
+  }
+
+</style>
+
+{% endblock %}
+{% block content %}
+<div class="betonquest-content">
+  <div class="betonquest-flex-container">
+    <div class="betonquest-flex-item">
+      <h1 class="betonquest-header betonquest-text-color">Unique Quests and Storylines</h1>
+      <ul>
+        <li class="betonquest-list"><b>Quest Tools:</b> Logs, Menus, Items, Notifications</li>
+        <li class="betonquest-list"><b>Conversations:</b> Interactive, Multi-Path, Translatable</li>
+        <li class="betonquest-list"><b>Extensive</b> 28+ Plugin Integrations, API</li>
+        <li class="betonquest-list"><b>Free</b> and Open Source</li>
+      </ul>
+      </p>
+      <a href="{{ page.next_page.url | url }}" title="Get started with our tutorials"
+         class="md-button md-button--primary betonquest-buttons">
+        Quick start
+      </a>
+      <a href="#what-server-owners-say" title="More information" class="md-button betonquest-buttons">
+        Read more
+      </a>
+    </div>
+    <div class="betonquest-flex-item">
+      <div class="betonquest-flex-logo">
+        <img src="media/brand/Logo/Logo1K.png" alt="" draggable="false">
+      </div>
+    </div>
+  </div>
+
+  {{ page.content }}
+</div>
+{% endblock %}
