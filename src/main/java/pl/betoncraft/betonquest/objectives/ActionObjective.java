@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -55,7 +56,7 @@ public class ActionObjective extends Objective implements Listener {
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onInteract(final PlayerInteractEvent event) {
         // Only fire the event for the main hand to avoid that the event is triggered two times.
         if (event.getHand() == EquipmentSlot.OFF_HAND && event.getHand() != null) {
@@ -133,7 +134,7 @@ public class ActionObjective extends Objective implements Listener {
                         completeObjective(playerID);
                     }
                 }
-            } catch (QuestRuntimeException e) {
+            } catch (final QuestRuntimeException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
                 LogUtils.logThrowable(e);
             }
@@ -164,7 +165,7 @@ public class ActionObjective extends Objective implements Listener {
             final Location location;
             try {
                 location = loc.getLocation(playerID);
-            } catch (QuestRuntimeException e) {
+            } catch (final QuestRuntimeException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Error while getting location property in '" + instruction.getID() + "' objective: "
                         + e.getMessage());
                 LogUtils.logThrowable(e);

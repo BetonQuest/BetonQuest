@@ -7,10 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased] - ${current-date}
 ### Added
 ### Changed
+- `action` objective cancels now the event, before other plugins check for it (better third-party support)
 ### Deprecated
 ### Removed
 ### Fixes
-added missing config options to the default config
+- added missing config options to the default config
 ### Security
 
 ## [1.12.5] - 2021-08-11
