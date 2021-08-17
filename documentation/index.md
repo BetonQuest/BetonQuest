@@ -9,6 +9,9 @@ hide:
 .bq-inline-example-container {
   width: clamp(300px,50%,100%) !important;
 }
+td:nth-child(2) {
+  background-color: rgba(0, 0, 0, 0.2);
+}
 </style>
 
 <div style="text-align: center;">
