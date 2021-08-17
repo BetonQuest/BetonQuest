@@ -9,8 +9,18 @@ hide:
 .bq-inline-example-container {
   width: clamp(300px,50%,100%) !important;
 }
+.bq-hilight {
+  font-weight: 700;
+  text-decoration: underline;
+}
+td, th{
+  vertical-align: middle !important;
+}
 td:nth-child(2) {
   background-color: rgba(0, 0, 0, 0.2);
+}
+tr:nth-child(10) {
+  box-shadow: 0 5px rgba(0, 0, 0, 0.2);
 }
 </style>
 
@@ -74,29 +84,63 @@ Sometimes, user reviews describe a plugin better than the author can:
         shown in this insanely powerful and (mostly) bug free quest plugin. Anyone who aspires to give their players a 
         proper RPG experience needs to check this plugin out. Quest on!!
 
-## BetonQuest vs. other Plugins
+## BetonQuest alternatives
 
-Feature[^1]               | BetonQuest         | Quests                                 | BeautyQuests          | QuestCreator             | MangoQuest          |
-------------------------- | :-----------------:| :----------------:                     | :--------------------:| :----------------------: | :-----------------: |
-Free                      | :white_check_mark: | :white_check_mark:                     | :white_check_mark:    | :x:  (20$)               | :white_check_mark:  |
-OpenSource                | :white_check_mark: | :white_check_mark:                     | :white_check_mark:    | :x:                      | :white_check_mark:  |
-API                       | :white_check_mark: | :white_check_mark:                     | :white_check_mark:    | (Private)[^2] :weary:    | :question:          |
-Version Support           | 1.13.2-1.17.1      | 1.7-1.17.1                             | 1.11-1.16.5           | 1.7-1.17.1               | 1.13-1.16.5         |
-Database Support          | SQL Lite & MySQL   | :x:                                    | MySQL                 | MySQL                    | :question:          |
-Bungee Support            | :white_check_mark: | :x:                                    | :x:                   | :x:                      | :question:          |
-Per Player Language       | :white_check_mark: | :question:                             | :x:                   | :x:                      | :question:          |
-Multi-Path Conversations  | :white_check_mark: | :question:                             | :question:            | :white_check_mark:       | :question:          |
-Client Side NPCs          | :white_check_mark: | :question:                             | :question:            | :white_check_mark:       | :question:          |
-Ingame Editor             | :x:                | Chat Included <br />Paid Addon for GUI | :white_check_mark:     | :white_check_mark:       | :x:                 |
-External Editor           | :white_check_mark: | :x:                                    | :x:                   | :x:                      | :white_check_mark:  |
-Organized File Structure  | :white_check_mark: | :x:                                    | :question:            | :white_check_mark:       | :white_check_mark:  |
-Integrated Plugins        | 29                 | 12                                     | 15                    | 23                       | 7                   |
+There are other quest plugins out there. Here you have a compare between some maintained and relevant quest plugins: 
 
-ProQuest, QuestWorld (2) and Quest by LMBishop have been classified as way to limited or unknown to appear in this
-table. They are simple task plugins, not plugins that are able to create story driven quests.
+Feature                   | [BetonQuest][L1]         | [Quests by PikaMug][L2]  | [Quests by LMBishop][L3] | [BeautyQuests][L4]       | [MangoQuest][L5]         | [QuestCreator][L6]       | [ProQuest][L7]           |
+------------------------- | :----------------------: | :----------------------: | :----------------------: | :----------------------: | :----------------------: | :----------------------: | :----------------------: |
+Free                      | :white_check_mark:       | :white_check_mark:       | :white_check_mark:       | :white_check_mark:       | :white_check_mark:       | :x:  (20$)               | :x:  (19.99$)            |
+OpenSource                | :white_check_mark:       | :white_check_mark:       | :white_check_mark:       | :white_check_mark:       | :white_check_mark:       | :x:                      | :x:                      |
+API                       | :white_check_mark:       | :white_check_mark:       | :white_check_mark:       | :white_check_mark:       | :x:                      |:material-check-bold: [^1]|:material-check-bold: [^1]|
+Version Support           | 1.13 - 1.17.1            | 1.7 - 1.17.1             | 1.7 - 1.17.1             | 1.11 - 1.16.5            | 1.13 - 1.17.1            | 1.7 - 1.17.1             | 1.7 - 1.17.1             |
+Integrated Plugins        | 29                       | 13                       | 1                        | 15                       | 6                        | 30                       | 1                        |
+Ingame Editor             | :x:                      | Chat & GUI(Paid)         | :x:                      | GUI                      | :white_check_mark:       | GUI                      | GUI                      |
+External Editor           | :white_check_mark:       | :x:                      | :x:                      | :x:                      | :x:                      | :x:                      | :x:                      |
+Database Support          | SQLite & MySQL           | MySQL                    | MySQL                    | MySQL                    | MySQL                    | MySQL                    | SQLite & MySQL           |
+Bungee Support            | :white_check_mark:       | :x:                      | :white_check_mark:       | :x:                      | :x:                      | :x:                      | :x:                      |
+Organized File Structure  | :white_check_mark:       | :x:                      | :x:                      | :x:                      | :white_check_mark:       | :white_check_mark:       | :x:                      |
+<span class="bq-hilight">Unique Features</span>
+Multi-Path Conversations  | :white_check_mark:       | :x:                      | :x:                      |:material-check-bold: [^3]| :white_check_mark:       | :white_check_mark:       | :x:                      |
+Quest Journal             | :white_check_mark:       | :white_check_mark:       | :x:                      | :x:                      | :white_check_mark:       | :white_check_mark:       | :x:                      |
+Inventory GUIs            | :white_check_mark:       | :x:                      | :white_check_mark: [^2]  | :x:                      | :x:                      | :white_check_mark:       | :white_check_mark:       |
+Quest Items               | :white_check_mark:       | :x:                      | :x:                      | :x:                      | :x:                      | :x:                      | :x:                      |
+Backpack for Quest Items  | :white_check_mark:       | :x:                      | :x:                      | :x:                      | :x:                      | :x:                      | :x:                      |
+Per Player Language       | :white_check_mark:       | :x:                      | :x:                      | :x:                      | :x:                      | :x:                      | :x:                      |
+Client Side NPCs (Hiding) | :white_check_mark:       | :x:                      | :x:                      | :x:                      | :x:                      | :white_check_mark:       | :x:                      |
+Player Hider              | :white_check_mark:       | :x:                      | :x:                      | :x:                      | :x:                      | :x:                      | :x:                      |
+HolographicDisplays Hider | :white_check_mark:       | :x:                      | :x:                      | :white_check_mark:       | :x:                      | :white_check_mark:       | :x:                      |
+Per Player Particles      | :white_check_mark:       | :x:                      | :x:                      |:material-check-bold: [^4]| :x:                      | :white_check_mark:       | :x:                      |
 
-[^1]: This table has been last updated on the 17th of January 2021. If there are any mistakes let us know!
-[^2]: This means that Open Source plugins cannot add support which is considered an unfriendly policy.
+Enjoy this table with caution, it might be outdated and it only trys to compare BetonQuest with the other plugins.  
+<span class="bq-hilight">**This table has been last updated on the 03rh of September 2021. If there are any mistakes let us know!**</span>
+
+You may notice the footnotes, if not you should read them.
+You should also notice, that BetonQuest is a more general plugins with the goal to be more like a scripting plugin.
+That means that if other plugins have equal features as BetonQuest, the features are probably more quests related than in BetonQuest.
+
+[L1]: https://www.spigotmc.org/resources/betonquest.2117/
+[L2]: https://www.spigotmc.org/resources/quests.3711/
+[L3]: https://www.spigotmc.org/resources/quests.23696/
+[L4]: https://www.spigotmc.org/resources/beautyquests.39255/
+[L5]: https://github.com/Cutiemango/MangoQuest
+[L6]: https://www.spigotmc.org/resources/questcreator.38734/
+[L7]: https://www.spigotmc.org/resources/proquests.18249/
+[^1]: Private API, this means that other plugins cannot add support it, which is considered an unfriendly policy.
+[^2]: Limited to Quest related context.
+[^3]: There are conversations, but they are not Multi-Path.
+[^4]: Only particles above NPCs and a limited configuration.
+
+### Scripting-Plugin alternatives
+
+There is one more type of plugins that could be used instead of BetonQuest.
+But the most people use them in addition to BetonQuest. We talk about Scripting plugins.
+If you want to make as much custom content as possible without coding java, you should check
+[Denizen](https://www.spigotmc.org/resources/denizen.21039/) and [Skript](https://github.com/SkriptLang/Skript/).
+
+But you should think about, that a scripting plugin usual take more time to lean and to script as BetonQuest,
+because we have a really simple scripting language. And if you want more quest specific content,
+you also profit by build in features of BetonQuest and other quest Plugins.
 
 <br>
 # Features
