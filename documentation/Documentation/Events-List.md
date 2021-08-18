@@ -157,7 +157,7 @@ Adds a specified potion effect to player. First argument is potion type. You can
 
 !!! example
     ```YAML
-    effect BLINDNESS ambient icon
+    effect BLINDNESS 30 1 ambient icon
     ```
 
 ## Explosion: `explosion`
