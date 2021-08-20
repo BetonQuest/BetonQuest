@@ -1,4 +1,11 @@
-This page will teach you the very basics of BetonQuest.
+There are two ways to get started with BetonQuest:
+
+1. Full beginner guide: A step-by-step tutorial to learn everything you need to know in an order which makes sense to a new BetonQuest user.
+2. Quick-Start-Tutorial: Provides a brief overview about the building blocks. Recommended for experienced plugin scripters and programmers. 
+
+
+[Full beginner guide :material-school:](https://mcmodels.net/how-to-tutorials/betonquest-tutorials/betonquest-full-beginners-guide/?wpam_id=3){: .md-button .md-button--primary }
+[Quick start tutorial :octicons-stopwatch-16:](#checking-out-the-default-example-quest){: .md-button .md-button--primary }
 
 ## Checking out the "default" example quest. 
 
