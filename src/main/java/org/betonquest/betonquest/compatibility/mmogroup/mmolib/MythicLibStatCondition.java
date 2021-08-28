@@ -29,6 +29,9 @@ public class MythicLibStatCondition extends Condition {
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
         final Player player = PlayerConverter.getPlayer(playerID);
         final MMOPlayerData data = MMOPlayerData.get(player);
+        if (data == null) {
+            return false;
+        }
         final double actualLevel = data.getStatMap().getStat(statName);
         return mustBeEqual ? actualLevel == targetLevel : actualLevel >= targetLevel;
     }
