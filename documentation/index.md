@@ -99,7 +99,7 @@ table. They are simple task plugins, not plugins that are able to create story d
 # Features
 
 !!! example inline end bq-inline-example-container
-    <video autoplay muted loop src="../media/content/Documentation/Conversations/MenuConvIO.mp4"
+    <video controls loop src="media/content/Documentation/Conversations/MenuConvIO.mp4"
     width="100%">
     Sorry, your browser doesn't support embedded videos.
     </video>
@@ -121,7 +121,7 @@ enough you can always just hook into Skript or Denizen too.
 See the full list of integrations [here](Documentation/Compatibility.md).
 
 !!! example inline end bq-inline-example-container
-    <video controls loop src="../media/content/Documentation/Notifications/NotifySystemOverview.mp4"
+    <video controls loop src="media/content/Documentation/Notifications/NotifySystemOverview.mp4"
     width="100%">
     Sorry, your browser doesn't support embedded videos.
     </video>
@@ -138,7 +138,7 @@ See the full list of integrations [here](Documentation/Compatibility.md).
   you can write content based on the players actions.
 
 !!! example inline end bq-inline-example-container
-    <video controls loop src="../media/content/Documentation/Compatibility/PlayerHider.mp4"
+    <video controls loop src="media/content/Documentation/Compatibility/PlayerHider.mp4"
     width="100%">
     Sorry, your browser doesn't support embedded videos.
     </video>
