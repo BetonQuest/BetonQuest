@@ -156,46 +156,46 @@ de:
   condition_variable_not_met: 'nein'
 fr:
   conversation_prefix: '&2[&9{1}&2] '
-  conversation_start: '&e====&bLa conversation avec {1}&b est engagee!&e===='
-  conversation_end: '&e====&bLa conversation avec {1}&b est terminee!&e===='
+  conversation_start: '&e====&bLa conversation avec {1}&b est engagée!&e===='
+  conversation_end: '&e====&bLa conversation avec {1}&b est terminée!&e===='
   no_permission: '&cVous n''avez pas la permission.'
-  new_journal_entry: '&e*&bLe journal a ete mis a jour!&e*'
+  new_journal_entry: '&e*&bLe journal a été mis à jour!&e*'
   journal_title: 'Journal'
-  journal_lore: 'Votre journal contient les informations sur vos quetes'
-  quest_item: '&2Objet de Quete'
-  backpack_title: 'Sac a dos'
-  previous: '&2Precedent'
+  journal_lore: 'Votre journal contient les informations sur vos quêtes'
+  quest_item: '&2Objet de Quête'
+  backpack_title: 'Sac à dos'
+  previous: '&2Précédent'
   next: '&2Suivant'
   inventory_full: '&e*&bVotre inventaire est plein!&e*'
   changelog: '&f[BetonQuest]: &e*&bLa liste des modifications est dans le repertoire du plugin. Lisez bien ce fichier des changements puis supprimez le pour masquer ce message!&e*'
   pullback: '&cVous devez terminer la conversation!'
   items_given: '&2Vous recevez {1}&2 x{2}'
   items_taken: '&2Vous redonnez {1}&2 x{2}'
-  money_given: '&2Received {1} {2}' # TODO: missing translation
-  money_taken: '&2Lost {1} {2}' # TODO: missing translation
-  point_given: '&2You received {1} points to {2}' # TODO: missing translation
-  point_taken: '&2You lost {1} points to {2}' # TODO: missing translation
-  point_multiplied: '&2Your points {2} are multiplied by {1}' # TODO: missing translation
-  blocks_to_break: '&2Encore {1} blocs a casser'
-  blocks_to_place: '&2Encore {1} blocs a poser'
-  mobs_to_kill: '&2Encore {1} mobs a tuer'
-  mobs_to_click: '&2Encore {1} mobs a cliquer'
-  players_to_kill: '&2{1}Encore {1} joueurs a tuer'
-  fish_to_catch: '&2Il vous reste {1} poisson(s) a attraper!'
-  sheep_to_shear: '&2Encore {1} mouton(s) a tondre.'
-  potions_to_brew: '&2Encore {1} potion(s) a preparer.'
-  animals_to_breed: '&2{1} animals left to breed' # TODO: missing translation
-  items_to_pickup: '&2{1} items left to pickup' # TODO: missing translation
-  items_to_smelt: '&2{1} items left to smelt' # TODO: missing translation
-  items_to_craft: '&2{1} items left to craft' # TODO: missing translation
+  money_given: '&2{1} {2} reçu'
+  money_taken: '&2{1} {2} perdu'
+  point_given: '&2Vous avez reçu {1} points à {2}'
+  point_taken: '&2Vous avez perdu {1} points à {2}'
+  point_multiplied: '&2Vos points {2} sont multipliés par {1}'
+  blocks_to_break: '&2Encore {1} blocs à casser'
+  blocks_to_place: '&2Encore {1} blocs à poser'
+  mobs_to_kill: '&2Encore {1} mobs à tuer'
+  mobs_to_click: '&2Encore {1} mobs à cliquer'
+  players_to_kill: '&2{1}Encore {1} joueurs à tuer'
+  fish_to_catch: '&2Encore {1} poisson(s) à attraper!'
+  sheep_to_shear: '&2Encore {1} mouton(s) à tondre.'
+  potions_to_brew: '&2Encore {1} potion(s) à preparer.'
+  animals_to_breed: '&2{1} animaux restant à reproduire'
+  items_to_pickup: '&2{1} objets restant à ramasser'
+  items_to_smelt: '&2{1} objets restant à cuire'
+  items_to_craft: '&2{1} objets restant à fabriquer'
   busy: '&cVous ne pouvez pas parler pendant un combat.'
-  quest_canceled: '&2Quete {1}&2 annulee!'
-  cancel: '&cAnnuler cette quete'
-  cancel_page: 'Annulation des quetes'
+  quest_canceled: '&2Quête {1}&2 annulée!'
+  cancel: '&cAnnuler cette quête'
+  cancel_page: 'Annulation des quêtes'
   compass: '&cCap de la boussole'
   compass_page: 'Choisissez une cible pour la boussole'
   command_blocked: '&cImpossible d''utiliser cette commande pendant une conversation.'
-  language_changed: '&2Langue modifiee!'
+  language_changed: '&2Langue modifiée!'
   language_missing: '&cChoix de la langue'
   language_not_exist: '&cCette langue n''est pas disponible, choix possibles: '
   days: 'jours'
@@ -204,8 +204,8 @@ fr:
   seconds: 'secondes'
   and: 'et'
   password: 'mot de passe : '
-  condition_variable_met: 'yes' # TODO: missing translation
-  condition_variable_not_met: 'no' # TODO: missing translation
+  condition_variable_met: 'oui'
+  condition_variable_not_met: 'non'
 cn:
   conversation_prefix: "&2[&9{1}&2] "
   conversation_start: "&e====&b\u4e0e{1}&b\u5bf9\u8bdd\u4e2d&e===="
