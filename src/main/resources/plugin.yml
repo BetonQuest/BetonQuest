@@ -31,6 +31,7 @@ softdepend:
   - ProtocolLib
   - Brewery
   - Jobs
+  - AureliumSkills
 commands:
   betonquest:
     description: General quest command

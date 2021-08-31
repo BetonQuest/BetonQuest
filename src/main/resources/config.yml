@@ -72,6 +72,7 @@ hook:
   mythiclib: 'true'
   mmocore: 'true'
   mmoitems: 'true'
+  aureliumskills: 'true'
 journal:
   chars_per_line: '19'
   lines_per_page: '13'
