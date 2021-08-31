@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - all objectives that can be advanced without directly completing now support notify
 - all objectives that can be advanced without directly completing now support `left`, `amount` and `total` variables
 - `action` objective cancels now the event, before other plugins check for it (better third-party support)
+- the French translation has been updated by the community <3
 ### Deprecated
 ### Removed
 - `message` event
