@@ -1,9 +1,9 @@
 # Compatibility
-**In total 28 plugins have dedicated support for BetonQuest.**
+**In total 29 plugins have dedicated support for BetonQuest.**
 
 BetonQuest hooks into other plugins by itself to provide more events, conditions and objectives or other features. 
-23 plugins are supported right now:    
-_Brewery, Citizens, Denizen, EffectLib, Heroes, HolographicDisplays, JobsReborn, Magic,
+24 plugins are supported right now:    
+_AureliumSkills, Brewery, Citizens, Denizen, EffectLib, Heroes, HolographicDisplays, JobsReborn, Magic,
 mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, ProtocolLib, Quests,
 Shopkeepers, SkillAPI, Skript, Vault, WorldEdit, FastAsyncWorldEdit and WorldGuard._
 
@@ -16,6 +16,19 @@ There are also plugins that hook into BetonQuest that require a clientside mod:
 [_BetonQuestGUI_](https://github.com/giovanni-bozzano/betonquest-gui-plugin),
 [_NGVexJournal_](https://www.spigotmc.org/resources/ngvexjournal-multi-function-betonquest-journal-gui-1-7-10-1-13.76938/)
 
+
+## [AureliumSkills](https://www.spigotmc.org/resources/aurelium-skills-advanced-skills-stats-abilities-and-more.81069/)
+
+###Conditions
+
+#### Skill level: `aureliumskillslevel`
+Checks if the player has the specified skill level. 
+The player needs to be on that level or higher to meet the condition.
+You can disable this behaviour by adding the `equal` argument, then the player must match the specified level exactly.
+```YAML linenums="1"
+aureliumskillslevel fighting 5
+aureliumskillslevel farming 10 equal
+```
 
 ## [Brewery](https://www.spigotmc.org/resources/brewery.3082/)
 

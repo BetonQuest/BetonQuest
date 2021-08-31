@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.compatibility.aureliumskills.AureliumSkillsIntegrator;
 import org.betonquest.betonquest.compatibility.brewery.BreweryIntegrator;
 import org.betonquest.betonquest.compatibility.citizens.CitizensIntegrator;
 import org.betonquest.betonquest.compatibility.denizen.DenizenIntegrator;
@@ -79,6 +80,7 @@ public class Compatibility implements Listener {
         integrators.put("ProtocolLib", new ProtocolLibIntegrator());
         integrators.put("Brewery", new BreweryIntegrator());
         integrators.put("Jobs", new JobsRebornIntegrator());
+        integrators.put("AureliumSkills", new AureliumSkillsIntegrator());
 
         // hook into already enabled plugins in case Bukkit messes up the loading order
         for (final Plugin hook : Bukkit.getPluginManager().getPlugins()) {

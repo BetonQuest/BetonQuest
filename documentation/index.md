@@ -87,7 +87,7 @@ Client Side NPCs          | :white_check_mark: | :question:                     
 Ingame Editor             | :x:                | Chat Included <br />Paid Addon for GUI | :white_check_mark:     | :white_check_mark:       | :x:                 |
 External Editor           | :white_check_mark: | :x:                                    | :x:                   | :x:                      | :white_check_mark:  |
 Organized File Structure  | :white_check_mark: | :x:                                    | :question:            | :white_check_mark:       | :white_check_mark:  |
-Integrated Plugins        | 27                 | 12                                     | 15                    | 23                       | 7                   |
+Integrated Plugins        | 29                 | 12                                     | 15                    | 23                       | 7                   |
 
 ProQuest, QuestWorld (2) and Quest by LMBishop have been classified as way to limited or unknown to appear in this
 table. They are simple task plugins, not plugins that are able to create story driven quests.
@@ -113,7 +113,7 @@ gameplay. Questers can also choose between five different styles to display thei
 
 ## Endless Integrations
 
-BetonQuest supports more then 28 other plugins, ranging from standard plugins like WorldGuard/WorldEdit and Citizens to
+BetonQuest supports more then 29 other plugins, ranging from standard plugins like WorldGuard/WorldEdit and Citizens to
 more advanced ones such as EffectLib. It also offers support for other quest plugins, so you can just keep your old
 quests and create further additions to your quest lines based upon the progress in your old plugin. If just Beton isn't
 enough you can always just hook into Skript or Denizen too.
