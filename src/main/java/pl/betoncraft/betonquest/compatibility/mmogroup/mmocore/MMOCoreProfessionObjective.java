@@ -32,6 +32,10 @@ public class MMOCoreProfessionObjective extends Objective implements Listener {
         if (!containsPlayer(playerID) || !checkConditions(playerID)) {
             return;
         }
+        if (event.getProfession() == null) {
+            return;
+        }
+
         if (!event.getProfession().getName().equalsIgnoreCase(professionName) || event.getNewLevel() < targetLevel) {
             return;
         }
