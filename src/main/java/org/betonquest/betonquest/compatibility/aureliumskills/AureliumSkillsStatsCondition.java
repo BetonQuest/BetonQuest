@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.aureliumskills;
 
 import com.archyx.aureliumskills.AureliumSkills;
 import com.archyx.aureliumskills.api.AureliumAPI;
-import com.archyx.aureliumskills.skills.Skill;
+import com.archyx.aureliumskills.stats.Stat;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
@@ -12,20 +12,18 @@ import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-/**
- * Checks whether a player has the required skill level.
- */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.PreserveStackTrace"})
-public class AureliumSkillsLevelCondition extends Condition {
+public class AureliumSkillsStatsCondition extends Condition {
 
     private final AureliumSkills aureliumSkills;
 
-    private final String skillName;
+    private final String statName;
     private final VariableNumber targetLevelVar;
-    private final Skill skill;
+    private final Stat stat;
+
     private boolean mustBeEqual;
 
-    public AureliumSkillsLevelCondition(final Instruction instruction) throws InstructionParseException {
+
+    public AureliumSkillsStatsCondition(Instruction instruction) throws InstructionParseException {
         super(instruction, true);
 
         try {
@@ -34,27 +32,29 @@ public class AureliumSkillsLevelCondition extends Condition {
             throw new InstructionParseException("AureliumSkills wasn't able to be hooked due to: " + exception);
         }
 
-        skillName = instruction.next();
+        statName = instruction.next();
         targetLevelVar = instruction.getVarNum();
-        if (instruction.hasArgument("equal")) {
-            mustBeEqual = true;
+
+        stat = aureliumSkills.getStatRegistry().getStat(statName);
+
+        if (stat == null) {
+            throw new InstructionParseException("Invalid stat name");
         }
 
-        skill = aureliumSkills.getSkillRegistry().getSkill(skillName);
-        if (skill == null) {
-            throw new InstructionParseException("Invalid skill name");
+        if (instruction.hasArgument("equal")) {
+            mustBeEqual = true;
         }
     }
 
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        if (skill == null) {
+    protected Boolean execute(String playerID) throws QuestRuntimeException {
+        if (stat == null) {
             return false;
         }
         final Player player = PlayerConverter.getPlayer(playerID);
 
-        final int actualLevel = AureliumAPI.getSkillLevel(player, skill);
-        final int targetLevel = targetLevelVar.getInt(playerID);
+        final double actualLevel = AureliumAPI.getStatLevel(player,stat);
+        final double targetLevel = targetLevelVar.getDouble(playerID);
 
         return mustBeEqual ? actualLevel == targetLevel : actualLevel >= targetLevel;
     }
