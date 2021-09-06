@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.citizens;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
+import org.betonquest.betonquest.compatibility.protocollib.hider.NPCGlowing;
 import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
 import org.betonquest.betonquest.compatibility.protocollib.hider.UpdateVisibilityNowEvent;
 
@@ -36,6 +37,7 @@ public class CitizensIntegrator implements Integrator {
         // if ProtocolLib is hooked, start NPCHider
         if (Compatibility.getHooked().contains("ProtocolLib")) {
             NPCHider.start();
+            NPCGlowing.start();
             plugin.registerEvents("updatevisibility", UpdateVisibilityNowEvent.class);
         }
         plugin.registerObjectives("npckill", NPCKillObjective.class);
