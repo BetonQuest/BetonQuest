@@ -1,7 +1,7 @@
-The BetonQuest organisation recommends <a href="https://www.jetbrains.com/idea/" target="_blank">IntelliJ Community Edition</a> (Community Edition) as the preferred IDE.
+The BetonQuest organisation recommends <a href="https://www.jetbrains.com/idea/" target="_blank">IntelliJ Community Edition</a> as preferred IDE.
 The advantage of using IntelliJ is that this guide contains some steps that help to fulfill our requirements.
 Additionally, the project contains a few config files that automatically setup IntelliJ to meet some of our requirements.
-You can still use your preferred IDE but then you need to check on your own that your changes fulfill our requirements.
+You can still use your preferred IDE, but then you need to check on your own that your changes fulfill our requirements.
 
 ##Installing IntelliJ 
 First download <a href="https://www.jetbrains.com/idea/download/" target="_blank">IntelliJ</a> and install it.
@@ -19,7 +19,7 @@ You can execute this directly trough maven or in IntelliJ with the `Maven` tab b
 double-click on `BetonQuest/Lifecycle/verify`.
 You can then find the jar in the folder `/target/artifacts`
 
-If you want to build without checking our requirements and just want a jar, you can execute `package` instead,
+If you want to build without checking our requirements and just want a jar, you can execute `package` instead of `verify`,
 but you need to successfully run `verify`, before you make a PR (Pull Request) on GitHub!
 
 ###Optimize the build
