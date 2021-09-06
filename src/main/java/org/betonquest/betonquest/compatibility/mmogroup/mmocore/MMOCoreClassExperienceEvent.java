@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmocore;
 
-import net.Indyuce.mmocore.api.experience.EXPSource;
 import net.Indyuce.mmocore.api.player.PlayerData;
+import net.Indyuce.mmocore.experience.EXPSource;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.QuestEvent;

@@ -31,9 +31,7 @@ public class MMOCoreBreakCustomBlockObjective extends CountingObjective implemen
     @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(final CustomBlockMineEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
-        if (containsPlayer(playerID)
-                && checkConditions(playerID)
-                && event.canBreak()) {
+        if (containsPlayer(playerID) && checkConditions(playerID)) {
             final String blockId = getBlockId(event.getBlockInfo().getBlock());
             if (blockId.equals(desiredBlockId)) {
                 getCountingData(playerID).progress();
