@@ -9,11 +9,21 @@ import org.bukkit.entity.Player;
 import java.lang.reflect.InvocationTargetException;
 
 @SuppressWarnings("PMD.CommentRequired")
-public class DefaultPacketHandler implements PacketHandler {
+public final class DefaultPacketHandler implements PacketHandler {
 
-    private final PacketContainer gethandle;
+    private final PacketContainer handle;
 
     private final PacketType type;
+
+    /**
+     * Constructs a new strongly typed wrapper with a new packet.
+     *
+     * @param type - the packet type.
+     */
+    protected DefaultPacketHandler(final PacketType type) {
+        this(new PacketContainer(type), type);
+        handle.getModifier().writeDefaults();
+    }
 
     /**
      * Constructs a new strongly typed wrapper for the given packet.
@@ -22,19 +32,30 @@ public class DefaultPacketHandler implements PacketHandler {
      * @param type   - the packet type.
      */
     protected DefaultPacketHandler(final PacketContainer handle, final PacketType type) {
-        if (handle == null)
-            throw new IllegalArgumentException("Packet handle cannot be NULL.");
-        if (!Objects.equal(handle.getType(), type))
-            throw new IllegalArgumentException(
-                    handle.getHandle() + " is not a packet of type " + type);
+        this(handle);
+        if (!Objects.equal(handle.getType(), type)) {
+            throw new IllegalArgumentException(handle.getHandle() + " is not a packet of type " + type);
+        }
+    }
 
-        this.gethandle = handle;
-        this.type = type;
+    /**
+     * Constructs a new wrapper for the given packet.
+     *
+     * @param handle - handle to the raw packet data.
+     */
+    protected DefaultPacketHandler(final PacketContainer handle) {
+        // Make sure we're given a valid packet
+        if (handle == null) {
+            throw new IllegalArgumentException("Packet handle cannot be NULL.");
+        }
+
+        this.handle = handle;
+        this.type = handle.getType();
     }
 
     @Override
     public PacketContainer getHandle() {
-        return gethandle;
+        return handle;
     }
 
     @Override

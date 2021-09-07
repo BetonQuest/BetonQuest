@@ -6,7 +6,6 @@ import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.protocollib.conversation.MenuConvIO;
 import org.betonquest.betonquest.compatibility.protocollib.conversation.PacketInterceptor;
-import org.betonquest.betonquest.compatibility.protocollib.hider.NPCGlowing;
 import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
 import org.betonquest.betonquest.compatibility.protocollib.hider.UpdateVisibilityNowEvent;
 import org.betonquest.betonquest.exceptions.HookException;
@@ -38,7 +37,6 @@ public class ProtocolLibIntegrator implements Integrator {
         // if Citizens is hooked, start NPCHider
         if (Compatibility.getHooked().contains("Citizens")) {
             NPCHider.start();
-            NPCGlowing.start();
             plugin.registerEvents("updatevisibility", UpdateVisibilityNowEvent.class);
         }
 
@@ -51,9 +49,6 @@ public class ProtocolLibIntegrator implements Integrator {
         //if NPCHider is running, reload it
         if (NPCHider.getInstance() != null) {
             NPCHider.start();
-        }
-        if(NPCGlowing.getInstance() != null){
-            NPCGlowing.start();
         }
     }
 
