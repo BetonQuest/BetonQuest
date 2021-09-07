@@ -18,15 +18,14 @@ import org.bukkit.entity.Player;
 @SuppressWarnings({"PMD.CommentRequired", "PMD.PreserveStackTrace"})
 public class AureliumSkillsLevelCondition extends Condition {
 
-    private final AureliumSkills aureliumSkills;
-
-    private final String skillName;
     private final VariableNumber targetLevelVar;
-    private final Skill skill;
+    private Skill skill;
     private boolean mustBeEqual;
 
     public AureliumSkillsLevelCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
+
+        AureliumSkills aureliumSkills;
 
         try {
             aureliumSkills = (AureliumSkills) Bukkit.getPluginManager().getPlugin("AureliumSkills");
@@ -34,16 +33,19 @@ public class AureliumSkillsLevelCondition extends Condition {
             throw new InstructionParseException("AureliumSkills wasn't able to be hooked due to: " + exception);
         }
 
-        skillName = instruction.next();
+        final String skillName = instruction.next();
         targetLevelVar = instruction.getVarNum();
         if (instruction.hasArgument("equal")) {
             mustBeEqual = true;
         }
 
-        skill = aureliumSkills.getSkillRegistry().getSkill(skillName);
-        if (skill == null) {
-            throw new InstructionParseException("Invalid skill name");
+        if (aureliumSkills != null) {
+            skill = aureliumSkills.getSkillRegistry().getSkill(skillName);
+            if (skill == null) {
+                throw new InstructionParseException("Invalid skill name");
+            }
         }
+
     }
 
     @Override

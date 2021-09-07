@@ -42,12 +42,13 @@ aureliumstatslevel luck 10 equal
 ### Events
 
 ### Give Skill Xp : `aureliumskillsxp`
-Adds experience to the players skill. The amount can be a variable or a number. 
+Adds experience to the players skill. The amount can be a variable or a number.
 The `level` argument is optional and would convert the amount to levels instead of XP points.
 ```YAML linenums="1"
 aureliumskillsxp farming 5
 aureliumskillsxp farming 10 level
 ```
+
 
 ## [Brewery](https://www.spigotmc.org/resources/brewery.3082/)
 

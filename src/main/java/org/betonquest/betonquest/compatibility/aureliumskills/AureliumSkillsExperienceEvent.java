@@ -13,16 +13,16 @@ import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+@SuppressWarnings({"PMD.CommentRequired", "PMD.PreserveStackTrace"})
 public class AureliumSkillsExperienceEvent extends QuestEvent {
 
     private final AureliumSkills aureliumSkills;
 
-    private final String skillName;
     private final VariableNumber amountVar;
     private final boolean isLevel;
-    private final Skill skill;
+    private Skill skill;
 
-    public AureliumSkillsExperienceEvent(Instruction instruction) throws InstructionParseException {
+    public AureliumSkillsExperienceEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
 
         try {
@@ -31,34 +31,36 @@ public class AureliumSkillsExperienceEvent extends QuestEvent {
             throw new InstructionParseException("AureliumSkills wasn't able to be hooked due to: " + exception);
         }
 
-        skillName = instruction.next();
+        final String skillName = instruction.next();
         amountVar = instruction.getVarNum();
         isLevel = instruction.hasArgument("level");
 
-        skill = aureliumSkills.getSkillRegistry().getSkill(skillName);
-
-        if (skill == null) {
-            throw new InstructionParseException("Invalid skill name");
+        if (aureliumSkills != null) {
+            skill = aureliumSkills.getSkillRegistry().getSkill(skillName);
+            if (skill == null) {
+                throw new InstructionParseException("Invalid skill name");
+            }
         }
     }
 
     @Override
-    protected Void execute(String playerID) throws QuestRuntimeException {
-        Player player = PlayerConverter.getPlayer(playerID);
+    protected Void execute(final String playerID) throws QuestRuntimeException {
+        final Player player = PlayerConverter.getPlayer(playerID);
         final double amount = amountVar.getDouble(playerID);
 
-        PlayerData playerData = aureliumSkills.getPlayerManager().getPlayerData(player);
+        final PlayerData playerData = aureliumSkills.getPlayerManager().getPlayerData(player);
 
-        int currentLevel = playerData.getSkillLevel(skill);
-        double currentExp = playerData.getSkillXp(skill);
+        if (playerData != null) {
+            final int currentLevel = playerData.getSkillLevel(skill);
 
-        if (isLevel) {
-            for (int i = 1; i <= amount; i++) {
-                double expRequirements = aureliumSkills.getLeveler().getXpRequired(currentLevel + i);
-                AureliumAPI.addXpRaw(player, skill, expRequirements);
+            if (isLevel) {
+                for (int i = 1; i <= amount; i++) {
+                    final double expRequirements = aureliumSkills.getLeveler().getXpRequired(currentLevel + i);
+                    AureliumAPI.addXpRaw(player, skill, expRequirements);
+                }
+            } else {
+                AureliumAPI.addXpRaw(player, skill, amount);
             }
-        } else {
-            AureliumAPI.addXpRaw(player, skill, amount);
         }
         return null;
     }
