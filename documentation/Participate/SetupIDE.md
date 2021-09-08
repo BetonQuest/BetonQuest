@@ -21,7 +21,7 @@ After you have setup the IDE,
 the BetonQuest repository from your namespace. You can also directly
 <a href="https://blog.jetbrains.com/idea/2020/10/clone-a-project-from-github/" target="_blank">clone the repository in IntelliJ</a>. 
 
-##Building with Maven
+##Building the Plugin jar
 To build the BetonQuest jar, you simply need to run `maven verify`.
 You can execute this directly using Maven or in IntelliJ within the `Maven` tab by
 double-click on `BetonQuest/Lifecycle/verify`.
@@ -54,7 +54,7 @@ Then adopt or copy the following to the file (this is maybe outdated):
 
 </settings>
 ````
-You need to add any new repositories to this list whenever you add some to the pom.xml.
+You need to add any new repositories to this list whenever a new repository was added to the pom.xml.
 
 ###Build on Start
 The first build of a day can take a while, because every version gets re-checked once every day.
@@ -142,35 +142,24 @@ or IntelliJ shows something like `Failed to execute goal`. Here you can read, ho
         We recommend running `mvn editorconfig:format` or use an IDE that support EditorConfig.
 
  
-##Advanced Edits
-* Clone in IntelliJ and select the "Docs" project scope.
-
-* Create a new branch before you start editing anything.
-
+##Building the Documentation
 Make sure <a href="https://www.python.org/downloads/" target="_blank">Python3</a> is installed on your local system,
-and you added it to the path. If you use Python for more than this you might want to look into
-<a href="https://docs.python.org/3/library/venv.html" target="_blank">python virtual environments</a> to avoid conflicts.
-This should not be the case for any non-devs though.
-
-You may need to install <a href="https://www.gtk.org/" target="_blank">GTK</a> if you are on Windows.
+and don't forget to add it the path manually in the installer.
+You also need to install <a href="https://www.gtk.org/" target="_blank">GTK</a> if you are on Windows.
 You can also use this <a href="https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer/" target="_blank">GTK installer</a> for Windows instead. 
 
-Install all other dependencies by entering `pip install -r config/docs-requirements.txt` in the console.
-
-In case you are a material-mkdocs insider (paid premium version):
-Set your license key by executing `set MKDOCS_MATERIAL_INSIDERS=LICENSE_KEY_HERE` (Windows) in the console.
-Then run `pip install -r config/docs-requirements-insiders.txt` instead of `docs-requirements.txt`.
+Install all other dependencies by entering `pip install -r config/docs-requirements.txt` in the console on the project's root directory.
+??? "In case you are a material-mkdocs insider (paid premium version)"  
+    Set your license key by executing `set MKDOCS_MATERIAL_INSIDERS=LICENSE_KEY_HERE` (Windows) in the console.
+    Then run `pip install -r config/docs-requirements-insiders.txt` instead of `docs-requirements.txt`.
 
 
 The only thing that's missing once you have done all that is all large files (images & videos). We use 
 <a href="https://git-lfs.github.com/" target="_blank">Git LFS</a> to store them, so you need to install that too.
-Just run `git lfs install` once you have executed the file that you downloaded from the Git LFS website.  
+Just run `git lfs install` once you have executed the file that you downloaded from the Git LFS website.
 Then use `git lfs pull` to actually download the files.
 
-Congrats! You should be ready to go.
-
 ### See your changes live
-
 You are now primarily working with tools called _mkdocs_ and  _mkdocs-material-theme_ in case you want to google anything.
 All files are regular markdown files though.
  
