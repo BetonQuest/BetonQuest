@@ -31,7 +31,7 @@ aureliumskillslevel farming 10 equal
 ```
 
 #### Stat level: `aureliumstatslevel`
-Checks is the player has the spesified stat level. The amount can be a variable or a number.
+Checks if the player has the specified stat level. The amount can be a variable or a number.
 The player needs to be on that level or higher to meet the condition.
 You can disable this behaviour by adding the `equal` argument, then the player must match the specified level exactly.
 ```YAML linenums="1"

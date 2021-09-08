@@ -9,14 +9,13 @@ import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings({"PMD.CommentRequired", "PMD.PreserveStackTrace"})
 public class AureliumSkillsStatsCondition extends Condition {
 
     private final VariableNumber targetLevelVar;
-    private Stat stat;
+    private final Stat stat;
 
     private boolean mustBeEqual;
 
@@ -24,22 +23,14 @@ public class AureliumSkillsStatsCondition extends Condition {
     public AureliumSkillsStatsCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
 
-        AureliumSkills aureliumSkills;
-
-        try {
-            aureliumSkills = (AureliumSkills) Bukkit.getPluginManager().getPlugin("AureliumSkills");
-        } catch (final ClassCastException exception) {
-            throw new InstructionParseException("AureliumSkills wasn't able to be hooked due to: " + exception);
-        }
+        final AureliumSkills aureliumSkills = AureliumSkillsIntegrator.getAureliumPlugin();
 
         final String statName = instruction.next();
         targetLevelVar = instruction.getVarNum();
 
-        if (aureliumSkills != null) {
-            stat = aureliumSkills.getStatRegistry().getStat(statName);
-            if (stat == null) {
-                throw new InstructionParseException("Invalid stat name");
-            }
+        stat = aureliumSkills.getStatRegistry().getStat(statName);
+        if (stat == null) {
+            throw new InstructionParseException("Invalid stat name");
         }
 
         if (instruction.hasArgument("equal")) {
@@ -49,9 +40,6 @@ public class AureliumSkillsStatsCondition extends Condition {
 
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        if (stat == null) {
-            return false;
-        }
         final Player player = PlayerConverter.getPlayer(playerID);
 
         final double actualLevel = AureliumAPI.getStatLevel(player, stat);
