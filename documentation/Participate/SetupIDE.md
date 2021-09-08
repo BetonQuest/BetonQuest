@@ -1,5 +1,5 @@
-The BetonQuest organisation recommends <a href="https://www.jetbrains.com/idea/" target="_blank">IntelliJ</a> (Community Edition) as preferred IDE.
-The advantage of using IntelliJ is that this guide contains some steps and the project contains some files that help to fulfill our requirements in IntelliJ.
+The BetonQuest Organisation recommends <a href="https://www.jetbrains.com/idea/" target="_blank">IntelliJ</a> (Community Edition) as the IDE (Integrated Development Environment).
+The advantage of using IntelliJ is that this guide contains some steps and the project contains some files that help to fulfill our requirements regarding code and documentation style.
 You can still use your preferred IDE, but then you need to check on your own that your changes fulfill our requirements.
 
 ##Installing IntelliJ 
@@ -10,29 +10,30 @@ After you installed IntelliJ, we recommend to installing the plugin
 The plugin helps to auto format code, organize imports, add final modifiers, and some other requirements we have.
 You don't need to configure that plugin, the project contains the configuration file.
 
-## Check out the code
-To be able to check out code from GutHub you need a git installation.
-If you don't know how to install git, you can follow this <a href="https://docs.github.com/en/get-started/quickstart/set-up-git" target="_blank">guide</a>.  
+## Check out the Code
+To be able to check out code from GitHub you need a Git installation.
+You can follow this <a href="https://docs.github.com/en/get-started/quickstart/set-up-git" target="_blank">guide</a> if you don't know how to install Git.  
 
-Then you should <a href="https://docs.github.com/en/get-started/quickstart/fork-a-repo" target="_blank">fork</a> the BetonQuest repository to your own namespace on GitHub
+Then you should <a href="https://docs.github.com/en/get-started/quickstart/fork-a-repo" target="_blank">fork</a> the BetonQuest repository to your own profile on GitHub.
 
-After you have set up the IDE,
+After you have setup the IDE,
 <a href="https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository" target="_blank">clone</a>
 the BetonQuest repository from your namespace. You can also directly
 <a href="https://blog.jetbrains.com/idea/2020/10/clone-a-project-from-github/" target="_blank">clone the repository in IntelliJ</a>. 
 
-##Building with maven
+##Building with Maven
 To build the BetonQuest jar, you simply need to run `maven verify`.
-You can execute this directly trough maven or in IntelliJ with the `Maven` tab by
+You can execute this directly using Maven or in IntelliJ within the `Maven` tab by
 double-click on `BetonQuest/Lifecycle/verify`.
-You can then find the `BetonQuest.jar` jar in the folder `/target/artifacts`.
+You can then find the `BetonQuest.jar` jar in the project's folder `/target/artifacts`.
 
 If you want to build without checking our requirements and just want a jar, you can execute `package` instead of `verify`,
 but you need to successfully run `verify`, before you make a PR (Pull Request) on GitHub!
 
-###Optimize the build
+###Optimize the Build
 As BetonQuest has a lot of dependencies, the build can take a long lime, especially for the first build.
-You can speed up this with the following configuration, that request all dependencies at our own Repository Manager.
+You can speed this up with the following configuration, that downloads all dependencies from our own Repository Manager
+instead of searching through all repositories that are defined in the project.
 
 If you do not already have the file, create a new file `${user.home}/.m2/settings.xml`.
 Then adopt or copy the following to the file (this is maybe outdated):
@@ -53,21 +54,20 @@ Then adopt or copy the following to the file (this is maybe outdated):
 
 </settings>
 ````
-This sets mirrors for the original repositories, that now point to our repository.
-When new repositories added in the pom.xml, you need to add this repository to this list, to keep the improvement.
+You need to add any new repositories to this list whenever you add some to the pom.xml.
 
-###Build on start
-The first build of a day can take a while, because every version gets checked every day once.
-This is the reason, why an automatic build on startup reduce the time of following builds, and it worth it set it up.
+###Build on Start
+The first build of a day can take a while, because every version gets re-checked once every day.
+This is the reason, why an automatic build on startup reduces the time of following builds. It is really worth it to set it up.
 In IntelliJ navigate to `File/Settings/Tools/Startup Tasks` click on the `Add` button and click `Add New Config`.
-Now select `Maven`, set a `Name` like `BetonQuest resolve dependencies` and write `dependency:resolve`
+Now select `Maven`, set a `Name` like `BetonQuest Resolve Dependencies` and write `dependency:resolve`
 into the field `Command line`. Then confirm with `Ok` twice.
-Now after starting IntelliJ the `BetonQuest resolve dependencies` task should run automatically.
+Now after starting IntelliJ the `BetonQuest Resolve Dependencies` task should run automatically.
 
-###Fully fil the requirements
-The build-pipeline checks like 95% off our requirements.
-That means `maven verify` will check the most requirements for you, and GitHub Actions is doing the rest for you.
-Everything that is not covered by the build-pipeline is really special and will be checked in the PRs by our review.
+###Fulfil the Requirements
+The build-pipeline checks about 95% of our requirements.
+That means `maven verify` will check most requirements for you, and GitHub Actions is doing the rest for you.
+Everything that is not covered by the build-pipeline is really special and will be checked in the PR by our review.
 
 If you now run into a problem when you execute `maven verify` you will notice it by the message in the log:
 ````
