@@ -124,8 +124,22 @@ or IntelliJ shows something like `Failed to execute goal`. Here you can read, ho
         <a href="https://checkstyle.sourceforge.io/checks.html" target="_blank">CheckStyle</a> page for it.
         If you need help solving an issue here, you can also ask us on our Discord for help with CheckStyle.
         <br><br><br>
-        
-        
+    === "EditorConfig"
+        Visit the <a href="https://editorconfig.org/" target="_blank">**EditorConfig Page**</a> for general info.
+        <br><br>
+        EditorConfig it natively supported by many IDEs and editors.
+        It checks for some really basic formatting like brackets, line endings, indention and some more.
+        EditorConfig violations look like this:
+        ````
+        [ERROR] There are .editorconfig violations. You may want to run
+        [ERROR]     mvn editorconfig:format
+        [ERROR] to fix them automagically.
+        ````
+        If your log contains such a message, it will also contain another message that looks like this if you want to solve it manual:
+        ````
+        [ERROR] src\main\java\org\betonquest\betonquest\BetonQuest.java@284,54: Delete 5 characters - violates trim_trailing_whitespace = true, reported by org.ec4j.linters.TextLinter
+        ````
+        We recommend running `mvn editorconfig:format` or use an IDE that support EditorConfig.
 
  
 ##Advanced Edits
