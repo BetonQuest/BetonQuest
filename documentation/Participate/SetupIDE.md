@@ -1,6 +1,5 @@
-The BetonQuest organisation recommends <a href="https://www.jetbrains.com/idea/" target="_blank">IntelliJ Community Edition</a> as preferred IDE.
-The advantage of using IntelliJ is that this guide contains some steps that help to fulfill our requirements.
-Additionally, the project contains a few config files that automatically setup IntelliJ to meet some of our requirements.
+The BetonQuest organisation recommends <a href="https://www.jetbrains.com/idea/" target="_blank">IntelliJ</a> (Community Edition) as preferred IDE.
+The advantage of using IntelliJ is that this guide contains some steps and the project contains some files that help to fulfill our requirements in IntelliJ.
 You can still use your preferred IDE, but then you need to check on your own that your changes fulfill our requirements.
 
 ##Installing IntelliJ 
@@ -11,13 +10,22 @@ After you installed IntelliJ, we recommend to installing the plugin
 The plugin helps to auto format code, organize imports, add final modifiers, and some other requirements we have.
 You don't need to configure that plugin, the project contains the configuration file.
 
-After you have set up the IDE, checkout the repository.
+## Check out the code
+To be able to check out code from GutHub you need a git installation.
+If you don't know how to install git, you can follow this <a href="https://docs.github.com/en/get-started/quickstart/set-up-git" target="_blank">guide</a>.  
+
+Then you should <a href="https://docs.github.com/en/get-started/quickstart/fork-a-repo" target="_blank">fork</a> the BetonQuest repository to your own namespace on GitHub
+
+After you have set up the IDE,
+<a href="https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository" target="_blank">clone</a>
+the BetonQuest repository from your namespace. You can also directly
+<a href="https://blog.jetbrains.com/idea/2020/10/clone-a-project-from-github/" target="_blank">clone the repository in IntelliJ</a>. 
 
 ##Building with maven
 To build the BetonQuest jar, you simply need to run `maven verify`.
 You can execute this directly trough maven or in IntelliJ with the `Maven` tab by
 double-click on `BetonQuest/Lifecycle/verify`.
-You can then find the jar in the folder `/target/artifacts`
+You can then find the `BetonQuest.jar` jar in the folder `/target/artifacts`.
 
 If you want to build without checking our requirements and just want a jar, you can execute `package` instead of `verify`,
 but you need to successfully run `verify`, before you make a PR (Pull Request) on GitHub!
@@ -61,7 +69,7 @@ The build-pipeline checks like 95% off our requirements.
 That means `maven verify` will check the most requirements for you, and GitHub Actions is doing the rest for you.
 Everything that is not covered by the build-pipeline is really special and will be checked in the PRs by our review.
 
-If you now run into a problem when you execute `maven verify` you will notice it by the message:
+If you now run into a problem when you execute `maven verify` you will notice it by the message in the log:
 ````
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD FAILURE
