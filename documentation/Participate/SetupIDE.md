@@ -81,6 +81,7 @@ or IntelliJ shows something like `Failed to execute goal`. Here you can read, ho
     === "PMD"
         Visit the <a href="https://pmd.github.io/latest/" target="_blank">**PMD Page**</a> for general info.
         <br><br>
+        PMD mainly checks for code smells. PMD' errors look like this:
         ````
         [ERROR] Failed to execute goal org.apache.maven.plugins:maven-pmd-plugin:3.14.0:check (default) on project betonquest: You have 1 PMD violation.
         ````
@@ -104,7 +105,7 @@ or IntelliJ shows something like `Failed to execute goal`. Here you can read, ho
         ````
         [ERROR] Medium: Null passed for non-null parameter of org.betonquest.betonquest.utils.PlayerConverter.getPlayer(String) in org.betonquest.betonquest.BetonQuest.condition(String, ConditionID) [org.betonquest.betonquest.BetonQuest, org.betonquest.betonquest.BetonQuest] Method invoked at BetonQuest.java:[line 349]Known null at BetonQuest.java:[line 344] NP_NULL_PARAM_DEREF
         ````
-        SpotBugs errors are a little bit complicated to read,
+        SpotBugs errors are a little complicated to read,
         but if you find e.g. `NP_NULL_PARAM_DEREF` at the end of the line you can simply search it on the
         <a href="https://spotbugs.readthedocs.io/en/stable/bugDescriptions.html" target="_blank">SpotBugs page</a> page.
         If you have problems solving these kinds of issues you can ask on our Discord for help with SpotBugs.
@@ -121,6 +122,8 @@ or IntelliJ shows something like `Failed to execute goal`. Here you can read, ho
         CheckStyle is very simple to read, normally it is in your language and self explaining.  
         In the above error you can find e.g `ImportOrder` and you can search on the
         <a href="https://checkstyle.sourceforge.io/checks.html" target="_blank">CheckStyle</a> page for it.
+        If you need help solving an issue here, you can also ask us on our Discord for help with CheckStyle.
+        <br><br><br>
         
         
 
