@@ -39,25 +39,20 @@ public class AureliumSkillsExperienceEvent extends QuestEvent {
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final Player player = PlayerConverter.getPlayer(playerID);
-
         final PlayerData playerData = aureliumSkills.getPlayerManager().getPlayerData(player);
 
         if (playerData == null) {
             return null;
         }
 
-        final double amount = amountVar.getDouble(playerID);
-        final int currentLevel = playerData.getSkillLevel(skill);
+        final int amount = amountVar.getInt(playerID);
 
         if (isLevel) {
-            for (int i = 1; i <= amount; i++) {
-                final double expRequirements = aureliumSkills.getLeveler().getXpRequired(currentLevel + i);
-                AureliumAPI.addXpRaw(player, skill, expRequirements);
-            }
+            final int targetLevel = playerData.getSkillLevel(skill) + amount;
+            playerData.setSkillLevel(skill, targetLevel);
         } else {
             AureliumAPI.addXpRaw(player, skill, amount);
         }
-
         return null;
     }
 }
