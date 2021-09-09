@@ -172,5 +172,4 @@ nav:
           - '📚 Contributing Guidelines': Participate/Code/Contributing-Guidelines.md
           - '🏭 Versioning & Releasing': Participate/Code/Versioning-and-Releasing.md
       - 'Docs':
-          - '🔧 Setup': Participate/Docs/Setup.md
           - '📚 Guidelines': Participate/Docs/Guidelines.md
