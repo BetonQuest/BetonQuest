@@ -11,7 +11,7 @@ import org.bukkit.plugin.Plugin;
 /**
  * Integrator for AureliumSkills.
  */
-@SuppressWarnings({"PMD.AtLeastOneConstructor", "PMD.UncommentedEmptyMethodBody", "CommentRequired", "PreserveStackTrace"})
+@SuppressWarnings({"PMD.AtLeastOneConstructor", "PMD.UncommentedEmptyMethodBody", "PMD.CommentRequired", "PMD.PreserveStackTrace"})
 public class AureliumSkillsIntegrator implements Integrator {
 
     @Getter
