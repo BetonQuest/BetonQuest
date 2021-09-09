@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.aureliumskills;
 
 import com.archyx.aureliumskills.AureliumSkills;
 import com.archyx.aureliumskills.api.AureliumAPI;
-import com.archyx.aureliumskills.skills.Skill;
+import com.archyx.aureliumskills.stats.Stat;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
@@ -11,30 +11,29 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 
-/**
- * Checks whether a player has the required skill level.
- */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.PreserveStackTrace"})
-public class AureliumSkillsLevelCondition extends Condition {
+public class AureliumSkillsStatsCondition extends Condition {
 
     private final VariableNumber targetLevelVar;
-    private final Skill skill;
+    private final Stat stat;
+
     private boolean mustBeEqual;
 
-    public AureliumSkillsLevelCondition(final Instruction instruction) throws InstructionParseException {
+
+    public AureliumSkillsStatsCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
 
-        final AureliumSkills aureliumSkills = AureliumSkillsIntegrator.getAureliumPlugin();
-
-        final String skillName = instruction.next();
+        final String statName = instruction.next();
         targetLevelVar = instruction.getVarNum();
-        if (instruction.hasArgument("equal")) {
-            mustBeEqual = true;
+
+        final AureliumSkills aureliumSkills = AureliumSkillsIntegrator.getAureliumPlugin();
+        stat = aureliumSkills.getStatRegistry().getStat(statName);
+        if (stat == null) {
+            throw new InstructionParseException("Invalid stat name");
         }
 
-        skill = aureliumSkills.getSkillRegistry().getSkill(skillName);
-        if (skill == null) {
-            throw new InstructionParseException("Invalid skill name");
+        if (instruction.hasArgument("equal")) {
+            mustBeEqual = true;
         }
     }
 
@@ -42,8 +41,8 @@ public class AureliumSkillsLevelCondition extends Condition {
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
         final Player player = PlayerConverter.getPlayer(playerID);
 
-        final int actualLevel = AureliumAPI.getSkillLevel(player, skill);
-        final int targetLevel = targetLevelVar.getInt(playerID);
+        final double actualLevel = AureliumAPI.getStatLevel(player, stat);
+        final double targetLevel = targetLevelVar.getDouble(playerID);
 
         return mustBeEqual ? actualLevel == targetLevel : actualLevel >= targetLevel;
     }

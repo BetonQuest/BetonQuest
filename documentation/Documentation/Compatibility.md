@@ -22,13 +22,33 @@ There are also plugins that hook into BetonQuest that require a clientside mod:
 ###Conditions
 
 #### Skill level: `aureliumskillslevel`
-Checks if the player has the specified skill level. 
+Checks if the player has the specified skill level. The amount can be a variable or a number.
 The player needs to be on that level or higher to meet the condition.
 You can disable this behaviour by adding the `equal` argument, then the player must match the specified level exactly.
 ```YAML linenums="1"
 aureliumskillslevel fighting 5
 aureliumskillslevel farming 10 equal
 ```
+
+#### Stat level: `aureliumstatslevel`
+Checks if the player has the specified stat level. The amount can be a variable or a number.
+The player needs to be on that level or higher to meet the condition.
+You can disable this behaviour by adding the `equal` argument, then the player must match the specified level exactly.
+```YAML linenums="1"
+aureliumstatslevel luck 5
+aureliumstatslevel luck 10 equal
+```
+
+### Events
+
+### Give Skill Xp : `aureliumskillsxp`
+Adds experience to the players skill. The amount can be a variable or a number.
+The `level` argument is optional and would convert the amount to levels instead of XP points.
+```YAML linenums="1"
+aureliumskillsxp farming 5
+aureliumskillsxp farming 10 level
+```
+
 
 ## [Brewery](https://www.spigotmc.org/resources/brewery.3082/)
 
