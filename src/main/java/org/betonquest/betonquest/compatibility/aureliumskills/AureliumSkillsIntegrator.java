@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.aureliumskills;
 
 import com.archyx.aureliumskills.AureliumSkills;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.Getter;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Integrator;
@@ -12,6 +13,7 @@ import org.bukkit.plugin.Plugin;
  * Integrator for AureliumSkills.
  */
 @SuppressWarnings({"PMD.AtLeastOneConstructor", "PMD.UncommentedEmptyMethodBody", "PMD.CommentRequired", "PMD.PreserveStackTrace"})
+@SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
 public class AureliumSkillsIntegrator implements Integrator {
 
     @Getter
