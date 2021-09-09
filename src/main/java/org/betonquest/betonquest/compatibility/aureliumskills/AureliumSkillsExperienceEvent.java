@@ -39,7 +39,6 @@ public class AureliumSkillsExperienceEvent extends QuestEvent {
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final Player player = PlayerConverter.getPlayer(playerID);
-        final double amount = amountVar.getDouble(playerID);
 
         final PlayerData playerData = aureliumSkills.getPlayerManager().getPlayerData(player);
 
@@ -47,6 +46,7 @@ public class AureliumSkillsExperienceEvent extends QuestEvent {
             return null;
         }
 
+        final double amount = amountVar.getDouble(playerID);
         final int currentLevel = playerData.getSkillLevel(skill);
 
         if (isLevel) {
