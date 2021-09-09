@@ -19,7 +19,12 @@ Then you should <a href="https://docs.github.com/en/get-started/quickstart/fork-
 After you have setup the IDE,
 <a href="https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository" target="_blank">clone</a>
 the BetonQuest repository from your namespace. You can also directly
-<a href="https://blog.jetbrains.com/idea/2020/10/clone-a-project-from-github/" target="_blank">clone the repository in IntelliJ</a>. 
+<a href="https://blog.jetbrains.com/idea/2020/10/clone-a-project-from-github/" target="_blank">clone the repository in IntelliJ</a>.
+
+??? "In case videos and other files like images are missing"
+    We use <a href="https://git-lfs.github.com/" target="_blank">Git LFS</a> to store big files like media files, so you need to install that too.
+    Once you have executed the file that you downloaded from the Git LFS website, just run `git lfs install`.
+    Then use `git lfs pull` to actually download the files.
 
 ##Building the Plugin jar
 To build the BetonQuest jar, you simply need to run `maven verify`.
@@ -152,12 +157,6 @@ Install all other dependencies by entering `pip install -r config/docs-requireme
 ??? "In case you are a material-mkdocs insider (paid premium version)"  
     Set your license key by executing `set MKDOCS_MATERIAL_INSIDERS=LICENSE_KEY_HERE` (Windows) in the console.
     Then run `pip install -r config/docs-requirements-insiders.txt` instead of `docs-requirements.txt`.
-
-
-The only thing that's missing once you have done all that is all large files (images & videos). We use 
-<a href="https://git-lfs.github.com/" target="_blank">Git LFS</a> to store them, so you need to install that too.
-Just run `git lfs install` once you have executed the file that you downloaded from the Git LFS website.
-Then use `git lfs pull` to actually download the files.
 
 ### See your changes live
 You are now primarily working with tools called _mkdocs_ and  _mkdocs-material-theme_ in case you want to google anything.
