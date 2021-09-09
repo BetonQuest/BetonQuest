@@ -40,7 +40,7 @@ As BetonQuest has a lot of dependencies, the build can take a long lime, especia
 You can speed this up with the following configuration, that downloads all dependencies from our own Repository Manager
 instead of searching through all repositories that are defined in the project.
 
-If you do not already have the file, create a new file `${user.home}/.m2/settings.xml`.
+If you do not already have the file, create a new file `<HOME>/.m2/settings.xml`.
 Then adopt or copy the following to the file (this is maybe outdated):
 
 ````XML
@@ -163,7 +163,7 @@ You are now primarily working with tools called _mkdocs_ and  _mkdocs-material-t
 All files are regular markdown files though.
  
 MkDocs enables you to create a website that shows you your changes while you make them.
-Execute this to see a preview of the webpage on <a href="http://127.0.0.1:8000" target="_blank">127.0.0.1:8000</a>:
+Execute this in the console on the project's root directory, to see a preview of the webpage on <a href="http://127.0.0.1:8000" target="_blank">127.0.0.1:8000</a>:
 
 ```BASH
 mkdocs serve
