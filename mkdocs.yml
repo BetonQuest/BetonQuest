@@ -167,9 +167,9 @@ nav:
       - '⚙️ API': API/API.md
   - '🧪 Participate':
       - '🤝 Overview': Participate/Overview.md
+      - '📰 Setup IDE': Participate/SetupIDE.md
       - 'Code':
           - '📚 Contributing Guidelines': Participate/Code/Contributing-Guidelines.md
           - '🏭 Versioning & Releasing': Participate/Code/Versioning-and-Releasing.md
       - 'Docs':
-          - '🔧 Setup': Participate/Docs/Setup.md
           - '📚 Guidelines': Participate/Docs/Guidelines.md
