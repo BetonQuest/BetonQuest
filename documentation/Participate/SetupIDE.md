@@ -5,43 +5,48 @@ You can still use your preferred IDE, but then you need to check on your own tha
 ##Installing IntelliJ 
 First download <a href="https://www.jetbrains.com/idea/download/" target="_blank">IntelliJ</a> and install it.
 
-After you installed IntelliJ, we recommend to installing the plugin
+After you installed IntelliJ, we recommend installing the plugin
 <a href="https://plugins.jetbrains.com/plugin/7642-save-actions" target="_blank">Save Actions</a>.
-The plugin helps to auto format code, organize imports, add final modifiers, and some other requirements we have.
+The plugin automatically formats code, organizes imports, adds final modifiers, and fulfils some other requirements we have.
 You don't need to configure that plugin, the project contains the configuration file.
 
-## Check out the Code
-To be able to check out code from GitHub you need a Git installation.
+## Check out the repository
+You need a Git installation to be able to check out code from GitHub.
 You can follow this <a href="https://docs.github.com/en/get-started/quickstart/set-up-git" target="_blank">guide</a> if you don't know how to install Git.  
 
-Then you should <a href="https://docs.github.com/en/get-started/quickstart/fork-a-repo" target="_blank">fork</a> the BetonQuest repository to your own profile on GitHub.
+Then you should <a href="https://docs.github.com/en/get-started/quickstart/fork-a-repo" target="_blank">fork</a> the BetonQuest repository to your own account on GitHub.
 
 After you have setup the IDE,
 <a href="https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository" target="_blank">clone</a>
-the BetonQuest repository from your namespace. You can also directly
+the BetonQuest repository from your account. You can also directly
 <a href="https://blog.jetbrains.com/idea/2020/10/clone-a-project-from-github/" target="_blank">clone the repository in IntelliJ</a>.
 
-??? "In case videos and other files like images are missing"
+??? "In case videos and other files like images are missing after cloning"
     We use <a href="https://git-lfs.github.com/" target="_blank">Git LFS</a> to store big files like media files, so you need to install that too.
     Once you have executed the file that you downloaded from the Git LFS website, just run `git lfs install`.
     Then use `git lfs pull` to actually download the files.
 
 ##Building the Plugin jar
+You can build the plugin with Maven. Sometimes, IntelliJ auto-detects that BetonQuest is a Maven project. You can see
+a "Maven" tab on the right side of the editor if that's the case. Otherwise, do this:
+First, right-click the `pom.xml` file in the projects root folder. 
+Then select "Add as Maven Project". 
+
 To build the BetonQuest jar, you simply need to run `maven verify`.
-You can execute this directly using Maven or in IntelliJ within the `Maven` tab by
-double-click on `BetonQuest/Lifecycle/verify`.
-You can then find the `BetonQuest.jar` jar in the project's folder `/target/artifacts`.
+You can do this from the command line or use IntelliJ's `Maven` tab (double-click on `BetonQuest/Lifecycle/verify`).
+You can then find a `BetonQuest.jar` in the project's folder `/target/artifacts`.
 
 If you want to build without checking our requirements and just want a jar, you can execute `package` instead of `verify`,
-but you need to successfully run `verify`, before you make a PR (Pull Request) on GitHub!
+but you need to successfully run `verify`, before you make a pull request on GitHub!
 
-###Optimize the Build
+###Build speed up
 As BetonQuest has a lot of dependencies, the build can take a long lime, especially for the first build.
 You can speed this up with the following configuration, that downloads all dependencies from our own Repository Manager
 instead of searching through all repositories that are defined in the project.
 
-If you do not already have the file, create a new file `<HOME>/.m2/settings.xml`.
-Then adopt or copy the following to the file (this is maybe outdated):
+If you do not already have the file, create a new file in your home directory. `<HOME DIRECTORY>\.m2\settings.xml`.
+The home directory on Windows is `C:\Users\<YOUR USER NAME>`.
+Then adopt or copy the following into the file:
 
 ````XML
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
@@ -59,7 +64,6 @@ Then adopt or copy the following to the file (this is maybe outdated):
 
 </settings>
 ````
-You need to add any new repositories to this list whenever a new repository was added to the pom.xml.
 
 ###Build on Start
 The first build of a day can take a while, because every version gets re-checked once every day.
@@ -69,24 +73,24 @@ Now select `Maven`, set a `Name` like `BetonQuest Resolve Dependencies` and writ
 into the field `Command line`. Then confirm with `Ok` twice.
 Now after starting IntelliJ the `BetonQuest Resolve Dependencies` task should run automatically.
 
-###Fulfil the Requirements
-The build-pipeline checks about 95% of our requirements.
-That means `maven verify` will check most requirements for you, and GitHub Actions is doing the rest for you.
-Everything that is not covered by the build-pipeline is really special and will be checked in the PR by our review.
+###Fulfil the Contributing Requirements
+Run `maven verify` before opening a pull request to check if you change meets the project's requirements regarding code
+style and quality.
+GitHub Actions(automated code check on GitHub) will also verify these requirements when you open the pull request.
 
-If you now run into a problem when you execute `maven verify` you will notice it by the message in the log:
+If any requirements are not met, `maven verify` will fail with this log message:
 ````
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD FAILURE
 [INFO] ------------------------------------------------------------------------
 ````
-or IntelliJ shows something like `Failed to execute goal`. Here you can read, how to solve the requirements violations:
+IntelliJ may also show something like `Failed to execute goal`. Here's a guide how to fix any requirement violations:
 
 !!! note ""
     === "PMD"
         Visit the <a href="https://pmd.github.io/latest/" target="_blank">**PMD Page**</a> for general info.
         <br><br>
-        PMD mainly checks for code smells. PMD' errors look like this:
+        PMD mainly checks for code smells. PMD's errors look like this:
         ````
         [ERROR] Failed to execute goal org.apache.maven.plugins:maven-pmd-plugin:3.14.0:check (default) on project betonquest: You have 1 PMD violation.
         ````
@@ -96,8 +100,8 @@ or IntelliJ shows something like `Failed to execute goal`. Here you can read, ho
         ````
         If you read this, you may know what is wrong. If you don't know why, visit the
         <a href="https://pmd.github.io/latest/" target="_blank">PMD</a> page.
-        Then you type in the rule e.g. `AvoidLiteralsInIfCondition` in the search and click on the rule.
-        Then you get a detailed description, what is wrong.
+        Then you type in the rule e.g. `AvoidLiteralsInIfCondition` in the search bar and click on the rule.
+        You will get a detailed description about what is wrong.
         If you still don't know how to solve it, ask the developers on Discord for help with PMD.
     === "SpotBugs"
         Visit the <a href="https://spotbugs.readthedocs.io/en/stable/index.html" target="_blank">**SpotBugs Page**</a> for general info.
@@ -112,7 +116,7 @@ or IntelliJ shows something like `Failed to execute goal`. Here you can read, ho
         ````
         SpotBugs errors are a little complicated to read,
         but if you find e.g. `NP_NULL_PARAM_DEREF` at the end of the line you can simply search it on the
-        <a href="https://spotbugs.readthedocs.io/en/stable/bugDescriptions.html" target="_blank">SpotBugs page</a> page.
+        <a href="https://spotbugs.readthedocs.io/en/stable/bugDescriptions.html" target="_blank">SpotBugs</a> page.
         If you have problems solving these kinds of issues you can ask on our Discord for help with SpotBugs.
     === "CheckStyle"
         Visit the <a href="https://checkstyle.sourceforge.io/checks.html" target="_blank">**CheckStyle Page**</a> for general info.
@@ -148,14 +152,17 @@ or IntelliJ shows something like `Failed to execute goal`. Here you can read, ho
 
  
 ##Building the Documentation
-Make sure <a href="https://www.python.org/downloads/" target="_blank">Python3</a> is installed on your local system,
-and don't forget to add it the path manually in the installer.
-You also need to install <a href="https://www.gtk.org/" target="_blank">GTK</a> if you are on Windows.
-You can also use this <a href="https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer/" target="_blank">GTK installer</a> for Windows instead. 
+Make sure <a href="https://www.python.org/downloads/" target="_blank">Python3</a> is installed on your local system
+and added to the PATH environment variable. The Python installer allows you to do so with a checkbox called something like
+"Add Python to environment variables".
+You also need to install <a href="https://www.gtk.org/" target="_blank">GTK</a>, the easiest way is to use this 
+<a href="https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer/" target="_blank">GTK installer</a>
+if you are on Windows. 
 
-Install all other dependencies by entering `pip install -r config/docs-requirements.txt` in the console on the project's root directory.
+Install all other dependencies by entering `pip install -r config/docs-requirements.txt` in the terminal on the project's root directory.
+
 ??? "In case you are a material-mkdocs insider (paid premium version)"  
-    Set your license key by executing `set MKDOCS_MATERIAL_INSIDERS=LICENSE_KEY_HERE` (Windows) in the console.
+    Set your license key by executing `set MKDOCS_MATERIAL_INSIDERS=LICENSE_KEY_HERE` (Windows) in the terminal.
     Then run `pip install -r config/docs-requirements-insiders.txt` instead of `docs-requirements.txt`.
 
 ### See your changes live
@@ -163,7 +170,7 @@ You are now primarily working with tools called _mkdocs_ and  _mkdocs-material-t
 All files are regular markdown files though.
  
 MkDocs enables you to create a website that shows you your changes while you make them.
-Execute this in the console on the project's root directory, to see a preview of the webpage on <a href="http://127.0.0.1:8000" target="_blank">127.0.0.1:8000</a>:
+Execute this in the terminal on the project's root directory, to see a preview of the webpage on <a href="http://127.0.0.1:8000" target="_blank">127.0.0.1:8000</a>:
 
 ```BASH
 mkdocs serve
