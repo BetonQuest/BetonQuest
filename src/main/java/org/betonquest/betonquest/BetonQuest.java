@@ -96,6 +96,7 @@ import org.betonquest.betonquest.events.DamageEvent;
 import org.betonquest.betonquest.events.DelEffectEvent;
 import org.betonquest.betonquest.events.DeletePointEvent;
 import org.betonquest.betonquest.events.DoorEvent;
+import org.betonquest.betonquest.events.DropItemEvent;
 import org.betonquest.betonquest.events.EffectEvent;
 import org.betonquest.betonquest.events.ExperienceEvent;
 import org.betonquest.betonquest.events.ExplosionEvent;
@@ -727,6 +728,7 @@ public class BetonQuest extends JavaPlugin {
         registerEvents("notify", NotifyEvent.class);
         registerEvents("notifyall", NotifyAllEvent.class);
         registerEvents("chat", ChatEvent.class);
+        registerEvents("drop", DropItemEvent.class);
 
         // register objectives
         registerObjectives("location", LocationObjective.class);
