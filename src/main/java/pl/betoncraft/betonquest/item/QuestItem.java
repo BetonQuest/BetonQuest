@@ -342,7 +342,8 @@ public class QuestItem {
             return false;
         }
         final ItemMeta meta = item.getItemMeta();
-        if (!name.check(meta.getDisplayName())) {
+        final String displayName = meta.hasDisplayName() ? meta.getDisplayName() : null;
+        if (!name.check(displayName)) {
             return false;
         }
         if (!lore.check(meta.getLore())) {
