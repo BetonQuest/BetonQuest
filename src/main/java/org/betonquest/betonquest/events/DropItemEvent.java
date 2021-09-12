@@ -45,7 +45,7 @@ public class DropItemEvent extends QuestEvent implements Listener {
     public DropItemEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
 
-        Bukkit.getPluginManager().registerEvents(BukkitEvent(), BetonQuest.getInstance());
+        Bukkit.getPluginManager().registerEvents(bukkitEvent(), BetonQuest.getInstance());
 
         questItems = instruction.getItemList();
         location = instruction.getLocation();
@@ -83,8 +83,8 @@ public class DropItemEvent extends QuestEvent implements Listener {
         return null;
     }
 
-    @SuppressWarnings({"PMD.MethodNamingConventions", "PMD.NPathComplexity", "PMD.AvoidDuplicateLiterals"})
-    private Listener BukkitEvent() {
+    @SuppressWarnings({"PMD.NPathComplexity", "PMD.AvoidDuplicateLiterals"})
+    private Listener bukkitEvent() {
         return new Listener() {
 
             @EventHandler(ignoreCancelled = true)
