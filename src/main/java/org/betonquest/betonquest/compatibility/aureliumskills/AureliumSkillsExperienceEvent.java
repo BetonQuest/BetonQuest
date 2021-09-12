@@ -48,8 +48,11 @@ public class AureliumSkillsExperienceEvent extends QuestEvent {
         final int amount = amountVar.getInt(playerID);
 
         if (isLevel) {
-            final int targetLevel = playerData.getSkillLevel(skill) + amount;
-            playerData.setSkillLevel(skill, targetLevel);
+            final int currentLevel = playerData.getSkillLevel(skill);
+            for (int i = 1; i <= amount; i++) {
+                final double requiredXP = aureliumSkills.getLeveler().getXpRequired(currentLevel + i);
+                AureliumAPI.addXpRaw(player, skill, requiredXP);
+            }
         } else {
             AureliumAPI.addXpRaw(player, skill, amount);
         }
