@@ -26,12 +26,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
-@SuppressWarnings({"PMD.CommentRequired", "PMD.FieldNamingConventions", "PMD.UnusedNullCheckInEquals", "PMD.CollapsibleIfStatements"})
+@SuppressWarnings({"PMD.CommentRequired"})
 public class DropItemEvent extends QuestEvent implements Listener {
 
     private final Instruction.Item[] questItems;
@@ -39,8 +38,8 @@ public class DropItemEvent extends QuestEvent implements Listener {
     private final boolean isPrivate;
     private final boolean isIndestructible;
 
-    private final Map<Entity, UUID> entityPlayerMap = new HashMap<>();
-    private final List<Entity> IndestructibleItem = new ArrayList<>();
+    private final ConcurrentHashMap<Entity, UUID> entityPlayerMap = new ConcurrentHashMap<>();
+    private final List<Entity> indestructibleItem = new ArrayList<>();
     private final EntityHider hider = new EntityHider(BetonQuest.getInstance(), EntityHider.Policy.BLACKLIST);
 
     public DropItemEvent(final Instruction instruction) throws InstructionParseException {
@@ -51,12 +50,10 @@ public class DropItemEvent extends QuestEvent implements Listener {
         questItems = instruction.getItemList();
         location = instruction.getLocation();
         isPrivate = instruction.hasArgument("private");
-        isIndestructible = instruction.hasArgument("indestructible");
+        isIndestructible = instruction.hasArgument("nodespawn");
 
-        if (isPrivate) {
-            if (Bukkit.getPluginManager().getPlugin("ProtocolLib") == null) {
-                throw new InstructionParseException("You Need ProtocolLib installed to Use Private Drop Item");
-            }
+        if (isPrivate && Bukkit.getPluginManager().getPlugin("ProtocolLib") == null) {
+            throw new InstructionParseException("You Need ProtocolLib installed to Use Private Drop Item");
         }
     }
 
@@ -80,7 +77,7 @@ public class DropItemEvent extends QuestEvent implements Listener {
                 }
             }
             if (isIndestructible) {
-                IndestructibleItem.add(droppedItem);
+                indestructibleItem.add(droppedItem);
             }
         }
         return null;
@@ -90,27 +87,26 @@ public class DropItemEvent extends QuestEvent implements Listener {
     private Listener BukkitEvent() {
         return new Listener() {
 
-            @SuppressWarnings("PMD.ConfusingTernary")
             @EventHandler(ignoreCancelled = true)
             @SuppressFBWarnings("UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS")
             public void onPickupItem(final EntityPickupItemEvent event) {
                 for (final Entity item : entityPlayerMap.keySet()) {
-                    if (item != null && event.getItem().equals(item)) {
-                        if (!event.getEntity().getUniqueId().equals(entityPlayerMap.get(item))) {
-                            event.setCancelled(true);
+                    if (event.getItem().equals(item)) {
+                        if (event.getEntity().getUniqueId().equals(entityPlayerMap.get(item))) {
+                                entityPlayerMap.remove(item);
                         } else {
-                            entityPlayerMap.remove(item);
+                            event.setCancelled(true);
                         }
                     }
                 }
-                IndestructibleItem.removeIf(item -> item != null && event.getItem().equals(item));
+                indestructibleItem.removeIf(item -> event.getItem().equals(item));
             }
 
             @EventHandler(ignoreCancelled = true)
             @SuppressFBWarnings("UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS")
             public void onPlayerJoin(final PlayerJoinEvent event) {
                 for (final Entity item : entityPlayerMap.keySet()) {
-                    if (item != null && !event.getPlayer().getUniqueId().equals(entityPlayerMap.get(item))) {
+                    if (!event.getPlayer().getUniqueId().equals(entityPlayerMap.get(item))) {
                         hider.hideEntity(event.getPlayer(), item);
                     }
                 }
@@ -120,12 +116,12 @@ public class DropItemEvent extends QuestEvent implements Listener {
             @SuppressFBWarnings("UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS")
             public void onMergingItem(final ItemMergeEvent event) {
                 for (final Entity item : entityPlayerMap.keySet()) {
-                    if (item != null && event.getEntity().equals(item)) {
+                    if (event.getEntity().equals(item)) {
                         event.setCancelled(true);
                     }
                 }
-                for (final Entity item : IndestructibleItem) {
-                    if (item != null && event.getEntity().equals(item)) {
+                for (final Entity item : indestructibleItem) {
+                    if (event.getEntity().equals(item)) {
                         event.setCancelled(true);
                     }
                 }
@@ -134,15 +130,13 @@ public class DropItemEvent extends QuestEvent implements Listener {
             @EventHandler(ignoreCancelled = true)
             @SuppressFBWarnings("UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS")
             public void onItemDespawn(final ItemDespawnEvent event) {
-                for (final Entity item : IndestructibleItem) {
-                    if (item != null
-                            && event.getEntity().equals(item)
-                            && event.getEntity().getType().equals(EntityType.DROPPED_ITEM)) {
+                for (final Entity item : indestructibleItem) {
+                    if (event.getEntity().equals(item) && event.getEntity().getType() == EntityType.DROPPED_ITEM) {
                         event.setCancelled(true);
                     }
                 }
                 for (final Entity item : entityPlayerMap.keySet()) {
-                    if (item != null && event.getEntity().equals(item)) {
+                    if (event.getEntity().equals(item)) {
                         entityPlayerMap.remove(item);
                     }
                 }
@@ -151,12 +145,11 @@ public class DropItemEvent extends QuestEvent implements Listener {
             @EventHandler(ignoreCancelled = true)
             @SuppressFBWarnings("UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS")
             public void onItemDamage(final EntityDamageEvent event) {
-                IndestructibleItem.removeIf(item -> item != null
-                        && event.getEntity().equals(item)
-                        && event.getEntityType().equals(EntityType.DROPPED_ITEM));
+                indestructibleItem.removeIf(item -> event.getEntity() == item
+                        && event.getEntityType() == EntityType.DROPPED_ITEM);
                 for (final Entity item : entityPlayerMap.keySet()) {
-                    if (item != null
-                            && event.getEntity().getType().equals(EntityType.DROPPED_ITEM)) {
+                    if (event.getEntity().getType() == EntityType.DROPPED_ITEM
+                            && event.getEntity().equals(item)) {
                         entityPlayerMap.remove(item);
                     }
                 }

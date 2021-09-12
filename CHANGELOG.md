@@ -34,7 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - added AureliumSkillsLevelExperienceEvent
 - add drop item event
   - added drop item private
-  - added drop item indestructible
+  - added drop item nodespawn
 ### Changed
 - math variable now allows rounding output with the ~ operator
 - changed package names from `pl.betoncraft.betonquest` to `org.betonquest.betonquest`
