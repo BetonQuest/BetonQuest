@@ -1,0 +1,56 @@
+package org.betonquest.betonquest.compatibility.luckperms;
+
+import net.luckperms.api.context.ContextCalculator;
+import net.luckperms.api.context.ContextConsumer;
+import net.luckperms.api.context.ContextSet;
+import net.luckperms.api.context.ImmutableContextSet;
+import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.utils.PlayerConverter;
+import org.bukkit.entity.Player;
+
+import java.util.List;
+
+/**
+ * Provides all per-player tags and all global tags as LuckPerms
+ * contexts.
+ */
+@SuppressWarnings({"PMD.CommentRequired", "PMD.AtLeastOneConstructor"})
+public class TagCalculator implements ContextCalculator<Player> {
+
+    public static final String KEY = "betonquest:tag";
+
+    private final BetonQuest betonQuest = BetonQuest.getInstance();
+
+    /**
+     * Calculates all tag contexts that a player has active.
+     *
+     * @param player          to check contexts for
+     * @param contextConsumer accepts contexts
+     */
+    @Override
+    public void calculate(final Player player, final ContextConsumer contextConsumer) {
+        final String uuid = PlayerConverter.getID(player);
+        final List<String> data = betonQuest.getPlayerData(uuid).getTags();
+        data.forEach(tag -> contextConsumer.accept(KEY, tag));
+
+        final List<String> globalData = betonQuest.getGlobalData().getTags();
+        globalData.forEach(tag -> contextConsumer.accept(KEY, tag));
+    }
+
+    /**
+     * Shows all global tags as autocompletion suggestions.
+     *
+     * @return a set of contexts to suggest.
+     */
+    @Override
+    public ContextSet estimatePotentialContexts() {
+        final ImmutableContextSet.Builder builder = ImmutableContextSet.builder();
+
+        final List<String> globalData = betonQuest.getGlobalData().getTags();
+        globalData.forEach(tag -> builder.add(KEY, tag));
+
+        return builder.build();
+    }
+}
+
+

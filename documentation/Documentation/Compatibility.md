@@ -1,9 +1,9 @@
 # Compatibility
-**In total 29 plugins have dedicated support for BetonQuest.**
+**In total 30 plugins have dedicated support for BetonQuest.**
 
 BetonQuest hooks into other plugins by itself to provide more events, conditions and objectives or other features. 
-24 plugins are supported right now:    
-_AureliumSkills, Brewery, Citizens, Denizen, EffectLib, Heroes, HolographicDisplays, JobsReborn, Magic,
+25 plugins are supported right now:    
+_AureliumSkills, Brewery, Citizens, Denizen, EffectLib, Heroes, HolographicDisplays, JobsReborn, LuckPerms, Magic,
 mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, ProtocolLib, Quests,
 Shopkeepers, SkillAPI, Skript, Vault, WorldEdit, FastAsyncWorldEdit and WorldGuard._
 
@@ -476,6 +476,26 @@ the player advances the objective, optionally with the notification interval aft
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of money already received,
 `left` is the amount of money still needed to receive and `total` is the amount of money initially required.
 
+
+## [LuckPerms](https://luckperms.net/)
+
+### Context Integration
+
+Any BetonQuest tag (global and per-player) can be used as a LuckPerms context. This means that a player needs the specified tag for a permission
+to be true - this removes the need for tons of `permission add ...` events as you can hook your existing
+quest progress tags right into LuckPerms permission
+<a href="https://luckperms.net/wiki/Context" target="_blank">contexts</a>.
+The syntax is as follows:
+
+| key            	| value                  	|
+|----------------	|------------------------	|
+| betonquest:tag 	| packageName.tagName    	|
+| betonquest:tag 	| default.questCompleted 	|
+
+Autocompletion only works in chat and for global tags.
+Check the 
+<a href="https://luckperms.net/wiki/Context" target="_blank">Luck Perms documentation</a>
+for an in-depth explanation on what contexts are and how to add them to permission.
 
 ## [Magic](http://dev.bukkit.org/bukkit-plugins/magic/)
 
