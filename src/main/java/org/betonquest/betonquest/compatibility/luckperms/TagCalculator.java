@@ -2,8 +2,6 @@ package org.betonquest.betonquest.compatibility.luckperms;
 
 import net.luckperms.api.context.ContextCalculator;
 import net.luckperms.api.context.ContextConsumer;
-import net.luckperms.api.context.ContextSet;
-import net.luckperms.api.context.ImmutableContextSet;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -38,21 +36,6 @@ public class TagCalculator implements ContextCalculator<Player> {
             final List<String> globalData = betonQuest.getGlobalData().getTags();
             globalData.forEach(tag -> contextConsumer.accept(KEY, tag));
         });
-    }
-
-    /**
-     * Shows all global tags as autocompletion suggestions.
-     *
-     * @return a set of contexts to suggest.
-     */
-    @Override
-    public ContextSet estimatePotentialContexts() {
-        final ImmutableContextSet.Builder builder = ImmutableContextSet.builder();
-        Bukkit.getScheduler().runTaskAsynchronously(BetonQuest.getInstance(), () -> {
-            final List<String> globalData = betonQuest.getGlobalData().getTags();
-            globalData.forEach(tag -> builder.add(KEY, tag));
-        });
-        return builder.build();
     }
 }
 
