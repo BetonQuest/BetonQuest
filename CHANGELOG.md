@@ -86,6 +86,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - added missing config options to the default config
 - `menu open` event does not show the previous menu again anymore
 - quest item empty name comparison
+- customized built-in messages that use the advancementIO 
 ### Security
 - it was possible to put a QuestItem into a chest
 - the take event is now threadsafe
