@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.events;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
@@ -45,7 +44,7 @@ public class DropItemEvent extends QuestEvent implements Listener {
     public DropItemEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
 
-        Bukkit.getPluginManager().registerEvents(bukkitEvent(), BetonQuest.getInstance());
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
 
         questItems = instruction.getItemList();
         location = instruction.getLocation();
@@ -83,77 +82,68 @@ public class DropItemEvent extends QuestEvent implements Listener {
         return null;
     }
 
-    @SuppressWarnings({"PMD.NPathComplexity", "PMD.AvoidDuplicateLiterals"})
-    private Listener bukkitEvent() {
-        return new Listener() {
 
-            @EventHandler(ignoreCancelled = true)
-            @SuppressFBWarnings("UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS")
-            public void onPickupItem(final EntityPickupItemEvent event) {
-                for (final Entity item : entityPlayerMap.keySet()) {
-                    if (event.getItem().equals(item)) {
-                        if (event.getEntity().getUniqueId().equals(entityPlayerMap.get(item))) {
-                                entityPlayerMap.remove(item);
-                        } else {
-                            event.setCancelled(true);
-                        }
-                    }
-                }
-                indestructibleItem.removeIf(item -> event.getItem().equals(item));
-            }
-
-            @EventHandler(ignoreCancelled = true)
-            @SuppressFBWarnings("UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS")
-            public void onPlayerJoin(final PlayerJoinEvent event) {
-                for (final Entity item : entityPlayerMap.keySet()) {
-                    if (!event.getPlayer().getUniqueId().equals(entityPlayerMap.get(item))) {
-                        hider.hideEntity(event.getPlayer(), item);
-                    }
+    @EventHandler(ignoreCancelled = true)
+    public void onPickupItem(final EntityPickupItemEvent event) {
+        for (final Entity item : entityPlayerMap.keySet()) {
+            if (event.getItem().equals(item)) {
+                if (event.getEntity().getUniqueId().equals(entityPlayerMap.get(item))) {
+                    entityPlayerMap.remove(item);
+                } else {
+                    event.setCancelled(true);
                 }
             }
+        }
+        indestructibleItem.removeIf(item -> event.getItem().equals(item));
+    }
 
-            @EventHandler(ignoreCancelled = true)
-            @SuppressFBWarnings("UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS")
-            public void onMergingItem(final ItemMergeEvent event) {
-                for (final Entity item : entityPlayerMap.keySet()) {
-                    if (event.getEntity().equals(item)) {
-                        event.setCancelled(true);
-                    }
-                }
-                for (final Entity item : indestructibleItem) {
-                    if (event.getEntity().equals(item)) {
-                        event.setCancelled(true);
-                    }
-                }
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerJoin(final PlayerJoinEvent event) {
+        for (final Entity item : entityPlayerMap.keySet()) {
+            if (!event.getPlayer().getUniqueId().equals(entityPlayerMap.get(item))) {
+                hider.hideEntity(event.getPlayer(), item);
             }
+        }
+    }
 
-            @EventHandler(ignoreCancelled = true)
-            @SuppressFBWarnings("UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS")
-            public void onItemDespawn(final ItemDespawnEvent event) {
-                for (final Entity item : indestructibleItem) {
-                    if (event.getEntity().equals(item) && event.getEntity().getType() == EntityType.DROPPED_ITEM) {
-                        event.setCancelled(true);
-                    }
-                }
-                for (final Entity item : entityPlayerMap.keySet()) {
-                    if (event.getEntity().equals(item)) {
-                        entityPlayerMap.remove(item);
-                    }
-                }
+    @EventHandler(ignoreCancelled = true)
+    public void onMergingItem(final ItemMergeEvent event) {
+        for (final Entity item : entityPlayerMap.keySet()) {
+            if (event.getEntity().equals(item)) {
+                event.setCancelled(true);
             }
+        }
+        for (final Entity item : indestructibleItem) {
+            if (event.getEntity().equals(item)) {
+                event.setCancelled(true);
+            }
+        }
+    }
 
-            @EventHandler(ignoreCancelled = true)
-            @SuppressFBWarnings("UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS")
-            public void onItemDamage(final EntityDamageEvent event) {
-                indestructibleItem.removeIf(item -> event.getEntity() == item
-                        && event.getEntityType() == EntityType.DROPPED_ITEM);
-                for (final Entity item : entityPlayerMap.keySet()) {
-                    if (event.getEntity().getType() == EntityType.DROPPED_ITEM
-                            && event.getEntity().equals(item)) {
-                        entityPlayerMap.remove(item);
-                    }
-                }
+    @EventHandler(ignoreCancelled = true)
+    public void onItemDespawn(final ItemDespawnEvent event) {
+        for (final Entity item : indestructibleItem) {
+            if (event.getEntity().equals(item) && event.getEntity().getType() == EntityType.DROPPED_ITEM) {
+                event.setCancelled(true);
             }
-        };
+        }
+        for (final Entity item : entityPlayerMap.keySet()) {
+            if (event.getEntity().equals(item)) {
+                entityPlayerMap.remove(item);
+            }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onItemDamage(final EntityDamageEvent event) {
+        indestructibleItem.removeIf(item -> event.getEntity() == item
+                && event.getEntityType() == EntityType.DROPPED_ITEM);
+
+        for (final Entity item : entityPlayerMap.keySet()) {
+            if (event.getEntity().getType() == EntityType.DROPPED_ITEM
+                    && event.getEntity().equals(item)) {
+                entityPlayerMap.remove(item);
+            }
+        }
     }
 }
