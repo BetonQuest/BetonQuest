@@ -52,7 +52,7 @@ public class DropItemEvent extends QuestEvent implements Listener {
         isIndestructible = instruction.hasArgument("nodespawn");
 
         if (isPrivate && Bukkit.getPluginManager().getPlugin("ProtocolLib") == null) {
-            throw new InstructionParseException("You Need ProtocolLib installed to Use Private Drop Item");
+            throw new InstructionParseException("You need to install ProtocolLib to use private item drops!");
         }
     }
 
