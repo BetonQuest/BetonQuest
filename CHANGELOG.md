@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - added missing config options to the default config
 - version check for ProtocolLibIntegrator
 - quest item empty name comparison
+- customized built-in messages that use the advancementIO
 ### Security
 
 ## [1.12.5] - 2021-08-11
