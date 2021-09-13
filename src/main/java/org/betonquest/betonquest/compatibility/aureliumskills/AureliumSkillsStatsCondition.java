@@ -26,7 +26,7 @@ public class AureliumSkillsStatsCondition extends Condition {
         final String statName = instruction.next();
         targetLevelVar = instruction.getVarNum();
 
-        final AureliumSkills aureliumSkills = AureliumSkillsIntegrator.getAureliumPlugin();
+        final AureliumSkills aureliumSkills = AureliumAPI.getPlugin();
         stat = aureliumSkills.getStatRegistry().getStat(statName);
         if (stat == null) {
             throw new InstructionParseException("Invalid stat name");
