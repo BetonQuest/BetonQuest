@@ -35,18 +35,19 @@ give accurate results. Experiment with this objective a bit to make sure you've 
 ## Block: `block`
 
 To complete this objective the player must break or place the specified amount of blocks. The first argument is a
-[Block Selector](./Reference.md#block-selectors). Next is amount. It can be more than 0 for placing and
-less than 0 for destroying. You can also use the `notify` keyword to display messages to the player each time he updates
+[Block Selector](./Reference.md#block-selectors). Next is amount. You can use `break` keyword for destroying. 
+You can also use the `notify` keyword to display messages to the player each time he updates
 amount of blocks, optionally with the notification interval after colon.
 
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of blocks already done,
 `left` is the amount of blocks still needed to complete the objective and `total` is the amount of blocks initially
 needed.
-Note that it follows the same rules as the amount argument, meaning that blocks to break are a negative number!
+Note that placed block by player that run the objective will not add progress to destroying block
 
 !!! example
     ```YAML
-    block LOG -16 events:reward notify:5
+    block LOG 16 break events:reward notify:5
+    block LOG 16 events:reward notify:5
     ```
 
 ## Breed animals: `breed`
