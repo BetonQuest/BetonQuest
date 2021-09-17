@@ -418,7 +418,7 @@
     <dependency>
       <groupId>com.github.Archy-X</groupId>
       <artifactId>AureliumSkills</artifactId>
-      <version>Beta1.2.1</version>
+      <version>Beta1.2.3</version>
       <optional>true</optional>
       <exclusions>
         <exclusion>
@@ -453,6 +453,12 @@
           <artifactId>*</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>net.luckperms</groupId>
+      <artifactId>api</artifactId>
+      <version>5.3</version>
+      <scope>provided</scope>
     </dependency>
 
     <!-- only dependencies from maven central that are no MC Plugins -->

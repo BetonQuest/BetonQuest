@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 @SuppressWarnings({"PMD.CommentRequired", "PMD.PreserveStackTrace"})
 public class AureliumSkillsExperienceEvent extends QuestEvent {
 
-    private final AureliumSkills aureliumSkills;
+    private final AureliumSkills aureliumSkills = AureliumAPI.getPlugin();
 
     private final VariableNumber amountVar;
     private final boolean isLevel;
@@ -27,8 +27,6 @@ public class AureliumSkillsExperienceEvent extends QuestEvent {
         final String skillName = instruction.next();
         amountVar = instruction.getVarNum();
         isLevel = instruction.hasArgument("level");
-
-        aureliumSkills = AureliumSkillsIntegrator.getAureliumPlugin();
 
         skill = aureliumSkills.getSkillRegistry().getSkill(skillName);
         if (skill == null) {
@@ -48,8 +46,11 @@ public class AureliumSkillsExperienceEvent extends QuestEvent {
         final int amount = amountVar.getInt(playerID);
 
         if (isLevel) {
-            final int targetLevel = playerData.getSkillLevel(skill) + amount;
-            playerData.setSkillLevel(skill, targetLevel);
+            final int currentLevel = playerData.getSkillLevel(skill);
+            for (int i = 1; i <= amount; i++) {
+                final double requiredXP = aureliumSkills.getLeveler().getXpRequired(currentLevel + i);
+                AureliumAPI.addXpRaw(player, skill, requiredXP);
+            }
         } else {
             AureliumAPI.addXpRaw(player, skill, amount);
         }

@@ -92,7 +92,7 @@ Free                      | :white_check_mark:       | :white_check_mark:       
 OpenSource                | :white_check_mark:       | :white_check_mark:       | :white_check_mark:       | :white_check_mark:       | :white_check_mark:       | :x:                      | :x:                      |
 API                       | :white_check_mark:       | :white_check_mark:       | :white_check_mark:       | :white_check_mark:       | :x:                      |:material-check-bold: [^1]|:material-check-bold: [^1]|
 Version Support           | 1.13 - 1.17.1            | 1.7 - 1.17.1             | 1.7 - 1.17.1             | 1.11 - 1.16.5            | 1.13 - 1.17.1            | 1.7 - 1.17.1             | 1.7 - 1.17.1             |
-Integrated Plugins        | 29                       | 13                       | 1                        | 15                       | 6                        | 30                       | 1                        |
+Integrated Plugins        | 30                       | 13                       | 1                        | 15                       | 6                        | 30                       | 1                        |
 Ingame Editor             | :x:                      | Chat & GUI(Paid)         | :x:                      | GUI                      | :white_check_mark:       | GUI                      | GUI                      |
 External Editor           | :white_check_mark:       | :x:                      | :x:                      | :x:                      | :x:                      | :x:                      | :x:                      |
 Database Support          | SQLite & MySQL           | MySQL                    | MySQL                    | MySQL                    | MySQL                    | MySQL                    | SQLite & MySQL           |
@@ -172,7 +172,7 @@ gameplay. Questers can also choose between five different styles to display thei
 
 ## Endless Integrations
 
-BetonQuest supports more then 29 other plugins, ranging from standard plugins like WorldGuard/WorldEdit and Citizens to
+BetonQuest supports more then 30 other plugins, ranging from standard plugins like WorldGuard/WorldEdit and Citizens to
 more advanced ones such as EffectLib. It also offers support for other quest plugins, so you can just keep your old
 quests and create further additions to your quest lines based upon the progress in your old plugin. If just Beton isn't
 enough you can always just hook into Skript or Denizen too.

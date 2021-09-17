@@ -24,14 +24,13 @@ public class AureliumSkillsLevelCondition extends Condition {
     public AureliumSkillsLevelCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
 
-        final AureliumSkills aureliumSkills = AureliumSkillsIntegrator.getAureliumPlugin();
-
         final String skillName = instruction.next();
         targetLevelVar = instruction.getVarNum();
         if (instruction.hasArgument("equal")) {
             mustBeEqual = true;
         }
 
+        final AureliumSkills aureliumSkills = AureliumAPI.getPlugin();
         skill = aureliumSkills.getSkillRegistry().getSkill(skillName);
         if (skill == null) {
             throw new InstructionParseException("Invalid skill name");
