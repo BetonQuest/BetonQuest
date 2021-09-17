@@ -76,7 +76,7 @@ braces `{ }`. Inside the curly braces you have to escape with `\`, so to have a 
     ```
     %math.calc:100*(15-point.reputation.amount)%
     %math.calc:objective.kill_zombies.left/objective.kill_zombies.total*100~2%
-    %math.calc:-{ph.myplugin_stragee+placeholder)%
+    %math.calc:-{ph.myplugin_stragee+placeholder}%
     ```
 
 ## NPC: `npc`
