@@ -39,7 +39,7 @@ public class DropItemEvent extends QuestEvent implements Listener {
 
     private final ConcurrentHashMap<Entity, UUID> entityPlayerMap = new ConcurrentHashMap<>();
     private final List<Entity> indestructibleItem = new ArrayList<>();
-    private final EntityHider hider = new EntityHider(BetonQuest.getInstance(), EntityHider.Policy.BLACKLIST);
+    private EntityHider hider;
 
     public DropItemEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
@@ -47,16 +47,16 @@ public class DropItemEvent extends QuestEvent implements Listener {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
 
         questItems = instruction.getItemList();
-        location = instruction.getLocation();
-        isPrivate = instruction.hasArgument("private");
+        location = instruction.getLocation("location");
+        isPrivate = instruction.hasArgument("isPrivate");
         isIndestructible = instruction.hasArgument("nodespawn");
 
-        if (isPrivate && Bukkit.getPluginManager().getPlugin("ProtocolLib") == null) {
-<<<<<<< HEAD
-            throw new InstructionParseException("You Need ProtocolLib installed to Use Private Drop Item");
-=======
-            throw new InstructionParseException("You need to install ProtocolLib to use private item drops!");
->>>>>>> origin/added/drop
+        if (isPrivate) {
+            if (Bukkit.getPluginManager().getPlugin("ProtocolLib") == null) {
+                throw new InstructionParseException("You Need ProtocolLib installed to Use Private Drop Item");
+            } else {
+                hider = new EntityHider(BetonQuest.getInstance(), EntityHider.Policy.BLACKLIST);
+            }
         }
     }
 
