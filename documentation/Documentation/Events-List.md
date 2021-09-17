@@ -2,7 +2,7 @@
 
 ## Cancel quest: `cancel`
 
-This event works in the same way as a [quest canceler in the backpack](../Reference/#canceling-quests).
+This event works in the same way as a [quest canceler in the backpack](Reference.md#canceling-quests).
 Running it is equal to the player clicking on the bone. The only argument is a name of a quest canceler, as defined in _main.yml_
 
 !!! example
