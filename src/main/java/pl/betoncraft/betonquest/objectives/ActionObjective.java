@@ -70,7 +70,7 @@ public class ActionObjective extends Objective implements Listener {
             switch (action) {
                 case RIGHT:
                     if ((event.getAction().equals(Action.RIGHT_CLICK_AIR)
-                            || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) && checkConditions(playerID)) {
+                            || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) && rangeCheck(playerID, event) && checkConditions(playerID)) {
                         if (cancel) {
                             event.setCancelled(true);
                         }
@@ -79,7 +79,7 @@ public class ActionObjective extends Objective implements Listener {
                     break;
                 case LEFT:
                     if ((event.getAction().equals(Action.LEFT_CLICK_AIR)
-                            || event.getAction().equals(Action.LEFT_CLICK_BLOCK)) && checkConditions(playerID)) {
+                            || event.getAction().equals(Action.LEFT_CLICK_BLOCK)) && rangeCheck(playerID, event) && checkConditions(playerID)) {
                         if (cancel) {
                             event.setCancelled(true);
                         }
@@ -91,7 +91,7 @@ public class ActionObjective extends Objective implements Listener {
                     if ((event.getAction().equals(Action.LEFT_CLICK_AIR)
                             || event.getAction().equals(Action.LEFT_CLICK_BLOCK)
                             || event.getAction().equals(Action.RIGHT_CLICK_AIR)
-                            || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) && checkConditions(playerID)) {
+                            || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) && rangeCheck(playerID, event) && checkConditions(playerID)) {
                         if (cancel) {
                             event.setCancelled(true);
                         }
@@ -113,31 +113,45 @@ public class ActionObjective extends Objective implements Listener {
                     actionEnum = null;
                     break;
             }
-            try {
-                if ((actionEnum == null && (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-                        || event.getAction().equals(Action.LEFT_CLICK_BLOCK)) || event.getAction().equals(actionEnum))
-                        && event.getClickedBlock() != null && ((selector.match(Material.FIRE) || selector.match(Material.LAVA) || selector.match(Material.WATER))
-                        && selector.match(event.getClickedBlock().getRelative(event.getBlockFace()), exactMatch)
-                        || selector.match(event.getClickedBlock(), exactMatch))) {
-                    if (loc != null) {
-                        final Location location = loc.getLocation(playerID);
-                        final double pRange = range.getDouble(playerID);
-                        if (!event.getClickedBlock().getWorld().equals(location.getWorld())
-                                || event.getClickedBlock().getLocation().distance(location) > pRange) {
-                            return;
-                        }
-                    }
-                    if (checkConditions(playerID)) {
-                        if (cancel) {
-                            event.setCancelled(true);
-                        }
-                        completeObjective(playerID);
-                    }
+            if ((actionEnum == null && (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
+                    || event.getAction().equals(Action.LEFT_CLICK_BLOCK)) || event.getAction().equals(actionEnum))
+                    && event.getClickedBlock() != null && ((selector.match(Material.FIRE) || selector.match(Material.LAVA) || selector.match(Material.WATER))
+                    && selector.match(event.getClickedBlock().getRelative(event.getBlockFace()), exactMatch)
+                    || selector.match(event.getClickedBlock(), exactMatch))) {
+                if (!rangeCheck(playerID, event)) {
+                    return;
                 }
-            } catch (final QuestRuntimeException e) {
-                LogUtils.getLogger().log(Level.WARNING, "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
-                LogUtils.logThrowable(e);
+                if (checkConditions(playerID)) {
+                    if (cancel) {
+                        event.setCancelled(true);
+                    }
+                    completeObjective(playerID);
+                }
             }
+        }
+    }
+
+    /**
+     * Checks to see if Player is within Range, if range is set
+     */
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
+    public boolean rangeCheck(final String playerID, final PlayerInteractEvent event) {
+        try {
+            if (loc == null) {
+                return true;
+            } else {
+                final Location location = loc.getLocation(playerID);
+                final double pRange = range.getDouble(playerID);
+                if (!event.getClickedBlock().getWorld().equals(location.getWorld())
+                        || event.getClickedBlock().getLocation().distance(location) > pRange) {
+                    return false;
+                }
+            }
+            return true;
+        } catch (final QuestRuntimeException e) {
+            LogUtils.getLogger().log(Level.WARNING, "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
+            LogUtils.logThrowable(e);
+            return true;
         }
     }
 
