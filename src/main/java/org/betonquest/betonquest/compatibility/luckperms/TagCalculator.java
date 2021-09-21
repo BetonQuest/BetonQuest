@@ -37,9 +37,7 @@ public class TagCalculator implements ContextCalculator<Player> {
             }
 
             final List<String> globalData = betonQuest.getGlobalData().getTags();
-            if (globalData != null) {
-                globalData.forEach(tag -> contextConsumer.accept(KEY, tag));
-            }
+            globalData.forEach(tag -> contextConsumer.accept(KEY, tag));
         });
     }
 }
