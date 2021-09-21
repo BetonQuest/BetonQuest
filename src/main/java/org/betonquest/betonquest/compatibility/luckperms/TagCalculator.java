@@ -30,8 +30,11 @@ public class TagCalculator implements ContextCalculator<Player> {
     public void calculate(final Player player, final ContextConsumer contextConsumer) {
         Bukkit.getScheduler().runTaskAsynchronously(BetonQuest.getInstance(), () -> {
             final String uuid = PlayerConverter.getID(player);
+
             final List<String> data = betonQuest.getPlayerData(uuid).getTags();
-            data.forEach(tag -> contextConsumer.accept(KEY, tag));
+            if (data != null) {
+                data.forEach(tag -> contextConsumer.accept(KEY, tag));
+            }
 
             final List<String> globalData = betonQuest.getGlobalData().getTags();
             globalData.forEach(tag -> contextConsumer.accept(KEY, tag));
