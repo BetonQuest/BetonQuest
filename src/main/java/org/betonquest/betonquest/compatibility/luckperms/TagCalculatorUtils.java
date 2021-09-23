@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.compatibility.luckperms;
 
 import net.luckperms.api.context.ContextCalculator;
-import net.luckperms.api.context.ContextConsumer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -14,33 +13,31 @@ import java.util.List;
  * Provides all per-player tags and all global tags as LuckPerms
  * contexts.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.AtLeastOneConstructor"})
-public class TagCalculator implements ContextCalculator<Player> {
-
+public final class TagCalculatorUtils {
+    /**
+     * The BetonQuest tag
+     */
     public static final String KEY = "betonquest:tag";
 
-    private final BetonQuest betonQuest = BetonQuest.getInstance();
+    private TagCalculatorUtils() {
+    }
 
     /**
-     * Calculates all tag contexts that a player has active.
+     * Get an anonymous ContextCalculator. It has to be anonymous to prevent the loading of the class when no LP is installed.
      *
-     * @param player          to check contexts for
-     * @param contextConsumer accepts contexts
+     * @return a {@link ContextCalculator<Player>}
      */
-    @Override
-    public void calculate(final Player player, final ContextConsumer contextConsumer) {
-        Bukkit.getScheduler().runTaskAsynchronously(BetonQuest.getInstance(), () -> {
+    public static ContextCalculator<Player> getTagContextCalculator() {
+        return (player, contextConsumer) -> Bukkit.getScheduler().runTaskAsynchronously(BetonQuest.getInstance(), () -> {
             final String uuid = PlayerConverter.getID(player);
 
-            final PlayerData data = betonQuest.getPlayerData(uuid);
+            final PlayerData data = BetonQuest.getInstance().getPlayerData(uuid);
             if (data != null) {
                 data.getTags().forEach(tag -> contextConsumer.accept(KEY, tag));
             }
 
-            final List<String> globalData = betonQuest.getGlobalData().getTags();
+            final List<String> globalData = BetonQuest.getInstance().getGlobalData().getTags();
             globalData.forEach(tag -> contextConsumer.accept(KEY, tag));
         });
     }
 }
-
-
