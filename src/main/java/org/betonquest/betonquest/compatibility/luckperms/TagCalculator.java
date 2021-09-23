@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.luckperms;
 import net.luckperms.api.context.ContextCalculator;
 import net.luckperms.api.context.ContextConsumer;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -31,9 +32,9 @@ public class TagCalculator implements ContextCalculator<Player> {
         Bukkit.getScheduler().runTaskAsynchronously(BetonQuest.getInstance(), () -> {
             final String uuid = PlayerConverter.getID(player);
 
-            final List<String> data = betonQuest.getPlayerData(uuid).getTags();
+            final PlayerData data = betonQuest.getPlayerData(uuid);
             if (data != null) {
-                data.forEach(tag -> contextConsumer.accept(KEY, tag));
+                data.getTags().forEach(tag -> contextConsumer.accept(KEY, tag));
             }
 
             final List<String> globalData = betonQuest.getGlobalData().getTags();
