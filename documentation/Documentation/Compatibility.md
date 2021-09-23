@@ -491,11 +491,9 @@ The syntax is as follows:
 |----------------	|------------------------	|
 | betonquest:tag:PACKAGE_NAME.TAG_NAME      | true     |
 | betonquest:globaltag:PACKAGE_NAME.TAG_NAME| true     |
+| betonquest:tag:myPackage.tagName| true |
+| betonquest:globaltag:myQuest.someTag | true |
 
-```YAML
-betonquest:tag:myPackage.tagName
-betonquest:globaltag:myQuest.someTag 
-```
 Check the 
 <a href="https://luckperms.net/wiki/Context" target="_blank">Luck Perms documentation</a>
 for an in-depth explanation on what contexts are and how to add them to permission.
