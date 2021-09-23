@@ -487,12 +487,13 @@ quest progress tags right into LuckPerms permission
 <a href="https://luckperms.net/wiki/Context" target="_blank">contexts</a>.
 The syntax is as follows:
 
-| key            	| value                  	|
+| key             | value                   |
 |----------------	|------------------------	|
-| betonquest:tag 	| packageName.tagName    	|
-| betonquest:tag 	| default.questCompleted 	|
+| betonquest:tag:PACKAGE_NAME.TAG_NAME      | true     |
+| betonquest:globaltag:PACKAGE_NAME.TAG_NAME| true     |
+| betonquest:tag:myPackage.tagName| true |
+| betonquest:globaltag:myQuest.someTag | true |
 
-Autocompletion only works in chat and for global tags.
 Check the 
 <a href="https://luckperms.net/wiki/Context" target="_blank">Luck Perms documentation</a>
 for an in-depth explanation on what contexts are and how to add them to permission.
