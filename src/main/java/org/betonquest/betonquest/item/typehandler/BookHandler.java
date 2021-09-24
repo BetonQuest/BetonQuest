@@ -58,6 +58,9 @@ public class BookHandler {
             textE = Existence.FORBIDDEN;
         } else {
             text = Utils.pagesFromString(string.replace("_", " "));
+            for (int i = 0; i < text.size(); i++) {
+                text.set(i, ChatColor.translateAlternateColorCodes('&', text.get(i)));
+            }
             textE = Existence.REQUIRED;
         }
     }
