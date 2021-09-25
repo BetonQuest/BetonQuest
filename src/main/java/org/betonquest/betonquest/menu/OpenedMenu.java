@@ -192,13 +192,19 @@ public class OpenedMenu implements Listener {
             LOG.debug(getId().getPackage(), "click of " + player.getName() + " in menu " + getId() + " was cancelled by a bukkit event listener");
             return;
         }
-        // If we are already closed then we are done
+        //done if already closed by a 3rd party listener
         if (closed) {
             return;
         }
 
-        //handle click
+        //run click events
         final boolean close = item.onClick(player, event.getClick());
+
+        //check if the inventory was closed by an event (teleport event etc.)
+        if (closed) {
+            return;
+        }
+
         if (getMenu(player).equals(this)) {
             //if close was set close the menu
             if (close) {
@@ -227,6 +233,7 @@ public class OpenedMenu implements Listener {
         //clean up
         HandlerList.unregisterAll(this);
         OPENED_MENUS.remove(playerId);
+        closed = true;
         //run close events
         this.data.runCloseEvents(player);
     }
