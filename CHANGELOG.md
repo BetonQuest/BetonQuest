@@ -88,7 +88,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - added missing config options to the default config
 - `menu open` event does not show the previous menu again anymore
 - quest item empty name comparison
-- customized built-in messages that use the advancementIO 
+- customized built-in messages that use the advancementIO
+- fix books not parsing color codes
+- fix RPGMenu error when teleport events are used as click events
 ### Security
 - it was possible to put a QuestItem into a chest
 - the take event is now threadsafe
