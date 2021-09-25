@@ -154,7 +154,7 @@ public class OpenedMenu implements Listener {
     }
 
     @EventHandler
-    @SuppressWarnings({"PMD.NPathComplexity", "PMD.CyclomaticComplexity"})
+    @SuppressWarnings({"PMD.NPathComplexity", "PMD.CyclomaticComplexity", "PMD.PrematureDeclaration"})
     public void onClick(final InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player)) {
             return;
