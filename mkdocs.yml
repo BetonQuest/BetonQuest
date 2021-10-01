@@ -166,9 +166,16 @@ nav:
       - '⚙️ API': API/API.md
   - '🧪 Participate':
       - '🤝 Overview': Participate/Overview.md
-      - '📰 Setup IDE': Participate/SetupIDE.md
+      - Process:
+          - '🚩 Setup Project': Participate/Process/Setup-Project.md
+          - '👨‍🔧 Changing Code': Participate/Process/Changing-Code.md
+          - '👨‍🏫 Changing Docs': Participate/Process/Changing-Docs.md
+          - '🕵️‍♂️ Checking Requirements': Participate/Process/Checking-Requirements.md
+          - '🏁 Submitting Changes': Participate/Process/Submitting-Changes.md
       - 'Code':
           - '📚 Contributing Guidelines': Participate/Code/Contributing-Guidelines.md
           - '🏭 Versioning & Releasing': Participate/Code/Versioning-and-Releasing.md
       - 'Docs':
           - '📚 Guidelines': Participate/Docs/Guidelines.md
+          - '✒️ GeneralStyle': Participate/Docs/General-Style.md
+          - '🗃️ MarkdownStyle': Participate/Docs/Markdown-and-Formatting.md

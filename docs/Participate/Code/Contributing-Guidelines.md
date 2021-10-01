@@ -62,6 +62,6 @@ guide</a> if you don't know how to do so.
 
 New repositories need to be added in this format: `betonquest-<repoName>-repo`.
 Additionally, you need to add that repositories ID to Maven's `settings.xml` configuration.
-Please see [this guide](../SetupIDE.md#build-speed-up) for an example configuration.
+Please see [this guide](../Process/Setup-Project.md#build-speed-up) for an example configuration.
 
 Make sure to add the new repository ID to the linked guide too!
