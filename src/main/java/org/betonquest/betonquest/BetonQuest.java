@@ -100,6 +100,7 @@ import org.betonquest.betonquest.events.EffectEvent;
 import org.betonquest.betonquest.events.ExperienceEvent;
 import org.betonquest.betonquest.events.ExplosionEvent;
 import org.betonquest.betonquest.events.FolderEvent;
+import org.betonquest.betonquest.events.FreezeEvent;
 import org.betonquest.betonquest.events.GiveEvent;
 import org.betonquest.betonquest.events.GiveJournalEvent;
 import org.betonquest.betonquest.events.GlobalPointEvent;
@@ -727,6 +728,7 @@ public class BetonQuest extends JavaPlugin {
         registerEvents("notify", NotifyEvent.class);
         registerEvents("notifyall", NotifyAllEvent.class);
         registerEvents("chat", ChatEvent.class);
+        registerEvents("freeze", FreezeEvent.class);
 
         // register objectives
         registerObjectives("location", LocationObjective.class);
@@ -1098,6 +1100,7 @@ public class BetonQuest extends JavaPlugin {
         }
 
         rpgMenu.onDisable();
+        FreezeEvent.cleanup();
     }
 
     /**
