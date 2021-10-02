@@ -30,6 +30,11 @@ the BetonQuest repository from your account. You can also directly
     Once you have executed the file that you downloaded from the Git LFS website, just run `git lfs install`.
     Then use `git lfs pull` to actually download the files.
 
+### Adding remote repository
+In IntelliJ click on `Git` in the left upper corner and then `Manage Remotes...`.
+In the new window you already see a remote called `origin`. This remote is your fork of BetonQuest.
+Now add a new repository with the name `upstream` and the url `https://github.com/BetonQuest/BetonQuest.git`.
+
 ##Building the Plugin jar
 You can build the plugin with Maven. Sometimes, IntelliJ auto-detects that BetonQuest is a Maven project. You can see
 a "Maven" tab on the right side of the editor if that's the case. Otherwise, do this:
