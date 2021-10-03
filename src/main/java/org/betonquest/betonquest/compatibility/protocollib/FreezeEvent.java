@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.events;
+package org.betonquest.betonquest.compatibility.protocollib;
 
 import com.comphenix.packetwrapper.WrapperPlayServerMount;
 import net.md_5.bungee.api.ChatMessageType;
@@ -18,10 +18,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@SuppressWarnings("PMD.CommentRequired")
 public class FreezeEvent extends QuestEvent {
 
-    private static final Map<UUID, ArmorStand> stands = new HashMap<>();
-    VariableNumber ticksVar;
+    private static final Map<UUID, ArmorStand> STANDS = new HashMap<>();
+    private final VariableNumber ticksVar;
 
     public FreezeEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
@@ -30,7 +31,7 @@ public class FreezeEvent extends QuestEvent {
     }
 
     public static void cleanup() {
-        stands.forEach((uuid, armorStand) -> armorStand.remove());
+        STANDS.forEach((uuid, armorStand) -> armorStand.remove());
     }
 
     @Override
@@ -39,16 +40,15 @@ public class FreezeEvent extends QuestEvent {
         final UUID uuid = player.getUniqueId();
         final int ticks = ticksVar.getInt(playerID);
 
-        if (stands.get(player.getUniqueId()) != null) {
-            stands.get(player.getUniqueId()).remove();
+        if (STANDS.get(player.getUniqueId()) != null) {
+            STANDS.get(player.getUniqueId()).remove();
         }
 
         final ArmorStand armorStand = player.getWorld().spawn(player.getLocation().clone().add(0, -1.1, 0), ArmorStand.class);
         armorStand.setGravity(false);
         armorStand.setVisible(false);
-        armorStand.setCanMove(false);
-        armorStand.setCanTick(false);
-        stands.put(uuid, armorStand);
+        armorStand.setInvulnerable(true);
+        STANDS.put(uuid, armorStand);
 
         final WrapperPlayServerMount mount = new WrapperPlayServerMount();
         mount.setEntityID(armorStand.getEntityId());
@@ -58,7 +58,7 @@ public class FreezeEvent extends QuestEvent {
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(" "));
 
         Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), () -> {
-            stands.remove(uuid);
+            STANDS.remove(uuid);
             armorStand.remove();
 
         }, ticks);
