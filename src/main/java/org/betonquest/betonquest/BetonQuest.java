@@ -19,6 +19,7 @@ import org.betonquest.betonquest.commands.JournalCommand;
 import org.betonquest.betonquest.commands.LangCommand;
 import org.betonquest.betonquest.commands.QuestCommand;
 import org.betonquest.betonquest.compatibility.Compatibility;
+import org.betonquest.betonquest.compatibility.protocollib.FreezeEvent;
 import org.betonquest.betonquest.conditions.AdvancementCondition;
 import org.betonquest.betonquest.conditions.AlternativeCondition;
 import org.betonquest.betonquest.conditions.ArmorCondition;
@@ -727,6 +728,7 @@ public class BetonQuest extends JavaPlugin {
         registerEvents("notify", NotifyEvent.class);
         registerEvents("notifyall", NotifyAllEvent.class);
         registerEvents("chat", ChatEvent.class);
+        registerEvents("freeze", FreezeEvent.class);
 
         // register objectives
         registerObjectives("location", LocationObjective.class);
@@ -1098,6 +1100,7 @@ public class BetonQuest extends JavaPlugin {
         }
 
         rpgMenu.onDisable();
+        FreezeEvent.cleanup();
     }
 
     /**
