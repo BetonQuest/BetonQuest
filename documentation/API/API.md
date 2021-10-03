@@ -36,11 +36,17 @@ If you want your event to be _static_, you need to set `super.staticness` variab
 
 When you'll finish your class you need to invoke `registerEvents(String name, Class<? extends QuestEvent> class)` from BetonQuest instance (which you can get using `BetonQuest.getInstance()` static method). The name for your event will be used in instruction strings (such as "journal" for journal event). The class argument is the `Class` object of your event. You can get it using `YourEvent.class`. That's it, you created an event. Don't forget to check it for bugs!
 
+!!! warning
+    IDE's typically autocomplete the wrong constructor. A correct constructor takes a single `Instruction` argument.
+
 ## Writing conditions
 
 Writing conditions is easy too. They must extend `Condition` and override `execute(String playerID)` method, which should return `true` or `false`, depending on if the condition was met. You register them using `registerConditions(String name, Class<? extends Condition)` method from BetonQuest instance as well. The rest is almost the same, you're defining the constructor which will parse the `Instruction` object and overriding `execute(String playerID)` method to check if the player meets the condition. Don't worry about inverting it, as it's automatically done by BetonQuest.
 
 Conditions are always getting an online player in the `execute(String playerID)` method, so you don't need to check that manually.
+
+!!! warning
+    IDE's typically autocomplete the wrong constructor. A correct constructor takes a single `Instruction` argument.
 
 ## Writing objectives
 
@@ -61,6 +67,9 @@ Every time your objective accepts the player's action (for example killing the r
 If your objective has some properties (used in variables) you should override the `String getProperty(String property, String playerID)` method. At runtime, if anyone uses `%objective.yourObjective.theProperty%` variable, BetonQuest will call that method with `theProperty` keyword as the first argument. Using it you should parse the data of the objective and return it as a String. If the supplied property name is incorrect or there was an error during getting the value, return an empty String and optionally log an error (`LogUtils.getLogger().log(...)`).
 
 Objectives are registered the same way as conditions and events, using `registerObjective(String name, Class<? extends Objective>)` method.
+
+!!! warning
+    IDE's typically autocomplete the wrong constructor. A correct constructor takes a single `Instruction` argument.
 
 ## Reading `Instruction` object
 
