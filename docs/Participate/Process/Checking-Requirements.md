@@ -1,9 +1,9 @@
 ###Fulfil the Contributing Requirements
-Run `maven verify` before [Submitting Changes](./Submitting-Changes.md) to check if you change
+Run `mvn verify` before [Submitting Changes](./Submitting-Changes.md) to check if you change
 meets the project's requirements regarding code style and quality.
 GitHub Actions(automated code check on GitHub) will also verify these requirements when you open the pull request.
 
-If any requirements are not met, `maven verify` will fail with this log message:
+If any requirements are not met, `mvn verify` will fail with this log message:
 ````
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD FAILURE

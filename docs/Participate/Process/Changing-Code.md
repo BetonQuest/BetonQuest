@@ -9,14 +9,14 @@ Then you click on `upstream/master` and click on `New Branch from Selected...`.
 Now give the branch a name that makes sense and click `CREATE`.
 
 ## Maven verify
-Before you [make changes](#make-changes) you should run `maven verify` as explained
+Before you [make changes](#make-changes) you should run `mvn verify` as explained
 [here](./Setup-Project.md#building-the-plugin-jar) to ensure, the plugins successfully build, before you made any changes.
 
-After you made changes, you should also run `maven verify` to check our requirements.
-If you have problems solving issues with your requirements there is also a page 
+After you made changes, you should also run `mvn verify` to check our requirements.
+If you have problems solving issues with our requirements there is also a page
 [Checking Requirements](./Checking-Requirements.md), that you will probably read later.
 
-If `maven verify` take too long, and you just want a jar, you want to build without checking our requirements.
+If `mvn verify` take too long, and you just want a jar, you want to build without checking our requirements.
 You can execute `package` instead of `verify` for that.
 But don't forget, you need to successfully run `verify`, before you make a pull request on GitHub!
 
