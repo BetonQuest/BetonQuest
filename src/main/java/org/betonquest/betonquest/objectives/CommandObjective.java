@@ -12,6 +12,8 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
+import java.util.List;
+
 /**
  * Requires the player to execute a specific command.
  */
@@ -19,22 +21,22 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 public class CommandObjective extends Objective implements Listener {
 
     private final String command;
+    private final List<String> commandVariables;
 
     public CommandObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = ObjectiveData.class;
-        command = instruction.next().toUpperCase().replaceAll("_", " ");
+        command = instruction.next().replaceAll("_", " ");
+        commandVariables = BetonQuest.resolveVariables(command);
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onCommand(final PlayerCommandPreprocessEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
         if (containsPlayer(playerID) && checkConditions(playerID)) {
-            final String commandExecuted = event.getMessage().toUpperCase();
-            // TODO
-            System.out.println("COMMAND REQUIRED: " + command);
-            System.out.println("COMMAND RUN: " + commandExecuted);
-            if (command.startsWith(commandExecuted)) {
+            final String commandExecuted = event.getMessage();
+            final String replaceCommand = getCommandWithVariablesReplaced(playerID);
+            if (commandExecuted.startsWith(replaceCommand)) {
                 completeObjective(playerID);
             }
         }
@@ -58,6 +60,17 @@ public class CommandObjective extends Objective implements Listener {
     @Override
     public String getProperty(final String name, final String playerID) {
         return "";
+    }
+
+    private String getCommandWithVariablesReplaced(final String playerID) {
+        String replaceCommand = command;
+        for (final String variable : commandVariables) {
+            replaceCommand = replaceCommand.replace(
+                    variable,
+                    BetonQuest.getInstance().getVariableValue(instruction.getPackage().getName(), variable, playerID)
+            );
+        }
+        return replaceCommand;
     }
 
 }
