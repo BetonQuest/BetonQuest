@@ -448,12 +448,11 @@ Optional arguments:
 * `ignoreCase`: If provided, instructs the objective to ignore case for the command.
 * `exact`: If provided, requires an exact command match, not just the command start.
 * `cancel`: If provided, the objective will cancel the execution of the command on a match.
-* `conditions`: If provided, specifies a list of conditions required to meet the objective in addition to the command.
 * `failEvents`: If provided, specifies a list of events to execute if a non-matching command is run and conditions are met.
 
 !!! complex example
     ```YAML
-    command /warp_%player%_farms ignoreCase exact cancel conditions:condition1,condition2 failEvents:failEvent1,failEvent2 events:event1,event2
+    command /warp_%player%_farms ignoreCase exact cancel failEvents:failEvent1,failEvent2 events:event1,event2
     ```
 
 ## Variable: `variable`
