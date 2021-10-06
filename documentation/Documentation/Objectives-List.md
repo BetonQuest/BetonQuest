@@ -431,8 +431,9 @@ This objective can be completed by riding the specified
 
 ## Run a Command: `command`
 
-To complete this objective the player must execute a specified command. The only argument is the command string. Use `_`
-in place of spaces. The command argument is case-sensitive and also supports using placeholders.
+To complete this objective the player must execute a specified command. The first argument is the command string. Use
+`_` in place of spaces for the command. The command argument is case-sensitive and also supports using placeholders. The
+second required argument is a list of events to execute when the objective is met.
 
 !!! example
     ```YAML
@@ -442,6 +443,18 @@ in place of spaces. The command argument is case-sensitive and also supports usi
 With this configuration, the command objective requires the player to execute `/warp MyName farms` to be completed. The
 command objective matches from the start of the command that was executed, therefore if the player executed
 `/warp MyName farms other arguments` it would still be completed.
+
+Optional arguments:
+* `ignoreCase`: If provided, instructs the objective to ignore case for the command.
+* `exact`: If provided, requires an exact command match, not just the command start.
+* `cancel`: If provided, the objective will cancel the execution of the command on a match.
+* `conditions`: If provided, specifies a list of conditions required to meet the objective in addition to the command.
+* `failEvents`: If provided, specifies a list of events to execute if a non-matching command is run and conditions are met.
+
+!!! complex example
+    ```YAML
+    command /warp_%player%_farms ignoreCase exact cancel conditions:condition1,condition2 failEvents:failEvent1,failEvent2 events:event1,event2
+    ```
 
 ## Variable: `variable`
 
