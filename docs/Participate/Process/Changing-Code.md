@@ -87,14 +87,36 @@ Here we will now look at what you need to fulfill, if you change code, and you w
             ```
 
 ??? success "... update the documentation?"
+    You need to adjust the documentation, everytime you changed, added or removed any feature.
+    There could also be other reasons, why you should or want to change the documentation,
+    like writing a new tutorial or adjust a wrong example.
+
 ??? success "~~... adjust the ConfigUpdater?~~"
-    Deprecated,
+    Deprecated,  
     currently we have planned a complete rework, and therefore this is not needed at the moment.
 
 ??? success "... solve all TODOs?"
+    We do not want any TODOs in our code, because it indicates, that your changed code is not finished.
+    If you think about the different types of TODOs, you have things like:
+    - `FIXME`: You should really fix it or open an issue on GutHub
+    - `DEPRECATED`: just deprecate it with `@Deprecated` and document it in the javadocs
+    - `Auto-gernerated code`: implement something, don't leave this TODO there
+    - `NOT IMPLEMENTED`: implement it or leave it empty
+
 ??? success "... remove any commented out code?"
+    We do have git, and it will remember any code. So don't event start to check in code, that is commented out!
+
 ??? success "... add debug messages?"
+    In general, BetonQuest already have a lot debug. So normally you do not need anything here.
+    But in case you have something that is new or code that is more complicated, you should add debug messages.
+
 ??? success "... clean the commit history?"
+    You did multiple commits, that may look like `progress fixing the bug`?  
+    Or you did a commit with a wrong description?  
+    Then you now need to do an `Interactive Rebase`.
+    With this you change the history of commits.
+    Here is the general <a href="https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History" target="_blank">git documentation</a>
+    for changing the history. But if you use IntelliJ, you should read [Edit Git project history](https://www.jetbrains.com/help/idea/edit-project-history.html).
 
 ## Commit
 
