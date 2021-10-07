@@ -450,7 +450,7 @@ command objective matches from the start of the command that was executed, there
 Optional arguments:
 * `ignoreCase`: If provided, instructs the objective to ignore case for the command to match.
 * `exact`: If provided, requires an exact command match, not just the command start.
-* `cancel`: If provided, the objective will cancel the execution of the command on a match.
+* `cancel`: If provided, the objective will cancel the execution of the command on a match. This needs to be enabled to suppress the `Unknown Command` message when using custom commands.
 * `failEvents`: If provided, specifies a list of events to execute if a non-matching command is run and conditions are met.
 
 !!! complex example
