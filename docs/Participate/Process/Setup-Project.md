@@ -95,20 +95,11 @@ Install all other dependencies by entering `pip install -r config/docs-requireme
     Then run `pip install -r config/docs-requirements-insiders.txt` instead of `docs-requirements.txt`.
 
 ### See your changes live
-You are now primarily working with tools called _mkdocs_ and  _mkdocs-material-theme_ in case you want to google anything.
-All files are regular markdown files though.
- 
-MkDocs enables you to create a website that shows you your changes while you make them.
-Execute this in the terminal on the project's root directory, to see a preview of the webpage on
-<a href="http://127.0.0.1:8000" target="_blank">127.0.0.1:8000</a>:
+Run this command in IntelliJ's integrated terminal (at the bottom) to create a docs preview in your browser:
 
 ```BASH
 mkdocs serve
 ```
-??? info "Hosting on your entire local network"
-    You can also execute this variation to host the website in your local network.
-    This can be useful for testing changes on different devices but is not needed for most tasks.
-    Make sure the hosting device's firewall exposes the port 8000.
-    ```BASH
-    mkdocs serve -a 0.0.0.0:8000
-    ```
+
+Then visit <a href="http://127.0.0.1:8000" target="_blank">127.0.0.1:8000</a> to make sure that everything works.
+

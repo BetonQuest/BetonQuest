@@ -28,9 +28,9 @@ theme:
     - navigation.tabs.sticky
     - navigation.tracking
     - navigation.sections
-    - navigation.expand
     - navigation.top
     - search.share
+    - navigation.indexes
     - search.suggest
   palette:
     - scheme: slate
@@ -168,16 +168,18 @@ nav:
       - '⚙️ API': API/API.md
   - '🧪 Participate':
       - '🤝 Overview': Participate/Overview.md
+      - '🚩 Setup Project': Participate/Process/Setup-Project.md
       - Process:
-          - '🚩 Setup Project': Participate/Process/Setup-Project.md
-          - '👨‍🔧 Changing Code': Participate/Process/Changing-Code.md
-          - '👨‍🏫 Changing Docs': Participate/Process/Changing-Docs.md
-          - '🕵️‍♂️ Checking Requirements': Participate/Process/Checking-Requirements.md
+          - '🦉 Create a new branch': Participate/Process/Create-a-new-Branch.md
+          - '👨‍🔧 Changing Code':
+              - Participate/Code/index.md
+              - '📚 Contributing Guidelines': Participate/Code/Contributing-Guidelines.md
+              - '📥 Adding a Dependency': Participate/Code/Adding-a-new-Dependency.md
+              - '🏭 Versioning & Releasing': Participate/Code/Versioning-and-Releasing.md
+          - '👨‍🏫 Changing Docs':
+              - Participate/Docs/index.md
+              - '✒️ Fundamental Principles': Participate/Docs/Principles.md
+              - '📚 Guidelines': Participate/Docs/Guidelines.md
+              - '🗃️ MarkdownStyle': Participate/Docs/Markdown-and-Formatting.md
+              - '🕵️‍♂️ Checking Requirements': Participate/Process/Checking-Requirements.md
           - '🏁 Submitting Changes': Participate/Process/Submitting-Changes.md
-      - 'Code':
-          - '📚 Contributing Guidelines': Participate/Code/Contributing-Guidelines.md
-          - '🏭 Versioning & Releasing': Participate/Code/Versioning-and-Releasing.md
-      - 'Docs':
-          - '✒️ Fundamental Principles': Participate/Docs/Principles.md
-          - '📚 Guidelines': Participate/Docs/Guidelines.md
-          - '🗃️ MarkdownStyle': Participate/Docs/Markdown-and-Formatting.md
