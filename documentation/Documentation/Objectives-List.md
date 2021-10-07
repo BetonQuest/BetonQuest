@@ -429,6 +429,35 @@ This objective can be completed by riding the specified
     ride any
     ```
 
+## Run a Command: `command`
+
+To complete this objective the player must execute a specified command. It can be both an existing or a new, custom
+command. The first argument is the command text. Use `_` in place of spaces for the command. If you need an actual `_`
+in your command, you must escape it using a backslash (`\`, see example below). The command argument is case-sensitive
+and also supports using placeholders. The second required argument is a list of events to execute when the objective is
+met.
+
+!!! example
+    ```YAML
+    command /warp_%player%_farms events:event1,event2
+    command //replace_oak\_wood events:event1,event2
+    ```
+
+With this configuration, the command objective requires the player to execute `/warp MyName farms` to be completed. The
+command objective matches from the start of the command that was executed, therefore if the player executed
+`/warp MyName farms other arguments` it would still be completed.
+
+Optional arguments:
+* `ignoreCase`: If provided, instructs the objective to ignore case for the command to match.
+* `exact`: If provided, requires an exact command match, not just the command start.
+* `cancel`: If provided, the objective will cancel the execution of the command on a match. This needs to be enabled to suppress the `Unknown Command` message when using custom commands.
+* `failEvents`: If provided, specifies a list of events to execute if a non-matching command is run and conditions are met.
+
+!!! complex example
+    ```YAML
+    command /warp_%player%_farms ignoreCase exact cancel failEvents:failEvent1,failEvent2 events:event1,event2
+    ```
+
 ## Variable: `variable`
 
 This objective is different. You cannot complete it, it will also ignore defined events and conditions. You can start it and that's it.
