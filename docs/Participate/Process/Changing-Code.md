@@ -122,4 +122,15 @@ and you want to [Submit the Changes](./Submitting-Changes.md) beside the automat
     for changing the history. But if you use IntelliJ, you should read [Edit Git project history](https://www.jetbrains.com/help/idea/edit-project-history.html).
 
 ## Commit
+After you made changes, don't forget to run `mvn verify`before you commit and push the changes.
 
+For a commit you should keep in mind, that you want to make as atomic (small) commits as possible.
+This means, if you simply fixed a bug, but during this you cleaned the code of a class,
+you should separate this two changes if possible into two separate commits.
+With other words, don't mix up different changes. 
+This makes it much easier to track of changes afterwards.
+
+The next thing is the message for your commit.
+If you fixed a bug, don't write `fixed deadlock`.
+You should give more qualified information like `fixed deadlock, when a huge amount of conditons are cheked at the same time`.
+Also, you don't should write `cleaned the code`, instead you should write things like this `renamed methods and variables`.  
