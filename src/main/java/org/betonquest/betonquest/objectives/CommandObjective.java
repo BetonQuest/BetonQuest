@@ -32,7 +32,7 @@ public class CommandObjective extends Objective implements Listener {
 
     public CommandObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
-        command = instruction.next().replace('_', ' ');
+        command = parseCommand(instruction.next());
         commandVariables = loadVariables(command);
         ignoreCase = instruction.hasArgument("ignoreCase");
         exact = instruction.hasArgument("exact");
@@ -77,6 +77,12 @@ public class CommandObjective extends Objective implements Listener {
     @Override
     public String getProperty(final String name, final String playerID) {
         return "";
+    }
+
+    private String parseCommand(final String rawCommand) {
+        return rawCommand
+                .replaceAll("(?<!\\\\)_", " ")
+                .replaceAll("\\\\_", "_");
     }
 
     private List<String> loadVariables(final String message) throws InstructionParseException {
