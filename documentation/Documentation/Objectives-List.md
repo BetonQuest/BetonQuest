@@ -431,7 +431,8 @@ This objective can be completed by riding the specified
 
 ## Run a Command: `command`
 
-To complete this objective the player must execute a specified command. The first argument is the command string. Use
+To complete this objective the player must execute a specified command. It can be both an existing or a new, custom command.
+The first argument is the command text. Use
 `_` in place of spaces for the command. The command argument is case-sensitive and also supports using placeholders. The
 second required argument is a list of events to execute when the objective is met.
 
