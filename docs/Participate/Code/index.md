@@ -21,3 +21,16 @@ Here we will now look at what you need to fulfill, if you change code, and you w
 
 ## Commit
 
+After you made changes, don't forget to run `mvn verify` again before you commit and push the changes.
+
+A commit needs to be _atomic_ which means it only contains changes that belong together. Large changes
+may also be split into multiple commits. This makes it easier to understand your changes.
+
+Example: Originally you just wanted to fix a bug, but you also cleaned the code of the class while doing so.
+Now you should separate these two (logically different) changes into two separate commits.
+With other words, don't mix up different changes.
+
+Another thing to keep in mind is the commit name and description.
+If you fixed a bug, don't write `fixed deadlock`.
+You should give more qualified information like `fixed deadlock, when a huge amount of conditons are cheked at the same time`.
+Also, you shouldn't write `cleaned the code`, instead you should write things like this `renamed methods and variables`.  
