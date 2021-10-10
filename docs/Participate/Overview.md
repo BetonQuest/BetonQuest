@@ -24,7 +24,7 @@ Therefore, we would be happy if you could translate it to your language and shar
 You can send us the edited messages.yml file via discord or submit a pull request.
 
 ##Improving the docs
-If you want to help improve the docs in any way check the [Docs Contributing Guidelines](Docs/Guidelines.md)!
+If you want to help improve the docs in any way check the [Docs Contributing Guidelines](Process/Docs/Guidelines.md)!
 
 ##Writing code
-If you want to write code for BetonQuest check the [Developer Documentation](Code/index.md)!
+If you want to write code for BetonQuest check the [Developer Documentation](Process/Code/index.md)!

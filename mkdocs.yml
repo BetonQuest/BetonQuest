@@ -168,17 +168,16 @@ nav:
       - '⚙️ API': API/API.md
   - '🧪 Participate':
       - '🤝 Overview': Participate/Overview.md
-      - '🚩 Setup Project': Participate/Process/Setup-Project.md
+      - '🚩 Setup Project': Participate/Setup-Project.md
       - Process:
           - '🦉 Create a new branch': Participate/Process/Create-a-new-Branch.md
           - '👨‍🔧 Changing Code':
-              - Participate/Code/index.md
+              - Participate/Process/Code/index.md
               - '🕵️‍♂️ Checking Requirements': Participate/Process/Checking-Requirements.md
-              - '📥 Adding a Dependency': Participate/Code/Adding-a-new-Dependency.md
-              - '🏭 Versioning & Releasing': Participate/Code/Versioning-and-Releasing.md
+              - '📥 Adding a Dependency': Participate/Process/Code/Adding-a-new-Dependency.md
+              - '🏭 Versioning & Releasing': Participate/Process/Code/Versioning-and-Releasing.md
           - '👨‍🏫 Changing Docs':
-              - Participate/Docs/index.md
-              - '✒️ Fundamental Principles': Participate/Docs/Principles.md
-              - '📚 Guidelines': Participate/Docs/Guidelines.md
-              - '🗃️ MarkdownStyle': Participate/Docs/Markdown-and-Formatting.md
+              - Participate/Process/Docs/index.md
+              - '✒️ Fundamental Principles': Participate/Process/Docs/Principles.md
+              - '📚 Guidelines': Participate/Process/Docs/Guidelines.md
           - '🏁 Submitting Changes': Participate/Process/Submitting-Changes.md
