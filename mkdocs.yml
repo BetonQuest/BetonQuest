@@ -173,7 +173,7 @@ nav:
           - '🦉 Create a new branch': Participate/Process/Create-a-new-Branch.md
           - '👨‍🔧 Changing Code':
               - Participate/Code/index.md
-              - '📚 Contributing Guidelines': Participate/Code/Contributing-Guidelines.md
+              - '🕵️‍♂️ Checking Requirements': Participate/Process/Checking-Requirements.md
               - '📥 Adding a Dependency': Participate/Code/Adding-a-new-Dependency.md
               - '🏭 Versioning & Releasing': Participate/Code/Versioning-and-Releasing.md
           - '👨‍🏫 Changing Docs':
@@ -181,5 +181,4 @@ nav:
               - '✒️ Fundamental Principles': Participate/Docs/Principles.md
               - '📚 Guidelines': Participate/Docs/Guidelines.md
               - '🗃️ MarkdownStyle': Participate/Docs/Markdown-and-Formatting.md
-              - '🕵️‍♂️ Checking Requirements': Participate/Process/Checking-Requirements.md
           - '🏁 Submitting Changes': Participate/Process/Submitting-Changes.md

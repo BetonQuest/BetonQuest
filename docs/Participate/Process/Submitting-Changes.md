@@ -111,3 +111,13 @@ A Pull Request basically means that you ask us to pull your changes into our cod
     With this you change the history of commits.
     Here is the general <a href="https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History" target="_blank">git documentation</a>
     for changing the history. But if you use IntelliJ, you should read [Edit Git project history](https://www.jetbrains.com/help/idea/edit-project-history.html).
+
+
+
+
+
+#### Clean the commit history
+
+You need to have a clean commit history in order to get you PR accepted. Check out
+this <a href="https://medium.com/@catalinaturlea/clean-git-history-a-step-by-step-guide-eefc0ad8696d" target="_blank">
+guide</a> if you don't know how to do so.

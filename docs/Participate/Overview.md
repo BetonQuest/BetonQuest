@@ -1,9 +1,11 @@
-#Contributing
+**First of all, thank you for looking at this page!** :smile:
 
-First of all, thank you for looking at this page! :smile:
+If you want to support BetonQuest, you have mainly two options:  
+1. Spending money  
+2. Spending time  
+If you choose two, you decided to participate BetonQuest, and we really want to say thank you for that! 
 
-You have numerous options to contribute to BetonQuest. 
-Check this list to see what fits your skills:
+You have numerous options to participate BetonQuest:
 
 ##Reporting bugs
 You just need to follow the bug report template on GitHub to submit a bug report. Please give us __**all information that is requested in the template!**__
@@ -25,4 +27,4 @@ You can send us the edited messages.yml file via discord or submit a pull reques
 If you want to help improve the docs in any way check the [Docs Contributing Guidelines](Docs/Guidelines.md)!
 
 ##Writing code
-If you want to write code for BetonQuest check the [Developer Documentation](Code/Contributing-Guidelines.md)!
+If you want to write code for BetonQuest check the [Developer Documentation](Code/index.md)!

@@ -1,5 +1,5 @@
 ###Fulfil the Contributing Requirements
-Run `mvn verify` before [Submitting Changes](./Submitting-Changes.md) to check if you change
+Run `mvn verify` before [Submitting Changes](../Process/Submitting-Changes.md) to check if you change
 meets the project's requirements regarding code style and quality.
 GitHub Actions(automated code check on GitHub) will also verify these requirements when you open the pull request.
 

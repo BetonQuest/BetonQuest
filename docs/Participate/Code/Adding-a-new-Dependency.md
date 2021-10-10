@@ -14,5 +14,18 @@ blocks for guidance.
 
 ## Finishing up
 We speed our builds up using our own mirror repository. It needs to be configured in your local Maven settings file as
-shown on the [Setup Project](../Process/Setup-Project.md#build-speed-up) page.
+shown on the [Setup Project](../Setup-Project.md#build-speed-up) page.
 **Please add any new repositories to your local file and to that documentation page.**
+
+
+
+
+
+
+#### Add new repositories to Maven's settings.xml
+
+New repositories need to be added in this format: `betonquest-<repoName>-repo`.
+Additionally, you need to add that repositories ID to Maven's `settings.xml` configuration.
+Please see [this guide](../Setup-Project.md#build-speed-up) for an example configuration.
+
+Make sure to add the new repository ID to the linked guide too!
