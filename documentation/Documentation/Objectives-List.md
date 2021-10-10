@@ -448,6 +448,7 @@ command objective matches from the start of the command that was executed, there
 `/warp MyName farms other arguments` it would still be completed.
 
 Optional arguments:
+
 * `ignoreCase`: If provided, instructs the objective to ignore case for the command to match.
 * `exact`: If provided, requires an exact command match, not just the command start.
 * `cancel`: If provided, the objective will cancel the execution of the command on a match. This needs to be enabled to suppress the `Unknown Command` message when using custom commands.
@@ -457,6 +458,17 @@ Optional arguments:
     ```YAML
     command /warp_%player%_farms ignoreCase exact cancel failEvents:failEvent1,failEvent2 events:event1,event2
     ```
+
+!!! warning
+    Sometimes you want to use actual underscores in your command. These will however be replaced with spaces by default.
+    You can "escape" them using backslashes:
+    One backslash (`\`) is required when using no quoting at all (`...`) or single quotes
+    (`'...'`). Two backslashes are required (`\\`) when using double quotes (`"..."`).
+
+    Examples:<br>
+    `eventName: command /enchant_@s_minecraft:aqua_affinity` :arrow_right: `eventName:command /enchant_@s_minecraft:aqua{++\++}_affinity`<br>
+    `eventName: {=='==}command /enchant_@s_minecraft:aqua_affinity{=='==}` :arrow_right: `eventName: {=='==}command /enchant_@s_minecraft:aqua{++\++}_affinity{=='==}`<br>
+    `eventName: {=="==}command /enchant_@s_minecraft:aqua_affinity{=="==}` :arrow_right: `eventName: {=="==}command /enchant_@s_minecraft:aqua{++\\++}_affinity{=="==}`<br>
 
 ## Variable: `variable`
 
