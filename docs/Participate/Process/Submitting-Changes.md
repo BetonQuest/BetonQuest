@@ -98,7 +98,8 @@ A Pull Request basically means that you ask us to pull your changes into our cod
     - `NOT IMPLEMENTED`: implement it or leave it empty
 
 ??? success "... remove any commented out code?"
-    We use the version control syt, and it will remember any code. So don't event start to check in code, that is commented out!
+    We use the version control syt, and it will remember any code.
+    So don't event start to check in code, that is commented out!
 
 ??? success "... add debug messages?"
     In general, BetonQuest already have a lot debug. So normally you do not need anything here.
@@ -107,17 +108,10 @@ A Pull Request basically means that you ask us to pull your changes into our cod
 ??? success "... clean the commit history?"
     You did multiple commits, that may look like `progress fixing the bug`?  
     Or you did a commit with a wrong description?  
-    Then you now need to do an `Interactive Rebase`.
-    With this you change the history of commits.
-    Here is the general <a href="https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History" target="_blank">git documentation</a>
-    for changing the history. But if you use IntelliJ, you should read [Edit Git project history](https://www.jetbrains.com/help/idea/edit-project-history.html).
-
-
-
-
-
-#### Clean the commit history
-
-You need to have a clean commit history in order to get you PR accepted. Check out
-this <a href="https://medium.com/@catalinaturlea/clean-git-history-a-step-by-step-guide-eefc0ad8696d" target="_blank">
-guide</a> if you don't know how to do so.
+    Then you now need to do an `Interactive Rebase`. With this you change the history of commits. Here is the general
+    <a href="https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History" target="_blank">git documentation</a>
+    for changing the history. But if you use IntelliJ, you should read
+    [Edit Git project history](https://www.jetbrains.com/help/idea/edit-project-history.html).  
+    In case you don't understand what we want, you should read this
+    <a href="https://medium.com/@catalinaturlea/clean-git-history-a-step-by-step-guide-eefc0ad8696d" target="_blank">guide</a>
+    that explain, why and how you clean the commit history.
