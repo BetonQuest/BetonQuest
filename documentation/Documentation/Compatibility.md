@@ -11,6 +11,7 @@ Some plugins also hook into BetonQuest and provide support by themselves:
 [_nuNPCDestinations_](https://www.spigotmc.org/resources/npcdestinations-create-living-npcs.13863/),
 [_RPGMenu_](https://www.spigotmc.org/resources/rpgmenu.55170/),
 [_CalebCompass_](https://www.spigotmc.org/resources/caleb-compass.82674/)
+[NotQuests](https://www.spigotmc.org/resources/1-17-1-notquests-⚡-solid-quest-system-✅.95872/)
 
 There are also plugins that hook into BetonQuest that require a clientside mod:  
 [_BetonQuestGUI_](https://github.com/giovanni-bozzano/betonquest-gui-plugin),
