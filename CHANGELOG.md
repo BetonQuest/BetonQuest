@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - version check for ProtocolLibIntegrator
 - quest item empty name comparison
 - customized built-in messages that use the advancementIO
+- BlockSelector without a namespace but starting with `:` did not work and threw an exception
 ### Security
 
 ## [1.12.5] - 2021-08-11
