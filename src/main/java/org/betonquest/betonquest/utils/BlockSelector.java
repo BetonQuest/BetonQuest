@@ -32,7 +32,7 @@ import java.util.regex.PatternSyntaxException;
  * - state - (optional) The block states can be provided in a comma separated `key=value` list surrounded by square
  * brackets. Regex allowed
  */
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "PMD.GodClass"})
 @CustomLog
 public class BlockSelector {
     private final List<Material> materials;
@@ -194,7 +194,7 @@ public class BlockSelector {
 
         if (restSelector.contains(":")) {
             final int index = restSelector.indexOf(':');
-            selectorParts[0] = restSelector.substring(0, index).toLowerCase(Locale.ROOT);
+            selectorParts[0] = index == 0 ? "minecraft" : restSelector.substring(0, index).toLowerCase(Locale.ROOT);
             selectorParts[1] = restSelector.substring(index + 1).toLowerCase(Locale.ROOT);
         } else {
             selectorParts[0] = "minecraft";
