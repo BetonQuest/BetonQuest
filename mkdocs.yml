@@ -1,10 +1,9 @@
 site_name: BetonQuest
 site_author: BetonQuest Organisation
 site_url: https://docs.betonquest.org/
-site_dir: target/documentation
-docs_dir: documentation
+site_dir: target/docs
+docs_dir: docs
 repo_name: BetonQuest on GitHub
-edit_uri: /BetonQuest/BetonQuest/edit/master/documentation/
 repo_url: https://github.com/BetonQuest/BetonQuest
 copyright: '© 2020  BetonQuest Organisation. GPLv3'
 
