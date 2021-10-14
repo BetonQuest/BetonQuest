@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased] - ${current-date}
 ### Added
 ### Changed
+### Deprecated
+### Removed
+### Fixes
+### Security
+
+## [1.12.6] - 2021-10-14
+### Added
+### Changed
 - `action` objective cancels now the event, before other plugins check for it (better third-party support)
 ### Deprecated
 ### Removed
