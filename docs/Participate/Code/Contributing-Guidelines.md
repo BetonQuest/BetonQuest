@@ -47,7 +47,7 @@ You can run `mvn verify` locally to ensure that you meet (nearly) all conditions
 
 You need to add your changes to the _Changelog.md_ file that can be found in the projects root folder.
 
-#### Update the documentation
+#### Update the docs
 
 You also need to document changes or additions to the plugins feature set in our documentation. Please notice that the
 documentation also has [it's own guidelines](../Docs/Guidelines.md).

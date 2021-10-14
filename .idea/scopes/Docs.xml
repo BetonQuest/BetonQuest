@@ -1,3 +1,3 @@
 <component name="DependencyValidationManager">
-  <scope name="Docs" pattern="file:config/docs-requirements-insiders.txt||file:config/docs-requirements.txt||file[betonquest]:documentation//*||file:CHANGELOG.md||file:CODE_OF_CONDUCT.md||file:CONTRIBUTING.md||file:LICENSE||file:mkdocs.yml||file:README.md" />
+  <scope name="Docs" pattern="file:config/docs-requirements-insiders.txt||file:config/docs-requirements.txt||file[betonquest]:docs//*||file:CHANGELOG.md||file:CODE_OF_CONDUCT.md||file:CONTRIBUTING.md||file:LICENSE||file:mkdocs.yml||file:README.md" />
 </component>

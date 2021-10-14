@@ -35,16 +35,16 @@ jobs:
           echo "PREVIOUS_VERSION_TAG=$PREVIOUS_VERSION_TAG" >> $GITHUB_ENV
           echo ::set-output name=previous_version_tag::$PREVIOUS_VERSION_TAG
           echo "Collected the previous build-number tag. The tag is '$PREVIOUS_VERSION_TAG'"
-      - name: Check for difference in documentation only
+      - name: Check for difference in docs only
         id: save_changes
         if: "github.repository == 'BetonQuest/BetonQuest' && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v') )"
         run: |
-          DIFF_OUTSIDE=$(git diff --quiet ${PREVIOUS_VERSION_TAG} -- . ':(exclude)documentation/' && echo Nothing || echo Changes)
-          DIFF_INSIDE=$(git diff --quiet ${PREVIOUS_VERSION_TAG} -- documentation/ && echo Nothing || echo Changes)
+          DIFF_OUTSIDE=$(git diff --quiet ${PREVIOUS_VERSION_TAG} -- . ':(exclude)docs/' && echo Nothing || echo Changes)
+          DIFF_INSIDE=$(git diff --quiet ${PREVIOUS_VERSION_TAG} -- docs/ && echo Nothing || echo Changes)
           if [[ $DIFF_OUTSIDE == Nothing && $DIFF_INSIDE == Changes ]]; then CHANGES_IN_DOCS_ONLY=true; else CHANGES_IN_DOCS_ONLY=false; fi
           echo "CHANGES_IN_DOCS_ONLY=$CHANGES_IN_DOCS_ONLY" >> $GITHUB_ENV
           echo ::set-output name=changes_in_docs_only::$CHANGES_IN_DOCS_ONLY
-          echo "Check for difference in documentation only. The value is '$CHANGES_IN_DOCS_ONLY'"
+          echo "Check for difference in docs only. The value is '$CHANGES_IN_DOCS_ONLY'"
       - name: Generate build number for Development Build
         if: "github.repository == 'BetonQuest/BetonQuest' && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v') ) && env.CHANGES_IN_DOCS_ONLY == 'false'"
         uses: einaregilsson/build-number@v3
@@ -149,8 +149,8 @@ jobs:
           name: BetonQuest-Artifacts
           path: build/artifacts
 
-  build-documentation:
-    name: Build Documentation
+  build-docs:
+    name: Build Docs
     needs: [ prepare ]
     runs-on: ubuntu-latest
 
@@ -202,23 +202,23 @@ jobs:
           sed -i "s~## \[Unreleased\]~## \[${VERSION}\]~g" ./CHANGELOG.md
           DATE=$(date +%Y-%m-%d)
           sed -i "s~\${current-date}~$DATE~g" ./CHANGELOG.md
-          cp ./CHANGELOG.md './documentation/Documentation/CHANGELOG.md'
+          cp ./CHANGELOG.md './docs/Documentation/CHANGELOG.md'
       - name: Build with mkdocs
         run: |
           mkdocs build
-          mkdir -p build/documentation
-          cp -r target/documentation/* build/documentation/
-          git diff > build/documentation/changes.patch
-      - name: Upload documentation
+          mkdir -p build/docs
+          cp -r target/docs/* build/docs/
+          git diff > build/docs/changes.patch
+      - name: Upload Docs
         uses: actions/upload-artifact@v2
         with:
-          name: BetonQuest-Documentation
-          path: build/documentation
+          name: BetonQuest-Docs
+          path: build/docs
 
   deploy-artifacts:
     name: Deploy Artifacts
     if: "needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'developement' && needs.prepare.outputs.CHANGES_IN_DOCS_ONLY == 'false'"
-    needs: [ prepare, build-artifacts, build-documentation ]
+    needs: [ prepare, build-artifacts, build-docs ]
     runs-on: ubuntu-latest
 
     steps:
@@ -287,11 +287,11 @@ jobs:
           REPOSITORY_USER: ${{ secrets.REPOSITORY_USER }}
           REPOSITORY_PASS: ${{ secrets.REPOSITORY_PASS }}
 
-  deploy-documentation:
-    name: Deploy Documentation
+  deploy-docs:
+    name: Deploy Docs
     concurrency: gh-pages-deploy
     if: "needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'developement'"
-    needs: [ prepare, build-artifacts, build-documentation ]
+    needs: [ prepare, build-artifacts, build-docs ]
     runs-on: ubuntu-latest
 
     steps:
@@ -320,11 +320,11 @@ jobs:
         with:
           python-version: '3.6'
           architecture: 'x64'
-      - name: Download Documentation
+      - name: Download Docs
         uses: actions/download-artifact@v2
         with:
-          name: BetonQuest-Documentation
-          path: build/documentation/
+          name: BetonQuest-Docs
+          path: build/docs/
       - name: Select mkDocs requirements
         run: |
           [ -z $MKDOCS_MATERIAL_INSIDERS ] && TXT=docs-requirements.txt || TXT=docs-requirements-insiders.txt
@@ -346,10 +346,10 @@ jobs:
           MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
       - name: Load target folder and patch file
         run: |
-          mkdir -p target/documentation
-          cp -r build/documentation/* target/documentation/
-          git apply build/documentation/changes.patch
-          rm build/documentation/changes.patch
+          mkdir -p target/docs
+          cp -r build/docs/* target/docs/
+          git apply build/docs/changes.patch
+          rm build/docs/changes.patch
       - name: Deploy Release to Github Pages
         if: "env.VERSION_TYPE == 'release'"
         run: |
@@ -370,7 +370,7 @@ jobs:
   create-release:
     name: Create Release Build
     if: "always() && !cancelled() && needs.prepare.outputs.VERSION_TYPE == 'release'"
-    needs: [ prepare, deploy-artifacts, deploy-documentation ]
+    needs: [ prepare, deploy-artifacts, deploy-docs ]
     runs-on: ubuntu-latest
 
     steps:
@@ -383,7 +383,7 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v2
       - name: Check previous Jobs
-        if: "needs.deploy-artifacts.result != 'success' || needs.deploy-documentation.result != 'success'"
+        if: "needs.deploy-artifacts.result != 'success' || needs.deploy-docs.result != 'success'"
         run: |
           exit 1
       - name: Download Artifacts
@@ -391,24 +391,24 @@ jobs:
         with:
           name: BetonQuest-Artifacts
           path: build/artifacts/
-      - name: Download Documentation
+      - name: Download Docs
         uses: actions/download-artifact@v2
         with:
-          name: BetonQuest-Documentation
-          path: build/documentation/
+          name: BetonQuest-Docs
+          path: build/docs/
       - name: Load target folder
         run: |
           mkdir -p target/artifacts
-          mkdir -p target/documentation
+          mkdir -p target/docs
           cp -r build/artifacts/* target/artifacts/
-          cp -r build/documentation/* target/documentation/
+          cp -r build/docs/* target/docs/
           rm build/artifacts/changes.patch
-          rm build/documentation/changes.patch
-      - name: Zip Documentation
+          rm build/docs/changes.patch
+      - name: Zip Docs
         run: |
-          cd build/documentation/
+          cd build/docs/
           find . -name \*.mp4 -type f -delete
-          zip -r Documentation.zip .
+          zip -r Docs.zip .
           cd ../..
       - name: Set CHANGELOG.md version
         run: |
@@ -426,7 +426,7 @@ jobs:
         with:
           args: |
             build/artifacts/BetonQuest.jar
-            build/documentation/Documentation.zip
+            build/docs/Docs.zip
       - name: Delete obsolete git tag
         run: |
           git push origin :${PREVIOUS_VERSION_TAG}
@@ -443,7 +443,7 @@ jobs:
   create-developement:
     name: Create Developement Build
     if: "always() && !cancelled() && needs.prepare.outputs.VERSION_TYPE == 'developement' && needs.prepare.outputs.CHANGES_IN_DOCS_ONLY != 'true'"
-    needs: [ prepare, deploy-artifacts, deploy-documentation ]
+    needs: [ prepare, deploy-artifacts, deploy-docs ]
     runs-on: ubuntu-latest
 
     steps:
@@ -456,7 +456,7 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v2
       - name: Check previous Jobs
-        if: "needs.deploy-artifacts.result != 'success' || needs.deploy-documentation.result != 'success'"
+        if: "needs.deploy-artifacts.result != 'success' || needs.deploy-docs.result != 'success'"
         run: |
           exit 1
       - name: Download Artifacts
@@ -464,24 +464,24 @@ jobs:
         with:
           name: BetonQuest-Artifacts
           path: build/artifacts/
-      - name: Download Documentation
+      - name: Download Docs
         uses: actions/download-artifact@v2
         with:
-          name: BetonQuest-Documentation
-          path: build/documentation/
+          name: BetonQuest-Docs
+          path: build/docs/
       - name: Load target folder
         run: |
           mkdir -p target/artifacts
-          mkdir -p target/documentation
+          mkdir -p target/docs
           cp -r build/artifacts/* target/artifacts/
-          cp -r build/documentation/* target/documentation/
+          cp -r build/docs/* target/docs/
           rm build/artifacts/changes.patch
-          rm build/documentation/changes.patch
-      - name: Zip Documentation
+          rm build/docs/changes.patch
+      - name: Zip Docs
         run: |
-          cd build/documentation/
+          cd build/docs/
           find . -name \*.mp4 -type f -delete
-          zip -r Documentation.zip .
+          zip -r Docs.zip .
           cd ../..
       - name: Prepare developement variables
         run: |
@@ -499,7 +499,7 @@ jobs:
           RUN_ID: ${{ github.run_id }}
           COMMIT_HASH: ${{ github.sha }}
           PLUGIN: "build/artifacts/BetonQuest.jar"
-          DOCS: "build/documentation/Documentation.zip"
+          DOCS: "build/docs/Docs.zip"
       - name: Publish to Discord
         if: "always()"
         run: |
