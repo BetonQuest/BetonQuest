@@ -146,7 +146,7 @@ nav:
   - 'Developer Documentation':
       - '📚 Contributing Guidelines': Developer-Documentation/Contributing-Guidelines.md
       - '⚙️ API': Developer-Documentation/API.md
-      - '🏭 Versioning & Releasing': Participate/Code/Versioning-and-Releasing.md
+      - '🏭 Versioning & Releasing': Developer-Documentation/Versioning-and-Releasing.md
   - 'Contributing':
       - '🤝 Overview': Contributing/Contributing.md
       - 'Docs':
