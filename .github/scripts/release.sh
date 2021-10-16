@@ -12,7 +12,7 @@ if [ -z "${NEXT_VERSION}" ]; then
   echo "You need to enter the next version!"
   exit 1
 fi
-echo -n "Enter remote repository name (upstream): "
+echo -n "Enter the name of the remote repository you want to create the release in (default 'upstream'): "
 read -r REMOTE_REPOSITORY
 if [ -z "${REMOTE_REPOSITORY}" ]; then
   REMOTE_REPOSITORY=upstream
