@@ -19,9 +19,10 @@ There are mainly two options to support projects like this:
     * No one has already requested it (Search GitHub discussion). You can comment on an existing discussion to add details.
 
 ??? note "Write Code or Documentation"
-    Please follow our detailed "[Setup Project](Setup-Project.md)" guide to obtain a local work environment.
-    Then, have a look at the "Process" chapter to learn everything you need to know about contributing!
-
+    Please follow our detailed "[Setup Project](Setup-Project.md)" guide to obtain a local working environment.  
+    From there we continue guiding you through [Create a new Branch](Process/Create-a-new-Branch.md), how you change
+    [Code](Process/Code/index.md) or [Docs](Process/Docs/index.md)
+    and how you finally [Submit Changes](Process/Submitting-Changes.md) you made.
 
 
 ## Donate Money
