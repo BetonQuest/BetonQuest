@@ -103,3 +103,7 @@ mkdocs serve
 
 Then visit <a href="http://127.0.0.1:8000" target="_blank">127.0.0.1:8000</a> to make sure that everything works.
 
+---
+## Where to Continue?
+You should now continue with [Create a new Branch](Process/Create-a-new-Branch.md),
+before you change [Code](Process/Code/index.md) or [Docs](Process/Docs/index.md).

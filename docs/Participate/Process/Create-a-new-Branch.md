@@ -5,3 +5,7 @@ Then you click on `upstream/master` and click on `New Branch from Selected...`.
 Now give the branch a name that describes the changes you want to make and click `CREATE`.
 
 <span class="centered">![RPGMenu example](../../media/content/Participate/Progress/Create-a-new-Branch.png)</span>
+
+---
+## Where to Continue?
+Now you can continue with [Code](Process/Code/index.md) or [Docs](Process/Docs/index.md), depending on your needs.
