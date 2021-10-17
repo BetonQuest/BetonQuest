@@ -36,6 +36,6 @@ Thanks to them for making this project possible!
 </a>
 
 
-[Shop on mcmodels! :fontawesome-solid-shopping-cart:](https://mcmodels.net/?wpam_id=3){: .md-button .md-button--primary }
+[Shop on mcmodels! :brands-mcmodels-anvil-red:](https://mcmodels.net/?wpam_id=3){: .md-button }
 
 *The mcmodels link is an affiliate link - we get a cut of the sales price.
