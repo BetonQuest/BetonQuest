@@ -35,3 +35,8 @@ Another thing to keep in mind is the commit name and description.
 If you fixed a bug, don't write `fixed deadlock`.
 You should give more qualified information like `fixed deadlock, when a huge amount of conditons are cheked at the same time`.
 Also, you shouldn't write `cleaned the code`, instead you should write things like this `renamed methods and variables`.  
+
+---
+## Where to Continue?
+If you finished your changed, you want to continue with [Submitting Changes](../Submitting-Changes.md).  
+But maybe you want to continue changing things in the Code or you want to switch to [Changing Docs](../Docs/index.md).
