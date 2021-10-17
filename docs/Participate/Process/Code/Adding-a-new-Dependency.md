@@ -8,24 +8,12 @@ Open up the pom.xml file located in the project's folder. Check if the new depen
 list of repositories. If that's the case, search for the dependency block related to that repository - there are comments
 above these blocks indicating that.
 
-If there is no such repository tag, add it. Then add a new dependency block for that repository. Take a look at the other
+If there is no such repository tag, add it.
+New repository tags need to be added in this format: `betonquest-<repoName>-repo`.
+Then add a new dependency block for that repository. Take a look at the other
 blocks for guidance.
-
 
 ## Finishing up
 We speed our builds up using our own mirror repository. It needs to be configured in your local Maven settings file as
 shown on the [Setup Project](../../Setup-Project.md#build-speed-up) page.
 **Please add any new repositories to your local file and to that documentation page.**
-
-
-
-
-
-
-#### Add new repositories to Maven's settings.xml
-
-New repositories need to be added in this format: `betonquest-<repoName>-repo`.
-Additionally, you need to add that repositories ID to Maven's `settings.xml` configuration.
-Please see [this guide](../../Setup-Project.md#build-speed-up) for an example configuration.
-
-Make sure to add the new repository ID to the linked guide too!
