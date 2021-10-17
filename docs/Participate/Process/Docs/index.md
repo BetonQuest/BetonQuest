@@ -12,5 +12,6 @@ Run
 
 ---
 ## Where to Continue?
-If you finished your changed, you want to continue with [Submitting Changes](../Submitting-Changes.md).  
+If you finished your changes, you want to continue with [Maintaining Changelog](../Maintaining-Changelog.md)
+before you continue with [Submitting Changes](../Submitting-Changes.md).  
 But maybe you want to continue changing things in the Docs or you want to switch to [Changing Code](../Code/index.md).

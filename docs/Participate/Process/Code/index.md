@@ -38,5 +38,6 @@ Also, you shouldn't write `cleaned the code`, instead you should write things li
 
 ---
 ## Where to Continue?
-If you finished your changed, you want to continue with [Submitting Changes](../Submitting-Changes.md).  
+  If you finished your changes, you want to continue with [Maintaining Changelog](../Maintaining-Changelog.md)
+before you continue with [Submitting Changes](../Submitting-Changes.md).  
 But maybe you want to continue changing things in the Code or you want to switch to [Changing Docs](../Docs/index.md).
