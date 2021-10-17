@@ -176,7 +176,7 @@ nav:
           - '🧬 Create a new Branch': Participate/Process/Create-a-new-Branch.md
           - '👨‍🔧 Changing Code':
               - Participate/Process/Code/index.md
-              - '🕵️‍♂️ Checking Requirements': Participate/Process/Checking-Requirements.md
+              - '🕵️‍♂️ Checking Requirements': Participate/Process/Code/Checking-Requirements.md
               - '📥 Adding a Dependency': Participate/Process/Code/Adding-a-new-Dependency.md
           - '👨‍🏫 Changing Docs':
               - Participate/Process/Docs/index.md
