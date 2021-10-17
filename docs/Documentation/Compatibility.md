@@ -8,14 +8,14 @@ mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, ProtocolLib, Qu
 Shopkeepers, SkillAPI, Skript, Vault, WorldEdit, FastAsyncWorldEdit and WorldGuard._
 
 Some plugins also hook into BetonQuest and provide support by themselves:  
-[_nuNPCDestinations_](https://www.spigotmc.org/resources/npcdestinations-create-living-npcs.13863/),
-[_RPGMenu_](https://www.spigotmc.org/resources/rpgmenu.55170/),
-[_CalebCompass_](https://www.spigotmc.org/resources/caleb-compass.82674/),
-[NotQuests](https://www.spigotmc.org/resources/1-17-1-notquests-⚡-solid-quest-system-✅.95872/)
+[_nuNPCDestinations_](https://www.spigotmc.org/resources/13863/),
+[_RPGMenu_](https://www.spigotmc.org/resources/55170/),
+[_CalebCompass_](https://www.spigotmc.org/resources/82674/),
+[NotQuests](https://www.spigotmc.org/resources/95872/)
 
 There are also plugins that hook into BetonQuest that require a clientside mod:  
 [_BetonQuestGUI_](https://github.com/giovanni-bozzano/betonquest-gui-plugin),
-[_NGVexJournal_](https://www.spigotmc.org/resources/ngvexjournal-multi-function-betonquest-journal-gui-1-7-10-1-13.76938/)
+[_NGVexJournal_](https://www.spigotmc.org/resources/76938/)
 
 
 ## [AureliumSkills](https://www.spigotmc.org/resources/aurelium-skills-advanced-skills-stats-abilities-and-more.81069/)
