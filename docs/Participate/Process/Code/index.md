@@ -38,6 +38,7 @@ Also, you shouldn't write `cleaned the code`, instead you should write things li
 
 ---
 ## Where to Continue?
-Once you are done with all code changes, continue with [Maintaining Changelog](../Maintaining-Changelog.md)
-In case you already did that: Continue with [Submitting Changes](../Submitting-Changes.md).  
 If you also want to adjust the documentation switch to [Changing Docs](../Docs/index.md).
+Once you are done with all changes, continue with [Maintaining Changelog](../Maintaining-Changelog.md)
+In case you already did that: Continue with [Submitting Changes](../Submitting-Changes.md).  
+

@@ -24,6 +24,6 @@ Check [their documentation](https://squidfunk.github.io/mkdocs-material/) to see
 
 ---
 ## Where to Continue?
-Continue with [Maintaining Changelog](../Maintaining-Changelog.md) once you are happy with your changes.
-If you already added to the changelog, continue with [Submitting Changes](../Submitting-Changes.md).
-Check out [Changing Code](../Code/index.md) if you also want to edit code.
+If you also want to adjust the code switch to [Changing Code](../Code/index.md).
+Once you are done with all changes, continue with [Maintaining Changelog](../Maintaining-Changelog.md)
+In case you already did that: Continue with [Submitting Changes](../Submitting-Changes.md).  
