@@ -1,6 +1,15 @@
 # Changing Docs
-Run 
+Run this command in IntelliJ's terminal window at the bottom to start a live preview of the documentation.
+It will be available on [127.0.0.1:8000](http://127.0.0.1:8000/) by default.
+You should work with the live preview as the documentation is not just markdown, there are many custom elements.
+The preview updates whenever you click outside of IntelliJ or trigger a file save.
 
+```bash 
+mkdocs serve
+```
+
+We use the [Material for MkDocs theme](https://squidfunk.github.io/mkdocs-material/) for our documentation.
+Check [their documentation](https://squidfunk.github.io/mkdocs-material/) to see all custom elements and features.
 
 ??? info "Hosting on your entire local network"
     You can also execute this variation to host the website in your local network.
@@ -10,8 +19,11 @@ Run
     mkdocs serve -a 0.0.0.0:8000
     ```
 
+
+
+
 ---
 ## Where to Continue?
-If you finished your changes, you want to continue with [Maintaining Changelog](../Maintaining-Changelog.md)
-before you continue with [Submitting Changes](../Submitting-Changes.md).  
-But maybe you want to continue changing things in the Docs or you want to switch to [Changing Code](../Code/index.md).
+Continue with [Maintaining Changelog](../Maintaining-Changelog.md) once you are happy with your changes.
+If you already added to the changelog, continue with [Submitting Changes](../Submitting-Changes.md).
+Check out [Changing Code](../Code/index.md) if you also want to edit code.

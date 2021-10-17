@@ -8,4 +8,4 @@ Now give the branch a name that describes the changes you want to make and click
 
 ---
 ## Where to Continue?
-Now you can continue with changing [Code](Code/index.md) or [Docs](Docs/index.md), depending on your needs.
+Now you can continue by changing [Code](Code/index.md#maven-verify) or [Docs](Docs/index.md), depending on your needs.

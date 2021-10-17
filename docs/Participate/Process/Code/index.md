@@ -1,7 +1,7 @@
 # Changing Code
-After you done [Setup Project](../../Setup-Project.md) and before you start changing code you should 
-[create a new branch](../Create-a-new-Branch.md) everytime, you want to develop a new feature,
-fix a bug or making other changes.
+Make sure to [setup the project](../../Setup-Project.md) before doing this step. 
+You should always [create a new branch](../Create-a-new-Branch.md) everytime you develop a new feature,
+fix a bug or make other changes.
 
 
 ## Maven verify
@@ -38,6 +38,6 @@ Also, you shouldn't write `cleaned the code`, instead you should write things li
 
 ---
 ## Where to Continue?
-  If you finished your changes, you want to continue with [Maintaining Changelog](../Maintaining-Changelog.md)
-before you continue with [Submitting Changes](../Submitting-Changes.md).  
-But maybe you want to continue changing things in the Code or you want to switch to [Changing Docs](../Docs/index.md).
+Once you are done with all code changes, continue with [Maintaining Changelog](../Maintaining-Changelog.md)
+In case you already did that: Continue with [Submitting Changes](../Submitting-Changes.md).  
+If you also want to adjust the documentation switch to [Changing Docs](../Docs/index.md).
