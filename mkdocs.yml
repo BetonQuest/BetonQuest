@@ -178,9 +178,10 @@ nav:
               - Participate/Process/Code/index.md
               - '🕵️‍♂️ Checking Requirements': Participate/Process/Checking-Requirements.md
               - '📥 Adding a Dependency': Participate/Process/Code/Adding-a-new-Dependency.md
-              - '🏭 Versioning & Releasing': Participate/Process/Code/Versioning-and-Releasing.md
           - '👨‍🏫 Changing Docs':
               - Participate/Process/Docs/index.md
               - '✒️ Fundamental Principles': Participate/Process/Docs/Principles.md
               - '📚 Guidelines': Participate/Process/Docs/Guidelines.md
           - '🏁 Submitting Changes': Participate/Process/Submitting-Changes.md
+      - Misc:
+          - '🏭 Versioning & Releasing': Participate/Process/Misc/Versioning-and-Releasing.md
