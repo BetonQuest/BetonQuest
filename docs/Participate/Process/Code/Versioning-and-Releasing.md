@@ -28,6 +28,6 @@ the path.
 
 ###Step 2: Build a release
 
-Run the script `./.github/scripts/release.sh` using some sort of bash shell (e.g. Git Bash).
+Run the script `./.github/scripts/release.sh` using some sort of bash shell (e.g. Git Bash) from the root dir of the project.
 It leads you through the creation of a release.
 If you run into errors you may need to do the script's release steps manually or fix the script / your setup. 
