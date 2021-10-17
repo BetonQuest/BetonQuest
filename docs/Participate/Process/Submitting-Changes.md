@@ -2,9 +2,25 @@ The last step of the contributing process is to submit your changes. This is don
 A Pull Request basically means that you ask us to pull your changes into our codebase. Let's create one!
 
 ## Creating a Pull Request
+You have 3 ways to create a Pull Request:
 
+1. If you recently pushed to your fork, you see a `create Pull Request` hint on our
+   [repository page](https://github.com/BetonQuest/BetonQuest).
+
+2. You can go to the [Pull Request](https://github.com/BetonQuest/BetonQuest/pulls) page on our repository and click on
+   `New pull request`. But then you need to click on `compare across forks` and then select your `head repository`.
+
+3. You can also click on `New pull request` in your fork, then it already compares it to the BetonQuest repository.
+
+Now give the Pull Request a `Title` that describes it as good as possible, but with short words.
+Then add a description that makes clear, what you added, removed or changed.
+If there are related issues, link them with the keyword `Closes`,
+so the issue is automatically closed when the Pull Request is merged.
+
+Now check the checklist. It is also in the Pull Request, but here you have a more detailed description.
 
 ### Did you...
+[Run maven Verify](Code/Checking-Requirements.md) in your IDE and ensure it SUCCEEDS!
 
 ??? success "... test your changes?"
     Always test your changes in-game! Keep in mind, that there could be some special cases in your code that need to be
@@ -115,3 +131,11 @@ A Pull Request basically means that you ask us to pull your changes into our cod
     In case you don't understand what we want, you should read this
     <a href="https://medium.com/@catalinaturlea/clean-git-history-a-step-by-step-guide-eefc0ad8696d" target="_blank">guide</a>
     that explain, why and how you clean the commit history.
+
+### Submit your Pull Request
+Now you can click on `Create pull request`, to finish the creation. 
+
+If you want to share your progress, also to get feedback before you are completely finished,
+you can also create a draft Pull Request.
+For that click on the arrow next to `Create pull request` and then select `Create draft pull request`.
+Now this indicates, that this Pull Request is not finished, and you can click on `Ready for review` if you are ready.
