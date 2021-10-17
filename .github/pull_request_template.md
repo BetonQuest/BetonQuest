@@ -9,9 +9,8 @@ Closes #XXXX
 Run maven Verify in your IDE and ensure it SUCCEEDS!
 
 ### Did you...
-<!-- Before we start a review of your PR, check the following things -->
-<!-- You can confirm it by inserting `[X]` or by clicking on it after you created the PR --> 
-<!-- Only check it if you did something there, otherwise leave it empty: -->
+<!-- DON'T DO ANYTHING HERE -->
+<!-- This is a checklist for the reviewers, and will checked by them! --> 
 - [ ]  ... test your changes?
 - [ ]  ... update the changelog?
 - [ ]  ... update the documentation?
