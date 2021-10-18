@@ -39,6 +39,7 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -1808,9 +1809,13 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 .append(clickToDownload.clickEvent(ClickEvent.runCommand(updateCommand)))
                 .append(Component.newline()).append(compVersionServerKey).append(compVersionServerValue)
                 .append(Component.newline())
-                .append(Component.newline()).append(compHookedKey).append(compHookedValue)
-                .append(Component.newline()).append(compCopyAll);
-        BetonQuest.getInstance().getAdventure().sender(sender).sendMessage(version);
+                .append(Component.newline()).append(compHookedKey).append(compHookedValue);
+        if (sender instanceof ConsoleCommandSender) {
+            BetonQuest.getInstance().getAdventure().sender(sender).sendMessage(version);
+        } else {
+            BetonQuest.getInstance().getAdventure().sender(sender)
+                    .sendMessage(version.append(Component.newline()).append(compCopyAll));
+        }
     }
 
     private void handleDebug(final CommandSender sender, final String... args) {
