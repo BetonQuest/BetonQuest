@@ -24,6 +24,14 @@ Check [their documentation](https://squidfunk.github.io/mkdocs-material/) to see
     ```
 
 ## Commit
+You need to commit (save) your changes once they are done.
+You can do this with
+<a href="https://www.jetbrains.com/help/idea/commit-and-push-changes.html" target="_blank">IntelliJ's Git integration</a>.
+
+**Here are a few tips how to make good commits:**
+
+All docs-only commits need to be prefixed with `[DOCS]`. This helps to distinguish them from technical commits that have
+a very similar name. Additionally, commit names should be short. If needed, provide more detail in the description.
 
 A commit needs to be _atomic_ which means it only contains changes that belong together. Large changes
 may also be split into multiple commits. This makes it easier to understand your changes.
@@ -33,9 +41,6 @@ of the documentation while doing so.
 Now you should separate these two (logically different) changes into two separate commits.
 With other words, don't mix up different changes.
 
-Another thing to keep in mind is the commit name and description.
-All docs-only commits need to be prefixed with `[DOCS]`. This helps to distinguish them from technical commits that have
-a very similar name. Additionally, commit names should be short. If needed, provide more detail in the description.
 
 ---
 ## Where to Continue?

@@ -1,6 +1,12 @@
 The last step of the contributing process is to submit your changes. This is done via a Pull Request on GitHub. 
 A Pull Request basically means that you ask us to pull your changes into our codebase. Let's create one!
 
+## Push your changes
+The first step is to push (upload) your changes to your fork on GitHub.
+You can do this using
+<a href="https://www.jetbrains.com/help/idea/commit-and-push-changes.html#push" target="_blank>IntelliJ's Git integration</a>
+
+
 ## Creating a Pull Request
 You have 3 ways to create a Pull Request:
 

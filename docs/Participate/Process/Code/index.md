@@ -23,8 +23,14 @@ Now go ahead and make your changes. Take a look at the sub-pages of this page fo
 ## Commit
 
 After you made changes, don't forget to run `mvn verify` again.
-You should also add a [changelog](../Maintaining-Changelog.md) entry at this point of progress,
-before you commit and push the changes.
+You should also add a [changelog](../Maintaining-Changelog.md) entry at this point,
+before you commit.
+
+You need to commit (save) your changes once they are done.
+You can do this with
+<a href="https://www.jetbrains.com/help/idea/commit-and-push-changes.html" target="_blank">IntelliJ's Git integration</a>.
+
+**Here are a few tips how to make good commits:**
 
 A commit needs to be _atomic_ which means it only contains changes that belong together. Large changes
 may also be split into multiple commits. This makes it easier to understand your changes.
