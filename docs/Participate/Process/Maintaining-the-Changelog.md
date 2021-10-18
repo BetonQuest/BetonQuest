@@ -17,67 +17,67 @@ Here is a breakdown of what belongs in each section:
 ??? info "Added"
     Do not write what class or file was added, describe the feature you added.
 
-    !!! example
-        ```MD
-        - event `teleport` allows teleportation of players
-        - Citizens event `movenpc` makes it possible to let a NPC walk to a specific location
-        ```
+    ```MD
+    Added:
+      - event `teleport` allows teleportation of players
+      - Citizens event `movenpc` makes it possible to let a NPC walk to a specific location
+    ```
 
 ??? info "Changed"
     Give qualified information that indicates what the user may have to be aware of.
     Do not write `event x has now argument y` - that is a new feature and belongs to `Added`. Only add to this section
     if there are changed _behaviours_.
 
-    !!! example
-        ```MD
-        - event `teleport` now first check if an other plugin canceled the event
-        - german translation has been updated
-        ```
+     ```MD
+     Changed:
+       - event `teleport` now first checks if another plugin canceled the event
+       - german translations have been updated
+     ```
 
 ??? info "Deprecated"
-    Mention things that have been marked for being removed. Also mention a replacement, if there is one.
+    List things that have been marked for removal. Also mention possible replacements.
 
-    !!! example
-        ```MD
-        - event `message` will be deleted, use the `notify` event instead
-        - Minecraft removed the old material syntx, therefore it will not be possible anymore in a future versions
-        ```
+     ```MD
+     Deprecated:
+       - event `message` will be deleted, use the `notify` event instead
+       - Minecraft recently replaced material ids with namespaces. Update your items accordingly, ids will stop working soon 
+     ```
 
 ??? info "Removed"
     After something has been marked for removal in the category `Deprecated` it will end up here eventually.
     Repeat possible replacements.
 
-    !!! example
-        ```MD
-        - event `message` was deleted, use the `notify` event instead
-        - Minecraft removed the old material syntax
-        ```
+     ```MD
+     Removed:
+       - `message` event, use the `notify` event instead
+       - old material syntax, use material namespaces instead
+     ```
 
 ??? info "Fixes"
     Solved bugs are listed in this category.
-    Let the users know what the bug did, so users know if they were affected.
+    Let the users know what the bug did, so they know if they were affected.
     Mention if the fix changed a behaviour.
-
-    !!! example
-        ```MD
-        - event `notify` did not resolve variables correctly
-        - Citizens event `movenpc` is now more robust combined with other events like `stopnpc` and `teleportnpc`
+  
+    ```MD
+    Fixes:
+      - event `notify` did not resolve variables correctly
+      - Citizens event `movenpc` is now more robust combined with other events like `stopnpc` and `teleportnpc`
         - you may need to reduce the distance beetween waypoints
-        ```
+    ```
 
 ??? info "Security"
     If there was a security issue, you write it down here. It's nearly the same as the category `Fixes`.
     But if something can be abused to effect server security or performance, 
     you keep the way how it can be abused secret.  
-    DO NOT LEAK CRITICAL SECURITY ISSUES!
+    **DO NOT LEAK EXPLOITABLE SECURITY ISSUES!**
 
-    !!! example
-        ```MD
-        - the take event is now threadsafe
-        - a deadlock in conversations was fixed
-        ```
+     ```MD
+     Security:
+       - the take event is now threadsafe
+       - a deadlock in conversations was fixed
+     ```
 
 ---
 ## Where to Continue?
-If you are finished, you should now continue with [Submitting Changes](Submitting-Changes.md).
+Continue with [Submitting Changes](Submitting-Changes.md) if all your changes are finished.
 But maybe you are not finished yet, and you want to go back to change [Code](Code/index.md) or [Docs](Docs/index.md).
