@@ -8,12 +8,14 @@ Closes #XXXX
 ## Checklist
 Run maven Verify in your IDE and ensure it SUCCEEDS!
 
-### Did you...
-<!-- Check these things before posting the pull request: -->
-- [ ]  ... test your changes?
+### Reviewer's checklist
+<!-- DON'T DO ANYTHING HERE -->
+<!-- This is a checklist for the reviewers, and will be checked by them! -->
+Did the contributor...
+- [ ]  ... test their changes?
 - [ ]  ... update the changelog?
 - [ ]  ... update the documentation?
-- [ ]  ... adjust the ConfigUpdater?
+- [ ]  ~~... adjust the ConfigUpdater?~~
 - [ ]  ... solve all TODOs?
 - [ ]  ... remove any commented out code?
 - [ ]  ... add debug messages?

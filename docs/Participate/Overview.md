@@ -1,28 +1,51 @@
-#Contributing
+There are two options to support projects like this one:
 
-First of all, thank you for looking at this page! :smile:
+## Donate Time :material-clock-time-four:
 
-You have numerous options to contribute to BetonQuest. 
-Check this list to see what fits your skills:
+??? bug "Report Bugs"
+    You just need to follow the bug report template on GitHub to
+    [submit a bug report](https://github.com/BetonQuest/BetonQuest/issues/new?assignees=&labels=Bug&template=bug-report.yml).
 
-##Reporting bugs
-You just need to follow the bug report template on GitHub to submit a bug report. Please give us __**all information that is requested in the template!**__
+??? info "Suggest Features"
+    Features can be requested on [our Github discussions page](https://github.com/BetonQuest/BetonQuest/discussions). 
+    Please make sure that:
+    
+    * The feature does not exist yet (Search docs / Ask on Discord)
+    * No one has already requested it (Search GitHub discussion). You can comment on an existing discussion to add details.
 
-##Suggesting features
-Before you suggest a feature please make sure it does not already exist! Search in the docs and if you are not sure ask in the <a href="https://discord.com/invite/rK6mfHq" target="_blank">discord!</a> 
-Once you are sure the feature does not already exist please also make sure nobody has already suggested it. Both things will save us time and therefore make it possible
-to implement more features.
+??? note "Write Code"
+    We have written a guide about contributing code:
+    
+    Please follow our detailed [Setup Project](Setup-Project.md) guide to obtain a local working environment. 
 
-Once you did that too simply <a href="https://github.com/BetonQuest/BetonQuest/issues/new?template=feature_request_template.md" target="_blank">
-open a new issue on GitHub</a>. Maybe someday someone will find the time to make your dream come true. **:man_mage:**
+    After that, you can follow the `Process` chapter. It explains every step in the contributing process.
+    Start by [creating a new branch](Process/Create-a-new-Branch.md), then change
+    [Code](Process/Code/index.md) and finally [submit any changes](Process/Submitting-Changes.md) you made.
 
-##Translations
-We love to see this plugin used by people all around the globe.
-Therefore, we would be happy if you could translate it to your language and share the translation with me. 
-You can send us the edited messages.yml file via discord or submit a pull request.
+??? abstract "Write Documentation"
+    We have written a guide about contributing documentation:
 
-##Improving the docs
-If you want to help improve the docs in any way check the [Docs Contributing Guidelines](Docs/Guidelines.md)!
+    Please follow our detailed [Setup Project](Setup-Project.md) guide to obtain a local working environment. 
 
-##Writing code
-If you want to write code for BetonQuest check the [Developer Documentation](Code/Contributing-Guidelines.md)!
+    After that, you can follow the `Process` chapter. It explains every step in the contributing process.
+    Start by [creating a new branch](Process/Create-a-new-Branch.md), then change [Docs](Process/Docs/index.md)
+    and finally [submit any changes](Process/Submitting-Changes.md) you made.
+
+
+## Donate Money :money_with_wings:
+
+We are part of the non-profit open source collective!
+Our monthly costs (server, domain, software licences) are paid by our community.
+Thanks to them for making this project possible!
+Any additional money has to be re-invested in the project.
+
+<div style="margin-right: 40px">
+<a href="https://opencollective.com/betonquest" target="_blank" style="padding-right: 30px;">
+    <img src="https://opencollective.com/betonquest/donate/button@2x.png?color=blue" width=300 />
+</a>
+<a href="https://mcmodels.net/?wpam_id=3" target="_blank">
+  <img src="../../media/content/Participate/Overview/mcmodels.png" width="300"/>
+</a>
+</div>
+
+  [^1]: You donate a small amount of the sales price by purchasing on mcmodels.net using our affiliate links.
