@@ -4,6 +4,7 @@
 BetonQuest follows the [Semantic Versioning](https://semver.org/) specification.
 
 We adapt the specification with these version types:
+
 * `1.12.0` for git version tags `v*` (in the official repository)
 * `1.12.0-DEV-1` for commits to `master` or branches called `master_v*` (in the official repository)
 * `1.12.0-DEV-ARTIFACT-5522` for commits to other branches (or repos) and Pull requests
