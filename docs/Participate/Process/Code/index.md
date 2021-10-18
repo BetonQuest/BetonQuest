@@ -6,16 +6,16 @@ fix a bug or make other changes.
 
 ## Maven verify
 Before you [make changes](#make-changes) you should run `mvn verify` as explained
-[here](../../Setup-Project.md#building-the-plugin-jar) to ensure, the plugins successfully build, before you made any changes.
+[here](../../Setup-Project.md#building-the-plugin-jar) to ensure the plugin successfully builds.
 
 After you made changes, you should also run `mvn verify` to check our requirements.
 If you have problems solving issues with our requirements there is also a page
 [Checking Requirements](Checking-Requirements.md), that you will probably read later.
 
 ??? success "Improve Build Speed"
-    If `mvn verify` take too long, and you just want a jar, you want to build without checking our requirements.
-    You can execute `package` instead of `verify` for that.
-    But don't forget, you need to successfully run `verify`, before you make a pull request on GitHub!
+    If `mvn verify` takes too long, and you just want a jar, you want to build without checking our requirements.
+    You can execute `mvn package` instead of `mvn verify` for that.
+    But don't forget, you need to successfully run `mvn verify`, before you make a pull request on GitHub!
 
 ## Make changes
 Now go ahead and make your changes. Take a look at the sub-pages of this page for more information about specific topics. 
@@ -23,10 +23,9 @@ Now go ahead and make your changes. Take a look at the sub-pages of this page fo
 ## Commit
 
 After you made changes, don't forget to run `mvn verify` again.
-You should also add a [changelog](../Maintaining-Changelog.md) entry at this point,
-before you commit.
+You should also add a [changelog](../Maintaining-the-Changelog.md) entry at this point.
 
-You need to commit (save) your changes once they are done.
+You need to commit your changes once they are done.
 You can do this with
 <a href="https://www.jetbrains.com/help/idea/commit-and-push-changes.html" target="_blank">IntelliJ's Git integration</a>.
 
@@ -47,6 +46,6 @@ Also, you shouldn't write `cleaned the code`, instead you should write things li
 ---
 ## Where to Continue?
 If you also want to adjust the documentation switch to [Changing Docs](../Docs/index.md).
-Once you are done with all changes, continue with [Maintaining Changelog](../Maintaining-Changelog.md)
+Once you are done with all changes, continue with [Maintaining Changelog](../Maintaining-the-Changelog.md)
 In case you already did that: Continue with [Submitting Changes](../Submitting-Changes.md).  
 

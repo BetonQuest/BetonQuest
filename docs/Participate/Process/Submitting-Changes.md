@@ -1,30 +1,31 @@
-The last step of the contributing process is to submit your changes. This is done via a Pull Request on GitHub. 
-A Pull Request basically means that you ask us to pull your changes into our codebase. Let's create one!
+The last step of the contributing process is to submit your changes. This is done via a pull request on GitHub. 
+A pull request basically means that you ask us to pull your changes into our codebase. Let's create one!
 
 ## Push your changes
 The first step is to push (upload) your changes to your fork on GitHub.
 You can do this using
-<a href="https://www.jetbrains.com/help/idea/commit-and-push-changes.html#push" target="_blank">IntelliJ's Git integration</a>
+<a href="https://www.jetbrains.com/help/idea/commit-and-push-changes.html#push" target="_blank">IntelliJ's Git integration</a>.
 
 
 ## Creating a Pull Request
-There are three ways to create a Pull Request:
+There are three ways to create a pull request:
 
 1. If you recently pushed to your fork, you see a `Create Pull Request` hint on our
    [repository page](https://github.com/BetonQuest/BetonQuest).
 
 2. You can go to the [Pull Request](https://github.com/BetonQuest/BetonQuest/pulls) page on our repository and click on
-   `New pull request`. But then you need to click on `Compare across Forks` and then select your `Head Repository`.
+   `New Pull Request`. But then you need to click on `Compare across Forks` and then select your `Head Repository`.
 
 3. You can also click on `New Pull Request` in your fork, then it already compares it to the BetonQuest repository.
 
-Now give the Pull Request a short but meaningful title.
+Now give the pull request a short but meaningful title.
 Then add a description that indicated what you added, removed or changed.
 If there are related issues, link them with the keyword `Closes #issue-id-here`,
-so the issue is automatically closed when the Pull Request is merged.
+so the issue is automatically closed when the pull request is merged.
 
 ### Did you...
-The Pull Request template contains a list of typical pitfalls. We will check these during the review. 
+The pull request template contains a list of typical problems. We will check these during the review.
+Do not check any of these boxes on GitHub, we will do that during the review. Please control these things though.
 
 ??? success "... run Maven verify?"
     The most basic check is [Maven Verify](Code/Checking-Requirements.md). Run it in you IDE and make sure it SUCCEEDS!
@@ -35,7 +36,7 @@ The Pull Request template contains a list of typical pitfalls. We will check the
 
 ??? success "... update the changelog?"
     Don't forget to add a changelog entry for concept every change you made.  
-    For more information you should read [Maintaining Changelog](Maintaining-Changelog.md).
+    For more information you should read [Maintaining Changelog](Maintaining-the-Changelog.md).
     
 ??? success "... update the documentation?"
     You need to adjust the documentation everytime you changed, added or removed any feature. Remember: Things that 
@@ -74,14 +75,14 @@ The Pull Request template contains a list of typical pitfalls. We will check the
     that explain, why and how you clean the commit history.
 
 ### Submit your Pull Request
-Now click on `Create pull request` to submit your request. 
+Now click on `Create Pull Request` to submit your request. 
 
-If you want to share your progress on a change to get early feedback, create a "draft Pull Request".
-For that click on the arrow next to `Create pull request` and then select `Create draft pull request`.
-Now this indicates, that this Pull Request is not finished, and you can click on `Ready for review` once you are ready.
+If you want to share work-in-progress changes to get early feedback, create a "draft pull request".
+Click on the arrow next to `Create Pull Request` and then select `Create draft Pull Request`.
+This indicates, that this pull request is not finished, and you can click on `Ready for review` once you are ready.
 
 ----
 
 Congrats, you are done! Thank you for contributing! :heart:
 
-Keep an eye out for reviews on your pull request.
+Keep an eye out for reviews of your pull request.

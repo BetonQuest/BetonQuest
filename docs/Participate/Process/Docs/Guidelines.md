@@ -1,6 +1,37 @@
 You need to follow these rules in order to contribute to the docs. They are important for a good user experience and provide
 a consistent baseline for other contributors to work with.
 
+## Markdown Formatting Conventions
+Unfortunately, there are different ways to format text in Markdown. Please use the syntax outlined here:
+
+### Bold
+**Bold text** is surrounded by two asterisks on each side: ``**Bold text**``
+
+### Italic
+_Italic text_ is surrounded by one underscore on each side: ``_Italic text_``
+
+### Lists
+
+Lists must be declared as such:
+
+```
+* Top Level
+    - Second Level
+    - Second Level
+* Another Top level
+```
+
+Result:
+
+* Top Level
+  - Second Level
+  - Second Level
+* Another Top level
+
+##Line length
+All lines must be wrapped after 121 character. You can exceed this limit by a few characters where resonable.
+Tables and other special syntax are exempt from this rule.
+
 ##Links
 
 ###Internal
@@ -51,24 +82,3 @@ The event `someEvent` prints a message to the player!
 
 Replace all spaces in file and folder names with `-`!
 
-##Lists
-
-Lists must be declared as such:
-
-```
-* Top Level
-    - Second Level
-    - Second Level
-* Another Top level
-```
-
-Result:
-
-* Top Level
-    - Second Level
-    - Second Level
-* Another Top level
-
-##Line length
-All lines must be wrapped after 121 character. You can exceed this limit by a few characters where resonable.
-Tables and other special syntax are exempt from this rule.

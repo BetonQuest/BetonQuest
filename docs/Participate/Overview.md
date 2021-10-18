@@ -1,4 +1,4 @@
-There are mainly two options to support projects like this one:
+There are two options to support projects like this one:
 
 ## Donate Time :material-clock-time-four:
 
@@ -13,23 +13,31 @@ There are mainly two options to support projects like this one:
     * The feature does not exist yet (Search docs / Ask on Discord)
     * No one has already requested it (Search GitHub discussion). You can comment on an existing discussion to add details.
 
-??? note "Write Code or Documentation"
-    We have written detailed guides about these two participation methods - they are the most significant time
-    contributions after all. 
+??? note "Write Code"
+    We have written a guide about contributing code:
     
     Please follow our detailed [Setup Project](Setup-Project.md) guide to obtain a local working environment. 
 
     After that, you can follow the `Process` chapter. It explains every step in the contributing process.
     Start by [creating a new branch](Process/Create-a-new-Branch.md), then change
-    [Code](Process/Code/index.md) or [Docs](Process/Docs/index.md)
+    [Code](Process/Code/index.md) and finally [submit any changes](Process/Submitting-Changes.md) you made.
+
+??? abstract "Write Documentation"
+    We have written a guide about contributing documentation:
+
+    Please follow our detailed [Setup Project](Setup-Project.md) guide to obtain a local working environment. 
+
+    After that, you can follow the `Process` chapter. It explains every step in the contributing process.
+    Start by [creating a new branch](Process/Create-a-new-Branch.md), then change [Docs](Process/Docs/index.md)
     and finally [submit any changes](Process/Submitting-Changes.md) you made.
 
 
 ## Donate Money :money_with_wings:
 
-This community funded project is part of the non-profit open source collective!
-Our monthly costs (server, domain, software licences) are paid by our backers.
+We are part of the non-profit open source collective!
+Our monthly costs (server, domain, software licences) are paid by our community.
 Thanks to them for making this project possible!
+Any additional money has to be re-invested in the project.
 
 <div style="margin-right: 40px">
 <a href="https://opencollective.com/betonquest" target="_blank" style="padding-right: 30px;">

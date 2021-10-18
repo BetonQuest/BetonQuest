@@ -1,8 +1,16 @@
 Before you make a commit, you should keep in mind, that you need to add a changelog entry.
 
 We have 6 categories in the CHANGELOG.md file for each version.
-In general do not repeat a keyword like `Added` and mark events, objectives and so on with `` ` `` around it.
-Also use short and user-friendly description of your changelog entry.
+These are general rules:
+
+* Write user-friendly entries - they are the ones that read the changelog after all.
+* Do not repeat the heading for individual entries 
+```
+Added:
+  * {--added--} new conversation style: Hologram
+  * new conversation style: Hologram
+```
+* Mark events, objectives etc. names with `` ` `` around them.
 
 Here is a breakdown of what belongs in each section:
 
@@ -16,9 +24,9 @@ Here is a breakdown of what belongs in each section:
         ```
 
 ??? info "Changed"
-    Give qualified information that indicates, what the users may have to be aware of.
-    Do not write `event x has now argument y`, that is a new feature and belongs to `Added`,
-    write about changed behaviours.
+    Give qualified information that indicates what the user may have to be aware of.
+    Do not write `event x has now argument y` - that is a new feature and belongs to `Added`. Only add to this section
+    if there are changed _behaviours_.
 
     !!! example
         ```MD

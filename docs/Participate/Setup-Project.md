@@ -25,7 +25,7 @@ After you have setup the IDE,
 the BetonQuest repository from your account. You can also directly
 <a href="https://blog.jetbrains.com/idea/2020/10/clone-a-project-from-github/" target="_blank">clone the repository in IntelliJ</a>.
 
-??? "In case videos and other files like images are missing after cloning"
+??? "In case videos and images are missing after cloning"
     We use <a href="https://git-lfs.github.com/" target="_blank">Git LFS</a> to store big files like media files, so you need to install that too.
     Once you have executed the file that you downloaded from the Git LFS website, just run `git lfs install`.
     Then use `git lfs pull` to actually download the files.
@@ -50,11 +50,11 @@ As BetonQuest has a lot of dependencies, the build can take a long lime, especia
 You can speed this up with the following configuration, that downloads all dependencies from our own Repository Manager
 instead of searching through all repositories that are defined in the project.
 
-If you do not already have the file, create a new file in your home directory. `<HOME DIRECTORY>\.m2\settings.xml`.
+If you do not already have the file, create a new file in this location: `<HOME DIRECTORY>\.m2\settings.xml`.
 The home directory on Windows is `C:\Users\<YOUR USER NAME>`.
 Then adopt or copy the following into the file:
 
-````XML
+````XML linenums="1"
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
@@ -106,4 +106,4 @@ Then visit <a href="http://127.0.0.1:8000" target="_blank">127.0.0.1:8000</a> to
 ---
 ## Where to Continue?
 You should now continue with [Create a new Branch](Process/Create-a-new-Branch.md),
-before you change [Code](Process/Code/index.md) or [Docs](Process/Docs/index.md).
+before you start changing [Code](Process/Code/index.md) or [Docs](Process/Docs/index.md).
