@@ -179,7 +179,7 @@ nav:
               - Participate/Process/Docs/index.md
               - '✒️ Fundamental Principles': Participate/Process/Docs/Principles.md
               - '📚 Guidelines': Participate/Process/Docs/Guidelines.md
-          - '📑 Maintaining Changelog': Participate/Process/Maintaining-Changelog.md
+          - '📑 Maintaining the Changelog': Participate/Process/Maintaining-the-Changelog.md
           - '🏁 Submitting Changes': Participate/Process/Submitting-Changes.md
       - Misc:
           - '🏭 Versioning & Releasing': Participate/Misc/Versioning-and-Releasing.md
