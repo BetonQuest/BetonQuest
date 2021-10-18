@@ -4,29 +4,30 @@ A Pull Request basically means that you ask us to pull your changes into our cod
 ## Push your changes
 The first step is to push (upload) your changes to your fork on GitHub.
 You can do this using
-<a href="https://www.jetbrains.com/help/idea/commit-and-push-changes.html#push" target="_blank>IntelliJ's Git integration</a>
+<a href="https://www.jetbrains.com/help/idea/commit-and-push-changes.html#push" target="_blank">IntelliJ's Git integration</a>
 
 
 ## Creating a Pull Request
-You have 3 ways to create a Pull Request:
+There are three ways to create a Pull Request:
 
-1. If you recently pushed to your fork, you see a `create Pull Request` hint on our
+1. If you recently pushed to your fork, you see a `Create Pull Request` hint on our
    [repository page](https://github.com/BetonQuest/BetonQuest).
 
 2. You can go to the [Pull Request](https://github.com/BetonQuest/BetonQuest/pulls) page on our repository and click on
-   `New pull request`. But then you need to click on `compare across forks` and then select your `head repository`.
+   `New pull request`. But then you need to click on `Compare across Forks` and then select your `Head Repository`.
 
-3. You can also click on `New pull request` in your fork, then it already compares it to the BetonQuest repository.
+3. You can also click on `New Pull Request` in your fork, then it already compares it to the BetonQuest repository.
 
-Now give the Pull Request a `Title` that describes it as good as possible, but with short words.
-Then add a description that makes clear, what you added, removed or changed.
-If there are related issues, link them with the keyword `Closes`,
+Now give the Pull Request a short but meaningful title.
+Then add a description that indicated what you added, removed or changed.
+If there are related issues, link them with the keyword `Closes #issue-id-here`,
 so the issue is automatically closed when the Pull Request is merged.
 
-Now check the checklist. It is also in the Pull Request, but here you have a more detailed description.
-
 ### Did you...
-[Run maven Verify](Code/Checking-Requirements.md) in your IDE and ensure it SUCCEEDS!
+The Pull Request template contains a list of typical pitfalls. We will check these during the review. 
+
+??? success "... run Maven verify?"
+    The most basic check is [Maven Verify](Code/Checking-Requirements.md). Run it in you IDE and make sure it SUCCEEDS!
 
 ??? success "... test your changes?"
     Always test your changes in-game! Keep in mind, that there could be some special cases in your code that need to be
@@ -73,9 +74,14 @@ Now check the checklist. It is also in the Pull Request, but here you have a mor
     that explain, why and how you clean the commit history.
 
 ### Submit your Pull Request
-Now you can click on `Create pull request`, to finish the creation. 
+Now click on `Create pull request` to submit your request. 
 
-If you want to share your progress, also to get feedback before you are completely finished,
-you can also create a draft Pull Request.
+If you want to share your progress on a change to get early feedback, create a "draft Pull Request".
 For that click on the arrow next to `Create pull request` and then select `Create draft pull request`.
-Now this indicates, that this Pull Request is not finished, and you can click on `Ready for review` if you are ready.
+Now this indicates, that this Pull Request is not finished, and you can click on `Ready for review` once you are ready.
+
+----
+
+Congrats, you are done! Thank you for contributing! :heart:
+
+Keep an eye out for reviews on your pull request.
