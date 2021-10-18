@@ -8,10 +8,11 @@ Closes #XXXX
 ## Checklist
 Run maven Verify in your IDE and ensure it SUCCEEDS!
 
-### Did you...
+### Reviewer's checklist
 <!-- DON'T DO ANYTHING HERE -->
-<!-- This is a checklist for the reviewers, and will checked by them! --> 
-- [ ]  ... test your changes?
+<!-- This is a checklist for the reviewers, and will checked by them! -->
+Did the contributor...
+- [ ]  ... test their changes?
 - [ ]  ... update the changelog?
 - [ ]  ... update the documentation?
 - [ ]  ~~... adjust the ConfigUpdater?~~

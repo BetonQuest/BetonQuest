@@ -23,9 +23,11 @@ Then add a description that indicates what you added, removed or changed.
 If there are related issues, link them with the keyword `Closes #issue-id-here`,
 so the issue is automatically closed when the pull request is merged.
 
-### Did you...
-The pull request template contains a list of typical problems. We will check these during the review.
-Do not check any of these boxes on GitHub, we will do that during the review. Please control these things though.
+### Reviewer's Checklist
+The list below contains typical problems that we will check during the review.
+Do not click any of these boxes on GitHub, we will do that. 
+
+**Please make sure that you fulfill these requirements. Did you...**
 
 ??? success "... run Maven verify?"
     The most basic check is [Maven Verify](Code/Checking-Requirements.md). Run it in you IDE and make sure it succeeds!
