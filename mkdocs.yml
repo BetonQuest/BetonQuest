@@ -169,7 +169,9 @@ nav:
           - '🔧  Configuration': Documentation/Configuration.md
           - '🗃️ Changelog': Documentation/CHANGELOG.md
   - '🔌 API':
+      - '🤝 Overview': API/Overview.md
       - '⚙️ API': API/API.md
+      - '📑 Logging': API/Logging.md
   - '🧪 Participate':
       - '🤝 Overview': Participate/Overview.md
       - '🚩 Setup Project': Participate/Setup-Project.md
