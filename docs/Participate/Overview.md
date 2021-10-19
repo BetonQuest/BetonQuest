@@ -49,3 +49,7 @@ Any additional money has to be re-invested in the project.
 </div>
 
   [^1]: You donate a small amount of the sales price by purchasing on mcmodels.net using our affiliate links.
+
+### Our Community Sponsors
+
+<object type="image/svg+xml" data="https://opencollective.com/betonquest/badge.svg?&button=false"></object>
