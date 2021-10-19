@@ -37,13 +37,13 @@ import java.util.Optional;
 @CustomLog
 public abstract class Objective {
 
+    protected final int notifyInterval;
+    protected final boolean notify;
     protected Instruction instruction;
     protected ConditionID[] conditions;
     protected EventID[] events;
     protected boolean persistent;
     protected boolean global;
-    protected final int notifyInterval;
-    protected final boolean notify;
     protected QREHandler qreHandler = new QREHandler();
 
     /**
@@ -117,10 +117,26 @@ public abstract class Objective {
     public abstract void start();
 
     /**
+     * This method is called by the plugin when the objective starts for a specific player.
+     */
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
+    public void start(final String playerId) {
+        //Empty
+    }
+
+    /**
      * This method is called by the plugin when the objective needs to be
      * stopped. You have to unregister all Listeners here.
      */
     public abstract void stop();
+
+    /**
+     * This method is called by the plugin when the objective stop for a specific player.
+     */
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
+    public void stop(final String playerId) {
+        //Empty
+    }
 
     /**
      * This method should return the default data instruction for the objective,
@@ -192,8 +208,8 @@ public abstract class Objective {
      * Send notification for progress with the objective.
      *
      * @param messageName meessage name to use in messages.yml
-     * @param playerID player to send notification to
-     * @param variables variables for putting into the message
+     * @param playerID    player to send notification to
+     * @param variables   variables for putting into the message
      */
     protected void sendNotify(final String playerID, final String messageName, final Object... variables) {
         try {
@@ -225,7 +241,7 @@ public abstract class Objective {
     /**
      * Start a new objective for the player.
      *
-     * @param playerId UUID as string of the player that has the objective
+     * @param playerId          UUID as string of the player that has the objective
      * @param instructionString the objective data instruction
      * @see #resumeObjectiveForPlayer(String, String)
      */
@@ -236,7 +252,7 @@ public abstract class Objective {
     /**
      * Resume a paused objective for the player.
      *
-     * @param playerId UUID as string of the player that has the objective
+     * @param playerId          UUID as string of the player that has the objective
      * @param instructionString the objective data instruction
      * @see #createObjectiveForPlayer(String, String)
      */
@@ -248,9 +264,9 @@ public abstract class Objective {
      * Start a objective for the player. This lower level method allows to set the previous state directly. If possible
      * prefer {@link #createObjectiveForPlayer(String, String)} and {@link #resumeObjectiveForPlayer(String, String)}.
      *
-     * @param playerID UUID as string of the player that has the objective
+     * @param playerID          UUID as string of the player that has the objective
      * @param instructionString the objective data instruction
-     * @param previousState the objective's previous state
+     * @param previousState     the objective's previous state
      */
     public final void startObjective(final String playerID, final String instructionString, final ObjectiveState previousState) {
         synchronized (this) {
@@ -353,9 +369,11 @@ public abstract class Objective {
             start();
         }
         dataMap.put(playerId, data);
+        start(playerId);
     }
 
     private void deactivateObjective(final String playerId) {
+        stop(playerId);
         dataMap.remove(playerId);
         if (dataMap.isEmpty()) {
             stop();
@@ -414,6 +432,7 @@ public abstract class Objective {
     public void close() {
         stop();
         for (final Map.Entry<String, ObjectiveData> entry : dataMap.entrySet()) {
+            stop(entry.getKey());
             BetonQuest.getInstance().getPlayerData(entry.getKey()).addRawObjective(instruction.getID().getFullID(),
                     entry.getValue().toString());
         }
@@ -426,6 +445,37 @@ public abstract class Objective {
      */
     public boolean isGlobal() {
         return global;
+    }
+
+    /**
+     * Show the states of the player objectives.
+     */
+    public enum ObjectiveState {
+
+        /**
+         * The objective is new and does not exist before.
+         */
+        NEW,
+
+        /**
+         * The objective is active.
+         */
+        ACTIVE,
+
+        /**
+         * The objective is complete.
+         */
+        COMPLETED,
+
+        /**
+         * The objective is paused.
+         */
+        PAUSED,
+
+        /**
+         * The objective is canceled.
+         */
+        CANCELED,
     }
 
     /**
@@ -536,36 +586,5 @@ public abstract class Objective {
                 LOG.warning(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
             }
         }
-    }
-
-    /**
-     * Show the states of the player objectives.
-     */
-    public enum ObjectiveState {
-
-        /**
-         * The objective is new and does not exist before.
-         */
-        NEW,
-
-        /**
-         * The objective is active.
-         */
-        ACTIVE,
-
-        /**
-         * The objective is complete.
-         */
-        COMPLETED,
-
-        /**
-         * The objective is paused.
-         */
-        PAUSED,
-
-        /**
-         * The objective is canceled.
-         */
-        CANCELED,
     }
 }
