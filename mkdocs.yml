@@ -74,6 +74,10 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
+      options:
+        custom_icons:
+          - custom_theme/.icons
+
   - pymdownx.inlinehilite
   - pymdownx.magiclink
   - pymdownx.mark
@@ -120,8 +124,8 @@ extra:
   social:
     - icon: fontawesome/brands/discord
       link: https://discord.gg/rK6mfHq
-    - icon: fontawesome/brands/patreon
-      link: https://patreon.com/betonquest
+    - icon: brands/opencollective-icon
+      link: https://opencollective.com/betonquest
     - icon: fontawesome/brands/github
       link: https://github.com/BetonQuest/BetonQuest
     - icon: fontawesome/solid/faucet
