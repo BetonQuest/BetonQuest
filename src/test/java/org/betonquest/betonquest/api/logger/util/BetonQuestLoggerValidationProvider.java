@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.logger.util;
 
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
+import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.utils.logger.BetonQuestLoggerImpl;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -37,7 +38,7 @@ public class BetonQuestLoggerValidationProvider implements ParameterResolver, Be
     public void beforeAll(final ExtensionContext context) {
         betonQuestLogger = mockStatic(BetonQuestLogger.class);
         betonQuestLogger.when(() -> BetonQuestLogger.create(any(), any())).thenAnswer(invocation ->
-                new BetonQuestLogger(parentLogger, invocation.getArgument(0), invocation.getArgument(1)));
+                new BetonQuestLoggerImpl(parentLogger, invocation.getArgument(0), invocation.getArgument(1)));
     }
 
     @Override

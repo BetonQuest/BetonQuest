@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api.logger;
+package org.betonquest.betonquest.utils.logger;
 
 import lombok.Getter;
 import org.betonquest.betonquest.config.ConfigPackage;

@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.logger;
 
 import org.betonquest.betonquest.api.logger.util.LogValidator;
+import org.betonquest.betonquest.utils.logger.TopicLogger;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;

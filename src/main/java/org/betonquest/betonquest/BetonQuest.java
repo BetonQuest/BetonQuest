@@ -11,7 +11,6 @@ import org.betonquest.betonquest.api.LoadDataEvent;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.Variable;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.commands.BackpackCommand;
 import org.betonquest.betonquest.commands.CancelQuestCommand;
 import org.betonquest.betonquest.commands.CompassCommand;
@@ -184,6 +183,7 @@ import org.betonquest.betonquest.objectives.VariableObjective;
 import org.betonquest.betonquest.utils.BStatsMetrics;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
+import org.betonquest.betonquest.utils.logger.BetonQuestLoggerImpl;
 import org.betonquest.betonquest.utils.logger.LogWatcher;
 import org.betonquest.betonquest.utils.versioning.Updater;
 import org.betonquest.betonquest.variables.ConditionVariable;
@@ -243,7 +243,7 @@ public class BetonQuest extends JavaPlugin {
      */
     @Getter
     private static BetonQuest instance;
-    private static BetonQuestLogger log;
+    private static BetonQuestLoggerImpl log;
     private final ConcurrentHashMap<String, PlayerData> playerDataMap = new ConcurrentHashMap<>();
     /**
      * The adventure instance.
@@ -278,7 +278,7 @@ public class BetonQuest extends JavaPlugin {
     public BetonQuest() {
         super();
         instance = this;
-        log = new BetonQuestLogger(this.getLogger(), this.getClass(), null);
+        log = new BetonQuestLoggerImpl(this.getLogger(), this.getClass(), null);
     }
 
     public static boolean conditions(final String playerID, final Collection<ConditionID> conditionIDs) {

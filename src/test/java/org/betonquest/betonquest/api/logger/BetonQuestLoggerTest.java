@@ -1,7 +1,9 @@
 package org.betonquest.betonquest.api.logger;
 
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.util.LogValidator;
 import org.betonquest.betonquest.config.ConfigPackage;
+import org.betonquest.betonquest.utils.logger.BetonQuestLoggerImpl;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -77,7 +79,7 @@ public class BetonQuestLoggerTest {
     }
 
     private BetonQuestLogger getBetonQuestLogger(final Logger logger) {
-        return new BetonQuestLogger(logger, BetonQuestLoggerTest.class, LOGGER_TOPIC);
+        return new BetonQuestLoggerImpl(logger, BetonQuestLoggerTest.class, LOGGER_TOPIC);
     }
 
     @Test

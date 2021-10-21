@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api.logger;
+package org.betonquest.betonquest.utils.logger;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
