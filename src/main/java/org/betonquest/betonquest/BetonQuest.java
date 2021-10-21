@@ -158,6 +158,7 @@ import org.betonquest.betonquest.objectives.BlockObjective;
 import org.betonquest.betonquest.objectives.BreedObjective;
 import org.betonquest.betonquest.objectives.BrewObjective;
 import org.betonquest.betonquest.objectives.ChestPutObjective;
+import org.betonquest.betonquest.objectives.CollectItemObjective;
 import org.betonquest.betonquest.objectives.CommandObjective;
 import org.betonquest.betonquest.objectives.ConsumeObjective;
 import org.betonquest.betonquest.objectives.CraftingObjective;
@@ -755,6 +756,7 @@ public class BetonQuest extends JavaPlugin {
         registerObjectives("respawn", RespawnObjective.class);
         registerObjectives("breed", BreedObjective.class);
         registerObjectives("command", CommandObjective.class);
+        registerObjectives("collect", CollectItemObjective.class);
         if (PaperLib.isPaper()) {
             registerObjectives("jump", JumpObjective.class);
         }
