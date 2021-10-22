@@ -34,7 +34,7 @@ public class CustomDropListener implements Listener {
                             .generate(Integer.parseInt(item.substring(separatorIndex + 1))));
                 }
             } catch (InstructionParseException | ObjectNotFoundException e) {
-                LOG.warning(null, "Error when dropping custom item from entity: " + e.getMessage(), e);
+                LOG.warning("Error when dropping custom item from entity: " + e.getMessage(), e);
             }
             dropIndex++;
         }

@@ -40,7 +40,7 @@ public class SQLite extends Database {
             try {
                 file.createNewFile();
             } catch (final IOException e) {
-                LOG.error(null, "Unable to create database!", e);
+                LOG.error("Unable to create database!", e);
             }
         }
         Connection connection = null;
@@ -49,7 +49,7 @@ public class SQLite extends Database {
             connection = DriverManager
                     .getConnection("jdbc:sqlite:" + plugin.getDataFolder().toPath().toString() + "/" + dbLocation);
         } catch (ClassNotFoundException | SQLException e) {
-            LOG.error(null, "There was an exception with SQL", e);
+            LOG.error("There was an exception with SQL", e);
         }
         return connection;
     }

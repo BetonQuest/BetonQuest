@@ -90,7 +90,7 @@ public class VariableNumber {
             try {
                 parsed = Double.parseDouble(resolved);
             } catch (final NumberFormatException e) {
-                LOG.debug(null, "Could not parse the variable as a number, it's value is: '" + resolved + "'; returning 0.", e);
+                LOG.debug("Could not parse the variable as a number, it's value is: '" + resolved + "'; returning 0.", e);
             }
             return parsed;
         }

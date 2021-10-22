@@ -47,7 +47,7 @@ public final class LogWatcher {
      */
     private final HistoryLogHandler historyHandler;
     /**
-     * All active log filters for the ingame log.
+     * All active log filters for the in-game log.
      */
     private final Map<UUID, Map<String, Level>> playerFilters;
     /**
@@ -56,7 +56,7 @@ public final class LogWatcher {
     private boolean debugging;
 
     /**
-     * Setups the debug and ingame chat log.
+     * Setups the debug and in-game chat log.
      *
      * @param plugin The related {@link Plugin} instance
      */
@@ -83,7 +83,7 @@ public final class LogWatcher {
             plugin.getLogger().addHandler(historyHandler);
             return historyHandler;
         } catch (final IOException e) {
-            LOG.error(null, "It was not possible to create the '" + logFile.getName() + "' or to register the plugin's internal logger. "
+            LOG.error("It was not possible to create the '" + logFile.getName() + "' or to register the plugin's internal logger. "
                     + "This is not a critical error, the server can still run, but it is not possible to use the '/q debug true' command. "
                     + "Reason: " + e.getMessage(), e);
         }

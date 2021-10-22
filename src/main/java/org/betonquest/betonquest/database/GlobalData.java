@@ -47,11 +47,11 @@ public class GlobalData {
                     globalPoints.add(new Point(res4.getString("category"), res4.getInt("count")));
                 }
                 // log data to debugger
-                LOG.debug(null, "There are " + globalTags.size() + " global_tags and " + globalPoints.size()
+                LOG.debug("There are " + globalTags.size() + " global_tags and " + globalPoints.size()
                         + " global_points loaded");
             }
         } catch (final SQLException e) {
-            LOG.error(null, "There was an exception with SQL", e);
+            LOG.error("There was an exception with SQL", e);
         }
     }
 

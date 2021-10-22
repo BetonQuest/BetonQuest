@@ -233,7 +233,7 @@ public class ConversationData {
             final String targetOption = parts[4];
             final ConversationData conv = BetonQuest.getInstance().getConversation(packName + "." + targetConv);
             if (conv == null) {
-                LOG.warning(null, "External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, "
+                LOG.warning("External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, "
                         + ("<starting_option>".equals(sourceOption) ? "starting option"
                         : "'" + sourceOption + "' player option")
                         + " points to '" + targetConv

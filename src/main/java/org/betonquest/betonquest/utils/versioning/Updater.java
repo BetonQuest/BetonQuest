@@ -130,7 +130,7 @@ public class Updater {
             searchUpdateTask(config);
             if (latest.getValue() != null) {
 
-                LOG.info(null, getUpdateNotification(config));
+                LOG.info(getUpdateNotification(config));
                 if (config.automatic) {
                     update(Bukkit.getConsoleSender());
                 }
@@ -142,17 +142,17 @@ public class Updater {
         try {
             searchUpdateTaskRelease(config);
         } catch (final UnknownHostException e) {
-            LOG.warning(null, "The update server for release builds is currently not available!");
+            LOG.warning("The update server for release builds is currently not available!");
         } catch (final IOException e) {
-            LOG.warning(null, "Could not get the latest release! " + e.getMessage(), e);
+            LOG.warning("Could not get the latest release! " + e.getMessage(), e);
         }
         if (!(isUpdateAvailable() && config.forcedStrategy) && config.downloadDev) {
             try {
                 searchUpdateTaskDev(config);
             } catch (final UnknownHostException e) {
-                LOG.warning(null, "The update server for dev builds is currently not available!");
+                LOG.warning("The update server for dev builds is currently not available!");
             } catch (final IOException e) {
-                LOG.warning(null, "Could not get the latest dev build! " + e.getMessage(), e);
+                LOG.warning("Could not get the latest dev build! " + e.getMessage(), e);
             }
         }
     }
@@ -262,13 +262,13 @@ public class Updater {
                 sendMessage(sender, ChatColor.DARK_GREEN + "...download finished. Restart the server to update the plugin.");
             } catch (final QuestRuntimeException e) {
                 sendMessage(sender, ChatColor.RED + e.getMessage());
-                LOG.debug(null, "Error while performing update!", e);
+                LOG.debug("Error while performing update!", e);
             }
         });
     }
 
     private void sendMessage(final CommandSender sender, final String message) {
-        LOG.info(null, message);
+        LOG.info(message);
         if (sender != null && !(sender instanceof ConsoleCommandSender)) {
             sender.sendMessage(BetonQuest.getInstance().getPluginTag() + message);
         }
@@ -377,7 +377,7 @@ public class Updater {
             try {
                 strategy = UpdateStrategy.valueOf(updateStrategy);
             } catch (final IllegalArgumentException exception) {
-                LOG.error(null, "Could not parse 'update.strategy' in 'config.yml'!", exception);
+                LOG.error("Could not parse 'update.strategy' in 'config.yml'!", exception);
                 strategy = UpdateStrategy.MINOR;
             }
             this.strategy = strategy;

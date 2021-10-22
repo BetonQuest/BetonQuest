@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.utils.logger;
 
-import lombok.Getter;
 import org.betonquest.betonquest.config.ConfigPackage;
 
 import java.util.logging.Level;
@@ -14,12 +13,7 @@ public class QuestPackageLogRecord extends LogRecord {
     private static final long serialVersionUID = -7094531905051980356L;
     /**
      * The package name.
-     * -- GETTER --
-     * Gets the package name.
-     *
-     * @return Returns the package name.
      */
-    @Getter
     private final String pack;
 
     /**
@@ -32,5 +26,14 @@ public class QuestPackageLogRecord extends LogRecord {
     public QuestPackageLogRecord(final ConfigPackage pack, final Level level, final String msg) {
         super(level, msg);
         this.pack = pack == null ? "" : pack.getName();
+    }
+
+    /**
+     * Gets the package name.
+     *
+     * @return Returns the package name.
+     */
+    public String getPack() {
+        return pack;
     }
 }

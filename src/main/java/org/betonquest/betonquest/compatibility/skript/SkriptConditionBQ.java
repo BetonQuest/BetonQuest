@@ -48,7 +48,7 @@ public class SkriptConditionBQ extends Condition {
         try {
             return BetonQuest.condition(PlayerConverter.getID(player.getSingle(event)), new ConditionID(null, conditionID));
         } catch (final ObjectNotFoundException e) {
-            LOG.warning(null, "Error while checking Skript condition - could not load condition with ID '" + conditionID + "': " + e.getMessage(), e);
+            LOG.warning("Error while checking Skript condition - could not load condition with ID '" + conditionID + "': " + e.getMessage(), e);
             return false;
         }
     }

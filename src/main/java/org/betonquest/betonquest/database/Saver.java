@@ -47,7 +47,7 @@ public class Saver extends Thread implements Listener {
                         active = false;
                         wait();
                     } catch (final InterruptedException e) {
-                        LOG.error(null, "There was a exception with SQL", e);
+                        LOG.error("There was a exception with SQL", e);
                     }
                 }
             }

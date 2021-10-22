@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 /**
- * This is a simple log formatting class for the ingame chat.
+ * This is a simple log formatting class for the in-game chat.
  */
 public class ChatLogFormatter extends DebugLogFormatter {
 

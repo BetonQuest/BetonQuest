@@ -79,7 +79,7 @@ public class CitizensListener implements Listener {
             try {
                 Config.sendNotify(null, playerID, "busy", "busy,error");
             } catch (final QuestRuntimeException e) {
-                LOG.warning(null, "The notify system was unable to play a sound for the 'busy' category. Error was: '" + e.getMessage() + "'", e);
+                LOG.warning("The notify system was unable to play a sound for the 'busy' category. Error was: '" + e.getMessage() + "'", e);
             }
             return;
         }

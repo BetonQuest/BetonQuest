@@ -13,11 +13,11 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 /**
- * This is a simple log formatting class for the ingame chat.
+ * This is a simple log formatting class for the in-game chat.
  */
 public class PlayerLogHandler extends Handler {
     /**
-     * All active log filters for the ingame log.
+     * All active log filters for the in-game log.
      */
     private final Map<UUID, Map<String, Level>> playerFilters;
 
