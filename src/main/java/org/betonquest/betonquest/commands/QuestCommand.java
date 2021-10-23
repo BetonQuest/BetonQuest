@@ -1840,6 +1840,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             if (exist && args.length == 3) {
                 if (!logWatcher.removeFilter(uuid, filter)) {
                     sender.sendMessage("§2Filter could not be removed!");
+                    return;
                 }
                 sender.sendMessage("§2Filter removed!");
                 return;
@@ -1847,6 +1848,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             final Level level = getLogLevel(args.length > 3 ? args[3] : null);
             if (!logWatcher.addFilter(uuid, filter, level)) {
                 sender.sendMessage("§2Filter could not be added!");
+                return;
             }
             sender.sendMessage("§2Filter added!");
             return;
