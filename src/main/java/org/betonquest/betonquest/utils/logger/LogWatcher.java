@@ -80,7 +80,7 @@ public final class LogWatcher {
             fileHandler.setFormatter(new DebugLogFormatter());
             final HistoryLogHandler historyHandler = new HistoryLogHandler(fileHandler);
             historyHandler.setFilter((record) -> debugging);
-            plugin.getLogger().addHandler(historyHandler);
+            plugin.getLogger().getParent().addHandler(historyHandler);
             return historyHandler;
         } catch (final IOException e) {
             LOG.error("It was not possible to create the '" + logFile.getName() + "' or to register the plugin's internal logger. "
@@ -93,7 +93,7 @@ public final class LogWatcher {
     private void setupPlayerLogHandler() {
         final PlayerLogHandler playerHandler = new PlayerLogHandler(playerFilters);
         playerHandler.setFormatter(new ChatLogFormatter());
-        plugin.getLogger().addHandler(playerHandler);
+        plugin.getLogger().getParent().addHandler(playerHandler);
     }
 
     /**

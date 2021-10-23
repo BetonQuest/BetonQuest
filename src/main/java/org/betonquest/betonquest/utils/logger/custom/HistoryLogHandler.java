@@ -2,6 +2,7 @@ package org.betonquest.betonquest.utils.logger.custom;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import org.betonquest.betonquest.utils.logger.QuestPackageLogRecord;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -47,6 +48,9 @@ public class HistoryLogHandler extends Handler {
      */
     @Override
     public void publish(final LogRecord record) {
+        if (!(record instanceof QuestPackageLogRecord)) {
+            return;
+        }
         lock.writeLock().lock();
         try {
             if (isLoggable(record)) {

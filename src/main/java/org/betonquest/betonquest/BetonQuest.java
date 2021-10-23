@@ -271,7 +271,7 @@ public class BetonQuest extends JavaPlugin {
      * @return The LogWatcher instance.
      */
     @Getter
-    private LogWatcher logWatcher;
+    private final LogWatcher logWatcher;
 
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
@@ -279,6 +279,7 @@ public class BetonQuest extends JavaPlugin {
         super();
         instance = this;
         log = new BetonQuestLoggerImpl(this.getLogger(), this.getClass(), null);
+        logWatcher = new LogWatcher(this);
     }
 
     public static boolean conditions(final String playerID, final Collection<ConditionID> conditionIDs) {
@@ -563,9 +564,6 @@ public class BetonQuest extends JavaPlugin {
     @Override
     public void onEnable() {
         pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
-
-        // initialize debugger
-        logWatcher = new LogWatcher(this);
 
         adventure = BukkitAudiences.create(this);
 
