@@ -45,7 +45,7 @@ public class BetonQuestLoggerTest {
     private static final String EXCEPTION_MESSAGE = "Test Exception";
     /**
      * The static mocked {@link BetonQuestLogger} instance.
-     * This is needed, because the {@link ConfigPackage} uses a @{@link lombok.CustomLog} annotation,
+     * This is needed, because the {@link ConfigPackage} uses a {@link lombok.CustomLog} annotation,
      * and we want to mock the {@link ConfigPackage}.
      */
     private static MockedStatic<BetonQuestLogger> betonQuestLoggerMockedStatic;
