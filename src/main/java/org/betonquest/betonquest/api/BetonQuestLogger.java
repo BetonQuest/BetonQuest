@@ -43,10 +43,10 @@ public interface BetonQuestLogger {
     static BetonQuestLoggerImpl create(final Class<?> clazz, final String topic) {
         for (final Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
             if (plugin.getClass().getClassLoader().equals(clazz.getClassLoader())) {
-                return new BetonQuestLoggerImpl(plugin.getLogger(), clazz, topic);
+                return new BetonQuestLoggerImpl(plugin, plugin.getLogger(), clazz, topic);
             }
         }
-        return new BetonQuestLoggerImpl(Bukkit.getLogger(), clazz, topic);
+        return new BetonQuestLoggerImpl(null, Bukkit.getLogger(), clazz, topic);
     }
 
     /**

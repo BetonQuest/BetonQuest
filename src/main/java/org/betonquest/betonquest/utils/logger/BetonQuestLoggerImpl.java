@@ -2,6 +2,7 @@ package org.betonquest.betonquest.utils.logger;
 
 import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.config.ConfigPackage;
+import org.bukkit.plugin.Plugin;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,7 +12,10 @@ import java.util.logging.Logger;
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public class BetonQuestLoggerImpl implements BetonQuestLogger {
-
+    /**
+     * The {@link Plugin} this logger is related to.
+     */
+    private final Plugin plugin;
     /**
      * The original logger.
      */
@@ -20,11 +24,12 @@ public class BetonQuestLoggerImpl implements BetonQuestLogger {
     /**
      * Creates a decorator for the {@link TopicLogger}.
      *
-     * @param parentLogger The instance of the parent {@link Logger}.
-     * @param clazz        The calling class.
-     * @param topic        The topic of the logger.
+     * @param plugin The {@link Plugin} this logger is related to.
+     * @param clazz  The calling class.
+     * @param topic  The topic of the logger.
      */
-    public BetonQuestLoggerImpl(final Logger parentLogger, final Class<?> clazz, final String topic) {
+    public BetonQuestLoggerImpl(final Plugin plugin, final Logger parentLogger, final Class<?> clazz, final String topic) {
+        this.plugin = plugin;
         this.logger = new TopicLogger(parentLogger, clazz, topic);
     }
 
@@ -35,7 +40,7 @@ public class BetonQuestLoggerImpl implements BetonQuestLogger {
 
     @Override
     public void info(final ConfigPackage pack, final String msg) {
-        final QuestPackageLogRecord record = new QuestPackageLogRecord(pack, Level.INFO, msg);
+        final QuestPackageLogRecord record = new QuestPackageLogRecord(plugin, pack, Level.INFO, msg);
         logger.log(record);
     }
 
@@ -46,7 +51,7 @@ public class BetonQuestLoggerImpl implements BetonQuestLogger {
 
     @Override
     public void warning(final ConfigPackage pack, final String msg) {
-        final QuestPackageLogRecord record = new QuestPackageLogRecord(pack, Level.WARNING, msg);
+        final QuestPackageLogRecord record = new QuestPackageLogRecord(plugin, pack, Level.WARNING, msg);
         logger.log(record);
     }
 
@@ -57,10 +62,10 @@ public class BetonQuestLoggerImpl implements BetonQuestLogger {
 
     @Override
     public void warning(final ConfigPackage pack, final String msg, final Throwable thrown) {
-        final QuestPackageLogRecord record = new QuestPackageLogRecord(pack, Level.WARNING, msg);
+        final QuestPackageLogRecord record = new QuestPackageLogRecord(plugin, pack, Level.WARNING, msg);
         logger.log(record);
 
-        final QuestPackageLogRecord recordThrowable = new QuestPackageLogRecord(pack, Level.FINE, "Additional stacktrace:");
+        final QuestPackageLogRecord recordThrowable = new QuestPackageLogRecord(plugin, pack, Level.FINE, "Additional stacktrace:");
         recordThrowable.setThrown(thrown);
         logger.log(recordThrowable);
     }
@@ -72,7 +77,7 @@ public class BetonQuestLoggerImpl implements BetonQuestLogger {
 
     @Override
     public void error(final ConfigPackage pack, final String msg) {
-        final QuestPackageLogRecord record = new QuestPackageLogRecord(pack, Level.SEVERE, msg);
+        final QuestPackageLogRecord record = new QuestPackageLogRecord(plugin, pack, Level.SEVERE, msg);
         logger.log(record);
     }
 
@@ -83,7 +88,7 @@ public class BetonQuestLoggerImpl implements BetonQuestLogger {
 
     @Override
     public void error(final ConfigPackage pack, final String msg, final Throwable thrown) {
-        final QuestPackageLogRecord record = new QuestPackageLogRecord(pack, Level.SEVERE, msg);
+        final QuestPackageLogRecord record = new QuestPackageLogRecord(plugin, pack, Level.SEVERE, msg);
         record.setThrown(thrown);
         logger.log(record);
     }
@@ -95,7 +100,7 @@ public class BetonQuestLoggerImpl implements BetonQuestLogger {
 
     @Override
     public void debug(final ConfigPackage pack, final String msg) {
-        final QuestPackageLogRecord record = new QuestPackageLogRecord(pack, Level.FINE, msg);
+        final QuestPackageLogRecord record = new QuestPackageLogRecord(plugin, pack, Level.FINE, msg);
         logger.log(record);
     }
 
@@ -106,7 +111,7 @@ public class BetonQuestLoggerImpl implements BetonQuestLogger {
 
     @Override
     public void debug(final ConfigPackage pack, final String msg, final Throwable thrown) {
-        final QuestPackageLogRecord record = new QuestPackageLogRecord(pack, Level.FINE, msg);
+        final QuestPackageLogRecord record = new QuestPackageLogRecord(plugin, pack, Level.FINE, msg);
         record.setThrown(thrown);
         logger.log(record);
     }
@@ -120,7 +125,7 @@ public class BetonQuestLoggerImpl implements BetonQuestLogger {
     public void reportException(final ConfigPackage pack, final Throwable thrown) {
         final String msg = "This is an exception that should never occur. "
                 + "If you don't know why this occurs please report it to the author.";
-        final QuestPackageLogRecord record = new QuestPackageLogRecord(pack, Level.SEVERE, msg);
+        final QuestPackageLogRecord record = new QuestPackageLogRecord(plugin, pack, Level.SEVERE, msg);
         record.setThrown(thrown);
         logger.log(record);
     }

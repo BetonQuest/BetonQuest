@@ -5,7 +5,7 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
-import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.utils.logger.QuestPackageLogRecord;
 import org.bukkit.ChatColor;
 
 import java.util.logging.Level;
@@ -26,10 +26,14 @@ public class ChatLogFormatter extends DebugLogFormatter {
     @Override
     public String format(final LogRecord record) {
         final String color = formatColor(record);
+        final boolean isBQ = record instanceof QuestPackageLogRecord;
+        final QuestPackageLogRecord logRecord = isBQ ? (QuestPackageLogRecord) record : null;
+        final String plugin = isBQ && !logRecord.getPlugin().isEmpty() ? logRecord.getPlugin() : "";
+        final String questPackage = isBQ && !logRecord.getPack().isEmpty() ? "<" + logRecord.getPack() + "> " : "";
         final String message = record.getMessage();
         final Component throwable = formatComponentThrowable(record);
 
-        final TextComponent formattedRecord = Component.text(BetonQuest.getInstance().getPluginTag() + color + message)
+        final TextComponent formattedRecord = Component.text(getPluginTag(plugin) + questPackage + color + message)
                 .append(throwable);
         return GsonComponentSerializer.gson().serialize(formattedRecord);
     }
@@ -43,9 +47,9 @@ public class ChatLogFormatter extends DebugLogFormatter {
             return ChatColor.RED.toString();
         }
         if (level >= Level.INFO.intValue()) {
-            return ChatColor.GRAY.toString();
+            return ChatColor.WHITE.toString();
         }
-        return ChatColor.WHITE.toString();
+        return ChatColor.GRAY.toString();
     }
 
     /**
@@ -64,5 +68,10 @@ public class ChatLogFormatter extends DebugLogFormatter {
                         .append(Component.newline()).append(Component.newline())
                         .append(Component.text("Click to copy!", NamedTextColor.DARK_GREEN)))
                 .clickEvent(ClickEvent.copyToClipboard(throwable));
+    }
+
+    private String getPluginTag(final String plugin) {
+        final String tag = "BetonQuest".equals(plugin) ? "BQ" : "BQ | " + plugin;
+        return ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + tag + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
     }
 }

@@ -45,7 +45,7 @@ public class BetonQuestLoggerTest {
     private static final String EXCEPTION_MESSAGE = "Test Exception";
     /**
      * The static mocked {@link BetonQuestLogger} instance.
-     * This is needed, because the {@link ConfigPackage} uses a @{@link lombok.CustomLog} annotation
+     * This is needed, because the {@link ConfigPackage} uses a @{@link lombok.CustomLog} annotation,
      * and we want to mock the {@link ConfigPackage}.
      */
     private static MockedStatic<BetonQuestLogger> betonQuestLoggerMockedStatic;
@@ -57,7 +57,7 @@ public class BetonQuestLoggerTest {
     }
 
     /**
-     * Setup the static mocked {@link BetonQuestLogger}.
+     * Set up the static mocked {@link BetonQuestLogger}.
      */
     @BeforeAll
     public static void beforeAll() {
@@ -79,7 +79,7 @@ public class BetonQuestLoggerTest {
     }
 
     private BetonQuestLogger getBetonQuestLogger(final Logger logger) {
-        return new BetonQuestLoggerImpl(logger, BetonQuestLoggerTest.class, LOGGER_TOPIC);
+        return new BetonQuestLoggerImpl(null, logger, BetonQuestLoggerTest.class, LOGGER_TOPIC);
     }
 
     @Test

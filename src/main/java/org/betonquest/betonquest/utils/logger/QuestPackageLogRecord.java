@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.utils.logger;
 
 import org.betonquest.betonquest.config.ConfigPackage;
+import org.bukkit.plugin.Plugin;
 
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -12,6 +13,10 @@ public class QuestPackageLogRecord extends LogRecord {
 
     private static final long serialVersionUID = -7094531905051980356L;
     /**
+     * The plugin where the log message comes from.
+     */
+    private final String plugin;
+    /**
      * The package name.
      */
     private final String pack;
@@ -19,12 +24,14 @@ public class QuestPackageLogRecord extends LogRecord {
     /**
      * Sets the package and calls the original method {@link LogRecord#LogRecord(Level, String)}.
      *
-     * @param pack  The {@link ConfigPackage} this LogRecord came from.
-     * @param level A logging level value.
-     * @param msg   The raw non-localized logging message (may be null).
+     * @param plugin The {@link Plugin}, where this log message comes from.
+     * @param pack   The {@link ConfigPackage} this LogRecord came from.
+     * @param level  A logging level value.
+     * @param msg    The raw non-localized logging message (may be null).
      */
-    public QuestPackageLogRecord(final ConfigPackage pack, final Level level, final String msg) {
+    public QuestPackageLogRecord(final Plugin plugin, final ConfigPackage pack, final Level level, final String msg) {
         super(level, msg);
+        this.plugin = plugin == null ? "" : plugin.getName();
         this.pack = pack == null ? "" : pack.getName();
     }
 
@@ -35,5 +42,14 @@ public class QuestPackageLogRecord extends LogRecord {
      */
     public String getPack() {
         return pack;
+    }
+
+    /**
+     * Get the plugin, where this log message comes from.
+     *
+     * @return The plugin.
+     */
+    public String getPlugin() {
+        return plugin;
     }
 }

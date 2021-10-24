@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.utils.logger.custom;
 
+import org.betonquest.betonquest.utils.logger.QuestPackageLogRecord;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Date;
@@ -26,13 +28,16 @@ public class DebugLogFormatter extends Formatter {
     @Override
     public String format(final LogRecord record) {
         dat.setTime(record.getMillis());
+        final boolean isBQ = record instanceof QuestPackageLogRecord;
+        final QuestPackageLogRecord logRecord = isBQ ? (QuestPackageLogRecord) record : null;
+        final String plugin = isBQ && !logRecord.getPlugin().isEmpty() ? "[" + logRecord.getPlugin() + "] " : "";
+        final String questPackage = isBQ && !logRecord.getPack().isEmpty() ? "<" + logRecord.getPack() + "> " : "";
         final String message = formatMessage(record);
         final String throwable = formatThrowable(record);
 
-        return String.format("[%1$ty.%1$tm.%1$td %tT %2$s]: %3$s%4$s%n",
-                dat,
-                record.getLevel().getName(),
-                message,
+        return String.format("[%1$ty.%1$tm.%1$td %tT %2$s]: %3$s%4$s%5$s%6$s%n",
+                dat, record.getLevel().getName(),
+                plugin, questPackage, message,
                 throwable);
     }
 

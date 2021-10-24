@@ -246,6 +246,15 @@ public class BetonQuest extends JavaPlugin {
     private static BetonQuestLoggerImpl log;
     private final ConcurrentHashMap<String, PlayerData> playerDataMap = new ConcurrentHashMap<>();
     /**
+     * -- GETTER --
+     * Get the LogWatcher instance.
+     *
+     * @return The LogWatcher instance.
+     */
+    @Getter
+    private final LogWatcher logWatcher;
+    private final String pluginTag;
+    /**
      * The adventure instance.
      * -- GETTER --
      * Get the adventure instance.
@@ -254,7 +263,6 @@ public class BetonQuest extends JavaPlugin {
      */
     @Getter
     private BukkitAudiences adventure;
-    private String pluginTag;
     private Database database;
     private boolean isMySQLUsed;
     @SuppressWarnings("PMD.DoNotUseThreads")
@@ -264,21 +272,15 @@ public class BetonQuest extends JavaPlugin {
     private PlayerHider playerHider;
     @Getter
     private RPGMenu rpgMenu;
-    /**
-     * -- GETTER --
-     * Get the LogWatcher instance.
-     *
-     * @return The LogWatcher instance.
-     */
-    @Getter
-    private final LogWatcher logWatcher;
 
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
     public BetonQuest() {
         super();
+        pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
+
         instance = this;
-        log = new BetonQuestLoggerImpl(this.getLogger(), this.getClass(), null);
+        log = new BetonQuestLoggerImpl(this, this.getLogger(), this.getClass(), null);
         logWatcher = new LogWatcher(this);
     }
 
@@ -563,8 +565,6 @@ public class BetonQuest extends JavaPlugin {
     @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.DoNotUseThreads", "PMD.NPathComplexity"})
     @Override
     public void onEnable() {
-        pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
-
         adventure = BukkitAudiences.create(this);
 
         // load configuration
