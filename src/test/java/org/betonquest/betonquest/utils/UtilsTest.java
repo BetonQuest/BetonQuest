@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.utils;
 
-import org.betonquest.betonquest.api.logger.util.BetonQuestLoggerValidationProvider;
 import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerValidationProvider;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockedStatic;

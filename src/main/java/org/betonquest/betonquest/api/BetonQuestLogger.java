@@ -2,7 +2,7 @@ package org.betonquest.betonquest.api;
 
 import lombok.CustomLog;
 import org.betonquest.betonquest.config.ConfigPackage;
-import org.betonquest.betonquest.utils.logger.BetonQuestLoggerImpl;
+import org.betonquest.betonquest.modules.logger.BetonQuestLoggerImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginLogger;
@@ -27,7 +27,7 @@ public interface BetonQuestLogger {
      * @param clazz The class that is passed by lombok.
      * @return The decorated Logger.
      */
-    static BetonQuestLoggerImpl create(final Class<?> clazz) {
+    static BetonQuestLogger create(final Class<?> clazz) {
         return create(clazz, null);
     }
 
@@ -40,7 +40,7 @@ public interface BetonQuestLogger {
      * @return The decorated Logger.
      */
     @SuppressWarnings("PMD.UseProperClassLoader")
-    static BetonQuestLoggerImpl create(final Class<?> clazz, final String topic) {
+    static BetonQuestLogger create(final Class<?> clazz, final String topic) {
         for (final Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
             if (plugin.getClass().getClassLoader().equals(clazz.getClassLoader())) {
                 return new BetonQuestLoggerImpl(plugin, plugin.getLogger(), clazz, topic);
@@ -55,7 +55,7 @@ public interface BetonQuestLogger {
      * Use this for normal log information.
      * <p>
      * Don't use this method, if you can provide a {@link ConfigPackage}.
-     * Use {@link BetonQuestLoggerImpl#info(ConfigPackage, String)} instead.
+     * Use {@link BetonQuestLogger#info(ConfigPackage, String)} instead.
      *
      * @param msg The message to log.
      */
@@ -76,10 +76,10 @@ public interface BetonQuestLogger {
      * <p>
      * Use this if you can provide useful information how to fix the underlying problem.
      * <p>
-     * If you can provide an exception use {@link BetonQuestLoggerImpl#warning(String, Throwable)} instead.
+     * If you can provide an exception use {@link BetonQuestLogger#warning(String, Throwable)} instead.
      * <p>
      * Don't use this method, if you can provide a {@link ConfigPackage}.
-     * Use {@link BetonQuestLoggerImpl#warning(ConfigPackage, String)} instead.
+     * Use {@link BetonQuestLogger#warning(ConfigPackage, String)} instead.
      *
      * @param msg The message to log.
      */
@@ -90,7 +90,7 @@ public interface BetonQuestLogger {
      * <p>
      * Use this if you can provide useful information how to fix the underlying problem.
      * <p>
-     * If you can provide an exception use {@link BetonQuestLoggerImpl#warning(ConfigPackage, String, Throwable)} instead.
+     * If you can provide an exception use {@link BetonQuestLogger#warning(ConfigPackage, String, Throwable)} instead.
      *
      * @param pack The related {@link ConfigPackage} or null.
      * @param msg  The message to log.
@@ -103,10 +103,10 @@ public interface BetonQuestLogger {
      * <p>
      * Use this if you can provide useful information how to fix the underlying problem.
      * <p>
-     * If you cannot provide an exception use {@link BetonQuestLoggerImpl#warning(String)} instead.
+     * If you cannot provide an exception use {@link BetonQuestLogger#warning(String)} instead.
      * <p>
      * Don't use this method, if you can provide a {@link ConfigPackage}.
-     * Use {@link BetonQuestLoggerImpl#warning(ConfigPackage, String, Throwable)} instead.
+     * Use {@link BetonQuestLogger#warning(ConfigPackage, String, Throwable)} instead.
      *
      * @param msg    The message to log.
      * @param thrown The throwable to log.
@@ -119,7 +119,7 @@ public interface BetonQuestLogger {
      * <p>
      * Use this if you can provide useful information how to fix the underlying problem.
      * <p>
-     * If you cannot provide an exception use {@link BetonQuestLoggerImpl#warning(ConfigPackage, String)} instead.
+     * If you cannot provide an exception use {@link BetonQuestLogger#warning(ConfigPackage, String)} instead.
      *
      * @param pack   The related {@link ConfigPackage} or null.
      * @param msg    The message to log.
@@ -133,10 +133,10 @@ public interface BetonQuestLogger {
      * Use this if the underlying problem affects the servers security or functionality.
      * Usage is also allowed if you don't know how the user can fix the underlying problem.
      * <p>
-     * If you can provide an exception use {@link BetonQuestLoggerImpl#error(String, Throwable)} instead.
+     * If you can provide an exception use {@link BetonQuestLogger#error(String, Throwable)} instead.
      * <p>
      * Don't use this method, if you can provide a {@link ConfigPackage}.
-     * Use {@link BetonQuestLoggerImpl#error(ConfigPackage, String)} instead.
+     * Use {@link BetonQuestLogger#error(ConfigPackage, String)} instead.
      *
      * @param msg The message to log.
      */
@@ -148,7 +148,7 @@ public interface BetonQuestLogger {
      * Use this if the underlying problem affects the servers security or functionality.
      * Usage is also allowed if you don't know how the user can fix the underlying problem.
      * <p>
-     * If you can provide an exception use {@link BetonQuestLoggerImpl#error(ConfigPackage, String, Throwable)} instead.
+     * If you can provide an exception use {@link BetonQuestLogger#error(ConfigPackage, String, Throwable)} instead.
      *
      * @param pack The related {@link ConfigPackage} or null.
      * @param msg  The message to log.
@@ -162,10 +162,10 @@ public interface BetonQuestLogger {
      * Use this if the underlying problem affects the servers security or functionality.
      * Usage is also allowed if you don't know how the user can fix the underlying problem.
      * <p>
-     * If you cannot provide an exception use {@link BetonQuestLoggerImpl#error(String)} instead.
+     * If you cannot provide an exception use {@link BetonQuestLogger#error(String)} instead.
      * <p>
      * Don't use this method, if you can provide a {@link ConfigPackage}.
-     * Use {@link BetonQuestLoggerImpl#error(ConfigPackage, String, Throwable)} instead.
+     * Use {@link BetonQuestLogger#error(ConfigPackage, String, Throwable)} instead.
      *
      * @param msg    The message to log.
      * @param thrown The throwable to log.
@@ -179,7 +179,7 @@ public interface BetonQuestLogger {
      * Use this if the underlying problem affects the servers security or functionality.
      * Usage is also allowed if you don't know how the user can fix the underlying problem.
      * <p>
-     * If you cannot provide an exception use {@link BetonQuestLoggerImpl#error(ConfigPackage, String)} instead.
+     * If you cannot provide an exception use {@link BetonQuestLogger#error(ConfigPackage, String)} instead.
      *
      * @param pack   The related {@link ConfigPackage} or null.
      * @param msg    The message to log.
@@ -192,10 +192,10 @@ public interface BetonQuestLogger {
      * <p>
      * Use this for additional debug log information.
      * <p>
-     * If you can provide an exception use {@link BetonQuestLoggerImpl#debug(String, Throwable)} instead.
+     * If you can provide an exception use {@link BetonQuestLogger#debug(String, Throwable)} instead.
      * <p>
      * Don't use this method, if you can provide a {@link ConfigPackage}.
-     * Use {@link BetonQuestLoggerImpl#debug(ConfigPackage, String)} instead.
+     * Use {@link BetonQuestLogger#debug(ConfigPackage, String)} instead.
      *
      * @param msg The message to log.
      */
@@ -206,7 +206,7 @@ public interface BetonQuestLogger {
      * <p>
      * Use this for additional debug log information.
      * <p>
-     * If you can provide an exception use {@link BetonQuestLoggerImpl#debug(ConfigPackage, String, Throwable)} instead.
+     * If you can provide an exception use {@link BetonQuestLogger#debug(ConfigPackage, String, Throwable)} instead.
      *
      * @param pack The related {@link ConfigPackage} or null.
      * @param msg  The message to log.
@@ -219,10 +219,10 @@ public interface BetonQuestLogger {
      * <p>
      * Use this for additional debug log information.
      * <p>
-     * If you cannot provide an exception use {@link BetonQuestLoggerImpl#debug(String)} instead.
+     * If you cannot provide an exception use {@link BetonQuestLogger#debug(String)} instead.
      * <p>
      * Don't use this method, if you can provide a {@link ConfigPackage}.
-     * Use {@link BetonQuestLoggerImpl#debug(ConfigPackage, String, Throwable)} instead.
+     * Use {@link BetonQuestLogger#debug(ConfigPackage, String, Throwable)} instead.
      *
      * @param msg    The message to log.
      * @param thrown The throwable to log.
@@ -235,7 +235,7 @@ public interface BetonQuestLogger {
      * <p>
      * Use this for additional debug log information.
      * <p>
-     * If you cannot provide an exception use {@link BetonQuestLoggerImpl#debug(ConfigPackage, String)} instead.
+     * If you cannot provide an exception use {@link BetonQuestLogger#debug(ConfigPackage, String)} instead.
      *
      * @param pack   The related {@link ConfigPackage} or null.
      * @param msg    The message to log.
@@ -251,7 +251,7 @@ public interface BetonQuestLogger {
      * Only use this in cases that should never occur and indicate an error that must be reported.
      * <p>
      * Don't use this method, if you can provide a {@link ConfigPackage}.
-     * Use {@link BetonQuestLoggerImpl#reportException(ConfigPackage, Throwable)} instead.
+     * Use {@link BetonQuestLogger#reportException(ConfigPackage, Throwable)} instead.
      *
      * @param thrown The throwable to log.
      */

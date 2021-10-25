@@ -1,11 +1,11 @@
-package org.betonquest.betonquest.utils.logger.custom;
+package org.betonquest.betonquest.modules.logger.custom;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
-import org.betonquest.betonquest.utils.logger.QuestPackageLogRecord;
+import org.betonquest.betonquest.modules.logger.QuestPackageLogRecord;
 import org.bukkit.ChatColor;
 
 import java.util.logging.Level;

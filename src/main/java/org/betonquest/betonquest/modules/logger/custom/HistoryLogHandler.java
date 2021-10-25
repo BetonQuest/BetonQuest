@@ -1,8 +1,8 @@
-package org.betonquest.betonquest.utils.logger.custom;
+package org.betonquest.betonquest.modules.logger.custom;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import org.betonquest.betonquest.utils.logger.QuestPackageLogRecord;
+import org.betonquest.betonquest.modules.logger.QuestPackageLogRecord;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantReadWriteLock;

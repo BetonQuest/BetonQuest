@@ -1,9 +1,9 @@
-package org.betonquest.betonquest.utils.logger.custom;
+package org.betonquest.betonquest.modules.logger.custom;
 
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.utils.logger.QuestPackageLogRecord;
+import org.betonquest.betonquest.modules.logger.QuestPackageLogRecord;
 
 import java.util.Map;
 import java.util.UUID;

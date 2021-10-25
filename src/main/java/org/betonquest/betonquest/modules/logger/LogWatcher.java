@@ -1,10 +1,10 @@
-package org.betonquest.betonquest.utils.logger;
+package org.betonquest.betonquest.modules.logger;
 
 import lombok.CustomLog;
-import org.betonquest.betonquest.utils.logger.custom.ChatLogFormatter;
-import org.betonquest.betonquest.utils.logger.custom.DebugLogFormatter;
-import org.betonquest.betonquest.utils.logger.custom.HistoryLogHandler;
-import org.betonquest.betonquest.utils.logger.custom.PlayerLogHandler;
+import org.betonquest.betonquest.modules.logger.custom.ChatLogFormatter;
+import org.betonquest.betonquest.modules.logger.custom.DebugLogFormatter;
+import org.betonquest.betonquest.modules.logger.custom.HistoryLogHandler;
+import org.betonquest.betonquest.modules.logger.custom.PlayerLogHandler;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;

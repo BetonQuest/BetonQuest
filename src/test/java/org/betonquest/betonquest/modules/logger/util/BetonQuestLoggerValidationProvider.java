@@ -1,7 +1,7 @@
-package org.betonquest.betonquest.api.logger.util;
+package org.betonquest.betonquest.modules.logger.util;
 
 import org.betonquest.betonquest.api.BetonQuestLogger;
-import org.betonquest.betonquest.utils.logger.BetonQuestLoggerImpl;
+import org.betonquest.betonquest.modules.logger.BetonQuestLoggerImpl;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;

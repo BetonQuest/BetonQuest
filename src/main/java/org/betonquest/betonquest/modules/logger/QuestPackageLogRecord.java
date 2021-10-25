@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.utils.logger;
+package org.betonquest.betonquest.modules.logger;
 
 import org.betonquest.betonquest.config.ConfigPackage;
 import org.bukkit.plugin.Plugin;

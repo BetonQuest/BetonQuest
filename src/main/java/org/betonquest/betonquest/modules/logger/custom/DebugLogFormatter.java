@@ -1,6 +1,6 @@
-package org.betonquest.betonquest.utils.logger.custom;
+package org.betonquest.betonquest.modules.logger.custom;
 
-import org.betonquest.betonquest.utils.logger.QuestPackageLogRecord;
+import org.betonquest.betonquest.modules.logger.QuestPackageLogRecord;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

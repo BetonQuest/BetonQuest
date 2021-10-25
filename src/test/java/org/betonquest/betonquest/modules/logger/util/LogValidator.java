@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api.logger.util;
+package org.betonquest.betonquest.modules.logger.util;
 
 import java.util.Deque;
 import java.util.LinkedList;

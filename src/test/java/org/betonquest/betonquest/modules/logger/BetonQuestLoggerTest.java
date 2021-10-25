@@ -1,9 +1,8 @@
-package org.betonquest.betonquest.api.logger;
+package org.betonquest.betonquest.modules.logger;
 
 import org.betonquest.betonquest.api.BetonQuestLogger;
-import org.betonquest.betonquest.api.logger.util.LogValidator;
 import org.betonquest.betonquest.config.ConfigPackage;
-import org.betonquest.betonquest.utils.logger.BetonQuestLoggerImpl;
+import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

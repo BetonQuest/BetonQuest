@@ -2,11 +2,11 @@ package org.betonquest.betonquest.utils.math;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Variable;
-import org.betonquest.betonquest.api.logger.util.BetonQuestLoggerValidationProvider;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerValidationProvider;
 import org.betonquest.betonquest.utils.math.tokens.Token;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
