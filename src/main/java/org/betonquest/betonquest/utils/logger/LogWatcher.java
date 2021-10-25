@@ -79,7 +79,7 @@ public final class LogWatcher {
             final FileHandler fileHandler = new FileHandler(logFile.getAbsolutePath());
             fileHandler.setFormatter(new DebugLogFormatter());
             final HistoryLogHandler historyHandler = new HistoryLogHandler(fileHandler);
-            historyHandler.setFilter((record) -> debugging);
+            historyHandler.setFilter(record -> debugging);
             plugin.getLogger().getParent().addHandler(historyHandler);
             return historyHandler;
         } catch (final IOException e) {
@@ -93,6 +93,7 @@ public final class LogWatcher {
     private void setupPlayerLogHandler() {
         final PlayerLogHandler playerHandler = new PlayerLogHandler(playerFilters);
         playerHandler.setFormatter(new ChatLogFormatter());
+        playerHandler.setFilter(record -> !playerFilters.isEmpty());
         plugin.getLogger().getParent().addHandler(playerHandler);
     }
 
