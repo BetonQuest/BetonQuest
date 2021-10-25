@@ -83,7 +83,7 @@ public class ConfigAccessor {
             } catch (final InvalidConfigurationException e) {
                 LOG.warning(null, "Invalid configuration found. It contains a YAML syntax error that needs to be fixed! \n" + e.getMessage(), e);
             } catch (final IOException e) {
-                LOG.error(null, "error while loading the config!", e);
+                LOG.error(null, "Unexpected error while loading the config!", e);
             }
         }
     }
