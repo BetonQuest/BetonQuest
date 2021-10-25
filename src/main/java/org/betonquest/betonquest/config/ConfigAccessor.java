@@ -3,10 +3,12 @@ package org.betonquest.betonquest.config;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -66,17 +68,22 @@ public class ConfigAccessor {
                 fileConfiguration = new YamlConfiguration();
             }
         } else {
-            fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
             // Look for defaults in the jar
             try (InputStream defConfigStream = plugin.getResource(fileName)) {
+                fileConfiguration = new YamlConfiguration();
+                fileConfiguration.load(configFile);
                 if (defConfigStream != null) {
                     try (InputStreamReader reader = new InputStreamReader(defConfigStream, StandardCharsets.UTF_8)) {
                         final YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(reader);
                         fileConfiguration.setDefaults(defConfig);
                     }
                 }
+            } catch (final FileNotFoundException e) {
+                LOG.debug(null, "The file '" + configFile.getPath() + "' does not exist!", e);
+            } catch (final InvalidConfigurationException e) {
+                LOG.warning(null, "Invalid configuration found. It contains a YAML syntax error that needs to be fixed! \n" + e.getMessage(), e);
             } catch (final IOException e) {
-                // Empty
+                LOG.error(null, "Unexpected error while loading the config!", e);
             }
         }
     }
