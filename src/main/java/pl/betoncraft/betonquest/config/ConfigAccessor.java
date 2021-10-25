@@ -1,12 +1,18 @@
 package pl.betoncraft.betonquest.config;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.utils.LogUtils;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.logging.Level;
@@ -58,21 +64,27 @@ public class ConfigAccessor {
                         fileConfiguration = YamlConfiguration.loadConfiguration(reader);
                     }
                 }
-            } catch (IOException exception) {
+            } catch (final IOException exception) {
                 fileConfiguration = new YamlConfiguration();
             }
         } else {
-            fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
             // Look for defaults in the jar
             try (InputStream defConfigStream = plugin.getResource(fileName)) {
+                fileConfiguration = new YamlConfiguration();
+                fileConfiguration.load(configFile);
                 if (defConfigStream != null) {
                     try (InputStreamReader reader = new InputStreamReader(defConfigStream, StandardCharsets.UTF_8)) {
                         final YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(reader);
                         fileConfiguration.setDefaults(defConfig);
                     }
                 }
-            } catch (IOException e) {
-                // Empty
+            } catch (final FileNotFoundException e) {
+                LogUtils.getLogger().log(Level.FINE, "The file '" + configFile.getPath() + "' does not exist!", e);
+            } catch (final InvalidConfigurationException e) {
+                LogUtils.getLogger().log(Level.WARNING, "Invalid configuration found. It contains a YAML syntax error that needs to be fixed! \n" + e.getMessage());
+                LogUtils.logThrowable(e);
+            } catch (final IOException e) {
+                LogUtils.getLogger().log(Level.SEVERE, "Unexpected error while loading the config!", e);
             }
         }
     }
@@ -106,7 +118,7 @@ public class ConfigAccessor {
             } else {
                 getConfig().save(configFile);
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LogUtils.getLogger().log(Level.SEVERE, "Could not save config to " + configFile);
             LogUtils.logThrowable(e);
         }
@@ -124,7 +136,7 @@ public class ConfigAccessor {
             try {
                 configFile.createNewFile();
                 try (InputStream input = plugin.getResource(fileName);
-                     OutputStream out = Files.newOutputStream(configFile.toPath());) {
+                     OutputStream out = Files.newOutputStream(configFile.toPath())) {
                     if (input == null) {
                         return;
                     }
@@ -135,7 +147,7 @@ public class ConfigAccessor {
                         length = input.read(buffer);
                     }
                 }
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 LogUtils.logThrowableReport(e);
             }
         }
