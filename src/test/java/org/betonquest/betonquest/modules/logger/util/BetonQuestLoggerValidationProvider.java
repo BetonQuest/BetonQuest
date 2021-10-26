@@ -19,6 +19,10 @@ import static org.mockito.Mockito.*;
  */
 public class BetonQuestLoggerValidationProvider implements ParameterResolver, BeforeAllCallback, AfterAllCallback {
     /**
+     * The topic of generated {@link BetonQuestLogger} in the {@link ParameterResolver}.
+     */
+    public final static String LOGGER_TOPIC = "GeneratedLoggerWithTopic";
+    /**
      * The instance of the parent logger.
      */
     private final Logger parentLogger;
@@ -50,7 +54,8 @@ public class BetonQuestLoggerValidationProvider implements ParameterResolver, Be
     @Override
     public boolean supportsParameter(final ParameterContext parameterContext, final ExtensionContext extensionContext) {
         return parameterContext.getParameter().getType() == LogValidator.class
-                || parameterContext.getParameter().getType() == Logger.class;
+                || parameterContext.getParameter().getType() == Logger.class
+                || parameterContext.getParameter().getType() == BetonQuestLogger.class;
     }
 
     @Override
@@ -60,6 +65,9 @@ public class BetonQuestLoggerValidationProvider implements ParameterResolver, Be
         }
         if (parameterContext.getParameter().getType() == Logger.class) {
             return parentLogger;
+        }
+        if (parameterContext.getParameter().getType() == BetonQuestLogger.class) {
+            return new BetonQuestLoggerImpl(null, parentLogger, parameterContext.getClass(), LOGGER_TOPIC);
         }
         return null;
     }
