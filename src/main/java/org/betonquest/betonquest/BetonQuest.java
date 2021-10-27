@@ -6,6 +6,7 @@ import lombok.Getter;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.LoadDataEvent;
 import org.betonquest.betonquest.api.Objective;
@@ -243,7 +244,7 @@ public class BetonQuest extends JavaPlugin {
      */
     @Getter
     private static BetonQuest instance;
-    private static BetonQuestLoggerImpl log;
+    private static BetonQuestLogger log;
     private final ConcurrentHashMap<String, PlayerData> playerDataMap = new ConcurrentHashMap<>();
     /**
      * -- GETTER --
