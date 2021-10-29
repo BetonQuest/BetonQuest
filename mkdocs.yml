@@ -9,19 +9,19 @@ copyright: '© 2014-2021  BetonQuest Organisation. GPLv3'
 
 
 extra_css:
-  - 'webCode/css/admonition.css'
-  - 'webCode/css/button.css'
-  - 'webCode/css/centered.css'
-  - 'webCode/css/contentAreaFullWidth.css'
-  - 'webCode/css/superFences.css'
+  - '_webCode/css/admonition.css'
+  - '_webCode/css/button.css'
+  - '_webCode/css/centered.css'
+  - '_webCode/css/contentAreaFullWidth.css'
+  - '_webCode/css/superFences.css'
 
 extra_javascript:
-  - 'webCode/js/copyLinkToClipboard.js'
+  - '_webCode/js/copyLinkToClipboard.js'
 
 # More info on this theme: https://squidfunk.github.io/mkdocs-material
 theme:
   name: material
-  custom_dir: 'custom_theme/'
+  custom_dir: 'docs/_custom_theme/'
   language: en
   features:
     - navigation.tabs
@@ -48,8 +48,8 @@ theme:
   font:
     text: Roboto
     code: Roboto Mono
-  logo: media/brand/Icon/Icon1K.png
-  favicon: media/brand/Icon/Icon32.ico
+  logo: '_media/brand/Icon/Icon1K.png'
+  favicon: '_media/brand/Icon/Icon32.ico'
   icon:
     admonition:
       example: fontawesome/regular/eye
@@ -88,7 +88,7 @@ markdown_extensions:
       custom_checkbox: true
   - pymdownx.tilde
   - pymdownx.snippets:
-      base_path: docs/snippets
+      base_path: docs/_snippets
   - abbr
   - toc:
       permalink: 🔗
@@ -97,6 +97,9 @@ plugins:
   - search
   - git-revision-date-localized:
       type: timeago
+  - exclude:
+      glob:
+        - _snippets/*
 
 extra:
   version:

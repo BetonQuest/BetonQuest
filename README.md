@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://betonquest.github.io/BetonQuest/"><img src="/docs/media/brand/Logo/LogoChainless1K.png" alt="BetonQuest Logo"/></a>
+  <a href="https://betonquest.github.io/BetonQuest/"><img src="/docs/_media/brand/Logo/LogoChainless1K.png" alt="BetonQuest Logo"/></a>
 </p>
 
 <p align="center">

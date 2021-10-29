@@ -25,7 +25,7 @@ tr:nth-child(10) {
 </style>
 
 <div style="text-align: center;">
-  <video loop controls poster="media/content/Home/OverviewVideoPreview.jpg" src="media/content/Home/Features/Trailer.mp4" width="100%" style="box-shadow: 0px 0px 30px black;">
+  <video loop controls poster="_media/content/Home/OverviewVideoPreview.jpg" src="_media/content/Home/Features/Trailer.mp4" width="100%" style="box-shadow: 0px 0px 30px black;">
     Sorry, your browser doesn't support embedded videos.
   </video>
 </div>
@@ -158,7 +158,7 @@ Please let us know if there is any outdated information.
 # Features
 
 !!! example inline end bq-inline-example-container
-    <video controls loop src="media/content/Documentation/Conversations/MenuConvIO.mp4"
+    <video controls loop src="_media/content/Documentation/Conversations/MenuConvIO.mp4"
     width="100%">
     Sorry, your browser doesn't support embedded videos.
     </video>
@@ -180,7 +180,7 @@ enough you can always just hook into Skript or Denizen too.
 See the full list of integrations [here](Documentation/Compatibility.md).
 
 !!! example inline end bq-inline-example-container
-    <video controls loop src="media/content/Documentation/Notifications/NotifySystemOverview.mp4"
+    <video controls loop src="_media/content/Documentation/Notifications/NotifySystemOverview.mp4"
     width="100%">
     Sorry, your browser doesn't support embedded videos.
     </video>
@@ -197,7 +197,7 @@ See the full list of integrations [here](Documentation/Compatibility.md).
   you can write content based on the players actions.
 
 !!! example inline end bq-inline-example-container
-    <video controls loop src="media/content/Documentation/Compatibility/PlayerHider.mp4"
+    <video controls loop src="_media/content/Documentation/Compatibility/PlayerHider.mp4"
     width="100%">
     Sorry, your browser doesn't support embedded videos.
     </video>
@@ -225,7 +225,7 @@ Take a look at this handpicked selection:
     <div>
       <h3> Wandering Trader by Ley </h3>
         <video controls loop
-        src="media/content/Home/Features/WanderingTrader.mp4"
+        src="_media/content/Home/Features/WanderingTrader.mp4"
         width="100%">
         Sorry, your browser doesn't support embedded videos.
       </video>
@@ -233,7 +233,7 @@ Take a look at this handpicked selection:
   </div>
   <div>
     <h3> Bookshop by Esron </h3>
-      <video controls loop src="media/content/Home/Features/BookShop.mp4"
+      <video controls loop src="_media/content/Home/Features/BookShop.mp4"
       width="100%">
       Sorry, your browser doesn't support embedded videos.
       </video>
@@ -241,7 +241,7 @@ Take a look at this handpicked selection:
   </div>
   <div>
     <h3> Menu by Esron </h3>
-      <video controls loop poster="media/content/Home/Features/RPGMenuVideoThumbnail.png" src="media/content/Home/Features/RPGMenu.mp4"
+      <video controls loop poster="_media/content/Home/Features/RPGMenuVideoThumbnail.png" src="_media/content/Home/Features/RPGMenu.mp4"
       width="100%">
       Sorry, your browser doesn't support embedded videos.
       </video>
@@ -249,7 +249,7 @@ Take a look at this handpicked selection:
   </div>
   <div>
     <h3> Bards by Esron </h3>
-      <video controls loop src="media/content/Home/Features/Bards.mp4"
+      <video controls loop src="_media/content/Home/Features/Bards.mp4"
       width="100%">
       Sorry, your browser doesn't support embedded videos.
       </video>
@@ -257,7 +257,7 @@ Take a look at this handpicked selection:
   </div>
   <div>
     <h3>Water Well by Titanium</h3>
-      <video controls loop src="media/content/Home/Features/WaterWell.mp4"
+      <video controls loop src="_media/content/Home/Features/WaterWell.mp4"
       width="100%">
       Sorry, your browser doesn't support embedded videos.
       </video>
@@ -266,7 +266,7 @@ Take a look at this handpicked selection:
   <div>
     <h3> Elevator by Titanium </h3>
         <video controls loop
-        src="media/content/Home/Features/Elevator.mp4"
+        src="_media/content/Home/Features/Elevator.mp4"
         width="100%">
         Sorry, your browser doesn't support embedded videos.
       </video>
@@ -275,7 +275,7 @@ Take a look at this handpicked selection:
   <div>
       <h3> Corpse Quest by Titanium </h3>
           <video controls loop
-          src="media/content/Home/Features/Corpse.mp4"
+          src="_media/content/Home/Features/Corpse.mp4"
           width="100%">
           Sorry, your browser doesn't support embedded videos.
         </video>
@@ -295,7 +295,7 @@ Any additional money has to be re-invested in the project.
     <img src="https://opencollective.com/betonquest/donate/button@2x.png?color=blue" width=300 />
 </a>
 <a href="https://mcmodels.net/?wpam_id=3" target="_blank">
-  <img src="../../media/content/Participate/Overview/mcmodels.png" width="300"/>
+  <img src="../../_media/content/Participate/Overview/mcmodels.png" width="300"/>
 </a>
 </div>
 

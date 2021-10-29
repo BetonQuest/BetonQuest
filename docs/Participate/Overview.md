@@ -44,7 +44,7 @@ Any additional money has to be re-invested in the project.
     <img src="https://opencollective.com/betonquest/donate/button@2x.png?color=blue" width=300 />
 </a>
 <a href="https://mcmodels.net/?wpam_id=3" target="_blank">
-  <img src="../../media/content/Participate/Overview/mcmodels.png" width="300"/>
+  <img src="../../_media/content/Participate/Overview/mcmodels.png" width="300"/>
 </a>
 </div>
 

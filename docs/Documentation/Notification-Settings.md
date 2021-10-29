@@ -4,7 +4,7 @@ with unique options that allow you to customize them. Just take a look at this e
 
 <div style="text-align: center">
  <video controls loop
-     src="../../media/content/Documentation/Notifications/NotifySystemOverview.mp4"
+     src="../../_media/content/Documentation/Notifications/NotifySystemOverview.mp4"
      width="780" height="500">
  Sorry, your browser doesn't support embedded videos.
  </video>
