@@ -100,6 +100,7 @@ plugins:
   - exclude:
       glob:
         - _snippets/*
+        - _custom_theme/*
 
 extra:
   version:
