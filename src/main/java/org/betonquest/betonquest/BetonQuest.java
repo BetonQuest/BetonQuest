@@ -567,6 +567,7 @@ public class BetonQuest extends JavaPlugin {
     @Override
     public void onEnable() {
         adventure = BukkitAudiences.create(this);
+        logWatcher.setupPlayerLogHandler(adventure);
 
         // load configuration
         new Config();

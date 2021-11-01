@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.modules.logger.custom;
 
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.modules.logger.QuestPackageLogRecord;
 
 import java.util.Map;
@@ -17,6 +17,10 @@ import java.util.logging.LogRecord;
  */
 public class PlayerLogHandler extends Handler {
     /**
+     * The {@link BukkitAudiences} instance for sending messages.
+     */
+    private final BukkitAudiences bukkitAudiences;
+    /**
      * All active log filters for the in-game log.
      */
     private final Map<UUID, Map<String, Level>> playerFilters;
@@ -24,10 +28,12 @@ public class PlayerLogHandler extends Handler {
     /**
      * Creates a new {@link PlayerLogHandler}.
      *
-     * @param playerFilters The map pointer with the filters
+     * @param bukkitAudiences The {@link BukkitAudiences} instance for sending messages.
+     * @param playerFilters   The map pointer with the filters
      */
-    public PlayerLogHandler(final Map<UUID, Map<String, Level>> playerFilters) {
+    public PlayerLogHandler(final BukkitAudiences bukkitAudiences, final Map<UUID, Map<String, Level>> playerFilters) {
         super();
+        this.bukkitAudiences = bukkitAudiences;
         this.playerFilters = playerFilters;
     }
 
@@ -64,8 +70,7 @@ public class PlayerLogHandler extends Handler {
                 final boolean equal = !entry.getKey().endsWith("*");
                 final String expression = equal ? entry.getKey() : StringUtils.chop(entry.getKey());
                 if (equal && pack.equals(expression) || !equal && pack.startsWith(expression)) {
-                    BetonQuest.getInstance().getAdventure().player(filterEntries.getKey())
-                            .sendMessage(GsonComponentSerializer.gson().deserialize(msg));
+                    bukkitAudiences.player(filterEntries.getKey()).sendMessage(GsonComponentSerializer.gson().deserialize(msg));
                     continue players;
                 }
             }

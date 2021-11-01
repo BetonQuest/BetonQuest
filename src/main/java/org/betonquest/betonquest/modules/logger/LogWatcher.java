@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.modules.logger;
 
 import lombok.CustomLog;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.betonquest.betonquest.modules.logger.custom.ChatLogFormatter;
 import org.betonquest.betonquest.modules.logger.custom.DebugLogFormatter;
 import org.betonquest.betonquest.modules.logger.custom.HistoryLogHandler;
@@ -64,9 +65,8 @@ public final class LogWatcher {
         this.plugin = plugin;
         this.logFile = new File(plugin.getDataFolder(), LOG_FILE_PATH);
         playerFilters = new HashMap<>();
-        historyHandler = setupDebugLogHandler();
-        setupPlayerLogHandler();
 
+        historyHandler = setupDebugLogHandler();
         if (historyHandler != null && plugin.getConfig().getBoolean(CONFIG_PATH, false)) {
             startDebug();
         }
@@ -75,7 +75,6 @@ public final class LogWatcher {
     private HistoryLogHandler setupDebugLogHandler() {
         try {
             renameDebugLogFile();
-
             final FileHandler fileHandler = new FileHandler(logFile.getAbsolutePath());
             fileHandler.setFormatter(new DebugLogFormatter());
             final HistoryLogHandler historyHandler = new HistoryLogHandler(fileHandler);
@@ -90,8 +89,13 @@ public final class LogWatcher {
         return null;
     }
 
-    private void setupPlayerLogHandler() {
-        final PlayerLogHandler playerHandler = new PlayerLogHandler(playerFilters);
+    /**
+     * Setup in-game lodging for players. Only call this method once.
+     *
+     * @param bukkitAudiences The {@link BukkitAudiences} instance
+     */
+    public void setupPlayerLogHandler(final BukkitAudiences bukkitAudiences) {
+        final PlayerLogHandler playerHandler = new PlayerLogHandler(bukkitAudiences, playerFilters);
         playerHandler.setFormatter(new ChatLogFormatter());
         playerHandler.setFilter(record -> !playerFilters.isEmpty());
         plugin.getLogger().getParent().addHandler(playerHandler);
