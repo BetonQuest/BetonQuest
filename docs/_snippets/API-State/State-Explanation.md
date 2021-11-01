@@ -1,22 +1,25 @@
 **BetonQuest 2.0 is currently in development.**  
-This is a progress, that will take some time.
-During this process, APIs will change maybe more than one time.
-To help you relay on the APIs that we touch, we give you a state for it.  
-The states are defined as followed:
+This will take some time. Any API may change more than once during development.
+Sure, any API is supposed to be stable. But we cannot guarantee this - BetonQuest 2.0 includes many redesigns
+of core concepts. It's possible that these turn out to be flawed.  
+However, API states help you understand how finalized an API is.
 
-### Experimental
-This is a first try of a new API implementation.
-Sure, the goal is always to develop a final and stable API.
-But APIs that are marked with the `Experimental` tag, are just reimplemented.
-They will change again, depending on bugs, feedback and missing features or improvements. 
+### Unfinished
+This API is brand-new.
+It will be changed if there are any bugs, missing features or usability improvements.
 
-### Unstable
-If we are pretty sure the state of Experimental is over, but we can not guarantee,
-that nothing will change, we tag it with `Unstable`.
-You can use it, but it could still happen, that we change something, but we try to prevent it.
-The main reason here for a change is a bug or main missing features or improvements.
+**It is not recommended relying on this API, it will most likely change.**
+
+### Draft
+Our own usage and testing has shown that this API is complete and seems bug free.
+However, other plugins may have other use cases which are not covered by our testing.
+Therefore, please go ahead and use this API. Let us know if there are missing features or bugs.
+This API will be changed if there are more bugs, missing features or usability improvements.
+
+**Please use these APIs and give us feedback!**
 
 ### Stable
-This is the point, where we already did some changes to a new or reimplemented API, and we tagged it as `Stable`.
-We are pretty sure, that we will not change something excepting for bugs or other main mistakes in the API design.
-This should be safe to use, as we also care about compatibility when we change something here.
+Both our own and third party testing showed that the API is complete.
+Only bugs and major conceptual problems would lead to more changes.
+
+**This API should be safe to use. We try to keep it compatible with previous versions if changes are needed.**
