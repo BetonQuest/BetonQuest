@@ -140,7 +140,6 @@ import org.betonquest.betonquest.id.VariableID;
 import org.betonquest.betonquest.item.QuestItemHandler;
 import org.betonquest.betonquest.mechanics.PlayerHider;
 import org.betonquest.betonquest.menu.RPGMenu;
-import org.betonquest.betonquest.modules.logger.BetonQuestLoggerImpl;
 import org.betonquest.betonquest.modules.logger.LogWatcher;
 import org.betonquest.betonquest.notify.ActionBarNotifyIO;
 import org.betonquest.betonquest.notify.AdvancementNotifyIO;
@@ -281,7 +280,7 @@ public class BetonQuest extends JavaPlugin {
         pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
 
         instance = this;
-        log = new BetonQuestLoggerImpl(this, this.getLogger(), this.getClass(), null);
+        log = BetonQuestLogger.create(this);
         logWatcher = new LogWatcher(this);
     }
 

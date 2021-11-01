@@ -6,14 +6,13 @@ import org.betonquest.betonquest.modules.logger.BetonQuestLoggerImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginLogger;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Level;
 
 /**
- * This is the BetonQuest log facade for usage with Lombok {@link CustomLog} annotation.
+ * This is the BetonQuest log facade for manual usage or Lombok's {@link CustomLog} annotation.
  * <p>
- * This decorator uses the {@link PluginLogger} from the {@link JavaPlugin#getLogger()} method.
+ * This facade uses the {@link PluginLogger} from the {@link Plugin#getLogger()} method.
  * It registers a new child logger for each class it's used in.
  * <p>
  * Therefore, all of BetonQuest's logging needs to be done with the methods of this class.
@@ -22,10 +21,11 @@ import java.util.logging.Level;
 public interface BetonQuestLogger {
     /**
      * Creates a logger.<p>
-     * This method should only be called with lombok using the @{@link CustomLog} annotation.
+     * <p>
+     * This method is used by Lombok.
      *
-     * @param clazz The class that is passed by lombok.
-     * @return The decorated Logger.
+     * @param clazz The class to create a logger for.
+     * @return A {@link BetonQuestLogger} implementation.
      */
     static BetonQuestLogger create(final Class<?> clazz) {
         return create(clazz, null);
@@ -33,11 +33,12 @@ public interface BetonQuestLogger {
 
     /**
      * Creates a logger.<p>
-     * This method should only be called with lombok using the @{@link CustomLog} annotation.
+     * <p>
+     * This method is used by Lombok.
      *
-     * @param clazz The class that is passed by lombok.
-     * @param topic The optional topic of the logger passed by lombok.
-     * @return The decorated Logger.
+     * @param clazz The class to create a logger for.
+     * @param topic The optional topic of the logger.
+     * @return A {@link BetonQuestLogger} implementation.
      */
     @SuppressWarnings("PMD.UseProperClassLoader")
     static BetonQuestLogger create(final Class<?> clazz, final String topic) {
@@ -47,6 +48,29 @@ public interface BetonQuestLogger {
             }
         }
         return new BetonQuestLoggerImpl(null, Bukkit.getLogger(), clazz, topic);
+    }
+
+    /**
+     * Creates a logger.<p>
+     *
+     * @param plugin The plugin which is used for logging.
+     * @param topic  The optional topic of the logger.
+     * @return A {@link BetonQuestLogger} implementation.
+     */
+    static BetonQuestLogger create(final Plugin plugin, final String topic) {
+        return new BetonQuestLoggerImpl(plugin, plugin.getLogger(), plugin.getClass(), topic);
+    }
+
+    /**
+     * Creates a logger.<p>
+     * Should only be used for instances of {@link Plugin}.
+     * Use create for all other classes.
+     *
+     * @param plugin The plugin which is used for logging.
+     * @return A {@link BetonQuestLogger} implementation.
+     */
+    static BetonQuestLogger create(final Plugin plugin) {
+        return create(plugin, null);
     }
 
     /**

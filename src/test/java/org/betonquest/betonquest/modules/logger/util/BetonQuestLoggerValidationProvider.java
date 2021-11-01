@@ -41,7 +41,7 @@ public class BetonQuestLoggerValidationProvider implements ParameterResolver, Be
     @Override
     public void beforeAll(final ExtensionContext context) {
         betonQuestLogger = mockStatic(BetonQuestLogger.class);
-        betonQuestLogger.when(() -> BetonQuestLogger.create(any(), any())).thenAnswer(invocation ->
+        betonQuestLogger.when(() -> BetonQuestLogger.create(any(Class.class), any())).thenAnswer(invocation ->
                 new BetonQuestLoggerImpl(null, parentLogger, invocation.getArgument(0), invocation.getArgument(1)));
     }
 
