@@ -16,7 +16,7 @@ However, other plugins may have other use cases which are not covered by our tes
 Therefore, please go ahead and use this API. Let us know if there are missing features or bugs.
 This API will be changed if there are more bugs, missing features or usability improvements.
 
-**Please use these APIs and give us feedback!**
+**Please use this API and give us feedback!**
 
 ### Stable
 Both our own and third party testing showed that the API is complete.
