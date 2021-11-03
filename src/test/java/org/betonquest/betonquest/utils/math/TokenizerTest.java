@@ -11,6 +11,8 @@ import org.betonquest.betonquest.utils.math.tokens.Token;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.mockito.MockedStatic;
 
 import java.util.Collections;
@@ -22,8 +24,9 @@ import static org.mockito.Mockito.*;
 /**
  * Test the {@link Tokenizer}.
  */
-@SuppressWarnings("PMD.AvoidDuplicateLiterals")
+@SuppressWarnings({"PMD.AvoidDuplicateLiterals", "deprecation"})
 @ExtendWith(BetonQuestLoggerValidationProvider.class)
+@Execution(ExecutionMode.SAME_THREAD)
 public class TokenizerTest {
 
     /**

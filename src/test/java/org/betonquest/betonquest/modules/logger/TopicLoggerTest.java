@@ -2,8 +2,6 @@ package org.betonquest.betonquest.modules.logger;
 
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -13,7 +11,6 @@ import java.util.logging.Logger;
  * This class test the {@link TopicLogger}.
  */
 @SuppressWarnings("PMD.MoreThanOneLogger")
-@Execution(ExecutionMode.CONCURRENT)
 public class TopicLoggerTest {
     /**
      * The logger topic.

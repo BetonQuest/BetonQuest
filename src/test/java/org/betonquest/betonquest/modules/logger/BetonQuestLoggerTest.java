@@ -18,8 +18,8 @@ import static org.mockito.Mockito.*;
  * This class test the {@link BetonQuestLogger}.
  */
 @SuppressWarnings({"PMD.JUnitTestsShouldIncludeAssert", "PMD.MoreThanOneLogger"})
-@Execution(ExecutionMode.CONCURRENT)
 @ExtendWith(BetonQuestLoggerValidationProvider.class)
+@Execution(ExecutionMode.SAME_THREAD)
 public class BetonQuestLoggerTest {
     /**
      * The {@link ConfigPackage} name.
