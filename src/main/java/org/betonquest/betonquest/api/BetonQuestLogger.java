@@ -20,9 +20,11 @@ import java.util.logging.Level;
 @SuppressWarnings("PMD.TooManyMethods")
 public interface BetonQuestLogger {
     /**
-     * Creates a logger.<p>
+     * Creates a logger.
      * <p>
-     * This method is used by Lombok.
+     * Use this method to create a logger without a topic.
+     * <p>
+     * This method is also used by Lombok.
      *
      * @param clazz The class to create a logger for.
      * @return A {@link BetonQuestLogger} implementation.
@@ -32,7 +34,9 @@ public interface BetonQuestLogger {
     }
 
     /**
-     * Creates a logger.<p>
+     * Creates a logger.
+     * <p>
+     * Use this method to create a logger with a topic.
      * <p>
      * This method is used by Lombok.
      *
@@ -51,7 +55,25 @@ public interface BetonQuestLogger {
     }
 
     /**
-     * Creates a logger.<p>
+     * Creates a logger.
+     * <p>
+     * Use this method to create a logger for the {@link Plugin} class without a topic.
+     * For other classes use the {@link BetonQuestLogger#create(Class)}
+     * or {@link BetonQuestLogger#create(Class, String)} method.
+     *
+     * @param plugin The plugin which is used for logging.
+     * @return A {@link BetonQuestLogger} implementation.
+     */
+    static BetonQuestLogger create(final Plugin plugin) {
+        return create(plugin, null);
+    }
+
+    /**
+     * Creates a logger.
+     * <p>
+     * Use this method to create a logger for the {@link Plugin} class without a topic.
+     * For other classes use the {@link BetonQuestLogger#create(Class)}
+     * or {@link BetonQuestLogger#create(Class, String)} method.
      *
      * @param plugin The plugin which is used for logging.
      * @param topic  The optional topic of the logger.
@@ -59,18 +81,6 @@ public interface BetonQuestLogger {
      */
     static BetonQuestLogger create(final Plugin plugin, final String topic) {
         return new BetonQuestLoggerImpl(plugin, plugin.getLogger(), plugin.getClass(), topic);
-    }
-
-    /**
-     * Creates a logger.<p>
-     * Should only be used for instances of {@link Plugin}.
-     * Use create for all other classes.
-     *
-     * @param plugin The plugin which is used for logging.
-     * @return A {@link BetonQuestLogger} implementation.
-     */
-    static BetonQuestLogger create(final Plugin plugin) {
-        return create(plugin, null);
     }
 
     /**
