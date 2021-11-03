@@ -3,7 +3,7 @@ package org.betonquest.betonquest.modules.logger.custom;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
-import org.betonquest.betonquest.modules.logger.QuestPackageLogRecord;
+import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
 
 import java.util.Map;
 import java.util.UUID;
@@ -46,7 +46,7 @@ public class PlayerLogHandler extends Handler {
     @Override
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public void publish(final LogRecord record) {
-        if (!(record instanceof QuestPackageLogRecord) || !isLoggable(record)) {
+        if (!(record instanceof BetonQuestLogRecord) || !isLoggable(record)) {
             return;
         }
         final String msg;
@@ -56,7 +56,7 @@ public class PlayerLogHandler extends Handler {
             reportError(null, ex, ErrorManager.FORMAT_FAILURE);
             return;
         }
-        final String pack = ((QuestPackageLogRecord) record).getPack();
+        final String pack = ((BetonQuestLogRecord) record).getPack();
         filterPlayers(record, msg, pack);
     }
 

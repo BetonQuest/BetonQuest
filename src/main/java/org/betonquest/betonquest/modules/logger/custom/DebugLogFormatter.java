@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.modules.logger.custom;
 
-import org.betonquest.betonquest.modules.logger.QuestPackageLogRecord;
+import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -28,8 +28,8 @@ public class DebugLogFormatter extends Formatter {
     @Override
     public String format(final LogRecord record) {
         dat.setTime(record.getMillis());
-        final boolean isBQ = record instanceof QuestPackageLogRecord;
-        final QuestPackageLogRecord logRecord = isBQ ? (QuestPackageLogRecord) record : null;
+        final boolean isBQ = record instanceof BetonQuestLogRecord;
+        final BetonQuestLogRecord logRecord = isBQ ? (BetonQuestLogRecord) record : null;
         final String plugin = isBQ && !logRecord.getPlugin().isEmpty() ? "[" + logRecord.getPlugin() + "] " : "";
         final String questPackage = isBQ && !logRecord.getPack().isEmpty() ? "<" + logRecord.getPack() + "> " : "";
         final String message = formatMessage(record);

@@ -5,7 +5,7 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
-import org.betonquest.betonquest.modules.logger.QuestPackageLogRecord;
+import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
 import org.bukkit.ChatColor;
 
 import java.util.logging.Level;
@@ -26,8 +26,8 @@ public class ChatLogFormatter extends DebugLogFormatter {
     @Override
     public String format(final LogRecord record) {
         final String color = formatColor(record);
-        final boolean isBQ = record instanceof QuestPackageLogRecord;
-        final QuestPackageLogRecord logRecord = isBQ ? (QuestPackageLogRecord) record : null;
+        final boolean isBQ = record instanceof BetonQuestLogRecord;
+        final BetonQuestLogRecord logRecord = isBQ ? (BetonQuestLogRecord) record : null;
         final String plugin = isBQ && !logRecord.getPlugin().isEmpty() ? logRecord.getPlugin() : "";
         final String questPackage = isBQ && !logRecord.getPack().isEmpty() ? "<" + logRecord.getPack() + "> " : "";
         final String message = record.getMessage();

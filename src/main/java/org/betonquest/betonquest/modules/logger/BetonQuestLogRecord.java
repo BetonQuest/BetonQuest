@@ -9,7 +9,7 @@ import java.util.logging.LogRecord;
 /**
  * Custom {@link LogRecord} for BetonQuest that adds a {@link ConfigPackage} name.
  */
-public class QuestPackageLogRecord extends LogRecord {
+public class BetonQuestLogRecord extends LogRecord {
 
     private static final long serialVersionUID = -7094531905051980356L;
     /**
@@ -29,7 +29,7 @@ public class QuestPackageLogRecord extends LogRecord {
      * @param level  A logging level value.
      * @param msg    The raw non-localized logging message (may be null).
      */
-    public QuestPackageLogRecord(final Plugin plugin, final ConfigPackage pack, final Level level, final String msg) {
+    public BetonQuestLogRecord(final Plugin plugin, final ConfigPackage pack, final Level level, final String msg) {
         super(level, msg);
         this.plugin = plugin == null ? "" : plugin.getName();
         this.pack = pack == null ? "" : pack.getName();
