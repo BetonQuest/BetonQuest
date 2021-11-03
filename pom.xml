@@ -973,6 +973,9 @@
           <configuration>
             <reuseForks>true</reuseForks>
             <forkCount>2C</forkCount>
+            <systemPropertyVariables>
+              <java.util.logging.config.file>${project.basedir}/src/test/resources/logging-test.properties</java.util.logging.config.file>
+            </systemPropertyVariables>
           </configuration>
         </plugin>
         <plugin>
