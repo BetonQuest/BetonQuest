@@ -4,13 +4,13 @@ Sure, any API is supposed to be stable. But we cannot guarantee this - BetonQues
 of core concepts. It's possible that these turn out to be flawed.  
 However, API states help you understand how finalized an API is.
 
-### Unfinished
+<h3> Unfinished </h3>
 This API is brand-new.
 It will be changed if there are any bugs, missing features or usability improvements.
 
 **It is not recommended relying on this API, it will most likely change.**
 
-### Draft
+<h3> Draft </h3>
 Our own usage and testing has shown that this API is complete and seems bug free.
 However, other plugins may have other use cases which are not covered by our testing.
 Therefore, please go ahead and use this API. Let us know if there are missing features or bugs.
@@ -18,7 +18,7 @@ This API will be changed if there are more bugs, missing features or usability i
 
 **Please use this API and give us feedback!**
 
-### Stable
+<h3> Stable </h3>
 Both our own and third party testing showed that the API is complete.
 Only bugs and major conceptual problems would lead to more changes.
 
