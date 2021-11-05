@@ -220,7 +220,7 @@ import java.util.regex.Pattern;
  * Represents BetonQuest plugin
  */
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength", "PMD.GodClass",
-        "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidFieldNameMatchingMethodName"})
+        "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidFieldNameMatchingMethodName", "PMD.AtLeastOneConstructor"})
 public class BetonQuest extends JavaPlugin {
     private static final Map<String, Class<? extends Condition>> CONDITION_TYPES = new HashMap<>();
     private static final Map<String, Class<? extends QuestEvent>> EVENT_TYPES = new HashMap<>();
@@ -252,8 +252,8 @@ public class BetonQuest extends JavaPlugin {
      * @return The LogWatcher instance.
      */
     @Getter
-    private final LogWatcher logWatcher;
-    private final String pluginTag;
+    private LogWatcher logWatcher;
+    private String pluginTag;
     /**
      * The adventure instance.
      * -- GETTER --
@@ -272,17 +272,6 @@ public class BetonQuest extends JavaPlugin {
     private PlayerHider playerHider;
     @Getter
     private RPGMenu rpgMenu;
-
-    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
-    @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
-    public BetonQuest() {
-        super();
-        pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
-
-        instance = this;
-        log = BetonQuestLogger.create(this);
-        logWatcher = new LogWatcher(this);
-    }
 
     public static boolean conditions(final String playerID, final Collection<ConditionID> conditionIDs) {
         final ConditionID[] ids = new ConditionID[conditionIDs.size()];
@@ -560,6 +549,16 @@ public class BetonQuest extends JavaPlugin {
         } else {
             getServer().getScheduler().runTask(BetonQuest.getInstance(), () -> getServer().getPluginManager().callEvent(event));
         }
+    }
+
+    @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
+    @Override
+    public void onLoad() {
+        instance = this;
+        pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
+
+        log = BetonQuestLogger.create(this);
+        logWatcher = new LogWatcher(this);
     }
 
     @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.DoNotUseThreads", "PMD.NPathComplexity"})
