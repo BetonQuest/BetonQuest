@@ -1,41 +1,39 @@
 --8<-- "API-State/Unfinished.md"
 
-Here you find everything that you need to know about the BetonQuest logger, no matter if you are working on BetonQuest 
+This page shows you everything you need to know about the BetonQuest logger, no matter if you are working on BetonQuest 
 itself or an integration / addon.
 
 ## Why a custom Logger?
 The main advantage is that it is **easier to use**.
-Especially for contributors that are not familiar with our logging conventions. This helps to keep the log consistent.
+It provides an easy interface that enables custom logging features and respects our logging conventions. 
+This helps to provide a great user experience and keeps the log consistent.
 
 ### Advantages
-These advantages are mainly for BetonQuest, but it is also very useful for other plugins, that integrate with BetonQuest. 
+These advantages are mainly for BetonQuest, but it is also very useful for 3rd party integrations. 
 
-??? info "Debug Logging"
-    First BetonQuest has an own `log` folder and if logging is enabled, a `latest.log` file will be written.
-    This log fle only contains BetonQuest related log messages and messages from other plugins, that use our logger.
-    The main advantage of our log is, that it also contains debug messages.
-    And if you use our logger in your plugin, you can set the things you log in relation to BetonQuest mechanics.
-    This also allows us to set things you do in reaction to BetonQuest.
-    All this mainly helps to trace more complicated bugs on both sides.
-
-??? info "Log History"
-    We keep an eye on the "Debug Logging".
-    It happens very often, that a user gets an error, and then he needs the debug log, but logging was not enabled.
-    To prevent to reproduce an unknown situation it is possible to log the last 10 minutes afterwards.
-    So if you enable the "Debug Logging", the history will be written automatically to the `latest.log`.
 
 ??? info "In-game logging"
-    One more thing that helps not only devs but also users, is the in-game logging.
-    You can see all log messages in-game, and you can filter for quest packages and for the log level.
-    With that you and users can easily track what's happening in-game. 
+    Users can see all log messages send using the BetonQuestLogger in-game.
+    Additionally, these messages can be filtered by quest package and log level.
+
+??? info "Debug Logging"
+    BetonQuest has its own `log` folder in which a `latest.log` file is written if debug logging is enabled.
+    It contains our own log messages and messages from 3rd party integrations.
+    Additional debug messages are logged next to everything that is displayed on the console already.
+    You can send debug log messages directly to that log when you use the BetonQuestLogger in your addon.
+    This will make it a lot easier to see how your plugin integrates with BetonQuest's mechanics if a bug occurs.
+
+??? info "Log History"
+    It happens very often that a user experiences a bug while debug logging is not enabled.
+    We keep the last 10 minutes of the debug log history saved in memory.
+    Therefore, the history will be written to `latest.log` once you enable "Debug Logging" via command. 
 
 ??? info "Logger Topics"
-    You can use a feature called topics. With topics, you can give your log messages a prefix like `(Database)`.
-    You can use a topic for each class or of each BetonQuestLogger instance.
-    Topics are mainly made to give important parts of your plugin log messages extra attention by marking them with a topic.
+    The BetonQuestLogger supports topics, which give your log messages a prefix like `(Database)`.
+    You can use a topic for each class or for each BetonQuestLogger instance.
+    Topics are supposed to give important log messages extra attention by making them stand out.
 
-## Get a BetonQuestLogger
-There are two ways to get a logger:
+## Obtaining a BetonQuestLogger Instance
 
 === "Using Lombock"
     Using Lombock enables you to use the handy
@@ -112,14 +110,21 @@ There are two ways to get a logger:
             }
         ````
 
-## Use a BetonQuestLogger
-Once you [Get a BetonQuestLogger](#get-a-betonquestlogger) you can use the variable `LOG`,
-that is an instance of the class BetonQuestLogger.
-You have a bunch of methods there, to log what ever you want or need.
+## Using the BetonQuestLogger
+A BetonQuestLogger will be available as the variable `LOG` once you [obtained a BetonQuestLogger instance](#obtaining-a-betonquestlogger-instance). 
+It has a bunch of methods for all use cases. Its JavaDocs explain when and how to use these.
+Make sure to give the JavaDocs a quick read! 
 
-There are mainly the method types `debug`, `info`, `warning`, `error` and `reportException`.
-All these methods are available with and without a package.
-If you can provide a package, you should, otherwise filtering for packages is not available.
-All methods have explicit javadocs, that explain how you use them and what they exactly do.
-The important behaviours are, that `warning` with an exception log the exception in the debug log,
-and `reportException` should only be called, if you are in an edge case, that can normally never occur.
+### Method Overview
+
+All methods come in multiple variants. Always provide a package if possible, as this makes it possible to filter the log
+message.
+ 
+
+| Name                              	| Use Case 	                                                                                                                                                 | Example 	                                                 |
+|------------------------------------ |----------------------------------------------------------------------------------------------------------------------------------------------------------- |---------------------------------------------------------- |
+| :shushing_face: Debug               | Used to display internal states or events that may be beneficial for bug-fixing. These messages are only be visible in the debug log.                      | An event has been fired.         	                       |
+| :information_source: Info           | Use this for normal log information in the server's console.                                                                                               | A new integration was successfully hooked.     	         |
+| :warning: Warning                   | You can provide useful information how to fix the underlying problem.                                                                                      | The user wrote an event with syntax errors.               |
+| :x: Error            	              | The underlying problem affects the servers security or functionality. Usage is also allowed if you don't know how the user can fix the underlying problem. | An error occurred while loading an integration.           |
+| :rotating_light: Report Exception 	| Only use this in cases that should never occur and indicate an error that must be reported to the projects issue tracker.                                  | You need to catch an exception that you know should never occur unless something is horribly wrong. | 
