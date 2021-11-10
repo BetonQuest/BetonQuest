@@ -1,4 +1,4 @@
---8<-- "API-State/Unfinished.md"
+--8<-- "API-State/Draft.md"
 
 This page shows you everything you need to know about the BetonQuest logger, no matter if you are working on BetonQuest 
 itself or an integration / addon.
@@ -35,52 +35,56 @@ These advantages are mainly for BetonQuest, but it is also very useful for 3rd p
 
 ## Obtaining a BetonQuestLogger Instance
 
-=== "Using Lombock"
-    Using Lombock enables you to use the handy
-    <a href="https://projectlombok.org/features/log" target="_blank">@CustomLog</a>
-    annotation on each class you want a logger for.
-
-    !!! abstract "1. Setup"
-        The first step is to install a Lombok plugin in your IDE. IntelliJ contains it by default.
-
-        All 3rd party plugins need to create a new file named 'lombok.config' in their projects root.
-        Copy the following to the file:
-        ````linenums="1"
-        lombok.log.custom.declaration = org.betonquest.betonquest.api.BetonQuestLogger org.betonquest.betonquest.api.BetonQuestLogger.create(TYPE)(TYPE,TOPIC)
-        lombok.log.fieldName = LOG
-        ````
-
-    !!! abstract "2. Usage"
-        Simply add the `@CustomLog` annotation to any class definition.
-
-        === "Without topic"
-            ````java linenums="1"
-            @CustomLog
-            public final class MyCustomEvent {
+!!! note ""
+    === "Using Lombock"
+        Using Lombock enables you to use the handy
+        <a href="https://projectlombok.org/features/log" target="_blank">@CustomLog</a>
+        annotation on each class you want a logger for.
+        This requires a Lombock setup in your project and in your IDE.
+    
+        !!! abstract "1. Setup"
+            The first step is to install a Lombok plugin in your IDE. IntelliJ contains it by default.
+    
+            All 3rd party plugins need to create a new file named `lombok.config` in their projects root.
+            Copy the following to the file:
+            ````linenums="1"
+            lombok.log.custom.declaration = org.betonquest.betonquest.api.BetonQuestLogger org.betonquest.betonquest.api.BetonQuestLogger.create(TYPE)(TYPE,TOPIC)
+            lombok.log.fieldName = LOG
             ````
-        === "With topic"
-            ````java linenums="1"
-            @CustomLog(topic = "MyCustomTopic")
-            public final class MyCustomEvent {
-            ````
+            Additionally, Lombock also needs to be setup for the project. The exact configuration depends on your project
+            setup.
+    
+        !!! abstract "2. Usage"
+            Simply add the `@CustomLog` annotation to any class definition.
+    
+            === "Without topic"
+                ````java linenums="1"
+                @CustomLog
+                public final class MyCustomEvent {
+                ````
+            === "With topic"
+                ````java linenums="1"
+                @CustomLog(topic = "MyCustomTopic")
+                public final class MyCustomEvent {
+                ````
+    
+    === "Using plain Java"    
+        !!! abstract ""
+            This method works without Lombok.
+            Simply create a BetonQuestLogger instance.
+    
+            === "Without topic"
+                ````java linenums="1"
+                public final class MyCustomEvent {
+                    private final static BetonQuestLogger LOG = BetonQuestLogger.create(MyCustomEvent.class);
+                ````
+            
+            === "With topic"
+                ````java linenums="1"
+                public final class MyCustomEvent {
+                    private final static BetonQuestLogger LOG = BetonQuestLogger.create(MyCustomEvent.class, "MyCustomTopic");
+                ````
 
-=== "Using plain Java"    
-    !!! abstract ""
-        This method works without Lombok.
-        Simply create a BetonQuestLogger instance.
-
-        === "Without topic"
-            ````java linenums="1"
-            public final class MyCustomEvent {
-                private final static BetonQuestLogger LOG = BetonQuestLogger.create(MyCustomEvent.class);
-            ````
-        
-        === "With topic"
-            ````java linenums="1"
-            public final class MyCustomEvent {
-                private final static BetonQuestLogger LOG = BetonQuestLogger.create(MyCustomEvent.class, "MyCustomTopic");
-            ````
----
 
 !!! warning "Get the logger in your JavaPlugin class"
     The methods described above do not work for your plugin's main class. 
