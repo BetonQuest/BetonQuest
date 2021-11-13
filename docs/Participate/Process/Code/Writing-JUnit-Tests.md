@@ -31,7 +31,7 @@ It is a major goal to write JUnit tests for most parts of BetonQuest.
 
 _You may need to read [Logging](../../../API/Logging.md) to understand this paragraph._
 
-This error can occur everytime the `@CustomLog` annotation is used in a class:
+This error can occur everytime the `@CustomLog` annotation is used in a class that is called by a JUnit test:
 
 ```
 Cannot invoke "org.bukkit.Server.getPluginManager()" because "org.bukkit.Bukkit.server" is null
