@@ -46,8 +46,8 @@ public class TestFeature {
 ````
 
 The test should now work as intended because a new anonymous logger is created everytime the `@CustomLog` annotation
-is used. All these loggers have a silent parent logger - so there are no visible log messages in the command line
-- but all messages are passed to the `LogValidator` nevertheless. This parent logger also enables a few new features:
+is used. All these loggers have a silent parent logger - so there are no visible log messages in the command line and the 
+`BetonQuestLoggerService` enables a few new features:
 
 ### LogValidator
 
@@ -61,7 +61,7 @@ public class TestFeature {
     public void testCustom(LogValidator validator) {
 ```
 
-The `validator` `LogValidator` is created and passed to your method by the `BetonQuestLoggerService`.
+The `validator` is created and passed to your method by the `BetonQuestLoggerService`.
 It makes it possible to assert that a log message has been printed.
 The simplest method is `assertLogEntry(Level level, String message)`, that you can use to check
 that the given message with the given level has been logged. You can also check that there are no additional log 
