@@ -59,15 +59,18 @@ public final class LogWatcher {
     /**
      * Setups the debug and in-game chat log.
      *
-     * @param plugin The related {@link Plugin} instance
+     * @param plugin          The related {@link Plugin} instance
+     * @param bukkitAudiences The {@link BukkitAudiences} instance
      */
-    public LogWatcher(final Plugin plugin) {
+    public LogWatcher(final Plugin plugin, final BukkitAudiences bukkitAudiences) {
         this.plugin = plugin;
         this.logFile = new File(plugin.getDataFolder(), LOG_FILE_PATH);
         playerFilters = new HashMap<>();
 
         historyHandler = setupDebugLogHandler();
-        if (historyHandler != null && plugin.getConfig().getBoolean(CONFIG_PATH, false)) {
+        setupPlayerLogHandler(bukkitAudiences);
+
+        if (historyHandler != null && plugin.getConfig().getBoolean(CONFIG_PATH + ".enabled", false)) {
             startDebug();
         }
     }
@@ -77,7 +80,8 @@ public final class LogWatcher {
             renameDebugLogFile();
             final FileHandler fileHandler = new FileHandler(logFile.getAbsolutePath());
             fileHandler.setFormatter(new DebugLogFormatter());
-            final HistoryLogHandler historyHandler = new HistoryLogHandler(fileHandler);
+            final HistoryLogHandler historyHandler = new HistoryLogHandler(fileHandler,
+                    plugin.getConfig().getInt(CONFIG_PATH + ".history_in_minutes", 10));
             historyHandler.setFilter(record -> debugging);
             plugin.getLogger().getParent().addHandler(historyHandler);
             return historyHandler;
@@ -89,12 +93,7 @@ public final class LogWatcher {
         return null;
     }
 
-    /**
-     * Setup in-game lodging for players. Only call this method once.
-     *
-     * @param bukkitAudiences The {@link BukkitAudiences} instance
-     */
-    public void setupPlayerLogHandler(final BukkitAudiences bukkitAudiences) {
+    private void setupPlayerLogHandler(final BukkitAudiences bukkitAudiences) {
         final PlayerLogHandler playerHandler = new PlayerLogHandler(bukkitAudiences, playerFilters);
         playerHandler.setFormatter(new ChatLogFormatter());
         playerHandler.setFilter(record -> !playerFilters.isEmpty());
@@ -108,7 +107,7 @@ public final class LogWatcher {
         synchronized (LogWatcher.class) {
             if (!debugging) {
                 debugging = true;
-                plugin.getConfig().set(CONFIG_PATH, true);
+                plugin.getConfig().set(CONFIG_PATH + ".enabled", true);
                 plugin.saveConfig();
                 historyHandler.push();
             }
@@ -122,7 +121,7 @@ public final class LogWatcher {
         synchronized (LogWatcher.class) {
             if (debugging) {
                 debugging = false;
-                plugin.getConfig().set(CONFIG_PATH, false);
+                plugin.getConfig().set(CONFIG_PATH + ".enabled", false);
                 plugin.saveConfig();
             }
         }

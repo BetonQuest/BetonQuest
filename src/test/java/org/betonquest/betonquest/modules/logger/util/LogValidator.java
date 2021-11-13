@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.modules.logger.util;
 
-import java.util.Deque;
-import java.util.LinkedList;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -18,14 +18,14 @@ public class LogValidator extends Handler {
     /**
      * The queue of all left {@link LogRecord}s.
      */
-    private final Deque<LogRecord> records;
+    private final Queue<LogRecord> records;
 
     /**
      * Create a new {@link LogValidator}.
      */
     public LogValidator() {
         super();
-        records = new LinkedList<>();
+        records = new ConcurrentLinkedQueue<>();
     }
 
     /**
@@ -53,7 +53,7 @@ public class LogValidator extends Handler {
 
     @Override
     public void publish(final LogRecord record) {
-        records.addLast(record);
+        records.add(record);
     }
 
     @Override
@@ -108,7 +108,7 @@ public class LogValidator extends Handler {
 
     private LogRecord popLogRecord() {
         assertFalse(records.isEmpty(), "There is no left LogRecord to query for assertion!");
-        return records.pop();
+        return records.remove();
     }
 
     private void assertEntry(final LogRecord record, final Level level, final String message, final Class<? extends Throwable> throwable, final String throwableMessage) {

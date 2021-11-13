@@ -1,17 +1,17 @@
 package org.betonquest.betonquest.modules.logger.custom;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
+import org.bukkit.Bukkit;
 
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 /**
- * This is a {@link Handler} that can hold the last 10 minutes of {@link LogRecord}s.
+ * This is a {@link Handler} that can hold the last x minutes of {@link LogRecord}s.
  * If the filter returns true, the LogRecords will be passed to the target logger
  * otherwise they will be written to the history.
  * The history can then be pushed to the target handler at any time.
@@ -19,13 +19,9 @@ import java.util.logging.LogRecord;
  */
 public class HistoryLogHandler extends Handler {
     /**
-     * The history of the last 10 minutes of LogRecords.
+     * The history of the last x minutes of LogRecords.
      */
-    private final Cache<Integer, LogRecord> records = CacheBuilder.newBuilder().expireAfterWrite(10, TimeUnit.MINUTES).build();
-    /**
-     * A lock to prevent read and write at the same time.
-     */
-    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock(true);
+    private final Queue<LogRecord> records;
     /**
      * The target Handler to log the history to.
      */
@@ -33,11 +29,30 @@ public class HistoryLogHandler extends Handler {
 
     /**
      * Creates a new {@link HistoryLogHandler}.
+     * <p>
+     * If expireAfterMinutes is 0, no history will be saved at all.
      *
-     * @param target The Handler to log the history to
+     * @param target             The Handler to log the history to
+     * @param expireAfterMinutes The time a {@link LogRecord} stays in the cache
      */
-    public HistoryLogHandler(final Handler target) {
+    public HistoryLogHandler(final Handler target, final int expireAfterMinutes) {
         super();
+        if (expireAfterMinutes == 0) {
+            this.records = null;
+        } else {
+            this.records = new ConcurrentLinkedQueue<>();
+            final int expireAfterMillis = expireAfterMinutes * 60 * 1000;
+            Bukkit.getScheduler().runTaskTimerAsynchronously(BetonQuest.getInstance(), () -> {
+                LogRecord record = null;
+                do {
+                    if (record != null) {
+                        records.remove();
+                    }
+                    record = records.peek();
+                } while (record != null && record.getMillis() < System.currentTimeMillis() - expireAfterMillis);
+
+            }, 20, 20);
+        }
         this.target = target;
     }
 
@@ -51,16 +66,11 @@ public class HistoryLogHandler extends Handler {
         if (!(record instanceof BetonQuestLogRecord)) {
             return;
         }
-        lock.writeLock().lock();
-        try {
-            if (isLoggable(record)) {
-                push();
-                target.publish(record);
-            } else {
-                records.put((int) records.size(), record);
-            }
-        } finally {
-            lock.writeLock().unlock();
+        if (isLoggable(record)) {
+            push();
+            target.publish(record);
+        } else if (records != null) {
+            records.add(record);
         }
     }
 
@@ -68,18 +78,14 @@ public class HistoryLogHandler extends Handler {
      * Publishes the history to the target handler if history is available.
      */
     public void push() {
-        lock.readLock().lock();
-        try {
-            if (records.size() > 0) {
-                target.publish(new LogRecord(Level.INFO, "=====START OF HISTORY====="));
-                for (int i = 0; i < records.size(); i++) {
-                    target.publish(records.getIfPresent(i));
-                }
-                target.publish(new LogRecord(Level.INFO, "=====END OF HISTORY====="));
-                records.invalidateAll();
-            }
-        } finally {
-            lock.readLock().unlock();
+        if (records != null && !records.isEmpty()) {
+            target.publish(new LogRecord(Level.INFO, "=====START OF HISTORY====="));
+            LogRecord record;
+            do {
+                record = records.poll();
+                target.publish(record);
+            } while (record != null);
+            target.publish(new LogRecord(Level.INFO, "=====END OF HISTORY====="));
         }
     }
 

@@ -551,21 +551,16 @@ public class BetonQuest extends JavaPlugin {
         }
     }
 
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.DoNotUseThreads", "PMD.NPathComplexity"})
     @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
     @Override
-    public void onLoad() {
+    public void onEnable() {
         instance = this;
+        log = BetonQuestLogger.create(this);
         pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
 
-        log = BetonQuestLogger.create(this);
-        logWatcher = new LogWatcher(this);
-    }
-
-    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.DoNotUseThreads", "PMD.NPathComplexity"})
-    @Override
-    public void onEnable() {
         adventure = BukkitAudiences.create(this);
-        logWatcher.setupPlayerLogHandler(adventure);
+        logWatcher = new LogWatcher(this, adventure);
 
         // load configuration
         new Config();
