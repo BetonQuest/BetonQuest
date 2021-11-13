@@ -1,6 +1,5 @@
-package org.betonquest.betonquest.modules.logger;
+package org.betonquest.betonquest.api;
 
-import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerValidationProvider;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
