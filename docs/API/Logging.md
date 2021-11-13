@@ -97,7 +97,7 @@ These advantages are mainly for BetonQuest, but it is also very useful for 3rd p
             private static BetonQuestLogger log;
     
             @Override
-            public void onLoad() {
+            public void onEnable() {
                 log = new BetonQuestLoggerImpl(this, this.getLogger(), this.getClass(), null);
             }
         ````
