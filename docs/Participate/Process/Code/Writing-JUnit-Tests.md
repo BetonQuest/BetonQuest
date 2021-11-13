@@ -1,7 +1,7 @@
 Here you can find a summary on how to write JUnit tests for BetonQuest. In order to understand this, you need to have
 basic knowledge of JUnit tests and mocking of objects and classes.
 
-## When to write tests?
+## Introduction
 
 It is a major goal to write JUnit tests for most parts of BetonQuest.
 
@@ -18,15 +18,14 @@ It is a major goal to write JUnit tests for most parts of BetonQuest.
 - Some parts of the code require a lot of Bukkit API mocking. If this takes too much time no tests are
   necessary
 
-## Handling Concurrency
-
-By default, all classes and methods are executed `CONCURRENT`. This means that its tests are run in parallel which saves
-time. Some tests cannot be executed in parallel, in such cases the following annotation needs to be 
-added to the related methods or the entire class.
-
-````java linenums="1"
-@Execution(ExecutionMode.SAME_THREAD)
-````
+!!! warning "Handling Concurrency"
+    By default, all classes and methods are executed `CONCURRENT`. This means that its tests are run in parallel which saves
+    time. Some tests cannot be executed in parallel, in such cases the following annotation needs to be 
+    added to the related methods or the entire class.
+    
+    ````java linenums="1"
+    @Execution(ExecutionMode.SAME_THREAD)
+    ````
 
 ## Handling Logging
 
@@ -85,9 +84,9 @@ messages in the `LogValidator` by calling `assertEmpty()`.
 
     public class TestFeature {
         @Test
-        public void testCustom(LogValidator validator, Logger logger /*(1)*/, BetonQuestLogger log /*(2)*/) {
+        public void testCustom(LogValidator validator, Logger logger, BetonQuestLogger log) {
     ```
     
-    1. This is the silenced parent logger.
+    The `logger` is the silenced parent `Logger`.
 
-    2. A new instance of an BetonQuestLogger that you can use to log things during the test.
+    The `log` is a new instance of the `BetonQuestLogger` that you can use to log things during the test.
