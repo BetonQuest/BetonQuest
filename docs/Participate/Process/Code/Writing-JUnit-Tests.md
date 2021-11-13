@@ -77,7 +77,7 @@ messages in the `LogValidator` by calling `assertEmpty()`.
 
 ### Advanced Features
 
-??? note "Advanced: Obtaining the parent `Logger` and a `BetonQuestLogger`"
+??? note "Obtaining the parent `Logger` and a `BetonQuestLogger`"
     You can also use these two additional arguments:
     
     ```java linenums="1" hl_lines="5"
