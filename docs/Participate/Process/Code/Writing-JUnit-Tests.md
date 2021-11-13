@@ -37,11 +37,11 @@ This error can occur everytime the `@CustomLog` annotation is used in a class th
 Cannot invoke "org.bukkit.Server.getPluginManager()" because "org.bukkit.Bukkit.server" is null
 ```
 
-If this is the case, you need the `BetonQuestLoggerValidationProvider`. Simply add the following annotation to the
+If this is the case, you need the `BetonQuestLoggerService`. Simply add the following annotation to the
 class:
 
 ````java linenums="1" hl_lines="1"
-@ExtendWith(BetonQuestLoggerValidationProvider.class)
+@ExtendWith(BetonQuestLoggerService.class)
 public class TestFeature {
 ````
 
@@ -54,14 +54,14 @@ is used. All these loggers have a silent parent logger - so there are no visible
 You can now add this optional argument to any test method signature.
 
 ```java linenums="1" hl_lines="5"
-@ExtendWith(BetonQuestLoggerValidationProvider.class)
+@ExtendWith(BetonQuestLoggerService.class)
 public class TestFeature {
 
     @Test
     public void testCustom(LogValidator validator) {
 ```
 
-The `validator` `LogValidator` is created and passed to your method by the `BetonQuestLoggerValidationProvider`.
+The `validator` `LogValidator` is created and passed to your method by the `BetonQuestLoggerService`.
 It makes it possible to assert that a log message has been printed.
 The simplest method is `assertLogEntry(Level level, String message)`, that you can use to check
 that the given message with the given level has been logged. You can also check that there are no additional log 
@@ -80,7 +80,7 @@ messages in the `LogValidator` by calling `assertEmpty()`.
     You can also use these two additional arguments:
     
     ```java linenums="1" hl_lines="5"
-    @ExtendWith(BetonQuestLoggerValidationProvider.class)
+    @ExtendWith(BetonQuestLoggerService.class)
 
     public class TestFeature {
         @Test

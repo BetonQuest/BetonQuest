@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
 /**
  * Resolves a {@link LogValidator} for JUnit 5 tests.
  */
-public class BetonQuestLoggerValidationProvider implements ParameterResolver, BeforeAllCallback, AfterAllCallback {
+public class BetonQuestLoggerService implements ParameterResolver, BeforeAllCallback, AfterAllCallback {
     /**
      * The topic of generated {@link BetonQuestLogger} in the {@link ParameterResolver}.
      */
@@ -33,9 +33,9 @@ public class BetonQuestLoggerValidationProvider implements ParameterResolver, Be
     private MockedStatic<BetonQuestLogger> betonQuestLogger;
 
     /**
-     * Default {@link BetonQuestLoggerValidationProvider} Constructor.
+     * Default {@link BetonQuestLoggerService} Constructor.
      */
-    public BetonQuestLoggerValidationProvider() {
+    public BetonQuestLoggerService() {
         parentLogger = LogValidator.getSilentLogger();
     }
 

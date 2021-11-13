@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.utils;
 
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerValidationProvider;
+import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockedStatic;
@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * This class test some utility class methods.
  */
-@ExtendWith(BetonQuestLoggerValidationProvider.class)
+@ExtendWith(BetonQuestLoggerService.class)
 public class UtilsTest {
 
     /**

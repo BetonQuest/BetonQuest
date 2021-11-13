@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api;
 
 import org.betonquest.betonquest.config.ConfigPackage;
-import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerValidationProvider;
+import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +17,7 @@ import static org.mockito.Mockito.*;
  * This class test the {@link BetonQuestLogger}.
  */
 @SuppressWarnings({"PMD.JUnitTestsShouldIncludeAssert", "PMD.MoreThanOneLogger"})
-@ExtendWith(BetonQuestLoggerValidationProvider.class)
+@ExtendWith(BetonQuestLoggerService.class)
 @Execution(ExecutionMode.SAME_THREAD)
 public class BetonQuestLoggerTest {
     /**
@@ -29,9 +29,9 @@ public class BetonQuestLoggerTest {
      */
     private static final String LOG_MESSAGE = "Test Message";
     /**
-     * The processed topic of the logger from {@link BetonQuestLoggerValidationProvider#LOGGER_TOPIC}.
+     * The processed topic of the logger from {@link BetonQuestLoggerService#LOGGER_TOPIC}.
      */
-    private static final String LOGGER_TOPIC = "(" + BetonQuestLoggerValidationProvider.LOGGER_TOPIC + ") ";
+    private static final String LOGGER_TOPIC = "(" + BetonQuestLoggerService.LOGGER_TOPIC + ") ";
     /**
      * The log message with topic.
      */
