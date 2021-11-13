@@ -1,5 +1,5 @@
 Here you can find a summary on how to write JUnit tests for BetonQuest. In order to understand this, you need to have
-basic knowledge of JUnit tests and mocking objects and classes.
+basic knowledge of JUnit tests and mocking of objects and classes.
 
 ## When to write tests?
 
@@ -41,7 +41,7 @@ Cannot invoke "org.bukkit.Server.getPluginManager()" because "org.bukkit.Bukkit.
 If this is the case, you need the `BetonQuestLoggerValidationProvider`. Simply add the following annotation to the
 class:
 
-````java linenums="1"
+````java linenums="1" hl_lines="1"
 @ExtendWith(BetonQuestLoggerValidationProvider.class)
 public class TestFeature {
 ````
@@ -54,13 +54,13 @@ is used. All these loggers have a silent parent logger - so there are no visible
 
 You can now add this optional argument to any test method signature.
 
-````java linenums="1"
+```java linenums="1" hl_lines="5"
 @ExtendWith(BetonQuestLoggerValidationProvider.class)
 public class TestFeature {
 
     @Test
     public void testCustom(LogValidator validator) {
-````
+```
 
 The `validator` `LogValidator` is created and passed to your method by the `BetonQuestLoggerValidationProvider`.
 It makes it possible to assert that a log message has been printed.
@@ -80,13 +80,13 @@ messages in the `LogValidator` by calling `assertEmpty()`.
 
     You can also use these two additional arguments:
     
-    ````java linenums="1"
+    ```java linenums="1" hl_lines="5"
     @ExtendWith(BetonQuestLoggerValidationProvider.class)
 
     public class TestFeature {
         @Test
         public void testCustom(LogValidator validator, Logger logger /*(1)*/, BetonQuestLogger log /*(2)*/) {
-    ````
+    ```
     
     1. This is the silenced parent logger.
 
