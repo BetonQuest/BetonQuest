@@ -3,23 +3,23 @@
 </p>
 
 <p align="center">
-    <a href="https://bstats.org/plugin/bukkit/BetonQuest/551/" title="See how many servers run this plugin." target="_blank">
-        <img src="https://img.shields.io/bstats/servers/551" />
+    <a href="https://bstats.org/plugin/bukkit/BetonQuest/551/" title="See how many servers run this plugin.">
+        <img src="https://img.shields.io/bstats/servers/551?style=plastic"/>
      </a>
-    <a href="https://www.spigotmc.org/resources/betonquest.2117/" title="See our Spigot rating." target="_blank">
-        <img src="https://img.shields.io/spiget/stars/2117"/>
+    <a href="https://www.spigotmc.org/resources/betonquest.2117/" title="See our Spigot rating.">
+        <img src="https://img.shields.io/spiget/stars/2117?style=plastic"/>
     </a>
-    <a href="https://discord.gg/MvmkHEu" title="Join our discord for support." target="_blank">
-        <img src="https://img.shields.io/badge/discord-join-7289DA.svg?logo=discord&longCache=true&style=flat" />
+    <a href="https://discord.gg/MvmkHEu" title="Join our discord for support.">
+        <img src="https://img.shields.io/discord/407221862980911105?label=discord&logo=discord&style=plastic" />
     </a>
-    <a href="https://github.com/BetonQuest/BetonQuest/actions" title="See the projects build status here.">
-        <img src="https://github.com/BetonQuest/BetonQuest/workflows/Build/badge.svg?branch=master&event=push">
+    <a href="https://github.com/BetonQuest/BetonQuest/actions?query=workflow%3ABuild+branch%3Amaster+event%3Apush++" title="See the projects build status here.">
+        <img src="https://img.shields.io/github/workflow/status/BetonQuest/BetonQuest/Build/master?event=push&logo=githubactions&style=plastic">
     </a>
     <a href="https://github.com/BetonQuest/BetonQuest/blob/master/LICENSE" title="This project is licensed under the GPLv3 license!">
-        <img src="https://img.shields.io/badge/license-GPLv3-blue" alt="License" />
+        <img src="https://img.shields.io/badge/license-GPLv3-blue?logo=github&style=plastic"/>
       </a>
-    <a href="https://patreon.com/BetonQuest" title="Donate to this project using Patreon!">
-         <img src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dbetonquest%26type%3Dpatrons&style=flat)" />
+    <a href="https://opencollective.com/betonquest" title="Donate to this project using open collective!">
+        <img src="https://img.shields.io/opencollective/all/betonquest?label=open%20collective&logo=opencollective&style=plastic">
     </a>
 </p>
 
