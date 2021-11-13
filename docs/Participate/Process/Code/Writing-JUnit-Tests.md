@@ -51,7 +51,7 @@ is used. All these loggers have a silent parent logger - so there are no visible
 
 ### LogValidator
 
-You can now add this optional argument to any test method signature.
+You can now add this optional argument to any test's method signature:
 
 ```java linenums="1" hl_lines="5"
 @ExtendWith(BetonQuestLoggerService.class)
@@ -75,8 +75,9 @@ messages in the `LogValidator` by calling `assertEmpty()`.
     @Execution(ExecutionMode.SAME_THREAD)
     ````
 
-??? note "Advanced: Obtaining the parent `Logger` and a `BetonQuestLogger`"
+### Advanced Features
 
+??? note "Advanced: Obtaining the parent `Logger` and a `BetonQuestLogger`"
     You can also use these two additional arguments:
     
     ```java linenums="1" hl_lines="5"
