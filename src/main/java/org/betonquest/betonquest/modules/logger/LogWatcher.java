@@ -6,6 +6,7 @@ import org.betonquest.betonquest.modules.logger.custom.ChatLogFormatter;
 import org.betonquest.betonquest.modules.logger.custom.DebugLogFormatter;
 import org.betonquest.betonquest.modules.logger.custom.HistoryLogHandler;
 import org.betonquest.betonquest.modules.logger.custom.PlayerLogHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
@@ -20,6 +21,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Setups the log for the plugin.
@@ -67,15 +69,15 @@ public final class LogWatcher {
         this.logFile = new File(plugin.getDataFolder(), LOG_FILE_PATH);
         playerFilters = new HashMap<>();
 
-        historyHandler = setupDebugLogHandler();
-        setupPlayerLogHandler(bukkitAudiences);
+        historyHandler = setupDebugLogHandler(Bukkit.getLogger().getParent());
+        setupPlayerLogHandler(Bukkit.getLogger().getParent(), bukkitAudiences);
 
         if (historyHandler != null && plugin.getConfig().getBoolean(CONFIG_PATH + ".enabled", false)) {
             startDebug();
         }
     }
 
-    private HistoryLogHandler setupDebugLogHandler() {
+    private HistoryLogHandler setupDebugLogHandler(final Logger logger) {
         try {
             renameDebugLogFile();
             final FileHandler fileHandler = new FileHandler(logFile.getAbsolutePath());
@@ -83,7 +85,7 @@ public final class LogWatcher {
             final HistoryLogHandler historyHandler = new HistoryLogHandler(fileHandler,
                     plugin.getConfig().getInt(CONFIG_PATH + ".history_in_minutes", 10));
             historyHandler.setFilter(record -> debugging);
-            plugin.getLogger().getParent().addHandler(historyHandler);
+            logger.addHandler(historyHandler);
             return historyHandler;
         } catch (final IOException e) {
             LOG.error("It was not possible to create the '" + logFile.getName() + "' or to register the plugin's internal logger. "
@@ -93,11 +95,11 @@ public final class LogWatcher {
         return null;
     }
 
-    private void setupPlayerLogHandler(final BukkitAudiences bukkitAudiences) {
+    private void setupPlayerLogHandler(final Logger logger, final BukkitAudiences bukkitAudiences) {
         final PlayerLogHandler playerHandler = new PlayerLogHandler(bukkitAudiences, playerFilters);
         playerHandler.setFormatter(new ChatLogFormatter());
         playerHandler.setFilter(record -> !playerFilters.isEmpty());
-        plugin.getLogger().getParent().addHandler(playerHandler);
+        logger.addHandler(playerHandler);
     }
 
     /**
