@@ -88,7 +88,7 @@ These advantages are mainly for BetonQuest, but it is also very useful for 3rd p
 
 !!! warning "Get the logger in your JavaPlugin class"
     The methods described above do not work for your plugin's main class. 
-    Create the logger instance in the `onLoad()` method instead.
+    Create the logger instance in the `onEnable()` method instead.
 
     === "Without topic"
         ````java linenums="1"
@@ -98,7 +98,7 @@ These advantages are mainly for BetonQuest, but it is also very useful for 3rd p
     
             @Override
             public void onEnable() {
-                log = new BetonQuestLoggerImpl(this, this.getLogger(), this.getClass(), null);
+                log = BetonQuestLogger.create(this);
             }
         ````
 
@@ -109,8 +109,8 @@ These advantages are mainly for BetonQuest, but it is also very useful for 3rd p
             private static BetonQuestLogger log;
     
             @Override
-            public void onLoad() {
-                log = new BetonQuestLoggerImpl(this, this.getLogger(), this.getClass(), "MyCustomTopic");
+            public void onEnable() {
+                log = BetonQuestLogger.create(this, "MyCustomTopic");
             }
         ````
 
