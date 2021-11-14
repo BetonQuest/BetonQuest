@@ -1,12 +1,22 @@
+# Changing Docs
+
 ## Live Preview
 Run this command in IntelliJ's terminal window (at the bottom) to start a live preview of the documentation.
 It will be available on 
 <a href="http://127.0.0.1:8000/" target="_blank">127.0.0.1:8000</a>
 by default.
 
-```bash linenums="1" 
-mkdocs serve
+``` bash linenums="1" 
+mkdocs serve --dirtyreload # (1)
 ```
+
+1. This optional argument determines that only files that have changed will be re-build.
+   This drastically increases build speed. However, it may lead to inaccurate navigation within your site.
+   Serve without this argument to validate your changes once finished.
+
+You should work with the live preview as the documentation does not just contain plain markdown,
+there are many custom elements which are only visible in the preview.
+The preview updates whenever you click outside of IntelliJ or trigger a file save.
 
 ??? info "Hosting on your entire local network"
     You can also execute this variation to host the website in your local network.
@@ -15,11 +25,6 @@ mkdocs serve
     ```BASH linenums="1"
     mkdocs serve -a 0.0.0.0:8000
     ```
-
-You should work with the live preview as the documentation does not just contain plain markdown,
-there are many custom elements which are only visible in the preview.
-The preview updates whenever you click outside of IntelliJ or trigger a file save.
-
 
 We use the [Material for MkDocs theme](https://squidfunk.github.io/mkdocs-material/) for our documentation.
 Check [their documentation](https://squidfunk.github.io/mkdocs-material/) to see all custom elements and features.
