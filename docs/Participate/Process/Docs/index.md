@@ -1,4 +1,8 @@
-# Changing Docs
+# 👨‍🏫 Changing Docs
+
+Make sure to [setup the project](../../Setup-Project.md) before doing this step.
+You should always [create a new branch](../Create-a-new-Branch.md) everytime you write new documentation,
+fix something or make other changes.
 
 ## Live Preview
 Run this command in IntelliJ's terminal window (at the bottom) to start a live preview of the documentation.
