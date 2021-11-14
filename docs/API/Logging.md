@@ -55,7 +55,8 @@ These advantages are mainly for BetonQuest, but it is also very useful for 3rd p
             setup.
     
         !!! abstract "2. Usage"
-            Simply add the `@CustomLog` annotation to any class definition.
+            Simply add the `@CustomLog` annotation to any class definition. This will **not** work on any class that
+            extends `Plugin`, see the warning box below for more information. 
     
             === "Without topic"
                 ````java linenums="1"
@@ -87,7 +88,7 @@ These advantages are mainly for BetonQuest, but it is also very useful for 3rd p
 
 
 !!! warning "Get the logger in your JavaPlugin class"
-    The methods described above do not work for your plugin's main class. 
+    The methods described above don't work for your plugin's main class (or any other class that extends `Plugin`). 
     Create the logger instance in the `onEnable()` method instead.
 
     === "Without topic"
