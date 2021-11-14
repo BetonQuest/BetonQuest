@@ -28,6 +28,7 @@ public interface BetonQuestLogger {
      *
      * @param clazz The class to create a logger for.
      * @return A {@link BetonQuestLogger} implementation.
+     * @throws IllegalStateException Thrown if this is called from a class, that extends {@link Plugin}
      */
     static BetonQuestLogger create(final Class<?> clazz) {
         return create(clazz, null);
@@ -43,15 +44,22 @@ public interface BetonQuestLogger {
      * @param clazz The class to create a logger for.
      * @param topic The optional topic of the logger.
      * @return A {@link BetonQuestLogger} implementation.
+     * @throws IllegalStateException Thrown if this is called from a class, that extends {@link Plugin}
      */
     @SuppressWarnings("PMD.UseProperClassLoader")
     static BetonQuestLogger create(final Class<?> clazz, final String topic) {
+        if (Plugin.class.isAssignableFrom(clazz)) {
+            throw new IllegalStateException("It is not allowed to use the '@CustomLog' annotation from the class '"
+                    + clazz.getName() + "' which directly or indirectly extends 'org.bukkit.plugin.Plugin'!");
+        }
         for (final Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
             if (plugin.getClass().getClassLoader().equals(clazz.getClassLoader())) {
                 return new BetonQuestLoggerImpl(plugin, plugin.getLogger(), clazz, topic);
             }
         }
-        return new BetonQuestLoggerImpl(null, Bukkit.getLogger(), clazz, topic);
+        throw new IllegalStateException("The class '" + clazz.getName()
+                + "' has not been loaded by a 'org.bukkit.plugin.Plugin'. "
+                + "Therefore, it was not possible to create a logger for this class!");
     }
 
     /**
