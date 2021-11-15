@@ -334,7 +334,7 @@ Displays a notification using the NotifyIO system.
 |--------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
 | message  	                                                         | The message that will be displayed. Supports variables and translations. *Required, must be first*             	                                                                     |
 | category 	                                                         | Will load all settings from that Notification Category. Can be a comma-seperated list. The first existent category will be used. *Optional*                  |   
-| io       	                                                         | Any [NotifyIO](https://betonquest.github.io/BetonQuest/RELEASE/Documentation/Notification-IO%27s-%26-Categories). Overrides the "category" settings. *Optional*                                                                                     |
+| io       	                                                         | Any [NotifyIO](Notification-IO's-&-Categories.md). Overrides the "category" settings. *Optional*                                                                                     |
 | [NotifyIO](Notification-IO's-&-Categories.md#notify-ios) 	         | Any setting from the defined notifyIO. Can be used multiple times. Overrides the "category" settings. *Optional*                                                                     |
 
 The fallback NotifyIO is `chat` if no argument other than `message` is specified.    
