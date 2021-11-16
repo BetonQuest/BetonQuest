@@ -14,8 +14,8 @@ by default.
 mkdocs serve --dirtyreload # (1)
 ```
 
-1. This optional argument determines that only files that have changed will be re-build.
-   This drastically increases build speed. However, it may lead to inaccurate navigation within your site.
+1. `--dirtyreload` is an optional argument that determines that only changed files will be re-build.
+   This drastically decreases build time. However, it may lead to inaccurate navigation within your site.
    Serve without this argument to validate your changes once finished.
 
 You should work with the live preview as the documentation does not just contain plain markdown,
