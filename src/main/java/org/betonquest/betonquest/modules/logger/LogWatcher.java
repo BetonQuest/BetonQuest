@@ -28,21 +28,22 @@ import java.util.logging.Logger;
  */
 @CustomLog(topic = "LogWatcher")
 public final class LogWatcher {
+
     /**
      * The config path that holds the debug state.
      */
     private static final String CONFIG_PATH = "debug";
     /**
-     * The file path where the latest.log is located.
+     * The file path to the latest.log.
      */
     private static final String LOG_FILE_PATH = "/logs/latest.log";
 
     /**
-     * The related JavaPlugin for that LogWatcher.
+     * The related JavaPlugin for this LogWatcher.
      */
     private final Plugin plugin;
     /**
-     * The file of the latest log.
+     * The latest.log file.
      */
     private final File logFile;
     /**
@@ -103,7 +104,7 @@ public final class LogWatcher {
     }
 
     /**
-     * Starts writing the latest.log file.
+     * Starts writing to the latest.log file.
      */
     public void startDebug() {
         synchronized (LogWatcher.class) {
@@ -117,7 +118,7 @@ public final class LogWatcher {
     }
 
     /**
-     * Stops writing the latest.log file.
+     * Stops writing to the latest.log file.
      */
     public void endDebug() {
         synchronized (LogWatcher.class) {
@@ -163,7 +164,7 @@ public final class LogWatcher {
      *
      * @param uuid   The {@link UUID} of the player
      * @param filter The filter pattern
-     * @param level  The Level of the filter
+     * @param level  The {@link Level} of the filter
      * @return True if the filter was successfully added
      */
     public boolean addFilter(final UUID uuid, final String filter, final Level level) {

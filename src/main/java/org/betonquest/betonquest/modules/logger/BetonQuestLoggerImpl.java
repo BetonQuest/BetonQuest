@@ -12,10 +12,12 @@ import java.util.logging.Logger;
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public class BetonQuestLoggerImpl implements BetonQuestLogger {
+
     /**
-     * The {@link Plugin} this logger is related to.
+     * The {@link Plugin} this logger belongs to.
      */
     private final Plugin plugin;
+
     /**
      * The original logger.
      */
@@ -24,7 +26,7 @@ public class BetonQuestLoggerImpl implements BetonQuestLogger {
     /**
      * Creates a decorator for the {@link TopicLogger}.
      *
-     * @param plugin The {@link Plugin} this logger is related to.
+     * @param plugin The {@link Plugin} this logger belongs to.
      * @param clazz  The calling class.
      * @param topic  The topic of the logger.
      */

@@ -11,17 +11,20 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 /**
- * This is a {@link Handler} that can hold the last x minutes of {@link LogRecord}s.
- * If the filter returns true, the LogRecords will be passed to the target logger
- * otherwise they will be written to the history.
+ * This {@link Handler} can hold all {@link LogRecord}s from the configured log history time frame.
+ * <br>
+ * If the filter returns true, a LogRecord will be passed to the target {@link Handler},
+ * otherwise it will be written to the history.
  * The history can then be pushed to the target handler at any time.
- * It is automatically pushed if the next LogRecord is logged and the filter returns true.
+ * It is automatically pushed if the filter returns true for any subsequent LogRecord.
  */
 public class HistoryLogHandler extends Handler {
+
     /**
-     * The history of the last x minutes of LogRecords.
+     * The {@link LogRecord} history.
      */
     private final Queue<LogRecord> records;
+
     /**
      * The target Handler to log the history to.
      */
@@ -59,7 +62,7 @@ public class HistoryLogHandler extends Handler {
     /**
      * Logs a LogRecord to the history or the target handler.
      *
-     * @param record The LogRecord to log
+     * @param record The {@link LogRecord} to log
      */
     @Override
     public void publish(final LogRecord record) {
@@ -75,7 +78,7 @@ public class HistoryLogHandler extends Handler {
     }
 
     /**
-     * Publishes the history to the target handler if history is available.
+     * Publishes any available history to the target handler.
      */
     public void push() {
         if (records != null && !records.isEmpty()) {
@@ -98,7 +101,7 @@ public class HistoryLogHandler extends Handler {
     }
 
     /**
-     * Closes the target Handler.
+     * Closes the target handler.
      */
     @Override
     public void close() {

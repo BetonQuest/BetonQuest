@@ -12,21 +12,23 @@ import java.util.logging.LogRecord;
 public class BetonQuestLogRecord extends LogRecord {
 
     private static final long serialVersionUID = -7094531905051980356L;
+
     /**
-     * The plugin where the log message comes from.
+     * The plugin that logged this message.
      */
     private final String plugin;
+
     /**
-     * The package name.
+     * The name of the originating {@link ConfigPackage}.
      */
     private final String pack;
 
     /**
-     * Sets the package and calls the original method {@link LogRecord#LogRecord(Level, String)}.
+     * Creates a custom {@link LogRecord} that contains a {@link ConfigPackage} and {@link Plugin} name.
      *
-     * @param plugin The {@link Plugin}, where this log message comes from.
-     * @param pack   The {@link ConfigPackage} this LogRecord came from.
-     * @param level  A logging level value.
+     * @param plugin The {@link Plugin}, that logged this message.
+     * @param pack   The {@link ConfigPackage} that belongs to this LogRecord.
+     * @param level  A log {@link Level}.
      * @param msg    The raw non-localized logging message (may be null).
      */
     public BetonQuestLogRecord(final Plugin plugin, final ConfigPackage pack, final Level level, final String msg) {
@@ -36,7 +38,7 @@ public class BetonQuestLogRecord extends LogRecord {
     }
 
     /**
-     * Gets the package name.
+     * Gets the {@link ConfigPackage} name.
      *
      * @return Returns the package name.
      */
@@ -45,7 +47,7 @@ public class BetonQuestLogRecord extends LogRecord {
     }
 
     /**
-     * Get the plugin, where this log message comes from.
+     * Gets the {@link Plugin}, that logged this message.
      *
      * @return The plugin.
      */

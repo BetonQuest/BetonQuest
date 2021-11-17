@@ -16,10 +16,12 @@ import java.util.logging.LogRecord;
  * This is a simple log formatting class for the in-game chat.
  */
 public class PlayerLogHandler extends Handler {
+
     /**
-     * The {@link BukkitAudiences} instance for sending messages.
+     * The {@link BukkitAudiences} instance responsible for sending messages.
      */
     private final BukkitAudiences bukkitAudiences;
+
     /**
      * All active log filters for the in-game log.
      */
@@ -38,8 +40,9 @@ public class PlayerLogHandler extends Handler {
     }
 
     /**
-     * Log a LogRecord to the history or the target handler.
-     * Also compare to the code of the {@link java.util.logging.Logger}.publish
+     * Logs a LogRecord to the history or the target handler.
+     * <br><br>
+     * The {@link java.util.logging.MemoryHandler#publish} method was used as reference.
      *
      * @param record The LogRecord to log
      */
