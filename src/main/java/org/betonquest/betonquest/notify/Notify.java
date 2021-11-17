@@ -62,13 +62,13 @@ public final class Notify {
         try {
             return getNotifyIO(ios, categoryData);
         } catch (final InstructionParseException exception) {
-            LOG.warning(null, exception.getMessage(), exception);
+            LOG.warning(exception.getMessage(), exception);
         }
 
         try {
             return new SuppressNotifyIO(categoryData);
         } catch (final InstructionParseException e) {
-            LOG.reportException(null, e);
+            LOG.reportException(e);
             throw new UnsupportedOperationException(e);
         }
     }

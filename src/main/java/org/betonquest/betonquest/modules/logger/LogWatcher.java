@@ -1,10 +1,12 @@
-package org.betonquest.betonquest.utils.logger;
+package org.betonquest.betonquest.modules.logger;
 
 import lombok.CustomLog;
-import org.betonquest.betonquest.utils.logger.custom.ChatLogFormatter;
-import org.betonquest.betonquest.utils.logger.custom.DebugLogFormatter;
-import org.betonquest.betonquest.utils.logger.custom.HistoryLogHandler;
-import org.betonquest.betonquest.utils.logger.custom.PlayerLogHandler;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import org.betonquest.betonquest.modules.logger.custom.ChatLogFormatter;
+import org.betonquest.betonquest.modules.logger.custom.DebugLogFormatter;
+import org.betonquest.betonquest.modules.logger.custom.HistoryLogHandler;
+import org.betonquest.betonquest.modules.logger.custom.PlayerLogHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
@@ -19,27 +21,29 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Setups the log for the plugin.
  */
 @CustomLog(topic = "LogWatcher")
 public final class LogWatcher {
+
     /**
      * The config path that holds the debug state.
      */
     private static final String CONFIG_PATH = "debug";
     /**
-     * The file path where the latest.log is located.
+     * The file path to the latest.log.
      */
     private static final String LOG_FILE_PATH = "/logs/latest.log";
 
     /**
-     * The related JavaPlugin for that LogWatcher.
+     * The related JavaPlugin for this LogWatcher.
      */
     private final Plugin plugin;
     /**
-     * The file of the latest log.
+     * The latest.log file.
      */
     private final File logFile;
     /**
@@ -47,7 +51,7 @@ public final class LogWatcher {
      */
     private final HistoryLogHandler historyHandler;
     /**
-     * All active log filters for the ingame log.
+     * All active log filters for the in-game log.
      */
     private final Map<UUID, Map<String, Level>> playerFilters;
     /**
@@ -56,54 +60,57 @@ public final class LogWatcher {
     private boolean debugging;
 
     /**
-     * Setups the debug and ingame chat log.
+     * Setups the debug and in-game chat log.
      *
-     * @param plugin The related {@link Plugin} instance
+     * @param plugin          The related {@link Plugin} instance
+     * @param bukkitAudiences The {@link BukkitAudiences} instance
      */
-    public LogWatcher(final Plugin plugin) {
+    public LogWatcher(final Plugin plugin, final BukkitAudiences bukkitAudiences) {
         this.plugin = plugin;
         this.logFile = new File(plugin.getDataFolder(), LOG_FILE_PATH);
         playerFilters = new HashMap<>();
-        historyHandler = setupDebugLogHandler();
-        setupPlayerLogHandler();
 
-        if (historyHandler != null && plugin.getConfig().getBoolean(CONFIG_PATH, false)) {
+        historyHandler = setupDebugLogHandler(Bukkit.getLogger().getParent());
+        setupPlayerLogHandler(Bukkit.getLogger().getParent(), bukkitAudiences);
+
+        if (historyHandler != null && plugin.getConfig().getBoolean(CONFIG_PATH + ".enabled", false)) {
             startDebug();
         }
     }
 
-    private HistoryLogHandler setupDebugLogHandler() {
+    private HistoryLogHandler setupDebugLogHandler(final Logger logger) {
         try {
             renameDebugLogFile();
-
             final FileHandler fileHandler = new FileHandler(logFile.getAbsolutePath());
             fileHandler.setFormatter(new DebugLogFormatter());
-            final HistoryLogHandler historyHandler = new HistoryLogHandler(fileHandler);
-            historyHandler.setFilter((record) -> debugging);
-            plugin.getLogger().addHandler(historyHandler);
+            final HistoryLogHandler historyHandler = new HistoryLogHandler(fileHandler,
+                    plugin.getConfig().getInt(CONFIG_PATH + ".history_in_minutes", 10));
+            historyHandler.setFilter(record -> debugging);
+            logger.addHandler(historyHandler);
             return historyHandler;
         } catch (final IOException e) {
-            LOG.error(null, "It was not possible to create the '" + logFile.getName() + "' or to register the plugin's internal logger. "
+            LOG.error("It was not possible to create the '" + logFile.getName() + "' or to register the plugin's internal logger. "
                     + "This is not a critical error, the server can still run, but it is not possible to use the '/q debug true' command. "
                     + "Reason: " + e.getMessage(), e);
         }
         return null;
     }
 
-    private void setupPlayerLogHandler() {
-        final PlayerLogHandler playerHandler = new PlayerLogHandler(playerFilters);
+    private void setupPlayerLogHandler(final Logger logger, final BukkitAudiences bukkitAudiences) {
+        final PlayerLogHandler playerHandler = new PlayerLogHandler(bukkitAudiences, playerFilters);
         playerHandler.setFormatter(new ChatLogFormatter());
-        plugin.getLogger().addHandler(playerHandler);
+        playerHandler.setFilter(record -> !playerFilters.isEmpty());
+        logger.addHandler(playerHandler);
     }
 
     /**
-     * Starts writing the latest.log file.
+     * Starts writing to the latest.log file.
      */
     public void startDebug() {
         synchronized (LogWatcher.class) {
             if (!debugging) {
                 debugging = true;
-                plugin.getConfig().set(CONFIG_PATH, true);
+                plugin.getConfig().set(CONFIG_PATH + ".enabled", true);
                 plugin.saveConfig();
                 historyHandler.push();
             }
@@ -111,13 +118,13 @@ public final class LogWatcher {
     }
 
     /**
-     * Stops writing the latest.log file.
+     * Stops writing to the latest.log file.
      */
     public void endDebug() {
         synchronized (LogWatcher.class) {
             if (debugging) {
                 debugging = false;
-                plugin.getConfig().set(CONFIG_PATH, false);
+                plugin.getConfig().set(CONFIG_PATH + ".enabled", false);
                 plugin.saveConfig();
             }
         }
@@ -157,7 +164,7 @@ public final class LogWatcher {
      *
      * @param uuid   The {@link UUID} of the player
      * @param filter The filter pattern
-     * @param level  The Level of the filter
+     * @param level  The {@link Level} of the filter
      * @return True if the filter was successfully added
      */
     public boolean addFilter(final UUID uuid, final String filter, final Level level) {

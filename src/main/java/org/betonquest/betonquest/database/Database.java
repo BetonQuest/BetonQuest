@@ -37,7 +37,7 @@ public abstract class Database {
         try {
             con.close();
         } catch (final SQLException e) {
-            LOG.error(null, "There was an exception with SQL", e);
+            LOG.error("There was an exception with SQL", e);
         }
         con = null;
     }
@@ -81,7 +81,7 @@ public abstract class Database {
                     .executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "global_points (id INTEGER PRIMARY KEY "
                             + autoIncrement + ", category VARCHAR(256) NOT NULL, count INT NOT NULL);");
         } catch (final SQLException e) {
-            LOG.error(null, "There was an exception with SQL", e);
+            LOG.error("There was an exception with SQL", e);
         }
     }
 }

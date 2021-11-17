@@ -38,7 +38,7 @@ public class StepObjective extends Objective implements Listener {
         try {
             return new BlockSelector("*_PRESSURE_PLATE");
         } catch (final InstructionParseException e) {
-            LOG.reportException(null, e);
+            LOG.reportException(e);
         }
         return null;
     }

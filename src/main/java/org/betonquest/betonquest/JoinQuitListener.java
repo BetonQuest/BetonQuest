@@ -52,7 +52,7 @@ public class JoinQuitListener implements Listener {
         if (playerData == null) {
             playerData = new PlayerData(playerID);
             BetonQuest.getInstance().putPlayerData(playerID, playerData);
-            LOG.warning(null, "Failed to load data for player " + event.getPlayer().getName() + ", forcing.");
+            LOG.warning("Failed to load data for player " + event.getPlayer().getName() + ", forcing.");
         }
         playerData.startObjectives();
         GlobalObjectives.startAll(playerID);
@@ -63,7 +63,7 @@ public class JoinQuitListener implements Listener {
                 try {
                     Config.sendNotify(null, PlayerConverter.getID(event.getPlayer()), "changelog", null, "changelog,info");
                 } catch (final QuestRuntimeException e) {
-                    LOG.warning(null, "The notify system was unable to play a sound for the 'changelog' category. Error was: '" + e.getMessage() + "'", e);
+                    LOG.warning("The notify system was unable to play a sound for the 'changelog' category. Error was: '" + e.getMessage() + "'", e);
                 }
             }
         }

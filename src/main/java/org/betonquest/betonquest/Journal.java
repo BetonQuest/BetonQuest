@@ -379,7 +379,7 @@ public class Journal {
             try {
                 Config.sendNotify(null, playerID, "inventory_full", null, "inventory_full,error");
             } catch (final QuestRuntimeException e) {
-                LOG.warning(null, "The notify system was unable to play a sound for the 'inventory_full' category. Error was: '" + e.getMessage() + "'", e);
+                LOG.warning("The notify system was unable to play a sound for the 'inventory_full' category. Error was: '" + e.getMessage() + "'", e);
             }
         }
     }

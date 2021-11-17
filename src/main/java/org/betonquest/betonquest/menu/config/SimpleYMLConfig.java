@@ -36,7 +36,7 @@ public abstract class SimpleYMLConfig extends SimpleYMLSection {
             ((FileConfiguration) super.config).save(this.file);
             return true;
         } catch (final IOException e) {
-            LOG.debug(null, e.getMessage());
+            LOG.debug(e.getMessage());
             return false;
         }
     }

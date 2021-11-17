@@ -33,7 +33,7 @@ public class EventReward extends CustomReward {
             final EventID event = new EventID(null, string);
             BetonQuest.event(playerID, event);
         } catch (final ObjectNotFoundException e) {
-            LOG.warning(null, "Error while running quest reward - BetonQuest event '" + string + "' not found: " + e.getMessage(), e);
+            LOG.warning("Error while running quest reward - BetonQuest event '" + string + "' not found: " + e.getMessage(), e);
         }
     }
 

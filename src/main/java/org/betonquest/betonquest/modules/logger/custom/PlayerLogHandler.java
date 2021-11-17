@@ -1,9 +1,9 @@
-package org.betonquest.betonquest.utils.logger.custom;
+package org.betonquest.betonquest.modules.logger.custom;
 
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
-import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.logger.QuestPackageLogRecord;
+import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
 
 import java.util.Map;
 import java.util.UUID;
@@ -13,34 +13,43 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 /**
- * This is a simple log formatting class for the ingame chat.
+ * This is a simple log formatting class for the in-game chat.
  */
 public class PlayerLogHandler extends Handler {
+
     /**
-     * All active log filters for the ingame log.
+     * The {@link BukkitAudiences} instance responsible for sending messages.
+     */
+    private final BukkitAudiences bukkitAudiences;
+
+    /**
+     * All active log filters for the in-game log.
      */
     private final Map<UUID, Map<String, Level>> playerFilters;
 
     /**
      * Creates a new {@link PlayerLogHandler}.
      *
-     * @param playerFilters The map pointer with the filters
+     * @param bukkitAudiences The {@link BukkitAudiences} instance for sending messages.
+     * @param playerFilters   The map pointer with the filters
      */
-    public PlayerLogHandler(final Map<UUID, Map<String, Level>> playerFilters) {
+    public PlayerLogHandler(final BukkitAudiences bukkitAudiences, final Map<UUID, Map<String, Level>> playerFilters) {
         super();
+        this.bukkitAudiences = bukkitAudiences;
         this.playerFilters = playerFilters;
     }
 
     /**
-     * Log a LogRecord to the history or the target handler.
-     * Also compare to the code of the {@link java.util.logging.Logger}.publish
+     * Logs a LogRecord to the history or the target handler.
+     * <br><br>
+     * The {@link java.util.logging.MemoryHandler#publish} method was used as reference.
      *
      * @param record The LogRecord to log
      */
     @Override
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public void publish(final LogRecord record) {
-        if (!(record instanceof QuestPackageLogRecord) || !isLoggable(record)) {
+        if (!(record instanceof BetonQuestLogRecord) || !isLoggable(record)) {
             return;
         }
         final String msg;
@@ -50,7 +59,7 @@ public class PlayerLogHandler extends Handler {
             reportError(null, ex, ErrorManager.FORMAT_FAILURE);
             return;
         }
-        final String pack = ((QuestPackageLogRecord) record).getPack();
+        final String pack = ((BetonQuestLogRecord) record).getPack();
         filterPlayers(record, msg, pack);
     }
 
@@ -64,8 +73,7 @@ public class PlayerLogHandler extends Handler {
                 final boolean equal = !entry.getKey().endsWith("*");
                 final String expression = equal ? entry.getKey() : StringUtils.chop(entry.getKey());
                 if (equal && pack.equals(expression) || !equal && pack.startsWith(expression)) {
-                    BetonQuest.getInstance().getAdventure().player(filterEntries.getKey())
-                            .sendMessage(GsonComponentSerializer.gson().deserialize(msg));
+                    bukkitAudiences.player(filterEntries.getKey()).sendMessage(GsonComponentSerializer.gson().deserialize(msg));
                     continue players;
                 }
             }

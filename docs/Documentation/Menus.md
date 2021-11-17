@@ -2,7 +2,7 @@
 
 <span class="centered">![RPGMenu logo](https://raw.githubusercontent.com/joblo2213/RPGMenu/master/header.png)</span>
 
-<span class="centered">![RPGMenu example](../media/content/Documentation/Menu/RPGMenuExample.png)</span>
+<span class="centered">![RPGMenu example](../_media/content/Documentation/Menu/RPGMenuExample.png)</span>
 
 BetonQuest allows the creation of fully custom GUIs.
 

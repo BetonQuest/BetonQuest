@@ -139,10 +139,10 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
             this.commandMap = (CommandMap) Utils.getField(managerClass, "commandMap").get(manager);
             this.commandMap.register("betonquest", this);
             syncCraftBukkitCommands();
-            LOG.debug(null, "Registered command " + getName() + "!");
+            LOG.debug("Registered command " + getName() + "!");
             return true;
         } catch (final Exception e) {
-            LOG.error(null, "Could not register command " + getName() + ":", e);
+            LOG.error("Could not register command " + getName() + ":", e);
             return false;
         }
     }
@@ -171,7 +171,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
                 commands.remove(this);
             }
             syncCraftBukkitCommands();
-            LOG.debug(null, "Unregistered command " + getName() + "!");
+            LOG.debug("Unregistered command " + getName() + "!");
             return true;
         } catch (final RuntimeException e) {
             if (!"java.lang.reflect.InaccessibleObjectException".equals(e.getClass().getName())) {
@@ -179,7 +179,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
             }
             return false;
         } catch (final Exception e) {
-            LOG.error(null, "Could not unregister command §7" + getName() + "§4:", e);
+            LOG.error("Could not unregister command §7" + getName() + "§4:", e);
             return false;
         }
     }

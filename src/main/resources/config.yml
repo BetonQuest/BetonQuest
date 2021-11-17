@@ -88,4 +88,6 @@ journal_colors:
   line: '4'
   text: '0'
 date_format: dd.MM.yyyy HH:mm
-debug: false
+debug:
+  enabled: false
+  history_in_minutes: 10

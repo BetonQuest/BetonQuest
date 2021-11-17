@@ -4,3 +4,5 @@ git+https://${MKDOCS_MATERIAL_INSIDERS}@github.com/squidfunk/mkdocs-material-ins
 mkdocs-git-revision-date-localized-plugin
 #Tool for MkDocs versioning
 mike==1.0.1
+#mkdocs-exclude plugin to exclude snippets
+mkdocs-exclude

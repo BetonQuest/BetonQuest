@@ -1,8 +1,8 @@
-# Changing Code
+# 👨‍🔧 Changing Code
+
 Make sure to [setup the project](../../Setup-Project.md) before doing this step. 
 You should always [create a new branch](../Create-a-new-Branch.md) everytime you develop a new feature,
 fix a bug or make other changes.
-
 
 ## Maven verify
 Before you [make changes](#make-changes) you should run `mvn verify` as explained

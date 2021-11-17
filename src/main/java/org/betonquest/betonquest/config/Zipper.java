@@ -60,7 +60,7 @@ public class Zipper {
             }
             zos.closeEntry();
         } catch (final IOException e) {
-            LOG.warning(null, "Couldn't zip the files", e);
+            LOG.warning("Couldn't zip the files", e);
         }
     }
 

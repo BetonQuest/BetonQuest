@@ -80,7 +80,7 @@ public class Config {
         for (final String key : messages.getConfig().getKeys(false)) {
             if (!"global".equals(key)) {
                 if (verboose) {
-                    LOG.debug(null, "Loaded " + key + " language");
+                    LOG.debug("Loaded " + key + " language");
                 }
                 LANGUAGES.add(key);
             }
@@ -123,7 +123,7 @@ public class Config {
     public static boolean createDefaultPackage(final String packName) {
         final File def = new File(instance.root, packName.replace("-", File.separator));
         if (!def.exists()) {
-            LOG.info(null, "Deploying " + packName + " package!");
+            LOG.info("Deploying " + packName + " package!");
             def.mkdirs();
             saveResource(def, "default/main.yml", "main.yml");
             saveResource(def, "default/events.yml", "events.yml");
@@ -167,7 +167,7 @@ public class Config {
                     }
                 }
             } catch (final IOException e) {
-                LOG.warning(null, "Could not save resource: " + e.getMessage(), e);
+                LOG.warning("Could not save resource: " + e.getMessage(), e);
             }
         }
     }
@@ -521,7 +521,7 @@ public class Config {
             try {
                 player.playSound(player.getLocation(), Sound.valueOf(rawSound), 1F, 1F);
             } catch (final IllegalArgumentException e) {
-                LOG.warning(null, "Unknown sound type: " + rawSound, e);
+                LOG.warning("Unknown sound type: " + rawSound, e);
             }
         }
     }

@@ -4,4 +4,5 @@ mkdocs-material==7.2.2
 mkdocs-git-revision-date-localized-plugin
 #Tool for MkDocs versioning
 mike==1.0.1
-
+#mkdocs-exclude plugin to exclude snippets
+mkdocs-exclude

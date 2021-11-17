@@ -34,7 +34,7 @@ public class StaticEvents {
      * to run at specified times
      */
     public StaticEvents() {
-        LOG.debug(null, "Initializing static events");
+        LOG.debug("Initializing static events");
         // old timers need to be deleted in case of reloading the plugin
         boolean deleted = false;
         for (final EventTimer eventTimer : TIMERS) {
@@ -42,7 +42,7 @@ public class StaticEvents {
             deleted = true;
         }
         if (deleted) {
-            LOG.debug(null, "Previous timers has been canceled");
+            LOG.debug("Previous timers has been canceled");
         }
         for (final ConfigPackage pack : Config.getPackages().values()) {
             final String packName = pack.getName();
@@ -75,14 +75,14 @@ public class StaticEvents {
                 }
             }
         }
-        LOG.debug(null, "Static events initialization done");
+        LOG.debug("Static events initialization done");
     }
 
     /**
      * Cancels all scheduled timers
      */
     public static void stop() {
-        LOG.debug(null, "Killing all timers on disable");
+        LOG.debug("Killing all timers on disable");
         for (final EventTimer timer : TIMERS) {
             timer.cancel();
         }
@@ -103,7 +103,7 @@ public class StaticEvents {
         try {
             timeStamp = new SimpleDateFormat("dd.MM.yy HH:mm", Locale.ROOT).parse(timeString).getTime();
         } catch (final ParseException e) {
-            LOG.warning(null, "Error in time setting in static event declaration: " + hour, e);
+            LOG.warning("Error in time setting in static event declaration: " + hour, e);
         }
         // if the timestamp is too old, add one day to it
         if (timeStamp < new Date().getTime()) {

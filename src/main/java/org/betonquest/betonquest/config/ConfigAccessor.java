@@ -118,7 +118,7 @@ public class ConfigAccessor {
                 getConfig().save(configFile);
             }
         } catch (final IOException e) {
-            LOG.error(null, "Could not save config to " + configFile, e);
+            LOG.error("Could not save config to " + configFile, e);
         }
     }
 
@@ -146,7 +146,7 @@ public class ConfigAccessor {
                     }
                 }
             } catch (final IOException e) {
-                LOG.reportException(null, e);
+                LOG.reportException(e);
             }
         }
     }

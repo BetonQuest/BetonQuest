@@ -9,21 +9,22 @@ copyright: '© 2014-2021  BetonQuest Organisation. GPLv3'
 
 
 extra_css:
-  - 'webCode/css/admonition.css'
-  - 'webCode/css/button.css'
-  - 'webCode/css/centered.css'
-  - 'webCode/css/contentAreaFullWidth.css'
-  - 'webCode/css/superFences.css'
+  - '_webCode/css/admonition.css'
+  - '_webCode/css/button.css'
+  - '_webCode/css/centered.css'
+  - '_webCode/css/contentAreaFullWidth.css'
+  - '_webCode/css/superFences.css'
 
 extra_javascript:
-  - 'webCode/js/copyLinkToClipboard.js'
+  - '_webCode/js/copyLinkToClipboard.js'
 
 # More info on this theme: https://squidfunk.github.io/mkdocs-material
 theme:
   name: material
-  custom_dir: 'custom_theme/'
+  custom_dir: 'docs/_custom_theme/'
   language: en
   features:
+    - content.code.annotate
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.tracking
@@ -48,8 +49,8 @@ theme:
   font:
     text: Roboto
     code: Roboto Mono
-  logo: media/brand/Icon/Icon1K.png
-  favicon: media/brand/Icon/Icon32.ico
+  logo: '_media/brand/Icon/Icon1K.png'
+  favicon: '_media/brand/Icon/Icon32.ico'
   icon:
     admonition:
       example: fontawesome/regular/eye
@@ -64,6 +65,7 @@ markdown_extensions:
       linenums: true
   - footnotes
   - meta
+  - pymdownx.highlight
   - pymdownx.arithmatex
   - pymdownx.betterem:
       smart_enable: all
@@ -87,6 +89,8 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
+  - pymdownx.snippets:
+      base_path: docs/_snippets
   - abbr
   - toc:
       permalink: 🔗
@@ -95,6 +99,10 @@ plugins:
   - search
   - git-revision-date-localized:
       type: timeago
+  - exclude:
+      glob:
+        - _snippets/*
+        - _custom_theme/*
 
 extra:
   version:
@@ -169,7 +177,9 @@ nav:
           - '🔧  Configuration': Documentation/Configuration.md
           - '🗃️ Changelog': Documentation/CHANGELOG.md
   - '🔌 API':
+      - '🤝 Overview': API/Overview.md
       - '⚙️ API': API/API.md
+      - '📑 Logging': API/Logging.md
   - '🧪 Participate':
       - '🤝 Overview': Participate/Overview.md
       - '🚩 Setup Project': Participate/Setup-Project.md
@@ -177,8 +187,9 @@ nav:
           - '🧬 Create a new Branch': Participate/Process/Create-a-new-Branch.md
           - '👨‍🔧 Changing Code':
               - Participate/Process/Code/index.md
-              - '🕵️‍♂️ Checking Requirements': Participate/Process/Code/Checking-Requirements.md
+              - '🕵️‍♂️  Checking Requirements': Participate/Process/Code/Checking-Requirements.md
               - '📥 Adding a Dependency': Participate/Process/Code/Adding-a-new-Dependency.md
+              - '📋    Writing JUnit Tests': Participate/Process/Code/Writing-JUnit-Tests.md
           - '👨‍🏫 Changing Docs':
               - Participate/Process/Docs/index.md
               - '✒️ Fundamental Principles': Participate/Process/Docs/Principles.md

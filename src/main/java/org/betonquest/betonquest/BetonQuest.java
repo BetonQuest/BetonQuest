@@ -6,12 +6,12 @@ import lombok.Getter;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.LoadDataEvent;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.Variable;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.commands.BackpackCommand;
 import org.betonquest.betonquest.commands.CancelQuestCommand;
 import org.betonquest.betonquest.commands.CompassCommand;
@@ -140,6 +140,7 @@ import org.betonquest.betonquest.id.VariableID;
 import org.betonquest.betonquest.item.QuestItemHandler;
 import org.betonquest.betonquest.mechanics.PlayerHider;
 import org.betonquest.betonquest.menu.RPGMenu;
+import org.betonquest.betonquest.modules.logger.LogWatcher;
 import org.betonquest.betonquest.notify.ActionBarNotifyIO;
 import org.betonquest.betonquest.notify.AdvancementNotifyIO;
 import org.betonquest.betonquest.notify.BossBarNotifyIO;
@@ -184,7 +185,6 @@ import org.betonquest.betonquest.objectives.VariableObjective;
 import org.betonquest.betonquest.utils.BStatsMetrics;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
-import org.betonquest.betonquest.utils.logger.LogWatcher;
 import org.betonquest.betonquest.utils.versioning.Updater;
 import org.betonquest.betonquest.variables.ConditionVariable;
 import org.betonquest.betonquest.variables.GlobalPointVariable;
@@ -220,7 +220,7 @@ import java.util.regex.Pattern;
  * Represents BetonQuest plugin
  */
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength", "PMD.GodClass",
-        "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidFieldNameMatchingMethodName"})
+        "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidFieldNameMatchingMethodName", "PMD.AtLeastOneConstructor"})
 public class BetonQuest extends JavaPlugin {
     private static final Map<String, Class<? extends Condition>> CONDITION_TYPES = new HashMap<>();
     private static final Map<String, Class<? extends QuestEvent>> EVENT_TYPES = new HashMap<>();
@@ -243,8 +243,17 @@ public class BetonQuest extends JavaPlugin {
      */
     @Getter
     private static BetonQuest instance;
+    private static BetonQuestLogger log;
     private final ConcurrentHashMap<String, PlayerData> playerDataMap = new ConcurrentHashMap<>();
-    private final BetonQuestLogger log = new BetonQuestLogger(this.getLogger(), this.getClass(), null);
+    /**
+     * -- GETTER --
+     * Get the LogWatcher instance.
+     *
+     * @return The LogWatcher instance.
+     */
+    @Getter
+    private LogWatcher logWatcher;
+    private String pluginTag;
     /**
      * The adventure instance.
      * -- GETTER --
@@ -254,7 +263,6 @@ public class BetonQuest extends JavaPlugin {
      */
     @Getter
     private BukkitAudiences adventure;
-    private String pluginTag;
     private Database database;
     private boolean isMySQLUsed;
     @SuppressWarnings("PMD.DoNotUseThreads")
@@ -264,21 +272,6 @@ public class BetonQuest extends JavaPlugin {
     private PlayerHider playerHider;
     @Getter
     private RPGMenu rpgMenu;
-    /**
-     * -- GETTER --
-     * Get the LogWatcher instance.
-     *
-     * @return The LogWatcher instance.
-     */
-    @Getter
-    private LogWatcher logWatcher;
-
-    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
-    @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
-    public BetonQuest() {
-        super();
-        instance = this;
-    }
 
     public static boolean conditions(final String playerID, final Collection<ConditionID> conditionIDs) {
         final ConditionID[] ids = new ConditionID[conditionIDs.size()];
@@ -309,7 +302,7 @@ public class BetonQuest extends JavaPlugin {
                         return false;
                     }
                 } catch (InterruptedException | ExecutionException e) {
-                    getInstance().log.reportException(null, e);
+                    log.reportException(e);
                     return false;
                 }
             }
@@ -328,7 +321,7 @@ public class BetonQuest extends JavaPlugin {
     public static boolean condition(final String playerID, final ConditionID conditionID) {
         // null check
         if (conditionID == null) {
-            getInstance().log.debug(null, "Null condition ID!");
+            log.debug("Null condition ID!");
             return false;
         }
         // get the condition
@@ -340,17 +333,17 @@ public class BetonQuest extends JavaPlugin {
             }
         }
         if (condition == null) {
-            getInstance().log.warning(conditionID.getPackage(), "The condition " + conditionID + " is not defined!");
+            log.warning(conditionID.getPackage(), "The condition " + conditionID + " is not defined!");
             return false;
         }
         // check for null player
         if (playerID == null && !condition.isStatic()) {
-            getInstance().log.debug(conditionID.getPackage(), "Cannot check non-static condition without a player, returning false");
+            log.debug(conditionID.getPackage(), "Cannot check non-static condition without a player, returning false");
             return false;
         }
         // check for online player
         if (playerID != null && PlayerConverter.getPlayer(playerID) == null && !condition.isPersistent()) {
-            getInstance().log.debug(conditionID.getPackage(), "Player was offline, condition is not persistent, returning false");
+            log.debug(conditionID.getPackage(), "Player was offline, condition is not persistent, returning false");
             return false;
         }
         // and check if it's met or not
@@ -358,11 +351,11 @@ public class BetonQuest extends JavaPlugin {
         try {
             outcome = condition.handle(playerID);
         } catch (final QuestRuntimeException e) {
-            getInstance().log.warning(conditionID.getPackage(), "Error while checking '" + conditionID + "' condition: " + e.getMessage(), e);
+            log.warning(conditionID.getPackage(), "Error while checking '" + conditionID + "' condition: " + e.getMessage(), e);
             return false;
         }
         final boolean isMet = outcome != conditionID.inverted();
-        getInstance().log.debug(conditionID.getPackage(),
+        log.debug(conditionID.getPackage(),
                 (isMet ? "TRUE" : "FALSE") + ": " + (conditionID.inverted() ? "inverted" : "") + " condition "
                         + conditionID + " for player " + PlayerConverter.getName(playerID));
         return isMet;
@@ -377,7 +370,7 @@ public class BetonQuest extends JavaPlugin {
     public static void event(final String playerID, final EventID eventID) {
         // null check
         if (eventID == null) {
-            getInstance().log.debug(null, "Null event ID!");
+            log.debug("Null event ID!");
             return;
         }
         // get the event
@@ -389,20 +382,20 @@ public class BetonQuest extends JavaPlugin {
             }
         }
         if (event == null) {
-            getInstance().log.warning(eventID.getPackage(), "Event " + eventID + " is not defined");
+            log.warning(eventID.getPackage(), "Event " + eventID + " is not defined");
             return;
         }
         // fire the event
         if (playerID == null) {
-            getInstance().log.debug(eventID.getPackage(), "Firing static event " + eventID);
+            log.debug(eventID.getPackage(), "Firing static event " + eventID);
         } else {
-            getInstance().log.debug(eventID.getPackage(),
+            log.debug(eventID.getPackage(),
                     "Firing event " + eventID + " for " + PlayerConverter.getName(playerID));
         }
         try {
             event.fire(playerID);
         } catch (final QuestRuntimeException e) {
-            getInstance().log.warning(eventID.getPackage(), "Error while firing '" + eventID + "' event: " + e.getMessage(), e);
+            log.warning(eventID.getPackage(), "Error while firing '" + eventID + "' event: " + e.getMessage(), e);
         }
     }
 
@@ -416,7 +409,7 @@ public class BetonQuest extends JavaPlugin {
     public static void newObjective(final String playerID, final ObjectiveID objectiveID) {
         // null check
         if (playerID == null || objectiveID == null) {
-            getInstance().log.debug(objectiveID.getPackage(), "Null arguments for the objective!");
+            log.debug(objectiveID.getPackage(), "Null arguments for the objective!");
             return;
         }
         Objective objective = null;
@@ -427,7 +420,7 @@ public class BetonQuest extends JavaPlugin {
             }
         }
         if (objective.containsPlayer(playerID)) {
-            getInstance().log.debug(objectiveID.getPackage(),
+            log.debug(objectiveID.getPackage(),
                     "Player " + PlayerConverter.getName(playerID) + " already has the " + objectiveID +
                             " objective");
             return;
@@ -445,7 +438,7 @@ public class BetonQuest extends JavaPlugin {
     public static void resumeObjective(final String playerID, final ObjectiveID objectiveID, final String instruction) {
         // null check
         if (playerID == null || objectiveID == null || instruction == null) {
-            getInstance().log.debug(null, "Null arguments for the objective!");
+            log.debug("Null arguments for the objective!");
             return;
         }
         Objective objective = null;
@@ -456,11 +449,11 @@ public class BetonQuest extends JavaPlugin {
             }
         }
         if (objective == null) {
-            getInstance().log.warning(objectiveID.getPackage(), "Objective " + objectiveID + " does not exist");
+            log.warning(objectiveID.getPackage(), "Objective " + objectiveID + " does not exist");
             return;
         }
         if (objective.containsPlayer(playerID)) {
-            getInstance().log.debug(objectiveID.getPackage(),
+            log.debug(objectiveID.getPackage(),
                     "Player " + PlayerConverter.getName(playerID) + " already has the " + objectiveID + " objective!");
             return;
         }
@@ -503,16 +496,16 @@ public class BetonQuest extends JavaPlugin {
             final Variable variable = variableClass.getConstructor(Instruction.class)
                     .newInstance(new VariableInstruction(pack, null, instruction));
             VARIABLES.put(variableID, variable);
-            getInstance().log.debug(pack, "Variable " + variableID + " loaded");
+            log.debug(pack, "Variable " + variableID + " loaded");
             return variable;
         } catch (final InvocationTargetException e) {
             if (e.getCause() instanceof InstructionParseException) {
                 throw new InstructionParseException("Error in " + variableID + " variable: " + e.getCause().getMessage(), e);
             } else {
-                getInstance().log.reportException(pack, e);
+                log.reportException(pack, e);
             }
         } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-            getInstance().log.reportException(pack, e);
+            log.reportException(pack, e);
         }
         return null;
     }
@@ -559,14 +552,15 @@ public class BetonQuest extends JavaPlugin {
     }
 
     @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.DoNotUseThreads", "PMD.NPathComplexity"})
+    @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
     @Override
     public void onEnable() {
+        instance = this;
+        log = BetonQuestLogger.create(this);
         pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
 
-        // initialize debugger
-        logWatcher = new LogWatcher(this);
-
         adventure = BukkitAudiences.create(this);
+        logWatcher = new LogWatcher(this, adventure);
 
         // load configuration
         new Config();
@@ -575,22 +569,22 @@ public class BetonQuest extends JavaPlugin {
         // try to connect to database
         final boolean mySQLEnabled = getConfig().getBoolean("mysql.enabled", true);
         if (mySQLEnabled) {
-            log.debug(null, "Connecting to MySQL database");
+            log.debug("Connecting to MySQL database");
             this.database = new MySQL(this, getConfig().getString("mysql.host"),
                     getConfig().getString("mysql.port"),
                     getConfig().getString("mysql.base"), getConfig().getString("mysql.user"),
                     getConfig().getString("mysql.pass"));
             if (database.getConnection() != null) {
                 isMySQLUsed = true;
-                log.info(null, "Successfully connected to MySQL database!");
+                log.info("Successfully connected to MySQL database!");
             }
         }
         if (!mySQLEnabled || !isMySQLUsed) {
             this.database = new SQLite(this, "database.db");
             if (mySQLEnabled) {
-                log.warning(null, "No connection to the mySQL Database! Using SQLite for storing data as fallback!");
+                log.warning("No connection to the mySQL Database! Using SQLite for storing data as fallback!");
             } else {
-                log.info(null, "Using SQLite for storing data!");
+                log.info("Using SQLite for storing data!");
             }
         }
 
@@ -824,7 +818,7 @@ public class BetonQuest extends JavaPlugin {
             try {
                 playerHider = new PlayerHider();
             } catch (final InstructionParseException e) {
-                log.error(null, "Could not start PlayerHider! " + e.getMessage(), e);
+                log.error("Could not start PlayerHider! " + e.getMessage(), e);
             }
         });
 
@@ -834,7 +828,7 @@ public class BetonQuest extends JavaPlugin {
             final Logger coreLogger = (Logger) LogManager.getRootLogger();
             coreLogger.addFilter(new AnswerFilter());
         } catch (ClassNotFoundException | NoClassDefFoundError e) {
-            getInstance().log.warning(null, "Could not disable /betonquestanswer logging", e);
+            log.warning("Could not disable /betonquestanswer logging", e);
         }
 
         // metrics
@@ -848,7 +842,7 @@ public class BetonQuest extends JavaPlugin {
         rpgMenu.onEnable();
 
         // done
-        log.info(null, "BetonQuest succesfully enabled!");
+        log.info("BetonQuest succesfully enabled!");
     }
 
     /**
@@ -881,14 +875,14 @@ public class BetonQuest extends JavaPlugin {
                 try {
                     identifier = new EventID(pack, key);
                 } catch (final ObjectNotFoundException e) {
-                    getInstance().log.warning(pack, "Error while loading event '" + packName + "." + key + "': " + e.getMessage(), e);
+                    log.warning(pack, "Error while loading event '" + packName + "." + key + "': " + e.getMessage(), e);
                     continue;
                 }
                 final String type;
                 try {
                     type = identifier.generateInstruction().getPart(0);
                 } catch (final InstructionParseException e) {
-                    getInstance().log.warning(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
+                    log.warning(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
                     continue;
                 }
                 final Class<? extends QuestEvent> eventClass = EVENT_TYPES.get(type);
@@ -906,7 +900,7 @@ public class BetonQuest extends JavaPlugin {
                     log.debug(pack, "  Event '" + identifier + "' loaded");
                 } catch (final InvocationTargetException e) {
                     if (e.getCause() instanceof InstructionParseException) {
-                        getInstance().log.warning(pack, "Error in '" + identifier + "' event (" + type + "): " + e.getCause().getMessage(), e);
+                        log.warning(pack, "Error in '" + identifier + "' event (" + type + "): " + e.getCause().getMessage(), e);
                     } else {
                         log.reportException(pack, e);
                     }
@@ -925,14 +919,14 @@ public class BetonQuest extends JavaPlugin {
                 try {
                     identifier = new ConditionID(pack, key);
                 } catch (final ObjectNotFoundException e) {
-                    getInstance().log.warning(pack, "Error while loading condition '" + packName + "." + key + "': " + e.getMessage(), e);
+                    log.warning(pack, "Error while loading condition '" + packName + "." + key + "': " + e.getMessage(), e);
                     continue;
                 }
                 final String type;
                 try {
                     type = identifier.generateInstruction().getPart(0);
                 } catch (final InstructionParseException e) {
-                    getInstance().log.warning(pack, "Condition type not defined in '" + packName + "." + key + "'", e);
+                    log.warning(pack, "Condition type not defined in '" + packName + "." + key + "'", e);
                     continue;
                 }
                 final Class<? extends Condition> conditionClass = CONDITION_TYPES.get(type);
@@ -950,7 +944,7 @@ public class BetonQuest extends JavaPlugin {
                     log.debug(pack, "  Condition '" + identifier + "' loaded");
                 } catch (final InvocationTargetException e) {
                     if (e.getCause() instanceof InstructionParseException) {
-                        getInstance().log.warning(pack, "Error in '" + identifier + "' condition (" + type + "): " + e.getCause().getMessage(), e);
+                        log.warning(pack, "Error in '" + identifier + "' condition (" + type + "): " + e.getCause().getMessage(), e);
                     } else {
                         log.reportException(pack, e);
                     }
@@ -969,14 +963,14 @@ public class BetonQuest extends JavaPlugin {
                 try {
                     identifier = new ObjectiveID(pack, key);
                 } catch (final ObjectNotFoundException e) {
-                    getInstance().log.warning(pack, "Error while loading objective '" + packName + "." + key + "': " + e.getMessage(), e);
+                    log.warning(pack, "Error while loading objective '" + packName + "." + key + "': " + e.getMessage(), e);
                     continue;
                 }
                 final String type;
                 try {
                     type = identifier.generateInstruction().getPart(0);
                 } catch (final InstructionParseException e) {
-                    getInstance().log.warning(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
+                    log.warning(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
                     continue;
                 }
                 final Class<? extends Objective> objectiveClass = OBJECTIVE_TYPES.get(type);
@@ -995,7 +989,7 @@ public class BetonQuest extends JavaPlugin {
                     log.debug(pack, "  Objective '" + identifier + "' loaded");
                 } catch (final InvocationTargetException e) {
                     if (e.getCause() instanceof InstructionParseException) {
-                        getInstance().log.warning(pack, "Error in '" + identifier + "' objective (" + type + "): " + e.getCause().getMessage(), e);
+                        log.warning(pack, "Error in '" + identifier + "' objective (" + type + "): " + e.getCause().getMessage(), e);
                     } else {
                         log.reportException(pack, e);
                     }
@@ -1013,7 +1007,7 @@ public class BetonQuest extends JavaPlugin {
                 try {
                     CONVERSATIONS.put(pack.getName() + "." + convName, new ConversationData(pack, convName));
                 } catch (final InstructionParseException e) {
-                    getInstance().log.warning(pack, "Error in '" + packName + "." + convName + "' conversation: " + e.getMessage(), e);
+                    log.warning(pack, "Error in '" + packName + "." + convName + "' conversation: " + e.getMessage(), e);
                 }
             }
             // check external pointers
@@ -1021,10 +1015,9 @@ public class BetonQuest extends JavaPlugin {
             log.debug(pack, "Everything in package " + packName + " loaded");
         }
         // done
-        log.info(null,
-                "There are " + CONDITIONS.size() + " conditions, " + EVENTS.size() + " events, "
-                        + OBJECTIVES.size() + " objectives and " + CONVERSATIONS.size() + " conversations loaded from "
-                        + Config.getPackages().size() + " packages.");
+        log.info("There are " + CONDITIONS.size() + " conditions, " + EVENTS.size() + " events, "
+                + OBJECTIVES.size() + " objectives and " + CONVERSATIONS.size() + " conversations loaded from "
+                + Config.getPackages().size() + " packages.");
         // start those freshly loaded objectives for all players
         for (final PlayerData playerData : playerDataMap.values()) {
             playerData.startObjectives();
@@ -1041,7 +1034,7 @@ public class BetonQuest extends JavaPlugin {
      */
     public void reload() {
         // reload the configuration
-        log.debug(null, "Reloading configuration");
+        log.debug("Reloading configuration");
         new Config();
         Notify.load();
         // reload updater settings
@@ -1050,7 +1043,7 @@ public class BetonQuest extends JavaPlugin {
         new StaticEvents();
         // stop current global locations listener
         // and start new one with reloaded configs
-        log.debug(null, "Restarting global locations");
+        log.debug("Restarting global locations");
         new GlobalObjectives();
         ConversationColors.loadColors();
         Compatibility.reload();
@@ -1059,7 +1052,7 @@ public class BetonQuest extends JavaPlugin {
         // start objectives and update journals for every online player
         for (final Player player : Bukkit.getOnlinePlayers()) {
             final String playerID = PlayerConverter.getID(player);
-            log.debug(null, "Updating journal for player " + PlayerConverter.getName(playerID));
+            log.debug("Updating journal for player " + PlayerConverter.getName(playerID));
             final PlayerData playerData = instance.getPlayerData(playerID);
             GlobalObjectives.startAll(playerID);
             final Journal journal = playerData.getJournal();
@@ -1069,7 +1062,7 @@ public class BetonQuest extends JavaPlugin {
         try {
             playerHider = new PlayerHider();
         } catch (final InstructionParseException e) {
-            log.error(null, "Could not start PlayerHider! " + e.getMessage(), e);
+            log.error("Could not start PlayerHider! " + e.getMessage(), e);
         }
     }
 
@@ -1094,7 +1087,7 @@ public class BetonQuest extends JavaPlugin {
 
 
         // done
-        log.info(null, "BetonQuest succesfully disabled!");
+        log.info("BetonQuest succesfully disabled!");
 
         if (this.adventure != null) {
             this.adventure.close();
@@ -1135,7 +1128,7 @@ public class BetonQuest extends JavaPlugin {
      * @param playerData PlayerData object to store
      */
     public void putPlayerData(final String playerID, final PlayerData playerData) {
-        log.debug(null, "Inserting data for " + PlayerConverter.getName(playerID));
+        log.debug("Inserting data for " + PlayerConverter.getName(playerID));
         playerDataMap.put(playerID, playerData);
     }
 
@@ -1181,7 +1174,7 @@ public class BetonQuest extends JavaPlugin {
      * @param conditionClass class object for the condition
      */
     public void registerConditions(final String name, final Class<? extends Condition> conditionClass) {
-        log.debug(null, "Registering " + name + " condition type");
+        log.debug("Registering " + name + " condition type");
         CONDITION_TYPES.put(name, conditionClass);
     }
 
@@ -1192,7 +1185,7 @@ public class BetonQuest extends JavaPlugin {
      * @param eventClass class object for the condition
      */
     public void registerEvents(final String name, final Class<? extends QuestEvent> eventClass) {
-        log.debug(null, "Registering " + name + " event type");
+        log.debug("Registering " + name + " event type");
         EVENT_TYPES.put(name, eventClass);
     }
 
@@ -1203,7 +1196,7 @@ public class BetonQuest extends JavaPlugin {
      * @param objectiveClass class object for the objective
      */
     public void registerObjectives(final String name, final Class<? extends Objective> objectiveClass) {
-        log.debug(null, "Registering " + name + " objective type");
+        log.debug("Registering " + name + " objective type");
         OBJECTIVE_TYPES.put(name, objectiveClass);
     }
 
@@ -1214,7 +1207,7 @@ public class BetonQuest extends JavaPlugin {
      * @param convIOClass class object to register
      */
     public void registerConversationIO(final String name, final Class<? extends ConversationIO> convIOClass) {
-        log.debug(null, "Registering " + name + " conversation IO type");
+        log.debug("Registering " + name + " conversation IO type");
         CONVERSATION_IO_TYPES.put(name, convIOClass);
     }
 
@@ -1225,7 +1218,7 @@ public class BetonQuest extends JavaPlugin {
      * @param interceptorClass class object to register
      */
     public void registerInterceptor(final String name, final Class<? extends Interceptor> interceptorClass) {
-        log.debug(null, "Registering " + name + " interceptor type");
+        log.debug("Registering " + name + " interceptor type");
         INTERCEPTOR_TYPES.put(name, interceptorClass);
     }
 
@@ -1236,7 +1229,7 @@ public class BetonQuest extends JavaPlugin {
      * @param ioClass class object to register
      */
     public void registerNotifyIO(final String name, final Class<? extends NotifyIO> ioClass) {
-        log.debug(null, "Registering " + name + " notify IO type");
+        log.debug("Registering " + name + " notify IO type");
         NOTIFY_IO_TYPES.put(name, ioClass);
     }
 
@@ -1247,7 +1240,7 @@ public class BetonQuest extends JavaPlugin {
      * @param variable class object of this type
      */
     public void registerVariable(final String name, final Class<? extends Variable> variable) {
-        log.debug(null, "Registering " + name + " variable type");
+        log.debug("Registering " + name + " variable type");
         VARIABLE_TYPES.put(name, variable);
     }
 
@@ -1326,19 +1319,19 @@ public class BetonQuest extends JavaPlugin {
      */
     public String getVariableValue(final String packName, final String name, final String playerID) {
         if (!Config.getPackages().containsKey(packName)) {
-            getInstance().log.warning(null, "Variable '" + name + "' contains the non-existent package '" + packName + "' !");
+            log.warning("Variable '" + name + "' contains the non-existent package '" + packName + "' !");
             return "";
         }
         final ConfigPackage pack = Config.getPackages().get(packName);
         try {
             final Variable var = createVariable(pack, name);
             if (var == null) {
-                getInstance().log.warning(pack, "Could not resolve variable '" + name + "'.");
+                log.warning(pack, "Could not resolve variable '" + name + "'.");
                 return "";
             }
             return var.getValue(playerID);
         } catch (final InstructionParseException e) {
-            getInstance().log.warning(pack, "&cCould not create variable '" + name + "': " + e.getMessage(), e);
+            log.warning(pack, "&cCould not create variable '" + name + "': " + e.getMessage(), e);
             return "";
         }
     }

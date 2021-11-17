@@ -5,7 +5,7 @@ of all NotifyIO's.
 
 <div style="text-align: center">
  <video controls loop
-     src="../../media/content/Documentation/Notifications/NotifySystemOverview.mp4"
+     src="../../_media/content/Documentation/Notifications/NotifySystemOverview.mp4"
      width="780" height="500">
  Sorry, your browser doesn't support embedded videos.
  </video>
@@ -25,7 +25,7 @@ in the *messages.yml* for all built-in notifications.
 Writes the notification in the players chat.
 
 ??? info "Preview"
-    ![chat image](../media/content/Documentation/Notifications/chat.png)
+    ![chat image](../_media/content/Documentation/Notifications/chat.png)
 
 | Option  | Description                 |
 |---------|-----------------------------|
@@ -39,7 +39,7 @@ You can still add your own additional sound as usual though.
 It will then be played together with the default advancement sound.
 
 ??? info "Preview"
-    ![advancement image](../media/content/Documentation/Notifications/advancement.png)
+    ![advancement image](../_media/content/Documentation/Notifications/advancement.png)
 
 | Option | Description |
 |--------|-------------|
@@ -51,7 +51,7 @@ It will then be played together with the default advancement sound.
 Shows the notification using the actionbar.
 
 ??? info "Preview"
-    ![actionbar image](../media/content/Documentation/Notifications/actionbar.png)
+    ![actionbar image](../_media/content/Documentation/Notifications/actionbar.png)
 
 | Option | Description |
 |--------|-------------|
@@ -62,7 +62,7 @@ Shows the notification using a bossbar at the top of the players screen.
 
 ??? info "Preview"
     <div style="text-align: center">
-    ![bossbar image](../media/content/Documentation/Notifications/bossbar.png)
+    ![bossbar image](../_media/content/Documentation/Notifications/bossbar.png)
     </div>
 | Option | Description |
 |--------|-------------|
@@ -80,7 +80,7 @@ A subtitle can be played simultaneously by adding `\n` to the notification text.
 Anything after these characters will be shown in the subtitle.
 
 ??? info "Preview"     
-    ![title](../media/content/Documentation/Notifications/title.png)
+    ![title](../_media/content/Documentation/Notifications/title.png)
 
 | Option | Description |
 |--------|-------------|
@@ -94,7 +94,7 @@ Anything after these characters will be shown in the subtitle.
 Shows the notification using a subtitle.
 
 ??? info "Preview"
-    ![subtitle](../media/content/Documentation/Notifications/subtitle.png)
+    ![subtitle](../_media/content/Documentation/Notifications/subtitle.png)
 
 | Option | Description |
 |--------|-------------|
@@ -110,7 +110,7 @@ during the animation.
 ??? info "Preview"
     <div style="text-align: center">
         <video controls loop
-        src="../../media/content/Documentation/Notifications/TotemIO.mp4"
+        src="../../_media/content/Documentation/Notifications/TotemIO.mp4"
         width="780" height="500">
         Sorry, your browser doesn't support embedded videos.
     </video>
@@ -148,13 +148,13 @@ then the `soundplayeroffset` would allow.
 
 ??? info "Visual Explanation"  
     <div style="text-align: center">
-    ![offset image](../media/content/Documentation/Notifications/offset.png)
+    ![offset image](../_media/content/Documentation/Notifications/offset.png)
     </div>
 
     This shows how the sound will be played at the `soundlocation` if the `soundplayeroffset` is bigger then the current
     distance between the player and the `soundlocation` 
     <div style="text-align: center">
-    ![offsetBiggerThanDistance image](../media/content/Documentation/Notifications/offsetBiggerThanDistance.png)
+    ![offsetBiggerThanDistance image](../_media/content/Documentation/Notifications/offsetBiggerThanDistance.png)
     </div>
 
 *Example usage*:
@@ -171,7 +171,7 @@ and the z axis is before / behind the players face. It will move along the playe
     In contrast to their global counterparts, relative x,y,z axes do not change their orientation relative to the player.
     Example: The positive x-axis will always point left from the perspective of the player.
     <div style="text-align: center">
-    ![relativeAxis image](../media/content/Documentation/Notifications/relativeAxis.png)
+    ![relativeAxis image](../_media/content/Documentation/Notifications/relativeAxis.png)
     </div>    
 
 This makes it possible to go crazy with sounds. Just one example: A halloween special
@@ -186,7 +186,7 @@ Here is a small example:
 
     <div style="text-align: center">
     <video controls loop
-    src="../../media/content/Documentation/Notifications/RelativeVectorExample.mp4"
+    src="../../_media/content/Documentation/Notifications/RelativeVectorExample.mp4"
     width="780" height="500">
     Sorry, your browser doesn't support embedded videos.
     </video>
