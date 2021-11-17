@@ -19,6 +19,7 @@ import java.util.logging.Level;
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public interface BetonQuestLogger {
+
     /**
      * Creates a logger.
      * <p>
@@ -129,18 +130,6 @@ public interface BetonQuestLogger {
 
     /**
      * Logs a warning message with the {@link Level#WARNING} level to the log.
-     * <p>
-     * Use this if you can provide useful information how to fix the underlying problem.
-     * <p>
-     * If you can provide an exception use {@link BetonQuestLogger#warning(ConfigPackage, String, Throwable)} instead.
-     *
-     * @param pack The related {@link ConfigPackage} or null.
-     * @param msg  The message to log.
-     */
-    void warning(ConfigPackage pack, String msg);
-
-    /**
-     * Logs a warning message with the {@link Level#WARNING} level to the log.
      * The {@link Throwable} is logged with the {@link Level#FINE} level to the log.
      * <p>
      * Use this if you can provide useful information how to fix the underlying problem.
@@ -154,6 +143,18 @@ public interface BetonQuestLogger {
      * @param thrown The throwable to log.
      */
     void warning(String msg, Throwable thrown);
+
+    /**
+     * Logs a warning message with the {@link Level#WARNING} level to the log.
+     * <p>
+     * Use this if you can provide useful information how to fix the underlying problem.
+     * <p>
+     * If you can provide an exception use {@link BetonQuestLogger#warning(ConfigPackage, String, Throwable)} instead.
+     *
+     * @param pack The related {@link ConfigPackage} or null.
+     * @param msg  The message to log.
+     */
+    void warning(ConfigPackage pack, String msg);
 
     /**
      * Logs a warning message with the {@link Level#WARNING} level to the log.
@@ -186,19 +187,6 @@ public interface BetonQuestLogger {
 
     /**
      * Logs an error message with the {@link Level#SEVERE} level to the log.
-     * <p>
-     * Use this if the underlying problem affects the servers security or functionality.
-     * Usage is also allowed if you don't know how the user can fix the underlying problem.
-     * <p>
-     * If you can provide an exception use {@link BetonQuestLogger#error(ConfigPackage, String, Throwable)} instead.
-     *
-     * @param pack The related {@link ConfigPackage} or null.
-     * @param msg  The message to log.
-     */
-    void error(ConfigPackage pack, String msg);
-
-    /**
-     * Logs an error message with the {@link Level#SEVERE} level to the log.
      * The {@link Throwable} is logged together with the message.
      * <p>
      * Use this if the underlying problem affects the servers security or functionality.
@@ -213,6 +201,19 @@ public interface BetonQuestLogger {
      * @param thrown The throwable to log.
      */
     void error(String msg, Throwable thrown);
+
+    /**
+     * Logs an error message with the {@link Level#SEVERE} level to the log.
+     * <p>
+     * Use this if the underlying problem affects the servers security or functionality.
+     * Usage is also allowed if you don't know how the user can fix the underlying problem.
+     * <p>
+     * If you can provide an exception use {@link BetonQuestLogger#error(ConfigPackage, String, Throwable)} instead.
+     *
+     * @param pack The related {@link ConfigPackage} or null.
+     * @param msg  The message to log.
+     */
+    void error(ConfigPackage pack, String msg);
 
     /**
      * Logs an error message with the {@link Level#SEVERE} level to the log.
@@ -245,18 +246,6 @@ public interface BetonQuestLogger {
 
     /**
      * Logs a debug message with the {@link Level#FINE} level to the log.
-     * <p>
-     * Use this for additional debug log information.
-     * <p>
-     * If you can provide an exception use {@link BetonQuestLogger#debug(ConfigPackage, String, Throwable)} instead.
-     *
-     * @param pack The related {@link ConfigPackage} or null.
-     * @param msg  The message to log.
-     */
-    void debug(ConfigPackage pack, String msg);
-
-    /**
-     * Logs a debug message with the {@link Level#FINE} level to the log.
      * The {@link Throwable} is logged together with the message.
      * <p>
      * Use this for additional debug log information.
@@ -270,6 +259,18 @@ public interface BetonQuestLogger {
      * @param thrown The throwable to log.
      */
     void debug(String msg, Throwable thrown);
+
+    /**
+     * Logs a debug message with the {@link Level#FINE} level to the log.
+     * <p>
+     * Use this for additional debug log information.
+     * <p>
+     * If you can provide an exception use {@link BetonQuestLogger#debug(ConfigPackage, String, Throwable)} instead.
+     *
+     * @param pack The related {@link ConfigPackage} or null.
+     * @param msg  The message to log.
+     */
+    void debug(ConfigPackage pack, String msg);
 
     /**
      * Logs a debug message with the {@link Level#FINE} level to the log.
