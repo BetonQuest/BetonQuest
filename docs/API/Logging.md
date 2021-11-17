@@ -12,8 +12,8 @@ This helps to provide a great user experience and keeps the log consistent.
 These advantages are mainly for BetonQuest, but it is also very useful for 3rd party integrations. 
 
 
-??? info "In-game logging"
-    Users can see all log messages send using the BetonQuestLogger in-game.
+??? info "In-Game Logging"
+    Users can see all log messages send, using the BetonQuestLogger in-game.
     Additionally, these messages can be filtered by quest package and log level.
 
 ??? info "Debug Logging"
@@ -25,7 +25,7 @@ These advantages are mainly for BetonQuest, but it is also very useful for 3rd p
 
 ??? info "Log History"
     It happens very often that a user experiences a bug while debug logging is not enabled.
-    We keep the last 10 minutes of the debug log history saved in memory.
+    We keep the last `x` configured minutes of the debug log history saved in memory.
     Therefore, the history will be written to `latest.log` once you enable "Debug Logging" via command. 
 
 ??? info "Logger Topics"

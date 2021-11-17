@@ -97,7 +97,7 @@ Using '`/q create beton`' command you will create new package named '`beton`'. I
 The `/q vector` command allows you to create vector variables from the specified in first argument location variable to your position. The result will be saved to the "vectors.{second argument}" variable.
 
 The debug command ('`/q debug`') allows you to enable or disable the debug mode. If the debug mode is enabled after
-server startup ('`/q debug true`'), the last 10 minutes of log entries are written down to the
+server startup ('`/q debug true`'), the last x configured minutes of log entries are written down to the
 `/plugins/BetonQuest/logs/latest.log` file as history and writing will be continued until the debug mode is disabled
 using ('`/q debug false`'). The `latest.log` is renamed to the current date and time on server startup.
 It's useful if you search for more information about an issue and can help developers to fix bugs.

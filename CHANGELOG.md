@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Log during `/q reload`
     - New command `/q debug ingame`
   - Debug logging
-    - now with 10 minutes history
+    - now with x configured minutes history
 - NotifyIO "totemIO"
 - Support for MythicLib
 - FastAsyncWorldEdit compatibility
