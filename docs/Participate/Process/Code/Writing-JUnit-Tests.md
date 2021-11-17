@@ -62,7 +62,7 @@ public class TestFeature {
 ```
 
 The `LogValidator` is created and passed to your method by the `BetonQuestLoggerService`.
-It makes it possible to assert that a log message has been logged in the silenced parent logger.
+It makes it possible to assert that a log message has been logged in the silent parent logger.
 The simplest method is `assertLogEntry(Level level, String message)`, that you can use to check
 that the given message with the given level has been logged. You can also check that there are no additional log 
 messages in the `LogValidator` by calling `assertEmpty()`.
