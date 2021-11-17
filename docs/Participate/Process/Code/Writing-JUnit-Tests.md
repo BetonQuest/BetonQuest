@@ -88,7 +88,7 @@ messages in the `LogValidator` by calling `assertEmpty()`.
         public void testCustom(LogValidator validator, Logger logger, BetonQuestLogger log) {
     ```
     
-    The `logger` is the silenced parent `Logger`.
+    The `logger` is the silent parent `Logger`.
 
     The `log` is a new instance of the `BetonQuestLogger` that you can use to log things during the test.
     This logger has a topic that can be accessed via `BetonQuestLoggerService.LOGGER_TOPIC`.
