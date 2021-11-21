@@ -6,9 +6,9 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
 @Execution(ExecutionMode.CONCURRENT)
-public class UnmodifiableConfigurationSectionTest extends AbstractConfigurationSectionTest {
+public class ConfigurationSectionDecoratorTest extends AbstractConfigurationSectionTest {
     @Override
     public ConfigurationSection getConfig() {
-        return new UnmodifiableConfigurationSection(super.getConfig());
+        return new ConfigurationSectionDecorator(super.getConfig());
     }
 }

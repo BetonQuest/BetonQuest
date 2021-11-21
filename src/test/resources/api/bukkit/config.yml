@@ -1,0 +1,56 @@
+childSection:
+  nestedChildSection:
+    key: value
+get: getValue
+existingSet: setValue
+string: Custom String
+integer: 12345
+boolean: true
+double: 123.45
+long: 9223372036854775807
+list:
+  - One
+  - 2
+  - 3.0
+stringList:
+  - One
+  - Two
+  - Three
+integerList:
+  - 1
+  - 2
+  - 3
+booleanList:
+  - true
+  - false
+  - true
+doubleList:
+  - 1.1
+  - 2.2
+  - 3.3
+characterList:
+  - a
+  - b
+  - c
+mapList:
+  - one: 1
+    two: 2
+  - three: 3
+    four: 4
+object:
+  ==: org.betonquest.betonquest.api.bukkit.config.util.AbstractConfigurationSectionTest$TestObject
+  name: Test
+  amount: 5
+  sum: 555
+vector:
+  ==: Vector
+  x: 1.0
+  y: 2.0
+  z: 3.0
+color:
+  ==: Color
+  RED: 255
+  BLUE: 0
+  GREEN: 0
+section:
+  key: value
