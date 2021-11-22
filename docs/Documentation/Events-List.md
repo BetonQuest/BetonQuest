@@ -58,7 +58,7 @@ This event works the same as `take` event, but it takes items from a chest at sp
     chesttake 100;200;300;world emerald:5,sword
     ```
 
-## Clear mobs: `clear`
+## Clear entities: `clear`
 
 This event removes all specified mobs from the specified area. The first required argument is a list of mobs (taken from [here](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html)) separated by commas. Next is location. After that there is the radius around the location (a positive number or a variable). You can also optionally specify `name:` argument, followed by name which removed mobs must have. You can use `marked:` argument to remove only mobs marked in `spawn` event.
 
