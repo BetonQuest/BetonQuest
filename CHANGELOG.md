@@ -97,6 +97,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - BlockSelector without a namespace but starting with `:` did not work and threw an exception
 - exception during reload, when npc_holograms are disabled
 - `entities` condition and `clear` event now support not living entities
+- mmoitems item creation only worked with uppercase id's
 ### Security
 - it was possible to put a QuestItem into a chest
 - the take event is now threadsafe

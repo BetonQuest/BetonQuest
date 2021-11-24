@@ -7,6 +7,8 @@ import net.Indyuce.mmoitems.api.item.mmoitem.MMOItem;
 import net.Indyuce.mmoitems.manager.ItemManager;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Locale;
+
 /**
  * A utility class for working with MMOItems.
  */
@@ -40,14 +42,14 @@ final public class MMOItemsUtils {
     /**
      * Get's an ItemStack from an MMOItems item type and MMOItems item ID.
      *
-     * @param type the MMOItems item type
+     * @param type      the MMOItems item type
      * @param mmoItemId the MMOItems item ID
      * @return ItemStack constructed by MMOItems
      */
     @SuppressWarnings("deprecation")
     public static ItemStack getMMOItemStack(final Type type, final String mmoItemId) {
         final ItemManager itemManager = MMOItems.plugin.getItems();
-        final MMOItem mmoitem = itemManager.getMMOItem(type, mmoItemId);
+        final MMOItem mmoitem = itemManager.getMMOItem(type, mmoItemId.toUpperCase(Locale.ROOT));
         return mmoitem.newBuilder().build();
     }
 }
