@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixes
 - exception during reload, when npc_holograms are disabled
 - `entities` condition and `clear` event now support not living entities
+- mmoitems item creation only worked with uppercase id's
 ### Security
 
 ## [1.12.6] - 2021-10-14
