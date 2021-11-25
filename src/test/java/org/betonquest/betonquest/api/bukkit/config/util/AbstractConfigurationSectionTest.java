@@ -188,11 +188,13 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testGetRoot() {
-        final ConfigurationSection config = getConfig().getRoot();
+        final ConfigurationSection config = getConfig();
         assertNotNull(config);
         final ConfigurationSection nestedChild = config.getConfigurationSection("childSection.nestedChildSection");
         assertNotNull(nestedChild);
-        assertEquals(config, nestedChild.getRoot());
+        final ConfigurationSection nestedChildRoot = nestedChild.getRoot();
+        assertNotNull(nestedChildRoot);
+        assertEquals(config.getValues(true), nestedChildRoot.getValues(true));
     }
 
     @Test
@@ -201,7 +203,11 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
         final ConfigurationSection config = getConfig();
         final ConfigurationSection nestedChild = config.getConfigurationSection("childSection.nestedChildSection");
         assertNotNull(nestedChild);
-        assertEquals(config.getConfigurationSection("childSection"), nestedChild.getParent());
+        final ConfigurationSection nestedChildParent = nestedChild.getParent();
+        assertNotNull(nestedChildParent);
+        final ConfigurationSection parentSection = config.getConfigurationSection("childSection");
+        assertNotNull(parentSection);
+        assertEquals(parentSection.getValues(true), nestedChildParent.getValues(true));
     }
 
     @Test
