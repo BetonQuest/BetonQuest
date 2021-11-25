@@ -120,7 +120,8 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testGetRoot() {
-        final ConfigurationSection config = getConfig();
+        final ConfigurationSection config = getConfig().getRoot();
+        assertNotNull(config);
         final ConfigurationSection nestedChild = config.getConfigurationSection("childSection.nestedChildSection");
         assertNotNull(nestedChild);
         assertEquals(config, nestedChild.getRoot());

@@ -116,7 +116,7 @@ public class ConfigurationSectionDecorator implements ConfigurationSection {
 
     @Override
     public boolean isString(@NotNull final String path) {
-        return delegate.isSet(path);
+        return delegate.isString(path);
     }
 
     @Override
@@ -193,7 +193,7 @@ public class ConfigurationSectionDecorator implements ConfigurationSection {
 
     @Override
     public boolean isList(@NotNull final String path) {
-        return delegate.isLong(path);
+        return delegate.isList(path);
     }
 
     @Override
