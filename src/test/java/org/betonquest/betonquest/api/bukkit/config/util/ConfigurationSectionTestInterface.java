@@ -1,18 +1,39 @@
 package org.betonquest.betonquest.api.bukkit.config.util;
 
 // Skipp cases where Mocking is necessary
-public abstract interface ConfigurationSectionTestInterface {
-    void testGetKeys();
+@SuppressWarnings("unused")
+public interface ConfigurationSectionTestInterface {
+    void testGetKeysDeepFalse();
 
-    void testGetValues();
+    void testGetKeysDeepTrue();
+
+    void testGetValuesDeepFalse();
+
+    void testGetValuesDeepTrue();
 
     void testContains();
 
     void testContainsOnInvalidConfigPath();
 
-    void testContainsIgnoreDefault();
+    void testContainsIgnoreDefaultFalse();
 
-    void testContainsIgnoreDefaultOnInvalidConfigPath();
+    void testContainsIgnoreDefaultFalseOnInvalidConfigPath();
+
+    void testContainsIgnoreDefaultTrue();
+
+    void testContainsIgnoreDefaultTrueOnInvalidConfigPath();
+
+    void testContainsOnDefault();
+
+    void testContainsOnDefaultOnInvalidConfigPath();
+
+    void testContainsIgnoreDefaultFalseOnDefault();
+
+    void testContainsIgnoreDefaultFalseOnDefaultOnInvalidConfigPath();
+
+    void testContainsIgnoreDefaultTrueOnDefault();
+
+    void testContainsIgnoreDefaultTrueOnDefaultOnInvalidConfigPath();
 
     void testIsSet();
 

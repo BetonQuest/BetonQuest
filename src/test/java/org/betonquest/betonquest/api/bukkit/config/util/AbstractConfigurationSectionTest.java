@@ -34,22 +34,38 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
 
     @Test
     @Override
-    public void testGetKeys() {
+    public void testGetKeysDeepFalse() {
         final ConfigurationSection config = getConfig();
         final ConfigurationSection section = config.getConfigurationSection("childSection");
         assertNotNull(section);
         assertEquals(new HashSet<>(Collections.singletonList("nestedChildSection")), section.getKeys(false));
+    }
+
+    @Test
+    @Override
+    public void testGetKeysDeepTrue() {
+        final ConfigurationSection config = getConfig();
+        final ConfigurationSection section = config.getConfigurationSection("childSection");
+        assertNotNull(section);
         assertEquals(new HashSet<>(Arrays.asList("nestedChildSection", "nestedChildSection.key")), section.getKeys(true));
     }
 
     @Test
     @Override
-    public void testGetValues() {
+    public void testGetValuesDeepFalse() {
         final ConfigurationSection config = getConfig();
         final ConfigurationSection section = config.getConfigurationSection("childSection");
         assertNotNull(section);
         assertEquals("{nestedChildSection=MemorySection[path='childSection.nestedChildSection', root='YamlConfiguration']}",
                 section.getValues(false).toString());
+    }
+
+    @Test
+    @Override
+    public void testGetValuesDeepTrue() {
+        final ConfigurationSection config = getConfig();
+        final ConfigurationSection section = config.getConfigurationSection("childSection");
+        assertNotNull(section);
         assertEquals("[nestedChildSection, nestedChildSection.key]", section.getKeys(true).toString());
     }
 
@@ -58,7 +74,6 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     public void testContains() {
         final ConfigurationSection config = getConfig();
         assertTrue(config.contains("get"));
-        assertTrue(config.contains("default.key", false));
     }
 
     @Test
@@ -66,22 +81,75 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     public void testContainsOnInvalidConfigPath() {
         final ConfigurationSection config = getConfig();
         assertFalse(config.contains("get_invalid"));
+    }
+
+    @Test
+    @Override
+    public void testContainsIgnoreDefaultFalse() {
+        final ConfigurationSection config = getConfig();
+        assertTrue(config.contains("get", false));
+    }
+
+    @Test
+    @Override
+    public void testContainsIgnoreDefaultFalseOnInvalidConfigPath() {
+        final ConfigurationSection config = getConfig();
+        assertFalse(config.contains("get_invalid", false));
+    }
+
+    @Test
+    @Override
+    public void testContainsIgnoreDefaultTrue() {
+        final ConfigurationSection config = getConfig();
+        assertTrue(config.contains("get", true));
+    }
+
+    @Test
+    @Override
+    public void testContainsIgnoreDefaultTrueOnInvalidConfigPath() {
+        final ConfigurationSection config = getConfig();
+        assertFalse(config.contains("get_invalid", true));
+    }
+
+    @Test
+    @Override
+    public void testContainsOnDefault() {
+        final ConfigurationSection config = getConfig();
+        assertTrue(config.contains("default.key"));
+    }
+
+    @Test
+    @Override
+    public void testContainsOnDefaultOnInvalidConfigPath() {
+        final ConfigurationSection config = getConfig();
+        assertFalse(config.contains("default.key_invalid"));
+    }
+
+    @Test
+    @Override
+    public void testContainsIgnoreDefaultFalseOnDefault() {
+        final ConfigurationSection config = getConfig();
+        assertTrue(config.contains("default.key", false));
+    }
+
+    @Test
+    @Override
+    public void testContainsIgnoreDefaultFalseOnDefaultOnInvalidConfigPath() {
+        final ConfigurationSection config = getConfig();
         assertFalse(config.contains("default.key_invalid", false));
     }
 
     @Test
     @Override
-    public void testContainsIgnoreDefault() {
+    public void testContainsIgnoreDefaultTrueOnDefault() {
         final ConfigurationSection config = getConfig();
-        assertTrue(config.contains("get", true));
         assertFalse(config.contains("default.key", true));
     }
 
     @Test
     @Override
-    public void testContainsIgnoreDefaultOnInvalidConfigPath() {
+    public void testContainsIgnoreDefaultTrueOnDefaultOnInvalidConfigPath() {
         final ConfigurationSection config = getConfig();
-        assertFalse(config.contains("get_invalid", true));
         assertFalse(config.contains("default.key_invalid", true));
     }
 
@@ -192,10 +260,14 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Override
     public void testCreateSectionOnExistingConfigPath() {
         final ConfigurationSection config = getConfig();
+
         final ConfigurationSection section = config.createSection("createdSectionExist");
         section.set("key", "created value");
+        assertEquals("created value", config.getString("createdSectionExist.key"));
+
         final ConfigurationSection sectionRecreated = config.createSection("createdSectionExist");
         assertNotEquals(section, sectionRecreated);
+
         assertEquals("created value", section.getString("key"));
         assertNull(sectionRecreated.getString("key"));
         assertNull(config.getString("createdSectionExist.key"));
@@ -224,15 +296,19 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
             put("one", 1);
             put("two", 2);
         }});
+        assertEquals(1, config.getInt("createdSectionWithValuesExist.one"));
+        assertEquals(2, config.getInt("createdSectionWithValuesExist.two"));
         final ConfigurationSection sectionRecreated = config.createSection("createdSectionWithValuesExist", new HashMap<String, Object>() {{
             put("three", 3);
             put("four", 4);
         }});
         assertNotEquals(section, sectionRecreated);
+
         assertEquals(1, section.getInt("one"));
         assertEquals(2, section.getInt("two"));
         assertEquals(3, sectionRecreated.getInt("three"));
         assertEquals(4, sectionRecreated.getInt("four"));
+
         assertNull(config.getString("createdSectionWithValuesExist.one"));
         assertNull(config.getString("createdSectionWithValuesExist.two"));
         assertEquals(3, config.getInt("createdSectionWithValuesExist.three"));
@@ -411,7 +487,7 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Override
     public void testGetLong() {
         final ConfigurationSection config = getConfig();
-        assertEquals(9223372036854775807L, config.getLong("long"));
+        assertEquals(Long.MAX_VALUE, config.getLong("long"));
     }
 
     @Test
@@ -425,14 +501,14 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Override
     public void testGetLongWithDefault() {
         final ConfigurationSection config = getConfig();
-        assertEquals(9223372036854775807L, config.getLong("long", -9223372036854775808L));
+        assertEquals(Long.MAX_VALUE, config.getLong("long", Long.MIN_VALUE));
     }
 
     @Test
     @Override
     public void testGetLongWithDefaultOnInvalidConfigPath() {
         final ConfigurationSection config = getConfig();
-        assertEquals(-9223372036854775808L, config.getLong("long_invalid", -9223372036854775808L));
+        assertEquals(Long.MIN_VALUE, config.getLong("long_invalid", Long.MIN_VALUE));
     }
 
     @Test
@@ -565,14 +641,14 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Override
     public void testGetLongList() {
         final ConfigurationSection config = getConfig();
-        assertEquals(Arrays.asList(1L, 2L, 3L), config.getLongList("doubleList"));
+        assertEquals(Arrays.asList(1L, 2L, 3L), config.getLongList("integerList"));
     }
 
     @Test
     @Override
     public void testGetLongListOnInvalidConfigPath() {
         final ConfigurationSection config = getConfig();
-        assertEquals(Collections.emptyList(), config.getFloatList("doubleList_invalid"));
+        assertEquals(Collections.emptyList(), config.getFloatList("integerList_invalid"));
     }
 
     @Test
@@ -600,7 +676,7 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Override
     public void testGetCharacterListOnInvalidConfigPath() {
         final ConfigurationSection config = getConfig();
-        assertEquals(Collections.emptyList(), config.getByteList("characterList_invalid"));
+        assertEquals(Collections.emptyList(), config.getCharacterList("characterList_invalid"));
     }
 
     @Test
