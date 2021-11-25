@@ -34,7 +34,7 @@ public class UnmodifiableConfigurationSection extends ConfigurationSectionDecora
     @Override
     public @Nullable
     Object get(@NotNull final String path, @Nullable final Object def) {
-        return wrapModifiable(delegate.get(path));
+        return wrapModifiable(delegate.get(path, def));
     }
 
     @Override

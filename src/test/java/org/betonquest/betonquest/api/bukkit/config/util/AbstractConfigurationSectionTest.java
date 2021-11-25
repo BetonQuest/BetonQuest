@@ -789,8 +789,7 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
         final ConfigurationSection config = getConfig();
         final ConfigurationSection section = config.getConfigurationSection("section");
         assertNotNull(section);
-        section.set("key", "new value");
-        assertEquals("new value", section.getString("key"));
+        assertEquals("value", section.getString("key"));
     }
 
     @Test
