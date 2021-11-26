@@ -219,6 +219,18 @@ public interface ConfigurationSectionTestInterface {
 
     void testIsColorOnInvalidConfigPath();
 
+    void testGetLocation();
+
+    void testGetLocationOnInvalidConfigPath();
+
+    void testGetLocationWithDefault();
+
+    void testGetLocationWithDefaultOnInvalidConfigPath();
+
+    void testIsLocation();
+
+    void testIsLocationOnInvalidConfigPath();
+
     void testGetConfigurationSection();
 
     void testGetConfigurationSectionOnInvalidConfigPath();

@@ -1,6 +1,10 @@
 package org.betonquest.betonquest.api.bukkit.config.util;
 
+import be.seeseemelk.mockbukkit.MockBukkit;
+import be.seeseemelk.mockbukkit.ServerMock;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
+import org.bukkit.Location;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -9,6 +13,8 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -23,6 +29,19 @@ import java.util.Objects;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AbstractConfigurationSectionTest implements ConfigurationSectionTestInterface {
+
+    @BeforeAll
+    public static void beforeAll() {
+        final ServerMock server = MockBukkit.mock();
+        server.addSimpleWorld("Test");
+        server.addSimpleWorld("TestInvalid");
+    }
+
+    @AfterAll
+    public static void afterAll() {
+        MockBukkit.unmock();
+    }
+
     public ConfigurationSection getConfig() {
         ConfigurationSerialization.registerClass(TestObject.class);
         final Configuration config = YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/config.yml"));
@@ -863,6 +882,52 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     public void testIsColorOnInvalidConfigPath() {
         final ConfigurationSection config = getConfig();
         assertFalse(config.isColor("color_invalid"));
+    }
+
+    @Test
+    @Override
+    public void testGetLocation() {
+        final ConfigurationSection config = getConfig();
+        final Location location = new Location(Bukkit.getWorld("Test"), 1, 2, 3, 4, 5);
+        assertEquals(location, config.getLocation("location"));
+    }
+
+    @Test
+    @Override
+    public void testGetLocationOnInvalidConfigPath() {
+        final ConfigurationSection config = getConfig();
+        assertNull(config.getLocation("location_invalid"));
+    }
+
+    @Test
+    @Override
+    public void testGetLocationWithDefault() {
+        final ConfigurationSection config = getConfig();
+        final Location location = new Location(Bukkit.getWorld("Test"), 1, 2, 3, 4, 5);
+        final Location locationDefault = new Location(Bukkit.getWorld("TestInvalid"), 1, 2, 3, 4, 5);
+        assertEquals(location, config.getLocation("location", locationDefault));
+    }
+
+    @Test
+    @Override
+    public void testGetLocationWithDefaultOnInvalidConfigPath() {
+        final ConfigurationSection config = getConfig();
+        final Location locationDefault = new Location(Bukkit.getWorld("TestInvalid"), 1, 2, 3, 4, 5);
+        assertEquals(locationDefault, config.getLocation("location_invalid", locationDefault));
+    }
+
+    @Test
+    @Override
+    public void testIsLocation() {
+        final ConfigurationSection config = getConfig();
+        assertTrue(config.isLocation("location"));
+    }
+
+    @Test
+    @Override
+    public void testIsLocationOnInvalidConfigPath() {
+        final ConfigurationSection config = getConfig();
+        assertFalse(config.isLocation("location_invalid"));
     }
 
     @Test
