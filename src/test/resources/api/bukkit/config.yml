@@ -62,3 +62,16 @@ location:
   z: 3.0
   pitch: 5.0
   yaw: 4.0
+item:
+  ==: org.bukkit.inventory.ItemStack
+  v: 1
+  type: BONE
+  amount: 42
+  meta:
+    ==: be.seeseemelk.mockbukkit.inventory.meta.ItemMetaMock
+    enchants: {}
+    damage: 0
+    persistentDataContainer: {}
+    itemFlags: !!set {}
+    unbreakable: false
+    repairCost: 0

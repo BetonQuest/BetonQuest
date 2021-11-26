@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.api.bukkit.config.util;
 
-// Skipp cases where Mocking is necessary
 @SuppressWarnings("unused")
 public interface ConfigurationSectionTestInterface {
     void testGetKeysDeepFalse();
@@ -206,6 +205,30 @@ public interface ConfigurationSectionTestInterface {
     void testIsVector();
 
     void testIsVectorOnInvalidConfigPath();
+
+    void testGetOfflinePlayer();
+
+    void testGetOfflinePlayerOnInvalidConfigPath();
+
+    void testGetOfflinePlayerWithDefault();
+
+    void testGetOfflinePlayerWithDefaultOnInvalidConfigPath();
+
+    void testIsOfflinePlayer();
+
+    void testIsOfflinePlayerOnInvalidConfigPath();
+
+    void testGetItemStack();
+
+    void testGetItemStackOnInvalidConfigPath();
+
+    void testGetItemStackWithDefault();
+
+    void testGetItemStackWithDefaultOnInvalidConfigPath();
+
+    void testIsItemStack();
+
+    void testIsItemStackOnInvalidConfigPath();
 
     void testGetColor();
 
