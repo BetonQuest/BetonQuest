@@ -19,8 +19,8 @@ It is a major goal to write JUnit tests for most parts of BetonQuest.
   necessary
 
 !!! warning "Handling Concurrency"
-    By default, all classes and methods are executed `CONCURRENT`. This means that its tests are run in parallel which saves
-    time. Some tests cannot be executed in parallel, in such cases the following annotation needs to be 
+    By default, all methods are executed `CONCURRENT`. This means that its tests are run in parallel which saves time.
+    Some tests cannot be executed in parallel, in such cases the following annotation needs to be 
     added to the related methods or the entire class.
     
     ````java linenums="1"
