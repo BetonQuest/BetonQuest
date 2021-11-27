@@ -22,7 +22,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.ArrayList;
@@ -225,12 +224,6 @@ public class Menu extends SimpleYMLConfig implements Listener {
 
     @EventHandler
     public void onItemClick(final PlayerInteractEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
-        if (event.getAction() == Action.PHYSICAL) {
-            return;
-        }
         //check if item is bound item
         if (!boundItem.get().compare(event.getItem())) {
             return;

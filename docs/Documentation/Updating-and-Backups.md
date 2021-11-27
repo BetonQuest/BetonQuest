@@ -44,26 +44,6 @@ Don't forget to post your error as an Issue on [GitHub](https://github.com/Beton
 
 When you enter the server, BetonQuest will alert you about changes and ask you to read changelog.txt file located in plugin's main directory.
 
-
-### Updating manually
-
-Configs update automatically when a new dev build has been installed but all comments in your configs will be lost due to Spigots limitations.
-We will make our own config system in BetonQuest 2.0. though so this will not last long. 
-
-To keep your comments follow this guide:
-This is a manual update, so you will have to change some errors in your quests afterwards.
-If you already did this once and want to update to a newer dev build (using /q update) just check if the version
-has changed by clicking the link in the third step. If it did not your comments are safe.
-
-* Make a backup  
-* Stop server.
-* Open up /plugins/BetonQuest/config.yml
-* Set the version: option to the one that you see here: This might change so please look it up each time you update!     
- https://github.com/BetonQuest/BetonQuest/blob/master/src/main/resources/config.yml
-* Update BetonQuest.jar
-* Start Server
-* Fix all issues (we changed the stuff down below.)
-
 ## Backups
 
 Every time the plugin updates the configuration, a backup will be created. 
