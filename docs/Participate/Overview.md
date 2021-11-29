@@ -33,7 +33,3 @@ There are two options to support projects like this one:
 
 
 --8<-- "sponsors.md"
-
-### Our Community Sponsors
-
-<object type="image/svg+xml" data="https://opencollective.com/betonquest/badge.svg?&button=false"></object>

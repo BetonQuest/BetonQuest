@@ -10,8 +10,12 @@ Any additional money has to be re-invested in the project.
     <img src="https://opencollective.com/betonquest/donate/button@2x.png?color=blue" width=300 />
 </a>
 <a href="https://mcmodels.net/?wpam_id=3" target="_blank">
-  <img src="../../_media/content/Participate/Overview/mcmodels.png" width="300"/>
+  <img src="../_media/content/Participate/Overview/mcmodels.png" width="300"/>
 </a>
 </div>
 
 <p style="font-size:medium;">You donate a small amount of the sales price by purchasing on mcmodels.net using our affiliate links. </p>
+
+### Our Community Sponsors
+
+<object type="image/svg+xml" data="https://opencollective.com/betonquest/badge.svg?&button=false"></object>
