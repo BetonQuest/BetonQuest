@@ -9,34 +9,34 @@ boolean: true
 double: 123.45
 long: 9223372036854775807
 list:
-- One
-- 2
-- 3.0
+  - One
+  - 2
+  - 3.0
 stringList:
-- One
-- Two
-- Three
+  - One
+  - Two
+  - Three
 integerList:
-- 1
-- 2
-- 3
+  - 1
+  - 2
+  - 3
 booleanList:
-- true
-- false
-- true
+  - true
+  - false
+  - true
 doubleList:
-- 1.1
-- 2.2
-- 3.3
+  - 1.1
+  - 2.2
+  - 3.3
 characterList:
-- a
-- b
-- c
+  - a
+  - b
+  - c
 mapList:
-- one: 1
-  two: 2
-- three: 3
-  four: 4
+  - one: 1
+    two: 2
+  - three: 3
+    four: 4
 object:
   ==: org.betonquest.betonquest.api.bukkit.config.util.AbstractConfigurationSectionTest$TestObject
   name: Test
@@ -67,11 +67,3 @@ item:
   v: 1
   type: BONE
   amount: 42
-  meta:
-    ==: be.seeseemelk.mockbukkit.inventory.meta.ItemMetaMock
-    enchants: {}
-    damage: 0
-    persistentDataContainer: {}
-    itemFlags: !!set {}
-    unbreakable: false
-    repairCost: 0

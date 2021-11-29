@@ -1,21 +1,28 @@
 package org.betonquest.betonquest.api.bukkit.config.util;
 
-import be.seeseemelk.mockbukkit.MockBukkit;
-import be.seeseemelk.mockbukkit.ServerMock;
+import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Server;
+import org.bukkit.UnsafeValues;
+import org.bukkit.World;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.inventory.ItemFactory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 
 import java.io.File;
 import java.util.Arrays;
@@ -27,19 +34,38 @@ import java.util.Map;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 public class AbstractConfigurationSectionTest implements ConfigurationSectionTestInterface {
+    private static MockedStatic<ItemStack> itemStackMockedStatic;
+    private ConfigurationSection config;
 
     @BeforeAll
     public static void beforeAll() {
-        final ServerMock server = MockBukkit.mock();
-        server.addSimpleWorld("Test");
-        server.addSimpleWorld("TestInvalid");
+        final World world = mock(World.class);
+        final World worldInvalid = mock(World.class);
+
+        final Server server = mock(Server.class);
+        when(server.getLogger()).thenReturn(LogValidator.getSilentLogger());
+        when(server.getWorld("Test")).thenReturn(world);
+        when(server.getWorld("TestInvalid")).thenReturn(worldInvalid);
+        when(server.getUnsafe()).thenReturn(mock(UnsafeValues.class));
+        when(server.getItemFactory()).thenReturn(mock(ItemFactory.class));
+
+        Bukkit.setServer(server);
+
+        itemStackMockedStatic = mockStatic(ItemStack.class);
+        itemStackMockedStatic.when(() -> ItemStack.deserialize(anyMap())).thenReturn(new ItemStack(Material.BONE, 42));
     }
 
     @AfterAll
     public static void afterAll() {
-        MockBukkit.unmock();
+        itemStackMockedStatic.close();
+    }
+
+    @BeforeEach
+    private void beforeEach() {
+        config = getConfig();
     }
 
     public ConfigurationSection getConfig() {
@@ -54,7 +80,6 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testGetKeysDeepFalse() {
-        final ConfigurationSection config = getConfig();
         final ConfigurationSection section = config.getConfigurationSection("childSection");
         assertNotNull(section);
         assertEquals(new HashSet<>(Collections.singletonList("nestedChildSection")), section.getKeys(false));
@@ -63,7 +88,6 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testGetKeysDeepTrue() {
-        final ConfigurationSection config = getConfig();
         final ConfigurationSection section = config.getConfigurationSection("childSection");
         assertNotNull(section);
         assertEquals(new HashSet<>(Arrays.asList("nestedChildSection", "nestedChildSection.key")), section.getKeys(true));
@@ -72,7 +96,6 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testGetValuesDeepFalse() {
-        final ConfigurationSection config = getConfig();
         final ConfigurationSection section = config.getConfigurationSection("childSection");
         assertNotNull(section);
         assertEquals("{nestedChildSection=MemorySection[path='childSection.nestedChildSection', root='YamlConfiguration']}",
@@ -82,7 +105,6 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testGetValuesDeepTrue() {
-        final ConfigurationSection config = getConfig();
         final ConfigurationSection section = config.getConfigurationSection("childSection");
         assertNotNull(section);
         assertEquals("[nestedChildSection, nestedChildSection.key]", section.getKeys(true).toString());
@@ -91,105 +113,90 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testContains() {
-        final ConfigurationSection config = getConfig();
         assertTrue(config.contains("get"));
     }
 
     @Test
     @Override
     public void testContainsOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertFalse(config.contains("get_invalid"));
     }
 
     @Test
     @Override
     public void testContainsIgnoreDefaultFalse() {
-        final ConfigurationSection config = getConfig();
         assertTrue(config.contains("get", false));
     }
 
     @Test
     @Override
     public void testContainsIgnoreDefaultFalseOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertFalse(config.contains("get_invalid", false));
     }
 
     @Test
     @Override
     public void testContainsIgnoreDefaultTrue() {
-        final ConfigurationSection config = getConfig();
         assertTrue(config.contains("get", true));
     }
 
     @Test
     @Override
     public void testContainsIgnoreDefaultTrueOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertFalse(config.contains("get_invalid", true));
     }
 
     @Test
     @Override
     public void testContainsOnDefault() {
-        final ConfigurationSection config = getConfig();
         assertTrue(config.contains("default.key"));
     }
 
     @Test
     @Override
     public void testContainsOnDefaultOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertFalse(config.contains("default.key_invalid"));
     }
 
     @Test
     @Override
     public void testContainsIgnoreDefaultFalseOnDefault() {
-        final ConfigurationSection config = getConfig();
         assertTrue(config.contains("default.key", false));
     }
 
     @Test
     @Override
     public void testContainsIgnoreDefaultFalseOnDefaultOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertFalse(config.contains("default.key_invalid", false));
     }
 
     @Test
     @Override
     public void testContainsIgnoreDefaultTrueOnDefault() {
-        final ConfigurationSection config = getConfig();
         assertFalse(config.contains("default.key", true));
     }
 
     @Test
     @Override
     public void testContainsIgnoreDefaultTrueOnDefaultOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertFalse(config.contains("default.key_invalid", true));
     }
 
     @Test
     @Override
     public void testIsSet() {
-        final ConfigurationSection config = getConfig();
         assertTrue(config.isSet("get"));
     }
 
     @Test
     @Override
     public void testIsSetOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertFalse(config.isSet("get_invalid"));
     }
 
     @Test
     @Override
     public void testGetCurrentPath() {
-        final ConfigurationSection config = getConfig();
         final ConfigurationSection nestedChild = config.getConfigurationSection("childSection.nestedChildSection");
         assertNotNull(nestedChild);
         assertEquals("childSection.nestedChildSection", nestedChild.getCurrentPath());
@@ -198,7 +205,6 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testGetName() {
-        final ConfigurationSection config = getConfig();
         final ConfigurationSection nestedChild = config.getConfigurationSection("childSection.nestedChildSection");
         assertNotNull(nestedChild);
         assertEquals("nestedChildSection", nestedChild.getName());
@@ -207,7 +213,6 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testGetRoot() {
-        final ConfigurationSection config = getConfig();
         assertNotNull(config);
         final ConfigurationSection nestedChild = config.getConfigurationSection("childSection.nestedChildSection");
         assertNotNull(nestedChild);
@@ -219,7 +224,6 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testGetParent() {
-        final ConfigurationSection config = getConfig();
         final ConfigurationSection nestedChild = config.getConfigurationSection("childSection.nestedChildSection");
         assertNotNull(nestedChild);
         final ConfigurationSection nestedChildParent = nestedChild.getParent();
@@ -232,35 +236,30 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testGet() {
-        final ConfigurationSection config = getConfig();
         assertEquals("getValue", config.get("get"));
     }
 
     @Test
     @Override
     public void testGetOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertNull(config.get("get_invalid"));
     }
 
     @Test
     @Override
     public void testGetWithDefault() {
-        final ConfigurationSection config = getConfig();
         assertEquals("getValue", config.get("get", "defaultValue"));
     }
 
     @Test
     @Override
     public void testGetWithDefaultOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertEquals("defaultValue", config.get("get_invalid", "defaultValue"));
     }
 
     @Test
     @Override
     public void testSet() {
-        final ConfigurationSection config = getConfig();
         config.set("testSet", "setValue");
         assertEquals("setValue", config.get("testSet"));
     }
@@ -268,7 +267,6 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testSetOnExistingConfigPath() {
-        final ConfigurationSection config = getConfig();
         config.set("existingSet", "overriddenValue");
         assertEquals("overriddenValue", config.get("existingSet"));
     }
@@ -276,7 +274,6 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testCreateSection() {
-        final ConfigurationSection config = getConfig();
         final ConfigurationSection section = config.createSection("createdSection");
         assertNotNull(section);
     }
@@ -284,7 +281,6 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testCreateSectionOnExistingConfigPath() {
-        final ConfigurationSection config = getConfig();
 
         final ConfigurationSection section = config.createSection("createdSectionExist");
         section.set("key", "created value");
@@ -302,7 +298,6 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Override
     @SuppressWarnings("serial")
     public void testCreateSectionWithValues() {
-        final ConfigurationSection config = getConfig();
         final ConfigurationSection section = config.createSection("createdSectionWithValues", new HashMap<String, Object>() {{
             put("one", 1);
             put("two", 2);
@@ -316,7 +311,6 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Override
     @SuppressWarnings("serial")
     public void testCreateSectionWithValuesOnExistingConfigPath() {
-        final ConfigurationSection config = getConfig();
         final ConfigurationSection section = config.createSection("createdSectionWithValuesExist", new HashMap<String, Object>() {{
             put("one", 1);
             put("two", 2);
@@ -343,378 +337,324 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testGetString() {
-        final ConfigurationSection config = getConfig();
         assertEquals("Custom String", config.getString("string"));
     }
 
     @Test
     @Override
     public void testGetStringOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertNull(config.getString("string_invalid"));
     }
 
     @Test
     @Override
     public void testGetStringWithDefault() {
-        final ConfigurationSection config = getConfig();
         assertEquals("Custom String", config.getString("string", "Custom String Default"));
     }
 
     @Test
     @Override
     public void testGetStringWithDefaultOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertEquals("Custom String Default", config.getString("string_invalid", "Custom String Default"));
     }
 
     @Test
     @Override
     public void testIsString() {
-        final ConfigurationSection config = getConfig();
         assertTrue(config.isString("string"));
     }
 
     @Test
     @Override
     public void testIsStringOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertFalse(config.isString("string_invalid"));
     }
 
     @Test
     @Override
     public void testGetInt() {
-        final ConfigurationSection config = getConfig();
         assertEquals(12345, config.getInt("integer"));
     }
 
     @Test
     @Override
     public void testGetIntOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertEquals(0, config.getInt("integer_invalid"));
     }
 
     @Test
     @Override
     public void testGetIntWithDefault() {
-        final ConfigurationSection config = getConfig();
         assertEquals(12345, config.getInt("integer", 54321));
     }
 
     @Test
     @Override
     public void testGetIntWithDefaultOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertEquals(54321, config.getInt("integer_invalid", 54321));
     }
 
     @Test
     @Override
     public void testIsInt() {
-        final ConfigurationSection config = getConfig();
         assertTrue(config.isInt("integer"));
     }
 
     @Test
     @Override
     public void testIsIntOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertFalse(config.isInt("integer_invalid"));
     }
 
     @Test
     @Override
     public void testGetBoolean() {
-        final ConfigurationSection config = getConfig();
         assertTrue(config.getBoolean("boolean"));
     }
 
     @Test
     @Override
     public void testGetBooleanOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertFalse(config.getBoolean("boolean_invalid"));
     }
 
     @Test
     @Override
     public void testGetBooleanWithDefault() {
-        final ConfigurationSection config = getConfig();
         assertTrue(config.getBoolean("boolean", false));
     }
 
     @Test
     @Override
     public void testGetBooleanWithDefaultOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertTrue(config.getBoolean("boolean_invalid", true));
     }
 
     @Test
     @Override
     public void testIsBoolean() {
-        final ConfigurationSection config = getConfig();
         assertTrue(config.isBoolean("boolean"));
     }
 
     @Test
     @Override
     public void testIsBooleanOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertFalse(config.isBoolean("boolean_invalid"));
     }
 
     @Test
     @Override
     public void testGetDouble() {
-        final ConfigurationSection config = getConfig();
         assertEquals(123.45, config.getDouble("double"));
     }
 
     @Test
     @Override
     public void testGetDoubleOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertEquals(0.0, config.getDouble("double_invalid"));
     }
 
     @Test
     @Override
     public void testGetDoubleWithDefault() {
-        final ConfigurationSection config = getConfig();
         assertEquals(123.45, config.getDouble("double", 543.21));
     }
 
     @Test
     @Override
     public void testGetDoubleWithDefaultOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertEquals(543.21, config.getDouble("double_invalid", 543.21));
     }
 
     @Test
     @Override
     public void testIsDouble() {
-        final ConfigurationSection config = getConfig();
         assertTrue(config.isDouble("double"));
     }
 
     @Test
     @Override
     public void testIsDoubleOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertFalse(config.isDouble("double_invalid"));
     }
 
     @Test
     @Override
     public void testGetLong() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Long.MAX_VALUE, config.getLong("long"));
     }
 
     @Test
     @Override
     public void testGetLongOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertEquals(0L, config.getLong("long_invalid"));
     }
 
     @Test
     @Override
     public void testGetLongWithDefault() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Long.MAX_VALUE, config.getLong("long", Long.MIN_VALUE));
     }
 
     @Test
     @Override
     public void testGetLongWithDefaultOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Long.MIN_VALUE, config.getLong("long_invalid", Long.MIN_VALUE));
     }
 
     @Test
     @Override
     public void testIsLong() {
-        final ConfigurationSection config = getConfig();
         assertTrue(config.isLong("long"));
     }
 
     @Test
     @Override
     public void testIsLongOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertFalse(config.isLong("long_invalid"));
     }
 
     @Test
     @Override
     public void testGetList() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Arrays.asList("One", 2, 3.0), config.getList("list"));
     }
 
     @Test
     @Override
     public void testGetListOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertNull(config.getList("list_invalid"));
     }
 
     @Test
     @Override
     public void testGetListWithDefault() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Arrays.asList("One", 2, 3.0), config.getList("list", Arrays.asList("Four", 5, 6.0)));
     }
 
     @Test
     @Override
     public void testGetListWithDefaultOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Arrays.asList("Four", 5, 6.0), config.getList("list_invalid", Arrays.asList("Four", 5, 6.0)));
     }
 
     @Test
     @Override
     public void testIsList() {
-        final ConfigurationSection config = getConfig();
         assertTrue(config.isList("list"));
     }
 
     @Test
     @Override
     public void testIsListOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertFalse(config.isList("list_invalid"));
     }
 
     @Test
     @Override
     public void testGetStringList() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Arrays.asList("One", "Two", "Three"), config.getStringList("stringList"));
     }
 
     @Test
     @Override
     public void testGetStringListOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Collections.emptyList(), config.getStringList("stringList_invalid"));
     }
 
     @Test
     @Override
     public void testGetIntegerList() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Arrays.asList(1, 2, 3), config.getIntegerList("integerList"));
     }
 
     @Test
     @Override
     public void testGetIntegerListOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Collections.emptyList(), config.getIntegerList("integerList_invalid"));
     }
 
     @Test
     @Override
     public void testGetBooleanList() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Arrays.asList(true, false, true), config.getBooleanList("booleanList"));
     }
 
     @Test
     @Override
     public void testGetBooleanListOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Collections.emptyList(), config.getBooleanList("booleanList_invalid"));
     }
 
     @Test
     @Override
     public void testGetDoubleList() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Arrays.asList(1.1, 2.2, 3.3), config.getDoubleList("doubleList"));
     }
 
     @Test
     @Override
     public void testGetDoubleListOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Collections.emptyList(), config.getDoubleList("doubleList_invalid"));
     }
 
     @Test
     @Override
     public void testGetFloatList() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Arrays.asList(1.1F, 2.2F, 3.3F), config.getFloatList("doubleList"));
     }
 
     @Test
     @Override
     public void testGetFloatListOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Collections.emptyList(), config.getFloatList("doubleList_invalid"));
     }
 
     @Test
     @Override
     public void testGetLongList() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Arrays.asList(1L, 2L, 3L), config.getLongList("integerList"));
     }
 
     @Test
     @Override
     public void testGetLongListOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Collections.emptyList(), config.getFloatList("integerList_invalid"));
     }
 
     @Test
     @Override
     public void testGetByteList() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Arrays.asList((byte) 1, (byte) 2, (byte) 3), config.getByteList("integerList"));
     }
 
     @Test
     @Override
     public void testGetByteListOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Collections.emptyList(), config.getByteList("integerList_invalid"));
     }
 
     @Test
     @Override
     public void testGetCharacterList() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Arrays.asList('a', 'b', 'c'), config.getCharacterList("characterList"));
     }
 
     @Test
     @Override
     public void testGetCharacterListOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Collections.emptyList(), config.getCharacterList("characterList_invalid"));
     }
 
     @Test
     @Override
     public void testGetShortList() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Arrays.asList((short) 1, (short) 2, (short) 3), config.getShortList("integerList"));
     }
 
     @Test
     @Override
     public void testGetShortListOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Collections.emptyList(), config.getByteList("integerList_invalid"));
     }
 
@@ -722,7 +662,6 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Override
     @SuppressWarnings("serial")
     public void testGetMapList() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Arrays.asList(new HashMap<String, Integer>() {{
                                        put("one", 1);
                                        put("two", 2);
@@ -736,28 +675,24 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testGetMapListOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Collections.emptyList(), config.getMapList("mapList_invalid"));
     }
 
     @Test
     @Override
     public void testGetObject() {
-        final ConfigurationSection config = getConfig();
         assertEquals(new TestObject("Test", 5, 555L), config.getObject("object", TestObject.class));
     }
 
     @Test
     @Override
     public void testGetObjectOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertNull(config.getObject("object_invalid", TestObject.class));
     }
 
     @Test
     @Override
     public void testGetObjectWithDefault() {
-        final ConfigurationSection config = getConfig();
         assertEquals(new TestObject("Test", 5, 555L),
                 config.getObject("object", TestObject.class, new TestObject("Test2", 4, 444L)));
     }
@@ -765,7 +700,6 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testGetObjectWithDefaultOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertEquals(new TestObject("Test2", 4, 444L),
                 config.getObject("object_invalid", TestObject.class, new TestObject("Test2", 4, 444L)));
     }
@@ -773,21 +707,18 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testGetSerializable() {
-        final ConfigurationSection config = getConfig();
         assertEquals(new TestObject("Test", 5, 555L), config.getSerializable("object", TestObject.class));
     }
 
     @Test
     @Override
     public void testGetSerializableOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertNull(config.getSerializable("object_invalid", TestObject.class));
     }
 
     @Test
     @Override
     public void testGetSerializableWithDefault() {
-        final ConfigurationSection config = getConfig();
         assertEquals(new TestObject("Test", 5, 555L),
                 config.getSerializable("object", TestObject.class, new TestObject("Test2", 4, 444L)));
     }
@@ -795,7 +726,6 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testGetSerializableWithDefaultOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertEquals(new TestObject("Test2", 4, 444L),
                 config.getSerializable("object_invalid", TestObject.class, new TestObject("Test2", 4, 444L)));
     }
@@ -803,91 +733,154 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testGetVector() {
-        final ConfigurationSection config = getConfig();
         assertEquals(new Vector(1, 2, 3), config.getVector("vector"));
     }
 
     @Test
     @Override
     public void testGetVectorOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertNull(config.getVector("vector_invalid"));
     }
 
     @Test
     @Override
     public void testGetVectorWithDefault() {
-        final ConfigurationSection config = getConfig();
         assertEquals(new Vector(1, 2, 3), config.getVector("vector", new Vector(4, 5, 6)));
     }
 
     @Test
     @Override
     public void testGetVectorWithDefaultOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertEquals(new Vector(4, 5, 6), config.getVector("vector_invalid", new Vector(4, 5, 6)));
     }
 
     @Test
     @Override
     public void testIsVector() {
-        final ConfigurationSection config = getConfig();
         assertTrue(config.isVector("vector"));
     }
 
     @Test
     @Override
     public void testIsVectorOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertFalse(config.isVector("vector_invalid"));
     }
 
     @Test
     @Override
+    public void testGetOfflinePlayer() {
+        fail();
+    }
+
+    @Test
+    @Override
+    public void testGetOfflinePlayerOnInvalidConfigPath() {
+        fail();
+    }
+
+    @Test
+    @Override
+    public void testGetOfflinePlayerWithDefault() {
+        fail();
+    }
+
+    @Test
+    @Override
+    public void testGetOfflinePlayerWithDefaultOnInvalidConfigPath() {
+        fail();
+    }
+
+    @Test
+    @Override
+    public void testIsOfflinePlayer() {
+        fail();
+    }
+
+    @Test
+    @Override
+    public void testIsOfflinePlayerOnInvalidConfigPath() {
+        fail();
+    }
+
+    @Test
+    @Override
+    public void testGetItemStack() {
+        final ItemStack item = new ItemStack(Material.BONE, 42);
+        assertEquals(item, config.getItemStack("item"));
+    }
+
+    @Test
+    @Override
+    public void testGetItemStackOnInvalidConfigPath() {
+        assertNull(config.getItemStack("item_invalid"));
+    }
+
+    @Test
+    @Override
+    public void testGetItemStackWithDefault() {
+        final ItemStack item = new ItemStack(Material.BONE, 42);
+        final ItemStack itemDefault = new ItemStack(Material.BONE_MEAL, 12);
+        assertEquals(item, config.getItemStack("item", itemDefault));
+    }
+
+    @Test
+    @Override
+    public void testGetItemStackWithDefaultOnInvalidConfigPath() {
+        final ItemStack itemDefault = new ItemStack(Material.BONE_MEAL, 12);
+        assertEquals(itemDefault, config.getItemStack("item_invalid", itemDefault));
+    }
+
+    @Test
+    @Override
+    public void testIsItemStack() {
+        assertFalse(config.isItemStack("item"));
+    }
+
+    @Test
+    @Override
+    public void testIsItemStackOnInvalidConfigPath() {
+        assertFalse(config.isItemStack("item_invalid"));
+    }
+
+    @Test
+    @Override
     public void testGetColor() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Color.RED, config.getColor("color"));
     }
 
     @Test
     @Override
     public void testGetColorOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertNull(config.getColor("color_invalid"));
     }
 
     @Test
     @Override
     public void testGetColorWithDefault() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Color.RED, config.getColor("color", Color.GREEN));
     }
 
     @Test
     @Override
     public void testGetColorWithDefaultOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertEquals(Color.GREEN, config.getColor("color_invalid", Color.GREEN));
     }
 
     @Test
     @Override
     public void testIsColor() {
-        final ConfigurationSection config = getConfig();
         assertTrue(config.isColor("color"));
     }
 
     @Test
     @Override
     public void testIsColorOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertFalse(config.isColor("color_invalid"));
     }
 
     @Test
     @Override
     public void testGetLocation() {
-        final ConfigurationSection config = getConfig();
         final Location location = new Location(Bukkit.getWorld("Test"), 1, 2, 3, 4, 5);
         assertEquals(location, config.getLocation("location"));
     }
@@ -895,14 +888,12 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testGetLocationOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertNull(config.getLocation("location_invalid"));
     }
 
     @Test
     @Override
     public void testGetLocationWithDefault() {
-        final ConfigurationSection config = getConfig();
         final Location location = new Location(Bukkit.getWorld("Test"), 1, 2, 3, 4, 5);
         final Location locationDefault = new Location(Bukkit.getWorld("TestInvalid"), 1, 2, 3, 4, 5);
         assertEquals(location, config.getLocation("location", locationDefault));
@@ -911,7 +902,6 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testGetLocationWithDefaultOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         final Location locationDefault = new Location(Bukkit.getWorld("TestInvalid"), 1, 2, 3, 4, 5);
         assertEquals(locationDefault, config.getLocation("location_invalid", locationDefault));
     }
@@ -919,21 +909,18 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testIsLocation() {
-        final ConfigurationSection config = getConfig();
         assertTrue(config.isLocation("location"));
     }
 
     @Test
     @Override
     public void testIsLocationOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertFalse(config.isLocation("location_invalid"));
     }
 
     @Test
     @Override
     public void testGetConfigurationSection() {
-        final ConfigurationSection config = getConfig();
         final ConfigurationSection section = config.getConfigurationSection("section");
         assertNotNull(section);
         assertEquals("value", section.getString("key"));
@@ -942,28 +929,24 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testGetConfigurationSectionOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertNull(config.getConfigurationSection("section_invalid"));
     }
 
     @Test
     @Override
     public void testIsConfigurationSection() {
-        final ConfigurationSection config = getConfig();
         assertTrue(config.isConfigurationSection("section"));
     }
 
     @Test
     @Override
     public void testIsConfigurationSectionOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertFalse(config.isConfigurationSection("section_invalid"));
     }
 
     @Test
     @Override
     public void testGetDefaultSection() {
-        final ConfigurationSection config = getConfig();
         final ConfigurationSection defaultSection = config.getDefaultSection();
         assertNotNull(defaultSection);
         assertEquals("value", defaultSection.getString("default.key"));
@@ -972,14 +955,12 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testGetDefaultSectionOnInvalidConfigPath() {
-        final ConfigurationSection config = getConfig();
         assertNull(config.getConfigurationSection("default_invalid"));
     }
 
     @Test
     @Override
     public void testAddDefault() {
-        final ConfigurationSection config = getConfig();
         config.addDefault("default.add", "value");
         assertEquals("value", config.getString("default.add"));
     }
@@ -987,7 +968,6 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testAddDefaultOnExistingConfigPath() {
-        final ConfigurationSection config = getConfig();
         config.addDefault("default.override", "first");
         config.addDefault("default.override", "second");
         assertEquals("second", config.getString("default.override"));
