@@ -67,3 +67,6 @@ item:
   v: 1
   type: BONE
   amount: 42
+offlinePlayer:
+  ==: org.bukkit.craftbukkit.CraftOfflinePlayer
+  UUID: "eba17d33-959d-42a7-a4d9-e9aebef5969e"

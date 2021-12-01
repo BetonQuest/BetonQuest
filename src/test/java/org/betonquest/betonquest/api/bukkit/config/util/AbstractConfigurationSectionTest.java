@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.UnsafeValues;
 import org.bukkit.World;
@@ -32,6 +33,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -43,15 +45,17 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @BeforeAll
     public static void beforeAll() {
         ConfigurationSerialization.registerClass(TestObject.class);
+        ConfigurationSerialization.registerClass(FakeOfflinePlayer.class, "org.bukkit.craftbukkit.CraftOfflinePlayer");
 
         itemStackMockedStatic = mockStatic(ItemStack.class);
 
-        Server serverMock = mock(Server.class);
+        final Server serverMock = mock(Server.class);
         when(serverMock.getLogger()).thenReturn(LogValidator.getSilentLogger());
         Bukkit.setServer(serverMock);
 
         mockWorlds(serverMock);
         mockItems(serverMock);
+        mockOfflinePlayer(serverMock);
     }
 
     private static void mockWorlds(final Server serverMock) {
@@ -72,6 +76,14 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
         when(serverMock.getItemFactory()).thenReturn(itemFactory);
 
         itemStackMockedStatic.when(() -> ItemStack.deserialize(anyMap())).thenReturn(new ItemStack(Material.BONE, 42));
+    }
+
+    private static void mockOfflinePlayer(final Server serverMock) {
+        when(serverMock.getOfflinePlayer(any(UUID.class))).thenAnswer(invocationOnMock -> {
+           final OfflinePlayer offlinePlayer = mock(OfflinePlayer.class);
+           when(offlinePlayer.getUniqueId()).thenReturn(invocationOnMock.getArgument(0));
+           return offlinePlayer;
+        });
     }
 
     @AfterAll
@@ -785,37 +797,47 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testGetOfflinePlayer() {
-        fail();
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString("eba17d33-959d-42a7-a4d9-e9aebef5969e"));
+        OfflinePlayer player = config.getOfflinePlayer("offlinePlayer");
+        assertNotNull(player);
+        assertEquals(offlinePlayer.getUniqueId(), player.getUniqueId());
     }
 
     @Test
     @Override
     public void testGetOfflinePlayerOnInvalidConfigPath() {
-        fail();
+        assertNull(config.getOfflinePlayer("offlinePlayer_invalid"));
     }
 
     @Test
     @Override
     public void testGetOfflinePlayerWithDefault() {
-        fail();
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString("eba17d33-959d-42a7-a4d9-e9aebef5969e"));
+        OfflinePlayer offlinePlayerDefault = Bukkit.getOfflinePlayer(UUID.fromString("5179617b-8418-4099-8773-37a4ac587dd8"));
+        OfflinePlayer player = config.getOfflinePlayer("offlinePlayer", offlinePlayerDefault);
+        assertNotNull(player);
+        assertEquals(offlinePlayer.getUniqueId(), player.getUniqueId());
     }
 
     @Test
     @Override
     public void testGetOfflinePlayerWithDefaultOnInvalidConfigPath() {
-        fail();
+        OfflinePlayer offlinePlayerDefault = Bukkit.getOfflinePlayer(UUID.fromString("5179617b-8418-4099-8773-37a4ac587dd8"));
+        OfflinePlayer player = config.getOfflinePlayer("offlinePlayer_invalid", offlinePlayerDefault);
+        assertNotNull(player);
+        assertEquals(offlinePlayerDefault.getUniqueId(), player.getUniqueId());
     }
 
     @Test
     @Override
     public void testIsOfflinePlayer() {
-        fail();
+        assertTrue(config.isOfflinePlayer("offlinePlayer"));
     }
 
     @Test
     @Override
     public void testIsOfflinePlayerOnInvalidConfigPath() {
-        fail();
+        assertFalse(config.isOfflinePlayer("offlinePlayer_invalid"));
     }
 
     @Test
@@ -1031,6 +1053,12 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
         @Override
         public int hashCode() {
             return Objects.hash(name, amount, sum);
+        }
+    }
+
+    public static interface FakeOfflinePlayer extends OfflinePlayer {
+        public static OfflinePlayer deserialize(Map<String, Object> args) {
+            return Bukkit.getOfflinePlayer(UUID.fromString((String) args.get("UUID")));
         }
     }
 }
