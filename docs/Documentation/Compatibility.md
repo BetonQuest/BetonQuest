@@ -73,7 +73,7 @@ drunkquality 3
 This condition is true if the player has the given grew with the specified amount in his inventory.
 
 ``` YAML linenums="1"
-hasbrew MY_BREW 2
+hasbrew 2 MY_BREW
 ```
 
 ### Events
@@ -89,7 +89,7 @@ givebrew 1 10 MY_BREW
 Removes the specified drink from the players inventory. An amount needs to be specified.
 
 ``` YAML linenums="1"
-takebrew MY_OTHER_BREW 2
+takebrew 2 MY_OTHER_BREW 
 ```
 
 ## NPC's using <a href="https://www.spigotmc.org/resources/citizens.13811/" target="_blank">Citizens</a>
