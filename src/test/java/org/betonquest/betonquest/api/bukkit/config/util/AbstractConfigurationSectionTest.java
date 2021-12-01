@@ -42,19 +42,35 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
 
     @BeforeAll
     public static void beforeAll() {
+        ConfigurationSerialization.registerClass(TestObject.class);
+
+        itemStackMockedStatic = mockStatic(ItemStack.class);
+
+        Server serverMock = mock(Server.class);
+        when(serverMock.getLogger()).thenReturn(LogValidator.getSilentLogger());
+        Bukkit.setServer(serverMock);
+
+        mockWorlds(serverMock);
+        mockItems(serverMock);
+    }
+
+    private static void mockWorlds(final Server serverMock) {
         final World world = mock(World.class);
         final World worldInvalid = mock(World.class);
 
-        final Server server = mock(Server.class);
-        when(server.getLogger()).thenReturn(LogValidator.getSilentLogger());
-        when(server.getWorld("Test")).thenReturn(world);
-        when(server.getWorld("TestInvalid")).thenReturn(worldInvalid);
-        when(server.getUnsafe()).thenReturn(mock(UnsafeValues.class));
-        when(server.getItemFactory()).thenReturn(mock(ItemFactory.class));
+        when(serverMock.getWorld("Test")).thenReturn(world);
+        when(serverMock.getWorld("TestInvalid")).thenReturn(worldInvalid);
+    }
 
-        Bukkit.setServer(server);
+    private static void mockItems(final Server serverMock) {
+        UnsafeValues values = mock(UnsafeValues.class);
+        when(values.getMaterial(eq("BONE"), anyInt())).thenReturn(Material.BONE);
+        when(serverMock.getUnsafe()).thenReturn(values);
+        ItemFactory itemFactory = mock(ItemFactory.class);
+        when(itemFactory.ensureServerConversions(any())).thenAnswer(invocationOnMock -> invocationOnMock.getArgument(0));
+        when(itemFactory.equals(any(),any())).thenReturn(true);
+        when(serverMock.getItemFactory()).thenReturn(itemFactory);
 
-        itemStackMockedStatic = mockStatic(ItemStack.class);
         itemStackMockedStatic.when(() -> ItemStack.deserialize(anyMap())).thenReturn(new ItemStack(Material.BONE, 42));
     }
 
@@ -64,12 +80,12 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     }
 
     @BeforeEach
+    @SuppressWarnings("unused")
     private void beforeEach() {
         config = getConfig();
     }
 
     public ConfigurationSection getConfig() {
-        ConfigurationSerialization.registerClass(TestObject.class);
         final Configuration config = YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/config.yml"));
         final Configuration defaultSection = new MemoryConfiguration();
         defaultSection.set("default.key", "value");
@@ -833,7 +849,7 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testIsItemStack() {
-        assertFalse(config.isItemStack("item"));
+        assertTrue(config.isItemStack("item"));
     }
 
     @Test
