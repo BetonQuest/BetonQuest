@@ -155,6 +155,7 @@ Please let us know if there is any outdated information.
     are suited better in certain scenarios. Many users even use these alongside BetonQuest as there is
     integration for such scripting plugins.
 
+<br>
 # Features
 
 !!! example inline end bq-inline-example-container
@@ -215,7 +216,8 @@ This website provides **in-depth learning material** for your staff which teache
 has guides on related topics such as the setup of a local test server, so your main server's stability will not be threatened
 by staff learning / developing quests.
 
-## Examples
+<p style="clear:both"/>
+# Examples
 
 Our community created a lot of cool stuff!
 Some members even made machines with this quest plugin - that really shows that your imagination is the only limit.
