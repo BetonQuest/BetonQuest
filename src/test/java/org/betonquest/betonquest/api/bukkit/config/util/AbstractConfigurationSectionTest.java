@@ -38,6 +38,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@SuppressWarnings({"PMD.CommentRequired", "PMD.JUnitAssertionsShouldIncludeMessage"})
 public class AbstractConfigurationSectionTest implements ConfigurationSectionTestInterface {
     private static MockedStatic<ItemStack> itemStackMockedStatic;
     private ConfigurationSection config;
@@ -1040,14 +1041,14 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
         }
 
         @Override
-        public boolean equals(final Object o) {
-            if (this == o) {
+        public boolean equals(final Object obj) {
+            if (this == obj) {
                 return true;
             }
-            if (o == null || getClass() != o.getClass()) {
+            if (obj == null || getClass() != obj.getClass()) {
                 return false;
             }
-            final TestObject that = (TestObject) o;
+            final TestObject that = (TestObject) obj;
             return amount == that.amount && sum == that.sum && Objects.equals(name, that.name);
         }
 
