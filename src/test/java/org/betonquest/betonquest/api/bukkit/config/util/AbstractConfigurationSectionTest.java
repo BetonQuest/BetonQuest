@@ -66,11 +66,12 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
         when(serverMock.getWorld("TestInvalid")).thenReturn(worldInvalid);
     }
 
+    @SuppressWarnings("deprecation")
     private static void mockItems(final Server serverMock) {
-        UnsafeValues values = mock(UnsafeValues.class);
+        final UnsafeValues values = mock(UnsafeValues.class);
         when(values.getMaterial(eq("BONE"), anyInt())).thenReturn(Material.BONE);
         when(serverMock.getUnsafe()).thenReturn(values);
-        ItemFactory itemFactory = mock(ItemFactory.class);
+        final ItemFactory itemFactory = mock(ItemFactory.class);
         when(itemFactory.ensureServerConversions(any())).thenAnswer(invocationOnMock -> invocationOnMock.getArgument(0));
         when(itemFactory.equals(any(),any())).thenReturn(true);
         when(serverMock.getItemFactory()).thenReturn(itemFactory);
@@ -797,8 +798,8 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testGetOfflinePlayer() {
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString("eba17d33-959d-42a7-a4d9-e9aebef5969e"));
-        OfflinePlayer player = config.getOfflinePlayer("offlinePlayer");
+        final  OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString("eba17d33-959d-42a7-a4d9-e9aebef5969e"));
+        final OfflinePlayer player = config.getOfflinePlayer("offlinePlayer");
         assertNotNull(player);
         assertEquals(offlinePlayer.getUniqueId(), player.getUniqueId());
     }
@@ -812,9 +813,9 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testGetOfflinePlayerWithDefault() {
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString("eba17d33-959d-42a7-a4d9-e9aebef5969e"));
-        OfflinePlayer offlinePlayerDefault = Bukkit.getOfflinePlayer(UUID.fromString("5179617b-8418-4099-8773-37a4ac587dd8"));
-        OfflinePlayer player = config.getOfflinePlayer("offlinePlayer", offlinePlayerDefault);
+        final OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString("eba17d33-959d-42a7-a4d9-e9aebef5969e"));
+        final OfflinePlayer offlinePlayerDefault = Bukkit.getOfflinePlayer(UUID.fromString("5179617b-8418-4099-8773-37a4ac587dd8"));
+        final OfflinePlayer player = config.getOfflinePlayer("offlinePlayer", offlinePlayerDefault);
         assertNotNull(player);
         assertEquals(offlinePlayer.getUniqueId(), player.getUniqueId());
     }
@@ -822,8 +823,8 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testGetOfflinePlayerWithDefaultOnInvalidConfigPath() {
-        OfflinePlayer offlinePlayerDefault = Bukkit.getOfflinePlayer(UUID.fromString("5179617b-8418-4099-8773-37a4ac587dd8"));
-        OfflinePlayer player = config.getOfflinePlayer("offlinePlayer_invalid", offlinePlayerDefault);
+        final OfflinePlayer offlinePlayerDefault = Bukkit.getOfflinePlayer(UUID.fromString("5179617b-8418-4099-8773-37a4ac587dd8"));
+        final OfflinePlayer player = config.getOfflinePlayer("offlinePlayer_invalid", offlinePlayerDefault);
         assertNotNull(player);
         assertEquals(offlinePlayerDefault.getUniqueId(), player.getUniqueId());
     }
@@ -1056,8 +1057,9 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
         }
     }
 
-    public static interface FakeOfflinePlayer extends OfflinePlayer {
-        public static OfflinePlayer deserialize(Map<String, Object> args) {
+    public interface FakeOfflinePlayer extends OfflinePlayer {
+        @SuppressWarnings("unused")
+        static OfflinePlayer deserialize(final Map<String, Object> args) {
             return Bukkit.getOfflinePlayer(UUID.fromString((String) args.get("UUID")));
         }
     }
