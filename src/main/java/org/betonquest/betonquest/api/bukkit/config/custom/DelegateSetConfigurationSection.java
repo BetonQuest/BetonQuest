@@ -7,10 +7,23 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
+/**
+ * This is an extension of {@link ConfigurationSectionDecorator},
+ * that delegate the {@link ConfigurationSection} methods that modify something.
+ */
 public class DelegateSetConfigurationSection extends ConfigurationSectionDecorator {
 
+    /**
+     * The {@link DelegateSet} instance
+     */
     private final DelegateSet setter;
 
+    /**
+     * Create a new delegate set instance.
+     *
+     * @param delegate The original {@link ConfigurationSection} that should be delegated on set
+     * @param setter The {@link DelegateSet} that manage modifications
+     */
     public DelegateSetConfigurationSection(final ConfigurationSection delegate, final DelegateSet setter) {
         super(delegate);
         this.setter = setter;

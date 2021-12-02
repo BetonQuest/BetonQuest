@@ -15,9 +15,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * This class hides an original {@link ConfigurationSection} and expose it,
+ * like it is the original {@link ConfigurationSection}.
+ * This gives the possibility to change a partial behaviour of the original {@link ConfigurationSection},
+ * without the need to implement everything again and again.
+ */
+@SuppressWarnings("PMD.ExcessivePublicCount")
 public class ConfigurationSectionDecorator implements ConfigurationSection {
+    /**
+     * The original {@link ConfigurationSection}.
+     */
     protected final ConfigurationSection delegate;
 
+    /**
+     * Create a new decorator instance.
+     * @param delegate The original {@link ConfigurationSection} that should be decorated.
+     */
     public ConfigurationSectionDecorator(final ConfigurationSection delegate) {
         this.delegate = delegate;
     }

@@ -11,7 +11,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Execution(ExecutionMode.CONCURRENT)
 @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
+/**
+ * This is a test for {@link UnmodifiableConfigurationSection}.
+ */
 public class UnmodifiableConfigurationSectionTest extends AbstractConfigurationSectionTest {
+    /**
+     * Empty constructor
+     */
     public UnmodifiableConfigurationSectionTest() {
         super();
     }

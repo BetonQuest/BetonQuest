@@ -7,8 +7,18 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
+/**
+ * This is an extension of {@link ConfigurationSectionDecorator},
+ * that makes the {@link ConfigurationSection} unmodifiable.
+ */
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class UnmodifiableConfigurationSection extends ConfigurationSectionDecorator {
 
+    /**
+     * Create a new unmodifiable instance.
+     *
+     * @param delegate The original {@link ConfigurationSection} that should be unmodifiable.
+     */
     public UnmodifiableConfigurationSection(final ConfigurationSection delegate) {
         super(delegate);
     }

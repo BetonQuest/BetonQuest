@@ -2,15 +2,25 @@ package org.betonquest.betonquest.api.bukkit.config.custom;
 
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationOptions;
+import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
+/**
+ * This is an extension of {@link ConfigurationSectionDecorator}, that makes the {@link Configuration} unmodifiable.
+ */
 public class UnmodifiableConfiguration extends UnmodifiableConfigurationSection implements Configuration {
-
+    /**
+     * The {@link ConfigurationSectionDecorator#delegate} but as {@link Configuration}.
+     */
     protected final Configuration delegate;
 
+    /**
+     * Create a new unmodifiable instance.
+     * @param delegate The original {@link ConfigurationSection} that should be unmodifiable.
+     */
     public UnmodifiableConfiguration(final Configuration delegate) {
         super(delegate);
         this.delegate = delegate;
