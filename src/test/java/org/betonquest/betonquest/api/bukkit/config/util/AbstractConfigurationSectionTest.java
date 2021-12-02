@@ -26,11 +26,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -38,11 +40,34 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@SuppressWarnings({"PMD.CommentRequired", "PMD.JUnitAssertionsShouldIncludeMessage"})
+/**
+ * This class is an abstract implementation.
+ * It tests all methods in the {@link ConfigurationSection} interface.
+ * It mainly tries to test the behaviour of the methods, so that they work as expected.
+ *
+ * This class can then be used to test custom implementations of {@link ConfigurationSection}.
+ * You than only need to override methods, that have a different behaviour.
+ */
+@SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.AvoidDuplicateLiterals"})
 public class AbstractConfigurationSectionTest implements ConfigurationSectionTestInterface {
+    /**
+     * The static mock of {@link ItemStack}
+     */
     private static MockedStatic<ItemStack> itemStackMockedStatic;
+    /**
+     * The {@link ConfigurationSection} instance for testing
+     */
     private ConfigurationSection config;
 
+    /**
+     * Empty constructor
+     */
+    public AbstractConfigurationSectionTest() {
+    }
+
+    /**
+     * Mock static things and {@link World}s {@link ItemStack}s and {@link OfflinePlayer}s
+     */
     @BeforeAll
     public static void beforeAll() {
         ConfigurationSerialization.registerClass(TestObject.class);
@@ -88,6 +113,9 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
         });
     }
 
+    /**
+     * Close the static mocks
+     */
     @AfterAll
     public static void afterAll() {
         itemStackMockedStatic.close();
@@ -242,6 +270,7 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
 
     @Test
     @Override
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     public void testGetRoot() {
         assertNotNull(config);
         final ConfigurationSection nestedChild = config.getConfigurationSection("childSection.nestedChildSection");
@@ -253,6 +282,7 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
 
     @Test
     @Override
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     public void testGetParent() {
         final ConfigurationSection nestedChild = config.getConfigurationSection("childSection.nestedChildSection");
         assertNotNull(nestedChild);
@@ -310,6 +340,7 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
 
     @Test
     @Override
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     public void testCreateSectionOnExistingConfigPath() {
 
         final ConfigurationSection section = config.createSection("createdSectionExist");
@@ -326,12 +357,12 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
 
     @Test
     @Override
-    @SuppressWarnings("serial")
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     public void testCreateSectionWithValues() {
-        final ConfigurationSection section = config.createSection("createdSectionWithValues", new HashMap<String, Object>() {{
-            put("one", 1);
-            put("two", 2);
-        }});
+        final Map<String, Object> sectionMap = new HashMap<>();
+        sectionMap.put("one", 1);
+        sectionMap.put("two", 2);
+        final ConfigurationSection section = config.createSection("createdSectionWithValues", sectionMap);
         assertNotNull(section);
         assertEquals(1, section.getInt("one"));
         assertEquals(2, section.getInt("two"));
@@ -339,18 +370,19 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
 
     @Test
     @Override
-    @SuppressWarnings("serial")
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     public void testCreateSectionWithValuesOnExistingConfigPath() {
-        final ConfigurationSection section = config.createSection("createdSectionWithValuesExist", new HashMap<String, Object>() {{
-            put("one", 1);
-            put("two", 2);
-        }});
+        final Map<String, Object> sectionMap1 = new HashMap<>();
+        sectionMap1.put("one", 1);
+        sectionMap1.put("two", 2);
+        final ConfigurationSection section = config.createSection("createdSectionWithValuesExist", sectionMap1);
         assertEquals(1, config.getInt("createdSectionWithValuesExist.one"));
         assertEquals(2, config.getInt("createdSectionWithValuesExist.two"));
-        final ConfigurationSection sectionRecreated = config.createSection("createdSectionWithValuesExist", new HashMap<String, Object>() {{
-            put("three", 3);
-            put("four", 4);
-        }});
+
+        final Map<String, Object> sectionMap2 = new HashMap<>();
+        sectionMap2.put("three", 3);
+        sectionMap2.put("four", 4);
+        final ConfigurationSection sectionRecreated = config.createSection("createdSectionWithValuesExist", sectionMap2);
         assertNotEquals(section, sectionRecreated);
 
         assertEquals(1, section.getInt("one"));
@@ -403,7 +435,7 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testGetInt() {
-        assertEquals(12345, config.getInt("integer"));
+        assertEquals(12_345, config.getInt("integer"));
     }
 
     @Test
@@ -415,13 +447,13 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testGetIntWithDefault() {
-        assertEquals(12345, config.getInt("integer", 54321));
+        assertEquals(12_345, config.getInt("integer", 54_321));
     }
 
     @Test
     @Override
     public void testGetIntWithDefaultOnInvalidConfigPath() {
-        assertEquals(54321, config.getInt("integer_invalid", 54321));
+        assertEquals(54_321, config.getInt("integer_invalid", 54_321));
     }
 
     @Test
@@ -690,16 +722,16 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
 
     @Test
     @Override
-    @SuppressWarnings("serial")
     public void testGetMapList() {
-        assertEquals(Arrays.asList(new HashMap<String, Integer>() {{
-                                       put("one", 1);
-                                       put("two", 2);
-                                   }},
-                new HashMap<String, Integer>() {{
-                    put("three", 3);
-                    put("four", 4);
-                }}), config.getMapList("mapList"));
+        final List<Map<String, Integer>> mapList = new ArrayList<>();
+        mapList.add(new HashMap<>());
+        mapList.add(new HashMap<>());
+        mapList.get(0).put("one", 1);
+        mapList.get(0).put("two", 2);
+        mapList.get(1).put("three", 3);
+        mapList.get(1).put("four", 4);
+
+        assertEquals(mapList, config.getMapList("mapList"));
     }
 
     @Test
@@ -1000,30 +1032,59 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
 
     @Test
     @Override
-    public void testAddDefault() {
-        config.addDefault("default.add", "value");
+    public void testAddDefaultOnChildSection() {
+        final ConfigurationSection defaultSection = config.getConfigurationSection("default");
+        assertNotNull(defaultSection);
+        defaultSection.addDefault("add", "value");
         assertEquals("value", config.getString("default.add"));
     }
 
     @Test
     @Override
-    public void testAddDefaultOnExistingConfigPath() {
-        config.addDefault("default.override", "first");
-        config.addDefault("default.override", "second");
+    public void testAddDefaultOnChildSectionOnExistingConfigPath() {
+        final ConfigurationSection defaultSection = config.getConfigurationSection("default");
+        assertNotNull(defaultSection);
+        defaultSection.addDefault("override", "first");
+        defaultSection.addDefault("override", "second");
         assertEquals("second", config.getString("default.override"));
     }
 
+    /**
+     * This is a {@link TestObject} for the related {@link ConfigurationSection} methods.
+     */
     public static class TestObject implements ConfigurationSerializable {
+        /**
+         * The pseudo name
+         */
         public final String name;
+        /**
+         * The pseudo amount
+         */
         public final int amount;
+        /**
+         * The pseudo sum
+         */
         public final long sum;
 
+        /**
+         * Create a new {@link TestObject}
+         *
+         * @param name The pseudo name
+         * @param amount The pseudo amount
+         * @param sum The pseudo sum
+         */
         public TestObject(final String name, final int amount, final long sum) {
             this.name = name;
             this.amount = amount;
             this.sum = sum;
         }
 
+        /**
+         * Method to deserialize a {@link TestObject}.
+         *
+         * @param args The map of arguments
+         * @return The created {@link TestObject}
+         */
         @NotNull
         @SuppressWarnings("unused")
         public static TestObject deserialize(@NotNull final Map<String, Object> args) {
@@ -1058,7 +1119,18 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
         }
     }
 
+    /**
+     * A fake {@link OfflinePlayer} that add a method for deserialization.
+     */
     public interface FakeOfflinePlayer extends OfflinePlayer {
+        /**
+         * Method to deserialize a {@link OfflinePlayer}.
+         * This will call the {@link Bukkit#getOfflinePlayer(UUID)} method.
+         * Therefore, this is only for the method {@link ConfigurationSerialization#registerClass(Class, String)}.
+         *
+         * @param args The map of arguments
+         * @return The returned {@link OfflinePlayer} from {@link Bukkit#getOfflinePlayer(UUID)}
+         */
         @SuppressWarnings("unused")
         static OfflinePlayer deserialize(final Map<String, Object> args) {
             return Bukkit.getOfflinePlayer(UUID.fromString((String) args.get("UUID")));

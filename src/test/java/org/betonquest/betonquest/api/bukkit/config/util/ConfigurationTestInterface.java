@@ -2,11 +2,9 @@ package org.betonquest.betonquest.api.bukkit.config.util;
 
 @SuppressWarnings({"unused", "PMD.CommentRequired", "PMD.JUnit4TestShouldUseTestAnnotation", "PMD.TooManyMethods"})
 public interface ConfigurationTestInterface extends ConfigurationSectionTestInterface {
-    @Override
-    void testAddDefault();
+    void testAddDefaultOnRootSection();
 
-    @Override
-    void testAddDefaultOnExistingConfigPath();
+    void testAddDefaultOnRootSectionOnExistingConfigPath();
 
     void testAddDefaultsAsMap();
 
@@ -17,8 +15,6 @@ public interface ConfigurationTestInterface extends ConfigurationSectionTestInte
     void testAddDefaultsAsConfigurationOnExistingConfigPath();
 
     void testGetDefaults();
-
-    void testGetDefaultsOnInvalidConfigPath();
 
     void testSetDefaults();
 

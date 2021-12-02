@@ -10,7 +10,12 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Execution(ExecutionMode.CONCURRENT)
+@SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
 public class UnmodifiableConfigurationSectionTest extends AbstractConfigurationSectionTest {
+    public UnmodifiableConfigurationSectionTest() {
+        super();
+    }
+
     @Override
     public ConfigurationSection getConfig() {
         return new UnmodifiableConfigurationSection(super.getConfig());
@@ -29,8 +34,8 @@ public class UnmodifiableConfigurationSectionTest extends AbstractConfigurationS
 
     @Test
     @Override
-    public void testAddDefault() {
-        assertThrowsException(super::testAddDefault);
+    public void testAddDefaultOnChildSection() {
+        assertThrowsException(super::testAddDefaultOnChildSection);
     }
 
     @Test
@@ -59,8 +64,8 @@ public class UnmodifiableConfigurationSectionTest extends AbstractConfigurationS
 
     @Test
     @Override
-    public void testAddDefaultOnExistingConfigPath() {
-        assertThrowsException(super::testAddDefaultOnExistingConfigPath);
+    public void testAddDefaultOnChildSectionOnExistingConfigPath() {
+        assertThrowsException(super::testAddDefaultOnChildSectionOnExistingConfigPath);
     }
 
     @Test
