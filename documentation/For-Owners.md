@@ -30,21 +30,21 @@ BetonQuest has [quite a lot of features](Features.md) and use cases. This page w
   However, one of the goals of the further development of BetonQuest is to reduce the overhead that is needed for simple quests.
 
 ##BetonQuest vs. other Plugins
-Feature[^1]               | BetonQuest         | Quests                                 | BeautyQuests          | QuestCreator             | MangoQuest          |  
-------------------------- | :-----------------:| :----------------:                     | :--------------------:| :----------------------: | :-----------------: |
-Free                      | :white_check_mark: | :white_check_mark:                     | :white_check_mark:    | :x:  (20$)               | :white_check_mark:  |
-OpenSource                | :white_check_mark: | :white_check_mark:                     | :white_check_mark:    | :x:                      | :white_check_mark:  |
-API                       | :white_check_mark: | :white_check_mark:                     | :white_check_mark:    | (Private)[^2] :weary:    | :question:          |
-Version Support           | 1.13.2-1.17.0      | 1.7-1.17.0                             | 1.11-1.16.5           | 1.7-1.17.0               | 1.13-1.16.5         | 
-Database Support          | SQL Lite & MySQL   | :x:                                    | MySQL                 | MySQL                    | :question:          |
-Bungee Support            | :white_check_mark: | :x:                                    | :x:                   | :x:                      | :question:          |
-Per Player Language       | :white_check_mark: | :question:                             | :x:                   | :x:                      | :question:          |
-Multi-Path Conversations  | :white_check_mark: | :question:                             | :question:            | :white_check_mark:       | :question:          |
-Client Side NPCs          | :white_check_mark: | :question:                             | :question:            | :white_check_mark:       | :question:          |
-Ingame Editor             | :x:                | Chat Included <br />Paid Addon for GUI | :white_check_mark:     | :white_check_mark:       | :x:                 |
-External Editor           | :white_check_mark: | :x:                                    | :x:                   | :x:                      | :white_check_mark:  |
-Organized File Structure  | :white_check_mark: | :x:                                    | :question:            | :white_check_mark:       | :white_check_mark:  |
-Integrated Plugins        | 27                 | 12                                     | 15                    | 23                       | 7                   |
+| Feature[^1]              |     BetonQuest     |                 Quests                 |    BeautyQuests    |     QuestCreator      |     MangoQuest     |  
+|--------------------------|:------------------:|:--------------------------------------:|:------------------:|:---------------------:|:------------------:|
+| Free                     | :white_check_mark: |           :white_check_mark:           | :white_check_mark: |      :x:  (20$)       | :white_check_mark: |
+| OpenSource               | :white_check_mark: |           :white_check_mark:           | :white_check_mark: |          :x:          | :white_check_mark: |
+| API                      | :white_check_mark: |           :white_check_mark:           | :white_check_mark: | (Private)[^2] :weary: |     :question:     |
+| Version Support          |    1.13.2-1.18     |               1.7-1.17.0               |    1.11-1.16.5     |      1.7-1.17.0       |    1.13-1.16.5     | 
+| Database Support         |  SQL Lite & MySQL  |                  :x:                   |       MySQL        |         MySQL         |     :question:     |
+| Bungee Support           | :white_check_mark: |                  :x:                   |        :x:         |          :x:          |     :question:     |
+| Per Player Language      | :white_check_mark: |               :question:               |        :x:         |          :x:          |     :question:     |
+| Multi-Path Conversations | :white_check_mark: |               :question:               |     :question:     |  :white_check_mark:   |     :question:     |
+| Client Side NPCs         | :white_check_mark: |               :question:               |     :question:     |  :white_check_mark:   |     :question:     |
+| Ingame Editor            |        :x:         | Chat Included <br />Paid Addon for GUI | :white_check_mark: |  :white_check_mark:   |        :x:         |
+| External Editor          | :white_check_mark: |                  :x:                   |        :x:         |          :x:          | :white_check_mark: |
+| Organized File Structure | :white_check_mark: |                  :x:                   |     :question:     |  :white_check_mark:   | :white_check_mark: |
+| Integrated Plugins       |         27         |                   12                   |         15         |          23           |         7          |
 
 ProQuest, QuestWorld (2) and Quest by LMBishop have been classified as way to limited or unknown to appear in this table. They are simple task plugins,
 not plugins that are able to create story driven quests.
