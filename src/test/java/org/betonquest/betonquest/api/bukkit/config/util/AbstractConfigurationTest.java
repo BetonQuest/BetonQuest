@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.api.bukkit.config.util;
 
 import org.bukkit.configuration.Configuration;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.junit.jupiter.api.Test;
 
@@ -9,21 +8,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * This class is an abstract implementation.
  * It tests all methods in the {@link Configuration} interface.
  * It mainly tries to test the behaviour of the methods, so that they work as expected.
- *
+ * <p>
  * This class can then be used to test custom implementations of {@link Configuration}.
  * You than only need to override methods, that have a different behaviour.
  */
 @SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.AvoidDuplicateLiterals"})
-public class AbstractConfigurationTest extends AbstractConfigurationSectionTest implements ConfigurationTestInterface{
-    /**
-     * The {@link Configuration} instance for testing
-     */
-    private Configuration config;
-
+public class AbstractConfigurationTest extends AbstractConfigBaseTest<Configuration> implements ConfigurationTestInterface {
     /**
      * Empty constructor
      */
@@ -32,9 +27,8 @@ public class AbstractConfigurationTest extends AbstractConfigurationSectionTest 
     }
 
     @Override
-    public ConfigurationSection getConfig() {
-        config = (Configuration) super.getConfig();
-        return config;
+    public Configuration getConfig() {
+        return getDefaultConfig();
     }
 
     @Test

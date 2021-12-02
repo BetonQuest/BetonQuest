@@ -39,7 +39,7 @@ public class UnmodifiableConfiguration extends UnmodifiableConfigurationSection 
     @Override
     public @Nullable
     Configuration getDefaults() {
-        return delegate.getDefaults();
+        return new UnmodifiableConfiguration(delegate.getDefaults());
     }
 
     @Override

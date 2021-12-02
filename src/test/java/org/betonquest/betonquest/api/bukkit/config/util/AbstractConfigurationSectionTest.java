@@ -1,31 +1,18 @@
 package org.betonquest.betonquest.api.bukkit.config.util;
 
-import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.Server;
-import org.bukkit.UnsafeValues;
-import org.bukkit.World;
-import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -38,101 +25,27 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 /**
  * This class is an abstract implementation.
  * It tests all methods in the {@link ConfigurationSection} interface.
  * It mainly tries to test the behaviour of the methods, so that they work as expected.
- *
+ * <p>
  * This class can then be used to test custom implementations of {@link ConfigurationSection}.
  * You than only need to override methods, that have a different behaviour.
  */
-@SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.AvoidDuplicateLiterals"})
-public class AbstractConfigurationSectionTest implements ConfigurationSectionTestInterface {
-    /**
-     * The static mock of {@link ItemStack}
-     */
-    private static MockedStatic<ItemStack> itemStackMockedStatic;
-    /**
-     * The {@link ConfigurationSection} instance for testing
-     */
-    private ConfigurationSection config;
-
+@SuppressWarnings({"PMD.GodClass", "PMD.JUnitAssertionsShouldIncludeMessage", "PMD.AvoidDuplicateLiterals"})
+public class AbstractConfigurationSectionTest extends AbstractConfigBaseTest<ConfigurationSection> implements ConfigurationSectionTestInterface {
     /**
      * Empty constructor
      */
     public AbstractConfigurationSectionTest() {
+        super();
     }
 
-    /**
-     * Mock static things and {@link World}s {@link ItemStack}s and {@link OfflinePlayer}s
-     */
-    @BeforeAll
-    public static void beforeAll() {
-        ConfigurationSerialization.registerClass(TestObject.class);
-        ConfigurationSerialization.registerClass(FakeOfflinePlayer.class, "org.bukkit.craftbukkit.CraftOfflinePlayer");
-
-        itemStackMockedStatic = mockStatic(ItemStack.class);
-
-        final Server serverMock = mock(Server.class);
-        when(serverMock.getLogger()).thenReturn(LogValidator.getSilentLogger());
-        Bukkit.setServer(serverMock);
-
-        mockWorlds(serverMock);
-        mockItems(serverMock);
-        mockOfflinePlayer(serverMock);
-    }
-
-    private static void mockWorlds(final Server serverMock) {
-        final World world = mock(World.class);
-        final World worldInvalid = mock(World.class);
-
-        when(serverMock.getWorld("Test")).thenReturn(world);
-        when(serverMock.getWorld("TestInvalid")).thenReturn(worldInvalid);
-    }
-
-    @SuppressWarnings("deprecation")
-    private static void mockItems(final Server serverMock) {
-        final UnsafeValues values = mock(UnsafeValues.class);
-        when(values.getMaterial(eq("BONE"), anyInt())).thenReturn(Material.BONE);
-        when(serverMock.getUnsafe()).thenReturn(values);
-        final ItemFactory itemFactory = mock(ItemFactory.class);
-        when(itemFactory.ensureServerConversions(any())).thenAnswer(invocationOnMock -> invocationOnMock.getArgument(0));
-        when(itemFactory.equals(any(),any())).thenReturn(true);
-        when(serverMock.getItemFactory()).thenReturn(itemFactory);
-
-        itemStackMockedStatic.when(() -> ItemStack.deserialize(anyMap())).thenReturn(new ItemStack(Material.BONE, 42));
-    }
-
-    private static void mockOfflinePlayer(final Server serverMock) {
-        when(serverMock.getOfflinePlayer(any(UUID.class))).thenAnswer(invocationOnMock -> {
-           final OfflinePlayer offlinePlayer = mock(OfflinePlayer.class);
-           when(offlinePlayer.getUniqueId()).thenReturn(invocationOnMock.getArgument(0));
-           return offlinePlayer;
-        });
-    }
-
-    /**
-     * Close the static mocks
-     */
-    @AfterAll
-    public static void afterAll() {
-        itemStackMockedStatic.close();
-    }
-
-    @BeforeEach
-    @SuppressWarnings("unused")
-    private void beforeEach() {
-        config = getConfig();
-    }
-
+    @Override
     public ConfigurationSection getConfig() {
-        final Configuration config = YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/config.yml"));
-        final Configuration defaultSection = new MemoryConfiguration();
-        defaultSection.set("default.key", "value");
-        config.setDefaults(defaultSection);
-        return config;
+        return getDefaultConfig();
     }
 
     @Test
@@ -831,7 +744,7 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     @Test
     @Override
     public void testGetOfflinePlayer() {
-        final  OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString("eba17d33-959d-42a7-a4d9-e9aebef5969e"));
+        final OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString("eba17d33-959d-42a7-a4d9-e9aebef5969e"));
         final OfflinePlayer player = config.getOfflinePlayer("offlinePlayer");
         assertNotNull(player);
         assertEquals(offlinePlayer.getUniqueId(), player.getUniqueId());
@@ -1050,6 +963,24 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
     }
 
     /**
+     * A fake {@link OfflinePlayer} that add a method for deserialization.
+     */
+    public interface FakeOfflinePlayer extends OfflinePlayer {
+        /**
+         * Method to deserialize a {@link OfflinePlayer}.
+         * This will call the {@link Bukkit#getOfflinePlayer(UUID)} method.
+         * Therefore, this is only for the method {@link ConfigurationSerialization#registerClass(Class, String)}.
+         *
+         * @param args The map of arguments
+         * @return The returned {@link OfflinePlayer} from {@link Bukkit#getOfflinePlayer(UUID)}
+         */
+        @SuppressWarnings("unused")
+        static OfflinePlayer deserialize(final Map<String, Object> args) {
+            return Bukkit.getOfflinePlayer(UUID.fromString((String) args.get("UUID")));
+        }
+    }
+
+    /**
      * This is a {@link TestObject} for the related {@link ConfigurationSection} methods.
      */
     public static class TestObject implements ConfigurationSerializable {
@@ -1069,9 +1000,9 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
         /**
          * Create a new {@link TestObject}
          *
-         * @param name The pseudo name
+         * @param name   The pseudo name
          * @param amount The pseudo amount
-         * @param sum The pseudo sum
+         * @param sum    The pseudo sum
          */
         public TestObject(final String name, final int amount, final long sum) {
             this.name = name;
@@ -1116,24 +1047,6 @@ public class AbstractConfigurationSectionTest implements ConfigurationSectionTes
         @Override
         public int hashCode() {
             return Objects.hash(name, amount, sum);
-        }
-    }
-
-    /**
-     * A fake {@link OfflinePlayer} that add a method for deserialization.
-     */
-    public interface FakeOfflinePlayer extends OfflinePlayer {
-        /**
-         * Method to deserialize a {@link OfflinePlayer}.
-         * This will call the {@link Bukkit#getOfflinePlayer(UUID)} method.
-         * Therefore, this is only for the method {@link ConfigurationSerialization#registerClass(Class, String)}.
-         *
-         * @param args The map of arguments
-         * @return The returned {@link OfflinePlayer} from {@link Bukkit#getOfflinePlayer(UUID)}
-         */
-        @SuppressWarnings("unused")
-        static OfflinePlayer deserialize(final Map<String, Object> args) {
-            return Bukkit.getOfflinePlayer(UUID.fromString((String) args.get("UUID")));
         }
     }
 }
