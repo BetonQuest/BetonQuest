@@ -945,6 +945,7 @@ public class AbstractConfigurationSectionTest extends AbstractConfigBaseTest<Con
 
     @Test
     @Override
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     public void testAddDefaultOnChildSection() {
         final ConfigurationSection section = config.getDefaultSection();
         assertNotNull(section);
@@ -956,6 +957,7 @@ public class AbstractConfigurationSectionTest extends AbstractConfigBaseTest<Con
 
     @Test
     @Override
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     public void testAddDefaultOnChildSectionOnExistingConfigPath() {
         final ConfigurationSection section = config.getDefaultSection();
         assertNotNull(section);

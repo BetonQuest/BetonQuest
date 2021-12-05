@@ -21,6 +21,9 @@ public class UnmodifiableConfigurationSectionTest extends AbstractConfigurationS
      * The values in the configuration before the test did run.
      */
     private Map<String, Object> values;
+    /**
+     * The values of the default section in the configuration before the test did run.
+     */
     private Map<String, Object> valuesDefault;
 
     /**
@@ -35,13 +38,19 @@ public class UnmodifiableConfigurationSectionTest extends AbstractConfigurationS
         return new UnmodifiableConfigurationSection(super.getConfig());
     }
 
-
+    /**
+     * Get a copy of the values in the config, before the test did run.
+     */
     @BeforeEach
     public void beforeEach() {
         values = config.getValues(true);
         valuesDefault = Objects.requireNonNull(config.getDefaultSection()).getValues(true);
     }
 
+    /**
+     * Compare the start values with the values after the test.
+     * They should not have been changed.
+     */
     @AfterEach
     public void afterEach() {
         assertEquals(values, config.getValues(true));
