@@ -108,9 +108,8 @@ public class AbstractConfigurationTest extends AbstractConfigBaseTest<Configurat
         assertEquals(3, config.getInt("default.three"));
         assertEquals(4, config.getInt("default.four"));
 
-        // This should be not null, but this is a bug in Bukkit
-        assertNull(config.get("default.one"));
-        assertNull(config.get("default.two"));
+        assertEquals(1, config.getInt("default.one"));
+        assertEquals(2, config.getInt("default.two"));
     }
 
     @Test
