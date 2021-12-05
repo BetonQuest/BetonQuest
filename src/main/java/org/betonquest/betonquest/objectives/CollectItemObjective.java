@@ -1,12 +1,13 @@
 package org.betonquest.betonquest.objectives;
 
-import lombok.SneakyThrows;
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.compatibility.protocollib.hider.EntityHider;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.item.QuestItem;
@@ -20,10 +21,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.entity.ItemMergeEvent;
+import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -32,16 +33,16 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+@CustomLog
 @SuppressWarnings("PMD.CommentRequired")
 public class CollectItemObjective extends CountingObjective implements Listener {
 
+    private static final int MAX_QUESTITEM = 1;
     private final Instruction.Item[] questItems;
     private final CompoundLocation location;
     private final boolean isProtected;
     private final boolean isPrivate;
     private final EventID[] failEvents;
-    private static final int MAX_QUESTITEM = 1;
-
     /**
      * Saves the entity of each dropped item alongside the player that is allowed to pick the item up.
      */
@@ -70,7 +71,7 @@ public class CollectItemObjective extends CountingObjective implements Listener 
             }
         }
         if (questItems.length != MAX_QUESTITEM) {
-            throw new InstructionParseException("Item can't be more or less than 1");
+            throw new InstructionParseException("Only one item can be added to this objective.");
         }
     }
 
@@ -79,7 +80,6 @@ public class CollectItemObjective extends CountingObjective implements Listener 
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
-    @SneakyThrows
     @Override
     public void start(final String playerID) {
         final Player player = PlayerConverter.getPlayer(playerID);
@@ -89,14 +89,22 @@ public class CollectItemObjective extends CountingObjective implements Listener 
             final int amountInt = amount.getInt(playerID);
 
             final ItemStack generateItem = item.generate(amountInt, playerID);
-            final Location loc = location.getLocation(playerID);
+
+            Location loc = null;
+            try {
+                loc = location.getLocation(playerID);
+            } catch (QuestRuntimeException e) {
+                LOG.error(instruction.getPackage(), "Unable to parse" + instruction.getID(), e);
+            }
 
             targetAmount = amountInt;
 
+            final Location finalLoc = loc;
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    final Entity droppedItem = loc.getWorld().dropItem(loc, generateItem);
+                    final Entity droppedItem = finalLoc.getWorld().dropItem(finalLoc, generateItem);
+                    droppedItem.setInvulnerable(true);
                     entityPlayerMap.put(droppedItem, player.getUniqueId());
                     if (isPrivate) {
                         for (final Player onlinePlayer : Bukkit.getOnlinePlayers()) {
@@ -122,28 +130,38 @@ public class CollectItemObjective extends CountingObjective implements Listener 
 
         if (isProtected && !event.getEntity().getUniqueId().equals(ownerUUID)) {
             event.setCancelled(true);
+            return;
         }
 
         if (pickupEntity instanceof Player) {
             final Player pickupPlayer = (Player) pickupEntity;
             final String playerID = PlayerConverter.getID(pickupPlayer);
             if (pickupPlayer.getUniqueId().equals(ownerUUID)) {
-                if (containsPlayer(playerID)) {
-                    if (checkConditions(playerID)) {
-                        getCountingData(playerID).progress(item.getItemStack().getAmount());
-                        completeIfDoneOrNotify(playerID);
-                        entityPlayerMap.remove(item);
-                    } else {
-                        event.setCancelled(true);
-                    }
-                    return;
+                if (checkConditions(playerID)) {
+                    getCountingData(playerID).progress(item.getItemStack().getAmount());
+                    completeIfDoneOrNotify(playerID);
+                    entityPlayerMap.remove(item);
+                } else {
+                    event.setCancelled(true);
                 }
             } else {
-                failObjective(playerID);
-                cancelObjectiveForPlayer(playerID);
+                failObjective(ownerUUID.toString());
             }
         }
-        event.setCancelled(true);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPickupItem(final InventoryPickupItemEvent event) {
+        final Item item = event.getItem();
+        if (!entityPlayerMap.containsKey(item)) {
+            return;
+        }
+
+        if (isProtected) {
+            event.setCancelled(true);
+            return;
+        }
+        failObjective(entityPlayerMap.get(event.getItem()).toString());
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -170,35 +188,35 @@ public class CollectItemObjective extends CountingObjective implements Listener 
         }
         if (isProtected) {
             event.setCancelled(true);
-        }
-        failObjective(entityPlayerMap.get(event.getEntity()).toString());
-        cancelObjectiveForPlayer(entityPlayerMap.get(event.getEntity()).toString());
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onItemDamage(final EntityDamageEvent event) {
-        if (!entityPlayerMap.containsKey(event.getEntity())) {
             return;
         }
         failObjective(entityPlayerMap.get(event.getEntity()).toString());
-        cancelObjectiveForPlayer(entityPlayerMap.get(event.getEntity()).toString());
     }
 
     @Override
     public void stop() {
-        HandlerList.unregisterAll(this);
+        final CollectItemObjective instance = this;
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                HandlerList.unregisterAll(instance);
+                for (final Map.Entry<Entity, UUID> items : entityPlayerMap.entrySet()) {
+                    items.getKey().remove();
+                }
+                entityPlayerMap.clear();
+            }
+        }.runTask(BetonQuest.getInstance());
     }
 
-    @SneakyThrows
     @Override
     public void stop(final String playerID) {
         if (!entityPlayerMap.containsValue(UUID.fromString(playerID))) {
             return;
         }
         for (final Map.Entry<Entity, UUID> items : entityPlayerMap.entrySet()) {
-            final Entity item = items.getKey();
             final UUID ownerUUID = items.getValue();
             if (ownerUUID.equals(UUID.fromString(playerID))) {
+                final Entity item = items.getKey();
                 new BukkitRunnable() {
                     @Override
                     public void run() {
@@ -218,5 +236,6 @@ public class CollectItemObjective extends CountingObjective implements Listener 
             BetonQuest.event(playerID, event);
         }
         BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective((ObjectiveID) instruction.getID());
+        cancelObjectiveForPlayer(playerID);
     }
 }
