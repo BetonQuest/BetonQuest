@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
 import java.util.Map;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,6 +21,7 @@ public class UnmodifiableConfigurationSectionTest extends AbstractConfigurationS
      * The values in the configuration before the test did run.
      */
     private Map<String, Object> values;
+    private Map<String, Object> valuesDefault;
 
     /**
      * Empty constructor
@@ -36,13 +38,14 @@ public class UnmodifiableConfigurationSectionTest extends AbstractConfigurationS
 
     @BeforeEach
     public void beforeEach() {
-        super.beforeEach();
         values = config.getValues(true);
+        valuesDefault = Objects.requireNonNull(config.getDefaultSection()).getValues(true);
     }
 
     @AfterEach
     public void afterEach() {
         assertEquals(values, config.getValues(true));
+        assertEquals(valuesDefault, Objects.requireNonNull(config.getDefaultSection()).getValues(true));
     }
 
     private void assertThrowsUnmodifiableException(final Executable executable) {

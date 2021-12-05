@@ -946,7 +946,9 @@ public class AbstractConfigurationSectionTest extends AbstractConfigBaseTest<Con
     @Test
     @Override
     public void testAddDefaultOnChildSection() {
-        final ConfigurationSection defaultSection = config.getConfigurationSection("default");
+        final ConfigurationSection section = config.getDefaultSection();
+        assertNotNull(section);
+        final ConfigurationSection defaultSection = section.getConfigurationSection("default");
         assertNotNull(defaultSection);
         defaultSection.addDefault("add", "value");
         assertEquals("value", config.getString("default.add"));
@@ -955,7 +957,9 @@ public class AbstractConfigurationSectionTest extends AbstractConfigBaseTest<Con
     @Test
     @Override
     public void testAddDefaultOnChildSectionOnExistingConfigPath() {
-        final ConfigurationSection defaultSection = config.getConfigurationSection("default");
+        final ConfigurationSection section = config.getDefaultSection();
+        assertNotNull(section);
+        final ConfigurationSection defaultSection = section.getConfigurationSection("default");
         assertNotNull(defaultSection);
         defaultSection.addDefault("override", "first");
         defaultSection.addDefault("override", "second");

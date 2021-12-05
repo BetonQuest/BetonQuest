@@ -16,7 +16,6 @@ import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.mockito.MockedStatic;
 
 import java.io.File;
@@ -39,7 +38,7 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
     /**
      * The {@link T} instance for testing
      */
-    protected T config;
+    protected final T config = getConfig();
 
     /**
      * Empty constructor
@@ -121,11 +120,5 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
         defaultSection.set("default.key", "value");
         config.setDefaults(defaultSection);
         return config;
-    }
-
-    @BeforeEach
-    @SuppressWarnings("unused")
-    public void beforeEach() {
-        config = getConfig();
     }
 }
