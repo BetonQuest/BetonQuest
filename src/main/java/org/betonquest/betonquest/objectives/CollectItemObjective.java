@@ -119,7 +119,7 @@ public class CollectItemObjective extends CountingObjective implements Listener 
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onPickupItem(final EntityPickupItemEvent event) {
+    public void onHopperPickupItem(final EntityPickupItemEvent event) {
         final Item item = event.getItem();
         if (!entityPlayerMap.containsKey(item)) {
             return;
@@ -151,7 +151,7 @@ public class CollectItemObjective extends CountingObjective implements Listener 
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onPickupItem(final InventoryPickupItemEvent event) {
+    public void onEntityPickupItem(final InventoryPickupItemEvent event) {
         final Item item = event.getItem();
         if (!entityPlayerMap.containsKey(item)) {
             return;
@@ -200,9 +200,6 @@ public class CollectItemObjective extends CountingObjective implements Listener 
             @Override
             public void run() {
                 HandlerList.unregisterAll(instance);
-                for (final Map.Entry<Entity, UUID> items : entityPlayerMap.entrySet()) {
-                    items.getKey().remove();
-                }
                 entityPlayerMap.clear();
             }
         }.runTask(BetonQuest.getInstance());
