@@ -35,7 +35,7 @@ public class UnmodifiableConfigurationSectionTest extends AbstractConfigurationS
 
     @Override
     public ConfigurationSection getConfig() {
-        return new UnmodifiableConfigurationSection(super.getConfig());
+        return new UnmodifiableConfigurationSection(super.getDefaultConfig());
     }
 
     /**

@@ -22,7 +22,7 @@ public class DelegateSetConfigurationSection extends ConfigurationSectionDecorat
      * Create a new delegate set instance.
      *
      * @param delegate The original {@link ConfigurationSection} that should be delegated on set
-     * @param setter The {@link DelegateSet} that manage modifications
+     * @param setter   The {@link DelegateSet} that manage modifications
      */
     public DelegateSetConfigurationSection(final ConfigurationSection delegate, final DelegateSet setter) {
         super(delegate);
@@ -50,7 +50,7 @@ public class DelegateSetConfigurationSection extends ConfigurationSectionDecorat
     @Override
     public @Nullable
     Object get(@NotNull final String path, @Nullable final Object def) {
-        return wrapModifiable(delegate.get(path));
+        return wrapModifiable(delegate.get(path, def));
     }
 
     @Override

@@ -4,7 +4,6 @@ import org.betonquest.betonquest.api.bukkit.config.util.AbstractConfigurationTes
 import org.bukkit.configuration.Configuration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
@@ -32,7 +31,7 @@ public class UnmodifiableConfigurationTest extends AbstractConfigurationTest {
 
     @Override
     public Configuration getConfig() {
-        return new UnmodifiableConfiguration(super.getConfig());
+        return new UnmodifiableConfiguration(super.getDefaultConfig());
     }
 
     /**
@@ -57,6 +56,7 @@ public class UnmodifiableConfigurationTest extends AbstractConfigurationTest {
     private void assertThrowsUnmodifiableException(final Executable executable) {
         assertThrowsUnmodifiableException(executable, "This config is unmodifiable");
     }
+
     private void assertThrowsUnmodifiableException(final Executable executable, final String message) {
         final Exception exception = assertThrows(UnsupportedOperationException.class, executable);
         assertEquals(message, exception.getMessage());

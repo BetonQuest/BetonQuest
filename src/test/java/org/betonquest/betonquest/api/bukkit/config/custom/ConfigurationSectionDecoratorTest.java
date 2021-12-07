@@ -17,6 +17,6 @@ public class ConfigurationSectionDecoratorTest extends AbstractConfigurationSect
 
     @Override
     public ConfigurationSection getConfig() {
-        return new ConfigurationSectionDecorator(super.getConfig());
+        return new ConfigurationSectionDecorator(super.getDefaultConfig());
     }
 }

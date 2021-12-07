@@ -203,7 +203,8 @@ public class MultiConfiguration extends MemoryConfiguration implements Configura
     private class MultiConfigurationSetter implements DelegateSet {
         @Override
         public void set(@NotNull final ConfigurationSection section, @NotNull final String path, @Nullable final Object value) {
-            checkAndSet(section.getCurrentPath() + "." + path, value);
+            final String sectionPath = (section.getCurrentPath() == null || section.getCurrentPath().isEmpty()? "" : section.getCurrentPath() + ".") + path;
+            checkAndSet(sectionPath, value);
             section.set(path, value);
         }
 
