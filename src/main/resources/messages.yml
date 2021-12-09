@@ -368,10 +368,10 @@ it:
   conversation_end: '&e====&bConversazione con {1}&b finita!&e===='
   no_permission: '&cNon hai il permesso.'
   new_journal_entry: '&e*&bDiario aggiornato!&e*'
-  journal_title: Diario
-  journal_lore: Diario di %player.display%, contiene informazioni sulle quest
+  journal_title: 'Diario'
+  journal_lore: 'Il tuo diario, contiene informazioni sulle quest'
   quest_item: '&2Oggetto quest'
-  backpack_title: Zaino
+  backpack_title: 'Zaino'
   previous: '&2Precedente'
   next: '&2Successivo'
   inventory_full: '&e*&bIl tuo inventario è pieno!&e*'
