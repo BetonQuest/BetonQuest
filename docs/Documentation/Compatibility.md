@@ -70,7 +70,7 @@ drunkquality 3
 ```
 
 #### Has Brew: `hasbrew`
-This condition is true if the player has the given grew with the specified amount in his inventory.
+This condition is true if the player has the given brew with the specified amount in his inventory.
 
 ``` YAML linenums="1"
 hasbrew 2 MY_BREW
