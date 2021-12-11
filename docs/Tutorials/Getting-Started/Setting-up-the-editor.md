@@ -81,7 +81,7 @@ if they do. An example might be provided after the colon (`:`). Just replace it 
 
 <div style="text-align: center">
  <video controls loop
-     src="../../../_media/content/LearnBeton/VSCodeExtension.mp4"
+     src="../../../_media/content/Tutorials/VSCodeExtension.mp4"
      width="780" height="500">
  Sorry, your browser doesn't support embedded videos.
  </video>
