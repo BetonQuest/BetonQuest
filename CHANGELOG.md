@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `entities` condition and `clear` event now support not living entities
 - mmoitems item creation only worked with uppercase id's
 ### Security
+- updated log4j to 2.15.0 which fixes CVE-2021-44228
 
 ## [1.12.6] - 2021-10-14
 ### Added
