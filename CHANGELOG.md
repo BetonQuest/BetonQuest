@@ -103,6 +103,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - it was possible to put a QuestItem into a chest
 - the take event is now threadsafe
+- bump log4j dependency 2.15.0 to fix CVE-2021-44228
 
 ## [1.12.1] - 2021-02-05
 ### Added
