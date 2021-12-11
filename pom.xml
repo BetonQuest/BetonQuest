@@ -817,8 +817,8 @@
           <artifactId>maven-surefire-plugin</artifactId>
           <version>3.0.0-M5</version>
           <configuration>
-            <reuseForks>true</reuseForks>
-            <forkCount>2C</forkCount>
+            <reuseForks>false</reuseForks>
+            <forkCount>1C</forkCount>
             <systemPropertyVariables>
               <java.util.logging.config.file>${project.basedir}/src/test/resources/logging-test.properties</java.util.logging.config.file>
             </systemPropertyVariables>
