@@ -45,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `action` objective cancels now the event, before other plugins check for it (better third-party support)
 - the French translation has been updated
 - AureliumSkills updated to version Beta1.2.5
+- PikaMug Quests updated to version 4.1.3
 ### Deprecated
 ### Removed
 - `message` event
