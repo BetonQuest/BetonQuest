@@ -11,20 +11,20 @@ import java.util.Map;
  * This is an extension of {@link ConfigurationSectionDecorator},
  * that delegate the {@link ConfigurationSection} methods that modify something.
  */
-public class DelegateSetConfigurationSection extends ConfigurationSectionDecorator {
+public class DelegateConfigurationSection extends ConfigurationSectionDecorator {
 
     /**
-     * The {@link DelegateSet} instance
+     * The {@link DelegateModificationConfigurationSection} instance
      */
-    private final DelegateSet setter;
+    private final DelegateModificationConfigurationSection setter;
 
     /**
      * Create a new delegate set instance.
      *
      * @param delegate The original {@link ConfigurationSection} that should be delegated on set
-     * @param setter   The {@link DelegateSet} that manage modifications
+     * @param setter   The {@link DelegateModificationConfigurationSection} that manage modifications
      */
-    public DelegateSetConfigurationSection(final ConfigurationSection delegate, final DelegateSet setter) {
+    public DelegateConfigurationSection(final ConfigurationSection delegate, final DelegateModificationConfigurationSection setter) {
         super(delegate);
         this.setter = setter;
     }
@@ -32,13 +32,13 @@ public class DelegateSetConfigurationSection extends ConfigurationSectionDecorat
     @Override
     public @Nullable
     Configuration getRoot() {
-        return new DelegateSetConfiguration(delegate.getRoot(), setter);
+        return new DelegateConfiguration(delegate.getRoot(), (DelegateModificationConfiguration) setter);
     }
 
     @Override
     public @Nullable
     ConfigurationSection getParent() {
-        return new DelegateSetConfigurationSection(delegate.getParent(), setter);
+        return new DelegateConfigurationSection(delegate.getParent(), setter);
     }
 
     @Override
@@ -94,18 +94,18 @@ public class DelegateSetConfigurationSection extends ConfigurationSectionDecorat
 
     @Override
     public void addDefault(@NotNull final String path, @Nullable final Object value) {
-        delegate.addDefault(path, value);
+        setter.addDefault(delegate, path, value);
     }
 
     private Object wrapModifiable(final Object obj) {
-        if (obj instanceof DelegateSetConfigurationSection) {
+        if (obj instanceof DelegateConfigurationSection) {
             return obj;
         }
         if (obj instanceof Configuration) {
-            return new DelegateSetConfiguration((Configuration) obj, setter);
+            return new DelegateConfiguration((Configuration) obj, (DelegateModificationConfiguration) setter);
         }
         if (obj instanceof ConfigurationSection) {
-            return new DelegateSetConfigurationSection((ConfigurationSection) obj, setter);
+            return new DelegateConfigurationSection((ConfigurationSection) obj, setter);
         }
         return obj;
     }

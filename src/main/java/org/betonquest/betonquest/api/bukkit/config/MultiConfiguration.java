@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.api.bukkit.config;
 
-import org.betonquest.betonquest.api.bukkit.config.custom.DelegateSet;
-import org.betonquest.betonquest.api.bukkit.config.custom.DelegateSetConfiguration;
-import org.betonquest.betonquest.api.bukkit.config.custom.DelegateSetConfigurationSection;
+import org.betonquest.betonquest.api.bukkit.config.custom.DelegateConfiguration;
+import org.betonquest.betonquest.api.bukkit.config.custom.DelegateConfigurationSection;
+import org.betonquest.betonquest.api.bukkit.config.custom.DelegateModificationConfiguration;
 import org.betonquest.betonquest.api.bukkit.config.custom.UnmodifiableConfigurationSection;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
@@ -102,69 +102,69 @@ public class MultiConfiguration extends MemoryConfiguration implements Configura
     @Override
     public @Nullable
     Configuration getRoot() {
-        return new DelegateSetConfiguration(super.getRoot(), setter);
+        return new DelegateConfiguration(super.getRoot(), setter);
     }
 
     @Override
     public @Nullable
     ConfigurationSection getParent() {
-        return new DelegateSetConfigurationSection(super.getParent(), setter);
+        return new DelegateConfigurationSection(super.getParent(), setter);
     }
 
     @Override
     public @Nullable
     Object get(@NotNull final String path) {
-        return new DelegateSetConfigurationSection(this, setter).get(path);
+        return new DelegateConfigurationSection(this, setter).get(path);
     }
 
     @Override
     public @Nullable
     Object get(@NotNull final String path, @Nullable final Object def) {
-        return new DelegateSetConfigurationSection(this, setter).get(path, def);
+        return new DelegateConfigurationSection(this, setter).get(path, def);
     }
 
     @Override
     public void set(@NotNull final String path, @Nullable final Object value) {
-        new DelegateSetConfigurationSection(this, setter).set(path, value);
+        new DelegateConfigurationSection(this, setter).set(path, value);
     }
 
     @Override
     public @NotNull
     ConfigurationSection createSection(@NotNull final String path) {
-        return new DelegateSetConfigurationSection(this, setter).createSection(path);
+        return new DelegateConfigurationSection(this, setter).createSection(path);
     }
 
     @Override
     public @NotNull
     ConfigurationSection createSection(@NotNull final String path, @NotNull final Map<?, ?> map) {
-        return new DelegateSetConfigurationSection(this, setter).createSection(path, map);
+        return new DelegateConfigurationSection(this, setter).createSection(path, map);
     }
 
     @Override
     public <T> T getObject(@NotNull final String path, @NotNull final Class<T> clazz) {
-        return new DelegateSetConfigurationSection(this, setter).getObject(path, clazz);
+        return new DelegateConfigurationSection(this, setter).getObject(path, clazz);
     }
 
     @Override
     public <T> T getObject(@NotNull final String path, @NotNull final Class<T> clazz, @Nullable final T def) {
-        return new DelegateSetConfigurationSection(this, setter).getObject(path, clazz, def);
+        return new DelegateConfigurationSection(this, setter).getObject(path, clazz, def);
     }
 
     @Override
     public @Nullable
     ConfigurationSection getConfigurationSection(@NotNull final String path) {
-        return new DelegateSetConfigurationSection(this, setter).getConfigurationSection(path);
+        return new DelegateConfigurationSection(this, setter).getConfigurationSection(path);
     }
 
     @Override
     public @Nullable
     ConfigurationSection getDefaultSection() {
-        return new DelegateSetConfigurationSection(this, setter).getDefaultSection();
+        return new DelegateConfigurationSection(this, setter).getDefaultSection();
     }
 
     @Override
     public void addDefault(@NotNull final String path, @Nullable final Object value) {
-        new DelegateSetConfigurationSection(this, setter).addDefault(path, value);
+        new DelegateConfigurationSection(this, setter).addDefault(path, value);
     }
 
     private void checkAndSet(final @NotNull String path, final @Nullable Object value) {
@@ -200,22 +200,42 @@ public class MultiConfiguration extends MemoryConfiguration implements Configura
         return new UnmodifiableConfigurationSection(unassociatedKeys);
     }
 
-    private class MultiConfigurationSetter implements DelegateSet {
+    private class MultiConfigurationSetter implements DelegateModificationConfiguration {
         @Override
         public void set(@NotNull final ConfigurationSection section, @NotNull final String path, @Nullable final Object value) {
-            final String sectionPath = (section.getCurrentPath() == null || section.getCurrentPath().isEmpty()? "" : section.getCurrentPath() + ".") + path;
+            final String sectionPath = (section.getCurrentPath() == null || section.getCurrentPath().isEmpty() ? "" : section.getCurrentPath() + ".") + path;
             checkAndSet(sectionPath, value);
             section.set(path, value);
         }
 
         @Override
         public ConfigurationSection createSection(@NotNull final ConfigurationSection section, @NotNull final String path) {
-            return new DelegateSetConfigurationSection(MultiConfiguration.super.createSection(section.getCurrentPath() + "." + path), this);
+            return new DelegateConfigurationSection(MultiConfiguration.super.createSection(section.getCurrentPath() + "." + path), this);
         }
 
         @Override
         public ConfigurationSection createSection(@NotNull final ConfigurationSection section, @NotNull final String path, @NotNull final Map<?, ?> map) {
-            return new DelegateSetConfigurationSection(MultiConfiguration.super.createSection(section.getCurrentPath() + "." + path, map), this);
+            return new DelegateConfigurationSection(MultiConfiguration.super.createSection(section.getCurrentPath() + "." + path, map), this);
+        }
+
+        @Override
+        public void addDefault(@NotNull final ConfigurationSection section, @NotNull final String path, @Nullable final Object value) {
+
+        }
+
+        @Override
+        public void addDefaults(@NotNull final Configuration section, @NotNull final Map<String, Object> defaults) {
+
+        }
+
+        @Override
+        public void addDefaults(@NotNull final Configuration section, @NotNull final Configuration defaults) {
+
+        }
+
+        @Override
+        public void setDefaults(@NotNull final Configuration section, @NotNull final Configuration defaults) {
+
         }
     }
 }

@@ -12,6 +12,10 @@ import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This is a test for {@link UnmodifiableConfiguration}.
+ */
+@SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
 public class UnmodifiableConfigurationTest extends AbstractConfigurationTest {
     /**
      * The values in the configuration before the test did run.
