@@ -35,6 +35,7 @@ public interface DelegateModificationConfigurationSection {
      * @param path    The path to the section
      * @return The created section
      */
+    @NotNull
     ConfigurationSection createSection(@NotNull ConfigurationSection section, @NotNull final String path);
 
     /**
@@ -45,5 +46,6 @@ public interface DelegateModificationConfigurationSection {
      * @param map     The values to set
      * @return The created section
      */
+    @NotNull
     ConfigurationSection createSection(@NotNull ConfigurationSection section, @NotNull final String path, @NotNull final Map<?, ?> map);
 }

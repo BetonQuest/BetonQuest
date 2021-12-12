@@ -56,12 +56,14 @@ public class DelegateModificationToConfiguration implements DelegateModification
         section.setDefaults(defaults);
     }
 
+    @NotNull
     @Override
     public ConfigurationSection createSection(@NotNull final ConfigurationSection section, @NotNull final String path) {
         this.section.createSection(getAbsolutePath(section, path));
         return new DelegateConfigurationSection(section.createSection(path), this);
     }
 
+    @NotNull
     @Override
     public ConfigurationSection createSection(@NotNull final ConfigurationSection section, @NotNull final String path, @NotNull final Map<?, ?> map) {
         this.section.createSection(getAbsolutePath(section, path), map);
