@@ -101,7 +101,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `entities` condition and `clear` event now support not living entities
 - mmoitems item creation only worked with uppercase id's
 - fix RPGMenu bound items not always working
-- reload with an invalid PlayerHider coursed NPE 
+- reload with an invalid PlayerHider causes a NPE 
 ### Security
 - it was possible to put a QuestItem into a chest
 - the take event is now threadsafe
