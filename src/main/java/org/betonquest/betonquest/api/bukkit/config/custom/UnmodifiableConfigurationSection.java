@@ -32,7 +32,7 @@ public class UnmodifiableConfigurationSection extends ConfigurationSectionDecora
     @Override
     public @Nullable
     ConfigurationSection getParent() {
-        return new UnmodifiableConfigurationSection(delegate.getParent());
+        return delegate.getParent() == null ? null : new UnmodifiableConfigurationSection(delegate.getParent());
     }
 
     @Override
