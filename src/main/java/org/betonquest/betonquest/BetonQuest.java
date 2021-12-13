@@ -1058,7 +1058,9 @@ public class BetonQuest extends JavaPlugin {
             final Journal journal = playerData.getJournal();
             journal.update();
         }
-        playerHider.stop();
+        if (playerHider != null) {
+            playerHider.stop();
+        }
         try {
             playerHider = new PlayerHider();
         } catch (final InstructionParseException e) {
@@ -1083,8 +1085,9 @@ public class BetonQuest extends JavaPlugin {
         // cancel static events (they are registered outside of Bukkit so it
         // won't happen automatically)
         StaticEvents.stop();
-        playerHider.stop();
-
+        if (playerHider != null) {
+            playerHider.stop();
+        }
 
         // done
         log.info("BetonQuest succesfully disabled!");
