@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - PikaMug Quests updated to version 4.1.3
 ### Deprecated
 ### Removed
-### Fixes
+### Fixed
 ### Security
 
 ## [1.12.7] - 2021-12-11
