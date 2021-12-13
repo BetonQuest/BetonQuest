@@ -266,7 +266,7 @@ public interface ConfigurationSectionTestInterface {
 
     void testGetDefaultSectionOnInvalidConfigPath();
 
-    void testAddDefaultOnChildSection();
+    void testAddDefault();
 
-    void testAddDefaultOnChildSectionOnExistingConfigPath();
+    void testAddDefaultOnExistingConfigPath();
 }
