@@ -53,7 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `playsound` event
 - more deprecated stuff
 - Support for MMOLib
-### Fixes
+### Fixed
 - parsing of math variable
 - `npcrange` objective is triggered at wrong time
 - Citizens compatibility for not spawned NPCs
