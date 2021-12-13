@@ -38,7 +38,7 @@ public class DelegateConfigurationSection extends ConfigurationSectionDecorator 
     @Override
     public @Nullable
     ConfigurationSection getParent() {
-        return new DelegateConfigurationSection(delegate.getParent(), setter);
+        return delegate.getParent() == null ? null : new DelegateConfigurationSection(delegate.getParent(), setter);
     }
 
     @Override

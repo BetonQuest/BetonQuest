@@ -70,8 +70,8 @@ public class UnmodifiableConfigurationSectionTest extends AbstractConfigurationS
 
     @Test
     @Override
-    public void testAddDefaultOnChildSection() {
-        assertThrowsUnmodifiableException(super::testAddDefaultOnChildSection);
+    public void testAddDefault() {
+        assertThrowsUnmodifiableException(super::testAddDefault);
     }
 
     @Test
@@ -100,8 +100,8 @@ public class UnmodifiableConfigurationSectionTest extends AbstractConfigurationS
 
     @Test
     @Override
-    public void testAddDefaultOnChildSectionOnExistingConfigPath() {
-        assertThrowsUnmodifiableException(super::testAddDefaultOnChildSectionOnExistingConfigPath);
+    public void testAddDefaultOnExistingConfigPath() {
+        assertThrowsUnmodifiableException(super::testAddDefaultOnExistingConfigPath);
     }
 
     @Test

@@ -60,15 +60,15 @@ public class DelegateConfigurationSectionToConfigurationTest extends AbstractCon
 
     @Test
     @Override
-    public void testAddDefaultOnChildSection() {
-        super.testAddDefaultOnChildSection();
+    public void testAddDefault() {
+        super.testAddDefault();
         config.addDefault("default", null);
     }
 
     @Test
     @Override
-    public void testAddDefaultOnChildSectionOnExistingConfigPath() {
-        super.testAddDefaultOnChildSection();
+    public void testAddDefaultOnExistingConfigPath() {
+        super.testAddDefaultOnExistingConfigPath();
         config.addDefault("default", null);
     }
 
