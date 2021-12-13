@@ -42,7 +42,7 @@ echo ""
 echo "Update version and changelog..."
 sed -i "s~<version>${MAVEN_VERSION}</version>~<version>${NEXT_VERSION}</version>~g" pom.xml
 DATE=$(date +%Y-%m-%d)
-NEW_CHANGELOG="## \[Unreleased\] - \${current-date}\n### Added\n### Changed\n### Deprecated\n### Removed\n### Fixes\n### Security\n"
+NEW_CHANGELOG="## \[Unreleased\] - \${current-date}\n### Added\n### Changed\n### Deprecated\n### Removed\n### Fixed\n### Security\n"
 sed -i "s~## \[Unreleased\] - \${current-date}~${NEW_CHANGELOG}\n## \[${MAVEN_VERSION}\] - ${DATE}~g" CHANGELOG.md
 echo "Version and changelog updated."
 
