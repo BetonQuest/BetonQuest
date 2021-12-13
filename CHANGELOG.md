@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated
 ### Removed
 ### Fixed
+- reload with an invalid PlayerHider causes a NPE
 ### Security
 
 ## [1.12.7] - 2021-12-11
