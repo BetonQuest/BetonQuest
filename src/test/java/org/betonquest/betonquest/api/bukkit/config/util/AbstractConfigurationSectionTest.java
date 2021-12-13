@@ -50,7 +50,11 @@ public class AbstractConfigurationSectionTest extends AbstractConfigBaseTest<Con
 
     @Test
     @Override
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     public void testGetKeysDeepFalse() {
+        assertEquals("[childSection, get, existingSet, string, integer, boolean, double, long, list, stringList, integerList, booleanList, doubleList, characterList, mapList, object, vector, color, section, location, item, offlinePlayer]",
+                config.getKeys(false).toString());
+
         final ConfigurationSection section = config.getConfigurationSection("childSection");
         assertNotNull(section);
         assertEquals(new HashSet<>(Collections.singletonList("nestedChildSection")), section.getKeys(false));
@@ -58,7 +62,11 @@ public class AbstractConfigurationSectionTest extends AbstractConfigBaseTest<Con
 
     @Test
     @Override
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     public void testGetKeysDeepTrue() {
+        assertEquals("[childSection, childSection.nestedChildSection, childSection.nestedChildSection.key, get, existingSet, string, integer, boolean, double, long, list, stringList, integerList, booleanList, doubleList, characterList, mapList, object, vector, color, section, section.key, location, item, offlinePlayer]",
+                config.getKeys(true).toString());
+
         final ConfigurationSection section = config.getConfigurationSection("childSection");
         assertNotNull(section);
         assertEquals(new HashSet<>(Arrays.asList("nestedChildSection", "nestedChildSection.key")), section.getKeys(true));
@@ -167,7 +175,9 @@ public class AbstractConfigurationSectionTest extends AbstractConfigBaseTest<Con
 
     @Test
     @Override
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     public void testGetCurrentPath() {
+        assertEquals("", config.getCurrentPath());
         final ConfigurationSection nestedChild = config.getConfigurationSection("childSection.nestedChildSection");
         assertNotNull(nestedChild);
         assertEquals("childSection.nestedChildSection", nestedChild.getCurrentPath());
@@ -175,7 +185,9 @@ public class AbstractConfigurationSectionTest extends AbstractConfigBaseTest<Con
 
     @Test
     @Override
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     public void testGetName() {
+        assertEquals("", config.getName());
         final ConfigurationSection nestedChild = config.getConfigurationSection("childSection.nestedChildSection");
         assertNotNull(nestedChild);
         assertEquals("nestedChildSection", nestedChild.getName());
@@ -185,7 +197,10 @@ public class AbstractConfigurationSectionTest extends AbstractConfigBaseTest<Con
     @Override
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     public void testGetRoot() {
-        assertNotNull(config);
+        final ConfigurationSection root = config.getRoot();
+        assertNotNull(root);
+        assertEquals(config.getValues(true), root.getValues(true));
+
         final ConfigurationSection nestedChild = config.getConfigurationSection("childSection.nestedChildSection");
         assertNotNull(nestedChild);
         final ConfigurationSection nestedChildRoot = nestedChild.getRoot();
@@ -197,6 +212,8 @@ public class AbstractConfigurationSectionTest extends AbstractConfigBaseTest<Con
     @Override
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     public void testGetParent() {
+        assertNull(config.getParent());
+
         final ConfigurationSection nestedChild = config.getConfigurationSection("childSection.nestedChildSection");
         assertNotNull(nestedChild);
         final ConfigurationSection nestedChildParent = nestedChild.getParent();
@@ -946,25 +963,17 @@ public class AbstractConfigurationSectionTest extends AbstractConfigBaseTest<Con
     @Test
     @Override
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
-    public void testAddDefaultOnChildSection() {
-        final ConfigurationSection section = config.getDefaultSection();
-        assertNotNull(section);
-        final ConfigurationSection defaultSection = section.getConfigurationSection("default");
-        assertNotNull(defaultSection);
-        defaultSection.addDefault("add", "value");
+    public void testAddDefault() {
+        config.addDefault("default.add", "value");
         assertEquals("value", config.getString("default.add"));
     }
 
     @Test
     @Override
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
-    public void testAddDefaultOnChildSectionOnExistingConfigPath() {
-        final ConfigurationSection section = config.getDefaultSection();
-        assertNotNull(section);
-        final ConfigurationSection defaultSection = section.getConfigurationSection("default");
-        assertNotNull(defaultSection);
-        defaultSection.addDefault("override", "first");
-        defaultSection.addDefault("override", "second");
+    public void testAddDefaultOnExistingConfigPath() {
+        config.addDefault("default.override", "first");
+        config.addDefault("default.override", "second");
         assertEquals("second", config.getString("default.override"));
     }
 
