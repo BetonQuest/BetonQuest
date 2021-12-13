@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 ### Fixed
 - reload with an invalid PlayerHider causes a NPE
+- QuestItems could be eaten, this was caused by a change mc behaviour
 ### Security
 
 ## [1.12.7] - 2021-12-11
