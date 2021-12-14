@@ -470,6 +470,17 @@ Optional arguments:
     `eventName: {=='==}command /enchant_@s_minecraft:aqua_affinity{=='==}` :arrow_right: `eventName: {=='==}command /enchant_@s_minecraft:aqua{++\++}_affinity{=='==}`<br>
     `eventName: {=="==}command /enchant_@s_minecraft:aqua_affinity{=="==}` :arrow_right: `eventName: {=="==}command /enchant_@s_minecraft:aqua{++\\++}_affinity{=="==}`<br>
 
+## Equip Item: `equip`
+
+To complete this objective player must wear a spesific item. The first argument is slot inventory `helmet,armor,pants,boots`. 
+The second argument must be the internal name of an item defined in `items.yml`.
+
+!!! example
+  ```YAML
+  equip helmet amazing_helmet events:event1,event2
+  equip armor amazing_armor events:event1,event2
+  ```
+
 ## Variable: `variable`
 
 This objective is different. You cannot complete it, it will also ignore defined events and conditions. You can start it and that's it.

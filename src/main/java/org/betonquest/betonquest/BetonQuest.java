@@ -165,6 +165,7 @@ import org.betonquest.betonquest.objectives.DelayObjective;
 import org.betonquest.betonquest.objectives.DieObjective;
 import org.betonquest.betonquest.objectives.EnchantObjective;
 import org.betonquest.betonquest.objectives.EntityInteractObjective;
+import org.betonquest.betonquest.objectives.EquipItemObjective;
 import org.betonquest.betonquest.objectives.ExperienceObjective;
 import org.betonquest.betonquest.objectives.FishObjective;
 import org.betonquest.betonquest.objectives.JumpObjective;
@@ -757,6 +758,7 @@ public class BetonQuest extends JavaPlugin {
         registerObjectives("command", CommandObjective.class);
         if (PaperLib.isPaper()) {
             registerObjectives("jump", JumpObjective.class);
+            registerObjectives("equip", EquipItemObjective.class);
         }
 
         // register conversation IO types
