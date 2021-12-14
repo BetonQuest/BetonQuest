@@ -412,6 +412,8 @@ message each time the player advances the objective, optionally with the notific
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of jumps already done,
 `left` is the amount of jumps still needed and `total` is the amount of jumps initially required.
 
+NOTE: THIS OBJECTIVE CAN ONLY BE USED WITH SERVER THAT USE PAPER
+
 !!! example
     ```YAML
     jump 15 events:legExerciseDone
@@ -474,6 +476,8 @@ Optional arguments:
 
 To complete this objective player must wear a spesific item. The first argument is slot inventory `helmet,armor,pants,boots`. 
 The second argument must be the internal name of an item defined in `items.yml`.
+
+NOTE: THIS OBJECTIVE CAN ONLY BE USED WITH SERVER THAT USE PAPER
 
 !!! example
   ```YAML
