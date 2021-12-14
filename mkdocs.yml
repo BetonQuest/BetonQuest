@@ -14,6 +14,7 @@ extra_css:
   - '_webCode/css/centered.css'
   - '_webCode/css/contentAreaFullWidth.css'
   - '_webCode/css/superFences.css'
+  - '_webCode/css/coloredIcons.css'
 
 extra_javascript:
   - '_webCode/js/copyLinkToClipboard.js'
