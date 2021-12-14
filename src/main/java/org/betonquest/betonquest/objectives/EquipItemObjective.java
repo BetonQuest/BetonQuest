@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.objectives;
 
 import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent;
+import org.apache.commons.lang3.EnumUtils;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
@@ -25,32 +26,11 @@ public class EquipItemObjective extends Objective implements Listener {
         final String slot = instruction.next();
         questItems = instruction.getQuestItem();
 
-        switch (slot.toLowerCase(Locale.ROOT)){
-            case "cap":
-            case "helm":
-            case "helmet":
-            case "hat":
-            case "head":
-                slotType = PlayerArmorChangeEvent.SlotType.HEAD;
-                break;
-            case "armor":
-            case "chest":
-            case "chestplate":
-                slotType = PlayerArmorChangeEvent.SlotType.CHEST;
-                break;
-            case "leggings":
-            case "pants":
-            case "legs":
-                slotType = PlayerArmorChangeEvent.SlotType.LEGS;
-                break;
-            case "boots":
-            case "shoes":
-            case "feet":
-                slotType = PlayerArmorChangeEvent.SlotType.FEET;
-                break;
-            default:
-                throw new InstructionParseException("Slot " + slot + " is Invalid Please Use Valid Slot {HEAD, CHEST, LEGS, FEET}");
+        if(!EnumUtils.isValidEnum(PlayerArmorChangeEvent.SlotType.class, slot)){
+            throw new InstructionParseException("Slot " + slot + " is Invalid Please Use Valid Slot {HEAD, CHEST, LEGS, FEET}");
         }
+
+        slotType = PlayerArmorChangeEvent.SlotType.valueOf(slot.toUpperCase(Locale.ROOT));
     }
 
     @Override
@@ -61,10 +41,10 @@ public class EquipItemObjective extends Objective implements Listener {
     @EventHandler
     public void onEquipmentChange(final PlayerArmorChangeEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
-        if (event.getSlotType() == slotType
+        if (containsPlayer(playerID)
+                && event.getSlotType() == slotType
                 && questItems.compare(event.getNewItem())
-                && checkConditions(playerID)
-                && containsPlayer(playerID)) {
+                && checkConditions(playerID)) {
                 completeObjective(playerID);
         }
     }

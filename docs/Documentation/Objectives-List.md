@@ -474,15 +474,15 @@ Optional arguments:
 
 ## Equip Item: `equip`
 
-To complete this objective player must wear a spesific item. The first argument is slot inventory `helmet,armor,pants,boots`. 
+To complete this objective player must wear a spesific item. The first argument is slot inventory `HEAD, CHEST, LEGS, FEET`. 
 The second argument must be the internal name of an item defined in `items.yml`.
 
 NOTE: THIS OBJECTIVE CAN ONLY BE USED WITH SERVER THAT USE PAPER
 
 !!! example
   ```YAML
-  equip helmet amazing_helmet events:event1,event2
-  equip armor amazing_armor events:event1,event2
+  equip HEAD amazing_helmet events:event1,event2
+  equip CHEST amazing_armor events:event1,event2
   ```
 
 ## Variable: `variable`
