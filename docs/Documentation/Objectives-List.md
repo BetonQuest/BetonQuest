@@ -404,9 +404,10 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
     ```
    
 
-## Jump!: `jump`
+## Player must Jump: `jump`
+**:fontawesome-solid-tasks:{.task} Objective  ·  :fontawesome-solid-paper-plane: Requires [Paper](https://papermc.io)**
 
-To complete this objective player must jump. The only argument is amount. You can use the `notify` keyword to display a
+To complete this objective the player must jump. The only argument is amount. You can use the `notify` keyword to display a
 message each time the player advances the objective, optionally with the notification interval after a colon.
 
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of jumps already done,
@@ -469,6 +470,18 @@ Optional arguments:
     `eventName: command /enchant_@s_minecraft:aqua_affinity` :arrow_right: `eventName:command /enchant_@s_minecraft:aqua{++\++}_affinity`<br>
     `eventName: {=='==}command /enchant_@s_minecraft:aqua_affinity{=='==}` :arrow_right: `eventName: {=='==}command /enchant_@s_minecraft:aqua{++\++}_affinity{=='==}`<br>
     `eventName: {=="==}command /enchant_@s_minecraft:aqua_affinity{=="==}` :arrow_right: `eventName: {=="==}command /enchant_@s_minecraft:aqua{++\\++}_affinity{=="==}`<br>
+
+## Equip Armor Item: `equip`
+**:fontawesome-solid-tasks:{.task} Objective  ·  :fontawesome-solid-paper-plane: Requires [Paper](https://papermc.io)**
+
+The player must equip the specified quest item in the specified slot.
+The item must be any quest item as defined in _items.yml_.
+Available slot types: `HEAD`, `CHEST`, `LEGS`, `FEET`.
+
+```YAML
+equip HEAD amazing_helmet events:event1,event2
+equip CHEST amazing_armor events:event1,event2
+```
 
 ## Variable: `variable`
 

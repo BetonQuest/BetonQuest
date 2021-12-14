@@ -37,6 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ProtocolLib compatibility feature: `freeze` event. Blocks the player from moving for the specified amount of ticks.
 - added CommandObjective
 - API method in objective API that starts and stops it per player
+- added EquipItemObjective
 ### Changed
 - math variable now allows rounding output with the ~ operator
 - changed package names from `pl.betoncraft.betonquest` to `org.betonquest.betonquest`
