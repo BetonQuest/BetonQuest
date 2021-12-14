@@ -412,12 +412,13 @@ message each time the player advances the objective, optionally with the notific
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of jumps already done,
 `left` is the amount of jumps still needed and `total` is the amount of jumps initially required.
 
-NOTE: THIS OBJECTIVE CAN ONLY BE USED WITH SERVER THAT USE PAPER
-
 !!! example
     ```YAML
     jump 15 events:legExerciseDone
     ```
+
+!!! warning
+    THIS OBJECTIVE CAN ONLY BE USED WITH SERVER THAT USE PAPER
 
 ## Ride an entity: `ride`
 
@@ -480,10 +481,13 @@ The second argument must be the internal name of an item defined in `items.yml`.
 NOTE: THIS OBJECTIVE CAN ONLY BE USED WITH SERVER THAT USE PAPER
 
 !!! example
-  ```YAML
-  equip HEAD amazing_helmet events:event1,event2
-  equip CHEST amazing_armor events:event1,event2
-  ```
+    ```YAML
+    equip HEAD amazing_helmet events:event1,event2
+    equip CHEST amazing_armor events:event1,event2
+    ```
+
+!!! warning
+    THIS OBJECTIVE CAN ONLY BE USED WITH SERVER THAT USE PAPER
 
 ## Variable: `variable`
 
