@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.bukkit.config.util.ConfigurationSectionBase
 import org.bukkit.configuration.ConfigurationSection;
 
 /**
- * This is a test for {@link ConfigurationSectionDecoratorTest}.
+ * This is a test for the {@link ConfigurationSectionDecorator}.
  */
 public class ConfigurationSectionDecoratorTest extends ConfigurationSectionBaseTest {
 
