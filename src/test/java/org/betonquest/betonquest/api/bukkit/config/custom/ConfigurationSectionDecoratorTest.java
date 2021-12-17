@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.api.bukkit.config.custom;
 
-import org.betonquest.betonquest.api.bukkit.config.util.AbstractConfigurationSectionTest;
+import org.betonquest.betonquest.api.bukkit.config.util.ConfigurationSectionBaseTest;
 import org.bukkit.configuration.ConfigurationSection;
 
 /**
  * This is a test for {@link ConfigurationSectionDecoratorTest}.
  */
-public class ConfigurationSectionDecoratorTest extends AbstractConfigurationSectionTest {
+public class ConfigurationSectionDecoratorTest extends ConfigurationSectionBaseTest {
 
     /**
      * Empty constructor
