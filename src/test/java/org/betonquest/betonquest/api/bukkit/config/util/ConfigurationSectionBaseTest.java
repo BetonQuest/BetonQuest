@@ -6,11 +6,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -18,10 +15,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,13 +28,15 @@ import static org.junit.jupiter.api.Assertions.*;
  * <p>
  * This class can then be used to test custom implementations of {@link ConfigurationSection}.
  * You than only need to override methods, that have a different behaviour.
+ * <p>
+ * This test should only fail if the Bukkit API behaviour has changed.
  */
 @SuppressWarnings({"PMD.GodClass", "PMD.JUnitAssertionsShouldIncludeMessage", "PMD.AvoidDuplicateLiterals"})
-public class AbstractConfigurationSectionTest extends AbstractConfigBaseTest<ConfigurationSection> implements ConfigurationSectionTestInterface {
+public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<ConfigurationSection> implements ConfigurationSectionTestInterface {
     /**
      * Empty constructor
      */
-    public AbstractConfigurationSectionTest() {
+    public ConfigurationSectionBaseTest() {
         super();
     }
 
@@ -975,93 +972,5 @@ public class AbstractConfigurationSectionTest extends AbstractConfigBaseTest<Con
         config.addDefault("default.override", "first");
         config.addDefault("default.override", "second");
         assertEquals("second", config.getString("default.override"));
-    }
-
-    /**
-     * A fake {@link OfflinePlayer} that add a method for deserialization.
-     */
-    public interface FakeOfflinePlayer extends OfflinePlayer {
-        /**
-         * Method to deserialize a {@link OfflinePlayer}.
-         * This will call the {@link Bukkit#getOfflinePlayer(UUID)} method.
-         * Therefore, this is only for the method {@link ConfigurationSerialization#registerClass(Class, String)}.
-         *
-         * @param args The map of arguments
-         * @return The returned {@link OfflinePlayer} from {@link Bukkit#getOfflinePlayer(UUID)}
-         */
-        @SuppressWarnings("unused")
-        static OfflinePlayer deserialize(final Map<String, Object> args) {
-            return Bukkit.getOfflinePlayer(UUID.fromString((String) args.get("UUID")));
-        }
-    }
-
-    /**
-     * This is a {@link TestObject} for the related {@link ConfigurationSection} methods.
-     */
-    public static class TestObject implements ConfigurationSerializable {
-        /**
-         * The pseudo name
-         */
-        public final String name;
-        /**
-         * The pseudo amount
-         */
-        public final int amount;
-        /**
-         * The pseudo sum
-         */
-        public final long sum;
-
-        /**
-         * Create a new {@link TestObject}
-         *
-         * @param name   The pseudo name
-         * @param amount The pseudo amount
-         * @param sum    The pseudo sum
-         */
-        public TestObject(final String name, final int amount, final long sum) {
-            this.name = name;
-            this.amount = amount;
-            this.sum = sum;
-        }
-
-        /**
-         * Method to deserialize a {@link TestObject}.
-         *
-         * @param args The map of arguments
-         * @return The created {@link TestObject}
-         */
-        @NotNull
-        @SuppressWarnings("unused")
-        public static TestObject deserialize(@NotNull final Map<String, Object> args) {
-            return new TestObject((String) args.get("name"), (int) args.get("amount"), (int) args.get("sum"));
-        }
-
-        @Override
-        public @NotNull
-        Map<String, Object> serialize() {
-            final Map<String, Object> map = new LinkedHashMap<>();
-            map.put("name", name);
-            map.put("amount", amount);
-            map.put("sum", sum);
-            return map;
-        }
-
-        @Override
-        public boolean equals(final Object obj) {
-            if (this == obj) {
-                return true;
-            }
-            if (obj == null || getClass() != obj.getClass()) {
-                return false;
-            }
-            final TestObject that = (TestObject) obj;
-            return amount == that.amount && sum == that.sum && Objects.equals(name, that.name);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(name, amount, sum);
-        }
     }
 }
