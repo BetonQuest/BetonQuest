@@ -1,7 +1,7 @@
-package org.betonquest.betonquest.api.bukkit.config.util;
+package org.betonquest.betonquest.api.bukkit.config.custom.handler.util;
 
-import org.betonquest.betonquest.api.bukkit.config.custom.DelegateConfigurationSection;
-import org.betonquest.betonquest.api.bukkit.config.custom.DelegateModificationConfiguration;
+import org.betonquest.betonquest.api.bukkit.config.custom.handler.ConfigurationModificationHandler;
+import org.betonquest.betonquest.api.bukkit.config.custom.handler.HandleModificationConfigurationSection;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -11,9 +11,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 
 /**
- * Delegate all modifications to another {@link Configuration}.
+ * Handles all modifications to another {@link Configuration}.
  */
-public class DelegateModificationToConfiguration implements DelegateModificationConfiguration {
+public class HandleModificationToConfiguration implements ConfigurationModificationHandler {
     /**
      * The {@link Configuration} where to store all modifications in.
      */
@@ -22,7 +22,7 @@ public class DelegateModificationToConfiguration implements DelegateModification
     /**
      * Empty constructor
      */
-    public DelegateModificationToConfiguration() {
+    public HandleModificationToConfiguration() {
         section = new MemoryConfiguration();
     }
 
@@ -60,14 +60,14 @@ public class DelegateModificationToConfiguration implements DelegateModification
     @Override
     public ConfigurationSection createSection(@NotNull final ConfigurationSection section, @NotNull final String path) {
         this.section.createSection(getAbsolutePath(section, path));
-        return new DelegateConfigurationSection(section.createSection(path), this);
+        return new HandleModificationConfigurationSection(section.createSection(path), this);
     }
 
     @NotNull
     @Override
     public ConfigurationSection createSection(@NotNull final ConfigurationSection section, @NotNull final String path, @NotNull final Map<?, ?> map) {
         this.section.createSection(getAbsolutePath(section, path), map);
-        return new DelegateConfigurationSection(section.createSection(path, map), this);
+        return new HandleModificationConfigurationSection(section.createSection(path, map), this);
     }
 
     private String getAbsolutePath(final ConfigurationSection section, final String path) {
