@@ -1,7 +1,7 @@
-package org.betonquest.betonquest.api.bukkit.config.custom;
+package org.betonquest.betonquest.api.bukkit.config.custom.handler;
 
-import org.betonquest.betonquest.api.bukkit.config.util.AbstractConfigurationTest;
-import org.betonquest.betonquest.api.bukkit.config.util.DelegateModificationToConfiguration;
+import org.betonquest.betonquest.api.bukkit.config.custom.handler.util.HandleModificationToConfiguration;
+import org.betonquest.betonquest.api.bukkit.config.util.ConfigurationBaseTest;
 import org.bukkit.configuration.Configuration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -9,26 +9,26 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This is a test for {@link DelegateConfiguration}.
+ * This is a test for {@link HandleModificationConfiguration}.
  */
 @SuppressWarnings({"PMD.JUnitTestsShouldIncludeAssert", "PMD.AvoidDuplicateLiterals", "PMD.JUnitAssertionsShouldIncludeMessage"})
-public class DelegateConfigurationToConfigurationTest extends AbstractConfigurationTest {
+public class HandleModificationConfigurationTest extends ConfigurationBaseTest {
     /**
      * The instance of the setter.
      */
-    private DelegateModificationToConfiguration setter;
+    private HandleModificationToConfiguration setter;
 
     /**
      * Empty constructor
      */
-    public DelegateConfigurationToConfigurationTest() {
+    public HandleModificationConfigurationTest() {
         super();
     }
 
     @Override
     public Configuration getConfig() {
-        setter = new DelegateModificationToConfiguration();
-        return new DelegateConfiguration(super.getDefaultConfig(), setter);
+        setter = new HandleModificationToConfiguration();
+        return new HandleModificationConfiguration(super.getDefaultConfig(), setter);
     }
 
     /**

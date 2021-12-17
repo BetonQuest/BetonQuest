@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api.bukkit.config.custom;
+package org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable;
 
 import org.bukkit.configuration.ConfigurationSection;
 

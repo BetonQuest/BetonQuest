@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api.bukkit.config.custom;
+package org.betonquest.betonquest.api.bukkit.config.custom.handler;
 
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
@@ -8,11 +8,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 
 /**
- * This delegator is called for all set operations in a {@link Configuration}.
+ * This handler is called for all modification operations in a {@link Configuration}.
  */
-public interface DelegateModificationConfiguration extends DelegateModificationConfigurationSection {
+public interface ConfigurationModificationHandler extends ConfigurationSectionModificationHandler {
     /**
-     * Delegate the {@link Configuration#addDefault(String, Object)} method.
+     * Handles the {@link Configuration#addDefault(String, Object)} method.
      *
      * @param section The {@link Configuration} from which the method was called
      * @param path    The path of the value
@@ -22,7 +22,7 @@ public interface DelegateModificationConfiguration extends DelegateModificationC
     void addDefault(@NotNull ConfigurationSection section, @NotNull String path, @Nullable Object value);
 
     /**
-     * Delegate the {@link Configuration#addDefaults(Map)} method.
+     * Handles the {@link Configuration#addDefaults(Map)} method.
      *
      * @param section  The {@link Configuration} from which the method was called
      * @param defaults The values to add
@@ -30,7 +30,7 @@ public interface DelegateModificationConfiguration extends DelegateModificationC
     void addDefaults(@NotNull Configuration section, @NotNull Map<String, Object> defaults);
 
     /**
-     * Delegate the {@link Configuration#addDefaults(Configuration)} method.
+     * Handles the {@link Configuration#addDefaults(Configuration)} method.
      *
      * @param section  The {@link Configuration} from which the method was called
      * @param defaults The values to add
@@ -38,7 +38,7 @@ public interface DelegateModificationConfiguration extends DelegateModificationC
     void addDefaults(@NotNull Configuration section, @NotNull Configuration defaults);
 
     /**
-     * Delegate the {@link Configuration#setDefaults(Configuration)} method.
+     * Handles the {@link Configuration#setDefaults(Configuration)} method.
      *
      * @param section  The {@link Configuration} from which the method was called
      * @param defaults The values to set
