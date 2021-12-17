@@ -38,7 +38,7 @@ mapList:
   - three: 3
     four: 4
 object:
-  ==: org.betonquest.betonquest.api.bukkit.config.util.AbstractConfigurationSectionTest$TestObject
+  ==: org.betonquest.betonquest.api.bukkit.config.util.AbstractConfigBaseTest$TestObject
   name: Test
   amount: 5
   sum: 555

@@ -1,5 +1,6 @@
-package org.betonquest.betonquest.api.bukkit.config.custom;
+package org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable;
 
+import org.betonquest.betonquest.api.bukkit.config.custom.ConfigurationSectionDecorator;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationOptions;
 import org.bukkit.configuration.ConfigurationSection;
@@ -13,17 +14,18 @@ import java.util.Map;
  */
 public class UnmodifiableConfiguration extends UnmodifiableConfigurationSection implements Configuration {
     /**
-     * The {@link ConfigurationSectionDecorator#delegate} but as {@link Configuration}.
+     * The {@link ConfigurationSectionDecorator#original} but as {@link Configuration}.
      */
-    protected final Configuration delegate;
+    protected final Configuration original;
 
     /**
-     * Create a new unmodifiable instance.
-     * @param delegate The original {@link ConfigurationSection} that should be unmodifiable.
+     * Creates a new unmodifiable instance.
+     *
+     * @param original The original {@link ConfigurationSection} that should be unmodifiable.
      */
-    public UnmodifiableConfiguration(final Configuration delegate) {
-        super(delegate);
-        this.delegate = delegate;
+    public UnmodifiableConfiguration(final Configuration original) {
+        super(original);
+        this.original = original;
     }
 
     @Override
@@ -39,7 +41,7 @@ public class UnmodifiableConfiguration extends UnmodifiableConfigurationSection 
     @Override
     public @Nullable
     Configuration getDefaults() {
-        return new UnmodifiableConfiguration(delegate.getDefaults());
+        return new UnmodifiableConfiguration(original.getDefaults());
     }
 
     @Override

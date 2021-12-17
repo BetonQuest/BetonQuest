@@ -16,13 +16,15 @@ import static org.junit.jupiter.api.Assertions.*;
  * <p>
  * This class can then be used to test custom implementations of {@link Configuration}.
  * You than only need to override methods, that have a different behaviour.
+ * <p>
+ * This test should only fail if the Bukkit API behaviour has changed.
  */
 @SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.AvoidDuplicateLiterals"})
-public class AbstractConfigurationTest extends AbstractConfigBaseTest<Configuration> implements ConfigurationTestInterface {
+public class ConfigurationBaseTest extends AbstractConfigBaseTest<Configuration> implements ConfigurationTestInterface {
     /**
      * Empty constructor
      */
-    public AbstractConfigurationTest() {
+    public ConfigurationBaseTest() {
         super();
     }
 
