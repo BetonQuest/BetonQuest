@@ -13,16 +13,17 @@ import java.util.Objects;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This is a test for {@link UnmodifiableConfigurationSection}.
+ * This is a test for the {@link UnmodifiableConfigurationSection}.
  */
 @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
 public class UnmodifiableConfigurationSectionTest extends ConfigurationSectionBaseTest {
+
     /**
-     * The values in the configuration before the test did run.
+     * The values in the configuration before the test was run.
      */
     private Map<String, Object> values;
     /**
-     * The values of the default section in the configuration before the test did run.
+     * The values of the default section in the configuration before the test was run.
      */
     private Map<String, Object> valuesDefault;
 
@@ -39,7 +40,7 @@ public class UnmodifiableConfigurationSectionTest extends ConfigurationSectionBa
     }
 
     /**
-     * Get a copy of the values in the config, before the test did run.
+     * Get a copy of the values in the config, before the test runs.
      */
     @BeforeEach
     public void beforeEach() {

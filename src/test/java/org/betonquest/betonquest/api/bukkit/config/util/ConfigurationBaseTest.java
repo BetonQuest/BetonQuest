@@ -10,14 +10,12 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This class is an abstract implementation.
- * It tests all methods in the {@link Configuration} interface.
- * It mainly tries to test the behaviour of the methods, so that they work as expected.
+ * This class tests all methods in the {@link Configuration} interface.
+ * Additionally, the behaviour of the {@link MemoryConfiguration} is verified.
+ * Therefore, this test should fail if the behaviour of the Bukkit API has changed.
  * <p>
- * This class can then be used to test custom implementations of {@link Configuration}.
- * You than only need to override methods, that have a different behaviour.
- * <p>
- * This test should only fail if the Bukkit API behaviour has changed.
+ * This class can be used to test custom implementations of {@link Configuration}.
+ * You only need to override methods with behaviours that differ from the default one.
  */
 @SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.AvoidDuplicateLiterals"})
 public class ConfigurationBaseTest extends AbstractConfigBaseTest<Configuration> implements ConfigurationTestInterface {
