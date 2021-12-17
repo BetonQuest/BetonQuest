@@ -9,8 +9,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 
 /**
- * This is an extension of {@link ConfigurationSectionDecorator},
- * that handles the {@link ConfigurationSection} methods that modify something.
+ * This is an extension of the {@link ConfigurationSectionDecorator},
+ * that handles all {@link ConfigurationSection} methods that do modifications.
  */
 public class HandleModificationConfigurationSection extends ConfigurationSectionDecorator {
 
