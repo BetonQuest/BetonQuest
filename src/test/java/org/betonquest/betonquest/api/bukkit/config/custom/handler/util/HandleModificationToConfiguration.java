@@ -11,11 +11,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 
 /**
- * Handles all modifications to another {@link Configuration}.
+ * Copies all modifications to the target {@link Configuration} to another Configuration.
  */
 public class HandleModificationToConfiguration implements ConfigurationModificationHandler {
+
     /**
-     * The {@link Configuration} where to store all modifications in.
+     * The {@link Configuration} that stores all modifications.
      */
     private final Configuration section;
 

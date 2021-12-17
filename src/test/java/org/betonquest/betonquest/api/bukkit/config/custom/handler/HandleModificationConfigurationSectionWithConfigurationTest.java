@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.bukkit.config.custom.handler.util.HandleMod
 import org.bukkit.configuration.ConfigurationSection;
 
 /**
- * This is a test for {@link HandleModificationConfigurationSection} as a {@link ConfigurationSection}.
+ * This is a test for the {@link HandleModificationConfigurationSection} as a {@link ConfigurationSection}.
  */
 public class HandleModificationConfigurationSectionWithConfigurationTest extends HandleModificationConfigurationSectionTest {
     /**

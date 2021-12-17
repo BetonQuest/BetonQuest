@@ -10,10 +10,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This is a test for {@link HandleModificationConfigurationSection}.
+ * This is a test for the {@link HandleModificationConfigurationSection}.
  */
 @SuppressWarnings({"PMD.JUnitTestsShouldIncludeAssert", "PMD.JUnitAssertionsShouldIncludeMessage"})
 public class HandleModificationConfigurationSectionTest extends ConfigurationSectionBaseTest {
+
     /**
      * The instance of the setter.
      */
@@ -33,7 +34,8 @@ public class HandleModificationConfigurationSectionTest extends ConfigurationSec
     }
 
     /**
-     * The test should not have any entries in the setters do to modifications.
+     * The test is supposed to roll back all changes made to the setter.
+     * Therefore, it must be empty after each test.
      */
     @AfterEach
     public void afterEach() {
