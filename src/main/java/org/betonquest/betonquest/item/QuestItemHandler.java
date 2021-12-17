@@ -242,16 +242,8 @@ public class QuestItemHandler implements Listener {
             return;
         }
         final ItemStack item = event.getItem();
-        if (item == null) {
-            return;
-        }
-
-        if (!EnchantmentTarget.TOOL.includes(item.getType())) {
-            final String playerID = PlayerConverter.getID(event.getPlayer());
-            if (Journal.isJournal(playerID, item) || Utils.isQuestItem(item)) {
-                event.setCancelled(true);
-            }
-
+        if (item != null && !EnchantmentTarget.TOOL.includes(item.getType()) && Utils.isQuestItem(item)) {
+            event.setCancelled(true);
         }
     }
 
