@@ -1,6 +1,6 @@
-package org.betonquest.betonquest.api.bukkit.config.custom;
+package org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable;
 
-import org.betonquest.betonquest.api.bukkit.config.util.AbstractConfigurationSectionTest;
+import org.betonquest.betonquest.api.bukkit.config.util.ConfigurationSectionBaseTest;
 import org.bukkit.configuration.ConfigurationSection;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * This is a test for {@link UnmodifiableConfigurationSection}.
  */
 @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
-public class UnmodifiableConfigurationSectionTest extends AbstractConfigurationSectionTest {
+public class UnmodifiableConfigurationSectionTest extends ConfigurationSectionBaseTest {
     /**
      * The values in the configuration before the test did run.
      */

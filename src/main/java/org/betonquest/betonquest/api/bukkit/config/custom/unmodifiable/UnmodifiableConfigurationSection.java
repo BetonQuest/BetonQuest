@@ -1,5 +1,6 @@
-package org.betonquest.betonquest.api.bukkit.config.custom;
+package org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable;
 
+import org.betonquest.betonquest.api.bukkit.config.custom.ConfigurationSectionDecorator;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
@@ -15,36 +16,36 @@ import java.util.Map;
 public class UnmodifiableConfigurationSection extends ConfigurationSectionDecorator {
 
     /**
-     * Create a new unmodifiable instance.
+     * Creates a new unmodifiable instance.
      *
-     * @param delegate The original {@link ConfigurationSection} that should be unmodifiable.
+     * @param original The original {@link ConfigurationSection} that should be unmodifiable.
      */
-    public UnmodifiableConfigurationSection(final ConfigurationSection delegate) {
-        super(delegate);
+    public UnmodifiableConfigurationSection(final ConfigurationSection original) {
+        super(original);
     }
 
     @Override
     public @Nullable
     Configuration getRoot() {
-        return new UnmodifiableConfiguration(delegate.getRoot());
+        return new UnmodifiableConfiguration(original.getRoot());
     }
 
     @Override
     public @Nullable
     ConfigurationSection getParent() {
-        return delegate.getParent() == null ? null : new UnmodifiableConfigurationSection(delegate.getParent());
+        return original.getParent() == null ? null : new UnmodifiableConfigurationSection(original.getParent());
     }
 
     @Override
     public @Nullable
     Object get(@NotNull final String path) {
-        return wrapModifiable(delegate.get(path));
+        return wrapModifiable(original.get(path));
     }
 
     @Override
     public @Nullable
     Object get(@NotNull final String path, @Nullable final Object def) {
-        return wrapModifiable(delegate.get(path, def));
+        return wrapModifiable(original.get(path, def));
     }
 
     @Override
@@ -66,24 +67,24 @@ public class UnmodifiableConfigurationSection extends ConfigurationSectionDecora
 
     @Override
     public <T> T getObject(@NotNull final String path, @NotNull final Class<T> clazz) {
-        return clazz.cast(wrapModifiable(delegate.getObject(path, clazz)));
+        return clazz.cast(wrapModifiable(original.getObject(path, clazz)));
     }
 
     @Override
     public <T> T getObject(@NotNull final String path, @NotNull final Class<T> clazz, @Nullable final T def) {
-        return clazz.cast(wrapModifiable(delegate.getObject(path, clazz, def)));
+        return clazz.cast(wrapModifiable(original.getObject(path, clazz, def)));
     }
 
     @Override
     public @Nullable
     ConfigurationSection getConfigurationSection(@NotNull final String path) {
-        return (ConfigurationSection) wrapModifiable(delegate.getConfigurationSection(path));
+        return (ConfigurationSection) wrapModifiable(original.getConfigurationSection(path));
     }
 
     @Override
     public @Nullable
     ConfigurationSection getDefaultSection() {
-        return (ConfigurationSection) wrapModifiable(delegate.getDefaultSection());
+        return (ConfigurationSection) wrapModifiable(original.getDefaultSection());
     }
 
     @Override
