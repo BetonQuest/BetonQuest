@@ -1,7 +1,7 @@
-package org.betonquest.betonquest.api.bukkit.config.custom.handler.util;
+package org.betonquest.betonquest.api.bukkit.config.custom.handle.util;
 
-import org.betonquest.betonquest.api.bukkit.config.custom.handler.ConfigurationModificationHandler;
-import org.betonquest.betonquest.api.bukkit.config.custom.handler.HandleModificationConfigurationSection;
+import org.betonquest.betonquest.api.bukkit.config.custom.handle.ConfigurationModificationHandler;
+import org.betonquest.betonquest.api.bukkit.config.custom.handle.HandleModificationConfigurationSection;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
