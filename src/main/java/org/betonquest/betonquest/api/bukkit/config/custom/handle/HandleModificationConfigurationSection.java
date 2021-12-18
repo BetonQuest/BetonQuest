@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api.bukkit.config.custom.handler;
+package org.betonquest.betonquest.api.bukkit.config.custom.handle;
 
 import org.betonquest.betonquest.api.bukkit.config.custom.ConfigurationSectionDecorator;
 import org.bukkit.configuration.Configuration;
