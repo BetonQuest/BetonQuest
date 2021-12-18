@@ -18,7 +18,7 @@ public class HandleModificationConfigurationSection extends ConfigurationSection
     /**
      * The {@link ConfigurationSectionModificationHandler} instance
      */
-    private final ConfigurationSectionModificationHandler handler;
+    protected final ConfigurationSectionModificationHandler handler;
 
     /**
      * Creates a new handler instance.
@@ -40,7 +40,7 @@ public class HandleModificationConfigurationSection extends ConfigurationSection
     @Override
     public @Nullable
     ConfigurationSection getParent() {
-        return original.getParent() == null ? null : new HandleModificationConfigurationSection(original.getParent(), handler);
+        return original.getParent() == null ? null : (ConfigurationSection) wrapModifiable(original.getParent());
     }
 
     @Override
