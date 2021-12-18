@@ -166,6 +166,5 @@ public class ConfigurationBaseTest extends AbstractConfigBaseTest<Configuration>
         assertEquals('.', config.options().pathSeparator());
         config.options().pathSeparator('-');
         assertEquals('-', config.options().pathSeparator());
-
     }
 }

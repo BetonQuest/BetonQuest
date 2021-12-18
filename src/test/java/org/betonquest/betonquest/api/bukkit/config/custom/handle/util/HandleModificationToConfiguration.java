@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api.bukkit.config.custom.handle.util;
 
 import org.betonquest.betonquest.api.bukkit.config.custom.handle.ConfigurationModificationHandler;
+import org.betonquest.betonquest.api.bukkit.config.custom.handle.ConfigurationSectionModificationHandler;
 import org.betonquest.betonquest.api.bukkit.config.custom.handle.HandleModificationConfigurationSection;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
@@ -41,13 +42,13 @@ public class HandleModificationToConfiguration implements ConfigurationModificat
 
     @Override
     public void set(@NotNull final ConfigurationSection section, @NotNull final String path, @Nullable final Object value) {
-        this.section.set(getAbsolutePath(section, path), value);
+        this.section.set(ConfigurationSectionModificationHandler.getAbsolutePath(section, path), value);
         section.set(path, value);
     }
 
     @Override
     public void addDefault(@NotNull final ConfigurationSection section, @NotNull final String path, @Nullable final Object value) {
-        this.section.addDefault(getAbsolutePath(section, path), value);
+        this.section.addDefault(ConfigurationSectionModificationHandler.getAbsolutePath(section, path), value);
         section.addDefault(path, value);
     }
 
@@ -72,14 +73,14 @@ public class HandleModificationToConfiguration implements ConfigurationModificat
     @NotNull
     @Override
     public ConfigurationSection createSection(@NotNull final ConfigurationSection section, @NotNull final String path) {
-        this.section.createSection(getAbsolutePath(section, path));
+        this.section.createSection(ConfigurationSectionModificationHandler.getAbsolutePath(section, path));
         return new HandleModificationConfigurationSection(section.createSection(path), this);
     }
 
     @NotNull
     @Override
     public ConfigurationSection createSection(@NotNull final ConfigurationSection section, @NotNull final String path, @NotNull final Map<?, ?> map) {
-        this.section.createSection(getAbsolutePath(section, path), map);
+        this.section.createSection(ConfigurationSectionModificationHandler.getAbsolutePath(section, path), map);
         return new HandleModificationConfigurationSection(section.createSection(path, map), this);
     }
 
@@ -88,7 +89,7 @@ public class HandleModificationToConfiguration implements ConfigurationModificat
         if (comments == null) {
             this.comments.remove(path);
         } else {
-            this.comments.put(getAbsolutePath(section, path), comments);
+            this.comments.put(ConfigurationSectionModificationHandler.getAbsolutePath(section, path), comments);
         }
         section.setComments(path, comments);
     }
@@ -98,16 +99,9 @@ public class HandleModificationToConfiguration implements ConfigurationModificat
         if (comments == null) {
             this.inlineComments.remove(path);
         } else {
-            this.inlineComments.put(getAbsolutePath(section, path), comments);
+            this.inlineComments.put(ConfigurationSectionModificationHandler.getAbsolutePath(section, path), comments);
         }
         section.setInlineComments(path, comments);
-    }
-
-    private String getAbsolutePath(final ConfigurationSection section, final String path) {
-        if (section.getCurrentPath() == null || section.getCurrentPath().isEmpty()) {
-            return path;
-        }
-        return section.getCurrentPath() + "." + path;
     }
 
     /**
