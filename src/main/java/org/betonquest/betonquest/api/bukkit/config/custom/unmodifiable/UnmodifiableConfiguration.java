@@ -30,12 +30,12 @@ public class UnmodifiableConfiguration extends UnmodifiableConfigurationSection 
 
     @Override
     public void addDefaults(@NotNull final Map<String, Object> defaults) {
-        throw new UnsupportedOperationException("This config is unmodifiable");
+        throw new UnsupportedOperationException(UNMODIFIABLE_MESSAGE);
     }
 
     @Override
     public void addDefaults(@NotNull final Configuration defaults) {
-        throw new UnsupportedOperationException("This config is unmodifiable");
+        throw new UnsupportedOperationException(UNMODIFIABLE_MESSAGE);
     }
 
     @Override
@@ -46,12 +46,12 @@ public class UnmodifiableConfiguration extends UnmodifiableConfigurationSection 
 
     @Override
     public void setDefaults(@NotNull final Configuration defaults) {
-        throw new UnsupportedOperationException("This config is unmodifiable");
+        throw new UnsupportedOperationException(UNMODIFIABLE_MESSAGE);
     }
 
     @Override
     public @NotNull
     ConfigurationOptions options() {
-        throw new UnsupportedOperationException("This config is unmodifiable and options are not implemented");
+        throw new UnsupportedOperationException(UNMODIFIABLE_MESSAGE + " and options are not implemented");
     }
 }
