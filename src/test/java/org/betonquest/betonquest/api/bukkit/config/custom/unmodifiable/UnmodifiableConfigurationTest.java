@@ -59,7 +59,7 @@ public class UnmodifiableConfigurationTest extends ConfigurationBaseTest {
     }
 
     private void assertThrowsUnmodifiableException(final Executable executable) {
-        assertThrowsUnmodifiableException(executable, "This config is unmodifiable");
+        assertThrowsUnmodifiableException(executable, UnmodifiableConfigurationSection.UNMODIFIABLE_MESSAGE);
     }
 
     private void assertThrowsUnmodifiableException(final Executable executable, final String message) {
@@ -107,7 +107,7 @@ public class UnmodifiableConfigurationTest extends ConfigurationBaseTest {
     @Override
     public void testOptions() {
         assertThrowsUnmodifiableException(super::testOptions,
-                "This config is unmodifiable and options are not implemented");
+                UnmodifiableConfigurationSection.UNMODIFIABLE_MESSAGE + " and options are not implemented");
     }
 
     @Test
