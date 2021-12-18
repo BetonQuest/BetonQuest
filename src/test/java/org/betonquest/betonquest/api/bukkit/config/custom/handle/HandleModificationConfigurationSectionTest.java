@@ -1,6 +1,6 @@
-package org.betonquest.betonquest.api.bukkit.config.custom.handler;
+package org.betonquest.betonquest.api.bukkit.config.custom.handle;
 
-import org.betonquest.betonquest.api.bukkit.config.custom.handler.util.HandleModificationToConfiguration;
+import org.betonquest.betonquest.api.bukkit.config.custom.handle.util.HandleModificationToConfiguration;
 import org.betonquest.betonquest.api.bukkit.config.util.ConfigurationSectionBaseTest;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
