@@ -60,7 +60,7 @@ public class UnmodifiableConfigurationSectionTest extends ConfigurationSectionBa
 
     private void assertThrowsUnmodifiableException(final Executable executable) {
         final Exception exception = assertThrows(UnsupportedOperationException.class, executable);
-        assertEquals("This config is unmodifiable", exception.getMessage());
+        assertEquals(UnmodifiableConfigurationSection.UNMODIFIABLE_MESSAGE, exception.getMessage());
     }
 
     @Test

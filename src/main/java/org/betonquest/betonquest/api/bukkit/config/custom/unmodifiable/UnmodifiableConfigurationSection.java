@@ -14,6 +14,10 @@ import java.util.Map;
  */
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class UnmodifiableConfigurationSection extends ConfigurationSectionDecorator {
+    /**
+     * Exception message for unmodifiable behaviours.
+     */
+    public static final String UNMODIFIABLE_MESSAGE = "This config is unmodifiable";
 
     /**
      * Creates a new unmodifiable instance.
@@ -50,19 +54,19 @@ public class UnmodifiableConfigurationSection extends ConfigurationSectionDecora
 
     @Override
     public void set(@NotNull final String path, @Nullable final Object value) {
-        throw new UnsupportedOperationException("This config is unmodifiable");
+        throw new UnsupportedOperationException(UNMODIFIABLE_MESSAGE);
     }
 
     @Override
     public @NotNull
     ConfigurationSection createSection(@NotNull final String path) {
-        throw new UnsupportedOperationException("This config is unmodifiable");
+        throw new UnsupportedOperationException(UNMODIFIABLE_MESSAGE);
     }
 
     @Override
     public @NotNull
     ConfigurationSection createSection(@NotNull final String path, @NotNull final Map<?, ?> map) {
-        throw new UnsupportedOperationException("This config is unmodifiable");
+        throw new UnsupportedOperationException(UNMODIFIABLE_MESSAGE);
     }
 
     @Override
@@ -89,7 +93,7 @@ public class UnmodifiableConfigurationSection extends ConfigurationSectionDecora
 
     @Override
     public void addDefault(@NotNull final String path, @Nullable final Object value) {
-        throw new UnsupportedOperationException("This config is unmodifiable");
+        throw new UnsupportedOperationException(UNMODIFIABLE_MESSAGE);
     }
 
     private Object wrapModifiable(final Object obj) {
