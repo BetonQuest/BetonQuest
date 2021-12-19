@@ -15,11 +15,11 @@ import java.util.Locale;
 @SuppressWarnings("PMD.CommentRequired")
 public class FireworkEffectHandler {
 
+    private final List<Color> mainColors = new LinkedList<>();
+    private final List<Color> fadeColors = new LinkedList<>();
     private Type type = Type.BALL; // default type for giving is small ball
     private Existence typeE = Existence.WHATEVER;
-    private final List<Color> mainColors = new LinkedList<>();
     private Existence mainE = Existence.WHATEVER;
-    private final List<Color> fadeColors = new LinkedList<>();
     private Existence fadeE = Existence.WHATEVER;
     private Existence trail = Existence.WHATEVER;
     private Existence flicker = Existence.WHATEVER;
@@ -27,7 +27,7 @@ public class FireworkEffectHandler {
     public FireworkEffectHandler() {
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
     public void set(final String string) throws InstructionParseException {
         if (string == null || string.isEmpty()) {
             throw new InstructionParseException("Effect is missing");
@@ -41,7 +41,7 @@ public class FireworkEffectHandler {
             }
             try {
                 type = Type.valueOf(parts[0].toUpperCase(Locale.ROOT));
-            } catch (IllegalArgumentException e) {
+            } catch (final IllegalArgumentException e) {
                 throw new InstructionParseException("Unknown firework effect type: " + parts[0], e);
             }
             if (typeE == Existence.FORBIDDEN) {
@@ -102,7 +102,7 @@ public class FireworkEffectHandler {
         return type;
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.SwitchDensity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.SwitchDensity", "PMD.CognitiveComplexity"})
     public boolean check(final FireworkEffect effect) {
         switch (typeE) {
             case WHATEVER:

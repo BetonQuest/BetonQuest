@@ -91,7 +91,7 @@ public class BookHandler {
         return true;
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     public boolean checkText(final List<String> list) {
         switch (textE) {
             case WHATEVER:

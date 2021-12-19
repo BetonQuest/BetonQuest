@@ -42,7 +42,7 @@ public class CitizensParticle extends BukkitRunnable {
     private int interval = 100;
     private int tick;
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AssignmentToNonFinalStatic"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AssignmentToNonFinalStatic", "PMD.CognitiveComplexity"})
     @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
     public CitizensParticle() {
         super();

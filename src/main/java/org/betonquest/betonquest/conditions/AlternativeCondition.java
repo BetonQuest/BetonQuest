@@ -27,6 +27,7 @@ public class AlternativeCondition extends Condition {
         conditionIDs = instruction.getList(instruction::getCondition);
     }
 
+    @SuppressWarnings("PMD.CognitiveComplexity")
     @Override
     protected Boolean execute(final String playerID) {
         if (Bukkit.isPrimaryThread()) {

@@ -88,6 +88,7 @@ public class MenuConvIO extends ChatConvIO {
     protected String configNpcNameFormat = "&e{npc_name}&r".replace('&', '§');
     private ArmorStand stand;
 
+    @SuppressWarnings("PMD.CognitiveComplexity")
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public MenuConvIO(final Conversation conv, final String playerID) {
         super(conv, playerID);
@@ -200,7 +201,7 @@ public class MenuConvIO extends ChatConvIO {
         }
     }
 
-    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition"})
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
     private PacketAdapter getPacketAdapter() {
         return new PacketAdapter(BetonQuest.getInstance(), ListenerPriority.HIGHEST,
                 PacketType.Play.Client.STEER_VEHICLE,
@@ -441,7 +442,7 @@ public class MenuConvIO extends ChatConvIO {
         }
     }
 
-    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     protected void updateDisplay() {
         if (npcText == null) {
             displayOutput = null;

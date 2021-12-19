@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * and push them into the production server.
  */
 @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
-public class VersionTest {
+class VersionTest {
     /**
      * A version that represent a MAJOR Version
      */
@@ -50,7 +50,7 @@ public class VersionTest {
      * Test if the {@link Version}'s have the correct string version
      */
     @Test
-    public void testVersionString() {
+    void testVersionString() {
         assertVersionString(V_1_0_0, "1.0.0");
         assertVersionString(V_1_0_0_DEV_1, "1.0.0-DEV-1");
         assertVersionString(V_1_1_0_DEV_146, "1.1.0-DEV-146");
@@ -64,7 +64,7 @@ public class VersionTest {
      * Test if the {@link Version}'s have the correct qualifier
      */
     @Test
-    public void testVersionQualifier() {
+    void testVersionQualifier() {
         assertVersionQualifier(V_1_0_0, null);
         assertVersionQualifier(V_1_0_0_DEV_1, "DEV-");
         assertVersionQualifier(V_1_1_0_DEV_146, "DEV-");
@@ -78,7 +78,7 @@ public class VersionTest {
      * Test if the {@link Version}'s have the correct build number
      */
     @Test
-    public void testVersionBuildNumber() {
+    void testVersionBuildNumber() {
         assertVersionBuildNumber(V_1_0_0, null);
         assertVersionBuildNumber(V_1_0_0_DEV_1, 1);
         assertVersionBuildNumber(V_1_1_0_DEV_146, 146);

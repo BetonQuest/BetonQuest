@@ -100,6 +100,7 @@ public class CitizensHologram extends BukkitRunnable {
         }
     }
 
+    @SuppressWarnings("PMD.CognitiveComplexity")
     private void initHolograms() {
         int interval = 100;
         for (final ConfigPackage pack : Config.getPackages().values()) {
@@ -188,7 +189,7 @@ public class CitizensHologram extends BukkitRunnable {
         return conditions;
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     private void updateHolograms() {
         boolean npcUpdater = false;
         for (final Map.Entry<Integer, List<NPCHologram>> entry : npcs.entrySet()) {

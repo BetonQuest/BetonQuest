@@ -134,7 +134,7 @@ public class RPGMenu {
      *
      * @return information if the reload was successful
      */
-    @SuppressWarnings({"PMD.NPathComplexity", "PMD.CyclomaticComplexity"})
+    @SuppressWarnings({"PMD.NPathComplexity", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     public ReloadInformation reloadData() {
         if (!menus.isEmpty()) {

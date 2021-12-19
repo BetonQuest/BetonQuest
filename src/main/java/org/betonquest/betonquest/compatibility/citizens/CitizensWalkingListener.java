@@ -78,6 +78,7 @@ public class CitizensWalkingListener implements Listener {
         }
     }
 
+    @SuppressWarnings("PMD.CognitiveComplexity")
     @EventHandler(ignoreCancelled = true)
     public void onConversationEnd(final PlayerConversationEndEvent event) {
         if (event.getConversation() instanceof CitizensConversation) {

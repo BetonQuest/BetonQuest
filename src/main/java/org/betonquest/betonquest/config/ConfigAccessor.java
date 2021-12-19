@@ -52,7 +52,7 @@ public class ConfigAccessor {
      * Reloads the configuration from the file. If the file is null, it will
      * try to load defaults, and if that fails it will create an empty yaml configuration.
      */
-    @SuppressWarnings("PMD.EmptyCatchBlock")
+    @SuppressWarnings({"PMD.EmptyCatchBlock", "PMD.CognitiveComplexity"})
     @SuppressFBWarnings("RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE")
     public void reloadConfig() {
         if (configFile == null) {

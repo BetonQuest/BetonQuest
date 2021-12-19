@@ -85,6 +85,7 @@ public final class Utils {
      * @return true if the backup was successful, false if there was an error
      */
     @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
+    @SuppressWarnings("PMD.CognitiveComplexity")
     public static boolean backupDatabase(final File databaseBackupFile) {
         final BetonQuest instance = BetonQuest.getInstance();
         try {
@@ -159,7 +160,7 @@ public final class Utils {
      * @param string text to convert
      * @return the list of pages for a book
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     public static List<String> pagesFromString(final String string) {
         final List<String> pages = new ArrayList<>();
         final String[] bigPages = string.split("\\|");
@@ -231,7 +232,7 @@ public final class Utils {
     /**
      * If the database backup file exists, loads it into the database.
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     public static void loadDatabaseFromBackup() {
         final BetonQuest instance = BetonQuest.getInstance();

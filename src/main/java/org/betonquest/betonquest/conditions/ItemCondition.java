@@ -26,6 +26,7 @@ public class ItemCondition extends Condition {
     }
 
     @Override
+    @SuppressWarnings("PMD.CognitiveComplexity")
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
         int successfulChecks = 0; // Count of successful checks

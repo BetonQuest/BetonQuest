@@ -91,7 +91,7 @@ public class NPCRangeObjective extends Objective {
         return distanceSqrd <= radiusSqrd;
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     private void checkPlayer(final UUID uuid, final String playerID, final boolean inside) {
         if (trigger == Trigger.INSIDE && !inside || trigger == Trigger.OUTSIDE && inside) {
             return;

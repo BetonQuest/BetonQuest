@@ -41,7 +41,7 @@ public class RPGMenuCommand extends SimpleCommand {
     }
 
     @Override
-    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition", "PMD.CyclomaticComplexity"})
+    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     public List<String> simpleTabComplete(final CommandSender sender, final String alias, final String[] args) {
         if (args.length == 1) {
             return Arrays.asList("reload", "open", "list");
@@ -80,7 +80,7 @@ public class RPGMenuCommand extends SimpleCommand {
     }
 
     @Override
-    @SuppressWarnings({"PMD.SwitchDensity", "PMD.NPathComplexity", "PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.SwitchStmtsShouldHaveDefault", "PMD.ExcessiveMethodLength", "PMD.AvoidLiteralsInIfCondition"})
+    @SuppressWarnings({"PMD.SwitchDensity", "PMD.NPathComplexity", "PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.SwitchStmtsShouldHaveDefault", "PMD.ExcessiveMethodLength", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
     public boolean simpleCommand(final CommandSender sender, final String alias, final String[] args) {
         if (args == null || args.length == 0) {
             //display command help

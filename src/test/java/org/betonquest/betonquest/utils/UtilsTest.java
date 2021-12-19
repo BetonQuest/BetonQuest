@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * This class test some utility class methods.
  */
 @ExtendWith(BetonQuestLoggerService.class)
-public class UtilsTest {
+class UtilsTest {
 
     /**
      * Default constructor.
@@ -32,7 +32,7 @@ public class UtilsTest {
     }
 
     @Test
-    public void testPagesFromString() {
+    void testPagesFromString() {
         try (MockedStatic<Config> config = prepareConfig()) {
             final String journalText = "&aActive Quest: &aFlint &1wants you to visit the Farm located at 191, 23, -167!";
 

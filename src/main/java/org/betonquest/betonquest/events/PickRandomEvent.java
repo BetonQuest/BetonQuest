@@ -23,7 +23,7 @@ public class PickRandomEvent extends QuestEvent {
     private final List<RandomEvent> events;
     private final VariableNumber amount;
 
-    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
+    @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
     public PickRandomEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         super.persistent = true;
@@ -48,7 +48,7 @@ public class PickRandomEvent extends QuestEvent {
             if (count == 1) {
                 try {
                     eventID = new EventID(instruction.getPackage(), parts[1]);
-                } catch (ObjectNotFoundException e) {
+                } catch (final ObjectNotFoundException e) {
                     throw new InstructionParseException("Error while loading event: " + e.getMessage(), e);
                 }
                 final VariableNumber chance = new VariableNumber(instruction.getPackage().getName(), parts[0]);
@@ -56,7 +56,7 @@ public class PickRandomEvent extends QuestEvent {
             } else if (count == 3) {
                 try {
                     eventID = new EventID(instruction.getPackage(), parts[3]);
-                } catch (ObjectNotFoundException e) {
+                } catch (final ObjectNotFoundException e) {
                     throw new InstructionParseException("Error while loading event: " + e.getMessage(), e);
                 }
                 final VariableNumber chance = new VariableNumber(instruction.getPackage().getName(), "%" + parts[1] + "%");

@@ -176,7 +176,7 @@ public class Journal {
      *
      * @param lang the language to use while generating text
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     public void generateTexts(final String lang) {
         // remove previous texts
         texts.clear();
@@ -249,7 +249,7 @@ public class Journal {
      *
      * @return the main page string or null, if there is no main page
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     private String generateMainPage() {
         final HashMap<Integer, ArrayList<String>> lines = new HashMap<>(); // holds text lines with their priority
         final HashSet<Integer> numbers = new HashSet<>(); // stores numbers that are used, so there's no need to search them
@@ -337,12 +337,10 @@ public class Journal {
         final ArrayList<String> sortedLines = new ArrayList<>();
         for (final int i : sorted) {
             final ArrayList<String> linesOrder = lines.get(i);
-            String[] sortedlinesOrder = new String[linesOrder.size()];
-            sortedlinesOrder = linesOrder.toArray(sortedlinesOrder);
-            Arrays.sort(sortedlinesOrder);
-            for (final String s : sortedlinesOrder) {
-                sortedLines.add(s);
-            }
+            String[] sortedLinesOrder = new String[linesOrder.size()];
+            sortedLinesOrder = linesOrder.toArray(sortedLinesOrder);
+            Arrays.sort(sortedLinesOrder);
+            sortedLines.addAll(Arrays.asList(sortedLinesOrder));
         }
         return StringUtils.join(sortedLines, '\n').replace('&', '§');
     }
@@ -389,7 +387,7 @@ public class Journal {
      *
      * @return the journal ItemStack
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public ItemStack getAsItem() {
         // create the book with default title/author

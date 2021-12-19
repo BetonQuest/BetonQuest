@@ -68,7 +68,7 @@ public class PointEvent extends QuestEvent {
         return null;
     }
 
-    @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.CyclomaticComplexity"})
+    @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     private void addPoints(final String playerID, final PlayerData playerData) throws QuestRuntimeException {
         final int intCount = count.getInt(playerID);
         if (multi) {
