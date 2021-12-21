@@ -41,6 +41,7 @@ public class PacketInterceptor implements Interceptor, Listener {
     private final PacketAdapter packetAdapter;
     private int baseComponentIndex = -1;
 
+    @SuppressWarnings("PMD.CognitiveComplexity")
     public PacketInterceptor(final Conversation conv, final String playerID) {
         this.conv = conv;
         this.player = PlayerConverter.getPlayer(playerID);

@@ -62,6 +62,7 @@ public final class NPCHider extends BukkitRunnable implements Listener {
         return instance;
     }
 
+    @SuppressWarnings("PMD.CognitiveComplexity")
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private void loadFromConfig() {
 

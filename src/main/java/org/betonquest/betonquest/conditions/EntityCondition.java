@@ -76,7 +76,7 @@ public class EntityCondition extends Condition {
         }
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {

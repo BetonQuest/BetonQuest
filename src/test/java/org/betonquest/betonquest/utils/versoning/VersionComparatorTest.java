@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * and push them into the production server.
  */
 @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
-public class VersionComparatorTest {
+class VersionComparatorTest {
     /**
      * PRE release qualifier
      */
@@ -85,7 +85,7 @@ public class VersionComparatorTest {
      * {@link UpdateStrategy#MAJOR} strategy.
      */
     @Test
-    public void testVersionCompareMajor() {
+    void testVersionCompareMajor() {
         final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR);
 
         assertMultipleVersions(comparator, false, V_1_0_0,
@@ -158,7 +158,7 @@ public class VersionComparatorTest {
      * {@link UpdateStrategy#MINOR} strategy.
      */
     @Test
-    public void testVersionCompareMinor() {
+    void testVersionCompareMinor() {
         final VersionComparator comparator = new VersionComparator(UpdateStrategy.MINOR);
 
         assertMultipleVersions(comparator, false, V_1_0_0,
@@ -229,7 +229,7 @@ public class VersionComparatorTest {
      * {@link UpdateStrategy#PATCH} strategy.
      */
     @Test
-    public void testVersionComparePatch() {
+    void testVersionComparePatch() {
         final VersionComparator comparator = new VersionComparator(UpdateStrategy.PATCH);
 
         assertMultipleVersions(comparator, false, V_1_0_0,
@@ -298,7 +298,7 @@ public class VersionComparatorTest {
      * {@link UpdateStrategy#MAJOR} strategy with dev qualifier.
      */
     @Test
-    public void testVersionCompareMajorDev() {
+    void testVersionCompareMajorDev() {
         final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR, QUALIFIER_PRE, QUALIFIER_DEV);
 
         assertMultipleVersions(comparator, false, V_1_0_0,
@@ -367,7 +367,7 @@ public class VersionComparatorTest {
      * {@link UpdateStrategy#MINOR} strategy with dev qualifier.
      */
     @Test
-    public void testVersionCompareMinorDev() {
+    void testVersionCompareMinorDev() {
         final VersionComparator comparator = new VersionComparator(UpdateStrategy.MINOR, QUALIFIER_PRE, QUALIFIER_DEV);
 
         assertMultipleVersions(comparator, false, V_1_0_0,
@@ -438,7 +438,7 @@ public class VersionComparatorTest {
      * {@link UpdateStrategy#PATCH} strategy with dev qualifier.
      */
     @Test
-    public void testVersionComparePatchDev() {
+    void testVersionComparePatchDev() {
         final VersionComparator comparator = new VersionComparator(UpdateStrategy.PATCH, QUALIFIER_PRE, QUALIFIER_DEV);
 
         assertMultipleVersions(comparator, false, V_1_0_0,
@@ -514,7 +514,7 @@ public class VersionComparatorTest {
     }
 
     @Test
-    public void testEmptyQualifier() {
+    void testEmptyQualifier() {
         final VersionComparator vc1 = new VersionComparator(UpdateStrategy.PATCH, "", QUALIFIER_DEV);
         assertTrue(vc1.isOtherNewerThanCurrent(V_1_1_0_DEV_146, V_1_1_0_99), "Expected update");
 

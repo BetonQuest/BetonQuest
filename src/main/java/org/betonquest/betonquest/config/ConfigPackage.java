@@ -144,7 +144,7 @@ public class ConfigPackage {
      * @param input The String to substitution
      * @return the substituted string
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     public String subst(final String input) {
         if (input == null) {
             return null;

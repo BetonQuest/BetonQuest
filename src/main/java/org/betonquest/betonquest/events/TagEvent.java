@@ -33,6 +33,7 @@ public class TagEvent extends QuestEvent {
         }
     }
 
+    @SuppressWarnings("PMD.CognitiveComplexity")
     @Override
     protected Void execute(final String playerID) {
         if (playerID == null) {

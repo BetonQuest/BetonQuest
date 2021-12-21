@@ -91,6 +91,7 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
      * @param playerID ID of the player for whom the event will fire
      * @throws QuestRuntimeException passes the exception from the event up the stack
      */
+    @SuppressWarnings("PMD.CognitiveComplexity")
     public final void fire(final String playerID) throws QuestRuntimeException {
         if (playerID == null) {
             // handle static event

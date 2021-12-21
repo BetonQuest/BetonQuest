@@ -231,6 +231,7 @@ public class Conversation implements Listener {
      *
      * @param options list of pointers to player options separated by commas
      */
+    @SuppressWarnings("PMD.CognitiveComplexity")
     private void printOptions(final String... options) {
         final List<Pair<String, List<CompletableFuture<Boolean>>>> futuresOptions = new ArrayList<>();
         for (final String option : options) {

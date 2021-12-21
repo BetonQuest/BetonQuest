@@ -121,7 +121,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
     }
 
     @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.NcssCount",
-            "PMD.NPathComplexity"})
+            "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @Override
     public void display() {
@@ -361,6 +361,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         return printMessages;
     }
 
+    @SuppressWarnings("PMD.CognitiveComplexity")
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected List<String> stringToLines(final String singleLine, final String color, final String prefix) {
         String inputPrefix = prefix;

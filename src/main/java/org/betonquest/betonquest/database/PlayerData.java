@@ -64,7 +64,7 @@ public class PlayerData {
     /**
      * Loads all data for the player and puts it in appropriate lists.
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     public final void loadAllPlayerData() {
         try {
             final Connector con = new Connector();
@@ -400,6 +400,7 @@ public class PlayerData {
      * @param item   ItemStack to add to backpack
      * @param amount amount of the items
      */
+    @SuppressWarnings("PMD.CognitiveComplexity")
     public void addItem(final ItemStack item, final int amount) {
         int inputAmount = amount;
         for (final ItemStack itemStack : backpack) {

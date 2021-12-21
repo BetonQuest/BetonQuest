@@ -17,7 +17,7 @@ public abstract class ID {
     protected Instruction instruction;
     protected String rawInstruction;
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     protected ID(final ConfigPackage pack, final String identifier) throws ObjectNotFoundException {
 
         // id must be specified

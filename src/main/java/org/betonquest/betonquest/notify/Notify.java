@@ -122,6 +122,7 @@ public final class Notify {
      * The Notifications should be in a separate configuration in the main folder
      */
     // TODO Replace with new method
+    @SuppressWarnings("PMD.CognitiveComplexity")
     private static void loadCategorySettings() {
         final Map<String, Map<String, String>> settings = new HashMap<>();
         for (final String packName : Config.getPackages().keySet()) {

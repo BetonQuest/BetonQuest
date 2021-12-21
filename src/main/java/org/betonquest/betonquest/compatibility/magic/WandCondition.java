@@ -52,11 +52,11 @@ public class WandCondition extends Condition {
         if (array != null) {
             for (final String spell : array) {
                 if (spell.contains(":")) {
-                    VariableNumber level;
+                    final VariableNumber level;
                     final String[] spellParts = spell.split(":");
                     try {
                         level = new VariableNumber(instruction.getPackage().getName(), spellParts[1]);
-                    } catch (InstructionParseException e) {
+                    } catch (final InstructionParseException e) {
                         throw new InstructionParseException("Could not parse spell level", e);
                     }
                     this.spells.put(spellParts[0], level);
@@ -70,7 +70,7 @@ public class WandCondition extends Condition {
         amount = instruction.getVarNum(instruction.getOptional("amount"));
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {

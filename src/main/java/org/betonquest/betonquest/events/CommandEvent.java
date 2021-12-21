@@ -38,6 +38,7 @@ public class CommandEvent extends QuestEvent {
         }
     }
 
+    @SuppressWarnings("PMD.CognitiveComplexity")
     @Override
     protected Void execute(final String playerID) {
         for (final Command command : commands) {

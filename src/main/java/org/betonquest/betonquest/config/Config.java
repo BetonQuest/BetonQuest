@@ -54,7 +54,7 @@ public class Config {
      *
      * @param verboose controls if this object should log it's actions to the file
      */
-    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
+    @SuppressWarnings({"PMD.AssignmentToNonFinalStatic", "PMD.CognitiveComplexity"})
     @SuppressFBWarnings({"ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"})
     public Config(final boolean verboose) {
 

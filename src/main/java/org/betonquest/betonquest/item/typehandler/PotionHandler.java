@@ -145,7 +145,7 @@ public class PotionHandler {
         public CustomEffectHandler() {
         }
 
-        @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition"})
+        @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
         private void set(final String custom) throws InstructionParseException {
             if (custom == null) {
                 throw new InstructionParseException("Potion is null!");
@@ -218,7 +218,7 @@ public class PotionHandler {
             return new PotionEffect(customType, duration, power);
         }
 
-        @SuppressWarnings("PMD.CyclomaticComplexity")
+        @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
         private boolean check(final PotionEffect effect) {
             switch (customTypeE) {
                 case WHATEVER:

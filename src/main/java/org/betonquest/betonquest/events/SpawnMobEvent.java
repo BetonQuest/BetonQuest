@@ -30,9 +30,6 @@ public class SpawnMobEvent extends QuestEvent {
     private final CompoundLocation loc;
     private final EntityType type;
     private final VariableNumber amount;
-    private String name;
-    private String marked;
-
     private final QuestItem helmet;
     private final QuestItem chestplate;
     private final QuestItem leggings;
@@ -40,6 +37,8 @@ public class SpawnMobEvent extends QuestEvent {
     private final QuestItem mainHand;
     private final QuestItem offHand;
     private final Item[] drops;
+    private String name;
+    private String marked;
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     public SpawnMobEvent(final Instruction instruction) throws InstructionParseException {
@@ -50,7 +49,7 @@ public class SpawnMobEvent extends QuestEvent {
         final String entity = instruction.next();
         try {
             type = EntityType.valueOf(entity.toUpperCase(Locale.ROOT));
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             throw new InstructionParseException("Entity type '" + entity + "' does not exist", e);
         }
         amount = instruction.getVarNum();
@@ -78,7 +77,7 @@ public class SpawnMobEvent extends QuestEvent {
         drops = instruction.getItemList(instruction.getOptional("drops"));
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {

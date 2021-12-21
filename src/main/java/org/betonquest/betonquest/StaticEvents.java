@@ -33,6 +33,7 @@ public class StaticEvents {
      * Creates new instance of a StaticEvents object, scheduling static events
      * to run at specified times
      */
+    @SuppressWarnings("PMD.CognitiveComplexity")
     public StaticEvents() {
         LOG.debug("Initializing static events");
         // old timers need to be deleted in case of reloading the plugin

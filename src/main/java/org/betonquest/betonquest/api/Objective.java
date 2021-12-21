@@ -67,7 +67,7 @@ public abstract class Objective {
      *                    extract all required information from it
      * @throws InstructionParseException if the syntax is wrong or any error happens while parsing
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     public Objective(final Instruction instruction) throws InstructionParseException {
         this.instruction = instruction;
         // extract events and conditions

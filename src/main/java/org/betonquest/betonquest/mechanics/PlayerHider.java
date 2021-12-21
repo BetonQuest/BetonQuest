@@ -87,17 +87,21 @@ public class PlayerHider {
         final Map<Player, List<Player>> playersToHide = getPlayersToHide(onlinePlayer);
         for (final Player source : onlinePlayer) {
             final List<Player> playerToHideList = playersToHide.get(source);
-            if (playerToHideList == null) {
-                for (final Player target : onlinePlayer) {
+            updateVisibilityForPlayers(onlinePlayer, source, playerToHideList);
+        }
+    }
+
+    private void updateVisibilityForPlayers(final Collection<? extends Player> onlinePlayer, final Player source, final List<Player> playerToHideList) {
+        if (playerToHideList == null) {
+            for (final Player target : onlinePlayer) {
+                source.showPlayer(BetonQuest.getInstance(), target);
+            }
+        } else {
+            for (final Player target : onlinePlayer) {
+                if (playerToHideList.contains(target)) {
+                    source.hidePlayer(BetonQuest.getInstance(), target);
+                } else {
                     source.showPlayer(BetonQuest.getInstance(), target);
-                }
-            } else {
-                for (final Player target : onlinePlayer) {
-                    if (playerToHideList.contains(target)) {
-                        source.hidePlayer(BetonQuest.getInstance(), target);
-                    } else {
-                        source.showPlayer(BetonQuest.getInstance(), target);
-                    }
                 }
             }
         }

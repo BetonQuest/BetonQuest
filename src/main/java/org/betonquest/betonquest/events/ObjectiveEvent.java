@@ -40,7 +40,7 @@ public class ObjectiveEvent extends QuestEvent {
         persistent = !"complete".equalsIgnoreCase(action);
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
         if (BetonQuest.getInstance().getObjective(objective) == null) {

@@ -35,7 +35,7 @@ public class LoreHandler {
         return lore;
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     public boolean check(final List<String> lore) {
         switch (existence) {
             case WHATEVER:

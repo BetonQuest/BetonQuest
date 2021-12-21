@@ -68,7 +68,7 @@ import java.util.logging.Level;
  * Main admin command for quest editing.
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength", "PMD.GodClass", "PMD.NPathComplexity",
-        "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition"})
+        "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
 @CustomLog
 public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
@@ -1894,7 +1894,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         if (args.length == 4) {
             return Arrays.asList("error", "info", "debug");
         }
-        return null;
+        return new ArrayList<>();
     }
 
     private void sendMessage(final CommandSender sender, final String messageName) {

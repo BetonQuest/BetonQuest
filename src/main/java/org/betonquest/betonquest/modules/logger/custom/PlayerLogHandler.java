@@ -70,14 +70,18 @@ public class PlayerLogHandler extends Handler {
                 if (record.getLevel().intValue() < entry.getValue().intValue()) {
                     continue;
                 }
-                final boolean equal = !entry.getKey().endsWith("*");
-                final String expression = equal ? entry.getKey() : StringUtils.chop(entry.getKey());
-                if (equal && pack.equals(expression) || !equal && pack.startsWith(expression)) {
+                if (validPackage(pack, entry.getKey())) {
                     bukkitAudiences.player(filterEntries.getKey()).sendMessage(GsonComponentSerializer.gson().deserialize(msg));
                     continue players;
                 }
             }
         }
+    }
+
+    private boolean validPackage(final String pack, final String filter) {
+        final boolean equal = !filter.endsWith("*");
+        final String expression = equal ? filter : StringUtils.chop(filter);
+        return equal && pack.equals(expression) || !equal && pack.startsWith(expression);
     }
 
     @Override

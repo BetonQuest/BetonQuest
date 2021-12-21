@@ -44,9 +44,9 @@ public class EntityInteractObjective extends CountingObjective {
 
     private final CompoundLocation loc;
     private final VariableNumber range;
-    protected EntityType mobType;
     private final String customName;
     private final String realName;
+    protected EntityType mobType;
     protected String marked;
     protected Interaction interaction;
     protected boolean cancel;
@@ -94,7 +94,7 @@ public class EntityInteractObjective extends CountingObjective {
         }
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private boolean onInteract(final Player player, final Entity entity) {
         // check if it's the right entity type

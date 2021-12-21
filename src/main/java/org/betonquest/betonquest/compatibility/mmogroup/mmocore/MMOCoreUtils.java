@@ -6,6 +6,7 @@ import net.Indyuce.mmocore.api.player.attribute.PlayerAttribute;
 import net.Indyuce.mmocore.api.player.attribute.PlayerAttributes;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -15,8 +16,7 @@ import java.util.UUID;
 @SuppressWarnings("PMD.CommentRequired")
 public final class MMOCoreUtils {
 
-    @SuppressFBWarnings("MS_PKGPROTECT")
-    public static YamlConfiguration mmoCoreAttributeConfig;
+    private static Configuration mmoCoreAttributeConfig;
 
     private MMOCoreUtils() {
     }

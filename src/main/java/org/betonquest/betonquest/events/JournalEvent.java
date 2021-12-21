@@ -53,7 +53,7 @@ public class JournalEvent extends QuestEvent {
         }
     }
 
-    @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.CyclomaticComplexity"})
+    @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
         if (playerID == null) {
