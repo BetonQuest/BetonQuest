@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * This class can be used to test custom implementations of {@link ConfigurationSection}.
  * You only need to override methods with behaviours that differ from the default one.
  */
-@SuppressWarnings({"PMD.GodClass", "PMD.JUnitAssertionsShouldIncludeMessage", "PMD.AvoidDuplicateLiterals"})
+@SuppressWarnings({"PMD.GodClass", "PMD.JUnitAssertionsShouldIncludeMessage", "PMD.AvoidDuplicateLiterals", "PMD.JUnit5TestShouldBePackagePrivate"})
 public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<ConfigurationSection> implements ConfigurationSectionTestInterface {
     /**
      * Empty constructor
