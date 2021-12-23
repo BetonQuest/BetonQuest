@@ -21,7 +21,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.metadata.MetadataValue;
 
 import java.util.Arrays;
@@ -220,7 +220,7 @@ public class EntityInteractObjective extends CountingObjective {
         }
 
         @EventHandler(ignoreCancelled = true)
-        public void onRightClick(final PlayerInteractEntityEvent event) {
+        public void onRightClick(final PlayerInteractAtEntityEvent event) {
             final boolean success = onInteract(event.getPlayer(), event.getRightClicked());
             if (success && cancel) {
                 event.setCancelled(true);
