@@ -140,7 +140,7 @@ extra:
     - icon: fontawesome/solid/faucet
       link: https://spigotmc.org/resources/betonquest.2117/
     - icon: fontawesome/solid/archive
-      link: https://betonquest.org/old
+      link: https://dev.betonquest.org
     - icon: fontawesome/solid/envelope
       link: mailto://contact@betonquest.org
 
