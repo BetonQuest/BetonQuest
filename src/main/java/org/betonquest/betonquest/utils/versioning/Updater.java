@@ -42,7 +42,7 @@ public class Updater {
     /**
      * The DEV API URL.
      */
-    public static final String DEV_API_URL = "https://betonquest.org/api/v1/";
+    public static final String DEV_API_URL = "https://dev.betonquest.org/api/v1/";
     /**
      * The API URL path to the latest versions.
      */
