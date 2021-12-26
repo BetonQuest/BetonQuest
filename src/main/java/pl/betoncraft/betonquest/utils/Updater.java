@@ -21,7 +21,12 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
 
 /**
@@ -35,7 +40,7 @@ public class Updater {
     /**
      * The DEV API URL.
      */
-    public static final String DEV_API_URL = "https://betonquest.org/api/v1/";
+    public static final String DEV_API_URL = "https://dev.betonquest.org/api/v1/";
     /**
      * The API URL path to the latest versions.
      */
