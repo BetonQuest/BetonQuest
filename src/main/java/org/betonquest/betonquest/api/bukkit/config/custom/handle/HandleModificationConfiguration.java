@@ -21,33 +21,33 @@ public class HandleModificationConfiguration extends HandleModificationConfigura
     /**
      * The {@link ConfigurationModificationHandler} instance
      */
-    private final ConfigurationModificationHandler setter;
+    private final ConfigurationModificationHandler handler;
 
     /**
      * Creates a new handler instance.
      *
      * @param original The original {@link Configuration} in which modifications will be handled
-     * @param setter   The {@link ConfigurationModificationHandler} that handles modifications
+     * @param handler  The {@link ConfigurationModificationHandler} that handles modifications
      */
-    public HandleModificationConfiguration(final Configuration original, final ConfigurationModificationHandler setter) {
-        super(original, setter);
-        this.setter = setter;
+    public HandleModificationConfiguration(final Configuration original, final ConfigurationModificationHandler handler) {
+        super(original, handler);
+        this.handler = handler;
         this.original = original;
     }
 
     @Override
     public void addDefault(@NotNull final String path, @Nullable final Object value) {
-        setter.addDefault(original, path, value);
+        handler.addDefault(original, path, value);
     }
 
     @Override
     public void addDefaults(@NotNull final Map<String, Object> defaults) {
-        setter.addDefaults(original, defaults);
+        handler.addDefaults(original, defaults);
     }
 
     @Override
     public void addDefaults(@NotNull final Configuration defaults) {
-        setter.addDefaults(original, defaults);
+        handler.addDefaults(original, defaults);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class HandleModificationConfiguration extends HandleModificationConfigura
 
     @Override
     public void setDefaults(@NotNull final Configuration defaults) {
-        setter.setDefaults(original, defaults);
+        handler.setDefaults(original, defaults);
     }
 
     @Override
