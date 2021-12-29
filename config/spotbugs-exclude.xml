@@ -10,7 +10,7 @@
     <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2,MS_EXPOSE_REP,ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD" />
   </Match>
 
-  <!-- Disabled rules, that have to many false positives or course other problems -->
+  <!-- Disabled rules, that have to many false positives or cause other problems -->
   <Match>
     <!-- https://github.com/spotbugs/spotbugs/issues/1338 -->
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE" />
