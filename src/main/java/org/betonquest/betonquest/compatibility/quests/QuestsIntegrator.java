@@ -22,7 +22,7 @@ public class QuestsIntegrator implements Integrator {
     }
 
     @Override
-    @SuppressFBWarnings({"ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"})
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public void hook() {
         questsInstance = (Quests) Bukkit.getPluginManager().getPlugin("Quests");
         plugin.registerConditions("quest", QuestsCondition.class);

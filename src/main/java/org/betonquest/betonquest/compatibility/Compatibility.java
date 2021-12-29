@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.aureliumskills.AureliumSkillsIntegrator;
@@ -54,7 +53,6 @@ public class Compatibility implements Listener {
     private final List<String> hooked = new ArrayList<>();
 
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
-    @SuppressFBWarnings("ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
     public Compatibility() {
         instance = this;
 

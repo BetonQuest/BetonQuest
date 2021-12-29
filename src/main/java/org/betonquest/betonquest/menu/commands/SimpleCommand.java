@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.menu.commands;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.menu.config.RPGMenuConfig;
@@ -14,6 +13,7 @@ import org.bukkit.command.PluginIdentifiableCommand;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -99,15 +99,15 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
         return simpleCommand(sender, label, args);
     }
 
+    @NotNull
     @Override
-    @SuppressFBWarnings("NP_NONNULL_RETURN_VIOLATION")
     public List<String> tabComplete(final CommandSender sender, final String alias, final String[] args) throws IllegalArgumentException {
         if (sender == null || alias == null || args == null) {
             return super.tabComplete(sender, alias, args);
         }
         final List<String> completations = this.simpleTabComplete(sender, alias, args);
         if (completations == null) {
-            return null;
+            return new ArrayList<>();
         }
         final List<String> out = new ArrayList<>();
         final String lastArg = args[args.length - 1];

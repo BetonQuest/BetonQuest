@@ -234,7 +234,6 @@ public class QuestItemHandler implements Listener {
         }
     }
 
-    @SuppressFBWarnings
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     @EventHandler()
     public void onInteractEvent(final PlayerInteractEvent event) {
