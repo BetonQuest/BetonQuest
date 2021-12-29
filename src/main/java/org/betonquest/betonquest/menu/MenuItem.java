@@ -200,6 +200,7 @@ public class MenuItem extends SimpleYMLSection {
      * @return the item as a bukkit item stack
      */
     @SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.AvoidCatchingNPE"})
+    @SuppressFBWarnings("DCN_NULLPOINTER_EXCEPTION")
     public ItemStack generateItem(final Player player) {
         try {
             final String playerId = PlayerConverter.getID(player);

@@ -501,7 +501,7 @@
     <dependency>
       <groupId>com.github.spotbugs</groupId>
       <artifactId>spotbugs-annotations</artifactId>
-      <version>4.4.2</version>
+      <version>4.5.2</version>
       <optional>true</optional>
     </dependency>
 
@@ -884,8 +884,9 @@
         <plugin>
           <groupId>com.github.spotbugs</groupId>
           <artifactId>spotbugs-maven-plugin</artifactId>
-          <version>4.2.2</version>
+          <version>4.5.2.0</version>
           <configuration>
+            <excludeFilterFile>config/spotbugs-exclude.xml</excludeFilterFile>
             <effort>max</effort>
             <threshold>low</threshold>
           </configuration>
