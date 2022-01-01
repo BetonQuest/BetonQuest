@@ -1,7 +1,8 @@
 childSection:
   nestedChildSection:
     key: value
-get: getValue
+# Test Comment
+get: getValue # Test Inline Comment
 existingSet: setValue
 string: Custom String
 integer: 12345
