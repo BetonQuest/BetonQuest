@@ -6,6 +6,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -93,6 +94,16 @@ public class UnmodifiableConfigurationSection extends ConfigurationSectionDecora
 
     @Override
     public void addDefault(@NotNull final String path, @Nullable final Object value) {
+        throw new UnsupportedOperationException(UNMODIFIABLE_MESSAGE);
+    }
+
+    @Override
+    public void setComments(@NotNull final String path, @Nullable final List<String> comments) {
+        throw new UnsupportedOperationException(UNMODIFIABLE_MESSAGE);
+    }
+
+    @Override
+    public void setInlineComments(@NotNull final String path, @Nullable final List<String> comments) {
         throw new UnsupportedOperationException(UNMODIFIABLE_MESSAGE);
     }
 

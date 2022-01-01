@@ -8,6 +8,8 @@ import org.bukkit.configuration.MemoryConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,12 +21,22 @@ public class HandleModificationToConfiguration implements ConfigurationModificat
      * The {@link Configuration} that stores all modifications.
      */
     private final Configuration section;
+    /**
+     * The map that stores all block comment modifications.
+     */
+    private final Map<String, List<String>> comments;
+    /**
+     * The map that stores all inline comment modifications.
+     */
+    private final Map<String, List<String>> inlineComments;
 
     /**
      * Empty constructor
      */
     public HandleModificationToConfiguration() {
         section = new MemoryConfiguration();
+        comments = new HashMap<>();
+        inlineComments = new HashMap<>();
     }
 
     @Override
@@ -71,6 +83,26 @@ public class HandleModificationToConfiguration implements ConfigurationModificat
         return new HandleModificationConfigurationSection(section.createSection(path, map), this);
     }
 
+    @Override
+    public void setComments(@NotNull final ConfigurationSection section, @NotNull final String path, @Nullable final List<String> comments) {
+        if (comments == null) {
+            this.comments.remove(path);
+        } else {
+            this.comments.put(getAbsolutePath(section, path), comments);
+        }
+        section.setComments(path, comments);
+    }
+
+    @Override
+    public void setInlineComments(@NotNull final ConfigurationSection section, @NotNull final String path, @Nullable final List<String> comments) {
+        if (comments == null) {
+            this.inlineComments.remove(path);
+        } else {
+            this.inlineComments.put(getAbsolutePath(section, path), comments);
+        }
+        section.setInlineComments(path, comments);
+    }
+
     private String getAbsolutePath(final ConfigurationSection section, final String path) {
         if (section.getCurrentPath() == null || section.getCurrentPath().isEmpty()) {
             return path;
@@ -85,5 +117,23 @@ public class HandleModificationToConfiguration implements ConfigurationModificat
      */
     public Configuration getSection() {
         return section;
+    }
+
+    /**
+     * Get the map with all block comment modifications.
+     *
+     * @return the map
+     */
+    public Map<String, List<String>> getComments() {
+        return comments;
+    }
+
+    /**
+     * Get the map with all inline comment modifications.
+     *
+     * @return the map
+     */
+    public Map<String, List<String>> getInlineComments() {
+        return inlineComments;
     }
 }
