@@ -270,4 +270,20 @@ public interface ConfigurationSectionTestInterface {
     void testAddDefault();
 
     void testAddDefaultOnExistingConfigPath();
+
+    void testSetComments();
+
+    void testSetCommentsOnInvalid();
+
+    void testSetInlineComments();
+
+    void testSetInlineCommentsOnInvalid();
+
+    void testGetComments();
+
+    void testGetCommentsOnInvalid();
+
+    void testGetInlineComments();
+
+    void testGetInlineCommentsOnInvalid();
 }

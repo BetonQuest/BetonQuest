@@ -6,6 +6,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -96,6 +97,16 @@ public class HandleModificationConfigurationSection extends ConfigurationSection
     @Override
     public void addDefault(@NotNull final String path, @Nullable final Object value) {
         handler.addDefault(original, path, value);
+    }
+
+    @Override
+    public void setComments(@NotNull final String path, @Nullable final List<String> comments) {
+        handler.setComments(original, path, comments);
+    }
+
+    @Override
+    public void setInlineComments(@NotNull final String path, @Nullable final List<String> comments) {
+        handler.setInlineComments(original, path, comments);
     }
 
     private Object wrapModifiable(final Object obj) {

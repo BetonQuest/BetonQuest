@@ -972,4 +972,68 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
         config.addDefault("default.override", "second");
         assertEquals("second", config.getString("default.override"));
     }
+
+    @Test
+    @Override
+    public void testSetComments() {
+        final List<String> comments = new ArrayList<>();
+        comments.add("Test Comment");
+        config.setComments("existingSet", comments);
+        assertEquals(comments, config.getComments("existingSet"));
+    }
+
+    @Test
+    @Override
+    public void testSetCommentsOnInvalid() {
+        final List<String> comments = new ArrayList<>();
+        comments.add("Test Comment");
+        config.setComments("existingSet_invalid", comments);
+        assertEquals(new ArrayList<>(), config.getComments("existingSet_invalid"));
+    }
+
+    @Test
+    @Override
+    public void testSetInlineComments() {
+        final List<String> comments = new ArrayList<>();
+        comments.add("Test Inline Comment");
+        config.setInlineComments("existingSet", comments);
+        assertEquals(comments, config.getInlineComments("existingSet"));
+    }
+
+    @Test
+    @Override
+    public void testSetInlineCommentsOnInvalid() {
+        final List<String> comments = new ArrayList<>();
+        comments.add("Test Comment");
+        config.setInlineComments("existingSet_invalid", comments);
+        assertEquals(new ArrayList<>(), config.getInlineComments("existingSet_invalid"));
+    }
+
+    @Test
+    @Override
+    public void testGetComments() {
+        final List<String> comments = new ArrayList<>();
+        comments.add("Test Comment");
+        assertEquals(comments, config.getComments("get"));
+    }
+
+    @Test
+    @Override
+    public void testGetCommentsOnInvalid() {
+        assertEquals(new ArrayList<>(), config.getComments("get_invalid"));
+    }
+
+    @Test
+    @Override
+    public void testGetInlineComments() {
+        final List<String> comments = new ArrayList<>();
+        comments.add("Test Inline Comment");
+        assertEquals(comments, config.getInlineComments("get"));
+    }
+
+    @Test
+    @Override
+    public void testGetInlineCommentsOnInvalid() {
+        assertEquals(new ArrayList<>(), config.getInlineComments("get_invalid"));
+    }
 }

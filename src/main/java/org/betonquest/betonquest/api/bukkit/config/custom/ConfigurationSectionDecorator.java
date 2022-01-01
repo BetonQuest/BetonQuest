@@ -400,4 +400,26 @@ public class ConfigurationSectionDecorator implements ConfigurationSection {
     public void addDefault(@NotNull final String path, @Nullable final Object value) {
         original.addDefault(path, value);
     }
+
+    @Override
+    public @NotNull
+    List<String> getComments(@NotNull final String path) {
+        return original.getComments(path);
+    }
+
+    @Override
+    public @NotNull
+    List<String> getInlineComments(@NotNull final String path) {
+        return original.getInlineComments(path);
+    }
+
+    @Override
+    public void setComments(@NotNull final String path, @Nullable final List<String> comments) {
+        original.setComments(path, comments);
+    }
+
+    @Override
+    public void setInlineComments(@NotNull final String path, @Nullable final List<String> comments) {
+        original.setInlineComments(path, comments);
+    }
 }

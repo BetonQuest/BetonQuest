@@ -43,6 +43,8 @@ public class HandleModificationConfigurationTest extends ConfigurationBaseTest {
         if (defaultSection != null) {
             assertTrue(defaultSection.getKeys(true).isEmpty());
         }
+        assertTrue(setter.getComments().isEmpty());
+        assertTrue(setter.getInlineComments().isEmpty());
     }
 
     @Test
