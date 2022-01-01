@@ -44,6 +44,8 @@ public class HandleModificationConfigurationSectionTest extends ConfigurationSec
         if (defaultSection != null) {
             assertTrue(defaultSection.getKeys(true).isEmpty());
         }
+        assertTrue(setter.getComments().isEmpty());
+        assertTrue(setter.getInlineComments().isEmpty());
     }
 
     @Test
@@ -100,5 +102,33 @@ public class HandleModificationConfigurationSectionTest extends ConfigurationSec
     public void testCreateSectionWithValuesOnExistingConfigPath() {
         super.testCreateSectionWithValuesOnExistingConfigPath();
         config.set("createdSectionWithValuesExist", null);
+    }
+
+    @Test
+    @Override
+    public void testSetComments() {
+        super.testSetComments();
+        config.setComments("existingSet", null);
+    }
+
+    @Test
+    @Override
+    public void testSetCommentsOnInvalid() {
+        super.testSetCommentsOnInvalid();
+        config.setComments("existingSet_invalid", null);
+    }
+
+    @Test
+    @Override
+    public void testSetInlineComments() {
+        super.testSetInlineComments();
+        config.setInlineComments("existingSet", null);
+    }
+
+    @Test
+    @Override
+    public void testSetInlineCommentsOnInvalid() {
+        super.testSetInlineCommentsOnInvalid();
+        config.setInlineComments("existingSet_invalid", null);
     }
 }

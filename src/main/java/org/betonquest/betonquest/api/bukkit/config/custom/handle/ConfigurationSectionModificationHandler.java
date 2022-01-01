@@ -4,6 +4,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,4 +49,22 @@ public interface ConfigurationSectionModificationHandler {
      */
     @NotNull
     ConfigurationSection createSection(@NotNull ConfigurationSection section, @NotNull final String path, @NotNull final Map<?, ?> map);
+
+    /**
+     * Handles the {@link ConfigurationSection#setComments(String, List)} method.
+     *
+     * @param section  The {@link ConfigurationSection} from which the method was called
+     * @param path     The path to the section
+     * @param comments The comments to set
+     */
+    void setComments(@NotNull ConfigurationSection section, @NotNull final String path, @Nullable final List<String> comments);
+
+    /**
+     * Handles the {@link ConfigurationSection#setInlineComments(String, List)} method.
+     *
+     * @param section  The {@link ConfigurationSection} from which the method was called
+     * @param path     The path to the section
+     * @param comments The comments to set
+     */
+    void setInlineComments(@NotNull ConfigurationSection section, @NotNull final String path, @Nullable final List<String> comments);
 }
