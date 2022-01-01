@@ -110,5 +110,29 @@ public class UnmodifiableConfigurationSectionTest extends ConfigurationSectionBa
     public void testCreateSectionWithValues() {
         assertThrowsUnmodifiableException(super::testCreateSectionWithValues);
     }
+
+    @Test
+    @Override
+    public void testSetComments() {
+        assertThrowsUnmodifiableException(super::testSetComments);
+    }
+
+    @Test
+    @Override
+    public void testSetCommentsOnInvalid() {
+        assertThrowsUnmodifiableException(super::testSetCommentsOnInvalid);
+    }
+
+    @Test
+    @Override
+    public void testSetInlineComments() {
+        assertThrowsUnmodifiableException(super::testSetInlineComments);
+    }
+
+    @Test
+    @Override
+    public void testSetInlineCommentsOnInvalid() {
+        assertThrowsUnmodifiableException(super::testSetInlineCommentsOnInvalid);
+    }
 }
 
