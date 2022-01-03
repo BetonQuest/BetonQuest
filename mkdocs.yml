@@ -34,6 +34,7 @@ theme:
     - search.share
     - navigation.indexes
     - search.suggest
+    - announce.dismiss
   palette:
     - scheme: slate
       primary: indigo
