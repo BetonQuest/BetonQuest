@@ -9,10 +9,10 @@ hide:
 .bq-inline-example-container {
   width: clamp(300px,50%,100%) !important;
 }
-td, th{
+td th{
   vertical-align: middle !important;
 }
-tr:nth-child(1), a p {
+tr:nth-child(1) a, tr:nth-child(1) p {
   font-size: medium !important;
   font-weight: 700 !important;
   text-decoration: underline !important;
@@ -26,7 +26,7 @@ tr:nth-child(11) {
 tr:nth-child(11):hover {
   background-color: rgba(0, 0, 0, 0.3) !important;
 }
-tr:nth-child(11), p {
+tr:nth-child(11) p {
   font-size: medium;
   font-weight: 700;
   text-decoration: underline;
