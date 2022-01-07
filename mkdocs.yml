@@ -22,7 +22,6 @@ extra_javascript:
 theme:
   name: material
   language: en
-  custom_dir: documentation/overrides
   features:
     - navigation.tabs
     - navigation.tabs.sticky
@@ -32,7 +31,6 @@ theme:
     - navigation.expand
     - search.share
     - search.suggest
-    - announce.dismiss
   palette:
     - scheme: slate
       primary: indigo
