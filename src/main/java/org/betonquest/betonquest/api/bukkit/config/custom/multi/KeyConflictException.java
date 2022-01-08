@@ -83,8 +83,14 @@ public class KeyConflictException extends InvalidConfigurationException {
     private void resolvePathMessage(final Map<ConfigurationSection, String> namedConfigurations, final StringBuilder exMessage) {
         exMessage.append('\n');
         for (final List<Pair<String, ConfigurationSection>> entry : conflictingPaths) {
-            final List<Pair<String, ConfigurationSection>> sorted = entry.stream().sorted().collect(Collectors.toList());
-            exMessage.append("    The key '").append(sorted.get(0).getKey()).append("' is a path with sub keys in at least one of the following configs:\n");
+            final List<Pair<String, ConfigurationSection>> sorted = entry.stream()
+                    .sorted(Map.Entry.comparingByKey()).collect(Collectors.toList());
+            final Pair<String, ConfigurationSection> firstEntry = sorted.get(0);
+            sorted.remove(0);
+
+            exMessage.append("    The key '").append(firstEntry.getKey()).append("' in config '")
+                    .append(namedConfigurations.get(firstEntry.getValue()))
+                    .append("' is a path with sub keys in at least one of the following configs:\n");
             sorted.parallelStream().map(pair -> Pair.of(namedConfigurations.get(pair.getValue()), pair.getKey())).sorted()
                     .forEachOrdered(pair -> exMessage.append("        - ").append(pair.getKey()).append(" with '").append(pair.getValue()).append("'\n"));
         }
