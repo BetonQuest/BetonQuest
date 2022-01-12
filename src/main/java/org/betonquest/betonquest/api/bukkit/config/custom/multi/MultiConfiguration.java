@@ -259,7 +259,8 @@ public class MultiConfiguration extends HandleModificationConfiguration {
         }
         final ConfigurationSection config = original.getConfigurationSection(path);
         if (config == null) {
-            return keyIndex.get(path).get(0);
+            final List<ConfigurationSection> keyIndexEntry = keyIndex.get(path);
+            return keyIndexEntry == null ? null : keyIndexEntry.get(0);
         }
         final Set<ConfigurationSection> configurationSections = new HashSet<>();
         for (final String key : config.getKeys(false)) {
@@ -296,7 +297,7 @@ public class MultiConfiguration extends HandleModificationConfiguration {
      * @param targetConfig the config to associate entries to
      */
     public void associateWith(final ConfigurationSection targetConfig) {
-        for (final String key : original.getKeys(false)) {
+        for (final String key : getUnassociatedKeys()) {
             associateWith(key, targetConfig);
         }
     }
