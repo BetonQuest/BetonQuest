@@ -11,9 +11,9 @@ import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.Point;
 import org.betonquest.betonquest.Pointer;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.config.ConfigAccessor;
 import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.database.Connector.UpdateType;
 import org.betonquest.betonquest.database.GlobalData;
@@ -48,6 +48,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -403,7 +404,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      *             null for unspecific
      * @return
      */
-    private List<String> completeId(final String[] args, final ConfigAccessor.AccessorType type) {
+    private List<String> completeId(final String[] args, final AccessorType type) {
         final String last = args[args.length - 1];
         if (last == null || !last.contains(".")) {
             return completePackage();
@@ -715,7 +716,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return Arrays.asList("add", "list", "del");
         }
         if (args.length == 4) {
-            return completeId(args, ConfigAccessor.AccessorType.JOURNAL);
+            return completeId(args, AccessorType.JOURNAL);
         }
         return new ArrayList<>();
     }
@@ -938,7 +939,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         // save it in items.yml
         LOG.debug("Saving item to configuration as " + args[1]);
         config.getConfig().set(name, instructions.trim());
-        config.saveConfig();
+        try {
+            config.save();
+        } catch (final IOException e) {
+            LOG.warning(configPack, e.getMessage(), e);
+            return;
+        }
         // done
         sendMessage(sender, "item_created", args[1]);
 
@@ -953,7 +959,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      */
     private List<String> completeItems(final String... args) {
         if (args.length == 2) {
-            return completeId(args, ConfigAccessor.AccessorType.ITEMS);
+            return completeId(args, AccessorType.ITEMS);
         }
         return new ArrayList<>();
     }
@@ -999,7 +1005,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return null;
         }
         if (args.length == 3) {
-            return completeId(args, ConfigAccessor.AccessorType.EVENTS);
+            return completeId(args, AccessorType.EVENTS);
         }
         return new ArrayList<>();
     }
@@ -1046,7 +1052,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return null;
         }
         if (args.length == 3) {
-            return completeId(args, ConfigAccessor.AccessorType.CONDITIONS);
+            return completeId(args, AccessorType.CONDITIONS);
         }
         return new ArrayList<>();
     }
@@ -1334,7 +1340,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return Arrays.asList("list", "add", "del", "complete");
         }
         if (args.length == 4) {
-            return completeId(args, ConfigAccessor.AccessorType.OBJECTIVES);
+            return completeId(args, AccessorType.OBJECTIVES);
         }
         return new ArrayList<>();
     }
@@ -1489,7 +1495,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 // rename objective in the file
                 nameID.getPackage().getObjectives().getConfig().set(rename.split("\\.")[1],
                         nameID.generateInstruction().getInstruction());
-                nameID.getPackage().getObjectives().saveConfig();
+                try {
+                    nameID.getPackage().getObjectives().save();
+                } catch (final IOException e) {
+                    LOG.warning(nameID.getPackage(), e.getMessage(), e);
+                    return;
+                }
                 // rename objective instance
                 final ObjectiveID renameID;
                 try {
@@ -1526,7 +1537,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     BetonQuest.resumeObjective(PlayerConverter.getID(player), renameID, data);
                 }
                 nameID.getPackage().getObjectives().getConfig().set(nameID.getBaseID(), null);
-                nameID.getPackage().getObjectives().saveConfig();
+                try {
+                    nameID.getPackage().getObjectives().save();
+                } catch (final IOException e) {
+                    LOG.warning(nameID.getPackage(), e.getMessage(), e);
+                    return;
+                }
                 break;
             case "journals":
             case "journal":
@@ -1674,14 +1690,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 case "objectives":
                 case "objective":
                 case "o":
-                    return completeId(args, ConfigAccessor.AccessorType.OBJECTIVES);
+                    return completeId(args, AccessorType.OBJECTIVES);
                 case "journals":
                 case "journal":
                 case "j":
                 case "entries":
                 case "entry":
                 case "e":
-                    return completeId(args, ConfigAccessor.AccessorType.JOURNAL);
+                    return completeId(args, AccessorType.JOURNAL);
                 default:
                     break;
             }
@@ -1908,5 +1924,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             final String message = Config.getMessage(Config.getLanguage(), messageName, variables);
             sender.sendMessage(message);
         }
+    }
+
+    private enum AccessorType {
+        EVENTS, CONDITIONS, OBJECTIVES, ITEMS, JOURNAL
     }
 }

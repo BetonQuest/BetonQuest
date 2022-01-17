@@ -3,7 +3,7 @@ package org.betonquest.betonquest.config;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.config.ConfigAccessor.AccessorType;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -12,6 +12,7 @@ import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -74,9 +75,13 @@ public class Config {
         plugin.saveConfig();
 
         // load messages
-        messages = new ConfigAccessor(new File(root, "messages.yml"), "messages.yml", AccessorType.OTHER);
-        messages.saveDefaultConfig();
-        internal = new ConfigAccessor(null, "messages-internal.yml", AccessorType.OTHER);
+        try {
+            messages = ConfigAccessor.create(new File(root, "messages.yml"), BetonQuest.getInstance(), "messages.yml");
+            internal = ConfigAccessor.create(BetonQuest.getInstance(), "messages-internal.yml");
+        } catch (final InvalidConfigurationException e) {
+            LOG.warning(e.getMessage(), e);
+            return;
+        }
         for (final String key : messages.getConfig().getKeys(false)) {
             if (!"global".equals(key)) {
                 if (verboose) {
@@ -295,7 +300,12 @@ public class Config {
             return true;
         } else if ("messages".equals(main)) {
             messages.getConfig().set(address.substring(9), value);
-            messages.saveConfig();
+            try {
+                messages.save();
+            } catch (final IOException e) {
+                LOG.warning(e.getMessage(), e);
+                return true;
+            }
             return true;
         } else {
             final ConfigPackage pack = PACKAGES.get(main);
@@ -540,6 +550,7 @@ public class Config {
         return getPackages().get(defaultPackage);
     }
 
+    @SuppressWarnings("PMD.CognitiveComplexity")
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private void searchForPackages(final File file) {
         if (file.isDirectory() && !UTIL_DIR_NAMES.contains(file.getName())) {
@@ -550,7 +561,13 @@ public class Config {
                     final String packPath = BetonQuest.getInstance().getDataFolder()
                             .toURI().relativize(file.toURI())
                             .toString().replace('/', ' ').trim().replace(' ', '-');
-                    final ConfigPackage pack = new ConfigPackage(file, packPath);
+                    final ConfigPackage pack;
+                    try {
+                        pack = new ConfigPackage(file, packPath);
+                    } catch (final InvalidConfigurationException e) {
+                        LOG.warning(e.getMessage(), e);
+                        return;
+                    }
                     if (pack.isEnabled()) {
                         PACKAGES.put(packPath, pack);
                     }
