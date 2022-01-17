@@ -2,12 +2,14 @@ package org.betonquest.betonquest.config;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
-import org.betonquest.betonquest.config.ConfigAccessor.AccessorType;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.GlobalVariableID;
 import org.betonquest.betonquest.utils.Utils;
+import org.bukkit.configuration.InvalidConfigurationException;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -43,25 +45,26 @@ public class ConfigPackage {
      * @param name the name of this package
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public ConfigPackage(final File pack, final String name) {
+    public ConfigPackage(final File pack, final String name) throws InvalidConfigurationException {
         if (!pack.isDirectory()) {
             throw new IllegalArgumentException("The file '" + pack.getName() + "' is not a folder!");
         }
         folder = pack;
         this.name = name;
-        main = new ConfigAccessor(new File(pack, "main.yml"), "main.yml", AccessorType.MAIN);
-        events = new ConfigAccessor(new File(pack, "events.yml"), "events.yml", AccessorType.EVENTS);
-        conditions = new ConfigAccessor(new File(pack, "conditions.yml"), "conditions.yml", AccessorType.CONDITIONS);
-        objectives = new ConfigAccessor(new File(pack, "objectives.yml"), "objectives.yml", AccessorType.OBJECTIVES);
-        journal = new ConfigAccessor(new File(pack, "journal.yml"), "journal.yml", AccessorType.JOURNAL);
-        items = new ConfigAccessor(new File(pack, "items.yml"), "items.yml", AccessorType.ITEMS);
-        custom = new ConfigAccessor(new File(pack, "custom.yml"), "custom.yml", AccessorType.CUSTOM);
+        final File mainFile = new File(pack, "main.yml");
+        main = ConfigAccessor.create(mainFile);
+        events = ConfigAccessor.create(new File(pack, "events.yml"));
+        conditions = ConfigAccessor.create(new File(pack, "conditions.yml"));
+        objectives = ConfigAccessor.create(new File(pack, "objectives.yml"));
+        journal = ConfigAccessor.create(new File(pack, "journal.yml"));
+        items = ConfigAccessor.create(new File(pack, "items.yml"));
+        custom = ConfigAccessor.create(new File(pack, "custom.yml"));
         final File convFile = new File(pack, "conversations");
         if (convFile.exists() && convFile.isDirectory()) {
             for (final File conv : convFile.listFiles()) {
                 final String convName = conv.getName();
                 if (convName.endsWith(".yml")) {
-                    final ConfigAccessor convAccessor = new ConfigAccessor(conv, convName, AccessorType.CONVERSATION);
+                    final ConfigAccessor convAccessor = ConfigAccessor.create(conv);
                     conversations.put(convName.substring(0, convName.length() - 4), convAccessor);
                 }
             }
@@ -280,7 +283,7 @@ public class ConfigPackage {
         return Utils.format(getString(address));
     }
 
-    @SuppressWarnings({"PMD.LinguisticNaming", "PMD.CyclomaticComplexity"})
+    @SuppressWarnings({"PMD.LinguisticNaming", "PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     public boolean setString(final String address, final String value) {
         // prepare the address
         final String[] parts = address.split("\\.");
@@ -334,7 +337,12 @@ public class ConfigPackage {
             }
         }
         config.getConfig().set(newPath.toString(), value);
-        config.saveConfig();
+        try {
+            config.save();
+        } catch (final IOException e) {
+            LOG.warning(this, e.getMessage(), e);
+            return false;
+        }
         return true;
     }
 
