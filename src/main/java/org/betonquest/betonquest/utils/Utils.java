@@ -3,9 +3,8 @@ package org.betonquest.betonquest.utils;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.config.ConfigAccessor;
-import org.betonquest.betonquest.config.ConfigAccessor.AccessorType;
 import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.config.Zipper;
 import org.betonquest.betonquest.database.Connector;
@@ -19,6 +18,7 @@ import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -93,7 +93,7 @@ public final class Utils {
             boolean done = true;
             // prepare the config file
             databaseBackupFile.createNewFile();
-            final ConfigAccessor accessor = new ConfigAccessor(databaseBackupFile, databaseBackupFile.getName(), AccessorType.OTHER);
+            final ConfigAccessor accessor = ConfigAccessor.create(databaseBackupFile);
             final FileConfiguration config = accessor.getConfig();
             // prepare the database and map
             final HashMap<String, ResultSet> map = new HashMap<>();
@@ -143,9 +143,9 @@ public final class Utils {
                 }
             }
             // save the config at the end
-            accessor.saveConfig();
+            accessor.save();
             return done;
-        } catch (IOException | SQLException e) {
+        } catch (IOException | SQLException | InvalidConfigurationException e) {
             LOG.warning("There was an error during database backup: " + e.getMessage(), e);
             final File brokenFile = new File(instance.getDataFolder(), "database-backup.yml");
             if (brokenFile.exists()) {
@@ -233,7 +233,7 @@ public final class Utils {
     /**
      * If the database backup file exists, loads it into the database.
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "PMD.NcssCount", "PMD.ExcessiveMethodLength"})
     @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     public static void loadDatabaseFromBackup() {
         final BetonQuest instance = BetonQuest.getInstance();
@@ -260,7 +260,13 @@ public final class Utils {
                     + "forever. Because of that the loading of backup was aborted!");
             return;
         }
-        final ConfigAccessor accessor = new ConfigAccessor(file, "database-backup.yml", AccessorType.OTHER);
+        final ConfigAccessor accessor;
+        try {
+            accessor = ConfigAccessor.create(file);
+        } catch (final InvalidConfigurationException e) {
+            LOG.warning(e.getMessage(), e);
+            return;
+        }
         final FileConfiguration config = accessor.getConfig();
         final Database database = instance.getDB();
         // create tables if they don't exist, so we can be 100% sure
