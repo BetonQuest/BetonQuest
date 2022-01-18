@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public class MultiConfiguration extends HandleModificationConfiguration {
+
     /**
      * Exception message for unmodifiable behaviours.
      */
@@ -45,7 +46,7 @@ public class MultiConfiguration extends HandleModificationConfiguration {
     private final Set<ConfigurationSection> unsavedConfigs;
 
     /**
-     * Create a new {@link MultiConfiguration} from a set of source {@link ConfigurationSection}s.
+     * Creates a new {@link MultiConfiguration} from a set of source {@link ConfigurationSection}s.
      * All {@link ConfigurationSection}s are merged together.
      * It is still possible to set values.
      * If the values exist in a source config, it will set them there,
@@ -212,7 +213,7 @@ public class MultiConfiguration extends HandleModificationConfiguration {
     /**
      * Returns if a save is needed on a {@link ConfigurationSection} or an unassociated entry.
      *
-     * @return true, if save is needed
+     * @return true, if a save is needed
      */
     public boolean needSave() {
         if (!unsavedConfigs.isEmpty()) {
@@ -241,7 +242,7 @@ public class MultiConfiguration extends HandleModificationConfiguration {
     /**
      * Get the configuration of a specified path. The path can also be a configuration section.
      * <p>
-     * If the path is not set in this {@link MultiConfiguration} this return null.
+     * If the path is not set in this {@link MultiConfiguration} this will return null.
      * This is also the case for default values.
      * <p>
      * If the path is a configuration section it will be checked,
@@ -368,8 +369,7 @@ public class MultiConfiguration extends HandleModificationConfiguration {
     }
 
     @Override
-    public @Nullable
-    ConfigurationSection getDefaultSection() {
+    public @Nullable ConfigurationSection getDefaultSection() {
         return new UnmodifiableConfigurationSection(original.getDefaultSection());
     }
 
@@ -378,7 +378,7 @@ public class MultiConfiguration extends HandleModificationConfiguration {
      */
     public interface Saver {
         /**
-         * This method gets called, for a configuration instance, that need to be saved.
+         * This method gets called for a configuration instance that needs to be saved.
          *
          * @param unsaved the instance of an unsaved {@link ConfigurationSection}
          */
