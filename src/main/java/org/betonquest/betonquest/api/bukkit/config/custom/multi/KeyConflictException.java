@@ -4,6 +4,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 
+import java.io.Serial;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -14,12 +15,15 @@ import java.util.stream.Collectors;
  * This exception represents a conflict with two keys in multiple configurations.
  */
 public class KeyConflictException extends InvalidConfigurationException {
+
+    @Serial
     private static final long serialVersionUID = 3529254335908123119L;
 
     /**
      * This map contains all conflicting keys and a list of all related {@link ConfigurationSection}s.
      */
     private final Map<String, List<ConfigurationSection>> conflictingKeys;
+
     /**
      * This outer list contains all conflicting paths while the inner list contains pairs of the actual
      * paths and the related {@link ConfigurationSection} that have a conflict.
@@ -29,7 +33,8 @@ public class KeyConflictException extends InvalidConfigurationException {
     /**
      * Creates an exception for duplicated keys.
      *
-     * @param duplicates the map of duplicated keys
+     * @param duplicates       the map of duplicated keys
+     * @param conflictingPaths the list of all conflicting paths
      */
     public KeyConflictException(final Map<String, List<ConfigurationSection>> duplicates,
                                 final List<List<Pair<String, ConfigurationSection>>> conflictingPaths) {
@@ -39,8 +44,9 @@ public class KeyConflictException extends InvalidConfigurationException {
     /**
      * Creates an exception for duplicated keys.
      *
-     * @param msg        the exception message
-     * @param duplicates the map of duplicated keys
+     * @param msg              the exception message
+     * @param duplicates       the map of duplicated keys
+     * @param conflictingPaths the list of all conflicting paths
      */
     public KeyConflictException(final String msg, final Map<String, List<ConfigurationSection>> duplicates,
                                 final List<List<Pair<String, ConfigurationSection>>> conflictingPaths) {
@@ -52,9 +58,9 @@ public class KeyConflictException extends InvalidConfigurationException {
     /**
      * Create a readable and more useful error message.
      *
-     * @param namedConfigurations a map of the {@link ConfigurationSection}s, that you used in the constructor of
-     *                            {@link MultiConfiguration#MultiConfiguration(ConfigurationSection...)} withe a
-     *                            readable string as to use in the message
+     * @param namedConfigurations a map of the {@link ConfigurationSection}s, that you used when constructing a
+     *                            {@link MultiConfiguration#MultiConfiguration(ConfigurationSection...)}.
+     *                            Each ConfigurationSection maps to a readable message.
      * @return a formatted and helpful error message
      */
     public String resolvedMessage(final Map<ConfigurationSection, String> namedConfigurations) {
