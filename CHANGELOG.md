@@ -63,7 +63,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Vietnamese translation
 - added invOrder setting to (mmoitem)take event
 - the mmoitemtake event & mmoitem condition now also check the backpack
-  - this will not work until the item rework / until the backpack contains NBT data
+    - this will not work until the item rework / until the backpack contains NBT data
 ### Changed
 - `/q create package` command does now create an empty package
 ### Deprecated
@@ -149,34 +149,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.12.0] - 2021-01-10
 ### Added
 - Tags and Objectives can now be removed with a static event for all players, even if they are not online
-  * deletepoint event can now also be called to delete all points for all players
-  * journal del event can now also be called as static
+    * deletepoint event can now also be called to delete all points for all players
+    * journal del event can now also be called as static
 - Added integration for TeamRequiem plugins (MMOCore, MMOItems, MMOLib)
-  * Conditions:
-    - MMOClass condition (type & class)
-    - MMOProfession condition
-    - MMOAttribute condition
-    - MMOItems item condition (item in inventory)
-    - MMOItems hand condition (item in main/offhand)
-    - MMOLib stats condition  (a ton of stats from Core and Items combined)
-  * Objectives:
-    - Level X Profession to X Level
-    - Craft / Upgrade X Item within Inventory
-    - Craft X item
-    - Apply Gem Stone to Item
-    - Upgrade Item via Consumable
-    - Cast Item ability
-    - Cast Class ability
-    - Mine MMOBlock
-  * Events:
-    - Add mmo class level or exp
-    -️ Add mmo professional level or exp
-    -️️ Add Skill points
-    -️️ Add attribute points
-    -️️ Add attribute reallocation points
-    -️️ Add class points
-    -️️ Give Item ️
-    -️ Take Item
+    * Conditions:
+        - MMOClass condition (type & class)
+        - MMOProfession condition
+        - MMOAttribute condition
+        - MMOItems item condition (item in inventory)
+        - MMOItems hand condition (item in main/offhand)
+        - MMOLib stats condition  (a ton of stats from Core and Items combined)
+    * Objectives:
+        - Level X Profession to X Level
+        - Craft / Upgrade X Item within Inventory
+        - Craft X item
+        - Apply Gem Stone to Item
+        - Upgrade Item via Consumable
+        - Cast Item ability
+        - Cast Class ability
+        - Mine MMOBlock
+    * Events:
+        - Add mmo class level or exp
+        -️ Add mmo professional level or exp
+        -️️ Add Skill points
+        -️️ Add attribute points
+        -️️ Add attribute reallocation points
+        -️️ Add class points
+        -️️ Give Item ️
+        -️ Take Item
 - equal argument for condition 'empty'
 - Condition 'wand' can now have an option '
 - Implementing 1.15 support for Events and Conditions
