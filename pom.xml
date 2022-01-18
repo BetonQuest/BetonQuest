@@ -118,6 +118,12 @@
       <artifactId>MythicMobs</artifactId>
       <version>4.11.2</version>
       <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -317,6 +323,11 @@
     </dependency>
 
     <!-- only dependencies from maven central that are no MC Plugins -->
+    <dependency>
+      <groupId>org.jetbrains</groupId>
+      <artifactId>annotations</artifactId>
+      <version>23.0.0</version>
+    </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
