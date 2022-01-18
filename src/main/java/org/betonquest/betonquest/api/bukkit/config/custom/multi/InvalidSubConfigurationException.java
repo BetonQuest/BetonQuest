@@ -3,11 +3,16 @@ package org.betonquest.betonquest.api.bukkit.config.custom.multi;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 
+import java.io.Serial;
+
 /**
  * This exception represents an invalid sub configuration in a {@link MultiConfiguration}.
  */
 public class InvalidSubConfigurationException extends InvalidConfigurationException {
+
+    @Serial
     private static final long serialVersionUID = 8273686920162391985L;
+
     /**
      * The invalid sub configuration.
      */
@@ -34,7 +39,7 @@ public class InvalidSubConfigurationException extends InvalidConfigurationExcept
     }
 
     /**
-     * Get the invalid sub configuration.
+     * Gets the invalid sub configuration.
      *
      * @return the invalid sub configuration
      */
