@@ -1371,20 +1371,20 @@ public class BetonQuest extends JavaPlugin {
      * @return the event types map
      */
     public Map<String, Class<? extends QuestEvent>> getEventTypes(){
-        return EVENT_TYPES;
+        return new HashMap<>(EVENT_TYPES);
     }
 
     /**
      * @return the condition types map
      */
     public Map<String, Class<? extends Condition>> getConditionTypes(){
-        return CONDITION_TYPES;
+        return new HashMap<>(CONDITION_TYPES);
     }
 
     /**
      * @return the objective types map
      */
     public Map<String, Class<? extends Objective>> getObjectiveTypes(){
-        return OBJECTIVE_TYPES;
+        return new HashMap<>(OBJECTIVE_TYPES);
     }
 }
