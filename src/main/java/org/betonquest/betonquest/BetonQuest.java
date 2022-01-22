@@ -1366,4 +1366,25 @@ public class BetonQuest extends JavaPlugin {
     public void renameObjective(final ObjectiveID name, final ObjectiveID rename) {
         OBJECTIVES.put(rename, OBJECTIVES.remove(name));
     }
+
+    /**
+     * @return the event types map
+     */
+    public Map<String, Class<? extends QuestEvent>> getEventTypes(){
+        return EVENT_TYPES;
+    }
+
+    /**
+     * @return the condition types map
+     */
+    public Map<String, Class<? extends Condition>> getConditionTypes(){
+        return CONDITION_TYPES;
+    }
+
+    /**
+     * @return the objective types map
+     */
+    public Map<String, Class<? extends Objective>> getObjectiveTypes(){
+        return OBJECTIVE_TYPES;
+    }
 }
