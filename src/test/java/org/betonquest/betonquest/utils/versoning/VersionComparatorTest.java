@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This test should only ensure, that the {@link Version} dose not break anything or select wrong versions
+ * This test should only ensure, that the {@link Version} does not break anything or select wrong versions
  * and push them into the production server.
  */
 @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
@@ -81,7 +81,7 @@ class VersionComparatorTest {
     }
 
     /**
-     * Compares all version combinations withe the
+     * Compares all version combinations with the
      * {@link UpdateStrategy#MAJOR} strategy.
      */
     @Test
@@ -154,7 +154,7 @@ class VersionComparatorTest {
     }
 
     /**
-     * Compares all version combinations withe the
+     * Compares all version combinations with the
      * {@link UpdateStrategy#MINOR} strategy.
      */
     @Test
@@ -225,7 +225,7 @@ class VersionComparatorTest {
     }
 
     /**
-     * Compares all version combinations withe the
+     * Compares all version combinations with the
      * {@link UpdateStrategy#PATCH} strategy.
      */
     @Test
@@ -294,7 +294,7 @@ class VersionComparatorTest {
     }
 
     /**
-     * Compares all version combinations withe the
+     * Compares all version combinations with the
      * {@link UpdateStrategy#MAJOR} strategy with dev qualifier.
      */
     @Test
@@ -363,7 +363,7 @@ class VersionComparatorTest {
     }
 
     /**
-     * Compares all version combinations withe the
+     * Compares all version combinations with the
      * {@link UpdateStrategy#MINOR} strategy with dev qualifier.
      */
     @Test
@@ -434,7 +434,7 @@ class VersionComparatorTest {
     }
 
     /**
-     * Compares all version combinations withe the
+     * Compares all version combinations with the
      * {@link UpdateStrategy#PATCH} strategy with dev qualifier.
      */
     @Test
