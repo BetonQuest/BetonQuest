@@ -2,7 +2,7 @@
 
 ## Cancel quest: `cancel`
 
-This event works in the same way as a [quest canceler in the backpack](/User-Documentation/Reference/#canceling-quests).
+This event works in the same way as a [quest canceler in the backpack](Reference.md#canceling-quests).
 Running it is equal to the player clicking on the bone. The only argument is a name of a quest canceler, as defined in _main.yml_
 
 !!! example
@@ -58,7 +58,7 @@ This event works the same as `take` event, but it takes items from a chest at sp
     chesttake 100;200;300;world emerald:5,sword
     ```
 
-## Clear mobs: `clear`
+## Clear entities: `clear`
 
 This event removes all specified mobs from the specified area. The first required argument is a list of mobs (taken from [here](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html)) separated by commas. Next is location. After that there is the radius around the location (a positive number or a variable). You can also optionally specify `name:` argument, followed by name which removed mobs must have. You can use `marked:` argument to remove only mobs marked in `spawn` event.
 
@@ -345,7 +345,7 @@ Displays a notification using the NotifyIO system.
 |--------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
 | message  	                                                         | The message that will be displayed. Supports variables and translations. *Required, must be first*             	                                                                     |
 | category 	                                                         | Will load all settings from that Notification Category. Can be a comma-seperated list. The first existent category will be used. *Optional*                  |   
-| io       	                                                         | Any [NotifyIO](https://betonquest.github.io/BetonQuest/RELEASE/User-Documentation/Notification-IO%27s-%26-Categories). Overrides the "category" settings. *Optional*                                                                                     |
+| io       	                                                         | Any [NotifyIO](Notification-IO's-&-Categories.md). Overrides the "category" settings. *Optional*                                                                                     |
 | [NotifyIO](Notification-IO's-&-Categories.md#notify-ios) 	         | Any setting from the defined notifyIO. Can be used multiple times. Overrides the "category" settings. *Optional*                                                                     |
 
 The fallback NotifyIO is `chat` if no argument other than `message` is specified.    

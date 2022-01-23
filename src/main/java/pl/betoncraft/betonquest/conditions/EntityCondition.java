@@ -4,7 +4,6 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.metadata.MetadataValue;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.VariableNumber;
@@ -56,7 +55,7 @@ public class EntityCondition extends Condition {
                     types[i] = EntityType.valueOf(rawTypes[i].toUpperCase(Locale.ROOT));
                     amounts[i] = new VariableNumber(1);
                 }
-            } catch (IllegalArgumentException e) {
+            } catch (final IllegalArgumentException e) {
                 throw new InstructionParseException("Unknown entity type: " + rawTypes[i], e);
             }
         }
@@ -72,7 +71,7 @@ public class EntityCondition extends Condition {
     private VariableNumber getAmount(final String typePart) throws InstructionParseException {
         try {
             return new VariableNumber(instruction.getPackage().getName(), typePart);
-        } catch (InstructionParseException e) {
+        } catch (final InstructionParseException e) {
             throw new InstructionParseException("Could not parse amount", e);
         }
     }
@@ -89,9 +88,6 @@ public class EntityCondition extends Condition {
         final Collection<Entity> entities = location.getWorld().getEntities();
         loop:
         for (final Entity entity : entities) {
-            if (!(entity instanceof LivingEntity)) {
-                continue;
-            }
             if (name != null && (entity.getCustomName() == null || !entity.getCustomName().equals(name))) {
                 continue;
             }

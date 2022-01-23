@@ -4,7 +4,7 @@ site_url: https://betonquest.github.io/BetonQuest/
 site_dir: target/documentation
 docs_dir: documentation
 repo_name: BetonQuest on GitHub
-edit_uri: /BetonQuest/BetonQuest/edit/master/documentation/
+edit_uri: /BetonQuest/BetonQuest/edit/master_v1.12/documentation/
 repo_url: https://github.com/BetonQuest/BetonQuest
 copyright: '© 2020  BetonQuest Organisation. GPLv3'
 
@@ -98,7 +98,7 @@ extra:
     - icon: fontawesome/brands/github
       link: https://github.com/BetonQuest/BetonQuest
     - icon: fontawesome/solid/archive
-      link: https://betonquest.org/old
+      link: https://dev.betonquest.org
     - icon: fontawesome/solid/faucet
       link: https://spigotmc.org/resources/betonquest.2117/
 
@@ -146,7 +146,7 @@ nav:
   - 'Developer Documentation':
       - '📚 Contributing Guidelines': Developer-Documentation/Contributing-Guidelines.md
       - '⚙️ API': Developer-Documentation/API.md
-      - '🏭 Versioning & Releasing': Participate/Code/Versioning-and-Releasing.md
+      - '🏭 Versioning & Releasing': Developer-Documentation/Versioning-and-Releasing.md
   - 'Contributing':
       - '🤝 Overview': Contributing/Contributing.md
       - 'Docs':

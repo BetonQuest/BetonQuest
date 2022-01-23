@@ -9,7 +9,12 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,7 +32,7 @@ import java.util.regex.PatternSyntaxException;
  * - state - (optional) The block states can be provided in a comma separated `key=value` list surrounded by square
  * brackets. Regex allowed
  */
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "PMD.GodClass"})
 public class BlockSelector {
     private final List<Material> materials;
     private final Map<String, String> states;
@@ -188,7 +193,7 @@ public class BlockSelector {
 
         if (restSelector.contains(":")) {
             final int index = restSelector.indexOf(':');
-            selectorParts[0] = restSelector.substring(0, index).toLowerCase(Locale.ROOT);
+            selectorParts[0] = index == 0 ? "minecraft" : restSelector.substring(0, index).toLowerCase(Locale.ROOT);
             selectorParts[1] = restSelector.substring(index + 1).toLowerCase(Locale.ROOT);
         } else {
             selectorParts[0] = "minecraft";
@@ -241,7 +246,7 @@ public class BlockSelector {
         try {
             namespacePattern = Pattern.compile("^" + namespaceString + "$");
             keyPattern = Pattern.compile("^" + keyString + "$");
-        } catch (PatternSyntaxException exception) {
+        } catch (final PatternSyntaxException exception) {
             throw new InstructionParseException("Invalid Regex: " + exception.getMessage(), exception);
         }
         for (final Material m : Material.values()) {

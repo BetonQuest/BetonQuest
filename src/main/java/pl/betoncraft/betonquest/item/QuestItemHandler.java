@@ -6,6 +6,7 @@ import org.bukkit.GameMode;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
@@ -235,22 +236,14 @@ public class QuestItemHandler implements Listener {
 
     @SuppressFBWarnings
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler()
     public void onInteractEvent(final PlayerInteractEvent event) {
-        if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
+        if (event.getPlayer().getGameMode() == GameMode.CREATIVE || event.useInteractedBlock() == Event.Result.DENY && event.useItemInHand() == Event.Result.DENY) {
             return;
         }
         final ItemStack item = event.getItem();
-        if (item == null) {
-            return;
-        }
-
-        if (!EnchantmentTarget.TOOL.includes(item.getType())) {
-            final String playerID = PlayerConverter.getID(event.getPlayer());
-            if (Journal.isJournal(playerID, item) || Utils.isQuestItem(item)) {
-                event.setCancelled(true);
-            }
-
+        if (item != null && !EnchantmentTarget.TOOL.includes(item.getType()) && Utils.isQuestItem(item)) {
+            event.setCancelled(true);
         }
     }
 

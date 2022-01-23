@@ -11,7 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.metadata.MetadataValue;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
@@ -25,7 +25,11 @@ import pl.betoncraft.betonquest.utils.PlayerConverter;
 import pl.betoncraft.betonquest.utils.Utils;
 import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Level;
 
 /**
@@ -41,10 +45,10 @@ public class EntityInteractObjective extends Objective {
     private final int notifyInterval;
     private final CompoundLocation loc;
     private final VariableNumber range;
-    protected EntityType mobType;
-    protected int amount;
     private final String customName;
     private final String realName;
+    protected EntityType mobType;
+    protected int amount;
     protected String marked;
     protected boolean notify;
     protected Interaction interaction;
@@ -276,7 +280,7 @@ public class EntityInteractObjective extends Objective {
         }
 
         @EventHandler(ignoreCancelled = true)
-        public void onRightClick(final PlayerInteractEntityEvent event) {
+        public void onRightClick(final PlayerInteractAtEntityEvent event) {
             final boolean success = onInteract(event.getPlayer(), event.getRightClicked());
             if (success && cancel) {
                 event.setCancelled(true);

@@ -1,9 +1,12 @@
 package pl.betoncraft.betonquest.compatibility.quests;
 
+import me.blackvein.quests.Quest;
 import pl.betoncraft.betonquest.Instruction;
 import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.exceptions.InstructionParseException;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
+
+import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
  * Checks if the player has done specified quest before.
@@ -20,8 +23,9 @@ public class QuestsCondition extends Condition {
 
     @Override
     protected Boolean execute(final String playerID) {
-        for (final String q : QuestsIntegrator.getQuestsInstance().getQuester(PlayerConverter.getPlayer(playerID).getUniqueId()).getCompletedQuests()) {
-            if (q.replace(' ', '_').equalsIgnoreCase(questName)) {
+        final ConcurrentSkipListSet<Quest> completedQuests = QuestsIntegrator.getQuestsInstance().getQuester(PlayerConverter.getPlayer(playerID).getUniqueId()).getCompletedQuests();
+        for (final Quest q : completedQuests) {
+            if (q.getName().replace(' ', '_').equalsIgnoreCase(questName)) {
                 return true;
             }
         }

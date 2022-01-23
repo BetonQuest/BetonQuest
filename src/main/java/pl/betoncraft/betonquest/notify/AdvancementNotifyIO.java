@@ -34,7 +34,7 @@ public class AdvancementNotifyIO extends NotifyIO {
     @Override
     protected void notifyPlayer(final String message, final Player player) {
         final NamespacedKey key = loadAdvancement(message);
-        grant(key, player);
+        Bukkit.getScheduler().runTask(BetonQuest.getInstance(), run -> grant(key, player));
         new BukkitRunnable() {
             @Override
             public void run() {

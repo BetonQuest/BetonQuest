@@ -23,10 +23,12 @@ public class CommandEvent extends QuestEvent {
         super(instruction, true);
         staticness = true;
         persistent = true;
-        String string = instruction.getInstruction();
-        string = string.replace("conditions:", "").trim();
+        final String string = instruction.getInstruction().trim();
+        int index = string.indexOf("conditions:");
+        index = index == -1 ? string.length() : index;
+        final String command = (String) string.subSequence(0, index);
         // Split commands by | but allow one to use \| to represent a pipe character
-        final String[] rawCommands = Arrays.stream(string.substring(string.indexOf(' ') + 1).split("(?<!\\\\)\\|"))
+        final String[] rawCommands = Arrays.stream(command.substring(command.indexOf(' ') + 1).split("(?<!\\\\)\\|"))
                 .map(s -> s.replace("\\|", "|"))
                 .map(String::trim)
                 .toArray(String[]::new);

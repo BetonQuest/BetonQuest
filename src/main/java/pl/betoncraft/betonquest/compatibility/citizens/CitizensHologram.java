@@ -23,7 +23,10 @@ import pl.betoncraft.betonquest.item.QuestItem;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 /**
@@ -39,8 +42,9 @@ public class CitizensHologram extends BukkitRunnable {
     private static CitizensHologram instance;
 
     private final Map<Integer, List<NPCHologram>> npcs = new HashMap<>();
-    private boolean follow;
     private final BukkitTask initializationTask;
+    private boolean follow;
+    private BukkitTask followTask;
     private BukkitTask updateTask;
 
     public CitizensHologram() {
@@ -74,14 +78,16 @@ public class CitizensHologram extends BukkitRunnable {
 
     @Override
     public void cancel() {
-        super.cancel();
+        if (updateTask != null) {
+            super.cancel();
+        }
 
         if (initializationTask != null) {
             initializationTask.cancel();
         }
-        if (updateTask != null) {
-            updateTask.cancel();
-            updateTask = null;
+        if (followTask != null) {
+            followTask.cancel();
+            followTask = null;
         }
 
         for (final List<NPCHologram> holograms : npcs.values()) {
@@ -127,7 +133,7 @@ public class CitizensHologram extends BukkitRunnable {
             initHologramsConfig(pack, hologramsSection);
         }
 
-        runTaskTimer(BetonQuest.getInstance(), 1, interval);
+        updateTask = runTaskTimer(BetonQuest.getInstance(), 1, interval);
     }
 
     private void initHologramsConfig(final ConfigPackage pack, final ConfigurationSection hologramsSection) {
@@ -207,22 +213,22 @@ public class CitizensHologram extends BukkitRunnable {
         }
 
         if (npcUpdater) {
-            if (updateTask == null) {
+            if (followTask == null) {
                 if (follow) {
-                    updateTask = Bukkit.getServer().getScheduler().runTaskTimer(BetonQuest.getInstance(), this::update, 1L, 1L);
+                    followTask = Bukkit.getServer().getScheduler().runTaskTimer(BetonQuest.getInstance(), this::followUpdate, 1L, 1L);
                 } else {
-                    updateTask = Bukkit.getServer().getScheduler().runTask(BetonQuest.getInstance(), this::update);
+                    followTask = Bukkit.getServer().getScheduler().runTask(BetonQuest.getInstance(), this::followUpdate);
                 }
             }
         } else {
-            if (updateTask != null) {
-                updateTask.cancel();
-                updateTask = null;
+            if (followTask != null) {
+                followTask.cancel();
+                followTask = null;
             }
         }
     }
 
-    private void update() {
+    private void followUpdate() {
         for (final Map.Entry<Integer, List<NPCHologram>> entry : npcs.entrySet()) {
             for (final NPCHologram npcHologram : entry.getValue()) {
                 if (npcHologram.hologram != null) {
@@ -272,10 +278,10 @@ public class CitizensHologram extends BukkitRunnable {
                     }
                     final ItemStack stack = new QuestItem(itemID).generate(stackSize);
                     hologram.appendItemLine(stack);
-                } catch (InstructionParseException e) {
+                } catch (final InstructionParseException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Could not parse item in " + npcHologram.pack.getName() + " hologram: " + e.getMessage());
                     LogUtils.logThrowable(e);
-                } catch (ObjectNotFoundException e) {
+                } catch (final ObjectNotFoundException e) {
                     LogUtils.getLogger().log(Level.WARNING, "Could not find item in " + npcHologram.pack.getName() + " hologram: " + e.getMessage());
                     LogUtils.logThrowable(e);
 
