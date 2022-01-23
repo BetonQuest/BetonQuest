@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixes
 - added missing config options to the default config
 - version check for ProtocolLibIntegrator
+- MMOItems Check if Item Is null or not
 ### Security
 
 ## [1.12.5] - 2021-08-11
