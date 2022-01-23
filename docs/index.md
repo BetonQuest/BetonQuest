@@ -40,12 +40,12 @@ tbody td:nth-child(1), th:nth-child(1) {
 tbody td:nth-child(2) {
   background-color: rgba(0, 0, 0, 0.2);
 }
-/* compare table - 11 row - set background and force it for colum 1 */
-tbody tr:nth-child(11), tr:nth-child(11) td:nth-child(1) {
+/* compare table - 12 row - set background and force it for colum 1 */
+tbody tr:nth-child(12), tr:nth-child(12) td:nth-child(1) {
   background-color: var(--md-primary-fg-color) !important;
 }
-/* compare table - 11 row - format heading */
-tbody tr:nth-child(11) p {
+/* compare table - 12 row - format heading */
+tbody tr:nth-child(12) p {
   font-size: medium;
   font-weight: 700;
   text-decoration: underline;
