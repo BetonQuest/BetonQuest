@@ -124,6 +124,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - tags and points are now thread safe
 - compatibility for packet interceptor on papermc
 - fix books not parsing color codes
+- action objective for any block ignored location
 ### Security
 
 ## [1.12.1] - 2021-02-05
