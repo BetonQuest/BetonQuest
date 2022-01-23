@@ -118,12 +118,6 @@
       <artifactId>MythicMobs</artifactId>
       <version>4.11.2</version>
       <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>*</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
       <optional>true</optional>
     </dependency>
     <dependency>
