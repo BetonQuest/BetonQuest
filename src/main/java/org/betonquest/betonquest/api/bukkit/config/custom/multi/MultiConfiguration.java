@@ -2,7 +2,6 @@ package org.betonquest.betonquest.api.bukkit.config.custom.multi;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.bukkit.config.custom.handle.ConfigurationModificationHandler;
-import org.betonquest.betonquest.api.bukkit.config.custom.handle.ConfigurationSectionModificationHandler;
 import org.betonquest.betonquest.api.bukkit.config.custom.handle.HandleModificationConfiguration;
 import org.betonquest.betonquest.api.bukkit.config.custom.handle.HandleModificationConfigurationSection;
 import org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable.UnmodifiableConfigurationSection;
@@ -25,6 +24,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.stream.Collectors;
+
+import static org.betonquest.betonquest.api.bukkit.config.custom.handle.ConfigurationSectionModificationHandler.getAbsolutePath;
 
 /**
  * This {@link MultiConfiguration} merges multiple {@link ConfigurationSection} to one big Configuration.
@@ -264,7 +265,7 @@ public class MultiConfiguration extends HandleModificationConfiguration {
         }
         final Set<ConfigurationSection> configurationSections = new HashSet<>();
         for (final String key : config.getKeys(false)) {
-            final String absolutePath = ConfigurationSectionModificationHandler.getAbsolutePath(config, key);
+            final String absolutePath = getAbsolutePath(config, key);
             if (original.isSet(absolutePath)) {
                 configurationSections.add(getSourceConfigurationSection(absolutePath));
             }
@@ -316,7 +317,7 @@ public class MultiConfiguration extends HandleModificationConfiguration {
         final ConfigurationSection config = original.getConfigurationSection(path);
         if (config != null && original.isSet(path)) {
             for (final String key : config.getKeys(false)) {
-                associateWith(ConfigurationSectionModificationHandler.getAbsolutePath(config, key), targetConfig);
+                associateWith(getAbsolutePath(config, key), targetConfig);
             }
             return;
         }
@@ -342,7 +343,7 @@ public class MultiConfiguration extends HandleModificationConfiguration {
             }
             final ConfigurationSection config = (ConfigurationSection) value;
             for (final String key : config.getKeys(false)) {
-                checkConflictAndSet(ConfigurationSectionModificationHandler.getAbsolutePath(config, key), config.get(key));
+                checkConflictAndSet(getAbsolutePath(config, key), config.get(key));
             }
             return;
         }
@@ -368,7 +369,8 @@ public class MultiConfiguration extends HandleModificationConfiguration {
     }
 
     @Override
-    public @Nullable ConfigurationSection getDefaultSection() {
+    public @Nullable
+    ConfigurationSection getDefaultSection() {
         return new UnmodifiableConfigurationSection(original.getDefaultSection());
     }
 
@@ -437,7 +439,7 @@ public class MultiConfiguration extends HandleModificationConfiguration {
         @Override
         public void set(@NotNull final ConfigurationSection section, @NotNull final String path, @Nullable final Object value) {
             if (consumer != null) {
-                consumer.set(ConfigurationSectionModificationHandler.getAbsolutePath(section, path), value);
+                consumer.set(getAbsolutePath(section, path), value);
             }
             section.set(path, value);
         }
@@ -457,7 +459,7 @@ public class MultiConfiguration extends HandleModificationConfiguration {
         @Override
         public void setComments(@NotNull final ConfigurationSection section, @NotNull final String path, @Nullable final List<String> comments) {
             if (consumer != null) {
-                consumer.setComment(ConfigurationSectionModificationHandler.getAbsolutePath(section, path), comments);
+                consumer.setComment(getAbsolutePath(section, path), comments);
             }
             section.setComments(path, comments);
         }
@@ -465,7 +467,7 @@ public class MultiConfiguration extends HandleModificationConfiguration {
         @Override
         public void setInlineComments(@NotNull final ConfigurationSection section, @NotNull final String path, @Nullable final List<String> comments) {
             if (consumer != null) {
-                consumer.setInlineComment(ConfigurationSectionModificationHandler.getAbsolutePath(section, path), comments);
+                consumer.setInlineComment(getAbsolutePath(section, path), comments);
             }
             section.setInlineComments(path, comments);
         }
