@@ -4,6 +4,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
@@ -66,6 +67,20 @@ public class ActionObjective extends Objective implements Listener {
         if (!containsPlayer(playerID)) {
             return;
         }
+        final Block clickedBlock = event.getClickedBlock();
+        if (loc != null && clickedBlock != null) {
+            try {
+                final Location location = loc.getLocation(playerID);
+                final double pRange = range.getDouble(playerID);
+                if (!location.getWorld().equals(clickedBlock.getWorld())
+                        || clickedBlock.getLocation().distance(location) > pRange) {
+                    return;
+                }
+            } catch (final QuestRuntimeException e) {
+                LogUtils.getLogger().log(Level.WARNING, "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
+                LogUtils.logThrowable(e);
+            }
+        }
         if (selector == null) {
             switch (action) {
                 case RIGHT:
@@ -113,30 +128,15 @@ public class ActionObjective extends Objective implements Listener {
                     actionEnum = null;
                     break;
             }
-            try {
-                if ((actionEnum == null && (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-                        || event.getAction().equals(Action.LEFT_CLICK_BLOCK)) || event.getAction().equals(actionEnum))
-                        && event.getClickedBlock() != null && ((selector.match(Material.FIRE) || selector.match(Material.LAVA) || selector.match(Material.WATER))
-                        && selector.match(event.getClickedBlock().getRelative(event.getBlockFace()), exactMatch)
-                        || selector.match(event.getClickedBlock(), exactMatch))) {
-                    if (loc != null) {
-                        final Location location = loc.getLocation(playerID);
-                        final double pRange = range.getDouble(playerID);
-                        if (!event.getClickedBlock().getWorld().equals(location.getWorld())
-                                || event.getClickedBlock().getLocation().distance(location) > pRange) {
-                            return;
-                        }
-                    }
-                    if (checkConditions(playerID)) {
-                        if (cancel) {
-                            event.setCancelled(true);
-                        }
-                        completeObjective(playerID);
-                    }
+            if ((actionEnum == null && (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
+                    || event.getAction().equals(Action.LEFT_CLICK_BLOCK)) || event.getAction().equals(actionEnum))
+                    && clickedBlock != null && ((selector.match(Material.FIRE) || selector.match(Material.LAVA) || selector.match(Material.WATER))
+                    && selector.match(clickedBlock.getRelative(event.getBlockFace()), exactMatch)
+                    || selector.match(clickedBlock, exactMatch)) && checkConditions(playerID)) {
+                if (cancel) {
+                    event.setCancelled(true);
                 }
-            } catch (final QuestRuntimeException e) {
-                LogUtils.getLogger().log(Level.WARNING, "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
-                LogUtils.logThrowable(e);
+                completeObjective(playerID);
             }
         }
     }
