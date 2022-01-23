@@ -25,10 +25,11 @@ public class MMOItemsGiveEvent extends QuestEvent {
 
     private final Type itemType;
     private final String itemID;
-    private VariableNumber amountVar = new VariableNumber(1);
     private final boolean scale;
     private final boolean notify;
     private final boolean singleStack;
+    private VariableNumber amountVar = new VariableNumber(1);
+    private ItemStack mmoItem;
 
     public MMOItemsGiveEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
@@ -43,6 +44,12 @@ public class MMOItemsGiveEvent extends QuestEvent {
         scale = instruction.hasArgument("scale");
         singleStack = instruction.hasArgument("singleStack");
         notify = instruction.hasArgument("notify");
+
+        mmoItem = mmoPlugin.getItem(itemType, itemID);
+
+        if (mmoItem == null) {
+            throw new InstructionParseException("Item with type '" + itemType + "' and ID '" +  itemID + "' does not exist.");
+        }
     }
 
     @SuppressWarnings("PMD.PreserveStackTrace")
@@ -52,11 +59,8 @@ public class MMOItemsGiveEvent extends QuestEvent {
         final Player player = PlayerConverter.getPlayer(playerID);
         int amount = amountVar.getInt(playerID);
 
-        final ItemStack mmoItem;
         if (scale) {
             mmoItem = mmoPlugin.getItem(itemType, itemID, PlayerData.get(player.getUniqueId()));
-        } else {
-            mmoItem = mmoPlugin.getItem(itemType, itemID);
         }
 
         if (notify) {

@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - QuestItems could be eaten, this was caused by a changed mc behaviour
 - command, sudo and opsudo events didn't work with conditions
 - interact objective did not work with armorstands
+- MMOItemsGiveEvent did not check if item actually exists
 ### Security
 
 ## [1.12.7] - 2021-12-11
