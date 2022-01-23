@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.AvoidDuplicateLiterals", "PMD.JUnitTestContainsTooManyAsserts"})
 class MultiConfigurationModificationTest {
+
     /**
      * {@link MultiConfiguration} part 1.
      */
