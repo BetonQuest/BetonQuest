@@ -21,7 +21,7 @@ public class HandleModificationConfiguration extends HandleModificationConfigura
     /**
      * The {@link ConfigurationModificationHandler} instance
      */
-    private final ConfigurationModificationHandler handler;
+    protected final ConfigurationModificationHandler handler;
 
     /**
      * Creates a new handler instance.

@@ -9,8 +9,8 @@
     <current-date>${maven.build.timestamp}</current-date>
     <maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
   </properties>
 
   <name>BetonQuest</name>
@@ -221,7 +221,7 @@
     <dependency>
       <groupId>com.elmakers.mine.bukkit</groupId>
       <artifactId>MagicAPI</artifactId>
-      <version>10.0</version>
+      <version>10.2</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
@@ -298,14 +298,14 @@
     <dependency>
       <groupId>net.kyori</groupId>
       <artifactId>adventure-platform-bukkit</artifactId>
-      <version>4.0.0</version>
+      <version>4.0.1</version>
     </dependency>
 
     <!-- only dependencies from maven central that are MC Plugins -->
     <dependency>
       <groupId>com.elmakers.mine.bukkit</groupId>
       <artifactId>EffectLib</artifactId>
-      <version>9.3</version>
+      <version>9.4</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
@@ -317,6 +317,11 @@
     </dependency>
 
     <!-- only dependencies from maven central that are no MC Plugins -->
+    <dependency>
+      <groupId>org.jetbrains</groupId>
+      <artifactId>annotations</artifactId>
+      <version>23.0.0</version>
+    </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
@@ -369,7 +374,7 @@
     <dependency>
       <groupId>com.github.spotbugs</groupId>
       <artifactId>spotbugs-annotations</artifactId>
-      <version>4.5.2</version>
+      <version>4.5.3</version>
       <optional>true</optional>
     </dependency>
 
@@ -389,7 +394,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.1.0</version>
+      <version>4.2.0</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -448,6 +453,14 @@
       <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
     </repository>
   </repositories>
+
+  <pluginRepositories>
+    <!-- needed for maven-shade-plugin 3.X.X-SNAPSHOT for java 17 support -->
+    <pluginRepository>
+      <id>apache-snapshot-repo</id>
+      <url>https://repository.apache.org/content/repositories/snapshots/</url>
+    </pluginRepository>
+  </pluginRepositories>
 
   <build>
     <directory>target/artifacts</directory>
@@ -739,7 +752,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
-          <version>3.2.4</version>
+          <version>3.3.1-SNAPSHOT</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>

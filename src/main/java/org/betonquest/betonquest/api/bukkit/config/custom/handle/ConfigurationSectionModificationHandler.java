@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.api.bukkit.config.custom.handle;
 
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -11,6 +12,26 @@ import java.util.Map;
  * This handler is called for all modification operations in a {@link ConfigurationSection}.
  */
 public interface ConfigurationSectionModificationHandler {
+    /**
+     * Get the absolut string path.
+     * It concatenates the current section with the path.
+     *
+     * @param section the current {@link ConfigurationSection}
+     * @param path    the target path
+     * @return the concatenated absolut path
+     */
+    static String getAbsolutePath(@NotNull final ConfigurationSection section, final String path) {
+        final String currentPath = section.getCurrentPath();
+        if (currentPath == null || currentPath.isEmpty()) {
+            return path;
+        }
+        final Configuration root = section.getRoot();
+        if (root == null) {
+            throw new IllegalStateException("Cannot get options without a root");
+        }
+        return currentPath + root.options().pathSeparator() + path;
+    }
+
     /**
      * Handles the {@link ConfigurationSection#set(String, Object)} method.
      *

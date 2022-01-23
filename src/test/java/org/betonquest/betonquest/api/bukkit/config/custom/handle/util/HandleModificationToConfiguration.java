@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.betonquest.betonquest.api.bukkit.config.custom.handle.ConfigurationSectionModificationHandler.getAbsolutePath;
+
 /**
  * Copies all modifications to the target {@link Configuration} to another Configuration.
  */
@@ -101,13 +103,6 @@ public class HandleModificationToConfiguration implements ConfigurationModificat
             this.inlineComments.put(getAbsolutePath(section, path), comments);
         }
         section.setInlineComments(path, comments);
-    }
-
-    private String getAbsolutePath(final ConfigurationSection section, final String path) {
-        if (section.getCurrentPath() == null || section.getCurrentPath().isEmpty()) {
-            return path;
-        }
-        return section.getCurrentPath() + "." + path;
     }
 
     /**
