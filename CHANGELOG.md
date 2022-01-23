@@ -106,6 +106,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - QuestItems could be eaten, this was caused by a change mc behaviour
 - command, sudo and opsudo events didn't work with conditions
 - interact objective did not work with armorstands
+- MMOItems Check if Item Is null or not
 ### Security
 - it was possible to put a QuestItem into a chest
 - the take event is now threadsafe
