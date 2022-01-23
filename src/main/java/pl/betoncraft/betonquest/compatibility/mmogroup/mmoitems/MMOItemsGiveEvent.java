@@ -25,11 +25,10 @@ public class MMOItemsGiveEvent extends QuestEvent {
 
     private final Type itemType;
     private final String itemID;
-    private VariableNumber amountVar = new VariableNumber(1);
     private final boolean scale;
     private final boolean notify;
     private final boolean singleStack;
-
+    private VariableNumber amountVar = new VariableNumber(1);
     private ItemStack mmoItem;
 
     public MMOItemsGiveEvent(final Instruction instruction) throws InstructionParseException {
@@ -48,8 +47,8 @@ public class MMOItemsGiveEvent extends QuestEvent {
 
         mmoItem = mmoPlugin.getItem(itemType, itemID);
 
-        if(mmoItem == null){
-            throw new InstructionParseException("Item " + itemID + " Not Found");
+        if (mmoItem == null) {
+            throw new InstructionParseException("Item with type '" + itemType + "' and ID '" +  itemID + "' does not exist.");
         }
     }
 
