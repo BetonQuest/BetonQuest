@@ -131,10 +131,9 @@ public class MultiConfiguration extends HandleModificationConfiguration {
     }
 
     /**
-     * Extract all keys from all section and put them into a key to section-list map.
+     * Extracts all keys from all sections and puts them into a key to section-list map.
      *
      * @param sourceConfigs the configs that should represent this config
-     * @return key to section-list map of given configs
      */
     private void buildKeyIndex(final ConfigurationSection... sourceConfigs) {
         Arrays.stream(sourceConfigs).forEach(sourceConfig -> sourceConfig.getKeys(true).stream()
@@ -240,14 +239,14 @@ public class MultiConfiguration extends HandleModificationConfiguration {
     }
 
     /**
-     * Get the configuration of a specified path. The path can also be a configuration section.
+     * Gets the configuration of a specified path. The path can also be a configuration section.
      * <p>
      * If the path is not set in this {@link MultiConfiguration} this will return null.
      * This is also the case for default values.
      * <p>
      * If the path is a configuration section it will be checked,
      * that every entry in the configuration section is from the same source configuration section.
-     * Otherwise, a {@link InvalidConfigurationException} is thrown.
+     * Otherwise, an {@link InvalidConfigurationException} is thrown.
      *
      * @param path The path of the entry to get the {@link ConfigurationSection} to
      * @return The clearly {@link ConfigurationSection} of the given path
@@ -277,7 +276,7 @@ public class MultiConfiguration extends HandleModificationConfiguration {
     }
 
     /**
-     * Get all keys, that are not associated with a {@link ConfigurationSection}.
+     * Gets all keys, that are not associated with a {@link ConfigurationSection}.
      *
      * @return a list of unassociated keys.
      */
@@ -386,7 +385,7 @@ public class MultiConfiguration extends HandleModificationConfiguration {
     }
 
     /**
-     * This class is designed to get called, when the method
+     * This class is designed to get called when the method
      * {@link MultiConfigurationHandler#set(ConfigurationSection, String, Object)}  or the method
      * {@link MultiConfigurationHandler#setComments(ConfigurationSection, String, List)} is called.
      */
