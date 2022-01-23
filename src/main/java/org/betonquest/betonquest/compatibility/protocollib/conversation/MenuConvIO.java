@@ -44,7 +44,6 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods",
@@ -96,7 +95,7 @@ public class MenuConvIO extends ChatConvIO {
         // Load Configuration from custom.yml with some sane defaults, loading our current package last
         for (final ConfigPackage pack : Stream.concat(
                 Config.getPackages().values().stream().filter(p -> p != conv.getPackage()),
-                Stream.of(conv.getPackage())).collect(Collectors.toList())) {
+                Stream.of(conv.getPackage())).toList()) {
             final ConfigurationSection section = pack.getCustom().getConfig().getConfigurationSection("menu_conv_io");
             if (section == null) {
                 continue;
@@ -125,8 +124,7 @@ public class MenuConvIO extends ChatConvIO {
         try {
             for (final CONTROL control : Arrays.stream(configControlCancel.split(","))
                     .map(string -> string.toUpperCase(Locale.ROOT))
-                    .map(CONTROL::valueOf)
-                    .collect(Collectors.toList())) {
+                    .map(CONTROL::valueOf).toList()) {
                 if (!controls.containsKey(control)) {
                     controls.put(control, ACTION.CANCEL);
                 }
@@ -137,8 +135,7 @@ public class MenuConvIO extends ChatConvIO {
         try {
             for (final CONTROL control : Arrays.stream(configControlSelect.split(","))
                     .map(string -> string.toUpperCase(Locale.ROOT))
-                    .map(CONTROL::valueOf)
-                    .collect(Collectors.toList())) {
+                    .map(CONTROL::valueOf).toList()) {
 
                 if (!controls.containsKey(control)) {
                     controls.put(control, ACTION.SELECT);
@@ -150,8 +147,7 @@ public class MenuConvIO extends ChatConvIO {
         try {
             for (final CONTROL control : Arrays.stream(configControlMove.split(","))
                     .map(string -> string.toUpperCase(Locale.ROOT))
-                    .map(CONTROL::valueOf)
-                    .collect(Collectors.toList())) {
+                    .map(CONTROL::valueOf).toList()) {
                 if (!controls.containsKey(control)) {
                     controls.put(control, ACTION.MOVE);
                 }
@@ -456,7 +452,7 @@ public class MenuConvIO extends ChatConvIO {
 
         final List<String> npcLines = Arrays.stream(LocalChatPaginator.wordWrap(
                         Utils.replaceReset(StringUtils.stripEnd(msgNpcText, "\n"), configNpcTextReset), configLineLength, configNpcWrap))
-                .collect(Collectors.toList());
+                .toList();
 
         // Provide for as many options as we can fit but if there is lots of npcLines we will reduce this as necessary
         // own to a minimum of 1.
@@ -505,9 +501,8 @@ public class MenuConvIO extends ChatConvIO {
                         .replace("{npc_name}", npcName);
 
                 optionLines = Arrays.stream(LocalChatPaginator.wordWrap(
-                                Utils.replaceReset(StringUtils.stripEnd(optionText, "\n"), configOptionSelectedReset),
-                                configLineLength, configOptionSelectedWrap))
-                        .collect(Collectors.toList());
+                        Utils.replaceReset(StringUtils.stripEnd(optionText, "\n"), configOptionSelectedReset),
+                        configLineLength, configOptionSelectedWrap)).toList();
 
 
             } else {
@@ -516,9 +511,8 @@ public class MenuConvIO extends ChatConvIO {
                         .replace("{npc_name}", npcName);
 
                 optionLines = Arrays.stream(LocalChatPaginator.wordWrap(
-                                Utils.replaceReset(StringUtils.stripEnd(optionText, "\n"), configOptionTextReset),
-                                configLineLength, configOptionWrap))
-                        .collect(Collectors.toList());
+                        Utils.replaceReset(StringUtils.stripEnd(optionText, "\n"), configOptionTextReset),
+                        configLineLength, configOptionWrap)).toList();
 
             }
 

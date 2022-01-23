@@ -10,14 +10,15 @@ import static org.junit.jupiter.api.Assertions.*;
 class EntityInteractObjectiveTest {
 
     /**
-     * The serialized instruction for a objective of one interaction with no progress.
+     * The serialized instruction for an objective of one interaction with no progress.
      */
     private static final String NO_PROGRESS_ON_SIMPLE_INTERACT_SERIALIZED = "1/1/1/0;";
 
     /**
      * Create the test class.
      */
-    public EntityInteractObjectiveTest() {}
+    public EntityInteractObjectiveTest() {
+    }
 
     @Test
     void testCreateFromMinimalCountingDataWithoutInteractAppendix() {
