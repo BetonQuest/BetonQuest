@@ -22,25 +22,31 @@ class MultiConfigurationKeyConflictExceptionTest {
     /**
      * Config with key3 as value
      */
-    public static final String CONFIG_STRING_1 = "section:\n"
-            + "    key1: value1\n"
-            + "    key3: value3-1\n"
-            + "    key4: value4\n";
+    public static final String CONFIG_STRING_1 = """
+            section:
+                key1: value1
+                key3: value3-1
+                key4: value4
+            """;
     /**
      * Config with key3 as value
      */
-    public static final String CONFIG_STRING_2 = "section:\n"
-            + "    key2: value2\n"
-            + "    key3: value3-2\n"
-            + "    key5: value5\n";
+    public static final String CONFIG_STRING_2 = """
+            section:
+                key2: value2
+                key3: value3-2
+                key5: value5
+            """;
     /**
      * Config with key3 as section
      */
-    public static final String CONFIG_STRING_3 = "section:\n"
-            + "    key2: value2\n"
-            + "    key3:\n"
-            + "        key: value\n"
-            + "    key5: value5\n";
+    public static final String CONFIG_STRING_3 = """
+            section:
+                key2: value2
+                key3:
+                    key: value
+                key5: value5
+            """;
 
     /**
      * Empty constructor
@@ -55,12 +61,14 @@ class MultiConfigurationKeyConflictExceptionTest {
         try {
             createConfig(configs, CONFIG_STRING_1, CONFIG_STRING_2);
         } catch (final KeyConflictException e) {
-            assertNull(null, e.getMessage());
-            assertEquals("You have conflicts in your configuration files:\n" +
-                            "\n" +
-                            "    The key 'section.key3' is defined multiple times in the following configs:\n" +
-                            "        - Config-1\n" +
-                            "        - Config-2\n"
+            assertNull(e.getMessage());
+            assertEquals("""
+                            You have conflicts in your configuration files:
+
+                                The key 'section.key3' is defined multiple times in the following configs:
+                                    - Config-1
+                                    - Config-2
+                            """
                     , e.resolvedMessage(configs));
             return;
         } catch (final InvalidSubConfigurationException e) {
@@ -75,11 +83,13 @@ class MultiConfigurationKeyConflictExceptionTest {
         try {
             createConfig(configs, CONFIG_STRING_1, CONFIG_STRING_3);
         } catch (final KeyConflictException e) {
-            assertNull(null, e.getMessage());
-            assertEquals("You have conflicts in your configuration files:\n" +
-                            "\n" +
-                            "    The key 'section.key3' in config 'Config-1' is a path with sub keys in at least one of the following configs:\n" +
-                            "        - Config-2 with 'section.key3.key'\n"
+            assertNull(e.getMessage());
+            assertEquals("""
+                            You have conflicts in your configuration files:
+
+                                The key 'section.key3' in config 'Config-1' is a path with sub keys in at least one of the following configs:
+                                    - Config-2 with 'section.key3.key'
+                            """
                     , e.resolvedMessage(configs));
             return;
         } catch (final InvalidSubConfigurationException e) {
@@ -94,22 +104,24 @@ class MultiConfigurationKeyConflictExceptionTest {
         try {
             createConfig(configs, CONFIG_STRING_1, CONFIG_STRING_2, CONFIG_STRING_3);
         } catch (final KeyConflictException e) {
-            assertNull(null, e.getMessage());
-            assertEquals("You have conflicts in your configuration files:\n" +
-                            "\n" +
-                            "    The key 'section.key2' is defined multiple times in the following configs:\n" +
-                            "        - Config-2\n" +
-                            "        - Config-3\n" +
-                            "    The key 'section.key3' is defined multiple times in the following configs:\n" +
-                            "        - Config-1\n" +
-                            "        - Config-2\n" +
-                            "    The key 'section.key5' is defined multiple times in the following configs:\n" +
-                            "        - Config-2\n" +
-                            "        - Config-3\n" +
-                            "\n" +
-                            "    The key 'section.key3' in config 'Config-2' is a path with sub keys in at least one of the following configs:\n" +
-                            "        - Config-1 with 'section.key3'\n" +
-                            "        - Config-3 with 'section.key3.key'\n"
+            assertNull(e.getMessage());
+            assertEquals("""
+                            You have conflicts in your configuration files:
+
+                                The key 'section.key2' is defined multiple times in the following configs:
+                                    - Config-2
+                                    - Config-3
+                                The key 'section.key3' is defined multiple times in the following configs:
+                                    - Config-1
+                                    - Config-2
+                                The key 'section.key5' is defined multiple times in the following configs:
+                                    - Config-2
+                                    - Config-3
+
+                                The key 'section.key3' in config 'Config-2' is a path with sub keys in at least one of the following configs:
+                                    - Config-1 with 'section.key3'
+                                    - Config-3 with 'section.key3.key'
+                            """
                     , e.resolvedMessage(configs));
             return;
         } catch (final InvalidSubConfigurationException e) {
