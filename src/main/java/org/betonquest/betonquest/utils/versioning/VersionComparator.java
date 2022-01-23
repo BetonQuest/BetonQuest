@@ -21,7 +21,7 @@ public class VersionComparator {
     /**
      * The provided {@link UpdateStrategy} determines which digits of the version are allowed to change.
      * <p>
-     * Also a list of allowed qualifiers can be provided. If not, no qualifiers are allowed.
+     * A list of allowed qualifiers can be provided. If not, no qualifiers are allowed.
      * An empty String represent a version without a qualifier but with a build number.
      * <p>
      * If a qualifier contains a separator before a build number,
@@ -62,7 +62,7 @@ public class VersionComparator {
      *
      * @param current The current version
      * @param other   The other version
-     * @return 0 if equal; less then 0 if other is newer; more than 0 if current is newer
+     * @return 0 if equal; less than 0 if other is newer; more than 0 if current is newer
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     public int compare(final Version current, final Version other) {

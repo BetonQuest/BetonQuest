@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This test should only ensure, that the {@link Version} dose not break anything or select wrong versions
+ * This test should only ensure, that the {@link Version} does not break anything or select wrong versions
  * and push them into the production server.
  */
 @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
