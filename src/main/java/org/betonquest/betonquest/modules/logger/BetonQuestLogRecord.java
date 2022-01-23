@@ -3,6 +3,7 @@ package org.betonquest.betonquest.modules.logger;
 import org.betonquest.betonquest.config.ConfigPackage;
 import org.bukkit.plugin.Plugin;
 
+import java.io.Serial;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
@@ -11,6 +12,7 @@ import java.util.logging.LogRecord;
  */
 public class BetonQuestLogRecord extends LogRecord {
 
+    @Serial
     private static final long serialVersionUID = -7094531905051980356L;
 
     /**
