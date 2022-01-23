@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Represents the data of the conversation.
@@ -564,14 +563,12 @@ public class ConversationData {
             // Pointers
             pointers = Arrays.stream(pack.subst(conv.getString("pointers", conv.getString("pointer", ""))).split(","))
                     .filter(StringUtils::isNotEmpty)
-                    .map(String::trim)
-                    .collect(Collectors.toList());
+                    .map(String::trim).toList();
 
 
             extendLinks = Arrays.stream(pack.subst(conv.getString("extends", conv.getString("extend", ""))).split(","))
                     .filter(StringUtils::isNotEmpty)
-                    .map(String::trim)
-                    .collect(Collectors.toList());
+                    .map(String::trim).toList();
         }
 
         public String getName() {
