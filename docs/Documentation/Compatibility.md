@@ -897,7 +897,7 @@ freezeMe: "freeze 100" #Freezes the player for 5 seconds
 ```
 
 
-## [Quests](http://dev.bukkit.org/bukkit-plugins/quests/)
+## [Quests](https://www.spigotmc.org/resources/quests.3711/)
 
 Quests is another questing plugin, which offers very simple creation of quests. If you don't want to spend a lot of time to write advanced quests in BetonQuest but you need a specific thing from this plugin you can use Custom Event Reward or Custom Condition Requirement. Alternatively, if you have a lot of quests written in Quests, but want to integrate them with the conversation system, you can use `quest` event and `quest` condition.
 
