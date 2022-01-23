@@ -48,8 +48,8 @@ public class MMOItemsGiveEvent extends QuestEvent {
 
         mmoItem = mmoPlugin.getItem(itemType, itemID);
 
-        if(mmoItem == null){
-            throw new InstructionParseException("Item " + itemID + " Not Found");
+        if (mmoItem == null) {
+            throw new InstructionParseException("Item with type '" + itemType + "' and ID '" +  itemID + "' does not exist.");
         }
     }
 
