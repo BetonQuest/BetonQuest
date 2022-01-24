@@ -19,7 +19,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -50,7 +49,7 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     public void testGetKeysDeepFalse() {
         assertEquals("[boolean, booleanList, characterList, childSection, color, double, doubleList, existingSet, get, integer, integerList, item, list, location, long, mapList, object, offlinePlayer, section, string, stringList, vector]",
-                config.getKeys(false).stream().sorted().collect(Collectors.toList()).toString());
+                config.getKeys(false).stream().sorted().toList().toString());
 
         final ConfigurationSection section = config.getConfigurationSection("childSection");
         assertNotNull(section);
@@ -62,7 +61,7 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     public void testGetKeysDeepTrue() {
         assertEquals("[boolean, booleanList, characterList, childSection, childSection.nestedChildSection, childSection.nestedChildSection.key, color, double, doubleList, existingSet, get, integer, integerList, item, list, location, long, mapList, object, offlinePlayer, section, section.key, string, stringList, vector]",
-                config.getKeys(true).stream().sorted().collect(Collectors.toList()).toString());
+                config.getKeys(true).stream().sorted().toList().toString());
 
         final ConfigurationSection section = config.getConfigurationSection("childSection");
         assertNotNull(section);
