@@ -40,11 +40,11 @@ public class DelayObjective extends Objective {
     }
 
     private void parseDelay() throws InstructionParseException {
-        String intOrVar = instruction.next();
+        final String intOrVar = instruction.next();
         if (intOrVar.startsWith("%")) {
             delay = new VariableNumber(instruction.getPackage().getName(), intOrVar);
         } else {
-            int time = Integer.parseInt(intOrVar);
+            final int time = Integer.parseInt(intOrVar);
             if (time < 0) {
                 throw new InstructionParseException("Error in delay objective '" + instruction.getID() + "': Delay cannot be less than 0");
             }
@@ -101,8 +101,8 @@ public class DelayObjective extends Objective {
     }
 
     @Override
-    public String getDefaultDataInstruction(String playerID) {
-        int time = delay.getInt(playerID);
+    public String getDefaultDataInstruction(final String playerID) {
+        final int time = delay.getInt(playerID);
         int milis = 0;
         try {
             milis = timeToMiliSeconds(time);
@@ -110,7 +110,7 @@ public class DelayObjective extends Objective {
             LOG.warning("Error in delay objective '" + instruction.getID() + "': " + e.getMessage());
         }
 
-        long timeToPass = Long.parseLong(String.valueOf(milis));
+        final long timeToPass = Long.parseLong(String.valueOf(milis));
         return Long.toString(new Date().getTime() + timeToPass);
     }
 

@@ -154,6 +154,7 @@ public abstract class Objective {
      * @param playerID player to parse the instruction for
      * @return the default data instruction string
      */
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
     public String getDefaultDataInstruction(final String playerID) {
         return null;
     }
@@ -161,16 +162,17 @@ public abstract class Objective {
     /**
      * Wrapper method to support both ways of getting the default data instruction.
      * Use this to get the data instruction.
+     *
      * @param playerID player to get the instruction for
      * @return the default data instruction
      */
     public String getDefaultInstruction(final String playerID) {
-        String standardResponse = getDefaultDataInstruction();
-        String variableResponse = getDefaultDataInstruction(playerID);
+        final String variableResponse = getDefaultDataInstruction(playerID);
         if (variableResponse != null) {
             return variableResponse;
         }
-        return standardResponse;
+        return getDefaultDataInstruction();
+
     }
 
     /**
