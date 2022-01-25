@@ -154,25 +154,8 @@ public abstract class Objective {
      * @param playerID player to parse the instruction for
      * @return the default data instruction string
      */
-    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
     public String getDefaultDataInstruction(final String playerID) {
-        return null;
-    }
-
-    /**
-     * Wrapper method to support both ways of getting the default data instruction.
-     * Use this to get the data instruction.
-     *
-     * @param playerID player to get the instruction for
-     * @return the default data instruction
-     */
-    public String getDefaultInstruction(final String playerID) {
-        final String variableResponse = getDefaultDataInstruction(playerID);
-        if (variableResponse != null) {
-            return variableResponse;
-        }
         return getDefaultDataInstruction();
-
     }
 
     /**
@@ -203,7 +186,7 @@ public abstract class Objective {
         BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective((ObjectiveID) instruction.getID());
         if (persistent) {
             BetonQuest.getInstance().getPlayerData(playerID).addNewRawObjective((ObjectiveID) instruction.getID());
-            createObjectiveForPlayer(playerID, getDefaultInstruction(playerID));
+            createObjectiveForPlayer(playerID, getDefaultDataInstruction(playerID));
         }
         LOG.debug(instruction.getPackage(),
                 "Objective \"" + instruction.getID().getFullID() + "\" has been completed for player "
@@ -262,7 +245,7 @@ public abstract class Objective {
      * @param playerID ID of the player
      */
     public final void newPlayer(final String playerID) {
-        final String defaultInstruction = getDefaultInstruction(playerID);
+        final String defaultInstruction = getDefaultDataInstruction(playerID);
         createObjectiveForPlayer(playerID, defaultInstruction);
         BetonQuest.getInstance().getPlayerData(playerID).addObjToDB(instruction.getID().getFullID(), defaultInstruction);
     }

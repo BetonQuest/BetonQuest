@@ -306,7 +306,7 @@ public class PlayerData {
         if (obj == null) {
             return;
         }
-        final String data = obj.getDefaultInstruction(playerID);
+        final String data = obj.getDefaultDataInstruction(playerID);
         if (addRawObjective(objectiveID.toString(), data)) {
             saver.add(new Record(UpdateType.ADD_OBJECTIVES, playerID, objectiveID.toString(), data));
         }
