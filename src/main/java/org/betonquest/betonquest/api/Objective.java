@@ -147,6 +147,18 @@ public abstract class Objective {
     public abstract String getDefaultDataInstruction();
 
     /**
+     * This method should return the default data instruction for the objective,
+     * ready to be parsed by the ObjectiveData class.
+     * Reimplement this method if you need player context (e.g. for variable parsing) when creating the data instruction.
+     *
+     * @param playerID player to parse the instruction for
+     * @return the default data instruction string
+     */
+    public String getDefaultDataInstruction(final String playerID) {
+        return getDefaultDataInstruction();
+    }
+
+    /**
      * This method should return various properties of the objective, formatted
      * as readable Strings. An example would be "5h 5min" for "time_left"
      * keyword in "delay" objective or "12" for keyword "mobs_killed" in
@@ -174,7 +186,7 @@ public abstract class Objective {
         BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective((ObjectiveID) instruction.getID());
         if (persistent) {
             BetonQuest.getInstance().getPlayerData(playerID).addNewRawObjective((ObjectiveID) instruction.getID());
-            createObjectiveForPlayer(playerID, getDefaultDataInstruction());
+            createObjectiveForPlayer(playerID, getDefaultDataInstruction(playerID));
         }
         LOG.debug(instruction.getPackage(),
                 "Objective \"" + instruction.getID().getFullID() + "\" has been completed for player "
@@ -233,7 +245,7 @@ public abstract class Objective {
      * @param playerID ID of the player
      */
     public final void newPlayer(final String playerID) {
-        final String defaultInstruction = getDefaultDataInstruction();
+        final String defaultInstruction = getDefaultDataInstruction(playerID);
         createObjectiveForPlayer(playerID, defaultInstruction);
         BetonQuest.getInstance().getPlayerData(playerID).addObjToDB(instruction.getID().getFullID(), defaultInstruction);
     }

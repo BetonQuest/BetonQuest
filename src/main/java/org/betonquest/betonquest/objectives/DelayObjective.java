@@ -1,7 +1,9 @@
 package org.betonquest.betonquest.objectives;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -19,28 +21,47 @@ import java.util.Map.Entry;
  * will be completed as soon as the time is up and he logs in again.
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class DelayObjective extends Objective {
 
-    private final double delay;
     private final int interval;
+    private VariableNumber delay;
     private BukkitTask runnable;
 
     public DelayObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = DelayData.class;
-        if (instruction.hasArgument("ticks")) {
-            delay = instruction.getDouble() * 50;
-        } else if (instruction.hasArgument("seconds")) {
-            delay = instruction.getDouble() * 1000;
-        } else {
-            delay = instruction.getDouble() * 1000 * 60;
-        }
-        if (delay < 0) {
-            throw new InstructionParseException("Delay cannot be less than 0");
-        }
+
+        parseDelay();
         interval = instruction.getInt(instruction.getOptional("interval"), 20 * 10);
         if (interval <= 0) {
             throw new InstructionParseException("Interval cannot be less than 1 tick");
+        }
+    }
+
+    private void parseDelay() throws InstructionParseException {
+        final String intOrVar = instruction.next();
+        if (intOrVar.startsWith("%")) {
+            delay = new VariableNumber(instruction.getPackage().getName(), intOrVar);
+        } else {
+            final int time = Integer.parseInt(intOrVar);
+            if (time < 0) {
+                throw new InstructionParseException("Error in delay objective '" + instruction.getID() + "': Delay cannot be less than 0");
+            }
+            delay = new VariableNumber(time);
+        }
+    }
+
+    private int timeToMiliSeconds(final int time) throws InstructionParseException {
+        if (time < 0) {
+            throw new InstructionParseException("Delay cannot be less than 0");
+        }
+        if (instruction.hasArgument("ticks")) {
+            return time * 50;
+        } else if (instruction.hasArgument("seconds")) {
+            return time * 1000;
+        } else {
+            return time * 1000 * 60;
         }
     }
 
@@ -76,7 +97,22 @@ public class DelayObjective extends Objective {
 
     @Override
     public String getDefaultDataInstruction() {
-        return Long.toString(new Date().getTime() + (long) delay);
+        //Empty to satisfy bad API needs
+        return null;
+    }
+
+    @Override
+    public String getDefaultDataInstruction(final String playerID) {
+        final int time = delay.getInt(playerID);
+        int milis = 0;
+        try {
+            milis = timeToMiliSeconds(time);
+        } catch (InstructionParseException e) {
+            LOG.warning("Error in delay objective '" + instruction.getID() + "': " + e.getMessage());
+        }
+
+        final long timeToPass = Long.parseLong(String.valueOf(milis));
+        return Long.toString(new Date().getTime() + timeToPass);
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
