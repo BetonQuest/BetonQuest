@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.config;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 
 import java.io.File;
@@ -8,49 +7,85 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-@SuppressWarnings("PMD.CommentRequired")
-@CustomLog
-public class Zipper {
-    private final List<String> fileList = new ArrayList<>();
-    private final String sourceFolder;
+/**
+ * Gives the possibility to zip files or folders to a target file.
+ */
+@CustomLog(topic = "Zipper")
+public final class Zipper {
 
-    public Zipper(final String source, final String output) {
-        String modifiedOutput = output;
-        int counter = 1;
-        while (new File(modifiedOutput + ".zip").exists()) {
-            counter++;
-            modifiedOutput = output + "-" + counter;
-        }
-        final String outputZipFile = modifiedOutput + ".zip";
-        sourceFolder = source;
-        generateFileList(new File(sourceFolder));
-        zipIt(outputZipFile);
+    private Zipper() {
+        // Empty
     }
 
     /**
-     * Zip it
+     * Zip a source file or directory to the given outputZip path.
+     * You can optionally define skipEntries, which are regex expressions,
+     * which define what get skipped from being zipped.
      *
-     * @param zipFile output ZIP file location
+     * @param source      the source file or directory
+     * @param outputZip   the output zip file without the ending .zip
+     * @param skipEntries regex expressions that should be skipped during zip process
      */
-    public final void zipIt(final String zipFile) {
+    public static void zip(final File source, final String outputZip, final String... skipEntries) {
+        final List<Path> files = generateFileList(source, skipEntries);
+        final Path outputZipFile = getOutputPath(outputZip);
+        zipFiles(source, files, outputZipFile);
+    }
 
+    private static List<Path> generateFileList(final File node, final String... skipEntries) {
+        final List<Path> fileList = new ArrayList<>();
+        for (final String skip : skipEntries) {
+            if (node.getName().matches(skip)) {
+                return fileList;
+            }
+        }
+
+        if (node.isFile()) {
+            fileList.add(node.toPath());
+        }
+
+        if (node.isDirectory()) {
+            final File[] subNote = node.listFiles();
+            if (subNote == null) {
+                LOG.warning("Directory '" + node.getPath() + "' could not be read!");
+            } else {
+                for (final File filename : subNote) {
+                    fileList.addAll(generateFileList(filename, skipEntries));
+                }
+            }
+        }
+
+        return fileList;
+    }
+
+    private static Path getOutputPath(final String outputZip) {
+        Path output;
+        int counter = 0;
+        do {
+            final String offset = counter == 0 ? "" : "-" + counter;
+            output = Paths.get(outputZip + offset + ".zip");
+            counter++;
+        } while (Files.exists(output));
+        return output;
+    }
+
+    private static void zipFiles(final File source, final List<Path> files, final Path zipFile) {
         final byte[] buffer = new byte[1024];
 
-        try (OutputStream fos = Files.newOutputStream(Paths.get(zipFile));
+        try (OutputStream fos = Files.newOutputStream(zipFile);
              ZipOutputStream zos = new ZipOutputStream(fos)) {
 
-            for (final String file : this.fileList) {
+            for (final Path file : files) {
+                zos.putNextEntry(new ZipEntry(generateZipEntry(source, file)));
 
-                final ZipEntry zipEntry = new ZipEntry(file);
-                zos.putNextEntry(zipEntry);
-
-                try (InputStream input = Files.newInputStream(Paths.get(sourceFolder + File.separator + file))) {
+                try (InputStream input = Files.newInputStream(file)) {
                     int len = input.read(buffer);
                     while (len > 0) {
                         zos.write(buffer, 0, len);
@@ -60,43 +95,11 @@ public class Zipper {
             }
             zos.closeEntry();
         } catch (final IOException e) {
-            LOG.warn("Couldn't zip the files", e);
+            LOG.warn("Couldn't zip the files if directory '" + source.getPath() + "'!", e);
         }
     }
 
-    /**
-     * Traverse a directory and get all files, and add the file into fileList
-     *
-     * @param node file or directory
-     */
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public void generateFileList(final File node) {
-
-        if (node.getName().matches("^backup.*") || node.getName().matches("^database\\.db$")
-                || node.getName().matches("^changelog\\.txt$") || node.getName().matches("^logs$")) {
-            return;
-        }
-
-        // add file only
-        if (node.isFile()) {
-            fileList.add(generateZipEntry(node.getAbsoluteFile().toString()));
-        }
-
-        if (node.isDirectory()) {
-            final String[] subNote = node.list();
-            for (final String filename : subNote) {
-                generateFileList(new File(node, filename));
-            }
-        }
-    }
-
-    /**
-     * Format the file path for zip
-     *
-     * @param file file path
-     * @return Formatted file path
-     */
-    private String generateZipEntry(final String file) {
-        return file.substring(sourceFolder.length() + 1);
+    private static String generateZipEntry(final File source, final Path file) {
+        return source.toURI().relativize(file.toUri()).getPath();
     }
 }
