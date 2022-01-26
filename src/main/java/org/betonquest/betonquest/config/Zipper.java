@@ -95,7 +95,7 @@ public final class Zipper {
             }
             zos.closeEntry();
         } catch (final IOException e) {
-            LOG.warn("Couldn't zip the files if directory '" + source.getPath() + "'!", e);
+            LOG.warn("Couldn't zip the files in directory '" + source.getPath() + "'!", e);
         }
     }
 
