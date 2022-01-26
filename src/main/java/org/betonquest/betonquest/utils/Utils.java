@@ -264,7 +264,7 @@ public final class Utils {
         try {
             accessor = ConfigAccessor.create(file);
         } catch (final InvalidConfigurationException e) {
-            LOG.warning(e.getMessage(), e);
+            LOG.warn(e.getMessage(), e);
             return;
         }
         final FileConfiguration config = accessor.getConfig();

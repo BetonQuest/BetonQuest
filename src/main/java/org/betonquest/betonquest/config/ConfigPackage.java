@@ -340,7 +340,7 @@ public class ConfigPackage {
         try {
             config.save();
         } catch (final IOException e) {
-            LOG.warning(this, e.getMessage(), e);
+            LOG.warn(this, e.getMessage(), e);
             return false;
         }
         return true;

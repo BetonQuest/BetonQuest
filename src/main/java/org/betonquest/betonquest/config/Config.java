@@ -79,7 +79,7 @@ public class Config {
             messages = ConfigAccessor.create(new File(root, "messages.yml"), BetonQuest.getInstance(), "messages.yml");
             internal = ConfigAccessor.create(BetonQuest.getInstance(), "messages-internal.yml");
         } catch (final InvalidConfigurationException e) {
-            LOG.warning(e.getMessage(), e);
+            LOG.warn(e.getMessage(), e);
             return;
         }
         for (final String key : messages.getConfig().getKeys(false)) {
@@ -303,7 +303,7 @@ public class Config {
             try {
                 messages.save();
             } catch (final IOException e) {
-                LOG.warning(e.getMessage(), e);
+                LOG.warn(e.getMessage(), e);
                 return true;
             }
             return true;
@@ -565,7 +565,7 @@ public class Config {
                     try {
                         pack = new ConfigPackage(file, packPath);
                     } catch (final InvalidConfigurationException e) {
-                        LOG.warning(e.getMessage(), e);
+                        LOG.warn(e.getMessage(), e);
                         return;
                     }
                     if (pack.isEnabled()) {
