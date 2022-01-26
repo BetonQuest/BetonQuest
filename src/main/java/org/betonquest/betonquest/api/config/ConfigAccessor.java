@@ -17,7 +17,7 @@ public interface ConfigAccessor {
      * This tries to load a configurationFile.
      *
      * @param configurationFile the {@link File} that is represented by this {@link ConfigAccessorImpl}
-     * @throws InvalidConfigurationException Is thrown if the configurationFile could not be loaded
+     * @throws InvalidConfigurationException thrown if the configurationFile could not be loaded
      */
     static ConfigAccessor create(final File configurationFile) throws InvalidConfigurationException {
         return create(configurationFile, null, null);
