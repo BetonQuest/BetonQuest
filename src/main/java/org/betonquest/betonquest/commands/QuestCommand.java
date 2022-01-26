@@ -942,7 +942,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         try {
             config.save();
         } catch (final IOException e) {
-            LOG.warning(configPack, e.getMessage(), e);
+            LOG.warn(configPack, e.getMessage(), e);
             return;
         }
         // done
@@ -1498,7 +1498,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 try {
                     nameID.getPackage().getObjectives().save();
                 } catch (final IOException e) {
-                    LOG.warning(nameID.getPackage(), e.getMessage(), e);
+                    LOG.warn(nameID.getPackage(), e.getMessage(), e);
                     return;
                 }
                 // rename objective instance
@@ -1540,7 +1540,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 try {
                     nameID.getPackage().getObjectives().save();
                 } catch (final IOException e) {
-                    LOG.warning(nameID.getPackage(), e.getMessage(), e);
+                    LOG.warn(nameID.getPackage(), e.getMessage(), e);
                     return;
                 }
                 break;
