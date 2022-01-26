@@ -53,7 +53,7 @@ public final class Zipper {
         if (node.isDirectory()) {
             final File[] subNote = node.listFiles();
             if (subNote == null) {
-                LOG.warning("Directory '" + node.getPath() + "' could not be read!");
+                LOG.warn("Directory '" + node.getPath() + "' could not be read!");
             } else {
                 for (final File filename : subNote) {
                     fileList.addAll(generateFileList(filename, skipEntries));
