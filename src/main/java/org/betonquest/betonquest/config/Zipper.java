@@ -21,7 +21,6 @@ import java.util.zip.ZipOutputStream;
 public final class Zipper {
 
     private Zipper() {
-        // Empty
     }
 
     /**
