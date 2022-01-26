@@ -9,12 +9,12 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * This interface defines the methods to load get save and delete a config file or a resource from a plugin jar.
+ * This interface defines methods to load, get, save and delete a config file or a resource from a plugin jar.
  */
 public interface ConfigAccessor {
 
     /**
-     * This tries to load a configurationFile.
+     * Loads a configurationFile.
      *
      * @param configurationFile the {@link File} that is represented by this {@link ConfigAccessorImpl}
      * @throws InvalidConfigurationException thrown if the configurationFile could not be loaded
@@ -24,25 +24,25 @@ public interface ConfigAccessor {
     }
 
     /**
-     * This tries to load a resourceFile.
+     * Tries to load a resourceFile.
      *
-     * @param plugin       the plugin where the resource file comes from
+     * @param plugin       the plugin which is the source of the resource file
      * @param resourceFile the resource file to load from the plugin
-     * @throws InvalidConfigurationException Is thrown if the resourceFile could not be loaded
+     * @throws InvalidConfigurationException thrown if the resourceFile could not be loaded
      */
     static ConfigAccessor create(final Plugin plugin, final String resourceFile) throws InvalidConfigurationException {
         return create(null, plugin, resourceFile);
     }
 
     /**
-     * This tries to load a configurationFile or resourceFile and saves it.
-     * If the configurationFile does not exist the resourceFile will be loaded
+     * Tries to load and save a configurationFile.
+     * If the configurationFile does not exist, a fallback resourceFile will be loaded
      * and then saved to the configurationFile if given.
      *
      * @param configurationFile the {@link File} that is represented by this {@link ConfigAccessorImpl}
-     * @param plugin            the plugin where the resource file comes from
+     * @param plugin            the plugin which is the source of the resource file
      * @param resourceFile      the resource file to load from the plugin
-     * @throws InvalidConfigurationException Is thrown if the configurationFile or the resourceFile could not be loaded,
+     * @throws InvalidConfigurationException thrown if the configurationFile or the resourceFile could not be loaded,
      *                                       or the resourceFile could not be saved to the configurationFile
      */
     static ConfigAccessor create(final File configurationFile, final Plugin plugin, final String resourceFile) throws InvalidConfigurationException {
@@ -50,7 +50,7 @@ public interface ConfigAccessor {
     }
 
     /**
-     * Get the {@link YamlConfiguration} that was loaded by this {@link ConfigAccessor}.
+     * Gets the {@link YamlConfiguration} that was loaded by this {@link ConfigAccessor}.
      *
      * @return the configuration.
      */
@@ -58,18 +58,18 @@ public interface ConfigAccessor {
 
     /**
      * Saves the file that is represented by this {@link ConfigAccessor}.
-     * If no configurationFile was provided in the constructor, this method does nothing.
+     * This method does nothing if no configurationFile was provided in the constructor.
      *
-     * @return Only returns true, if the file was saved.
-     * @throws IOException Is thrown if the file could not be saved.
+     * @return Only returns true if the file was saved.
+     * @throws IOException thrown if the file could not be saved.
      */
     boolean save() throws IOException;
 
     /**
      * Delete the file that is represented by this {@link ConfigAccessor}.
-     * If no configurationFile was provided in the constructor, this method does nothing.
+     * This method does nothing if no configurationFile was provided in the constructor.
      *
-     * @return Only returns true, if the file was deleted and did exist before.
+     * @return Only returns true if the file was deleted and existed before.
      */
     boolean delete();
 }
