@@ -15,12 +15,13 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 
 /**
- * The {@link ConfigAccessorImpl} represent a {@link YamlConfiguration} that is a file or a resource from the plugin.
+ * Represents a {@link YamlConfiguration} that is a file or a resource from a plugin.
  */
 @CustomLog
 public class ConfigAccessorImpl implements ConfigAccessor {
+
     /**
-     * The file where to load nad save the {@link ConfigAccessorImpl#configuration} from and to.
+     * The file from which the {@link ConfigAccessorImpl#configuration} was loaded and will be saved to.
      */
     private final File configurationFile;
     /**
@@ -29,13 +30,13 @@ public class ConfigAccessorImpl implements ConfigAccessor {
     private final YamlConfiguration configuration;
 
     /**
-     * This constructor tries to load the configurationFile.
+     * Tries to load the configurationFile.
      * If the configurationFile does not exist the resourceFile will be loaded and then saved to the configurationFile.
      *
      * @param configurationFile the {@link File} that is represented by this {@link ConfigAccessorImpl}
-     * @param plugin            the plugin where the resource file comes from
+     * @param plugin            the plugin which is the source of the resource file
      * @param resourceFile      the resource file to load from the plugin
-     * @throws InvalidConfigurationException Is thrown if the configurationFile or the resourceFile could not be loaded,
+     * @throws InvalidConfigurationException thrown if the configurationFile or the resourceFile could not be loaded,
      *                                       or the resourceFile could not be saved to the configurationFile
      */
     public ConfigAccessorImpl(final File configurationFile, final Plugin plugin, final String resourceFile) throws InvalidConfigurationException {
@@ -54,13 +55,12 @@ public class ConfigAccessorImpl implements ConfigAccessor {
         }
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     private void checkValidParams(final File configurationFile, final Plugin plugin, final String resourceFile) throws InvalidConfigurationException {
         if (configurationFile == null && plugin == null && resourceFile == null) {
-            throw new InvalidConfigurationException("No configurationFile and no plugin and resourceFile was passed!");
+            throw new InvalidConfigurationException("The configurationsFile, plugin and resourceFile are null. Pass either a configurationFile or a plugin and a resourceFile.");
         }
-        if (plugin != null && resourceFile == null || plugin == null && resourceFile != null) {
-            throw new InvalidConfigurationException("The plugin and the resourceFile must be defined or null!");
+        if ((plugin != null) == (resourceFile == null)) {
+            throw new InvalidConfigurationException("Both the plugin and the resourceFile must be defined or null!");
         }
     }
 
@@ -84,7 +84,7 @@ public class ConfigAccessorImpl implements ConfigAccessor {
     private YamlConfiguration load(final Object input, final boolean isResource, final String sourcePath) throws InvalidConfigurationException {
         try {
             final YamlConfiguration config = new YamlConfiguration();
-            loadFormObject(input, config);
+            loadFromObject(input, config);
             return config;
         } catch (final FileNotFoundException e) {
             throw new InvalidConfigurationException(buildExceptionMessage(isResource, sourcePath,
@@ -98,7 +98,7 @@ public class ConfigAccessorImpl implements ConfigAccessor {
         }
     }
 
-    private void loadFormObject(final Object input, final YamlConfiguration config) throws IOException, InvalidConfigurationException {
+    private void loadFromObject(final Object input, final YamlConfiguration config) throws IOException, InvalidConfigurationException {
         if (input instanceof File file) {
             config.load(file);
         } else if (input instanceof Reader reader) {
