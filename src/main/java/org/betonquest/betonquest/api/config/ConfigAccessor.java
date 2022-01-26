@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.config;
 
-import org.betonquest.betonquest.config.ConfigAccessorImpl;
+import org.betonquest.betonquest.modules.config.ConfigAccessorImpl;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
