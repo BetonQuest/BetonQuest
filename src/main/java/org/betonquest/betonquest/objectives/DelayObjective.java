@@ -107,8 +107,8 @@ public class DelayObjective extends Objective {
         int milis = 0;
         try {
             milis = timeToMiliSeconds(time);
-        } catch (InstructionParseException e) {
-            LOG.warning("Error in delay objective '" + instruction.getID() + "': " + e.getMessage());
+        } catch (final InstructionParseException e) {
+            LOG.warn("Error in delay objective '" + instruction.getID() + "': " + e.getMessage());
         }
 
         final long timeToPass = Long.parseLong(String.valueOf(milis));

@@ -166,11 +166,11 @@ public class ConfigPackage {
                 final GlobalVariableID variableID = new GlobalVariableID(this, varName);
                 varVal = variableID.getPackage().getMain().getConfig().getString("variables." + variableID.getBaseID());
             } catch (final ObjectNotFoundException e) {
-                LOG.warning(this, e.getMessage(), e);
+                LOG.warn(this, e.getMessage(), e);
                 return variableInput;
             }
             if (varVal == null) {
-                LOG.warning(this, String.format("Variable %s not defined in package %s", varName, name));
+                LOG.warn(this, String.format("Variable %s not defined in package %s", varName, name));
                 return variableInput;
             }
 
@@ -181,13 +181,13 @@ public class ConfigPackage {
                 final String innerVarName = varVal.substring(1, varVal.indexOf('$', 2));
                 final String innerVarVal = main.getConfig().getString("variables." + innerVarName);
                 if (innerVarVal == null) {
-                    LOG.warning(this, String.format("Location variable %s is not defined, in variable %s, package %s.",
+                    LOG.warn(this, String.format("Location variable %s is not defined, in variable %s, package %s.",
                             innerVarName, varName, name));
                     return variableInput;
                 }
 
                 if (!innerVarVal.matches("^\\-?\\d+;\\-?\\d+;\\-?\\d+;.+$")) {
-                    LOG.warning(this,
+                    LOG.warn(this,
                             String.format("Inner variable %s is not valid location, in variable %s, package %s.",
                                     innerVarName, varName, name));
                     return variableInput;
@@ -207,7 +207,7 @@ public class ConfigPackage {
                     // rest is world + possible other arguments
                     rest = innerVarVal.substring(offset3);
                 } catch (final NumberFormatException e) {
-                    LOG.warning(this, String.format(
+                    LOG.warn(this, String.format(
                             "Could not parse coordinates in inner variable %s in variable %s in package %s",
                             innerVarName, varName, name), e);
                     return variableInput;
@@ -225,7 +225,7 @@ public class ConfigPackage {
                     vecLocY = Double.parseDouble(varVal.substring(offset2 + 1, offset3));
                     vecLocZ = Double.parseDouble(varVal.substring(offset3 + 1, offset4));
                 } catch (final NumberFormatException e) {
-                    LOG.warning(this, String.format("Could not parse vector inlocation variable %s in package %s",
+                    LOG.warn(this, String.format("Could not parse vector inlocation variable %s in package %s",
                             varName, name), e);
                     return variableInput;
                 }

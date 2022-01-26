@@ -81,7 +81,7 @@ public class ConfigAccessor {
             } catch (final FileNotFoundException e) {
                 LOG.debug(null, "The file '" + configFile.getPath() + "' does not exist!", e);
             } catch (final InvalidConfigurationException e) {
-                LOG.warning(null, "Invalid configuration found. It contains a YAML syntax error that needs to be fixed! \n" + e.getMessage(), e);
+                LOG.warn(null, "Invalid configuration found. It contains a YAML syntax error that needs to be fixed! \n" + e.getMessage(), e);
             } catch (final IOException e) {
                 LOG.error(null, "Unexpected error while loading the config!", e);
             }

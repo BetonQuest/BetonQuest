@@ -64,7 +64,7 @@ public final class ConversationColors {
             optionColors = new ChatColor[]{};
             answerColors = new ChatColor[]{};
             numberColors = new ChatColor[]{};
-            LOG.warning("Could not parse conversation colors, everything will be white!", e);
+            LOG.warn("Could not parse conversation colors, everything will be white!", e);
         }
     }
 

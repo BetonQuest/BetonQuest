@@ -37,7 +37,7 @@ public class ObjectivePropertyVariable extends Variable {
         try {
             objective = new ObjectiveID(instruction.getPackage(), objectiveID);
         } catch (final ObjectNotFoundException e) {
-            LOG.warning(instruction.getPackage(), "Error in objective property variable '" + instruction + "' " + e.getMessage());
+            LOG.warn(instruction.getPackage(), "Error in objective property variable '" + instruction + "' " + e.getMessage());
         }
     }
 

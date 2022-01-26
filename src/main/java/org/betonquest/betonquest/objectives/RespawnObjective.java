@@ -36,7 +36,7 @@ public class RespawnObjective extends Objective implements Listener {
                 try {
                     event.setRespawnLocation(location.getLocation(playerID));
                 } catch (final QuestRuntimeException e) {
-                    LOG.warning(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: \" + e.getMessage()", e);
+                    LOG.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: \" + e.getMessage()", e);
                 }
             }
             completeObjective(playerID);

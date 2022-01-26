@@ -57,7 +57,7 @@ public final class Utils {
         final long time = new Date().getTime();
         final BetonQuest instance = BetonQuest.getInstance();
         if (!backupDatabase(new File(instance.getDataFolder(), "database-backup.yml"))) {
-            LOG.warning("There was an error during backing up the database! This does not affect"
+            LOG.warn("There was an error during backing up the database! This does not affect"
                     + " the configuration backup, nor damage your database. You should backup"
                     + " the database maually if you want to be extra safe, but it's not necessary if"
                     + " you don't want to downgrade later.");
@@ -129,7 +129,7 @@ public final class Utils {
                                 final String value = res.getString(columnName);
                                 config.set(entry.getKey() + "." + counter + "." + columnName, value);
                             } catch (final SQLException e) {
-                                LOG.warning("Could not read SQL: " + e.getMessage(), e);
+                                LOG.warn("Could not read SQL: " + e.getMessage(), e);
                                 done = false;
                                 // do nothing, as there can be nothing done
                                 // error while loading the string means the
@@ -145,7 +145,7 @@ public final class Utils {
             accessor.saveConfig();
             return done;
         } catch (IOException | SQLException e) {
-            LOG.warning("There was an error during database backup: " + e.getMessage(), e);
+            LOG.warn("There was an error during database backup: " + e.getMessage(), e);
             final File brokenFile = new File(instance.getDataFolder(), "database-backup.yml");
             if (brokenFile.exists()) {
                 brokenFile.delete();
@@ -254,7 +254,7 @@ public final class Utils {
         final String filename = "old-database-" + backupNumber + ".yml";
         LOG.info("Backing up old database!");
         if (!backupDatabase(new File(backupFolder, filename))) {
-            LOG.warning("There was an error during old database backup process. This means that"
+            LOG.warn("There was an error during old database backup process. This means that"
                     + " if the plugin loaded new database (from backup), the old one would be lost "
                     + "forever. Because of that the loading of backup was aborted!");
             return;

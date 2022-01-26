@@ -76,7 +76,7 @@ public class ActionObjective extends Objective implements Listener {
                     return;
                 }
             } catch (final QuestRuntimeException e) {
-                LOG.warning(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
+                LOG.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
             }
         }
         if (selector == null) {
@@ -164,7 +164,7 @@ public class ActionObjective extends Objective implements Listener {
             try {
                 location = loc.getLocation(playerID);
             } catch (final QuestRuntimeException e) {
-                LOG.warning(instruction.getPackage(), "Error while getting location property in '" + instruction.getID() + "' objective: "
+                LOG.warn(instruction.getPackage(), "Error while getting location property in '" + instruction.getID() + "' objective: "
                         + e.getMessage(), e);
                 return "";
             }

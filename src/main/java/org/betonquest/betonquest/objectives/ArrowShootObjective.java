@@ -71,12 +71,12 @@ public class ArrowShootObjective extends Objective implements Listener {
                             completeObjective(playerID);
                         }
                     } catch (final QuestRuntimeException e) {
-                        LOG.warning(instruction.getPackage(), "Could not resolve range variable: " + e.getMessage(), e);
+                        LOG.warn(instruction.getPackage(), "Could not resolve range variable: " + e.getMessage(), e);
                     }
                 }
             }.runTask(BetonQuest.getInstance());
         } catch (final QuestRuntimeException e) {
-            LOG.warning(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
+            LOG.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
         }
     }
 

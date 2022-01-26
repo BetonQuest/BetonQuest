@@ -135,7 +135,7 @@ public class QuestCanceler {
         // get location
         if (locParts != null) {
             if (locParts.length != 4 && locParts.length != 6) {
-                LOG.warning(pack, "Wrong location format in quest canceler " + name);
+                LOG.warn(pack, "Wrong location format in quest canceler " + name);
                 return;
             }
             final double locX;
@@ -146,12 +146,12 @@ public class QuestCanceler {
                 locY = Double.parseDouble(locParts[1]);
                 locZ = Double.parseDouble(locParts[2]);
             } catch (final NumberFormatException e) {
-                LOG.warning(pack, "Could not parse location in quest canceler " + name, e);
+                LOG.warn(pack, "Could not parse location in quest canceler " + name, e);
                 return;
             }
             final World world = Bukkit.getWorld(locParts[3]);
             if (world == null) {
-                LOG.warning(pack, "The world doesn't exist in quest canceler " + name);
+                LOG.warn(pack, "The world doesn't exist in quest canceler " + name);
                 return;
             }
             float yaw = 0;
@@ -161,7 +161,7 @@ public class QuestCanceler {
                     yaw = Float.parseFloat(locParts[4]);
                     pitch = Float.parseFloat(locParts[5]);
                 } catch (final NumberFormatException e) {
-                    LOG.warning(pack, "Could not parse yaw/pitch in quest canceler " + name + ", setting to 0", e);
+                    LOG.warn(pack, "Could not parse yaw/pitch in quest canceler " + name + ", setting to 0", e);
                     yaw = 0;
                     pitch = 0;
                 }
@@ -251,7 +251,7 @@ public class QuestCanceler {
         try {
             Config.sendNotify(packName, playerID, "quest_canceled", new String[]{questName}, "quest_cancelled,quest_canceled,info");
         } catch (final QuestRuntimeException exception) {
-            LOG.warning("The notify system was unable to play a sound for the 'quest_canceled' category in quest '" + name + "'. Error was: '" + exception.getMessage() + "'");
+            LOG.warn("The notify system was unable to play a sound for the 'quest_canceled' category in quest '" + name + "'. Error was: '" + exception.getMessage() + "'");
         }
     }
 
@@ -272,7 +272,7 @@ public class QuestCanceler {
             questName = name.get("en");
         }
         if (questName == null) {
-            LOG.warning("Default quest name not defined in canceler " + packName + "." + cancelerName);
+            LOG.warn("Default quest name not defined in canceler " + packName + "." + cancelerName);
             questName = "Quest";
         }
         return questName.replace("_", " ").replace("&", "§");
@@ -286,7 +286,7 @@ public class QuestCanceler {
                 final ItemID itemID = new ItemID(Config.getPackages().get(packName), item);
                 stack = new QuestItem(itemID).generate(1);
             } catch (InstructionParseException | ObjectNotFoundException e) {
-                LOG.warning("Could not load cancel button: " + e.getMessage(), e);
+                LOG.warn("Could not load cancel button: " + e.getMessage(), e);
             }
         }
         final ItemMeta meta = stack.getItemMeta();

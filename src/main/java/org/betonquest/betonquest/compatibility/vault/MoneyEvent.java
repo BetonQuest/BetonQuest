@@ -62,7 +62,7 @@ public class MoneyEvent extends QuestEvent {
                     Config.sendNotify(instruction.getPackage().getName(), playerID, "money_given",
                             new String[]{decimalFormat.format(difference), currencyName}, "money_given,info");
                 } catch (final QuestRuntimeException e) {
-                    LOG.warning(instruction.getPackage(), "The notify system was unable to play a sound for the 'money_given' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
+                    LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'money_given' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
                 }
             }
         } else if (difference < 0) {
@@ -72,7 +72,7 @@ public class MoneyEvent extends QuestEvent {
                     Config.sendNotify(instruction.getPackage().getName(), playerID, "money_taken",
                             new String[]{decimalFormat.format(difference), currencyName}, "money_taken,info");
                 } catch (final QuestRuntimeException e) {
-                    LOG.warning(instruction.getPackage(), "The notify system was unable to play a sound for the 'money_taken' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
+                    LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'money_taken' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
                 }
             }
         }

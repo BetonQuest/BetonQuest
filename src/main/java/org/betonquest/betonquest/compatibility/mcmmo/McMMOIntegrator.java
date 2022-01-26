@@ -23,7 +23,7 @@ public class McMMOIntegrator implements Integrator {
             new MCMMOQuestItemHandler();
             LOG.debug("Enabled MCMMO QuestItemHandler");
         } catch (final LinkageError e) {
-            LOG.warning("MCMMO version is not compatible with the QuestItemHandler.", e);
+            LOG.warn("MCMMO version is not compatible with the QuestItemHandler.", e);
         }
     }
 

@@ -142,17 +142,17 @@ public class Updater {
         try {
             searchUpdateTaskRelease(config);
         } catch (final UnknownHostException e) {
-            LOG.warning("The update server for release builds is currently not available!");
+            LOG.warn("The update server for release builds is currently not available!");
         } catch (final IOException e) {
-            LOG.warning("Could not get the latest release! " + e.getMessage(), e);
+            LOG.warn("Could not get the latest release! " + e.getMessage(), e);
         }
         if (!(isUpdateAvailable() && config.forcedStrategy) && config.downloadDev) {
             try {
                 searchUpdateTaskDev(config);
             } catch (final UnknownHostException e) {
-                LOG.warning("The update server for dev builds is currently not available!");
+                LOG.warn("The update server for dev builds is currently not available!");
             } catch (final IOException e) {
-                LOG.warning("Could not get the latest dev build! " + e.getMessage(), e);
+                LOG.warn("Could not get the latest dev build! " + e.getMessage(), e);
             }
         }
     }

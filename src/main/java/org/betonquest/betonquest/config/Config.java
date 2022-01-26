@@ -107,7 +107,7 @@ public class Config {
                 try {
                     CANCELERS.put(name, new QuestCanceler(name));
                 } catch (final InstructionParseException e) {
-                    LOG.warning(pack, "Could not load '" + name + "' quest canceler: " + e.getMessage(), e);
+                    LOG.warn(pack, "Could not load '" + name + "' quest canceler: " + e.getMessage(), e);
                 }
             }
         }
@@ -167,7 +167,7 @@ public class Config {
                     }
                 }
             } catch (final IOException e) {
-                LOG.warning("Could not save resource: " + e.getMessage(), e);
+                LOG.warn("Could not save resource: " + e.getMessage(), e);
             }
         }
     }
@@ -521,7 +521,7 @@ public class Config {
             try {
                 player.playSound(player.getLocation(), Sound.valueOf(rawSound), 1F, 1F);
             } catch (final IllegalArgumentException e) {
-                LOG.warning("Unknown sound type: " + rawSound, e);
+                LOG.warn("Unknown sound type: " + rawSound, e);
             }
         }
     }

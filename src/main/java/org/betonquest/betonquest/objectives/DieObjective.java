@@ -76,7 +76,7 @@ public class DieObjective extends Objective implements Listener {
                     targetLocation = location.getLocation(playerID);
                 }
             } catch (final QuestRuntimeException e) {
-                LOG.warning(instruction.getPackage(), "Couldn't execute onLastDamage in DieObjective", e);
+                LOG.warn(instruction.getPackage(), "Couldn't execute onLastDamage in DieObjective", e);
             }
             final Location finaltagetLocation = targetLocation;
             new BukkitRunnable() {

@@ -217,13 +217,13 @@ public class Journal {
                     text = pack.getFormattedString("journal." + pointerName);
                 }
             } else {
-                LOG.warning(pack, "No defined journal entry " + pointerName + " in package " + pack.getName());
+                LOG.warn(pack, "No defined journal entry " + pointerName + " in package " + pack.getName());
                 text = "error";
             }
 
             // handle case when the text isn't defined
             if (text == null) {
-                LOG.warning(pack, "No text defined for journal entry " + pointerName + " in language " + lang);
+                LOG.warn(pack, "No text defined for journal entry " + pointerName + " in language " + lang);
                 text = "error";
             }
 
@@ -232,7 +232,7 @@ public class Journal {
                 try {
                     BetonQuest.createVariable(pack, variable);
                 } catch (final InstructionParseException e) {
-                    LOG.warning(pack, "Error while creating variable '" + variable + "' on journal page '" + pointerName + "' in "
+                    LOG.warn(pack, "Error while creating variable '" + variable + "' on journal page '" + pointerName + "' in "
                             + PlayerConverter.getName(playerID) + "'s journal: " + e.getMessage(), e);
                 }
                 text = text.replace(variable,
@@ -278,7 +278,7 @@ public class Journal {
                                 continue;
                             }
                         } catch (final ObjectNotFoundException e) {
-                            LOG.warning(pack, "Error while generating main page in " + PlayerConverter.getPlayer(playerID) + "'s journal: " + e.getMessage(), e);
+                            LOG.warn(pack, "Error while generating main page in " + PlayerConverter.getPlayer(playerID) + "'s journal: " + e.getMessage(), e);
                             continue;
                         }
                     }
@@ -303,7 +303,7 @@ public class Journal {
                         try {
                             BetonQuest.createVariable(pack, variable);
                         } catch (final InstructionParseException e) {
-                            LOG.warning(pack, "Error while creating variable '" + variable + "' on main page in "
+                            LOG.warn(pack, "Error while creating variable '" + variable + "' on main page in "
                                     + PlayerConverter.getName(playerID) + "'s journal: " + e.getMessage(), e);
                         }
                         text = text.replace(variable,
@@ -321,7 +321,7 @@ public class Journal {
                     }
                     linesOrder.add(text + "§r"); // reset the formatting
                 } else {
-                    LOG.warning(pack, "Priority of " + packName + "." + key
+                    LOG.warn(pack, "Priority of " + packName + "." + key
                             + " journal main page line is not defined");
                 }
             }
@@ -377,7 +377,7 @@ public class Journal {
             try {
                 Config.sendNotify(null, playerID, "inventory_full", null, "inventory_full,error");
             } catch (final QuestRuntimeException e) {
-                LOG.warning("The notify system was unable to play a sound for the 'inventory_full' category. Error was: '" + e.getMessage() + "'", e);
+                LOG.warn("The notify system was unable to play a sound for the 'inventory_full' category. Error was: '" + e.getMessage() + "'", e);
             }
         }
     }

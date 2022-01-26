@@ -62,7 +62,7 @@ public final class Notify {
         try {
             return getNotifyIO(ios, categoryData);
         } catch (final InstructionParseException exception) {
-            LOG.warning(exception.getMessage(), exception);
+            LOG.warn(exception.getMessage(), exception);
         }
 
         try {

@@ -119,14 +119,14 @@ public interface BetonQuestLogger {
      * <p>
      * Use this if you can provide useful information how to fix the underlying problem.
      * <p>
-     * If you can provide an exception use {@link BetonQuestLogger#warning(String, Throwable)} instead.
+     * If you can provide an exception use {@link BetonQuestLogger#warn(String, Throwable)} instead.
      * <p>
      * Don't use this method, if you can provide a {@link ConfigPackage}.
-     * Use {@link BetonQuestLogger#warning(ConfigPackage, String)} instead.
+     * Use {@link BetonQuestLogger#warn(ConfigPackage, String)} instead.
      *
      * @param msg The message to log.
      */
-    void warning(String msg);
+    void warn(String msg);
 
     /**
      * Logs a warning message with the {@link Level#WARNING} level to the log.
@@ -134,27 +134,27 @@ public interface BetonQuestLogger {
      * <p>
      * Use this if you can provide useful information how to fix the underlying problem.
      * <p>
-     * If you cannot provide an exception use {@link BetonQuestLogger#warning(String)} instead.
+     * If you cannot provide an exception use {@link BetonQuestLogger#warn(String)} instead.
      * <p>
      * Don't use this method, if you can provide a {@link ConfigPackage}.
-     * Use {@link BetonQuestLogger#warning(ConfigPackage, String, Throwable)} instead.
+     * Use {@link BetonQuestLogger#warn(ConfigPackage, String, Throwable)} instead.
      *
      * @param msg    The message to log.
      * @param thrown The throwable to log.
      */
-    void warning(String msg, Throwable thrown);
+    void warn(String msg, Throwable thrown);
 
     /**
      * Logs a warning message with the {@link Level#WARNING} level to the log.
      * <p>
      * Use this if you can provide useful information how to fix the underlying problem.
      * <p>
-     * If you can provide an exception use {@link BetonQuestLogger#warning(ConfigPackage, String, Throwable)} instead.
+     * If you can provide an exception use {@link BetonQuestLogger#warn(ConfigPackage, String, Throwable)} instead.
      *
      * @param pack The related {@link ConfigPackage} or null.
      * @param msg  The message to log.
      */
-    void warning(ConfigPackage pack, String msg);
+    void warn(ConfigPackage pack, String msg);
 
     /**
      * Logs a warning message with the {@link Level#WARNING} level to the log.
@@ -162,13 +162,13 @@ public interface BetonQuestLogger {
      * <p>
      * Use this if you can provide useful information how to fix the underlying problem.
      * <p>
-     * If you cannot provide an exception use {@link BetonQuestLogger#warning(ConfigPackage, String)} instead.
+     * If you cannot provide an exception use {@link BetonQuestLogger#warn(ConfigPackage, String)} instead.
      *
      * @param pack   The related {@link ConfigPackage} or null.
      * @param msg    The message to log.
      * @param thrown The throwable to log.
      */
-    void warning(ConfigPackage pack, String msg, Throwable thrown);
+    void warn(ConfigPackage pack, String msg, Throwable thrown);
 
     /**
      * Logs an error message with the {@link Level#SEVERE} level to the log.

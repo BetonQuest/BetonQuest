@@ -64,7 +64,7 @@ public class CitizensParticle extends BukkitRunnable {
             // load the condition check interval
             interval = section.getInt("check_interval", 100);
             if (interval <= 0) {
-                LOG.warning(pack, "Could not load npc effects of package " + pack.getName() + ": " +
+                LOG.warn(pack, "Could not load npc effects of package " + pack.getName() + ": " +
                         "Check interval must be bigger than 0.");
                 enabled = false;
                 return;
@@ -90,7 +90,7 @@ public class CitizensParticle extends BukkitRunnable {
                 // load the interval between animations
                 effect.interval = settings.getInt("interval", 100);
                 if (effect.interval <= 0) {
-                    LOG.warning(pack, "Could not load npc effect " + key + " in package " + pack.getName() + ": " +
+                    LOG.warn(pack, "Could not load npc effect " + key + " in package " + pack.getName() + ": " +
                             "Effect interval must be bigger than 0.");
                     continue;
                 }

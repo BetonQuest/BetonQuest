@@ -76,7 +76,7 @@ public class ChestPutObjective extends Objective implements Listener {
             final Block block = targetChestLocation.getBlock();
             if (!(block.getState() instanceof InventoryHolder)) {
                 final World world = targetChestLocation.getWorld();
-                LOG.warning(instruction.getPackage(),
+                LOG.warn(instruction.getPackage(),
                         String.format("Error in '%s' chestput objective: Block at location x:%d y:%d z:%d in world '%s' isn't a chest!",
                                 instruction.getID().getFullID(),
                                 targetChestLocation.getBlockX(),
@@ -96,7 +96,7 @@ public class ChestPutObjective extends Objective implements Listener {
                 }
             }
         } catch (final QuestRuntimeException e) {
-            LOG.warning(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
+            LOG.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
         }
     }
 

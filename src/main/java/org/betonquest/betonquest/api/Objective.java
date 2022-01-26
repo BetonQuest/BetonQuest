@@ -231,7 +231,7 @@ public abstract class Objective {
             Config.sendNotify(instruction.getPackage().getName(), playerID, messageName, stringVariables, messageName + ",info");
         } catch (final QuestRuntimeException exception) {
             try {
-                LOG.warning(instruction.getPackage(), "The notify system was unable to play a sound for the '" + messageName + "' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
+                LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the '" + messageName + "' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
             } catch (final InstructionParseException e) {
                 LOG.reportException(instruction.getPackage(), e);
             }
@@ -298,7 +298,7 @@ public abstract class Objective {
 
     private void handleObjectiveDataConstructionError(final String playerID, final ReflectiveOperationException exception) {
         if (exception.getCause() instanceof InstructionParseException) {
-            LOG.warning(instruction.getPackage(), "Error while loading " + this.instruction.getID().getFullID() + " objective data for player "
+            LOG.warn(instruction.getPackage(), "Error while loading " + this.instruction.getID().getFullID() + " objective data for player "
                     + PlayerConverter.getName(playerID) + ": " + exception.getCause().getMessage(), exception);
         } else {
             LOG.reportException(instruction.getPackage(), exception);
@@ -595,7 +595,7 @@ public abstract class Objective {
                     return;
                 }
                 last = System.currentTimeMillis();
-                LOG.warning(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
+                LOG.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
             }
         }
     }

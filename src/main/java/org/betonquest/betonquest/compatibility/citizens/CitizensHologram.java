@@ -110,7 +110,7 @@ public class CitizensHologram extends BukkitRunnable {
                     try {
                         npcs.put(Integer.parseInt(npcID), new ArrayList<>());
                     } catch (final NumberFormatException exception) {
-                        LOG.warning(pack, "Could not parse number of NPC '" + npcID + "'");
+                        LOG.warn(pack, "Could not parse number of NPC '" + npcID + "'");
                     }
                 }
             }
@@ -124,7 +124,7 @@ public class CitizensHologram extends BukkitRunnable {
             }
             interval = hologramsSection.getInt("check_interval", 100);
             if (interval <= 0) {
-                LOG.warning(pack, "Could not load npc holograms of package " + pack.getName() + ": " +
+                LOG.warn(pack, "Could not load npc holograms of package " + pack.getName() + ": " +
                         "Check interval must be bigger than 0.");
                 return;
             }
@@ -168,7 +168,7 @@ public class CitizensHologram extends BukkitRunnable {
                 final String[] vectorParts = vector.split(";");
                 return new Vector(Double.parseDouble(vectorParts[0]), Double.parseDouble(vectorParts[1]), Double.parseDouble(vectorParts[2]));
             } catch (final NumberFormatException e) {
-                LOG.warning(pack, pack.getName() + ": Invalid vector in Hologram '" + key + "': " + vector, e);
+                LOG.warn(pack, pack.getName() + ": Invalid vector in Hologram '" + key + "': " + vector, e);
             }
         }
         return new Vector(0, 3, 0);
@@ -181,7 +181,7 @@ public class CitizensHologram extends BukkitRunnable {
                 try {
                     conditions.add(new ConditionID(pack, part));
                 } catch (final ObjectNotFoundException e) {
-                    LOG.warning(pack, "Error while loading " + part + " condition for hologram " + pack.getName() + "."
+                    LOG.warn(pack, "Error while loading " + part + " condition for hologram " + pack.getName() + "."
                             + key + ": " + e.getMessage(), e);
                 }
             }
@@ -277,9 +277,9 @@ public class CitizensHologram extends BukkitRunnable {
                     final ItemStack stack = new QuestItem(itemID).generate(stackSize);
                     hologram.appendItemLine(stack);
                 } catch (final InstructionParseException e) {
-                    LOG.warning(npcHologram.pack, "Could not parse item in " + npcHologram.pack.getName() + " hologram: " + e.getMessage(), e);
+                    LOG.warn(npcHologram.pack, "Could not parse item in " + npcHologram.pack.getName() + " hologram: " + e.getMessage(), e);
                 } catch (final ObjectNotFoundException e) {
-                    LOG.warning(npcHologram.pack, "Could not find item in " + npcHologram.pack.getName() + " hologram: " + e.getMessage(), e);
+                    LOG.warn(npcHologram.pack, "Could not find item in " + npcHologram.pack.getName() + " hologram: " + e.getMessage(), e);
                 }
             } else {
                 hologram.appendTextLine(line.replace('&', '§'));

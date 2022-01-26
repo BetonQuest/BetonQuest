@@ -132,7 +132,7 @@ public class MenuConvIO extends ChatConvIO {
                 }
             }
         } catch (final IllegalArgumentException e) {
-            LOG.warning(conv.getPackage(), conv.getPackage().getName() + ": Invalid data for 'control_cancel': " + configControlCancel, e);
+            LOG.warn(conv.getPackage(), conv.getPackage().getName() + ": Invalid data for 'control_cancel': " + configControlCancel, e);
         }
         try {
             for (final CONTROL control : Arrays.stream(configControlSelect.split(","))
@@ -145,7 +145,7 @@ public class MenuConvIO extends ChatConvIO {
                 }
             }
         } catch (final IllegalArgumentException e) {
-            LOG.warning(conv.getPackage(), conv.getPackage().getName() + ": Invalid data for 'control_select': " + configControlSelect, e);
+            LOG.warn(conv.getPackage(), conv.getPackage().getName() + ": Invalid data for 'control_select': " + configControlSelect, e);
         }
         try {
             for (final CONTROL control : Arrays.stream(configControlMove.split(","))
@@ -157,7 +157,7 @@ public class MenuConvIO extends ChatConvIO {
                 }
             }
         } catch (final IllegalArgumentException e) {
-            LOG.warning(conv.getPackage(), conv.getPackage().getName() + ": Invalid data for 'control_move': " + configControlMove, e);
+            LOG.warn(conv.getPackage(), conv.getPackage().getName() + ": Invalid data for 'control_move': " + configControlMove, e);
         }
     }
 

@@ -335,7 +335,7 @@ public class BetonQuest extends JavaPlugin {
             }
         }
         if (condition == null) {
-            log.warning(conditionID.getPackage(), "The condition " + conditionID + " is not defined!");
+            log.warn(conditionID.getPackage(), "The condition " + conditionID + " is not defined!");
             return false;
         }
         // check for null player
@@ -353,7 +353,7 @@ public class BetonQuest extends JavaPlugin {
         try {
             outcome = condition.handle(playerID);
         } catch (final QuestRuntimeException e) {
-            log.warning(conditionID.getPackage(), "Error while checking '" + conditionID + "' condition: " + e.getMessage(), e);
+            log.warn(conditionID.getPackage(), "Error while checking '" + conditionID + "' condition: " + e.getMessage(), e);
             return false;
         }
         final boolean isMet = outcome != conditionID.inverted();
@@ -384,7 +384,7 @@ public class BetonQuest extends JavaPlugin {
             }
         }
         if (event == null) {
-            log.warning(eventID.getPackage(), "Event " + eventID + " is not defined");
+            log.warn(eventID.getPackage(), "Event " + eventID + " is not defined");
             return;
         }
         // fire the event
@@ -397,7 +397,7 @@ public class BetonQuest extends JavaPlugin {
         try {
             event.fire(playerID);
         } catch (final QuestRuntimeException e) {
-            log.warning(eventID.getPackage(), "Error while firing '" + eventID + "' event: " + e.getMessage(), e);
+            log.warn(eventID.getPackage(), "Error while firing '" + eventID + "' event: " + e.getMessage(), e);
         }
     }
 
@@ -451,7 +451,7 @@ public class BetonQuest extends JavaPlugin {
             }
         }
         if (objective == null) {
-            log.warning(objectiveID.getPackage(), "Objective " + objectiveID + " does not exist");
+            log.warn(objectiveID.getPackage(), "Objective " + objectiveID + " does not exist");
             return;
         }
         if (objective.containsPlayer(playerID)) {
@@ -583,7 +583,7 @@ public class BetonQuest extends JavaPlugin {
         if (!mySQLEnabled || !isMySQLUsed) {
             this.database = new SQLite(this, "database.db");
             if (mySQLEnabled) {
-                log.warning("No connection to the mySQL Database! Using SQLite for storing data as fallback!");
+                log.warn("No connection to the mySQL Database! Using SQLite for storing data as fallback!");
             } else {
                 log.info("Using SQLite for storing data!");
             }
@@ -830,7 +830,7 @@ public class BetonQuest extends JavaPlugin {
             final Logger coreLogger = (Logger) LogManager.getRootLogger();
             coreLogger.addFilter(new AnswerFilter());
         } catch (ClassNotFoundException | NoClassDefFoundError e) {
-            log.warning("Could not disable /betonquestanswer logging", e);
+            log.warn("Could not disable /betonquestanswer logging", e);
         }
 
         // metrics
@@ -869,7 +869,7 @@ public class BetonQuest extends JavaPlugin {
             final FileConfiguration eConfig = Config.getPackages().get(packName).getEvents().getConfig();
             for (final String key : eConfig.getKeys(false)) {
                 if (key.contains(" ")) {
-                    log.warning(pack,
+                    log.warn(pack,
                             "Event name cannot contain spaces: '" + key + "' (in " + packName + " package)");
                     continue;
                 }
@@ -877,21 +877,21 @@ public class BetonQuest extends JavaPlugin {
                 try {
                     identifier = new EventID(pack, key);
                 } catch (final ObjectNotFoundException e) {
-                    log.warning(pack, "Error while loading event '" + packName + "." + key + "': " + e.getMessage(), e);
+                    log.warn(pack, "Error while loading event '" + packName + "." + key + "': " + e.getMessage(), e);
                     continue;
                 }
                 final String type;
                 try {
                     type = identifier.generateInstruction().getPart(0);
                 } catch (final InstructionParseException e) {
-                    log.warning(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
+                    log.warn(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
                     continue;
                 }
                 final Class<? extends QuestEvent> eventClass = EVENT_TYPES.get(type);
                 if (eventClass == null) {
                     // if it's null then there is no such type registered, log
                     // an error
-                    log.warning(pack, "Event type " + type + " is not registered, check if it's"
+                    log.warn(pack, "Event type " + type + " is not registered, check if it's"
                             + " spelled correctly in '" + identifier + "' event.");
                     continue;
                 }
@@ -902,7 +902,7 @@ public class BetonQuest extends JavaPlugin {
                     log.debug(pack, "  Event '" + identifier + "' loaded");
                 } catch (final InvocationTargetException e) {
                     if (e.getCause() instanceof InstructionParseException) {
-                        log.warning(pack, "Error in '" + identifier + "' event (" + type + "): " + e.getCause().getMessage(), e);
+                        log.warn(pack, "Error in '" + identifier + "' event (" + type + "): " + e.getCause().getMessage(), e);
                     } else {
                         log.reportException(pack, e);
                     }
@@ -913,7 +913,7 @@ public class BetonQuest extends JavaPlugin {
             final FileConfiguration cConfig = pack.getConditions().getConfig();
             for (final String key : cConfig.getKeys(false)) {
                 if (key.contains(" ")) {
-                    log.warning(pack,
+                    log.warn(pack,
                             "Condition name cannot contain spaces: '" + key + "' (in " + packName + " package)");
                     continue;
                 }
@@ -921,21 +921,21 @@ public class BetonQuest extends JavaPlugin {
                 try {
                     identifier = new ConditionID(pack, key);
                 } catch (final ObjectNotFoundException e) {
-                    log.warning(pack, "Error while loading condition '" + packName + "." + key + "': " + e.getMessage(), e);
+                    log.warn(pack, "Error while loading condition '" + packName + "." + key + "': " + e.getMessage(), e);
                     continue;
                 }
                 final String type;
                 try {
                     type = identifier.generateInstruction().getPart(0);
                 } catch (final InstructionParseException e) {
-                    log.warning(pack, "Condition type not defined in '" + packName + "." + key + "'", e);
+                    log.warn(pack, "Condition type not defined in '" + packName + "." + key + "'", e);
                     continue;
                 }
                 final Class<? extends Condition> conditionClass = CONDITION_TYPES.get(type);
                 // if it's null then there is no such type registered, log an
                 // error
                 if (conditionClass == null) {
-                    log.warning(pack, "Condition type " + type + " is not registered,"
+                    log.warn(pack, "Condition type " + type + " is not registered,"
                             + " check if it's spelled correctly in '" + identifier + "' condition.");
                     continue;
                 }
@@ -946,7 +946,7 @@ public class BetonQuest extends JavaPlugin {
                     log.debug(pack, "  Condition '" + identifier + "' loaded");
                 } catch (final InvocationTargetException e) {
                     if (e.getCause() instanceof InstructionParseException) {
-                        log.warning(pack, "Error in '" + identifier + "' condition (" + type + "): " + e.getCause().getMessage(), e);
+                        log.warn(pack, "Error in '" + identifier + "' condition (" + type + "): " + e.getCause().getMessage(), e);
                     } else {
                         log.reportException(pack, e);
                     }
@@ -957,7 +957,7 @@ public class BetonQuest extends JavaPlugin {
             final FileConfiguration oConfig = pack.getObjectives().getConfig();
             for (final String key : oConfig.getKeys(false)) {
                 if (key.contains(" ")) {
-                    log.warning(pack,
+                    log.warn(pack,
                             "Objective name cannot contain spaces: '" + key + "' (in " + packName + " package)");
                     continue;
                 }
@@ -965,21 +965,21 @@ public class BetonQuest extends JavaPlugin {
                 try {
                     identifier = new ObjectiveID(pack, key);
                 } catch (final ObjectNotFoundException e) {
-                    log.warning(pack, "Error while loading objective '" + packName + "." + key + "': " + e.getMessage(), e);
+                    log.warn(pack, "Error while loading objective '" + packName + "." + key + "': " + e.getMessage(), e);
                     continue;
                 }
                 final String type;
                 try {
                     type = identifier.generateInstruction().getPart(0);
                 } catch (final InstructionParseException e) {
-                    log.warning(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
+                    log.warn(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
                     continue;
                 }
                 final Class<? extends Objective> objectiveClass = OBJECTIVE_TYPES.get(type);
                 // if it's null then there is no such type registered, log an
                 // error
                 if (objectiveClass == null) {
-                    log.warning(pack,
+                    log.warn(pack,
                             "Objective type " + type + " is not registered, check if it's"
                                     + " spelled correctly in '" + identifier + "' objective.");
                     continue;
@@ -991,7 +991,7 @@ public class BetonQuest extends JavaPlugin {
                     log.debug(pack, "  Objective '" + identifier + "' loaded");
                 } catch (final InvocationTargetException e) {
                     if (e.getCause() instanceof InstructionParseException) {
-                        log.warning(pack, "Error in '" + identifier + "' objective (" + type + "): " + e.getCause().getMessage(), e);
+                        log.warn(pack, "Error in '" + identifier + "' objective (" + type + "): " + e.getCause().getMessage(), e);
                     } else {
                         log.reportException(pack, e);
                     }
@@ -1001,7 +1001,7 @@ public class BetonQuest extends JavaPlugin {
             }
             for (final String convName : pack.getConversationNames()) {
                 if (convName.contains(" ")) {
-                    log.warning(pack,
+                    log.warn(pack,
                             "Conversation name cannot contain spaces: '" + convName + "' (in " + packName
                                     + " package)");
                     continue;
@@ -1009,7 +1009,7 @@ public class BetonQuest extends JavaPlugin {
                 try {
                     CONVERSATIONS.put(pack.getName() + "." + convName, new ConversationData(pack, convName));
                 } catch (final InstructionParseException e) {
-                    log.warning(pack, "Error in '" + packName + "." + convName + "' conversation: " + e.getMessage(), e);
+                    log.warn(pack, "Error in '" + packName + "." + convName + "' conversation: " + e.getMessage(), e);
                 }
             }
             // check external pointers
@@ -1324,19 +1324,19 @@ public class BetonQuest extends JavaPlugin {
      */
     public String getVariableValue(final String packName, final String name, final String playerID) {
         if (!Config.getPackages().containsKey(packName)) {
-            log.warning("Variable '" + name + "' contains the non-existent package '" + packName + "' !");
+            log.warn("Variable '" + name + "' contains the non-existent package '" + packName + "' !");
             return "";
         }
         final ConfigPackage pack = Config.getPackages().get(packName);
         try {
             final Variable var = createVariable(pack, name);
             if (var == null) {
-                log.warning(pack, "Could not resolve variable '" + name + "'.");
+                log.warn(pack, "Could not resolve variable '" + name + "'.");
                 return "";
             }
             return var.getValue(playerID);
         } catch (final InstructionParseException e) {
-            log.warning(pack, "&cCould not create variable '" + name + "': " + e.getMessage(), e);
+            log.warn(pack, "&cCould not create variable '" + name + "': " + e.getMessage(), e);
             return "";
         }
     }
@@ -1370,21 +1370,21 @@ public class BetonQuest extends JavaPlugin {
     /**
      * @return the event types map
      */
-    public Map<String, Class<? extends QuestEvent>> getEventTypes(){
+    public Map<String, Class<? extends QuestEvent>> getEventTypes() {
         return new HashMap<>(EVENT_TYPES);
     }
 
     /**
      * @return the condition types map
      */
-    public Map<String, Class<? extends Condition>> getConditionTypes(){
+    public Map<String, Class<? extends Condition>> getConditionTypes() {
         return new HashMap<>(CONDITION_TYPES);
     }
 
     /**
      * @return the objective types map
      */
-    public Map<String, Class<? extends Objective>> getObjectiveTypes(){
+    public Map<String, Class<? extends Objective>> getObjectiveTypes() {
         return new HashMap<>(OBJECTIVE_TYPES);
     }
 }

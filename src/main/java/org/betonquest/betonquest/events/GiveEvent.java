@@ -49,7 +49,7 @@ public class GiveEvent extends QuestEvent {
                                     questItem.getName() == null ? questItem.getMaterial().toString().toLowerCase(Locale.ROOT).replace("_", " ") : questItem.getName(),
                                     String.valueOf(amountInt)}, "items_given,info");
                 } catch (final QuestRuntimeException e) {
-                    LOG.warning(instruction.getPackage(), "The notify system was unable to play a sound for the 'mobs_to_kill' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
+                    LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'mobs_to_kill' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
                 }
             }
             while (amountInt > 0) {

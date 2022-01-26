@@ -21,7 +21,7 @@ public class GiveJournalEvent extends QuestEvent {
         try {
             journalSlot = Integer.parseInt(Config.getString("config.default_journal_slot"));
         } catch (final NumberFormatException e) {
-            LOG.warning(instruction.getPackage(), "Could not read default_journal_slot: " + e.getMessage(), e);
+            LOG.warn(instruction.getPackage(), "Could not read default_journal_slot: " + e.getMessage(), e);
             journalSlot = -1;
         }
     }

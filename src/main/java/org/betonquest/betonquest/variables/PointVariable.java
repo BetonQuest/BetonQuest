@@ -37,7 +37,7 @@ public class PointVariable extends Variable {
                 };
                 category = id.getPackage().getName() + "." + pointCategory;
             } catch (final ObjectNotFoundException e) {
-                LOG.warning(instruction.getPackage(), e.getMessage());
+                LOG.warn(instruction.getPackage(), e.getMessage());
             }
 
         } else if (instruction.size() == 3) {

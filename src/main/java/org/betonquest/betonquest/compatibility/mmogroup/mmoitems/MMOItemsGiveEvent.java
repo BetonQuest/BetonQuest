@@ -49,7 +49,7 @@ public class MMOItemsGiveEvent extends QuestEvent {
         mmoItem = mmoPlugin.getItem(itemType, itemID);
 
         if (mmoItem == null) {
-            throw new InstructionParseException("Item with type '" + itemType + "' and ID '" +  itemID + "' does not exist.");
+            throw new InstructionParseException("Item with type '" + itemType + "' and ID '" + itemID + "' does not exist.");
         }
     }
 
@@ -70,7 +70,7 @@ public class MMOItemsGiveEvent extends QuestEvent {
                         new String[]{mmoItem.getItemMeta().getDisplayName(), String.valueOf(amount)},
                         "items_given,info");
             } catch (final QuestRuntimeException e) {
-                LOG.warning(instruction.getPackage(), "The notify system was unable to play a sound for the 'items_given' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
+                LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'items_given' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
             }
         }
 

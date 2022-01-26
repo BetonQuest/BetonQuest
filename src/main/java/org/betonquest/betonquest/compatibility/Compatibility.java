@@ -163,8 +163,8 @@ public class Compatibility implements Listener {
                         hookedPlugin.getName(),
                         hookedPlugin.getDescription().getVersion(),
                         exception.getMessage());
-                LOG.warning(message, exception);
-                LOG.warning("BetonQuest will work correctly, except for that single integration. "
+                LOG.warn(message, exception);
+                LOG.warn("BetonQuest will work correctly, except for that single integration. "
                         + "You can turn it off by setting 'hook." + name.toLowerCase(Locale.ROOT)
                         + "' to false in config.yml file.");
             } catch (final RuntimeException | LinkageError exception) {
@@ -175,7 +175,7 @@ public class Compatibility implements Listener {
                         Bukkit.getVersion(),
                         exception.getMessage());
                 LOG.error(message, exception);
-                LOG.warning("BetonQuest will work correctly, except for that single integration. "
+                LOG.warn("BetonQuest will work correctly, except for that single integration. "
                         + "You can turn it off by setting 'hook." + name.toLowerCase(Locale.ROOT)
                         + "' to false in config.yml file.");
             }

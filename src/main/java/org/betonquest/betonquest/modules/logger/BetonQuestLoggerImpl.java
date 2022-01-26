@@ -47,23 +47,23 @@ public class BetonQuestLoggerImpl implements BetonQuestLogger {
     }
 
     @Override
-    public void warning(final String msg) {
-        warning(null, msg);
+    public void warn(final String msg) {
+        warn(null, msg);
     }
 
     @Override
-    public void warning(final ConfigPackage pack, final String msg) {
+    public void warn(final ConfigPackage pack, final String msg) {
         final BetonQuestLogRecord record = new BetonQuestLogRecord(plugin, pack, Level.WARNING, msg);
         logger.log(record);
     }
 
     @Override
-    public void warning(final String msg, final Throwable thrown) {
-        warning(null, msg, thrown);
+    public void warn(final String msg, final Throwable thrown) {
+        warn(null, msg, thrown);
     }
 
     @Override
-    public void warning(final ConfigPackage pack, final String msg, final Throwable thrown) {
+    public void warn(final ConfigPackage pack, final String msg, final Throwable thrown) {
         final BetonQuestLogRecord record = new BetonQuestLogRecord(plugin, pack, Level.WARNING, msg);
         logger.log(record);
 

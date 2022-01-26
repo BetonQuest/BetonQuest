@@ -203,7 +203,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
                     try {
                         data = Short.parseShort(materialName.substring(colonIndex + 1));
                     } catch (final NumberFormatException e) {
-                        LOG.warning(conv.getPackage(), "Could not read material data: " + e.getMessage(), e);
+                        LOG.warn(conv.getPackage(), "Could not read material data: " + e.getMessage(), e);
                         data = 0;
                     }
                     materialName = materialName.substring(0, colonIndex);

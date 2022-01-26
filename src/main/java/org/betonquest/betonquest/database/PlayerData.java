@@ -104,7 +104,7 @@ public class PlayerData {
                     try {
                         item = new QuestItem(instruction).generate(amount);
                     } catch (final InstructionParseException e) {
-                        LOG.warning("Could not load backpack item for player " + PlayerConverter.getName(playerID)
+                        LOG.warn("Could not load backpack item for player " + PlayerConverter.getName(playerID)
                                 + ", with instruction '" + instruction + "', because: " + e.getMessage(), e);
                         continue;
                     }
@@ -280,7 +280,7 @@ public class PlayerData {
                 final ObjectiveID objectiveID = new ObjectiveID(null, objective);
                 BetonQuest.resumeObjective(playerID, objectiveID, entry.getValue());
             } catch (final ObjectNotFoundException e) {
-                LOG.warning("Loaded '" + objective
+                LOG.warn("Loaded '" + objective
                         + "' objective from the database, but it is not defined in configuration. Skipping.", e);
             }
         }

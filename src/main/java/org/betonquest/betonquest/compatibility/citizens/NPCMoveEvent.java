@@ -151,7 +151,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
             return;
         }
         if (event instanceof NavigationStuckEvent || event instanceof NavigationCancelEvent) {
-            LOG.warning(instruction.getPackage(), "The NPC was stucked, maybe the distance between two points was too high. "
+            LOG.warn(instruction.getPackage(), "The NPC was stucked, maybe the distance between two points was too high. "
                     + "This is a Citizens behavior, your NPC was teleported by Citizens, we continue the movement from this location.");
         }
         if (locationsIterator.hasNext()) {
@@ -159,7 +159,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
             try {
                 next = locationsIterator.next().getLocation(currentPlayer);
             } catch (final QuestRuntimeException e) {
-                LOG.warning(instruction.getPackage(), "Error while NPC " + npc.getId() + " navigation: " + e.getMessage(), e);
+                LOG.warn(instruction.getPackage(), "Error while NPC " + npc.getId() + " navigation: " + e.getMessage(), e);
                 return;
             }
             if (npc.isSpawned()) {
@@ -172,7 +172,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
         try {
             npc.getNavigator().setTarget(locationsIterator.previous().getLocation(currentPlayer));
         } catch (final QuestRuntimeException e) {
-            LOG.warning(instruction.getPackage(), "Error while finishing NPC " + npc.getId() + " navigation: " + e.getMessage(), e);
+            LOG.warn(instruction.getPackage(), "Error while finishing NPC " + npc.getId() + " navigation: " + e.getMessage(), e);
         }
         npc.getNavigator().setPaused(true);
         new BukkitRunnable() {

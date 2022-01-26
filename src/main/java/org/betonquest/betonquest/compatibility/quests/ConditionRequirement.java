@@ -32,7 +32,7 @@ public class ConditionRequirement extends CustomRequirement {
             final ConditionID condition = new ConditionID(null, string);
             return BetonQuest.condition(playerID, condition);
         } catch (final ObjectNotFoundException e) {
-            LOG.warning("Error while checking quest requirement - BetonQuest condition '" + string + "' not found: " + e.getMessage(), e);
+            LOG.warn("Error while checking quest requirement - BetonQuest condition '" + string + "' not found: " + e.getMessage(), e);
             return false;
         }
     }

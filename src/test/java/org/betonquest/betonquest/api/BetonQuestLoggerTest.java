@@ -96,30 +96,30 @@ class BetonQuestLoggerTest {
     }
 
     @Test
-    void testWarning(final BetonQuestLogger log, final LogValidator logValidator) {
-        log.warning(LOG_MESSAGE);
+    void testWarn(final BetonQuestLogger log, final LogValidator logValidator) {
+        log.warn(LOG_MESSAGE);
         logValidator.assertLogEntry(Level.WARNING, LOG_MESSAGE_WITH_TOPIC);
         logValidator.assertEmpty();
     }
 
     @Test
-    void testWarningWithPackage(final BetonQuestLogger log, final LogValidator logValidator) {
-        log.warning(mockConfigPackage(), LOG_MESSAGE);
+    void testWarnWithPackage(final BetonQuestLogger log, final LogValidator logValidator) {
+        log.warn(mockConfigPackage(), LOG_MESSAGE);
         logValidator.assertLogEntry(Level.WARNING, LOG_MESSAGE_WITH_TOPIC);
         logValidator.assertEmpty();
     }
 
     @Test
-    void testWarningException(final BetonQuestLogger log, final LogValidator logValidator) {
-        log.warning(LOG_MESSAGE, new IOException(EXCEPTION_MESSAGE));
+    void testWarnException(final BetonQuestLogger log, final LogValidator logValidator) {
+        log.warn(LOG_MESSAGE, new IOException(EXCEPTION_MESSAGE));
         logValidator.assertLogEntry(Level.WARNING, LOG_MESSAGE_WITH_TOPIC);
         logValidator.assertLogEntry(Level.FINE, LOGGER_TOPIC + "Additional stacktrace:", IOException.class, EXCEPTION_MESSAGE);
         logValidator.assertEmpty();
     }
 
     @Test
-    void testWarningExceptionWithPackage(final BetonQuestLogger log, final LogValidator logValidator) {
-        log.warning(mockConfigPackage(), LOG_MESSAGE, new IOException(EXCEPTION_MESSAGE));
+    void testWarnExceptionWithPackage(final BetonQuestLogger log, final LogValidator logValidator) {
+        log.warn(mockConfigPackage(), LOG_MESSAGE, new IOException(EXCEPTION_MESSAGE));
         logValidator.assertLogEntry(Level.WARNING, LOG_MESSAGE_WITH_TOPIC);
         logValidator.assertLogEntry(Level.FINE, LOGGER_TOPIC + "Additional stacktrace:", IOException.class, EXCEPTION_MESSAGE);
         logValidator.assertEmpty();

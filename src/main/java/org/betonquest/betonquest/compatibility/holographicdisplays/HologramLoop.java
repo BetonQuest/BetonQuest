@@ -51,7 +51,7 @@ public class HologramLoop {
             }
             for (final String key : section.getKeys(false)) {
                 if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
-                    LOG.warning(pack, "Holograms won't be able to hide from players without ProtocolLib plugin! "
+                    LOG.warn(pack, "Holograms won't be able to hide from players without ProtocolLib plugin! "
                             + "Install it to use conditioned holograms.");
                     runnable = null;
                     return;
@@ -61,7 +61,7 @@ public class HologramLoop {
                 final String rawLocation = section.getString(key + ".location");
                 final int checkInterval = section.getInt(key + ".check_interval", 0);
                 if (rawLocation == null) {
-                    LOG.warning(pack, "Location is not specified in " + key + " hologram");
+                    LOG.warn(pack, "Location is not specified in " + key + " hologram");
                     continue;
                 }
                 ConditionID[] conditions = {};
@@ -72,7 +72,7 @@ public class HologramLoop {
                         try {
                             conditions[i] = new ConditionID(pack, parts[i]);
                         } catch (final ObjectNotFoundException e) {
-                            LOG.warning(pack, "Error while loading " + parts[i] + " condition for hologram " + packName + "."
+                            LOG.warn(pack, "Error while loading " + parts[i] + " condition for hologram " + packName + "."
                                     + key + ": " + e.getMessage(), e);
                         }
                     }
@@ -81,7 +81,7 @@ public class HologramLoop {
                 try {
                     location = new CompoundLocation(packName, pack.subst(rawLocation)).getLocation(null);
                 } catch (QuestRuntimeException | InstructionParseException e) {
-                    LOG.warning(pack, "Could not parse location in " + key + " hologram: " + e.getMessage(), e);
+                    LOG.warn(pack, "Could not parse location in " + key + " hologram: " + e.getMessage(), e);
                     continue;
                 }
                 final Hologram hologram = HologramsAPI.createHologram(BetonQuest.getInstance(), location);
@@ -102,9 +102,9 @@ public class HologramLoop {
                             final ItemStack stack = new QuestItem(itemID).generate(stackSize);
                             hologram.appendItemLine(stack);
                         } catch (final InstructionParseException e) {
-                            LOG.warning(pack, "Could not parse item in " + key + " hologram: " + e.getMessage(), e);
+                            LOG.warn(pack, "Could not parse item in " + key + " hologram: " + e.getMessage(), e);
                         } catch (final ObjectNotFoundException e) {
-                            LOG.warning(pack, "Could not find item in " + key + " hologram: " + e.getMessage(), e);
+                            LOG.warn(pack, "Could not find item in " + key + " hologram: " + e.getMessage(), e);
                         }
                     } else {
                         hologram.appendTextLine(line.replace('&', '§'));

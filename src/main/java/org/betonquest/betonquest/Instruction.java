@@ -48,7 +48,7 @@ public class Instruction {
         try {
             this.identifier = identifier == null ? new NoID(pack) : identifier;
         } catch (final ObjectNotFoundException e) {
-            LOG.warning(pack, "Could not find instruction: " + e.getMessage(), e);
+            LOG.warn(pack, "Could not find instruction: " + e.getMessage(), e);
         }
         this.instruction = instruction;
         this.parts = Utils.split(instruction);
@@ -481,7 +481,7 @@ public class Instruction {
 
     public <T> List<T> getList(final String string, final Converter<T> converter) throws InstructionParseException {
         if (string == null) {
-            return new ArrayList<T>(0);
+            return new ArrayList<>(0);
         }
         final String[] array = getArray(string);
         final List<T> list = new ArrayList<>(array.length);

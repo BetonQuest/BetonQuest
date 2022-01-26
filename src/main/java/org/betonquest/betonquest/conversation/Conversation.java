@@ -108,7 +108,7 @@ public class Conversation implements Listener {
 
         // check if data is present
         if (data == null) {
-            LOG.warning(pack, "Conversation '" + conversationID
+            LOG.warn(pack, "Conversation '" + conversationID
                     + "' does not exist. Check for errors on /q reload! It probably couldn't be loaded due to some other error.");
             return;
         }
@@ -373,7 +373,7 @@ public class Conversation implements Listener {
             try {
                 Config.sendNotify(getPackage().getName(), PlayerConverter.getID(event.getPlayer()), "command_blocked", "command_blocked,error");
             } catch (final QuestRuntimeException e) {
-                LOG.warning(pack, "The notify system was unable to play a sound for the 'command_blocked' category. Error was: '" + e.getMessage() + "'", e);
+                LOG.warn(pack, "The notify system was unable to play a sound for the 'command_blocked' category. Error was: '" + e.getMessage() + "'", e);
             }
         }
     }
@@ -407,7 +407,7 @@ public class Conversation implements Listener {
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public void suspend() {
         if (inOut == null) {
-            LOG.warning(pack, "Conversation IO is not loaded, conversation will end for player "
+            LOG.warn(pack, "Conversation IO is not loaded, conversation will end for player "
                     + PlayerConverter.getName(playerID));
             LIST.remove(playerID);
             HandlerList.unregisterAll(this);
@@ -520,7 +520,7 @@ public class Conversation implements Listener {
                 conv.inOut = convIO.getConstructor(Conversation.class, String.class).newInstance(conv, playerID);
             } catch (final InstantiationException | IllegalAccessException | IllegalArgumentException
                     | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                LOG.warning(pack, "Error when loading conversation IO", e);
+                LOG.warn(pack, "Error when loading conversation IO", e);
                 return;
             }
 
@@ -535,7 +535,7 @@ public class Conversation implements Listener {
                     conv.interceptor = interceptor.getConstructor(Conversation.class, String.class).newInstance(conv, playerID);
                 } catch (final InstantiationException | IllegalAccessException | IllegalArgumentException
                         | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                    LOG.warning(pack, "Error when loading interceptor", e);
+                    LOG.warn(pack, "Error when loading interceptor", e);
                     return;
                 }
             }

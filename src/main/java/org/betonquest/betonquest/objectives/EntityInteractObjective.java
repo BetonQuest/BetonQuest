@@ -134,7 +134,7 @@ public class EntityInteractObjective extends CountingObjective {
                     return false;
                 }
             } catch (final QuestRuntimeException e) {
-                LOG.warning(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
+                LOG.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
             }
         }
 

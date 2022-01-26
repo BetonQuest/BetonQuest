@@ -468,14 +468,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 itemID = new ItemID(null, args[1]);
             } catch (final ObjectNotFoundException e) {
                 sendMessage(sender, "error", e.getMessage());
-                LOG.warning("Could not find Item: " + e.getMessage(), e);
+                LOG.warn("Could not find Item: " + e.getMessage(), e);
                 return;
             }
             final GiveEvent give = new GiveEvent(new Instruction(itemID.getPackage(), null, "give " + itemID.getBaseID()));
             give.fire(PlayerConverter.getID((Player) sender));
         } catch (InstructionParseException | QuestRuntimeException e) {
             sendMessage(sender, "error", e.getMessage());
-            LOG.warning("Error while creating an item: " + e.getMessage(), e);
+            LOG.warn("Error while creating an item: " + e.getMessage(), e);
         }
     }
 
@@ -672,7 +672,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                                 .parse(args[4].replaceAll("_", " ")).getTime());
                     } catch (final ParseException e) {
                         sendMessage(sender, "specify_date");
-                        LOG.warning("Could not parse date: " + e.getMessage(), e);
+                        LOG.warn("Could not parse date: " + e.getMessage(), e);
                         return;
                     }
                 }
@@ -978,7 +978,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             eventID = new EventID(null, args[2]);
         } catch (final ObjectNotFoundException e) {
             sendMessage(sender, "error", e.getMessage());
-            LOG.warning("Could not find event: " + e.getMessage(), e);
+            LOG.warn("Could not find event: " + e.getMessage(), e);
             return;
         }
         // fire the event
@@ -1025,7 +1025,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             conditionID = new ConditionID(null, args[2]);
         } catch (final ObjectNotFoundException e) {
             sendMessage(sender, "error", e.getMessage());
-            LOG.warning("Could not find condition: " + e.getMessage(), e);
+            LOG.warn("Could not find condition: " + e.getMessage(), e);
             return;
         }
         // display message about condition
@@ -1266,7 +1266,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             objectiveID = new ObjectiveID(null, args[3]);
         } catch (final ObjectNotFoundException e) {
             sendMessage(sender, "error", e.getMessage());
-            LOG.warning("Could not find objective: " + e.getMessage(), e);
+            LOG.warn("Could not find objective: " + e.getMessage(), e);
             return;
         }
         final Objective objective = BetonQuest.getInstance().getObjective(objectiveID);
@@ -1483,7 +1483,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     nameID = new ObjectiveID(null, name);
                 } catch (final ObjectNotFoundException e) {
                     sendMessage(sender, "error", e.getMessage());
-                    LOG.warning("Could not find Objective: " + e.getMessage(), e);
+                    LOG.warn("Could not find Objective: " + e.getMessage(), e);
                     return;
                 }
                 // rename objective in the file
@@ -1620,7 +1620,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     objectiveID = new ObjectiveID(null, name);
                 } catch (final ObjectNotFoundException e) {
                     sendMessage(sender, "error", e.getMessage());
-                    LOG.warning("Could not find objective: " + e.getMessage(), e);
+                    LOG.warn("Could not find objective: " + e.getMessage(), e);
                     return;
                 }
                 for (final Player player : Bukkit.getOnlinePlayers()) {

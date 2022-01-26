@@ -233,7 +233,7 @@ public class ConversationData {
             final String targetOption = parts[4];
             final ConversationData conv = BetonQuest.getInstance().getConversation(packName + "." + targetConv);
             if (conv == null) {
-                LOG.warning("External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, "
+                LOG.warn("External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, "
                         + ("<starting_option>".equals(sourceOption) ? "starting option"
                         : "'" + sourceOption + "' player option")
                         + " points to '" + targetConv
@@ -241,7 +241,7 @@ public class ConversationData {
                 continue;
             }
             if (conv.getText(Config.getLanguage(), targetOption, OptionType.NPC) == null) {
-                LOG.warning(conv.pack, "External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, "
+                LOG.warn(conv.pack, "External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, "
                         + ("<starting_option>".equals(sourceOption) ? "starting option"
                         : "'" + sourceOption + "' player option")
                         + " points to '" + targetOption + "' NPC option in '" + targetConv

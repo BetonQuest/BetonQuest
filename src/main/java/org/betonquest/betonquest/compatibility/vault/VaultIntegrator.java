@@ -51,14 +51,14 @@ public class VaultIntegrator implements Integrator {
             economy = economyProvider.getProvider();
         }
         if (economy == null) {
-            LOG.warning("There is no economy plugin on the server!");
+            LOG.warn("There is no economy plugin on the server!");
         } else {
             plugin.registerEvents("money", MoneyEvent.class);
             plugin.registerConditions("money", MoneyCondition.class);
             plugin.registerVariable("money", MoneyVariable.class);
         }
         if (permission == null) {
-            LOG.warning("Could not get permission provider!");
+            LOG.warn("Could not get permission provider!");
         } else {
             plugin.registerEvents("permission", PermissionEvent.class);
         }

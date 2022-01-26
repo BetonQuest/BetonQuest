@@ -69,7 +69,7 @@ public class LocationObjective extends Objective implements Listener {
             try {
                 location = loc.getLocation(playerID);
             } catch (final QuestRuntimeException e) {
-                LOG.warning(instruction.getPackage(), "Error while getting location property in '" + instruction.getID() + "' objective: "
+                LOG.warn(instruction.getPackage(), "Error while getting location property in '" + instruction.getID() + "' objective: "
                         + e.getMessage(), e);
                 return "";
             }
