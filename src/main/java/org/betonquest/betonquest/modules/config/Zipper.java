@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.config;
+package org.betonquest.betonquest.modules.config;
 
 import lombok.CustomLog;
 
