@@ -45,11 +45,10 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
     /**
      * Logs that a patch file couldn't be found.
      *
-     * @param e original exception
+     * @param exception original exception
      */
-    @SuppressWarnings("PMD.ShortVariable")
-    public static void logMissingResourceFile(final InvalidConfigurationException e) {
-        LOG.debug(e.getMessage(), e);
+    public static void logMissingResourceFile(final InvalidConfigurationException exception) {
+        LOG.debug(exception.getMessage(), exception);
     }
 
     @SuppressWarnings("PMD.UnusedFormalParameter")
