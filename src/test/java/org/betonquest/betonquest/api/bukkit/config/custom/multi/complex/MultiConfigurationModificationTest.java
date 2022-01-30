@@ -14,8 +14,10 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -84,27 +86,35 @@ class MultiConfigurationModificationTest {
     void testModificationToConfigs() {
         config.set("events.custom.path.give.item", "stone");
         assertTrue(config.needSave());
-        config.saveConfigs(toSave -> {
-            if (toSave == config1) {
-                assertEquals("stone", toSave.getString("events.custom.path.give.item"));
-            } else {
-                fail();
-            }
-        });
+        final Set<ConfigurationSection> unsavedConfigs1 = config.getUnsavedConfigs();
+        assertEquals(1, unsavedConfigs1.size());
+        final ConfigurationSection unsavedConfig1 = unsavedConfigs1.iterator().next();
+        assertEquals(config1, unsavedConfig1);
+        assertEquals("stone", unsavedConfig1.getString("events.custom.path.give.item"));
+        assertTrue(config.markAsSaved(unsavedConfig1));
         assertFalse(config.needSave());
 
         config.set("events.custom.path.cancel.target", "stone");
         config.set("conditions.items.stone.amount", "stone");
         assertTrue(config.needSave());
-        config.saveConfigs(toSave -> {
-            if (toSave == config2) {
-                assertEquals("stone", toSave.getString("events.custom.path.cancel.target"));
-            } else if (toSave == config3) {
-                assertEquals("stone", toSave.getString("conditions.items.stone.amount"));
-            } else {
-                fail();
-            }
-        });
+        final Set<ConfigurationSection> unsavedConfigs2 = config.getUnsavedConfigs();
+        assertEquals(2, unsavedConfigs2.size());
+        final Iterator<ConfigurationSection> iterator = unsavedConfigs2.iterator();
+        final ConfigurationSection unsavedConfig2 = iterator.next();
+        final ConfigurationSection unsavedConfig3 = iterator.next();
+
+        if (unsavedConfig2.equals(config2) && unsavedConfig3.equals(config3)) {
+            assertEquals("stone", unsavedConfig2.getString("events.custom.path.cancel.target"));
+            assertEquals("stone", unsavedConfig3.getString("conditions.items.stone.amount"));
+        } else if (unsavedConfig2.equals(config3) && unsavedConfig3.equals(config2)) {
+            assertEquals("stone", unsavedConfig3.getString("events.custom.path.cancel.target"));
+            assertEquals("stone", unsavedConfig2.getString("conditions.items.stone.amount"));
+        } else {
+            fail();
+        }
+
+        assertTrue(config.markAsSaved(unsavedConfig2));
+        assertTrue(config.markAsSaved(unsavedConfig3));
         assertFalse(config.needSave());
     }
 
@@ -125,14 +135,13 @@ class MultiConfigurationModificationTest {
         assertTrue(config.getUnassociatedKeys().isEmpty());
         assertTrue(config.needSave());
 
-        config.saveConfigs(toSave -> {
-            if (toSave == newConfig) {
-                assertEquals("block", toSave.getString("objectives.block.type"));
-                assertEquals("bedrock", toSave.getString("objectives.block.material"));
-            } else {
-                fail();
-            }
-        });
+        final Set<ConfigurationSection> unsavedConfigs1 = config.getUnsavedConfigs();
+        assertEquals(1, unsavedConfigs1.size());
+        final ConfigurationSection unsavedConfig1 = unsavedConfigs1.iterator().next();
+        assertEquals(newConfig, unsavedConfig1);
+        assertEquals("block", unsavedConfig1.getString("objectives.block.type"));
+        assertEquals("bedrock", unsavedConfig1.getString("objectives.block.material"));
+        assertTrue(config.markAsSaved(unsavedConfig1));
 
         assertFalse(config.needSave());
         config.set("objectives.block.amount", "50");
@@ -148,15 +157,15 @@ class MultiConfigurationModificationTest {
         assertTrue(config.getUnassociatedKeys().isEmpty());
         assertTrue(config.needSave());
 
-        config.saveConfigs(toSave -> {
-            if (toSave == newConfig) {
-                assertEquals("50", toSave.getString("objectives.block.amount"));
-                assertEquals("5", toSave.getString("objectives.block.notify"));
-            } else {
-                fail();
-            }
-        });
+        final Set<ConfigurationSection> unsavedConfigs2 = config.getUnsavedConfigs();
+        assertEquals(1, unsavedConfigs2.size());
+        final ConfigurationSection unsavedConfig2 = unsavedConfigs2.iterator().next();
+        assertEquals(newConfig, unsavedConfig2);
+        assertEquals("50", unsavedConfig2.getString("objectives.block.amount"));
+        assertEquals("5", unsavedConfig2.getString("objectives.block.notify"));
+        assertTrue(config.markAsSaved(unsavedConfig2));
 
+        assertFalse(config.needSave());
         assertEquals(newConfig, config.getSourceConfigurationSection("objectives.block"));
     }
 

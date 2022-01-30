@@ -228,15 +228,24 @@ public class MultiConfiguration extends HandleModificationConfiguration {
     }
 
     /**
-     * Saves all {@link ConfigurationSection} by calling the {@link Saver}.
+     * Gets all {@link ConfigurationSection}s that are unsaved.
+     * Make sure to call {@link MultiConfiguration#markAsSaved(ConfigurationSection)}s
+     * if you managed to successfully save a config.
      *
-     * @param saver the saver to call
+     * @return a list of all unsaved {@link ConfigurationSection}s
      */
-    public void saveConfigs(final Saver saver) {
-        for (final ConfigurationSection unsavedConfig : unsavedConfigs) {
-            saver.save(unsavedConfig);
-        }
-        unsavedConfigs.clear();
+    public Set<ConfigurationSection> getUnsavedConfigs() {
+        return new HashSet<>(unsavedConfigs);
+    }
+
+    /**
+     * Marks the given {@link ConfigurationSection} as saved.
+     *
+     * @param section the {@link ConfigurationSection} to save
+     * @return true, if it was marked as saved
+     */
+    public boolean markAsSaved(final ConfigurationSection section) {
+        return unsavedConfigs.remove(section);
     }
 
     /**
@@ -372,18 +381,6 @@ public class MultiConfiguration extends HandleModificationConfiguration {
     public @Nullable
     ConfigurationSection getDefaultSection() {
         return new UnmodifiableConfigurationSection(original.getDefaultSection());
-    }
-
-    /**
-     * Handles saves that need to be done on {@link ConfigurationSection} instances.
-     */
-    public interface Saver {
-        /**
-         * This method gets called for a configuration instance that needs to be saved.
-         *
-         * @param unsaved the instance of an unsaved {@link ConfigurationSection}
-         */
-        void save(ConfigurationSection unsaved);
     }
 
     /**
