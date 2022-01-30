@@ -135,6 +135,11 @@ public class ConfigAccessorImpl implements ConfigAccessor {
         return configurationFile.delete();
     }
 
+    @Override
+    public File getConfigurationFile() {
+        return configurationFile;
+    }
+
     private String buildExceptionMessage(final boolean isResource, final String sourcePath, final String message) {
         return "The " + (isResource ? "resource" : "file") + " '" + sourcePath + "' " + message;
     }
