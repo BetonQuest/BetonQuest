@@ -6,7 +6,10 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.plugin.Plugin;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -30,25 +33,55 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
      * @param patchAccessor a {@link ConfigAccessor} that holds the patch file
      * @throws InvalidConfigurationException if patch modifications couldn't be saved
      */
-    public ConfigurationFileImpl(final ConfigAccessor accessor, final ConfigAccessor patchAccessor) throws InvalidConfigurationException {
+    private ConfigurationFileImpl(final ConfigAccessor accessor, final ConfigAccessor patchAccessor) throws InvalidConfigurationException {
         super(accessor.getConfig());
         this.accessor = accessor;
         if (patchAccessor != null && patchConfig(patchAccessor.getConfig())) {
             try {
                 accessor.save();
             } catch (final IOException e) {
-                throw new InvalidConfigurationException("The configuration file was patched but could not be saved! Reason: " + e.getCause().getMessage(), e);
+                throw new InvalidConfigurationException("The configuration file was patched but could not be saved! Reason: " + e.getMessage(), e);
             }
         }
     }
 
     /**
-     * Logs that a patch file couldn't be found.
-     *
-     * @param exception original exception
+     * @see ConfigurationFile#create(File, Plugin, String)
      */
-    public static void logMissingResourceFile(final InvalidConfigurationException exception) {
-        LOG.debug(exception.getMessage(), exception);
+    public static ConfigurationFile create(final File configurationFile, final Plugin plugin, final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
+        if (configurationFile == null || plugin == null || resourceFile == null) {
+            throw new IllegalArgumentException("The configurationFile, plugin and resourceFile must be defined but were null.");
+        }
+
+        final ConfigAccessor accessor = ConfigAccessor.create(configurationFile, plugin, resourceFile);
+        final ConfigAccessor resourceAccessor = ConfigAccessor.create(plugin, resourceFile);
+        accessor.getConfig().setDefaults(resourceAccessor.getConfig());
+        accessor.getConfig().options().copyDefaults(true);
+        try {
+            accessor.save();
+        } catch (final IOException e) {
+            throw new InvalidConfigurationException("Default values were applied to the config but could not be saved! Reason: " + e.getMessage(), e);
+        }
+        final ConfigAccessor patchAccessor = createPatchAccessor(plugin, resourceFile);
+        return new ConfigurationFileImpl(accessor, patchAccessor);
+    }
+
+    private static ConfigAccessor createPatchAccessor(final Plugin plugin, final String resourceFile) throws InvalidConfigurationException {
+        int index = resourceFile.lastIndexOf('.');
+        final int separatorIndex = resourceFile.lastIndexOf(File.pathSeparator);
+        if (index < separatorIndex) {
+            index = -1;
+        }
+        if (index == -1) {
+            index = resourceFile.length();
+        }
+        final String resourceFilePatch = resourceFile.substring(0, index) + ".patch" + resourceFile.substring(index);
+        try {
+            return ConfigAccessor.create(plugin, resourceFilePatch);
+        } catch (final FileNotFoundException e) {
+            LOG.debug(e.getMessage(), e);
+        }
+        return null;
     }
 
     @SuppressWarnings("PMD.UnusedFormalParameter")
