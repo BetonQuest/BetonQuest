@@ -72,4 +72,12 @@ public interface ConfigAccessor {
      * @return Only returns true if the file was deleted and existed before.
      */
     boolean delete();
+
+    /**
+     * Gets the {@link File}, that is represented by this {@link ConfigAccessor}.
+     * Returns null, if the file is a resource from a plugin that is not saved as a file in the file system.
+     *
+     * @return the {@link File} if it exists
+     */
+    File getConfigurationFile();
 }
