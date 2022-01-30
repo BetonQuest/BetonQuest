@@ -9,6 +9,7 @@ import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.configuration.InvalidConfigurationException;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
@@ -52,22 +53,27 @@ public class ConfigPackage {
         folder = pack;
         this.name = name;
         final File mainFile = new File(pack, "main.yml");
-        main = ConfigAccessor.create(mainFile);
-        events = ConfigAccessor.create(new File(pack, "events.yml"));
-        conditions = ConfigAccessor.create(new File(pack, "conditions.yml"));
-        objectives = ConfigAccessor.create(new File(pack, "objectives.yml"));
-        journal = ConfigAccessor.create(new File(pack, "journal.yml"));
-        items = ConfigAccessor.create(new File(pack, "items.yml"));
-        custom = ConfigAccessor.create(new File(pack, "custom.yml"));
-        final File convFile = new File(pack, "conversations");
-        if (convFile.exists() && convFile.isDirectory()) {
-            for (final File conv : convFile.listFiles()) {
-                final String convName = conv.getName();
-                if (convName.endsWith(".yml")) {
-                    final ConfigAccessor convAccessor = ConfigAccessor.create(conv);
-                    conversations.put(convName.substring(0, convName.length() - 4), convAccessor);
+        try {
+            main = ConfigAccessor.create(mainFile);
+            events = ConfigAccessor.create(new File(pack, "events.yml"));
+            conditions = ConfigAccessor.create(new File(pack, "conditions.yml"));
+            objectives = ConfigAccessor.create(new File(pack, "objectives.yml"));
+            journal = ConfigAccessor.create(new File(pack, "journal.yml"));
+            items = ConfigAccessor.create(new File(pack, "items.yml"));
+            custom = ConfigAccessor.create(new File(pack, "custom.yml"));
+
+            final File convFile = new File(pack, "conversations");
+            if (convFile.exists() && convFile.isDirectory()) {
+                for (final File conv : convFile.listFiles()) {
+                    final String convName = conv.getName();
+                    if (convName.endsWith(".yml")) {
+                        final ConfigAccessor convAccessor = ConfigAccessor.create(conv);
+                        conversations.put(convName.substring(0, convName.length() - 4), convAccessor);
+                    }
                 }
             }
+        } catch (final FileNotFoundException e) {
+            throw new InvalidConfigurationException(e);
         }
         enabled = main.getConfig().getBoolean("enabled", true);
     }
