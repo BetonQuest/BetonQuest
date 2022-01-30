@@ -37,7 +37,7 @@ public interface ConfigAccessor {
     /**
      * Tries to load and save a configurationFile.
      * If the configurationFile does not exist, a fallback resourceFile will be loaded
-     * and then saved to the configurationFile if given.
+     * and then saved as the configurationFile if given.
      *
      * @param configurationFile the {@link File} that is represented by this {@link ConfigAccessorImpl}
      * @param plugin            the plugin which is the source of the resource file
