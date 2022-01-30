@@ -16,6 +16,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -78,7 +79,7 @@ public class Config {
         try {
             messages = ConfigAccessor.create(new File(root, "messages.yml"), BetonQuest.getInstance(), "messages.yml");
             internal = ConfigAccessor.create(BetonQuest.getInstance(), "messages-internal.yml");
-        } catch (final InvalidConfigurationException e) {
+        } catch (final InvalidConfigurationException | FileNotFoundException e) {
             LOG.warn(e.getMessage(), e);
             return;
         }

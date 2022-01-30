@@ -24,6 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -263,7 +264,7 @@ public final class Utils {
         final ConfigAccessor accessor;
         try {
             accessor = ConfigAccessor.create(file);
-        } catch (final InvalidConfigurationException e) {
+        } catch (final InvalidConfigurationException | FileNotFoundException e) {
             LOG.warn(e.getMessage(), e);
             return;
         }

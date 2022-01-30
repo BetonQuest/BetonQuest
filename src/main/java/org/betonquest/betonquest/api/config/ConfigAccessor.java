@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -18,8 +19,9 @@ public interface ConfigAccessor {
      *
      * @param configurationFile the {@link File} that is represented by this {@link ConfigAccessorImpl}
      * @throws InvalidConfigurationException thrown if the configurationFile could not be loaded
+     * @throws FileNotFoundException         thrown if the {@code configurationFile} could not be found
      */
-    static ConfigAccessor create(final File configurationFile) throws InvalidConfigurationException {
+    static ConfigAccessor create(final File configurationFile) throws InvalidConfigurationException, FileNotFoundException {
         return create(configurationFile, null, null);
     }
 
@@ -29,23 +31,26 @@ public interface ConfigAccessor {
      * @param plugin       the plugin which is the source of the resource file
      * @param resourceFile the resource file to load from the plugin
      * @throws InvalidConfigurationException thrown if the resourceFile could not be loaded
+     * @throws FileNotFoundException         thrown if the {@code resourceFile} could not be found
      */
-    static ConfigAccessor create(final Plugin plugin, final String resourceFile) throws InvalidConfigurationException {
+    static ConfigAccessor create(final Plugin plugin, final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
         return create(null, plugin, resourceFile);
     }
 
     /**
      * Tries to load and save a configurationFile.
      * If the configurationFile does not exist, a fallback resourceFile will be loaded
-     * and then saved to the configurationFile if given.
+     * and then saved as the configurationFile if given.
      *
      * @param configurationFile the {@link File} that is represented by this {@link ConfigAccessorImpl}
      * @param plugin            the plugin which is the source of the resource file
      * @param resourceFile      the resource file to load from the plugin
      * @throws InvalidConfigurationException thrown if the configurationFile or the resourceFile could not be loaded,
      *                                       or the resourceFile could not be saved to the configurationFile
+     * @throws FileNotFoundException         thrown if the {@code configurationFile} or the {@code resourceFile}
+     *                                       could not be found
      */
-    static ConfigAccessor create(final File configurationFile, final Plugin plugin, final String resourceFile) throws InvalidConfigurationException {
+    static ConfigAccessor create(final File configurationFile, final Plugin plugin, final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
         return new ConfigAccessorImpl(configurationFile, plugin, resourceFile);
     }
 
