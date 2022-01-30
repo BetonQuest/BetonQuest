@@ -29,7 +29,7 @@ public interface ConfigurationFile extends ConfigurationSection {
      * @param plugin            to load the jar resources from
      * @param resourceFile      path to the default config in the plugin's jar
      * @return a new ConfigurationFile
-     * @throws InvalidConfigurationException if the configuration is invalid, could not be saved
+     * @throws InvalidConfigurationException if the configuration is invalid or could not be saved
      * @throws FileNotFoundException         if the {@code configurationFile} or {@code resourceFile} could not be found
      */
     static ConfigurationFile create(final File configurationFile, final Plugin plugin, final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
