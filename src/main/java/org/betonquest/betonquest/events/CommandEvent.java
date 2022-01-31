@@ -52,7 +52,7 @@ public class CommandEvent extends QuestEvent {
                         String com = command.command;
                         for (final String var : command.variables) {
                             com = com.replace(var, BetonQuest.getInstance().getVariableValue(
-                                    instruction.getPackage().getName(), var, PlayerConverter.getID(player)));
+                                    instruction.getPackage().getPackagePath(), var, PlayerConverter.getID(player)));
                         }
                         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), com);
                     }
@@ -67,7 +67,7 @@ public class CommandEvent extends QuestEvent {
                         String com = command.command;
                         for (final String var : command.variables) {
                             com = com.replace(var, BetonQuest.getInstance().getVariableValue(
-                                    instruction.getPackage().getName(), var, playerID));
+                                    instruction.getPackage().getPackagePath(), var, playerID));
                         }
                         final String finalCom = com;
                         Bukkit.getScheduler().callSyncMethod(BetonQuest.getInstance(), () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), finalCom));

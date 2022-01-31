@@ -4,8 +4,8 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -43,9 +43,9 @@ public class HologramLoop {
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     public HologramLoop() {
         // get all holograms and their condition
-        for (final ConfigPackage pack : Config.getPackages().values()) {
-            final String packName = pack.getName();
-            final ConfigurationSection section = pack.getCustom().getConfig().getConfigurationSection("holograms");
+        for (final QuestPackage pack : Config.getPackages().values()) {
+            final String packName = pack.getPackagePath();
+            final ConfigurationSection section = pack.getConfig().getConfigurationSection("holograms");
             if (section == null) {
                 continue;
             }

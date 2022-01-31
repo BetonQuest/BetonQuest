@@ -68,6 +68,8 @@ public class EntityHider implements Listener {
      * Packets to suppress for hidden entities. It contains all packets that update remote player entities.<br>
      * This list is used for Minecraft versions 1.13 to 1.16.
      */
+    //TODO version switch:
+    // remove if minecraft version support below 1.17 is dropped
     @SuppressWarnings("deprecation")
     private static final PacketType[] ENTITY_PACKETS_PRE_17 = {
             PacketType.Play.Server.ENTITY_EQUIPMENT,

@@ -5,10 +5,10 @@ import lombok.CustomLog;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.compatibility.effectlib.EffectLibIntegrator;
 import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -46,10 +46,10 @@ public class CitizensParticle extends BukkitRunnable {
         super();
         instance = this;
         // loop across all packages
-        for (final ConfigPackage pack : Config.getPackages().values()) {
+        for (final QuestPackage pack : Config.getPackages().values()) {
 
             // npc_effects contains all effects for NPCs
-            final ConfigurationSection section = pack.getCustom().getConfig().getConfigurationSection("npc_effects");
+            final ConfigurationSection section = pack.getConfig().getConfigurationSection("npc_effects");
 
             // if it's not defined then we're not displaying effects
             if (section == null) {
@@ -64,7 +64,7 @@ public class CitizensParticle extends BukkitRunnable {
             // load the condition check interval
             interval = section.getInt("check_interval", 100);
             if (interval <= 0) {
-                LOG.warn(pack, "Could not load npc effects of package " + pack.getName() + ": " +
+                LOG.warn(pack, "Could not load npc effects of package " + pack.getPackagePath() + ": " +
                         "Check interval must be bigger than 0.");
                 enabled = false;
                 return;
@@ -90,7 +90,7 @@ public class CitizensParticle extends BukkitRunnable {
                 // load the interval between animations
                 effect.interval = settings.getInt("interval", 100);
                 if (effect.interval <= 0) {
-                    LOG.warn(pack, "Could not load npc effect " + key + " in package " + pack.getName() + ": " +
+                    LOG.warn(pack, "Could not load npc effect " + key + " in package " + pack.getPackagePath() + ": " +
                             "Effect interval must be bigger than 0.");
                     continue;
                 }
@@ -100,7 +100,7 @@ public class CitizensParticle extends BukkitRunnable {
                 if (settings.isList("npcs")) {
                     effect.npcs.addAll(settings.getIntegerList("npcs"));
                 } else {
-                    final ConfigurationSection npcs = pack.getMain().getConfig().getConfigurationSection("npcs");
+                    final ConfigurationSection npcs = pack.getConfig().getConfigurationSection("npcs");
                     if (npcs != null) {
                         for (final String npcID : npcs.getKeys(false)) {
                             try {

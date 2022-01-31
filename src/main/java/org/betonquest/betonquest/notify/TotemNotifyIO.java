@@ -60,6 +60,8 @@ public class TotemNotifyIO extends NotifyIO {
     private void sendOffhandPacket(final Player player, final ItemStack offHandItem) {
         final WrapperPlayServerSetSlot slotPacket;
 
+        //TODO version switch:
+        // remove if minecraft version support below 1.17 is dropped
         if (PaperLib.isVersion(17, 1)) {
             slotPacket = new WrapperPlayServerSetSlot() {
                 @Override

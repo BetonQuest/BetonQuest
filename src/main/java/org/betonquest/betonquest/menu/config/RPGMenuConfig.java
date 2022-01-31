@@ -2,6 +2,7 @@ package org.betonquest.betonquest.menu.config;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.ChatColor;
@@ -10,6 +11,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,10 +21,10 @@ import java.util.Map;
  * The plugins config file
  */
 @SuppressWarnings("PMD.CommentRequired")
-public class RPGMenuConfig extends SimpleYMLConfig {
+public class RPGMenuConfig extends SimpleYMLSection {
 
     /**
-     * Default value if menus close when a item was clicked
+     * Default value if menus close when an item was clicked
      */
     public final boolean defaultCloseOnClick;
 
@@ -38,8 +40,8 @@ public class RPGMenuConfig extends SimpleYMLConfig {
 
     @SuppressWarnings("PMD.AvoidDuplicateLiterals")
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public RPGMenuConfig() throws InvalidConfigurationException {
-        super(new File(BetonQuest.getInstance().getDataFolder(), "menuConfig.yml"));
+    public RPGMenuConfig() throws InvalidConfigurationException, FileNotFoundException {
+        super("menuConfig.yml", ConfigAccessor.create(new File(BetonQuest.getInstance().getDataFolder(), "menuConfig.yml")).getConfig());
         //load languages
         if (!config.contains("messages") || !config.isConfigurationSection("messages")) {
             throw new Missing("messages");

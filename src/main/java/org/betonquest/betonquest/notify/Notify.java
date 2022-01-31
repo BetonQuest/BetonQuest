@@ -126,7 +126,7 @@ public final class Notify {
     private static void loadCategorySettings() {
         final Map<String, Map<String, String>> settings = new HashMap<>();
         for (final String packName : Config.getPackages().keySet()) {
-            final ConfigurationSection notifySection = Config.getPackages().get(packName).getCustom().getConfig().getConfigurationSection("notifications");
+            final ConfigurationSection notifySection = Config.getPackages().get(packName).getConfig().getConfigurationSection("notifications");
             if (notifySection != null) {
                 for (final String notifyName : notifySection.getKeys(false)) {
                     final ConfigurationSection notify = notifySection.getConfigurationSection(notifyName);

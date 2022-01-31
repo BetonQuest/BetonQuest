@@ -44,7 +44,7 @@ public class GiveEvent extends QuestEvent {
             int amountInt = amount.getInt(playerID);
             if (notify) {
                 try {
-                    Config.sendNotify(instruction.getPackage().getName(), playerID, "items_given",
+                    Config.sendNotify(instruction.getPackage().getPackagePath(), playerID, "items_given",
                             new String[]{
                                     questItem.getName() == null ? questItem.getMaterial().toString().toLowerCase(Locale.ROOT).replace("_", " ") : questItem.getName(),
                                     String.valueOf(amountInt)}, "items_given,info");

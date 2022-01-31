@@ -19,17 +19,17 @@ public class HeightCondition extends Condition {
     public HeightCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         final String string = instruction.next();
-        final String packName = instruction.getPackage().getName();
+        final String packName = instruction.getPackage().getPackagePath();
         if (string.matches("\\-?\\d+\\.?\\d*")) {
             try {
                 height = new VariableNumber(packName, string);
-            } catch (InstructionParseException e) {
+            } catch (final InstructionParseException e) {
                 throw new InstructionParseException("Could not parse height", e);
             }
         } else {
             try {
                 height = new VariableNumber(new CompoundLocation(packName, string).getLocation(null).getY());
-            } catch (QuestRuntimeException e) {
+            } catch (final QuestRuntimeException e) {
                 throw new InstructionParseException("Could not parse height", e);
             }
         }

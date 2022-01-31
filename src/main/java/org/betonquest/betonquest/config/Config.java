@@ -4,6 +4,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -22,10 +23,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Handles the configuration of the plugin
@@ -34,9 +35,9 @@ import java.util.Map;
         "PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition"})
 @CustomLog
 public class Config {
+    public static final String CONFIG_PACKAGE_SEPARATOR = "-";
 
-    private static final List<String> UTIL_DIR_NAMES = Arrays.asList("logs", "backups", "conversations");
-    private static final Map<String, ConfigPackage> PACKAGES = new HashMap<>();
+    private static final Map<String, QuestPackage> PACKAGES = new HashMap<>();
     private static final Map<String, QuestCanceler> CANCELERS = new HashMap<>();
     private static final List<String> LANGUAGES = new ArrayList<>();
     private static BetonQuest plugin;
@@ -54,11 +55,11 @@ public class Config {
     /**
      * Creates new instance of the Config handler
      *
-     * @param verboose controls if this object should log it's actions to the file
+     * @param verbose controls if this object should log its actions to the file
      */
-    @SuppressWarnings({"PMD.AssignmentToNonFinalStatic", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.AssignmentToNonFinalStatic", "PMD.CognitiveComplexity", "PMD.NPathComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public Config(final boolean verboose) {
+    public Config(final boolean verbose) {
 
         PACKAGES.clear();
         CANCELERS.clear();
@@ -85,7 +86,7 @@ public class Config {
         }
         for (final String key : messages.getConfig().getKeys(false)) {
             if (!"global".equals(key)) {
-                if (verboose) {
+                if (verbose) {
                     LOG.debug("Loaded " + key + " language");
                 }
                 LANGUAGES.add(key);
@@ -98,18 +99,25 @@ public class Config {
         createDefaultPackage(defaultPackage);
 
         // load packages
-        for (final File file : plugin.getDataFolder().listFiles()) {
-            searchForPackages(file);
+        final File questPackages = new File(plugin.getDataFolder(), "QuestPackages");
+        if (!questPackages.exists() && !questPackages.mkdir()) {
+            LOG.error("It was not possible to create the folder '" + questPackages.getPath() + "'!");
+            return;
+        }
+        try {
+            searchForPackages(questPackages, questPackages, "package", ".yml");
+        } catch (final IOException e) {
+            LOG.error("Error while loading '" + questPackages.getPath() + "'!", e);
         }
 
         // load quest cancelers
-        for (final ConfigPackage pack : PACKAGES.values()) {
-            final ConfigurationSection section = pack.getMain().getConfig().getConfigurationSection("cancel");
+        for (final QuestPackage pack : PACKAGES.values()) {
+            final ConfigurationSection section = pack.getConfig().getConfigurationSection("cancel");
             if (section == null) {
                 continue;
             }
             for (final String key : section.getKeys(false)) {
-                final String name = pack.getName() + "." + key;
+                final String name = pack.getPackagePath() + "." + key;
                 try {
                     CANCELERS.put(name, new QuestCanceler(name));
                 } catch (final InstructionParseException e) {
@@ -131,7 +139,7 @@ public class Config {
         if (!def.exists()) {
             LOG.info("Deploying " + packName + " package!");
             def.mkdirs();
-            saveResource(def, "default/main.yml", "main.yml");
+            saveResource(def, "default/package.yml", "package.yml");
             saveResource(def, "default/events.yml", "events.yml");
             saveResource(def, "default/conditions.yml", "conditions.yml");
             saveResource(def, "default/journal.yml", "journal.yml");
@@ -244,14 +252,14 @@ public class Config {
     /**
      * @return the map of packages and their names
      */
-    public static Map<String, ConfigPackage> getPackages() {
+    public static Map<String, QuestPackage> getPackages() {
         return PACKAGES;
     }
 
     /**
      * Retrieves the string from across all configuration. The variables are not
      * replaced! To replace variables automatically just call getString() method
-     * on ConfigPackage.
+     * on {@link QuestPackage}.
      *
      * @param address address of the string
      * @return the requested string
@@ -270,50 +278,11 @@ public class Config {
         } else if ("messages".equals(main)) {
             return messages.getConfig().getString(address.substring(9));
         } else {
-            final ConfigPackage pack = PACKAGES.get(main);
+            final QuestPackage pack = PACKAGES.get(main);
             if (pack == null) {
                 return null;
             }
             return pack.getRawString(address.substring(main.length() + 1));
-        }
-    }
-
-    /**
-     * Sets the string at specified address
-     *
-     * @param address address of the variable
-     * @param value   value that needs to be set
-     * @return true if it was set, false otherwise
-     */
-    @SuppressWarnings("PMD.LinguisticNaming")
-    public static boolean setString(final String address, final String value) {
-        if (address == null) {
-            return false;
-        }
-        final String[] parts = address.split("\\.");
-        if (parts.length < 2) {
-            return false;
-        }
-        final String main = parts[0];
-        if ("config".equals(main)) {
-            plugin.getConfig().set(address.substring(7), value);
-            plugin.saveConfig();
-            return true;
-        } else if ("messages".equals(main)) {
-            messages.getConfig().set(address.substring(9), value);
-            try {
-                messages.save();
-            } catch (final IOException e) {
-                LOG.warn(e.getMessage(), e);
-                return true;
-            }
-            return true;
-        } else {
-            final ConfigPackage pack = PACKAGES.get(main);
-            if (pack == null) {
-                return false;
-            }
-            return pack.setString(address.substring(main.length() + 1), value);
         }
     }
 
@@ -342,9 +311,9 @@ public class Config {
      */
     public static String getNpc(final String value) {
         // load npc assignments from all packages
-        for (final Map.Entry<String, ConfigPackage> entry : PACKAGES.entrySet()) {
-            final ConfigPackage pack = entry.getValue();
-            final ConfigurationSection assignments = pack.getMain().getConfig().getConfigurationSection("npcs");
+        for (final Map.Entry<String, QuestPackage> entry : PACKAGES.entrySet()) {
+            final QuestPackage pack = entry.getValue();
+            final ConfigurationSection assignments = pack.getConfig().getConfigurationSection("npcs");
             if (assignments != null) {
                 for (final String assignment : assignments.getKeys(false)) {
                     if (assignment.equalsIgnoreCase(value)) {
@@ -517,7 +486,7 @@ public class Config {
     }
 
     /**
-     * Plays a sound specified in the plugins config to the player
+     * Plays a sound specified in the plugin's config to the player
      *
      * @param playerID  the uuid of the player
      * @param soundName the name of the sound to play to the player
@@ -547,37 +516,54 @@ public class Config {
     /**
      * @return the default package, as specified in the config
      */
-    public static ConfigPackage getDefaultPackage() {
+    public static QuestPackage getDefaultPackage() {
         return getPackages().get(defaultPackage);
     }
 
     @SuppressWarnings("PMD.CognitiveComplexity")
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    private void searchForPackages(final File file) {
-        if (file.isDirectory() && !UTIL_DIR_NAMES.contains(file.getName())) {
-            final File[] content = file.listFiles();
-            for (final File subFile : content) {
-                if ("main.yml".equals(subFile.getName())) {
-                    // this is a package, add it and stop searching
-                    final String packPath = BetonQuest.getInstance().getDataFolder()
-                            .toURI().relativize(file.toURI())
-                            .toString().replace('/', ' ').trim().replace(' ', '-');
-                    final ConfigPackage pack;
-                    try {
-                        pack = new ConfigPackage(file, packPath);
-                    } catch (final InvalidConfigurationException e) {
-                        LOG.warn(e.getMessage(), e);
-                        return;
-                    }
-                    if (pack.isEnabled()) {
-                        PACKAGES.put(packPath, pack);
-                    }
-                    return;
+    private List<File> searchForPackages(final File root, final File file, final String packageIndicator, final String fileIndicator) throws IOException {
+        if (!file.isDirectory()) {
+            throw new IOException("File '" + file.getPath() + "' is not a directory!");
+        }
+        final File[] listFiles = file.listFiles();
+        if (listFiles == null) {
+            throw new IOException("Invalid list of file for directory '\" + file.getPath() + \"'!");
+        }
+        final List<File> files = new ArrayList<>();
+        File main = null;
+        for (final File subFile : listFiles) {
+            if (subFile.isDirectory()) {
+                try {
+                    files.addAll(Objects.requireNonNull(searchForPackages(root, subFile, packageIndicator, fileIndicator)));
+                } catch (final IOException e) {
+                    LOG.warn(e.getMessage(), e);
+                }
+            } else {
+                if ((packageIndicator + fileIndicator).equals(subFile.getName())) {
+                    main = subFile;
+                } else {
+                    files.add(subFile);
                 }
             }
-            for (final File subFile : content) {
-                searchForPackages(subFile);
+        }
+        if (main != null) {
+            createPackage(root, main, files);
+            files.clear();
+        }
+        return files;
+    }
+
+    private void createPackage(final File root, final File main, final List<File> files) {
+        try {
+            final String packagePath = root.toURI().relativize(main.getParentFile().toURI())
+                    .toString().replace('/', ' ').trim().replaceAll(" ", CONFIG_PACKAGE_SEPARATOR);
+            final QuestPackage pack = new QuestPackage(packagePath, main, files);
+            if (!pack.getConfig().contains("enabled") || pack.isFromPackageConfig("enabled") && "true".equals(pack.getString("enabled"))) {
+                PACKAGES.put(pack.getPackagePath(), pack);
             }
+        } catch (final InvalidConfigurationException | FileNotFoundException e) {
+            LOG.warn("QuestPackage '" + main.getParentFile().getPath() + "' could not be loaded, reason: " + e.getMessage(), e);
         }
     }
 }
