@@ -1,7 +1,7 @@
 package org.betonquest.betonquest;
 
 import lombok.CustomLog;
-import org.betonquest.betonquest.config.ConfigPackage;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
@@ -35,7 +35,7 @@ import java.util.regex.Pattern;
 @CustomLog
 public class Instruction {
     private static final Pattern NUMBER_PATTERN = Pattern.compile("(?:\\s|\\G|^)((\\+|-)?\\d+)(?:\\s|$)");
-    private final ConfigPackage pack;
+    private final QuestPackage pack;
     protected String instruction;
     protected String[] parts;
     private ID identifier;
@@ -43,7 +43,7 @@ public class Instruction {
     private int currentIndex = 1;
     private String lastOptional;
 
-    public Instruction(final ConfigPackage pack, final ID identifier, final String instruction) {
+    public Instruction(final QuestPackage pack, final ID identifier, final String instruction) {
         this.pack = pack;
         try {
             this.identifier = identifier == null ? new NoID(pack) : identifier;
@@ -67,7 +67,7 @@ public class Instruction {
         return parts.length;
     }
 
-    public ConfigPackage getPackage() {
+    public QuestPackage getPackage() {
         return pack;
     }
 
@@ -133,7 +133,7 @@ public class Instruction {
             return null;
         }
         try {
-            return new CompoundLocation(pack.getName(), string);
+            return new CompoundLocation(pack.getPackagePath(), string);
         } catch (final InstructionParseException e) {
             throw new PartParseException("Error while parsing location: " + e.getMessage(), e);
         }
@@ -148,7 +148,7 @@ public class Instruction {
             return null;
         }
         try {
-            return new VariableNumber(pack.getName(), string);
+            return new VariableNumber(pack.getPackagePath(), string);
         } catch (final InstructionParseException e) {
             throw new PartParseException("Could not parse a number: " + e.getMessage(), e);
         }

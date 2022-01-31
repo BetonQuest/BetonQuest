@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.id;
 
-import org.betonquest.betonquest.config.ConfigPackage;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidFieldNameMatchingMethodName"})
@@ -8,7 +8,7 @@ public class ConditionID extends ID {
 
     private final boolean inverted;
 
-    public ConditionID(final ConfigPackage pack, final String identifier) throws ObjectNotFoundException {
+    public ConditionID(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
         super(pack, removeExclamationMark(identifier));
         this.inverted = !identifier.isEmpty() && identifier.charAt(0) == '!';
         rawInstruction = super.pack.getString("conditions." + super.identifier);

@@ -6,6 +6,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,18 +26,15 @@ public class MultiConfigurationSectionSplitWithConfigurationTest extends MultiCo
 
     @Override
     public Configuration getConfig() {
-        final Configuration config1 = YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/multi/config1.yml"));
-        final Configuration config2 = YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/multi/config2.yml"));
-        final Configuration config3 = YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/multi/config3.yml"));
+        final Map<ConfigurationSection, String> configs = new HashMap<>();
+        configs.put(YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/multi/config1.yml")), "config1.yml");
+        configs.put(YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/multi/config2.yml")), "config1.yml");
+        configs.put(YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/multi/config3.yml")), "config1.yml");
         try {
-            final MultiConfiguration multiConfiguration = new MultiConfiguration(config1, config2, config3);
+            final MultiConfiguration multiConfiguration = new MultiConfiguration(new ArrayList<>(configs.keySet()));
             multiConfiguration.setMultiDefaults(MultiConfigurationSplitTest.getDefault());
             return multiConfiguration;
         } catch (final KeyConflictException e) {
-            final Map<ConfigurationSection, String> configs = new HashMap<>();
-            configs.put(config1, "config1.yml");
-            configs.put(config2, "config2.yml");
-            configs.put(config3, "config3.yml");
             fail(e.resolvedMessage(configs), e);
         } catch (final InvalidConfigurationException e) {
             fail(e);

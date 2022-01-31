@@ -76,7 +76,7 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
         final String placeholderIdentifier;
         final int index = identifier.indexOf(':');
         if (index == -1) {
-            pack = Config.getDefaultPackage().getName();
+            pack = Config.getDefaultPackage().getPackagePath();
             placeholderIdentifier = identifier;
         } else {
             pack = identifier.substring(0, index);

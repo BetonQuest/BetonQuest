@@ -55,7 +55,7 @@ public class WandCondition extends Condition {
                     final VariableNumber level;
                     final String[] spellParts = spell.split(":");
                     try {
-                        level = new VariableNumber(instruction.getPackage().getName(), spellParts[1]);
+                        level = new VariableNumber(instruction.getPackage().getPackagePath(), spellParts[1]);
                     } catch (final InstructionParseException e) {
                         throw new InstructionParseException("Could not parse spell level", e);
                     }

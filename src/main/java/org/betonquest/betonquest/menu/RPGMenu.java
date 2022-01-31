@@ -3,8 +3,8 @@ package org.betonquest.betonquest.menu;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.menu.betonquest.MenuCondition;
 import org.betonquest.betonquest.menu.betonquest.MenuObjective;
@@ -15,11 +15,13 @@ import org.betonquest.betonquest.menu.config.RPGMenuConfig;
 import org.betonquest.betonquest.menu.events.MenuOpenEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -147,25 +149,21 @@ public class RPGMenu {
         final ReloadInformation info = new ReloadInformation();
         try {
             this.config = new RPGMenuConfig();
-        } catch (final InvalidConfigurationException e) {
+        } catch (final InvalidConfigurationException | FileNotFoundException e) {
             LOG.error("Invalid Configuration.", e);
             info.addError(e);
             info.result = ReloadResult.FAILED;
             return info;
         }
         //load files for all packages
-        for (final ConfigPackage pack : Config.getPackages().values()) {
-            final File menusFolder = new File(pack.getFolder(), "menus");
-            if (!menusFolder.exists()) {
-                menusFolder.mkdir();
-            }
-            final File[] files = menusFolder.listFiles((dir, name) -> name.endsWith(".yml"));
-            if (files == null) {
+        for (final QuestPackage pack : Config.getPackages().values()) {
+            final ConfigurationSection menus = pack.getConfig().getConfigurationSection("menus");
+            if (menus == null) {
                 continue;
             }
-            for (final File f : files) {
+            for (final String name : menus.getKeys(false)) {
                 try {
-                    final MenuID menuID = new MenuID(pack, f.getName().substring(0, f.getName().length() - 4));
+                    final MenuID menuID = new MenuID(pack, name);
                     this.menus.put(menuID, new Menu(menuID));
                     info.loaded++;
                 } catch (final InvalidConfigurationException e) {

@@ -5,8 +5,8 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -37,10 +37,10 @@ public class CompassEvent extends QuestEvent {
         compass = instruction.next();
 
         // Check if compass is valid
-        for (final ConfigPackage pack : Config.getPackages().values()) {
-            final ConfigurationSection section = pack.getMain().getConfig().getConfigurationSection("compass");
+        for (final QuestPackage pack : Config.getPackages().values()) {
+            final ConfigurationSection section = pack.getConfig().getConfigurationSection("compass");
             if (section != null && section.contains(compass)) {
-                compassLocation = new CompoundLocation(pack.getName(), pack.getString("main.compass." + compass + ".location"));
+                compassLocation = new CompoundLocation(pack.getPackagePath(), pack.getString("compass." + compass + ".location"));
                 break;
             }
         }

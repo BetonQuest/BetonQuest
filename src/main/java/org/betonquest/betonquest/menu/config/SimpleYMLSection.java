@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.menu.config;
 
-import org.betonquest.betonquest.config.ConfigPackage;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
@@ -27,7 +27,7 @@ public abstract class SimpleYMLSection {
     public SimpleYMLSection(final String name, final ConfigurationSection config) throws InvalidConfigurationException {
         this.config = config;
         this.name = name;
-        if (config == null || config.getKeys(false) == null || config.getKeys(false).size() == 0) {
+        if (config == null || config.getKeys(false).size() == 0) {
             throw new InvalidSimpleConfigException("RPGMenuConfig is invalid or empty!");
         }
     }
@@ -219,7 +219,7 @@ public abstract class SimpleYMLSection {
      * @throws Missing if nothing is given
      * @throws Invalid if one of the events can't be found
      */
-    protected List<EventID> getEvents(final String key, final ConfigPackage pack) throws Missing, Invalid {
+    protected List<EventID> getEvents(final String key, final QuestPackage pack) throws Missing, Invalid {
         final List<String> strings = getStrings(key);
         final List<EventID> events = new ArrayList<>(strings.size());
         for (final String string : strings) {
@@ -240,7 +240,7 @@ public abstract class SimpleYMLSection {
      * @throws Missing if nothing is given
      * @throws Invalid if one of the conditions can't be found
      */
-    protected List<ConditionID> getConditions(final String key, final ConfigPackage pack) throws Missing, Invalid {
+    protected List<ConditionID> getConditions(final String key, final QuestPackage pack) throws Missing, Invalid {
         final List<String> strings = getStrings(key);
         final List<ConditionID> conditions = new ArrayList<>(strings.size());
         for (final String string : strings) {

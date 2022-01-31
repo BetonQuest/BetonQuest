@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.modules.config;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -17,7 +16,6 @@ import java.nio.charset.StandardCharsets;
 /**
  * Represents a {@link YamlConfiguration} that is a file or a resource from a plugin.
  */
-@CustomLog
 public class ConfigAccessorImpl implements ConfigAccessor {
 
     /**

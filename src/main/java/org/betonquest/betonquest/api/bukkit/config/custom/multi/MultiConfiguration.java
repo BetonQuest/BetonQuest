@@ -13,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +56,7 @@ public class MultiConfiguration extends HandleModificationConfiguration {
      * @throws KeyConflictException             is thrown, if two or more configs define conflicting entries
      * @throws InvalidSubConfigurationException is thrown, if a source configuration is invalid in some way
      */
-    public MultiConfiguration(final ConfigurationSection... sourceConfigs) throws KeyConflictException, InvalidSubConfigurationException {
+    public MultiConfiguration(final List<ConfigurationSection> sourceConfigs) throws KeyConflictException, InvalidSubConfigurationException {
         super(new MemoryConfiguration(), new MultiConfigurationHandler());
         checkSourceConfigs(sourceConfigs);
         ((MultiConfigurationHandler) handler).setConsumer(getSetConsumer());
@@ -70,7 +69,7 @@ public class MultiConfiguration extends HandleModificationConfiguration {
         original.options().copyDefaults(true);
     }
 
-    private void checkSourceConfigs(final ConfigurationSection... sourceConfigs) throws InvalidSubConfigurationException {
+    private void checkSourceConfigs(final List<ConfigurationSection> sourceConfigs) throws InvalidSubConfigurationException {
         for (final ConfigurationSection sourceConfig : sourceConfigs) {
             final Configuration root = sourceConfig.getRoot();
             if (root == null) {
@@ -136,8 +135,8 @@ public class MultiConfiguration extends HandleModificationConfiguration {
      *
      * @param sourceConfigs the configs that should represent this config
      */
-    private void buildKeyIndex(final ConfigurationSection... sourceConfigs) {
-        Arrays.stream(sourceConfigs).forEach(sourceConfig -> sourceConfig.getKeys(true).stream()
+    private void buildKeyIndex(final List<ConfigurationSection> sourceConfigs) {
+        sourceConfigs.forEach(sourceConfig -> sourceConfig.getKeys(true).stream()
                 .filter(sectionKey -> !sourceConfig.isConfigurationSection(sectionKey))
                 .forEach(sectionKey -> addToList(keyIndex, sectionKey, sourceConfig)));
     }
@@ -201,8 +200,13 @@ public class MultiConfiguration extends HandleModificationConfiguration {
         keyIndex.forEach((key, value) -> {
             final ConfigurationSection config = value.get(0);
             original.set(key, config.get(key));
-            original.setComments(key, config.getComments(key));
-            original.setInlineComments(key, config.getInlineComments(key));
+            //TODO version switch:
+            // remove the try catch, if minecraft version support below 1.18 is dropped
+            try {
+                original.setComments(key, config.getComments(key));
+                original.setInlineComments(key, config.getInlineComments(key));
+            } catch (final NoSuchMethodError ignored) {
+            }
         });
     }
 

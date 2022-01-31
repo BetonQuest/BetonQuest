@@ -54,17 +54,17 @@ class MultiConfigurationModificationTest {
     public MultiConfigurationModificationTest() {
         super();
         configAll = YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/multi/modification/configAll.yml"));
+        final Map<ConfigurationSection, String> configs = new HashMap<>();
         config1 = YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/multi/modification/config1.yml"));
         config2 = YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/multi/modification/config2.yml"));
         config3 = YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/multi/modification/config3.yml"));
+        configs.put(config1, "config1.yml");
+        configs.put(config2, "config2.yml");
+        configs.put(config3, "config3.yml");
         MultiConfiguration multiConfiguration = null;
         try {
-            multiConfiguration = new MultiConfiguration(config1, config2, config3);
+            multiConfiguration = new MultiConfiguration(new ArrayList<>(configs.keySet()));
         } catch (final KeyConflictException e) {
-            final Map<ConfigurationSection, String> configs = new HashMap<>();
-            configs.put(config1, "config1.yml");
-            configs.put(config2, "config2.yml");
-            configs.put(config3, "config3.yml");
             fail(e.resolvedMessage(configs), e);
         } catch (final InvalidConfigurationException e) {
             fail(e);

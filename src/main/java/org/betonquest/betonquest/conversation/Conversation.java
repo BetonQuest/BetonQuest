@@ -9,8 +9,8 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.ConversationOptionEvent;
 import org.betonquest.betonquest.api.PlayerConversationEndEvent;
 import org.betonquest.betonquest.api.PlayerConversationStartEvent;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.conversation.ConversationData.OptionType;
 import org.betonquest.betonquest.database.Connector.UpdateType;
 import org.betonquest.betonquest.database.Saver.Record;
@@ -53,7 +53,7 @@ public class Conversation implements Listener {
 
     private final String playerID;
     private final Player player;
-    private final ConfigPackage pack;
+    private final QuestPackage pack;
     private final String language;
     private final Location location;
     private final String convID;
@@ -179,7 +179,7 @@ public class Conversation implements Listener {
                 convName = data.getName();
                 optionName = option;
             }
-            final ConversationData currentData = plugin.getConversation(pack.getName() + "." + convName);
+            final ConversationData currentData = plugin.getConversation(pack.getPackagePath() + "." + convName);
             if (force || BetonQuest.conditions(this.playerID, currentData.getConditionIDs(optionName, OptionType.NPC))) {
                 this.option = optionName;
                 data = currentData;
@@ -298,7 +298,7 @@ public class Conversation implements Listener {
         //only display status messages if conversationIO allows it
         if (conv.inOut.printMessages()) {
             // print message
-            conv.inOut.print(Config.parseMessage(pack.getName(), playerID, "conversation_end", new String[]{data.getQuester(language)}));
+            conv.inOut.print(Config.parseMessage(pack.getPackagePath(), playerID, "conversation_end", new String[]{data.getQuester(language)}));
         }
         //play conversation end sound
         Config.playSound(playerID, "end");
@@ -371,7 +371,7 @@ public class Conversation implements Listener {
         if (blacklist.contains(cmdName)) {
             event.setCancelled(true);
             try {
-                Config.sendNotify(getPackage().getName(), PlayerConverter.getID(event.getPlayer()), "command_blocked", "command_blocked,error");
+                Config.sendNotify(getPackage().getPackagePath(), PlayerConverter.getID(event.getPlayer()), "command_blocked", "command_blocked,error");
             } catch (final QuestRuntimeException e) {
                 LOG.warn(pack, "The notify system was unable to play a sound for the 'command_blocked' category. Error was: '" + e.getMessage() + "'", e);
             }
@@ -463,7 +463,7 @@ public class Conversation implements Listener {
     /**
      * @return the package containing this conversation
      */
-    public ConfigPackage getPackage() {
+    public QuestPackage getPackage() {
         return pack;
     }
 
@@ -560,7 +560,7 @@ public class Conversation implements Listener {
                 if (conv.inOut.printMessages()) {
                     // print message about starting a conversation only if it
                     // is started, not resumed
-                    conv.inOut.print(Config.parseMessage(pack.getName(), playerID, "conversation_start", new String[]{data.getQuester(language)},
+                    conv.inOut.print(Config.parseMessage(pack.getPackagePath(), playerID, "conversation_start", new String[]{data.getQuester(language)},
                             prefixName, prefixVariables));
                 }
                 //play the conversation start sound

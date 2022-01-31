@@ -42,7 +42,7 @@ public class DelayObjective extends Objective {
     private void parseDelay() throws InstructionParseException {
         final String intOrVar = instruction.next();
         if (intOrVar.startsWith("%")) {
-            delay = new VariableNumber(instruction.getPackage().getName(), intOrVar);
+            delay = new VariableNumber(instruction.getPackage().getPackagePath(), intOrVar);
         } else {
             final int time = Integer.parseInt(intOrVar);
             if (time < 0) {

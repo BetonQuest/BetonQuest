@@ -4,8 +4,8 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -38,7 +38,7 @@ public class MenuItem extends SimpleYMLSection {
     /**
      * The package this item is inside
      */
-    private final ConfigPackage pack;
+    private final QuestPackage pack;
 
     /**
      * The betonquest quest item this item is based on
@@ -70,16 +70,16 @@ public class MenuItem extends SimpleYMLSection {
      */
     private final boolean close;
 
-    @SuppressWarnings({"PMD.ExceptionAsFlowControl", "PMD.EmptyCatchBlock", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.ExceptionAsFlowControl", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public MenuItem(final ConfigPackage pack, final String name, final ConfigurationSection section) throws InvalidConfigurationException {
+    public MenuItem(final QuestPackage pack, final String name, final ConfigurationSection section) throws InvalidConfigurationException {
         super(name, section);
         try {
             this.pack = pack;
             //load item
             final ItemID itemID = new ItemID(pack, getString("item").trim());
             final VariableNumber amount;
-            amount = new VariableNumber(pack.getName(), new DefaultSetting<String>("1") {
+            amount = new VariableNumber(pack.getPackagePath(), new DefaultSetting<>("1") {
                 @Override
                 @SuppressWarnings("PMD.ShortMethodName")
                 protected String of() throws Missing {
@@ -101,7 +101,7 @@ public class MenuItem extends SimpleYMLSection {
                     this.descriptions.put(Config.getLanguage(),
                             new ItemDescription(this.pack, getStringList("text")));
                 }
-            } catch (final Missing missing) {
+            } catch (final Missing ignored) {
             }
             //load events
             this.leftClick = new ArrayList<>();
@@ -109,32 +109,32 @@ public class MenuItem extends SimpleYMLSection {
             if (config.isConfigurationSection("click")) {
                 try {
                     this.leftClick.addAll(getEvents("click.left", pack));
-                } catch (final Missing e) {
+                } catch (final Missing ignored) {
                 }
                 try {
                     this.rightClick.addAll(getEvents("click.right", pack));
-                } catch (final Missing e) {
+                } catch (final Missing ignored) {
                 }
             } else {
                 try {
                     final List<EventID> list = getEvents("click", pack);
                     this.leftClick.addAll(list);
                     this.rightClick.addAll(list);
-                } catch (final Missing e) {
+                } catch (final Missing ignored) {
                 }
             }
             //load display conditions
             this.conditions = new ArrayList<>();
             try {
                 this.conditions.addAll(getConditions("conditions", pack));
-            } catch (final Missing e) {
+            } catch (final Missing ignored) {
             }
             try {
                 this.conditions.addAll(getConditions("condition", pack));
-            } catch (final Missing e) {
+            } catch (final Missing ignored) {
             }
             //load if menu should close when item is clicked
-            this.close = new DefaultSetting<Boolean>(BetonQuest.getInstance().getRpgMenu().getConfiguration().defaultCloseOnClick) {
+            this.close = new DefaultSetting<>(BetonQuest.getInstance().getRpgMenu().getConfiguration().defaultCloseOnClick) {
                 @Override
                 @SuppressWarnings("PMD.ShortMethodName")
                 protected Boolean of() throws Missing, Invalid {

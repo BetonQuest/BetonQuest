@@ -7,6 +7,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,13 +28,13 @@ public class MultiConfigurationTest extends ConfigurationBaseTest {
     @Override
     public Configuration getConfig() {
         final Configuration defaultConfig = super.getDefaultConfig();
+        final Map<ConfigurationSection, String> configs = new HashMap<>();
+        configs.put(defaultConfig, "config.yml");
         try {
-            final MultiConfiguration multiConfiguration = new MultiConfiguration(defaultConfig);
+            final MultiConfiguration multiConfiguration = new MultiConfiguration(new ArrayList<>(configs.keySet()));
             multiConfiguration.setMultiDefaults(defaultConfig.getDefaults());
             return multiConfiguration;
         } catch (final KeyConflictException e) {
-            final Map<ConfigurationSection, String> configs = new HashMap<>();
-            configs.put(defaultConfig, "config.yml");
             fail(e.resolvedMessage(configs), e);
         } catch (final InvalidConfigurationException e) {
             fail(e);

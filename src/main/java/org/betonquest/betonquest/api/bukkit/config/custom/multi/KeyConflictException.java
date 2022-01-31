@@ -59,7 +59,7 @@ public class KeyConflictException extends InvalidConfigurationException {
      * Create a readable and more useful error message.
      *
      * @param namedConfigurations a map of the {@link ConfigurationSection}s, that you used when constructing a
-     *                            {@link MultiConfiguration#MultiConfiguration(ConfigurationSection...)}.
+     *                            {@link MultiConfiguration#MultiConfiguration(List)}.
      *                            Each ConfigurationSection maps to a readable message.
      * @return a formatted and helpful error message
      */
@@ -90,7 +90,13 @@ public class KeyConflictException extends InvalidConfigurationException {
         exMessage.append('\n');
         for (final List<Pair<String, ConfigurationSection>> entry : conflictingPaths) {
             final List<Pair<String, ConfigurationSection>> sorted = entry.stream()
-                    .sorted(Map.Entry.comparingByKey()).collect(Collectors.toList());
+                    .sorted((entry1, entry2) -> {
+                        final int compare = entry1.getKey().compareTo(entry2.getKey());
+                        if (compare == 0) {
+                            return namedConfigurations.get(entry1.getValue()).compareTo(namedConfigurations.get(entry2.getValue()));
+                        }
+                        return compare;
+                    }).collect(Collectors.toList());
             final Pair<String, ConfigurationSection> firstEntry = sorted.get(0);
             sorted.remove(0);
 
