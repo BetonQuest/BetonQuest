@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.utils;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -11,6 +12,9 @@ import java.util.function.Predicate;
  * This is a utility class for working with inventories and crafting.
  */
 public final class InventoryUtils {
+
+    private InventoryUtils() {
+    }
 
     /**
      * Check whether an item "is nothing". Sometimes they are {@link ItemStack}s with material {@link Material#AIR} but
@@ -28,9 +32,10 @@ public final class InventoryUtils {
      * ignored, to see how often the given stack fits use {@code calculateSpaceForItem(inventory, item) / item.getAmount()}.
      *
      * @param inventory the inventory to check
-     * @param item the item to fit.
+     * @param item      the item to fit.
      * @return the maximum amount the item fits into the inventory
      */
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public static int calculateSpaceForItem(final Inventory inventory, final ItemStack item) {
         int remainingSpace = 0;
         for (final ItemStack i : inventory.getStorageContents()) {
@@ -64,8 +69,8 @@ public final class InventoryUtils {
      * Calculate how many items will be shift crafted. This method takes into consideration how many items are crafted
      * per craft, how many items can be crafted at most and how many items fit into the inventory.
      *
-     * @param result the result of one craft action
-     * @param inventory the inventory to deposit the result into
+     * @param result      the result of one craft action
+     * @param inventory   the inventory to deposit the result into
      * @param ingredients the ingredients used for crafting (e.g. the crafting matrix)
      * @return the exact amount of items that will be created by shift-crafting
      */
@@ -80,7 +85,7 @@ public final class InventoryUtils {
      * Calculate how many items can be crafted at max. This is done by multiplying the maximum amount of craft actions
      * by the amount of items created with each craft action.
      *
-     * @param result the result of one craft action
+     * @param result      the result of one craft action
      * @param ingredients the ingredients to check
      * @return the amount of items that can be crafted
      * @see #calculateMaximumCraftActions(ItemStack...)
@@ -95,7 +100,7 @@ public final class InventoryUtils {
      * slot is empty or non if there is already something inside the slot. Minecraft will not add crafted items to an
      * already existing item stack of the same type with this method, even if there is theoretically enough space.
      *
-     * @param result the result of one craft action
+     * @param result  the result of one craft action
      * @param swapped the item in the target fast-swap slot
      * @return either 0 or the amount of the result
      */
@@ -117,8 +122,5 @@ public final class InventoryUtils {
             return result.getAmount();
         }
         return 0;
-    }
-
-    private InventoryUtils() {
     }
 }
