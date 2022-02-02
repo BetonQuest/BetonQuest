@@ -66,7 +66,8 @@ public class QuestPackage {
         for (final File file : files) {
             final ConfigAccessor configAccessor = ConfigAccessor.create(file);
             configs.add(configAccessor);
-            configurations.put(configAccessor.getConfig(), configAccessor.getConfigurationFile().getPath());
+            final String filePath = packageConfig.getParentFile().toURI().relativize(configAccessor.getConfigurationFile().toURI()).getPath();
+            configurations.put(configAccessor.getConfig(), filePath);
         }
         try {
             config = new MultiConfiguration(new ArrayList<>(configurations.keySet()));
