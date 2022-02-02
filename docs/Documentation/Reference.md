@@ -38,7 +38,7 @@ If you want, you can simply ignore the existence of packages and write all your 
 
 Each package can be disabled/enabled in the _main.yml_ file, by setting `enabled` to `true` or `false`.
 ```YAML
-#Add this to the package main.yml
+#Add this to the package.yml
 enabled: true
 ```
 

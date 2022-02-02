@@ -1,4 +1,5 @@
-wood_started: 'tag wood_started'
-wood_done: 'tag wood_done'
-wood_paid: 'tag wood_paid'
-has_wood: 'item wood:16'
+conditions:
+  wood_started: 'tag wood_started'
+  wood_done: 'tag wood_done'
+  wood_paid: 'tag wood_paid'
+  has_wood: 'item wood:16'

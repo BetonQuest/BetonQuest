@@ -21,7 +21,6 @@
 * **/q delete {tag/point/objective/entry} {name}** - deletes all specified things in the database
 * **/q backup** - creates a backup of configuration files and database
 * **/q update** - updates the plugin to the newest version.
-* **/q create {package}**: creates new package with given name, filled with default quest
 * **/q version**: displays the versions of BetonQuest, the server and all hooked plugins
 * **/q debug [true/false/ingame]**: enable debug mode and write all down in a log file or disable the debug mode
 * **/questlang {lang}** - changes the language for the player (and globally if used from console). `default` language will use the language defined in _config.yml_.
