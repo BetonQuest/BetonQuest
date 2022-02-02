@@ -116,7 +116,6 @@ public final class Config {
      * Creates package with the given name and populates it with default quest
      *
      * @param packName name of the new package
-     * @return true if the package was created, false if it already existed
      */
     @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     public static void createDefaultPackage(final File packages, final String packName) {
@@ -504,15 +503,15 @@ public final class Config {
     }
 
     private static void createPackage(final File root, final File main, final List<File> files) {
+        final String packagePath = root.toURI().relativize(main.getParentFile().toURI())
+                .toString().replace('/', ' ').trim().replaceAll(" ", CONFIG_PACKAGE_SEPARATOR);
         try {
-            final String packagePath = root.toURI().relativize(main.getParentFile().toURI())
-                    .toString().replace('/', ' ').trim().replaceAll(" ", CONFIG_PACKAGE_SEPARATOR);
             final QuestPackage pack = new QuestPackage(packagePath, main, files);
             if (!pack.getConfig().contains("enabled") || pack.isFromPackageConfig("enabled") && "true".equals(pack.getString("enabled"))) {
                 PACKAGES.put(pack.getPackagePath(), pack);
             }
         } catch (final InvalidConfigurationException | FileNotFoundException e) {
-            LOG.warn("QuestPackage '" + main.getParentFile().getPath() + "' could not be loaded, reason: " + e.getMessage(), e);
+            LOG.warn("QuestPackage '" + packagePath + "' could not be loaded, reason: " + e.getMessage(), e);
         }
     }
 }
