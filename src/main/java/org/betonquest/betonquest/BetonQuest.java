@@ -1008,6 +1008,12 @@ public class BetonQuest extends JavaPlugin {
             final ConfigurationSection conversationsConfig = pack.getConfig().getConfigurationSection("conversations");
             if (conversationsConfig != null) {
                 for (final String convName : conversationsConfig.getKeys(false)) {
+                    if (convName.contains(" ")) {
+                        log.warn(pack,
+                                "Conversation name cannot contain spaces: '" + convName + "' (in " + packName
+                                        + " package)");
+                        continue;
+                    }
                     try {
                         CONVERSATIONS.put(pack.getPackagePath() + "." + convName, new ConversationData(pack, convName, conversationsConfig.getConfigurationSection(convName)));
                     } catch (final InstructionParseException e) {
