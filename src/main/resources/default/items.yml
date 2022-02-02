@@ -1,2 +1,3 @@
-emerald: 'EMERALD data:0 name:Emerald_Item lore:Made_of_emeralds;Quest_reward'
-wood: $block$
+items:
+  emerald: 'EMERALD data:0 name:Emerald_Item lore:Made_of_emeralds;Quest_reward'
+  wood: $block$

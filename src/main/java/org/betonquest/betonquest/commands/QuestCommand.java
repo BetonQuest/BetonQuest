@@ -275,10 +275,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     }
                     Utils.backup();
                     break;
-                case "create":
-                case "package":
-                    createNewPackage(sender, args);
-                    break;
                 case "debug":
                     handleDebug(sender, args);
                     break;
@@ -299,7 +295,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         if (args.length == 1) {
             return Arrays.asList("condition", "event", "item", "give", "objective", "globaltag",
                     "globalpoint", "tag", "point", "journal", "delete", "rename", "version", "purge",
-                    "update", "reload", "backup", "create", "debug");
+                    "update", "reload", "backup", "debug");
         }
         switch (args[0].toLowerCase(Locale.ROOT)) {
             case "conditions":
@@ -365,7 +361,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "update":
             case "reload":
             case "backup":
-            case "create":
             case "package":
             default:
                 return new ArrayList<>();
@@ -463,22 +458,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         } catch (InstructionParseException | QuestRuntimeException e) {
             sendMessage(sender, "error", e.getMessage());
             LOG.warn("Error while creating an item: " + e.getMessage(), e);
-        }
-    }
-
-    /**
-     * Creates new package
-     */
-    private void createNewPackage(final CommandSender sender, final String... args) {
-        if (args.length < 2) {
-            LOG.debug("Package name is missing");
-            sendMessage(sender, "specify_package");
-            return;
-        }
-        if (Config.createDefaultPackage(args[1])) {
-            sendMessage(sender, "package_created");
-        } else {
-            sendMessage(sender, "package_exists");
         }
     }
 

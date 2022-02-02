@@ -564,7 +564,7 @@ public class BetonQuest extends JavaPlugin {
         logWatcher = new LogWatcher(this, adventure);
 
         // load configuration
-        new Config();
+        Config.setup(this);
         Notify.load();
 
         // try to connect to database
@@ -1040,7 +1040,7 @@ public class BetonQuest extends JavaPlugin {
     public void reload() {
         // reload the configuration
         log.debug("Reloading configuration");
-        new Config();
+        Config.setup(this);
         Notify.load();
         // reload updater settings
         BetonQuest.getInstance().getUpdater().searchUpdate();
