@@ -804,10 +804,13 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         // save it in items.yml
         LOG.debug("Saving item to configuration as " + args[1]);
         final String path = "items." + name;
+        final boolean exists = configPack.getConfig().isSet(path);
         configPack.getConfig().set(path, instructions.trim());
         try {
-            final ConfigAccessor itemFile = configPack.getOrCreateConfigAccessor("/items/" + name + ".yml");
-            configPack.getConfig().associateWith(path, itemFile.getConfig());
+            if (!exists) {
+                final ConfigAccessor itemFile = configPack.getOrCreateConfigAccessor("items.yml");
+                configPack.getConfig().associateWith(path, itemFile.getConfig());
+            }
             configPack.saveAll();
         } catch (final IOException | InvalidConfigurationException e) {
             LOG.warn(configPack, e.getMessage(), e);

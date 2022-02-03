@@ -308,7 +308,8 @@ public class QuestPackage {
     @NotNull
     private ConfigAccessor createConfigAccessor(final String relativePath, final File root) throws InvalidConfigurationException, FileNotFoundException {
         final File newConfig = new File(root, relativePath);
-        if (!newConfig.getParentFile().exists() && !newConfig.mkdirs()) {
+        final File newConfigParent = newConfig.getParentFile();
+        if (!newConfigParent.exists() && !newConfigParent.mkdirs()) {
             throw new InvalidConfigurationException("It was not possible to create the folders for the file '" + newConfig.getPath() + "'!");
         }
         try {
