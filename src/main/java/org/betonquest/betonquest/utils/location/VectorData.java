@@ -2,7 +2,7 @@ package org.betonquest.betonquest.utils.location;
 
 
 import org.betonquest.betonquest.api.Variable;
-import org.betonquest.betonquest.config.ConfigPackage;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.util.Vector;
 
@@ -27,7 +27,7 @@ public class VectorData extends AbstractData<Vector> {
      * The input string has to be in the format '(x;y;z)'.
      * Each part of the input string can be a {@link Variable}s instead of an {@link Integer} or {@link String}.
      *
-     * @param packName Name of the {@link ConfigPackage} - required for {@link Variable} resolution
+     * @param packName Name of the {@link QuestPackage} - required for {@link Variable} resolution
      * @param data     string containing raw {@link Vector} in the defined format
      * @throws InstructionParseException Is thrown when an error appears while parsing the {@link Variable}s or {@link Vector}
      */

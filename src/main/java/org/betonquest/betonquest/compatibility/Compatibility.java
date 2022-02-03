@@ -119,8 +119,10 @@ public class Compatibility implements Listener {
     }
 
     public static void disable() {
-        for (final String hooked : getHooked()) {
-            instance.integrators.get(hooked).close();
+        if (instance != null) {
+            for (final String hooked : getHooked()) {
+                instance.integrators.get(hooked).close();
+            }
         }
     }
 

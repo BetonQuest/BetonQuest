@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.menu;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.config.ConfigPackage;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.ChatColor;
 
@@ -15,10 +15,10 @@ import java.util.List;
 @SuppressWarnings("PMD.CommentRequired")
 public class ItemDescription {
 
-    private final ConfigPackage pack;
+    private final QuestPackage pack;
     private final List<Line> lines;
 
-    public ItemDescription(final ConfigPackage pack, final Collection<String> content) throws InstructionParseException {
+    public ItemDescription(final QuestPackage pack, final Collection<String> content) throws InstructionParseException {
         this.pack = pack;
         this.lines = new ArrayList<>();
         for (final String line : content) {
@@ -94,7 +94,7 @@ public class ItemDescription {
         public String resolve(final String playerID) {
             String line = this.line;
             for (final String variable : variables) {
-                line = line.replace(variable, BetonQuest.getInstance().getVariableValue(pack.getName(), variable, playerID));
+                line = line.replace(variable, BetonQuest.getInstance().getVariableValue(pack.getPackagePath(), variable, playerID));
             }
             return line;
         }

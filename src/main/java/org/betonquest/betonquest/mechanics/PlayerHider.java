@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.mechanics;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
@@ -40,8 +40,8 @@ public class PlayerHider {
     public PlayerHider() throws InstructionParseException {
         hiders = new HashMap<>();
 
-        for (final ConfigPackage pack : Config.getPackages().values()) {
-            final ConfigurationSection hiderSection = pack.getCustom().getConfig().getConfigurationSection("player_hider");
+        for (final QuestPackage pack : Config.getPackages().values()) {
+            final ConfigurationSection hiderSection = pack.getConfig().getConfigurationSection("player_hider");
             if (hiderSection != null) {
                 for (final String key : hiderSection.getKeys(false)) {
                     final String rawConditionsSource = hiderSection.getString(key + ".source_player");
@@ -62,7 +62,7 @@ public class PlayerHider {
         bukkitTask.cancel();
     }
 
-    private ConditionID[] getConditions(final ConfigPackage pack, final String key, final String rawConditions) throws InstructionParseException {
+    private ConditionID[] getConditions(final QuestPackage pack, final String key, final String rawConditions) throws InstructionParseException {
         if (rawConditions == null) {
             return new ConditionID[0];
         }
@@ -73,7 +73,7 @@ public class PlayerHider {
                 conditionList[i] = new ConditionID(pack, rawConditionsList[i]);
             } catch (final ObjectNotFoundException e) {
                 throw new InstructionParseException("Error while loading " + rawConditionsList[i]
-                        + " condition for player_hider " + pack.getName() + "." + key + ": " + e.getMessage(), e);
+                        + " condition for player_hider " + pack.getPackagePath() + "." + key + ": " + e.getMessage(), e);
             }
         }
         return conditionList;

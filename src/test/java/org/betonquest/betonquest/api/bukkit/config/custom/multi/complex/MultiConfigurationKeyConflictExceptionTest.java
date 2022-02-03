@@ -8,6 +8,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -118,8 +119,8 @@ class MultiConfigurationKeyConflictExceptionTest {
                                     - Config-2
                                     - Config-3
 
-                                The key 'section.key3' in config 'Config-2' is a path with sub keys in at least one of the following configs:
-                                    - Config-1 with 'section.key3'
+                                The key 'section.key3' in config 'Config-1' is a path with sub keys in at least one of the following configs:
+                                    - Config-2 with 'section.key3'
                                     - Config-3 with 'section.key3.key'
                             """
                     , e.resolvedMessage(configs));
@@ -131,18 +132,15 @@ class MultiConfigurationKeyConflictExceptionTest {
     }
 
     private void createConfig(final Map<ConfigurationSection, String> configsMap, final String... configStrings) throws KeyConflictException, InvalidSubConfigurationException {
-        final ConfigurationSection[] configs = new ConfigurationSection[configStrings.length];
         for (int i = 0; i < configStrings.length; i++) {
             final YamlConfiguration config = new YamlConfiguration();
-            configs[i] = config;
             configsMap.put(config, "Config-" + (i + 1));
-
             try {
                 config.loadFromString(configStrings[i]);
             } catch (final InvalidConfigurationException e) {
                 fail(e);
             }
         }
-        new MultiConfiguration(configs);
+        new MultiConfiguration(new ArrayList<>(configsMap.keySet()));
     }
 }

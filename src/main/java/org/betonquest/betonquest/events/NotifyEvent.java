@@ -99,7 +99,7 @@ public class NotifyEvent extends QuestEvent {
         }
         for (final String variable : variables) {
             message = message.replace(variable,
-                    BetonQuest.getInstance().getVariableValue(instruction.getPackage().getName(), variable, playerID));
+                    BetonQuest.getInstance().getVariableValue(instruction.getPackage().getPackagePath(), variable, playerID));
         }
 
         final Player player = PlayerConverter.getPlayer(playerID);

@@ -4,8 +4,8 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.Connector.QueryType;
 import org.betonquest.betonquest.database.Connector.UpdateType;
@@ -381,11 +381,11 @@ public final class Utils {
      * @param string ID of event/condition/objective/item etc.
      * @return full ID with package prefix
      */
-    public static String addPackage(final ConfigPackage pack, final String string) {
+    public static String addPackage(final QuestPackage pack, final String string) {
         if (string.contains(".")) {
             return string;
         } else {
-            return pack.getName() + "." + string;
+            return pack.getPackagePath() + "." + string;
         }
     }
 

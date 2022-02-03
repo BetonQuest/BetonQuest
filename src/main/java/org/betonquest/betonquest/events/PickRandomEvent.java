@@ -51,7 +51,7 @@ public class PickRandomEvent extends QuestEvent {
                 } catch (final ObjectNotFoundException e) {
                     throw new InstructionParseException("Error while loading event: " + e.getMessage(), e);
                 }
-                final VariableNumber chance = new VariableNumber(instruction.getPackage().getName(), parts[0]);
+                final VariableNumber chance = new VariableNumber(instruction.getPackage().getPackagePath(), parts[0]);
                 return new RandomEvent(eventID, chance);
             } else if (count == 3) {
                 try {
@@ -59,7 +59,7 @@ public class PickRandomEvent extends QuestEvent {
                 } catch (final ObjectNotFoundException e) {
                     throw new InstructionParseException("Error while loading event: " + e.getMessage(), e);
                 }
-                final VariableNumber chance = new VariableNumber(instruction.getPackage().getName(), "%" + parts[1] + "%");
+                final VariableNumber chance = new VariableNumber(instruction.getPackage().getPackagePath(), "%" + parts[1] + "%");
                 return new RandomEvent(eventID, chance);
             }
             throw new InstructionParseException("Error while loading event: '" + instruction.getEvent().getFullID() + "'. Wrong number of % detected. Check your event.");

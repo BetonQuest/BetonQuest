@@ -3,8 +3,8 @@ package org.betonquest.betonquest;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.api.QuestCompassTargetChangeEvent;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -420,24 +420,24 @@ public class Backpack implements Listener {
             super();
             int counter = 0;
             // for every package
-            for (final ConfigPackage pack : Config.getPackages().values()) {
-                final String packName = pack.getName();
+            for (final QuestPackage pack : Config.getPackages().values()) {
+                final String packName = pack.getPackagePath();
                 // loop all compass locations
-                final ConfigurationSection section = pack.getMain().getConfig().getConfigurationSection("compass");
+                final ConfigurationSection section = pack.getConfig().getConfigurationSection("compass");
                 if (section != null) {
                     for (final String key : section.getKeys(false)) {
-                        final String location = pack.getString("main.compass." + key + ".location");
+                        final String location = pack.getString("compass." + key + ".location");
                         String name;
                         if (section.isConfigurationSection(key + ".name")) {
-                            name = pack.getString("main.compass." + key + ".name." + lang);
+                            name = pack.getString("compass." + key + ".name." + lang);
                             if (name == null) {
-                                name = pack.getString("main.compass." + key + ".name." + Config.getLanguage());
+                                name = pack.getString("compass." + key + ".name." + Config.getLanguage());
                             }
                             if (name == null) {
-                                name = pack.getString("main.compass." + key + ".name.en");
+                                name = pack.getString("compass." + key + ".name.en");
                             }
                         } else {
-                            name = pack.getString("main.compass." + key + ".name");
+                            name = pack.getString("compass." + key + ".name");
                         }
                         if (name == null) {
                             LOG.warn("Name not defined in a compass pointer in " + packName + " package: " + key);
@@ -479,7 +479,7 @@ public class Backpack implements Listener {
                         // put location with next number
                         locations.put(counter, loc);
                         names.put(counter, name);
-                        final String itemName = pack.getString("main.compass." + key + ".item");
+                        final String itemName = pack.getString("compass." + key + ".item");
                         if (itemName != null) {
                             items.put(counter, packName + "." + itemName);
                         }

@@ -5,6 +5,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -63,22 +64,22 @@ public class QuestCanceler {
         }
         packName = parts[0];
         cancelerName = parts[1];
-        final ConfigPackage pack = Config.getPackages().get(packName);
+        final QuestPackage pack = Config.getPackages().get(packName);
         if (pack == null) {
             throw new InstructionParseException("Package does not exist");
         }
-        final String rawEvents = pack.getString("main.cancel." + cancelerName + ".events");
+        final String rawEvents = pack.getString("cancel." + cancelerName + ".events");
         // get the name
-        if (pack.getMain().getConfig().isConfigurationSection("cancel." + cancelerName + ".name")) {
-            for (final String lang : pack.getMain().getConfig().getConfigurationSection("cancel." + cancelerName + ".name")
+        if (pack.getConfig().isConfigurationSection("cancel." + cancelerName + ".name")) {
+            for (final String lang : pack.getConfig().getConfigurationSection("cancel." + cancelerName + ".name")
                     .getKeys(false)) {
-                name.put(lang, pack.getString("main.cancel." + cancelerName + ".name." + lang));
+                name.put(lang, pack.getString("cancel." + cancelerName + ".name." + lang));
             }
         } else {
-            name.put(Config.getLanguage(), pack.getString("main.cancel." + cancelerName + ".name"));
+            name.put(Config.getLanguage(), pack.getString("cancel." + cancelerName + ".name"));
         }
         // get the item
-        item = pack.getString("main.cancel." + cancelerName + ".item");
+        item = pack.getString("cancel." + cancelerName + ".item");
         if (item == null) {
             item = Config.getString(packName + ".items.cancel_button");
         }
@@ -96,7 +97,7 @@ public class QuestCanceler {
                 }
             }
         }
-        final String rawConditions = pack.getString("main.cancel." + cancelerName + ".conditions");
+        final String rawConditions = pack.getString("cancel." + cancelerName + ".conditions");
         if (rawConditions == null) {
             conditions = new ConditionID[0];
         } else {
@@ -110,7 +111,7 @@ public class QuestCanceler {
                 }
             }
         }
-        final String rawObjectives = pack.getString("main.cancel." + cancelerName + ".objectives");
+        final String rawObjectives = pack.getString("cancel." + cancelerName + ".objectives");
         if (rawObjectives == null) {
             objectives = new ObjectiveID[0];
         } else {
@@ -124,10 +125,10 @@ public class QuestCanceler {
                 }
             }
         }
-        final String rawTags = pack.getString("main.cancel." + cancelerName + ".tags");
-        final String rawPoints = pack.getString("main.cancel." + cancelerName + ".points");
-        final String rawJournal = pack.getString("main.cancel." + cancelerName + ".journal");
-        final String rawLoc = pack.getString("main.cancel." + cancelerName + ".loc");
+        final String rawTags = pack.getString("cancel." + cancelerName + ".tags");
+        final String rawPoints = pack.getString("cancel." + cancelerName + ".points");
+        final String rawJournal = pack.getString("cancel." + cancelerName + ".journal");
+        final String rawLoc = pack.getString("cancel." + cancelerName + ".loc");
         tags = rawTags == null ? null : rawTags.split(",");
         points = rawPoints == null ? null : rawPoints.split(",");
         journal = rawJournal == null ? null : rawJournal.split(",");

@@ -9,6 +9,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.List;
+
 import static com.ibm.icu.impl.Assert.fail;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,7 +32,7 @@ class MultiConfigurationInvalidSubConfigurationExceptionTest {
         final YamlConfiguration configuration = new YamlConfiguration();
         configuration.options().pathSeparator('/');
         try {
-            new MultiConfiguration(configuration);
+            new MultiConfiguration(List.of(configuration));
         } catch (final InvalidSubConfigurationException e) {
             assertEquals("At least one source config does not have valid path separator!", e.getMessage());
             return;
@@ -43,7 +45,7 @@ class MultiConfigurationInvalidSubConfigurationExceptionTest {
     @Test
     void testNoRoot() {
         try {
-            new MultiConfiguration(Mockito.mock(ConfigurationSection.class));
+            new MultiConfiguration(List.of(Mockito.mock(ConfigurationSection.class)));
         } catch (final InvalidSubConfigurationException e) {
             assertEquals("At least one source config does not have a root!", e.getMessage());
             return;

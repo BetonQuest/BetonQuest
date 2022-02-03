@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.utils.location;
 
 import org.betonquest.betonquest.api.Variable;
-import org.betonquest.betonquest.config.ConfigPackage;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.Location;
@@ -21,7 +21,7 @@ public class CompoundLocation {
      * The last optional part is the {@link Vector} that will be added to the {@link Location} if specified.
      * Each part of the input string can be a {@link Variable} instead of an {@link Integer} or {@link String}.
      *
-     * @param packName Name of the {@link ConfigPackage} - required for {@link Variable} resolution
+     * @param packName Name of the {@link QuestPackage} - required for {@link Variable} resolution
      * @param data     string containing raw location in the defined format
      * @throws InstructionParseException Is thrown when an error appears while parsing {@link LocationData}
      *                                   or {@link VectorData}

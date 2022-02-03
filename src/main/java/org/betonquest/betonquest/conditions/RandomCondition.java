@@ -27,11 +27,11 @@ public class RandomCondition extends Condition {
         if (values.length != 2) {
             throw new InstructionParseException("Wrong randomness format");
         }
-        final String packName = instruction.getPackage().getName();
+        final String packName = instruction.getPackage().getPackagePath();
         try {
             valueMax = new VariableNumber(packName, values[0]);
             rangeOfRandom = new VariableNumber(packName, values[1]);
-        } catch (InstructionParseException e) {
+        } catch (final InstructionParseException e) {
             throw new InstructionParseException("Cannot parse randomness values", e);
         }
     }

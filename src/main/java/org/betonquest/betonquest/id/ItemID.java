@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.id;
 
-import org.betonquest.betonquest.config.ConfigPackage;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class ItemID extends ID {
 
-    public ItemID(final ConfigPackage pack, final String identifier) throws ObjectNotFoundException {
+    public ItemID(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
         super(pack, identifier);
         rawInstruction = super.pack.getString("items." + super.identifier);
         if (rawInstruction == null) {

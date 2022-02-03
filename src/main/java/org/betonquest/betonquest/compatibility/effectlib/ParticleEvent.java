@@ -25,7 +25,7 @@ public class ParticleEvent extends QuestEvent {
     public ParticleEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         final String string = instruction.next();
-        parameters = instruction.getPackage().getCustom().getConfig().getConfigurationSection("effects." + string);
+        parameters = instruction.getPackage().getConfig().getConfigurationSection("effects." + string);
         if (parameters == null) {
             throw new InstructionParseException("Effect '" + string + "' does not exist!");
         }
