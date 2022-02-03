@@ -21,7 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * This {@link QuestPackage} represent a set of files that are merged together in a {@link MultiConfiguration}.
+ * This {@link QuestPackage} represents a set of files that are merged together in a {@link MultiConfiguration}.
  */
 @SuppressWarnings({"PMD.GodClass", "PMD.AvoidDuplicateLiterals"})
 @CustomLog
@@ -29,7 +29,7 @@ public class QuestPackage {
     @SuppressWarnings("PMD.CommentRequired")
     private final String packagePath;
     /**
-     * The root package {@link ConfigAccessor} that represent this {@link QuestPackage}
+     * The root package {@link ConfigAccessor} that represents this {@link QuestPackage}
      */
     private final ConfigAccessor packageConfig;
     /**
@@ -37,19 +37,19 @@ public class QuestPackage {
      */
     private final List<ConfigAccessor> configs;
     /**
-     * The merged {@link MultiConfiguration} that represent this {@link QuestPackage}
+     * The merged {@link MultiConfiguration} that represents this {@link QuestPackage}
      */
     private final MultiConfiguration config;
 
     /**
-     * Creates a new {@link QuestPackage}. The {@code packagePath} represent the address of this {@link QuestPackage}.
+     * Creates a new {@link QuestPackage}. The {@code packagePath} represents the address of this {@link QuestPackage}.
      * The {@code packageConfig} is the root file of the {@link QuestPackage},
      * while the {@code files} are all other files except the {@code packageConfig} file.
      * <p>
      * All files are merged into one {@link MultiConfiguration} config.
      *
      * @param packagePath   the path that address this {@link QuestPackage}
-     * @param packageConfig the file that represent the root of theis {@link QuestPackage}
+     * @param packageConfig the file that represent the root of this {@link QuestPackage}
      * @param files         all files contained by this {@link QuestPackage} except the {@code packageConfig}
      * @throws InvalidConfigurationException thrown if a {@link ConfigAccessor} could not be created
      *                                       or an exception occurred while creating the {@link MultiConfiguration}
@@ -77,7 +77,7 @@ public class QuestPackage {
     }
 
     /**
-     * Get the path that address this {@link QuestPackage}.
+     * Gets the path that address this {@link QuestPackage}.
      *
      * @return the address
      */
@@ -86,7 +86,7 @@ public class QuestPackage {
     }
 
     /**
-     * Get the merged {@link MultiConfiguration} that represent this {@link QuestPackage}
+     * Gets the merged {@link MultiConfiguration} that represents this {@link QuestPackage}
      *
      * @return the {@link MultiConfiguration}
      */
@@ -197,7 +197,7 @@ public class QuestPackage {
                     vecLocY = Double.parseDouble(varVal.substring(offset2 + 1, offset3));
                     vecLocZ = Double.parseDouble(varVal.substring(offset3 + 1, offset4));
                 } catch (final NumberFormatException e) {
-                    LOG.warn(this, String.format("Could not parse vector inlocation variable %s in package %s",
+                    LOG.warn(this, String.format("Could not parse vector in location variable %s in package %s",
                             varName, packagePath), e);
                     return variableInput;
                 }
@@ -238,7 +238,7 @@ public class QuestPackage {
 
     /**
      * Checks if a given {@code path} is physically saved in the {@link QuestPackage}'s package {@link ConfigAccessor}.
-     * This can be used to force that a {@code path} is from the packageConfig.
+     * This can be used to validate that a {@code path} is covered the packageConfig.
      *
      * @param path to check
      * @return true if the path is defined in the packageConfig
@@ -254,7 +254,7 @@ public class QuestPackage {
     /**
      * Tries to save all modifications in the {@link MultiConfiguration} to files.
      *
-     * @return true, and only true if there is nothing left, that is not saved
+     * @return true, and only true if there are no unsaved changes
      * @throws IOException thrown if an exception was thrown by calling {@link ConfigAccessor#save()}
      *                     or {@link MultiConfiguration#getUnsavedConfigs()} returned a {@link ConfigurationSection},
      *                     that is not represented by this {@link QuestPackage}
@@ -284,7 +284,7 @@ public class QuestPackage {
     }
 
     /**
-     * Get the existing {@link ConfigAccessor} for the {@code relativePath}.
+     * Gets the existing {@link ConfigAccessor} for the {@code relativePath}.
      * If the {@link ConfigAccessor} for the {@code relativePath} does not exist, a new one is created.
      *
      * @param relativePath the relative path from the root of the package
