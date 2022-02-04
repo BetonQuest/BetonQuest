@@ -507,7 +507,7 @@ public final class Config {
                 .toString().replace('/', ' ').trim().replaceAll(" ", CONFIG_PACKAGE_SEPARATOR);
         try {
             final QuestPackage pack = new QuestPackage(packagePath, main, files);
-            if (!pack.getConfig().contains("enabled") || pack.isFromPackageConfig("enabled") && "true".equals(pack.getString("enabled"))) {
+            if (!pack.getConfig().contains("enabled") || pack.isFromPackageConfig("enabled") && "true".equals(pack.getConfig().getString("enabled"))) {
                 PACKAGES.put(pack.getPackagePath(), pack);
             }
         } catch (final InvalidConfigurationException | FileNotFoundException e) {
