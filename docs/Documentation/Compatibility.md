@@ -9,7 +9,6 @@ Shopkeepers, SkillAPI, Skript, Vault, WorldEdit, FastAsyncWorldEdit and WorldGua
 
 Some plugins also hook into BetonQuest and provide support by themselves:  
 [_nuNPCDestinations_](https://www.spigotmc.org/resources/13863/),
-[_RPGMenu_](https://www.spigotmc.org/resources/55170/),
 [_CalebCompass_](https://www.spigotmc.org/resources/82674/),
 [NotQuests](https://www.spigotmc.org/resources/95872/)
 
