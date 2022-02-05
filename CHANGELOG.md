@@ -43,6 +43,15 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Changed
 - Java 17 is now required
 - changed package names from `pl.betoncraft.betonquest` to `org.betonquest.betonquest`
+- Changed quest package structure
+    - Quest packages are now searched and loaded from the folder `BetonQuest/QuestPackages`
+    - Quest packages can now contain more quest packages in sub folders
+    - `main.yml` was renamed to `package.yml`
+    - Files can now have any name except `package.yml`, as that file indicates a quest package
+    - `events`, `objectives`, `conditions`, `journal` and `items` are now defined in a config section matching their
+      names
+    - `conversations` and `menus` are now defined in a config section matching their names and a unique identifier like
+      the file name before
 - all objectives that can be advanced without directly completing now support notify
 - all objectives that can be advanced without directly completing now support `left`, `amount` and `total` variables
     - the `left` and `amount` variables of some objectives were swapped and have been corrected: `left` is the amount
