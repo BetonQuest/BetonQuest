@@ -18,4 +18,8 @@ Any additional money has to be re-invested in the project.
 
 ### Our Community Sponsors
 
-<object type="image/svg+xml" data="https://opencollective.com/betonquest/badge.svg?&button=false"></object>
+<p style="text-align: center">
+  <a rel="noreferrer noopener" href="https://opencollective.com/betonquest#category-CONTRIBUTE" target="_blank">
+    <img src="https://opencollective.com/betonquest/backers.svg?&button=false&avatarHeight=70&width=1000">
+  </a>
+</p>
