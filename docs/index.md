@@ -36,7 +36,6 @@ thead a, thead p {
   text-decoration: underline;
   color: var(--md-primary-bg-color) !important;
 }
-
 /* compare table - div - set fixed size */
 .md-typeset__table {
   width: 100%;
@@ -66,7 +65,6 @@ tbody tr:nth-child(12) p {
 thead span {
   text-decoration: none;
   font-weight: 400;
-  
 }
 </style>
 
