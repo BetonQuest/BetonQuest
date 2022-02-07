@@ -4,7 +4,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import lombok.CustomLog;
-import org.betonquest.betonquest.BetonQuest;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -51,6 +50,11 @@ public class Downloader implements Callable<Boolean> {
     public static final int RESPONSE_403 = 403;
 
     /**
+     * The BetonQuest Data folder that contains all plugin configuration
+     */
+    private final File dataFolder;
+
+    /**
      * Owner of the repository from which the files are to be downloaded
      */
     private final String owner;
@@ -73,6 +77,16 @@ public class Downloader implements Callable<Boolean> {
     private final String path;
 
     /**
+     * Path relative to the BetonQuest folder where the files should be placed
+     */
+    private final String destPath;
+
+    /**
+     * If subpackages should be included recursively.
+     */
+    private final boolean recurse;
+
+    /**
      * SHA Hash of the branches latest commit.
      * Is null before {@link #requestCommitSHA()} has been called.
      */
@@ -82,16 +96,22 @@ public class Downloader implements Callable<Boolean> {
      * Construct a new downloader instance for the given repository and branch.
      * Call {@link #call()} to actually start the download
      *
-     * @param owner  the owner of the repo
-     * @param repo   the name of the repo
-     * @param branch the name of the branch
-     * @param path   path relative to repository root from which the files should be extracted
+     * @param dataFolder BetonQuest plugin data folder
+     * @param owner      the owner of the repo
+     * @param repo       the name of the repo
+     * @param branch     the name of the branch
+     * @param path       path relative to repository root from which the files should be extracted
+     * @param destPath   path relative to BetonQuest folder where downloaded files will be extracted
+     * @param recurse    if true subpackages will be included recursive, if false don't
      */
-    public Downloader(final String owner, final String repo, final String branch, final String path) {
+    public Downloader(final File dataFolder, final String owner, final String repo, final String branch, final String path, final String destPath, final boolean recurse) {
+        this.dataFolder = dataFolder;
         this.owner = owner;
         this.repo = repo;
         this.branch = branch;
         this.path = path;
+        this.destPath = destPath;
+        this.recurse = recurse;
     }
 
 
@@ -149,7 +169,7 @@ public class Downloader implements Callable<Boolean> {
      */
     private File cacheFile() {
         final String filename = CACHE_DIR + owner + "_" + repo + "_" + sha.substring(0, 7) + ".zip";
-        return new File(BetonQuest.getInstance().getDataFolder(), filename);
+        return new File(dataFolder, filename);
     }
 
     /**
@@ -159,6 +179,7 @@ public class Downloader implements Callable<Boolean> {
      */
     @SuppressWarnings("PMD.AssignmentInOperand")
     private void download() throws IOException {
+        Files.createDirectories(new File(dataFolder, CACHE_DIR).toPath());
         final URL url = new URL(GITHUB_DOWNLOAD_URL
                 .replace("{owner}", owner)
                 .replace("{repo}", repo)
