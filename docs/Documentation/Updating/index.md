@@ -1,7 +1,4 @@
 <style>
-.bq-inline-example-container {
-  width: clamp(500px,55%,100%) !important;
-}
 .table {
   max-width: 1200px;
   margin: 0 auto;
@@ -26,8 +23,8 @@ For a production/live system it is recommended to [disable automatic updates](#e
 and to check out the [CHANGELOG](../CHANGELOG.md) before you execute `/q update` for manual updates.
 
 !!! warning "Updating to 2.0"
-If you update to BetonQuest 2.0 you should read the [Migration](Migration.md) guide to see, what you need to do
-manually.
+    If you update to BetonQuest 2.0 you should read the [Migration](Migration.md) guide to see, what you need to do
+    manually.
 
 ## Understanding Versioning
 <div class="table" markdown="block">
@@ -71,28 +68,19 @@ servers.
 
 Disabling automatic updates still allows the use of `/q update`!
 
-## Backups and restoring
+## Backups and Restoring
+### Creating Backups
+After a manual or automatic update, sometimes BetonQuest updates some quest packages or the database. If a file or the
+database is touched, an automatic backup will be created and is saved as a zip file to `BetonQuest/Backups/` to prevent
+losing your work due to errors.
 
-After updating to a new version (manually or automatically), configuration files and database will be automatically
-backed up to a zip file to prevent losing your work due to errors. Then, configuration will be converted to a new
-version. At the end, the localization will be updated with new languages, and a _changelog.txt_ file will be created.
+A backup can also be created manually by running the [backup command](../Commands-and-permissions.md#commands).
 
-If there were any unexpected errors during an update process, download the previous version, restore your configs from
-backup, and disable autoupdating feature. Don't forget to post your error as an Issue
-on [GitHub](https://github.com/BetonQuest/BetonQuest/issues/new?template=bug_report_template.md) so it can be fixed!
+### Restoring Backups
+You find your backups as zip file in the folder `BetonQuest/Backups/` containing every configuration and a save of you
+database. To restore a chosen backup stop your server, delete all the files in the folder `BetonQuest/`,
+except `BetonQuest/Backups/`, and replace them with the files from the chosen backup zip file and start your server
+again.
 
-## Backups
-Every time the plugin updates the configuration, a backup will be created. This is especially important if a development
-version is being used because they may be unstable. A backup can also be created manually by running **/q backup**
-command. It needs to be run from the console on an empty server because it heavily uses the database.
-
-You can find your backups in _backup_ directory in the plugin's folder. They are .zip files containing all your
-configuration and _database-backup.yml_ file, which - as the name says - is your database backup. To replace your
-configuration with an older backup, delete all the files (except backups and logs) and replace them with the files from
-.zip file.
-
-If you want your database loaded, place _database-backup.yml_ file in plugin's directory. When the plugin sees this file
-while enabling, it will backup the current database and load all data from that file to the database. A backup of the
-old database can be found in _backups_ folder, so if you ever need to load it back, just rename it to _
-database-backup.yml_ and place it back in main plugin's directory. Note that _database-backup.yml_ file will be deleted
-after loading, so it does not replace your database on next plugin start.
+If you only want to restore the database stop your server, only delete the existing database and extract the database
+backup file from the zip file and start your server again.

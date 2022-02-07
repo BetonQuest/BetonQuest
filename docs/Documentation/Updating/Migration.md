@@ -10,7 +10,7 @@ __**What to do Now?!**__
 
 __**Changelog**__
 - Java 17 is now required
-- Every current Quest need to be moved to the folder `BetonQuest/QuestPackages`, simply move the folders in there!
+- Every current Quest need to be moved to the folder `BetonQuest/QuestPackages/`, simply move the folders in there!
 - `main.yml` is now renamed to `package.yml`
 - `events`, `objectives`, `conditions`, `journal` and `items` needs now an extra prefix like:
 ```yaml
