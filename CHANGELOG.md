@@ -48,7 +48,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - Quest packages are now searched and loaded from the folder `BetonQuest/QuestPackages/`
     - Quest packages can now contain more quest packages in sub folders
     - `main.yml` was renamed to `package.yml`
-    - Files can now have any name except `package.yml`, as that file indicates a quest package
+    - Any file and folder structure with any file and folder names is now allowed, except `package.yml`, as that file
+      indicates a quest package
     - `events`, `objectives`, `conditions`, `journal` and `items` are now defined in a config section matching their
       names
     - `conversations` and `menus` are now defined in a config section matching their names and a unique identifier like
