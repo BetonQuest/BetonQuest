@@ -63,8 +63,8 @@ public final class Utils {
                     + " the database maually if you want to be extra safe, but it's not necessary if"
                     + " you don't want to downgrade later.");
         }
-        // create backups folder if it does not exist
-        final File backupFolder = new File(instance.getDataFolder(), "backups");
+        // create Backups folder if it does not exist
+        final File backupFolder = new File(instance.getDataFolder(), "Backups");
         if (!backupFolder.isDirectory()) {
             backupFolder.mkdir();
         }
@@ -77,7 +77,7 @@ public final class Utils {
         new File(instance.getDataFolder(), "database-backup.yml").delete();
         // done
         LOG.debug("Done in " + (new Date().getTime() - time) + "ms");
-        LOG.info("Done, you can find the backup in \"backups\" directory.");
+        LOG.info("Done, you can find the backup in 'Backups' directory.");
     }
 
     /**
@@ -245,7 +245,7 @@ public final class Utils {
         }
         LOG.info("Loading database backup!");
         // backup the database
-        final File backupFolder = new File(instance.getDataFolder(), "backups");
+        final File backupFolder = new File(instance.getDataFolder(), "Backups");
         if (!backupFolder.isDirectory()) {
             backupFolder.mkdirs();
         }
