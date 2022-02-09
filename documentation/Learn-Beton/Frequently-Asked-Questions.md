@@ -203,7 +203,7 @@ IfElseReward: if StepsCondition Rewards else AdvanceSteps
 StepsCondition: point Steps 2
 ```
 
-Please note that the amount of points your checking for *must* be lower than the actual amount of steps (So if you have 5 steps, you will have to check for 4 points in the condition).
+Please note that the amount of points you're checking for *must* be lower than the actual amount of steps (So if you have 5 steps, you will have to check for 4 points in the condition).
 In this example, we are checking for the completion of 3 steps to the quest.
 
 Your `Rewards` event can be whatever you were planning on using as the event fired upon completion of the overall objective.
