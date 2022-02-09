@@ -182,3 +182,43 @@ Imagine you want to lie to NPC and he has 15% chance of believing you completely
 ## Quest GUI
 
 If you want your players to be able to choose a quest everywhere, every time, then you can create a conversation which can be started with an item. This one is a little hacky but it shows flexibility of BetonQuest. First you need a conversation which behaves as a quest choosing GUI. Name the NPC "Quester", add one option for each quest etc. Now you need an objective which will start this conversation using `conversation` event. It should be `action` objective, set to right click on any block. Add `hand` condition to make it accept only clicks with a specific item and make the objective `persistent` (so players can use it multiple times). The item used here should be marked as Quest Item so players can't drop it. Now define new global location covering your whole map and using it start the objective and give players the item. This way all players (existing and new) will get the quest item, which opens a GUI with quests when right clicked.
+
+## How to allow players to complete quests steps non-linearly
+
+If you have a quest that has a "main" objective that is only completed by completing several other steps via BetonQuest objectives, you may want to make it so that players can complete these steps in a non-linear fashion (Step C -> Step A -> Step B -> Completion). The method to do so isn't complicated at all. It involves using points as a way of logging "steps" and an `ifelse` event that checks those points and gives the rewards once the player has completed all steps. 
+
+Firstly, you will have to create an `ifelse` event. It should look something like this:
+
+```YAML
+IfElseEvent: if CONDITIONID EVENT1ID else EVENT2ID
+```
+
+This is an example of what `IfElse` events look like. For sake of clarity, we will be using placeholder IDs but feel free to replace them with whatever naming conventions fit your needs. For us, our `IfElseEvent` will now look like this:
+```YAML
+IfElseReward: if StepsCondition Rewards else AdvanceSteps
+```
+`StepsCondition` will be your condition to check the players steps through the aforementioned points, which we will simply name `Steps`. 
+
+```YAML
+StepsCondition: point Steps 2
+```
+
+Please note that the amount of points your checking for *must* be lower than the actual amount of steps (So if you have 5 steps, you will have to check for 4 points in the condition).
+In this example, we are checking for the completion of 3 steps to the quest.
+
+Your `Rewards` event can be whatever you were planning on using as the event fired upon completion of the overall objective.
+
+`AdvanceSteps` will simply be:
+
+```YAML
+AdvanceSteps: point Steps 1
+```
+
+This just increases the amount of `Steps` points the player has.
+
+And now finally, you simply have to go into your `objectives.yml` file and replace the events section of all the objectives you're using as steps in the overal quest with the `IfElseReward`.
+
+The logic behind this entire system is essentially: On objective completion, check for X amount of steps to ensure overall completion of the main objective, if X amount of steps is reached, give reward, else add 1 step. 
+`
+
+And there you go. You now have a system that allows for players to complete objectives within a quest non-linearly. Make sure you name the steps differently if you are using multiple step systems within the same package.
