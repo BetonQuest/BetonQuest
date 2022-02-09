@@ -52,35 +52,35 @@ meaning, that is explained in the following table.
 Valid update strategies are: `MAJOR`, `MINOR`, `PATCH` and `MAJOR_DEV`, `MINOR_DEV`, `PATCH_DEV`
 
 `MINOR` and `PATCH` strategy are really safe to use, even on a production/live system. You will receive bugfixes and new
-features, that will not have an impact on your existing stuff. `MAJOR` strategy is defensively not recommended for
-production/live systems, they can break everything. For a test system, you need to decide, if you want to stay on the
-latest version with `MAJOR`, or you want ot be more stable.
+features, that will not have an impact on your existing stuff. `MAJOR` strategy is not recommended for production/live
+systems, they can break everything. For a test system, you need to decide weather you want to stay on the latest version
+with `MAJOR` or you want to be more stable.
 
-By adding the `_DEV` suffix to the version, you also download dev-builds for the corresponding version. Dev-builds can
-contain everything, bug fixes, new features, but also new bugs, or even worse it beaks something, so don't use this on a
-production/live system without checking out the changes.
+By adding the `_DEV` suffix to the update strategy, you also download dev-builds for the corresponding version.
+Dev-builds can contain everything: Bug fixes and new features, but also new bugs or even worse it beaks something, so
+don't use this on a production/live system without checking out the changes.
 
 ## Enable or Disable automatic updates
 Apart from the version you also have to choose if you want BetonQuest to update automatically or only after
 confirmation. Having automatic updates enabled is handy for `PATCH` and `MINOR` but risky on `MAJOR` strategies.
-Automatic updates for any `_DEV` version are dangerous as these can contain very bad bugs. Only use this for test
+Automatic updates for any `_DEV` version are dangerous as these can contain very severe bugs. Only use this for test
 servers.
 
 Disabling automatic updates still allows the use of `/q update`!
 
 ## Backups and Restoring
 ### Creating Backups
-After a manual or automatic update, sometimes BetonQuest updates some quest packages or the database. If a file or the
-database is touched, an automatic backup will be created and is saved as a zip file to `BetonQuest/Backups/` to prevent
-losing your work due to errors.
+After a manual or automatic update BetonQuest might update some quest packages or the database to a new format. If a
+file or the database is touched, an automatic backup will be created and is saved as a zip file to `BetonQuest/Backups/`
+to prevent losing your work due to errors.
 
 A backup can also be created manually by running the [backup command](../Commands-and-permissions.md#commands).
 
 ### Restoring Backups
-You find your backups as zip file in the folder `BetonQuest/Backups/` containing every configuration and a save of you
+You find your backups as zip file in the folder `BetonQuest/Backups/` containing every configuration and a dump of you
 database. To restore a chosen backup stop your server, delete all the files in the folder `BetonQuest/`,
 except `BetonQuest/Backups/`, and replace them with the files from the chosen backup zip file and start your server
 again.
 
-If you only want to restore the database stop your server, only delete the existing database and extract the database
-backup file from the zip file and start your server again.
+If you only want to restore the database then stop your server, only delete the existing database file and extract the
+database backup file from the zip archive and start your server again.
