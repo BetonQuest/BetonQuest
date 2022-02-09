@@ -1,46 +1,41 @@
-__**What to do Now?!**__
-1. First of all: **Backup your system!**  This is really important, there could be unknown breaking bugs (not really,
-   but who knows)!
-2. Then download the `BetonQuest-Artifacts` from this
-   link: https://github.com/BetonQuest/BetonQuest/actions/runs/1796964705 and use the `BetonQuest.jar` inside the zip
-   file.
-3. Ensure your server is running on **java 17**
-4. Change everything, as explained in the *Changelog* down below.
-5. Start you server, everything in-game should now work as before.
+This migration guide currently need to be done manual. As long as BQ 2.0 is in development, this will not change!
 
-__**Changelog**__
-- Java 17 is now required
-- Every current Quest need to be moved to the folder `BetonQuest/QuestPackages/`, simply move the folders in there!
-- `main.yml` is now renamed to `package.yml`
-- `events`, `objectives`, `conditions`, `journal` and `items` needs now an extra prefix like:
-```yaml
-events:
-  myEvent: ....
-```
-- `conversations` and `menus` needs now a extra prefix like:
-```yaml
-conversations:
-  Wolf2323:
+Before you start migrating, you should **backup your system**!
+
+Also check your current version, so you know which migration steps you need to do.
+
+## Changes
+Skip to the first version, that is above the version, that you used before starting the migration:
+
+Changes introduced in:
+
+- [2.0.0-DEV-238](#200-dev-238)
+
+### 2.0.0-DEV-238
+- Ensure your server is running on __java 17__
+- Move your current Quests to the folder `BetonQuest/QuestPackages/`, as quests are now loaded from there
+- Rename `main.yml` to `package.yml`
+- Change the `events.yml`, `objectives.yml`, `conditions.yml`, `journal.yml` and `items.yml` to the following format
+  with an extra prefix matching there file name:
+  ```YAML
+  events:
+    myEvent1: ...
+    ....
+  ```
+- Change the `conversations` and `menus` to the following format with an extra prefix matching there type and the file
+  name:
+  ```YAML
+  conversations:
+    FileName:
+      NPC_options: ....
+      ....
+  ```
+  or alternatively:
+  ```YAML
+  conversations.FileName:
     NPC_options: ....
     ....
-```
-or alternatively like:
-```yaml
-conversations.Wolf2323:
-  NPC_options: ....
-  ....
-```
-`Wolf2323` works like the file name (-> conversation ID in `package.yml`)!
-
-__**Explanation:**__
-- It is now possible to have as many or few files as you want in one **QP** (QuestPackage). You can create as many (
-  nested) sub-folders in your package as you like.
-  _All `yml` files found in the same folder or in sub-folders as the `package.yml` will be **merged**. This means we
-  combine them in the memory. This means that you can now create a quest completely in the  `package.yml` or in as many
-  files as you want, and the file names and folder names do not matter anymore. The only thing you cannot do is to
-  define the same event, objective,... name twice in the same QP._
-
--It is now allowed to nest QPs inside QPs.
-_A QP is limited by all folders "above" the folder that contain the `package.yml` and all folders nested inside it that
-contain another `package.yml`. Any other files and folder without a package.yml are considered as contents of one
-package._
+  ```
+- Quest packages can now contain nested quest packages in sub folders. You can also have any file and folder structure
+  with any file and folder names you want. Only the `package.yml` is reserved as indicator for a quest
+  package. [DOCS](../Reference.md#packages)
