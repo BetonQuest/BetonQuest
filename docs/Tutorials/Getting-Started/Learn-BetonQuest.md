@@ -37,8 +37,7 @@ Do that now or just continue with this tutorial.
 
 ### Events
 
-Let's just open _events.yml_ file inside the _default_ package. Add a new line at the bottom:
-
+Let's just open _events.yml_ file inside the _default_ package. Add a new line at the bottom, note the 2 spaces at the beginning of the line:
 ```YAML linenums="1"
   mega: "notify Hello world!"
 ```
@@ -149,7 +148,7 @@ Now run `del_beton_tag` event. Guess what, `default.beton` disappeared from the 
 add and remove tags. Pretty useless.
 
 Nothing could be more wrong. Tags are one the most powerful things in BetonQuest. They just need to be used with `tag`
-condition. Open _conditions.yml_ and add the line
+condition. Open _conditions.yml_ and add this line:
 
 ```YAML linenums="1"
   has_beton_tag: "tag beton"
