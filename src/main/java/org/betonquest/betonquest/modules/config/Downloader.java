@@ -35,14 +35,19 @@ public class Downloader implements Callable<Boolean> {
      * Base URL of the GitHub branches RestAPI.
      * Owner, repo and branch must be replaced with actual values.
      */
-    private static final String GITHUB_BRANCHES_URL = "https://api.github.com/repos/{owner}/{repo}/branches/{branch}";
+    private static final String GITHUB_BRANCHES_URL = "https://api.github.com/repos/{namespace}/branches/{branch}";
 
 
     /**
      * Base url where the files can be downloaded.
      * Owner, repo and commit sha must be replaced with actual values
      */
-    private static final String GITHUB_DOWNLOAD_URL = "https://github.com/{owner}/{repo}/archive/{sha}.zip";
+    private static final String GITHUB_DOWNLOAD_URL = "https://github.com/{namespace}/archive/{sha}.zip";
+
+    /**
+     * Used to identify zip entries that are package.yml files
+     */
+    private static final String PACKAGE_YML = "/package.yml";
 
     /**
      * The response code 403.
@@ -55,31 +60,26 @@ public class Downloader implements Callable<Boolean> {
     private final File dataFolder;
 
     /**
-     * Owner of the repository from which the files are to be downloaded
+     * Namespace of the GitHub repository from which the files are to be downloaded.
+     * Format is either {@code user/repo} or {@code organisation/repo}.
      */
-    private final String owner;
+    private final String namespace;
 
     /**
-     * Name of the repository from which the files are to be downloaded.
-     * Must be a public repo.
+     * Git Tag or Git Branch from which the files should be downloaded
      */
-    private final String repo;
-
-    /**
-     * Git branch from which the files are to be downloaded
-     */
-    private final String branch;
+    private final String ref;
 
     /**
      * A relative path in the remote repository specified by {@code owner} and {@code repo} fields.
      * Only files in this path should be extracted, all other files should remain cached.
      */
-    private final String path;
+    private final String sourcePath;
 
     /**
      * Path relative to the BetonQuest folder where the files should be placed
      */
-    private final String destPath;
+    private final String targetPath;
 
     /**
      * If subpackages should be included recursively.
@@ -87,7 +87,7 @@ public class Downloader implements Callable<Boolean> {
     private final boolean recurse;
 
     /**
-     * SHA Hash of the branches latest commit.
+     * SHA Hash of the commit to which the ref points.
      * Is null before {@link #requestCommitSHA()} has been called.
      */
     private String sha;
@@ -97,21 +97,34 @@ public class Downloader implements Callable<Boolean> {
      * Call {@link #call()} to actually start the download
      *
      * @param dataFolder BetonQuest plugin data folder
-     * @param owner      the owner of the repo
-     * @param repo       the name of the repo
-     * @param branch     the name of the branch
-     * @param path       path relative to repository root from which the files should be extracted
-     * @param destPath   path relative to BetonQuest folder where downloaded files will be extracted
+     * @param namespace  Github namespace of the repo in the format {@code user/repo} or {@code organisation/repo}.
+     * @param ref        Git Tag or Git Branch
+     * @param sourcePath what folders to download from the repo
+     * @param targetPath where to put the downloaded files
      * @param recurse    if true subpackages will be included recursive, if false don't
      */
-    public Downloader(final File dataFolder, final String owner, final String repo, final String branch, final String path, final String destPath, final boolean recurse) {
+    public Downloader(final File dataFolder, final String namespace, final String ref, final String sourcePath, final String targetPath, final boolean recurse) {
         this.dataFolder = dataFolder;
-        this.owner = owner;
-        this.repo = repo;
-        this.branch = branch;
-        this.path = path;
-        this.destPath = destPath;
+        this.namespace = namespace;
+        this.ref = ref;
+        this.sourcePath = sourcePath;
+        this.targetPath = targetPath;
         this.recurse = recurse;
+    }
+
+    /**
+     * Strips leading slashes from a path as they should be ignored in any further code.
+     * Therefore {@code /quest/lumberjack} is identical to {@code quest/lumberjack}
+     *
+     * @param path input path where leading slash should be stripped
+     * @return path without leading slash
+     */
+    private String stripLeadingSlash(String path) {
+        if (path.startsWith("/")) {
+            return path.substring(1);
+        } else {
+            return path;
+        }
     }
 
 
@@ -120,6 +133,10 @@ public class Downloader implements Callable<Boolean> {
     //TODO Refined exception handling
 
     //TODO cleanup old cache files
+
+    //TODO implementation of "offsetPath" as defined in issue #1728
+
+    //TODO support all refs, not only branches
 
     /**
      * Run the downloader with the specified settings
@@ -144,9 +161,8 @@ public class Downloader implements Callable<Boolean> {
      */
     private void requestCommitSHA() throws IOException {
         final URL url = new URL(GITHUB_BRANCHES_URL
-                .replace("{owner}", owner)
-                .replace("{repo}", repo)
-                .replace("{branch}", branch));
+                .replace("{namespace}", namespace)
+                .replace("{branch}", ref));
         final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.connect();
         final int code = connection.getResponseCode();
@@ -168,7 +184,7 @@ public class Downloader implements Callable<Boolean> {
      * @return zip file containing the repo data
      */
     private File cacheFile() {
-        final String filename = CACHE_DIR + owner + "_" + repo + "_" + sha.substring(0, 7) + ".zip";
+        final String filename = CACHE_DIR + namespace + "-" + sha.substring(0, 7) + ".zip";
         return new File(dataFolder, filename);
     }
 
@@ -181,8 +197,7 @@ public class Downloader implements Callable<Boolean> {
     private void download() throws IOException {
         Files.createDirectories(new File(dataFolder, CACHE_DIR).toPath());
         final URL url = new URL(GITHUB_DOWNLOAD_URL
-                .replace("{owner}", owner)
-                .replace("{repo}", repo)
+                .replace("{namespace}", namespace)
                 .replace("{sha}", sha)
         );
         try (BufferedInputStream input = new BufferedInputStream(url.openStream());
