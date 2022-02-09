@@ -13,12 +13,17 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.concurrent.Callable;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
+import static java.nio.file.StandardOpenOption.READ;
 
 /**
  * Download files from any public GitHub repository and extract them to your QuestPackages folder.
@@ -210,8 +215,108 @@ public class Downloader implements Callable<Boolean> {
         }
     }
 
-    private void extract() {
-        //TODO implement
-        throw new UnsupportedOperationException("todo implement");
+    /**
+     * Extract the files placed at {@link #sourcePath} from the cached zip and place them in {@link #targetPath}
+     *
+     * @throws IOException if any io error occurs while extracting the zip
+     */
+    @SuppressWarnings("PMD.AssignmentInOperand")
+    private void extract() throws IOException {
+        final List<String> subPackages = listIgnoredPackagesInZip();
+        try (ZipInputStream input = new ZipInputStream(Files.newInputStream(cacheFile().toPath(), READ))) {
+            ZipEntry entry;
+            while ((entry = input.getNextEntry()) != null) {
+                if (isChildOfPath(entry)) {
+                    final String name = stripRootDir(entry.getName());
+                    if (recurse || subPackages.stream().noneMatch(name::startsWith)) {
+                        //TODO extract entry
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Lists all subpackages that shall not be extracted from the zip.
+     * If {@link #recurse} flag is set to true an empty list will be returned as even subpackages shall be included.
+     *
+     * @return a list of all sub packages or an empty list
+     * @throws IOException for any occurring io error
+     */
+    private List<String> listIgnoredPackagesInZip() throws IOException {
+        if (recurse) {
+            return List.of();
+        } else {
+            final List<String> packagesAll = listAllPackagesInZip();
+            return packagesAll.stream().filter(pack ->
+                    packagesAll.stream()
+                            .filter(other -> !other.equals(pack))
+                            .anyMatch(pack::startsWith)
+            ).toList();
+        }
+    }
+
+    /**
+     * List all packages in the cached zip file, including subpackages.
+     *
+     * @return a list containing all package directories
+     * @throws IOException for any occurring io error
+     */
+    @SuppressWarnings("PMD.AssignmentInOperand")
+    private List<String> listAllPackagesInZip() throws IOException {
+        final List<String> packagesAll = new ArrayList<>();
+        try (ZipInputStream input = new ZipInputStream(Files.newInputStream(cacheFile().toPath(), READ))) {
+            ZipEntry entry;
+            while ((entry = input.getNextEntry()) != null) {
+                if (isChildOfPath(entry) && isPackageYML(entry)) {
+                    packagesAll.add(getPackageDir(entry));
+                }
+            }
+        }
+        return packagesAll;
+    }
+
+    /**
+     * Zip files downloaded from GitHub always contain a root folder that has the same name as the zip file.
+     * This folder shall be stripped from the zip entry name so further code does not need to handle it.
+     *
+     * @param entryName initial name of the zip entry
+     * @return name with the first directory stripped from it
+     */
+    private String stripRootDir(final String entryName) {
+        return entryName.substring(entryName.indexOf('/') + 1);
+    }
+
+    /**
+     * Checks if the entry is a child of the directory specified by {@link #sourcePath}
+     *
+     * @param entry the entry to check
+     * @return true if a child of sourcePath, false otherwise
+     */
+    private boolean isChildOfPath(final ZipEntry entry) {
+        final String name = stripRootDir(entry.getName());
+        return name.startsWith(sourcePath);
+    }
+
+    /**
+     * Checks if the given zip entry is a package.yml file
+     *
+     * @param entry entry that should be checked
+     * @return true if the entry is a package.yml, false otherwise
+     */
+    private boolean isPackageYML(final ZipEntry entry) {
+        return !entry.isDirectory() && entry.getName().endsWith(PACKAGE_YML);
+    }
+
+    /**
+     * Returns the directory of the package that is specified by the supplied package yml.
+     * Ensure that the ZipEntry passed is a package.yml with {@link #isPackageYML(ZipEntry)} before calling this method.
+     *
+     * @param packageYml the package.yml as zip entry
+     * @return the directory where the entry is located
+     */
+    private String getPackageDir(final ZipEntry packageYml) {
+        final String name = stripRootDir(packageYml.getName());
+        return name.substring(0, name.length() - PACKAGE_YML.length());
     }
 }
