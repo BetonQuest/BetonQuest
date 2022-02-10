@@ -45,49 +45,70 @@ resources, not 100, not 40.
 All quests you create are organized into packages. A single package can contain one or multiple quests - it's up to your
 liking.
 
+### Structure
+
 Each package must contain a _package.yml_ file. Additionally, you can create extra files or sub-folders to organise your
 quest the way you want. These files can hold events, objectives, conditions, conversations and other BetonQuest
-features. The individual features need to be defined in sections like so:
+features. The names of these features must be unique in that package, no matter which file they are in. This is because 
+you can reference any feature from any other file of a package. 
+Let's take a look at a few examples:
 
-```YAML
-events:
-  someEvent: "..."
-  #...
+!!! example "Structure Examples"
+    Every quest package is marked with a blue box.
+    === "Simple Package"       
+        <img src="../../_media/content/Documentation/Reference/PackageSimple.png" width=450>
+        <br>
+        A very simple package. It's defined by the _package.yml_ and has two additional files.
+        
+    === "Complex Package"
+        <img src="../../_media/content/Documentation/Reference/PackageComplex.png" width=450>
+        <br>
+         and has two additional files.
+        
+    === "Nested Packages"
+        <img src="../../_media/content/Documentation/Reference/PackagesNested.png" width=450>
+ 
+### Defining features
 
-conditions:
-  someCondition: "..."
+Most of the features (events, objectives, conditions, conversations, menus) need to be defined in a section that defines 
+their type.
 
-objectives:
-  someObjective: "..."
+??? examples
+    ```YAML
+    events:
+      someEvent: "..."
+      #...
+    
+    conditions:
+      someCondition: "..."
+      #...
+      
+    objectives:
+      someObjective: "..."
+      #...
+      
+    conversations:
+      someConversation:
+        quester: Name
+        #...
+    ```
 
-conversations:
-  someConversation:
-    quester: Name
-    #...
-```
-
-Test
-<img src="../../_media/content/Documentation/Reference/PackageSimple.png">
-<img src="https://opencollective.com/betonquest/donate/button@2x.png?color=blue" width=300 />
+### Disabling Packages
 
 Each package can be disabled/enabled in the _package.yml_ file, by setting `enabled` to `true` or `false`.
 
 ```YAML
 #Add this to the package.yml
-enabled: true
+enabled: false
 ```
 
-## Working across Packages
+### Working across Packages
 
 It would be limiting if you couldn't interact between packages. That's why you can always access stuff from other
 packages by prefixing its name with package name. If you're writing a conversation in package `village` and you want to
 fire an event `reward` from package `beton`, you simply name the event as `beton.reward`. The plugin will search
-for `reward` in `beton` package instead of the one in which the conversation is defined. All events, conditions,
+for `reward` in the `beton` package instead of the one in which the conversation is defined. All events, conditions,
 objectives, items and conversations behave this way. Note that you can't cross-reference journal entries!
-
-Packages can be nested together in folders. A folder can either contain packages or be a package, never both. The name
-of such nested package is prefixed by names of all folders, separated with a dash. This directory tree (_package.yml_
-represents a package):
 
 ```
     BetonQuest/
@@ -119,10 +140,9 @@ you wanted to reference `quests-village2-quest1` from that package, you would us
 will get you to `quests` package, and from there you're going into `village2` and then `quest1`.
 
 Relative paths can be useful if you want to move your packages between directories. Instead of rewriting every package
-name to match current directory tree, you can use relative paths and it will just work. It can also be useful if you
+name to match current directory tree, you can use relative paths and it will just work. This can be very useful if you
 want to create a downloadable quest package which can be placed anywhere and not just on the root directory
-(_BetonQuest/_) or when working with BetonQuest-Editor + BetonQuestUploader combo - quest writers don't have to prefix
-every package call with their name (this feature will work soon, needs an update in the editor).
+(_BetonQuest/QuestPackages_). 
 
 ## Unified location formating
 
