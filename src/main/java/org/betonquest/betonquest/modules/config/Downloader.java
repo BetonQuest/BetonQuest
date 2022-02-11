@@ -117,22 +117,6 @@ public class Downloader implements Callable<Boolean> {
         this.recurse = recurse;
     }
 
-    /**
-     * Strips leading slashes from a path as they should be ignored in any further code.
-     * Therefore {@code /quest/lumberjack} is identical to {@code quest/lumberjack}
-     *
-     * @param path input path where leading slash should be stripped
-     * @return path without leading slash
-     */
-    private String stripLeadingSlash(String path) {
-        if (path.startsWith("/")) {
-            return path.substring(1);
-        } else {
-            return path;
-        }
-    }
-
-
     //TODO should result give more details than just returning true?
 
     //TODO Refined exception handling
