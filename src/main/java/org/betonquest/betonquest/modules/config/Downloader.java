@@ -234,7 +234,8 @@ public class Downloader implements Callable<Boolean> {
     private boolean isCacheFile(final Path file) {
         if (file.toAbsolutePath().startsWith(getCacheFile().toAbsolutePath().getParent())) {
             final String fileIdentifier = namespace.substring(namespace.lastIndexOf('/') + 1) + "-" + getShortRef();
-            return file.getFileName().toString().startsWith(fileIdentifier);
+            return Optional.ofNullable(file.getFileName()).map(Path::toString).stream()
+                    .anyMatch(s -> s.startsWith(fileIdentifier));
         } else {
             return false;
         }
@@ -295,17 +296,12 @@ public class Downloader implements Callable<Boolean> {
      * @param entry entry to extract from the zip file
      * @throws IOException if any io exception occurs while extraction
      */
-    @SuppressWarnings("PMD.AssignmentInOperand")
     private void extractEntry(final ZipInputStream input, final ZipEntry entry) throws IOException {
         final String relative = stripRootDir(entry.getName()).replace(getFullSourcePath(), "");
         final Path newFile = new File(dataFolder, getFullTargetPath() + relative).toPath();
-        Files.createDirectories(newFile.toAbsolutePath().getParent());
+        Files.createDirectories(Optional.ofNullable(newFile.toAbsolutePath().getParent()).orElseThrow());
         try (OutputStream out = Files.newOutputStream(newFile, CREATE_NEW)) {
-            final byte[] dataBuffer = new byte[1024];
-            int len;
-            while ((len = input.read(dataBuffer)) != -1) {
-                out.write(dataBuffer, 0, len);
-            }
+            input.transferTo(out);
         }
     }
 
