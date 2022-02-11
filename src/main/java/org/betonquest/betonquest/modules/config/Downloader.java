@@ -12,7 +12,11 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -22,6 +26,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.nio.file.FileVisitResult.CONTINUE;
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 import static java.nio.file.StandardOpenOption.READ;
 
@@ -37,15 +42,15 @@ public class Downloader implements Callable<Boolean> {
     private static final String CACHE_DIR = "/.cache/downloader/";
 
     /**
-     * Base URL of the GitHub branches RestAPI.
-     * Owner, repo and branch must be replaced with actual values.
+     * Base URL of the GitHub refs RestAPI.
+     * Namespace and ref must be replaced with actual values.
      */
-    private static final String GITHUB_BRANCHES_URL = "https://api.github.com/repos/{namespace}/branches/{branch}";
+    private static final String GITHUB_REFS_URL = "https://api.github.com/repos/{namespace}/git/ref/{ref}";
 
 
     /**
      * Base url where the files can be downloaded.
-     * Owner, repo and commit sha must be replaced with actual values
+     * Namespace and commit sha must be replaced with actual values
      */
     private static final String GITHUB_DOWNLOAD_URL = "https://github.com/{namespace}/archive/{sha}.zip";
 
@@ -76,6 +81,12 @@ public class Downloader implements Callable<Boolean> {
     private final String ref;
 
     /**
+     * Which folder from the repository format to select as root folder:
+     * {@code QuestPackages} or {@code QuestTemplates}.
+     */
+    private final String offsetPath;
+
+    /**
      * A relative path in the remote repository specified by {@code owner} and {@code repo} fields.
      * Only files in this path should be extracted, all other files should remain cached.
      */
@@ -104,14 +115,16 @@ public class Downloader implements Callable<Boolean> {
      * @param dataFolder BetonQuest plugin data folder
      * @param namespace  Github namespace of the repo in the format {@code user/repo} or {@code organisation/repo}.
      * @param ref        Git Tag or Git Branch
+     * @param offsetPath {@code QuestPackages} or {@code QuestTemplates}
      * @param sourcePath what folders to download from the repo
      * @param targetPath where to put the downloaded files
      * @param recurse    if true subpackages will be included recursive, if false don't
      */
-    public Downloader(final File dataFolder, final String namespace, final String ref, final String sourcePath, final String targetPath, final boolean recurse) {
+    public Downloader(final File dataFolder, final String namespace, final String ref, final String offsetPath, final String sourcePath, final String targetPath, final boolean recurse) {
         this.dataFolder = dataFolder;
         this.namespace = namespace;
         this.ref = ref;
+        this.offsetPath = offsetPath;
         this.sourcePath = sourcePath;
         this.targetPath = targetPath;
         this.recurse = recurse;
@@ -120,12 +133,6 @@ public class Downloader implements Callable<Boolean> {
     //TODO should result give more details than just returning true?
 
     //TODO Refined exception handling
-
-    //TODO cleanup old cache files
-
-    //TODO implementation of "offsetPath" as defined in issue #1728
-
-    //TODO support all refs, not only branches
 
     /**
      * Run the downloader with the specified settings
@@ -136,8 +143,9 @@ public class Downloader implements Callable<Boolean> {
     @Override
     public Boolean call() throws Exception {
         requestCommitSHA();
-        if (!cacheFile().exists()) {
+        if (!Files.exists(getCacheFile())) {
             download();
+            cleanupOld();
         }
         extract();
         return true;
@@ -149,9 +157,9 @@ public class Downloader implements Callable<Boolean> {
      * @throws IOException if any io error occurs while during request or parsing
      */
     private void requestCommitSHA() throws IOException {
-        final URL url = new URL(GITHUB_BRANCHES_URL
+        final URL url = new URL(GITHUB_REFS_URL
                 .replace("{namespace}", namespace)
-                .replace("{branch}", ref));
+                .replace("{ref}", ref));
         final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.connect();
         final int code = connection.getResponseCode();
@@ -159,8 +167,12 @@ public class Downloader implements Callable<Boolean> {
             throw new IOException("It looks like too many requests were made to the github api, please wait until you have been unblocked.");
         }
         try (InputStreamReader reader = new InputStreamReader(connection.getInputStream(), UTF_8)) {
-            final Optional<JsonElement> commit = Optional.ofNullable(JsonParser.parseReader(reader).getAsJsonObject().get("commit"));
-            final Optional<JsonElement> sha = Optional.ofNullable(commit.orElseThrow().getAsJsonObject().get("sha"));
+            final JsonElement object = Optional.ofNullable(JsonParser.parseReader(reader).getAsJsonObject().get("object")).orElseThrow();
+            final Optional<JsonElement> type = Optional.ofNullable(object.getAsJsonObject().get("type"));
+            if (type.stream().map(JsonElement::getAsString).noneMatch("commit"::equals)) {
+                throw new IOException("ref does not point to a commit");
+            }
+            final Optional<JsonElement> sha = Optional.ofNullable(object.getAsJsonObject().get("sha"));
             this.sha = sha.orElseThrow().getAsString();
         } catch (JsonParseException | NoSuchElementException | IllegalStateException e) {
             throw new IOException("Unable to parse the JSON returned by Github API", e);
@@ -168,17 +180,68 @@ public class Downloader implements Callable<Boolean> {
     }
 
     /**
+     * Get the full source path including the offsetPath
+     *
+     * @return full source path
+     */
+    private String getFullSourcePath() {
+        return offsetPath + "/" + sourcePath;
+    }
+
+    /**
+     * Get the full target path including the offsetPath
+     *
+     * @return full target path
+     */
+    private String getFullTargetPath() {
+        return offsetPath + "/" + targetPath;
+    }
+
+    /**
+     * A short form of the {@link #ref} for use in filenames.
+     * All {@code /} chars will be replaced with {@code _}
+     *
+     * @return shortened form of the ref
+     */
+    private String getShortRef() {
+        String shortRef;
+        if (ref.startsWith("heads/")) {
+            shortRef = "b" + ref.substring(6);
+        } else if (ref.startsWith("tags/")) {
+            shortRef = "t" + ref.substring(5);
+        } else {
+            shortRef = "_" + ref;
+        }
+        return shortRef.replace('/', '_');
+    }
+
+    /**
      * The file inside the cache directory where the repo is cached
      *
      * @return zip file containing the repo data
      */
-    private File cacheFile() {
-        final String filename = CACHE_DIR + namespace + "-" + sha.substring(0, 7) + ".zip";
-        return new File(dataFolder, filename);
+    private Path getCacheFile() {
+        final String filename = CACHE_DIR + namespace + "-" + getShortRef() + "-" + sha.substring(0, 7) + ".zip";
+        return new File(dataFolder, filename).toPath();
     }
 
     /**
-     * Download the repository as zip file from GitHub and save it to {@link #cacheFile()}.
+     * Checks if the supplied file is a cache file for this ref
+     *
+     * @param file any file to check
+     * @return true if a cached file (maybe an old one), false otherwise
+     */
+    private boolean isCacheFile(final Path file) {
+        if (file.toAbsolutePath().startsWith(getCacheFile().toAbsolutePath().getParent())) {
+            final String fileIdentifier = namespace.substring(namespace.lastIndexOf('/') + 1) + "-" + getShortRef();
+            return file.getFileName().toString().startsWith(fileIdentifier);
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Download the repository as zip file from GitHub and save it to {@link #getCacheFile()}.
      *
      * @throws IOException if any io error occurs while downloading the repo
      */
@@ -190,7 +253,7 @@ public class Downloader implements Callable<Boolean> {
                 .replace("{sha}", sha)
         );
         try (BufferedInputStream input = new BufferedInputStream(url.openStream());
-             OutputStream output = Files.newOutputStream(cacheFile().toPath(), CREATE_NEW)) {
+             OutputStream output = Files.newOutputStream(getCacheFile(), CREATE_NEW)) {
             final byte[] dataBuffer = new byte[1024];
             int read;
             while ((read = input.read(dataBuffer, 0, 1024)) != -1) {
@@ -207,17 +270,63 @@ public class Downloader implements Callable<Boolean> {
     @SuppressWarnings("PMD.AssignmentInOperand")
     private void extract() throws IOException {
         final List<String> subPackages = listIgnoredPackagesInZip();
-        try (ZipInputStream input = new ZipInputStream(Files.newInputStream(cacheFile().toPath(), READ))) {
+        boolean foundAny = false;
+        try (ZipInputStream input = new ZipInputStream(Files.newInputStream(getCacheFile(), READ))) {
             ZipEntry entry;
             while ((entry = input.getNextEntry()) != null) {
                 if (isChildOfPath(entry)) {
+                    foundAny = true;
                     final String name = stripRootDir(entry.getName());
                     if (recurse || subPackages.stream().noneMatch(name::startsWith)) {
-                        //TODO extract entry
+                        extractEntry(input, entry);
                     }
                 }
             }
         }
+        if (!foundAny) {
+            throw new IOException("repo contained no files at '" + getFullSourcePath() + "'");
+        }
+    }
+
+    /**
+     * Extract a single entry from the provided zip input and save it to {@code sourcePath}.
+     *
+     * @param input zip input stream used to read the zip file
+     * @param entry entry to extract from the zip file
+     * @throws IOException if any io exception occurs while extraction
+     */
+    @SuppressWarnings("PMD.AssignmentInOperand")
+    private void extractEntry(final ZipInputStream input, final ZipEntry entry) throws IOException {
+        final String relative = stripRootDir(entry.getName()).replace(getFullSourcePath(), "");
+        final Path newFile = new File(dataFolder, getFullTargetPath() + relative).toPath();
+        Files.createDirectories(newFile.toAbsolutePath().getParent());
+        try (OutputStream out = Files.newOutputStream(newFile, CREATE_NEW)) {
+            final byte[] dataBuffer = new byte[1024];
+            int len;
+            while ((len = input.read(dataBuffer)) != -1) {
+                out.write(dataBuffer, 0, len);
+            }
+        }
+    }
+
+    /**
+     * Cleanup any old cache files for the same ref
+     *
+     * @throws IOException any io error while cleanup
+     */
+    private void cleanupOld() throws IOException {
+        final Path cacheDir = getCacheFile().getParent();
+        Files.walkFileTree(cacheDir, new SimpleFileVisitor<>() {
+            @Override
+            public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
+                if (attrs.isRegularFile() && isCacheFile(file)) {
+                    Files.delete(file);
+                    return CONTINUE;
+                } else {
+                    return super.visitFile(file, attrs);
+                }
+            }
+        });
     }
 
     /**
@@ -249,7 +358,7 @@ public class Downloader implements Callable<Boolean> {
     @SuppressWarnings("PMD.AssignmentInOperand")
     private List<String> listAllPackagesInZip() throws IOException {
         final List<String> packagesAll = new ArrayList<>();
-        try (ZipInputStream input = new ZipInputStream(Files.newInputStream(cacheFile().toPath(), READ))) {
+        try (ZipInputStream input = new ZipInputStream(Files.newInputStream(getCacheFile(), READ))) {
             ZipEntry entry;
             while ((entry = input.getNextEntry()) != null) {
                 if (isChildOfPath(entry) && isPackageYML(entry)) {
@@ -279,7 +388,7 @@ public class Downloader implements Callable<Boolean> {
      */
     private boolean isChildOfPath(final ZipEntry entry) {
         final String name = stripRootDir(entry.getName());
-        return name.startsWith(sourcePath);
+        return name.startsWith(getFullSourcePath());
     }
 
     /**
