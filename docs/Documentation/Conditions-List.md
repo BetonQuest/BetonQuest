@@ -22,7 +22,7 @@ Conjunction of specified conditions. This means that every condition has to be m
 
 ## Armor: `armor`
 
-The armor condition requires the player to wear an armor that has been specified in the _items.yml_ file.
+The armor condition requires the player to wear an armor that has been specified in the _items_ section.
 
 !!! example
     ```YAML
@@ -210,7 +210,7 @@ This condition requires the player to have all specified items in his inventory 
 
 ## Journal entry: `journal`
 
-This condition will return true if the player has specified entry in his journal (internal name of the entry, like in _journal.yml_). The only argument is name of the entry.
+This condition will return true if the player has specified entry in his journal (internal name of the entry, like in _journal_ section). The only argument is name of the entry.
 
 !!! example
     ```YAML
@@ -246,7 +246,7 @@ This condition checks the players moon cycle (1 is full moon, 8 is Waxing Gibbou
 
 ## Objective: `objective`
 
-This conditions is very simple: it's true only when the player has an active objective. The only argument is the name of the objective, as defined in _objectives.yml_.
+This conditions is very simple: it's true only when the player has an active objective. The only argument is the name of the objective, as defined in the _objectives_ section.
 
 !!! example
     ```YAML

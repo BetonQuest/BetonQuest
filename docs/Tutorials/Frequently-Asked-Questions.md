@@ -60,10 +60,10 @@ The core ideas of that system are:
 
 Here is an example for the block objective.
 ```YAML
-#objectives.yml
+#objectives
 mineStone: "block stone -1 persistent events:blockBroken"
 
-#events.yml
+#events
 blockBroken: "folder addPoint,sendNotify,checkForCompletion"
 
 addPoint: "point blockCounter 1"
@@ -71,7 +71,7 @@ sendNotify: "notify &a%point.blockCounter.amount%&8/&210 &7stone broken. io:chat
 
 checkForCompletion: "run ^objective remove mineStone ^deletepoint blockCounter conditions:has10Points"
 
-#conditions.yml
+#conditions
 has10Points: "point blockCounter 10"
 ``` 
 
@@ -95,34 +95,34 @@ You can just add them together using `math.calc`.
 
 ## How to match different items with just one condition?
 If you want a player to have e.g. `potato + poisonous_potato = 64` in his inventory you can make a special item in your 
-items.yml file that matches items based of their names. 
+`items` section file that matches items based of their names. 
 More specifically, you can have a [*Block Selector*](../Documentation/Reference.md#block-selectors) that is a *regex*.
 It would look like this in the example:
 ```YAML
-#items.yml
+#items
 anyPotato: ".*potato.*"
 
-#conditions.yml
+#conditions
 hasAnyPotato: "item anyPotato"
 ```
 
 ## How to store custom text in a variable / How to use the variable objective?
 1. Start a variable objective for the player. It serves as a variable storage:
 ```YAML
-#objectives.yml
+#objectives
  myVariableStorage: "variable no-chat"
 ```
 
 2. Assign values to that storage using a key and a value. Both can be any text you like:
 ```YAML
-#events.yml
+#events
 addBlock: "variable myVariableStorage blockName REDSTONE"
 addLocation: "variable myVariableStorage location 123;456;789;world"
 ```
 
 3. Read from your variable storage using the storages name and the data key.
 ```YAML
-#conditions.yml
+#conditions
 hasHeartBlock: "testforblock %objective.myVariableStorage.location% %objective.myVariableStorage.blockName%"
 ```
 
@@ -134,7 +134,7 @@ Copy your file into http://www.yamllint.com/ to confirm that it is actually a YA
 Best practise is to define all options like this: `myOptionName: "myData"` The double quotes prevent YAMl issues with e.g. `!`.
 
 ## Other plugins override BetonQuest commands / BetonQuest overrides other commands!
-You can change which command is used using a Bukkit feature: https://bukkit.gamepedia.com/Commands.yml
+You can change which command is used, using a Bukkit feature: https://bukkit.gamepedia.com/Commands.yml
 
 ## Handling death in your quests
 
@@ -178,7 +178,7 @@ events that are fired upon completion. That globalpoint variable tracks the play
 The "completion events" must be limited by a `globalpoint` condition that checks whether the `globalpoint` variable has
 reached a certain value.
 
-=== "events.yml"
+=== "events"
     ```YAML
     # 1. increase the global variable 2. wait one tick for the change to process 3. attempt to run the completion events
     gQuestProgress: folder gQuestIncrementCounter,gQuestCheckCompletion period:1 ticks
@@ -189,7 +189,7 @@ reached a certain value.
     # Deletes the objective from everyone that fished a salmon after the goal was met
     qDeleteObjective: "objective delete gQuest"
     ```
-=== "conditions.yml"
+=== "conditions"
     ```YAML
     # Complete at one hundred collected
     gquest_complete: globalpoint gquest 100
@@ -208,7 +208,7 @@ remove the event package after the event.
 
 Such a package holds the original objective and clean-up objective:
 
-=== "objectives.yml"
+=== "objectives"
     ```YAML
     # Old objective just without global & persistent to make sure no one get's it automatically
     gQuest: fish SALMON 1 events:gQuestProgress
@@ -216,7 +216,7 @@ Such a package holds the original objective and clean-up objective:
     login events:deleteOldObjective global
     ```
 
-=== "events.yml"
+=== "events"
     ```YAML
     # Deletes the old objective from the current player
     deleteOldObjective: "objective delete gQuest"
@@ -237,7 +237,7 @@ itself, you may want to add the option of being able to complete the objectives 
 Objective A -> Objective B -> Completed). There are multiple ways of doing this but this one is probably the simplest.
 Firstly, create as many objectives as you want. We are going to be working with three objectives:
 
-=== "objectives.yml"
+=== "objectives"
     ```YAML
     Objective_A: Objective_Arguments events:Rewards
     Objective_B: Objective_Arguments events:Rewards
@@ -247,7 +247,7 @@ Firstly, create as many objectives as you want. We are going to be working with 
 Now that the player has been given these three objectives, we will also create three `objective` conditions that check
 the player for these objectives:
 
-=== "conditions.yml"
+=== "conditions"
     ```YAML
     Has_Objective_A: objective Objective_A
     Has_Objective_B: objective Objective_B
@@ -258,7 +258,7 @@ conditions in order for it to return as true. In this case, the player must *not
 objectives. The `!` in front of the ConditionIDs negates the arguments within the condition. Make sure you have wrapped
 the condition with `'` or `"` depending on your preferences.
 
-=== "conditions.yml"
+=== "conditions"
     ```YAML
     All_Objectives_Done: 'and !Has_Objective_A,!Has_Objective_B,!Has_Objective_C'
     ```
@@ -267,7 +267,7 @@ Finally, create the event that you wanted to use to give the quest rewards to th
 the `All_Objectives_Done` condition. This ensures that the event will not be fired unless the player has completed all
 objectives.
 
-=== "events.yml"
+=== "events"
     ```YAML
     Rewards: RewardEventArguments condition:All_Objectives_Done
     ```

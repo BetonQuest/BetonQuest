@@ -33,10 +33,7 @@ All notifications will be displayed using the ChatIO and without a sound by defa
 These categories are pretty much just pre-defined [NotifyIO settings](Notification-IO's-&-Categories.md#notify-ios).    
 Each notification in *messages.yml* has a special category with a reserved name assigned to it.
 
-For example: If you would like to have the "language_changed" notification displayed as an actionbar message you would:
-
-  * Add a file named *custom.yml* to your package.
-  * Add this to the file: 
+For example: If you would like to have the "language_changed" notification displayed as an actionbar message you define the following:
 
 ```YAML
 notifications:        #General header for all notification settings
@@ -45,8 +42,8 @@ notifications:        #General header for all notification settings
 ``` 
 
 !!! warning
-    **A note about the custom.yml: This is a strange file. BetonQuest searches through all packages and just uses the first one it finds.
-    Therefore, you should probably create just one custom.yml with all your settings. We will improve this in BQ 2.0.**
+    **A note about the `notifications` section: BetonQuest searches through all packages and just uses the first one it finds.
+    Therefore, you should probably create just one `notifications` section. We will improve this in BQ 2.0.**
 
 
 You can add any other [Notify IO setting](Notification-IO's-&-Categories.md#notify-ios) to the category like so:

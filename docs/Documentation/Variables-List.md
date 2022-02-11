@@ -25,7 +25,7 @@ Works the same as normal point variable but instead of displaying points from a 
 
 ## Item: `item`
 
-With this variable you can display amount of specific items in player's inventory or a number needed to reach specific amount. The first argument is the name of an item (as defined in _items.yml_) and the second one is either `amount` or `left:x`, where `x` is a number.
+With this variable you can display amount of specific items in player's inventory or a number needed to reach specific amount. The first argument is the name of an item (as defined in the _items_ section) and the second one is either `amount` or `left:x`, where `x` is a number.
 
 !!! example
     `%item.stick.amount%`
@@ -88,7 +88,7 @@ It's a very simple variable. It's replaced by the name of the NPC in player's la
 
 ## Objective: `objective`
 
-Using this variable you can display a property of an objective. The first argument is an ID of the objective as defined in _objectives.yml_ (not the type). Make sure that the player has this objective active or it will be replaced with nothing (""). Second argument is the name of a property you want to display. All properties are described in "Objectives List" chapter.
+Using this variable you can display a property of an objective. The first argument is an ID of the objective as defined in the _objectives_ section (not the type). Make sure that the player has this objective active or it will be replaced with nothing (""). Second argument is the name of a property you want to display. All properties are described in "Objectives List" chapter.
 
 !!! example
     `%objective.kill_zombies.left%`

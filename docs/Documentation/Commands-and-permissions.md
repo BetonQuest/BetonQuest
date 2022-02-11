@@ -84,7 +84,7 @@ You can purge specific player with '`/q purge Beton`' command, where Beton is th
 
 Delete command ('`/q delete`') allows you to delete from the database every tag, point, objective or journal entry with specified name.
 
-Rename command ('`/q rename`') allows you to rename every tag, point, globalpoint, objective or journal entry in the database. In case of an objective it will also rename the objective in _objectives.yml_, so it continues to work correctly.
+Rename command ('`/q rename`') allows you to rename every tag, point, globalpoint, objective or journal entry in the database. In case of an objective it will also rename the objective in _objectives_ section in the configuration file, so it continues to work correctly.
 
 If you want to backup your configuration and database make sure that your server is empty (this process requires all data to be saved to database -> all players offline) and run '`/q backup`' command. You will get a zip file containing all your data, ready to be unzipped for restoring the plugin.
 

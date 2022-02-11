@@ -92,7 +92,6 @@ public class MenuConvIO extends ChatConvIO {
     public MenuConvIO(final Conversation conv, final String playerID) {
         super(conv, playerID);
 
-        // Load Configuration from custom.yml with some sane defaults, loading our current package last
         for (final QuestPackage pack : Stream.concat(
                 Config.getPackages().values().stream().filter(p -> p != conv.getPackage()),
                 Stream.of(conv.getPackage())).toList()) {

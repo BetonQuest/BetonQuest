@@ -68,7 +68,7 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 ## Put items in a chest: `chestput`
 
 This objective requires the player to put specified items in a specified chest. First argument is a location of the
-chest, second argument is a list of items (from _items.yml_ file), separated with a comma. You can also add amount of
+chest, second argument is a list of items (from _items_ section), separated with a comma. You can also add amount of
 items after a colon. The items will be removed upon completing the objective unless you add `items-stay` optional
 argument.
 
@@ -80,7 +80,7 @@ argument.
 ## Eat/drink: `consume`
 
 This objective is completed by eating specified food or drinking specified potion. The only required argument is the ID
-of an item from _items.yml_.
+of an item from the _items_ section.
 
 !!! example
     ```YAML
@@ -89,7 +89,7 @@ of an item from _items.yml_.
 
 ## Crafting: `craft`
 
-To complete this objective the player must craft specified item. First argument is ID of the item, as in _items.yml_.
+To complete this objective the player must craft specified item. First argument is ID of the item, as in the _items_ section.
 Next is amount (integer). You can use the `notify` keyword to display a message each time the player advances the
 objective, optionally with the notification interval after a colon.
 
@@ -104,7 +104,7 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 ## Enchant item: `enchant`
 
 This objectie is completed when the player enchants specified item with specified enchantment. The first argument is an
-item name, as defined it _items.yml_. Second one is the
+item name, as defined it the _items_ section. Second one is the
 [enchantment](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html) and a level, separated
 with a colon. If you need to check for multiple enchantments you can add a list of them, separated by colons.
 
@@ -288,7 +288,7 @@ The objective's instruction string is defined as follows:
 ## Pickup item: `pickup`
 
 To complete this objective you need to pickup the specified amount of items. 
-The first argument must be the internal name of an item defined in `items.yml`. This can also be a comma-separated list of multiple items.
+The first argument must be the internal name of an item defined in the `items` section. This can also be a comma-separated list of multiple items.
 You can optionally add the `amount:` argument to specify how many of these items the player needs to pickup. 
 This amount is a total amount though, it does not count per each individual item. You can use the `notify` keyword to
 display a message each time the player advances the objective, optionally with the notification interval after a colon.
@@ -325,7 +325,7 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 ## Potion brewing: `brew`
 
 To complete this objective the player needs to brew specified amount of specified potions.
-The first argument is a potion ID from _items.yml_. Second argument is amount of potions.
+The first argument is a potion ID from the _items_ section. Second argument is amount of potions.
 You can optionally add `notify` argument to make the objective display progress to players,
 optionally with the notification interval after a colon.
 
@@ -475,7 +475,7 @@ Optional arguments:
 **:fontawesome-solid-tasks:{.task} Objective  ·  :fontawesome-solid-paper-plane: Requires [Paper](https://papermc.io)**
 
 The player must equip the specified quest item in the specified slot.
-The item must be any quest item as defined in _items.yml_.
+The item must be any quest item as defined in the _items_ section.
 Available slot types: `HEAD`, `CHEST`, `LEGS`, `FEET`.
 
 ```YAML
@@ -488,7 +488,7 @@ equip CHEST amazing_armor events:event1,event2
 This objective is different. You cannot complete it, it will also ignore defined events and conditions. You can start it and that's it.
 While this objective is active though, everything the player types in chat (and matches special pattern) will become a variable.
 The pattern is `key: value`. So if you type that, it will create a variable called `key`, which will resolve to `value` string.
-These are not global variables, you can access them as objective properties. Let's say you defined this objective as `var` in your _objectives.yml_ file.
+These are not global variables, you can access them as objective properties. Let's say you defined this objective as `var` in your _objectives_ section.
 You can access the variable in any conversation, event or condition with `%objective.var.key%` - and in case of this example, it will resolve to `value`.
 The player can type something else, and the variable will change its value. Variables are per-player, so my `key` variable 
 will be different from your `key` variable, depending on what we were typing in chat. You can have as much variables here as you want.

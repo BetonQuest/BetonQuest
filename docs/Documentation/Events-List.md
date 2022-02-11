@@ -3,7 +3,7 @@
 ## Cancel quest: `cancel`
 
 This event works in the same way as a [quest canceler in the backpack](Reference.md#canceling-quests).
-Running it is equal to the player clicking on the bone. The only argument is a name of a quest canceler, as defined in _main.yml_
+Running it is equal to the player clicking on the bone. The only argument is a name of a quest canceler, as defined in the _cancel_ section
 
 !!! example
     ```YAML
@@ -69,9 +69,9 @@ This event removes all specified mobs from the specified area. The first require
 
 ## Compass: `compass`
 
-When you run this event, you can add or remove a compass destination for the player. You may also directly set the players's compass destination as well. When a destination is added the player will be able to select a specified location as a target of his compass. To select the target the player must open his backpack and click on the compass icon. The first argument is `add`,`del` or `set`, and second one is the name of the target, as defined in _main.yml_. Note that if you set a target the player will not automatically have it added to their choices.
+When you run this event, you can add or remove a compass destination for the player. You may also directly set the player's compass destination as well. When a destination is added the player will be able to select a specified location as a target of his compass. To select the target the player must open his backpack and click on the compass icon. The first argument is `add`,`del` or `set`, and second one is the name of the target, as defined in the _compass_ section. Note that if you set a target the player will not automatically have it added to their choices.
 
-The destination must be defined in the _main.yml_ file in `compass` section. You can specify a name for the target in each language or just give a general name, and optionally add a custom item (from _items.yml_) to be displayed in the backpack. Example of a compass target:
+The destination must be defined in `compass` section. You can specify a name for the target in each language or just give a general name, and optionally add a custom item (from _items_ section) to be displayed in the backpack. Example of a compass target:
 
 ```YAML
 compass:
@@ -246,9 +246,9 @@ This event will check a condition, and based on the outcome it will run the firs
 
 **static**
 
-Adds or deletes an entry to/from a player's journal. Journal entries have to be defined in `journal.yml`. The first
-argument is the action to perform, the second one is the name of the entry if required. Changing journal entries will
-also reload the journal.
+Adds or deletes an entry to/from a player's journal. Journal entries have to be defined in the `journal` section. The
+first argument is the action to perform, the second one is the name of the entry if required. Changing journal entries
+will also reload the journal.
 
 Possible actions are:
 - `add`: Adds a page to the journal.
@@ -391,7 +391,7 @@ This events works just like the [notify](#notification-notify) event but shows t
 **persistent**, **static**
 
 Manages the objectives. Syntax is `objective <action> name`, where `<action>` can be _start_/_add_ (one of the two),
-_delete_/_remove_ or _complete_/_finish_. Name is the name of the objective, as defined in _objectives.yml_.
+_delete_/_remove_ or _complete_/_finish_. Name is the name of the objective, as defined in the _objectives_ section.
 
 Using this in static contexts only works when removing objectives!
 
@@ -502,7 +502,7 @@ Very powerful if used to trigger redstone contraptions.
 
 Spawns specified amount of mobs of given type at the location. First argument is a location. Next is [type of the mob](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html). The last, third argument is integer for amount of mobs to be spawned. You can also specify `name:` argument, followed by the name of the mob. All `_` characters will be replaced with spaces. You can also mark the spawned mob with a keyword using `marked:` argument. It won't show anywhere, and you can check for only marked mobs in `mobkill` objective.
 
-You can specify armor which the mob will wear and items it will hold with `h:` (helmet), `c:` (chestplate), `l:` (leggings), `b:` (boots), `m:` (main hand) and `o:` (off hand) optional arguments. These take a single item without amount, as defined in _items.yml_. You can also add a list of drops with `drops:` argument, followed by a list of items with amounts after colons, separated by commas.
+You can specify armor which the mob will wear and items it will hold with `h:` (helmet), `c:` (chestplate), `l:` (leggings), `b:` (boots), `m:` (main hand) and `o:` (off hand) optional arguments. These take a single item without amount, as defined in the _items_ section. You can also add a list of drops with `drops:` argument, followed by a list of items with amounts after colons, separated by commas.
 
 !!! example
     ```YAML
@@ -542,7 +542,7 @@ Next goes the tag name. It can't contain spaces (though `_` is fine). Additional
 ## Take Items: `take`
 
 Removes items from the player’s inventory, armor slots or backpack.
-The items itself must be defined in the items.yml, optionally with an amount after a colon.
+The items itself must be defined in the `items` section, optionally with an amount after a colon.
 Which inventory types are checked is defined by the `invOrder:`
 option. You can use `Backpack`, `Inventory`, `Offhand` and `Armor` there. One after another will be checked if multiple types are defined.
 

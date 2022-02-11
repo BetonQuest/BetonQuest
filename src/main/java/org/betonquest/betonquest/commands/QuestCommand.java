@@ -773,6 +773,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_item");
             return;
         }
+        final Player player = (Player) sender;
+        final ItemStack item = player.getInventory().getItemInMainHand();
+        if (item.getType() == Material.AIR) {
+            LOG.debug("Cannot continue, item must not be air");
+            sendMessage(sender, "no_item");
+            return;
+        }
+
         final String itemID = args[1];
         final String pack;
         final String name;
@@ -783,15 +791,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         } else {
             pack = defaultPack;
             name = itemID;
-        }
-        final Player player = (Player) sender;
-        final ItemStack item = player.getInventory().getItemInMainHand();
-
-        // if item is air then there is nothing to add to items.yml
-        if (item.getType() == Material.AIR) {
-            LOG.debug("Cannot continue, item must not be air");
-            sendMessage(sender, "no_item");
-            return;
         }
         // define parts of the final string
         final QuestPackage configPack = Config.getPackages().get(pack);
