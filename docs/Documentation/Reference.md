@@ -43,55 +43,122 @@ resources, not 100, not 40.
 ## Packages
 
 All quests you create are organized into packages. A single package can contain one or multiple quests - it's up to your
-liking.
+liking. **It is very important to have a good understand of packages. Read this section carefully.**
 
 ### Structure
 
-Each package must contain a _package.yml_ file. Additionally, you can create extra files or sub-folders to organise your
-quest the way you want. These files can hold events, objectives, conditions, conversations and other BetonQuest
-features. The names of these features must be unique in that package, no matter which file they are in. This is because 
-you can reference any feature from any other file of a package. 
+A package is a folder with a _package.yml_ file. It must be placed inside the `BetonQuest/QuestPackages` directory.   
+Additionally, you can create extra files or sub-folders inside a package to organize your quest the way you want.
+Sub-folders of packages that contain a _package.yml_ are separate packages, they do not interact with the surrounding
+package in any way. 
+
+It is allowed to create empty folders in the `QuestPackages` directory to organize your quests. However, these are **not** packages.
+ 
 Let's take a look at a few examples:
 
 !!! example "Structure Examples"
     Every quest package is marked with a blue box.
-    === "Simple Package"       
+    === "Simple Package"
+        A very simple package. It's defined by the _package.yml_ and has two additional files.       
         <img src="../../_media/content/Documentation/Reference/PackageSimple.png" width=450>
-        <br>
-        A very simple package. It's defined by the _package.yml_ and has two additional files.
         
     === "Complex Package"
+        The package `storyLine` is defined by the _package.yml_. It contains two sub-folders, both of them
+        (including their files) are part of the package.<br>
         <img src="../../_media/content/Documentation/Reference/PackageComplex.png" width=450>
-        <br>
-         and has two additional files.
         
     === "Nested Packages"
+        The package `weeklyQuests` is defined by the _package.yml_. It contains two sub-folders, they are **not** part
+        of the package. This is the case because they have their own _package.yml_ files. Because of that they are 
+        separate packages.<br> 
         <img src="../../_media/content/Documentation/Reference/PackagesNested.png" width=450>
- 
+
 ### Defining features
 
-Most of the features (events, objectives, conditions, conversations, menus) need to be defined in a section that defines 
-their type.
+You can freely define most of the features (events, objectives, conditions, conversations, menus, items) in all files 
+of a quest package. However, they need to be defined in a section that defines their type.
 
-??? examples
+The names of these features must be unique in that package, no matter which file they are in.
+
+
+??? example
     ```YAML
     events:
-      someEvent: "..."
-      #...
+      teleportPlayer: "..."
     
     conditions:
-      someCondition: "..."
-      #...
+      hasDiamondArmor: "..."
       
     objectives:
-      someObjective: "..."
-      #...
+      killCrepper: "..."
+      
+    items:
+      legendarySword: "..."
       
     conversations:
-      someConversation:
-        quester: Name
+      bobsConversation:
+        quester: Bob
+        #...
+        
+    menus:
+      homeMenu:
+        height: 3
         #...
     ```
+    
+### Working across Packages
+
+Accessing features from other packages can be very helpful to link quests together.
+All events, conditions, objectives, items and conversations can be accessed. Just journal entries only work in their own
+package.
+
+#### Top-Level Packages
+
+You can access **top-level packages** (placed directly in `QuestPackages`) by prefixing the feature's name with
+the package name.
+
+??? example
+    Let's assume you have a `rewards` package that contains player reward events.  
+    Let's run the `EasyMobObjective` event of the `rewards` package from another package:
+    
+    * Combine the event name with the package name :arrow_right: `rewards.EasyMobObjective`
+    
+    An example usage could look like this:
+    ````YAML
+    zombieObjective: "mobkill ZOMBIE 5 events:{==rewards.EasyMobObjective==}"
+    ````
+    Note that this only works if the `rewards` package is placed directly in the `QuestPackages` folder.
+
+#### Packages in Sub-folders
+
+You can access packages in sub-folders by prefixing the feature's name with
+the package name and the path from the `QuestPackages` folder to the package.
+
+??? example
+    Let's assume you have a `dailyQuestOne` package inside a `dailyQuests` package.
+    Let's run the `startDailyQuest` event of the `dailyQuestOne` package from a third, uninvolved package:
+    
+    1. Combine the event name with the package name :arrow_right: `dailyQuestOne.startDailyQuest`
+    2. Add the path from the `QuestPackages` folder to the `dailyQuestOne` package seperated by dashes (`-`).
+    <br>:arrow_right: `{++dailyQuests-++}dailyQuestOne.startDailyQuest`
+    
+    An example usage could look like this:
+    ````YAML
+    zombieObjective: "mobkill ZOMBIE 5 events:{==dailyQuests-dailyQuestOne.startDailyQuest==}"
+    ````
+  
+#### Relative paths
+
+You can specify relative paths to a package instead of full paths. The underscore (`_`) means "one folder up" 
+
+
+In the example above, if you wanted to reference package
+`quests-village1-quest2` from `quests-village1-quest1`, you could write it as `_-quest2` - this means "from the current
+package (`quest1`) go up one time and find there package `quest2`". Name `_` has special meaning here. 
+
+Relative paths can be useful if you want to move your packages between directories. Instead of rewriting every package
+name to match the current location, relative paths will continue to work. This can be very useful if you
+want to create a downloadable quest package.
 
 ### Disabling Packages
 
@@ -102,47 +169,6 @@ Each package can be disabled/enabled in the _package.yml_ file, by setting `enab
 enabled: false
 ```
 
-### Working across Packages
-
-It would be limiting if you couldn't interact between packages. That's why you can always access stuff from other
-packages by prefixing its name with package name. If you're writing a conversation in package `village` and you want to
-fire an event `reward` from package `beton`, you simply name the event as `beton.reward`. The plugin will search
-for `reward` in the `beton` package instead of the one in which the conversation is defined. All events, conditions,
-objectives, items and conversations behave this way. Note that you can't cross-reference journal entries!
-
-```
-    BetonQuest/
-    ├─default/
-    └─quests/
-      ├─village1/
-      │ ├─quest1/
-	  │ │ └─package.yml
-      │ └─quest2/
-	  │   └─package.yml
-      └─village2/
-        └─quest1/
-		  └─package.yml
-```
-
-contains these packages:
-
-- _default_
-- _quests-village1-quest1_
-- _quests-village1-quest2_
-- _quests-village2-quest1_
-
-### Relative paths
-
-You don't have to always specify a full package name. In the example above, if you wanted to reference package
-`quests-village1-quest2` from `quests-village1-quest1`, you could write it as `_-quest2` - this means "from the current
-package (`quest1`) go up one time and find there package `quest2`". Name `_` has special meaning here. Analogously, if
-you wanted to reference `quests-village2-quest1` from that package, you would use `_-_-village2-quest1`. Using `_` twice
-will get you to `quests` package, and from there you're going into `village2` and then `quest1`.
-
-Relative paths can be useful if you want to move your packages between directories. Instead of rewriting every package
-name to match current directory tree, you can use relative paths and it will just work. This can be very useful if you
-want to create a downloadable quest package which can be placed anywhere and not just on the root directory
-(_BetonQuest/QuestPackages_). 
 
 ## Unified location formating
 
