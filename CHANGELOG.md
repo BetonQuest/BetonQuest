@@ -110,6 +110,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - interact objective did not work with armorstands
 - MMOItemsGiveEvent did not check if item actually exists
 - action objective for any block ignored location
+- mmobkill objective "neutralDeathRadiusAllPlayers" argument only worked for non-player sources
 
 ### Security
 - it was possible to put a QuestItem into a chest

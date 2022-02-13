@@ -60,17 +60,17 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
             return;
         }
 
-        if (event.getKiller() instanceof Player) {
-            handlePlayerKill((Player) event.getKiller(), event.getMob());
-        } else {
-            if (neutralDeathRadiusAllPlayers > 0) {
-                final Location center = BukkitAdapter.adapt(event.getMob().getLocation());
-                for (final Player player : center.getWorld().getPlayers()) {
-                    if (isValidPlayer(player)
-                            && player.getLocation().distanceSquared(center) <= neutralDeathRadiusAllPlayersSquared) {
-                        handlePlayerKill(player, event.getMob());
-                    }
+        if (neutralDeathRadiusAllPlayers > 0) {
+            final Location center = BukkitAdapter.adapt(event.getMob().getLocation());
+            for (final Player player : center.getWorld().getPlayers()) {
+                if (isValidPlayer(player)
+                        && player.getLocation().distanceSquared(center) <= neutralDeathRadiusAllPlayersSquared) {
+                    handlePlayerKill(player, event.getMob());
                 }
+            }
+        } else {
+            if (event.getKiller() instanceof Player) {
+                handlePlayerKill((Player) event.getKiller(), event.getMob());
             }
         }
     }
