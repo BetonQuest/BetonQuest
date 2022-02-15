@@ -22,7 +22,11 @@ public class VariableCondition extends Condition {
 
     @Override
     protected Boolean execute(final String playerID) {
-        return BetonQuest.getInstance().getVariableValue(instruction.getPackage().getName(), variable, playerID).matches(regex);
+        if (variable.charAt(0) == '%' && variable.endsWith("%")) {
+            return BetonQuest.getInstance().getVariableValue(instruction.getPackage().getName(), variable, playerID).matches(regex);
+        } else {
+            return variable.matches(regex);
+        }
     }
 
 }
