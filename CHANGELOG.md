@@ -40,7 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - added EquipItemObjective
 - variable support to delay objective
 - opsudo event now supports variables
-- `variable` condition - now support constants and global variables
+- `variable` condition now supports variables
 ### Changed
 - math variable now allows rounding output with the ~ operator
 - changed package names from `pl.betoncraft.betonquest` to `org.betonquest.betonquest`
