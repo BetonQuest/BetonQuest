@@ -52,12 +52,13 @@ Additionally, you can create extra files or sub-folders inside a package to orga
 Sub-folders of packages that contain a _package.yml_ are separate packages, they do not interact with the surrounding
 package in any way. 
 
-It is allowed to create empty folders in the `QuestPackages` directory to organize your quests. However, these are **not** packages.
+It is allowed to create folders that are not packages anywhere in your `QuestPackages` directory. 
  
 Let's take a look at a few examples:
 
 !!! example "Structure Examples"
-    Every quest package is marked with a blue box.
+    Every quest package is surrounded with a blue box.
+   
     === "Simple Package"
         A very simple package. It's defined by the _package.yml_ and has two additional files.       
         <img src="../../_media/content/Documentation/Reference/PackageSimple.png" width=450>
@@ -80,8 +81,9 @@ of a quest package. However, they need to be defined in a section that defines t
 
 The names of these features must be unique in that package, no matter which file they are in.
 
+All other features can be defined without a section.
 
-??? example
+??? info "List of required sections"
     ```YAML
     events:
       teleportPlayer: "..."
@@ -110,24 +112,29 @@ The names of these features must be unique in that package, no matter which file
 
 Accessing features from other packages can be very helpful to link quests together.
 All events, conditions, objectives, items and conversations can be accessed. Just journal entries only work in their own
-package.
+package. 
+
+You never need to access a specific file since feature names are unique within a package.
 
 #### Top-Level Packages
 
-You can access **top-level packages** (placed directly in `QuestPackages`) by prefixing the feature's name with
-the package name.
+You can access **top-level packages** (placed directly in `QuestPackages`) by prefixing the feature's name with a
+dot and the package name. 
 
 ??? example
     Let's assume you have a `rewards` package that contains player reward events.  
-    Let's run the `EasyMobObjective` event of the `rewards` package from another package:
+    Let's run the `easyMobObjective` event of the `rewards` package from another package:
     
-    * Combine the event name with the package name :arrow_right: `rewards.EasyMobObjective`
+    1. Add a dot (`.`) before the event name. :arrow_right: `{++.++}easyMobObjective`
+    2. Add the package name infront of the dot :arrow_right: `{++rewards++}.easyMobObjective`
     
     An example usage could look like this:
     ````YAML
-    zombieObjective: "mobkill ZOMBIE 5 events:{==rewards.EasyMobObjective==}"
+    zombieObjective: "mobkill ZOMBIE 5 events:{==rewards.easyMobObjective==}"
     ````
-    Note that this only works if the `rewards` package is placed directly in the `QuestPackages` folder.
+    Note that this only works for top-level packages (the `rewards` package is placed directly in the `QuestPackages`
+    folder).
+    Check the next paragraph to see how it's done for other packages.
 
 #### Packages in Sub-folders
 
@@ -135,31 +142,57 @@ You can access packages in sub-folders by prefixing the feature's name with
 the package name and the path from the `QuestPackages` folder to the package.
 
 ??? example
-    Let's assume you have a `dailyQuestOne` package inside a `dailyQuests` package.
-    Let's run the `startDailyQuest` event of the `dailyQuestOne` package from a third, uninvolved package:
+
+    === "One Nested Package"
+        Let's assume you have a `dailyQuestOne` package inside a `dailyQuests` package. The `dailyQuests` package
+        is located in the `QuestPackages` folder.
+        Let's run the `startDailyQuest` event of the `dailyQuestOne` package from a third package:
+        
+        1. Combine the event name with the package name :arrow_right: `{++dailyQuestOne.++}startDailyQuest`
+        2. Add the path from the `QuestPackages` folder to the `dailyQuestOne` package seperated by dashes (`-`).
+        <br>:arrow_right: `{++dailyQuests-++}dailyQuestOne.startDailyQuest`
+        
+        An example usage could look like this:
+        ````YAML
+        zombieObjective: "mobkill ZOMBIE 5 events:{==dailyQuests-dailyQuestOne.startDailyQuest==}"
+        ````
+        
+    === "Multiple Nested Packages"
+        Let's assume you have a `dailyQuestOne` package inside a `dailyQuests` package. The `dailyQuests` package
+        is contained inside a folder called `repeatable` which is located in the `QuestPackages` folder.
+        Let's run the `startDailyQuest` event of the `dailyQuestOne` package from a third package:
+        
+        1. Combine the event name with the package name :arrow_right: `{++dailyQuestOne.++}startDailyQuest`
+        2. Add the path from the `QuestPackages` folder to the `dailyQuestOne` package seperated by dashes (`-`).
+        <br>:arrow_right: `{++repetable-dailyQuests-++}dailyQuestOne.startDailyQuest`
+        
+        An example usage could look like this:
+        ````YAML
+        zombieObjective: "mobkill ZOMBIE 5 events:{==repetable-dailyQuests-dailyQuestOne.startDailyQuest==}"
+        ````
     
-    1. Combine the event name with the package name :arrow_right: `dailyQuestOne.startDailyQuest`
-    2. Add the path from the `QuestPackages` folder to the `dailyQuestOne` package seperated by dashes (`-`).
-    <br>:arrow_right: `{++dailyQuests-++}dailyQuestOne.startDailyQuest`
+#### Relative paths
+
+You can specify relative paths to a package instead of full paths. The underscore (`_`) means "one folder up" from 
+the current packages _package.yml_. 
+This can be useful when distributing or moving packages. Instead of rewriting every package
+name to match the current location, relative paths will still work.
+
+
+??? example
+    Let's assume you have a `weeklyQuestOne` package inside a `weeklyQuests` package.
+    Let's run the `resetWeekly` event of the `weeklyQuests` package from the `weeklyQuestOne` package.
+    
+    1. Combine the event name with the package name :arrow_right: `weeklyQuests.resetWeekly`
+    2. Add the path from the current _package.yml_ to the folder the package of interested lies in. This is done using
+    underscores ("go one folder up"). A dash must be added after each underscore (`-`).
+    <br>:arrow_right: `{++_-++}weeklyQuests.resetWeekly`
     
     An example usage could look like this:
     ````YAML
-    zombieObjective: "mobkill ZOMBIE 5 events:{==dailyQuests-dailyQuestOne.startDailyQuest==}"
+    zombieObjective: "mobkill ZOMBIE 50 events:{==_-weeklyQuests.resetWeekly==}"
     ````
-  
-#### Relative paths
-
-You can specify relative paths to a package instead of full paths. The underscore (`_`) means "one folder up" 
-
-
-In the example above, if you wanted to reference package
-`quests-village1-quest2` from `quests-village1-quest1`, you could write it as `_-quest2` - this means "from the current
-package (`quest1`) go up one time and find there package `quest2`". Name `_` has special meaning here. 
-
-Relative paths can be useful if you want to move your packages between directories. Instead of rewriting every package
-name to match the current location, relative paths will continue to work. This can be very useful if you
-want to create a downloadable quest package.
-
+    
 ### Disabling Packages
 
 Each package can be disabled/enabled in the _package.yml_ file, by setting `enabled` to `true` or `false`.
