@@ -1,5 +1,3 @@
-
-
 # Reference
 
 This chapter describes all aspects of BetonQuest in one place. You should read it at least once to know what you're dealing with and where to search for information if you ever have any problems.
@@ -24,55 +22,185 @@ You can use conversation variables instead of numeric arguments in events. If th
 
 ### Objectives
 
-Objectives are the main things you will use when creating complex quests. You start them with a special event, `objective`. You define them in the _objectives_ section, just as you would conditions or events. At the end of the instruction string you can add conditions and events for the objective. Conditions will limit when the objective can be completed (e.g. killing zombies only at given location in quest for defending city gates), and events will fire when the objective is completed (e.g. giving a reward, or setting a tag which will enable collecting a reward from an NPC). You define these like that: `conditions:con1,con2 events:event1,event2` at the end of instruction string . Separate them by commas and never use spaces! You can also use singular forms of these arguments: `condition:` and `event:`.
+Objectives are the main things you will use when creating complex quests. You start them with a special
+event, `objective`. You define them in the _objectives.yml_ file, just as you would conditions or events. At the end of
+the instruction string you can add conditions and events for the objective. Conditions will limit when the objective can
+be completed (e.g. killing zombies only at given location in quest for defending city gates), and events will fire when
+the objective is completed (e.g. giving a reward, or setting a tag which will enable collecting a reward from an NPC).
+You define these like that: `conditions:con1,con2 events:event1,event2` at the end of instruction string . Separate them
+by commas and never use spaces! You can also use singular forms of these arguments: `condition:` and `event:`.
 
-If you want to start an objective right after it was completed (for example `die` objective: when you die, teleport you to a special spawnpoint and start `die` objective again), you can add `persistent` argument at the end of an instruction string. It will prevent the objective from being completed, although it will run all its events. To cancel such objective you will need to use `objective delete` event.
+If you want to start an objective right after it was completed (for example `die` objective: when you die, teleport you
+to a special spawnpoint and start `die` objective again), you can add `persistent` argument at the end of an instruction
+string. It will prevent the objective from being completed, although it will run all its events. To cancel such
+objective you will need to use `objective delete` event.
 
-Objectives are loaded at start-up, but they do not consume resources without player actually having them active. This means that if you have 100 objectives defined, and 20 players doing one objective, 20 another players doing second objective, and the rest objectives are inactive (no one does them), then only 2 objectives will be consuming your server resources, not 100, not 40.
+Objectives are loaded at start-up, but they do not consume resources without player actually having them active. This
+means that if you have 100 objectives defined, and 20 players doing one objective, 20 another players doing second
+objective, and the rest objectives are inactive (no one does them), then only 2 objectives will be consuming your server
+resources, not 100, not 40.
 
 ## Packages
 
-All the content you create is organized into packages. Each package must contain the _main.yml_ file with package-specific settings. Additionally it can have _conversations_ directory with conversation files, _events.yml_, _conditions.yml_, _objectives.yml_, _items.yml_ and _journal.yml_. The default package is called simply "default". It is always present, and if you delete it, it will be regenerated with a sample quest.
+All quests you create are organized into packages. A single package can contain one or multiple quests - it's up to your
+liking. **It is very important to have a good understand of packages. Read this section carefully.**
 
-If you want, you can simply ignore the existence of packages and write all your quests in the default one. You will however come to a point, when your files contain hundreds of lines and it gets a little bit confusing. That's why it's better to split your quests into multiple packages, for example "main" for the quests in the main city, "dungeon" for some interesting dungeon story etc.
+### Structure
 
-Each package can be disabled/enabled in the _main.yml_ file, by setting `enabled` to `true` or `false`.
+A package is a folder with a _package.yml_ file. It must be placed inside the `BetonQuest/QuestPackages` directory.   
+Additionally, you can create extra files or sub-folders inside a package to organize your quest the way you want.
+Sub-folders of packages that contain a _package.yml_ are separate packages, they do not interact with the surrounding
+package in any way. 
+
+It is allowed to create folders that are not packages anywhere in your `QuestPackages` directory. 
+ 
+Let's take a look at a few examples:
+
+!!! example "Structure Examples"
+    Every quest package is surrounded with a blue box.
+   
+    === "Simple Package"
+        A very simple package. It's defined by the _package.yml_ and has two additional files.       
+        <img src="../../_media/content/Documentation/Reference/PackageSimple.png" width=450>
+        
+    === "Complex Package"
+        The package `storyLine` is defined by the _package.yml_. It contains two sub-folders, both of them
+        (including their files) are part of the package.<br>
+        <img src="../../_media/content/Documentation/Reference/PackageComplex.png" width=450>
+        
+    === "Nested Packages"
+        The package `weeklyQuests` is defined by the _package.yml_. It contains two sub-folders, they are **not** part
+        of the package. This is the case because they have their own _package.yml_ files. Because of that they are 
+        separate packages.<br> 
+        <img src="../../_media/content/Documentation/Reference/PackagesNested.png" width=450>
+
+### Defining features
+
+You can freely define features (events, conversations, items etc.) in all files 
+of a quest package. However, they need to be defined in a section that defines their type.
+
+The names of these features must be unique in that package, no matter which file they are in.
+
+??? example
+
+    ```YAML
+    events:
+      teleportPlayer: "..."
+    
+    conditions:
+      hasDiamondArmor: "..."
+      
+    objectives:
+      killCrepper: "..."
+      
+    items:
+      legendarySword: "..."
+      
+    conversations:
+      bobsConversation:
+        quester: Bob
+        #...
+        
+    menus:
+      homeMenu:
+        height: 3
+        #...
+    ```
+    
+### Working across Packages
+
+Accessing features from other packages can be very helpful to link quests together.
+All events, conditions, objectives, items and conversations can be accessed. Just journal entries only work in their own
+package. 
+
+You never need to access a specific file since feature names are unique within a package.
+
+#### Top-Level Packages
+
+You can access **top-level packages** (placed directly in `QuestPackages`) by prefixing the feature's name with a
+dot and the package name. 
+
+??? example
+    Let's assume you have a `rewards` package that contains player reward events.  
+    Let's run the `easyMobObjective` event of the `rewards` package from another package:
+    
+    1. Add a dot (`.`) before the event name :arrow_right: `{==.==}easyMobObjective`
+    2. Add the package name infront of the dot :arrow_right: `{==rewards==}.easyMobObjective`
+    
+    An example usage could look like this:
+    ````YAML
+    zombieObjective: "mobkill ZOMBIE 5 events:{==rewards.easyMobObjective==}"
+    ````
+    Note that this only works for top-level packages (the `rewards` package is placed directly in the `QuestPackages`
+    folder).
+    Check the next paragraph to see how it's done for other packages.
+
+#### Packages in Sub-folders
+
+You can access packages in sub-folders by prefixing the feature's name with
+the package name and the path from the `QuestPackages` folder to the package.
+
+??? example
+
+    === "One Nested Package"
+        Let's assume you have a `dailyQuests` package that contains a `dailyQuestOne` package. The `dailyQuests` package
+        is located in the `QuestPackages` folder.
+        Let's run the `startDailyQuest` event of the `dailyQuestOne` package from a third package:
+        
+        1. Combine the event name with the package name :arrow_right: `{==dailyQuestOne.==}startDailyQuest`
+        2. Add the path from the `QuestPackages` folder to the `dailyQuestOne` package seperated by dashes (`-`).
+        :arrow_right: `{==dailyQuests-==}dailyQuestOne.startDailyQuest`
+        
+        An example usage could look like this:
+        ````YAML
+        zombieObjective: "mobkill ZOMBIE 5 events:{==dailyQuests-dailyQuestOne.startDailyQuest==}"
+        ````
+        
+    === "Multiple Nested Packages"
+        Let's assume you have a `dailyQuests` package that contains a `dailyQuestOne` package. The `dailyQuests` package
+        is contained inside a folder called `repeatable` which is located in the `QuestPackages` folder.
+        Let's run the `startDailyQuest` event of the `dailyQuestOne` package from a third package:
+        
+        1. Combine the event name with the package name :arrow_right: `{==dailyQuestOne.==}startDailyQuest`
+        2. Add the path from the `QuestPackages` folder to the `dailyQuestOne` package seperated by dashes (`-`).
+        :arrow_right: `{==repetable-dailyQuests-==}dailyQuestOne.startDailyQuest`
+        
+        An example usage could look like this:
+        ````YAML
+        zombieObjective: "mobkill ZOMBIE 5 events:{==repetable-dailyQuests-dailyQuestOne.startDailyQuest==}"
+        ````
+    
+#### Relative paths
+
+You can specify relative paths to a package instead of full paths. The underscore (`_`) means "one folder up" from 
+the current packages _package.yml_. 
+This can be useful when distributing or moving packages. Instead of rewriting every package path
+to match the current location, relative paths will still work.
+
+
+??? example
+    Let's assume you have a `weeklyQuests` folder that contains a `weeklyQuestOne` and a `weeklyQuestTwo` package.
+    Let's run the `startQuestTwo` event of the `weeklyQuestTwo` package from the `weeklyQuestOne` package.
+    
+    1. Combine the event name with the package name :arrow_right: `{==weeklyQuestTwo.==}startQuestTwo`
+    2. Add the path from the current _package.yml_ to the folder the package of interested lies in. This is done using
+    underscores ("go one folder up"). A dash must be added after each underscore (`-`).
+    :arrow_right: `{==_-==}weeklyQuestTwo.startQuestTwo`
+    
+    An example usage could look like this:
+    ````YAML
+    zombieObjective: "mobkill ZOMBIE 50 events:{==_-weeklyQuestTwo.startQuestTwo==}"
+    ````
+    
+### Disabling Packages
+
+Each package can be disabled/enabled in the _package.yml_ file, by setting `enabled` to `true` or `false`.
+
 ```YAML
 #Add this to the package.yml
-enabled: true
+enabled: false
 ```
 
-
-It would be limiting if you couldn't interact between packages. That's why you can always access stuff from other packages by prefixing its name with package name. If you're writing a conversation in package `village` and you want to fire an event `reward` from package `beton`, you simply name the event as `beton.reward`. The plugin will search for `reward` in `beton` package instead of the one in which the conversation is defined. All events, conditions, objectives, items and conversations behave this way. Note that you can't cross-reference journal entries!
-
-Packages can be nested together in folders. A folder can either contain packages or be a package, never both. The name of such nested package is prefixed by names of all folders, separated with a dash. This directory tree (_main.yml_ represents a package):
-
-```
-    BetonQuest/
-    ├─default/
-    └─quests/
-      ├─village1/
-      │ ├─quest1/
-	  │ │ └─main.yml
-      │ └─quest2/
-	  │   └─main.yml
-      └─village2/
-        └─quest1/
-		  └─main.yml
-```
-
-contains these packages:
-
-- _default_
-- _quests-village1-quest1_
-- _quests-village1-quest2_
-- _quests-village2-quest1_
-
-### Relative paths
-
-You don't have to always specify a full package name. In the example above, if you wanted to reference package `quests-village1-quest2` from `quests-village1-quest1`, you could write it as `_-quest2` - this means "from the current package (`quest1`) go up one time and find there package `quest2`". Name `_` has special meaning here. Analogously, if you wanted to reference `quests-village2-quest1` from that package, you would use `_-_-village2-quest1`. Using `_` twice will get you to `quests` package, and from there you're going into `village2` and then `quest1`.
-
-Relative paths can be useful if you want to move your packages between directories. Instead of rewriting every package name to match current directory tree, you can use relative paths and it will just work. It can also be useful if you want to create a downloadable quest package which can be placed anywhere and not just on the root directory (_BetonQuest/_) or when working with BetonQuest-Editor + BetonQuestUploader combo - quest writers don't have to prefix every package call with their name (this feature will work soon, needs an update in the editor).
 
 ## Unified location formating
 
@@ -86,9 +214,16 @@ The vector is a modification of the location. It will be useful if you use globa
 
 ## Global variables
 
-You can insert a global variable in any instruction string. It looks like this: `$beton$` (and this one would be called "beton"). When the plugin loads that instruction string it will replace those variables with values assigned to them in the _variables_ section **before** the instruction string is parsed. This is useful for example when installing a package containing a WorldEdit schematic of the quest building. Instead of going through the whole code to set those locations, names or texts you will only have to specify a few variables (that is, of course, if the author of the package used those variables properly in his code).
+You can insert a global variable in any instruction string. It looks like this: `$beton$` (and this one would be
+called "beton"). When the plugin loads that instruction string it will replace those variables with values assigned to
+them in _package.yml_ file **before** the instruction string is parsed. This is useful for example when installing a
+package containing a WorldEdit schematic of the quest building. Instead of going through the whole code to set those
+locations, names or texts you will only have to specify a few variables (that is, of course, if the author of the
+package used those variables properly in his code).
 
-Note that these variables are something entirely different than conversation variables. Global ones use `$` characters and conversation ones use `%` characters. The former is resolved before the instruction string is parsed while the latter is resolved when the quests are running, usually on a per-player basis.
+Note that these variables are something entirely different than conversation variables. Global ones use `$` characters
+and conversation ones use `%` characters. The former is resolved before the instruction string is parsed while the
+latter is resolved when the quests are running, usually on a per-player basis.
 
 ```YAML
 variables:
@@ -98,7 +233,9 @@ variables:
 
 ## Canceling quests
 
-If you want to let your players cancel their quest there is a function for that, by creating a `cancel` section. You can specify there quests, which can be canceled, as well as actions that need to be done to actually cancel them. You can find an example in the `default` package. The arguments you can specify are:
+If you want to let your players cancel their quest there is a function for that. In _package.yml_ file there is `cancel`
+branch. You can specify there quests, which can be canceled, as well as actions that need to be done to actually cancel
+them. You can find an example in the `default` package. The arguments you can specify are:
 
 * `name` - this will be the name displayed to the player. All `_` characters will be converted to spaces. If you want to include other languages you can add here additional options (`en` for English etc.)
 * `conditions` - this is a list of conditions separated by commas. The player needs to meet all those conditions to be able to cancel this quest. Place there the ones which detect that the player has started the quest, but he has not finished it yet. 
@@ -126,14 +263,12 @@ start_quest_mine: 'location 100;200;300;world 5 events:start_quest_mine_folder g
 ```
 ## Static events
 
-Static events are events that will fire at the specified time of the day.
-It is possible to address multiple events with a `,` separated list.
-They are not tied to a specific player, so not all event types can be used as static.
+Static events are events that will fire at the specified time of the day. It is possible to address multiple events with
+a `,` separated list. They are not tied to a specific player, so not all event types can be used as static.
 (Which player should receive a tag or objective? From which one should the items be taken?)
-Also, static events cannot have conditions defined (`event-conditions:` argument),
-as the plugin cannot check any condition without the player.
-Events, that can be used as static are flagged with `static` keyword in this documentation.
-You can define your static events in a `static` section, as such:
+Also, static events cannot have conditions defined (`event-conditions:` argument), as the plugin cannot check any
+condition without the player. Events, that can be used as static are flagged with `static` keyword in this
+documentation. You can define your static events in _package.yml_ file under `static` section, as such:
 
 ```YAML
 static:
@@ -155,9 +290,12 @@ If you want to translate the entry do the same thing as with conversation option
 
 You can control behavior of the journal in _config.yml_ file, in `journal` section. `chars_per_page` specifies how many characters will be placed on a single page. If you set it too high, the text will overflow outside of the page, too low, there will be too much pages. `one_entry_per_page` allows you to place every entry on a single page. The `chars_per_page` setting is in this case ignored, BetonQuest will put entire entry on that page. `reversed_order` allows you to reverse order of entries and `hide_date` lets you remove the date from journal entries.
 
-You can control colors in the journal in `journal_colors` section in _config.yml_: `date` is a color of date of every entry, `line` is a color of lines separating entries and `text` is just a color of a text. You need to use standard color codes without `&` (eg. `'4'` for dark red).
+You can control colors in the journal in `journal_colors` section in _config.yml_: `date` is a color of date of every
+entry, `line` is a color of lines separating entries and `text` is just a color of a text. You need to use standard
+color codes without `&` (eg. `'4'` for dark red).
 
-You can also add a main page to the journal. It's a list of texts, which will show only if specified conditions are met. You can define them in the `journal_main_page` section:
+You can also add a main page to the journal. It's a list of texts, which will show only if specified conditions are met.
+You can define them in the _package.yml_ file, in the `journal_main_page` section:
 
 ```YAML
 journal_main_page:
