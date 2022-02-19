@@ -100,7 +100,7 @@ A Citizen NPC will only react to right clicks by default. This can be changed by
 setting `acceptNPCLeftClick` in the config.yml to `true`.
 
 !!! notice
-      You need to specify the ID of the NPC instead of it's name in the main.yml when using Citizens!
+      You need to specify the ID of the NPC instead of it's name in the package.yml when using Citizens!
 
 ### Conditions
 
@@ -238,9 +238,9 @@ EffectLib is not a normal plugin, it's a developer tool - there are no official 
 It does contain a few magic specific settings though so please don't be confused if some stuff does not work.
 There is also a <a href="https://sandbox.elmakers.com/#betonquestEffectLibTemplate" target="_blank">magic editor</a> with autocompletion for EffectLib.
 
-You can control the behaviour of particles around the NPCs in _custom.yml_ file, in `npc_effects` section.
+You can control the behaviour of particles around the NPCs in the `npc_effects` section.
 Each effect is defined as a separate subsection and consists of EffectLib options (described on the EffectLib page) and several BetonQuest settings.
-`npcs` is a list of all NPCs on which this effect can be displayed. If no `npcs` are specified it will use the package NPCs from _main.yml_.
+`npcs` is a list of all NPCs on which this effect can be displayed. If no `npcs` are specified it will use the package NPCs from _package.yml_.
 `conditions` is a list of conditions the player has to meet in order to see the effect.
 BetonQuest will find the first effect which can be displayed and show it to the player.
 `interval` controls how often the effect is displayed (in ticks). The effect will be fired from the exact location of the NPC, upwards.
@@ -269,15 +269,14 @@ npc_effects:
 
 #### Particle: `particle`
 
-This event will load an effect defined in `effects` section in
-_custom.yml_ file and display it on player's location. The only argument
+This event will load an effect defined in `effects` section
+and display it on player's location. The only argument
 is the name of the effect. You can optionally add `loc:` argument
 followed by a location written like `100;200;300;world;180;-90` to put
 it on that location. If you add `private` argument the effect will only
 be displayed to the player for which you ran the event.
 
 !!! example
-    **In custom.yml**
     ```YAML
     effects:
       beton:
@@ -289,10 +288,9 @@ be displayed to the player for which you ran the event.
         grow: 3
         radius: 30
     ```
-    
-    **In events.yml**
     ```YAML
-    particle beton loc:100;200;300;world;180;-90 private
+    events:
+      playEffect: particle beton loc:100;200;300;world;180;-90 private
     ```
 
 ## [Heroes](http://dev.bukkit.org/bukkit-plugins/heroes/)
@@ -336,7 +334,7 @@ This event simply gives the player specified amount of Heroes experience. The fi
 ### Hidden Holograms
 Installing this plugin will enable you to create hidden holograms, which will be shown to players only if they meet specified conditions. Note that you need to have [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/) installed in order to hide holograms from certain players.
 
-In order to create a hologram, you have to add `holograms` section in your _custom.yml_ file. Add a node named as your hologram to this section and define `lines`, `conditions` and `location` subnodes. The fist one should be a list of texts - these will be the lines of a hologram. Color codes are supported. Second is a list of conditions separated by commas. Third is a location in a standard format, like in `teleport` event. An example of such hologram definition:
+In order to create a hologram, you have to add a `holograms` section. Add a node named as your hologram to this section and define `lines`, `conditions` and `location` subnodes. The fist one should be a list of texts - these will be the lines of a hologram. Color codes are supported. Second is a list of conditions separated by commas. Third is a location in a standard format, like in `teleport` event. An example of such hologram definition:
 
 ```YAML
 holograms:
@@ -351,13 +349,13 @@ holograms:
     check_interval: 20
 ```
 
-A line can also represent a floating item. To do so enter the line as 'item:`custom_item`'. It will be replaced with the `custom_item` defined defined in items.yml. If the Item is defined for example as map, a floating map will be seen between two lines of text.
+A line can also represent a floating item. To do so enter the line as 'item:`custom_item`'. It will be replaced with the `custom_item` defined in the `items` section. If the Item is defined for example as map, a floating map will be seen between two lines of text.
 
 The holograms are updated every 10 seconds. If you want to make it faster, add `hologram_update_interval` option in _config.yml_ file and set it to a number of ticks you want to pass between updates (one second is 20 ticks). Don't set it to 0 or negative numbers, it will result in an error.
 
 ### NPC Holograms
 
-If Citizens is also installed then you can have holograms configured relative to an npc. Add the following to _custom.yml_.
+If Citizens is also installed then you can have holograms configured relative to an npc. Add the following:
 
 ```YAML
 npc_holograms:
@@ -808,7 +806,7 @@ You can also use placeholders from other plugins in BetonQuest. Simply insert a 
 
 ### Hiding NPC's
 Having ProtocolLib installed will let you hide Citizens NPCs if specified conditions are met.
-You can do that by adding a `hide_npcs` section to the *custom.yml* file in your package. 
+You can do that by adding a `hide_npcs` section in your package. 
 It allows you to assign conditions to specific NPC IDs like so:
 
 ```YAML
@@ -833,7 +831,7 @@ ProtocolLib also enables a conversation IO that makes use of a chat menu system.
  Sorry, your browser doesn't support embedded videos.
  </video>
 
-Customize how it looks by adding the following lines to custom.yml:
+Customize how it looks by adding the following lines:
 
 ```YAML
 menu_conv_io:
@@ -997,26 +995,25 @@ This entry will describe two things: Skript event and BetonQuest event.
     ```YAML
     on betonquest event "concrete":
     ```
-    
-    **In events.yml**
+    **In BetonQuest**
     ```YAML
-    fire_concrete_script: skript concrete
+    events:
+      fire_concrete_script: skript concrete
     ```
 
 ### Skript condition
 
-You can check BetonQuest conditions in your scripts by using the syntax `player meets [betonquest] condition "id"`. `betonquest` is optional, and `id` is the name of the condition, as defined in _conditions.yml_.
+You can check BetonQuest conditions in your scripts by using the syntax `player meets [betonquest] condition "id"`. `betonquest` is optional, and `id` is the name of the condition, as defined in the _conditions_ section.
 
 !!! example
     **In your script**
     ```YAML
     player meets condition "has_ore"
     ```
-     
-     **In conditions.yml**
-     ```YAML
-     has_ore: item iron_ore:5
-     ```
+    **In BetonQuest**
+    ```YAML
+    has_ore: item iron_ore:5
+    ```
 
 ### Skript event
 
@@ -1027,10 +1024,10 @@ You can also fire BetonQuest events with scripts. The syntax for Skript effect i
     ```YAML
     fire event "give_emeralds" for player
     ```
-     
-    **In events.yml**
+    **In BetonQuest**
     ```YAML
-    give_emeralds: give emerald:5
+    events:
+      give_emeralds: give emerald:5
     ```
 
 ## [Vault](http://dev.bukkit.org/bukkit-plugins/vault/)

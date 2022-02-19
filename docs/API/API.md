@@ -4,7 +4,7 @@
     All existing API will break in BetonQuest 2.0 which is being worked on while you read this.
     If you plan on doing something with this API please keep in mind that you will need to change it again later.
 
-Add this to your pom.yml.
+Add this to your pom.xml.
 
 ```XML
 <repositories>

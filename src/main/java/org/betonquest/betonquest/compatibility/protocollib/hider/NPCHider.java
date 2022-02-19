@@ -80,7 +80,7 @@ public final class NPCHider extends BukkitRunnable implements Listener {
                 try {
                     npcId = Integer.parseInt(npcIds);
                 } catch (final NumberFormatException e) {
-                    LOG.warn(cfgPackage, "NPC ID '" + npcIds + "' is not a valid number, in custom.yml hide_npcs", e);
+                    LOG.warn(cfgPackage, "NPC ID '" + npcIds + "' is not a valid number, in hide_npcs", e);
                     continue npcs;
                 }
                 final Set<ConditionID> conditions = new HashSet<>();
@@ -90,7 +90,7 @@ public final class NPCHider extends BukkitRunnable implements Listener {
                     try {
                         conditions.add(new ConditionID(cfgPackage, condition));
                     } catch (final ObjectNotFoundException e) {
-                        LOG.warn(cfgPackage, "Condition '" + condition + "' does not exist, in custom.yml hide_npcs with ID " + npcIds, e);
+                        LOG.warn(cfgPackage, "Condition '" + condition + "' does not exist, in hide_npcs with ID " + npcIds, e);
                         continue npcs;
                     }
                 }

@@ -61,7 +61,7 @@ public class QuestItem {
     private final CustomModelDataHandler customModelData = new CustomModelDataHandler();
 
     /**
-     * Creates new instance of the quest item using the ID from items.yml file.
+     * Creates new instance of the quest item using the ID
      *
      * @param itemID ID of the item
      * @throws InstructionParseException when item parsing goes wrong

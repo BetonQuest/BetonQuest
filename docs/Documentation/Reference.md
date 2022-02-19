@@ -6,13 +6,13 @@ This chapter describes all aspects of BetonQuest in one place. You should read i
 
 ## Conditions, Events and Objectives
 
-Conditions, events and objectives are defined with an "instruction string". It's a piece of text, formatted in a specific way, containing the instruction for the condition/event/objective. Thanks to this string they know what should they do. To define the instruction string you will need a reference, few pages below. It describes how something behaves and how it should be created. All instruction strings are defined in appropriate files, for example all conditions are in _conditions.yml_ config. The syntax used to define them looks like this: `name: 'the instruction string containing the data'`. Apostrophes are optional in most cases, you can find out when to use them by looking up "YAML syntax" in Google.
+Conditions, events and objectives are defined with an "instruction string". It's a piece of text, formatted in a specific way, containing the instruction for the condition/event/objective. Thanks to this string they know what should they do. To define the instruction string you will need a reference, few pages below. It describes how something behaves and how it should be created. All instruction strings are defined in appropriate sections, for example all conditions are in the _conditions_ section. The syntax used to define them looks like this: `name: 'the instruction string containing the data'`. Apostrophes are optional in most cases, you can find out when to use them by looking up "YAML syntax" in Google.
 
 ### Conditions
 
 Conditions are the most versatile and useful tools in creating advanced quests. They allow you to control what options are available to player in conversations, how the NPC responds or if the objective will be completed. The reference of all possible conditions is down below.
 
-You can negate the condition (revert its output) by adding an exclamation mark (`!`) at the beginning of it's name (in the place you use it, i.e. in conversations, not in the _conditions.yml_ file).
+You can negate the condition (revert its output) by adding an exclamation mark (`!`) at the beginning of it's name (in the place you use it, i.e. in conversations, not in the _conditions_ section).
 
 You can use conversation variables instead of numeric arguments in conditions. If the variable fails to resolve (i.e. it will return an empty string) BetonQuest will use 0 instead.
 
@@ -24,7 +24,7 @@ You can use conversation variables instead of numeric arguments in events. If th
 
 ### Objectives
 
-Objectives are the main things you will use when creating complex quests. You start them with a special event, `objective`. You define them in the _objectives.yml_ file, just as you would conditions or events. At the end of the instruction string you can add conditions and events for the objective. Conditions will limit when the objective can be completed (e.g. killing zombies only at given location in quest for defending city gates), and events will fire when the objective is completed (e.g. giving a reward, or setting a tag which will enable collecting a reward from an NPC). You define these like that: `conditions:con1,con2 events:event1,event2` at the end of instruction string . Separate them by commas and never use spaces! You can also use singular forms of these arguments: `condition:` and `event:`.
+Objectives are the main things you will use when creating complex quests. You start them with a special event, `objective`. You define them in the _objectives_ section, just as you would conditions or events. At the end of the instruction string you can add conditions and events for the objective. Conditions will limit when the objective can be completed (e.g. killing zombies only at given location in quest for defending city gates), and events will fire when the objective is completed (e.g. giving a reward, or setting a tag which will enable collecting a reward from an NPC). You define these like that: `conditions:con1,con2 events:event1,event2` at the end of instruction string . Separate them by commas and never use spaces! You can also use singular forms of these arguments: `condition:` and `event:`.
 
 If you want to start an objective right after it was completed (for example `die` objective: when you die, teleport you to a special spawnpoint and start `die` objective again), you can add `persistent` argument at the end of an instruction string. It will prevent the objective from being completed, although it will run all its events. To cancel such objective you will need to use `objective delete` event.
 
@@ -86,7 +86,7 @@ The vector is a modification of the location. It will be useful if you use globa
 
 ## Global variables
 
-You can insert a global variable in any instruction string. It looks like this: `$beton$` (and this one would be called "beton"). When the plugin loads that instruction string it will replace those variables with values assigned to them in _main.yml_ file **before** the instruction string is parsed. This is useful for example when installing a package containing a WorldEdit schematic of the quest building. Instead of going through the whole code to set those locations, names or texts you will only have to specify a few variables (that is, of course, if the author of the package used those variables properly in his code).
+You can insert a global variable in any instruction string. It looks like this: `$beton$` (and this one would be called "beton"). When the plugin loads that instruction string it will replace those variables with values assigned to them in the _variables_ section **before** the instruction string is parsed. This is useful for example when installing a package containing a WorldEdit schematic of the quest building. Instead of going through the whole code to set those locations, names or texts you will only have to specify a few variables (that is, of course, if the author of the package used those variables properly in his code).
 
 Note that these variables are something entirely different than conversation variables. Global ones use `$` characters and conversation ones use `%` characters. The former is resolved before the instruction string is parsed while the latter is resolved when the quests are running, usually on a per-player basis.
 
@@ -98,7 +98,7 @@ variables:
 
 ## Canceling quests
 
-If you want to let your players cancel their quest there is a function for that. In _main.yml_ file there is `cancel` branch. You can specify there quests, which can be canceled, as well as actions that need to be done to actually cancel them. You can find an example in the `default` package. The arguments you can specify are:
+If you want to let your players cancel their quest there is a function for that, by creating a `cancel` section. You can specify there quests, which can be canceled, as well as actions that need to be done to actually cancel them. You can find an example in the `default` package. The arguments you can specify are:
 
 * `name` - this will be the name displayed to the player. All `_` characters will be converted to spaces. If you want to include other languages you can add here additional options (`en` for English etc.)
 * `conditions` - this is a list of conditions separated by commas. The player needs to meet all those conditions to be able to cancel this quest. Place there the ones which detect that the player has started the quest, but he has not finished it yet. 
@@ -133,7 +133,7 @@ They are not tied to a specific player, so not all event types can be used as st
 Also, static events cannot have conditions defined (`event-conditions:` argument),
 as the plugin cannot check any condition without the player.
 Events, that can be used as static are flagged with `static` keyword in this documentation.
-You can define your static events in _main.yml_ file under `static` section, as such:
+You can define your static events in a `static` section, as such:
 
 ```YAML
 static:
@@ -147,7 +147,7 @@ The hour must be in `''` to avoid problems, it needs leading zero if less than 1
 
 ## Journal
 
-The journal is a book in which all your adventures are described. You can obtain it by typing **/j** command or **/b** and selecting it from backpack. You cannot put it into any chests, item frames and so on. If you ever feel the need to get rid of your journal, just drop it - it will return to your backpack. The journal is updated with the `journal` event, and the text inside is defined in _journal.yml_ config file. If you update these texts and reload the plugin, all players' journals will reflect changes. Colors in the journal can be altered in config.yml. The entries can use color codes, but the color will be lost between pages.
+The journal is a book in which all your adventures are described. You can obtain it by typing **/j** command or **/b** and selecting it from backpack. You cannot put it into any chests, item frames and so on. If you ever feel the need to get rid of your journal, just drop it - it will return to your backpack. The journal is updated with the `journal` event, and the text inside is defined in the _journal_ section. If you update these texts and reload the plugin, all players' journals will reflect changes. Colors in the journal can be altered in config.yml. The entries can use color codes, but the color will be lost between pages.
 
 The journal by default appears in the last slot of the hotbar. If you want to change that use `default_journal_slot` option in _config.yml_, experiment with different settings until you're ok with it.
 
@@ -157,7 +157,7 @@ You can control behavior of the journal in _config.yml_ file, in `journal` secti
 
 You can control colors in the journal in `journal_colors` section in _config.yml_: `date` is a color of date of every entry, `line` is a color of lines separating entries and `text` is just a color of a text. You need to use standard color codes without `&` (eg. `'4'` for dark red).
 
-You can also add a main page to the journal. It's a list of texts, which will show only if specified conditions are met. You can define them in the _main.yml_ file, in the `journal_main_page` section:
+You can also add a main page to the journal. It's a list of texts, which will show only if specified conditions are met. You can define them in the `journal_main_page` section:
 
 ```YAML
 journal_main_page:
@@ -184,7 +184,7 @@ Points are like tags, but with amount. You can earn them for doing quest, talkin
 
 ## NPCs
 
-Conversations can be assigned to NPCs created with Citizens. You do it in the _main.yml_ file inside a package, in `npcs` section:
+Conversations can be assigned to NPCs created with Citizens. You do it in the `npcs` section:
 
 ```YAML
 npcs:
@@ -193,8 +193,8 @@ npcs:
 ```
 
 The first string is the ID of the NPC (_don't try to put Citizens NPC's name here, it must be the ID_), second one is
-the corresponding conversation file name (_without `.yml` at the end_). To acquire the NPCs ID select the NPC and type
-`/npc` or `/npc id`.
+the corresponding conversation name as defined in the `conversations` section. To acquire the NPCs ID select the NPC and type
+`/npc` or `/npc id`. 
 
 You can assign the same conversation to multiple NPCs.
 
@@ -203,7 +203,7 @@ You can assign the same conversation to multiple NPCs.
 
 ## Items
 
-Items in BetonQuest are defined in _items.yml_ file. Each item has an instruction string, similarly to events, conditions etc. Basic syntax is very simple:
+Items in BetonQuest are defined in the _items_ section. Each item has an instruction string, similarly to events, conditions etc. Basic syntax is very simple:
 
 ```YAML
 item: BLOCK_SELECTOR other arguments...
@@ -380,7 +380,7 @@ important_sword: "DIAMOND_SWORD name:Sword_for_destroying__The_Concrete lore:Mad
 
 To open your backpack just type **/j** command. The inventory window will open, displaying your stored items. The first slot is always the journal, and if you get it, the slot will stay empty. You can transfer quest items back and forth between inventories by clicking on them. Left click will transfer just one item, right click will try to transfer all items. Normal items cannot be stored into the backpack, so it's not an infinite inventory.
 
-If you will ever have more than one page of quest items, the buttons will appear. You can customize those buttons by creating `previous_button` and `next_button` items in _items.yml_ file. Their name will be overwritten with the one defined in _messages.yml_.
+If you will ever have more than one page of quest items, the buttons will appear. You can customize those buttons by creating `previous_button` and `next_button` items in the _items_ section. Their name will be overwritten with the one defined in _messages.yml_.
 
 Quest items cannot be dropped in any way other than using them. This way you can create a quest for eating cookies by giving the player a stack of cookies flagged as quest items and not continuing until there are no more cookies in his inventory/backpack. The player cannot drop the cookies, so he must eat every one of them to complete the quest.
 
@@ -465,7 +465,7 @@ width="780">
 Sorry, your browser doesn't support embedded videos.
 </video>
 
-You can also hide players for specific players in the `custom.yml`. If the `source_player` meets the conditions
+You can also hide players for specific players. If the `source_player` meets the conditions
 every player that meets the `target_player` conditions is completely hidden for him.
 This is really helpful if you want a lonely place on your server,
 or your quests break when multiple players can see or affect each other.

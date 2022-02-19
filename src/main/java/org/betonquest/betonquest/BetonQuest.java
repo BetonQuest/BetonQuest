@@ -315,7 +315,7 @@ public class BetonQuest extends JavaPlugin {
     /**
      * Checks if the condition described by conditionID is met
      *
-     * @param conditionID ID of the condition to check, as defined in conditions.yml
+     * @param conditionID ID of the condition to check
      * @param playerID    ID of the player which should be checked
      * @return if the condition is met
      */
@@ -366,7 +366,7 @@ public class BetonQuest extends JavaPlugin {
     /**
      * Fires the event described by eventID
      *
-     * @param eventID  ID of the event to fire, as defined in events.yml
+     * @param eventID  ID of the event to fire
      * @param playerID ID of the player who the event is firing for
      */
     public static void event(final String playerID, final EventID eventID) {
@@ -1008,12 +1008,6 @@ public class BetonQuest extends JavaPlugin {
             final ConfigurationSection conversationsConfig = pack.getConfig().getConfigurationSection("conversations");
             if (conversationsConfig != null) {
                 for (final String convName : conversationsConfig.getKeys(false)) {
-                    if (convName.contains(" ")) {
-                        log.warn(pack,
-                                "Conversation name cannot contain spaces: '" + convName + "' (in " + packName
-                                        + " package)");
-                        continue;
-                    }
                     try {
                         CONVERSATIONS.put(pack.getPackagePath() + "." + convName, new ConversationData(pack, convName, conversationsConfig.getConfigurationSection(convName)));
                     } catch (final InstructionParseException e) {
