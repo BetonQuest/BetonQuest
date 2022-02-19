@@ -60,19 +60,19 @@ The core ideas of that system are:
 
 Here is an example for the block objective.
 ```YAML
-#objectives
-mineStone: "block stone -1 persistent events:blockBroken"
+objectives:
+  mineStone: "block stone -1 persistent events:blockBroken"
 
-#events
-blockBroken: "folder addPoint,sendNotify,checkForCompletion"
+events:
+  blockBroken: "folder addPoint,sendNotify,checkForCompletion"
+  
+  addPoint: "point blockCounter 1"
+  sendNotify: "notify &a%point.blockCounter.amount%&8/&210 &7stone broken. io:chat"
+  
+  checkForCompletion: "run ^objective remove mineStone ^deletepoint blockCounter conditions:has10Points"
 
-addPoint: "point blockCounter 1"
-sendNotify: "notify &a%point.blockCounter.amount%&8/&210 &7stone broken. io:chat"
-
-checkForCompletion: "run ^objective remove mineStone ^deletepoint blockCounter conditions:has10Points"
-
-#conditions
-has10Points: "point blockCounter 10"
+conditions:
+  has10Points: "point blockCounter 10"
 ``` 
 
 ## How can I let the NPC say things across multiple lines?
@@ -99,31 +99,31 @@ If you want a player to have e.g. `potato + poisonous_potato = 64` in his invent
 More specifically, you can have a [*Block Selector*](../Documentation/Reference.md#block-selectors) that is a *regex*.
 It would look like this in the example:
 ```YAML
-#items
-anyPotato: ".*potato.*"
+items:
+  anyPotato: ".*potato.*"
 
-#conditions
-hasAnyPotato: "item anyPotato"
+conditions:
+  hasAnyPotato: "item anyPotato"
 ```
 
 ## How to store custom text in a variable / How to use the variable objective?
 1. Start a variable objective for the player. It serves as a variable storage:
 ```YAML
-#objectives
- myVariableStorage: "variable no-chat"
+objectives:
+  myVariableStorage: "variable no-chat"
 ```
 
 2. Assign values to that storage using a key and a value. Both can be any text you like:
 ```YAML
-#events
-addBlock: "variable myVariableStorage blockName REDSTONE"
-addLocation: "variable myVariableStorage location 123;456;789;world"
+events:
+  addBlock: "variable myVariableStorage blockName REDSTONE"
+  addLocation: "variable myVariableStorage location 123;456;789;world"
 ```
 
 3. Read from your variable storage using the storages name and the data key.
 ```YAML
-#conditions
-hasHeartBlock: "testforblock %objective.myVariableStorage.location% %objective.myVariableStorage.blockName%"
+conditions:
+  hasHeartBlock: "testforblock %objective.myVariableStorage.location% %objective.myVariableStorage.blockName%"
 ```
 
 ## Error "Quester is not defined"
