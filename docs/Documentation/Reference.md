@@ -124,8 +124,8 @@ dot and the package name.
     Let's assume you have a `rewards` package that contains player reward events.  
     Let's run the `easyMobObjective` event of the `rewards` package from another package:
     
-    1. Add a dot (`.`) before the event name. :arrow_right: `{++.++}easyMobObjective`
-    2. Add the package name infront of the dot :arrow_right: `{++rewards++}.easyMobObjective`
+    1. Add a dot (`.`) before the event name :arrow_right: `{==.==}easyMobObjective`
+    2. Add the package name infront of the dot :arrow_right: `{==rewards==}.easyMobObjective`
     
     An example usage could look like this:
     ````YAML
@@ -147,9 +147,9 @@ the package name and the path from the `QuestPackages` folder to the package.
         is located in the `QuestPackages` folder.
         Let's run the `startDailyQuest` event of the `dailyQuestOne` package from a third package:
         
-        1. Combine the event name with the package name :arrow_right: `{++dailyQuestOne.++}startDailyQuest`
+        1. Combine the event name with the package name :arrow_right: `{==dailyQuestOne.==}startDailyQuest`
         2. Add the path from the `QuestPackages` folder to the `dailyQuestOne` package seperated by dashes (`-`).
-        <br>:arrow_right: `{++dailyQuests-++}dailyQuestOne.startDailyQuest`
+        :arrow_right: `{==dailyQuests-==}dailyQuestOne.startDailyQuest`
         
         An example usage could look like this:
         ````YAML
@@ -161,9 +161,9 @@ the package name and the path from the `QuestPackages` folder to the package.
         is contained inside a folder called `repeatable` which is located in the `QuestPackages` folder.
         Let's run the `startDailyQuest` event of the `dailyQuestOne` package from a third package:
         
-        1. Combine the event name with the package name :arrow_right: `{++dailyQuestOne.++}startDailyQuest`
+        1. Combine the event name with the package name :arrow_right: `{==dailyQuestOne.==}startDailyQuest`
         2. Add the path from the `QuestPackages` folder to the `dailyQuestOne` package seperated by dashes (`-`).
-        <br>:arrow_right: `{++repetable-dailyQuests-++}dailyQuestOne.startDailyQuest`
+        :arrow_right: `{==repetable-dailyQuests-==}dailyQuestOne.startDailyQuest`
         
         An example usage could look like this:
         ````YAML
@@ -182,10 +182,10 @@ to match the current location, relative paths will still work.
     Let's assume you have a `weeklyQuests` folder that contains a `weeklyQuestOne` and a `weeklyQuestTwo` package.
     Let's run the `startQuestTwo` event of the `weeklyQuestTwo` package from the `weeklyQuestOne` package.
     
-    1. Combine the event name with the package name :arrow_right: `{++weeklyQuestTwo.++}startQuestTwo`
+    1. Combine the event name with the package name :arrow_right: `{==weeklyQuestTwo.==}startQuestTwo`
     2. Add the path from the current _package.yml_ to the folder the package of interested lies in. This is done using
     underscores ("go one folder up"). A dash must be added after each underscore (`-`).
-    <br>:arrow_right: `{++_-++}weeklyQuestTwo.startQuestTwo`
+    :arrow_right: `{==_-==}weeklyQuestTwo.startQuestTwo`
     
     An example usage could look like this:
     ````YAML
