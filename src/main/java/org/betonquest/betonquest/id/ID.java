@@ -113,7 +113,7 @@ public abstract class ID {
 
     @Override
     public boolean equals(final Object other) {
-        if (other instanceof final ID identifier) {
+        if (other instanceof ID identifier) {
             return identifier.identifier.equals(this.identifier) &&
                     identifier.pack.getPackagePath().equals(this.pack.getPackagePath());
         }
