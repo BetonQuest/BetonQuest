@@ -47,6 +47,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Changed quest package structure
     - Quest packages are now searched and loaded from the folder `BetonQuest/QuestPackages/`
     - Quest packages can now contain more quest packages in sub folders
+    - Relative paths can now navigate downwards and not only upwards
     - `main.yml` was renamed to `package.yml`
     - Any file and folder structure with any file and folder names is now allowed, except `package.yml`, as that file
       indicates a quest package

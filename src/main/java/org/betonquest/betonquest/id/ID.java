@@ -57,7 +57,18 @@ public abstract class ID {
                 // throw error earlier so it can have more information than default one at the bottom
                 if (this.pack == null) {
                     throw new ObjectNotFoundException("Relative path in ID '" + identifier + "' resolved to '" + absolute +
-                            "', but this package does not exist");
+                            "', but this package does not exist!");
+                }
+                // We want to go down
+            } else if (pack != null && packName.startsWith("-")) {
+                final String currentPath = pack.getPackagePath();
+                final String fullPath = currentPath + packName;
+
+                this.pack = Config.getPackages().get(fullPath);
+                // throw error earlier so it can have more information than default one at the bottom
+                if (this.pack == null) {
+                    throw new ObjectNotFoundException("Relative path in ID '" + identifier + "' resolved to '" + fullPath +
+                            "', but this package does not exist!");
                 }
             } else {
                 // use package name as absolute path if no relative path is available
@@ -102,8 +113,7 @@ public abstract class ID {
 
     @Override
     public boolean equals(final Object other) {
-        if (other instanceof ID) {
-            final ID identifier = (ID) other;
+        if (other instanceof ID identifier) {
             return identifier.identifier.equals(this.identifier) &&
                     identifier.pack.getPackagePath().equals(this.pack.getPackagePath());
         }
