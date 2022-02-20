@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * This {@link Updater} checks for new versions on the BeonQuest page and on the GitHub page and download them if wanted.
+ * This {@link Updater} checks for new versions on the BetonQuest page and on the GitHub page and download them if wanted.
  */
 @CustomLog
 public class Updater {
@@ -56,7 +56,7 @@ public class Updater {
      */
     public static final int RESPONSE_403 = 403;
     /**
-     * The minimum delay when checking for updates, this prevent to api requests when reloading the plugin too often.
+     * The minimum delay when checking for updates, this prevents too many api requests when reloading the plugin often.
      */
     private static final long CHECK_DELAY = 1000 * 60 * 10;
     /**
@@ -68,7 +68,7 @@ public class Updater {
      */
     private static final String DEV_INDICATOR = "DEV-";
     /**
-     * The file name of the plugin in the plugins folder.
+     * The file name of the plugin in the plugin's folder.
      */
     private final String fileName;
     /**
@@ -81,7 +81,7 @@ public class Updater {
      */
     private Pair<Version, String> latest;
     /**
-     * The last timestamp, when a update was searched.
+     * The last timestamp, when an update was searched.
      */
     private long lastCheck;
     /**
@@ -93,7 +93,7 @@ public class Updater {
      * Create a new Updater instance.
      *
      * @param currentVersion The current plugin version.
-     * @param file           The file of the plugin in the plugins folder.
+     * @param file           The file of the plugin in the plugin's folder.
      */
     public Updater(final String currentVersion, final File file) {
         this.fileName = file.getName();
@@ -213,7 +213,7 @@ public class Updater {
     }
 
     /**
-     * Send a update notification to a player.
+     * Sends an update notification to a player.
      *
      * @param player The player, that should receive the message.
      */
@@ -350,7 +350,7 @@ public class Updater {
          */
         private final boolean automatic;
         /**
-         * Should player be notified ingame.
+         * Should player be notified in game.
          */
         private final boolean ingameNotification;
         /**

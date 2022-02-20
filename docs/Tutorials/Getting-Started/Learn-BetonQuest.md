@@ -10,14 +10,15 @@ There are two ways to get started with BetonQuest:
 ## Checking out the "default" example quest. 
 
 Let's start by checking out the build in example quest. You can find it in the BetonQuest directory that has been
-generated in your plugins folder. The folder you are looking for is named "_default_".
+generated in your plugins folder. The folder you are looking for is named "_QuestPackages/default/_".
 
-Open it up and find a file called _main.yml_. It contains a lot of options, but you only need to look at this section:
+Open it up and find a file called _package.yml_. It contains a lot of options, but you only need to look at this section:
 ```YAML linenums="1"
 npcs:
   '0': innkeeper
 ```
-You will need to change the `'0'` to the ID of the Citizens NPC you want to learn Beton with. 
+You will need to change the `'0'` to the ID of the [Citizens](../../Documentation/Compatibility.md#npcs-using-citizens)
+NPC you want to learn Beton with. 
 You obtain a NPC's ID by selecting it with **/npc sel** while looking at it and then running **/npc id**.   
 Execute **/q reload** and right-click the NPC.
 
@@ -36,10 +37,9 @@ Do that now or just continue with this tutorial.
 
 ### Events
 
-Let's just open _events.yml_ file inside the _default_ package. Add a new line at the bottom:
-
+Let's just open _events.yml_ file inside the _default_ package. Add a new line at the bottom, note the 2 spaces at the beginning of the line:
 ```YAML linenums="1"
-mega: "notify Hello world!"
+  mega: "notify Hello world!"
 ```
 
 This is an event instruction. BetonQuest will use it to determine what type of event is used and what exactly it should do.
@@ -55,7 +55,7 @@ Press F3 and check out your current location (it's shown on the left, three numb
 Now add in _events.yml_ another line:
 
 ```YAML linenums="1"
-tp: "teleport 100;200;300;world"
+  tp: "teleport 100;200;300;world"
 ```
 
 and replace `100` with your `x` coordinate, `200` with `y` and `300` with `z`. `world` needs to be replaced with your 
@@ -71,7 +71,7 @@ Once you're done let's start learning conditions.
 Open the _conditions.yml_ file and add a new line:
 
 ```YAML linenums="1"
-mega: "location 100;200;300;world 5"
+  mega: "location 100;200;300;world 5"
 ```
 
 Can you see how we named the `mega` condition in the same way as the `mega` event? They are not connected in any way.
@@ -94,21 +94,21 @@ of the event, otherwise it will get confusing really fast. Example:
 
 === "events.yml"
     ```YAML
-    # This is a comment btw
-    # Old:
-    mega: "notify Hello world!"
-    
-    # New:
-    sayHello: "notify Hello world! conditions:isAtSpawn"
+      # This is a comment btw
+      # Old:
+      mega: "notify Hello world!"
+      
+      # New:
+      sayHello: "notify Hello world! conditions:isAtSpawn"
     ```
     
 === "conditions.yml"
     ```YAML
-    # Old:
-    mega: "location 100;200;300;world 5"
-    
-    # New:
-    isAtSpawn: "location 100;200;300;world 5"
+      # Old:
+      mega: "location 100;200;300;world 5"
+      
+      # New:
+      isAtSpawn: "location 100;200;300;world 5"
     ```
 
 
@@ -123,7 +123,7 @@ You can simply negate the condition. Negation makes the condition behave in the 
 Open the _events.yml_ and add an exclamation mark before the `isAtSpawn` condition, so it looks like this:
 
 ```YAML linenums="1"
-sayHello: "notify Hello world! conditions:!isAtSpawn"
+  sayHello: "notify Hello world! conditions:!isAtSpawn"
 ```
 
 This means "display the `Hello world!` notification if the `isAtSpawn` condition is _not met_". Save the file, reload the plugin
@@ -134,8 +134,8 @@ and run the event inside and outside of the radius to see how it works.
 Now that you know how to use events and conditions I'll show you what tags are. Create new events:
 
 ```YAML linenums="1"
-add_beton_tag: "tag add beton"
-del_beton_tag: "tag del beton"
+  add_beton_tag: "tag add beton"
+  del_beton_tag: "tag del beton"
 ```
 
 It's a good practice to give your events names that describe what they are doing. Imagine you have 100 events, `foo24`,
@@ -148,13 +148,13 @@ Now run `del_beton_tag` event. Guess what, `default.beton` disappeared from the 
 add and remove tags. Pretty useless.
 
 Nothing could be more wrong. Tags are one the most powerful things in BetonQuest. They just need to be used with `tag`
-condition. Open _conditions.yml_ and add
+condition. Open _conditions.yml_ and add this line:
 
 ```YAML linenums="1"
-has_beton_tag: "tag beton"
+  has_beton_tag: "tag beton"
 ```
 
-line. As you can imagine, `tag` is the type of condition (the same as `tag` event, but these are not the same things - one
+As you can imagine, `tag` is the type of condition (the same as `tag` event, but these are not the same things - one
 is an event, the other one is a condition) and `beton` is the name of the tag. You don't have to specify `default.beton`,
 but you can if you want. Now save, reload and check it with a command. It should show **false**, since you have removed
 the tag with `del_beton_tag` event. Add it again with `add_beton_tag` event and check the `has_beton_tag` condition again.
@@ -168,7 +168,7 @@ talks with an NPC, and if the NPC sees that tag next time they talk, he will tel
 Time to write some objectives! Open the _objectives.yml_ file and add a new line:
 
 ```YAML linenums="1"
-kill_creepers: "mobkill CREEPER 3 events:tp conditions:has_beton_tag"
+  kill_creepers: "mobkill CREEPER 3 events:tp conditions:has_beton_tag"
 ```
 
 Now let's analyze it. `kill_creepers` is a name of the objective. `mobkill` is a type. In this case, to complete the
@@ -198,17 +198,19 @@ that for reference. Now create a new file, let's say _miner.yml_. Now type
 (don't copy-paste it, you'll learn better while typing) that into the file:
 
 ```YAML linenums="1"
-quester: Miner
-first: greeting
-NPC_options:
-  greeting:
-    text: Hi there, traveler!
+conversations:
+  miner:
+    quester: Miner
+    first: greeting
+    NPC_options:
+      greeting:
+        text: Hi there, traveler!
 ```
 
 It's the most basic conversation possible. The NPC named `Miner` upon starting the conversation will use `greeting` option,
 which means he will say `Hi there, traveler!`. Then the conversation will end, because there are no player options defined.
 Now you need to link the conversation with an NPC. For that you now need to create or select another NPC.
-Then you link your conversation to the npc in the _main.yml_ file. Open it now. As you can see the previous NPC
+Then you link your conversation to the npc in the _package.yml_ file. Open it now. As you can see the previous NPC
 conversation is linked to `Innkeeper` word. Now add another line under the Innkeeper:
 `'1': miner`, save the file and reload the server. This will link our new conversation with the NPC with the id "1".
 Now click on that NPC.
@@ -218,15 +220,15 @@ The Miner just said `Hi there, traveler!`, as expected. Now go to the conversati
 (again, manually, no copy-paste!) so the options look like this:
 
 ```YAML linenums="1"
-NPC_options:
-  greeting:
-    text: Hi there, traveler!
-    pointers: hello,bye
-player_options:
-  hello:
-    text: Hello!
-  bye:
-    text: I need to go, sorry.
+    NPC_options:
+      greeting:
+        text: Hi there, traveler!
+        pointers: hello,bye
+    player_options:
+      hello:
+        text: Hello!
+      bye:
+        text: I need to go, sorry.
 ```
 
 When you save the file, reload the plugin and start the conversation again you will notice that there are two options
@@ -237,18 +239,18 @@ Now add a new NPC option, for example `weather` with text `Nice weather.` and ma
 When you save&reload, the Miner should say `Nice weather.` when you tell him `Hello!`. I think you get how it works.
 
 ```YAML linenums="1"
-NPC_options:
-  greeting:
-    text: Hi there, traveler!
-    pointers: hello,bye
-  weather:
-    text: Nice weather.
-player_options:
-  hello:
-    text: Hello!
-    pointer: weather
-  bye:
-    text: I need to go, sorry.
+    NPC_options:
+      greeting:
+        text: Hi there, traveler!
+        pointers: hello,bye
+      weather:
+        text: Nice weather.
+    player_options:
+      hello:
+        text: Hello!
+        pointer: weather
+      bye:
+        text: I need to go, sorry.
 ```
 
 Now, every time you talk to the Miner, he will say the same thing. It would be nice if the second time you talk to him
@@ -261,13 +263,13 @@ Now, rename `greeting` NPC option to `first_greeting`. Add `meet_miner` event an
 condition with `''`, because strings cannot start with exclamation marks in YAML. It should look like this:
 
 ```YAML linenums="1"
-first: first_greeting
-NPC_options:
-  first_greeting:
-    text: Hi there, traveler!
-    condition: '!has_met_miner'
-    event: meet_miner
-    pointers: hello,bye 
+    first: first_greeting
+    NPC_options:
+      first_greeting:
+        text: Hi there, traveler!
+        condition: '!has_met_miner'
+        event: meet_miner
+        pointers: hello,bye 
 ```
 
 This means: `first_greeting` should be used if the player **does not** pass `has_met_miner` condition (meaning he
@@ -277,11 +279,11 @@ and display `hello` and `bye` options. Alright, but what happens if the player m
 so let's add it.
 
 ```YAML linenums="1"
-first: first_greeting,regular_greeting
-NPC_options:
-  regular_greeting:
-    text: Hi %player%!
-    pointers: hello,bye
+    first: first_greeting,regular_greeting
+    NPC_options:
+      regular_greeting:
+        text: Hi %player%!
+        pointers: hello,bye
 ```
 
 This option does not have any conditions, so if the `first_greeting` fails, the NPC will always choose this one.
@@ -293,24 +295,27 @@ your Minecraft name.
 Here's the whole conversation you created, so you can check if you understood everything correctly:
 
 ```YAML linenums="1"
-first: first_greeting,regular_greeting
-NPC_options:
-  first_greeting:
-    text: Hi there, traveler!
-    condition: '!has_met_miner'
-    event: meet_miner
-    pointers: hello,bye 
-  regular_greeting:
-    text: Hi %player%!
-    pointers: hello,bye
-  weather:
-    text: Nice weather.
-player_options:
-  hello:
-    text: Hello!
-    pointer: weather
-  bye:
-    text: I need to go, sorry.
+conversations:
+  miner:
+    quester: Miner
+    first: first_greeting,regular_greeting
+    NPC_options:
+      first_greeting:
+        text: Hi there, traveler!
+        condition: '!has_met_miner'
+        event: meet_miner
+        pointers: hello,bye 
+      regular_greeting:
+        text: Hi %player%!
+        pointers: hello,bye
+      weather:
+        text: Nice weather.
+    player_options:
+      hello:
+        text: Hello!
+        pointer: weather
+      bye:
+        text: I need to go, sorry.
 ```
 
 Now you should experiment some more with this conversation, you can help yourself by looking at the
@@ -319,6 +324,5 @@ Try to understand how that conversation works step by step. As the excercise you
 asks you to mine some iron ore, then smelt it in the furnace, next craft an armor with it and return to him wearing this armor.
 
 You might want to check out the [Reference](../../Documentation/Reference.md) chapter to see how to handle items in 
-your quests and how to add entries to the journal. If you want to use Citizens NPCs instead of the ones made with clay 
-you will find information you need in that chapter too. To find out more about events, conditions, objectives and variables,
+your quests and how to add entries to the journal. To find out more about events, conditions, objectives and variables,
 take a look at the appropriate lists (after the _Reference_ chapter).

@@ -7,8 +7,8 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
@@ -63,7 +63,7 @@ public class RPGMenuCommand extends SimpleCommand {
                     return new ArrayList<>(Config.getPackages().keySet());
                 }
                 final String pack = args[1].substring(0, args[1].indexOf('.'));
-                final ConfigPackage configPack = Config.getPackages().get(pack);
+                final QuestPackage configPack = Config.getPackages().get(pack);
                 if (configPack == null) {
                     return new ArrayList<>();
                 }

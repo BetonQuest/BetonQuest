@@ -201,11 +201,11 @@ Does not output any sound or text 🔕. Can be used to remove built-in notificat
 
 Notify Categories are pre-defined [NotifyIO settings](#notify-ios). They can be applied to any notify event and are used
 by BetonQuests built-in notifications.
-All categories must be defined in the *custom.yml* file in a section called `notifications`.
+All categories must be defined in a section called `notifications`.
 
 !!! warning
-    **A note about the custom.yml: This is a strange file. BetonQuest searches through all packages and just uses the first one it finds.
-    Therefore, you should probably create just one custom.yml with all your settings. We will improve this in BQ 2.0.**
+    **A note about the `notifications` section: BetonQuest searches through all packages and just uses the first one it finds.
+    Therefore, you should probably create just one `notifications` section. We will improve this in BQ 2.0.**
 
 ### Custom Categories
 
@@ -230,7 +230,7 @@ The table below contains all build-in notification categories.
 
 You may notice that the "Categories" column lists two categories.
 These work exactly like the one in the `notify` event. The first existent category (from left to right) will be used.
-This allows you to change all build-in notifications with just two entries in your *custom.yml*:
+This allows you to change all build-in notifications with just two entries in your *notifications* section:
 ```YAML
 notifications:
   info:

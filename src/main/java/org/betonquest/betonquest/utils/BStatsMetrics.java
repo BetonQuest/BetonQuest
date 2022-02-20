@@ -11,6 +11,8 @@ import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.id.VariableID;
 import org.bstats.bukkit.Metrics;
+import org.bstats.charts.AdvancedPie;
+import org.bstats.charts.DrilldownPie;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -50,8 +52,8 @@ public class BStatsMetrics {
         final String versionPlugin = plugin.getDescription().getVersion();
         final String versionMc = plugin.getServer().getBukkitVersion().split("-")[0];
 
-        metrics.addCustomChart(new Metrics.DrilldownPie("versionMcBq", () -> getDrilldownPie(versionPlugin, versionMc)));
-        metrics.addCustomChart(new Metrics.DrilldownPie("versionBqMc", () -> getDrilldownPie(versionMc, versionPlugin)));
+        metrics.addCustomChart(new DrilldownPie("versionMcBq", () -> getDrilldownPie(versionPlugin, versionMc)));
+        metrics.addCustomChart(new DrilldownPie("versionBqMc", () -> getDrilldownPie(versionMc, versionPlugin)));
     }
 
     public Map<String, Map<String, Integer>> getDrilldownPie(final String value1, final String value2) {
@@ -63,8 +65,8 @@ public class BStatsMetrics {
     }
 
     private <T> void listUsage(final String bStatsId, final Map<? extends ID, ? extends T> objects, final Map<String, Class<? extends T>> types) {
-        metrics.addCustomChart(new Metrics.AdvancedPie(bStatsId + "Count", () -> countUsageClasses(objects.values(), types)));
-        metrics.addCustomChart(new Metrics.AdvancedPie(bStatsId + "Enabled", () -> {
+        metrics.addCustomChart(new AdvancedPie(bStatsId + "Count", () -> countUsageClasses(objects.values(), types)));
+        metrics.addCustomChart(new AdvancedPie(bStatsId + "Enabled", () -> {
             final Map<String, Integer> enabled = new HashMap<>();
             final Map<String, Integer> usage = countUsageClasses(objects.values(), types);
 
@@ -96,7 +98,7 @@ public class BStatsMetrics {
     }
 
     private void hookedPlugins() {
-        metrics.addCustomChart(new Metrics.DrilldownPie("hookedPlugins", () -> {
+        metrics.addCustomChart(new DrilldownPie("hookedPlugins", () -> {
             final Map<String, Map<String, Integer>> map = new HashMap<>();
             for (final String hook : Compatibility.getHooked()) {
                 final Plugin plug = Bukkit.getPluginManager().getPlugin(hook);

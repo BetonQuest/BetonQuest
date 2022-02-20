@@ -11,6 +11,9 @@ indent_size = 2
 [docs/_media/**]
 #end_of_line = unset
 
+[CHANGELOG.md]
+indent_size = 4
+
 [*.java]
 indent_size = 4
 trim_trailing_whitespace = true

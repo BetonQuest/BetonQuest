@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.id;
 
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 
 import java.util.Objects;
@@ -13,12 +13,12 @@ public abstract class ID {
     public static final String UP_STR = "_"; // string used as "up the hierarchy" package
 
     protected String identifier;
-    protected ConfigPackage pack;
+    protected QuestPackage pack;
     protected Instruction instruction;
     protected String rawInstruction;
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
-    protected ID(final ConfigPackage pack, final String identifier) throws ObjectNotFoundException {
+    protected ID(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
 
         // id must be specified
         if (identifier == null || identifier.length() == 0) {
@@ -32,7 +32,7 @@ public abstract class ID {
             final String packName = identifier.substring(0, dotIndex);
             if (pack != null && packName.startsWith(UP_STR + "-")) {
                 // resolve relative name if we have a supplied package
-                final String[] root = pack.getName().split("-");
+                final String[] root = pack.getPackagePath().split("-");
                 final String[] path = packName.split("-");
                 // count how many packages up we need to go
                 int stepsUp = 0;
@@ -57,7 +57,18 @@ public abstract class ID {
                 // throw error earlier so it can have more information than default one at the bottom
                 if (this.pack == null) {
                     throw new ObjectNotFoundException("Relative path in ID '" + identifier + "' resolved to '" + absolute +
-                            "', but this package does not exist");
+                            "', but this package does not exist!");
+                }
+                // We want to go down
+            } else if (pack != null && packName.startsWith("-")) {
+                final String currentPath = pack.getPackagePath();
+                final String fullPath = currentPath + packName;
+
+                this.pack = Config.getPackages().get(fullPath);
+                // throw error earlier so it can have more information than default one at the bottom
+                if (this.pack == null) {
+                    throw new ObjectNotFoundException("Relative path in ID '" + identifier + "' resolved to '" + fullPath +
+                            "', but this package does not exist!");
                 }
             } else {
                 // use package name as absolute path if no relative path is available
@@ -83,7 +94,7 @@ public abstract class ID {
         }
     }
 
-    public ConfigPackage getPackage() {
+    public QuestPackage getPackage() {
         return pack;
     }
 
@@ -92,7 +103,7 @@ public abstract class ID {
     }
 
     public String getFullID() {
-        return pack.getName() + "." + getBaseID();
+        return pack.getPackagePath() + "." + getBaseID();
     }
 
     @Override
@@ -102,10 +113,9 @@ public abstract class ID {
 
     @Override
     public boolean equals(final Object other) {
-        if (other instanceof ID) {
-            final ID identifier = (ID) other;
+        if (other instanceof ID identifier) {
             return identifier.identifier.equals(this.identifier) &&
-                    identifier.pack.getName().equals(this.pack.getName());
+                    identifier.pack.getPackagePath().equals(this.pack.getPackagePath());
         }
         return false;
     }

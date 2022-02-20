@@ -6,8 +6,8 @@ import lombok.CustomLog;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.api.PlayerJournalAddEvent;
 import org.betonquest.betonquest.api.PlayerJournalDeleteEvent;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.database.Connector.UpdateType;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -200,15 +200,16 @@ public class Journal {
             // get package and name of the pointer
             final String[] parts = pointer.getPointer().split("\\.");
             final String packName = parts[0];
-            final ConfigPackage pack = Config.getPackages().get(packName);
+            final QuestPackage pack = Config.getPackages().get(packName);
             if (pack == null) {
                 continue;
             }
             final String pointerName = parts[1];
             // resolve the text in player's language
             String text;
-            if (pack.getJournal().getConfig().contains(pointerName)) {
-                if (pack.getJournal().getConfig().isConfigurationSection(pointerName)) {
+            final ConfigurationSection journal = pack.getConfig().getConfigurationSection("journal");
+            if (journal != null && journal.contains(pointerName)) {
+                if (journal.isConfigurationSection(pointerName)) {
                     text = pack.getFormattedString("journal." + pointerName + "." + lang);
                     if (text == null) {
                         text = pack.getFormattedString("journal." + pointerName + "." + Config.getLanguage());
@@ -217,7 +218,7 @@ public class Journal {
                     text = pack.getFormattedString("journal." + pointerName);
                 }
             } else {
-                LOG.warn(pack, "No defined journal entry " + pointerName + " in package " + pack.getName());
+                LOG.warn(pack, "No defined journal entry " + pointerName + " in package " + pack.getPackagePath());
                 text = "error";
             }
 
@@ -253,14 +254,13 @@ public class Journal {
     private String generateMainPage() {
         final HashMap<Integer, ArrayList<String>> lines = new HashMap<>(); // holds text lines with their priority
         final HashSet<Integer> numbers = new HashSet<>(); // stores numbers that are used, so there's no need to search them
-        for (final ConfigPackage pack : Config.getPackages().values()) {
-            final String packName = pack.getName();
-            final ConfigurationSection section = pack.getMain().getConfig().getConfigurationSection("journal_main_page");
+        for (final QuestPackage pack : Config.getPackages().values()) {
+            final String packName = pack.getPackagePath();
+            final ConfigurationSection section = pack.getConfig().getConfigurationSection("journal_main_page");
             if (section == null) {
                 continue;
             }
             // handle every entry
-            keys:
             for (final String key : section.getKeys(false)) {
                 final int number = section.getInt(key + ".priority", -1);
                 // only add entry if the priority is set and not doubled

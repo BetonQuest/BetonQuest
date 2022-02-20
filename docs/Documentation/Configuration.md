@@ -51,10 +51,13 @@ English (en), Polish (pl), German (de), French (fr), Spanish (es), Chinese (cn),
 ### Updating
 The `update` section controls the Auto-Updater. It has the following settings:
 
-  * `enabled` (default `true`). Enables or disables the Updater. If set to false, it is not possible to update with the updater and no version checks are executed.
-  * `strategy` (default `MINOR`). The update strategy is the most important feature of the Auto-Updater. An explanation is available [here](Updating-and-Backups.md).
-  * `automatic` (default `true`). If true the updater will download new Versions automatically. Otherwise, the updater
-    will only download new versions when the update command is executed.
+* `enabled` (default `true`). Enables or disables the Updater. If set to false, it is not possible to update with the
+  updater and no version checks are executed.
+* `strategy` (default `MINOR`). The update strategy is the most important feature of the Auto-Updater. An explanation is
+  available [here](Updating/index.md#choose-an-update-strategy).
+* `automatic` (default `true`). If true the updater will download new Versions automatically. Otherwise, the updater
+  will only download new versions when the update command is executed. Advice is
+  available [here](Updating/index.md#enable-or-disable-automatic-updates).
 
 ### Journal slots
 
@@ -64,7 +67,7 @@ be added. You can disable this behaviour by setting the option to `-1`. BetonQue
 
 ### Citizens identifier
 
-`citizens_npcs_by_name` sets whether NPCs from Citizens 2 should be identified in main.yml by their name instead of
+`citizens_npcs_by_name` sets whether NPCs from Citizens 2 should be identified in package.yml by their name instead of
 their id. This is a dangerous setting as two different NPC's at the opposite edges of your world that share the same
 name by accident will trigger the same quest.
 

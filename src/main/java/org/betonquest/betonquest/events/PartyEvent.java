@@ -32,7 +32,7 @@ public class PartyEvent extends QuestEvent {
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final List<String> members = Utils.getParty(playerID, range.getDouble(playerID), instruction.getPackage()
-                .getName(), conditions);
+                .getPackagePath(), conditions);
         for (final String memberID : members) {
             for (final EventID event : events) {
                 BetonQuest.event(memberID, event);

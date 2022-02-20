@@ -6,3 +6,5 @@ mkdocs-git-revision-date-localized-plugin
 mike==1.0.1
 #mkdocs-exclude plugin to exclude snippets
 mkdocs-exclude
+# Extra features
+pymdown-extensions

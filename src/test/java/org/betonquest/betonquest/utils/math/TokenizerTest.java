@@ -2,8 +2,8 @@ package org.betonquest.betonquest.utils.math;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Variable;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
@@ -53,15 +53,15 @@ class TokenizerTest {
     private static void withVariables(final Executable executable, final ProtoVariable... variables) throws Throwable {
         try (MockedStatic<Config> config = mockStatic(Config.class);
              MockedStatic<BetonQuest> betonQuest = mockStatic(BetonQuest.class)) {
-            final ConfigPackage configPackage = mock(ConfigPackage.class);
-            final Map<String, ConfigPackage> packageMap = Collections.singletonMap(TEST_PACKAGE, configPackage);
+            final QuestPackage questPackage = mock(QuestPackage.class);
+            final Map<String, QuestPackage> packageMap = Collections.singletonMap(TEST_PACKAGE, questPackage);
             //noinspection ResultOfMethodCallIgnored
             config.when(Config::getPackages).thenReturn(packageMap);
 
             for (final ProtoVariable variableTemplate : variables) {
                 final Variable var = mock(Variable.class);
                 when(var.getValue(TEST_PLAYER_ID)).thenReturn(variableTemplate.getValue());
-                betonQuest.when(() -> BetonQuest.createVariable(configPackage, "%" + variableTemplate.getKey() + "%")).thenReturn(var);
+                betonQuest.when(() -> BetonQuest.createVariable(questPackage, "%" + variableTemplate.getKey() + "%")).thenReturn(var);
             }
 
             executable.execute();

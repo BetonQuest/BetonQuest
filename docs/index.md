@@ -9,6 +9,18 @@ hide:
 .bq-inline-example-container {
   width: clamp(300px,50%,100%) !important;
 }
+.examples {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-gap: 1rem;
+}
+@media (min-width: 1000px) {
+  .examples { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 2000px) {
+  .examples { grid-template-columns: repeat(3, 1fr); }
+}
 /* compare table - vertical middle */
 tr td {
   vertical-align: middle !important;
@@ -24,7 +36,6 @@ thead a, thead p {
   text-decoration: underline;
   color: var(--md-primary-bg-color) !important;
 }
-
 /* compare table - div - set fixed size */
 .md-typeset__table {
   width: 100%;
@@ -54,7 +65,6 @@ tbody tr:nth-child(12) p {
 thead span {
   text-decoration: none;
   font-weight: 400;
-  
 }
 </style>
 
@@ -126,7 +136,7 @@ Sometimes, user reviews describe a plugin better than the author can:
 | OpenSource               | :white_check_mark: |         :white_check_mark:          |          :white_check_mark:          | :white_check_mark: |     :white_check_mark:     | :white_check_mark: |            :x:             |            :x:             |
 | API                      | :white_check_mark: |         :white_check_mark:          |          :white_check_mark:          | :white_check_mark: |     :white_check_mark:     |        :x:         | :material-check-bold: [^1] | :material-check-bold: [^1] |
 | Version Support          |    1.13 - 1.18     |             1.7 - 1.18              |              1.7 - 1.18              |    1.17 - 1.18     |        1.11 - 1.18         |   1.13 - 1.17.1    |         1.7 - 1.18         |         1.7 - 1.18         |
-| Integrated Plugins       |         31         |                 13                  |                  1                   |         19         |             15             |         6          |             30             |             1              |
+| Integrated Plugins       |         30         |                 13                  |                  1                   |         19         |             15             |         6          |             30             |             1              |
 | BetonQuest integration   |                    |     :material-check-bold: [^5]      |                 :x:                  | :white_check_mark: |            :x:             |        :x:         |            :x:             |            :x:             |
 | Ingame Editor            |        :x:         |          Chat & GUI(Paid)           |                 :x:                  | :white_check_mark: |            GUI             | :white_check_mark: |            GUI             |            GUI             |
 | External Editor          | :white_check_mark: |                 :x:                 |                 :x:                  |        :x:         |            :x:             |        :x:         |            :x:             |            :x:             |
@@ -193,16 +203,16 @@ Please let us know if there is any outdated information.
     integration for such scripting plugins.
 
 <br>
-# Features
 
-!!! example inline end bq-inline-example-container
-    <video controls loop src="_media/content/Documentation/Conversations/MenuConvIO.mp4"
-    width="100%">
-    Sorry, your browser doesn't support embedded videos.
-    </video>
+# Features
 
 ## Beautiful multi-path Conversations
 
+!!! example inline end bq-inline-example-container note ""
+<video controls loop src="_media/content/Documentation/Conversations/MenuConvIO.mp4"
+width="100%">
+Sorry, your browser doesn't support embedded videos.
+</video>
 
 Players can have immersive conversation with NPC's by utilizing BetonQuests Multi-Path-Conversation System. Questers can
 freely define multi-path stories, narrated with NPC conversations, and with multiple endings that affect a player's
@@ -217,13 +227,13 @@ enough you can always just hook into Skript or Denizen too.
 
 See the full list of integrations [here](Documentation/Compatibility.md).
 
-!!! example inline end bq-inline-example-container
-    <video controls loop src="_media/content/Documentation/Notifications/NotifySystemOverview.mp4"
-    width="100%">
-    Sorry, your browser doesn't support embedded videos.
-    </video>
-
 ## Custom Notification System
+
+!!! example inline end bq-inline-example-container note ""
+<video controls loop src="_media/content/Documentation/Notifications/NotifySystemOverview.mp4"
+width="100%">
+Sorry, your browser doesn't support embedded videos.
+</video>
 
 * Questers can make use of BetonQuests notifyIO system that provides access to all of Minecafts GUI elements to display
   notifications.
@@ -234,14 +244,12 @@ See the full list of integrations [here](Documentation/Compatibility.md).
 * You can give players information about where they are in a quest using the "Journal". The Journal is a book in which
   you can write content based on the players actions.
 
-!!! example inline end bq-inline-example-container
-    <video controls loop src="_media/content/Documentation/Compatibility/PlayerHider.mp4"
-    width="100%">
-    Sorry, your browser doesn't support embedded videos.
-    </video>
-
 ## Player, NPC and Hologram Hider
-
+!!! example inline end bq-inline-example-container note ""
+<video controls loop src="_media/content/Documentation/Compatibility/PlayerHider.mp4"
+width="100%">
+Sorry, your browser doesn't support embedded videos.
+</video>
 
 BetonQuest allows you to hide players from each other based on conditions. This can be used to create story-regions
 where players are always alone.  
@@ -260,7 +268,7 @@ Our community created a lot of cool stuff!
 Some members even made machines with this quest plugin - that really shows that your imagination is the only limit.
 Take a look at this handpicked selection:
 
-<div style="display: grid; grid-column-gap: 50px; grid-template-columns: auto auto;"> 
+<div class="examples"> 
     <div>
       <h3> Wandering Trader by Ley </h3>
         <video controls loop

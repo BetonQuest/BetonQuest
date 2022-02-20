@@ -65,6 +65,7 @@ markdown_extensions:
   - codehilite:
       linenums: true
   - footnotes
+  - markdown.extensions.md_in_html
   - meta
   - pymdownx.highlight
   - pymdownx.arithmatex
@@ -80,7 +81,6 @@ markdown_extensions:
       options:
         custom_icons:
           - custom_theme/.icons
-
   - pymdownx.inlinehilite
   - pymdownx.magiclink
   - pymdownx.mark
@@ -174,7 +174,9 @@ nav:
           - "🏷️   IO's & Categories": Documentation/Notification-IO's-&-Categories.md
       - 'Technical':
           - '🔒 Permissions & Commands': Documentation/Commands-and-permissions.md
-          - '📥 Updating': Documentation/Updating-and-Backups.md
+          - '📥 Updating':
+              - Documentation/Updating/index.md
+              - '📤 Migration': Documentation/Updating/Migration.md
           - '🔧  Configuration': Documentation/Configuration.md
           - '🗃️ Changelog': Documentation/CHANGELOG.md
   - '🔌 API':

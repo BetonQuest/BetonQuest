@@ -3,7 +3,7 @@ package org.betonquest.betonquest.menu;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.config.ConfigPackage;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
@@ -12,7 +12,7 @@ import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.menu.commands.SimpleCommand;
 import org.betonquest.betonquest.menu.config.RPGMenuConfig;
-import org.betonquest.betonquest.menu.config.SimpleYMLConfig;
+import org.betonquest.betonquest.menu.config.SimpleYMLSection;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -35,7 +35,7 @@ import java.util.Optional;
  */
 @CustomLog
 @SuppressWarnings({"PMD.GodClass", "PMD.ShortClassName", "PMD.CommentRequired"})
-public class Menu extends SimpleYMLConfig implements Listener {
+public class Menu extends SimpleYMLSection implements Listener {
 
     /**
      * The internal id of the menu
@@ -92,10 +92,10 @@ public class Menu extends SimpleYMLConfig implements Listener {
     @SuppressWarnings("PMD.AvoidFieldNameMatchingTypeName")
     private final RPGMenu menu = BetonQuest.getInstance().getRpgMenu();
 
-    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.EmptyCatchBlock", "PMD.NPathComplexity", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.NPathComplexity", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public Menu(final MenuID menuID) throws InvalidConfigurationException {
-        super(menuID.getFullID(), menuID.getFile());
+        super(menuID.getFullID(), menuID.getConfig());
         this.menuID = menuID;
         //load size
         this.height = getInt("height");
@@ -108,19 +108,19 @@ public class Menu extends SimpleYMLConfig implements Listener {
         this.openConditions = new ArrayList<>();
         try {
             this.openConditions.addAll(getConditions("open_conditions", this.menuID.getPackage()));
-        } catch (final Missing e) {
+        } catch (final Missing ignored) {
         }
         //load opening events
         this.openEvents = new ArrayList<>();
         try {
             this.openEvents.addAll(getEvents("open_events", this.menuID.getPackage()));
-        } catch (final Missing e) {
+        } catch (final Missing ignored) {
         }
         //load closing events
         this.closeEvents = new ArrayList<>();
         try {
             this.closeEvents.addAll(getEvents("close_events", this.menuID.getPackage()));
-        } catch (final Missing e) {
+        } catch (final Missing ignored) {
         }
         //load bound item
         this.boundItem = new OptionalSetting<QuestItem>() {
@@ -275,7 +275,7 @@ public class Menu extends SimpleYMLConfig implements Listener {
     /**
      * @return the package this menu is located in
      */
-    public ConfigPackage getPackage() {
+    public QuestPackage getPackage() {
         return this.menuID.getPackage();
     }
 

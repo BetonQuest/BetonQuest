@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.LoadDataEvent;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.Variable;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.commands.BackpackCommand;
 import org.betonquest.betonquest.commands.CancelQuestCommand;
 import org.betonquest.betonquest.commands.CompassCommand;
@@ -64,7 +65,6 @@ import org.betonquest.betonquest.conditions.VariableCondition;
 import org.betonquest.betonquest.conditions.WeatherCondition;
 import org.betonquest.betonquest.conditions.WorldCondition;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.conversation.CombatTagger;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
@@ -199,7 +199,7 @@ import org.betonquest.betonquest.variables.PointVariable;
 import org.betonquest.betonquest.variables.VersionVariable;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -315,7 +315,7 @@ public class BetonQuest extends JavaPlugin {
     /**
      * Checks if the condition described by conditionID is met
      *
-     * @param conditionID ID of the condition to check, as defined in conditions.yml
+     * @param conditionID ID of the condition to check
      * @param playerID    ID of the player which should be checked
      * @return if the condition is met
      */
@@ -366,7 +366,7 @@ public class BetonQuest extends JavaPlugin {
     /**
      * Fires the event described by eventID
      *
-     * @param eventID  ID of the event to fire, as defined in events.yml
+     * @param eventID  ID of the event to fire
      * @param playerID ID of the player who the event is firing for
      */
     public static void event(final String playerID, final EventID eventID) {
@@ -471,7 +471,7 @@ public class BetonQuest extends JavaPlugin {
      * @return the Variable instance
      * @throws InstructionParseException when the variable parsing fails
      */
-    public static Variable createVariable(final ConfigPackage pack, final String instruction)
+    public static Variable createVariable(final QuestPackage pack, final String instruction)
             throws InstructionParseException {
         final VariableID variableID;
         try {
@@ -564,7 +564,7 @@ public class BetonQuest extends JavaPlugin {
         logWatcher = new LogWatcher(this, adventure);
 
         // load configuration
-        new Config();
+        Config.setup(this);
         Notify.load();
 
         // try to connect to database
@@ -863,153 +863,156 @@ public class BetonQuest extends JavaPlugin {
         OBJECTIVES.clear();
         VARIABLES.clear();
         // load new data
-        for (final ConfigPackage pack : Config.getPackages().values()) {
-            final String packName = pack.getName();
+        for (final QuestPackage pack : Config.getPackages().values()) {
+            final String packName = pack.getPackagePath();
             log.debug(pack, "Loading stuff in package " + packName);
-            final FileConfiguration eConfig = Config.getPackages().get(packName).getEvents().getConfig();
-            for (final String key : eConfig.getKeys(false)) {
-                if (key.contains(" ")) {
-                    log.warn(pack,
-                            "Event name cannot contain spaces: '" + key + "' (in " + packName + " package)");
-                    continue;
-                }
-                final EventID identifier;
-                try {
-                    identifier = new EventID(pack, key);
-                } catch (final ObjectNotFoundException e) {
-                    log.warn(pack, "Error while loading event '" + packName + "." + key + "': " + e.getMessage(), e);
-                    continue;
-                }
-                final String type;
-                try {
-                    type = identifier.generateInstruction().getPart(0);
-                } catch (final InstructionParseException e) {
-                    log.warn(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
-                    continue;
-                }
-                final Class<? extends QuestEvent> eventClass = EVENT_TYPES.get(type);
-                if (eventClass == null) {
-                    // if it's null then there is no such type registered, log
-                    // an error
-                    log.warn(pack, "Event type " + type + " is not registered, check if it's"
-                            + " spelled correctly in '" + identifier + "' event.");
-                    continue;
-                }
-                try {
-                    final QuestEvent event = eventClass.getConstructor(Instruction.class)
-                            .newInstance(identifier.generateInstruction());
-                    EVENTS.put(identifier, event);
-                    log.debug(pack, "  Event '" + identifier + "' loaded");
-                } catch (final InvocationTargetException e) {
-                    if (e.getCause() instanceof InstructionParseException) {
-                        log.warn(pack, "Error in '" + identifier + "' event (" + type + "): " + e.getCause().getMessage(), e);
-                    } else {
+            final ConfigurationSection eConfig = Config.getPackages().get(packName).getConfig().getConfigurationSection("events");
+            if (eConfig != null) {
+                for (final String key : eConfig.getKeys(false)) {
+                    if (key.contains(" ")) {
+                        log.warn(pack,
+                                "Event name cannot contain spaces: '" + key + "' (in " + packName + " package)");
+                        continue;
+                    }
+                    final EventID identifier;
+                    try {
+                        identifier = new EventID(pack, key);
+                    } catch (final ObjectNotFoundException e) {
+                        log.warn(pack, "Error while loading event '" + packName + "." + key + "': " + e.getMessage(), e);
+                        continue;
+                    }
+                    final String type;
+                    try {
+                        type = identifier.generateInstruction().getPart(0);
+                    } catch (final InstructionParseException e) {
+                        log.warn(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
+                        continue;
+                    }
+                    final Class<? extends QuestEvent> eventClass = EVENT_TYPES.get(type);
+                    if (eventClass == null) {
+                        // if it's null then there is no such type registered, log
+                        // an error
+                        log.warn(pack, "Event type " + type + " is not registered, check if it's"
+                                + " spelled correctly in '" + identifier + "' event.");
+                        continue;
+                    }
+                    try {
+                        final QuestEvent event = eventClass.getConstructor(Instruction.class)
+                                .newInstance(identifier.generateInstruction());
+                        EVENTS.put(identifier, event);
+                        log.debug(pack, "  Event '" + identifier + "' loaded");
+                    } catch (final InvocationTargetException e) {
+                        if (e.getCause() instanceof InstructionParseException) {
+                            log.warn(pack, "Error in '" + identifier + "' event (" + type + "): " + e.getCause().getMessage(), e);
+                        } else {
+                            log.reportException(pack, e);
+                        }
+                    } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
                         log.reportException(pack, e);
                     }
-                } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-                    log.reportException(pack, e);
                 }
             }
-            final FileConfiguration cConfig = pack.getConditions().getConfig();
-            for (final String key : cConfig.getKeys(false)) {
-                if (key.contains(" ")) {
-                    log.warn(pack,
-                            "Condition name cannot contain spaces: '" + key + "' (in " + packName + " package)");
-                    continue;
-                }
-                final ConditionID identifier;
-                try {
-                    identifier = new ConditionID(pack, key);
-                } catch (final ObjectNotFoundException e) {
-                    log.warn(pack, "Error while loading condition '" + packName + "." + key + "': " + e.getMessage(), e);
-                    continue;
-                }
-                final String type;
-                try {
-                    type = identifier.generateInstruction().getPart(0);
-                } catch (final InstructionParseException e) {
-                    log.warn(pack, "Condition type not defined in '" + packName + "." + key + "'", e);
-                    continue;
-                }
-                final Class<? extends Condition> conditionClass = CONDITION_TYPES.get(type);
-                // if it's null then there is no such type registered, log an
-                // error
-                if (conditionClass == null) {
-                    log.warn(pack, "Condition type " + type + " is not registered,"
-                            + " check if it's spelled correctly in '" + identifier + "' condition.");
-                    continue;
-                }
-                try {
-                    final Condition condition = conditionClass.getConstructor(Instruction.class)
-                            .newInstance(identifier.generateInstruction());
-                    CONDITIONS.put(identifier, condition);
-                    log.debug(pack, "  Condition '" + identifier + "' loaded");
-                } catch (final InvocationTargetException e) {
-                    if (e.getCause() instanceof InstructionParseException) {
-                        log.warn(pack, "Error in '" + identifier + "' condition (" + type + "): " + e.getCause().getMessage(), e);
-                    } else {
+            final ConfigurationSection cConfig = pack.getConfig().getConfigurationSection("conditions");
+            if (cConfig != null) {
+                for (final String key : cConfig.getKeys(false)) {
+                    if (key.contains(" ")) {
+                        log.warn(pack,
+                                "Condition name cannot contain spaces: '" + key + "' (in " + packName + " package)");
+                        continue;
+                    }
+                    final ConditionID identifier;
+                    try {
+                        identifier = new ConditionID(pack, key);
+                    } catch (final ObjectNotFoundException e) {
+                        log.warn(pack, "Error while loading condition '" + packName + "." + key + "': " + e.getMessage(), e);
+                        continue;
+                    }
+                    final String type;
+                    try {
+                        type = identifier.generateInstruction().getPart(0);
+                    } catch (final InstructionParseException e) {
+                        log.warn(pack, "Condition type not defined in '" + packName + "." + key + "'", e);
+                        continue;
+                    }
+                    final Class<? extends Condition> conditionClass = CONDITION_TYPES.get(type);
+                    // if it's null then there is no such type registered, log an
+                    // error
+                    if (conditionClass == null) {
+                        log.warn(pack, "Condition type " + type + " is not registered,"
+                                + " check if it's spelled correctly in '" + identifier + "' condition.");
+                        continue;
+                    }
+                    try {
+                        final Condition condition = conditionClass.getConstructor(Instruction.class)
+                                .newInstance(identifier.generateInstruction());
+                        CONDITIONS.put(identifier, condition);
+                        log.debug(pack, "  Condition '" + identifier + "' loaded");
+                    } catch (final InvocationTargetException e) {
+                        if (e.getCause() instanceof InstructionParseException) {
+                            log.warn(pack, "Error in '" + identifier + "' condition (" + type + "): " + e.getCause().getMessage(), e);
+                        } else {
+                            log.reportException(pack, e);
+                        }
+                    } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
                         log.reportException(pack, e);
                     }
-                } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-                    log.reportException(pack, e);
                 }
             }
-            final FileConfiguration oConfig = pack.getObjectives().getConfig();
-            for (final String key : oConfig.getKeys(false)) {
-                if (key.contains(" ")) {
-                    log.warn(pack,
-                            "Objective name cannot contain spaces: '" + key + "' (in " + packName + " package)");
-                    continue;
-                }
-                final ObjectiveID identifier;
-                try {
-                    identifier = new ObjectiveID(pack, key);
-                } catch (final ObjectNotFoundException e) {
-                    log.warn(pack, "Error while loading objective '" + packName + "." + key + "': " + e.getMessage(), e);
-                    continue;
-                }
-                final String type;
-                try {
-                    type = identifier.generateInstruction().getPart(0);
-                } catch (final InstructionParseException e) {
-                    log.warn(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
-                    continue;
-                }
-                final Class<? extends Objective> objectiveClass = OBJECTIVE_TYPES.get(type);
-                // if it's null then there is no such type registered, log an
-                // error
-                if (objectiveClass == null) {
-                    log.warn(pack,
-                            "Objective type " + type + " is not registered, check if it's"
-                                    + " spelled correctly in '" + identifier + "' objective.");
-                    continue;
-                }
-                try {
-                    final Objective objective = objectiveClass.getConstructor(Instruction.class)
-                            .newInstance(identifier.generateInstruction());
-                    OBJECTIVES.put(identifier, objective);
-                    log.debug(pack, "  Objective '" + identifier + "' loaded");
-                } catch (final InvocationTargetException e) {
-                    if (e.getCause() instanceof InstructionParseException) {
-                        log.warn(pack, "Error in '" + identifier + "' objective (" + type + "): " + e.getCause().getMessage(), e);
-                    } else {
+            final ConfigurationSection oConfig = pack.getConfig().getConfigurationSection("objectives");
+            if (oConfig != null) {
+                for (final String key : oConfig.getKeys(false)) {
+                    if (key.contains(" ")) {
+                        log.warn(pack,
+                                "Objective name cannot contain spaces: '" + key + "' (in " + packName + " package)");
+                        continue;
+                    }
+                    final ObjectiveID identifier;
+                    try {
+                        identifier = new ObjectiveID(pack, key);
+                    } catch (final ObjectNotFoundException e) {
+                        log.warn(pack, "Error while loading objective '" + packName + "." + key + "': " + e.getMessage(), e);
+                        continue;
+                    }
+                    final String type;
+                    try {
+                        type = identifier.generateInstruction().getPart(0);
+                    } catch (final InstructionParseException e) {
+                        log.warn(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
+                        continue;
+                    }
+                    final Class<? extends Objective> objectiveClass = OBJECTIVE_TYPES.get(type);
+                    // if it's null then there is no such type registered, log an
+                    // error
+                    if (objectiveClass == null) {
+                        log.warn(pack,
+                                "Objective type " + type + " is not registered, check if it's"
+                                        + " spelled correctly in '" + identifier + "' objective.");
+                        continue;
+                    }
+                    try {
+                        final Objective objective = objectiveClass.getConstructor(Instruction.class)
+                                .newInstance(identifier.generateInstruction());
+                        OBJECTIVES.put(identifier, objective);
+                        log.debug(pack, "  Objective '" + identifier + "' loaded");
+                    } catch (final InvocationTargetException e) {
+                        if (e.getCause() instanceof InstructionParseException) {
+                            log.warn(pack, "Error in '" + identifier + "' objective (" + type + "): " + e.getCause().getMessage(), e);
+                        } else {
+                            log.reportException(pack, e);
+                        }
+                    } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
                         log.reportException(pack, e);
                     }
-                } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-                    log.reportException(pack, e);
                 }
             }
-            for (final String convName : pack.getConversationNames()) {
-                if (convName.contains(" ")) {
-                    log.warn(pack,
-                            "Conversation name cannot contain spaces: '" + convName + "' (in " + packName
-                                    + " package)");
-                    continue;
-                }
-                try {
-                    CONVERSATIONS.put(pack.getName() + "." + convName, new ConversationData(pack, convName));
-                } catch (final InstructionParseException e) {
-                    log.warn(pack, "Error in '" + packName + "." + convName + "' conversation: " + e.getMessage(), e);
+            final ConfigurationSection conversationsConfig = pack.getConfig().getConfigurationSection("conversations");
+            if (conversationsConfig != null) {
+                for (final String convName : conversationsConfig.getKeys(false)) {
+                    try {
+                        CONVERSATIONS.put(pack.getPackagePath() + "." + convName, new ConversationData(pack, convName, conversationsConfig.getConfigurationSection(convName)));
+                    } catch (final InstructionParseException e) {
+                        log.warn(pack, "Error in '" + packName + "." + convName + "' conversation: " + e.getMessage(), e);
+                    }
                 }
             }
             // check external pointers
@@ -1037,7 +1040,7 @@ public class BetonQuest extends JavaPlugin {
     public void reload() {
         // reload the configuration
         log.debug("Reloading configuration");
-        new Config();
+        Config.setup(this);
         Notify.load();
         // reload updater settings
         BetonQuest.getInstance().getUpdater().searchUpdate();
@@ -1081,9 +1084,13 @@ public class BetonQuest extends JavaPlugin {
             player.closeInventory();
         }
         // cancel database saver
-        saver.end();
+        if (saver != null) {
+            saver.end();
+        }
         Compatibility.disable();
-        database.closeConnection();
+        if (database != null) {
+            database.closeConnection();
+        }
         // cancel static events (they are registered outside of Bukkit so it
         // won't happen automatically)
         StaticEvents.stop();
@@ -1099,7 +1106,9 @@ public class BetonQuest extends JavaPlugin {
             this.adventure = null;
         }
 
-        rpgMenu.onDisable();
+        if (rpgMenu != null) {
+            rpgMenu.onDisable();
+        }
         FreezeEvent.cleanup();
     }
 
@@ -1327,7 +1336,7 @@ public class BetonQuest extends JavaPlugin {
             log.warn("Variable '" + name + "' contains the non-existent package '" + packName + "' !");
             return "";
         }
-        final ConfigPackage pack = Config.getPackages().get(packName);
+        final QuestPackage pack = Config.getPackages().get(packName);
         try {
             final Variable var = createVariable(pack, name);
             if (var == null) {

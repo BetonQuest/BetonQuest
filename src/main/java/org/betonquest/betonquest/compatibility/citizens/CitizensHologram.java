@@ -6,8 +6,8 @@ import lombok.CustomLog;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
@@ -103,8 +103,8 @@ public class CitizensHologram extends BukkitRunnable {
     @SuppressWarnings("PMD.CognitiveComplexity")
     private void initHolograms() {
         int interval = 100;
-        for (final ConfigPackage pack : Config.getPackages().values()) {
-            final ConfigurationSection npcsSection = pack.getMain().getConfig().getConfigurationSection("npcs");
+        for (final QuestPackage pack : Config.getPackages().values()) {
+            final ConfigurationSection npcsSection = pack.getConfig().getConfigurationSection("npcs");
             if (npcsSection != null) {
                 for (final String npcID : npcsSection.getKeys(false)) {
                     try {
@@ -115,7 +115,7 @@ public class CitizensHologram extends BukkitRunnable {
                 }
             }
 
-            final ConfigurationSection hologramsSection = pack.getCustom().getConfig().getConfigurationSection("npc_holograms");
+            final ConfigurationSection hologramsSection = pack.getConfig().getConfigurationSection("npc_holograms");
             if (hologramsSection == null) {
                 continue;
             }
@@ -124,7 +124,7 @@ public class CitizensHologram extends BukkitRunnable {
             }
             interval = hologramsSection.getInt("check_interval", 100);
             if (interval <= 0) {
-                LOG.warn(pack, "Could not load npc holograms of package " + pack.getName() + ": " +
+                LOG.warn(pack, "Could not load npc holograms of package " + pack.getPackagePath() + ": " +
                         "Check interval must be bigger than 0.");
                 return;
             }
@@ -136,7 +136,7 @@ public class CitizensHologram extends BukkitRunnable {
         updateTask = runTaskTimer(BetonQuest.getInstance(), 1, interval);
     }
 
-    private void initHologramsConfig(final ConfigPackage pack, final ConfigurationSection hologramsSection) {
+    private void initHologramsConfig(final QuestPackage pack, final ConfigurationSection hologramsSection) {
         for (final String key : hologramsSection.getKeys(false)) {
             final ConfigurationSection settingsSection = hologramsSection.getConfigurationSection(key);
             if (settingsSection == null) {
@@ -162,26 +162,26 @@ public class CitizensHologram extends BukkitRunnable {
         }
     }
 
-    private Vector getVector(final ConfigPackage pack, final String key, final String vector) {
+    private Vector getVector(final QuestPackage pack, final String key, final String vector) {
         if (vector != null) {
             try {
                 final String[] vectorParts = vector.split(";");
                 return new Vector(Double.parseDouble(vectorParts[0]), Double.parseDouble(vectorParts[1]), Double.parseDouble(vectorParts[2]));
             } catch (final NumberFormatException e) {
-                LOG.warn(pack, pack.getName() + ": Invalid vector in Hologram '" + key + "': " + vector, e);
+                LOG.warn(pack, pack.getPackagePath() + ": Invalid vector in Hologram '" + key + "': " + vector, e);
             }
         }
         return new Vector(0, 3, 0);
     }
 
-    private List<ConditionID> initHologramsConfigConditions(final ConfigPackage pack, final String key, final String rawConditions) {
+    private List<ConditionID> initHologramsConfigConditions(final QuestPackage pack, final String key, final String rawConditions) {
         final ArrayList<ConditionID> conditions = new ArrayList<>();
         if (rawConditions != null) {
             for (final String part : rawConditions.split(",")) {
                 try {
                     conditions.add(new ConditionID(pack, part));
                 } catch (final ObjectNotFoundException e) {
-                    LOG.warn(pack, "Error while loading " + part + " condition for hologram " + pack.getName() + "."
+                    LOG.warn(pack, "Error while loading " + part + " condition for hologram " + pack.getPackagePath() + "."
                             + key + ": " + e.getMessage(), e);
                 }
             }
@@ -277,9 +277,9 @@ public class CitizensHologram extends BukkitRunnable {
                     final ItemStack stack = new QuestItem(itemID).generate(stackSize);
                     hologram.appendItemLine(stack);
                 } catch (final InstructionParseException e) {
-                    LOG.warn(npcHologram.pack, "Could not parse item in " + npcHologram.pack.getName() + " hologram: " + e.getMessage(), e);
+                    LOG.warn(npcHologram.pack, "Could not parse item in " + npcHologram.pack.getPackagePath() + " hologram: " + e.getMessage(), e);
                 } catch (final ObjectNotFoundException e) {
-                    LOG.warn(npcHologram.pack, "Could not find item in " + npcHologram.pack.getName() + " hologram: " + e.getMessage(), e);
+                    LOG.warn(npcHologram.pack, "Could not find item in " + npcHologram.pack.getPackagePath() + " hologram: " + e.getMessage(), e);
                 }
             } else {
                 hologram.appendTextLine(line.replace('&', '§'));
@@ -291,7 +291,7 @@ public class CitizensHologram extends BukkitRunnable {
         private List<ConditionID> conditions;
         private Vector vector;
         private List<String> lines;
-        private ConfigPackage pack;
+        private QuestPackage pack;
         private Hologram hologram;
 
         public NPCHologram() {

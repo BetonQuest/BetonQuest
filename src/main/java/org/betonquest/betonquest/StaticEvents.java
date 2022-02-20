@@ -1,8 +1,8 @@
 package org.betonquest.betonquest;
 
 import lombok.CustomLog;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.EventID;
 import org.bukkit.configuration.ConfigurationSection;
@@ -45,11 +45,11 @@ public class StaticEvents {
         if (deleted) {
             LOG.debug("Previous timers has been canceled");
         }
-        for (final ConfigPackage pack : Config.getPackages().values()) {
-            final String packName = pack.getName();
+        for (final QuestPackage pack : Config.getPackages().values()) {
+            final String packName = pack.getPackagePath();
             LOG.debug(pack, "Searching package " + packName);
             // get those hours and events
-            final ConfigurationSection config = pack.getMain().getConfig().getConfigurationSection("static");
+            final ConfigurationSection config = pack.getConfig().getConfigurationSection("static");
             if (config == null) {
                 LOG.debug(pack, "There are no static events defined, skipping");
                 continue;

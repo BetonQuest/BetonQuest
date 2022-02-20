@@ -39,7 +39,7 @@ public class PartyCondition extends Condition {
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
         // get the party
-        final List<String> members = Utils.getParty(playerID, range.getDouble(playerID), instruction.getPackage().getName(), conditions);
+        final List<String> members = Utils.getParty(playerID, range.getDouble(playerID), instruction.getPackage().getPackagePath(), conditions);
         // check every condition against every player - all of them must meet those conditions
         final Stream<String> partyStream = Bukkit.isPrimaryThread() ? members.stream() : members.parallelStream();
         if (!partyStream.allMatch(member -> BetonQuest.conditions(member, everyone))) {

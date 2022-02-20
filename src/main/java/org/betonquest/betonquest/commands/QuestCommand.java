@@ -11,10 +11,11 @@ import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.Point;
 import org.betonquest.betonquest.Pointer;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.config.ConfigAccessor;
-import org.betonquest.betonquest.config.ConfigPackage;
 import org.betonquest.betonquest.database.Connector.UpdateType;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.database.PlayerData;
@@ -31,7 +32,6 @@ import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.modules.logger.LogWatcher;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
-import org.betonquest.betonquest.utils.location.VectorData;
 import org.betonquest.betonquest.utils.versioning.Updater;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -41,18 +41,17 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -135,10 +134,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 case "give":
                 case "g":
                     giveItem(sender, args);
-                    break;
-                case "config":
-                    // config is also only synchronous
-                    handleConfig(sender, args);
                     break;
                 case "objectives":
                 case "objective":
@@ -239,10 +234,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         }
                     }.runTaskAsynchronously(BetonQuest.getInstance());
                     break;
-                case "vector":
-                case "vec":
-                    handleVector(sender, args);
-                    break;
                 case "version":
                 case "ver":
                 case "v":
@@ -284,10 +275,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     }
                     Utils.backup();
                     break;
-                case "create":
-                case "package":
-                    createNewPackage(sender, args);
-                    break;
                 case "debug":
                     handleDebug(sender, args);
                     break;
@@ -306,9 +293,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     @Override
     public List<String> simpleTabComplete(final CommandSender sender, final Command command, final String alias, final String... args) {
         if (args.length == 1) {
-            return Arrays.asList("condition", "event", "item", "give", "config", "objective", "globaltag",
-                    "globalpoint", "tag", "point", "journal", "delete", "rename", "vector", "version", "purge",
-                    "update", "reload", "backup", "create", "debug");
+            return Arrays.asList("condition", "event", "item", "give", "objective", "globaltag",
+                    "globalpoint", "tag", "point", "journal", "delete", "rename", "version", "purge",
+                    "update", "reload", "backup", "debug");
         }
         switch (args[0].toLowerCase(Locale.ROOT)) {
             case "conditions":
@@ -325,8 +312,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "give":
             case "g":
                 return completeItems(args);
-            case "config":
-                return completeConfig(args);
             case "objectives":
             case "objective":
             case "o":
@@ -362,9 +347,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "rename":
             case "r":
                 return completeRenaming(args);
-            case "vector":
-            case "vec":
-                return completeVector(args);
             case "purge":
                 if (args.length == 2) {
                     return null;
@@ -379,7 +361,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "update":
             case "reload":
             case "backup":
-            case "create":
             case "package":
             default:
                 return new ArrayList<>();
@@ -403,13 +384,13 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      *             null for unspecific
      * @return
      */
-    private List<String> completeId(final String[] args, final ConfigAccessor.AccessorType type) {
+    private List<String> completeId(final String[] args, final AccessorType type) {
         final String last = args[args.length - 1];
         if (last == null || !last.contains(".")) {
             return completePackage();
         } else {
             final String pack = last.substring(0, last.indexOf('.'));
-            final ConfigPackage configPack = Config.getPackages().get(pack);
+            final QuestPackage configPack = Config.getPackages().get(pack);
             if (configPack == null) {
                 return new ArrayList<>();
             }
@@ -418,32 +399,33 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 completations.add(pack + '.');
                 return completations;
             }
-            final ConfigAccessor accessor;
+            final ConfigurationSection configuration;
             switch (type) {
                 case ITEMS:
-                    accessor = configPack.getItems();
+                    configuration = configPack.getConfig().getConfigurationSection("items");
                     break;
                 case EVENTS:
-                    accessor = configPack.getEvents();
+                    configuration = configPack.getConfig().getConfigurationSection("events");
                     break;
                 case JOURNAL:
-                    accessor = configPack.getJournal();
+                    configuration = configPack.getConfig().getConfigurationSection("journal");
                     break;
                 case CONDITIONS:
-                    accessor = configPack.getConditions();
+                    configuration = configPack.getConfig().getConfigurationSection("conditions");
                     break;
                 case OBJECTIVES:
-                    accessor = configPack.getObjectives();
+                    configuration = configPack.getConfig().getConfigurationSection("objectives");
                     break;
                 default:
                     return new ArrayList<>();
             }
-            final FileConfiguration configuration = accessor.getConfig();
-            final List<String> completations = new ArrayList<>();
-            for (final String key : configuration.getKeys(false)) {
-                completations.add(pack + '.' + key);
+            final List<String> completions = new ArrayList<>();
+            if (configuration != null) {
+                for (final String key : configuration.getKeys(false)) {
+                    completions.add(pack + '.' + key);
+                }
             }
-            return completations;
+            return completions;
         }
     }
 
@@ -480,22 +462,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     }
 
     /**
-     * Creates new package
-     */
-    private void createNewPackage(final CommandSender sender, final String... args) {
-        if (args.length < 2) {
-            LOG.debug("Package name is missing");
-            sendMessage(sender, "specify_package");
-            return;
-        }
-        if (Config.createDefaultPackage(args[1])) {
-            sendMessage(sender, "package_created");
-        } else {
-            sendMessage(sender, "package_exists");
-        }
-    }
-
-    /**
      * Purges player's data
      */
     private void purgePlayer(final CommandSender sender, final String... args) {
@@ -518,105 +484,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         playerData.purgePlayer();
         // done
         sendMessage(sender, "purged", args[1]);
-    }
-
-    /**
-     * Reads, sets or appends strings from/to config files
-     */
-    @SuppressWarnings("PMD.NcssCount")
-    private void handleConfig(final CommandSender sender, final String... args) {
-        if (args.length < 3) {
-            LOG.debug("No action specified!");
-            sendMessage(sender, "specify_action");
-            return;
-        }
-        final String action = args[1];
-        final String path = args[2];
-        switch (action) {
-            case "read":
-            case "r":
-                LOG.debug("Displaying variable at path " + path);
-                final String message = Config.getString(path);
-                sender.sendMessage(message == null ? "null" : message);
-                break;
-            case "set":
-            case "s":
-                if (args.length < 4) {
-                    sendMessage(sender, "config_set_error");
-                    return;
-                }
-                final StringBuilder strBldr = new StringBuilder();
-                for (int i = 3; i < args.length; i++) {
-                    strBldr.append(args[i]).append(' ');
-                }
-                if (strBldr.length() < 2) {
-                    LOG.debug("Wrong path!");
-                    sendMessage(sender, "specify_path");
-                    return;
-                }
-                final boolean set = Config.setString(path, "null".equalsIgnoreCase(args[3]) ? null : strBldr.toString().trim());
-                if (set) {
-                    LOG.debug("Displaying variable at path " + path);
-                    final String message1 = Config.getString(path);
-                    sender.sendMessage(message1 == null ? "null" : message1);
-                } else {
-                    sendMessage(sender, "config_set_error");
-                }
-                break;
-            case "add":
-            case "a":
-                if (args.length < 4) {
-                    sendMessage(sender, "config_set_error");
-                    return;
-                }
-                final StringBuilder strBldr2 = new StringBuilder();
-                for (int i = 3; i < args.length; i++) {
-                    strBldr2.append(args[i]).append(' ');
-                }
-                if (strBldr2.length() < 2) {
-                    LOG.debug("Wrong path!");
-                    sendMessage(sender, "specify_path");
-                    return;
-                }
-                String finalString = strBldr2.toString().trim();
-                boolean space = false;
-                if (!finalString.isEmpty() && finalString.charAt(0) == '_') {
-                    finalString = finalString.substring(1);
-                    space = true;
-                }
-                String oldString = Config.getString(path);
-                if (oldString == null) {
-                    oldString = "";
-                }
-                final boolean set2 = Config.setString(path, oldString + (space ? " " : "") + finalString);
-                if (set2) {
-                    LOG.debug("Displaying variable at path " + path);
-                    final String message2 = Config.getString(path);
-                    sender.sendMessage(message2 == null ? "null" : message2);
-                } else {
-                    sendMessage(sender, "config_set_error");
-                }
-                break;
-            default:
-                // if there was something else, display error message
-                LOG.debug("The argument was unknown");
-                sendMessage(sender, "unknown_argument");
-                break;
-        }
-    }
-
-    /**
-     * Returns a list including all possible options for tab complete of the
-     * /betonquest config command
-     *
-     * @param args
-     * @return
-     */
-    private List<String> completeConfig(final String... args) {
-        if (args.length == 2) {
-            return Arrays.asList("set", "add", "read");
-        }
-        return new ArrayList<>();
     }
 
     /**
@@ -715,7 +582,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return Arrays.asList("add", "list", "del");
         }
         if (args.length == 4) {
-            return completeId(args, ConfigAccessor.AccessorType.JOURNAL);
+            return completeId(args, AccessorType.JOURNAL);
         }
         return new ArrayList<>();
     }
@@ -906,6 +773,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_item");
             return;
         }
+        final Player player = (Player) sender;
+        final ItemStack item = player.getInventory().getItemInMainHand();
+        if (item.getType() == Material.AIR) {
+            LOG.debug("Cannot continue, item must not be air");
+            sendMessage(sender, "no_item");
+            return;
+        }
+
         final String itemID = args[1];
         final String pack;
         final String name;
@@ -917,28 +792,29 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             pack = defaultPack;
             name = itemID;
         }
-        final Player player = (Player) sender;
-        final ItemStack item = player.getInventory().getItemInMainHand();
-
-        // if item is air then there is nothing to add to items.yml
-        if (item.getType() == Material.AIR) {
-            LOG.debug("Cannot continue, item must not be air");
-            sendMessage(sender, "no_item");
-            return;
-        }
         // define parts of the final string
-        final ConfigPackage configPack = Config.getPackages().get(pack);
+        final QuestPackage configPack = Config.getPackages().get(pack);
         if (configPack == null) {
             LOG.debug("Cannot continue, package does not exist");
             sendMessage(sender, "specify_package");
             return;
         }
-        final ConfigAccessor config = configPack.getItems();
         final String instructions = QuestItem.itemToString(item);
         // save it in items.yml
         LOG.debug("Saving item to configuration as " + args[1]);
-        config.getConfig().set(name, instructions.trim());
-        config.saveConfig();
+        final String path = "items." + name;
+        final boolean exists = configPack.getConfig().isSet(path);
+        configPack.getConfig().set(path, instructions.trim());
+        try {
+            if (!exists) {
+                final ConfigAccessor itemFile = configPack.getOrCreateConfigAccessor("items.yml");
+                configPack.getConfig().associateWith(path, itemFile.getConfig());
+            }
+            configPack.saveAll();
+        } catch (final IOException | InvalidConfigurationException e) {
+            LOG.warn(configPack, e.getMessage(), e);
+            return;
+        }
         // done
         sendMessage(sender, "item_created", args[1]);
 
@@ -953,7 +829,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      */
     private List<String> completeItems(final String... args) {
         if (args.length == 2) {
-            return completeId(args, ConfigAccessor.AccessorType.ITEMS);
+            return completeId(args, AccessorType.ITEMS);
         }
         return new ArrayList<>();
     }
@@ -999,7 +875,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return null;
         }
         if (args.length == 3) {
-            return completeId(args, ConfigAccessor.AccessorType.EVENTS);
+            return completeId(args, AccessorType.EVENTS);
         }
         return new ArrayList<>();
     }
@@ -1046,7 +922,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return null;
         }
         if (args.length == 3) {
-            return completeId(args, ConfigAccessor.AccessorType.CONDITIONS);
+            return completeId(args, AccessorType.CONDITIONS);
         }
         return new ArrayList<>();
     }
@@ -1334,78 +1210,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return Arrays.asList("list", "add", "del", "complete");
         }
         if (args.length == 4) {
-            return completeId(args, ConfigAccessor.AccessorType.OBJECTIVES);
-        }
-        return new ArrayList<>();
-    }
-
-    /**
-     * Creates a vector variable
-     *
-     * @param sender
-     * @param args
-     */
-    private void handleVector(final CommandSender sender, final String... args) {
-        if (!(sender instanceof Player)) {
-            return;
-        }
-        final Player player = (Player) sender;
-        if (args.length != 3) {
-            player.sendMessage("§4ERROR");
-            return;
-        }
-        final String pack;
-        final String name;
-        if (args[1].contains(".")) {
-            final String[] parts = args[1].split("\\.");
-            pack = parts[0];
-            name = parts[1];
-        } else {
-            pack = defaultPack;
-            name = args[1];
-        }
-        final String origin = Config.getString(pack + ".main.variables." + name);
-        if (origin == null) {
-            player.sendMessage("§4ERROR");
-            return;
-        }
-        final Vector vector;
-        try {
-            vector = VectorData.parseVector(origin);
-        } catch (final InstructionParseException e) {
-            player.sendMessage("§4ERROR");
-            LOG.debug("Error while executing quest command!", e);
-            return;
-        }
-        Config.setString(pack + ".main.variables.vectors." + args[2],
-                String.format(Locale.US, "$%s$->(%.2f,%.2f,%.2f)", name, vector.getX(), vector.getY(), vector.getZ()));
-        player.sendMessage("§2OK");
-    }
-
-    /**
-     * Returns a list including all possible options for tab complete of the
-     * /betonquest vector command
-     *
-     * @param args
-     * @return
-     */
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    private List<String> completeVector(final String... args) {
-        if (args.length == 2) {
-            if (args[1] == null || !args[1].contains(".")) {
-                return completePackage();
-            }
-            final String pack = args[1].substring(0, args[1].indexOf('.'));
-            final ConfigPackage configPack = Config.getPackages().get(pack);
-            if (configPack == null) {
-                return new ArrayList<>();
-            }
-            final ConfigurationSection section = configPack.getMain().getConfig().getConfigurationSection("variables");
-            final Collection<String> keys = section.getKeys(false);
-            if (keys.isEmpty()) {
-                return new ArrayList<>();
-            }
-            return new ArrayList<>(keys);
+            return completeId(args, AccessorType.OBJECTIVES);
         }
         return new ArrayList<>();
     }
@@ -1487,9 +1292,16 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     return;
                 }
                 // rename objective in the file
-                nameID.getPackage().getObjectives().getConfig().set(rename.split("\\.")[1],
-                        nameID.generateInstruction().getInstruction());
-                nameID.getPackage().getObjectives().saveConfig();
+                final MultiConfiguration configuration = nameID.getPackage().getConfig();
+                final String newPath = "objectives." + rename.split("\\.")[1];
+                configuration.set(newPath, nameID.generateInstruction().getInstruction());
+                try {
+                    configuration.associateWith(newPath, configuration.getSourceConfigurationSection(nameID.getBaseID()));
+                    nameID.getPackage().saveAll();
+                } catch (final IOException | InvalidConfigurationException e) {
+                    LOG.warn(nameID.getPackage(), e.getMessage(), e);
+                    return;
+                }
                 // rename objective instance
                 final ObjectiveID renameID;
                 try {
@@ -1525,8 +1337,13 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective(nameID);
                     BetonQuest.resumeObjective(PlayerConverter.getID(player), renameID, data);
                 }
-                nameID.getPackage().getObjectives().getConfig().set(nameID.getBaseID(), null);
-                nameID.getPackage().getObjectives().saveConfig();
+                nameID.getPackage().getConfig().set(nameID.getBaseID(), null);
+                try {
+                    nameID.getPackage().saveAll();
+                } catch (final IOException e) {
+                    LOG.warn(nameID.getPackage(), e.getMessage(), e);
+                    return;
+                }
                 break;
             case "journals":
             case "journal":
@@ -1674,14 +1491,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 case "objectives":
                 case "objective":
                 case "o":
-                    return completeId(args, ConfigAccessor.AccessorType.OBJECTIVES);
+                    return completeId(args, AccessorType.OBJECTIVES);
                 case "journals":
                 case "journal":
                 case "j":
                 case "entries":
                 case "entry":
                 case "e":
-                    return completeId(args, ConfigAccessor.AccessorType.JOURNAL);
+                    return completeId(args, AccessorType.JOURNAL);
                 default:
                     break;
             }
@@ -1908,5 +1725,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             final String message = Config.getMessage(Config.getLanguage(), messageName, variables);
             sender.sendMessage(message);
         }
+    }
+
+    private enum AccessorType {
+        EVENTS, CONDITIONS, OBJECTIVES, ITEMS, JOURNAL
     }
 }

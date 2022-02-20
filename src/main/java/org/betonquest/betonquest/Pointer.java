@@ -7,7 +7,7 @@ package org.betonquest.betonquest;
 public class Pointer {
 
     /**
-     * String pointing to the journal entry in journal.yml
+     * String pointing to the journal entry
      */
     private final String pointer;
     /**
@@ -27,7 +27,7 @@ public class Pointer {
     }
 
     /**
-     * Returns the name of the journal entry from journal.yml.
+     * Returns the name of the journal entry
      *
      * @return the name of the journal entry
      */

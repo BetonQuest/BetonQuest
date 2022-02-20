@@ -104,7 +104,7 @@ is the way the user interacts with them.
         A chest GUI with clickable buttons where the NPC's text and options will be shown as item lore.
 
         You can change the option's item to something else than ender pearls by adding a prefix to that option's text.
-        The prefix is a name of the material (like in _items.yml_) inside curly braces, with an optional damage value after a colon.
+        The prefix is a name of the material (like in the _items_ section) inside curly braces, with an optional damage value after a colon.
         Example of such option text: `{diamond_sword}I want to start a quest!`.
 
 You can control the colors of conversation elements in the _config.yml_ file, in `conversation_colors` section. Here you must use names of the colors.

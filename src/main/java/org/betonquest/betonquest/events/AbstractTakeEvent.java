@@ -79,7 +79,7 @@ public abstract class AbstractTakeEvent extends QuestEvent {
     protected void notifyPlayer(final String playerID, final String itemName, final int amount) {
         if (notify) {
             try {
-                Config.sendNotify(instruction.getPackage().getName(), playerID, "items_taken",
+                Config.sendNotify(instruction.getPackage().getPackagePath(), playerID, "items_taken",
                         new String[]{itemName, String.valueOf(amount)}, "items_taken,info");
             } catch (final QuestRuntimeException exception) {
                 LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'items_taken' category in '" + getFullId() + "'. Error was: '" + exception.getMessage() + "'", exception);
