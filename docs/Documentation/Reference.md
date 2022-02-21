@@ -49,7 +49,7 @@ liking. **It is very important to have a good understand of packages. Read this 
 
 A package is a folder with a _package.yml_ file. It must be placed inside the `BetonQuest/QuestPackages` directory.   
 Additionally, you can create extra files or sub-folders inside a package to organize your quest the way you want.
-Sub-folders of packages that contain a _package.yml_ are separate packages, they do not interact with the surrounding
+Sub-folders of packages that contain a _package.yml_ are separate packages, they do not belong to the surrounding
 package in any way. 
 
 It is allowed to create folders that are not packages anywhere in your `QuestPackages` directory. 
@@ -125,7 +125,7 @@ dot and the package name.
     Let's run the `easyMobObjective` event of the `rewards` package from another package:
     
     1. Add a dot (`.`) before the event name :arrow_right: `{==.==}easyMobObjective`
-    2. Add the package name infront of the dot :arrow_right: `{==rewards==}.easyMobObjective`
+    2. Add the package name in front of the dot :arrow_right: `{==rewards==}.easyMobObjective`
     
     An example usage could look like this:
     ````YAML
