@@ -622,7 +622,7 @@ public class BetonQuest extends JavaPlugin {
         new MobKillListener();
 
         // start custom drop listener
-        new CustomDropListener();
+        new DropListener();
 
         // register commands
         new QuestCommand();

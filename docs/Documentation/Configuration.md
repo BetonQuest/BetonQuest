@@ -168,7 +168,7 @@ A list of all possible sounds for the latest Minecraft version can be found [her
   * `full_main_page` makes the main page always take a full page. If a lot of information is being displayed, it is advised to make this true.
    If you use the main page only for small notifications, set it to false, so the entries can follow immediately.
   * `show_separator` shows a separator between journal entries (default: true). Customize the separator in `messages.yml` with the key `journal_separator`.
-  
+  * `drop` makes the journal can be drop (default: true).
 ### Journal Colors
 `journal_colors` controls the colors used in the journal. It takes color codes without the `&` character.
 
