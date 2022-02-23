@@ -41,7 +41,6 @@ public class CitizensHologram extends BukkitRunnable {
     private static CitizensHologram instance;
 
     private final Map<Integer, List<NPCHologram>> npcs = new HashMap<>();
-    private final BukkitTask initializationTask;
     private boolean follow;
     private BukkitTask followTask;
     private BukkitTask updateTask;
@@ -49,12 +48,11 @@ public class CitizensHologram extends BukkitRunnable {
     public CitizensHologram() {
         super();
         if (instance != null) {
-            initializationTask = null;
             return;
         }
         instance = this;
 
-        initializationTask = Bukkit.getServer().getScheduler().runTask(BetonQuest.getInstance(), this::initHolograms);
+        initHolograms();
     }
 
     /**
@@ -79,10 +77,6 @@ public class CitizensHologram extends BukkitRunnable {
     public void cancel() {
         if (updateTask != null) {
             super.cancel();
-        }
-
-        if (initializationTask != null) {
-            initializationTask.cancel();
         }
         if (followTask != null) {
             followTask.cancel();
