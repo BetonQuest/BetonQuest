@@ -34,6 +34,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `opsudo` event - now supports variables
 - `variable` condition - now supports variables
 - Things that are also added in 1.12.X:
+    - new line support for `journal_lore` in `messages.yml`
     - FastAsyncWorldEdit compatibility
     - curly braces in math.calc variables for using variables with math symbols
     - Vietnamese translation

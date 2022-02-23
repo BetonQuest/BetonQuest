@@ -22,6 +22,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * Represents player's journal.
@@ -79,7 +81,12 @@ public class Journal {
         return item.getType().equals(Material.WRITTEN_BOOK) && ((BookMeta) item.getItemMeta()).hasTitle()
                 && ((BookMeta) item.getItemMeta()).getTitle().equals(Config.getMessage(playerLang, "journal_title"))
                 && item.getItemMeta().hasLore()
-                && item.getItemMeta().getLore().contains(Config.getMessage(playerLang, "journal_lore"));
+                && Objects.equals(item.getItemMeta().getLore(), getJournalLore(playerLang));
+    }
+
+    @NotNull
+    private static List<String> getJournalLore(final String lang) {
+        return Arrays.asList(Utils.format(Config.getMessage(lang, "journal_lore")).split("\n"));
     }
 
     /**
@@ -395,9 +402,7 @@ public class Journal {
         final BookMeta meta = (BookMeta) item.getItemMeta();
         meta.setTitle(Utils.format(Config.getMessage(lang, "journal_title")));
         meta.setAuthor(PlayerConverter.getPlayer(playerID).getName());
-        final List<String> lore = new ArrayList<>();
-        lore.add(Utils.format(Config.getMessage(lang, "journal_lore")));
-        meta.setLore(lore);
+        meta.setLore(getJournalLore(lang));
         // add main page and generate pages from texts
         final List<String> finalList = new ArrayList<>();
         if ("false".equalsIgnoreCase(Config.getString("config.journal.one_entry_per_page"))) {
