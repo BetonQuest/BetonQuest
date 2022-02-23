@@ -6,7 +6,6 @@ import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.Point;
 import org.betonquest.betonquest.Pointer;
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.PlayerObjectiveChangeEvent;
 import org.betonquest.betonquest.api.PlayerTagAddEvent;
 import org.betonquest.betonquest.api.PlayerTagRemoveEvent;
 import org.betonquest.betonquest.config.Config;
