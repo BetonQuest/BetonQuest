@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - command, sudo and opsudo events didn't work with conditions
 - interact objective did not work with armorstands
 - MMOItemsGiveEvent did not check if item actually exists
+- notify IO `subtitle` and `title` with only a subtitle was not send
 ### Security
 
 ## [1.12.7] - 2021-12-11
