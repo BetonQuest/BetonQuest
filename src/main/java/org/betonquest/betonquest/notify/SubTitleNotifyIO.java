@@ -23,6 +23,6 @@ public class SubTitleNotifyIO extends NotifyIO {
 
     @Override
     protected void notifyPlayer(final String message, final Player player) {
-        player.sendTitle("", message, fadeIn, stay, fadeOut);
+        player.sendTitle(" ", message, fadeIn, stay, fadeOut);
     }
 }
