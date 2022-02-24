@@ -113,7 +113,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - mmoitems item creation only worked with uppercase id's
     - reload with an invalid PlayerHider causes a NPE
     - QuestItems could be eaten, this was caused by a changed mc behaviour
-    - notify IO `subtitle` and `title` with ony a subtitle was not send
+    - notify IO `subtitle` and `title` with only a subtitle was not send
     - `npcrange` objective - is triggered at wrong time
     - `command` event - includes 'conditions:...' into the command
     - `craft` objective - multi-craft, drop-craft, hotbar/offhand-craft, shift-Q-craft and any illegal crafting is
