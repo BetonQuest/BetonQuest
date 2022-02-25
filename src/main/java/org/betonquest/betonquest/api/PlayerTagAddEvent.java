@@ -6,23 +6,24 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
 /**
- * event fired when player's tag is added
+ * This event is fired when a player's tag was added.
  */
 @SuppressWarnings({"PMD.DataClass"})
 public class PlayerTagAddEvent extends PlayerEvent {
+
     /**
      * HandlerList of this event.
      */
     private static final HandlerList HANDLERS = new HandlerList();
 
     /**
-     * added tag.
+     * The tag that was added.
      */
     @Getter
     private final String tag;
 
     /**
-     * Constructor of PlayerTagAddEvent.
+     * Creates a new PlayerTagAddEvent.
      *
      * @param who the player whose tag has added
      * @param tag added tag
@@ -33,7 +34,7 @@ public class PlayerTagAddEvent extends PlayerEvent {
     }
 
     /**
-     * Get the HandlerList of this event.
+     * Gets the HandlerList of this event.
      *
      * @return the HandlerList
      */
@@ -42,7 +43,7 @@ public class PlayerTagAddEvent extends PlayerEvent {
     }
 
     /**
-     * Get the HandlerList of this event.
+     * Gets the HandlerList of this event.
      *
      * @return the HandlerList
      */
