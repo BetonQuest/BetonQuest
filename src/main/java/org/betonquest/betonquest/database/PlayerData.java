@@ -181,11 +181,11 @@ public class PlayerData {
      */
     public void removeTag(final String tag) {
         synchronized (tags) {
-            final boolean containsTag = tags.contains(tag);
-            tags.remove(tag);
-            saver.add(new Record(UpdateType.REMOVE_TAGS, playerID, tag));
-            if (containsTag) {
-                BetonQuest.getInstance().callSyncBukkitEvent(new PlayerTagRemoveEvent(PlayerConverter.getPlayer(playerID), tag));
+            if (tags.contains(tag)) {
+                tags.remove(tag);
+                saver.add(new Record(UpdateType.REMOVE_TAGS, playerID, tag));
+                BetonQuest.getInstance()
+                        .callSyncBukkitEvent(new PlayerTagRemoveEvent(PlayerConverter.getPlayer(playerID), tag));
             }
         }
     }
