@@ -6,6 +6,8 @@ import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.Point;
 import org.betonquest.betonquest.Pointer;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.PlayerTagAddEvent;
+import org.betonquest.betonquest.api.PlayerTagRemoveEvent;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.database.Connector.QueryType;
@@ -165,6 +167,8 @@ public class PlayerData {
             if (!tags.contains(tag)) {
                 tags.add(tag);
                 saver.add(new Record(UpdateType.ADD_TAGS, playerID, tag));
+                BetonQuest.getInstance()
+                        .callSyncBukkitEvent(new PlayerTagAddEvent(PlayerConverter.getPlayer(playerID), tag));
             }
         }
     }
@@ -177,8 +181,12 @@ public class PlayerData {
      */
     public void removeTag(final String tag) {
         synchronized (tags) {
-            tags.remove(tag);
-            saver.add(new Record(UpdateType.REMOVE_TAGS, playerID, tag));
+            if (tags.contains(tag)) {
+                tags.remove(tag);
+                saver.add(new Record(UpdateType.REMOVE_TAGS, playerID, tag));
+                BetonQuest.getInstance()
+                        .callSyncBukkitEvent(new PlayerTagRemoveEvent(PlayerConverter.getPlayer(playerID), tag));
+            }
         }
     }
 
