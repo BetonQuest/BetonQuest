@@ -6,25 +6,26 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
 /**
- * event fired when player's tag is removed
+ * This event is fired when a player's tag was removed.
  */
 @SuppressWarnings({"PMD.DataClass"})
 public class PlayerTagRemoveEvent extends PlayerEvent {
+
     /**
      * HandlerList of this event.
      */
     private static final HandlerList HANDLERS = new HandlerList();
 
     /**
-     * removed tag.
+     * The tag that was removed.
      */
     @Getter
     private final String tag;
 
     /**
-     * Constructor of PlayerTagRemoveEvent.
+     * Creates a new PlayerTagRemoveEvent.
      *
-     * @param who the player whose tag has removed
+     * @param who the player whose tag was removed
      * @param tag removed tag
      */
     public PlayerTagRemoveEvent(final Player who, final String tag) {
@@ -33,7 +34,7 @@ public class PlayerTagRemoveEvent extends PlayerEvent {
     }
 
     /**
-     * Get the HandlerList of this event.
+     * Gets the HandlerList of this event.
      *
      * @return the HandlerList
      */
@@ -42,7 +43,7 @@ public class PlayerTagRemoveEvent extends PlayerEvent {
     }
 
     /**
-     * Get the HandlerList of this event.
+     * Gets the HandlerList of this event.
      *
      * @return the HandlerList
      */
