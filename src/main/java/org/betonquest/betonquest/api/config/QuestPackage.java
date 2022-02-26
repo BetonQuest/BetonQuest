@@ -62,7 +62,7 @@ public class QuestPackage {
         this.configs = new ArrayList<>();
 
         final HashMap<ConfigurationSection, String> configurations = new HashMap<>();
-        configurations.put(this.packageConfig.getConfig(), this.packageConfig.getConfigurationFile().getPath());
+        configurations.put(this.packageConfig.getConfig(), packageConfig.getParentFile().toURI().relativize(packageConfig.toURI()).getPath());
         for (final File file : files) {
             final ConfigAccessor configAccessor = ConfigAccessor.create(file);
             configs.add(configAccessor);
