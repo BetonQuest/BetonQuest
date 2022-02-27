@@ -122,7 +122,7 @@ public abstract class ID {
 
     @Override
     public int hashCode() {
-        return Objects.hash(identifier, pack);
+        return Objects.hash(identifier, pack.getPackagePath());
     }
 
     public Instruction generateInstruction() {
