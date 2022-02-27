@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - interact objective did not work with armorstands
 - MMOItemsGiveEvent did not check if item actually exists
 - notify IO `subtitle` and `title` with only a subtitle was not send
+- npcHider not working for Citizens with ModelEngine trait
 ### Security
 
 ## [1.12.7] - 2021-12-11
