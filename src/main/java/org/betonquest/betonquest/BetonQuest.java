@@ -1261,6 +1261,14 @@ public class BetonQuest extends JavaPlugin {
         return playerData;
     }
 
+    public PlayerData getOfflinePlayerData(final String playerID) {
+        final PlayerData playerData = getPlayerData(playerID);
+        if (playerData == null) {
+            return new PlayerData(playerID);
+        }
+        return playerData;
+    }
+
     /**
      * Retrieves GlobalData object which handles all global tags and points
      *

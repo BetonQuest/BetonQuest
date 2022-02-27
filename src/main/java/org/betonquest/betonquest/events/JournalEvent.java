@@ -87,7 +87,7 @@ public class JournalEvent extends QuestEvent {
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
         if (playerID != null) {
-            final PlayerData playerData = PlayerConverter.getPlayer(playerID) == null ? new PlayerData(playerID) : BetonQuest.getInstance().getPlayerData(playerID);
+            final PlayerData playerData = BetonQuest.getInstance().getOfflinePlayerData(playerID);
             final Journal journal = playerData.getJournal();
             journalChanger.changeJournal(journal);
             journal.update();
