@@ -152,7 +152,7 @@ public class Journal {
                         ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date(pointer.getTimestamp()))
                         : Long.toString(pointer.getTimestamp());
                 BetonQuest.getInstance().getSaver()
-                        .add(new Record(UpdateType.REMOVE_JOURNAL, new String[]{playerID, pointer.getPointer(), date}));
+                        .add(new Record(UpdateType.REMOVE_JOURNAL, playerID, pointer.getPointer(), date));
                 pointers.remove(pointer);
                 break;
             }

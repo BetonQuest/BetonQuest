@@ -15,7 +15,7 @@ import org.bukkit.event.Listener;
 
 import java.util.Locale;
 
-@SuppressWarnings({"PMD.CommentRequired","PMD.CyclomaticComplexity"})
+@SuppressWarnings({"PMD.CommentRequired", "PMD.CyclomaticComplexity"})
 public class EquipItemObjective extends Objective implements Listener {
 
     private final QuestItem questItems;
@@ -26,7 +26,7 @@ public class EquipItemObjective extends Objective implements Listener {
         final String slot = instruction.next();
         questItems = instruction.getQuestItem();
 
-        if(!EnumUtils.isValidEnum(PlayerArmorChangeEvent.SlotType.class, slot)){
+        if (!EnumUtils.isValidEnum(PlayerArmorChangeEvent.SlotType.class, slot)) {
             throw new InstructionParseException("Slot " + slot + " is Invalid Please Use Valid Slot {HEAD, CHEST, LEGS, FEET}");
         }
 
@@ -45,7 +45,7 @@ public class EquipItemObjective extends Objective implements Listener {
                 && event.getSlotType() == slotType
                 && questItems.compare(event.getNewItem())
                 && checkConditions(playerID)) {
-                completeObjective(playerID);
+            completeObjective(playerID);
         }
     }
 

@@ -249,7 +249,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
 
             // Option Text
             lines.addAll(Arrays.asList(LocalChatPaginator.wordWrap(
-                    Utils.replaceReset(string.toString() + "- " + option, optionColor),
+                    Utils.replaceReset(string + "- " + option, optionColor),
                     45)));
             meta.setLore(lines);
 

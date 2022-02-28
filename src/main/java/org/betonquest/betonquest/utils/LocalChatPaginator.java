@@ -80,7 +80,7 @@ public class LocalChatPaginator extends ChatPaginator {
                 .collect(Collectors.joining(""));
 
         if (lastColor != null) {
-            result = lastColor.toString() + result;
+            result = lastColor + result;
         }
         return result;
     }

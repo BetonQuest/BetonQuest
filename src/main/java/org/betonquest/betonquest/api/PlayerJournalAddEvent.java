@@ -29,7 +29,7 @@ public class PlayerJournalAddEvent extends PlayerEvent {
     /**
      * Constructor of PlayerJournalAddEvent.
      *
-     * @param who the player who was added journal
+     * @param who     the player who was added journal
      * @param journal the journal of this player
      * @param pointer the pointer for which journal entry was been added for this player
      */
@@ -37,6 +37,15 @@ public class PlayerJournalAddEvent extends PlayerEvent {
         super(who);
         this.journal = journal;
         this.pointer = pointer;
+    }
+
+    /**
+     * Get the HandlerList of this event.
+     *
+     * @return the HandlerList.
+     */
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
     }
 
     /**
@@ -56,15 +65,6 @@ public class PlayerJournalAddEvent extends PlayerEvent {
      */
     public Pointer getPointer() {
         return pointer;
-    }
-
-    /**
-     * Get the HandlerList of this event.
-     *
-     * @return the HandlerList.
-     */
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
     }
 
     /**

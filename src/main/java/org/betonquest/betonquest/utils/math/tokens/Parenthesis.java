@@ -29,7 +29,7 @@ public class Parenthesis implements Token {
     /**
      * Creates new parenthesis around a token.
      *
-     * @param inside token that is inside
+     * @param inside        token that is inside
      * @param openingSymbol opening character
      * @param closingSymbol closing character
      */

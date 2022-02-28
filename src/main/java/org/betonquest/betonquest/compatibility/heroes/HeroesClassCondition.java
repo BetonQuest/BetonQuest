@@ -18,11 +18,11 @@ import java.util.ArrayList;
 @SuppressWarnings("PMD.CommentRequired")
 public class HeroesClassCondition extends Condition {
 
-    private HeroClass heroClass;
-    private boolean any;
     private final boolean primary;
     private final boolean mastered;
     private final VariableNumber level;
+    private HeroClass heroClass;
+    private boolean any;
 
     public HeroesClassCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

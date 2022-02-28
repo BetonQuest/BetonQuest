@@ -116,7 +116,7 @@ public class BrewObjective extends CountingObjective implements Listener {
      * Generates an array that matches potions in slots to if they are match the quest item. A filter array can be
      * provided that excludes all indices that are {@code true}.
      *
-     * @param inventory the brewer inventory to check
+     * @param inventory  the brewer inventory to check
      * @param exclusions the excluded indices
      * @return array mapping slot index to potion match
      */
