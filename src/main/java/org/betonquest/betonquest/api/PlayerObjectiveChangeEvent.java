@@ -34,17 +34,26 @@ public class PlayerObjectiveChangeEvent extends PlayerEvent {
     /**
      * Constructor of PlayerObjectiveChangeEvent.
      *
-     * @param who player who change this objective
-     * @param objective objective which will be changed
-     * @param state future state of this objective
+     * @param who           player who change this objective
+     * @param objective     objective which will be changed
+     * @param state         future state of this objective
      * @param previousState previous state of this objective
      */
-    public PlayerObjectiveChangeEvent (final Player who, final Objective objective,
-                                       final Objective.ObjectiveState state, final Objective.ObjectiveState previousState) {
+    public PlayerObjectiveChangeEvent(final Player who, final Objective objective,
+                                      final Objective.ObjectiveState state, final Objective.ObjectiveState previousState) {
         super(who);
         this.objective = objective;
         this.state = state;
         this.previousState = previousState;
+    }
+
+    /**
+     * Get the HandlerList of this event.
+     *
+     * @return the HandlerList
+     */
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
     }
 
     /**
@@ -81,15 +90,6 @@ public class PlayerObjectiveChangeEvent extends PlayerEvent {
      */
     public Objective.ObjectiveState getPreviousState() {
         return previousState;
-    }
-
-    /**
-     * Get the HandlerList of this event.
-     *
-     * @return the HandlerList
-     */
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
     }
 
     /**

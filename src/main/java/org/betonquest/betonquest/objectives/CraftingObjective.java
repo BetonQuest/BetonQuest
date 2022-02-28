@@ -36,18 +36,6 @@ public class CraftingObjective extends CountingObjective implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onCrafting(final CraftItemEvent event) {
-        if (event.getWhoClicked() instanceof Player) {
-            final Player player = (Player) event.getWhoClicked();
-            final String playerID = PlayerConverter.getID(player);
-            if (containsPlayer(playerID) && item.compare(event.getRecipe().getResult()) && checkConditions(playerID)) {
-                getCountingData(playerID).progress(calculateCraftAmount(event));
-                completeIfDoneOrNotify(playerID);
-            }
-        }
-    }
-
     private static int calculateCraftAmount(final CraftItemEvent event) {
         final ItemStack result = event.getRecipe().getResult();
         final PlayerInventory inventory = event.getWhoClicked().getInventory();
@@ -69,6 +57,18 @@ public class CraftingObjective extends CountingObjective implements Listener {
                 return InventoryUtils.calculateSimpleCraftAmount(result, event.getCursor());
             default:
                 return 0;
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onCrafting(final CraftItemEvent event) {
+        if (event.getWhoClicked() instanceof Player) {
+            final Player player = (Player) event.getWhoClicked();
+            final String playerID = PlayerConverter.getID(player);
+            if (containsPlayer(playerID) && item.compare(event.getRecipe().getResult()) && checkConditions(playerID)) {
+                getCountingData(playerID).progress(calculateCraftAmount(event));
+                completeIfDoneOrNotify(playerID);
+            }
         }
     }
 

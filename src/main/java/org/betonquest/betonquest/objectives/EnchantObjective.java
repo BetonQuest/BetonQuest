@@ -45,7 +45,7 @@ public class EnchantObjective extends Objective implements Listener {
             return;
         }
         for (final EnchantmentData enchant : enchantments) {
-            if (!event.getEnchantsToAdd().keySet().contains(enchant.getEnchantment())
+            if (!event.getEnchantsToAdd().containsKey(enchant.getEnchantment())
                     || event.getEnchantsToAdd().get(enchant.getEnchantment()) < enchant.getLevel()) {
                 return;
             }
@@ -98,7 +98,7 @@ public class EnchantObjective extends Objective implements Listener {
             final int level;
             try {
                 level = Integer.parseInt(parts[1]);
-            } catch (NumberFormatException e) {
+            } catch (final NumberFormatException e) {
                 throw new InstructionParseException("Could not parse enchantment level: " + string, e);
             }
             return new EnchantmentData(enchantment, level);

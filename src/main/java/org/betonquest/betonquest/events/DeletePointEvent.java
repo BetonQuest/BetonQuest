@@ -35,9 +35,7 @@ public class DeletePointEvent extends QuestEvent {
                 final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(p));
                 playerData.removePointsCategory(category);
             }
-            BetonQuest.getInstance().getSaver().add(new Saver.Record(Connector.UpdateType.REMOVE_ALL_POINTS, new String[]{
-                    category
-            }));
+            BetonQuest.getInstance().getSaver().add(new Saver.Record(Connector.UpdateType.REMOVE_ALL_POINTS, category));
         } else if (PlayerConverter.getPlayer(playerID) == null) {
             final PlayerData playerData = new PlayerData(playerID);
             playerData.removePointsCategory(category);

@@ -35,7 +35,7 @@ public class ExperienceObjective extends Objective implements Listener {
         if (amount <= 0) {
             throw new InstructionParseException("Amount cannot be less than 1");
         }
-        if(instruction.hasArgument("level")) {
+        if (instruction.hasArgument("level")) {
             notifyMessageName = "level_to_gain";
             toData = Player::getLevel;
             eventListener = new LevelChangeListener();

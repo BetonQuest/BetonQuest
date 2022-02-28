@@ -173,7 +173,7 @@ public class Slots {
     public MenuItem getItem(final Player player, final int slot) {
         final int index = this.getIndex(slot);
         if (index == -1) {
-            throw new RuntimeException("Invalid slot for Slots '" + toString() + "': " + slot);
+            throw new RuntimeException("Invalid slot for Slots '" + this + "': " + slot);
         }
         try {
             return this.getItems(player).get(index);

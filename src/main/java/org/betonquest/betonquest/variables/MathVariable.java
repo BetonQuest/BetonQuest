@@ -38,7 +38,7 @@ public class MathVariable extends Variable {
             }
             return String.valueOf(value);
         } catch (final QuestRuntimeException e) {
-            LOG.warn(instruction.getPackage(), "Could not calculate '" + calculation.toString() + "' (" + e.getMessage() + "). Returning 0 instead.", e);
+            LOG.warn(instruction.getPackage(), "Could not calculate '" + calculation + "' (" + e.getMessage() + "). Returning 0 instead.", e);
             return "0";
         }
     }

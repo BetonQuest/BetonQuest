@@ -298,7 +298,7 @@ public class Conversation implements Listener {
         //only display status messages if conversationIO allows it
         if (conv.inOut.printMessages()) {
             // print message
-            conv.inOut.print(Config.parseMessage(pack.getPackagePath(), playerID, "conversation_end", new String[]{data.getQuester(language)}));
+            conv.inOut.print(Config.parseMessage(pack.getPackagePath(), playerID, "conversation_end", data.getQuester(language)));
         }
         //play conversation end sound
         Config.playSound(playerID, "end");
@@ -419,7 +419,7 @@ public class Conversation implements Listener {
         final String loc = location.getX() + ";" + location.getY() + ";" + location.getZ() + ";"
                 + location.getWorld().getName();
         plugin.getSaver().add(new Record(UpdateType.UPDATE_CONVERSATION,
-                new String[]{convID + " " + option + " " + loc, playerID}));
+                convID + " " + option + " " + loc, playerID));
 
         // End interceptor
         if (interceptor != null) {

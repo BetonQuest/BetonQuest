@@ -105,7 +105,7 @@ public final class Utils {
             for (final String table : tables) {
                 LOG.debug("Loading " + table);
                 final String enumName = ("LOAD_ALL_" + table).toUpperCase(Locale.ROOT);
-                map.put(table, database.querySQL(QueryType.valueOf(enumName), new String[]{}));
+                map.put(table, database.querySQL(QueryType.valueOf(enumName)));
             }
             // extract data from resultsets into the config file
             for (final Map.Entry<String, ResultSet> entry : map.entrySet()) {

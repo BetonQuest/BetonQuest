@@ -82,7 +82,7 @@ public class GlobalData {
     public void addTag(final String tag) {
         if (!globalTags.contains(tag)) {
             globalTags.add(tag);
-            saver.add(new Record(UpdateType.ADD_GLOBAL_TAGS, new String[]{tag}));
+            saver.add(new Record(UpdateType.ADD_GLOBAL_TAGS, tag));
         }
     }
 
@@ -94,7 +94,7 @@ public class GlobalData {
      */
     public void removeTag(final String tag) {
         globalTags.remove(tag);
-        saver.add(new Record(UpdateType.REMOVE_GLOBAL_TAGS, new String[]{tag}));
+        saver.add(new Record(UpdateType.REMOVE_GLOBAL_TAGS, tag));
     }
 
     /**
@@ -131,20 +131,20 @@ public class GlobalData {
      * @param count    how much global_points will be added (or subtracted if negative)
      */
     public void modifyPoints(final String category, final int count) {
-        saver.add(new Record(UpdateType.REMOVE_GLOBAL_POINTS, new String[]{category}));
+        saver.add(new Record(UpdateType.REMOVE_GLOBAL_POINTS, category));
         // check if the category already exists
         for (final Point point : globalPoints) {
             if (point.getCategory().equalsIgnoreCase(category)) {
                 // if it does, add global_points to it
                 saver.add(new Record(UpdateType.ADD_GLOBAL_POINTS,
-                        new String[]{category, String.valueOf(point.getCount() + count)}));
+                        category, String.valueOf(point.getCount() + count)));
                 point.addPoints(count);
                 return;
             }
         }
         // if not then create new point category with given amount of global_points
         globalPoints.add(new Point(category, count));
-        saver.add(new Record(UpdateType.ADD_GLOBAL_POINTS, new String[]{category, String.valueOf(count)}));
+        saver.add(new Record(UpdateType.ADD_GLOBAL_POINTS, category, String.valueOf(count)));
     }
 
     /**
@@ -162,7 +162,7 @@ public class GlobalData {
         if (pointToRemove != null) {
             globalPoints.remove(pointToRemove);
         }
-        saver.add(new Record(UpdateType.REMOVE_GLOBAL_POINTS, new String[]{category}));
+        saver.add(new Record(UpdateType.REMOVE_GLOBAL_POINTS, category));
     }
 
     /**
@@ -173,8 +173,8 @@ public class GlobalData {
         globalTags.clear();
         globalPoints.clear();
         // clear the database
-        saver.add(new Record(UpdateType.DELETE_GLOBAL_POINTS, new String[0]));
-        saver.add(new Record(UpdateType.DELETE_GLOBAL_TAGS, new String[0]));
+        saver.add(new Record(UpdateType.DELETE_GLOBAL_POINTS));
+        saver.add(new Record(UpdateType.DELETE_GLOBAL_TAGS));
     }
 
     /**
@@ -184,7 +184,7 @@ public class GlobalData {
         // clear all lists
         globalTags.clear();
         // clear the database
-        saver.add(new Record(UpdateType.DELETE_GLOBAL_TAGS, new String[0]));
+        saver.add(new Record(UpdateType.DELETE_GLOBAL_TAGS));
     }
 
     /**
@@ -194,6 +194,6 @@ public class GlobalData {
         // clear all lists
         globalPoints.clear();
         // clear the database
-        saver.add(new Record(UpdateType.DELETE_GLOBAL_POINTS, new String[0]));
+        saver.add(new Record(UpdateType.DELETE_GLOBAL_POINTS));
     }
 }
