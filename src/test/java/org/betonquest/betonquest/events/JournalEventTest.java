@@ -2,6 +2,7 @@ package org.betonquest.betonquest.events;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.events.action.journal.JournalEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
@@ -38,6 +39,11 @@ class JournalEventTest {
      * Logger used by the mock Bukkit server instance.
      */
     private static Logger bukkitLogger;
+
+    /**
+     * TODO
+     */
+    final JournalEventFactory journalFactory = new JournalEventFactory();
 
     /**
      * Create JournalEvent test class.
@@ -92,7 +98,7 @@ class JournalEventTest {
         final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "journal update");
-        assertDoesNotThrow(() -> new JournalEvent(instruction), "journal event update action could not be created");
+        assertDoesNotThrow(() -> journalFactory.parseEventInstruction(instruction), "journal event update action could not be created");
     }
 
     @Test
@@ -101,7 +107,7 @@ class JournalEventTest {
         final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "journal add quest_started");
-        assertDoesNotThrow(() -> new JournalEvent(instruction), "journal event add action could not be created");
+        assertDoesNotThrow(() -> journalFactory.parseEventInstruction(instruction), "journal event add action could not be created");
     }
 
     @Test
@@ -110,7 +116,7 @@ class JournalEventTest {
         final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "journal add");
-        assertThrows(InstructionParseException.class, () -> new JournalEvent(instruction), "journal event add action without page reference should throw an exception when created");
+        assertThrows(InstructionParseException.class, () -> journalFactory.parseEventInstruction(instruction), "journal event add action without page reference should throw an exception when created");
     }
 
     @Test
@@ -119,7 +125,7 @@ class JournalEventTest {
         final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "journal delete quest_available");
-        assertDoesNotThrow(() -> new JournalEvent(instruction), "journal event delete action could not be created");
+        assertDoesNotThrow(() -> journalFactory.parseEventInstruction(instruction), "journal event delete action could not be created");
     }
 
     @Test
@@ -128,7 +134,7 @@ class JournalEventTest {
         final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "journal delete");
-        assertThrows(InstructionParseException.class, () -> new JournalEvent(instruction), "journal event delete action without page reference should throw an exception when created");
+        assertThrows(InstructionParseException.class, () -> journalFactory.parseEventInstruction(instruction), "journal event delete action without page reference should throw an exception when created");
     }
 
     @Test
@@ -137,7 +143,7 @@ class JournalEventTest {
         final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "journal invalid");
-        assertThrows(InstructionParseException.class, () -> new JournalEvent(instruction), "invalid action of journal event should throw an exception when created");
+        assertThrows(InstructionParseException.class, () -> journalFactory.parseEventInstruction(instruction), "invalid action of journal event should throw an exception when created");
     }
 
     @Test
@@ -146,7 +152,7 @@ class JournalEventTest {
         final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "journal add quest_started");
-        final JournalEvent event = new JournalEvent(instruction);
+        final JournalEvent event = journalFactory.parseEventInstruction(instruction);
 
         event.execute(null);
 
@@ -159,7 +165,7 @@ class JournalEventTest {
         final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "journal update");
-        final JournalEvent event = new JournalEvent(instruction);
+        final JournalEvent event = journalFactory.parseEventInstruction(instruction);
 
         event.execute(null);
 
