@@ -1,10 +1,7 @@
 package org.betonquest.betonquest.utils;
 
-import org.betonquest.betonquest.api.Condition;
-import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.QuestEvent;
-import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.compatibility.Compatibility;
+import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ID;
@@ -17,9 +14,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class BStatsMetrics {
@@ -29,14 +28,14 @@ public class BStatsMetrics {
     private final JavaPlugin plugin;
 
     public BStatsMetrics(final JavaPlugin plugin,
-                         final Map<ConditionID, Condition> conditions,
-                         final Map<EventID, QuestEvent> events,
-                         final Map<ObjectiveID, Objective> objectives,
-                         final Map<VariableID, Variable> variables,
-                         final Map<String, Class<? extends Condition>> conditionTypes,
-                         final Map<String, Class<? extends QuestEvent>> eventTypes,
-                         final Map<String, Class<? extends Objective>> objectiveTypes,
-                         final Map<String, Class<? extends Variable>> variableTypes) {
+                         final Set<ConditionID> conditions,
+                         final Set<EventID> events,
+                         final Set<ObjectiveID> objectives,
+                         final Set<VariableID> variables,
+                         final Set<String> conditionTypes,
+                         final Set<String> eventTypes,
+                         final Set<String> objectiveTypes,
+                         final Set<String> variableTypes) {
         this.plugin = plugin;
         metrics = new Metrics(plugin, METRICS_ID);
 
@@ -64,37 +63,31 @@ public class BStatsMetrics {
         return map;
     }
 
-    private <T> void listUsage(final String bStatsId, final Map<? extends ID, ? extends T> objects, final Map<String, Class<? extends T>> types) {
-        metrics.addCustomChart(new AdvancedPie(bStatsId + "Count", () -> countUsageClasses(objects.values(), types)));
-        metrics.addCustomChart(new AdvancedPie(bStatsId + "Enabled", () -> {
-            final Map<String, Integer> enabled = new HashMap<>();
-            final Map<String, Integer> usage = countUsageClasses(objects.values(), types);
-
-            for (final Map.Entry<String, Integer> use : usage.entrySet()) {
-                enabled.put(use.getKey(), 1);
-            }
-
-            return enabled;
-        }
-        ));
+    private void listUsage(final String bStatsId, final Set<? extends ID> objects, final Set<String> validTypes) {
+        metrics.addCustomChart(new AdvancedPie(bStatsId + "Count", () -> countUsages(objects, validTypes)));
+        metrics.addCustomChart(new AdvancedPie(bStatsId + "Enabled", () -> collectEnabled(objects, validTypes)));
     }
 
-    private <T> Map<String, Integer> countUsageClasses(final Collection<? extends T> objects, final Map<String, Class<? extends T>> types) {
-        final Map<String, Integer> countList = new HashMap<>();
+    private Map<String, Integer> collectEnabled(final Set<? extends ID> objects, final Set<String> validTypes) {
+        final Map<String, Integer> enabled = new HashMap<>();
+        countUsages(objects, validTypes).forEach((key, count) -> enabled.put(key, 1));
+        return enabled;
+    }
 
-        for (final Map.Entry<String, Class<? extends T>> type : types.entrySet()) {
-            int count = 0;
-            for (final Object object : objects) {
-                if (type.getValue().isInstance(object)) {
-                    count++;
-                }
-            }
-            if (count > 0) {
-                countList.put(type.getKey(), count);
-            }
+    private Map<String, Integer> countUsages(final Set<? extends ID> ids, final Set<String> validTypes) {
+        return ids.stream()
+                .map(this::typeFromId)
+                .filter(validTypes::contains)
+                .collect(Collectors.toMap(Function.identity(), key -> 1, Integer::sum));
+    }
+
+    private String typeFromId(final ID identifier) {
+        try {
+            return identifier.generateInstruction().getPart(0);
+        } catch (InstructionParseException ex) {
+            // ignore broken instructions
+            return null;
         }
-
-        return countList;
     }
 
     private void hookedPlugins() {
