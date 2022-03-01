@@ -117,7 +117,7 @@ public class MultiConfiguration extends HandleModificationConfiguration {
      *
      * @param templates all templates, the weakest first
      */
-    public void setMultiDefaults(final ConfigurationSection... templates) {
+    public void setMultiDefaults(final List<ConfigurationSection> templates) {
         for (final ConfigurationSection template : templates) {
             for (final String key : template.getKeys(true)) {
                 if (!template.isConfigurationSection(key)) {

@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.api.bukkit.config.custom.multi;
 
+import com.sucy.skill.util.Lists;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -44,7 +45,7 @@ public class MultiConfigurationSplitTest extends MultiConfigurationTest {
         configs.put(YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/multi/config3.yml")), "config1.yml");
         try {
             final MultiConfiguration multiConfiguration = new MultiConfiguration(new ArrayList<>(configs.keySet()));
-            multiConfiguration.setMultiDefaults(getDefault());
+            multiConfiguration.setMultiDefaults(Lists.asList(getDefault()));
             return multiConfiguration;
         } catch (final KeyConflictException e) {
             fail(e.resolvedMessage(configs), e);
