@@ -4,7 +4,6 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
-import org.betonquest.betonquest.events.NullEvent;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
 import java.lang.reflect.InvocationTargetException;
@@ -33,6 +32,7 @@ public class LegacyAdapterEventFactory<T extends QuestEvent> implements EventFac
 
     @Override
     public QuestEvent parseEventInstruction(final Instruction instruction) throws InstructionParseException {
+        final Throwable error;
         try {
             return eventClass.getConstructor(Instruction.class).newInstance(instruction);
         } catch (final InvocationTargetException e) {
@@ -40,10 +40,11 @@ public class LegacyAdapterEventFactory<T extends QuestEvent> implements EventFac
             if (cause instanceof InstructionParseException) {
                 throw (InstructionParseException) cause;
             }
-            LOG.reportException(instruction.getPackage(), e);
+            error = e;
         } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-            LOG.reportException(instruction.getPackage(), e);
+            error = e;
         }
-        return new NullEvent(instruction);
+        LOG.reportException(instruction.getPackage(), error);
+        throw new InstructionParseException("A broken event prevents the creation of " + instruction, error);
     }
 }
