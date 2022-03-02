@@ -2,11 +2,7 @@ package org.betonquest.betonquest.utils;
 
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ID;
-import org.betonquest.betonquest.id.ObjectiveID;
-import org.betonquest.betonquest.id.VariableID;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.AdvancedPie;
 import org.bstats.charts.DrilldownPie;
@@ -27,23 +23,12 @@ public class BStatsMetrics {
     private final Metrics metrics;
     private final JavaPlugin plugin;
 
-    public BStatsMetrics(final JavaPlugin plugin,
-                         final Set<ConditionID> conditions,
-                         final Set<EventID> events,
-                         final Set<ObjectiveID> objectives,
-                         final Set<VariableID> variables,
-                         final Set<String> conditionTypes,
-                         final Set<String> eventTypes,
-                         final Set<String> objectiveTypes,
-                         final Set<String> variableTypes) {
+    public BStatsMetrics(final JavaPlugin plugin, final Map<String, InstructionMetricsSupplier<? extends ID>> metricsSuppliers) {
         this.plugin = plugin;
         metrics = new Metrics(plugin, METRICS_ID);
 
         versionMcBq();
-        listUsage("conditions", conditions, conditionTypes);
-        listUsage("events", events, eventTypes);
-        listUsage("objectives", objectives, objectiveTypes);
-        listUsage("variables", variables, variableTypes);
+        metricsSuppliers.forEach(this::listUsage);
         hookedPlugins();
     }
 
@@ -63,19 +48,20 @@ public class BStatsMetrics {
         return map;
     }
 
-    private void listUsage(final String bStatsId, final Set<? extends ID> objects, final Set<String> validTypes) {
-        metrics.addCustomChart(new AdvancedPie(bStatsId + "Count", () -> countUsages(objects, validTypes)));
-        metrics.addCustomChart(new AdvancedPie(bStatsId + "Enabled", () -> collectEnabled(objects, validTypes)));
+    private void listUsage(final String bStatsId, final InstructionMetricsSupplier<? extends ID> instructionMetricsSupplier) {
+        metrics.addCustomChart(new AdvancedPie(bStatsId + "Count", () -> countUsages(instructionMetricsSupplier)));
+        metrics.addCustomChart(new AdvancedPie(bStatsId + "Enabled", () -> collectEnabled(instructionMetricsSupplier)));
     }
 
-    private Map<String, Integer> collectEnabled(final Set<? extends ID> objects, final Set<String> validTypes) {
+    private Map<String, Integer> collectEnabled(final InstructionMetricsSupplier<? extends ID> instructionMetricsSupplier) {
         final Map<String, Integer> enabled = new HashMap<>();
-        countUsages(objects, validTypes).forEach((key, count) -> enabled.put(key, 1));
+        countUsages(instructionMetricsSupplier).forEach((key, count) -> enabled.put(key, 1));
         return enabled;
     }
 
-    private Map<String, Integer> countUsages(final Set<? extends ID> ids, final Set<String> validTypes) {
-        return ids.stream()
+    private Map<String, Integer> countUsages(final InstructionMetricsSupplier<? extends ID> instructionMetricsSupplier) {
+        final Set<String> validTypes = instructionMetricsSupplier.getTypes();
+        return instructionMetricsSupplier.getIdentifiers().stream()
                 .map(this::typeFromId)
                 .filter(validTypes::contains)
                 .collect(Collectors.toMap(Function.identity(), key -> 1, Integer::sum));

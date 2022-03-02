@@ -137,6 +137,7 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.id.VariableID;
 import org.betonquest.betonquest.item.QuestItemHandler;
@@ -186,6 +187,8 @@ import org.betonquest.betonquest.objectives.StepObjective;
 import org.betonquest.betonquest.objectives.TameObjective;
 import org.betonquest.betonquest.objectives.VariableObjective;
 import org.betonquest.betonquest.utils.BStatsMetrics;
+import org.betonquest.betonquest.utils.InstructionMetricsSupplier;
+import org.betonquest.betonquest.utils.LegacyAdapterInstructionMetricsSupplier;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.utils.versioning.Updater;
@@ -836,8 +839,12 @@ public class BetonQuest extends JavaPlugin {
         }
 
         // metrics
-        new BStatsMetrics(this, CONDITIONS.keySet(), EVENTS.keySet(), OBJECTIVES.keySet(), VARIABLES.keySet(),
-                CONDITION_TYPES.keySet(), eventTypes.keySet(), OBJECTIVE_TYPES.keySet(), VARIABLE_TYPES.keySet());
+        final Map<String, InstructionMetricsSupplier<? extends ID>> metricsSuppliers = new HashMap<>();
+        metricsSuppliers.put("conditions", new LegacyAdapterInstructionMetricsSupplier<>(CONDITIONS::keySet, CONDITION_TYPES::keySet));
+        metricsSuppliers.put("events", new LegacyAdapterInstructionMetricsSupplier<>(EVENTS::keySet, eventTypes::keySet));
+        metricsSuppliers.put("objectives", new LegacyAdapterInstructionMetricsSupplier<>(OBJECTIVES::keySet, OBJECTIVE_TYPES::keySet));
+        metricsSuppliers.put("variables", new LegacyAdapterInstructionMetricsSupplier<>(VARIABLES::keySet, VARIABLE_TYPES::keySet));
+        new BStatsMetrics(this, metricsSuppliers);
 
         // updater
         updater = new Updater(this.getDescription().getVersion(), this.getFile());
