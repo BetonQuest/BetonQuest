@@ -76,12 +76,21 @@ public class BlockSelector {
     }
 
     /**
-     * Get a random Material. If only one Material is represented by this {@link BlockSelector} this will be returned.
+     * Get a random {@link Material}. If only one Material is represented by this {@link BlockSelector} this will be returned.
      *
      * @return A {@link Material}
      */
     public Material getRandomMaterial() {
         return materials.get(random.nextInt(materials.size()));
+    }
+
+    /**
+     * Get a list of all {@link Material}s that match this {@link BlockSelector}.
+     *
+     * @return A copy of the list of matching {@link Material}s
+     */
+    public List<Material> getMaterials() {
+        return new ArrayList<>(materials);
     }
 
     private String getStateAsString() {
