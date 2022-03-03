@@ -1,10 +1,10 @@
 package pl.betoncraft.betonquest.objectives;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
@@ -31,7 +31,6 @@ import java.util.logging.Level;
  */
 @SuppressWarnings({"PMD.GodClass", "PMD.CommentRequired"})
 public class ActionObjective extends Objective implements Listener {
-
     private final Click action;
     private final BlockSelector selector;
     private final boolean exactMatch;
@@ -51,94 +50,49 @@ public class ActionObjective extends Objective implements Listener {
         exactMatch = instruction.hasArgument("exactMatch");
         loc = instruction.getLocation(instruction.getOptional("loc"));
         final String stringRange = instruction.getOptional("range");
-        range = instruction.getVarNum(stringRange == null ? "1" : stringRange);
+        range = instruction.getVarNum(stringRange == null ? "0" : stringRange);
         cancel = instruction.hasArgument("cancel");
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
+    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     @EventHandler(priority = EventPriority.LOWEST)
     public void onInteract(final PlayerInteractEvent event) {
-        // Only fire the event for the main hand to avoid that the event is triggered two times.
-        if (event.getHand() == EquipmentSlot.OFF_HAND && event.getHand() != null) {
-            return; // off hand packet, ignore.
-        }
-        final String playerID = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(playerID)) {
+        if (event.getHand() != null && event.getHand() == EquipmentSlot.OFF_HAND) {
             return;
         }
+
+        final String playerID = PlayerConverter.getID(event.getPlayer());
+        if (!containsPlayer(playerID) || !action.match(event.getAction())) {
+            return;
+        }
+
         final Block clickedBlock = event.getClickedBlock();
-        if (loc != null && clickedBlock != null) {
+        if (loc != null) {
+            final Location current = clickedBlock == null ? event.getPlayer().getLocation() : clickedBlock.getLocation();
             try {
                 final Location location = loc.getLocation(playerID);
                 final double pRange = range.getDouble(playerID);
-                if (!location.getWorld().equals(clickedBlock.getWorld())
-                        || clickedBlock.getLocation().distance(location) > pRange) {
+                if (!location.getWorld().equals(current.getWorld()) || current.distance(location) > pRange) {
                     return;
                 }
             } catch (final QuestRuntimeException e) {
                 LogUtils.getLogger().log(Level.WARNING, "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage());
                 LogUtils.logThrowable(e);
+                return;
             }
         }
-        if (selector == null) {
-            switch (action) {
-                case RIGHT:
-                    if ((event.getAction().equals(Action.RIGHT_CLICK_AIR)
-                            || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) && checkConditions(playerID)) {
-                        if (cancel) {
-                            event.setCancelled(true);
-                        }
-                        completeObjective(playerID);
-                    }
-                    break;
-                case LEFT:
-                    if ((event.getAction().equals(Action.LEFT_CLICK_AIR)
-                            || event.getAction().equals(Action.LEFT_CLICK_BLOCK)) && checkConditions(playerID)) {
-                        if (cancel) {
-                            event.setCancelled(true);
-                        }
-                        completeObjective(playerID);
-                    }
-                    break;
-                case ANY:
-                default:
-                    if ((event.getAction().equals(Action.LEFT_CLICK_AIR)
-                            || event.getAction().equals(Action.LEFT_CLICK_BLOCK)
-                            || event.getAction().equals(Action.RIGHT_CLICK_AIR)
-                            || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) && checkConditions(playerID)) {
-                        if (cancel) {
-                            event.setCancelled(true);
-                        }
-                        completeObjective(playerID);
-                    }
-                    break;
+
+        if ((selector == null || clickedBlock != null && (checkBlock(clickedBlock, event.getBlockFace()))) && checkConditions(playerID)) {
+            if (cancel) {
+                event.setCancelled(true);
             }
-        } else {
-            final Action actionEnum;
-            switch (action) {
-                case RIGHT:
-                    actionEnum = Action.RIGHT_CLICK_BLOCK;
-                    break;
-                case LEFT:
-                    actionEnum = Action.LEFT_CLICK_BLOCK;
-                    break;
-                case ANY:
-                default:
-                    actionEnum = null;
-                    break;
-            }
-            if ((actionEnum == null && (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-                    || event.getAction().equals(Action.LEFT_CLICK_BLOCK)) || event.getAction().equals(actionEnum))
-                    && clickedBlock != null && ((selector.match(Material.FIRE) || selector.match(Material.LAVA) || selector.match(Material.WATER))
-                    && selector.match(clickedBlock.getRelative(event.getBlockFace()), exactMatch)
-                    || selector.match(clickedBlock, exactMatch)) && checkConditions(playerID)) {
-                if (cancel) {
-                    event.setCancelled(true);
-                }
-                completeObjective(playerID);
-            }
+            completeObjective(playerID);
         }
+    }
+
+    private boolean checkBlock(final Block clickedBlock, final BlockFace blockFace) {
+        return (selector.match(Material.WATER) || selector.match(Material.LAVA))
+                && selector.match(clickedBlock.getRelative(blockFace), exactMatch) || selector.match(clickedBlock, exactMatch);
     }
 
     @Override
@@ -177,7 +131,16 @@ public class ActionObjective extends Objective implements Listener {
     }
 
     public enum Click {
-        RIGHT, LEFT, ANY
+        RIGHT, LEFT, ANY;
+
+        public boolean match(final Action action) {
+            if (action == Action.PHYSICAL) {
+                return false;
+            }
+            return this == ANY
+                    || this == RIGHT && (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK)
+                    || this == LEFT && (action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK);
+        }
     }
 
 }
