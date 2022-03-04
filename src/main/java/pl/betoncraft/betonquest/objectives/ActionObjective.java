@@ -26,11 +26,12 @@ import pl.betoncraft.betonquest.utils.location.CompoundLocation;
 import java.util.logging.Level;
 
 /**
- * Player has to click on block (or air). Left click, right click and any one of
+ * Player has to click on a block (or air). Left click, right click and any one of
  * them is supported.
  */
 @SuppressWarnings({"PMD.GodClass", "PMD.CommentRequired"})
 public class ActionObjective extends Objective implements Listener {
+
     private final Click action;
     private final BlockSelector selector;
     private final boolean exactMatch;
@@ -41,6 +42,7 @@ public class ActionObjective extends Objective implements Listener {
     public ActionObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         template = ObjectiveData.class;
+
         action = instruction.getEnum(Click.class);
         if ("any".equalsIgnoreCase(instruction.next())) {
             selector = null;
