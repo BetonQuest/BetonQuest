@@ -1,0 +1,10 @@
+configVersion: "1.12.1-CONFIG-1"
+section:
+  myList:
+    - someEntry
+    - currentEntry
+    - removedEntry
+  default_conversation_IO: menu
+  test: someValue
+  testKey: test
+

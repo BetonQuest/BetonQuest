@@ -86,7 +86,11 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
 
     @SuppressWarnings("PMD.UnusedFormalParameter")
     private boolean patchConfig(final ConfigurationSection patchAccessorConfig) {
-        return false;
+        final Patcher patcher = new Patcher(accessor.getConfig(), patchAccessorConfig);
+        if (patcher.hasUpdate()) {
+            return patcher.patch();
+        }
+        return true;
     }
 
     @Override
