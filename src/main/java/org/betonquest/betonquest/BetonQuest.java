@@ -187,8 +187,8 @@ import org.betonquest.betonquest.objectives.StepObjective;
 import org.betonquest.betonquest.objectives.TameObjective;
 import org.betonquest.betonquest.objectives.VariableObjective;
 import org.betonquest.betonquest.utils.BStatsMetrics;
+import org.betonquest.betonquest.utils.CompositeInstructionMetricsSupplier;
 import org.betonquest.betonquest.utils.InstructionMetricsSupplier;
-import org.betonquest.betonquest.utils.LegacyAdapterInstructionMetricsSupplier;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.utils.versioning.Updater;
@@ -840,10 +840,10 @@ public class BetonQuest extends JavaPlugin {
 
         // metrics
         final Map<String, InstructionMetricsSupplier<? extends ID>> metricsSuppliers = new HashMap<>();
-        metricsSuppliers.put("conditions", new LegacyAdapterInstructionMetricsSupplier<>(CONDITIONS::keySet, CONDITION_TYPES::keySet));
-        metricsSuppliers.put("events", new LegacyAdapterInstructionMetricsSupplier<>(EVENTS::keySet, eventTypes::keySet));
-        metricsSuppliers.put("objectives", new LegacyAdapterInstructionMetricsSupplier<>(OBJECTIVES::keySet, OBJECTIVE_TYPES::keySet));
-        metricsSuppliers.put("variables", new LegacyAdapterInstructionMetricsSupplier<>(VARIABLES::keySet, VARIABLE_TYPES::keySet));
+        metricsSuppliers.put("conditions", new CompositeInstructionMetricsSupplier<>(CONDITIONS::keySet, CONDITION_TYPES::keySet));
+        metricsSuppliers.put("events", new CompositeInstructionMetricsSupplier<>(EVENTS::keySet, eventTypes::keySet));
+        metricsSuppliers.put("objectives", new CompositeInstructionMetricsSupplier<>(OBJECTIVES::keySet, OBJECTIVE_TYPES::keySet));
+        metricsSuppliers.put("variables", new CompositeInstructionMetricsSupplier<>(VARIABLES::keySet, VARIABLE_TYPES::keySet));
         new BStatsMetrics(this, metricsSuppliers);
 
         // updater
