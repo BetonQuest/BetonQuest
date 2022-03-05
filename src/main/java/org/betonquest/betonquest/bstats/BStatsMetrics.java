@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.utils;
+package org.betonquest.betonquest.bstats;
 
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
