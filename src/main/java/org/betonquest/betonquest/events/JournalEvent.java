@@ -15,11 +15,12 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 public class JournalEvent extends QuestEvent {
 
     /**
-     * Journal action applicable for one specific player
+     * Journal action applicable for one specific player.
      */
     private final EventAction journalAction;
+
     /**
-     * Journal action applicable for all players
+     * Journal action applicable for all players.
      */
     private final EventBulkAction journalBulkAction;
 
