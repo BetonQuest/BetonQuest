@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.api.bukkit.config.custom.multi;
 
-import com.sucy.skill.util.Lists;
 import org.betonquest.betonquest.api.bukkit.config.util.ConfigurationBaseTest;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
@@ -10,6 +9,7 @@ import org.junit.jupiter.api.function.Executable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,7 +33,9 @@ public class MultiConfigurationTest extends ConfigurationBaseTest {
         configs.put(defaultConfig, "config.yml");
         try {
             final MultiConfiguration multiConfiguration = new MultiConfiguration(new ArrayList<>(configs.keySet()));
-            multiConfiguration.setMultiDefaults(Lists.asList(defaultConfig.getDefaults()));
+            final Configuration defaults = defaultConfig.getDefaults();
+            assertNotNull(defaults);
+            multiConfiguration.setMultiDefaults(List.of(defaults));
             return multiConfiguration;
         } catch (final KeyConflictException e) {
             fail(e.resolvedMessage(configs), e);
