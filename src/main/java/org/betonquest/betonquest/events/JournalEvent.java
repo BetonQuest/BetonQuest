@@ -14,8 +14,14 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 @CustomLog
 public class JournalEvent extends QuestEvent {
 
+    /**
+     * Journal action applicable for one specific player
+     */
     private final EventAction journalAction;
-    private final EventBulkAction eventBulkAction;
+    /**
+     * Journal action applicable for all players
+     */
+    private final EventBulkAction journalBulkAction;
 
     /**
      * Create JournalEvent from Instruction.
@@ -23,17 +29,17 @@ public class JournalEvent extends QuestEvent {
      * @param instruction instruction to parse.
      * @throws InstructionParseException if the instruction contains errors
      */
-    public JournalEvent(final Instruction instruction, final EventAction journalAction, final EventBulkAction eventBulkAction) throws InstructionParseException {
+    public JournalEvent(final Instruction instruction, final EventAction journalAction, final EventBulkAction journalBulkAction) throws InstructionParseException {
         super(instruction, false);
         this.journalAction = journalAction;
-        this.eventBulkAction = eventBulkAction;
+        this.journalBulkAction = journalBulkAction;
         staticness = true;
     }
 
     @Override
     protected Void execute(final String playerId) throws QuestRuntimeException {
         if (playerId == null) {
-            eventBulkAction.doBulkAction();
+            journalBulkAction.doBulkAction();
         } else {
             journalAction.doAction(playerId);
         }
