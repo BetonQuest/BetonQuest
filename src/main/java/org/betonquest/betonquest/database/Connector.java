@@ -25,7 +25,7 @@ public class Connector {
      */
     public Connector() {
         final BetonQuest plugin = BetonQuest.getInstance();
-        prefix = plugin.getConfig().getString("mysql.prefix", "");
+        prefix = plugin.getPluginConfig().getString("mysql.prefix", "");
         database = plugin.getDB();
         connection = database.getConnection();
         refresh();

@@ -11,7 +11,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -363,12 +362,11 @@ public class Updater {
          */
         @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
         public UpdaterConfig() {
-            final FileConfiguration config = BetonQuest.getInstance().getConfig();
 
-            enabled = config.getBoolean("update.enabled", true);
-            ingameNotification = config.getBoolean("update.ingameNotification", true);
+            enabled = BetonQuest.getInstance().getPluginConfig().getBoolean("update.enabled", true);
+            ingameNotification = BetonQuest.getInstance().getPluginConfig().getBoolean("update.ingameNotification", true);
 
-            String updateStrategy = config.getString("update.strategy", "MINOR").toUpperCase(Locale.ROOT);
+            String updateStrategy = BetonQuest.getInstance().getPluginConfig().getString("update.strategy", "MINOR").toUpperCase(Locale.ROOT);
             boolean downloadDev = updateStrategy.endsWith(DEV_INDICATOR);
             if (downloadDev) {
                 updateStrategy = updateStrategy.substring(0, updateStrategy.length() - DEV_INDICATOR.length());
@@ -388,7 +386,7 @@ public class Updater {
                 automatic = false;
                 forcedStrategy = true;
             } else {
-                automatic = config.getBoolean("update.automatic", false);
+                automatic = BetonQuest.getInstance().getPluginConfig().getBoolean("update.automatic", false);
                 forcedStrategy = false;
             }
             this.downloadDev = downloadDev;

@@ -28,7 +28,7 @@ public final class Notify {
 
     public static void load() {
         loadCategorySettings();
-        defaultNotifyIO = BetonQuest.getInstance().getConfig().getString("default_notify_IO");
+        defaultNotifyIO = BetonQuest.getInstance().getPluginConfig().getString("default_notify_IO");
     }
 
     public static NotifyIO get() {

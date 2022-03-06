@@ -148,7 +148,7 @@ public class HologramLoop {
                 }
             }
         };
-        runnable.runTaskTimerAsynchronously(BetonQuest.getInstance(), 20, BetonQuest.getInstance().getConfig()
+        runnable.runTaskTimerAsynchronously(BetonQuest.getInstance(), 20, BetonQuest.getInstance().getPluginConfig()
                 .getInt("hologram_update_interval", 20 * 10));
     }
 

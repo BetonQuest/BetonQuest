@@ -49,7 +49,6 @@ public class Compatibility implements Listener {
 
     private static Compatibility instance;
     private final Map<String, Integrator> integrators = new HashMap<>();
-    private final BetonQuest betonQuest = BetonQuest.getInstance();
     private final List<String> hooked = new ArrayList<>();
 
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
@@ -153,7 +152,7 @@ public class Compatibility implements Listener {
         }
 
         // hook into the plugin if it's enabled in the config
-        if ("true".equalsIgnoreCase(betonQuest.getConfig().getString("hook." + name.toLowerCase(Locale.ROOT)))) {
+        if ("true".equalsIgnoreCase(BetonQuest.getInstance().getPluginConfig().getString("hook." + name.toLowerCase(Locale.ROOT)))) {
             LOG.info("Hooking into " + name);
 
             // log important information in case of an error

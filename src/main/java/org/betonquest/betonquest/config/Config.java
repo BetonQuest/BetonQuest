@@ -4,6 +4,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -36,7 +37,7 @@ public final class Config {
     private static final Map<String, QuestPackage> PACKAGES = new HashMap<>();
     private static final List<String> LANGUAGES = new ArrayList<>();
     private static BetonQuest plugin;
-    private static ConfigAccessor messages;
+    private static ConfigurationFile messages;
     private static ConfigAccessor internal;
     private static String lang;
     private static String defaultPackage = "default";
@@ -55,18 +56,16 @@ public final class Config {
         LANGUAGES.clear();
 
         final File root = plugin.getDataFolder();
-
         try {
-            ConfigAccessor.create(new File(root, "config.yml"), plugin, "config.yml");
-            BetonQuest.getInstance().reloadConfig();
-            messages = ConfigAccessor.create(new File(root, "messages.yml"), plugin, "messages.yml");
+            messages = ConfigurationFile.create(new File(root, "messages.yml"), plugin, "messages.yml");
             internal = ConfigAccessor.create(plugin, "messages-internal.yml");
         } catch (final InvalidConfigurationException | FileNotFoundException e) {
             LOG.warn(e.getMessage(), e);
             return;
         }
-        lang = BetonQuest.getInstance().getConfig().getString("language");
-        for (final String key : messages.getConfig().getKeys(false)) {
+
+        lang = plugin.getPluginConfig().getString("language");
+        for (final String key : messages.getKeys(false)) {
             if (!"global".equals(key)) {
                 LOG.debug("Loaded " + key + " language");
                 LANGUAGES.add(key);
@@ -74,7 +73,7 @@ public final class Config {
         }
 
         final File packages = new File(root, "QuestPackages");
-        defaultPackage = plugin.getConfig().getString("default_package", defaultPackage);
+        defaultPackage = plugin.getPluginConfig().getString("default_package", defaultPackage);
 
         // Create QuestPackages folder
         if (!packages.exists() && !packages.mkdir()) {
@@ -133,12 +132,12 @@ public final class Config {
      * does not exist
      */
     public static String getMessage(final String lang, final String message, final String... variables) {
-        String result = messages.getConfig().getString(lang + "." + message);
+        String result = messages.getString(lang + "." + message);
         if (result == null) {
-            result = messages.getConfig().getString(Config.getLanguage() + "." + message);
+            result = messages.getString(Config.getLanguage() + "." + message);
         }
         if (result == null) {
-            result = messages.getConfig().getString("en." + message);
+            result = messages.getString("en." + message);
         }
         if (result == null) {
             result = internal.getConfig().getString(lang + "." + message);
@@ -194,9 +193,9 @@ public final class Config {
         }
         final String main = parts[0];
         if ("config".equals(main)) {
-            return plugin.getConfig().getString(address.substring(7));
+            return plugin.getPluginConfig().getString(address.substring(7));
         } else if ("messages".equals(main)) {
-            return messages.getConfig().getString(address.substring(9));
+            return messages.getString(address.substring(9));
         } else {
             final QuestPackage pack = PACKAGES.get(main);
             if (pack == null) {
@@ -209,7 +208,7 @@ public final class Config {
     /**
      * @return messages configuration
      */
-    public static ConfigAccessor getMessages() {
+    public static ConfigurationFile getMessages() {
         return messages;
     }
 
@@ -416,7 +415,7 @@ public final class Config {
         if (player == null) {
             return;
         }
-        final String rawSound = BetonQuest.getInstance().getConfig().getString("sounds." + soundName);
+        final String rawSound = plugin.getPluginConfig().getString("sounds." + soundName);
         if (!"false".equalsIgnoreCase(rawSound)) {
             try {
                 player.playSound(player.getLocation(), Sound.valueOf(rawSound), 1F, 1F);

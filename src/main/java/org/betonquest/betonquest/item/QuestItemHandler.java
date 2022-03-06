@@ -221,7 +221,7 @@ public class QuestItemHandler implements Listener {
     @SuppressWarnings("deprecation")
     @EventHandler(ignoreCancelled = true)
     public void onItemBreak(final PlayerItemBreakEvent event) {
-        if ("false".equalsIgnoreCase(BetonQuest.getInstance().getConfig().getString("quest_items_unbreakable"))) {
+        if ("false".equalsIgnoreCase(BetonQuest.getInstance().getPluginConfig().getString("quest_items_unbreakable"))) {
             return;
         }
         // prevent quest items from breaking

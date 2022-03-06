@@ -73,7 +73,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
             }
 
         } else {
-            BetonQuest.getInstance().getConfig().set("language", args[0]);
+            BetonQuest.getInstance().getPluginConfig().set("language", args[0]);
             sender.sendMessage(Config.getMessage(args[0], "default_language_changed"));
         }
         return true;

@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.LoadDataEvent;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.Variable;
+import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.bstats.BStatsMetrics;
@@ -205,10 +206,15 @@ import org.betonquest.betonquest.variables.VersionVariable;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -229,7 +235,6 @@ import java.util.regex.Pattern;
         "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidFieldNameMatchingMethodName", "PMD.AtLeastOneConstructor"})
 public class BetonQuest extends JavaPlugin {
     private static final Map<String, Class<? extends Condition>> CONDITION_TYPES = new HashMap<>();
-    private final Map<String, EventFactory> eventTypes = new HashMap<>();
     private static final Map<String, Class<? extends Objective>> OBJECTIVE_TYPES = new HashMap<>();
     private static final Map<String, Class<? extends ConversationIO>> CONVERSATION_IO_TYPES = new HashMap<>();
     private static final Map<String, Class<? extends Interceptor>> INTERCEPTOR_TYPES = new HashMap<>();
@@ -250,7 +255,9 @@ public class BetonQuest extends JavaPlugin {
     @Getter
     private static BetonQuest instance;
     private static BetonQuestLogger log;
+    private final Map<String, EventFactory> eventTypes = new HashMap<>();
     private final ConcurrentHashMap<String, PlayerData> playerDataMap = new ConcurrentHashMap<>();
+    private ConfigurationFile config;
     /**
      * -- GETTER --
      * Get the LogWatcher instance.
@@ -546,6 +553,11 @@ public class BetonQuest extends JavaPlugin {
         return NOTIFY_IO_TYPES.get(name);
     }
 
+    @NotNull
+    public ConfigurationFile getPluginConfig() {
+        return config;
+    }
+
     public String getPluginTag() {
         return pluginTag;
     }
@@ -563,23 +575,30 @@ public class BetonQuest extends JavaPlugin {
     public void onEnable() {
         instance = this;
         log = BetonQuestLogger.create(this);
-        pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
+        try {
+            config = ConfigurationFile.create(new File(getDataFolder(), "config.yml"), this, "config.yml");
+        } catch (InvalidConfigurationException | FileNotFoundException e) {
+            log.error("Could not load the config.yml file!", e);
+            return;
+        }
 
+        pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
         adventure = BukkitAudiences.create(this);
-        logWatcher = new LogWatcher(this, adventure);
+        logWatcher = new LogWatcher(new File(getDataFolder(), "/logs"), config, adventure);
 
         // load configuration
         Config.setup(this);
         Notify.load();
 
         // try to connect to database
-        final boolean mySQLEnabled = getConfig().getBoolean("mysql.enabled", true);
+        final boolean mySQLEnabled = config.getBoolean("mysql.enabled", true);
         if (mySQLEnabled) {
             log.debug("Connecting to MySQL database");
-            this.database = new MySQL(this, getConfig().getString("mysql.host"),
-                    getConfig().getString("mysql.port"),
-                    getConfig().getString("mysql.base"), getConfig().getString("mysql.user"),
-                    getConfig().getString("mysql.pass"));
+            this.database = new MySQL(this, config.getString("mysql.host"),
+                    config.getString("mysql.port"),
+                    config.getString("mysql.base"),
+                    config.getString("mysql.user"),
+                    config.getString("mysql.pass"));
             if (database.getConnection() != null) {
                 isMySQLUsed = true;
                 log.info("Successfully connected to MySQL database!");
@@ -910,7 +929,7 @@ public class BetonQuest extends JavaPlugin {
                         final QuestEvent event = eventFactory.parseEventInstruction(identifier.generateInstruction());
                         EVENTS.put(identifier, event);
                         log.debug(pack, "  Event '" + identifier + "' loaded");
-                    } catch (InstructionParseException e) {
+                    } catch (final InstructionParseException e) {
                         log.warn(pack, "Error in '" + identifier + "' event (" + type + "): " + e.getCause().getMessage(), e);
                     }
                 }
@@ -1043,6 +1062,11 @@ public class BetonQuest extends JavaPlugin {
     public void reload() {
         // reload the configuration
         log.debug("Reloading configuration");
+        try {
+            config.reload();
+        } catch (final IOException e) {
+            log.warn("Could not reload config! " + e.getMessage(), e);
+        }
         Config.setup(this);
         Notify.load();
         // reload updater settings
@@ -1210,7 +1234,7 @@ public class BetonQuest extends JavaPlugin {
     /**
      * Registers a new event with its name and a factory to create them.
      *
-     * @param name name of the event
+     * @param name         name of the event
      * @param eventFactory factory to create the event
      */
     public void registerEvent(final String name, final EventFactory eventFactory) {

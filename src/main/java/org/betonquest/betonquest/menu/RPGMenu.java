@@ -3,6 +3,7 @@ package org.betonquest.betonquest.menu;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -118,8 +119,10 @@ public class RPGMenu {
         this.pluginCommand = new RPGMenuCommand();
         //create config if it doesn't exist
         final File config = new File(BetonQuest.getInstance().getDataFolder(), "menuConfig.yml");
-        if (!config.exists()) {
-            BetonQuest.getInstance().saveResource("menuConfig.yml", false);
+        try {
+            ConfigAccessor.create(config, BetonQuest.getInstance(), "menuConfig.yml");
+        } catch (InvalidConfigurationException | FileNotFoundException e) {
+            LOG.warn(e.getMessage(), e);
         }
     }
 

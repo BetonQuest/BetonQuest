@@ -2,6 +2,7 @@ package org.betonquest.betonquest.database;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
+import org.betonquest.betonquest.BetonQuest;
 import org.bukkit.plugin.Plugin;
 
 import java.sql.Connection;
@@ -19,9 +20,9 @@ public abstract class Database {
     protected String prefix;
     protected Connection con;
 
-    protected Database(final Plugin plugin) {
+    protected Database(final BetonQuest plugin) {
         this.plugin = plugin;
-        this.prefix = plugin.getConfig().getString("mysql.prefix", "");
+        this.prefix = plugin.getPluginConfig().getString("mysql.prefix", "");
     }
 
     public Connection getConnection() {

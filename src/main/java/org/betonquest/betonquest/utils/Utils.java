@@ -70,7 +70,7 @@ public final class Utils {
         }
         // zip all the files
         final String outputPath = backupFolder.getAbsolutePath() + File.separator + "backup-"
-                + instance.getConfig().getString("version", null);
+                + instance.getPluginConfig().getString("version", null);
 
         Zipper.zip(instance.getDataFolder(), outputPath, "^backup.*", "^database\\.db$", "^changelog\\.txt$", "^logs$");
         // delete database backup so it doesn't make a mess later on
