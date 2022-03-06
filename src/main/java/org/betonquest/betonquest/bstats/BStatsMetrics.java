@@ -6,9 +6,7 @@ import org.betonquest.betonquest.id.ID;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.AdvancedPie;
 import org.bstats.charts.DrilldownPie;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,16 +14,30 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * bStats metrics sending class. It implements BetonQuest's custom charts.
+ */
 public class BStatsMetrics {
-    private final static int METRICS_ID = 551;
-
+    /**
+     * The metrics instance to send metrics.
+     */
     private final Metrics metrics;
-    private final JavaPlugin plugin;
 
-    public BStatsMetrics(final JavaPlugin plugin, final Map<String, InstructionMetricsSupplier<? extends ID>> metricsSuppliers) {
+    /**
+     * The plugin that metrics are sent for.
+     */
+    private final Plugin plugin;
+
+    /**
+     * Create a BStatsMetrics instance.
+     *
+     * @param plugin plugin to send metrics for
+     * @param metrics metrics instance to use
+     * @param metricsSuppliers instruction metrics suppliers to query for metrics
+     */
+    public BStatsMetrics(final Plugin plugin, final Metrics metrics, final Map<String, InstructionMetricsSupplier<? extends ID>> metricsSuppliers) {
         this.plugin = plugin;
-        metrics = new Metrics(plugin, METRICS_ID);
+        this.metrics = metrics;
 
         versionMcBq();
         metricsSuppliers.forEach(this::listUsage);
@@ -40,7 +52,7 @@ public class BStatsMetrics {
         metrics.addCustomChart(new DrilldownPie("versionBqMc", () -> getDrillDownPie(versionMc, versionPlugin)));
     }
 
-    public Map<String, Map<String, Integer>> getDrillDownPie(final String value1, final String value2) {
+    private Map<String, Map<String, Integer>> getDrillDownPie(final String value1, final String value2) {
         final Map<String, Map<String, Integer>> map = new HashMap<>();
         final Map<String, Integer> entry = new HashMap<>();
         entry.put(value1, 1);
@@ -80,7 +92,7 @@ public class BStatsMetrics {
         metrics.addCustomChart(new DrilldownPie("hookedPlugins", () -> {
             final Map<String, Map<String, Integer>> map = new HashMap<>();
             for (final String hook : Compatibility.getHooked()) {
-                final Plugin plug = Bukkit.getPluginManager().getPlugin(hook);
+                final Plugin plug = plugin.getServer().getPluginManager().getPlugin(hook);
                 final String hookVersion = plug == null ? "unknown" : plug.getDescription().getVersion();
 
                 final Map<String, Integer> entry = new HashMap<>();
