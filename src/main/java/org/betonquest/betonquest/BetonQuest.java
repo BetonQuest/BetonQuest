@@ -13,6 +13,10 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.bstats.BStatsMetrics;
+import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
+import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
 import org.betonquest.betonquest.commands.BackpackCommand;
 import org.betonquest.betonquest.commands.CancelQuestCommand;
 import org.betonquest.betonquest.commands.CompassCommand;
@@ -130,11 +134,13 @@ import org.betonquest.betonquest.events.TeleportEvent;
 import org.betonquest.betonquest.events.TimeEvent;
 import org.betonquest.betonquest.events.VariableEvent;
 import org.betonquest.betonquest.events.WeatherEvent;
+import org.betonquest.betonquest.events.factory.LegacyAdapterEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.id.ID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.id.VariableID;
 import org.betonquest.betonquest.item.QuestItemHandler;
@@ -183,7 +189,6 @@ import org.betonquest.betonquest.objectives.SmeltingObjective;
 import org.betonquest.betonquest.objectives.StepObjective;
 import org.betonquest.betonquest.objectives.TameObjective;
 import org.betonquest.betonquest.objectives.VariableObjective;
-import org.betonquest.betonquest.utils.BStatsMetrics;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.utils.versioning.Updater;
@@ -224,7 +229,7 @@ import java.util.regex.Pattern;
         "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidFieldNameMatchingMethodName", "PMD.AtLeastOneConstructor"})
 public class BetonQuest extends JavaPlugin {
     private static final Map<String, Class<? extends Condition>> CONDITION_TYPES = new HashMap<>();
-    private static final Map<String, Class<? extends QuestEvent>> EVENT_TYPES = new HashMap<>();
+    private final Map<String, EventFactory> eventTypes = new HashMap<>();
     private static final Map<String, Class<? extends Objective>> OBJECTIVE_TYPES = new HashMap<>();
     private static final Map<String, Class<? extends ConversationIO>> CONVERSATION_IO_TYPES = new HashMap<>();
     private static final Map<String, Class<? extends Interceptor>> INTERCEPTOR_TYPES = new HashMap<>();
@@ -834,7 +839,12 @@ public class BetonQuest extends JavaPlugin {
         }
 
         // metrics
-        new BStatsMetrics(this, CONDITIONS, EVENTS, OBJECTIVES, VARIABLES, CONDITION_TYPES, EVENT_TYPES, OBJECTIVE_TYPES, VARIABLE_TYPES);
+        final Map<String, InstructionMetricsSupplier<? extends ID>> metricsSuppliers = new HashMap<>();
+        metricsSuppliers.put("conditions", new CompositeInstructionMetricsSupplier<>(CONDITIONS::keySet, CONDITION_TYPES::keySet));
+        metricsSuppliers.put("events", new CompositeInstructionMetricsSupplier<>(EVENTS::keySet, eventTypes::keySet));
+        metricsSuppliers.put("objectives", new CompositeInstructionMetricsSupplier<>(OBJECTIVES::keySet, OBJECTIVE_TYPES::keySet));
+        metricsSuppliers.put("variables", new CompositeInstructionMetricsSupplier<>(VARIABLES::keySet, VARIABLE_TYPES::keySet));
+        new BStatsMetrics(this, metricsSuppliers);
 
         // updater
         updater = new Updater(this.getDescription().getVersion(), this.getFile());
@@ -888,27 +898,20 @@ public class BetonQuest extends JavaPlugin {
                         log.warn(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
                         continue;
                     }
-                    final Class<? extends QuestEvent> eventClass = EVENT_TYPES.get(type);
-                    if (eventClass == null) {
-                        // if it's null then there is no such type registered, log
-                        // an error
+                    final EventFactory eventFactory = eventTypes.get(type);
+                    if (eventFactory == null) {
+                        // if it's null then there is no such type registered, log an error
                         log.warn(pack, "Event type " + type + " is not registered, check if it's"
                                 + " spelled correctly in '" + identifier + "' event.");
                         continue;
                     }
+
                     try {
-                        final QuestEvent event = eventClass.getConstructor(Instruction.class)
-                                .newInstance(identifier.generateInstruction());
+                        final QuestEvent event = eventFactory.parseEventInstruction(identifier.generateInstruction());
                         EVENTS.put(identifier, event);
                         log.debug(pack, "  Event '" + identifier + "' loaded");
-                    } catch (final InvocationTargetException e) {
-                        if (e.getCause() instanceof InstructionParseException) {
-                            log.warn(pack, "Error in '" + identifier + "' event (" + type + "): " + e.getCause().getMessage(), e);
-                        } else {
-                            log.reportException(pack, e);
-                        }
-                    } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-                        log.reportException(pack, e);
+                    } catch (InstructionParseException e) {
+                        log.warn(pack, "Error in '" + identifier + "' event (" + type + "): " + e.getCause().getMessage(), e);
                     }
                 }
             }
@@ -1196,11 +1199,23 @@ public class BetonQuest extends JavaPlugin {
      * Registers new event classes by their names
      *
      * @param name       name of the event type
-     * @param eventClass class object for the condition
+     * @param eventClass class object for the event
+     * @deprecated replaced by {@link #registerEvent(String, EventFactory)}
      */
+    @Deprecated
     public void registerEvents(final String name, final Class<? extends QuestEvent> eventClass) {
+        registerEvent(name, new LegacyAdapterEventFactory<>(eventClass));
+    }
+
+    /**
+     * Registers a new event with its name and a factory to create them.
+     *
+     * @param name name of the event
+     * @param eventFactory factory to create the event
+     */
+    public void registerEvent(final String name, final EventFactory eventFactory) {
         log.debug("Registering " + name + " event type");
-        EVENT_TYPES.put(name, eventClass);
+        eventTypes.put(name, eventFactory);
     }
 
     /**
@@ -1354,8 +1369,8 @@ public class BetonQuest extends JavaPlugin {
      * @param name the name of the event class, as previously registered
      * @return the class of the event
      */
-    public Class<? extends QuestEvent> getEventClass(final String name) {
-        return EVENT_TYPES.get(name);
+    public EventFactory getEventFactory(final String name) {
+        return eventTypes.get(name);
     }
 
     /**
@@ -1374,13 +1389,6 @@ public class BetonQuest extends JavaPlugin {
      */
     public void renameObjective(final ObjectiveID name, final ObjectiveID rename) {
         OBJECTIVES.put(rename, OBJECTIVES.remove(name));
-    }
-
-    /**
-     * @return the event types map
-     */
-    public Map<String, Class<? extends QuestEvent>> getEventTypes() {
-        return new HashMap<>(EVENT_TYPES);
     }
 
     /**
