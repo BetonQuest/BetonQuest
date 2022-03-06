@@ -75,8 +75,18 @@ public interface ConfigAccessor {
      * This method does nothing if no configurationFile was provided in the constructor.
      *
      * @return Only returns true if the file was deleted and existed before.
+     * @throws IOException thrown if the file could not be deleted.
      */
-    boolean delete();
+    boolean delete() throws IOException;
+
+    /**
+     * Reloads from the file that is represented by this {@link ConfigAccessor}.
+     * This method does nothing if no configurationFile was provided in the constructor.
+     *
+     * @return Only returns true if the file was successfully reloaded.
+     * @throws IOException thrown if the file could not be reloaded.
+     */
+    boolean reload() throws IOException;
 
     /**
      * Gets the {@link File}, that is represented by this {@link ConfigAccessor}.
