@@ -1,10 +1,9 @@
 package org.betonquest.betonquest.events;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.Utils;
 
 /**
  * Cancels the quest for the player.
@@ -12,16 +11,16 @@ import org.betonquest.betonquest.utils.Utils;
 @SuppressWarnings("PMD.CommentRequired")
 public class CancelEvent extends QuestEvent {
 
-    private final String canceler;
+    private final QuestCanceler canceler;
 
     public CancelEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
-        canceler = Utils.addPackage(instruction.getPackage(), instruction.next());
+        canceler = instruction.getPackage().getCanceler().get(instruction.next());
     }
 
     @Override
     protected Void execute(final String playerID) {
-        BetonQuest.getInstance().getPlayerData(playerID).cancelQuest(canceler);
+        canceler.cancel(playerID);
         return null;
     }
 

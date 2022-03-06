@@ -40,8 +40,8 @@ public class QuestCanceler {
     private final EventID[] events;
     private final ObjectiveID[] objectives;
     private final Map<String, String> name = new HashMap<>();
-    private final String packName;
-    private final String cancelerName;
+    private final QuestPackage pack;
+    private final String cancelerID;
     private String item;
     private Location loc;
 
@@ -53,35 +53,29 @@ public class QuestCanceler {
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public QuestCanceler(final String cancelerID) throws InstructionParseException {
+    public QuestCanceler(final QuestPackage pack, final String cancelerID) throws InstructionParseException {
         if (cancelerID == null) {
             throw new InstructionParseException("Name is null");
         }
-        // get the instruction
-        final String[] parts = cancelerID.split("\\.");
-        if (parts.length != 2) {
-            throw new InstructionParseException("ID is incorrect");
-        }
-        packName = parts[0];
-        cancelerName = parts[1];
-        final QuestPackage pack = Config.getPackages().get(packName);
         if (pack == null) {
             throw new InstructionParseException("Package does not exist");
         }
-        final String rawEvents = pack.getString("cancel." + cancelerName + ".events");
+        this.pack = pack;
+        this.cancelerID = cancelerID;
+        final String rawEvents = pack.getString("cancel." + cancelerID + ".events");
         // get the name
-        if (pack.getConfig().isConfigurationSection("cancel." + cancelerName + ".name")) {
-            for (final String lang : pack.getConfig().getConfigurationSection("cancel." + cancelerName + ".name")
+        if (pack.getConfig().isConfigurationSection("cancel." + cancelerID + ".name")) {
+            for (final String lang : pack.getConfig().getConfigurationSection("cancel." + cancelerID + ".name")
                     .getKeys(false)) {
-                name.put(lang, pack.getString("cancel." + cancelerName + ".name." + lang));
+                name.put(lang, pack.getString("cancel." + cancelerID + ".name." + lang));
             }
         } else {
-            name.put(Config.getLanguage(), pack.getString("cancel." + cancelerName + ".name"));
+            name.put(Config.getLanguage(), pack.getString("cancel." + cancelerID + ".name"));
         }
         // get the item
-        item = pack.getString("cancel." + cancelerName + ".item");
+        item = pack.getString("cancel." + cancelerID + ".item");
         if (item == null) {
-            item = Config.getString(packName + ".items.cancel_button");
+            item = Config.getString(pack.getPackagePath() + ".items.cancel_button");
         }
         // parse it to get the data
         if (rawEvents == null) {
@@ -91,13 +85,13 @@ public class QuestCanceler {
             events = new EventID[arr.length];
             for (int i = 0; i < arr.length; i++) {
                 try {
-                    events[i] = new EventID(Config.getPackages().get(packName), arr[i]);
+                    events[i] = new EventID(pack, arr[i]);
                 } catch (final ObjectNotFoundException e) {
                     throw new InstructionParseException("Error while parsing quest canceler events: " + e.getMessage(), e);
                 }
             }
         }
-        final String rawConditions = pack.getString("cancel." + cancelerName + ".conditions");
+        final String rawConditions = pack.getString("cancel." + cancelerID + ".conditions");
         if (rawConditions == null) {
             conditions = new ConditionID[0];
         } else {
@@ -105,13 +99,13 @@ public class QuestCanceler {
             conditions = new ConditionID[arr.length];
             for (int i = 0; i < arr.length; i++) {
                 try {
-                    conditions[i] = new ConditionID(Config.getPackages().get(packName), arr[i]);
+                    conditions[i] = new ConditionID(pack, arr[i]);
                 } catch (final ObjectNotFoundException e) {
                     throw new InstructionParseException("Error while parsing quest canceler conditions: " + e.getMessage(), e);
                 }
             }
         }
-        final String rawObjectives = pack.getString("cancel." + cancelerName + ".objectives");
+        final String rawObjectives = pack.getString("cancel." + cancelerID + ".objectives");
         if (rawObjectives == null) {
             objectives = new ObjectiveID[0];
         } else {
@@ -119,16 +113,16 @@ public class QuestCanceler {
             objectives = new ObjectiveID[arr.length];
             for (int i = 0; i < arr.length; i++) {
                 try {
-                    objectives[i] = new ObjectiveID(Config.getPackages().get(packName), arr[i]);
+                    objectives[i] = new ObjectiveID(pack, arr[i]);
                 } catch (final ObjectNotFoundException e) {
                     throw new InstructionParseException("Error while parsing quest canceler objectives: " + e.getMessage(), e);
                 }
             }
         }
-        final String rawTags = pack.getString("cancel." + cancelerName + ".tags");
-        final String rawPoints = pack.getString("cancel." + cancelerName + ".points");
-        final String rawJournal = pack.getString("cancel." + cancelerName + ".journal");
-        final String rawLoc = pack.getString("cancel." + cancelerName + ".loc");
+        final String rawTags = pack.getString("cancel." + cancelerID + ".tags");
+        final String rawPoints = pack.getString("cancel." + cancelerID + ".points");
+        final String rawJournal = pack.getString("cancel." + cancelerID + ".journal");
+        final String rawLoc = pack.getString("cancel." + cancelerID + ".loc");
         tags = rawTags == null ? null : rawTags.split(",");
         points = rawPoints == null ? null : rawPoints.split(",");
         journal = rawJournal == null ? null : rawJournal.split(",");
@@ -201,7 +195,7 @@ public class QuestCanceler {
                 if (tag.contains(".")) {
                     playerData.removeTag(tag);
                 } else {
-                    playerData.removeTag(packName + "." + tag);
+                    playerData.removeTag(pack.getPackagePath() + "." + tag);
                 }
             }
         }
@@ -211,7 +205,7 @@ public class QuestCanceler {
                 if (point.contains(".")) {
                     playerData.removePointsCategory(point);
                 } else {
-                    playerData.removePointsCategory(packName + "." + point);
+                    playerData.removePointsCategory(pack.getPackagePath() + "." + point);
                 }
             }
         }
@@ -230,7 +224,7 @@ public class QuestCanceler {
                 if (entry.contains(".")) {
                     journal.removePointer(entry);
                 } else {
-                    journal.removePointer(packName + "." + entry);
+                    journal.removePointer(pack.getPackagePath() + "." + entry);
                 }
             }
             journal.update();
@@ -250,7 +244,7 @@ public class QuestCanceler {
         LOG.debug("Quest removed!");
         final String questName = getName(playerID);
         try {
-            Config.sendNotify(packName, playerID, "quest_canceled", new String[]{questName}, "quest_cancelled,quest_canceled,info");
+            Config.sendNotify(pack.getPackagePath(), playerID, "quest_canceled", new String[]{questName}, "quest_cancelled,quest_canceled,info");
         } catch (final QuestRuntimeException exception) {
             LOG.warn("The notify system was unable to play a sound for the 'quest_canceled' category in quest '" + name + "'. Error was: '" + exception.getMessage() + "'");
         }
@@ -273,7 +267,7 @@ public class QuestCanceler {
             questName = name.get("en");
         }
         if (questName == null) {
-            LOG.warn("Default quest name not defined in canceler " + packName + "." + cancelerName);
+            LOG.warn("Default quest name not defined in canceler " + pack.getPackagePath() + "." + cancelerID);
             questName = "Quest";
         }
         return questName.replace("_", " ").replace("&", "§");
@@ -284,7 +278,7 @@ public class QuestCanceler {
         ItemStack stack = new ItemStack(Material.BONE);
         if (item != null) {
             try {
-                final ItemID itemID = new ItemID(Config.getPackages().get(packName), item);
+                final ItemID itemID = new ItemID(pack, item);
                 stack = new QuestItem(itemID).generate(1);
             } catch (InstructionParseException | ObjectNotFoundException e) {
                 LOG.warn("Could not load cancel button: " + e.getMessage(), e);

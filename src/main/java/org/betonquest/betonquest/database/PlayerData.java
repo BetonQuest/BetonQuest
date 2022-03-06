@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.PlayerTagAddEvent;
 import org.betonquest.betonquest.api.PlayerTagRemoveEvent;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.database.Connector.QueryType;
 import org.betonquest.betonquest.database.Connector.UpdateType;
 import org.betonquest.betonquest.database.Saver.Record;
@@ -451,18 +450,6 @@ public class PlayerData {
             final String instruction = QuestItem.itemToString(itemStack);
             final String newAmount = String.valueOf(itemStack.getAmount());
             saver.add(new Record(UpdateType.ADD_BACKPACK, playerID, instruction, newAmount));
-        }
-    }
-
-    /**
-     * Cancels the quest by removing all defined tags, points, objectives etc.
-     *
-     * @param name name of the canceler
-     */
-    public void cancelQuest(final String name) {
-        final QuestCanceler canceler = Config.getCancelers().get(name);
-        if (canceler != null) {
-            canceler.cancel(playerID);
         }
     }
 

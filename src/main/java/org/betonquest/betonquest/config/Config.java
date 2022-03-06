@@ -6,7 +6,6 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.database.PlayerData;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -35,7 +34,6 @@ public final class Config {
     public static final String CONFIG_PACKAGE_SEPARATOR = "-";
 
     private static final Map<String, QuestPackage> PACKAGES = new HashMap<>();
-    private static final Map<String, QuestCanceler> CANCELERS = new HashMap<>();
     private static final List<String> LANGUAGES = new ArrayList<>();
     private static BetonQuest plugin;
     private static ConfigAccessor messages;
@@ -54,7 +52,6 @@ public final class Config {
     public static void setup(final BetonQuest plugin) {
         Config.plugin = plugin;
         PACKAGES.clear();
-        CANCELERS.clear();
         LANGUAGES.clear();
 
         final File root = plugin.getDataFolder();
@@ -94,22 +91,6 @@ public final class Config {
         } catch (final IOException e) {
             LOG.error("Error while loading '" + packages.getPath() + "'!", e);
         }
-
-        // load quest cancelers
-        for (final QuestPackage pack : PACKAGES.values()) {
-            final ConfigurationSection section = pack.getConfig().getConfigurationSection("cancel");
-            if (section == null) {
-                continue;
-            }
-            for (final String key : section.getKeys(false)) {
-                final String name = pack.getPackagePath() + "." + key;
-                try {
-                    CANCELERS.put(name, new QuestCanceler(name));
-                } catch (final InstructionParseException e) {
-                    LOG.warn(pack, "Could not load '" + name + "' quest canceler: " + e.getMessage(), e);
-                }
-            }
-        }
     }
 
     /**
@@ -139,15 +120,6 @@ public final class Config {
         } catch (final InvalidConfigurationException | FileNotFoundException e) {
             LOG.warn(e.getMessage(), e);
         }
-    }
-
-    /**
-     * Returns a map containing all quest cancelers from across all packages.
-     *
-     * @return the map with quest cancelers
-     */
-    public static Map<String, QuestCanceler> getCancelers() {
-        return CANCELERS;
     }
 
     /**

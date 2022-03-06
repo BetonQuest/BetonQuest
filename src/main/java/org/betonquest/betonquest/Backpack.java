@@ -29,6 +29,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -367,12 +368,13 @@ public class Backpack implements Listener {
          */
         public Cancelers() {
             super();
-            final HashMap<String, QuestCanceler> cancelers = new HashMap<>();
+            final ArrayList<QuestCanceler> cancelers = new ArrayList<>();
             // get all quest cancelers that can be shown to the player
-            for (final String name : Config.getCancelers().keySet()) {
-                final QuestCanceler canceler = Config.getCancelers().get(name);
-                if (canceler.show(playerID)) {
-                    cancelers.put(name, canceler);
+            for (final QuestPackage pack : Config.getPackages().values()) {
+                for (final QuestCanceler canceler : pack.getCanceler().values()) {
+                    if (canceler.show(playerID)) {
+                        cancelers.add(canceler);
+                    }
                 }
             }
             // generate the inventory view
@@ -386,7 +388,7 @@ public class Backpack implements Listener {
             inv = Bukkit.createInventory(null, numberOfRows * 9, Config.getMessage(lang, "cancel_page"));
             final ItemStack[] content = new ItemStack[numberOfRows * 9];
             int index = 0;
-            for (final QuestCanceler canceler : cancelers.values()) {
+            for (final QuestCanceler canceler : cancelers) {
                 content[index] = canceler.getItem(playerID);
                 map.put(index, canceler);
                 index++;

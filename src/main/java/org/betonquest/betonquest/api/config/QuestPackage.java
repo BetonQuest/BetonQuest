@@ -3,6 +3,8 @@ package org.betonquest.betonquest.api.config;
 import lombok.CustomLog;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.KeyConflictException;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
+import org.betonquest.betonquest.config.QuestCanceler;
+import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.GlobalVariableID;
 import org.betonquest.betonquest.utils.Utils;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,6 +43,9 @@ public class QuestPackage {
      * The merged {@link MultiConfiguration} that represents this {@link QuestPackage}
      */
     private final MultiConfiguration config;
+
+    @SuppressWarnings("PMD.CommentRequired")
+    private final Map<String, QuestCanceler> canceler;
 
     /**
      * Creates a new {@link QuestPackage}. The {@code packagePath} represents the address of this {@link QuestPackage}.
@@ -74,6 +80,22 @@ public class QuestPackage {
         } catch (final KeyConflictException e) {
             throw new InvalidConfigurationException(e.resolvedMessage(configurations), e);
         }
+        canceler = getQuestCanceler(this);
+    }
+
+    private static Map<String, QuestCanceler> getQuestCanceler(final QuestPackage pack) {
+        final ConfigurationSection cancelSection = pack.getConfig().getConfigurationSection("cancel");
+        final Map<String, QuestCanceler> cancelers = new HashMap<>();
+        if (cancelSection != null) {
+            for (final String key : cancelSection.getKeys(false)) {
+                try {
+                    cancelers.put(key, new QuestCanceler(pack, key));
+                } catch (final InstructionParseException e) {
+                    LOG.warn(pack, "Could not load '" + pack.getPackagePath() + "." + key + "' quest canceler: " + e.getMessage(), e);
+                }
+            }
+        }
+        return cancelers;
     }
 
     /**
@@ -92,6 +114,10 @@ public class QuestPackage {
      */
     public MultiConfiguration getConfig() {
         return config;
+    }
+
+    public Map<String, QuestCanceler> getCanceler() {
+        return canceler;
     }
 
     @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition"})
