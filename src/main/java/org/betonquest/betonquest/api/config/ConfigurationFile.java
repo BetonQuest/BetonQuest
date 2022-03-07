@@ -19,7 +19,7 @@ public interface ConfigurationFile extends ConfigurationSection {
      * <br>
      * Additionally, attempts to patch the {@code configurationFile} with a patch file.
      * This patch file must exist in the same directory as the {@code resourceFile}.
-     * It's name is the one of the {@code resourceFile} but with
+     * Its name is the one of the {@code resourceFile} but with
      * '.patch' inserted between the file name and the file extension.
      * <br>
      * E.g:
