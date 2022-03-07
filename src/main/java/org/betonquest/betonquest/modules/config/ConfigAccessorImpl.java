@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.modules.config;
 
-import io.lumine.mythic.utils.files.Files;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -13,6 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 /**
  * Represents a {@link YamlConfiguration} that is a file or a resource from a plugin.
@@ -139,7 +139,7 @@ public class ConfigAccessorImpl implements ConfigAccessor {
             return false;
         }
         try {
-            Files.delete(configurationFile);
+            Files.delete(configurationFile.toPath());
             return true;
         } catch (final IOException e) {
             throw new IOException(buildExceptionMessage(false, configurationFile.getPath(),

@@ -40,4 +40,14 @@ public interface ConfigurationFile extends ConfigurationSection {
      * @see ConfigAccessor#save()
      */
     void save() throws IOException;
+
+    /**
+     * @see ConfigAccessor#delete()
+     */
+    void delete() throws IOException;
+
+    /**
+     * @see ConfigAccessor#reload()
+     */
+    void reload() throws IOException;
 }
