@@ -1684,6 +1684,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             } else {
                 logWatcher.endDebug();
             }
+            try {
+                logWatcher.saveDebuggingToConfig();
+            } catch (final IOException e) {
+                sender.sendMessage("Could not save new debugging state to configuration file!");
+                LOG.warn("Could not save new debugging state to configuration file! " + e.getMessage(), e);
+            }
             sender.sendMessage("§2Debugging mode was " + (logWatcher.isDebugging() ? "enabled" : "disabled") + '!');
             LOG.info("Debuging mode was " + (logWatcher.isDebugging() ? "enabled" : "disabled") + '!');
             return;

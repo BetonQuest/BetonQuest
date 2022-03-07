@@ -103,8 +103,8 @@ public class Conversation implements Listener {
         this.location = location;
         this.convID = conversationID;
         this.data = plugin.getConversation(convID);
-        this.blacklist = plugin.getConfig().getStringList("cmd_blacklist");
-        this.messagesDelaying = "true".equalsIgnoreCase(plugin.getConfig().getString("display_chat_after_conversation"));
+        this.blacklist = plugin.getPluginConfig().getStringList("cmd_blacklist");
+        this.messagesDelaying = "true".equalsIgnoreCase(plugin.getPluginConfig().getString("display_chat_after_conversation"));
 
         // check if data is present
         if (data == null) {

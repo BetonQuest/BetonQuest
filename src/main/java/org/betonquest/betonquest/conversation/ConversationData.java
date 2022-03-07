@@ -89,7 +89,7 @@ public class ConversationData {
         }
         final String stop = pack.getString("conversations." + name + ".stop");
         blockMovement = stop != null && stop.equalsIgnoreCase("true");
-        final String rawConvIO = pack.getString("conversations." + name + ".conversationIO", BetonQuest.getInstance().getConfig().getString("default_conversation_IO", "menu,chest"));
+        final String rawConvIO = pack.getString("conversations." + name + ".conversationIO", BetonQuest.getInstance().getPluginConfig().getString("default_conversation_IO", "menu,chest"));
 
         // check if all data is valid (or at least exist)
         for (final String s : rawConvIO.split(",")) {
@@ -102,7 +102,7 @@ public class ConversationData {
             throw new InstructionParseException("No registered conversation IO found: " + rawConvIO);
         }
 
-        final String rawInterceptor = pack.getString("conversations." + name + ".interceptor", BetonQuest.getInstance().getConfig().getString("default_interceptor", "simple"));
+        final String rawInterceptor = pack.getString("conversations." + name + ".interceptor", BetonQuest.getInstance().getPluginConfig().getString("default_interceptor", "simple"));
         for (final String s : rawInterceptor.split(",")) {
             if (BetonQuest.getInstance().getInterceptor(s.trim()) != null) {
                 interceptor = s.trim();

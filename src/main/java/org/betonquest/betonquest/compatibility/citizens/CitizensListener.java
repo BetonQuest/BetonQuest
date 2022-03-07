@@ -53,11 +53,11 @@ public class CitizensListener implements Listener {
         rightClick = new RightClickListener();
         Bukkit.getPluginManager().registerEvents(rightClick, plugin);
 
-        if (plugin.getConfig().getBoolean("acceptNPCLeftClick")) {
+        if (plugin.getPluginConfig().getBoolean("acceptNPCLeftClick")) {
             leftClick = new LeftClickListener();
             Bukkit.getPluginManager().registerEvents(leftClick, plugin);
         }
-        interactionLimit = plugin.getConfig().getInt("npcInteractionLimit", 500);
+        interactionLimit = plugin.getPluginConfig().getInt("npcInteractionLimit", 500);
     }
 
     @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.CyclomaticComplexity", "PMD.NPathComplexity"})

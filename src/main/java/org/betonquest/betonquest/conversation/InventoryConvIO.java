@@ -99,8 +99,8 @@ public class InventoryConvIO implements Listener, ConversationIO {
         loc = player.getLocation();
 
         // Load config
-        if (BetonQuest.getInstance().getConfig().contains("conversation_IO_config.chest")) {
-            final ConfigurationSection config = BetonQuest.getInstance().getConfig().getConfigurationSection("conversation_IO_config.chest");
+        if (BetonQuest.getInstance().getPluginConfig().contains("conversation_IO_config.chest")) {
+            final ConfigurationSection config = BetonQuest.getInstance().getPluginConfig().getConfigurationSection("conversation_IO_config.chest");
             showNumber = config.getBoolean("show_number", true);
             showNPCText = config.getBoolean("show_npc_text", true);
         }
