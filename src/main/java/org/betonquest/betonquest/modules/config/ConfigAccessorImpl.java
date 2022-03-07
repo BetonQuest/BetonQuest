@@ -12,10 +12,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 /**
  * Represents a {@link YamlConfiguration} that is a file or a resource from a plugin.
  */
+@SuppressWarnings("PMD.GodClass")
 public class ConfigAccessorImpl implements ConfigAccessor {
 
     /**
@@ -25,7 +27,7 @@ public class ConfigAccessorImpl implements ConfigAccessor {
     /**
      * The loaded configurationFile represented by this {@link ConfigAccessorImpl}.
      */
-    private final YamlConfiguration configuration;
+    private YamlConfiguration configuration;
 
     /**
      * Tries to load the configurationFile.
@@ -132,11 +134,31 @@ public class ConfigAccessorImpl implements ConfigAccessor {
     }
 
     @Override
-    public final boolean delete() {
+    public final boolean delete() throws IOException {
         if (configurationFile == null) {
             return false;
         }
-        return configurationFile.delete();
+        try {
+            Files.delete(configurationFile.toPath());
+            return true;
+        } catch (final IOException e) {
+            throw new IOException(buildExceptionMessage(false, configurationFile.getPath(),
+                    "could not be deleted! Reason: " + e.getMessage()), e);
+        }
+    }
+
+    @Override
+    public boolean reload() throws IOException {
+        if (configurationFile == null) {
+            return false;
+        }
+        try {
+            this.configuration = readFromFile();
+            return true;
+        } catch (InvalidConfigurationException | FileNotFoundException e) {
+            throw new IOException(buildExceptionMessage(false, configurationFile.getPath(),
+                    "could not be reloaded! Reason: " + e.getMessage()), e);
+        }
     }
 
     @Override

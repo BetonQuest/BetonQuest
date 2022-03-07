@@ -29,7 +29,7 @@ public class ConfigurationSectionDecorator implements ConfigurationSection {
     /**
      * The original {@link ConfigurationSection}.
      */
-    protected final ConfigurationSection original;
+    protected ConfigurationSection original;
 
     /**
      * Create a new decorator instance.

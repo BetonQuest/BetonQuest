@@ -93,4 +93,15 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
     public void save() throws IOException {
         accessor.save();
     }
+
+    @Override
+    public void delete() throws IOException {
+        accessor.delete();
+    }
+
+    @Override
+    public void reload() throws IOException {
+        accessor.reload();
+        original = accessor.getConfig();
+    }
 }
