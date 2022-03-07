@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - ${current-date}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## [1.12.8] - 2022-03-07
+### Added
 - new line support for `journal_lore` in `messages.yml`
 ### Changed
 - PikaMug Quests updated to version 4.1.3
