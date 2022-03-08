@@ -107,7 +107,7 @@ public class Updater {
         final String automaticDone = "it was downloaded and will be " + automatic;
         final String command = "it will be installed, if you execute '/q update'!";
 
-        updateNotification = isUpdateAvailable() && config.inGameNotification ? version + (config.automatic ? automaticDone : command) : null;
+        updateNotification = isUpdateAvailable() && config.ingameNotification ? version + (config.automatic ? automaticDone : command) : null;
         return version + (config.automatic ? automaticProgress : command);
     }
 
@@ -351,7 +351,7 @@ public class Updater {
         /**
          * Should player be notified in game.
          */
-        private final boolean inGameNotification;
+        private final boolean ingameNotification;
         /**
          * True, if the {@link UpdateStrategy} was forced to a DEV UpdateStrategy.
          */
@@ -364,7 +364,7 @@ public class Updater {
         public UpdaterConfig() {
 
             enabled = BetonQuest.getInstance().getPluginConfig().getBoolean("update.enabled", true);
-            inGameNotification = BetonQuest.getInstance().getPluginConfig().getBoolean("update.inGameNotification", true);
+            ingameNotification = BetonQuest.getInstance().getPluginConfig().getBoolean("update.ingameNotification", true);
 
             String updateStrategy = BetonQuest.getInstance().getPluginConfig().getString("update.strategy", "MINOR").toUpperCase(Locale.ROOT);
             boolean downloadDev = updateStrategy.endsWith(DEV_INDICATOR);
