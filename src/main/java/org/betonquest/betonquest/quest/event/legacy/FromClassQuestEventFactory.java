@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.events.factory;
+package org.betonquest.betonquest.quest.event.legacy;
 
 import lombok.CustomLog;
 import org.betonquest.betonquest.Instruction;
@@ -9,12 +9,15 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * Adapter to allow creation of {@link QuestEvent}s by {@link Class} instance.
+ * Factory to create {@link QuestEvent}s with the old convention of the pre-defined constructor taking just one
+ * {@link Instruction} argument.
  *
  * @param <T> type of the event
+ * @deprecated new events must use an {@link EventFactory} instead
  */
 @CustomLog
-public class LegacyAdapterEventFactory<T extends QuestEvent> implements EventFactory {
+@Deprecated
+public class FromClassQuestEventFactory<T extends QuestEvent> implements QuestEventFactory {
 
     /**
      * Class of the event to create.
@@ -22,11 +25,11 @@ public class LegacyAdapterEventFactory<T extends QuestEvent> implements EventFac
     private final Class<T> eventClass;
 
     /**
-     * Create a factory that can create events that conform to the old convention of how to define their constructor.
+     * Create the factory for a specific event class.
      *
      * @param eventClass event class to create with this factory
      */
-    public LegacyAdapterEventFactory(final Class<T> eventClass) {
+    public FromClassQuestEventFactory(final Class<T> eventClass) {
         this.eventClass = eventClass;
     }
 

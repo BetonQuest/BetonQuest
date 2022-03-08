@@ -4,9 +4,9 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
-import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.quest.event.legacy.QuestEventFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +51,7 @@ public class RunEvent extends QuestEvent {
         if (parts.length <= 0) {
             throw new InstructionParseException("Not enough arguments in internal event");
         }
-        final EventFactory eventFactory = BetonQuest.getInstance().getEventFactory(parts[0]);
+        final QuestEventFactory eventFactory = BetonQuest.getInstance().getEventFactory(parts[0]);
         if (eventFactory == null) {
             // if it's null then there is no such type registered, log an error
             throw new InstructionParseException("Event type " + parts[0] + " is not registered, check if it's"

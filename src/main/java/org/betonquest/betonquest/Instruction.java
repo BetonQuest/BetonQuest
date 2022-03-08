@@ -75,6 +75,15 @@ public class Instruction {
         return identifier;
     }
 
+    /**
+     * Copy the instruction. The copy has no consumed arguments.
+     *
+     * @return a new instruction
+     */
+    public Instruction copy() {
+        return new Instruction(pack, identifier, instruction);
+    }
+
     /////////////////////
     ///    GENERAL    ///
     /////////////////////
@@ -550,5 +559,4 @@ public class Instruction {
             super("Error while parsing " + (lastOptional == null ? currentIndex : lastOptional + " optional") + " argument: " + message, cause);
         }
     }
-
 }
