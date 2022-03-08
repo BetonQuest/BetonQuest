@@ -370,11 +370,9 @@ public class Backpack implements Listener {
             super();
             final ArrayList<QuestCanceler> cancelers = new ArrayList<>();
             // get all quest cancelers that can be shown to the player
-            for (final QuestPackage pack : Config.getPackages().values()) {
-                for (final QuestCanceler canceler : pack.getCanceler().values()) {
-                    if (canceler.show(playerID)) {
-                        cancelers.add(canceler);
-                    }
+            for (final QuestCanceler canceler : BetonQuest.getCanceler().values()) {
+                if (canceler.show(playerID)) {
+                    cancelers.add(canceler);
                 }
             }
             // generate the inventory view
