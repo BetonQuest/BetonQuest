@@ -2,10 +2,10 @@ package org.betonquest.betonquest.events;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.config.QuestPackage;
-import org.betonquest.betonquest.events.action.journal.JournalEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
+import org.betonquest.betonquest.quest.event.journal.JournalEventFactory;
+import org.betonquest.betonquest.quest.event.legacy.QuestEventFactoryAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -28,7 +28,7 @@ import static org.mockito.Mockito.*;
 /**
  * JournalEvent tests.
  */
-class JournalEventTest {
+class JournalEventFactoryIntegrationTest {
 
     /**
      * Mocked Minecraft Bukkit server.
@@ -43,12 +43,12 @@ class JournalEventTest {
     /**
      * TODO
      */
-    final JournalEventFactory journalFactory = new JournalEventFactory();
+    final QuestEventFactoryAdapter journalFactory = new QuestEventFactoryAdapter(new JournalEventFactory());
 
     /**
      * Create JournalEvent test class.
      */
-    public JournalEventTest() {}
+    public JournalEventFactoryIntegrationTest() {}
 
     @BeforeAll
     static void initializeBukkit() {
@@ -144,31 +144,5 @@ class JournalEventTest {
 
         final Instruction instruction = new Instruction(questPackage, null, "journal invalid");
         assertThrows(InstructionParseException.class, () -> journalFactory.parseEventInstruction(instruction), "invalid action of journal event should throw an exception when created");
-    }
-
-    @Test
-    void executeJournalAddEventWithoutPlayer(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, InstructionParseException, QuestRuntimeException {
-        setupLogger();
-        final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
-
-        final Instruction instruction = new Instruction(questPackage, null, "journal add quest_started");
-        final JournalEvent event = journalFactory.parseEventInstruction(instruction);
-
-        event.execute(null);
-
-        verify(server, never()).getOnlinePlayers();
-    }
-
-    @Test
-    void executeJournalUpdateEventWithoutPlayer(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, InstructionParseException, QuestRuntimeException {
-        setupLogger();
-        final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
-
-        final Instruction instruction = new Instruction(questPackage, null, "journal update");
-        final JournalEvent event = journalFactory.parseEventInstruction(instruction);
-
-        event.execute(null);
-
-        verify(server, never()).getOnlinePlayers();
     }
 }

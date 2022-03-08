@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.events.action.journal;
+package org.betonquest.betonquest.quest.event.journal;
 
 import org.betonquest.betonquest.Journal;
 

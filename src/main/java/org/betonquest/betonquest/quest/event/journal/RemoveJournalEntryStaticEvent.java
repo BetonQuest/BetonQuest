@@ -1,28 +1,27 @@
-package org.betonquest.betonquest.events.action.journal;
+package org.betonquest.betonquest.quest.event.journal;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.Saver;
-import org.betonquest.betonquest.events.action.EventAction;
-import org.betonquest.betonquest.events.action.EventBulkAction;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class RemoveJournalEntryEventBulkAction implements EventBulkAction {
+public class RemoveJournalEntryStaticEvent implements StaticEvent {
     private final String entryName;
-    private final EventAction deleteSingleAction;
+    private final JournalEvent deleteEvent;
 
-    public RemoveJournalEntryEventBulkAction(final String entryName, final EventAction deleteSingleAction) {
+    public RemoveJournalEntryStaticEvent(final String entryName, final JournalEvent deleteEvent) {
         this.entryName = entryName;
-        this.deleteSingleAction = deleteSingleAction;
+        this.deleteEvent = deleteEvent;
     }
 
     @Override
-    public void doBulkAction() {
+    public void execute() {
         for (final Player p : Bukkit.getOnlinePlayers()) {
             final String playerId = PlayerConverter.getID(p);
-            deleteSingleAction.doAction(playerId);
+            deleteEvent.execute(playerId);
         }
         BetonQuest.getInstance().getSaver().add(new Saver.Record(Connector.UpdateType.REMOVE_ALL_ENTRIES, entryName));
     }

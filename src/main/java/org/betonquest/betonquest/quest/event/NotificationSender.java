@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.events.action;
+package org.betonquest.betonquest.quest.event;
 
 /**
  * Allows sending notifications to a player.

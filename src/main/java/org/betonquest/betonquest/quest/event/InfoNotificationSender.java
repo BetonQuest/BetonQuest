@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.events.action;
+package org.betonquest.betonquest.quest.event;
 
 import lombok.CustomLog;
 import org.betonquest.betonquest.api.config.QuestPackage;
