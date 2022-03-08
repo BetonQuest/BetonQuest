@@ -36,11 +36,11 @@ public class BStatsMetrics {
         final String versionPlugin = plugin.getDescription().getVersion();
         final String versionMc = plugin.getServer().getBukkitVersion().split("-")[0];
 
-        metrics.addCustomChart(new DrilldownPie("versionMcBq", () -> getDrilldownPie(versionPlugin, versionMc)));
-        metrics.addCustomChart(new DrilldownPie("versionBqMc", () -> getDrilldownPie(versionMc, versionPlugin)));
+        metrics.addCustomChart(new DrilldownPie("versionMcBq", () -> getDrillDownPie(versionPlugin, versionMc)));
+        metrics.addCustomChart(new DrilldownPie("versionBqMc", () -> getDrillDownPie(versionMc, versionPlugin)));
     }
 
-    public Map<String, Map<String, Integer>> getDrilldownPie(final String value1, final String value2) {
+    public Map<String, Map<String, Integer>> getDrillDownPie(final String value1, final String value2) {
         final Map<String, Map<String, Integer>> map = new HashMap<>();
         final Map<String, Integer> entry = new HashMap<>();
         entry.put(value1, 1);
@@ -70,7 +70,7 @@ public class BStatsMetrics {
     private String typeFromId(final ID identifier) {
         try {
             return identifier.generateInstruction().getPart(0);
-        } catch (InstructionParseException ex) {
+        } catch (final InstructionParseException ex) {
             // ignore broken instructions
             return null;
         }

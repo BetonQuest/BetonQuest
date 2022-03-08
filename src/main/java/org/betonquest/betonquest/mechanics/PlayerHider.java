@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The PlayerHider can hide other players, if the source fits all conditions and the targets also fits there conditions.
+ * The PlayerHider can hide other players, if both the source and the target meet all their conditions.
  */
 public class PlayerHider {
     /**
@@ -35,7 +35,7 @@ public class PlayerHider {
     /**
      * Initialize and start a new PlayerHider
      *
-     * @throws InstructionParseException Thrown if there is an configuration error.
+     * @throws InstructionParseException Thrown if there is a configuration error.
      */
     public PlayerHider() throws InstructionParseException {
         hiders = new HashMap<>();
@@ -131,10 +131,6 @@ public class PlayerHider {
 
     private List<Player> getOrCreatePlayerList(final Player player, final Map<Player, List<Player>> playersToHide) {
         final List<Player> playList = playersToHide.get(player);
-        if (playList == null) {
-            return new ArrayList<>();
-        } else {
-            return playList;
-        }
+        return playList == null ? new ArrayList<>() : playList;
     }
 }
