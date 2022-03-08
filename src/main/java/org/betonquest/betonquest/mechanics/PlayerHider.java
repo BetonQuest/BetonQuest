@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The PlayerHider can hide other players, if the source fits all conditions and the targets also fits their conditions.
+ * The PlayerHider can hide other players, if both the source and the target meet all their conditions.
  */
 public class PlayerHider {
     /**
