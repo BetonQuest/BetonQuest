@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.events;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.config.QuestCanceler;
@@ -15,7 +16,7 @@ public class CancelEvent extends QuestEvent {
 
     public CancelEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
-        canceler = instruction.getPackage().getCanceler().get(instruction.next());
+        canceler = BetonQuest.getCanceler().get(instruction.getPackage().getPackagePath() + "." + instruction.next());
     }
 
     @Override

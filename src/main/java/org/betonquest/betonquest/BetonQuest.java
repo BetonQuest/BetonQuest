@@ -70,6 +70,7 @@ import org.betonquest.betonquest.conditions.VariableCondition;
 import org.betonquest.betonquest.conditions.WeatherCondition;
 import org.betonquest.betonquest.conditions.WorldCondition;
 import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.conversation.CombatTagger;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.ConversationColors;
@@ -245,6 +246,7 @@ public class BetonQuest extends JavaPlugin {
     private static final Map<ObjectiveID, Objective> OBJECTIVES = new HashMap<>();
     private static final Map<String, ConversationData> CONVERSATIONS = new HashMap<>();
     private static final Map<VariableID, Variable> VARIABLES = new HashMap<>();
+    private static final Map<String, QuestCanceler> CANCELERS = new HashMap<>();
     /**
      * The BetonQuest Plugin instance.
      * -- GETTER --
@@ -551,6 +553,26 @@ public class BetonQuest extends JavaPlugin {
      */
     public static Class<? extends NotifyIO> getNotifyIO(final String name) {
         return NOTIFY_IO_TYPES.get(name);
+    }
+
+    private static void loadQuestCanceler() {
+        for (final Entry<String, QuestPackage> entry : Config.getPackages().entrySet()) {
+            final QuestPackage pack = entry.getValue();
+            final ConfigurationSection cancelSection = pack.getConfig().getConfigurationSection("cancel");
+            if (cancelSection != null) {
+                for (final String key : cancelSection.getKeys(false)) {
+                    try {
+                        CANCELERS.put(entry.getKey() + "." + key, new QuestCanceler(pack, key));
+                    } catch (final InstructionParseException e) {
+                        log.warn(pack, "Could not load '" + pack.getPackagePath() + "." + key + "' quest canceler: " + e.getMessage(), e);
+                    }
+                }
+            }
+        }
+    }
+
+    public static Map<String, QuestCanceler> getCanceler() {
+        return CANCELERS;
     }
 
     @NotNull
@@ -891,6 +913,10 @@ public class BetonQuest extends JavaPlugin {
         CONVERSATIONS.clear();
         OBJECTIVES.clear();
         VARIABLES.clear();
+        CANCELERS.clear();
+
+        loadQuestCanceler();
+
         // load new data
         for (final QuestPackage pack : Config.getPackages().values()) {
             final String packName = pack.getPackagePath();
@@ -1069,6 +1095,7 @@ public class BetonQuest extends JavaPlugin {
         }
         Config.setup(this);
         Notify.load();
+
         // reload updater settings
         BetonQuest.getInstance().getUpdater().searchUpdate();
         // load new static events
