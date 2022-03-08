@@ -930,7 +930,7 @@ public class BetonQuest extends JavaPlugin {
                         EVENTS.put(identifier, event);
                         log.debug(pack, "  Event '" + identifier + "' loaded");
                     } catch (final InstructionParseException e) {
-                        log.warn(pack, "Error in '" + identifier + "' event (" + type + "): " + e.getCause().getMessage(), e);
+                        log.warn(pack, "Error in '" + identifier + "' event (" + type + "): " + e.getMessage(), e);
                     }
                 }
             }
