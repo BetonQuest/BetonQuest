@@ -275,23 +275,23 @@ es:
   pullback: '&cDebes finalizar la conversacion.'
   items_given: '&2Recibido {1}&2 x{2}'
   items_taken: '&2Perdido {1}&2 x{2}'
-  money_given: '&2Received {1} {2}' # TODO: missing translation
-  money_taken: '&2Lost {1} {2}' # TODO: missing translation
-  point_given: '&2You received {1} points to {2}' # TODO: missing translation
-  point_taken: '&2You lost {1} points to {2}' # TODO: missing translation
-  point_multiplied: '&2Your points {2} are multiplied by {1}' # TODO: missing translation
+  money_given: '&2Recibido {1} {2}'
+  money_taken: '&2Perdido {1} {2}'
+  point_given: '&2Recibiste {1} puntos para {2}'
+  point_taken: '&2Perdiste {1} puntos por {2}'
+  point_multiplied: '&2Tus puntos {2} se multiplican por {1}'
   blocks_to_break: '&2{1} bloques restantes que romper'
   blocks_to_place: '&2{1} bloques restantes que colocar'
   mobs_to_kill: '&2{1} jugadores restantes que matar'
-  mobs_to_click: '&2{1} mobs left to click' # TODO: missing translation
+  mobs_to_click: '&2{1} monstruos restantes para hacer clic'
   players_to_kill: '&2{1} restantes que matar'
   fish_to_catch: '&2{1} peces restantes que pescar'
   sheep_to_shear: '&2{1} ovejas restantes que esquilar'
   potions_to_brew: '&2{1} pociones que crear'
-  animals_to_breed: '&2{1} animals left to breed' # TODO: missing translation
-  items_to_pickup: '&2{1} items left to pickup' # TODO: missing translation
-  items_to_smelt: '&2{1} items left to smelt' # TODO: missing translation
-  items_to_craft: '&2{1} items left to craft' # TODO: missing translation
+  animals_to_breed: '&2{1} animales restantes para criar'
+  items_to_pickup: '&2{1} objetos restantes para recoger'
+  items_to_smelt: '&2{1} objetos restantes para fundir'
+  items_to_craft: '&2{1} objetos restantes para crear'
   busy: '&cNo puedes hablar mientras luchas!'
   quest_canceled: '&2Mision {1}&2 cancelada!'
   cancel: '&cCancelar la mision'
@@ -308,8 +308,8 @@ es:
   seconds: 'segundos'
   and: 'y'
   password: 'clave: '
-  condition_variable_met: 'yes' # TODO: missing translation
-  condition_variable_not_met: 'no' # TODO: missing translation
+  condition_variable_met: 'si'
+  condition_variable_not_met: 'no'
 nl:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bGesprek met {1}&b begonnen!&e===='
