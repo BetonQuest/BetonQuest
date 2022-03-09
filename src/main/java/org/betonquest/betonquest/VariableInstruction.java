@@ -15,4 +15,8 @@ public class VariableInstruction extends Instruction {
         super.parts = super.instruction.split("\\.");
     }
 
+    @Override
+    public VariableInstruction copy() {
+        return new VariableInstruction(super.getPackage(), super.getID(), "%" + instruction + "%");
+    }
 }

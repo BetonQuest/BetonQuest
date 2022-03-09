@@ -136,7 +136,6 @@ import org.betonquest.betonquest.events.TeleportEvent;
 import org.betonquest.betonquest.events.TimeEvent;
 import org.betonquest.betonquest.events.VariableEvent;
 import org.betonquest.betonquest.events.WeatherEvent;
-import org.betonquest.betonquest.events.factory.LegacyAdapterEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -191,6 +190,9 @@ import org.betonquest.betonquest.objectives.SmeltingObjective;
 import org.betonquest.betonquest.objectives.StepObjective;
 import org.betonquest.betonquest.objectives.TameObjective;
 import org.betonquest.betonquest.objectives.VariableObjective;
+import org.betonquest.betonquest.quest.event.legacy.FromClassQuestEventFactory;
+import org.betonquest.betonquest.quest.event.legacy.QuestEventFactory;
+import org.betonquest.betonquest.quest.event.legacy.QuestEventFactoryAdapter;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.utils.versioning.Updater;
@@ -257,7 +259,11 @@ public class BetonQuest extends JavaPlugin {
     @Getter
     private static BetonQuest instance;
     private static BetonQuestLogger log;
-    private final Map<String, EventFactory> eventTypes = new HashMap<>();
+
+    /**
+     * Map of registered events.
+     */
+    private final Map<String, QuestEventFactory> eventTypes = new HashMap<>();
     private final ConcurrentHashMap<String, PlayerData> playerDataMap = new ConcurrentHashMap<>();
     private ConfigurationFile config;
     /**
@@ -943,7 +949,7 @@ public class BetonQuest extends JavaPlugin {
                         log.warn(pack, "Objective type not defined in '" + packName + "." + key + "'", e);
                         continue;
                     }
-                    final EventFactory eventFactory = eventTypes.get(type);
+                    final QuestEventFactory eventFactory = getEventFactory(type);
                     if (eventFactory == null) {
                         // if it's null then there is no such type registered, log an error
                         log.warn(pack, "Event type " + type + " is not registered, check if it's"
@@ -1247,7 +1253,7 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * Registers new event classes by their names
+     * Registers an event with its name and the class used to create instances of the event.
      *
      * @param name       name of the event type
      * @param eventClass class object for the event
@@ -1255,18 +1261,19 @@ public class BetonQuest extends JavaPlugin {
      */
     @Deprecated
     public void registerEvents(final String name, final Class<? extends QuestEvent> eventClass) {
-        registerEvent(name, new LegacyAdapterEventFactory<>(eventClass));
+        log.debug("Registering " + name + " event type");
+        eventTypes.put(name, new FromClassQuestEventFactory<>(eventClass));
     }
 
     /**
-     * Registers a new event with its name and a factory to create them.
+     * Registers an event with its name and a factory to create new instances of the event.
      *
      * @param name         name of the event
      * @param eventFactory factory to create the event
      */
     public void registerEvent(final String name, final EventFactory eventFactory) {
         log.debug("Registering " + name + " event type");
-        eventTypes.put(name, eventFactory);
+        eventTypes.put(name, new QuestEventFactoryAdapter(eventFactory));
     }
 
     /**
@@ -1417,10 +1424,12 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * @param name the name of the event class, as previously registered
-     * @return the class of the event
+     * Fetches the factory to create the event registered with the given name.
+     *
+     * @param name the name of the event
+     * @return a factory to create the event
      */
-    public EventFactory getEventFactory(final String name) {
+    public QuestEventFactory getEventFactory(final String name) {
         return eventTypes.get(name);
     }
 
