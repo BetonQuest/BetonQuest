@@ -179,100 +179,126 @@ public class QuestItem {
         String firework = "";
         String unbreakable = "";
         String customModelData = "";
-        final ItemMeta meta = item.getItemMeta();
-        if (item.getDurability() != 0) {
-            durability = " durability:" + item.getDurability();
-        }
-        if (meta.hasDisplayName()) {
-            name = " name:" + meta.getDisplayName().replace(" ", "_");
-        }
-        if (meta.hasLore()) {
-            final StringBuilder string = new StringBuilder();
-            for (final String line : meta.getLore()) {
-                string.append(line).append(';');
+        if (item.getType() != Material.AIR) {
+            if (item.getDurability() != 0) {
+                durability = " durability:" + item.getDurability();
             }
-            lore = " lore:" + string.substring(0, string.length() - 1).replace(" ", "_").replace("§", "&");
-        }
-        if (meta.hasEnchants()) {
-            final StringBuilder string = new StringBuilder();
-            for (final Enchantment enchant : meta.getEnchants().keySet()) {
-                string.append(enchant.getName()).append(':').append(meta.getEnchants().get(enchant)).append(',');
+            final ItemMeta meta = item.getItemMeta();
+            if (meta.hasDisplayName()) {
+                name = " name:" + meta.getDisplayName().replace(" ", "_");
             }
-            enchants = " enchants:" + string.substring(0, string.length() - 1);
-        }
-        if (meta.isUnbreakable()) {
-            unbreakable = " unbreakable";
-        }
-        if (meta.hasCustomModelData()) {
-            customModelData = " custom-model-data:" + meta.getCustomModelData();
-        }
-        if (meta instanceof BookMeta) {
-            final BookMeta bookMeta = (BookMeta) meta;
-            if (bookMeta.hasAuthor()) {
-                author = " author:" + bookMeta.getAuthor().replace(" ", "_");
-            }
-            if (bookMeta.hasTitle()) {
-                title = " title:" + bookMeta.getTitle().replace(" ", "_");
-            }
-            if (bookMeta.hasPages()) {
-                final StringBuilder strBldr = new StringBuilder();
-                for (final String page : bookMeta.getPages()) {
-                    String processedPage = page;
-                    if (processedPage.startsWith("\"") && processedPage.endsWith("\"")) {
-                        processedPage = processedPage.substring(1, processedPage.length() - 1);
-                    }
-                    // this will remove black color code between lines
-                    // Bukkit is adding it for some reason (probably to mess people's code)
-                    strBldr.append(processedPage.replace(" ", "_").replaceAll("(§0)?\\n(§0)?", "\\\\n")).append('|');
-                }
-                text = " text:" + strBldr.substring(0, strBldr.length() - 1);
-            }
-        }
-        if (meta instanceof PotionMeta) {
-            final PotionMeta potionMeta = (PotionMeta) meta;
-            final PotionData pData = potionMeta.getBasePotionData();
-            effects = " type:" + pData.getType() + (pData.isExtended() ? " extended" : "")
-                    + (pData.isUpgraded() ? " upgraded" : "");
-            if (potionMeta.hasCustomEffects()) {
+            if (meta.hasLore()) {
                 final StringBuilder string = new StringBuilder();
-                for (final PotionEffect effect : potionMeta.getCustomEffects()) {
-                    final int power = effect.getAmplifier() + 1;
-                    final int duration = (effect.getDuration() - (effect.getDuration() % 20)) / 20;
-                    string.append(effect.getType().getName()).append(':').append(power).append(':').append(duration).append(',');
+                for (final String line : meta.getLore()) {
+                    string.append(line).append(';');
                 }
-                effects += " effects:" + string.substring(0, string.length() - 1);
+                lore = " lore:" + string.substring(0, string.length() - 1).replace(" ", "_").replace("§", "&");
             }
-        }
-        if (meta instanceof LeatherArmorMeta) {
-            final LeatherArmorMeta armorMeta = (LeatherArmorMeta) meta;
-            if (!armorMeta.getColor().equals(Bukkit.getServer().getItemFactory().getDefaultLeatherColor())) {
-                final DyeColor dyeColor = DyeColor.getByColor(armorMeta.getColor());
-                color = " color:" + (dyeColor == null ? '#' + Integer.toHexString(armorMeta.getColor().asRGB()) : dyeColor.toString());
-            }
-        }
-        if (meta instanceof EnchantmentStorageMeta) {
-            final EnchantmentStorageMeta storageMeta = (EnchantmentStorageMeta) meta;
-            if (storageMeta.hasStoredEnchants()) {
+            if (meta.hasEnchants()) {
                 final StringBuilder string = new StringBuilder();
-                for (final Enchantment enchant : storageMeta.getStoredEnchants().keySet()) {
-                    string.append(enchant.getName()).append(':').append(storageMeta.getStoredEnchants().get(enchant)).append(',');
+                for (final Enchantment enchant : meta.getEnchants().keySet()) {
+                    string.append(enchant.getName()).append(':').append(meta.getEnchants().get(enchant)).append(',');
                 }
                 enchants = " enchants:" + string.substring(0, string.length() - 1);
             }
-        }
-        if (meta instanceof SkullMeta) {
-            final SkullMeta skullMeta = (SkullMeta) meta;
-            if (skullMeta.hasOwner()) {
-                owner = " owner:" + skullMeta.getOwner();
+            if (meta.isUnbreakable()) {
+                unbreakable = " unbreakable";
             }
-        }
-        if (meta instanceof FireworkMeta) {
-            final FireworkMeta fireworkMeta = (FireworkMeta) meta;
-            if (fireworkMeta.hasEffects()) {
-                final StringBuilder builder = new StringBuilder();
-                builder.append(" firework:");
-                for (final FireworkEffect effect : fireworkMeta.getEffects()) {
-                    builder.append(effect.getType()).append(':');
+            if (meta.hasCustomModelData()) {
+                customModelData = " custom-model-data:" + meta.getCustomModelData();
+            }
+            if (meta instanceof BookMeta) {
+                final BookMeta bookMeta = (BookMeta) meta;
+                if (bookMeta.hasAuthor()) {
+                    author = " author:" + bookMeta.getAuthor().replace(" ", "_");
+                }
+                if (bookMeta.hasTitle()) {
+                    title = " title:" + bookMeta.getTitle().replace(" ", "_");
+                }
+                if (bookMeta.hasPages()) {
+                    final StringBuilder strBldr = new StringBuilder();
+                    for (final String page : bookMeta.getPages()) {
+                        String processedPage = page;
+                        if (processedPage.startsWith("\"") && processedPage.endsWith("\"")) {
+                            processedPage = processedPage.substring(1, processedPage.length() - 1);
+                        }
+                        // this will remove black color code between lines
+                        // Bukkit is adding it for some reason (probably to mess people's code)
+                        strBldr.append(processedPage.replace(" ", "_").replaceAll("(§0)?\\n(§0)?", "\\\\n")).append('|');
+                    }
+                    text = " text:" + strBldr.substring(0, strBldr.length() - 1);
+                }
+            }
+            if (meta instanceof PotionMeta) {
+                final PotionMeta potionMeta = (PotionMeta) meta;
+                final PotionData pData = potionMeta.getBasePotionData();
+                effects = " type:" + pData.getType() + (pData.isExtended() ? " extended" : "")
+                        + (pData.isUpgraded() ? " upgraded" : "");
+                if (potionMeta.hasCustomEffects()) {
+                    final StringBuilder string = new StringBuilder();
+                    for (final PotionEffect effect : potionMeta.getCustomEffects()) {
+                        final int power = effect.getAmplifier() + 1;
+                        final int duration = (effect.getDuration() - (effect.getDuration() % 20)) / 20;
+                        string.append(effect.getType().getName()).append(':').append(power).append(':').append(duration).append(',');
+                    }
+                    effects += " effects:" + string.substring(0, string.length() - 1);
+                }
+            }
+            if (meta instanceof LeatherArmorMeta) {
+                final LeatherArmorMeta armorMeta = (LeatherArmorMeta) meta;
+                if (!armorMeta.getColor().equals(Bukkit.getServer().getItemFactory().getDefaultLeatherColor())) {
+                    final DyeColor dyeColor = DyeColor.getByColor(armorMeta.getColor());
+                    color = " color:" + (dyeColor == null ? '#' + Integer.toHexString(armorMeta.getColor().asRGB()) : dyeColor.toString());
+                }
+            }
+            if (meta instanceof EnchantmentStorageMeta) {
+                final EnchantmentStorageMeta storageMeta = (EnchantmentStorageMeta) meta;
+                if (storageMeta.hasStoredEnchants()) {
+                    final StringBuilder string = new StringBuilder();
+                    for (final Enchantment enchant : storageMeta.getStoredEnchants().keySet()) {
+                        string.append(enchant.getName()).append(':').append(storageMeta.getStoredEnchants().get(enchant)).append(',');
+                    }
+                    enchants = " enchants:" + string.substring(0, string.length() - 1);
+                }
+            }
+            if (meta instanceof SkullMeta) {
+                final SkullMeta skullMeta = (SkullMeta) meta;
+                if (skullMeta.hasOwner()) {
+                    owner = " owner:" + skullMeta.getOwner();
+                }
+            }
+            if (meta instanceof FireworkMeta) {
+                final FireworkMeta fireworkMeta = (FireworkMeta) meta;
+                if (fireworkMeta.hasEffects()) {
+                    final StringBuilder builder = new StringBuilder();
+                    builder.append(" firework:");
+                    for (final FireworkEffect effect : fireworkMeta.getEffects()) {
+                        builder.append(effect.getType()).append(':');
+                        for (final Color c : effect.getColors()) {
+                            final DyeColor dye = DyeColor.getByFireworkColor(c);
+                            builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(';');
+                        }
+                        // remove last semicolon
+                        builder.setLength(Math.max(builder.length() - 1, 0));
+                        builder.append(':');
+                        for (final Color c : effect.getFadeColors()) {
+                            final DyeColor dye = DyeColor.getByFireworkColor(c);
+                            builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(';');
+                        }
+                        builder.setLength(Math.max(builder.length() - 1, 0));
+                        builder.append(':').append(effect.hasTrail()).append(':').append(effect.hasFlicker()).append(',');
+                    }
+                    builder.setLength(Math.max(builder.length() - 1, 0));
+                    builder.append(" power:").append(fireworkMeta.getPower());
+                    firework = builder.toString();
+                }
+            }
+            if (meta instanceof FireworkEffectMeta) {
+                final FireworkEffectMeta fireworkMeta = (FireworkEffectMeta) meta;
+                if (fireworkMeta.hasEffect()) {
+                    final FireworkEffect effect = fireworkMeta.getEffect();
+                    final StringBuilder builder = new StringBuilder();
+                    builder.append(" firework:").append(effect.getType()).append(':');
                     for (final Color c : effect.getColors()) {
                         final DyeColor dye = DyeColor.getByFireworkColor(c);
                         builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(';');
@@ -285,32 +311,8 @@ public class QuestItem {
                         builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(';');
                     }
                     builder.setLength(Math.max(builder.length() - 1, 0));
-                    builder.append(':').append(effect.hasTrail()).append(':').append(effect.hasFlicker()).append(',');
+                    builder.append(':').append(effect.hasTrail()).append(':').append(effect.hasFlicker());
                 }
-                builder.setLength(Math.max(builder.length() - 1, 0));
-                builder.append(" power:").append(fireworkMeta.getPower());
-                firework = builder.toString();
-            }
-        }
-        if (meta instanceof FireworkEffectMeta) {
-            final FireworkEffectMeta fireworkMeta = (FireworkEffectMeta) meta;
-            if (fireworkMeta.hasEffect()) {
-                final FireworkEffect effect = fireworkMeta.getEffect();
-                final StringBuilder builder = new StringBuilder();
-                builder.append(" firework:").append(effect.getType()).append(':');
-                for (final Color c : effect.getColors()) {
-                    final DyeColor dye = DyeColor.getByFireworkColor(c);
-                    builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(';');
-                }
-                // remove last semicolon
-                builder.setLength(Math.max(builder.length() - 1, 0));
-                builder.append(':');
-                for (final Color c : effect.getFadeColors()) {
-                    final DyeColor dye = DyeColor.getByFireworkColor(c);
-                    builder.append(dye == null ? '#' + Integer.toHexString(c.asRGB()) : dye).append(';');
-                }
-                builder.setLength(Math.max(builder.length() - 1, 0));
-                builder.append(':').append(effect.hasTrail()).append(':').append(effect.hasFlicker());
             }
         }
         // put it all together in a single string
@@ -362,6 +364,9 @@ public class QuestItem {
         // basic meta checks
         if (!durability.check(item.getDurability())) {
             return false;
+        }
+        if (item.getType() == Material.AIR) {
+            return true;
         }
         final ItemMeta meta = item.getItemMeta();
         final String displayName = meta.hasDisplayName() ? meta.getDisplayName() : null;
@@ -451,6 +456,9 @@ public class QuestItem {
         final Material material = selector.getRandomMaterial();
 
         final ItemStack item = new ItemStack(material, stackSize);
+        if (item.getType() == Material.AIR) {
+            return item;
+        }
         final ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(name.get());
         meta.setLore(lore.get());

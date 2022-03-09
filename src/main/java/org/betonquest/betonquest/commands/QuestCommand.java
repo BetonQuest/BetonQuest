@@ -35,7 +35,6 @@ import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.utils.versioning.Updater;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -773,13 +772,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_item");
             return;
         }
-        final Player player = (Player) sender;
-        final ItemStack item = player.getInventory().getItemInMainHand();
-        if (item.getType() == Material.AIR) {
-            LOG.debug("Cannot continue, item must not be air");
-            sendMessage(sender, "no_item");
-            return;
-        }
 
         final String itemID = args[1];
         final String pack;
@@ -799,6 +791,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_package");
             return;
         }
+        final Player player = (Player) sender;
+        final ItemStack item = player.getInventory().getItemInMainHand();
         final String instructions = QuestItem.itemToString(item);
         // save it in items.yml
         LOG.debug("Saving item to configuration as " + args[1]);

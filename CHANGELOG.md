@@ -62,6 +62,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
       left, `amount` is the amount done
 - AureliumSkills updated to version Beta1.2.5
 - PikaMug Quests updated to version 4.1.3
+- Items now support AIR
 - Things that are also changed in 1.12.X:
     - math variable now allows rounding output with the ~ operator
     - French translation has been updated

@@ -17,7 +17,6 @@ en:
   package_created: '&2Package created'
   package_exists: '&cPackage already exists'
   config_set_error: '&cCould not set specified path.'
-  no_item: '&cYou''re not holding any item!'
   item_created: '&2Item saved to configuration as {1}.'
   player_objectives: '&aPlayer''s objectives:'
   player_tags: '&aPlayer''s tags:'
