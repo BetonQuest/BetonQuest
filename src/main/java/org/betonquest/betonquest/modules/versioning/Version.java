@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.utils.versioning;
+package org.betonquest.betonquest.modules.versioning;
 
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 

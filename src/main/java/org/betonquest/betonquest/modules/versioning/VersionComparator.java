@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.utils.versioning;
+package org.betonquest.betonquest.modules.versioning;
 
 import com.google.common.collect.Lists;
 

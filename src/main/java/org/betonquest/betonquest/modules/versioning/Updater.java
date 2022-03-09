@@ -1,11 +1,11 @@
-package org.betonquest.betonquest.utils.versioning;
+package org.betonquest.betonquest.modules.versioning;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -67,6 +67,10 @@ public class Updater {
      */
     private static final String DEV_INDICATOR = "DEV-";
     /**
+     * The plugins {@link ConfigurationFile} for the debugging settings.
+     */
+    private final ConfigurationFile config;
+    /**
      * The file name of the plugin in the plugin's folder.
      */
     private final String fileName;
@@ -94,7 +98,8 @@ public class Updater {
      * @param currentVersion The current plugin version.
      * @param file           The file of the plugin in the plugin's folder.
      */
-    public Updater(final String currentVersion, final File file) {
+    public Updater(final ConfigurationFile config, final File file, final String currentVersion) {
+        this.config = config;
         this.fileName = file.getName();
         this.latest = Pair.of(new Version(currentVersion), null);
         searchUpdate();
@@ -273,7 +278,6 @@ public class Updater {
         }
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     private void updateDownloadToFile(final File folder) throws QuestRuntimeException {
         final File file = new File(folder, fileName + ".tmp");
         file.deleteOnExit();
@@ -360,13 +364,11 @@ public class Updater {
         /**
          * Reads the configuration file.
          */
-        @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
         public UpdaterConfig() {
+            enabled = config.getBoolean("update.enabled", true);
+            ingameNotification = config.getBoolean("update.ingameNotification", true);
 
-            enabled = BetonQuest.getInstance().getPluginConfig().getBoolean("update.enabled", true);
-            ingameNotification = BetonQuest.getInstance().getPluginConfig().getBoolean("update.ingameNotification", true);
-
-            String updateStrategy = BetonQuest.getInstance().getPluginConfig().getString("update.strategy", "MINOR").toUpperCase(Locale.ROOT);
+            String updateStrategy = config.getString("update.strategy", "MINOR").toUpperCase(Locale.ROOT);
             boolean downloadDev = updateStrategy.endsWith(DEV_INDICATOR);
             if (downloadDev) {
                 updateStrategy = updateStrategy.substring(0, updateStrategy.length() - DEV_INDICATOR.length());
@@ -386,7 +388,7 @@ public class Updater {
                 automatic = false;
                 forcedStrategy = true;
             } else {
-                automatic = BetonQuest.getInstance().getPluginConfig().getBoolean("update.automatic", false);
+                automatic = config.getBoolean("update.automatic", false);
                 forcedStrategy = false;
             }
             this.downloadDev = downloadDev;
