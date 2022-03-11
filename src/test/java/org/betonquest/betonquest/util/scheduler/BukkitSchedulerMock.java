@@ -176,24 +176,31 @@ public class BukkitSchedulerMock implements BukkitScheduler {
         // Wait for all tasks to finish executing.
         final long systemTime = System.currentTimeMillis();
         while (pool.getActiveCount() > 0) {
-            try {
-                Thread.sleep(10L);
-            } catch (final InterruptedException e) {
-                Thread.currentThread().interrupt();
+            if (executeShutdown(systemTime)) {
                 return;
             }
-            if (System.currentTimeMillis() > (systemTime + executorTimeout)) {
-                for (final ScheduledTask task : scheduledTasks.getCurrentTaskList()) {
-                    if (task.isRunning()) {
-                        task.cancel();
-                        cancelTask(task.getTaskId());
-                        throw new RuntimeException("Forced Cancellation of task owned by "
-                                + task.getOwner().getName());
-                    }
-                }
-                pool.shutdownNow();
-            }
         }
+    }
+
+    private boolean executeShutdown(final long systemTime) {
+        try {
+            Thread.sleep(10L);
+        } catch (final InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return true;
+        }
+        if (System.currentTimeMillis() > (systemTime + executorTimeout)) {
+            for (final ScheduledTask task : scheduledTasks.getCurrentTaskList()) {
+                if (task.isRunning()) {
+                    task.cancel();
+                    cancelTask(task.getTaskId());
+                    throw new RuntimeException("Forced Cancellation of task owned by "
+                            + task.getOwner().getName());
+                }
+            }
+            pool.shutdownNow();
+        }
+        return false;
     }
 
     @Override
@@ -375,7 +382,7 @@ public class BukkitSchedulerMock implements BukkitScheduler {
     @Override
     public @NotNull
     Executor getMainThreadExecutor(@NotNull final Plugin plugin) {
-        return null;
+        throw new UnsupportedOperationException(MESSAGE_UNUSED);
     }
 
     @Override
