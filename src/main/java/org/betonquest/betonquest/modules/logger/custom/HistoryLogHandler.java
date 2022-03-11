@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.modules.logger.custom;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -45,14 +45,14 @@ public class HistoryLogHandler extends Handler {
      * @param target             The Handler to log the history to
      * @param expireAfterMinutes The time a {@link LogRecord} stays in the cache
      */
-    public HistoryLogHandler(final Handler target, final double expireAfterMinutes) {
+    public HistoryLogHandler(final Plugin plugin, final Handler target, final double expireAfterMinutes) {
         super();
         if (expireAfterMinutes == 0) {
             this.records = null;
         } else {
             this.records = new ConcurrentLinkedQueue<>();
             final int expireAfterMillis = (int) (expireAfterMinutes * 60 * 1000);
-            Bukkit.getScheduler().runTaskTimerAsynchronously(BetonQuest.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
                 LogRecord record = null;
                 do {
                     if (record != null) {

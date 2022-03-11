@@ -606,7 +606,7 @@ public class BetonQuest extends JavaPlugin {
 
         pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
         adventure = BukkitAudiences.create(this);
-        logWatcher = new LogWatcher(new File(getDataFolder(), "/logs"), config, adventure);
+        logWatcher = new LogWatcher(this, new File(getDataFolder(), "/logs"), config, adventure);
 
         // load configuration
         Config.setup(this);

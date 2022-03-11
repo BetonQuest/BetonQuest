@@ -31,14 +31,12 @@ class HistoryLogHandlerTest {
     @Test
     void testLogHistory() throws InterruptedException {
         final BukkitSchedulerMock scheduler = new BukkitSchedulerMock();
-        try (MockedStatic<Bukkit> bukkit = mockStatic(Bukkit.class);
-             MockedStatic<BetonQuest> betonQuest = mockStatic(BetonQuest.class)) {
+        try (MockedStatic<Bukkit> bukkit = mockStatic(Bukkit.class)) {
             bukkit.when(Bukkit::getScheduler).thenReturn(scheduler);
-            betonQuest.when(BetonQuest::getInstance).thenReturn(mock(BetonQuest.class));
 
             final Logger logger = LogValidator.getSilentLogger();
             final LogValidator validator = new LogValidator();
-            final HistoryLogHandler history = new HistoryLogHandler(validator, 0.08);
+            final HistoryLogHandler history = new HistoryLogHandler(mock(BetonQuest.class), validator, 0.08);
 
             logger.addHandler(history);
             history.setFilter(record -> debugging);

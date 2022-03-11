@@ -3,7 +3,7 @@ package org.betonquest.betonquest.util.scheduler;
 import org.bukkit.plugin.Plugin;
 
 /**
- * A scheduled repeating task fot the {@link BukkitSchedulerMock}.
+ * A scheduled repeating task for the {@link BukkitSchedulerMock}.
  */
 public class RepeatingTask extends ScheduledTask {
     /**
