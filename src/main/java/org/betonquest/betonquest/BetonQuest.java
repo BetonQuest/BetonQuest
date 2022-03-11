@@ -148,6 +148,7 @@ import org.betonquest.betonquest.item.QuestItemHandler;
 import org.betonquest.betonquest.mechanics.PlayerHider;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.modules.logger.LogWatcher;
+import org.betonquest.betonquest.modules.versioning.Updater;
 import org.betonquest.betonquest.notify.ActionBarNotifyIO;
 import org.betonquest.betonquest.notify.AdvancementNotifyIO;
 import org.betonquest.betonquest.notify.BossBarNotifyIO;
@@ -195,7 +196,6 @@ import org.betonquest.betonquest.quest.event.legacy.QuestEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactoryAdapter;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
-import org.betonquest.betonquest.utils.versioning.Updater;
 import org.betonquest.betonquest.variables.ConditionVariable;
 import org.betonquest.betonquest.variables.GlobalPointVariable;
 import org.betonquest.betonquest.variables.ItemAmountVariable;
@@ -612,7 +612,7 @@ public class BetonQuest extends JavaPlugin {
 
         pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
         adventure = BukkitAudiences.create(this);
-        logWatcher = new LogWatcher(new File(getDataFolder(), "/logs"), config, adventure);
+        logWatcher = new LogWatcher(this, new File(getDataFolder(), "/logs"), config, adventure);
 
         // load configuration
         Config.setup(this);
@@ -894,7 +894,7 @@ public class BetonQuest extends JavaPlugin {
         new BStatsMetrics(this, metricsSuppliers);
 
         // updater
-        updater = new Updater(this.getDescription().getVersion(), this.getFile());
+        updater = new Updater(config, this.getFile(), this.getDescription().getVersion());
 
         //RPGMenu integration
         rpgMenu = new RPGMenu();

@@ -8,6 +8,7 @@ import org.betonquest.betonquest.modules.logger.custom.DebugLogFormatter;
 import org.betonquest.betonquest.modules.logger.custom.HistoryLogHandler;
 import org.betonquest.betonquest.modules.logger.custom.PlayerLogHandler;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -65,12 +66,12 @@ public final class LogWatcher {
      * @param logFileFolder   The folder where the logfiles should be written
      * @param bukkitAudiences The {@link BukkitAudiences} instance
      */
-    public LogWatcher(final File logFileFolder, final ConfigurationFile config, final BukkitAudiences bukkitAudiences) {
+    public LogWatcher(final Plugin plugin, final File logFileFolder, final ConfigurationFile config, final BukkitAudiences bukkitAudiences) {
         this.logFile = new File(logFileFolder, LOG_FILE_PATH);
         this.config = config;
         playerFilters = new HashMap<>();
 
-        historyHandler = setupDebugLogHandler(Bukkit.getLogger().getParent());
+        historyHandler = setupDebugLogHandler(plugin, Bukkit.getLogger().getParent());
         setupPlayerLogHandler(Bukkit.getLogger().getParent(), bukkitAudiences);
 
         if (historyHandler != null && this.config.getBoolean(CONFIG_PATH + ".enabled", false)) {
@@ -78,12 +79,12 @@ public final class LogWatcher {
         }
     }
 
-    private HistoryLogHandler setupDebugLogHandler(final Logger logger) {
+    private HistoryLogHandler setupDebugLogHandler(final Plugin plugin, final Logger logger) {
         try {
             renameDebugLogFile();
             final FileHandler fileHandler = new FileHandler(logFile.getAbsolutePath());
             fileHandler.setFormatter(new DebugLogFormatter());
-            final HistoryLogHandler historyHandler = new HistoryLogHandler(fileHandler,
+            final HistoryLogHandler historyHandler = new HistoryLogHandler(plugin, fileHandler,
                     config.getInt(CONFIG_PATH + ".history_in_minutes", 10));
             historyHandler.setFilter(record -> debugging);
             logger.addHandler(historyHandler);
