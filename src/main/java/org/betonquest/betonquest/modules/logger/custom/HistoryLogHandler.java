@@ -19,7 +19,14 @@ import java.util.logging.LogRecord;
  * It is automatically pushed if the filter returns true for any subsequent LogRecord.
  */
 public class HistoryLogHandler extends Handler {
-
+    /**
+     * The message printed before the history is printed.
+     */
+    public static final String START_OF_HISTORY = "=====START OF HISTORY=====";
+    /**
+     * The message printed after the history is printed.
+     */
+    public static final String END_OF_HISTORY = "=====END OF HISTORY=====";
     /**
      * The {@link LogRecord} history.
      */
@@ -38,13 +45,13 @@ public class HistoryLogHandler extends Handler {
      * @param target             The Handler to log the history to
      * @param expireAfterMinutes The time a {@link LogRecord} stays in the cache
      */
-    public HistoryLogHandler(final Handler target, final int expireAfterMinutes) {
+    public HistoryLogHandler(final Handler target, final double expireAfterMinutes) {
         super();
         if (expireAfterMinutes == 0) {
             this.records = null;
         } else {
             this.records = new ConcurrentLinkedQueue<>();
-            final int expireAfterMillis = expireAfterMinutes * 60 * 1000;
+            final int expireAfterMillis = (int) (expireAfterMinutes * 60 * 1000);
             Bukkit.getScheduler().runTaskTimerAsynchronously(BetonQuest.getInstance(), () -> {
                 LogRecord record = null;
                 do {
@@ -82,13 +89,11 @@ public class HistoryLogHandler extends Handler {
      */
     public void push() {
         if (records != null && !records.isEmpty()) {
-            target.publish(new LogRecord(Level.INFO, "=====START OF HISTORY====="));
-            LogRecord record;
-            do {
-                record = records.poll();
-                target.publish(record);
-            } while (record != null);
-            target.publish(new LogRecord(Level.INFO, "=====END OF HISTORY====="));
+            target.publish(new LogRecord(Level.INFO, START_OF_HISTORY));
+            while (records.peek() != null) {
+                target.publish(records.poll());
+            }
+            target.publish(new LogRecord(Level.INFO, END_OF_HISTORY));
         }
     }
 

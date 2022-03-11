@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.modules.versioning;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -278,6 +279,7 @@ public class Updater {
         }
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     private void updateDownloadToFile(final File folder) throws QuestRuntimeException {
         final File file = new File(folder, fileName + ".tmp");
         file.deleteOnExit();
@@ -364,6 +366,7 @@ public class Updater {
         /**
          * Reads the configuration file.
          */
+        @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
         public UpdaterConfig() {
             enabled = config.getBoolean("update.enabled", true);
             ingameNotification = config.getBoolean("update.ingameNotification", true);
