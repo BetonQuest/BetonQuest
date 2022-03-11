@@ -51,19 +51,18 @@ public class HistoryLogHandler extends Handler {
             this.records = null;
         } else {
             this.records = new ConcurrentLinkedQueue<>();
-            final int expireAfterMillis = (int) (expireAfterMinutes * 60 * 1000);
+            final long expireAfterMillis = (long) (expireAfterMinutes * 60 * 1000);
             Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
-                LogRecord record = null;
-                do {
-                    if (record != null) {
-                        records.remove();
-                    }
-                    record = records.peek();
-                } while (record != null && record.getMillis() < System.currentTimeMillis() - expireAfterMillis);
-
+                while (isExpired(records.peek(), expireAfterMillis)) {
+                    records.remove();
+                }
             }, 20, 20);
         }
         this.target = target;
+    }
+
+    private boolean isExpired(final LogRecord record, final long afterMillis) {
+        return record != null && record.getMillis() < System.currentTimeMillis() - afterMillis;
     }
 
     /**

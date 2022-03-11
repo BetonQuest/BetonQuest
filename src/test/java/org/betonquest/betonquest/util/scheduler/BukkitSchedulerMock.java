@@ -92,7 +92,8 @@ public class BukkitSchedulerMock implements BukkitScheduler {
 
 
     /**
-     * Shuts the scheduler down. Note that this function will re-throw an exception if one or multiple appeared during the scheduler's lifecycle.
+     * Shuts the scheduler down.
+     * Note that this function will re-throw an exception if one or multiple appeared during the scheduler's lifecycle.
      */
     public void shutdown() {
         waitAsyncTasksFinished();

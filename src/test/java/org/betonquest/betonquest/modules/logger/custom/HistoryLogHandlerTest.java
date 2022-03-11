@@ -36,7 +36,7 @@ class HistoryLogHandlerTest {
 
             final Logger logger = LogValidator.getSilentLogger();
             final LogValidator validator = new LogValidator();
-            final HistoryLogHandler history = new HistoryLogHandler(mock(BetonQuest.class), validator, 0.08);
+            final HistoryLogHandler history = new HistoryLogHandler(mock(BetonQuest.class), validator, 0.0025);
 
             logger.addHandler(history);
             history.setFilter(record -> debugging);
@@ -47,10 +47,10 @@ class HistoryLogHandlerTest {
     }
 
     private void createLogMessages(final Logger logger, final BukkitSchedulerMock scheduler) throws InterruptedException {
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 2; i++) {
             logger.log(new BetonQuestLogRecord(null, null, Level.INFO, "Message " + i));
-            Thread.sleep(1000);
-            scheduler.performTicks(20);
+            Thread.sleep(100);
+            scheduler.performTicks(10);
         }
     }
 
@@ -59,7 +59,7 @@ class HistoryLogHandlerTest {
         debugging = true;
         history.push();
         validator.assertLogEntry(Level.INFO, HistoryLogHandler.START_OF_HISTORY);
-        for (int i = 2; i < 6; i++) {
+        for (int i = 1; i < 2; i++) {
             validator.assertLogEntry(Level.INFO, "Message " + i);
         }
         validator.assertLogEntry(Level.INFO, HistoryLogHandler.END_OF_HISTORY);
