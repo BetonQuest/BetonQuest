@@ -12,7 +12,7 @@ public class RepeatingTask extends ScheduledTask {
     private final long period;
 
     /**
-     * Create a new scheduled repeating task.
+     * Creates a new scheduled repeating task.
      *
      * @param taskId        the task id
      * @param plugin        the plugin from the task

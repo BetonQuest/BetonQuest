@@ -9,7 +9,9 @@ import java.util.List;
 import java.util.concurrent.CancellationException;
 
 /**
- * A scheduled task fot the {@link BukkitSchedulerMock}.
+ * A scheduled task for the {@link BukkitSchedulerMock}.
+ * <p>
+ * This class has been taken and modified from https://github.com/MockBukkit/MockBukkit.
  */
 public class ScheduledTask implements BukkitTask {
     /**
@@ -17,11 +19,11 @@ public class ScheduledTask implements BukkitTask {
      */
     private final int taskId;
     /**
-     * The plugin created this task.
+     * The plugin that created this task.
      */
     private final Plugin plugin;
     /**
-     * Is this task sync.
+     * Whether this task is sync.
      */
     private final boolean sync;
     /**
@@ -33,7 +35,7 @@ public class ScheduledTask implements BukkitTask {
      */
     private final List<Runnable> cancelListeners;
     /**
-     * It this task canceled.
+     * Whether this task is canceled.
      */
     private boolean cancelled;
     /**
@@ -46,7 +48,7 @@ public class ScheduledTask implements BukkitTask {
     private boolean running;
 
     /**
-     * Create a new scheduled task.
+     * Creates a new scheduled task.
      *
      * @param taskId        the task id
      * @param plugin        the plugin from the task
@@ -75,7 +77,7 @@ public class ScheduledTask implements BukkitTask {
 
 
     /**
-     * Get the tick at which the task is scheduled to run at.
+     * Gets the tick at which the task is scheduled to run.
      *
      * @return The tick the task is scheduled to run at.
      */
@@ -86,14 +88,14 @@ public class ScheduledTask implements BukkitTask {
     /**
      * Sets the tick at which the task is scheduled to run at.
      *
-     * @param scheduledTick The tick at which the task is scheduled to run at.
+     * @param scheduledTick The tick at which the task is scheduled to run.
      */
     protected void setScheduledTick(final long scheduledTick) {
         this.scheduledTick = scheduledTick;
     }
 
     /**
-     * Get the task itself that will be run.
+     * Gets the task that will be run.
      *
      * @return The task that will be run.
      */

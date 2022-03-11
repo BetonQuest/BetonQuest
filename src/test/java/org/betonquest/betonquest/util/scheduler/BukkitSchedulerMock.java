@@ -30,7 +30,7 @@ public class BukkitSchedulerMock implements BukkitScheduler {
      */
     private final static String MESSAGE_DEPRECATED = "Not Implemented because it is already deprecated!";
     /**
-     * Exception message for not often used methods.
+     * Exception message for rarely used methods.
      */
     private final static String MESSAGE_UNUSED = "Not Implemented because it is rarely used!";
     /**
@@ -64,7 +64,7 @@ public class BukkitSchedulerMock implements BukkitScheduler {
     private long executorTimeout = 60_000;
 
     /**
-     * Create a new {@link BukkitSchedulerMock}.
+     * Creates a new {@link BukkitSchedulerMock}.
      */
     public BukkitSchedulerMock() {
         pool = new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS, new SynchronousQueue<>());
@@ -82,7 +82,7 @@ public class BukkitSchedulerMock implements BukkitScheduler {
     }
 
     /**
-     * Set a shutdown time out of the scheduler.
+     * Sets a shutdown time out of the scheduler.
      *
      * @param timeout the new timeout
      */
@@ -92,8 +92,7 @@ public class BukkitSchedulerMock implements BukkitScheduler {
 
 
     /**
-     * Shuts the scheduler down. Note that this function will throw exception that where thrown by old asynchronous
-     * tasks.
+     * Shuts the scheduler down. Note that this function will re-throw an exception if one or multiple appeared during the scheduler's lifecycle.
      */
     public void shutdown() {
         waitAsyncTasksFinished();
@@ -104,7 +103,7 @@ public class BukkitSchedulerMock implements BukkitScheduler {
     }
 
     /**
-     * Get the current tick of the server.
+     * Gets the current tick of the server.
      *
      * @return The current tick of the server.
      */
@@ -113,7 +112,7 @@ public class BukkitSchedulerMock implements BukkitScheduler {
     }
 
     /**
-     * Perform one tick on the server.
+     * Performs one tick on the server.
      */
     public void performTick() {
         currentTick++;
@@ -136,7 +135,7 @@ public class BukkitSchedulerMock implements BukkitScheduler {
     }
 
     /**
-     * Perform a number of ticks on the server.
+     * Performs a number of ticks on the server.
      *
      * @param ticks The number of ticks to execute.
      */
@@ -429,7 +428,7 @@ public class BukkitSchedulerMock implements BukkitScheduler {
         }
 
         /**
-         * Add a task but locks the task list to other writes while adding it.
+         * Adds a task.
          *
          * @param task the task to remove.
          */
@@ -439,7 +438,7 @@ public class BukkitSchedulerMock implements BukkitScheduler {
 
 
         /**
-         * Get a list of all current tasks.
+         * Gets a list of all current tasks.
          *
          * @return the task list
          */
@@ -448,7 +447,7 @@ public class BukkitSchedulerMock implements BukkitScheduler {
         }
 
         /**
-         * Get the amount of scheduled tasks
+         * Gets the amount of scheduled tasks
          *
          * @return the amount of scheduled tasks
          */
@@ -464,7 +463,7 @@ public class BukkitSchedulerMock implements BukkitScheduler {
         }
 
         /**
-         * Cancel a task with a specific task id.
+         * Cancels a task with a specific task id.
          *
          * @param taskID the task id to cancel
          */
