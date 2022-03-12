@@ -123,7 +123,7 @@ We also have a method that allows to get the number of ticks since the `BukkitSc
     scheduler.getCurrentTick();
 ````
 
-There are some more methods that allows to do some more things with this scheduler:
+There are some additional features of this scheduler:
 
 ````java linenums="1"
     scheduler.shutdown();
