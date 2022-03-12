@@ -23,7 +23,7 @@ import java.util.function.Consumer;
 /**
  * A mock for {@link BukkitScheduler}.
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.AvoidThrowingRawExceptionTypes", "PMD.DoNotUseThreads", "PMD.GodClass", "PMD.CyclomaticComplexity"})
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.DoNotUseThreads", "PMD.GodClass", "PMD.CyclomaticComplexity"})
 public class BukkitSchedulerMock implements BukkitScheduler {
     /**
      * Exception message for deprecated methods.
@@ -166,7 +166,6 @@ public class BukkitSchedulerMock implements BukkitScheduler {
      * Waits until all asynchronous tasks have finished executing. If you have an asynchronous task that runs
      * indefinitely, this function will never return.
      */
-    @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
     public void waitAsyncTasksFinished() {
         // Make sure all tasks get to execute. (except for repeating asynchronous tasks, they only will fire once)
         while (scheduledTasks.getScheduledTaskCount() > 0) {
@@ -182,6 +181,7 @@ public class BukkitSchedulerMock implements BukkitScheduler {
         }
     }
 
+    @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
     private boolean executeShutdown(final long systemTime) {
         try {
             Thread.sleep(10L);

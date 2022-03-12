@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.time.InstantSource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -84,8 +85,8 @@ public final class LogWatcher {
             renameDebugLogFile();
             final FileHandler fileHandler = new FileHandler(logFile.getAbsolutePath());
             fileHandler.setFormatter(new DebugLogFormatter());
-            final HistoryLogHandler historyHandler = new HistoryLogHandler(plugin, fileHandler,
-                    config.getInt(CONFIG_PATH + ".history_in_minutes", 10));
+            final HistoryLogHandler historyHandler = new HistoryLogHandler(plugin, plugin.getServer().getScheduler(), fileHandler,
+                    InstantSource.system(), config.getInt(CONFIG_PATH + ".history_in_minutes", 10));
             historyHandler.setFilter(record -> debugging);
             logger.addHandler(historyHandler);
             return historyHandler;
