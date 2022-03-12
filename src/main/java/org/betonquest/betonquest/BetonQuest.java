@@ -249,7 +249,7 @@ import java.util.regex.Pattern;
  */
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength", "PMD.GodClass",
         "PMD.TooManyMethods", "PMD.TooManyFields", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals",
-        "PMD.AvoidFieldNameMatchingMethodName", "PMD.AtLeastOneConstructor"})
+        "PMD.AvoidFieldNameMatchingMethodName", "PMD.AtLeastOneConstructor", "PMD.ExcessivePublicCount"})
 public class BetonQuest extends JavaPlugin {
     private static final Map<String, Class<? extends Condition>> CONDITION_TYPES = new HashMap<>();
     private static final Map<String, Class<? extends Objective>> OBJECTIVE_TYPES = new HashMap<>();
