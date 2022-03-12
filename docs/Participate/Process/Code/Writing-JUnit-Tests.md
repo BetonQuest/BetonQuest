@@ -113,21 +113,21 @@ Now you can use the scheduler object for several things. First if you want to pe
 you can call the methods `performTick()` or `performTicks(long)`:
 
 ````java linenums="1"
-    scheduler.performTick();
-    scheduler.performTicks(20);
+scheduler.performTick();
+scheduler.performTicks(20);
 ````
 
 We also have a method that allows to get the number of ticks since the `BukkitSchedulerMock` was created.
 
 ````java linenums="1"
-    scheduler.getCurrentTick();
+scheduler.getCurrentTick();
 ````
 
 There are some additional features of this scheduler:
 
 ````java linenums="1"
-    scheduler.shutdown();
-    scheduler.setShutdownTimeout(long);
-    scheduler.waitAsyncTasksFinished();
-    scheduler.getNumberOfQueuedAsyncTasks();
+scheduler.shutdown();
+scheduler.setShutdownTimeout(long);
+scheduler.waitAsyncTasksFinished();
+scheduler.getNumberOfQueuedAsyncTasks();
 ````
