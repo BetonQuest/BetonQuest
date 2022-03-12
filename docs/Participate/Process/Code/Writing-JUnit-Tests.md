@@ -109,7 +109,7 @@ void testMethod {
 }
 ````
 
-Now you can use the scheduler object to several things. First if you want to perform a single tick or multiple ticks,
+Now you can use the scheduler object for several things. First if you want to perform a single or multiple ticks,
 you can call the methods `performTick()` or `performTicks(long)`:
 
 ````java linenums="1"
