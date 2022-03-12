@@ -14,7 +14,15 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
+/**
+ * Factory to create journal events from {@link Instruction}s.
+ */
 public class JournalEventFactory implements EventFactory {
+    /**
+     * Create the journal event factory.
+     */
+    public JournalEventFactory() {
+    }
 
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {

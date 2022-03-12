@@ -8,10 +8,26 @@ import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+/**
+ * Static journal event to remove an entry from all players.
+ */
 public class RemoveJournalEntryStaticEvent implements StaticEvent {
+    /**
+     * The name of journal entry to remove.
+     */
     private final String entryName;
+
+    /**
+     * The journal event that removes the entry from an online player.
+     */
     private final JournalEvent deleteEvent;
 
+    /**
+     * Create the static remove event.
+     *
+     * @param entryName journal entry to remove
+     * @param deleteEvent delete event to execute for all online players
+     */
     public RemoveJournalEntryStaticEvent(final String entryName, final JournalEvent deleteEvent) {
         this.entryName = entryName;
         this.deleteEvent = deleteEvent;
