@@ -42,7 +42,7 @@ class:
 
 ````java linenums="1" hl_lines="1"
 @ExtendWith(BetonQuestLoggerService.class)
-public class TestFeature {
+public class TestClass {
 ````
 
 The test should now work as intended because a new anonymous logger is created everytime the `@CustomLog` annotation
@@ -55,7 +55,7 @@ You can now add this optional argument to any test's method signature:
 
 ```java linenums="1" hl_lines="5"
 @ExtendWith(BetonQuestLoggerService.class)
-public class TestFeature {
+public class TestClass {
 
     @Test
     public void testCustom(LogValidator validator) {
@@ -83,7 +83,7 @@ messages in the `LogValidator` by calling `assertEmpty()`.
     ```java linenums="1" hl_lines="5"
     @ExtendWith(BetonQuestLoggerService.class)
 
-    public class TestFeature {
+    public class TestClass {
         @Test
         public void testCustom(LogValidator validator, Logger logger, BetonQuestLogger log) {
     ```
@@ -92,3 +92,42 @@ messages in the `LogValidator` by calling `assertEmpty()`.
 
     The `log` is a new instance of the `BetonQuestLogger` that you can use to log things during the test.
     This logger has a topic that can be accessed via `BetonQuestLoggerService.LOGGER_TOPIC`.
+
+## Handling BukkitScheduler
+
+If you want to test code that only works with the `BukkitScheduler`, we even have a ready to use solution for this.
+To use the `BukkitSchedulerMock` you need to create the following setup:
+
+````java linenums="1" hl_lines="3-5"
+@Test
+void testMethod {
+    final BukkitSchedulerMock scheduler = new BukkitSchedulerMock();
+    try (MockedStatic<Bukkit> bukkit = mockStatic(Bukkit.class)) {
+        bukkit.when(Bukkit::getScheduler).thenReturn(scheduler);
+        ...
+    }
+}
+````
+
+Now you can use the scheduler object for several things. First if you want to perform a single or multiple ticks,
+you can call the methods `performTick()` or `performTicks(long)`:
+
+````java linenums="1"
+scheduler.performTick();
+scheduler.performTicks(20);
+````
+
+We also have a method that allows to get the number of ticks since the `BukkitSchedulerMock` was created.
+
+````java linenums="1"
+scheduler.getCurrentTick();
+````
+
+There are some additional features of this scheduler:
+
+````java linenums="1"
+scheduler.shutdown();
+scheduler.setShutdownTimeout(long);
+scheduler.waitAsyncTasksFinished();
+scheduler.getNumberOfQueuedAsyncTasks();
+````
