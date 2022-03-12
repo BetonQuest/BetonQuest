@@ -4,10 +4,12 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.betonquest.betonquest.util.scheduler.BukkitSchedulerMock;
-import org.bukkit.Bukkit;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
 
+import java.time.InstantSource;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,6 +19,10 @@ import static org.mockito.Mockito.*;
  * A test for the {@link HistoryLogHandler}.
  */
 class HistoryLogHandlerTest {
+    /**
+     * A fixed time for this test to work with.
+     */
+    private static final LocalDateTime FIXED_TIME = LocalDateTime.of(2022, 1, 1, 0, 0);
     /**
      * Is debug logging enabled during the test.
      */
@@ -29,29 +35,30 @@ class HistoryLogHandlerTest {
     }
 
     @Test
-    void testLogHistory() throws InterruptedException {
+    void testLogHistory() {
+        final InstantSource fixedTime = InstantSource.fixed(FIXED_TIME.toInstant(ZoneOffset.UTC));
+
         final BukkitSchedulerMock scheduler = new BukkitSchedulerMock();
-        try (MockedStatic<Bukkit> bukkit = mockStatic(Bukkit.class)) {
-            bukkit.when(Bukkit::getScheduler).thenReturn(scheduler);
+        final Logger logger = LogValidator.getSilentLogger();
+        final LogValidator validator = new LogValidator();
+        final HistoryLogHandler history = new HistoryLogHandler(mock(BetonQuest.class), scheduler, validator, fixedTime, 20);
 
-            final Logger logger = LogValidator.getSilentLogger();
-            final LogValidator validator = new LogValidator();
-            final HistoryLogHandler history = new HistoryLogHandler(mock(BetonQuest.class), validator, 0.0025);
+        logger.addHandler(history);
+        history.setFilter(record -> debugging);
 
-            logger.addHandler(history);
-            history.setFilter(record -> debugging);
-
-            createLogMessages(logger, scheduler);
-            assertLogMessages(validator, history);
-        }
+        createLogMessages(logger);
+        scheduler.performTicks(20);
+        scheduler.waitAsyncTasksFinished();
+        assertLogMessages(validator, history);
     }
 
-    private void createLogMessages(final Logger logger, final BukkitSchedulerMock scheduler) throws InterruptedException {
-        for (int i = 0; i < 2; i++) {
-            logger.log(new BetonQuestLogRecord(null, null, Level.INFO, "Message " + i));
-            Thread.sleep(100);
-            scheduler.performTicks(10);
-        }
+    private void createLogMessages(final Logger logger) {
+        final BetonQuestLogRecord record1 = new BetonQuestLogRecord(null, null, Level.INFO, "Message 1");
+        final BetonQuestLogRecord record2 = new BetonQuestLogRecord(null, null, Level.INFO, "Message 2");
+        record1.setInstant(InstantSource.fixed(FIXED_TIME.minus(50, ChronoUnit.MINUTES).toInstant(ZoneOffset.UTC)).instant());
+        record2.setInstant(InstantSource.fixed(FIXED_TIME.minus(10, ChronoUnit.MINUTES).toInstant(ZoneOffset.UTC)).instant());
+        logger.log(record1);
+        logger.log(record2);
     }
 
     private void assertLogMessages(final LogValidator validator, final HistoryLogHandler history) {
@@ -59,9 +66,7 @@ class HistoryLogHandlerTest {
         debugging = true;
         history.push();
         validator.assertLogEntry(Level.INFO, HistoryLogHandler.START_OF_HISTORY);
-        for (int i = 1; i < 2; i++) {
-            validator.assertLogEntry(Level.INFO, "Message " + i);
-        }
+        validator.assertLogEntry(Level.INFO, "Message 2");
         validator.assertLogEntry(Level.INFO, HistoryLogHandler.END_OF_HISTORY);
         validator.assertEmpty();
     }

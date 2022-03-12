@@ -1,9 +1,10 @@
 package org.betonquest.betonquest.modules.logger.custom;
 
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitScheduler;
 
+import java.time.InstantSource;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Handler;
@@ -42,18 +43,21 @@ public class HistoryLogHandler extends Handler {
      * <p>
      * If expireAfterMinutes is 0, no history will be saved at all.
      *
-     * @param target             The Handler to log the history to
-     * @param expireAfterMinutes The time a {@link LogRecord} stays in the cache
+     * @param plugin             the plugin, that should own the task for cleanups
+     * @param scheduler          the scheduler for the cleanup task
+     * @param target             the Handler to log the history to
+     * @param instantSource      the {@link InstantSource} to get the {@link java.time.Instant} from
+     * @param expireAfterMinutes the time a {@link LogRecord} stays in the cache
      */
-    public HistoryLogHandler(final Plugin plugin, final Handler target, final double expireAfterMinutes) {
+    public HistoryLogHandler(final Plugin plugin, final BukkitScheduler scheduler, final Handler target,
+                             final InstantSource instantSource, final int expireAfterMinutes) {
         super();
         if (expireAfterMinutes == 0) {
             this.records = null;
         } else {
             this.records = new ConcurrentLinkedQueue<>();
-            final long expireAfterMillis = (long) (expireAfterMinutes * 60 * 1000);
-            Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
-                while (isExpired(records.peek(), expireAfterMillis)) {
+            scheduler.runTaskTimerAsynchronously(plugin, () -> {
+                while (isExpired(records.peek(), instantSource, expireAfterMinutes * 60 * 1000L)) {
                     records.remove();
                 }
             }, 20, 20);
@@ -61,8 +65,8 @@ public class HistoryLogHandler extends Handler {
         this.target = target;
     }
 
-    private boolean isExpired(final LogRecord record, final long afterMillis) {
-        return record != null && record.getMillis() < System.currentTimeMillis() - afterMillis;
+    private boolean isExpired(final LogRecord record, final InstantSource instantSource, final long afterMillis) {
+        return record != null && record.getInstant().isBefore(instantSource.instant().minusMillis(afterMillis));
     }
 
     /**
