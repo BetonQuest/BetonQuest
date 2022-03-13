@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.compatibility.mythicmobs;
 
-import io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper;
+import io.lumine.mythic.bukkit.BukkitAPIHelper;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
