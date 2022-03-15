@@ -9,7 +9,11 @@ import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.api.QuestEvent;
 import pl.betoncraft.betonquest.api.Variable;
 import pl.betoncraft.betonquest.compatibility.Compatibility;
-import pl.betoncraft.betonquest.id.*;
+import pl.betoncraft.betonquest.id.ConditionID;
+import pl.betoncraft.betonquest.id.EventID;
+import pl.betoncraft.betonquest.id.ID;
+import pl.betoncraft.betonquest.id.ObjectiveID;
+import pl.betoncraft.betonquest.id.VariableID;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -32,7 +36,7 @@ public class BStatsMetrics {
                          final Map<String, Class<? extends Objective>> objectiveTypes,
                          final Map<String, Class<? extends Variable>> variableTypes) {
         this.plugin = plugin;
-        metrics = new Metrics(plugin, METRICS_ID);
+        metrics = new Metrics(plugin);
 
         versionMcBq();
         listUsage("conditions", conditions, conditionTypes);
