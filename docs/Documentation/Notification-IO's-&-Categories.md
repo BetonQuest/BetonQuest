@@ -103,7 +103,7 @@ Shows the notification using a subtitle.
 | fadeOut | Ticks to fade the title out. Default 20 |
 | [SoundIO](#soundio) | Any option from the [SoundIO](#soundio). |
 
-### TotemIO
+### Totem
 Shows a totem with a "customModelData" NBT tag. This allows you to replace the totem with a custom texture or model 
 during the animation.
 
