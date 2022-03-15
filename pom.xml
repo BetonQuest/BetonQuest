@@ -144,9 +144,9 @@
 
     <!-- from lumine repository -->
     <dependency>
-      <groupId>io.lumine.xikage</groupId>
-      <artifactId>MythicMobs</artifactId>
-      <version>4.11.2</version>
+      <groupId>io.lumine</groupId>
+      <artifactId>Mythic</artifactId>
+      <version>5.0.1</version>
       <scope>provided</scope>
       <optional>true</optional>
       <exclusions>
@@ -453,6 +453,11 @@
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>31.0.1-jre</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.9.0</version>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>

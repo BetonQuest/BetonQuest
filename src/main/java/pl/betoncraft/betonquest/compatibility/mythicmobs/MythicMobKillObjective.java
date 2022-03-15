@@ -1,9 +1,9 @@
 package pl.betoncraft.betonquest.compatibility.mythicmobs;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import io.lumine.xikage.mythicmobs.adapters.bukkit.BukkitAdapter;
-import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMobDeathEvent;
-import io.lumine.xikage.mythicmobs.mobs.ActiveMob;
+import io.lumine.mythic.bukkit.BukkitAdapter;
+import io.lumine.mythic.bukkit.events.MythicMobDeathEvent;
+import io.lumine.mythic.core.mobs.ActiveMob;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -111,10 +111,10 @@ public class MythicMobKillObjective extends Objective implements Listener {
             if (minMobLevel.getDouble(playerID) > actualMobLevel || maxMobLevel.getDouble(playerID) < actualMobLevel) {
                 return;
             }
-        } catch (QuestRuntimeException exep) {
+        } catch (final QuestRuntimeException exep) {
             try {
                 LogUtils.getLogger().log(Level.SEVERE, "Unable to resolve minMobLevel / maxMobLevel variable in " + instruction.getObjective().getFullID());
-            } catch (InstructionParseException e) {
+            } catch (final InstructionParseException e) {
                 LogUtils.logThrowableReport(exep);
             }
             return;
