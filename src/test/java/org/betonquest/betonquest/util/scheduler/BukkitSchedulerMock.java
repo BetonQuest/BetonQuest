@@ -6,25 +6,29 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scheduler.BukkitWorker;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Assertions;
 
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Future;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 /**
  * A mock for {@link BukkitScheduler}.
  */
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.DoNotUseThreads", "PMD.GodClass", "PMD.CyclomaticComplexity"})
-public class BukkitSchedulerMock implements BukkitScheduler {
+public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable {
     /**
      * Exception message for deprecated methods.
      */
@@ -47,9 +51,9 @@ public class BukkitSchedulerMock implements BukkitScheduler {
      */
     private final TaskList scheduledTasks;
     /**
-     * Reference to an exception that occurred async.
+     * Deque containing all exceptions that occurred during async execution in chronological order.
      */
-    private final AtomicReference<Exception> asyncException;
+    private final Deque<ExecutionException> asyncExceptions;
     /**
      * The current tick that should be executed.
      */
@@ -58,10 +62,6 @@ public class BukkitSchedulerMock implements BukkitScheduler {
      * The task id for the next task.
      */
     private int taskId;
-    /**
-     * The executor timeout for shutdown.
-     */
-    private long executorTimeout = 60_000;
 
     /**
      * Creates a new {@link BukkitSchedulerMock}.
@@ -69,7 +69,7 @@ public class BukkitSchedulerMock implements BukkitScheduler {
     public BukkitSchedulerMock() {
         pool = new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS, new SynchronousQueue<>());
         scheduledTasks = new TaskList();
-        asyncException = new AtomicReference<>();
+        asyncExceptions = new LinkedList<>();
     }
 
     private static Runnable wrapTask(final ScheduledTask task) {
@@ -79,28 +79,6 @@ public class BukkitSchedulerMock implements BukkitScheduler {
             task.run();
             task.setRunning(false);
         };
-    }
-
-    /**
-     * Sets a shutdown time out of the scheduler.
-     *
-     * @param timeout the new timeout
-     */
-    public void setShutdownTimeout(final long timeout) {
-        this.executorTimeout = timeout;
-    }
-
-
-    /**
-     * Shuts the scheduler down.
-     * Note that this function will re-throw an exception if one or multiple appeared during the scheduler's lifecycle.
-     */
-    public void shutdown() {
-        waitAsyncTasksFinished();
-        pool.shutdown();
-        if (asyncException.get() != null) {
-            throw new AsyncTaskException(asyncException.get());
-        }
     }
 
     /**
@@ -121,16 +99,34 @@ public class BukkitSchedulerMock implements BukkitScheduler {
 
         for (final ScheduledTask task : oldTasks) {
             if (task.getScheduledTick() == currentTick && !task.isCancelled()) {
-                if (task.isSync()) {
-                    wrapTask(task).run();
-                } else {
-                    pool.submit(wrapTask(task));
+                try {
+                    executeTask(task);
+                } catch (final InterruptedException interruptedException) {
+                    if (Thread.interrupted()) {
+                        return;
+                    }
                 }
 
-                if (task instanceof RepeatingTask && !task.isCancelled()) {
-                    ((RepeatingTask) task).updateScheduledTick();
-                    scheduledTasks.addTask(task);
-                }
+                rescheduleRepeatingTasks(task);
+            }
+        }
+    }
+
+    private void rescheduleRepeatingTasks(final ScheduledTask task) {
+        if (task instanceof RepeatingTask && !task.isCancelled()) {
+            ((RepeatingTask) task).updateScheduledTick();
+            scheduledTasks.addTask(task);
+        }
+    }
+
+    private void executeTask(final ScheduledTask task) throws InterruptedException {
+        if (task.isSync()) {
+            wrapTask(task).run();
+        } else {
+            try {
+                pool.submit(wrapTask(task)).get();
+            } catch (final ExecutionException e) {
+                asyncExceptions.addLast(e);
             }
         }
     }
@@ -160,47 +156,6 @@ public class BukkitSchedulerMock implements BukkitScheduler {
             queuedAsync++;
         }
         return queuedAsync;
-    }
-
-    /**
-     * Waits until all asynchronous tasks have finished executing. If you have an asynchronous task that runs
-     * indefinitely, this function will never return.
-     */
-    public void waitAsyncTasksFinished() {
-        // Make sure all tasks get to execute. (except for repeating asynchronous tasks, they only will fire once)
-        while (scheduledTasks.getScheduledTaskCount() > 0) {
-            performTick();
-        }
-
-        // Wait for all tasks to finish executing.
-        final long systemTime = System.currentTimeMillis();
-        while (pool.getActiveCount() > 0) {
-            if (executeShutdown(systemTime)) {
-                return;
-            }
-        }
-    }
-
-    @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
-    private boolean executeShutdown(final long systemTime) {
-        try {
-            Thread.sleep(10L);
-        } catch (final InterruptedException e) {
-            Thread.currentThread().interrupt();
-            return true;
-        }
-        if (System.currentTimeMillis() > (systemTime + executorTimeout)) {
-            for (final ScheduledTask task : scheduledTasks.getCurrentTaskList()) {
-                if (task.isRunning()) {
-                    task.cancel();
-                    cancelTask(task.getTaskId());
-                    throw new RuntimeException("Forced Cancellation of task owned by "
-                            + task.getOwner().getName());
-                }
-            }
-            pool.shutdownNow();
-        }
-        return false;
     }
 
     @Override
@@ -332,7 +287,7 @@ public class BukkitSchedulerMock implements BukkitScheduler {
     @Override
     public @NotNull
     BukkitTask runTaskAsynchronously(@NotNull final Plugin plugin, @NotNull final Runnable task) {
-        final ScheduledTask scheduledTask = new ScheduledTask(taskId++, plugin, false, currentTick, new AsyncRunnable(task));
+        final ScheduledTask scheduledTask = new ScheduledTask(taskId++, plugin, false, currentTick, task);
         pool.execute(wrapTask(scheduledTask));
         return scheduledTask;
     }
@@ -352,8 +307,7 @@ public class BukkitSchedulerMock implements BukkitScheduler {
     @Override
     public @NotNull
     BukkitTask runTaskLaterAsynchronously(@NotNull final Plugin plugin, @NotNull final Runnable task, final long delay) {
-        final ScheduledTask scheduledTask = new ScheduledTask(taskId++, plugin, false, currentTick + delay,
-                new AsyncRunnable(task));
+        final ScheduledTask scheduledTask = new ScheduledTask(taskId++, plugin, false, currentTick + delay, task);
         scheduledTasks.addTask(scheduledTask);
         return scheduledTask;
     }
@@ -367,8 +321,7 @@ public class BukkitSchedulerMock implements BukkitScheduler {
     @Override
     public @NotNull
     BukkitTask runTaskTimerAsynchronously(@NotNull final Plugin plugin, @NotNull final Runnable task, final long delay, final long period) {
-        final RepeatingTask scheduledTask = new RepeatingTask(taskId++, plugin, false, currentTick + delay, period,
-                new AsyncRunnable(task));
+        final RepeatingTask scheduledTask = new RepeatingTask(taskId++, plugin, false, currentTick + delay, period, task);
         scheduledTasks.addTask(scheduledTask);
         return scheduledTask;
     }
@@ -413,6 +366,39 @@ public class BukkitSchedulerMock implements BukkitScheduler {
     @Override
     public void runTaskTimerAsynchronously(@NotNull final Plugin plugin, @NotNull final Consumer<BukkitTask> task, final long delay, final long period) {
         throw new UnsupportedOperationException(MESSAGE_UNUSED);
+    }
+
+    @Override
+    public void close() {
+        pool.shutdown();
+    }
+
+    /**
+     * Get the next async execution exception that happened during ticking. The exceptions are returned in chronological
+     * order but with no guarantees about the task they came from.
+     *
+     * @return the last execution
+     * @throws NoSuchElementException if there are no exceptions remaining
+     * @see #hasAsyncExceptionRemaining()
+     */
+    public ExecutionException nextAsyncException() {
+        return asyncExceptions.removeFirst();
+    }
+
+    /**
+     * Check whether any async execution exceptions are remaining.
+     *
+     * @return true if there are exceptions; false otherwise
+     */
+    public boolean hasAsyncExceptionRemaining() {
+        return !asyncExceptions.isEmpty();
+    }
+
+    /**
+     * Assert that no exceptions have been thrown during async execution.
+     */
+    public void assertNoExceptions() {
+        Assertions.assertFalse(hasAsyncExceptionRemaining(), "No exceptions should have been thrown during async execution.");
     }
 
     /**
@@ -475,30 +461,5 @@ public class BukkitSchedulerMock implements BukkitScheduler {
                 tasks.put(taskID, task);
             }
         }
-    }
-
-    /**
-     * Async task runnable.
-     */
-    private class AsyncRunnable implements Runnable {
-        /**
-         * The runnable to execute async.
-         */
-        private final Runnable task;
-
-        private AsyncRunnable(final @NotNull Runnable runnable) {
-            task = runnable;
-        }
-
-        @SuppressWarnings("PMD.AvoidCatchingGenericException")
-        @Override
-        public void run() {
-            try {
-                task.run();
-            } catch (final Exception t) {
-                asyncException.set(t);
-            }
-        }
-
     }
 }

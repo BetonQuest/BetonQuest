@@ -23,10 +23,6 @@ class HistoryLogHandlerTest {
      * A fixed time for this test to work with.
      */
     private static final LocalDateTime FIXED_TIME = LocalDateTime.of(2022, 1, 1, 0, 0);
-    /**
-     * Is debug logging enabled during the test.
-     */
-    private boolean debugging;
 
     /**
      * Default constructor.
@@ -38,18 +34,20 @@ class HistoryLogHandlerTest {
     void testLogHistory() {
         final InstantSource fixedTime = InstantSource.fixed(FIXED_TIME.toInstant(ZoneOffset.UTC));
 
-        final BukkitSchedulerMock scheduler = new BukkitSchedulerMock();
+        final LogValidator validator;
+        final HistoryLogHandler historyHandler;
         final Logger logger = LogValidator.getSilentLogger();
-        final LogValidator validator = new LogValidator();
-        final HistoryLogHandler history = new HistoryLogHandler(mock(BetonQuest.class), scheduler, validator, fixedTime, 20);
+        validator = new LogValidator();
+        try (BukkitSchedulerMock scheduler = new BukkitSchedulerMock()) {
+            historyHandler = new HistoryLogHandler(mock(BetonQuest.class), scheduler, validator, fixedTime, 20);
 
-        logger.addHandler(history);
-        history.setFilter(record -> debugging);
+            logger.addHandler(historyHandler);
 
-        createLogMessages(logger);
-        scheduler.performTicks(20);
-        scheduler.waitAsyncTasksFinished();
-        assertLogMessages(validator, history);
+            createLogMessages(logger);
+            scheduler.performTicks(20);
+            scheduler.assertNoExceptions();
+        }
+        assertLogMessages(validator, historyHandler);
     }
 
     private void createLogMessages(final Logger logger) {
@@ -61,10 +59,9 @@ class HistoryLogHandlerTest {
         logger.log(record2);
     }
 
-    private void assertLogMessages(final LogValidator validator, final HistoryLogHandler history) {
+    private void assertLogMessages(final LogValidator validator, final HistoryLogHandler historyHandler) {
         validator.assertEmpty();
-        debugging = true;
-        history.push();
+        historyHandler.startDebug();
         validator.assertLogEntry(Level.INFO, HistoryLogHandler.START_OF_HISTORY);
         validator.assertLogEntry(Level.INFO, "Message 2");
         validator.assertLogEntry(Level.INFO, HistoryLogHandler.END_OF_HISTORY);

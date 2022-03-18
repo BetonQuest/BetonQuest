@@ -15,14 +15,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.time.InstantSource;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 import java.util.logging.FileHandler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -53,13 +47,9 @@ public final class LogWatcher {
      */
     private final HistoryLogHandler historyHandler;
     /**
-     * All active log filters for the in-game log.
+     * The {@link PlayerLogHandler} that holds old LogRecords.
      */
-    private final Map<UUID, Map<String, Level>> playerFilters;
-    /**
-     * Whether debugging is enabled.
-     */
-    private boolean debugging;
+    private final PlayerLogHandler playerHandler;
 
     /**
      * Setups the debug and in-game chat log.
@@ -70,13 +60,12 @@ public final class LogWatcher {
     public LogWatcher(final Plugin plugin, final File logFileFolder, final ConfigurationFile config, final BukkitAudiences bukkitAudiences) {
         this.logFile = new File(logFileFolder, LOG_FILE_PATH);
         this.config = config;
-        playerFilters = new HashMap<>();
 
         historyHandler = setupDebugLogHandler(plugin, Bukkit.getLogger().getParent());
-        setupPlayerLogHandler(Bukkit.getLogger().getParent(), bukkitAudiences);
+        playerHandler = setupPlayerLogHandler(Bukkit.getLogger().getParent(), bukkitAudiences);
 
         if (historyHandler != null && this.config.getBoolean(CONFIG_PATH + ".enabled", false)) {
-            startDebug();
+            historyHandler.startDebug();
         }
     }
 
@@ -87,7 +76,6 @@ public final class LogWatcher {
             fileHandler.setFormatter(new DebugLogFormatter());
             final HistoryLogHandler historyHandler = new HistoryLogHandler(plugin, plugin.getServer().getScheduler(), fileHandler,
                     InstantSource.system(), config.getInt(CONFIG_PATH + ".history_in_minutes", 10));
-            historyHandler.setFilter(record -> debugging);
             logger.addHandler(historyHandler);
             return historyHandler;
         } catch (final IOException e) {
@@ -98,34 +86,11 @@ public final class LogWatcher {
         return null;
     }
 
-    private void setupPlayerLogHandler(final Logger logger, final BukkitAudiences bukkitAudiences) {
-        final PlayerLogHandler playerHandler = new PlayerLogHandler(bukkitAudiences, playerFilters);
+    private PlayerLogHandler setupPlayerLogHandler(final Logger logger, final BukkitAudiences bukkitAudiences) {
+        final PlayerLogHandler playerHandler = new PlayerLogHandler(bukkitAudiences);
         playerHandler.setFormatter(new ChatLogFormatter());
-        playerHandler.setFilter(record -> !playerFilters.isEmpty());
         logger.addHandler(playerHandler);
-    }
-
-    /**
-     * Starts writing to the latest.log file.
-     */
-    public void startDebug() {
-        synchronized (LogWatcher.class) {
-            if (!debugging) {
-                debugging = true;
-                historyHandler.push();
-            }
-        }
-    }
-
-    /**
-     * Stops writing to the latest.log file.
-     */
-    public void endDebug() {
-        synchronized (LogWatcher.class) {
-            if (debugging) {
-                debugging = false;
-            }
-        }
+        return playerHandler;
     }
 
     /**
@@ -134,15 +99,8 @@ public final class LogWatcher {
      * @throws IOException Is thrown if the configuration file could not be saved
      */
     public void saveDebuggingToConfig() throws IOException {
-        config.set(CONFIG_PATH + ".enabled", debugging);
+        config.set(CONFIG_PATH + ".enabled", historyHandler.isDebugging());
         config.save();
-    }
-
-    /**
-     * @return True, if debugging is enabled
-     */
-    public boolean isDebugging() {
-        return debugging;
     }
 
     private void renameDebugLogFile() throws IOException {
@@ -168,53 +126,20 @@ public final class LogWatcher {
     }
 
     /**
-     * Adds a filter to a player.
+     * Get the {@link PlayerLogHandler} instance for the plugin.
      *
-     * @param uuid   The {@link UUID} of the player
-     * @param filter The filter pattern
-     * @param level  The {@link Level} of the filter
-     * @return True if the filter was successfully added
+     * @return the instance of the {@link PlayerLogHandler}
      */
-    public boolean addFilter(final UUID uuid, final String filter, final Level level) {
-        if (!playerFilters.containsKey(uuid)) {
-            playerFilters.put(uuid, new HashMap<>());
-        }
-        final Map<String, Level> filters = playerFilters.get(uuid);
-        if (filters.containsKey(filter) && filters.get(filter).equals(level)) {
-            return false;
-        }
-        filters.put(filter, level);
-        return true;
+    public PlayerLogHandler getPlayerLogHandler() {
+        return playerHandler;
     }
 
     /**
-     * Removes a filter from a player.
+     * Get the {@link HistoryLogHandler} instance for the plugin.
      *
-     * @param uuid   The {@link UUID} of the player
-     * @param filter The filter pattern
-     * @return True if the filter was successfully removed
+     * @return the instance of the {@link HistoryLogHandler}
      */
-    public boolean removeFilter(final UUID uuid, final String filter) {
-        if (playerFilters.containsKey(uuid)) {
-            final boolean removed = playerFilters.get(uuid).remove(filter) != null;
-            if (playerFilters.get(uuid).isEmpty()) {
-                playerFilters.remove(uuid);
-            }
-            return removed;
-        }
-        return false;
-    }
-
-    /**
-     * Gets a players filters.
-     *
-     * @param uuid The {@link UUID} of the player
-     * @return A list of filters
-     */
-    public List<String> getFilters(final UUID uuid) {
-        if (playerFilters.containsKey(uuid)) {
-            return new ArrayList<>(playerFilters.get(uuid).keySet());
-        }
-        return new ArrayList<>();
+    public HistoryLogHandler getHistoryLogHandler() {
+        return historyHandler;
     }
 }
