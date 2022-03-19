@@ -30,6 +30,8 @@ import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.modules.logger.LogWatcher;
+import org.betonquest.betonquest.modules.logger.custom.HistoryLogHandler;
+import org.betonquest.betonquest.modules.logger.custom.PlayerLogHandler;
 import org.betonquest.betonquest.modules.versioning.Updater;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
@@ -254,16 +256,16 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 case "reload":
                     // just reloading
                     defaultPack = Config.getString("config.default_package");
-                    final LogWatcher logWatcher = BetonQuest.getInstance().getLogWatcher();
+                    final PlayerLogHandler playerHandler = BetonQuest.getInstance().getLogWatcher().getPlayerLogHandler();
                     final UUID uuid = sender instanceof Player ? ((Player) sender).getUniqueId() : null;
-                    final boolean noFilters = uuid != null && logWatcher.getFilters(uuid).isEmpty();
+                    final boolean noFilters = uuid != null && playerHandler.getFilters(uuid).isEmpty();
                     if (noFilters) {
-                        logWatcher.addFilter(uuid, "*", Level.WARNING);
+                        playerHandler.addFilter(uuid, "*", Level.WARNING);
                     }
                     instance.reload();
                     sendMessage(sender, "reloaded");
                     if (noFilters) {
-                        logWatcher.removeFilter(uuid, "*");
+                        playerHandler.removeFilter(uuid, "*");
                     }
                     break;
                 case "backup":
@@ -1631,9 +1633,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     private void handleDebug(final CommandSender sender, final String... args) {
         final LogWatcher logWatcher = BetonQuest.getInstance().getLogWatcher();
+        final HistoryLogHandler historyHandler = logWatcher.getHistoryLogHandler();
         if (args.length == 1) {
             sender.sendMessage(
-                    "§2Debugging mode is currently " + (logWatcher.isDebugging() ? "enabled" : "disabled") + '!');
+                    "§2Debugging mode is currently " + (historyHandler.isDebugging() ? "enabled" : "disabled") + '!');
             return;
         }
         if ("ingame".equalsIgnoreCase(args[1])) {
@@ -1641,15 +1644,16 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 LOG.debug("Cannot continue, sender must be player");
                 return;
             }
+            final PlayerLogHandler playerHandler = logWatcher.getPlayerLogHandler();
             final UUID uuid = ((Player) sender).getUniqueId();
             if (args.length < 3) {
-                sender.sendMessage("§2Active Filters: " + String.join(", ", logWatcher.getFilters(uuid)));
+                sender.sendMessage("§2Active Filters: " + String.join(", ", playerHandler.getFilters(uuid)));
                 return;
             }
             final String filter = args[2];
-            final boolean exist = logWatcher.getFilters(uuid).contains(filter);
+            final boolean exist = playerHandler.getFilters(uuid).contains(filter);
             if (exist && args.length == 3) {
-                if (!logWatcher.removeFilter(uuid, filter)) {
+                if (!playerHandler.removeFilter(uuid, filter)) {
                     sender.sendMessage("§2Filter could not be removed!");
                     return;
                 }
@@ -1657,7 +1661,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 return;
             }
             final Level level = getLogLevel(args.length > 3 ? args[3] : null);
-            if (!logWatcher.addFilter(uuid, filter, level)) {
+            if (!playerHandler.addFilter(uuid, filter, level)) {
                 sender.sendMessage("§2Filter could not be added!");
                 return;
             }
@@ -1668,15 +1672,15 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 : "false".equalsIgnoreCase(args[1]) ? Boolean.FALSE : null;
         if (input != null && args.length == 2) {
 
-            if (logWatcher.isDebugging() && input || !logWatcher.isDebugging() && !input) {
+            if (historyHandler.isDebugging() && input || !historyHandler.isDebugging() && !input) {
                 sender.sendMessage(
-                        "§2Debugging mode is already " + (logWatcher.isDebugging() ? "enabled" : "disabled") + '!');
+                        "§2Debugging mode is already " + (historyHandler.isDebugging() ? "enabled" : "disabled") + '!');
                 return;
             }
             if (input) {
-                logWatcher.startDebug();
+                historyHandler.startDebug();
             } else {
-                logWatcher.endDebug();
+                historyHandler.endDebug();
             }
             try {
                 logWatcher.saveDebuggingToConfig();
@@ -1684,8 +1688,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 sender.sendMessage("Could not save new debugging state to configuration file!");
                 LOG.warn("Could not save new debugging state to configuration file! " + e.getMessage(), e);
             }
-            sender.sendMessage("§2Debugging mode was " + (logWatcher.isDebugging() ? "enabled" : "disabled") + '!');
-            LOG.info("Debuging mode was " + (logWatcher.isDebugging() ? "enabled" : "disabled") + '!');
+            sender.sendMessage("§2Debugging mode was " + (historyHandler.isDebugging() ? "enabled" : "disabled") + '!');
+            LOG.info("Debuging mode was " + (historyHandler.isDebugging() ? "enabled" : "disabled") + '!');
             return;
         }
         sendMessage(sender, "unknown_argument");

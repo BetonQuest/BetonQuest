@@ -7,6 +7,9 @@ import org.bukkit.scheduler.BukkitScheduler;
 import java.time.InstantSource;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -28,15 +31,23 @@ public class HistoryLogHandler extends Handler {
      * The message printed after the history is printed.
      */
     public static final String END_OF_HISTORY = "=====END OF HISTORY=====";
+
     /**
      * The {@link LogRecord} history.
      */
     private final Queue<LogRecord> records;
-
+    /**
+     * Lock for publishing {@link LogRecord}s to maintain chronological order while publishing the accumulated history.
+     */
+    private final Lock publishLock;
     /**
      * The target Handler to log the history to.
      */
     private final Handler target;
+    /**
+     * Whether debugging is enabled.
+     */
+    private final AtomicBoolean debugging;
 
     /**
      * Creates a new {@link HistoryLogHandler}.
@@ -63,6 +74,8 @@ public class HistoryLogHandler extends Handler {
             }, 20, 20);
         }
         this.target = target;
+        this.debugging = new AtomicBoolean(false);
+        this.publishLock = new ReentrantLock(true);
     }
 
     private boolean isExpired(final LogRecord record, final InstantSource instantSource, final long afterMillis) {
@@ -76,12 +89,16 @@ public class HistoryLogHandler extends Handler {
      */
     @Override
     public void publish(final LogRecord record) {
-        if (!(record instanceof BetonQuestLogRecord)) {
+        if (!(record instanceof BetonQuestLogRecord) || !isLoggable(record)) {
             return;
         }
-        if (isLoggable(record)) {
-            push();
-            target.publish(record);
+        if (debugging.get()) {
+            publishLock.lock();
+            try {
+                target.publish(record);
+            } finally {
+                publishLock.unlock();
+            }
         } else if (records != null) {
             records.add(record);
         }
@@ -90,7 +107,7 @@ public class HistoryLogHandler extends Handler {
     /**
      * Publishes any available history to the target handler.
      */
-    public void push() {
+    private void push() {
         if (records != null && !records.isEmpty()) {
             target.publish(new LogRecord(Level.INFO, START_OF_HISTORY));
             while (records.peek() != null) {
@@ -114,5 +131,33 @@ public class HistoryLogHandler extends Handler {
     @Override
     public void close() {
         target.close();
+    }
+
+    /**
+     * @return True, if debugging is enabled
+     */
+    public boolean isDebugging() {
+        return debugging.get();
+    }
+
+    /**
+     * Starts writing to the latest.log file.
+     */
+    public void startDebug() {
+        publishLock.lock();
+        try {
+            if (debugging.compareAndSet(false, true)) {
+                push();
+            }
+        } finally {
+            publishLock.unlock();
+        }
+    }
+
+    /**
+     * Stops writing to the latest.log file.
+     */
+    public void endDebug() {
+        debugging.set(false);
     }
 }

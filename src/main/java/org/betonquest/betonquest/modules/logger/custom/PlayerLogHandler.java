@@ -5,6 +5,9 @@ import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.ErrorManager;
@@ -31,12 +34,11 @@ public class PlayerLogHandler extends Handler {
      * Creates a new {@link PlayerLogHandler}.
      *
      * @param bukkitAudiences The {@link BukkitAudiences} instance for sending messages.
-     * @param playerFilters   The map pointer with the filters
      */
-    public PlayerLogHandler(final BukkitAudiences bukkitAudiences, final Map<UUID, Map<String, Level>> playerFilters) {
+    public PlayerLogHandler(final BukkitAudiences bukkitAudiences) {
         super();
         this.bukkitAudiences = bukkitAudiences;
-        this.playerFilters = playerFilters;
+        this.playerFilters = new HashMap<>();
     }
 
     /**
@@ -49,7 +51,7 @@ public class PlayerLogHandler extends Handler {
     @Override
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public void publish(final LogRecord record) {
-        if (!(record instanceof BetonQuestLogRecord) || !isLoggable(record)) {
+        if (!(record instanceof BetonQuestLogRecord) || playerFilters.isEmpty() || !isLoggable(record)) {
             return;
         }
         final String msg;
@@ -92,5 +94,56 @@ public class PlayerLogHandler extends Handler {
     @Override
     public void close() {
         // Empty
+    }
+
+    /**
+     * Adds a filter to a player.
+     *
+     * @param uuid   The {@link UUID} of the player
+     * @param filter The filter pattern
+     * @param level  The {@link Level} of the filter
+     * @return True if the filter was successfully added
+     */
+    public boolean addFilter(final UUID uuid, final String filter, final Level level) {
+        if (!playerFilters.containsKey(uuid)) {
+            playerFilters.put(uuid, new HashMap<>());
+        }
+        final Map<String, Level> filters = playerFilters.get(uuid);
+        if (filters.containsKey(filter) && filters.get(filter).equals(level)) {
+            return false;
+        }
+        filters.put(filter, level);
+        return true;
+    }
+
+    /**
+     * Removes a filter from a player.
+     *
+     * @param uuid   The {@link UUID} of the player
+     * @param filter The filter pattern
+     * @return True if the filter was successfully removed
+     */
+    public boolean removeFilter(final UUID uuid, final String filter) {
+        if (playerFilters.containsKey(uuid)) {
+            final boolean removed = playerFilters.get(uuid).remove(filter) != null;
+            if (playerFilters.get(uuid).isEmpty()) {
+                playerFilters.remove(uuid);
+            }
+            return removed;
+        }
+        return false;
+    }
+
+    /**
+     * Gets a players filters.
+     *
+     * @param uuid The {@link UUID} of the player
+     * @return A list of filters
+     */
+    public List<String> getFilters(final UUID uuid) {
+        if (playerFilters.containsKey(uuid)) {
+            return new ArrayList<>(playerFilters.get(uuid).keySet());
+        }
+        return new ArrayList<>();
     }
 }
