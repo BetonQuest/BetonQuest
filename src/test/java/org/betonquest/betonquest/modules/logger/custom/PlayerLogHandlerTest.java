@@ -86,9 +86,9 @@ class PlayerLogHandlerTest {
 
         final PlainTextComponentSerializer serializer = PlainTextComponentSerializer.plainText();
 
-        assertEquals("§7[§8BQ | §7]§r <Package1> §fMessage 1", serializer.serialize(components.get(0)), "");
-        assertEquals("§7[§8BQ | §7]§r <Package3> §fMessage 3", serializer.serialize(components.get(1)), "");
-        assertEquals("§7[§8BQ | §7]§r <Package2> §fMessage 2", serializer.serialize(components.get(2)), "");
-        assertEquals("§7[§8BQ | §7]§r <Package3> §fMessage 3", serializer.serialize(components.get(3)), "");
+        assertEquals("§7[§8BQ | §7]§r <Package1> §fMessage 1", serializer.serialize(components.get(0)), "Audience 1 should first receive 'Message 1'");
+        assertEquals("§7[§8BQ | §7]§r <Package3> §fMessage 3", serializer.serialize(components.get(1)), "Audience 1 should then receive 'Message 3'");
+        assertEquals("§7[§8BQ | §7]§r <Package2> §fMessage 2", serializer.serialize(components.get(2)), "Audience 2 should first receive 'Message 2'");
+        assertEquals("§7[§8BQ | §7]§r <Package3> §fMessage 3", serializer.serialize(components.get(3)), "Audience 2 should then receive 'Message 3'");
     }
 }
