@@ -8,6 +8,7 @@ import org.bukkit.scheduler.BukkitWorker;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 
+import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -28,7 +29,7 @@ import java.util.function.Consumer;
  * A mock for {@link BukkitScheduler}.
  */
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.DoNotUseThreads", "PMD.GodClass", "PMD.CyclomaticComplexity"})
-public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable {
+public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Closeable {
     /**
      * Exception message for deprecated methods.
      */
