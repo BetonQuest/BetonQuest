@@ -22,7 +22,7 @@ public class BetonQuestLoggerService implements ParameterResolver, BeforeAllCall
     /**
      * The topic of generated {@link BetonQuestLogger} in the {@link ParameterResolver}.
      */
-    public final static String LOGGER_TOPIC = "GeneratedLoggerWithTopic";
+    public final static String LOGGER_TOPIC = "GeneratedTopic";
     /**
      * The mocked plugin instance.
      */
