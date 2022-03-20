@@ -84,6 +84,7 @@ import org.betonquest.betonquest.conversation.SimpleConvIO;
 import org.betonquest.betonquest.conversation.SimpleInterceptor;
 import org.betonquest.betonquest.conversation.SlowTellrawConvIO;
 import org.betonquest.betonquest.conversation.TellrawConvIO;
+import org.betonquest.betonquest.database.AsyncSaver;
 import org.betonquest.betonquest.database.Database;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.database.MySQL;
@@ -287,7 +288,7 @@ public class BetonQuest extends JavaPlugin {
     private Database database;
     private boolean isMySQLUsed;
     @SuppressWarnings("PMD.DoNotUseThreads")
-    private Saver saver;
+    private AsyncSaver saver;
     private Updater updater;
     private GlobalData globalData;
     private PlayerHider playerHider;
@@ -646,7 +647,7 @@ public class BetonQuest extends JavaPlugin {
 
         // create and start the saver object, which handles correct asynchronous
         // saving to the database
-        saver = new Saver();
+        saver = new AsyncSaver();
         saver.start();
 
         // load database backup
@@ -1370,11 +1371,10 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * Returns the instance of Saver
+     * Returns the {@link Saver} instance used by BetonQuest.
      *
-     * @return the Saver
+     * @return the database saver
      */
-    @SuppressWarnings("PMD.DoNotUseThreads")
     public Saver getSaver() {
         return saver;
     }
