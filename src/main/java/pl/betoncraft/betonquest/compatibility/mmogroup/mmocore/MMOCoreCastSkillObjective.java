@@ -1,8 +1,9 @@
 package pl.betoncraft.betonquest.compatibility.mmogroup.mmocore;
 
-import net.Indyuce.mmocore.api.event.PlayerPostCastSkillEvent;
+import io.lumine.mythic.lib.api.event.skill.PlayerCastSkillEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import pl.betoncraft.betonquest.BetonQuest;
@@ -23,14 +24,14 @@ public class MMOCoreCastSkillObjective extends Objective implements Listener {
         skillId = instruction.next();
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void onSkillCast(final PlayerPostCastSkillEvent event) {
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onSkillCast(final PlayerCastSkillEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
         if (!containsPlayer(playerID) || !checkConditions(playerID)) {
             return;
         }
-        final String skillName = event.getCast().getSkill().getId();
-        if (!skillId.equalsIgnoreCase(skillName) || !event.wasSuccessful()) {
+        final String skillName = event.getCast().getHandler().getId();
+        if (!skillId.equalsIgnoreCase(skillName)) {
             return;
         }
         completeObjective(playerID);

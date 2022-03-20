@@ -36,7 +36,7 @@ public class BStatsMetrics {
                          final Map<String, Class<? extends Objective>> objectiveTypes,
                          final Map<String, Class<? extends Variable>> variableTypes) {
         this.plugin = plugin;
-        metrics = new Metrics(plugin);
+        metrics = new Metrics(plugin, METRICS_ID);
 
         versionMcBq();
         listUsage("conditions", conditions, conditionTypes);
