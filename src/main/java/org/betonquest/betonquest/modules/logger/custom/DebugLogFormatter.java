@@ -27,7 +27,7 @@ public class DebugLogFormatter extends Formatter {
 
     @Override
     public String format(final LogRecord record) {
-        if (!(record instanceof final BetonQuestLogRecord logRecord)) {
+        if (!(record instanceof BetonQuestLogRecord logRecord)) {
             throw new UnsupportedOperationException("The DebugLogFormatter can only format BetonQuestLogRecords!");
         }
         date.setTime(record.getMillis());

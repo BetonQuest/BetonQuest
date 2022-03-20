@@ -25,7 +25,7 @@ public class ChatLogFormatter extends DebugLogFormatter {
 
     @Override
     public String format(final LogRecord record) {
-        if (!(record instanceof final BetonQuestLogRecord logRecord)) {
+        if (!(record instanceof BetonQuestLogRecord logRecord)) {
             throw new UnsupportedOperationException("The ChatLogFormatter can only format BetonQuestLogRecords!");
         }
         final String color = formatColor(record.getLevel());

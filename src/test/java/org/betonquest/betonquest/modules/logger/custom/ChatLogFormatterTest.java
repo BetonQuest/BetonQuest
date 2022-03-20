@@ -56,9 +56,9 @@ class ChatLogFormatterTest {
     void testChatFormattingException() {
         final BetonQuestLogRecord record = new BetonQuestLogRecord(plugin, null, Level.INFO, "Message4");
         record.setThrown(new NullPointerException("Exception Message"));
-        final String message = getFormattedMessage(record);
-        final String start = "{\"extra\":[{\"color\":\"red\",\"clickEvent\":{\"action\":\"copy_to_clipboard\",\"value\":\"\\r\\n"
-                + "java.lang.NullPointerException: Exception Message\\r\\n\\";
+        final String message = getFormattedMessage(record).replace("\\r\\n", "\\n").replace("\\r", "\\n");
+        final String start = "{\"extra\":[{\"color\":\"red\",\"clickEvent\":{\"action\":\"copy_to_clipboard\",\"value\":\"\\n"
+                + "java.lang.NullPointerException: Exception Message\\n\\";
         final String end = "}},\"text\":\" Hover for Stacktrace!\"}],\"text\":\"§7[§8BQ§7]§r §fMessage4\"}";
         assertEquals(start, message.substring(0, start.length()), "The start of the log message is not correct formatted");
         assertEquals(end, message.substring(message.length() - end.length()), "The end of the log message is not correct formatted");
