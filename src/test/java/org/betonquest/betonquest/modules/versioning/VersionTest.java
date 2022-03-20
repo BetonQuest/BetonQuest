@@ -1,6 +1,5 @@
-package org.betonquest.betonquest.modules.versoning;
+package org.betonquest.betonquest.modules.versioning;
 
-import org.betonquest.betonquest.modules.versioning.Version;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
