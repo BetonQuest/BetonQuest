@@ -146,7 +146,7 @@
     <dependency>
       <groupId>io.lumine</groupId>
       <artifactId>Mythic</artifactId>
-      <version>5.0.1</version>
+      <version>5.0.2</version>
       <scope>provided</scope>
       <optional>true</optional>
       <exclusions>
