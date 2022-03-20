@@ -3,6 +3,7 @@ package org.betonquest.betonquest.modules.logger;
 import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,7 +31,7 @@ public class BetonQuestLoggerImpl implements BetonQuestLogger {
      * @param clazz  The calling class.
      * @param topic  The topic of the logger.
      */
-    public BetonQuestLoggerImpl(final Plugin plugin, final Logger parentLogger, final Class<?> clazz, final String topic) {
+    public BetonQuestLoggerImpl(@NotNull final Plugin plugin, final Logger parentLogger, final Class<?> clazz, final String topic) {
         this.plugin = plugin;
         this.logger = new TopicLogger(parentLogger, clazz, topic);
     }

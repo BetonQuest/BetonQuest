@@ -22,7 +22,11 @@ public class BetonQuestLoggerService implements ParameterResolver, BeforeAllCall
     /**
      * The topic of generated {@link BetonQuestLogger} in the {@link ParameterResolver}.
      */
-    public final static String LOGGER_TOPIC = "GeneratedLoggerWithTopic";
+    public final static String LOGGER_TOPIC = "GeneratedTopic";
+    /**
+     * The mocked plugin instance.
+     */
+    private final Plugin plugin;
     /**
      * The instance of the parent logger.
      */
@@ -36,6 +40,8 @@ public class BetonQuestLoggerService implements ParameterResolver, BeforeAllCall
      * Default {@link BetonQuestLoggerService} Constructor.
      */
     public BetonQuestLoggerService() {
+        plugin = mock(Plugin.class);
+        when(plugin.getName()).thenReturn("GeneratedPlugin");
         parentLogger = LogValidator.getSilentLogger();
     }
 
@@ -43,13 +49,13 @@ public class BetonQuestLoggerService implements ParameterResolver, BeforeAllCall
     public void beforeAll(final ExtensionContext context) {
         betonQuestLogger = mockStatic(BetonQuestLogger.class);
         betonQuestLogger.when(() -> BetonQuestLogger.create(any(Class.class))).thenAnswer(invocation ->
-                new BetonQuestLoggerImpl(null, parentLogger, invocation.getArgument(0), null));
+                new BetonQuestLoggerImpl(plugin, parentLogger, invocation.getArgument(0), null));
         betonQuestLogger.when(() -> BetonQuestLogger.create(any(Class.class), anyString())).thenAnswer(invocation ->
-                new BetonQuestLoggerImpl(null, parentLogger, invocation.getArgument(0), invocation.getArgument(1)));
+                new BetonQuestLoggerImpl(plugin, parentLogger, invocation.getArgument(0), invocation.getArgument(1)));
         betonQuestLogger.when(() -> BetonQuestLogger.create(any(Plugin.class))).thenAnswer(invocation ->
-                new BetonQuestLoggerImpl(null, parentLogger, invocation.getArgument(0).getClass(), null));
+                new BetonQuestLoggerImpl(plugin, parentLogger, invocation.getArgument(0).getClass(), null));
         betonQuestLogger.when(() -> BetonQuestLogger.create(any(Plugin.class), anyString())).thenAnswer(invocation ->
-                new BetonQuestLoggerImpl(null, parentLogger, invocation.getArgument(0).getClass(), invocation.getArgument(1)));
+                new BetonQuestLoggerImpl(plugin, parentLogger, invocation.getArgument(0).getClass(), invocation.getArgument(1)));
     }
 
     @Override
@@ -74,7 +80,7 @@ public class BetonQuestLoggerService implements ParameterResolver, BeforeAllCall
             return parentLogger;
         }
         if (parameterContext.getParameter().getType() == BetonQuestLogger.class) {
-            return new BetonQuestLoggerImpl(null, parentLogger, parameterContext.getClass(), LOGGER_TOPIC);
+            return new BetonQuestLoggerImpl(plugin, parentLogger, parameterContext.getClass(), LOGGER_TOPIC);
         }
         return null;
     }

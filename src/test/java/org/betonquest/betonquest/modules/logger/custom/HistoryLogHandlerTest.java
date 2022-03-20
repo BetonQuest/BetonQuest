@@ -4,6 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.betonquest.betonquest.util.scheduler.BukkitSchedulerMock;
+import org.bukkit.plugin.Plugin;
 import org.junit.jupiter.api.Test;
 
 import java.time.InstantSource;
@@ -25,9 +26,16 @@ class HistoryLogHandlerTest {
     private static final LocalDateTime FIXED_TIME = LocalDateTime.of(2022, 1, 1, 0, 0);
 
     /**
+     * The mocked plugin instance.
+     */
+    private final Plugin plugin;
+
+    /**
      * Default constructor.
      */
     public HistoryLogHandlerTest() {
+        plugin = mock(Plugin.class);
+        when(plugin.getName()).thenReturn("BetonQuest");
     }
 
     @Test
@@ -51,8 +59,8 @@ class HistoryLogHandlerTest {
     }
 
     private void createLogMessages(final Logger logger) {
-        final BetonQuestLogRecord record1 = new BetonQuestLogRecord(null, null, Level.INFO, "Message 1");
-        final BetonQuestLogRecord record2 = new BetonQuestLogRecord(null, null, Level.INFO, "Message 2");
+        final BetonQuestLogRecord record1 = new BetonQuestLogRecord(plugin, null, Level.INFO, "Message 1");
+        final BetonQuestLogRecord record2 = new BetonQuestLogRecord(plugin, null, Level.INFO, "Message 2");
         record1.setInstant(InstantSource.fixed(FIXED_TIME.minus(50, ChronoUnit.MINUTES).toInstant(ZoneOffset.UTC)).instant());
         record2.setInstant(InstantSource.fixed(FIXED_TIME.minus(10, ChronoUnit.MINUTES).toInstant(ZoneOffset.UTC)).instant());
         logger.log(record1);
