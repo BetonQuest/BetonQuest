@@ -25,7 +25,7 @@ public class MMOItemsCastAbilityObjective extends Objective implements Listener 
 
     @EventHandler(ignoreCancelled = true)
     public void onAbilityCast(final AbilityUseEvent event) {
-        if (!event.getAbility().getAbility().getID().equalsIgnoreCase(abilityID)) {
+        if (!event.getAbility().getAbility().getName().equalsIgnoreCase(abilityID)) {
             return;
         }
         final String playerID = PlayerConverter.getID(event.getPlayer());
