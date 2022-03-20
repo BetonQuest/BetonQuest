@@ -758,7 +758,7 @@ public class BetonQuest extends JavaPlugin {
         registerEvents("command", CommandEvent.class);
         registerEvents("tag", TagEvent.class);
         registerEvents("globaltag", GlobalTagEvent.class);
-        registerEvent("journal", new JournalEventFactory());
+        registerEvent("journal", new JournalEventFactory(getSaver(), getServer()));
         registerEvents("teleport", TeleportEvent.class);
         registerEvents("explosion", ExplosionEvent.class);
         registerEvents("lightning", LightningEvent.class);

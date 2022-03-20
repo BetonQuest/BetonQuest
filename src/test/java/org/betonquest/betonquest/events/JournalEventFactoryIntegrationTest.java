@@ -2,25 +2,22 @@ package org.betonquest.betonquest.events;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.modules.logger.util.LogValidator;
+import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.quest.event.journal.JournalEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactoryAdapter;
-import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collections;
-import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -28,39 +25,34 @@ import static org.mockito.Mockito.*;
 /**
  * JournalEvent tests.
  */
+@ExtendWith(BetonQuestLoggerService.class)
 class JournalEventFactoryIntegrationTest {
 
     /**
      * Mocked Minecraft Bukkit server.
      */
-    private static Server server;
+    private final Server server = mock(Server.class);
 
     /**
-     * Logger used by the mock Bukkit server instance.
+     * Mocked database Saver.
      */
-    private static Logger bukkitLogger;
+    private final Saver saver = mock(Saver.class);
 
     /**
-     * TODO
+     * The journal factory used to create journal events in tests.
      */
-    final QuestEventFactoryAdapter journalFactory = new QuestEventFactoryAdapter(new JournalEventFactory());
+    private final QuestEventFactoryAdapter journalFactory = new QuestEventFactoryAdapter(new JournalEventFactory(saver, server));
 
     /**
      * Create JournalEvent test class.
      */
-    public JournalEventFactoryIntegrationTest() {}
-
-    @BeforeAll
-    static void initializeBukkit() {
-        bukkitLogger = LogValidator.getSilentLogger();
-        server = mock(Server.class);
-        when(server.getLogger()).thenReturn(bukkitLogger);
-        Bukkit.setServer(server);
+    public JournalEventFactoryIntegrationTest() {
     }
 
     @AfterEach
     void resetServerMock() {
         reset(server);
+        reset(saver);
     }
 
     private QuestPackage setupQuestPackage(final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
@@ -75,26 +67,8 @@ class JournalEventFactoryIntegrationTest {
         return new QuestPackage("test", packageConfigFile, Collections.emptyList());
     }
 
-    private LogValidator setupLogger() {
-        final Logger logger = LogValidator.getSilentLogger();
-        logger.setParent(bukkitLogger);
-        final LogValidator logValidator = LogValidator.getForLogger(logger);
-
-        final Plugin plugin = mock(Plugin.class);
-        when(plugin.getLogger()).thenReturn(logger);
-
-        final PluginManager pluginManager = mock(PluginManager.class);
-        when(pluginManager.getPlugins()).thenReturn(new Plugin[]{plugin});
-        when(server.getPluginManager()).thenReturn(pluginManager);
-
-        logValidator.flush();
-
-        return logValidator;
-    }
-
     @Test
     void constructJournalUpdateEvent(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
-        setupLogger();
         final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "journal update");
@@ -103,7 +77,6 @@ class JournalEventFactoryIntegrationTest {
 
     @Test
     void constructJournalAddEvent(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
-        setupLogger();
         final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "journal add quest_started");
@@ -112,7 +85,6 @@ class JournalEventFactoryIntegrationTest {
 
     @Test
     void constructJournalAddEventWithoutPageReference(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
-        setupLogger();
         final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "journal add");
@@ -121,7 +93,6 @@ class JournalEventFactoryIntegrationTest {
 
     @Test
     void constructJournalDeleteEvent(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
-        setupLogger();
         final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "journal delete quest_available");
@@ -130,7 +101,6 @@ class JournalEventFactoryIntegrationTest {
 
     @Test
     void constructJournalDeleteEventWithoutPageReference(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
-        setupLogger();
         final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "journal delete");
@@ -139,7 +109,6 @@ class JournalEventFactoryIntegrationTest {
 
     @Test
     void constructInvalidJournalEvent(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
-        setupLogger();
         final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "journal invalid");
