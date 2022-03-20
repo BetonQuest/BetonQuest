@@ -2,6 +2,8 @@ package org.betonquest.betonquest.modules.logger;
 
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.Serial;
 import java.util.logging.Level;
@@ -33,9 +35,9 @@ public class BetonQuestLogRecord extends LogRecord {
      * @param level  A log {@link Level}.
      * @param msg    The raw non-localized logging message (may be null).
      */
-    public BetonQuestLogRecord(final Plugin plugin, final QuestPackage pack, final Level level, final String msg) {
+    public BetonQuestLogRecord(@NotNull final Plugin plugin, @Nullable final QuestPackage pack, final Level level, final String msg) {
         super(level, msg);
-        this.plugin = plugin == null ? "" : plugin.getName();
+        this.plugin = plugin.getName();
         this.pack = pack == null ? "" : pack.getPackagePath();
     }
 
@@ -53,7 +55,8 @@ public class BetonQuestLogRecord extends LogRecord {
      *
      * @return The plugin.
      */
-    public String getPlugin() {
+    public @NotNull
+    String getPlugin() {
         return plugin;
     }
 }

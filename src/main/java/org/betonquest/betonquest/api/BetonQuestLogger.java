@@ -6,6 +6,7 @@ import org.betonquest.betonquest.modules.logger.BetonQuestLoggerImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginLogger;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.logging.Level;
 
@@ -73,7 +74,7 @@ public interface BetonQuestLogger {
      * @param plugin The plugin which is used for logging.
      * @return A {@link BetonQuestLogger} implementation.
      */
-    static BetonQuestLogger create(final Plugin plugin) {
+    static BetonQuestLogger create(@NotNull final Plugin plugin) {
         return create(plugin, null);
     }
 
@@ -88,7 +89,7 @@ public interface BetonQuestLogger {
      * @param topic  The optional topic of the logger.
      * @return A {@link BetonQuestLogger} implementation.
      */
-    static BetonQuestLogger create(final Plugin plugin, final String topic) {
+    static BetonQuestLogger create(@NotNull final Plugin plugin, final String topic) {
         return new BetonQuestLoggerImpl(plugin, plugin.getLogger(), plugin.getClass(), topic);
     }
 

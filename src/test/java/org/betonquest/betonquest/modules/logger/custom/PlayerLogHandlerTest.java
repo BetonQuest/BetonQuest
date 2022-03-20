@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
+import org.bukkit.plugin.Plugin;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -25,11 +26,17 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(BetonQuestLoggerService.class)
 class PlayerLogHandlerTest {
+    /**
+     * The mocked plugin instance.
+     */
+    private final Plugin plugin;
 
     /**
      * Default constructor.
      */
     public PlayerLogHandlerTest() {
+        plugin = mock(Plugin.class);
+        when(plugin.getName()).thenReturn("BetonQuest");
     }
 
     @Test
@@ -68,9 +75,9 @@ class PlayerLogHandlerTest {
         when(pack2.getPackagePath()).thenReturn("Package2");
         when(pack3.getPackagePath()).thenReturn("Package3");
 
-        final BetonQuestLogRecord record1 = new BetonQuestLogRecord(null, pack1, Level.INFO, "Message 1");
-        final BetonQuestLogRecord record2 = new BetonQuestLogRecord(null, pack2, Level.INFO, "Message 2");
-        final BetonQuestLogRecord record3 = new BetonQuestLogRecord(null, pack3, Level.INFO, "Message 3");
+        final BetonQuestLogRecord record1 = new BetonQuestLogRecord(plugin, pack1, Level.INFO, "Message 1");
+        final BetonQuestLogRecord record2 = new BetonQuestLogRecord(plugin, pack2, Level.INFO, "Message 2");
+        final BetonQuestLogRecord record3 = new BetonQuestLogRecord(plugin, pack3, Level.INFO, "Message 3");
         logger.log(record1);
         logger.log(record2);
         logger.log(record3);
@@ -86,9 +93,9 @@ class PlayerLogHandlerTest {
 
         final PlainTextComponentSerializer serializer = PlainTextComponentSerializer.plainText();
 
-        assertEquals("§7[§8BQ | §7]§r <Package1> §fMessage 1", serializer.serialize(components.get(0)), "Audience 1 should first receive 'Message 1'");
-        assertEquals("§7[§8BQ | §7]§r <Package3> §fMessage 3", serializer.serialize(components.get(1)), "Audience 1 should then receive 'Message 3'");
-        assertEquals("§7[§8BQ | §7]§r <Package2> §fMessage 2", serializer.serialize(components.get(2)), "Audience 2 should first receive 'Message 2'");
-        assertEquals("§7[§8BQ | §7]§r <Package3> §fMessage 3", serializer.serialize(components.get(3)), "Audience 2 should then receive 'Message 3'");
+        assertEquals("§7[§8BQ§7]§r <Package1> §fMessage 1", serializer.serialize(components.get(0)), "Audience 1 should first receive 'Message 1'");
+        assertEquals("§7[§8BQ§7]§r <Package3> §fMessage 3", serializer.serialize(components.get(1)), "Audience 1 should then receive 'Message 3'");
+        assertEquals("§7[§8BQ§7]§r <Package2> §fMessage 2", serializer.serialize(components.get(2)), "Audience 2 should first receive 'Message 2'");
+        assertEquals("§7[§8BQ§7]§r <Package3> §fMessage 3", serializer.serialize(components.get(3)), "Audience 2 should then receive 'Message 3'");
     }
 }

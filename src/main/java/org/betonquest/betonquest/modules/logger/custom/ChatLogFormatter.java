@@ -25,11 +25,12 @@ public class ChatLogFormatter extends DebugLogFormatter {
 
     @Override
     public String format(final LogRecord record) {
-        final String color = formatColor(record);
-        final boolean isBQ = record instanceof BetonQuestLogRecord;
-        final BetonQuestLogRecord logRecord = isBQ ? (BetonQuestLogRecord) record : null;
-        final String plugin = isBQ && !logRecord.getPlugin().isEmpty() ? logRecord.getPlugin() : "";
-        final String questPackage = isBQ && !logRecord.getPack().isEmpty() ? "<" + logRecord.getPack() + "> " : "";
+        if (!(record instanceof final BetonQuestLogRecord logRecord)) {
+            throw new UnsupportedOperationException("The ChatLogFormatter can only format BetonQuestLogRecords!");
+        }
+        final String color = formatColor(record.getLevel());
+        final String plugin = logRecord.getPlugin();
+        final String questPackage = logRecord.getPack().isEmpty() ? "" : "<" + logRecord.getPack() + "> ";
         final String message = record.getMessage();
         final Component throwable = formatComponentThrowable(record);
 
@@ -38,15 +39,15 @@ public class ChatLogFormatter extends DebugLogFormatter {
         return GsonComponentSerializer.gson().serialize(formattedRecord);
     }
 
-    private String formatColor(final LogRecord record) {
-        final int level = record.getLevel().intValue();
-        if (level >= Level.SEVERE.intValue()) {
+    private String formatColor(final Level level) {
+        final int levelValue = level.intValue();
+        if (levelValue >= Level.SEVERE.intValue()) {
             return ChatColor.DARK_RED.toString();
         }
-        if (level >= Level.WARNING.intValue()) {
+        if (levelValue >= Level.WARNING.intValue()) {
             return ChatColor.RED.toString();
         }
-        if (level >= Level.INFO.intValue()) {
+        if (levelValue >= Level.INFO.intValue()) {
             return ChatColor.WHITE.toString();
         }
         return ChatColor.GRAY.toString();
