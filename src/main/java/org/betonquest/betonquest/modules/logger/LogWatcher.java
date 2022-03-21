@@ -62,7 +62,7 @@ public final class LogWatcher {
         this.config = config;
 
         historyHandler = setupDebugLogHandler(plugin, Bukkit.getLogger().getParent());
-        playerHandler = setupPlayerLogHandler(Bukkit.getLogger().getParent(), bukkitAudiences);
+        playerHandler = setupPlayerLogHandler(plugin, Bukkit.getLogger().getParent(), bukkitAudiences);
 
         if (historyHandler != null && this.config.getBoolean(CONFIG_PATH + ".enabled", false)) {
             historyHandler.startDebug();
@@ -86,9 +86,9 @@ public final class LogWatcher {
         return null;
     }
 
-    private PlayerLogHandler setupPlayerLogHandler(final Logger logger, final BukkitAudiences bukkitAudiences) {
+    private PlayerLogHandler setupPlayerLogHandler(final Plugin plugin, final Logger logger, final BukkitAudiences bukkitAudiences) {
         final PlayerLogHandler playerHandler = new PlayerLogHandler(bukkitAudiences);
-        playerHandler.setFormatter(new ChatLogFormatter());
+        playerHandler.setFormatter(new ChatLogFormatter(plugin, "BQ"));
         logger.addHandler(playerHandler);
         return playerHandler;
     }

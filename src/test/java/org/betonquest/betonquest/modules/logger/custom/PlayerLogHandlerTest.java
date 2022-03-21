@@ -45,7 +45,7 @@ class PlayerLogHandlerTest {
             final Logger logger = LogValidator.getSilentLogger();
             final PlayerLogHandler playerHandler = new PlayerLogHandler(audiences);
 
-            playerHandler.setFormatter(new ChatLogFormatter());
+            playerHandler.setFormatter(new ChatLogFormatter(plugin, "BQ"));
             logger.addHandler(playerHandler);
 
             final Audience audience1 = getAudience(playerHandler, audiences, "Package1", "Package3");
