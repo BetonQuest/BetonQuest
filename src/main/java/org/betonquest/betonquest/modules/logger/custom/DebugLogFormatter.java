@@ -27,12 +27,10 @@ public class DebugLogFormatter extends Formatter {
 
     @Override
     public String format(final LogRecord record) {
-        if (!(record instanceof BetonQuestLogRecord logRecord)) {
-            throw new UnsupportedOperationException("The DebugLogFormatter can only format BetonQuestLogRecords!");
-        }
         date.setTime(record.getMillis());
-        final String plugin = logRecord.getPlugin().isEmpty() ? "" : "[" + logRecord.getPlugin() + "] ";
-        final String questPackage = logRecord.getPack().isEmpty() ? "" : "<" + logRecord.getPack() + "> ";
+        final BetonQuestLogRecord logRecord = record instanceof BetonQuestLogRecord ? (BetonQuestLogRecord) record : null;
+        final String plugin = "[" + (logRecord == null ? "?" : logRecord.getPlugin()) + "] ";
+        final String questPackage = logRecord == null || logRecord.getPack().isEmpty() ? "" : "<" + logRecord.getPack() + "> ";
         final String message = formatMessage(record);
         final String throwable = formatThrowable(record);
 
