@@ -191,7 +191,8 @@
   <rule ref="category/java/documentation.xml/CommentContent"/>
   <rule ref="category/java/documentation.xml/CommentRequired">
     <properties>
-      <property name="violationSuppressXPath" value="./ancestor::ClassOrInterfaceBodyDeclaration/Annotation/MarkerAnnotation/Name[@Image='Test']"/>
+      <property name="serialVersionUIDCommentRequired" value="Required"/>
+      <property name="serialPersistentFieldsCommentRequired" value="Required"/>
     </properties>
   </rule>
   <rule ref="category/java/documentation.xml/CommentSize">

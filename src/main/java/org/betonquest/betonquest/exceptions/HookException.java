@@ -5,11 +5,16 @@ package org.betonquest.betonquest.exceptions;
 
 import org.bukkit.plugin.Plugin;
 
+import java.io.Serial;
+
 /**
  * Thrown if BetonQuest tries to hook a plugin
  */
 public class HookException extends Exception {
-
+    /**
+     * serialVersionUID.
+     */
+    @Serial
     private static final long serialVersionUID = 7965553395053833302L;
 
     /**
