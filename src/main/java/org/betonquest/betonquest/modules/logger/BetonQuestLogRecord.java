@@ -13,7 +13,9 @@ import java.util.logging.LogRecord;
  * Custom {@link LogRecord} for BetonQuest that adds a {@link QuestPackage} name.
  */
 public class BetonQuestLogRecord extends LogRecord {
-
+    /**
+     * serialVersionUID.
+     */
     @Serial
     private static final long serialVersionUID = -7094531905051980356L;
 

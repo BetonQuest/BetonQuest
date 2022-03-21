@@ -1,10 +1,15 @@
 package org.betonquest.betonquest.exceptions;
 
+import java.io.Serial;
+
 /**
  * Exception thrown when there was an unexpected error.
  */
 public class QuestRuntimeException extends Exception {
-
+    /**
+     * serialVersionUID.
+     */
+    @Serial
     private static final long serialVersionUID = 2375018439469626832L;
 
     /**
