@@ -24,16 +24,15 @@ class UtilsTest {
     public UtilsTest() {
     }
 
-    private MockedStatic<Config> prepareConfig() {
-        final MockedStatic<Config> config = Mockito.mockStatic(Config.class);
+    private void prepareConfig(final MockedStatic<Config> config) {
         config.when(() -> Config.getString("config.journal.lines_per_page")).thenReturn("13");
         config.when(() -> Config.getString("config.journal.chars_per_line")).thenReturn("19");
-        return config;
     }
 
     @Test
     void testPagesFromString() {
-        try (MockedStatic<Config> config = prepareConfig()) {
+        try (MockedStatic<Config> config = Mockito.mockStatic(Config.class)) {
+            prepareConfig(config);
             final String journalText = "&aActive Quest: &aFlint &1wants you to visit the Farm located at 191, 23, -167!";
 
             final List<String> journalTextFormatted = new ArrayList<>();

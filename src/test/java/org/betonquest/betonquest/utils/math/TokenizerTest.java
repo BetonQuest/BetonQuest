@@ -24,7 +24,7 @@ import static org.mockito.Mockito.*;
 /**
  * Test the {@link Tokenizer}.
  */
-@SuppressWarnings({"PMD.AvoidDuplicateLiterals", "deprecation"})
+@SuppressWarnings({"deprecation", "PMD.AvoidDuplicateLiterals"})
 @ExtendWith(BetonQuestLoggerService.class)
 @Execution(ExecutionMode.SAME_THREAD)
 class TokenizerTest {

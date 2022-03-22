@@ -90,18 +90,21 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
     }
 
     @Override
-    public void save() throws IOException {
-        accessor.save();
+    public boolean save() throws IOException {
+        return accessor.save();
     }
 
     @Override
-    public void delete() throws IOException {
-        accessor.delete();
+    public boolean delete() throws IOException {
+        return accessor.delete();
     }
 
     @Override
-    public void reload() throws IOException {
-        accessor.reload();
-        original = accessor.getConfig();
+    public boolean reload() throws IOException {
+        if (accessor.reload()) {
+            original = accessor.getConfig();
+            return true;
+        }
+        return false;
     }
 }

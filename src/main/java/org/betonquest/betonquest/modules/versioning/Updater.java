@@ -97,6 +97,7 @@ public class Updater {
      * Create a new Updater instance.
      *
      * @param currentVersion The current plugin version.
+     * @param config         The file name of the plugin in the plugin's folder.
      * @param file           The file of the plugin in the plugin's folder.
      */
     public Updater(final ConfigurationFile config, final File file, final String currentVersion) {
@@ -355,7 +356,7 @@ public class Updater {
          */
         private final boolean automatic;
         /**
-         * Should player be notified in game.
+         * Should player be notified ingame.
          */
         private final boolean ingameNotification;
         /**
