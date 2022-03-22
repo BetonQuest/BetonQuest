@@ -29,6 +29,7 @@ import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.item.QuestItem;
+import org.betonquest.betonquest.modules.config.Downloader;
 import org.betonquest.betonquest.modules.logger.LogWatcher;
 import org.betonquest.betonquest.modules.logger.custom.HistoryLogHandler;
 import org.betonquest.betonquest.modules.logger.custom.PlayerLogHandler;
@@ -279,6 +280,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 case "debug":
                     handleDebug(sender, args);
                     break;
+                case "download":
+                    handleDownload(sender, args);
+                    break;
                 default:
                     // there was an unknown argument, so handle this
                     sendMessage(sender, "unknown_argument");
@@ -296,7 +300,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         if (args.length == 1) {
             return Arrays.asList("condition", "event", "item", "give", "objective", "globaltag",
                     "globalpoint", "tag", "point", "journal", "delete", "rename", "version", "purge",
-                    "update", "reload", "backup", "debug");
+                    "update", "reload", "backup", "debug", "download");
         }
         switch (args[0].toLowerCase(Locale.ROOT)) {
             case "conditions":
@@ -363,6 +367,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "reload":
             case "backup":
             case "package":
+            case "download":
             default:
                 return new ArrayList<>();
         }
@@ -1693,6 +1698,32 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         sendMessage(sender, "unknown_argument");
+    }
+
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
+    private void handleDownload(final CommandSender sender, final String... args) {
+        if (args.length < 5) {
+            sendMessage(sender, "arguments");
+            return;
+        }
+        final String githubNamespace = args[1];
+        final String ref = args[2];
+        final String offsetPath = args[3];
+        final String sourcePath = args[4];
+        final String targetPath = args.length < 6 ? sourcePath : args[5];
+        final boolean recursive = args.length >= 7 && Boolean.parseBoolean(args[6]);
+        final Downloader down = new Downloader(instance.getDataFolder(), githubNamespace, ref, offsetPath, sourcePath, targetPath, recursive);
+        sendMessage(sender, "download_scheduled");
+        Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
+            try {
+                down.call();
+                sendMessage(sender, "download_success");
+            } catch (Exception e) {
+                sendMessage(sender, "download_failed", e.getMessage());
+                LOG.warn(String.format("Download from %s %s of %s/%s to %s/%s failed:",
+                        githubNamespace, ref, offsetPath, sourcePath, offsetPath, targetPath), e);
+            }
+        });
     }
 
     private Level getLogLevel(final String arg) {

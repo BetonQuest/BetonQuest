@@ -73,3 +73,6 @@ en:
   offline: '&4All players must be offline in order to make a backup!'
   default_language_changed: '&2Default language changed!'
   error: '&cThere has been an error: {1}'
+  download_scheduled: '&bInitiated download...'
+  download_success: '&aDownload completed!'
+  download_failed: '&4Download failed due to the following error:\n&c{1}\n&7&osee log for more details'
