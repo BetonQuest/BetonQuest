@@ -1702,6 +1702,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
     private void handleDownload(final CommandSender sender, final String... args) {
+        if (!(sender instanceof ConsoleCommandSender)) {
+            sendMessage(sender, "console_only");
+            return;
+        }
         if (args.length < 5) {
             sendMessage(sender, "arguments");
             return;
