@@ -6,15 +6,15 @@ package org.betonquest.betonquest.modules.versioning;
  */
 public enum UpdateStrategy {
     /**
-     * The first digit of a semantic version.
+     * The first number of a semantic version.
      */
     MAJOR(),
     /**
-     * The second digit of a semantic version.
+     * The second number of a semantic version.
      */
     MINOR(),
     /**
-     * The third digit of a semantic version.
+     * The third number of a semantic version.
      */
     PATCH(),
 }
