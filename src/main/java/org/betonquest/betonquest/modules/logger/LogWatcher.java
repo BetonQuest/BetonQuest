@@ -54,7 +54,9 @@ public final class LogWatcher {
     /**
      * Setups the debug and in-game chat log.
      *
+     * @param plugin          The {@link Plugin} to link this setup to
      * @param logFileFolder   The folder where the logfiles should be written
+     * @param config          The {@link ConfigurationFile} to load and save the debugging options from
      * @param bukkitAudiences The {@link BukkitAudiences} instance
      */
     public LogWatcher(final Plugin plugin, final File logFileFolder, final ConfigurationFile config, final BukkitAudiences bukkitAudiences) {

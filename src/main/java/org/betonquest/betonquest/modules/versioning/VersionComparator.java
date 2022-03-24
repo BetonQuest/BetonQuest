@@ -35,6 +35,11 @@ public class VersionComparator {
         this.qualifiers = Lists.reverse(Arrays.asList(qualifiers));
     }
 
+    /**
+     * Gets the set {@link UpdateStrategy} for the {@link VersionComparator}.
+     *
+     * @return the {@link UpdateStrategy}
+     */
     public UpdateStrategy getUpdateStrategy() {
         return updateStrategy;
     }

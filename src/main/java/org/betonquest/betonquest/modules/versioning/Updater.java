@@ -96,13 +96,14 @@ public class Updater {
     /**
      * Create a new Updater instance.
      *
-     * @param currentVersion The current plugin version.
+     * @param config         The config file that contains the updater config section.
      * @param file           The file of the plugin in the plugin's folder.
+     * @param currentVersion The current plugin version.
      */
-    public Updater(final ConfigurationFile config, final File file, final String currentVersion) {
+    public Updater(final ConfigurationFile config, final File file, final Version currentVersion) {
         this.config = config;
         this.fileName = file.getName();
-        this.latest = Pair.of(new Version(currentVersion), null);
+        this.latest = Pair.of(currentVersion, null);
         searchUpdate();
     }
 
@@ -355,7 +356,7 @@ public class Updater {
          */
         private final boolean automatic;
         /**
-         * Should player be notified in game.
+         * Should the player be notified ingame.
          */
         private final boolean ingameNotification;
         /**

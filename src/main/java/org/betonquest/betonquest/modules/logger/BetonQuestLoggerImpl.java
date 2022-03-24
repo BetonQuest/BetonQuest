@@ -27,9 +27,10 @@ public class BetonQuestLoggerImpl implements BetonQuestLogger {
     /**
      * Creates a decorator for the {@link TopicLogger}.
      *
-     * @param plugin The {@link Plugin} this logger belongs to.
-     * @param clazz  The calling class.
-     * @param topic  The topic of the logger.
+     * @param plugin       The {@link Plugin} this logger belongs to.
+     * @param parentLogger The parent logger for this logger.
+     * @param clazz        The calling class.
+     * @param topic        The topic of the logger.
      */
     public BetonQuestLoggerImpl(@NotNull final Plugin plugin, final Logger parentLogger, final Class<?> clazz, final String topic) {
         this.plugin = plugin;

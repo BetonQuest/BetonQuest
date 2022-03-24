@@ -150,6 +150,7 @@ import org.betonquest.betonquest.mechanics.PlayerHider;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.modules.logger.LogWatcher;
 import org.betonquest.betonquest.modules.versioning.Updater;
+import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.notify.ActionBarNotifyIO;
 import org.betonquest.betonquest.notify.AdvancementNotifyIO;
 import org.betonquest.betonquest.notify.BossBarNotifyIO;
@@ -895,7 +896,8 @@ public class BetonQuest extends JavaPlugin {
         new BStatsMetrics(this, metricsSuppliers);
 
         // updater
-        updater = new Updater(config, this.getFile(), this.getDescription().getVersion());
+        final Version pluginVersion = new Version(this.getDescription().getVersion());
+        updater = new Updater(config, this.getFile(), pluginVersion);
 
         //RPGMenu integration
         rpgMenu = new RPGMenu();

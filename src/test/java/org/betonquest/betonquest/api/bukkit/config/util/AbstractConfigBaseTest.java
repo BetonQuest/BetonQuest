@@ -33,6 +33,8 @@ import static org.mockito.Mockito.*;
  * This is an abstract class that provides a basic test setup for tests with
  * a {@link Configuration} or {@link ConfigurationSection}.
  * It also mocks {@link World}s, {@link ItemStack}s and {@link OfflinePlayer}s.
+ *
+ * @param <T> a {@link ConfigurationSection} or a class implementing {@link ConfigurationSection}
  */
 public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
     /**

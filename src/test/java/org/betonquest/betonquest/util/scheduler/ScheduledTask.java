@@ -66,11 +66,20 @@ public class ScheduledTask implements BukkitTask {
         this.running = false;
     }
 
-
+    /**
+     * Gets if this {@link ScheduledTask} is currently running.
+     *
+     * @return weather this is running or not
+     */
     public boolean isRunning() {
         return running;
     }
 
+    /**
+     * Sets if this {@link ScheduledTask} is currently running.
+     *
+     * @param running the current running state
+     */
     public void setRunning(final boolean running) {
         this.running = running;
     }

@@ -37,17 +37,29 @@ public interface ConfigurationFile extends ConfigurationSection {
     }
 
     /**
-     * @see ConfigAccessor#save()
+     * Saves the file that is represented by this {@link ConfigAccessor}.
+     * This method does nothing if no configurationFile was provided in the constructor.
+     *
+     * @return Only returns true if the file was saved.
+     * @throws IOException if the file could not be saved.
      */
-    void save() throws IOException;
+    boolean save() throws IOException;
 
     /**
-     * @see ConfigAccessor#delete()
+     * Delete the file that is represented by this {@link ConfigAccessor}.
+     * This method does nothing if no configurationFile was provided in the constructor.
+     *
+     * @return Only returns true if the file was deleted and existed before.
+     * @throws IOException if the file could not be deleted.
      */
-    void delete() throws IOException;
+    boolean delete() throws IOException;
 
     /**
-     * @see ConfigAccessor#reload()
+     * Reloads from the file that is represented by this {@link ConfigAccessor}.
+     * This method does nothing if no configurationFile was provided in the constructor.
+     *
+     * @return Only returns true if the file was successfully reloaded.
+     * @throws IOException if the file could not be reloaded.
      */
-    void reload() throws IOException;
+    boolean reload() throws IOException;
 }
