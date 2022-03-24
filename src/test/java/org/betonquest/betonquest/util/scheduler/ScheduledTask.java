@@ -67,7 +67,7 @@ public class ScheduledTask implements BukkitTask {
     }
 
     /**
-     * Get if this {@link ScheduledTask} is currently running.
+     * Gets if this {@link ScheduledTask} is currently running.
      *
      * @return weather this is running or not
      */
@@ -76,7 +76,7 @@ public class ScheduledTask implements BukkitTask {
     }
 
     /**
-     * Set if this {@link ScheduledTask} is currently running.
+     * Sets if this {@link ScheduledTask} is currently running.
      *
      * @param running the current running state
      */

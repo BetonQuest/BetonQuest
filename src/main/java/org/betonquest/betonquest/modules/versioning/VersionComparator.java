@@ -36,7 +36,7 @@ public class VersionComparator {
     }
 
     /**
-     * Get the set {@link UpdateStrategy} for the {@link VersionComparator}.
+     * Gets the set {@link UpdateStrategy} for the {@link VersionComparator}.
      *
      * @return the {@link UpdateStrategy}
      */

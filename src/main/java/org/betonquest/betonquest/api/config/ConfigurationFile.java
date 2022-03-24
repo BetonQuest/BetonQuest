@@ -41,7 +41,7 @@ public interface ConfigurationFile extends ConfigurationSection {
      * This method does nothing if no configurationFile was provided in the constructor.
      *
      * @return Only returns true if the file was saved.
-     * @throws IOException thrown if the file could not be saved.
+     * @throws IOException if the file could not be saved.
      */
     boolean save() throws IOException;
 
@@ -50,7 +50,7 @@ public interface ConfigurationFile extends ConfigurationSection {
      * This method does nothing if no configurationFile was provided in the constructor.
      *
      * @return Only returns true if the file was deleted and existed before.
-     * @throws IOException thrown if the file could not be deleted.
+     * @throws IOException if the file could not be deleted.
      */
     boolean delete() throws IOException;
 
@@ -59,7 +59,7 @@ public interface ConfigurationFile extends ConfigurationSection {
      * This method does nothing if no configurationFile was provided in the constructor.
      *
      * @return Only returns true if the file was successfully reloaded.
-     * @throws IOException thrown if the file could not be reloaded.
+     * @throws IOException if the file could not be reloaded.
      */
     boolean reload() throws IOException;
 }
