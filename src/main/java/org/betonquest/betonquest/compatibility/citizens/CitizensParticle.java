@@ -118,7 +118,7 @@ public class CitizensParticle extends BukkitRunnable {
                     try {
                         effect.conditions.add(new ConditionID(pack, cond));
                     } catch (final ObjectNotFoundException e) {
-                        LOG.debug(pack, "Could not find condition!", e);
+                        LOG.warn(pack, "Error while loading npc_effects '" + key + "': " + e.getMessage(), e);
                     }
                 }
 
