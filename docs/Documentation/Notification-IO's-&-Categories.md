@@ -12,8 +12,8 @@ of all NotifyIO's.
 </div>
 
 Most NotifyIO's have unique settings that somehow change how a notification is displayed.    
-**Additionally, they all allow each setting of the SoundIO to be used!**
-This is the case because every NotifyIO has an internal SoundIO. 
+**Additionally, they all allow any setting from the SoundIO to be used!**
+This is because every NotifyIO has an internal SoundIO. 
 Therefore, you can play a sound whenever a notification is shown.
 
 The actual message is either defined in the event that triggers the NotifyIO or
@@ -22,18 +22,18 @@ in the *messages.yml* for all built-in notifications.
 **Check the [notification event documentation](Events-List.md#notification-notify) on how to use the notify event!**
 
 ### Chat
-Writes the notification in the players chat.
+Writes the notification in the player's chat.
 
 ??? info "Preview"
     ![chat image](../_media/content/Documentation/Notifications/chat.png)
 
 | Option  | Description                 |
 |---------|-----------------------------|
-| [SoundIO](#soundio) | Any option from the [SoundIO](#soundio). |
+| [Sound](#sound) | Any option from the [SoundIO](#sound). |
 
 ### Advancement
-Shows the notification using an achievement popup. Unfortunately Minecraft does play the default advancement sound here. 
-It's not possible to stop this sound from playing - if you want to get rid of it you would have to override / remove
+Shows the notification using an achievement popup. Unfortunately Minecraft will play the default advancement sound here. 
+It's not possible to stop this sound from playing - if you want to get rid of it, you would have to override / remove
 that sound from your server's ressource pack.
 You can still add your own additional sound as usual though.
 It will then be played together with the default advancement sound.
@@ -45,7 +45,7 @@ It will then be played together with the default advancement sound.
 |--------|-------------|
 | frame | What Achievement frame to use. Can be: `challenge`, `goal`, `task` |
 | icon | What icon to show. Must be the vanilla name of an item. Example: minecraft:map |
-| [SoundIO](#soundio) | Any option from the [SoundIO](#soundio). |
+| [Sound](#sound) | Any option from the [SoundIO](#sound). |
 
 ### Actionbar
 Shows the notification using the actionbar.
@@ -55,7 +55,7 @@ Shows the notification using the actionbar.
 
 | Option | Description |
 |--------|-------------|
-| [SoundIO](#soundio) | Any option from the [SoundIO](#soundio). |
+| [Sound](#sound) | Any option from the [SoundIO](#sound). |
 
 ### Bossbar
 Shows the notification using a bossbar at the top of the players screen.
@@ -72,7 +72,7 @@ Shows the notification using a bossbar at the top of the players screen.
 | style | What bar <a href="https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/boss/BarStyle.html" target="_blank">style</a> to use. |
 | stay | How many ticks to keep the bar on screen. Defaults to 70 |
 | countdown | If set, will step the progress of the bar by countdown steps. For example, if set to 10, then 10 times during the time it is on the screen the progress will drop by 1/10 |
-| [SoundIO](#soundio) | Any option from the [SoundIO](#soundio). |
+| [Sound](#sound) | Any option from the [SoundIO](#sound). |
 
 ### Title
 Shows the notification using a title.
@@ -88,7 +88,7 @@ Anything after these characters will be shown in the subtitle.
 | stay | Ticks to keep title on screen. Default 70 |
 | fadeOut | Ticks to fade the title out. Default 20 |
 | fadeOut | Ticks to fade the title out. Default 20 |
-| [SoundIO](#soundio) | Any option from the [SoundIO](#soundio). |
+| [Sound](#sound) | Any option from the [SoundIO](#sound). |
 
 ### SubTitle
 Shows the notification using a subtitle.
@@ -101,7 +101,7 @@ Shows the notification using a subtitle.
 | fadeIn | Ticks to fade the title in. Default 10 |
 | stay | Ticks to keep title on screen. Default 70 |
 | fadeOut | Ticks to fade the title out. Default 20 |
-| [SoundIO](#soundio) | Any option from the [SoundIO](#soundio). |
+| [Sound](#sound) | Any option from the [SoundIO](#sound). |
 
 ### Totem
 Shows a totem with a "customModelData" NBT tag. This allows you to replace the totem with a custom texture or model 
@@ -119,10 +119,10 @@ during the animation.
 | Option | Description |
 |--------|-------------|
 | custommodeldata | This CustomModelData will be used. |
-| [SoundIO](#soundio) | Any option from the [SoundIO](#soundio). |
+| [Sound](#sound) | Any option from the [SoundIO](#sound). |
 
 ### Sound
-This IO just plays a sound. You can use it's options in any other IO.
+This IO just plays a sound. You can use its options in any other IO.
 You should read the <a href="https://minecraft.gamepedia.com/Commands/playsound" target="_blank">wiki page</a> of the playsound command
 as Minecraft's sound system is kinda strange. Just one example: Sound never moves in Minecraft. It's totally static.
 Keep that in mind when creating sounds close to a player. They can move around the sound and make it louder or quieter by walking towards / away from it.
@@ -200,7 +200,7 @@ Does not output any sound or text 🔕. Can be used to remove built-in notificat
 ## Categories
 
 Notify Categories are pre-defined [NotifyIO settings](#notify-ios). They can be applied to any notify event and are used
-by BetonQuests built-in notifications.
+by BetonQuest's built-in notifications.
 All categories must be defined in a section called `notifications`.
 
 !!! warning
