@@ -614,7 +614,7 @@ Example: `fence[facing=north] matches fence[facing=north] and fence[facing=north
 You can add an `exactMatch` argument if you only want to match blocks that exactly match the block state. 
 A regex is allowed in any block state value when the block selector is used to match blocks.
 
-## Hiding Player's
+## Hiding Players
 
 <video controls loop
 src="../../_media/content/Documentation/Compatibility/PlayerHider.mp4"
@@ -622,20 +622,20 @@ width="780">
 Sorry, your browser doesn't support embedded videos.
 </video>
 
-You can also hide players for specific players. If the `source_player` meets the conditions
-every player that meets the `target_player` conditions is completely hidden for him.
-This is really helpful if you want a lonely place on your server,
+You can also hide players for specific players in the `player_hider` section of your package. When the `source_player` meets the conditions,
+every player that meets the `target_player` conditions will be completely hidden from them. 
+This is really useful if you want a lonely place on your server 
 or your quests break when multiple players can see or affect each other.
 You can configure the interval which checks the conditions in the [config.yml](./Configuration.md#player-hider-interval).
 
 Special behaviour:
 
-* A player that meets the `source_player`conditions can't be pushed anymore by other players.
+* A player that meets the `source_player`conditions can no longer be pushed by other players.
 * By leaving the e.g. `source_player` argument empty it will match all players.
 
 ```YAML
 player_hider:
-  example_hider:  #All players in a special region cannot see any other players in that region.
+  example_hider:  #All players in a special region cannot see any other players in that region. If a player is outside the region, they can still see the `target_player`.
     source_player: in_StoryRegion
     target_player: in_StoryRegion
   another_hider: #No one can see any players inside a secret room.
