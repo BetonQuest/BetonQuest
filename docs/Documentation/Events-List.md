@@ -588,11 +588,12 @@ This event has only one purpose: Change values that are stored in `variable` obj
 the ID of the `variable` objective. The second argument is the name of the variable to set. The third argument is the
 value to set. Both the name and value can use `%...%` variables. To delete a variable you can use `""`. Refer to the
 [`variable` objective](./Objectives-List.md#variable-variable) documentation for more information about
-storing variables.
+storing variables. This event will do nothing if the player does not already have a `variable` objective assigned to them.
 
 !!! example
     ```YAML
-    variable some_var_obj name %player%
+    variable CustomVariable MyFirstVariable Goodbye!
+    variable variable_objectiveID name %player%
     variable other_var_obj desc ""
     ```
 
