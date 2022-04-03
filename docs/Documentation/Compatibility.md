@@ -671,8 +671,8 @@ mmoclassexperience 1 level
 Adds experience in the specified player profession. The amount can be a variable or a number. The `level` argument
 is optional and would convert the amount to levels instead of XP points.
 ```YAML linenums="1"
-mmoprofessionexperience 100
-mmoprofessionexperience 1 level
+mmoprofessionexperience MINING 100
+mmoprofessionexperience CUSTOM_PROFESSION_NAME 1 level
 ```
 
 ####Give class points: `mmocoreclasspoints`
