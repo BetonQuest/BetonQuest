@@ -1,11 +1,11 @@
-This migration guide currently need to be done manual. As long as BQ 2.0 is in development, this will not change!
+This migration guide currently needs to be done manually. As long as BQ 2.0 is in development, this will not change!
 
 Before you start migrating, you should **backup your system**!
 
 Also check your current version, so you know which migration steps you need to do.
 
 ## Changes
-Skip to the first version, that is above the version, that you used before starting the migration:
+Skip to the first version that is above the version that you used before starting the migration:
 
 Changes introduced in:
 
@@ -16,7 +16,7 @@ Changes introduced in:
 - Move your current Quests to the folder `BetonQuest/QuestPackages/`, as quests are now loaded from there
 - Rename `main.yml` to `package.yml`
 - Change the `events.yml`, `objectives.yml`, `conditions.yml`, `journal.yml` and `items.yml` to the following format
-  with an extra prefix matching there file name:
+  with an extra prefix matching their file name:
   ```YAML
   events:
     myEvent1: ...
@@ -26,13 +26,13 @@ Changes introduced in:
   name:
   ```YAML
   conversations:
-    FileName:
+    ConversationName:
       NPC_options: ....
       ....
   ```
   or alternatively:
   ```YAML
-  conversations.FileName:
+  conversations.ConversationName:
     NPC_options: ....
     ....
   ```
