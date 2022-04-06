@@ -24,8 +24,8 @@ Lists must be declared as such:
 Result:
 
 * Top Level
-  - Second Level
-  - Second Level
+    - Second Level
+    - Second Level
 * Another Top level
 
 ##Line length
