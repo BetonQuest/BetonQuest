@@ -279,13 +279,7 @@ setupPublishCreatePullRequest() {
 }
 
 setupPublishCreatePullRequestSlug() {
-  SETUP_REMOTE_SLUG_RAW="$(git config --get remote.$SETUP_REMOTE_REPOSITORY.url)"
-  if [ "${SETUP_REMOTE_SLUG_RAW:0:15}" == 'git@github.com:' ]; then
-    SETUP_REMOTE_SLUG=${SETUP_REMOTE_SLUG_RAW:15:${#SETUP_REMOTE_SLUG_RAW}-30}
-  fi
-  if [ "${SETUP_REMOTE_SLUG_RAW:0:19}" == 'https://github.com/' ]; then
-    SETUP_REMOTE_SLUG=${SETUP_REMOTE_SLUG_RAW:19:${#SETUP_REMOTE_SLUG_RAW}-30}
-  fi
+  SETUP_REMOTE_SLUG="$(git config --get remote.${SETUP_REMOTE_REPOSITORY}.url | grep -o '[^:/]\+/[^/.]\+\.git$' | grep -o '^[^/]\+')"
   if [ -z "$SETUP_REMOTE_SLUG" ]; then
     printNewSection
     echo 'No GitHub remote slug could be extracted from remotes!'
