@@ -250,7 +250,7 @@ setupPublish() {
   setupPublishCreatePullRequest
 
   echo '    Reset current branch...'
-  git reset --hard "$(git rev-parse --abbrev-ref --symbolic-full-name @\{upstream\})" 2>&1 > /dev/null | sed 's/^/        /'
+  git reset --hard HEAD~1 2>&1 > /dev/null | sed 's/^/        /'
 
   echo '    DONE'
 }
