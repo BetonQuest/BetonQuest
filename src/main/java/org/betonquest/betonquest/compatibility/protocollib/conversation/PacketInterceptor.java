@@ -3,7 +3,6 @@ package org.betonquest.betonquest.compatibility.protocollib.conversation;
 import com.comphenix.packetwrapper.WrapperPlayServerChat;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.async.AsyncListenerHandler;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
@@ -19,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -30,10 +30,8 @@ public class PacketInterceptor implements Interceptor, Listener {
 
     /**
      * A prefix that marks messages to be ignored by this interceptor.
-     * To be invisible if the interceptor was closed before the message was sent the tag is a color code.
-     * The actual tags colors are the hex-representation of the ASCII representing the string '_bq_'.
      */
-    private static final String MESSAGE_PASSTHROUGH_TAG = "§5§f§6§2§7§1§5§f";
+    private static final String MESSAGE_PASSTHROUGH_TAG = "<BQ-PASSTHROUGH>";
 
     protected final Conversation conv;
     protected final Player player;
@@ -46,11 +44,7 @@ public class PacketInterceptor implements Interceptor, Listener {
         this.conv = conv;
         this.player = PlayerConverter.getPlayer(playerID);
 
-        // Intercept Packets
-        packetAdapter = new PacketAdapter(BetonQuest.getInstance(), ListenerPriority.HIGHEST,
-                PacketType.Play.Server.CHAT
-
-        ) {
+        packetAdapter = new PacketAdapter(BetonQuest.getInstance(), ListenerPriority.LOWEST, PacketType.Play.Server.CHAT) {
             @Override
             public void onPacketSending(final PacketEvent event) {
                 if (!event.getPlayer().equals(player)) {
@@ -68,6 +62,8 @@ public class PacketInterceptor implements Interceptor, Listener {
                     }
                     final BaseComponent[] components = (BaseComponent[]) packet.getModifier().read(baseComponentIndex);
                     if (components != null && components.length > 0 && ((TextComponent) components[0]).getText().contains(MESSAGE_PASSTHROUGH_TAG)) {
+                        packet.getModifier().write(baseComponentIndex, Arrays.copyOfRange(components, 1, components.length));
+                        event.setPacket(packet);
                         return;
                     }
 
@@ -79,8 +75,7 @@ public class PacketInterceptor implements Interceptor, Listener {
             }
         };
 
-        final AsyncListenerHandler handler = ProtocolLibrary.getProtocolManager().getAsynchronousManager().registerAsyncHandler(packetAdapter);
-        handler.start();
+        ProtocolLibrary.getProtocolManager().addPacketListener(packetAdapter);
     }
 
     /**
@@ -101,7 +96,7 @@ public class PacketInterceptor implements Interceptor, Listener {
     @Override
     public void end() {
         // Stop Listening for Packets
-        ProtocolLibrary.getProtocolManager().getAsynchronousManager().unregisterAsyncHandler(packetAdapter);
+        ProtocolLibrary.getProtocolManager().removePacketListener(packetAdapter);
 
         //Send all messages to player
         for (final WrapperPlayServerChat message : messages) {
