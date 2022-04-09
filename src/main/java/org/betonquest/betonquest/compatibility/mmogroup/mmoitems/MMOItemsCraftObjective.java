@@ -1,13 +1,14 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 
 import io.lumine.mythic.lib.api.item.NBTItem;
+import io.lumine.mythic.lib.api.util.ui.FriendlyFeedbackProvider;
 import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
-import net.Indyuce.mmoitems.api.crafting.ConfigMMOItem;
 import net.Indyuce.mmoitems.api.crafting.recipe.CraftingRecipe;
 import net.Indyuce.mmoitems.api.crafting.recipe.Recipe;
 import net.Indyuce.mmoitems.api.event.CraftMMOItemEvent;
 import net.Indyuce.mmoitems.api.event.PlayerUseCraftingStationEvent;
+import net.Indyuce.mmoitems.api.util.message.FFPMMOItems;
 import net.Indyuce.mmoitems.manager.TypeManager;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
@@ -95,8 +96,8 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
                 && checkConditions(playerID)) {
             final CraftingRecipe craftingRecipe = (CraftingRecipe) usedRecipe;
 
-            final ConfigMMOItem craftedItem = craftingRecipe.getOutput();
-            if (isValidItem(craftedItem.getPreview())) {
+            final ItemStack craftedItem = craftingRecipe.getOutput().getItemStack(new FriendlyFeedbackProvider(FFPMMOItems.get()));
+            if (isValidItem(craftedItem)) {
                 progressCraftObjective(playerID, craftedItem.getAmount());
             }
         }
