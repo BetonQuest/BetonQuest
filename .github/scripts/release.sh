@@ -10,19 +10,19 @@ printNewSection() {
 printHelp() {
   printNewSection
   echo 'HELP'
-  echo '    This script can do the following things based on your commit that you checked out,'
-  echo '    and it will lead you through all steps:'
+  echo '    This script guides you through all steps.'
+  echo '    It can do the following based on the currently checked out commit:'
   echo
   echo '    Release'
-  echo '        Create a version tag with the current corresponding pom.xml version.'
+  echo '        Create a version tag with the current pom.xml version.'
   echo '        This tag is than pushed to a selected remote repository.'
   echo '    Setup'
-  echo '        Request a new version. This version is than updated in the pom.xml file.'
+  echo '        Request a new version. This version is then set in the pom.xml.'
   echo '        The CHANGELOG.md file will be updated and the timestamp of the previous release is added.'
-  echo '        Than the changes are pushed to a selected remote repository and branch.'
-  echo '        Than a PullRequest is created for the selected remote repository and branch.'
+  echo '        Then the changes are pushed to a selected remote repository and branch.'
+  echo '        Additionally a Pull Request is created for the selected remote repository and branch.'
   echo
-  echo '    A value in (parentheses) before a input value indicates a default value if no input was given.'
+  echo '    A value in (parentheses) before an input value is the default value if no input was given.'
 }
 
 deletePreviousLines() {
@@ -147,7 +147,7 @@ releasePrepare() {
 
 releaseSelectRemote() {
   echo
-  echo '    ? Enter the name (not URL) of the remote repository you want to create the release in'
+  echo '    ? Enter the name (not URL) of the Git remote repository you want to create the release in'
   echo -n '    Remote repository (upstream): '
   read -r RELEASE_REMOTE_REPOSITORY
   if [ -z "$RELEASE_REMOTE_REPOSITORY" ]; then
@@ -160,10 +160,10 @@ releaseSelectRemote() {
 releasePublish() {
   echo 'Release'
 
-  echo '    Create version tag...'
+  echo '    Creating version tag...'
   git tag "v$CURRENT_VERSION" HEAD 2>&1 > /dev/null | sed 's/^/        /'
 
-  echo '    Push version tag...'
+  echo '    Pushing version tag...'
   git push "$RELEASE_REMOTE_REPOSITORY" "v$CURRENT_VERSION" 2>&1 > /dev/null | sed 's/^/        /'
 
   echo '    DONE'
@@ -179,7 +179,7 @@ setupPrepare() {
 
 setupSelectRemote() {
   echo
-  echo '    ? Enter the name (not URL) of the remote repository you want to create the setup in'
+  echo '    ? Enter the name (not URL) of the Git remote repository you want to create the setup in'
   echo -n '    Remote repository (origin): '
   read -r SETUP_REMOTE_REPOSITORY
   if [ -z "$SETUP_REMOTE_REPOSITORY" ]; then
@@ -233,23 +233,23 @@ setupSelectTimeDefaultValue() {
 setupPublish() {
   echo 'Setup'
 
-  echo '    Update pom.xml file...'
+  echo '    Updating pom.xml file...'
   mvn versions:set-property -DgenerateBackupPoms=false -Dproperty=version -DnewVersion="$NEW_VERSION" 2>&1 > /dev/null | sed 's/^/        /'
 
-  echo '    Update CHANGELOG.md file...'
+  echo '    Updating CHANGELOG.md file...'
   NEW_CHANGELOG="## \[Unreleased\] - \${current-date}\n### Added\n### Changed\n### Deprecated\n### Removed\n### Fixed\n### Security\n"
   sed -i "s~## \[Unreleased\] - \${current-date}~$NEW_CHANGELOG\n## \[$CURRENT_VERSION\] - $SETUP_TIME~g" CHANGELOG.md 2>&1 > /dev/null | sed 's/^/        /'
 
-  echo '    Commit changed files...'
+  echo '    Committing changed files...'
   git commit --all --message="Version bump to $NEW_VERSION" 2>&1 > /dev/null | sed 's/^/        /'
 
-  echo '    Push committed changes...'
+  echo '    Pushing committed changes...'
   git push "$SETUP_REMOTE_REPOSITORY" "HEAD:$SETUP_REMOTE_BRANCH" 2>&1 > /dev/null | sed 's/^/        /'
 
-  echo '    Create Pull Request...'
+  echo '    Creating Pull Request...'
   setupPublishCreatePullRequest
 
-  echo '    Reset current branch...'
+  echo '    Resetting current branch...'
   git reset --hard HEAD~1 2>&1 > /dev/null | sed 's/^/        /'
 
   echo '    DONE'
