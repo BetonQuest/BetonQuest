@@ -209,10 +209,10 @@ Please let us know if there is any outdated information.
 ## Beautiful multi-path Conversations
 
 !!! example inline end bq-inline-example-container note ""
-<video controls loop src="_media/content/Documentation/Conversations/MenuConvIO.mp4"
-width="100%">
-Sorry, your browser doesn't support embedded videos.
-</video>
+    <video controls loop src="_media/content/Documentation/Conversations/MenuConvIO.mp4"
+    width="100%">
+    Sorry, your browser doesn't support embedded videos.
+    </video>
 
 Players can have immersive conversation with NPC's by utilizing BetonQuests Multi-Path-Conversation System. Questers can
 freely define multi-path stories, narrated with NPC conversations, and with multiple endings that affect a player's
@@ -230,10 +230,10 @@ See the full list of integrations [here](Documentation/Compatibility.md).
 ## Custom Notification System
 
 !!! example inline end bq-inline-example-container note ""
-<video controls loop src="_media/content/Documentation/Notifications/NotifySystemOverview.mp4"
-width="100%">
-Sorry, your browser doesn't support embedded videos.
-</video>
+    <video controls loop src="_media/content/Documentation/Notifications/NotifySystemOverview.mp4"
+    width="100%">
+    Sorry, your browser doesn't support embedded videos.
+    </video>
 
 * Questers can make use of BetonQuests notifyIO system that provides access to all of Minecafts GUI elements to display
   notifications.
@@ -246,10 +246,10 @@ Sorry, your browser doesn't support embedded videos.
 
 ## Player, NPC and Hologram Hider
 !!! example inline end bq-inline-example-container note ""
-<video controls loop src="_media/content/Documentation/Compatibility/PlayerHider.mp4"
-width="100%">
-Sorry, your browser doesn't support embedded videos.
-</video>
+    <video controls loop src="_media/content/Documentation/Compatibility/PlayerHider.mp4"
+    width="100%">
+    Sorry, your browser doesn't support embedded videos.
+    </video>
 
 BetonQuest allows you to hide players from each other based on conditions. This can be used to create story-regions
 where players are always alone.  
