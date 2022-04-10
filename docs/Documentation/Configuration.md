@@ -94,7 +94,7 @@ Read [this page](Conversations.md) for more information about conversation inter
 ### Default Chat interceptor
 
 `default_interceptor` is a comma-separated list of chat interceptors with the first valid one used.
-Read [this page](Conversations.md) for more information about chat interceptors.
+Read [this page](Conversations.md#chat-interceptor) for more information about chat interceptors.
 
 ### Conversation Chat Display options
 `display_chat_after_conversation` this will prevent all chat messages from displaying during a conversation and it will show them once it's finished.

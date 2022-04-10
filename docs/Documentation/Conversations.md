@@ -115,7 +115,7 @@ You can however change the utilized conversationIO by setting the `default_conve
 In case you want to use a different type of conversation display for just one specific conversation you can add a `conversationIO:
 <type>` setting to the conversation file at the top of the YAML hierarchy (which is the same level as `quester` or `first` options).
 
-## Chat Interceptors
+## Chat Interceptor
 While engaged in a conversation, it can be distracting when messages from other players or system messages interfere with the dialogue.
 A chat interceptor provides a method of intercepting those messages and then sending them after the conversation has ended.
 
@@ -125,11 +125,12 @@ Additionally, you can overwrite the default for each conversation by setting the
 The default configuration of BetonQuest sets the `default_interceptor` option to `packet,simple`.
 This means that it first tries to use the `packet` interceptor. If that fails it falls back to using the `simple` interceptor.
 
-BetonQuest adds following interceptors: `simple`, `packet` and `none`:
-  
-The `simple` interceptor works with every Spigot server but only supports very basic functionality and may not work with plugins like Herochat.
+### Chat Interceptor Types
+There are three build in interceptors from BetonQuest: `packet`, `simple` and `none`.
 
-The `packet` interceptor requires the ProtocolLib plugin to be installed. It will work well in any kind of situation.
+We recommend the [packet](Compatibility.md#chat-interceptor-type-packet) interceptor that requires ProtocolLib.
+
+The `simple` interceptor works with every Spigot server but only supports very basic functionality and may not work with plugins that use packets.
 
 The `none` interceptor is an interceptor that won't intercept messages. That sounds useless until you have a conversation
 that you want to be excluded from interception. In this case you can just set `interceptor: none` inside your conversation file.

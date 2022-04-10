@@ -884,9 +884,25 @@ Variables:
   * `{option_text}` - The option text
   * `{npc_name}` - The name of the NPC
 
-### Chat Interceptor: `packet`
+### Chat Interceptor Type: `packet`
 
-Intercept pretty much anything sent to the player by intercepting packets sent to them. This can be enabled by default by setting the `default_interceptor` to `packet` in config.yml or per conversation by setting `interceptor` to `packet` in the top level of the conversation.
+The `packet` [Chat Interceptor](Conversations.md#chat-interceptor) is based on packages, what makes this interceptor really robust and save.
+
+Intercepting packages is like catching the messages that are sent on the network level.
+This makes it possible to intercepts pretty much anything sent to the player.
+
+!!! warning
+    If you see the message `<BQ-PASSTHROUGH>` in the ingame chat you are probably using BungeeCord (or something similar).
+    If this is the case, you probably have something like a chat plugin that synchronize the chat over your network.
+    In this case, the messages are sent from the proxy (BungeeCord) and it is not possible for us to intercept them.  
+    You have some solutions now:
+    
+    - The best solution is, if your related chat plugin support something like `send the messages back to the servers`.
+      Some of them have a setting for this, but the most plugins do not support this.
+    - Instead of using the `packet` interceptor use the [simple](Conversations.md#chat-interceptor-types) interceptor.
+      The downside of this is, that some messages will not be catched by the simple interceptor.
+    - You can also disable the interceptor by using the [none](Conversations.md#chat-interceptor-types) interceptor.
+      But than you dont use an interceptor at all.
 
 ### Freeze players: 'freeze'
 This event allows you to freeze player for the given amount of ticks:
