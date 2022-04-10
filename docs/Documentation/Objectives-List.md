@@ -405,7 +405,7 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
    
 
 ## Player must Jump: `jump`
-**:fontawesome-solid-tasks:{.task} Objective  ·  :fontawesome-solid-paper-plane: Requires [Paper](https://papermc.io)**
+**:fontawesome-solid-list-check:{.task} Objective  ·  :fontawesome-solid-paper-plane: Requires [Paper](https://papermc.io)**
 
 To complete this objective the player must jump. The only argument is amount. You can use the `notify` keyword to display a
 message each time the player advances the objective, optionally with the notification interval after a colon.
@@ -472,7 +472,7 @@ Optional arguments:
     `eventName: {=="==}command /enchant_@s_minecraft:aqua_affinity{=="==}` :arrow_right: `eventName: {=="==}command /enchant_@s_minecraft:aqua{++\\++}_affinity{=="==}`<br>
 
 ## Equip Armor Item: `equip`
-**:fontawesome-solid-tasks:{.task} Objective  ·  :fontawesome-solid-paper-plane: Requires [Paper](https://papermc.io)**
+**:fontawesome-solid-list-check:{.task} Objective  ·  :fontawesome-solid-paper-plane: Requires [Paper](https://papermc.io)**
 
 The player must equip the specified quest item in the specified slot.
 The item must be any quest item as defined in the _items_ section.
