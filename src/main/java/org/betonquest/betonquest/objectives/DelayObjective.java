@@ -7,6 +7,7 @@ import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -52,7 +53,7 @@ public class DelayObjective extends Objective {
         }
     }
 
-    private int timeToMiliSeconds(final int time) throws InstructionParseException {
+    private double timeToMilliSeconds(final double time) throws InstructionParseException {
         if (time < 0) {
             throw new InstructionParseException("Delay cannot be less than 0");
         }
@@ -103,16 +104,14 @@ public class DelayObjective extends Objective {
 
     @Override
     public String getDefaultDataInstruction(final String playerID) {
-        final int time = delay.getInt(playerID);
-        int milis = 0;
+        double millis = 0;
         try {
-            milis = timeToMiliSeconds(time);
-        } catch (final InstructionParseException e) {
+            final double time = delay.getDouble(playerID);
+            millis = timeToMilliSeconds(time);
+        } catch (final InstructionParseException | QuestRuntimeException e) {
             LOG.warn("Error in delay objective '" + instruction.getID() + "': " + e.getMessage());
         }
-
-        final long timeToPass = Long.parseLong(String.valueOf(milis));
-        return Long.toString(new Date().getTime() + timeToPass);
+        return Double.toString(new Date().getTime() + millis);
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
@@ -124,11 +123,11 @@ public class DelayObjective extends Objective {
             final String hoursWord = Config.getMessage(lang, "hours");
             final String minutesWord = Config.getMessage(lang, "minutes");
             final String secondsWord = Config.getMessage(lang, "seconds");
-            final long timeLeft = ((DelayData) dataMap.get(playerID)).getTime() - new Date().getTime();
-            final long seconds = (timeLeft / (1000)) % 60;
-            final long minutes = (timeLeft / (1000 * 60)) % 60;
-            final long hours = (timeLeft / (1000 * 60 * 60)) % 24;
-            final long days = timeLeft / (1000 * 60 * 60 * 24);
+            final double timeLeft = ((DelayData) dataMap.get(playerID)).getTime() - new Date().getTime();
+            final double seconds = (timeLeft / (1000)) % 60;
+            final double minutes = (timeLeft / (1000 * 60)) % 60;
+            final double hours = (timeLeft / (1000 * 60 * 60)) % 24;
+            final double days = timeLeft / (1000 * 60 * 60 * 24);
             final StringBuilder time = new StringBuilder();
             final String[] words = new String[3];
             if (days > 0) {
@@ -174,21 +173,21 @@ public class DelayObjective extends Objective {
             return time.toString();
         } else if ("date".equalsIgnoreCase(name)) {
             return new SimpleDateFormat(Config.getString("config.date_format"), Locale.ROOT)
-                    .format(new Date(((DelayData) dataMap.get(playerID)).getTime()));
+                    .format(new Date((long) ((DelayData) dataMap.get(playerID)).getTime()));
         }
         return "";
     }
 
     public static class DelayData extends ObjectiveData {
 
-        private final long timestamp;
+        private final double timestamp;
 
         public DelayData(final String instruction, final String playerID, final String objID) {
             super(instruction, playerID, objID);
-            timestamp = Long.parseLong(instruction);
+            timestamp = Double.parseDouble(instruction);
         }
 
-        private long getTime() {
+        private double getTime() {
             return timestamp;
         }
 
