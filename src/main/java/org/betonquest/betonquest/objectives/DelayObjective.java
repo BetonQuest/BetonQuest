@@ -41,11 +41,11 @@ public class DelayObjective extends Objective {
     }
 
     private void parseDelay() throws InstructionParseException {
-        final String intOrVar = instruction.next();
-        if (intOrVar.startsWith("%")) {
-            delay = new VariableNumber(instruction.getPackage().getPackagePath(), intOrVar);
+        final String doubleOrVar = instruction.next();
+        if (doubleOrVar.startsWith("%")) {
+            delay = new VariableNumber(instruction.getPackage().getPackagePath(), doubleOrVar);
         } else {
-            final int time = Integer.parseInt(intOrVar);
+            final double time = Double.parseDouble(doubleOrVar);
             if (time < 0) {
                 throw new InstructionParseException("Error in delay objective '" + instruction.getID() + "': Delay cannot be less than 0");
             }
