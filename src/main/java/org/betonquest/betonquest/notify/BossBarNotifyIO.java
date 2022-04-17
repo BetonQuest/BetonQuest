@@ -74,7 +74,7 @@ public class BossBarNotifyIO extends NotifyIO {
         try {
             resolvedProgress = normalizeBossBarProgress(getFloatData(player, "progress", 1));
         } catch (final InstructionParseException | QuestRuntimeException e) {
-            LOG.warn(pack, "Invalid variable in bossbar notification:", e);
+            LOG.warn(pack, "Invalid variable in bossbar notification from package " + pack.getPackagePath() + ": " + e.getMessage(), e);
         }
         bossBar.setProgress(resolvedProgress);
         bossBar.addPlayer(player);
