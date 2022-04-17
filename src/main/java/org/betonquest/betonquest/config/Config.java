@@ -351,7 +351,7 @@ public final class Config {
             return;
         }
 
-        Notify.get(category, data).sendNotify(message, player);
+        Notify.get(Config.getPackages().get(packName), category, data).sendNotify(message, player);
     }
 
     public static String parseMessage(final String packName, final String playerID, final String messageName, final String... variables) {

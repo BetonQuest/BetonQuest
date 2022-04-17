@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.notify;
 
+import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.Utils;
@@ -18,13 +20,15 @@ public abstract class NotifyIO {
 
     protected final Map<String, String> data;
     private final NotifySound sound;
+    private final QuestPackage pack;
 
-    protected NotifyIO() throws InstructionParseException {
-        this(new HashMap<>());
+    protected NotifyIO(final QuestPackage pack) throws InstructionParseException {
+        this(pack, new HashMap<>());
     }
 
-    protected NotifyIO(final Map<String, String> data) throws InstructionParseException {
+    protected NotifyIO(final QuestPackage pack, final Map<String, String> data) throws InstructionParseException {
         this.data = data;
+        this.pack = pack;
         sound = new NotifySound(this);
     }
 

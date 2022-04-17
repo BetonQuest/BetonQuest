@@ -174,6 +174,9 @@ public class DelayObjective extends Objective {
         } else if ("date".equalsIgnoreCase(name)) {
             return new SimpleDateFormat(Config.getString("config.date_format"), Locale.ROOT)
                     .format(new Date((long) ((DelayData) dataMap.get(playerID)).getTime()));
+        } else if ("raw".equalsIgnoreCase(name)) {
+            final double timeLeft = ((DelayData) dataMap.get(playerID)).getTime() - new Date().getTime();
+            return String.valueOf(timeLeft / 1000 / 60);
         }
         return "";
     }

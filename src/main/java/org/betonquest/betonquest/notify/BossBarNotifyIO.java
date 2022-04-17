@@ -1,7 +1,9 @@
 package org.betonquest.betonquest.notify;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
@@ -26,8 +28,8 @@ public class BossBarNotifyIO extends NotifyIO {
     private final int countdown;
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
-    public BossBarNotifyIO(final Map<String, String> data) throws InstructionParseException {
-        super(data);
+    public BossBarNotifyIO(final QuestPackage pack, final Map<String, String> data) throws InstructionParseException {
+        super(pack, data);
 
         barFlags = new ArrayList<>();
         if (data.containsKey("barflags")) {

@@ -73,7 +73,7 @@ public class NotifyEvent extends QuestEvent {
             data.remove("conditions");
         }
         final String category = data.remove("category");
-        notifyIO = Notify.get(category, data);
+        notifyIO = Notify.get(instruction.getPackage(), category, data);
     }
 
     private void checkVariables(final String message) throws InstructionParseException {

@@ -5,6 +5,7 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -24,8 +25,8 @@ public class AdvancementNotifyIO extends NotifyIO {
     private final String frame;
     private final String icon;
 
-    public AdvancementNotifyIO(final Map<String, String> data) throws InstructionParseException {
-        super(data);
+    public AdvancementNotifyIO(final QuestPackage pack, final Map<String, String> data) throws InstructionParseException {
+        super(pack, data);
 
         frame = data.getOrDefault("frame", "challenge").toLowerCase(Locale.ROOT);
         icon = data.getOrDefault("icon", "minecraft:map").toLowerCase(Locale.ROOT);

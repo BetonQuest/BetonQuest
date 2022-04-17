@@ -5,6 +5,7 @@ import com.comphenix.packetwrapper.WrapperPlayServerSetSlot;
 import io.papermc.lib.PaperLib;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -35,8 +36,8 @@ public class TotemNotifyIO extends NotifyIO {
      * @param data map with user instructions.
      * @throws InstructionParseException if the users input couldn't be parsed.
      */
-    public TotemNotifyIO(final Map<String, String> data) throws InstructionParseException {
-        super(data);
+    public TotemNotifyIO(final QuestPackage pack, final Map<String, String> data) throws InstructionParseException {
+        super(pack, data);
         customModelData = getIntegerData("custommodeldata", 2);
     }
 

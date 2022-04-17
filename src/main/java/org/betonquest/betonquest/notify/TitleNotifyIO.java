@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.notify;
 
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.entity.Player;
 
@@ -12,8 +13,8 @@ public class TitleNotifyIO extends NotifyIO {
     private final int stay;
     private final int fadeOut;
 
-    public TitleNotifyIO(final Map<String, String> data) throws InstructionParseException {
-        super(data);
+    public TitleNotifyIO(final QuestPackage pack, final Map<String, String> data) throws InstructionParseException {
+        super(pack, data);
 
         fadeIn = getIntegerData("fadein", 10);
         stay = getIntegerData("stay", 70);
