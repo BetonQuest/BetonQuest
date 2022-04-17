@@ -3,6 +3,6 @@ mkdocs-material==8.2.9
 #Shows git revision date at the bottom of the page
 mkdocs-git-revision-date-localized-plugin
 #Tool for MkDocs versioning
-mike==1.0.1
+mike==1.1.2
 #mkdocs-exclude plugin to exclude snippets
 mkdocs-exclude

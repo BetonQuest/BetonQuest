@@ -2,6 +2,7 @@ package org.betonquest.betonquest.notify;
 
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.configuration.ConfigurationSection;
@@ -31,19 +32,19 @@ public final class Notify {
         defaultNotifyIO = BetonQuest.getInstance().getPluginConfig().getString("default_notify_IO");
     }
 
-    public static NotifyIO get() {
-        return get(null, null);
+    public static NotifyIO get(final QuestPackage pack) {
+        return get(pack, null, null);
     }
 
-    public static NotifyIO get(final String category) {
-        return get(category, null);
+    public static NotifyIO get(final QuestPackage pack, final String category) {
+        return get(pack, category, null);
     }
 
-    public static NotifyIO get(@Nullable final Map<String, String> data) {
-        return get(null, data);
+    public static NotifyIO get(final QuestPackage pack, @Nullable final Map<String, String> data) {
+        return get(pack, null, data);
     }
 
-    public static NotifyIO get(final String category, @Nullable final Map<String, String> data) {
+    public static NotifyIO get(final QuestPackage pack, final String category, @Nullable final Map<String, String> data) {
         final SortedSet<String> categories = getCategories(category);
 
         final Map<String, String> categoryData = getCategorySettings(categories);
@@ -60,13 +61,13 @@ public final class Notify {
         ios.add("chat");
 
         try {
-            return getNotifyIO(ios, categoryData);
+            return getNotifyIO(pack, ios, categoryData);
         } catch (final InstructionParseException exception) {
             LOG.warn(exception.getMessage(), exception);
         }
 
         try {
-            return new SuppressNotifyIO(categoryData);
+            return new SuppressNotifyIO(pack, categoryData);
         } catch (final InstructionParseException e) {
             LOG.reportException(e);
             throw new UnsupportedOperationException(e);
@@ -104,12 +105,12 @@ public final class Notify {
         return ios;
     }
 
-    private static NotifyIO getNotifyIO(final List<String> ios, final Map<String, String> categoryData) throws InstructionParseException {
+    private static NotifyIO getNotifyIO(final QuestPackage pack, final List<String> ios, final Map<String, String> categoryData) throws InstructionParseException {
         for (final String name : ios) {
             final Class<? extends NotifyIO> clazz = BetonQuest.getNotifyIO(name);
             if (clazz != null) {
                 try {
-                    return clazz.getConstructor(Map.class).newInstance(categoryData);
+                    return clazz.getConstructor(QuestPackage.class, Map.class).newInstance(pack, categoryData);
                 } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException exception) {
                     throw new InstructionParseException("Couldn't load Notify IO '" + name + "': " + exception.getMessage(), exception);
                 }

@@ -1,7 +1,10 @@
 package org.betonquest.betonquest.notify;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
@@ -15,6 +18,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+
+@CustomLog
 @SuppressWarnings("PMD.CommentRequired")
 public class BossBarNotifyIO extends NotifyIO {
 
@@ -26,8 +31,8 @@ public class BossBarNotifyIO extends NotifyIO {
     private final int countdown;
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
-    public BossBarNotifyIO(final Map<String, String> data) throws InstructionParseException {
-        super(data);
+    public BossBarNotifyIO(final QuestPackage pack, final Map<String, String> data) throws InstructionParseException {
+        super(pack, data);
 
         barFlags = new ArrayList<>();
         if (data.containsKey("barflags")) {
@@ -54,7 +59,7 @@ public class BossBarNotifyIO extends NotifyIO {
             throw new InstructionParseException(String.format(CATCH_MESSAGE_TYPE, "BarStyle", styleString.toUpperCase(Locale.ROOT)), exception);
         }
 
-        progress = Math.max(0.0, Math.min(1.0, getFloatData("progress", 1)));
+        progress = normalizeBossBarProgress(getFloatData("progress", 1));
         stay = Math.max(0, getIntegerData("stay", 70));
         countdown = getIntegerData("countdown", 0);
     }
@@ -65,7 +70,13 @@ public class BossBarNotifyIO extends NotifyIO {
         for (final BarFlag flag : barFlags) {
             bossBar.addFlag(flag);
         }
-        bossBar.setProgress(progress);
+        double resolvedProgress = 0;
+        try {
+            resolvedProgress = normalizeBossBarProgress(getFloatData(player, "progress", 1));
+        } catch (final InstructionParseException | QuestRuntimeException e) {
+            LOG.warn(pack, "Invalid variable in bossbar notification from package " + pack.getPackagePath() + ": " + e.getMessage(), e);
+        }
+        bossBar.setProgress(resolvedProgress);
         bossBar.addPlayer(player);
         bossBar.setVisible(true);
         scheduleRemoval(bossBar);
@@ -75,6 +86,10 @@ public class BossBarNotifyIO extends NotifyIO {
             final double amount = progress / ((double) countdown);
             scheduleAnimation(bossBar, interval, amount);
         }
+    }
+
+    private double normalizeBossBarProgress(final double value) {
+        return Math.max(0.0, Math.min(1.0, value));
     }
 
     private void scheduleRemoval(final BossBar bar) {

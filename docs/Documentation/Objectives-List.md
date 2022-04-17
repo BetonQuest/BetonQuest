@@ -128,25 +128,35 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
     experience 25 level events:reward
     ```
 
-## Delay: `delay`
+##:material-clock-time-two-outline: Wait: `delay` 
 
-This objective is just a long, persistent delay for firing events. It will run only after certain amount of time
-(measured in minutes) and only when player is online and meets all conditions. If a player is offline at that time it
-will just wait for them to log in. You should use it for example to delete tags so the player can complete quests
-multiple times. First argument is time, by default in minutes. You can also use `ticks` or `seconds` argument to use
-different units, but keep in mind that it's not very precise - it will complete roughly after the time ends. To control
-that precision you can specify an optional `interval:` argument, which specifies how many ticks should pass between
-checks. One second is 20 ticks. Less makes the objective more precise, at the expense of performance. The rest is
-just like in other objectives.
+This objective completes itself after certain amount of time.
+The player must be online and meet all conditions. If the player is not online the objective is completed on the player's
+next login.
 
-Delay has two properties, `left` and `date`. The first one will show how much time needs to pass before the delay is
-completed (i.e. `23 days, 5 hours and 45 minutes`), the second one will show a date of completing the objective
-formatted using `date_format` setting in _config.yml_ (it will look like the one above every journal entry).
+| Parameter   | Syntax          | Default Value          | Explanation                                                                                                                                        |
+|-------------|-----------------|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| _time_      | any number      | :octicons-x-circle-16: | The time after which the objective is completed.                                                                                                   |
+| _unit_      | keyword         | minutes                | The unit of time. Either `minutes`, `seconds` or `ticks`.                                                                                          |
+| _precision_ | interval:number | interval:200           | The interval in which the objective checks if the time is up. Measured in ticks. Low values cost more performance but make the objective preciser. |
 
-!!! example
+!!! example annotate
     ```YAML
-    delay 1000 ticks interval:5 events:event1,event2
+    delay 1440 events:resetDaily (2)
+    delay 1000 ticks interval:5 events:failQuest (1) 
     ```
+    
+1. Runs the `failQuest` event after 1000 ticks (50 seconds) have passed. The objective checks every 5 ticks (250ms) if the time is up.
+2. Runs the `resetDaily` event after 1440 minutes (24 hours).
+
+<h5> Variable Properties </h5> 
+
+| Name         | Example Output                  | Explanation                                                                                                              |
+|--------------|---------------------------------|--------------------------------------------------------------------------------------------------------------------------|
+| _left_       | 23 days, 5 hours and 45 minutes | Shows the time left until the objective is completed.                                                                    |
+| _date_       | 17.04.2022 16:14                | Shows the date the objective is completed at using the config's `date_format` [setting](Configuration.md#misc-settings). |
+| _secondsRaw_ | 5482                            | Shows the amount of seconds until objective completion.                                                                  |
+
 
 ## Death: `die`
 

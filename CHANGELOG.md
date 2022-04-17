@@ -33,6 +33,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `delay` objective - now support variables
 - `opsudo` event - now supports variables
 - `variable` condition - now supports variables
+- `bossbar` notify style now supports variables for the `progress` argument
+- `delay` objective property: `rawSeconds`
 - Things that are also added in 1.12.X:
     - new line support for `journal_lore` in `messages.yml`
     - FastAsyncWorldEdit compatibility
