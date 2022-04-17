@@ -115,7 +115,7 @@ public class DelayObjective extends Objective {
         return Double.toString(new Date().getTime() + millis);
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @Override
     public String getProperty(final String name, final String playerID) {
         return switch (name.toUpperCase(Locale.ROOT)) {
@@ -126,7 +126,7 @@ public class DelayObjective extends Objective {
         };
     }
 
-    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
+    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition"})
     @NotNull
     private String parseVariableLeft(final String playerID) {
         final String lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
