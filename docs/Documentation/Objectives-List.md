@@ -134,7 +134,7 @@ This objective completes itself after certain amount of time.
 The player must be online and meet all conditions. If the player is not online the objective is completed on the player's
 next login.
 
-| Argument    | Syntax          | Default Value          | Explanation                                                                                                                                        |
+| Parameter   | Syntax          | Default Value          | Explanation                                                                                                                                        |
 |-------------|-----------------|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
 | _time_      | any number      | :octicons-x-circle-16: | The time after which the objective is completed.                                                                                                   |
 | _unit_      | keyword         | minutes                | The unit of time. Either `minutes`, `seconds` or `ticks`.                                                                                          |
