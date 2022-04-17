@@ -149,7 +149,8 @@ next login.
 1. Runs the `failQuest` event after 1000 ticks (50 seconds) have passed. The objective checks every 5 ticks (250ms) if the time is up.
 2. Runs the `resetDaily` event after 1440 minutes (24 hours).
 
-### Variable Properties 
+<h5> Variable Properties </h5> 
+
 | Name         | Example Output                  | Explanation                                                                                                              |
 |--------------|---------------------------------|--------------------------------------------------------------------------------------------------------------------------|
 | _left_       | 23 days, 5 hours and 45 minutes | Shows the time left until the objective is completed.                                                                    |
