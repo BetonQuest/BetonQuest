@@ -191,7 +191,7 @@ public class DelayObjective extends Objective {
 
     private String parseVariableRawSeconds(final String playerID) {
         final double timeLeft = ((DelayData) dataMap.get(playerID)).getTime() - new Date().getTime();
-        return String.valueOf(timeLeft / 1000 / 60);
+        return String.valueOf(timeLeft / 1000);
     }
 
     public static class DelayData extends ObjectiveData {
