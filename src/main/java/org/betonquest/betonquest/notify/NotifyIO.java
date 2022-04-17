@@ -19,8 +19,8 @@ public abstract class NotifyIO {
     protected final static String CATCH_MESSAGE_TYPE = "%s with the name '%s' does not exists!";
 
     protected final Map<String, String> data;
+    protected final QuestPackage pack;
     private final NotifySound sound;
-    private final QuestPackage pack;
 
     protected NotifyIO(final QuestPackage pack) throws InstructionParseException {
         this(pack, new HashMap<>());
@@ -47,8 +47,27 @@ public abstract class NotifyIO {
 
     protected float getFloatData(final String dataKey, final float defaultData) throws InstructionParseException {
         final String dataString = data.get(dataKey);
+
+        if (dataString == null || dataString.startsWith("%")) {
+            return defaultData;
+        }
         try {
-            return dataString == null ? defaultData : Float.parseFloat(dataString);
+            return Float.parseFloat(dataString);
+        } catch (final NumberFormatException exception) {
+            throw new InstructionParseException(String.format(CATCH_MESSAGE_FLOAT, dataKey, dataString), exception);
+        }
+
+    }
+
+    protected float getFloatData(final Player player, final String dataKey, final float defaultData) throws InstructionParseException, QuestRuntimeException {
+        final String dataString = data.get(dataKey);
+        if (dataString == null) {
+            return defaultData;
+        } else if (dataString.startsWith("%")) {
+            return (float) new VariableNumber(pack.getPackagePath(), dataString).getDouble(player.getUniqueId().toString());
+        }
+        try {
+            return Float.parseFloat(dataString);
         } catch (final NumberFormatException exception) {
             throw new InstructionParseException(String.format(CATCH_MESSAGE_FLOAT, dataKey, dataString), exception);
         }
