@@ -10,6 +10,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -117,68 +118,80 @@ public class DelayObjective extends Objective {
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
     @Override
     public String getProperty(final String name, final String playerID) {
-        if ("left".equalsIgnoreCase(name)) {
-            final String lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
-            final String daysWord = Config.getMessage(lang, "days");
-            final String hoursWord = Config.getMessage(lang, "hours");
-            final String minutesWord = Config.getMessage(lang, "minutes");
-            final String secondsWord = Config.getMessage(lang, "seconds");
-            final double timeLeft = ((DelayData) dataMap.get(playerID)).getTime() - new Date().getTime();
-            final double seconds = (timeLeft / (1000)) % 60;
-            final double minutes = (timeLeft / (1000 * 60)) % 60;
-            final double hours = (timeLeft / (1000 * 60 * 60)) % 24;
-            final double days = timeLeft / (1000 * 60 * 60 * 24);
-            final StringBuilder time = new StringBuilder();
-            final String[] words = new String[3];
-            if (days > 0) {
-                words[0] = days + " " + daysWord;
-            }
-            if (hours > 0) {
-                words[1] = hours + " " + hoursWord;
-            }
-            if (minutes > 0) {
-                words[2] = minutes + " " + minutesWord;
-            }
-            int count = 0;
-            for (final String word : words) {
-                if (word != null) {
-                    count++;
-                }
-            }
-            if (count == 0) {
-                time.append(seconds).append(' ').append(secondsWord);
-            } else if (count == 1) {
-                for (final String word : words) {
-                    if (word == null) {
-                        continue;
-                    }
-                    time.append(word);
-                }
-            } else if (count == 2) {
-                boolean second = false;
-                for (final String word : words) {
-                    if (word == null) {
-                        continue;
-                    }
-                    if (second) {
-                        time.append(' ').append(word);
-                    } else {
-                        time.append(word).append(' ').append(Config.getMessage(lang, "and"));
-                        second = true;
-                    }
-                }
-            } else {
-                time.append(words[0]).append(", ").append(words[1]).append(' ').append(Config.getMessage(lang, "and")).append(' ').append(words[2]);
-            }
-            return time.toString();
-        } else if ("date".equalsIgnoreCase(name)) {
-            return new SimpleDateFormat(Config.getString("config.date_format"), Locale.ROOT)
-                    .format(new Date((long) ((DelayData) dataMap.get(playerID)).getTime()));
-        } else if ("raw".equalsIgnoreCase(name)) {
-            final double timeLeft = ((DelayData) dataMap.get(playerID)).getTime() - new Date().getTime();
-            return String.valueOf(timeLeft / 1000 / 60);
+        return switch (name.toUpperCase(Locale.ROOT)) {
+            case "LEFT" -> parseVariableLeft(playerID);
+            case "DATE" -> parseVariableDate(playerID);
+            case "RAWSECONDS" -> parseVariableRawSeconds(playerID);
+            default -> "";
+        };
+    }
+
+    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
+    @NotNull
+    private String parseVariableLeft(final String playerID) {
+        final String lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
+        final String daysWord = Config.getMessage(lang, "days");
+        final String hoursWord = Config.getMessage(lang, "hours");
+        final String minutesWord = Config.getMessage(lang, "minutes");
+        final String secondsWord = Config.getMessage(lang, "seconds");
+        final double timeLeft = ((DelayData) dataMap.get(playerID)).getTime() - new Date().getTime();
+        final double seconds = (timeLeft / (1000)) % 60;
+        final double minutes = (timeLeft / (1000 * 60)) % 60;
+        final double hours = (timeLeft / (1000 * 60 * 60)) % 24;
+        final double days = timeLeft / (1000 * 60 * 60 * 24);
+        final StringBuilder time = new StringBuilder();
+        final String[] words = new String[3];
+        if (days > 0) {
+            words[0] = days + " " + daysWord;
         }
-        return "";
+        if (hours > 0) {
+            words[1] = hours + " " + hoursWord;
+        }
+        if (minutes > 0) {
+            words[2] = minutes + " " + minutesWord;
+        }
+        int count = 0;
+        for (final String word : words) {
+            if (word != null) {
+                count++;
+            }
+        }
+        if (count == 0) {
+            time.append(seconds).append(' ').append(secondsWord);
+        } else if (count == 1) {
+            for (final String word : words) {
+                if (word == null) {
+                    continue;
+                }
+                time.append(word);
+            }
+        } else if (count == 2) {
+            boolean second = false;
+            for (final String word : words) {
+                if (word == null) {
+                    continue;
+                }
+                if (second) {
+                    time.append(' ').append(word);
+                } else {
+                    time.append(word).append(' ').append(Config.getMessage(lang, "and"));
+                    second = true;
+                }
+            }
+        } else {
+            time.append(words[0]).append(", ").append(words[1]).append(' ').append(Config.getMessage(lang, "and")).append(' ').append(words[2]);
+        }
+        return time.toString();
+    }
+
+    private String parseVariableDate(final String playerID) {
+        return new SimpleDateFormat(Config.getString("config.date_format"), Locale.ROOT)
+                .format(new Date((long) ((DelayData) dataMap.get(playerID)).getTime()));
+    }
+
+    private String parseVariableRawSeconds(final String playerID) {
+        final double timeLeft = ((DelayData) dataMap.get(playerID)).getTime() - new Date().getTime();
+        return String.valueOf(timeLeft / 1000 / 60);
     }
 
     public static class DelayData extends ObjectiveData {
