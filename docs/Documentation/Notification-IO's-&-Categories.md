@@ -68,10 +68,10 @@ Shows the notification using a bossbar at the top of the players screen.
 |--------|-------------|
 | barFlags | What <a href="https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/boss/BarFlag.html" target="_blank">flags</a> to add to the bossbar. `PLAY_BOSS_MUSIC` seems to be broken in either Spigot or the game itself.
 | barColor | What <a href="https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/boss/BarColor.html" target="_blank">color</a> to draw the bar. |
-| progress | What progress to show the bar. A floating point number between 0.0 (empty) and 1.0 (full) |
+| progress | What progress to show in the bar. A floating point number between 0.0 (empty) and 1.0 (full). Supports variables. |
 | style | What bar <a href="https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/boss/BarStyle.html" target="_blank">style</a> to use. |
-| stay | How many ticks to keep the bar on screen. Defaults to 70 |
-| countdown | If set, will step the progress of the bar by countdown steps. For example, if set to 10, then 10 times during the time it is on the screen the progress will drop by 1/10 |
+| stay | How many ticks to keep the bar on screen. Defaults to 70. |
+| countdown | Animates the progress of the bar if set. The value determines how often the bar is updated. Formula: $TimeBetweenUpdates = \frac{stay}{countdown}$ |
 | [Sound](#sound) | Any option from the [SoundIO](#sound). |
 
 ### Title
@@ -127,14 +127,14 @@ You should read the <a href="https://minecraft.gamepedia.com/Commands/playsound"
 as Minecraft's sound system is kinda strange. Just one example: Sound never moves in Minecraft. It's totally static.
 Keep that in mind when creating sounds close to a player. They can move around the sound and make it louder or quieter by walking towards / away from it.
 
-| Option | Description |
-|--------|-------------|
-| sound | Sound to play. If blank, no sound. Either vanilla Minecraft sounds (get them using /playsound autocompletion) or the name of a sound from a resource pack. |
-| soundcategory | The <a href="https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/SoundCategory.html" target="_blank">category</a> in which the sound will be played. |
-| soundvolume | Minecraft's <a href="https://minecraft.gamepedia.com/Commands/playsound#Arguments" target="_blank">special sound volume</a>. Default: _1_ |
-| soundpitch | Pitch of the sound. Default: _1_ Min: _0_ Max: _2_ |
-| soundlocation | Default: The player's location. A location using the BetonQuest [ULF](../Reference/#unified-location-formating). Can include variables. |
-| soundplayeroffset | This option is special. See below.
+| Option            | Description                                                                                                                                                |
+|-------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| sound             | Sound to play. If blank, no sound. Either vanilla Minecraft sounds (get them using /playsound autocompletion) or the name of a sound from a resource pack. |
+| soundcategory     | The <a href="https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/SoundCategory.html" target="_blank">category</a> in which the sound will be played.       |
+| soundvolume       | Minecraft's <a href="https://minecraft.gamepedia.com/Commands/playsound#Arguments" target="_blank">special sound volume</a>. Default: _1_                  |
+| soundpitch        | Pitch of the sound. Default: _1_ Min: _0_ Max: _2_                                                                                                         |
+| soundlocation     | Default: The player's location. A location using the BetonQuest [ULF](../Reference/#unified-location-formating). Can include variables.                    |
+| soundplayeroffset | This option is special. See below.                                                                                                                         |
 
 <h3>soundplayeroffset:</h3>
 This option can be a number or a vector.
