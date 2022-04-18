@@ -81,6 +81,7 @@ journal:
   reversed_order: 'true'
   hide_date: 'false'
   full_main_page: 'false'
+  show_in_backpack: 'true'
 journal_colors:
   date:
     day: '9'

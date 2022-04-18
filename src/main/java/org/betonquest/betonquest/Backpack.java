@@ -85,7 +85,7 @@ public class Backpack implements Listener {
         // create display
         switch (type) {
             case DEFAULT:
-                display = new Page(0);
+                display = new Page(1);
                 break;
             case CANCEL:
                 display = new Cancelers();
@@ -145,44 +145,42 @@ public class Backpack implements Listener {
      */
     @SuppressWarnings({"PMD.ShortClassName", "PMD.CyclomaticComplexity", "PMD.AvoidFieldNameMatchingTypeName"})
     private class Page extends Display {
-
         private final int page;
+        private final int pages;
+        private final int pageOffset;
+        private final boolean showJournal;
+        private final List<ItemStack> backpackItems;
 
         /**
          * Creates and displays to the player a given page.
          *
-         * @param page number of the page to display, starting from 0
+         * @param page number of the page to display, starting from 1
          */
         @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
         @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
         public Page(final int page) {
             super();
+            final boolean showJournalInBackpack = Boolean.parseBoolean(Config.getString("config.journal.show_in_backpack"));
             this.page = page;
-            final List<ItemStack> backpackItems = playerData.getBackpack();
-            // amount of pages, considering that the first contains 44 items and all others 45
-            final int pages = backpackItems.size() / 45 + 1;
-            // prepare the inventory
+            this.showJournal = showJournalInBackpack && !Journal.hasJournal(playerID);
+            this.backpackItems = playerData.getBackpack();
+            if (showJournal) {
+                backpackItems.add(0, playerData.getJournal().getAsItem());
+            }
+            this.pages = (int) Math.ceil(backpackItems.size() / 45F);
+            this.pageOffset = (page - 1) * 45;
+
             inv = Bukkit.createInventory(null, 54, Config.getMessage(lang, "backpack_title")
-                    + (pages == 1 ? "" : " (" + (page + 1) + "/" + pages + ")"));
+                    + (pages == 0 || pages == 1 ? "" : " (" + page + "/" + pages + ")"));
             final ItemStack[] content = new ItemStack[54];
-            int index = 0;
-            // insert the journal if the player doesn't have it in his inventory
-            if (page == 0) {
-                if (Journal.hasJournal(playerID)) {
-                    content[0] = null;
-                } else {
-                    content[0] = playerData.getJournal().getAsItem();
-                }
-                index++;
-            }
-            // set all the items
-            while (index < 45 && index + (page * 45) <= backpackItems.size()) {
-                final ItemStack item = backpackItems.get(index + (page * 45) - 1);
+
+            for (int index = 0; index < 45 && pageOffset + index < backpackItems.size(); index++) {
+                final ItemStack item = backpackItems.get(pageOffset + index);
                 content[index] = item;
-                index++;
             }
+
             // if there are other pages, place the buttons
-            if (page > 0) {
+            if (page > 1) {
                 ItemStack previous;
                 try {
                     previous = new QuestItem(new ItemID(Config.getDefaultPackage(), "previous_button")).generate(1);
@@ -199,7 +197,7 @@ public class Backpack implements Listener {
                 previous.setItemMeta(meta);
                 content[48] = previous;
             }
-            if (backpackItems.size() > (page + 1) * 45 - 1) {
+            if (page < pages) {
                 ItemStack next;
                 try {
                     next = new QuestItem(new ItemID(Config.getDefaultPackage(), "next_button")).generate(1);
@@ -254,24 +252,16 @@ public class Backpack implements Listener {
             Bukkit.getPluginManager().registerEvents(Backpack.this, BetonQuest.getInstance());
         }
 
-        @SuppressWarnings({"PMD.NcssCount", "PMD.CognitiveComplexity"})
+        @SuppressWarnings({"PMD.NcssCount", "PMD.CognitiveComplexity", "PMD.AvoidDeeplyNestedIfStmts"})
         @Override
         protected void click(final int slot, final int playerSlot, final ClickType click) {
-            if (page == 0 && slot == 0) {
-                // first page on first slot should contain the journal
+            if (page == 1 && slot == 0 && showJournal) {
                 playerData.getJournal().addToInv(Integer.parseInt(Config.getString("config.default_journal_slot")));
                 display = new Page(page);
             } else if (slot < 45) {
-                // raw slot lower than 45 is a quest item
-                // read the id of the item from clicked slot
-                final int slotId = page * 45 + slot - 1;
-                ItemStack item = null;
-                // get the item if it exists
-                final List<ItemStack> backpackItems = playerData.getBackpack();
+                final int slotId = pageOffset + slot;
                 if (backpackItems.size() > slotId) {
-                    item = backpackItems.get(slotId);
-                }
-                if (item != null) {
+                    final ItemStack item = backpackItems.get(slotId);
                     // if the item exists, put it in player's inventory
                     final int backpackAmount = item.getAmount();
                     int getAmount = 0;
@@ -301,7 +291,7 @@ public class Backpack implements Listener {
                         if (backpackAmount - getAmount + leftAmount == 0) {
                             backpackItems.remove(slotId);
                         }
-                        playerData.setBackpack(backpackItems);
+                        playerData.setBackpack(backpackItems.subList(showJournal ? 1 : 0, backpackItems.size()));
                     }
                     display = new Page(page);
                 }
@@ -340,10 +330,10 @@ public class Backpack implements Listener {
                     }
                     display = new Page(page);
                 }
-            } else if (slot == 48 && page > 0) {
+            } else if (slot == 48 && page > 1) {
                 // if it was a previous/next button turn the pages
                 display = new Page(page - 1);
-            } else if (slot == 50 && playerData.getBackpack().size() > (page + 1) * 45 - 1) {
+            } else if (slot == 50 && page < pages) {
                 display = new Page(page + 1);
             } else if (slot == 45) {
                 // slot 45 is a slot with quest cancelers
