@@ -15,27 +15,24 @@ public class WeatherEvent extends QuestEvent {
     private final boolean storm;
     private final boolean thunder;
 
+    @SuppressWarnings("PMD.SwitchStmtsShouldHaveDefault")
     public WeatherEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         final String part = instruction.next();
         switch (part) {
-            case "sun":
-            case "clear":
+            case "sun", "clear" -> {
                 storm = false;
                 thunder = false;
-                break;
-            case "rain":
-            case "rainy":
+            }
+            case "rain", "rainy" -> {
                 storm = true;
                 thunder = false;
-                break;
-            case "storm":
-            case "thunder":
-                storm = false;
+            }
+            case "storm", "thunder" -> {
+                storm = true;
                 thunder = true;
-                break;
-            default:
-                throw new InstructionParseException("Weather type '" + part + "' does not exist");
+            }
+            default -> throw new InstructionParseException("Weather type '" + part + "' does not exist");
         }
     }
 
