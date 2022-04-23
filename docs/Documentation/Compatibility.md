@@ -878,7 +878,7 @@ Where:
   * `npc_name_type` - Type of NPC name display. Can be one of: 'none', 'chat'
   * `npc_name_align` - For npc name type of 'chat', how to align name. One of: 'left', 'right', 'center'
   * `npc_name_format` - How to format the npc name
-  * `npc_name_newline_separator` - Should an empty line inserted after the NPC name if there is space left.
+  * `npc_name_newline_separator` - Whether an empty line is inserted after the NPC's name if there is space leftover. 
 
 Variables:
 
