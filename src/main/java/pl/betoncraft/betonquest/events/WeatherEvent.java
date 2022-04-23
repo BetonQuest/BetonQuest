@@ -31,7 +31,7 @@ public class WeatherEvent extends QuestEvent {
                 break;
             case "storm":
             case "thunder":
-                storm = false;
+                storm = true;
                 thunder = true;
                 break;
             default:
