@@ -856,6 +856,7 @@ menu_conv_io:
   npc_name_type: chat
   npc_name_align: center
   npc_name_format: '&e{npc_name}&r'
+  npc_name_newline_separator: true
 ```
 
 Where:
@@ -877,6 +878,7 @@ Where:
   * `npc_name_type` - Type of NPC name display. Can be one of: 'none', 'chat'
   * `npc_name_align` - For npc name type of 'chat', how to align name. One of: 'left', 'right', 'center'
   * `npc_name_format` - How to format the npc name
+  * `npc_name_newline_separator` - Whether an empty line is inserted after the NPC's name if there is space leftover. 
 
 Variables:
 
