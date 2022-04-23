@@ -136,6 +136,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - `command`, `sudo` and `opsudo` events - didn't work with conditions
     - `interact` objective - did not work with armorstands
     - `action` objective - for `any` block ignored location
+    - `weather` event - storm did not work
 ### Security
 - it was possible to put a QuestItem into a chest
 - bump log4j dependency 2.15.0 to fix CVE-2021-44228
