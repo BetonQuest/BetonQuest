@@ -27,7 +27,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - allow access to objective variable properties from other packages
 - allow point variables from other packages
 - API method in objective API that starts and stops it per player
-- Menu conversation io now has a option `npc_name_newline_separator`
+- `menu` conversationIO option `npc_name_newline_separator`
 - `freeze` event - ProtocolLib compatibility feature: Blocks the player from moving for the specified amount of ticks.
 - `command` objective
 - `equip` objective
