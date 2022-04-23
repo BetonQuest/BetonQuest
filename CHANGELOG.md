@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated
 ### Removed
 ### Fixed
+- `weather` event - storm did not work
 ### Security
 
 ## [1.12.8] - 2022-03-07
