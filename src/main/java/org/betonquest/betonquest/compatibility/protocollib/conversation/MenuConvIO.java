@@ -85,6 +85,7 @@ public class MenuConvIO extends ChatConvIO {
     protected String configNpcNameType = "chat";
     protected String configNpcNameAlign = "center";
     protected String configNpcNameFormat = "&e{npc_name}&r".replace('&', '§');
+    protected boolean configNpcNameNewlineSeparator = true;
     private ArmorStand stand;
 
     @SuppressWarnings("PMD.CognitiveComplexity")
@@ -117,6 +118,7 @@ public class MenuConvIO extends ChatConvIO {
             configNpcNameType = section.getString("npc_name_type", configNpcNameType);
             configNpcNameAlign = section.getString("npc_name_align", configNpcNameAlign);
             configNpcNameFormat = section.getString("npc_name_format", configNpcNameFormat).replace('&', '§');
+            configNpcNameNewlineSeparator = section.getBoolean("npc_name_newline_separator", configNpcNameNewlineSeparator);
         }
 
         // Sort out Controls
@@ -555,7 +557,7 @@ public class MenuConvIO extends ChatConvIO {
         }
 
         // We aim to try have a blank line at the top. It looks better
-        if (linesAvailable > 0) {
+        if (configNpcNameNewlineSeparator && linesAvailable > 0) {
             displayBuilder.append(" \n");
             linesAvailable--;
         }
