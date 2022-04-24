@@ -39,7 +39,7 @@ public class Downloader implements Callable<Boolean> {
     /**
      * Directory where downloaded repositories should be cached
      */
-    private static final String CACHE_DIR = "/.cache/downloader/";
+    private static final String CACHE_DIR = ".cache/downloader/";
 
     /**
      * Base URL of the GitHub refs RestAPI.
@@ -57,7 +57,7 @@ public class Downloader implements Callable<Boolean> {
     /**
      * Used to identify zip entries that are package.yml files
      */
-    private static final String PACKAGE_YML = "/package.yml";
+    private static final String PACKAGE_YML = "package.yml";
 
     /**
      * The response code 403.
@@ -67,7 +67,7 @@ public class Downloader implements Callable<Boolean> {
     /**
      * The BetonQuest Data folder that contains all plugin configuration
      */
-    private final File dataFolder;
+    private final Path dataFolder;
 
     /**
      * Namespace of the GitHub repository from which the files are to be downloaded.
@@ -121,7 +121,7 @@ public class Downloader implements Callable<Boolean> {
      * @param recurse    if true subpackages will be included recursive, if false don't
      */
     public Downloader(final File dataFolder, final String namespace, final String ref, final String offsetPath, final String sourcePath, final String targetPath, final boolean recurse) {
-        this.dataFolder = dataFolder;
+        this.dataFolder = dataFolder.toPath();
         this.namespace = namespace;
         this.ref = ref;
         this.offsetPath = offsetPath;
@@ -222,7 +222,7 @@ public class Downloader implements Callable<Boolean> {
      */
     private Path getCacheFile() {
         final String filename = CACHE_DIR + namespace + "-" + getShortRef() + "-" + sha.substring(0, 7) + ".zip";
-        return new File(dataFolder, filename).toPath();
+        return dataFolder.resolve(filename);
     }
 
     /**
@@ -248,7 +248,7 @@ public class Downloader implements Callable<Boolean> {
      */
     @SuppressWarnings("PMD.AssignmentInOperand")
     private void download() throws IOException {
-        Files.createDirectories(new File(dataFolder, CACHE_DIR).toPath());
+        Files.createDirectories(dataFolder.resolve(CACHE_DIR));
         final URL url = new URL(GITHUB_DOWNLOAD_URL
                 .replace("{namespace}", namespace)
                 .replace("{sha}", sha)
@@ -298,7 +298,16 @@ public class Downloader implements Callable<Boolean> {
      */
     private void extractEntry(final ZipInputStream input, final ZipEntry entry) throws IOException {
         final String relative = stripRootDir(entry.getName()).replace(getFullSourcePath(), "");
-        final Path newFile = new File(dataFolder, getFullTargetPath() + relative).toPath();
+        final Path newFile = dataFolder.resolve(getFullTargetPath() + relative);
+        if (!newFile.toRealPath().startsWith(dataFolder.toRealPath())) {
+            throw new IOException("'" + newFile + "' is not a child of BetonQuest data folder");
+        }
+        if (!newFile.toRealPath().startsWith(dataFolder.resolve(offsetPath).toRealPath())) {
+            throw new IOException("'" + newFile + "' is not a child of " + offsetPath + " folder");
+        }
+        if (!newFile.toRealPath().equals(dataFolder.resolve("config.yml").toRealPath())) {
+            throw new IOException("Download tried to override BetonQuest config. Aborting for security reasons!");
+        }
         Files.createDirectories(Optional.ofNullable(newFile.toAbsolutePath().getParent()).orElseThrow());
         try (OutputStream out = Files.newOutputStream(newFile, CREATE_NEW)) {
             input.transferTo(out);
@@ -406,6 +415,6 @@ public class Downloader implements Callable<Boolean> {
      */
     private String getPackageDir(final ZipEntry packageYml) {
         final String name = stripRootDir(packageYml.getName());
-        return name.substring(0, name.length() - PACKAGE_YML.length());
+        return name.substring(0, name.length() - PACKAGE_YML.length() - 1);
     }
 }

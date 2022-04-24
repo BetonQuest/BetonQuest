@@ -76,4 +76,3 @@ en:
   download_scheduled: '&bInitiated download...'
   download_success: '&aDownload completed!'
   download_failed: '&4Download failed due to the following error:\n&c{1}\n&7&osee log for more details'
-  console_only: '&cCommand must be run from console for security reasons!'
