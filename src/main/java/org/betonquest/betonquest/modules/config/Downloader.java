@@ -28,12 +28,6 @@ import java.util.zip.ZipInputStream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.nio.file.FileVisitResult.CONTINUE;
-import static java.nio.file.StandardOpenOption.CREATE;
-import static java.nio.file.StandardOpenOption.CREATE_NEW;
-import static java.nio.file.StandardOpenOption.READ;
-import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
-import static java.nio.file.StandardOpenOption.WRITE;
-
 /**
  * Download files from any public GitHub repository and extract them to your QuestPackages folder.
  */
@@ -130,7 +124,8 @@ public class Downloader implements Callable<Boolean> {
      * @param recurse    if true subpackages will be included recursive, if false don't
      * @param override   if true existing files will be overwritten, if false an exception is thrown
      */
-    public Downloader(final File dataFolder, final String namespace, final String ref, final String offsetPath, final String sourcePath, final String targetPath, final boolean recurse, final boolean override) {
+    public Downloader(final File dataFolder, final String namespace, final String ref, final String offsetPath,
+                      final String sourcePath, final String targetPath, final boolean recurse, final boolean override) {
         this.dataFolder = dataFolder.toPath();
         this.namespace = namespace;
         this.ref = ref;
@@ -261,7 +256,7 @@ public class Downloader implements Callable<Boolean> {
                 .replace("{sha}", sha)
         );
         try (BufferedInputStream input = new BufferedInputStream(url.openStream());
-             OutputStream output = Files.newOutputStream(getCacheFile(), CREATE_NEW)) {
+             OutputStream output = Files.newOutputStream(getCacheFile(), StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW)) {
             final byte[] dataBuffer = new byte[1024];
             int read;
             while ((read = input.read(dataBuffer, 0, 1024)) != -1) {
@@ -279,7 +274,7 @@ public class Downloader implements Callable<Boolean> {
     private void extract() throws IOException {
         final List<String> subPackages = listIgnoredPackagesInZip();
         boolean foundAny = false;
-        try (ZipInputStream input = new ZipInputStream(Files.newInputStream(getCacheFile(), READ))) {
+        try (ZipInputStream input = new ZipInputStream(Files.newInputStream(getCacheFile(), StandardOpenOption.READ))) {
             ZipEntry entry;
             while ((entry = input.getNextEntry()) != null) {
                 if (isChildOfPath(entry)) {
@@ -318,9 +313,9 @@ public class Downloader implements Callable<Boolean> {
         Files.createDirectories(Optional.ofNullable(newFile.toAbsolutePath().getParent()).orElseThrow());
         final StandardOpenOption[] options;
         if (override) {
-            options = new StandardOpenOption[]{WRITE, CREATE, TRUNCATE_EXISTING};
+            options = new StandardOpenOption[]{StandardOpenOption.WRITE, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING};
         } else {
-            options = new StandardOpenOption[]{WRITE, CREATE_NEW};
+            options = new StandardOpenOption[]{StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW};
         }
         try (OutputStream out = Files.newOutputStream(newFile, options)) {
             input.transferTo(out);
@@ -376,7 +371,7 @@ public class Downloader implements Callable<Boolean> {
     @SuppressWarnings("PMD.AssignmentInOperand")
     private List<String> listAllPackagesInZip() throws IOException {
         final List<String> packagesAll = new ArrayList<>();
-        try (ZipInputStream input = new ZipInputStream(Files.newInputStream(getCacheFile(), READ))) {
+        try (ZipInputStream input = new ZipInputStream(Files.newInputStream(getCacheFile(), StandardOpenOption.READ))) {
             ZipEntry entry;
             while ((entry = input.getNextEntry()) != null) {
                 if (isChildOfPath(entry) && isPackageYML(entry)) {
