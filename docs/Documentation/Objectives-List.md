@@ -136,8 +136,8 @@ next login.
 
 | Parameter   | Syntax          | Default Value          | Explanation                                                                                                                                        |
 |-------------|-----------------|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| _time_      | any number      | :octicons-x-circle-16: | The time after which the objective is completed.                                                                                                   |
-| _unit_      | keyword         | minutes                | The unit of time. Either `minutes`, `seconds` or `ticks`.                                                                                          |
+| _time_      | Any Number      | :octicons-x-circle-16: | The time after which the objective is completed.                                                                                                   |
+| _unit_      | Keyword         | minutes                | The unit of time. Either `minutes`, `seconds` or `ticks`.                                                                                          |
 | _precision_ | interval:number | interval:200           | The interval in which the objective checks if the time is up. Measured in ticks. Low values cost more performance but make the objective preciser. |
 
 !!! example annotate
@@ -172,18 +172,33 @@ add them right after type of objective.
 
 ## Fishing: `fish`
 
-Requires the player to catch something with the fishing rod. It doesn't have to be a fish, it can also be a treasure or
-junk. The first argument is a [Block Selector](./Reference.md#block-selectors) of the item to catch.
-Second argument must be the amount of fish to catch. You can also add the `notify` argument if you want to display
-progress, optionally with the notification interval after a colon.
+Requires the player to catch something with the fishing rod. It doesn't have to be a fish, it can also be any other item.
 
-The fish objective has three properties: `left` is the amount of fish still left to be caught, `amount` is the amount of
-already caught fish and `total` is the initially required amount of fish needed to be caught.
+| Parameter       | Syntax                                                             | Default Value          | Explanation                                                                                                            |
+|-----------------|--------------------------------------------------------------------|------------------------|------------------------------------------------------------------------------------------------------------------------|
+| _item_          | [Block Selector](./Reference.md#block-selectors)                   | :octicons-x-circle-16: | The item that must be caught.                                                                                          |
+| _amount_        | Any Number                                                         | :octicons-x-circle-16: | The amount that must be caught.                                                                                        |
+| _notifications_ | notify:number                                                      | notify:0               | Add `notify` to display a notification when a fish is caught. Optionally with the notification interval after a colon. |
+| _hookLocation_  | hookLocation:[Location](./Reference.md#unified-location-formating) | Everywhere             | The location at which the item must be caught. Range must also be defined.                                             |
+| _range_         | range:number                                                       | Everywhere             | The range around the location. Location must also be defined.                                                          |
 
-!!! example
+
+!!! example annotate
     ```YAML
-    fish SALMON 5 notify events:tag_fish_caught
+    fish SALMON 5 notify events:tag_fish_caught (1)
+    fish COD 5 hookLocation:123;456;789;fishWorld range:10 events:giveSpecialFish (2)
     ```
+
+1. Requires the player to catch 5 salmon. The player will get a notification for every caught fish.
+2. Requires the player to catch 5 cod. The rod's hook must be used in a 10 block radius around `x:123 y:456 z:789` in a world named `fishWorld`.
+
+<h5> Variable Properties </h5>
+
+| Name   | Example Output | Explanation                                                |
+|--------|----------------|------------------------------------------------------------|
+| left   | 4              | The amount of fish still left to be caught.                |
+| amount | 6              | The amount of already caught fish.                         |
+| total  | 10             | The initially required amount of fish needed to be caught. |
 
 ## Interact with entity: `interact`
 
