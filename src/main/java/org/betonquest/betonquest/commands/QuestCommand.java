@@ -60,6 +60,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringJoiner;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -1712,6 +1713,32 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final String offsetPath = args[3];
         final String sourcePath = args[4];
         final String targetPath = args.length < 6 ? sourcePath : args[5];
+        final String errSummary = String.format("Download from %s %s of %s/%s to %s/%s failed:",
+                githubNamespace, ref, offsetPath, sourcePath, offsetPath, targetPath);
+
+        //Check offset paths
+        if (!Set.of("QuestPackages", "QuestTemplates").contains(offsetPath)) {
+            sendMessage(sender, "download_failed", "Invalid offset path.");
+            LOG.warn(errSummary, new IllegalArgumentException(offsetPath));
+            return;
+        }
+
+        //check if repo is allowed
+        final List<String> whitelist = instance.getPluginConfig().getStringList("download.repo_whitelist");
+        if (whitelist.stream().map(String::trim).noneMatch(githubNamespace::equals)) {
+            sendMessage(sender, "download_failed", "Repository not whitelisted.");
+            LOG.warn(errSummary, new IllegalArgumentException(githubNamespace));
+            return;
+        }
+
+        //check if ref is valid
+        if (ref.toLowerCase(Locale.ROOT).startsWith("refs/pull/") && !instance.getPluginConfig().getBoolean("download.pullrequests", false)) {
+            sendMessage(sender, "download_failed", "Downloading of pull requests is disabled to prevent exploits.");
+            LOG.warn(errSummary, new IllegalArgumentException(ref));
+            return;
+        }
+
+        //run download
         final boolean recursive = args.length >= 7 && Boolean.parseBoolean(args[6]);
         final boolean override = args.length >= 8 && Boolean.parseBoolean(args[7]);
         final Downloader down = new Downloader(instance.getDataFolder(), githubNamespace, ref, offsetPath, sourcePath, targetPath, recursive, override);

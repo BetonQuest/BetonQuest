@@ -94,3 +94,7 @@ date_format: dd.MM.yyyy HH:mm
 debug:
   enabled: false
   history_in_minutes: 10
+download:
+  pullrequests: 'false'
+  repo_whitelist:
+    - BetonQuest/Quest-Tutorials
