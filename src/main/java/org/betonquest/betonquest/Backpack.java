@@ -175,7 +175,7 @@ public class Backpack implements Listener {
             final ItemStack[] content = new ItemStack[54];
 
             for (int index = 0; index < 45 && pageOffset + index < backpackItems.size(); index++) {
- content[index] = backpackItems.get(pageOffset + index);
+                content[index] = backpackItems.get(pageOffset + index);
             }
 
             // if there are other pages, place the buttons
@@ -255,7 +255,7 @@ public class Backpack implements Listener {
         @Override
         protected void click(final int slot, final int playerSlot, final ClickType click) {
             if (page == 1 && slot == 0 && showJournal) {
-                playerData.getJournal().addToInv(Integer.parseInt(Config.getString("config.default_journal_slot")));
+                playerData.getJournal().addToInv();
                 display = new Page(page);
             } else if (slot < 45) {
                 final int slotId = pageOffset + slot;
@@ -298,6 +298,7 @@ public class Backpack implements Listener {
                 // slot above 53 is player's inventory, so handle item storing
                 final ItemStack item = player.getInventory().getItem(playerSlot);
                 if (item != null) {
+                    final boolean lockJournalSlot = Boolean.parseBoolean(Config.getString("config.journal.lock_default_journal_slot"));
                     // if the item exists continue
                     if (Utils.isQuestItem(item)) {
                         // if it is a quest item, add it to the backpack
@@ -322,7 +323,7 @@ public class Backpack implements Listener {
                             item.setAmount(item.getAmount() - amount);
                             player.getInventory().setItem(playerSlot, item);
                         }
-                    } else if (Journal.isJournal(playerID, item)) {
+                    } else if (!lockJournalSlot && Journal.isJournal(playerID, item)) {
                         // if it's a journal, remove it so it appears in
                         // backpack again
                         playerData.getJournal().removeFromInv();

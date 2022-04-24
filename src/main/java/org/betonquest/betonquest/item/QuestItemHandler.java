@@ -30,6 +30,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemBreakEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -40,7 +41,7 @@ import java.util.ListIterator;
 /**
  * Handler for Journals.
  */
-@SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods", "PMD.CommentRequired"})
+@SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.CyclomaticComplexity"})
 public class QuestItemHandler implements Listener {
     private static final HandlerList HANDLERS = new HandlerList();
 
@@ -63,14 +64,18 @@ public class QuestItemHandler implements Listener {
         final String playerID = PlayerConverter.getID(event.getPlayer());
         final ItemStack item = event.getItemDrop().getItemStack();
         if (Journal.isJournal(playerID, item)) {
-            event.getItemDrop().remove();
+            if (isJournalSlotLocked()) {
+                event.setCancelled(true);
+            } else {
+                event.getItemDrop().remove();
+            }
         } else if (Utils.isQuestItem(item)) {
             BetonQuest.getInstance().getPlayerData(playerID).addItem(item.clone(), item.getAmount());
             event.getItemDrop().remove();
         }
     }
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity", "PMD.NPathComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @EventHandler(ignoreCancelled = true)
     public void onItemMove(final InventoryClickEvent event) {
@@ -81,25 +86,32 @@ public class QuestItemHandler implements Listener {
             return;
         }
         final String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
-        final ItemStack item;
+        ItemStack item = null;
         switch (event.getAction()) {
-            case MOVE_TO_OTHER_INVENTORY:
-                item = event.getCurrentItem();
-                break;
-            case PLACE_ALL:
-            case PLACE_ONE:
-            case PLACE_SOME:
-            case SWAP_WITH_CURSOR:
-                if (event.getClickedInventory().getType() == InventoryType.PLAYER) {
-                    item = null;
-                } else {
-                    item = event.getCursor();
+            case PICKUP_ALL:
+            case PICKUP_HALF:
+            case PICKUP_ONE:
+            case PICKUP_SOME:
+                if (isJournalSlotLocked() && Journal.isJournal(playerID, event.getCurrentItem())) {
+                    event.setCancelled(true);
+                    return;
                 }
                 break;
             case HOTBAR_MOVE_AND_READD:
             case HOTBAR_SWAP:
                 if (event.getClickedInventory().getType() == InventoryType.PLAYER) {
-                    item = null;
+                    if (isJournalSlotLocked()) {
+                        final ItemStack swapped;
+                        if (event.getHotbarButton() == -1 && "SWAP_OFFHAND".equals(event.getClick().name())) {
+                            swapped = event.getWhoClicked().getInventory().getItemInOffHand();
+                        } else {
+                            swapped = event.getWhoClicked().getInventory().getItem(event.getHotbarButton());
+                        }
+                        if (Journal.isJournal(playerID, event.getCurrentItem()) || Journal.isJournal(playerID, swapped)) {
+                            event.setCancelled(true);
+                            return;
+                        }
+                    }
                 } else {
                     if (event.getHotbarButton() == -1 && "SWAP_OFFHAND".equals(event.getClick().name())) {
                         item = event.getWhoClicked().getInventory().getItemInOffHand();
@@ -108,11 +120,25 @@ public class QuestItemHandler implements Listener {
                     }
                 }
                 break;
+            case MOVE_TO_OTHER_INVENTORY:
+                item = event.getCurrentItem();
+                break;
+            case PLACE_ALL:
+            case PLACE_ONE:
+            case PLACE_SOME:
+            case SWAP_WITH_CURSOR:
+                if (isJournalSlotLocked() && Journal.isJournal(playerID, event.getCurrentItem())) {
+                    event.setCancelled(true);
+                    return;
+                }
+                if (event.getClickedInventory().getType() != InventoryType.PLAYER) {
+                    item = event.getCursor();
+                }
+                break;
             default:
-                item = null;
                 break;
         }
-        if (item != null && (Journal.isJournal(playerID, item) || Utils.isQuestItem(item))) {
+        if (Journal.isJournal(playerID, item) || Utils.isQuestItem(item)) {
             event.setCancelled(true);
         }
     }
@@ -172,21 +198,23 @@ public class QuestItemHandler implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onRespawn(final PlayerRespawnEvent event) {
-        if ("false".equals(Config.getString("config.remove_items_after_respawn"))) {
-            return;
-        }
-        // some plugins block item dropping after death and add those
-        // items after respawning, so the player doesn't loose his
-        // inventory after death; this aims to force removing quest
-        // items, as they have been added to the backpack already
-        if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
-            return;
-        }
-        final Inventory inv = event.getPlayer().getInventory();
-        for (int i = 0; i < inv.getSize(); i++) {
-            if (Utils.isQuestItem(inv.getItem(i))) {
-                inv.setItem(i, null);
+        if (Boolean.parseBoolean(Config.getString("config.remove_items_after_respawn"))) {
+            // some plugins block item dropping after death and add those
+            // items after respawning, so the player doesn't loose his
+            // inventory after death; this aims to force removing quest
+            // items, as they have been added to the backpack already
+            if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
+                return;
             }
+            final Inventory inv = event.getPlayer().getInventory();
+            for (int i = 0; i < inv.getSize(); i++) {
+                if (Utils.isQuestItem(inv.getItem(i))) {
+                    inv.setItem(i, null);
+                }
+            }
+        }
+        if (Boolean.parseBoolean(Config.getString("config.journal.give_on_respawn"))) {
+            BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(event.getPlayer())).getJournal().addToInv();
         }
     }
 
@@ -265,6 +293,21 @@ public class QuestItemHandler implements Listener {
         if (Utils.isQuestItem(itemMain) || Utils.isQuestItem(itemOff)) {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerSwapHandItems(final PlayerSwapHandItemsEvent event) {
+        if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
+            return;
+        }
+        final String playerID = PlayerConverter.getID(event.getPlayer());
+        if (isJournalSlotLocked() && (Journal.isJournal(playerID, event.getMainHandItem()) || Journal.isJournal(playerID, event.getOffHandItem()))) {
+            event.setCancelled(true);
+        }
+    }
+
+    private boolean isJournalSlotLocked() {
+        return Boolean.parseBoolean(Config.getString("config.journal.lock_default_journal_slot"));
     }
 
     public HandlerList getHandlers() {
