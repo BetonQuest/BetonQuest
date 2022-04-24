@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmocore;
 
-import net.Indyuce.mmocore.api.event.PlayerPostCastSkillEvent;
+import io.lumine.mythic.lib.api.event.skill.PlayerCastSkillEvent;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
@@ -24,13 +24,13 @@ public class MMOCoreCastSkillObjective extends Objective implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onSkillCast(final PlayerPostCastSkillEvent event) {
+    public void onSkillCast(final PlayerCastSkillEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
         if (!containsPlayer(playerID) || !checkConditions(playerID)) {
             return;
         }
-        final String skillName = event.getCast().getSkill().getId();
-        if (!skillId.equalsIgnoreCase(skillName) || !event.wasSuccessful()) {
+        final String skillName = event.getCast().getHandler().getId();
+        if (!skillId.equalsIgnoreCase(skillName) || !event.getResult().isSuccessful(event.getMetadata())) {
             return;
         }
         completeObjective(playerID);
