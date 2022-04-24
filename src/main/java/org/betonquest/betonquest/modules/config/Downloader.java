@@ -16,6 +16,7 @@ import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
+import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +28,11 @@ import java.util.zip.ZipInputStream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.nio.file.FileVisitResult.CONTINUE;
+import static java.nio.file.StandardOpenOption.CREATE;
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 import static java.nio.file.StandardOpenOption.READ;
+import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
+import static java.nio.file.StandardOpenOption.WRITE;
 
 /**
  * Download files from any public GitHub repository and extract them to your QuestPackages folder.
@@ -103,6 +107,11 @@ public class Downloader implements Callable<Boolean> {
     private final boolean recurse;
 
     /**
+     * If files shall be overwritten, otherwise an exception is thrown
+     */
+    private final boolean override;
+
+    /**
      * SHA Hash of the commit to which the ref points.
      * Is null before {@link #requestCommitSHA()} has been called.
      */
@@ -119,8 +128,9 @@ public class Downloader implements Callable<Boolean> {
      * @param sourcePath what folders to download from the repo
      * @param targetPath where to put the downloaded files
      * @param recurse    if true subpackages will be included recursive, if false don't
+     * @param override   if true existing files will be overwritten, if false an exception is thrown
      */
-    public Downloader(final File dataFolder, final String namespace, final String ref, final String offsetPath, final String sourcePath, final String targetPath, final boolean recurse) {
+    public Downloader(final File dataFolder, final String namespace, final String ref, final String offsetPath, final String sourcePath, final String targetPath, final boolean recurse, final boolean override) {
         this.dataFolder = dataFolder.toPath();
         this.namespace = namespace;
         this.ref = ref;
@@ -128,11 +138,8 @@ public class Downloader implements Callable<Boolean> {
         this.sourcePath = sourcePath;
         this.targetPath = targetPath;
         this.recurse = recurse;
+        this.override = override;
     }
-
-    //TODO should result give more details than just returning true?
-
-    //TODO Refined exception handling
 
     /**
      * Run the downloader with the specified settings
@@ -309,7 +316,13 @@ public class Downloader implements Callable<Boolean> {
             throw new IOException("Download tried to override BetonQuest config. Aborting for security reasons!");
         }
         Files.createDirectories(Optional.ofNullable(newFile.toAbsolutePath().getParent()).orElseThrow());
-        try (OutputStream out = Files.newOutputStream(newFile, CREATE_NEW)) {
+        final StandardOpenOption[] options;
+        if (override) {
+            options = new StandardOpenOption[]{WRITE, CREATE, TRUNCATE_EXISTING};
+        } else {
+            options = new StandardOpenOption[]{WRITE, CREATE_NEW};
+        }
+        try (OutputStream out = Files.newOutputStream(newFile, options)) {
             input.transferTo(out);
         }
     }

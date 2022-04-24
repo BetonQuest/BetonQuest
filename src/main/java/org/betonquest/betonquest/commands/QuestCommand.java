@@ -1532,6 +1532,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         cmds.put("version", "version");
         cmds.put("purge", "purge <player>");
         cmds.put("debug", "debug [true/false/ingame]");
+        cmds.put("download", "download <gitHubNamespace> <ref> <offsetPath> <sourcePath> [targetPath] [recursive] [override]");
         if (!(sender instanceof Player)) {
             cmds.put("backup", "backup");
         }
@@ -1712,7 +1713,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final String sourcePath = args[4];
         final String targetPath = args.length < 6 ? sourcePath : args[5];
         final boolean recursive = args.length >= 7 && Boolean.parseBoolean(args[6]);
-        final Downloader down = new Downloader(instance.getDataFolder(), githubNamespace, ref, offsetPath, sourcePath, targetPath, recursive);
+        final boolean override = args.length >= 8 && Boolean.parseBoolean(args[7]);
+        final Downloader down = new Downloader(instance.getDataFolder(), githubNamespace, ref, offsetPath, sourcePath, targetPath, recursive, override);
         sendMessage(sender, "download_scheduled");
         Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
             try {
