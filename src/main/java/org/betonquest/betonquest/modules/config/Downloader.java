@@ -32,6 +32,7 @@ import static java.nio.file.FileVisitResult.CONTINUE;
  * Download files from any public GitHub repository and extract them to your QuestPackages folder.
  */
 @CustomLog(topic = "Downloader")
+@SuppressWarnings("PMD.GodClass")
 public class Downloader implements Callable<Boolean> {
 
     /**
@@ -145,7 +146,9 @@ public class Downloader implements Callable<Boolean> {
     @Override
     public Boolean call() throws Exception {
         requestCommitSHA();
-        if (!Files.exists(getCacheFile())) {
+        if (Files.exists(getCacheFile())) {
+            LOG.debug(getCacheFile() + " is already cached, reusing it");
+        } else {
             download();
             cleanupOld();
         }
@@ -162,6 +165,7 @@ public class Downloader implements Callable<Boolean> {
         final URL url = new URL(GITHUB_REFS_URL
                 .replace("{namespace}", namespace)
                 .replace("{ref}", ref));
+        LOG.debug("Requesting commit sha for " + namespace + " at " + ref + " from github api");
         final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.connect();
         final int code = connection.getResponseCode();
@@ -176,6 +180,7 @@ public class Downloader implements Callable<Boolean> {
             }
             final Optional<JsonElement> sha = Optional.ofNullable(object.getAsJsonObject().get("sha"));
             this.sha = sha.orElseThrow().getAsString();
+            LOG.debug("Commit has sha '" + this.sha + "'");
         } catch (JsonParseException | NoSuchElementException | IllegalStateException e) {
             throw new IOException("Unable to parse the JSON returned by Github API", e);
         }
@@ -262,6 +267,7 @@ public class Downloader implements Callable<Boolean> {
             while ((read = input.read(dataBuffer, 0, 1024)) != -1) {
                 output.write(dataBuffer, 0, read);
             }
+            LOG.debug("Repo has been saved to cache as " + getCacheFile());
         }
     }
 
@@ -272,7 +278,12 @@ public class Downloader implements Callable<Boolean> {
      */
     @SuppressWarnings("PMD.AssignmentInOperand")
     private void extract() throws IOException {
+        LOG.debug("Extracting downloaded files from cache");
         final List<String> subPackages = listIgnoredPackagesInZip();
+        if (!subPackages.isEmpty()) {
+            LOG.debug("Ignoring the following sub packages:");
+            subPackages.stream().map(s -> "    " + s).forEach(LOG::debug);
+        }
         boolean foundAny = false;
         try (ZipInputStream input = new ZipInputStream(Files.newInputStream(getCacheFile(), StandardOpenOption.READ))) {
             ZipEntry entry;
@@ -319,6 +330,7 @@ public class Downloader implements Callable<Boolean> {
         }
         try (OutputStream out = Files.newOutputStream(newFile, options)) {
             input.transferTo(out);
+            LOG.debug("Extracted " + newFile);
         }
     }
 
@@ -329,11 +341,13 @@ public class Downloader implements Callable<Boolean> {
      */
     private void cleanupOld() throws IOException {
         final Path cacheDir = getCacheFile().getParent();
+        LOG.debug("Cleaning up any old files from cache");
         Files.walkFileTree(cacheDir, new SimpleFileVisitor<>() {
             @Override
             public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
                 if (attrs.isRegularFile() && isCacheFile(file)) {
                     Files.delete(file);
+                    LOG.debug("Deleted " + file);
                     return CONTINUE;
                 } else {
                     return super.visitFile(file, attrs);
