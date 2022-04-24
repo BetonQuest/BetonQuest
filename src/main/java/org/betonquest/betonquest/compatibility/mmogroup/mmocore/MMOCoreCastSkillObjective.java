@@ -30,7 +30,7 @@ public class MMOCoreCastSkillObjective extends Objective implements Listener {
             return;
         }
         final String skillName = event.getCast().getHandler().getId();
-        if (!skillId.equalsIgnoreCase(skillName)) {
+        if (!skillId.equalsIgnoreCase(skillName) || !event.getResult().isSuccessful(event.getMetadata())) {
             return;
         }
         completeObjective(playerID);
