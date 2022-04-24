@@ -175,8 +175,7 @@ public class Backpack implements Listener {
             final ItemStack[] content = new ItemStack[54];
 
             for (int index = 0; index < 45 && pageOffset + index < backpackItems.size(); index++) {
-                final ItemStack item = backpackItems.get(pageOffset + index);
-                content[index] = item;
+ content[index] = backpackItems.get(pageOffset + index);
             }
 
             // if there are other pages, place the buttons
