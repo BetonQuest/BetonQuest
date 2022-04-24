@@ -1713,8 +1713,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final String offsetPath = args[3];
         final String sourcePath = args[4];
         final String targetPath = args.length < 6 ? sourcePath : args[5];
-        final String errSummary = String.format("Download from %s %s of %s/%s to %s/%s failed:",
-                githubNamespace, ref, offsetPath, sourcePath, offsetPath, targetPath);
+        final String errSummary = String.format("Download from %s %s of %s from %s to %s failed:",
+                githubNamespace, ref, offsetPath, sourcePath, targetPath);
 
         //Check offset paths
         if (!Set.of("QuestPackages", "QuestTemplates").contains(offsetPath)) {
@@ -1748,9 +1748,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 down.call();
                 sendMessage(sender, "download_success");
             } catch (Exception e) {
-                sendMessage(sender, "download_failed", e.getMessage());
-                LOG.warn(String.format("Download from %s %s of %s/%s to %s/%s failed:",
-                        githubNamespace, ref, offsetPath, sourcePath, offsetPath, targetPath), e);
+                sendMessage(sender, "download_failed", e.getClass().getSimpleName() + ": " + e.getMessage());
+                LOG.warn(String.format("Download from %s %s of %s from %s to %s failed:",
+                        githubNamespace, ref, offsetPath, sourcePath, targetPath), e);
             }
         });
     }

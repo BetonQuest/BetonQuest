@@ -44,7 +44,7 @@ public class Downloader implements Callable<Boolean> {
      * Base URL of the GitHub refs RestAPI.
      * Namespace and ref must be replaced with actual values.
      */
-    private static final String GITHUB_REFS_URL = "https://api.github.com/repos/{namespace}/git/ref/{ref}";
+    private static final String GITHUB_REFS_URL = "https://api.github.com/repos/{namespace}/git/{ref}";
 
 
     /**
@@ -59,9 +59,9 @@ public class Downloader implements Callable<Boolean> {
     private static final String PACKAGE_YML = "package.yml";
 
     /**
-     * The response code 403.
+     * The http status code 400 - Bad Request
      */
-    public static final int RESPONSE_403 = 403;
+    public static final int RESPONSE_400 = 400;
 
     /**
      * The BetonQuest Data folder that contains all plugin configuration
@@ -169,8 +169,12 @@ public class Downloader implements Callable<Boolean> {
         final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.connect();
         final int code = connection.getResponseCode();
-        if (code == RESPONSE_403) {
-            throw new IOException("It looks like too many requests were made to the github api, please wait until you have been unblocked.");
+        if (code >= RESPONSE_400) {
+            throw switch (code) {
+                case 403 -> new IOException("It looks like too many requests were made to the github api, please wait until you have been unblocked.");
+                case 404 -> new IOException("404 Not Found - are namespace and ref name correct?");
+                default -> new IOException("github api returned error code " + code);
+            };
         }
         try (InputStreamReader reader = new InputStreamReader(connection.getInputStream(), UTF_8)) {
             final JsonElement object = Optional.ofNullable(JsonParser.parseReader(reader).getAsJsonObject().get("object")).orElseThrow();
@@ -192,7 +196,7 @@ public class Downloader implements Callable<Boolean> {
      * @return full source path
      */
     private String getFullSourcePath() {
-        return offsetPath + "/" + sourcePath;
+        return offsetPath + (sourcePath.startsWith("/") ? "" : "/") + sourcePath;
     }
 
     /**
@@ -201,7 +205,7 @@ public class Downloader implements Callable<Boolean> {
      * @return full target path
      */
     private String getFullTargetPath() {
-        return offsetPath + "/" + targetPath;
+        return offsetPath + (targetPath.startsWith("/") ? "" : "/") + targetPath;
     }
 
     /**
@@ -212,10 +216,10 @@ public class Downloader implements Callable<Boolean> {
      */
     private String getShortRef() {
         String shortRef;
-        if (ref.startsWith("heads/")) {
-            shortRef = "b" + ref.substring(6);
-        } else if (ref.startsWith("tags/")) {
-            shortRef = "t" + ref.substring(5);
+        if (ref.startsWith("refs/heads/")) {
+            shortRef = "b" + ref.substring(11);
+        } else if (ref.startsWith("refs/tags/")) {
+            shortRef = "t" + ref.substring(10);
         } else {
             shortRef = "_" + ref;
         }
@@ -255,7 +259,7 @@ public class Downloader implements Callable<Boolean> {
      */
     @SuppressWarnings("PMD.AssignmentInOperand")
     private void download() throws IOException {
-        Files.createDirectories(dataFolder.resolve(CACHE_DIR));
+        Files.createDirectories(Optional.ofNullable(getCacheFile().getParent()).orElseThrow());
         final URL url = new URL(GITHUB_DOWNLOAD_URL
                 .replace("{namespace}", namespace)
                 .replace("{sha}", sha)
@@ -311,26 +315,31 @@ public class Downloader implements Callable<Boolean> {
      */
     private void extractEntry(final ZipInputStream input, final ZipEntry entry) throws IOException {
         final String relative = stripRootDir(entry.getName()).replace(getFullSourcePath(), "");
-        final Path newFile = dataFolder.resolve(getFullTargetPath() + relative);
-        if (!newFile.toRealPath().startsWith(dataFolder.toRealPath())) {
-            throw new IOException("'" + newFile + "' is not a child of BetonQuest data folder");
+        final Path newFile = dataFolder.resolve(getFullTargetPath() + relative).normalize();
+        if (!newFile.startsWith(dataFolder.normalize())) {
+            throw new SecurityException("'" + newFile + "' is not a child of BetonQuest data folder");
         }
-        if (!newFile.toRealPath().startsWith(dataFolder.resolve(offsetPath).toRealPath())) {
-            throw new IOException("'" + newFile + "' is not a child of " + offsetPath + " folder");
+        if (!newFile.startsWith(dataFolder.resolve(offsetPath).normalize())) {
+            throw new SecurityException("'" + newFile + "' is not a child of " + offsetPath + " folder");
         }
-        if (!newFile.toRealPath().equals(dataFolder.resolve("config.yml").toRealPath())) {
-            throw new IOException("Download tried to override BetonQuest config. Aborting for security reasons!");
+        if (newFile.equals(dataFolder.resolve("config.yml").normalize())) {
+            throw new SecurityException("Download tried to override BetonQuest config. Aborting for security reasons!");
         }
-        Files.createDirectories(Optional.ofNullable(newFile.toAbsolutePath().getParent()).orElseThrow());
-        final StandardOpenOption[] options;
-        if (override) {
-            options = new StandardOpenOption[]{StandardOpenOption.WRITE, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING};
+        if (entry.isDirectory()) {
+            Files.createDirectories(newFile);
         } else {
-            options = new StandardOpenOption[]{StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW};
-        }
-        try (OutputStream out = Files.newOutputStream(newFile, options)) {
-            input.transferTo(out);
-            LOG.debug("Extracted " + newFile);
+            Files.createDirectories(Optional.ofNullable(newFile.getParent()).orElseThrow());
+            final StandardOpenOption[] options;
+            if (override) {
+                options = new StandardOpenOption[]{StandardOpenOption.WRITE, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING};
+            } else {
+                options = new StandardOpenOption[]{StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW};
+            }
+            try (OutputStream out = Files.newOutputStream(newFile, options)) {
+                input.transferTo(out);
+                LOG.debug("Extracted " + newFile);
+            }
+
         }
     }
 
@@ -345,7 +354,7 @@ public class Downloader implements Callable<Boolean> {
         Files.walkFileTree(cacheDir, new SimpleFileVisitor<>() {
             @Override
             public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
-                if (attrs.isRegularFile() && isCacheFile(file)) {
+                if (attrs.isRegularFile() && isCacheFile(file) && !file.equals(getCacheFile())) {
                     Files.delete(file);
                     LOG.debug("Deleted " + file);
                     return CONTINUE;
