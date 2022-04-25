@@ -180,7 +180,7 @@ Requires the player to catch something with the fishing rod. It doesn't have to 
 | _amount_        | Any Number                                                         | :octicons-x-circle-16: | The amount that must be caught.                                                                                        |
 | _notifications_ | notify:number                                                      | notify:0               | Add `notify` to display a notification when a fish is caught. Optionally with the notification interval after a colon. |
 | _hookLocation_  | hookLocation:[Location](./Reference.md#unified-location-formating) | Everywhere             | The location at which the item must be caught. Range must also be defined.                                             |
-| _range_         | range:number                                                       | Everywhere             | The range around the location. Location must also be defined.                                                          |
+| _range_         | range:number                                                       | Everywhere             | The range around the `hookLocation`.                                                                                   |
 
 
 !!! example annotate
