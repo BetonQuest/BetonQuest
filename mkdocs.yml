@@ -92,7 +92,7 @@ extra:
     provider: mike
   analytics:
     provider: google
-    property: UA-164568470-1
+    property: G-312814001
 
   social:
     - icon: fontawesome/brands/discord
