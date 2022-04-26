@@ -10,10 +10,9 @@ copyright: '© 2020  BetonQuest Organisation. GPLv3'
 
 
 extra_css:
-  - 'webCode/css/superFences.css'
   - 'webCode/css/centered.css'
   - 'webCode/css/contentAreaFullWidth.css'
-  - 'webCode/css/admonition.css'
+
 
 extra_javascript:
   - 'webCode/js/copyLinkToClipboard.js'
@@ -36,14 +35,14 @@ theme:
       primary: indigo
       accent: teal
       toggle:
-        icon: material/lightbulb-outline
-        name: Switch to dark mode
+        icon: material/lightbulb
+        name: Switch to light mode
     - scheme: default
       primary: blue
       accent: blue
       toggle:
-        icon: material/lightbulb
-        name: Switch to light mode
+        icon: fontawesome/solid/moon
+        name: Switch to dark mode
   font:
     text: Roboto
     code: Roboto Mono
@@ -75,7 +74,8 @@ markdown_extensions:
   - pymdownx.mark
   - pymdownx.smartsymbols
   - pymdownx.superfences
-  - pymdownx.tabbed
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
@@ -90,6 +90,10 @@ plugins:
 extra:
   version:
     provider: mike
+  analytics:
+    provider: google
+    property: G-312814001
+
   social:
     - icon: fontawesome/brands/discord
       link: https://discord.gg/rK6mfHq
@@ -97,7 +101,7 @@ extra:
       link: https://patreon.com/betonquest
     - icon: fontawesome/brands/github
       link: https://github.com/BetonQuest/BetonQuest
-    - icon: fontawesome/solid/archive
+    - icon: fontawesome/solid/box-archive
       link: https://dev.betonquest.org
     - icon: fontawesome/solid/faucet
       link: https://spigotmc.org/resources/betonquest.2117/
@@ -156,6 +160,3 @@ nav:
           - '💲 Patreon': Contributing/Sponsors.md
 
 
-google_analytics:
-  - UA-164568470-1
-  - auto
