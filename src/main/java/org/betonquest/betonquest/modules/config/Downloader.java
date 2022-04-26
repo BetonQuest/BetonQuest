@@ -104,7 +104,7 @@ public class Downloader implements Callable<Boolean> {
     /**
      * If files shall be overwritten, otherwise an exception is thrown
      */
-    private final boolean override;
+    private final boolean overwrite;
 
     /**
      * SHA Hash of the commit to which the ref points.
@@ -123,10 +123,10 @@ public class Downloader implements Callable<Boolean> {
      * @param sourcePath what folders to download from the repo
      * @param targetPath where to put the downloaded files
      * @param recurse    if true subpackages will be included recursive, if false don't
-     * @param override   if true existing files will be overwritten, if false an exception is thrown
+     * @param overwrite  if true existing files will be overwritten, if false an exception is thrown
      */
     public Downloader(final File dataFolder, final String namespace, final String ref, final String offsetPath,
-                      final String sourcePath, final String targetPath, final boolean recurse, final boolean override) {
+                      final String sourcePath, final String targetPath, final boolean recurse, final boolean overwrite) {
         this.dataFolder = dataFolder.toPath();
         this.namespace = namespace;
         this.ref = ref;
@@ -134,7 +134,7 @@ public class Downloader implements Callable<Boolean> {
         this.sourcePath = sourcePath;
         this.targetPath = targetPath;
         this.recurse = recurse;
-        this.override = override;
+        this.overwrite = overwrite;
     }
 
     /**
@@ -323,14 +323,14 @@ public class Downloader implements Callable<Boolean> {
             throw new SecurityException("'" + newFile + "' is not a child of " + offsetPath + " folder");
         }
         if (newFile.equals(dataFolder.resolve("config.yml").normalize())) {
-            throw new SecurityException("Download tried to override BetonQuest config. Aborting for security reasons!");
+            throw new SecurityException("Download tried to overwrite BetonQuest config. Aborting for security reasons!");
         }
         if (entry.isDirectory()) {
             Files.createDirectories(newFile);
         } else {
             Files.createDirectories(Optional.ofNullable(newFile.getParent()).orElseThrow());
             final StandardOpenOption[] options;
-            if (override) {
+            if (overwrite) {
                 options = new StandardOpenOption[]{StandardOpenOption.WRITE, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING};
             } else {
                 options = new StandardOpenOption[]{StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW};

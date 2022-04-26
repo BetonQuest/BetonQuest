@@ -191,15 +191,28 @@ If you want to add a font style (bold, italic etc.) do so after placing a comma.
   * `number` is the option number
   * `option` is the text of an option
 
-### Conversation Settings: ChestIO 
-  * `conversation_IO_config` manages settings for individual conoversation IO's:
-    - `chest` manages settings for the chest conversation IO
-        - `show_number` will show the player number option if true (default: true)
-        - `show_npc_text` will show the npc text in every player option if true (default: true)
+### Conversation Settings: ChestIO
+
+* `conversation_IO_config` manages settings for individual conoversation IO's:
+  - `chest` manages settings for the chest conversation IO
+    - `show_number` will show the player number option if true (default: true)
+    - `show_npc_text` will show the npc text in every player option if true (default: true)
+
+### Quest downloader
+
+`download` controls security restrictions for the [`/q download`](Commands-and-permissions.md) command:
+
+* `pullrequests` defines if pull requests may be downloaded. **Only enable this if you really know what you are doing!**
+  Everyone can open pull requests that could contain malicious files and if a permission misconfiguration occurs this
+  will make your server vulnerable to attacks.
+* `repo_whitelist` is a list of trusted github repositories from which quests and templates can be downloaded.  
+  By default only or official tutorial repo [BetonQuest/Quest-Tutorials](https://github.com/BetonQuest/Quest-Tutorials)
+  is on this list.
 
 ### Misc settings
-  * `date_format` is the Java [date format](https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html) used in journal dates.
-   It needs to have a space between the day and hour.
-  * `debug` is responsible for logging the plugin's activity to _debug.log_ file in _logs_ directory. Turning this on can slow your server down.
-   However, if you experience any errors, turn this on and let the plugin gather the data and send logs to the developer.
-   Note that the first run of the plugin will be logged anyway, just as a precaution.
+
+* `date_format` is the Java [date format](https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html)
+  used in journal dates. It needs to have a space between the day and hour.
+* `debug` is responsible for logging the plugin's activity to _debug.log_ file in _logs_ directory. Turning this on can
+  slow your server down. However, if you experience any errors, turn this on and let the plugin gather the data and send
+  logs to the developer. Note that the first run of the plugin will be logged anyway, just as a precaution.

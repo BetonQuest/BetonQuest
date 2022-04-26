@@ -1533,7 +1533,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         cmds.put("version", "version");
         cmds.put("purge", "purge <player>");
         cmds.put("debug", "debug [true/false/ingame]");
-        cmds.put("download", "download <gitHubNamespace> <ref> <offsetPath> <sourcePath> [targetPath] [recursive] [override]");
+        cmds.put("download", "download <gitHubNamespace> <ref> <offsetPath> <sourcePath> [targetPath] [recursive] [overwrite]");
         if (!(sender instanceof Player)) {
             cmds.put("backup", "backup");
         }

@@ -23,7 +23,10 @@
 * **/q update** - updates the plugin to the newest version.
 * **/q version**: displays the versions of BetonQuest, the server and all hooked plugins
 * **/q debug [true/false/ingame]**: enable debug mode and write all down in a log file or disable the debug mode
-* **/questlang {lang}** - changes the language for the player (and globally if used from console). `default` language will use the language defined in _config.yml_.
+* **/q download {gitHubNamespace} {ref} {offsetPath} {sourcePath} [targetPath] [recursive] [overwrite]**: download
+  quests and templates from a github repository
+* **/questlang {lang}** - changes the language for the player (and globally if used from console). `default` language
+  will use the language defined in _config.yml_.
 
 ## Aliases
 
@@ -100,15 +103,32 @@ using ('`/q debug false`'). The `latest.log` is renamed to the current date and 
 It's useful if you search for more information about an issue and can help developers to fix bugs.
 
 The command ('`/q debug ingame`') allows you to manage your ingame debugging.
-The ingame debugging sends you live information about quests to your chat.
-Running the command without any argument shows your active filters.
-If you don't have any filters active you will see all console output from `/q reload`.
-If you have filters active you only see information from the selected packages.
-Appending a package name activates the filter for that package.
-You can also use `*` / `MyFolder-*` instead of a package name to address all packages / all packages of a folder.
-Appending a level allows you to select which types of messages are displayed.
-The default level `error` shows all `WARNINGS` and `ERRORS` from the log.
-If you want to see more information use the levels `info` or `debug`.
+The ingame debugging sends you live information about quests to your chat. Running the command without any argument
+shows your active filters. If you don't have any filters active you will see all console output from `/q reload`. If you
+have filters active you only see information from the selected packages. Appending a package name activates the filter
+for that package. You can also use `*` / `MyFolder-*` instead of a package name to address all packages / all packages
+of a folder. Appending a level allows you to select which types of messages are displayed. The default level `error`
+shows all `WARNINGS` and `ERRORS` from the log. If you want to see more information use the levels `info` or `debug`.
 Beware though, the debug level might be spammy.
 
+The download command (`/q download`) can be used to download tutorial quests & quest templates from
+the [Quest-Tutorials](https://github.com/BetonQuest/Quest-Tutorials) repository. For
+example `/q download BetonQuest/Quest-Tutorials refs/heads/main QuestPackages /` will download the (old) default quest
+and place it in the same folder. The first argument (`gitHubNamespace`) is the github repository in the format user/repo
+or organisation/repo. Before you can download from a repo you need to add the namespace to
+the [`repo_whitelist`](Configuration.md#quest-downloader) in the BetonQuest config. This is a security measure that
+prevents users from screwing up all your quests or downloading malicious files if they get the permission to run this
+command by accident. The second argument (`ref`) is a git reference to a specific commit that should be downloaded. For
+a branch (eg. `main`) it is `refs/heads/main` and for a tag it is `refs/tags/tagname`. Pull request references (
+eg. `refs/pull/1731/head`) are also possible but must be enabled in the [config](Configuration.md#quest-downloader).
+Keep in mind that anyone can open a pullrequest so use this very carefully. Third argument (`offsetPath`) is
+either `QuestPackages` or `QuestTemplates` depending on what type you want to download. As 4th argument (`sourcePath`)
+you define what folders to download from the repo. It is appended to the offsetPath to get the full Path in the repo.
+Optionally you may add some more parameters:  
+5th parameter (`targetPath`) is where in your BetonQuest folder the files shall be put, relative to either the
+QuestPackages or QuestTemplates folder defined as `offsetPath`. Then there are two further boolean parameters (
+either `true` or `false`) that allow controlling the behavior of the downloader.
+`recursive` states whether to download nested packages or templates and is disabled by default.
+`overwrite` defines if a file that already exists may be overwritten. By default an error is logged and the download is
+stopped.
 
