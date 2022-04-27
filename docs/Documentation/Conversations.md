@@ -2,34 +2,37 @@
 Each conversation must define name of the NPC 
 (some conversations can be not bound to any NPC, so it’s important to specify it even though an NPC will have a name) and his initial options.
 ```YAML
-quester: Name
-first: option1, option2
-stop: 'true'
-final_events: event1, event2
-interceptor: simple
-NPC_options:
-  option1:
-    text: Some text in default language
-    events: event3, event4
-    conditions: condition1, !condition2
-    pointers: reply1, reply2
-  option2:
-    text: '&3This ends the conversation'
-player_options:
-  reply1:
-    text:
-      en: Text in English
-      pl: Tekst po polsku
-    event: event5
-    condition: '!condition3'
-    pointer: option2
-  reply2:
-    text: 'Text containing '' character'
+conversations:
+  conversationName:
+    quester: Name
+    first: option1, option2
+    stop: 'true'
+    final_events: event1, event2
+    interceptor: simple
+    NPC_options:
+      option1:
+        text: Some text in default language
+        events: event3, event4
+        conditions: condition1, !condition2
+        pointers: reply1, reply2
+      option2:
+        text: '&3This ends the conversation'
+    player_options:
+      reply1:
+        text:
+          en: Text in English
+          pl: Tekst po polsku
+        event: event5
+        condition: '!condition3'
+        pointer: option2
+      reply2:
+        text: 'Text containing '' character'
 ```
 
 !!! note
     Configuration files use YAML syntax. Google it if you don't know anything about it. Main rule is that you must use two spaces instead of tabs when going deeper into the hierarchy tree. If you want to write `'` character, you must double it and surround the whole text with another `'` characters. When writing `true` or `false` it also needs to be surrounded with `'`. If you want to start the line with `&` character, the whole line needs to be surrounded with `'`. You can check if the file is correct using [this tool](http://www.yamllint.com).
-
+* `conversations` defines the section as a conversation section.
+* `ConversationName` is the name of the conversation, which you assign then to an NPC in the `npcs` section. Alternatively, you can combine `conversations` and `ConversationName` and use `conversations.ConversationName` instead.
 * `quester` is name of NPC. It should be the same as name of NPC this conversation is assigned to for greater immersion, but it's your call.
 * `first` are pointers to options the NPC will use at the beginning of the conversation. He will choose the first one that meets all conditions. You define these options in `npc_options` branch.
 * `final_events` are events that will fire on conversation end, no matter how it ends (so you can create e.g. guards attacking the player if he tries to run). You can leave this option out if you don't need any final events.
