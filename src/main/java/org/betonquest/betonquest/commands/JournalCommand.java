@@ -2,7 +2,6 @@ package org.betonquest.betonquest.commands;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -28,8 +27,7 @@ public class JournalCommand implements CommandExecutor {
             // command sender must be a player, console can't have journal
             if (sender instanceof Player) {
                 // giving the player his journal
-                BetonQuest.getInstance().getPlayerData(PlayerConverter.getID((Player) sender)).getJournal()
-                        .addToInv(Integer.parseInt(Config.getString("config.default_journal_slot")));
+                BetonQuest.getInstance().getPlayerData(PlayerConverter.getID((Player) sender)).getJournal().addToInv();
             }
             return true;
         }

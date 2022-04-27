@@ -28,6 +28,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - allow point variables from other packages
 - API method in objective API that starts and stops it per player
 - config option `journal.show_in_backpack` to remove the journal from the backpack
+- config option `journal.lock_default_journal_slot` to lock the journal to the `default_journal_slot`
+- config option `journal.give_on_respawn` to add the journal to the inventory after the player respawns
 - `menu` conversationIO option `npc_name_newline_separator`
 - `freeze` event - ProtocolLib compatibility feature: Blocks the player from moving for the specified amount of ticks.
 - `command` objective

@@ -362,11 +362,9 @@ public class Journal {
 
     /**
      * Adds journal to player inventory.
-     *
-     * @param slot slot number for adding the journal
      */
-    public void addToInv(final int slot) {
-        final int targetSlot = hasJournal(playerID) ? removeFromInv() : slot;
+    public void addToInv() {
+        final int targetSlot = getJournalSlot();
         generateTexts(lang);
         final Inventory inventory = PlayerConverter.getPlayer(playerID).getInventory();
         final ItemStack item = getAsItem();
@@ -387,6 +385,17 @@ public class Journal {
                 LOG.warn("The notify system was unable to play a sound for the 'inventory_full' category. Error was: '" + e.getMessage() + "'", e);
             }
         }
+    }
+
+    @SuppressWarnings("PMD.PrematureDeclaration")
+    private int getJournalSlot() {
+        final int slot = Integer.parseInt(Config.getString("config.default_journal_slot"));
+        final boolean forceJournalSlot = Boolean.parseBoolean(Config.getString("config.journal.lock_default_journal_slot"));
+        final int oldSlot = removeFromInv();
+        if (forceJournalSlot) {
+            return slot;
+        }
+        return oldSlot == -1 ? slot : oldSlot;
     }
 
     /**
@@ -451,9 +460,7 @@ public class Journal {
      */
     public void update() {
         if (hasJournal(playerID)) {
-            lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
-            final int slot = removeFromInv();
-            addToInv(slot);
+            addToInv();
         }
     }
 
