@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.config;
+package org.betonquest.betonquest.modules.downloader;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
