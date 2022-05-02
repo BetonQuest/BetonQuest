@@ -100,11 +100,12 @@ public class CitizensHologram extends BukkitRunnable {
         for (final QuestPackage pack : Config.getPackages().values()) {
             final ConfigurationSection npcsSection = pack.getConfig().getConfigurationSection("npcs");
             if (npcsSection != null) {
-                for (final String npcID : npcsSection.getKeys(false)) {
+                for (final String npcIdString : npcsSection.getKeys(false)) {
                     try {
-                        npcs.put(Integer.parseInt(npcID), new ArrayList<>());
+                        final int npcId = Integer.parseInt(npcIdString);
+                        npcs.putIfAbsent(npcId, new ArrayList<>());
                     } catch (final NumberFormatException exception) {
-                        LOG.warn(pack, "Could not parse number of NPC '" + npcID + "'");
+                        LOG.warn(pack, "Could not parse number of NPC '" + npcIdString + "'");
                     }
                 }
             }
@@ -136,12 +137,9 @@ public class CitizensHologram extends BukkitRunnable {
             if (settingsSection == null) {
                 continue;
             }
-
-            final NPCHologram hologramConfig = new NPCHologram();
-            hologramConfig.pack = pack;
-            hologramConfig.vector = getVector(pack, key, settingsSection.getString("vector"));
-            hologramConfig.conditions = initHologramsConfigConditions(pack, key, settingsSection.getString("conditions"));
-            hologramConfig.lines = settingsSection.getStringList("lines");
+            final Vector vector = getVector(pack, key, settingsSection.getString("vector"));
+            final List<String> lines = settingsSection.getStringList("lines");
+            final List<ConditionID> conditions = initHologramsConfigConditions(pack, key, settingsSection.getString("conditions"));
 
             final List<Integer> affectedNpcs = new ArrayList<>();
             for (final int id : settingsSection.getIntegerList("npcs")) {
@@ -150,7 +148,7 @@ public class CitizensHologram extends BukkitRunnable {
                 }
             }
             for (final int npcID : affectedNpcs.isEmpty() ? npcs.keySet() : affectedNpcs) {
-                npcs.get(npcID).add(hologramConfig);
+                npcs.get(npcID).add(new NPCHologram(pack, vector, lines, conditions));
             }
 
         }
@@ -282,13 +280,18 @@ public class CitizensHologram extends BukkitRunnable {
     }
 
     private static class NPCHologram {
-        private List<ConditionID> conditions;
-        private Vector vector;
-        private List<String> lines;
-        private QuestPackage pack;
+        private final QuestPackage pack;
+        private final Vector vector;
+        private final List<String> lines;
+        private final List<ConditionID> conditions;
         private Hologram hologram;
 
-        public NPCHologram() {
+        public NPCHologram(final QuestPackage pack, final Vector vector, final List<String> lines, final List<ConditionID> conditions) {
+            this.pack = pack;
+            this.vector = vector;
+            this.lines = lines;
+            this.conditions = conditions;
+            this.hologram = null;
         }
     }
 }
