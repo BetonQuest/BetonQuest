@@ -149,6 +149,9 @@ import org.betonquest.betonquest.item.QuestItemHandler;
 import org.betonquest.betonquest.mechanics.PlayerHider;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.modules.logger.LogWatcher;
+import org.betonquest.betonquest.modules.logger.LogWatcherFactory;
+import org.betonquest.betonquest.modules.logger.custom.chat.ChatHandler;
+import org.betonquest.betonquest.modules.logger.custom.debug.HistoryHandler;
 import org.betonquest.betonquest.modules.versioning.Updater;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.notify.ActionBarNotifyIO;
@@ -221,6 +224,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.time.InstantSource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -614,7 +618,10 @@ public class BetonQuest extends JavaPlugin {
 
         pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
         adventure = BukkitAudiences.create(this);
-        logWatcher = new LogWatcher(this, new File(getDataFolder(), "/logs"), config, adventure);
+
+        final HistoryHandler historyHandler = LogWatcherFactory.getHistoryHandler(this, this.getServer().getScheduler(), config, new File(getDataFolder(), "/logs"), InstantSource.system());
+        final ChatHandler chatHandler = LogWatcherFactory.getChatHandler(this, adventure);
+        logWatcher = new LogWatcher(this, historyHandler, chatHandler);
 
         // load configuration
         Config.setup(this);
@@ -1173,6 +1180,7 @@ public class BetonQuest extends JavaPlugin {
             rpgMenu.onDisable();
         }
         FreezeEvent.cleanup();
+        logWatcher.close();
     }
 
     /**

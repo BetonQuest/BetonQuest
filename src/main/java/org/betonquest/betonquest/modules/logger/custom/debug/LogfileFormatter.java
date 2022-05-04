@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.logger.custom;
+package org.betonquest.betonquest.modules.logger.custom.debug;
 
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
 
@@ -11,7 +11,7 @@ import java.util.logging.LogRecord;
 /**
  * This is a simple log formatting class.
  */
-public class DebugLogFormatter extends Formatter {
+public class LogfileFormatter extends Formatter {
 
     /**
      * The log report's timestamp.
@@ -21,7 +21,7 @@ public class DebugLogFormatter extends Formatter {
     /**
      * Default constructor.
      */
-    public DebugLogFormatter() {
+    public LogfileFormatter() {
         super();
     }
 

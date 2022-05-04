@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.logger.custom;
+package org.betonquest.betonquest.modules.logger.custom.debug;
 
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
@@ -14,10 +14,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * A test for the {@link ChatLogFormatter}.
+ * A test for the {@link LogfileFormatter}.
  */
 @ExtendWith(BetonQuestLoggerService.class)
-class ChatLogFormatterTest {
+class LogfileFormatterTest {
     /**
      * The mocked plugin instance.
      */
@@ -26,49 +26,49 @@ class ChatLogFormatterTest {
     /**
      * Default constructor.
      */
-    public ChatLogFormatterTest() {
+    public LogfileFormatterTest() {
         plugin = mock(Plugin.class);
         when(plugin.getName()).thenReturn("BetonQuest");
     }
 
     @Test
-    void testChatFormatting() {
+    void testDebugFormatting() {
         final BetonQuestLogRecord record = new BetonQuestLogRecord(plugin, null, Level.INFO, "Message1");
-        assertLogMessage(record, "{\"text\":\"§7[§8BQ§7]§r §fMessage1\"}");
+        assertLogMessage(record, "INFO]: [BetonQuest] Message1\n");
     }
 
     @Test
     void testChatFormattingLogRecord() {
         final LogRecord record = new LogRecord(Level.INFO, "Message1");
-        assertLogMessage(record, "{\"text\":\"§7[§8BQ | ?§7]§r §fMessage1\"}");
+        assertLogMessage(record, "INFO]: [?] Message1\n");
     }
 
     @Test
-    void testChatFormattingPlugin() {
+    void testDebugFormattingPlugin() {
         final Plugin plugin = mock(Plugin.class);
         when(plugin.getName()).thenReturn("CustomPlugin");
         final BetonQuestLogRecord record = new BetonQuestLogRecord(plugin, null, Level.INFO, "Message2");
-        assertLogMessage(record, "{\"text\":\"§7[§8BQ | CustomPlugin§7]§r §fMessage2\"}");
+        assertLogMessage(record, "INFO]: [CustomPlugin] Message2\n");
     }
 
     @Test
-    void testChatFormattingPackage() {
+    void testDebugFormattingPackage() {
         final QuestPackage pack = mock(QuestPackage.class);
         when(pack.getPackagePath()).thenReturn("TestPackage");
         final BetonQuestLogRecord record = new BetonQuestLogRecord(plugin, pack, Level.INFO, "Message3");
-        assertLogMessage(record, "{\"text\":\"§7[§8BQ§7]§r \\u003cTestPackage\\u003e §fMessage3\"}");
+        assertLogMessage(record, "INFO]: [BetonQuest] <TestPackage> Message3\n");
     }
 
     @Test
-    void testChatFormattingException() {
+    void testDebugFormattingException() {
         final BetonQuestLogRecord record = new BetonQuestLogRecord(plugin, null, Level.INFO, "Message4");
         record.setThrown(new NullPointerException("Exception Message"));
         final String message = getFormattedMessage(record);
-        final String start = "{\"extra\":[{\"color\":\"red\",\"clickEvent\":{\"action\":\"copy_to_clipboard\",\"value\":\"\\n"
-                + "java.lang.NullPointerException: Exception Message\\n\\";
-        final String end = "}},\"text\":\" Hover for Stacktrace!\"}],\"text\":\"§7[§8BQ§7]§r §fMessage4\"}";
+        final String start = """
+                INFO]: [BetonQuest] Message4
+                java.lang.NullPointerException: Exception Message
+                """;
         assertEquals(start, message.substring(0, start.length()), "The start of the log message is not correct formatted");
-        assertEquals(end, message.substring(message.length() - end.length()), "The end of the log message is not correct formatted");
     }
 
     private void assertLogMessage(final LogRecord record, final String expected) {
@@ -77,7 +77,7 @@ class ChatLogFormatterTest {
     }
 
     private String getFormattedMessage(final LogRecord record) {
-        final ChatLogFormatter formatter = new ChatLogFormatter(plugin, "BQ");
-        return formatter.format(record).replace("\\r\\n", "\\n").replace("\\r", "\\n");
+        final LogfileFormatter formatter = new LogfileFormatter();
+        return formatter.format(record).substring(19).replace("\r\n", "\n").replace("\r", "\n");
     }
 }

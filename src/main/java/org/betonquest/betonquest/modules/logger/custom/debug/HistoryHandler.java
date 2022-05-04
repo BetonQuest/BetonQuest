@@ -1,13 +1,13 @@
-package org.betonquest.betonquest.modules.logger.custom;
+package org.betonquest.betonquest.modules.logger.custom.debug;
 
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
+import org.betonquest.betonquest.modules.logger.custom.debug.config.DebugConfig;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.time.InstantSource;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Handler;
@@ -22,7 +22,7 @@ import java.util.logging.LogRecord;
  * The history can then be pushed to the target handler at any time.
  * It is automatically pushed if the filter returns true for any subsequent LogRecord.
  */
-public class HistoryLogHandler extends Handler {
+public class HistoryHandler extends Handler {
     /**
      * The message printed before the history is printed.
      */
@@ -43,38 +43,39 @@ public class HistoryLogHandler extends Handler {
     /**
      * The target Handler to log the history to.
      */
-    private final Handler target;
-    /**
-     * Whether debugging is enabled.
-     */
-    private final AtomicBoolean debugging;
+    private final ResettableHandler target;
 
     /**
-     * Creates a new {@link HistoryLogHandler}.
-     * <p>
-     * If expireAfterMinutes is 0, no history will be saved at all.
-     *
-     * @param plugin             the plugin, that should own the task for cleanups
-     * @param scheduler          the scheduler for the cleanup task
-     * @param target             the Handler to log the history to
-     * @param instantSource      the {@link InstantSource} to get the {@link java.time.Instant} from
-     * @param expireAfterMinutes the time a {@link LogRecord} stays in the cache
+     * The {@link DebugConfig} for this {@link Handler}.
      */
-    public HistoryLogHandler(final Plugin plugin, final BukkitScheduler scheduler, final Handler target,
-                             final InstantSource instantSource, final int expireAfterMinutes) {
+    private final DebugConfig debugConfig;
+
+    /**
+     * Creates a new {@link HistoryHandler}.
+     *
+     * @param debugConfig   the config for the settings
+     * @param plugin        the plugin, that should own the task for cleanups
+     * @param scheduler     the scheduler for the cleanup task
+     * @param target        the Handler to log the history to
+     * @param instantSource the {@link InstantSource} to get the {@link java.time.Instant} from
+     */
+    public HistoryHandler(final DebugConfig debugConfig, final Plugin plugin, final BukkitScheduler scheduler, final ResettableHandler target,
+                          final InstantSource instantSource) {
         super();
-        if (expireAfterMinutes == 0) {
+        this.debugConfig = debugConfig;
+        debugConfig.addOnStartHandler(this, new PushHistoryRunnable());
+        debugConfig.addOnStopHandler(this, new ResetTargetRunnable());
+        if (debugConfig.getExpireAfterMinutes() == 0) {
             this.records = null;
         } else {
             this.records = new ConcurrentLinkedQueue<>();
             scheduler.runTaskTimerAsynchronously(plugin, () -> {
-                while (isExpired(records.peek(), instantSource, expireAfterMinutes * 60 * 1000L)) {
+                while (isExpired(records.peek(), instantSource, debugConfig.getExpireAfterMinutes() * 60 * 1000L)) {
                     records.remove();
                 }
             }, 20, 20);
         }
         this.target = target;
-        this.debugging = new AtomicBoolean(false);
         this.publishLock = new ReentrantLock(true);
     }
 
@@ -92,7 +93,7 @@ public class HistoryLogHandler extends Handler {
         if (!(record instanceof BetonQuestLogRecord) || !isLoggable(record)) {
             return;
         }
-        if (debugging.get()) {
+        if (debugConfig.isDebugging()) {
             publishLock.lock();
             try {
                 target.publish(record);
@@ -130,34 +131,70 @@ public class HistoryLogHandler extends Handler {
      */
     @Override
     public void close() {
+        debugConfig.removeOnStartHandler(this);
         target.close();
     }
 
     /**
-     * @return True, if debugging is enabled
+     * Get the {@link DebugConfig} related to this {@link HistoryHandler}
+     *
+     * @return a {@link DebugConfig} instance
      */
-    public boolean isDebugging() {
-        return debugging.get();
+    public DebugConfig getDebugConfig() {
+        return debugConfig;
     }
 
     /**
-     * Starts writing to the latest.log file.
+     * Implementation of {@link DebugConfig.PrePostRunnable} for publishing the history.
      */
-    public void startDebug() {
-        publishLock.lock();
-        try {
-            if (debugging.compareAndSet(false, true)) {
-                push();
-            }
-        } finally {
+    private class PushHistoryRunnable implements DebugConfig.PrePostRunnable {
+        /**
+         * Default constructor.
+         */
+        public PushHistoryRunnable() {
+            // Empty
+        }
+
+        @Override
+        public void preRun() {
+            publishLock.lock();
+        }
+
+        @Override
+        public void postRun() {
             publishLock.unlock();
+        }
+
+        @Override
+        public void run() {
+            push();
         }
     }
 
     /**
-     * Stops writing to the latest.log file.
+     * Implementation for {@link DebugConfig.PrePostRunnable} for resetting the target handler.
      */
-    public void endDebug() {
-        debugging.set(false);
+    private class ResetTargetRunnable implements DebugConfig.PrePostRunnable {
+        /**
+         * Default constructor.
+         */
+        public ResetTargetRunnable() {
+            // Empty
+        }
+
+        @Override
+        public void preRun() {
+            publishLock.lock();
+        }
+
+        @Override
+        public void postRun() {
+            publishLock.unlock();
+        }
+
+        @Override
+        public void run() {
+            target.reset();
+        }
     }
 }

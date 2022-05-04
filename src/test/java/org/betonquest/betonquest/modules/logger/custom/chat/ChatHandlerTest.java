@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.logger.custom;
+package org.betonquest.betonquest.modules.logger.custom.chat;
 
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
@@ -14,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,44 +23,41 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * A test for the {@link PlayerLogHandler}.
+ * A test for the {@link ChatHandler}.
  */
 @ExtendWith(BetonQuestLoggerService.class)
-class PlayerLogHandlerTest {
-    /**
-     * The mocked plugin instance.
-     */
-    private final Plugin plugin;
-
+class ChatHandlerTest {
     /**
      * Default constructor.
      */
-    public PlayerLogHandlerTest() {
-        plugin = mock(Plugin.class);
-        when(plugin.getName()).thenReturn("BetonQuest");
+    public ChatHandlerTest() {
+        // Empty
     }
 
     @Test
-    void testLogHistory() {
+    void test() {
         try (BukkitAudiences audiences = mock(BukkitAudiences.class)) {
+            final PlayerFilter playerFilter = mock(PlayerFilter.class);
+            final UUID uuid1 = UUID.randomUUID();
+            final UUID uuid2 = UUID.randomUUID();
+            when(playerFilter.getUUIDs()).thenReturn(Set.of(uuid1, uuid2));
+            final Audience audience1 = getAudience(playerFilter, audiences, uuid1, "Package1", "Package3");
+            final Audience audience2 = getAudience(playerFilter, audiences, uuid2, "Package2", "Package3");
+
+            final ChatHandler playerHandler = new ChatHandler(playerFilter, audiences);
+            playerHandler.setFormatter(new ChatFormatter());
+
             final Logger logger = LogValidator.getSilentLogger();
-            final PlayerLogHandler playerHandler = new PlayerLogHandler(audiences);
-
-            playerHandler.setFormatter(new ChatLogFormatter(plugin, "BQ"));
             logger.addHandler(playerHandler);
-
-            final Audience audience1 = getAudience(playerHandler, audiences, "Package1", "Package3");
-            final Audience audience2 = getAudience(playerHandler, audiences, "Package2", "Package3");
 
             createLogMessages(logger);
             assertLogMessages(audience1, audience2);
         }
     }
 
-    private Audience getAudience(final PlayerLogHandler playerHandler, final BukkitAudiences audiences, final String... packs) {
-        final UUID uuid = UUID.randomUUID();
+    private Audience getAudience(final PlayerFilter playerFilter, final BukkitAudiences audiences, final UUID uuid, final String... packs) {
         for (final String pack : packs) {
-            playerHandler.addFilter(uuid, pack, Level.INFO);
+            when(playerFilter.filter(uuid, pack, Level.INFO)).thenReturn(true);
         }
 
         final Audience audience = mock(Audience.class);
@@ -74,6 +72,9 @@ class PlayerLogHandlerTest {
         when(pack1.getPackagePath()).thenReturn("Package1");
         when(pack2.getPackagePath()).thenReturn("Package2");
         when(pack3.getPackagePath()).thenReturn("Package3");
+
+        final Plugin plugin = mock(Plugin.class);
+        when(plugin.getName()).thenReturn("BetonQuest");
 
         final BetonQuestLogRecord record1 = new BetonQuestLogRecord(plugin, pack1, Level.INFO, "Message 1");
         final BetonQuestLogRecord record2 = new BetonQuestLogRecord(plugin, pack2, Level.INFO, "Message 2");
@@ -93,9 +94,9 @@ class PlayerLogHandlerTest {
 
         final PlainTextComponentSerializer serializer = PlainTextComponentSerializer.plainText();
 
-        assertEquals("§7[§8BQ§7]§r <Package1> §fMessage 1", serializer.serialize(components.get(0)), "Audience 1 should first receive 'Message 1'");
-        assertEquals("§7[§8BQ§7]§r <Package3> §fMessage 3", serializer.serialize(components.get(1)), "Audience 1 should then receive 'Message 3'");
-        assertEquals("§7[§8BQ§7]§r <Package2> §fMessage 2", serializer.serialize(components.get(2)), "Audience 2 should first receive 'Message 2'");
-        assertEquals("§7[§8BQ§7]§r <Package3> §fMessage 3", serializer.serialize(components.get(3)), "Audience 2 should then receive 'Message 3'");
+        assertEquals("<Package1> §fMessage 1", serializer.serialize(components.get(0)), "Audience 1 should first receive 'Message 1'");
+        assertEquals("<Package3> §fMessage 3", serializer.serialize(components.get(1)), "Audience 1 should then receive 'Message 3'");
+        assertEquals("<Package2> §fMessage 2", serializer.serialize(components.get(2)), "Audience 2 should first receive 'Message 2'");
+        assertEquals("<Package3> §fMessage 3", serializer.serialize(components.get(3)), "Audience 2 should then receive 'Message 3'");
     }
 }
