@@ -375,27 +375,27 @@ it:
   previous: '&2Precedente'
   next: '&2Successivo'
   inventory_full: '&e*&bIl tuo inventario è pieno!&e*'
-  changelog: '&f[BetonQuest]: &e*&bNew changelog is available in the plugin''s directory. Read the changes and delete or rename the file to dismiss this message!&e*' # TODO: missing translation
+  changelog: '&f[BetonQuest]: &e*&bLa lista dei cambiamenti è disponibile nella cartella del plugin. Leggi i cambiamenti, elimina o rinomina il file per disabilitare questo messaggio!&e*'
   pullback: '&cDevi finire la conversazione!'
   items_given: '&2Hai ricevuto {1}&2 x{2}'
   items_taken: '&2Hai perso {1}&2 x{2}'
-  money_given: '&2Received {1} {2}' # TODO: missing translation
-  money_taken: '&2Lost {1} {2}' # TODO: missing translation
-  point_given: '&2You received {1} points to {2}' # TODO: missing translation
-  point_taken: '&2You lost {1} points to {2}' # TODO: missing translation
-  point_multiplied: '&2Your points {2} are multiplied by {1}' # TODO: missing translation
+  money_given: '&2Hai ricevuto {1} {2}' 
+  money_taken: '&2Hai perso {1} {2}'
+  point_given: '&2Hai ricevuto {1} punti da {2}'
+  point_taken: '&2Hai perso {1} punti da {2}'
+  point_multiplied: '&2I tuoi punti {2} sono moltiplicati di {1}'
   blocks_to_break: '&2{1} blocchi rimasti da rompere'
   blocks_to_place: '&2{1} blocchi rimasti da piazzare'
   mobs_to_kill: '&2{1} nemici rimasti da uccidere'
-  mobs_to_click: '&2{1} mobs left to click' # TODO: missing translation
+  mobs_to_click: '&2{1} nemici rimasti da cliccare'
   players_to_kill: '&2{1} giocatori rimasti da uccidere'
   fish_to_catch: '&2{1} pesci rimasti da pescare'
   sheep_to_shear: '&2{1} pecore rimaste da tosare'
   potions_to_brew: '&2{1} pozioni da preparare'
   animals_to_breed: '&2{1} animali rimasti da far accoppiare'
-  items_to_pickup: '&2{1} items left to pickup' # TODO: missing translation
-  items_to_smelt: '&2{1} items left to smelt' # TODO: missing translation
-  items_to_craft: '&2{1} items left to craft' # TODO: missing translation
+  items_to_pickup: '&2{1} oggetti rimasti da raccogliere' 
+  items_to_smelt: '&2{1} oggetti rimasti da cuocere' 
+  items_to_craft: '&2{1} oggetti da creare' 
   busy: '&cNon puoi parlare mentre stai combattendo.'
   quest_canceled: '&2Quest {1}&2 annullata!'
   cancel: '&cAnnulla quest'
@@ -403,17 +403,17 @@ it:
   compass: '&cObiettivi bussola'
   compass_page: Scegli l'obiettivo
   command_blocked: '&cNon puoi usare questo comando mentre stai parlando.'
-  language_changed: '&2Language changed!' # TODO: missing translation
-  language_missing: '&cSpecify language' # TODO: missing translation
-  language_not_exist: '&cThis language is not defined, possible options: ' # TODO: missing translation
+  language_changed: '&2Lingua Cambiata!' 
+  language_missing: '&cSpecifica la lingua'
+  language_not_exist: '&cQuesta lingua non è presente, opzioni disponibili: '
   days: giorni
   hours: ore
   minutes: minuti
   seconds: secondi
   and: e
-  password: 'password: ' # TODO: missing translation
-  condition_variable_met: 'yes' # TODO: missing translation
-  condition_variable_not_met: 'no' # TODO: missing translation
+  password: 'password: ' 
+  condition_variable_met: 'si' 
+  condition_variable_not_met: 'no' 
 hu:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bBeszélgetés a következővel {1}&b elkezdve!&e===='
