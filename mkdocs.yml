@@ -183,6 +183,8 @@ nav:
           - 'Setting up the editor': Tutorials/Getting-Started/Setting-up-the-editor.md
           - 'YAML for questers': Tutorials/Getting-Started/YAML-for-questers.md
           - 'Learn BetonQuest': Tutorials/Getting-Started/Learn-BetonQuest.md
+      - 'Basics':
+          - '💬 Conversations': Tutorials/Basics/Conversations.md
       - 'Frequently Asked Questions':
           - 'General FAQ': Tutorials/Frequently-Asked-Questions.md
   - 'Documentation':
