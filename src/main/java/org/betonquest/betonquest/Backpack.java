@@ -2,6 +2,7 @@ package org.betonquest.betonquest;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
+import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.config.Config;
@@ -402,7 +403,7 @@ public class Backpack implements Listener {
 
         private final Map<Integer, Location> locations = new HashMap<>();
         private final Map<Integer, String> names = new HashMap<>();
-        private final Map<Integer, String> items = new HashMap<>();
+        private final Map<Integer, Pair<QuestPackage, String>> items = new HashMap<>();
 
         @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
         @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
@@ -471,7 +472,7 @@ public class Backpack implements Listener {
                         names.put(counter, name);
                         final String itemName = pack.getString("compass." + key + ".item");
                         if (itemName != null) {
-                            items.put(counter, packName + "." + itemName);
+                            items.put(counter, Pair.of(pack, itemName));
                         }
                         counter++;
                     }
@@ -490,10 +491,10 @@ public class Backpack implements Listener {
             final ItemStack[] content = new ItemStack[numberOfRows * 9];
             int index = 0;
             for (final Integer slot : locations.keySet()) {
-                final String item = items.get(slot);
+                final Pair<QuestPackage, String> item = items.get(slot);
                 ItemStack compass;
                 try {
-                    compass = new QuestItem(new ItemID(Config.getDefaultPackage(), item)).generate(1);
+                    compass = new QuestItem(new ItemID(item.getKey(), item.getValue())).generate(1);
                 } catch (final InstructionParseException e) {
                     LOG.warn("Could not load compass button: " + e.getMessage(), e);
                     player.closeInventory();
