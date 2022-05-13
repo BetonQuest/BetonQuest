@@ -113,22 +113,22 @@ Beware though, the debug level might be spammy.
 
 The download command (`/q download`) can be used to download tutorial quests & quest templates from
 the [Quest-Tutorials](https://github.com/BetonQuest/Quest-Tutorials) repository. For
-example `/q download BetonQuest/Quest-Tutorials refs/heads/main QuestPackages /` will download the (old) default quest
-and place it in the same folder. The first argument (`gitHubNamespace`) is the github repository in the format user/repo
-or organisation/repo. Before you can download from a repo you need to add the namespace to
+example `/q download BetonQuest/Quest-Tutorials refs/heads/main QuestPackages /` will download the default quest and
+place it in the same folder. The first argument (`gitHubNamespace`) is the github repository in the format user/repo or
+organisation/repo. Before you can download from a repo you need to add the namespace to
 the [`repo_whitelist`](Configuration.md#quest-downloader) in the BetonQuest config. This is a security measure that
 prevents users from screwing up all your quests or downloading malicious files if they get the permission to run this
-command by accident. The second argument (`ref`) is a git reference to a specific commit that should be downloaded. For
-a branch (eg. `main`) it is `refs/heads/main` and for a tag it is `refs/tags/tagname`. Pull request references (
+command by accident. The second argument (`ref`) is either a branch name or a git reference to a specific commit that
+should be downloaded. So for a branch (eg. `main`) both `main` and `refs/heads/main` works. For a tag it
+is `refs/tags/tagname`. Pull request references (
 eg. `refs/pull/1731/head`) are also possible but must be enabled in the [config](Configuration.md#quest-downloader).
 Keep in mind that anyone can open a pullrequest so use this very carefully. Third argument (`offsetPath`) is
 either `QuestPackages` or `QuestTemplates` depending on what type you want to download. As 4th argument (`sourcePath`)
 you define what folders to download from the repo. It is appended to the offsetPath to get the full Path in the repo.
-Optionally you may add some more parameters:  
-5th parameter (`targetPath`) is where in your BetonQuest folder the files shall be put, relative to either the
-QuestPackages or QuestTemplates folder defined as `offsetPath`. Then there are two further boolean parameters (
-either `true` or `false`) that allow controlling the behavior of the downloader.
-`recursive` states whether to download nested packages or templates and is disabled by default.
-`overwrite` defines if a file that already exists may be overwritten. By default an error is logged and the download is
-stopped.
-
+Optionally you may add a 5th parameter:
+`targetPath` is where in your BetonQuest folder the files shall be put, relative to either the QuestPackages or
+QuestTemplates folder defined as `offsetPath`.  
+Additionally you can add tags to the end of the command to control behavior of the downloader:
+If `recursive` is added [nested packages](Reference.md#structure) or templates will be downloaded while by default they
+will be skipped. The tag `overwrite` defines that already existing files may be overwritten. By default an error is
+logged and the download is stopped.

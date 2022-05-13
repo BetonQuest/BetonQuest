@@ -12,16 +12,19 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -117,7 +120,7 @@ public class Downloader implements Callable<Boolean> {
      * Call {@link #call()} to actually start the download
      *
      * @param dataFolder BetonQuest plugin data folder
-     * @param namespace  Github namespace of the repo in the format {@code user/repo} or {@code organisation/repo}.
+     * @param namespace  GitHub namespace of the repo in the format {@code user/repo} or {@code organisation/repo}.
      * @param ref        Git Tag or Git Branch
      * @param offsetPath {@code QuestPackages} or {@code QuestTemplates}
      * @param sourcePath what folders to download from the repo
@@ -159,9 +162,10 @@ public class Downloader implements Callable<Boolean> {
     /**
      * Performs a get request to the GitHub RestAPI to retrieve the SHA hash of the latest commit on the branch.
      *
-     * @throws IOException if any io error occurs while during request or parsing
+     * @throws DownloadFailedException if the download fails due to any qualified error
+     * @throws IOException             if any io error occurs during request or parsing
      */
-    private void requestCommitSHA() throws IOException {
+    private void requestCommitSHA() throws DownloadFailedException, IOException {
         final URL url = new URL(GITHUB_REFS_URL
                 .replace("{namespace}", namespace)
                 .replace("{ref}", ref));
@@ -171,16 +175,16 @@ public class Downloader implements Callable<Boolean> {
         final int code = connection.getResponseCode();
         if (code >= RESPONSE_400) {
             throw switch (code) {
-                case 403 -> new IOException("It looks like too many requests were made to the github api, please wait until you have been unblocked.");
-                case 404 -> new IOException("404 Not Found - are namespace and ref name correct?");
-                default -> new IOException("github api returned error code " + code);
+                case 403 -> new DownloadFailedException("It looks like too many requests were made to the github api, please wait until you have been unblocked.");
+                case 404 -> new DownloadFailedException("404 Not Found - are namespace and ref name correct?");
+                default -> new DownloadFailedException("github api returned error code " + code);
             };
         }
         try (InputStreamReader reader = new InputStreamReader(connection.getInputStream(), UTF_8)) {
             final JsonElement object = Optional.ofNullable(JsonParser.parseReader(reader).getAsJsonObject().get("object")).orElseThrow();
             final Optional<JsonElement> type = Optional.ofNullable(object.getAsJsonObject().get("type"));
             if (type.stream().map(JsonElement::getAsString).noneMatch("commit"::equals)) {
-                throw new IOException("ref does not point to a commit");
+                throw new DownloadFailedException("ref does not point to a commit");
             }
             final Optional<JsonElement> sha = Optional.ofNullable(object.getAsJsonObject().get("sha"));
             this.sha = sha.orElseThrow().getAsString();
@@ -232,8 +236,8 @@ public class Downloader implements Callable<Boolean> {
      * @return zip file containing the repo data
      */
     private Path getCacheFile() {
-        final String filename = CACHE_DIR + namespace + "-" + getShortRef() + "-" + sha.substring(0, 7) + ".zip";
-        return dataFolder.resolve(filename);
+        final String filename = namespace + "-" + getShortRef() + "-" + sha.substring(0, 7) + ".zip";
+        return dataFolder.resolve(CACHE_DIR).resolve(filename);
     }
 
     /**
@@ -278,16 +282,20 @@ public class Downloader implements Callable<Boolean> {
     /**
      * Extract the files placed at {@link #sourcePath} from the cached zip and place them in {@link #targetPath}
      *
-     * @throws IOException if any io error occurs while extracting the zip
+     * @throws DownloadFailedException if the download fails due to any qualified error
+     * @throws IOException             if any unhandled io error occurs while extracting the zip
      */
     @SuppressWarnings("PMD.AssignmentInOperand")
-    private void extract() throws IOException {
+    private void extract() throws DownloadFailedException, IOException {
         LOG.debug("Extracting downloaded files from cache");
-        final List<String> subPackages = listIgnoredPackagesInZip();
-        if (!subPackages.isEmpty()) {
+        final Set<String> packages = listAllPackagesInZip();
+        final List<String> ignoredPackages = filterIgnoredPackagesInZip(packages);
+        ignoredPackages.forEach(packages::remove);
+        if (!ignoredPackages.isEmpty()) {
             LOG.debug("Ignoring the following sub packages:");
-            subPackages.stream().map(s -> "    " + s).forEach(LOG::debug);
+            ignoredPackages.stream().map(s -> "    " + s).forEach(LOG::debug);
         }
+        checkAnyPackageOverwritten(packages);
         boolean foundAny = false;
         try (ZipInputStream input = new ZipInputStream(Files.newInputStream(getCacheFile(), StandardOpenOption.READ))) {
             ZipEntry entry;
@@ -295,14 +303,14 @@ public class Downloader implements Callable<Boolean> {
                 if (isChildOfPath(entry)) {
                     foundAny = true;
                     final String name = stripRootDir(entry.getName());
-                    if (recurse || subPackages.stream().noneMatch(name::startsWith)) {
+                    if (recurse || ignoredPackages.stream().noneMatch(name::startsWith)) {
                         extractEntry(input, entry);
                     }
                 }
             }
         }
         if (!foundAny) {
-            throw new IOException("repo contained no files at '" + getFullSourcePath() + "'");
+            throw new DownloadFailedException("repo contained no files at '" + getFullSourcePath() + "'");
         }
     }
 
@@ -311,11 +319,13 @@ public class Downloader implements Callable<Boolean> {
      *
      * @param input zip input stream used to read the zip file
      * @param entry entry to extract from the zip file
-     * @throws IOException if any io exception occurs while extraction
+     * @throws DownloadFailedException if the download fails due to any qualified error
+     * @throws IOException             if any unhandled io exception occurs while extraction
      */
-    private void extractEntry(final ZipInputStream input, final ZipEntry entry) throws IOException {
+    @SuppressWarnings("PMD.CyclomaticComplexity")   //just slightly above limit
+    private void extractEntry(final ZipInputStream input, final ZipEntry entry) throws DownloadFailedException, IOException {
         final String relative = stripRootDir(entry.getName()).replace(getFullSourcePath(), "");
-        final Path newFile = dataFolder.resolve(getFullTargetPath() + relative).normalize();
+        final Path newFile = dataFolder.resolve(getFullTargetPath()).resolve(relative).normalize();
         if (!newFile.startsWith(dataFolder.normalize())) {
             throw new SecurityException("'" + newFile + "' is not a child of BetonQuest data folder");
         }
@@ -338,6 +348,8 @@ public class Downloader implements Callable<Boolean> {
             try (OutputStream out = Files.newOutputStream(newFile, options)) {
                 input.transferTo(out);
                 LOG.debug("Extracted " + newFile);
+            } catch (FileAlreadyExistsException e) {
+                throw new DownloadFailedException("File already exists: " + e.getMessage(), e);
             }
 
         }
@@ -366,17 +378,16 @@ public class Downloader implements Callable<Boolean> {
     }
 
     /**
-     * Lists all subpackages that shall not be extracted from the zip.
+     * Returns only subpackages that shall not be extracted from the zip.
      * If {@link #recurse} flag is set to true an empty list will be returned as even subpackages shall be included.
      *
+     * @param packagesAll collection that contains all packages in the zip
      * @return a list of all sub packages or an empty list
-     * @throws IOException for any occurring io error
      */
-    private List<String> listIgnoredPackagesInZip() throws IOException {
+    private List<String> filterIgnoredPackagesInZip(final Collection<String> packagesAll) {
         if (recurse) {
             return List.of();
         } else {
-            final List<String> packagesAll = listAllPackagesInZip();
             return packagesAll.stream().filter(pack ->
                     packagesAll.stream()
                             .filter(other -> !other.equals(pack))
@@ -388,12 +399,12 @@ public class Downloader implements Callable<Boolean> {
     /**
      * List all packages in the cached zip file, including subpackages.
      *
-     * @return a list containing all package directories
+     * @return a mutable set containing all package directories
      * @throws IOException for any occurring io error
      */
     @SuppressWarnings("PMD.AssignmentInOperand")
-    private List<String> listAllPackagesInZip() throws IOException {
-        final List<String> packagesAll = new ArrayList<>();
+    private Set<String> listAllPackagesInZip() throws IOException {
+        final Set<String> packagesAll = new HashSet<>();
         try (ZipInputStream input = new ZipInputStream(Files.newInputStream(getCacheFile(), StandardOpenOption.READ))) {
             ZipEntry entry;
             while ((entry = input.getNextEntry()) != null) {
@@ -447,5 +458,27 @@ public class Downloader implements Callable<Boolean> {
     private String getPackageDir(final ZipEntry packageYml) {
         final String name = stripRootDir(packageYml.getName());
         return name.substring(0, name.length() - PACKAGE_YML.length() - 1);
+    }
+
+    /**
+     * Check if overwrite flag is not set and any package would be overwritten by extracting.
+     * If this is the case an exception is thrown.
+     *
+     * @param packages packages created when extracting the zip
+     * @throws DownloadFailedException exception thrown if package would get overwritten
+     */
+    private void checkAnyPackageOverwritten(final Set<String> packages) throws DownloadFailedException {
+        if (overwrite) {
+            return;
+        }
+        final Optional<Path> existing = packages.stream()
+                .map(packageName -> packageName.replace(getFullSourcePath(), ""))
+                .map(packageName -> dataFolder.resolve(getFullTargetPath()).resolve(packageName).resolve(PACKAGE_YML))
+                .filter(Files::exists)
+                .findAny();
+        if (existing.isPresent()) {
+            throw new DownloadFailedException("package already exists: "
+                    + dataFolder.resolve(offsetPath).relativize(existing.get()).getParent());
+        }
     }
 }

@@ -32,7 +32,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - config option `journal.give_on_respawn` to add the journal to the inventory after the player respawns
 - compass now supports items from other packages
 - `menu` conversationIO option `npc_name_newline_separator`
-- `freeze` event - ProtocolLib compatibility feature: Blocks the player from moving for the specified amount of ticks.
+- added `q download` command.
+- `freeze` event - ProtocolLib compatibility feature: Blocks the player from moving for the specified amount of ticks
 - `command` objective
 - `equip` objective
 - `delay` objective - now support variables
@@ -41,7 +42,6 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `bossbar` notify style now supports variables for the `progress` argument
 - `delay` objective property: `rawSeconds`
 - `fish` objective now has `hookLocation` and `range` settings.
-- added `q download` command
 - Things that are also added in 1.12.X:
     - new line support for `journal_lore` in `messages.yml`
     - FastAsyncWorldEdit compatibility
