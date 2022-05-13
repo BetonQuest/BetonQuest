@@ -70,6 +70,7 @@ import java.util.StringJoiner;
 import java.util.TreeMap;
 import java.util.UUID;
 import java.util.logging.Level;
+import java.util.stream.Stream;
 
 /**
  * Main admin command for quest editing.
@@ -368,6 +369,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 }
             case "debug":
                 return completeDebug(args);
+            case "download":
+                return completeDownload(args);
             case "version":
             case "ver":
             case "v":
@@ -375,7 +378,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "reload":
             case "backup":
             case "package":
-            case "download":
             default:
                 return new ArrayList<>();
         }
@@ -1788,6 +1790,18 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 }
             }
         });
+    }
+
+    private List<String> completeDownload(final String... args) {
+        return switch (args.length) {
+            case 2 -> instance.getPluginConfig().getStringList("download.repo_whitelist");
+            case 3 -> List.of("main", "refs/heads/", "refs/tags/");
+            case 4 -> List.of("QuestPackages", "QuestTemplates");
+            case 5 -> List.of("/");
+            case 6 -> List.of("/", "overwrite", "recursive");
+            case 7, 8 -> Stream.of("overwrite", "recursive").filter(tag -> !Arrays.asList(args).contains(tag)).toList();
+            default -> List.of();
+        };
     }
 
     private Level getLogLevel(final String arg) {
