@@ -95,6 +95,6 @@ debug:
   enabled: false
   history_in_minutes: 10
 download:
-  pullrequests: false
+  pull_requests: false
   repo_whitelist:
     - BetonQuest/Quest-Tutorials

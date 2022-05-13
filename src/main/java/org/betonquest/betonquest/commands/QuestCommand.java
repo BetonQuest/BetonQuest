@@ -1745,7 +1745,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 githubNamespace, ref, offsetPath, sourcePath, targetPath);
 
         //Check offset paths
-        if (!Set.of("QuestPackages", "QuestTemplates").contains(offsetPath)) {
+        if (!Downloader.ALLOWED_OFFSET_PATHS.contains(offsetPath)) {
             sendMessage(sender, "download_failed_offset");
             LOG.debug(errSummary, new IllegalArgumentException(offsetPath));
             return;
@@ -1760,7 +1760,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         }
 
         //check if ref is valid
-        if (ref.toLowerCase(Locale.ROOT).startsWith("refs/pull/") && !instance.getPluginConfig().getBoolean("download.pullrequests", false)) {
+        if (ref.toLowerCase(Locale.ROOT).startsWith("refs/pull/") && !instance.getPluginConfig().getBoolean("download.pull_requests", false)) {
             sendMessage(sender, "download_failed_pr");
             LOG.debug(errSummary, new IllegalArgumentException(ref));
             return;
@@ -1774,7 +1774,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             try {
                 downloader.call();
                 sendMessage(sender, "download_success");
-            } catch (DownloadFailedException e) {
+            } catch (DownloadFailedException | SecurityException e) {
                 sendMessage(sender, "download_failed", e.getMessage());
                 LOG.debug(errSummary, e);
             } catch (Exception e) {
@@ -1796,7 +1796,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         return switch (args.length) {
             case 2 -> instance.getPluginConfig().getStringList("download.repo_whitelist");
             case 3 -> List.of("main", "refs/heads/", "refs/tags/");
-            case 4 -> List.of("QuestPackages", "QuestTemplates");
+            case 4 -> Downloader.ALLOWED_OFFSET_PATHS;
             case 5 -> List.of("/");
             case 6 -> List.of("/", "overwrite", "recursive");
             case 7, 8 -> Stream.of("overwrite", "recursive").filter(tag -> !Arrays.asList(args).contains(tag)).toList();

@@ -35,7 +35,7 @@ import static java.nio.file.FileVisitResult.CONTINUE;
  * Download files from any public GitHub repository and extract them to your QuestPackages folder.
  */
 @CustomLog(topic = "Downloader")
-@SuppressWarnings("PMD.GodClass")
+@SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods"})
 public class Downloader implements Callable<Boolean> {
 
     /**
@@ -60,6 +60,12 @@ public class Downloader implements Callable<Boolean> {
      * Used to identify zip entries that are package.yml files
      */
     private static final String PACKAGE_YML = "package.yml";
+
+    /**
+     * Values that are allowed as {@link #offsetPath}.
+     * Currently, only {@code QuestPackages} and {@code QuestTemplates}
+     */
+    public static final List<String> ALLOWED_OFFSET_PATHS = List.of("QuestPackages", "QuestTemplates");
 
     /**
      * The http status code 400 - Bad Request
@@ -322,19 +328,10 @@ public class Downloader implements Callable<Boolean> {
      * @throws DownloadFailedException if the download fails due to any qualified error
      * @throws IOException             if any unhandled io exception occurs while extraction
      */
-    @SuppressWarnings("PMD.CyclomaticComplexity")   //just slightly above limit
     private void extractEntry(final ZipInputStream input, final ZipEntry entry) throws DownloadFailedException, IOException {
         final String relative = stripRootDir(entry.getName()).replace(getFullSourcePath(), "");
         final Path newFile = dataFolder.resolve(getFullTargetPath()).resolve(relative).normalize();
-        if (!newFile.startsWith(dataFolder.normalize())) {
-            throw new SecurityException("'" + newFile + "' is not a child of BetonQuest data folder");
-        }
-        if (!newFile.startsWith(dataFolder.resolve(offsetPath).normalize())) {
-            throw new SecurityException("'" + newFile + "' is not a child of " + offsetPath + " folder");
-        }
-        if (newFile.equals(dataFolder.resolve("config.yml").normalize())) {
-            throw new SecurityException("Download tried to overwrite BetonQuest config. Aborting for security reasons!");
-        }
+        checkSecurityRestrictions(newFile);
         if (entry.isDirectory()) {
             Files.createDirectories(newFile);
         } else {
@@ -352,6 +349,27 @@ public class Downloader implements Callable<Boolean> {
                 throw new DownloadFailedException("File already exists: " + e.getMessage(), e);
             }
 
+        }
+    }
+
+    /**
+     * Checks if a file at the given Path may be created by the downloader or if some security restrictions deny it.
+     * <p>
+     * Specifically the BetonQuest folder should act as a sandbox and the Downloader should not be allowed to download
+     * anything to a place outside this folder.
+     *
+     * @param newFile path of the file that the downloader tries to create
+     * @throws SecurityException if the file is outside the BetonQuest folder or would overwrite the BetonQuest config
+     */
+    private void checkSecurityRestrictions(final Path newFile) {
+        if (!newFile.startsWith(dataFolder.normalize())) {
+            throw new SecurityException("'" + newFile + "' is not a child of BetonQuest data folder");
+        }
+        if (ALLOWED_OFFSET_PATHS.stream().noneMatch(path -> newFile.startsWith(dataFolder.resolve(path).normalize()))) {
+            throw new SecurityException("'" + newFile + "' is not a valid target");
+        }
+        if (newFile.equals(dataFolder.resolve("config.yml").normalize())) {
+            throw new SecurityException("Download tried to overwrite BetonQuest config. Aborting for security reasons!");
         }
     }
 

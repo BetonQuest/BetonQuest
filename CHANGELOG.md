@@ -32,7 +32,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - config option `journal.give_on_respawn` to add the journal to the inventory after the player respawns
 - compass now supports items from other packages
 - `menu` conversationIO option `npc_name_newline_separator`
-- added `q download` command.
+- added `q download` command
 - `freeze` event - ProtocolLib compatibility feature: Blocks the player from moving for the specified amount of ticks
 - `command` objective
 - `equip` objective
