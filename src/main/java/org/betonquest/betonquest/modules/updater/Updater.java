@@ -1,32 +1,31 @@
-package org.betonquest.betonquest.modules.versioning;
+package org.betonquest.betonquest.modules.updater;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.modules.updater.source.UpdateSourceDevelopmentHandler;
+import org.betonquest.betonquest.modules.updater.source.UpdateSourceReleaseHandler;
+import org.betonquest.betonquest.modules.versioning.Version;
+import org.betonquest.betonquest.modules.versioning.VersionComparator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
-import java.util.Date;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.InstantSource;
+import java.time.temporal.TemporalAmount;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Locale;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -36,37 +35,17 @@ import java.util.UUID;
 @CustomLog
 public class Updater {
     /**
-     * The RELEASE API URL.
-     */
-    public static final String RELEASE_API_URL = "https://api.github.com/repos/BetonQuest/BetonQuest/releases";
-    /**
-     * The DEV API URL.
-     */
-    public static final String DEV_API_URL = "https://dev.betonquest.org/api/v1/";
-    /**
-     * The API URL path to the latest versions.
-     */
-    public static final String DEV_API_LATEST = DEV_API_URL + "builds/latest";
-    /**
-     * The API URL path to the real file for download.
-     */
-    public static final String DEV_API_DOWNLOAD = DEV_API_URL + "/builds/download/:version/:versionNumber/BetonQuest.jar";
-    /**
-     * The response code 403.
-     */
-    public static final int RESPONSE_403 = 403;
-    /**
      * The minimum delay when checking for updates, this prevents too many api requests when reloading the plugin often.
      */
-    private static final long CHECK_DELAY = 1000 * 60 * 10;
+    private static final TemporalAmount CHECK_DELAY = Duration.ofMinutes(10);
     /**
      * The minimum delay when we send a player a notification about a new update.
      */
-    private static final long NOTIFICATION_DELAY = 1000 * 60 * 60 * 20;
+    private static final TemporalAmount NOTIFICATION_DELAY = Duration.ofHours(20);
     /**
      * The indicator for dev versions.
      */
-    private static final String DEV_INDICATOR = "DEV-";
+    private static final String DEV_INDICATOR = "DEV";
     /**
      * The plugins {@link ConfigurationFile} for the debugging settings.
      */
@@ -78,7 +57,10 @@ public class Updater {
     /**
      * The last timestamp, when a player was notified.
      */
-    private final Map<UUID, Long> lastNotification = new HashMap<>();
+    private final Map<UUID, Instant> lastNotification = new HashMap<>();
+    private final InstantSource instantSource;
+    private final List<UpdateSourceReleaseHandler> releaseHandlerList;
+    private final List<UpdateSourceDevelopmentHandler> developmentHandlerList;
     /**
      * The latest version, the key is a {@link Version} and the value is the URL for the download.
      * If the URL is empty, the version is the current installed one or the already downloaded one.
@@ -87,7 +69,7 @@ public class Updater {
     /**
      * The last timestamp, when an update was searched.
      */
-    private long lastCheck;
+    private Instant lastCheck;
     /**
      * The update notification
      */
@@ -96,14 +78,21 @@ public class Updater {
     /**
      * Create a new Updater instance.
      *
-     * @param config         The config file that contains the updater config section.
-     * @param file           The file of the plugin in the plugin's folder.
-     * @param currentVersion The current plugin version.
+     * @param config                 The config file that contains the updater config section.
+     * @param file                   The file of the plugin in the plugin's folder.
+     * @param currentVersion         The current plugin version.
+     * @param releaseHandlerList     A list of {@link UpdateSourceReleaseHandler}
+     * @param developmentHandlerList A list of {@link UpdateSourceDevelopmentHandler}
      */
-    public Updater(final ConfigurationFile config, final File file, final Version currentVersion) {
+    public Updater(final ConfigurationFile config, final File file, final Version currentVersion,
+                   final List<UpdateSourceReleaseHandler> releaseHandlerList,
+                   final List<UpdateSourceDevelopmentHandler> developmentHandlerList, final InstantSource instantSource) {
         this.config = config;
         this.fileName = file.getName();
         this.latest = Pair.of(currentVersion, null);
+        this.instantSource = instantSource;
+        this.releaseHandlerList = releaseHandlerList;
+        this.developmentHandlerList = developmentHandlerList;
         searchUpdate();
     }
 
@@ -114,20 +103,20 @@ public class Updater {
         final String automaticDone = "it was downloaded and will be " + automatic;
         final String command = "it will be installed, if you execute '/q update'!";
 
-        updateNotification = isUpdateAvailable() && config.ingameNotification ? version + (config.automatic ? automaticDone : command) : null;
-        return version + (config.automatic ? automaticProgress : command);
+        updateNotification = version + (config.isAutomatic() ? automaticDone : command);
+        return version + (config.isAutomatic() ? automaticProgress : command);
     }
 
     /**
      * Starts an asynchronous search for updates.
      */
     public final void searchUpdate() {
-        final UpdaterConfig config = new UpdaterConfig();
-        if (!config.enabled) {
+        final UpdaterConfig config = new UpdaterConfig(this.config, latest.getKey(), DEV_INDICATOR);
+        if (!config.isEnabled()) {
             return;
         }
-        final long currentTime = new Date().getTime();
-        if (lastCheck + CHECK_DELAY > currentTime) {
+        final Instant currentTime = instantSource.instant();
+        if (lastCheck != null && lastCheck.plus(CHECK_DELAY).isAfter(currentTime)) {
             return;
         }
         lastCheck = currentTime;
@@ -135,9 +124,8 @@ public class Updater {
         Bukkit.getScheduler().runTaskAsynchronously(BetonQuest.getInstance(), () -> {
             searchUpdateTask(config);
             if (latest.getValue() != null) {
-
                 LOG.info(getUpdateNotification(config));
-                if (config.automatic) {
+                if (config.isAutomatic()) {
                     update(Bukkit.getConsoleSender());
                 }
             }
@@ -152,7 +140,7 @@ public class Updater {
         } catch (final IOException e) {
             LOG.warn("Could not get the latest release! " + e.getMessage(), e);
         }
-        if (!(isUpdateAvailable() && config.forcedStrategy) && config.downloadDev) {
+        if (!(isUpdateAvailable() && config.isForcedStrategy()) && config.isDevDownloadEnabled()) {
             try {
                 searchUpdateTaskDev(config);
             } catch (final UnknownHostException e) {
@@ -164,38 +152,26 @@ public class Updater {
     }
 
     private void searchUpdateTaskRelease(final UpdaterConfig config) throws IOException {
-        final JSONArray releaseArray = new JSONArray(readStringFromURL(RELEASE_API_URL));
-        for (int index = 0; index < releaseArray.length(); index++) {
-            final JSONObject release = releaseArray.getJSONObject(index);
-            final Version version = new Version(release.getString("tag_name").substring(1));
-            final JSONArray assetsArray = release.getJSONArray("assets");
-            for (int i = 0; i < assetsArray.length(); i++) {
-                final JSONObject asset = assetsArray.getJSONObject(i);
-                if ("BetonQuest.jar".equals(asset.getString("name"))) {
-                    final String url = asset.getString("browser_download_url");
-                    final VersionComparator comparator = new VersionComparator(config.strategy);
-                    if (comparator.isOtherNewerThanCurrent(latest.getKey(), version)) {
-                        latest = Pair.of(version, url);
-                    }
-                }
-            }
+        for (final UpdateSourceReleaseHandler updateSourceReleaseHandler : releaseHandlerList) {
+            compareVersionList(config, updateSourceReleaseHandler.getReleaseVersions());
         }
     }
 
     private void searchUpdateTaskDev(final UpdaterConfig config) throws IOException {
-        final JSONObject json = new JSONObject(readStringFromURL(DEV_API_LATEST));
-        final Iterator<String> keys = json.keys();
-        while (keys.hasNext()) {
-            final String key = keys.next();
-            final String dev = json.getString(key);
-            final Version version = new Version(key + "-DEV-" + dev);
-            final String url = DEV_API_DOWNLOAD.replace(":versionNumber", dev).replace(":version", key);
-            final VersionComparator comparator = new VersionComparator(config.strategy, "DEV-");
-            if (comparator.isOtherNewerThanCurrent(latest.getKey(), version)) {
-                latest = Pair.of(version, url);
+        for (final UpdateSourceDevelopmentHandler updateSourceDevelopmentHandler : developmentHandlerList) {
+            compareVersionList(config, updateSourceDevelopmentHandler.getDevelopmentVersions());
+        }
+    }
+
+    private void compareVersionList(final UpdaterConfig config, final Map<Version, String> versionList) {
+        for (final Map.Entry<Version, String> entry : versionList.entrySet()) {
+            final VersionComparator comparator = new VersionComparator(config.getStrategy(), DEV_INDICATOR + "-");
+            if (comparator.isOtherNewerThanCurrent(latest.getKey(), entry.getKey())) {
+                latest = Pair.of(entry.getKey(), entry.getValue());
             }
         }
     }
+
 
     /**
      * Return if a new version is available.
@@ -224,9 +200,9 @@ public class Updater {
      * @param player The player, that should receive the message.
      */
     public void sendUpdateNotification(final Player player) {
-        if (updateNotification != null && isUpdateAvailable()) {
-            final long currentTime = new Date().getTime();
-            if (lastNotification.getOrDefault(player.getUniqueId(), 0L) + NOTIFICATION_DELAY > currentTime) {
+        if (isUpdateAvailable()) {
+            final Instant currentTime = instantSource.instant();
+            if (lastNotification.containsKey(player.getUniqueId()) && lastNotification.get(player.getUniqueId()).plus(NOTIFICATION_DELAY).isAfter(currentTime)) {
                 return;
             }
             lastNotification.put(player.getUniqueId(), currentTime);
@@ -242,8 +218,8 @@ public class Updater {
     public void update(final CommandSender sender) {
         Bukkit.getScheduler().runTaskAsynchronously(BetonQuest.getInstance(), () -> {
             try {
-                final UpdaterConfig config = new UpdaterConfig();
-                if (!config.enabled) {
+                final UpdaterConfig config = new UpdaterConfig(this.config, latest.getKey(), DEV_INDICATOR);
+                if (!config.isEnabled()) {
                     throw new QuestRuntimeException("The updater is disabled! Change config entry 'update.enabled' to 'true' to enable it.");
                 }
                 final Version version = latest.getKey();
@@ -292,7 +268,7 @@ public class Updater {
             if (!file.createNewFile()) {
                 throw new QuestRuntimeException("The updater could not create the file '" + file.getName() + "'!");
             }
-            updateDownloadToFileFromURL(file);
+            downloadToFileFromURL(latest.getValue(), file);
             if (!file.renameTo(new File(folder, fileName))) {
                 throw new QuestRuntimeException("Could not rename the downloaded file."
                         + " Try running '/q update' again. If it still does not work use a manual download.");
@@ -312,90 +288,7 @@ public class Updater {
         }
     }
 
-    private void updateDownloadToFileFromURL(final File file) throws IOException {
-        FileUtils.copyURLToFile(new URL(latest.getValue()), file, 5000, 5000);
-    }
-
-    private String readStringFromURL(final String stringUrl) throws IOException {
-        final URL url = new URL(stringUrl);
-        final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.connect();
-        final int code = connection.getResponseCode();
-        if (code == RESPONSE_403) {
-            throw new IOException("It looks like too many requests were made to the update server, please wait until you have been unblocked.");
-        }
-        try (InputStream inputStream = connection.getInputStream()) {
-            final String result = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-            connection.disconnect();
-            return result;
-        }
-    }
-
-    /**
-     * Represent the Updater related configuration.
-     */
-    private class UpdaterConfig {
-        /**
-         * Indicator for dev {@link UpdateStrategy}.
-         */
-        private static final String DEV_INDICATOR = "_DEV";
-        /**
-         * True, if the updater is enabled.
-         */
-        private final boolean enabled;
-        /**
-         * The selected {@link UpdateStrategy}.
-         */
-        private final UpdateStrategy strategy;
-        /**
-         * True if dev versions should be downloaded.
-         */
-        private final boolean downloadDev;
-        /**
-         * True, if updated should be downloaded automatic.
-         */
-        private final boolean automatic;
-        /**
-         * Should the player be notified ingame.
-         */
-        private final boolean ingameNotification;
-        /**
-         * True, if the {@link UpdateStrategy} was forced to a DEV UpdateStrategy.
-         */
-        private final boolean forcedStrategy;
-
-        /**
-         * Reads the configuration file.
-         */
-        @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-        public UpdaterConfig() {
-            enabled = config.getBoolean("update.enabled", true);
-            ingameNotification = config.getBoolean("update.ingameNotification", true);
-
-            String updateStrategy = config.getString("update.strategy", "MINOR").toUpperCase(Locale.ROOT);
-            boolean downloadDev = updateStrategy.endsWith(DEV_INDICATOR);
-            if (downloadDev) {
-                updateStrategy = updateStrategy.substring(0, updateStrategy.length() - DEV_INDICATOR.length());
-            }
-            UpdateStrategy strategy;
-            try {
-                strategy = UpdateStrategy.valueOf(updateStrategy);
-            } catch (final IllegalArgumentException exception) {
-                LOG.error("Could not parse 'update.strategy' in 'config.yml'!", exception);
-                strategy = UpdateStrategy.MINOR;
-            }
-            this.strategy = strategy;
-
-            final boolean isDev = Updater.DEV_INDICATOR.equals(latest.getKey().getQualifier());
-            if (isDev && !downloadDev || !isDev && latest.getKey().hasQualifier()) {
-                downloadDev = true;
-                automatic = false;
-                forcedStrategy = true;
-            } else {
-                automatic = config.getBoolean("update.automatic", false);
-                forcedStrategy = false;
-            }
-            this.downloadDev = downloadDev;
-        }
+    private void downloadToFileFromURL(final String url, final File file) throws IOException {
+        FileUtils.copyURLToFile(new URL(url), file, 5000, 5000);
     }
 }
