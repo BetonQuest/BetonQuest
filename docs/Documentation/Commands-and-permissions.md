@@ -113,7 +113,7 @@ Beware though, the debug level might be spammy.
 
 The download command (`/q download`) can be used to download tutorial quests & quest templates from
 the [Quest-Tutorials](https://github.com/BetonQuest/Quest-Tutorials) repository. For
-example `/q download BetonQuest/Quest-Tutorials refs/heads/main QuestPackages /` will download the default quest and
+example `/q download BetonQuest/Quest-Tutorials main QuestPackages /` will download the default quest and
 place it in the same folder. The first argument (`gitHubNamespace`) is the github repository in the format user/repo or
 organisation/repo. Before you can download from a repo you need to add the namespace to
 the [`repo_whitelist`](Configuration.md#quest-downloader) in the BetonQuest config. This is a security measure that
