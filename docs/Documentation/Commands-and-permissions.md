@@ -23,7 +23,7 @@
 * **/q update** - updates the plugin to the newest version.
 * **/q version**: displays the versions of BetonQuest, the server and all hooked plugins
 * **/q debug [true/false/ingame]**: enable debug mode and write all down in a log file or disable the debug mode
-* **/q download {gitHubNamespace} {ref} {offsetPath} {sourcePath} [targetPath] [recursive] [overwrite]**: download
+* **/q download {gitHubNamespace} {ref} {type} {sourcePath} [targetPath] [recursive] [overwrite]**: download
   quests and templates from a github repository
 * **/questlang {lang}** - changes the language for the player (and globally if used from console). `default` language
   will use the language defined in _config.yml_.
@@ -122,12 +122,12 @@ command by accident. The second argument (`ref`) is either a branch name or a gi
 should be downloaded. So for a branch (eg. `main`) both `main` and `refs/heads/main` works. For a tag it
 is `refs/tags/tagname`. Pull request references (
 eg. `refs/pull/1731/head`) are also possible but must be enabled in the [config](Configuration.md#quest-downloader).
-Keep in mind that anyone can open a pullrequest so use this very carefully. Third argument (`offsetPath`) is
+Keep in mind that anyone can open a pullrequest so use this very carefully. Third argument (`type`) is
 either `QuestPackages` or `QuestTemplates` depending on what type you want to download. As 4th argument (`sourcePath`)
-you define what folders to download from the repo. It is appended to the offsetPath to get the full Path in the repo.
+you define what folders to download from the repo. It is appended to the type to get the full Path in the repo.
 Optionally you may add a 5th parameter:
 `targetPath` is where in your BetonQuest folder the files shall be put, relative to either the QuestPackages or
-QuestTemplates folder defined as `offsetPath`.  
+QuestTemplates folder defined as `type`.  
 Additionally you can add tags to the end of the command to control behavior of the downloader:
 If `recursive` is added [nested packages](Reference.md#structure) or templates will be downloaded while by default they
 will be skipped. The tag `overwrite` defines that already existing files may be overwritten. By default an error is
