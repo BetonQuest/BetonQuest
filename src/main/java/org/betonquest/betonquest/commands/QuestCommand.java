@@ -2,9 +2,11 @@ package org.betonquest.betonquest.commands;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Journal;
@@ -29,7 +31,11 @@ import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.item.QuestItem;
+import org.betonquest.betonquest.modules.downloader.DownloadFailedException;
+import org.betonquest.betonquest.modules.downloader.Downloader;
+import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
 import org.betonquest.betonquest.modules.logger.LogWatcher;
+import org.betonquest.betonquest.modules.logger.custom.ChatLogFormatter;
 import org.betonquest.betonquest.modules.logger.custom.HistoryLogHandler;
 import org.betonquest.betonquest.modules.logger.custom.PlayerLogHandler;
 import org.betonquest.betonquest.modules.versioning.Updater;
@@ -59,10 +65,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringJoiner;
 import java.util.TreeMap;
 import java.util.UUID;
 import java.util.logging.Level;
+import java.util.stream.Stream;
 
 /**
  * Main admin command for quest editing.
@@ -74,12 +82,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     private final BetonQuest instance = BetonQuest.getInstance();
     private String defaultPack = Config.getString("config.default_package");
+    private final BukkitAudiences bukkitAudiences;
 
     /**
      * Registers a new executor and a new tab completer of the /betonquest command.
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public QuestCommand() {
+    public QuestCommand(final BukkitAudiences bukkitAudiences) {
+        this.bukkitAudiences = bukkitAudiences;
         BetonQuest.getInstance().getCommand("betonquest").setExecutor(this);
         BetonQuest.getInstance().getCommand("betonquest").setTabCompleter(this);
     }
@@ -279,6 +289,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 case "debug":
                     handleDebug(sender, args);
                     break;
+                case "download":
+                    handleDownload(sender, args);
+                    break;
                 default:
                     // there was an unknown argument, so handle this
                     sendMessage(sender, "unknown_argument");
@@ -296,7 +309,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         if (args.length == 1) {
             return Arrays.asList("condition", "event", "item", "give", "objective", "globaltag",
                     "globalpoint", "tag", "point", "journal", "delete", "rename", "version", "purge",
-                    "update", "reload", "backup", "debug");
+                    "update", "reload", "backup", "debug", "download");
         }
         switch (args[0].toLowerCase(Locale.ROOT)) {
             case "conditions":
@@ -356,6 +369,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 }
             case "debug":
                 return completeDebug(args);
+            case "download":
+                return completeDownload(args);
             case "version":
             case "ver":
             case "v":
@@ -1527,6 +1542,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         cmds.put("version", "version");
         cmds.put("purge", "purge <player>");
         cmds.put("debug", "debug [true/false/ingame]");
+        cmds.put("download", "download <gitHubNamespace> <ref> <offsetPath> <sourcePath> [targetPath] [recursive] [overwrite]");
         if (!(sender instanceof Player)) {
             cmds.put("backup", "backup");
         }
@@ -1693,6 +1709,99 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         sendMessage(sender, "unknown_argument");
+    }
+
+    @SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.SwitchStmtsShouldHaveDefault"})
+    private void handleDownload(final CommandSender sender, final String... args) {
+        if (args.length < 5) {
+            sendMessage(sender, "arguments");
+            return;
+        }
+        final String sourcePath = args[4];
+        final String targetPath;
+        boolean recursive = false;
+        boolean overwrite = false;
+        if (args.length < 6 || Set.of("recursive", "overwrite").contains(args[5])) {
+            targetPath = sourcePath;
+        } else {
+            targetPath = args[5];
+        }
+        for (int i = 5; i < args.length; i++) {
+            switch (args[i].toLowerCase(Locale.ROOT)) {
+                case "recursive" -> recursive = true;
+                case "overwrite" -> overwrite = true;
+                default -> {
+                    if (i > 5) {
+                        sendMessage(sender, "unknown_argument");
+                        return;
+                    }
+                }
+            }
+        }
+        final String githubNamespace = args[1];
+        final String ref = args[2].startsWith("refs/") ? args[2] : "refs/heads/" + args[2];
+        final String offsetPath = args[3];
+        final String errSummary = String.format("Download from %s ref %s of %s at %s to %s failed:",
+                githubNamespace, ref, offsetPath, sourcePath, targetPath);
+
+        //Check offset paths
+        if (!Downloader.ALLOWED_OFFSET_PATHS.contains(offsetPath)) {
+            sendMessage(sender, "download_failed_offset");
+            LOG.debug(errSummary, new IllegalArgumentException(offsetPath));
+            return;
+        }
+
+        //check if repo is allowed
+        final List<String> whitelist = instance.getPluginConfig().getStringList("download.repo_whitelist");
+        if (whitelist.stream().map(String::trim).noneMatch(githubNamespace::equals)) {
+            sendMessage(sender, "download_failed_whitelist");
+            LOG.debug(errSummary, new IllegalArgumentException(githubNamespace));
+            return;
+        }
+
+        //check if ref is valid
+        if (ref.toLowerCase(Locale.ROOT).startsWith("refs/pull/") && !instance.getPluginConfig().getBoolean("download.pull_requests", false)) {
+            sendMessage(sender, "download_failed_pr");
+            LOG.debug(errSummary, new IllegalArgumentException(ref));
+            return;
+        }
+
+        //run download
+        final Downloader downloader = new Downloader(instance.getDataFolder(), githubNamespace, ref,
+                offsetPath, sourcePath, targetPath, recursive, overwrite);
+        sendMessage(sender, "download_scheduled");
+        Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
+            try {
+                downloader.call();
+                sendMessage(sender, "download_success");
+            } catch (DownloadFailedException | SecurityException e) {
+                sendMessage(sender, "download_failed", e.getMessage());
+                LOG.debug(errSummary, e);
+            } catch (Exception e) {
+                sendMessage(sender, "download_failed", e.getClass().getSimpleName() + ": " + e.getMessage());
+                if (sender instanceof Player player) {
+                    final BetonQuestLogRecord record = new BetonQuestLogRecord(instance, null, Level.FINE, "");
+                    record.setThrown(e);
+                    final String msgJson = new ChatLogFormatter(instance, "BQ").format(record);
+                    bukkitAudiences.player(player).sendMessage(GsonComponentSerializer.gson().deserialize(msgJson));
+                    LOG.debug(errSummary, e);
+                } else {
+                    LOG.error(errSummary, e);
+                }
+            }
+        });
+    }
+
+    private List<String> completeDownload(final String... args) {
+        return switch (args.length) {
+            case 2 -> instance.getPluginConfig().getStringList("download.repo_whitelist");
+            case 3 -> List.of("main", "refs/heads/", "refs/tags/");
+            case 4 -> Downloader.ALLOWED_OFFSET_PATHS;
+            case 5 -> List.of("/");
+            case 6 -> List.of("/", "overwrite", "recursive");
+            case 7, 8 -> Stream.of("overwrite", "recursive").filter(tag -> !Arrays.asList(args).contains(tag)).toList();
+            default -> List.of();
+        };
     }
 
     private Level getLogLevel(final String arg) {

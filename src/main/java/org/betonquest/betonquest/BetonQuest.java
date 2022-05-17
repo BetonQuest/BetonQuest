@@ -679,7 +679,7 @@ public class BetonQuest extends JavaPlugin {
         new CustomDropListener();
 
         // register commands
-        new QuestCommand();
+        new QuestCommand(adventure);
         new JournalCommand();
         new BackpackCommand();
         new CancelQuestCommand();
