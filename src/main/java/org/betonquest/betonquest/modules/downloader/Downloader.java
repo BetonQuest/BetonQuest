@@ -31,8 +31,9 @@ import java.util.zip.ZipInputStream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.nio.file.FileVisitResult.CONTINUE;
+
 /**
- * Download files from any public GitHub repository and extract them to your QuestPackages folder.
+ * Downloads files from any public GitHub repository and extracts them to your QuestPackages folder.
  */
 @CustomLog(topic = "Downloader")
 @SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods"})
@@ -48,7 +49,6 @@ public class Downloader implements Callable<Boolean> {
      * Namespace and ref must be replaced with actual values.
      */
     private static final String GITHUB_REFS_URL = "https://api.github.com/repos/{namespace}/git/{ref}";
-
 
     /**
      * Base url where the files can be downloaded.
@@ -122,7 +122,7 @@ public class Downloader implements Callable<Boolean> {
     private String sha;
 
     /**
-     * Construct a new downloader instance for the given repository and branch.
+     * Constructs a new downloader instance for the given repository and branch.
      * Call {@link #call()} to actually start the download
      *
      * @param dataFolder BetonQuest plugin data folder
@@ -147,7 +147,7 @@ public class Downloader implements Callable<Boolean> {
     }
 
     /**
-     * Run the downloader with the specified settings
+     * Runs the downloader with the specified settings.
      *
      * @return result of the download, generally true
      * @throws Exception if any exception occurred during download
@@ -181,7 +181,8 @@ public class Downloader implements Callable<Boolean> {
         final int code = connection.getResponseCode();
         if (code >= RESPONSE_400) {
             throw switch (code) {
-                case 403 -> new DownloadFailedException("It looks like too many requests were made to the github api, please wait until you have been unblocked.");
+                case 403 ->
+                        new DownloadFailedException("It looks like too many requests were made to the github api, please wait until you have been unblocked.");
                 case 404 -> new DownloadFailedException("404 Not Found - are namespace and ref name correct?");
                 default -> new DownloadFailedException("github api returned error code " + code);
             };
@@ -201,7 +202,7 @@ public class Downloader implements Callable<Boolean> {
     }
 
     /**
-     * Get the full source path including the offsetPath
+     * Gets the full source path including the offsetPath
      *
      * @return full source path
      */
@@ -210,7 +211,7 @@ public class Downloader implements Callable<Boolean> {
     }
 
     /**
-     * Get the full target path including the offsetPath
+     * Gets the full target path including the offsetPath
      *
      * @return full target path
      */
@@ -225,7 +226,7 @@ public class Downloader implements Callable<Boolean> {
      * @return shortened form of the ref
      */
     private String getShortRef() {
-        String shortRef;
+        final String shortRef;
         if (ref.startsWith("refs/heads/")) {
             shortRef = "b" + ref.substring(11);
         } else if (ref.startsWith("refs/tags/")) {
@@ -237,7 +238,7 @@ public class Downloader implements Callable<Boolean> {
     }
 
     /**
-     * The file inside the cache directory where the repo is cached
+     * Gets the file inside the cache directory where the repo is cached.
      *
      * @return zip file containing the repo data
      */
@@ -247,7 +248,7 @@ public class Downloader implements Callable<Boolean> {
     }
 
     /**
-     * Checks if the supplied file is a cache file for this ref
+     * Checks if the supplied file is a cache file for this ref.
      *
      * @param file any file to check
      * @return true if a cached file (maybe an old one), false otherwise
@@ -263,7 +264,7 @@ public class Downloader implements Callable<Boolean> {
     }
 
     /**
-     * Download the repository as zip file from GitHub and save it to {@link #getCacheFile()}.
+     * Downloads the repository as a zip file from GitHub and saves it to {@link #getCacheFile()}.
      *
      * @throws IOException if any io error occurs while downloading the repo
      */
@@ -286,7 +287,7 @@ public class Downloader implements Callable<Boolean> {
     }
 
     /**
-     * Extract the files placed at {@link #sourcePath} from the cached zip and place them in {@link #targetPath}
+     * Extracts the files placed at the {@link #sourcePath} from the cached zip and places them in the {@link #targetPath}.
      *
      * @throws DownloadFailedException if the download fails due to any qualified error
      * @throws IOException             if any unhandled io error occurs while extracting the zip
@@ -321,7 +322,7 @@ public class Downloader implements Callable<Boolean> {
     }
 
     /**
-     * Extract a single entry from the provided zip input and save it to {@code sourcePath}.
+     * Extracts a single entry from the provided zip input and saves it to the {@code sourcePath}.
      *
      * @param input zip input stream used to read the zip file
      * @param entry entry to extract from the zip file
@@ -374,7 +375,7 @@ public class Downloader implements Callable<Boolean> {
     }
 
     /**
-     * Cleanup any old cache files for the same ref
+     * Cleanups any old cache files for the same ref.
      *
      * @throws IOException any io error while cleanup
      */
@@ -415,7 +416,7 @@ public class Downloader implements Callable<Boolean> {
     }
 
     /**
-     * List all packages in the cached zip file, including subpackages.
+     * Lists all packages in the cached zip file, including subpackages.
      *
      * @return a mutable set containing all package directories
      * @throws IOException for any occurring io error
