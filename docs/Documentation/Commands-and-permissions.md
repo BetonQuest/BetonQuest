@@ -127,8 +127,9 @@ either `QuestPackages` or `QuestTemplates` depending on what type you want to do
 you define what folders to download from the repo. It is appended to the offsetPath to get the full Path in the repo.
 Optionally you may add a 5th parameter:
 `targetPath` is where in your BetonQuest folder the files shall be put, relative to either the QuestPackages or
-QuestTemplates folder defined as `offsetPath`.  
-Additionally you can add tags to the end of the command to control behavior of the downloader:
+QuestTemplates folder defined as `offsetPath`. If you want to place some QuestTemplates inside `QuestPackages` you can
+do this by adding `../QuestTemplates/` to the beginning of the target path. Additionally, you can add tags to the end of
+the command to control behavior of the downloader:
 If `recursive` is added [nested packages](Reference.md#structure) or templates will be downloaded while by default they
 will be skipped. The tag `overwrite` defines that already existing files may be overwritten. By default an error is
 logged and the download is stopped.

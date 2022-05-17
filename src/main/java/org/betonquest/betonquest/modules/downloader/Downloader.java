@@ -206,7 +206,7 @@ public class Downloader implements Callable<Boolean> {
      * @return full source path
      */
     private String getFullSourcePath() {
-        return offsetPath + (sourcePath.startsWith("/") ? "" : "/") + sourcePath;
+        return offsetPath + (sourcePath.startsWith("/") ? "" : "/") + sourcePath + (sourcePath.endsWith("/") ? "" : "/");
     }
 
     /**
@@ -215,7 +215,7 @@ public class Downloader implements Callable<Boolean> {
      * @return full target path
      */
     private String getFullTargetPath() {
-        return offsetPath + (targetPath.startsWith("/") ? "" : "/") + targetPath;
+        return offsetPath + (targetPath.startsWith("/") ? "" : "/") + targetPath + (targetPath.endsWith("/") ? "" : "/");
     }
 
     /**
@@ -330,7 +330,7 @@ public class Downloader implements Callable<Boolean> {
      */
     private void extractEntry(final ZipInputStream input, final ZipEntry entry) throws DownloadFailedException, IOException {
         final String relative = stripRootDir(entry.getName()).replace(getFullSourcePath(), "");
-        final Path newFile = dataFolder.resolve(getFullTargetPath()).resolve(relative).normalize();
+        final Path newFile = dataFolder.resolve(getFullTargetPath() + relative).normalize();
         checkSecurityRestrictions(newFile);
         if (entry.isDirectory()) {
             Files.createDirectories(newFile);
@@ -475,7 +475,7 @@ public class Downloader implements Callable<Boolean> {
      */
     private String getPackageDir(final ZipEntry packageYml) {
         final String name = stripRootDir(packageYml.getName());
-        return name.substring(0, name.length() - PACKAGE_YML.length() - 1);
+        return name.substring(0, name.length() - PACKAGE_YML.length());
     }
 
     /**
