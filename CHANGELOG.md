@@ -31,6 +31,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - config option `journal.lock_default_journal_slot` to lock the journal to the `default_journal_slot`
 - config option `journal.give_on_respawn` to add the journal to the inventory after the player respawns
 - compass now supports items from other packages
+- RPGMenu `click` section now asks for middle mouse button clicks to execute events
+- RPGMenu `click` options `shiftLeft`, `shiftRight` and `middleMouse` to execute events on item click
 - `menu` conversationIO option `npc_name_newline_separator`
 - added `q download` command
 - `freeze` event - ProtocolLib compatibility feature: Blocks the player from moving for the specified amount of ticks
@@ -72,6 +74,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - AureliumSkills updated to version Beta1.2.5
 - PikaMug Quests updated to version 4.1.3
 - Items now support AIR
+- RPGMenu `left` and `right` in the `click` section no longer supports shift clicks 
 - Things that are also changed in 1.12.X:
     - math variable now allows rounding output with the ~ operator
     - French translation has been updated

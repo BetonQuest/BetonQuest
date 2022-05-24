@@ -180,6 +180,7 @@ public class OpenedMenu implements Listener {
             case RIGHT:
             case SHIFT_LEFT:
             case LEFT:
+            case MIDDLE:
                 break;
             default:
                 return;
