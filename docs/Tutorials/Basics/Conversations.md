@@ -45,6 +45,9 @@ Save the file after editing.
 
 ## 2. Creating your first conversation
 
+It's time to create the first conversation with the NPC! The goal is to learn how the basics works and to
+understand how pointers are working.
+
 Open the file `jack.yml` in the `conversations` folder. Now we will start creating the first conversation.
 The goal is that we can talk to the created NPC and have the first small conversation with him.
 We start off with that:
