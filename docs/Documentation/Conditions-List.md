@@ -1,3 +1,6 @@
+---
+icon: octicons/question-16
+---
 # Conditions List
 
 ## Advancement: `advancement`

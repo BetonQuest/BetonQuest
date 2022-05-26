@@ -1,3 +1,6 @@
+---
+icon: material/source-branch-plus
+---
 A new branch should always be created from an up to date `master` branch.
 That's why you [added the BetonQuest repositry](../Setup-Project.md#adding-remote-repository) `upstream`.
 Now click on your current branch in the bottom right corner, probably `master`.

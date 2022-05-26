@@ -1,3 +1,6 @@
+---
+icon: fontawesome/solid/flag-checkered
+---
 The last step of the contributing process is to submit your changes. This is done via a pull request on GitHub. 
 A pull request basically is asking us to pull your changes into our codebase. Let's create one!
 

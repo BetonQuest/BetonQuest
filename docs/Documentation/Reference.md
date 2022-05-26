@@ -1,3 +1,6 @@
+---
+icon: fontawesome/solid/book
+---
 # Reference
 
 This chapter describes all aspects of BetonQuest in one place. You should read it at least once to know what you're dealing with and where to search for information if you ever have any problems.

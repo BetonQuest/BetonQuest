@@ -1,3 +1,6 @@
+---
+icon: material/check-circle
+---
 # Objectives List
 
 ## Action: `action`

@@ -1,3 +1,6 @@
+---
+icon: material/magnify
+---
 ###Fulfil the Contributing Requirements
 Run `mvn verify` before [Submitting Changes](../Submitting-Changes.md) to check if your change
 meets the project's requirements regarding code style and quality.

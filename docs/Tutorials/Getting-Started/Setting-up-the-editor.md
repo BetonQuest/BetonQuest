@@ -1,3 +1,6 @@
+---
+icon: material/wrench
+---
 #Setting up the editor
 
 In theory, you can edit quests with any editor. However, using the feature-packed but lightweight 

@@ -1,3 +1,6 @@
+---
+icon: material/party-popper
+---
 ## Notify IO's
 
 A NotifyIO is a method of displaying a notification to the player. Here's a demo video showing an example configuration

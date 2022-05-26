@@ -1,3 +1,6 @@
+---
+icon: material/cards-variant
+---
 Before you make a commit, you should keep in mind, that you need to add a changelog entry.
 
 We have 6 categories in the CHANGELOG.md file for each version.

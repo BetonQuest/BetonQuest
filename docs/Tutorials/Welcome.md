@@ -1,3 +1,6 @@
+---
+icon: material/hand-wave
+---
 # Welcome!
 Welcome to BetonQuest! Thank you for trying it out. This plugin can do some really 
 cool stuff and therefore requires some learning.

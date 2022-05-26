@@ -1,3 +1,6 @@
+---
+icon: octicons/terminal-16
+---
 # Setting up a local test server
 
 ## Why do I need a local server?!

@@ -1,3 +1,6 @@
+---
+icon: fontawesome/solid/wrench
+---
 # Configuration
 
 The configuration of BetonQuest is mainly done in the `config.yml` file. All of its options are described on this page.

@@ -1,3 +1,6 @@
+---
+icon: material/pen
+---
 # 👨‍🏫 Changing Docs
 
 Make sure to [setup the project](../../Setup-Project.md) before doing this step.
