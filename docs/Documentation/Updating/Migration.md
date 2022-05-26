@@ -10,6 +10,7 @@ Skip to the first version that is above the version that you used before startin
 Changes introduced in:
 
 - [2.0.0-DEV-238](#200-dev-238)
+- [2.0.0-DEV-98](#200-dev-98)
 
 ### 2.0.0-DEV-238
 - Ensure your server is running on __java 17__
@@ -39,3 +40,7 @@ Changes introduced in:
 - Quest packages can now contain nested quest packages in sub folders. You can also have any file and folder structure
   with any file and folder names you want. Only the `package.yml` is reserved as indicator for a quest
   package. [DOCS](../Reference.md#packages)
+
+### 2.0.0-DEV-98
+All existing RPGMenu users must update their RPGMenu config file. Simply rename it from `rpgmenu.config.yml` to
+`menuConfig.yml`.

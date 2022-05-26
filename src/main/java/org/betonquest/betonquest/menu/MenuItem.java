@@ -56,9 +56,24 @@ public class MenuItem extends SimpleYMLSection {
     private final List<EventID> leftClick;
 
     /**
+     * Ids of all events that should be run on shift-left click
+     */
+    private final List<EventID> shiftLeftClick;
+
+    /**
      * Ids of all events that should be run on right click
      */
     private final List<EventID> rightClick;
+
+    /**
+     * Ids of all events that should be run on shift-right click
+     */
+    private final List<EventID> shiftRightClick;
+
+    /**
+     * Ids of all events that should be run on middle-mouse click
+     */
+    private final List<EventID> middleMouseClick;
 
     /**
      * Conditions that have to be matched to view the item
@@ -70,7 +85,7 @@ public class MenuItem extends SimpleYMLSection {
      */
     private final boolean close;
 
-    @SuppressWarnings({"PMD.ExceptionAsFlowControl", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.ExceptionAsFlowControl", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity", "PMD.NPathComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public MenuItem(final QuestPackage pack, final String name, final ConfigurationSection section) throws InvalidConfigurationException {
         super(name, section);
@@ -105,21 +120,39 @@ public class MenuItem extends SimpleYMLSection {
             }
             //load events
             this.leftClick = new ArrayList<>();
+            this.shiftLeftClick = new ArrayList<>();
             this.rightClick = new ArrayList<>();
+            this.shiftRightClick = new ArrayList<>();
+            this.middleMouseClick = new ArrayList<>();
             if (config.isConfigurationSection("click")) {
                 try {
                     this.leftClick.addAll(getEvents("click.left", pack));
                 } catch (final Missing ignored) {
                 }
                 try {
+                    this.shiftLeftClick.addAll(getEvents("click.shiftLeft", pack));
+                } catch (final Missing ignored) {
+                }
+                try {
                     this.rightClick.addAll(getEvents("click.right", pack));
+                } catch (final Missing ignored) {
+                }
+                try {
+                    this.shiftRightClick.addAll(getEvents("click.shiftRight", pack));
+                } catch (final Missing ignored) {
+                }
+                try {
+                    this.middleMouseClick.addAll(getEvents("click.middleMouse", pack));
                 } catch (final Missing ignored) {
                 }
             } else {
                 try {
                     final List<EventID> list = getEvents("click", pack);
                     this.leftClick.addAll(list);
+                    this.shiftLeftClick.addAll(list);
                     this.rightClick.addAll(list);
+                    this.shiftRightClick.addAll(list);
+                    this.middleMouseClick.addAll(list);
                 } catch (final Missing ignored) {
                 }
             }
@@ -153,19 +186,35 @@ public class MenuItem extends SimpleYMLSection {
      * @param type   type of the click action
      * @return if the menu should be closed after this operation
      */
-    @SuppressWarnings("PMD.AvoidDuplicateLiterals")
+    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.CyclomaticComplexity"})
     public boolean onClick(final Player player, final ClickType type) {
         switch (type) {
+            case LEFT:
+                for (final EventID eventID : this.leftClick) {
+                    LOG.debug(pack, "Item " + name + ": Run event " + eventID);
+                    BetonQuest.event(PlayerConverter.getID(player), eventID);
+                }
+                return this.close;
+            case SHIFT_LEFT:
+                for (final EventID eventID : this.shiftLeftClick) {
+                    LOG.debug(pack, "Item " + name + ": Run event " + eventID);
+                    BetonQuest.event(PlayerConverter.getID(player), eventID);
+                }
+                return this.close;
             case RIGHT:
-            case SHIFT_RIGHT:
                 for (final EventID eventID : this.rightClick) {
                     LOG.debug(pack, "Item " + name + ": Run event " + eventID);
                     BetonQuest.event(PlayerConverter.getID(player), eventID);
                 }
                 return this.close;
-            case LEFT:
-            case SHIFT_LEFT:
-                for (final EventID eventID : this.leftClick) {
+            case SHIFT_RIGHT:
+                for (final EventID eventID : this.shiftRightClick) {
+                    LOG.debug(pack, "Item " + name + ": Run event " + eventID);
+                    BetonQuest.event(PlayerConverter.getID(player), eventID);
+                }
+                return this.close;
+            case MIDDLE:
+                for (final EventID eventID : this.middleMouseClick) {
                     LOG.debug(pack, "Item " + name + ": Run event " + eventID);
                     BetonQuest.event(PlayerConverter.getID(player), eventID);
                 }

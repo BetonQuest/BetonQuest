@@ -174,8 +174,13 @@ nav:
           - '🤝 Compatibility List': Documentation/Compatibility.md
           - '🔮   Variables List': Documentation/Variables-List.md
       - 'Notifications':
-          - '🔊   Settings': Documentation/Notification-Settings.md
-          - "🏷️   IO's & Categories": Documentation/Notification-IO's-&-Categories.md
+          - 'Settings': Documentation/Notification-Settings.md
+          - "IO's & Categories": Documentation/Notification-IO's-&-Categories.md
+      - 'Menus':
+          - 'Menus': Documentation/Menu-Menu.md
+          - 'Elements': Documentation/Menu-Elements.md
+          - 'Commands': Documentation/Menu-Commands.md
+          - 'Config': Documentation/Menu-Config.md
       - 'Technical':
           - '🔒 Permissions & Commands': Documentation/Commands-and-permissions.md
           - '📥 Updating':
