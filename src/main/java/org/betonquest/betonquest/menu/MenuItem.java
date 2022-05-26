@@ -127,9 +127,21 @@ public class MenuItem extends SimpleYMLSection {
             if (config.isConfigurationSection("click")) {
                 try {
                     this.leftClick.addAll(getEvents("click.left", pack));
+                } catch (final Missing ignored) {
+                }
+                try {
                     this.shiftLeftClick.addAll(getEvents("click.shiftLeft", pack));
+                } catch (final Missing ignored) {
+                }
+                try {
                     this.rightClick.addAll(getEvents("click.right", pack));
+                } catch (final Missing ignored) {
+                }
+                try {
                     this.shiftRightClick.addAll(getEvents("click.shiftRight", pack));
+                } catch (final Missing ignored) {
+                }
+                try {
                     this.middleMouseClick.addAll(getEvents("click.middleMouse", pack));
                 } catch (final Missing ignored) {
                 }
