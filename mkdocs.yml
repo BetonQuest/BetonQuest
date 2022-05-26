@@ -166,7 +166,6 @@ nav:
       - 'General':
           - '📚   Reference': Documentation/Reference.md
           - '💬  Conversations': Documentation/Conversations.md
-          - '   📱     Menus': Documentation/Menus.md
       - 'Types':
           - '✔️ Objectives List': Documentation/Objectives-List.md
           - '⚙️ Events List': Documentation/Events-List.md
@@ -174,8 +173,8 @@ nav:
           - '🤝 Compatibility List': Documentation/Compatibility.md
           - '🔮   Variables List': Documentation/Variables-List.md
       - 'Notifications':
-          - 'Settings': Documentation/Notification-Settings.md
-          - "IO's & Categories": Documentation/Notification-IO's-&-Categories.md
+          - '🔊   Settings': Documentation/Notification-Settings.md
+          - "🏷️   IO's & Categories": Documentation/Notification-IO's-&-Categories.md
       - 'Menus':
           - 'Menus': Documentation/Menu-Menu.md
           - 'Elements': Documentation/Menu-Elements.md
