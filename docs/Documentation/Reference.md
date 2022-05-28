@@ -1,5 +1,5 @@
 ---
-icon: fontawesome/solid/book
+icon: octicons/book-16
 ---
 # Reference
 
