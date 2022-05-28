@@ -1,8 +1,8 @@
 #MkDocs and the MkDocs-material theme
-mkdocs-material==8.2.11
-#Shows git revision date at the bottom of the page
-mkdocs-git-revision-date-localized-plugin
+mkdocs-material==8.2.15
+
 #Tool for MkDocs versioning
 mike==1.1.2
-#mkdocs-exclude plugin to exclude snippets
-mkdocs-exclude
+#mkdocs-exclude plugin to directories inside /docs from the build
+#Used to exclude snippets, theme customization etc.
+mkdocs-exclude==1.0.2
