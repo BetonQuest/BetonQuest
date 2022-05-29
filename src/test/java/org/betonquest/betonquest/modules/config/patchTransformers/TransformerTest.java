@@ -168,6 +168,9 @@ public class TransformerTest {
         final YamlConfiguration questConfig = new YamlConfiguration();
         questConfig.loadFromString(CONFIG.saveToString());
 
+        //New version is automatically set for all tests
+        CONFIG.set("configVersion", "2.0.0-CONFIG-1");
+
         final Patcher patcher = new Patcher(questConfig, patchConfig);
         patcher.patch();
         return questConfig.saveToString();

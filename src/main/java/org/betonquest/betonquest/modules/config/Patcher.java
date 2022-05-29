@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 @CustomLog
 public class Patcher {
 
+    public static final Pattern VERSION_PATTERN = Pattern.compile("(\\d*\\.\\d*\\.\\d*)\\.(\\d*)");
     private final ConfigurationSection pluginConfig;
     private final ConfigurationSection patch;
 
@@ -71,8 +72,7 @@ public class Patcher {
                     buildVersionIndex(nestedSection, currentKey);
                 }
             } else {
-                final Pattern p = Pattern.compile("(\\d*\\.\\d*\\.\\d*)\\.(\\d*)");
-                final Matcher m = p.matcher(currentKey);
+                final Matcher m = VERSION_PATTERN.matcher(currentKey);
                 if (m.matches()) {
                     final String result = m.group(1) + "-CONFIG-" + m.group(2);
                     final Version discoveredVersion = new Version(result);
@@ -93,12 +93,20 @@ public class Patcher {
         for (final String key : versionIndex.values()) {
             try {
                 applyPatch(key);
+                pluginConfig.set("configVersion", getNewVersion(key));
             } catch (final Exception placeholder) {
                 LOG.error("Failed patching the config file. Your BetonQuest config may now be in an invalid state!");
                 return false;
             }
         }
         return true;
+    }
+
+    private String getNewVersion(final String key) {
+        final int lastPoint = key.lastIndexOf('.');
+        final String first = key.substring(0, lastPoint);
+        final String second = key.substring(lastPoint + 1);
+        return first + "-CONFIG-" + second;
     }
 
     private boolean applyPatch(final String patchDataPath) {
