@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.File;
-import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,23 +14,20 @@ import static org.junit.jupiter.api.Assertions.*;
  * A test for the {@link Patcher}.
  */
 @ExtendWith(BetonQuestLoggerService.class)
-public class PatcherTest {
+class PatcherTest {
 
     @Test
-    void testHasUpdate() throws IOException, InvalidConfigurationException {
-        final Patcher p = setupPatcher(new File("src/test/resources/modules.config/config.yml"), new File("src/test/resources/modules.config/config.patch.yml"));
-        assertTrue(p.hasUpdate());
+    void testHasUpdate() throws InvalidConfigurationException {
+        final YamlConfiguration config = YamlConfiguration.loadConfiguration(new File("src/test/resources/modules.config/config.yml"));
+        final YamlConfiguration patch = YamlConfiguration.loadConfiguration(new File("src/test/resources/modules.config/config.patch.yml"));
 
-        final Patcher p2 = setupPatcher(new File("src/test/resources/modules.config/configFromTheFuture.yml"), new File("src/test/resources/modules.config/config.patch.yml"));
-        assertFalse(p2.hasUpdate());
-    }
+        final Patcher patcher = new Patcher(config, patch);
+        assertTrue(patcher.hasUpdate(), "Patcher did not recognise the possible update.");
 
-    private Patcher setupPatcher(final File configFile, final File patchFile) throws IOException, InvalidConfigurationException {
-        final YamlConfiguration patch = new YamlConfiguration();
-        final YamlConfiguration config = new YamlConfiguration();
-        config.load(configFile);
-        patch.load(patchFile);
+        final YamlConfiguration configFromTheFuture = new YamlConfiguration();
+        configFromTheFuture.loadFromString("configVersion: \"6.2.3-CONFIG-12\"");
 
-        return new Patcher(config, patch);
+        final Patcher anotherPatcher = new Patcher(configFromTheFuture, patch);
+        assertFalse(anotherPatcher.hasUpdate(), "Patcher recognised invalid possible updates.");
     }
 }

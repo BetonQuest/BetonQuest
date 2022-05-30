@@ -1,14 +1,14 @@
 package org.betonquest.betonquest.modules.config;
 
 import lombok.CustomLog;
-import org.betonquest.betonquest.modules.config.patchTransformers.KeyRenameTransformation;
-import org.betonquest.betonquest.modules.config.patchTransformers.ListEntryAddTransformation;
-import org.betonquest.betonquest.modules.config.patchTransformers.ListEntryRemoveTransformation;
-import org.betonquest.betonquest.modules.config.patchTransformers.ListEntryRenameTransformation;
-import org.betonquest.betonquest.modules.config.patchTransformers.PatchTransformation;
-import org.betonquest.betonquest.modules.config.patchTransformers.RemoveTransformation;
-import org.betonquest.betonquest.modules.config.patchTransformers.SetTransformation;
-import org.betonquest.betonquest.modules.config.patchTransformers.ValueRenameTransformation;
+import org.betonquest.betonquest.modules.config.transformer.KeyRenameTransformation;
+import org.betonquest.betonquest.modules.config.transformer.ListEntryAddTransformation;
+import org.betonquest.betonquest.modules.config.transformer.ListEntryRemoveTransformation;
+import org.betonquest.betonquest.modules.config.transformer.ListEntryRenameTransformation;
+import org.betonquest.betonquest.modules.config.transformer.PatchTransformation;
+import org.betonquest.betonquest.modules.config.transformer.RemoveTransformation;
+import org.betonquest.betonquest.modules.config.transformer.SetTransformation;
+import org.betonquest.betonquest.modules.config.transformer.ValueRenameTransformation;
 import org.betonquest.betonquest.modules.versioning.UpdateStrategy;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.modules.versioning.VersionComparator;
@@ -28,22 +28,54 @@ import java.util.regex.Pattern;
 @CustomLog
 public class Patcher {
 
+    /**
+     * Regex pattern of the internal config version schema.
+     */
     public static final Pattern VERSION_PATTERN = Pattern.compile("(\\d*\\.\\d*\\.\\d*)\\.(\\d*)");
+    /**
+     * The config to patch.
+     */
     private final ConfigurationSection pluginConfig;
-    private final ConfigurationSection patch;
+    /**
+     * A config that contains one or more patches that will be applied to the pluginConfig.
+     * Each patch inside this config has a version that determines if the patch will be applied.
+     */
+    private final ConfigurationSection patchConfig;
 
-    private final Map<Version, String> versionIndex = new TreeMap(new VersionComparator(UpdateStrategy.MAJOR, "CONFIG-"));
+    /**
+     * A pair of versions with the corresponding config path from the patch.
+     */
+    private final Map<Version, String> versionIndex = new TreeMap<>(new VersionComparator(UpdateStrategy.MAJOR, "CONFIG-"));
+    /**
+     * The {@link VersionComparator} that compares the versions of patches.
+     */
     private final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR, "CONFIG-");
+    /**
+     * The current version of the plugin's config.
+     */
     private final Version configVersion;
 
+    /**
+     * A map with the ID's and instances of all registered {@link PatchTransformation}s.
+     */
     private final Map<String, PatchTransformation> transformers = new HashMap<>();
 
-    public Patcher(final ConfigurationSection config, final ConfigurationSection patch) {
+    /**
+     * Creates a new Patcher.
+     * <br>
+     * Check for available patches using {@link Patcher#hasUpdate()}.
+     * <br>
+     * Updates can be applied using {@link Patcher#patch()}.
+     *
+     * @param config      the config that must be patched
+     * @param patchConfig the patchConfig that contains patches
+     */
+    public Patcher(final ConfigurationSection config, final ConfigurationSection patchConfig) {
         this.pluginConfig = config;
-        this.patch = patch;
+        this.patchConfig = patchConfig;
         this.configVersion = new Version(config.getString("configVersion"));
         try {
-            buildVersionIndex(this.patch, "");
+            buildVersionIndex(this.patchConfig, "");
         } catch (final InvalidConfigurationException e) {
             LOG.error("Invalid patch file! A version number is too short.", e);
         }
@@ -72,14 +104,18 @@ public class Patcher {
                     buildVersionIndex(nestedSection, currentKey);
                 }
             } else {
-                final Matcher m = VERSION_PATTERN.matcher(currentKey);
-                if (m.matches()) {
-                    final String result = m.group(1) + "-CONFIG-" + m.group(2);
-                    final Version discoveredVersion = new Version(result);
-                    if (comparator.isOtherNewerThanCurrent(configVersion, discoveredVersion)) {
-                        versionIndex.put(discoveredVersion, currentKey);
-                    }
-                }
+                collectVersion(currentKey);
+            }
+        }
+    }
+
+    private void collectVersion(final String currentKey) {
+        final Matcher matcher = VERSION_PATTERN.matcher(currentKey);
+        if (matcher.matches()) {
+            final String result = matcher.group(1) + "-CONFIG-" + matcher.group(2);
+            final Version discoveredVersion = new Version(result);
+            if (comparator.isOtherNewerThanCurrent(configVersion, discoveredVersion)) {
+                versionIndex.put(discoveredVersion, currentKey);
             }
         }
     }
@@ -91,13 +127,8 @@ public class Patcher {
      */
     public boolean patch() {
         for (final String key : versionIndex.values()) {
-            try {
-                applyPatch(key);
-                pluginConfig.set("configVersion", getNewVersion(key));
-            } catch (final Exception placeholder) {
-                LOG.error("Failed patching the config file. Your BetonQuest config may now be in an invalid state!");
-                return false;
-            }
+            applyPatch(key);
+            pluginConfig.set("configVersion", getNewVersion(key));
         }
         return true;
     }
@@ -109,8 +140,8 @@ public class Patcher {
         return first + "-CONFIG-" + second;
     }
 
-    private boolean applyPatch(final String patchDataPath) {
-        final var patchData = patch.getMapList(patchDataPath);
+    private void applyPatch(final String patchDataPath) {
+        final var patchData = patchConfig.getMapList(patchDataPath);
         patchData.forEach(transformationData -> {
             final Map<String, String> typeSafeTransformationData = new HashMap<>();
             transformationData.forEach((key, value) -> {
@@ -120,7 +151,6 @@ public class Patcher {
             final String transformationType = transformationData.get("type").toString().toUpperCase(Locale.ROOT);
             applyTransformation(typeSafeTransformationData, transformationType);
         });
-        return true;
     }
 
     private void applyTransformation(final Map<String, String> transformationData, final String transformationType) {

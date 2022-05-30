@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.config.patchTransformers;
+package org.betonquest.betonquest.modules.config.transformer;
 
 import lombok.CustomLog;
 import org.bukkit.configuration.ConfigurationSection;
@@ -8,8 +8,18 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * Adds an entry to the given list at the given position.
+ */
 @CustomLog
+@SuppressWarnings({"PMD.SwitchStmtsShouldHaveDefault"})
 public class ListEntryAddTransformation implements PatchTransformation {
+
+    /**
+     * Default constructor
+     */
+    public ListEntryAddTransformation() {
+    }
 
     @Override
     public void transform(final Map<String, String> options, final ConfigurationSection config) {
@@ -23,18 +33,14 @@ public class ListEntryAddTransformation implements PatchTransformation {
 
         final List<String> list = config.getStringList(key);
 
-        switch (position) {
-            case "LAST" -> {
-                list.add(entry);
-                config.set(key, list);
-            }
-            case "FIRST" -> {
-                final List<String> newList = new ArrayList<>();
-                newList.add(entry);
-                newList.addAll(list);
-                config.set(key, newList);
-            }
-            default -> LOG.warn("Invalid position");
+        if ("LAST".equals(position)) {
+            list.add(entry);
+            config.set(key, list);
+        } else if ("FIRST".equals(position)) {
+            final List<String> newList = new ArrayList<>();
+            newList.add(entry);
+            newList.addAll(list);
+            config.set(key, newList);
         }
     }
 }

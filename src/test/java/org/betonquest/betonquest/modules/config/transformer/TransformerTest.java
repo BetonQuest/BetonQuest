@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.config.patchTransformers;
+package org.betonquest.betonquest.modules.config.transformer;
 
 import org.betonquest.betonquest.modules.config.Patcher;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
@@ -15,10 +15,21 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This test tests all config transformers.
+ */
+@SuppressWarnings({"PMD.AvoidDuplicateLiterals"})
 @ExtendWith(BetonQuestLoggerService.class)
-public class TransformerTest {
+class TransformerTest {
 
+    /**
+     * The file that contains a demo config for this test.
+     */
     private static final File CONFIG_FILE = new File("src/test/resources/modules.config/config.yml");
+
+    /**
+     * The demo config that is used for this test.
+     */
     private static final YamlConfiguration CONFIG = new YamlConfiguration();
 
     @BeforeEach
@@ -38,11 +49,11 @@ public class TransformerTest {
         final String serializedConfig = getSerializedPatchedConfig(patch);
 
         CONFIG.set("section.testKey", "newTest");
-        assertEquals(CONFIG.saveToString(), serializedConfig);
+        assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
     @Test
-    void testListAddLast() throws InvalidConfigurationException {
+    void testListEntryAddLast() throws InvalidConfigurationException {
         final String patch = """
                 2.0.0.1:
                     - type: LIST_ENTRY_ADD
@@ -55,11 +66,11 @@ public class TransformerTest {
         final List<String> list = CONFIG.getStringList("section.myList");
         list.add("newEntry");
         CONFIG.set("section.myList", list);
-        assertEquals(CONFIG.saveToString(), serializedConfig);
+        assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
     @Test
-    void testListAddFirst() throws InvalidConfigurationException {
+    void testListEntryAddFirst() throws InvalidConfigurationException {
         final String patch = """
                 2.0.0.1:
                     - type: LIST_ENTRY_ADD
@@ -74,7 +85,23 @@ public class TransformerTest {
         newList.add("newEntry");
         newList.addAll(list);
         CONFIG.set("section.myList", newList);
-        assertEquals(CONFIG.saveToString(), serializedConfig);
+        assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
+    }
+
+    @Test
+    void testListEntryDefault() throws InvalidConfigurationException {
+        final String patch = """
+                2.0.0.1:
+                    - type: LIST_ENTRY_ADD
+                      key: section.myList
+                      entry: newEntry
+                """;
+        final String serializedConfig = getSerializedPatchedConfig(patch);
+
+        final List<String> list = CONFIG.getStringList("section.myList");
+        list.add("newEntry");
+        CONFIG.set("section.myList", list);
+        assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
     @Test
@@ -93,7 +120,7 @@ public class TransformerTest {
         list.set(index, "newEntry");
         CONFIG.set("section.myList", list);
 
-        assertEquals(CONFIG.saveToString(), serializedConfig);
+        assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
     @Test
@@ -110,7 +137,7 @@ public class TransformerTest {
         list.remove("removedEntry");
         CONFIG.set("section.myList", list);
 
-        assertEquals(CONFIG.saveToString(), serializedConfig);
+        assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
     @Test
@@ -124,7 +151,7 @@ public class TransformerTest {
 
         CONFIG.set("section.myList", null);
 
-        assertEquals(CONFIG.saveToString(), serializedConfig);
+        assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
     @Test
@@ -142,7 +169,7 @@ public class TransformerTest {
         CONFIG.set("section.test", null);
         CONFIG.set("section.testNew", value);
 
-        assertEquals(CONFIG.saveToString(), serializedConfig);
+        assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
     @Test
@@ -157,7 +184,7 @@ public class TransformerTest {
 
         CONFIG.set("journalLock", "true");
 
-        assertEquals(CONFIG.saveToString(), serializedConfig);
+        assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
     private String getSerializedPatchedConfig(final String patch) throws InvalidConfigurationException {

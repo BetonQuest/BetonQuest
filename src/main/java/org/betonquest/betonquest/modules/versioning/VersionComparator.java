@@ -2,6 +2,8 @@ package org.betonquest.betonquest.modules.versioning;
 
 import com.google.common.collect.Lists;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -9,7 +11,14 @@ import java.util.List;
 /**
  * Compares two {@link Version}s. This comparator can also be used to sort lists of {@link Version}s.
  */
-public class VersionComparator implements Comparator<Version> {
+public class VersionComparator implements Comparator<Version>, Serializable {
+
+    /**
+     * The serialVersionUID of this class.
+     */
+    @Serial
+    private static final long serialVersionUID = 1641779671214600158L;
+
     /**
      * The chosen {@link UpdateStrategy}
      */

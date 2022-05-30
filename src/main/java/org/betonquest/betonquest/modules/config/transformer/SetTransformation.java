@@ -1,10 +1,19 @@
-package org.betonquest.betonquest.modules.config.patchTransformers;
+package org.betonquest.betonquest.modules.config.transformer;
 
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Map;
 
+/**
+ * Sets the given value on the given key.
+ */
 public class SetTransformation implements PatchTransformation {
+
+    /**
+     * Default constructor
+     */
+    public SetTransformation() {
+    }
 
     @Override
     public void transform(final Map<String, String> options, final ConfigurationSection config) {
