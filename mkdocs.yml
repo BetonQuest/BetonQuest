@@ -36,6 +36,7 @@ theme:
     - search.share
     - navigation.indexes
     - search.suggest
+    - content.tooltips
   palette:
     - scheme: slate
       primary: indigo
@@ -102,8 +103,6 @@ markdown_extensions:
 
 plugins:
   - search
-  - git-revision-date-localized:
-      type: timeago
   - exclude:
       glob:
         - _snippets/*
@@ -114,7 +113,22 @@ extra:
     provider: mike
   analytics:
     provider: google
-    property: G-312814001
+    property: G-VEBGTNXWEL
+    feedback:
+      title: Was this page helpful?
+      ratings:
+        - icon: material/emoticon-happy-outline
+          name: This page was helpful
+          data: 1
+          note: >-
+            Thanks for your feedback!
+        - icon: material/emoticon-sad-outline
+          name: This page could be improved
+          data: 0
+          note: >-
+            Thanks for your feedback! Help us improve this page by using our 
+            <a href="https://github.com/BetonQuest/BetonQuest/issues/new/?title=[Docs Feedback]+{title}+-+{url}&template=docs-feedback.yml">
+            feedback form</a>.
   consent:
     title: Cookie consent
     cookies:

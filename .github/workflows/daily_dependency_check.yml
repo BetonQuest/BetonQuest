@@ -46,10 +46,10 @@ jobs:
       - name: Git LFS Pull
         run: git lfs pull
 
-      - name: Setup Python
-        uses: actions/setup-python@v1
+      - name: Setup Python 3.10
+        uses: actions/setup-python@v3
         with:
-          python-version: '3.6'
+          python-version: '3.10'
           architecture: 'x64'
 
       - name: Select mkDocs requirements
