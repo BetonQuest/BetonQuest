@@ -1,3 +1,6 @@
+---
+icon: material/handshake
+---
 !!! caution "Work in Progress! :construction: :construction_worker:  :construction_site:"
 
     **Both the plugin and the API are currently getting redesigned.**

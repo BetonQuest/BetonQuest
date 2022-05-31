@@ -1,3 +1,6 @@
+---
+icon: fontawesome/solid/lock
+---
 # Commands and permissions
 
 ## Commands

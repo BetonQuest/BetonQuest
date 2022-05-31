@@ -1,3 +1,6 @@
+---
+icon: material/pencil
+---
 There are two ways to get started with BetonQuest:
 
 1. Full beginner guide: A step-by-step tutorial to learn everything you need to know in an order which makes sense to a new BetonQuest user.

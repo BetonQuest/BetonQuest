@@ -1,4 +1,5 @@
 ---
+icon: material/rocket-launch
 template: home.html
 title: Home
 hide:

@@ -1,3 +1,6 @@
+---
+icon: material/handshake
+---
 There are two options to support projects like this one:
 
 ## Donate Time :material-clock-time-four:

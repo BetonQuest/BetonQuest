@@ -1,3 +1,6 @@
+---
+icon: material/flag
+---
 The BetonQuest Organisation recommends <a href="https://www.jetbrains.com/idea/" target="_blank">IntelliJ</a>
 (Community Edition) as the IDE (Integrated Development Environment).
 The advantage of using IntelliJ is that this guide contains some steps and the project contains some files

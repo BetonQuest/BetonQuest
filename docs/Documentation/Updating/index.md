@@ -1,3 +1,6 @@
+---
+icon: material/download
+---
 <style>
 .table {
   max-width: 1200px;

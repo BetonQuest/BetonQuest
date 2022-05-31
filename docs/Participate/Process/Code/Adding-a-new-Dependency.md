@@ -1,3 +1,6 @@
+---
+icon: octicons/package-dependencies-16
+---
 ## Requirements 
 You can only add support for plugins that have a public API. This means Maven must be able to resolve the dependency 
 from an online repository. Adding dependencies from you local harddrive is NOT allowed as this stops everyone from 

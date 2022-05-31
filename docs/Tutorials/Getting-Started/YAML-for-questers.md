@@ -1,3 +1,6 @@
+---
+icon: material/newspaper
+---
 ##YAML Syntax
 Before we can start you need to understand the fundamentals of YAML.
 You have no idea what that is? Well YAML is the format most plugins store their config data in.

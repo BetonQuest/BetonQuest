@@ -1,3 +1,6 @@
+---
+icon: material/handshake
+---
 # Compatibility
 **In total 30 plugins have dedicated support for BetonQuest.**
 

@@ -1,3 +1,6 @@
+---
+icon: material/text-box-outline
+---
 --8<-- "API-State/Draft.md"
 
 This page shows you everything you need to know about the BetonQuest logger, no matter if you are working on BetonQuest 

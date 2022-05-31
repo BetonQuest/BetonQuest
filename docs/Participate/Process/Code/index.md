@@ -1,4 +1,7 @@
-# 👨‍🔧 Changing Code
+---
+icon: material/code-json
+---
+# Changing Code
 
 Make sure to [setup the project](../../Setup-Project.md) before doing this step. 
 You should always [create a new branch](../Create-a-new-Branch.md) everytime you develop a new feature,

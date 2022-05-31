@@ -1,3 +1,6 @@
+---
+icon: material/variable-box
+---
 # Variables List
 
 ## Custom Strings

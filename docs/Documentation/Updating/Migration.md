@@ -1,3 +1,6 @@
+---
+icon: material/upload
+---
 This migration guide currently needs to be done manually. As long as BQ 2.0 is in development, this will not change!
 
 Before you start migrating, you should **backup your system**!

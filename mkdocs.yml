@@ -151,61 +151,61 @@ extra:
 #Notice that here are a few strange looking hairspaces in here.
 #They make the space between the emojis and the text look equal
 nav:
-  - '🚀 Home': index.md
-  - '🎓 Tutorials':
-      - '👋 Welcome!': Tutorials/Welcome.md
+  - 'Home': index.md
+  - 'Tutorials':
+      - 'Welcome!': Tutorials/Welcome.md
       - 'Getting Started':
-          - '💻 Setting up a local test server': Tutorials/Getting-Started/Setting-up-a-local-test-server.md
-          - '📥 Installing BetonQuest': Tutorials/Getting-Started/Installing-BetonQuest.md
-          - '✒️ Setting up the editor': Tutorials/Getting-Started/Setting-up-the-editor.md
-          - '📑 YAML for questers': Tutorials/Getting-Started/YAML-for-questers.md
-          - '🎓 Learn BetonQuest': Tutorials/Getting-Started/Learn-BetonQuest.md
-      - '❓ Frequently Asked Questions':
-          - '🤔  General FAQ': Tutorials/Frequently-Asked-Questions.md
-  - '📚 Documentation':
+          - 'Setting up a local test server': Tutorials/Getting-Started/Setting-up-a-local-test-server.md
+          - 'Installing BetonQuest': Tutorials/Getting-Started/Installing-BetonQuest.md
+          - 'Setting up the editor': Tutorials/Getting-Started/Setting-up-the-editor.md
+          - 'YAML for questers': Tutorials/Getting-Started/YAML-for-questers.md
+          - 'Learn BetonQuest': Tutorials/Getting-Started/Learn-BetonQuest.md
+      - 'Frequently Asked Questions':
+          - 'General FAQ': Tutorials/Frequently-Asked-Questions.md
+  - 'Documentation':
       - 'General':
-          - '📚   Reference': Documentation/Reference.md
-          - '💬  Conversations': Documentation/Conversations.md
+          - 'Conversations': Documentation/Conversations.md
+          - 'Reference': Documentation/Reference.md
       - 'Types':
-          - '✔️ Objectives List': Documentation/Objectives-List.md
-          - '⚙️ Events List': Documentation/Events-List.md
-          - '  ❓    Conditions List': Documentation/Conditions-List.md
-          - '🤝 Compatibility List': Documentation/Compatibility.md
-          - '🔮   Variables List': Documentation/Variables-List.md
+          - 'Objectives List': Documentation/Objectives-List.md
+          - 'Events List': Documentation/Events-List.md
+          - 'Conditions List': Documentation/Conditions-List.md
+          - 'Compatibility List': Documentation/Compatibility.md
+          - 'Variables List': Documentation/Variables-List.md
       - 'Notifications':
-          - '🔊   Settings': Documentation/Notification-Settings.md
-          - "🏷️   IO's & Categories": Documentation/Notification-IO's-&-Categories.md
+          - 'Settings': Documentation/Notification-Settings.md
+          - "IO's & Categories": Documentation/Notification-IO's-&-Categories.md
       - 'Menus':
           - 'Menus': Documentation/Menu-Menu.md
           - 'Elements': Documentation/Menu-Elements.md
           - 'Commands': Documentation/Menu-Commands.md
           - 'Config': Documentation/Menu-Config.md
       - 'Technical':
-          - '🔒 Permissions & Commands': Documentation/Commands-and-permissions.md
-          - '📥 Updating':
+          - 'Permissions & Commands': Documentation/Commands-and-permissions.md
+          - 'Updating':
               - Documentation/Updating/index.md
-              - '📤 Migration': Documentation/Updating/Migration.md
-          - '🔧  Configuration': Documentation/Configuration.md
-          - '🗃️ Changelog': Documentation/CHANGELOG.md
-  - '🔌 API':
-      - '🤝 Overview': API/Overview.md
-      - '⚙️ API': API/API.md
-      - '📑 Logging': API/Logging.md
-  - '🧪 Participate':
-      - '🤝 Overview': Participate/Overview.md
-      - '🚩 Setup Project': Participate/Setup-Project.md
+              - 'Migration': Documentation/Updating/Migration.md
+          - 'Configuration': Documentation/Configuration.md
+          - 'Changelog': Documentation/CHANGELOG.md
+  - 'API':
+      - 'Overview': API/Overview.md
+      - 'API': API/API.md
+      - 'Logging': API/Logging.md
+  - 'Participate':
+      - 'Overview': Participate/Overview.md
+      - 'Setup Project': Participate/Setup-Project.md
       - Process:
-          - '🧬 Create a new Branch': Participate/Process/Create-a-new-Branch.md
-          - '👨‍🔧 Changing Code':
+          - 'Create a new Branch': Participate/Process/Create-a-new-Branch.md
+          - 'Changing Code':
               - Participate/Process/Code/index.md
-              - '🕵️‍♂️  Checking Requirements': Participate/Process/Code/Checking-Requirements.md
-              - '📥 Adding a Dependency': Participate/Process/Code/Adding-a-new-Dependency.md
-              - '📋    Writing JUnit Tests': Participate/Process/Code/Writing-JUnit-Tests.md
-          - '👨‍🏫 Changing Docs':
+              - 'Checking Requirements': Participate/Process/Code/Checking-Requirements.md
+              - 'Adding a Dependency': Participate/Process/Code/Adding-a-new-Dependency.md
+              - 'Writing JUnit Tests': Participate/Process/Code/Writing-JUnit-Tests.md
+          - 'Changing Docs':
               - Participate/Process/Docs/index.md
-              - '✒️ Fundamental Principles': Participate/Process/Docs/Principles.md
-              - '📚 Guidelines': Participate/Process/Docs/Guidelines.md
-          - '📑 Maintaining the Changelog': Participate/Process/Maintaining-the-Changelog.md
-          - '🏁 Submitting Changes': Participate/Process/Submitting-Changes.md
+              - 'Fundamental Principles': Participate/Process/Docs/Principles.md
+              - 'Guidelines': Participate/Process/Docs/Guidelines.md
+          - 'Maintaining the Changelog': Participate/Process/Maintaining-the-Changelog.md
+          - 'Submitting Changes': Participate/Process/Submitting-Changes.md
       - Misc:
-          - '🏭 Versioning & Releasing': Participate/Misc/Versioning-and-Releasing.md
+          - 'Versioning & Releasing': Participate/Misc/Versioning-and-Releasing.md

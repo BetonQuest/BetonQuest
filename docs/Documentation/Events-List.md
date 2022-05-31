@@ -1,3 +1,6 @@
+---
+icon: octicons/gear-16
+---
 # Events List
 
 ## Cancel quest: `cancel`
