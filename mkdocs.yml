@@ -113,7 +113,7 @@ extra:
     provider: mike
   analytics:
     provider: google
-    property: G-VEBGTNXWEL
+    property: G-4W2KZT9102
     feedback:
       title: Was this page helpful?
       ratings:
