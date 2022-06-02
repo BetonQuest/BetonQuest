@@ -205,6 +205,9 @@ jobs:
           DATE=$(date +%Y-%m-%d)
           sed -i "s~\${current-date}~$DATE~g" ./CHANGELOG.md
           cp ./CHANGELOG.md './docs/Documentation/CHANGELOG.md'
+      - name: Set mkdocs.yml version
+        run: |
+          sed -i "s~\${version}\$~${VERSION}~g" ./mkdocs.yml
       - name: Build with mkdocs
         run: |
           mkdocs build

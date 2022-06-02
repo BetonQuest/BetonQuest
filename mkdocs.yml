@@ -127,7 +127,7 @@ extra:
           data: 0
           note: >-
             Thanks for your feedback! Help us improve this page by using our 
-            <a href="https://github.com/BetonQuest/BetonQuest/issues/new/?title=[Docs Feedback]+{title}+-+{url}&template=docs-feedback.yml">
+            <a href="https://github.com/BetonQuest/BetonQuest/issues/new/?template=docs-feedback.yml&title=[Docs Feedback]+{title}+-+{url}&version=${version}$">
             feedback form</a>.
   consent:
     title: Cookie consent
