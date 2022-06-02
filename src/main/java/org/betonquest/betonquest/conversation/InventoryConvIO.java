@@ -3,13 +3,14 @@ package org.betonquest.betonquest.conversation;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.papermc.lib.PaperLib;
 import lombok.CustomLog;
-import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.utils.LocalChatPaginator;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -27,7 +28,6 @@ import org.bukkit.inventory.meta.SkullMeta;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -125,9 +125,13 @@ public class InventoryConvIO implements Listener, ConversationIO {
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @Override
     public void display() {
-        // prevent displaying anything if the player closed the conversation
-        // in the meantime
         if (conv.isEnded()) {
+            return;
+        }
+        if (player.getGameMode() == GameMode.SPECTATOR) {
+            conv.endConversation();
+            player.closeInventory();
+            conv.getInterceptor().sendMessage(Config.getMessage(PlayerConverter.getID(player), "conversation_spectator"));
             return;
         }
         if (response == null) {
@@ -359,43 +363,6 @@ public class InventoryConvIO implements Listener, ConversationIO {
     @Override
     public boolean printMessages() {
         return printMessages;
-    }
-
-    @SuppressWarnings("PMD.CognitiveComplexity")
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    protected List<String> stringToLines(final String singleLine, final String color, final String prefix) {
-        String inputPrefix = prefix;
-        final ArrayList<String> multiLine = new ArrayList<>();
-        boolean firstLinePrefix = inputPrefix != null;
-        if (inputPrefix == null) {
-            inputPrefix = "";
-        }
-        final String[] lineBreaks = (inputPrefix + singleLine).split("\n");
-        for (final String brokenLine : lineBreaks) {
-            final String[] arr = brokenLine.split(" ");
-            StringBuilder line = new StringBuilder();
-            for (final String s : arr) {
-                //don't count color codes for line length
-                final int rawLength = ChatColor.stripColor(line.toString()).length() + ChatColor.stripColor(s).length();
-                if (rawLength + 1 > 42) {
-                    if (firstLinePrefix) {
-                        firstLinePrefix = false;
-                        multiLine.add(StringUtils.replaceOnce(line.toString().trim(), inputPrefix, inputPrefix + color));
-                    } else {
-                        multiLine.add(color + line.toString().trim());
-                    }
-                    line = new StringBuilder();
-                }
-                line.append(s).append(' ');
-            }
-            if (firstLinePrefix) {
-                firstLinePrefix = false;
-                multiLine.add(StringUtils.replaceOnce(line.toString().trim(), inputPrefix, inputPrefix + color));
-            } else {
-                multiLine.add(color + line.toString().trim());
-            }
-        }
-        return multiLine;
     }
 
     /**
