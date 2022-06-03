@@ -157,7 +157,7 @@ Starting the random quest must be blocked with a special tag. If there is no suc
 
 ## The same random daily quest for every player
 
-To do this use something called "[Static event](../../Documentation/Reference/#static-events)".
+To do this use something called "[Static event](../Documentation/Reference/#static-events)".
 Run a static `folder` event every day at some late hour (for example 4am).
 The `folder` event should be `random:1` and contain several different `globaltag` events.
 These events will set a specific tag. Now when the player starts the conversation and asks about the daily quest the NPC
@@ -281,15 +281,15 @@ have to add the additional objectives to the conditions.
 
 ## Creating quest menus
 To create a menu that gives the player a overview of his open quests just define one menu item for each quest.
-Set the [conditions](Menu-Menu.md#the-items-section) for this item so it is only displayed if the quest is not finished (use the [tag condition](Conditions-List.md#tag-tag)).  
-Then assign all those items to [a row of slots](Menu-Menu.md#the-slots-section) so that they are sorted perfectly.
+Set the [conditions](../Documentation/Menu-Menu.md#the-items-section) for this item so it is only displayed if the quest is not finished (use the [tag condition](../Documentation/Conditions-List.md#tag-tag)).  
+Then assign all those items to [a row of slots](../Documentation/Menu-Menu.md#the-slots-section) so that they are sorted perfectly.
 
 You can also add click events to display npc locations, add compass targets, directly open the conversations or cancel the quest.
 
 Or you could define separate items for open and finished quests or even to show the progress. Just be a bit creative.
 
 ## Menus displaying players stats
-You may also use menus to display the stats of a player. Just use [variables](Variables-List.md) in the text or for the amount of an item.
+You may also use menus to display the stats of a player. Just use [variables](../Documentation/Variables-List.md) in the text or for the amount of an item.
 
 For example try displaying a players money using the varible from [Vault integration](http://dev.bukkit.org/bukkit-plugins/vault/)
-or use [PlaceholderAPI](Compatibility.md#placeholderapi) to show placeholders from many other plugins.
+or use [PlaceholderAPI](../Documentation/Compatibility.md#placeholderapi) to show placeholders from many other plugins.
