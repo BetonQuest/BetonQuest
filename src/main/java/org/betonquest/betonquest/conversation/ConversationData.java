@@ -468,8 +468,8 @@ public class ConversationData {
             final ConfigurationSection conv = convSection.getConfigurationSection(type.getIdentifier() + "." + name);
 
             if (conv == null) {
-                pointers = null;
-                extendLinks = null;
+                pointers = new ArrayList<>();
+                extendLinks = new ArrayList<>();
                 return;
             }
 
