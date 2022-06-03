@@ -1,18 +1,17 @@
 name: "Docs Feedback"
 description: "Report unclear documentation."
 body:
-  - type: textarea
+  - type: input
     attributes:
-      label: "Docs version"
-      description: "Please name the version of the docs that you use."
-      placeholder: "2.0.0"
+      label: "Docs Version"
+      description: "The version of the documentation this report is about."
+      placeholder: 2.3.1
     validations:
       required: true
-
+    id: "version"
   - type: textarea
     attributes:
       label: "Improvement"
       description: "What can be improved?"
-      render: Text
     validations:
       required: true
