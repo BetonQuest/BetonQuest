@@ -18,12 +18,18 @@ import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Server;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.InstantSource;
 import java.util.Locale;
 
 /**
  * Factory to create journal events from {@link Instruction}s.
  */
 public class JournalEventFactory implements EventFactory {
+    /**
+     * The instant source to provide to events.
+     */
+    private final InstantSource instantSource;
+
     /**
      * The saver to inject into database-using events.
      */
@@ -37,10 +43,12 @@ public class JournalEventFactory implements EventFactory {
     /**
      * Create the journal event factory.
      *
-     * @param saver  database saver to use
+     * @param instantSource instant source to pass on
+     * @param saver database saver to use
      * @param server server to refer to
      */
-    public JournalEventFactory(final Saver saver, final Server server) {
+    public JournalEventFactory(final InstantSource instantSource, final Saver saver, final Server server) {
+        this.instantSource = instantSource;
         this.saver = saver;
         this.server = server;
     }
@@ -77,7 +85,7 @@ public class JournalEventFactory implements EventFactory {
     @NotNull
     private JournalEvent createJournalAddEvent(final Instruction instruction) throws InstructionParseException {
         final String entryName = Utils.addPackage(instruction.getPackage(), instruction.next());
-        final JournalChanger journalChanger = new AddEntryJournalChanger(entryName);
+        final JournalChanger journalChanger = new AddEntryJournalChanger(instantSource, entryName);
         final NotificationSender notificationSender = new InfoNotificationSender("new_journal_entry", instruction.getPackage(), instruction.getID().getFullID());
         return new JournalEvent(journalChanger, notificationSender);
     }

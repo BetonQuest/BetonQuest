@@ -9,50 +9,49 @@ import org.betonquest.betonquest.quest.event.journal.JournalEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactoryAdapter;
 import org.bukkit.Server;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.time.Instant;
+import java.time.InstantSource;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 /**
  * JournalEvent tests.
  */
 @ExtendWith(BetonQuestLoggerService.class)
+@ExtendWith(MockitoExtension.class)
 class JournalEventFactoryIntegrationTest {
 
     /**
      * Mocked Minecraft Bukkit server.
      */
-    private final Server server = mock(Server.class);
+    @Mock
+    private Server server;
 
     /**
      * Mocked database Saver.
      */
-    private final Saver saver = mock(Saver.class);
+    @Mock
+    private Saver saver;
 
     /**
-     * The journal factory used to create journal events in tests.
+     * Fixed present time instant.
      */
-    private final QuestEventFactoryAdapter journalFactory = new QuestEventFactoryAdapter(new JournalEventFactory(saver, server));
+    private final Instant now = Instant.now();
 
     /**
      * Create JournalEvent test class.
      */
     public JournalEventFactoryIntegrationTest() {
-    }
-
-    @AfterEach
-    void resetServerMock() {
-        reset(server);
-        reset(saver);
     }
 
     private QuestPackage setupQuestPackage(final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
@@ -67,8 +66,14 @@ class JournalEventFactoryIntegrationTest {
         return new QuestPackage("test", packageConfigFile, Collections.emptyList());
     }
 
+    private QuestEventFactoryAdapter createJournalEventFactory() {
+        return new QuestEventFactoryAdapter(new JournalEventFactory(InstantSource.fixed(now), saver, server));
+
+    }
+
     @Test
     void constructJournalUpdateEvent(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+        final QuestEventFactoryAdapter journalFactory = createJournalEventFactory();
         final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "journal update");
@@ -77,6 +82,7 @@ class JournalEventFactoryIntegrationTest {
 
     @Test
     void constructJournalAddEvent(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+        final QuestEventFactoryAdapter journalFactory = createJournalEventFactory();
         final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "journal add quest_started");
@@ -85,6 +91,7 @@ class JournalEventFactoryIntegrationTest {
 
     @Test
     void constructJournalAddEventWithoutPageReference(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+        final QuestEventFactoryAdapter journalFactory = createJournalEventFactory();
         final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "journal add");
@@ -93,6 +100,7 @@ class JournalEventFactoryIntegrationTest {
 
     @Test
     void constructJournalDeleteEvent(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+        final QuestEventFactoryAdapter journalFactory = createJournalEventFactory();
         final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "journal delete quest_available");
@@ -101,6 +109,7 @@ class JournalEventFactoryIntegrationTest {
 
     @Test
     void constructJournalDeleteEventWithoutPageReference(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+        final QuestEventFactoryAdapter journalFactory = createJournalEventFactory();
         final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "journal delete");
@@ -109,6 +118,7 @@ class JournalEventFactoryIntegrationTest {
 
     @Test
     void constructInvalidJournalEvent(@TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException {
+        final QuestEventFactoryAdapter journalFactory = createJournalEventFactory();
         final QuestPackage questPackage = setupQuestPackage(questPackagesDirectory);
 
         final Instruction instruction = new Instruction(questPackage, null, "journal invalid");
