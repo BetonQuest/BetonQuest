@@ -207,7 +207,7 @@ jobs:
           cp ./CHANGELOG.md './docs/Documentation/CHANGELOG.md'
       - name: Set mkdocs.yml version
         run: |
-          sed -i "s~\$VERSION\$~${VERSION}~g" ./mkdocs.yml
+          sed -i "s~%VERSION%~${VERSION}~g" ./mkdocs.yml
       - name: Build with mkdocs
         run: |
           mkdocs build
