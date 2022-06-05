@@ -2,9 +2,7 @@ package org.betonquest.betonquest.modules.logger.custom.chat;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -30,22 +28,22 @@ public class PlayerPackageFilter implements PlayerFilter {
     }
 
     @Override
-    public boolean addFilter(final UUID uuid, final String filter, final Level level) {
+    public boolean addFilter(final UUID uuid, final String pattern, final Level level) {
         if (!playerFilters.containsKey(uuid)) {
             playerFilters.put(uuid, new HashMap<>());
         }
         final Map<String, Level> filters = playerFilters.get(uuid);
-        if (filters.containsKey(filter) && filters.get(filter).equals(level)) {
+        if (filters.containsKey(pattern) && filters.get(pattern).equals(level)) {
             return false;
         }
-        filters.put(filter, level);
+        filters.put(pattern, level);
         return true;
     }
 
     @Override
-    public boolean removeFilter(final UUID uuid, final String filter) {
+    public boolean removeFilter(final UUID uuid, final String pattern) {
         if (playerFilters.containsKey(uuid)) {
-            final boolean removed = playerFilters.get(uuid).remove(filter) != null;
+            final boolean removed = playerFilters.get(uuid).remove(pattern) != null;
             if (playerFilters.get(uuid).isEmpty()) {
                 playerFilters.remove(uuid);
             }
@@ -55,11 +53,11 @@ public class PlayerPackageFilter implements PlayerFilter {
     }
 
     @Override
-    public List<String> getFilters(final UUID uuid) {
+    public Set<String> getFilters(final UUID uuid) {
         if (playerFilters.containsKey(uuid)) {
-            return new ArrayList<>(playerFilters.get(uuid).keySet());
+            return playerFilters.get(uuid).keySet();
         }
-        return new ArrayList<>();
+        return Set.of();
     }
 
     @Override
@@ -68,7 +66,7 @@ public class PlayerPackageFilter implements PlayerFilter {
     }
 
     @Override
-    public boolean filter(final UUID uuid, final String pack, final Level level) {
+    public boolean match(final UUID uuid, final String pack, final Level level) {
         final Map<String, Level> filterEntries = playerFilters.get(uuid);
         if (filterEntries != null) {
             for (final Map.Entry<String, Level> entry : filterEntries.entrySet()) {
@@ -80,9 +78,9 @@ public class PlayerPackageFilter implements PlayerFilter {
         return false;
     }
 
-    private boolean validPackage(final String pack, final String filter) {
-        final boolean equal = !filter.endsWith("*");
-        final String expression = equal ? filter : StringUtils.chop(filter);
+    private boolean validPackage(final String pack, final String pattern) {
+        final boolean equal = !pattern.endsWith("*");
+        final String expression = equal ? pattern : StringUtils.chop(pattern);
         return equal && pack.equals(expression) || !equal && pack.startsWith(expression);
     }
 }

@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.modules.logger.custom.chat;
 
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -12,21 +11,21 @@ public interface PlayerFilter {
     /**
      * Adds a filter to a player.
      *
-     * @param uuid   The {@link UUID} of the player
-     * @param filter The filter pattern
-     * @param level  The {@link Level} of the filter
+     * @param uuid    The {@link UUID} of the player
+     * @param pattern The filter pattern
+     * @param level   The {@link Level} of the filter
      * @return True if the filter was successfully added
      */
-    boolean addFilter(UUID uuid, String filter, Level level);
+    boolean addFilter(UUID uuid, String pattern, Level level);
 
     /**
      * Removes a filter from a player.
      *
-     * @param uuid   The {@link UUID} of the player
-     * @param filter The filter pattern
+     * @param uuid    The {@link UUID} of the player
+     * @param pattern The filter pattern
      * @return True if the filter was successfully removed
      */
-    boolean removeFilter(UUID uuid, String filter);
+    boolean removeFilter(UUID uuid, String pattern);
 
     /**
      * Gets a players filters.
@@ -34,7 +33,7 @@ public interface PlayerFilter {
      * @param uuid The {@link UUID} of the player
      * @return A list of filters
      */
-    List<String> getFilters(UUID uuid);
+    Set<String> getFilters(UUID uuid);
 
     /**
      * Get all player {@link UUID}s, that have active filters.
@@ -51,5 +50,5 @@ public interface PlayerFilter {
      * @param level The level related to the key.
      * @return True if it fits the active filter.
      */
-    boolean filter(UUID uuid, String key, Level level);
+    boolean match(UUID uuid, String key, Level level);
 }

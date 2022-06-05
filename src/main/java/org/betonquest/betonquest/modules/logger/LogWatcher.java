@@ -3,7 +3,7 @@ package org.betonquest.betonquest.modules.logger;
 import org.betonquest.betonquest.modules.logger.custom.chat.ChatHandler;
 import org.betonquest.betonquest.modules.logger.custom.chat.PlayerFilter;
 import org.betonquest.betonquest.modules.logger.custom.debug.HistoryHandler;
-import org.betonquest.betonquest.modules.logger.custom.debug.config.DebugConfig;
+import org.betonquest.betonquest.modules.logger.custom.debug.LogPublishingController;
 import org.bukkit.plugin.Plugin;
 
 import java.util.logging.Logger;
@@ -51,12 +51,12 @@ public final class LogWatcher implements AutoCloseable {
     }
 
     /**
-     * Get the {@link DebugConfig} instance for the {@link HistoryHandler}.
+     * Get the {@link LogPublishingController} instance for the {@link HistoryHandler}.
      *
-     * @return the instance of the {@link DebugConfig}
+     * @return the instance of the {@link LogPublishingController}
      */
-    public DebugConfig getDebugConfig() {
-        return historyHandler.getDebugConfig();
+    public LogPublishingController getDebuggingController() {
+        return historyHandler;
     }
 
     @Override

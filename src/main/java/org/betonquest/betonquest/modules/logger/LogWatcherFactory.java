@@ -8,10 +8,10 @@ import org.betonquest.betonquest.modules.logger.custom.chat.ChatHandler;
 import org.betonquest.betonquest.modules.logger.custom.chat.PlayerFilter;
 import org.betonquest.betonquest.modules.logger.custom.chat.PlayerPackageFilter;
 import org.betonquest.betonquest.modules.logger.custom.debug.HistoryHandler;
+import org.betonquest.betonquest.modules.logger.custom.debug.HistoryHandlerConfig;
 import org.betonquest.betonquest.modules.logger.custom.debug.LazyLogHandler;
 import org.betonquest.betonquest.modules.logger.custom.debug.LogfileFormatter;
 import org.betonquest.betonquest.modules.logger.custom.debug.ResettableHandler;
-import org.betonquest.betonquest.modules.logger.custom.debug.config.FileDebugConfig;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -43,7 +43,7 @@ public final class LogWatcherFactory {
      * @param bukkitAudiences {@link BukkitAudiences} instance
      * @return a new {@link ChatHandler}
      */
-    public static ChatHandler getChatHandler(final Plugin plugin, final BukkitAudiences bukkitAudiences) {
+    public static ChatHandler createChatHandler(final Plugin plugin, final BukkitAudiences bukkitAudiences) {
         final PlayerFilter playerFilter = new PlayerPackageFilter();
         final ChatHandler handler = new ChatHandler(playerFilter, bukkitAudiences);
         handler.setFormatter(new ChatFormatter(ChatFormatter.PluginDisplayMethod.ROOT_PLUGIN_AND_PLUGIN, plugin, "BQ"));
@@ -60,20 +60,20 @@ public final class LogWatcherFactory {
      * @param instantSource {@link InstantSource} instance
      * @return a new {@link HistoryHandler}
      */
-    public static HistoryHandler getHistoryHandler(final Plugin plugin, final BukkitScheduler scheduler, final ConfigurationFile config, final File logFileFolder, final InstantSource instantSource) {
-        final FileDebugConfig debugConfig = new FileDebugConfig(config, logFileFolder);
-        final ResettableHandler targetHandler = new LazyLogHandler(() -> setupFileHandler(debugConfig, instantSource));
-        return new HistoryHandler(debugConfig, plugin, scheduler, targetHandler, instantSource);
+    public static HistoryHandler createHistoryHandler(final Plugin plugin, final BukkitScheduler scheduler, final ConfigurationFile config, final File logFileFolder, final InstantSource instantSource) {
+        final HistoryHandlerConfig historyHandlerConfig = new HistoryHandlerConfig(config, logFileFolder);
+        final ResettableHandler targetHandler = new LazyLogHandler(() -> setupFileHandler(historyHandlerConfig, instantSource));
+        return new HistoryHandler(historyHandlerConfig, plugin, scheduler, targetHandler, instantSource);
     }
 
-    private static Handler setupFileHandler(final FileDebugConfig debugConfig, final InstantSource instantSource) {
+    private static Handler setupFileHandler(final HistoryHandlerConfig historyHandlerConfig, final InstantSource instantSource) {
         try {
-            renameLogFile(debugConfig.getLogFile(), instantSource);
-            final FileHandler fileHandler = new FileHandler(debugConfig.getLogFile().getAbsolutePath());
+            renameLogFile(historyHandlerConfig.getLogFile(), instantSource);
+            final FileHandler fileHandler = new FileHandler(historyHandlerConfig.getLogFile().getAbsolutePath());
             fileHandler.setFormatter(new LogfileFormatter());
             return fileHandler;
         } catch (final IOException e) {
-            LOG.error("It was not possible to create the '" + debugConfig.getLogFile().getName() + "' or to register the plugin's internal logger. "
+            LOG.error("It was not possible to create the '" + historyHandlerConfig.getLogFile().getName() + "' or to register the plugin's internal logger. "
                     + "This is not a critical error, the server can still run, but it is not possible to use the '/q debug true' command. "
                     + "Reason: " + e.getMessage(), e);
         }

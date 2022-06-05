@@ -36,7 +36,7 @@ import org.betonquest.betonquest.modules.downloader.Downloader;
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
 import org.betonquest.betonquest.modules.logger.custom.chat.ChatFormatter;
 import org.betonquest.betonquest.modules.logger.custom.chat.PlayerFilter;
-import org.betonquest.betonquest.modules.logger.custom.debug.config.DebugConfig;
+import org.betonquest.betonquest.modules.logger.custom.debug.LogPublishingController;
 import org.betonquest.betonquest.modules.versioning.Updater;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
@@ -1637,10 +1637,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     }
 
     private void handleDebug(final CommandSender sender, final String... args) {
-        final DebugConfig historyHandler = BetonQuest.getInstance().getLogWatcher().getDebugConfig();
+        final LogPublishingController debuggingController = BetonQuest.getInstance().getLogWatcher().getDebuggingController();
         if (args.length == 1) {
             sender.sendMessage(
-                    "§2Debugging mode is currently " + (historyHandler.isDebugging() ? "enabled" : "disabled") + '!');
+                    "§2Debugging mode is currently " + (debuggingController.isLogging() ? "enabled" : "disabled") + '!');
             return;
         }
         if ("ingame".equalsIgnoreCase(args[1])) {
@@ -1676,23 +1676,23 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 : "false".equalsIgnoreCase(args[1]) ? Boolean.FALSE : null;
         if (input != null && args.length == 2) {
 
-            if (historyHandler.isDebugging() && input || !historyHandler.isDebugging() && !input) {
+            if (debuggingController.isLogging() && input || !debuggingController.isLogging() && !input) {
                 sender.sendMessage(
-                        "§2Debugging mode is already " + (historyHandler.isDebugging() ? "enabled" : "disabled") + '!');
+                        "§2Debugging mode is already " + (debuggingController.isLogging() ? "enabled" : "disabled") + '!');
                 return;
             }
             try {
                 if (input) {
-                    historyHandler.startDebug();
+                    debuggingController.startLogging();
                 } else {
-                    historyHandler.stopDebug();
+                    debuggingController.stopLogging();
                 }
             } catch (final IOException e) {
                 sender.sendMessage("Could not save new debugging state to configuration file!");
                 LOG.warn("Could not save new debugging state to configuration file! " + e.getMessage(), e);
             }
-            sender.sendMessage("§2Debugging mode was " + (historyHandler.isDebugging() ? "enabled" : "disabled") + '!');
-            LOG.info("Debuging mode was " + (historyHandler.isDebugging() ? "enabled" : "disabled") + '!');
+            sender.sendMessage("§2Debugging mode was " + (debuggingController.isLogging() ? "enabled" : "disabled") + '!');
+            LOG.info("Debuging mode was " + (debuggingController.isLogging() ? "enabled" : "disabled") + '!');
             return;
         }
         sendMessage(sender, "unknown_argument");

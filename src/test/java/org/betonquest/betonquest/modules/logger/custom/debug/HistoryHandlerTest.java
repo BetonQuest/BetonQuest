@@ -1,14 +1,15 @@
 package org.betonquest.betonquest.modules.logger.custom.debug;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
-import org.betonquest.betonquest.modules.logger.custom.debug.config.DebugConfig;
-import org.betonquest.betonquest.modules.logger.custom.debug.config.SimpleDebugConfig;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.betonquest.betonquest.util.scheduler.BukkitSchedulerMock;
 import org.bukkit.plugin.Plugin;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.InstantSource;
 import java.time.LocalDateTime;
@@ -42,7 +43,7 @@ class HistoryHandlerTest {
     }
 
     @Test
-    void testLogHistory() throws IOException {
+    void testLogHistory(@TempDir final File tempDir) throws IOException {
         final InstantSource fixedTime = InstantSource.fixed(FIXED_TIME.toInstant(ZoneOffset.UTC));
 
         final LogValidator validator;
@@ -50,8 +51,12 @@ class HistoryHandlerTest {
         final Logger logger = LogValidator.getSilentLogger();
         validator = new LogValidator();
         try (BukkitSchedulerMock scheduler = new BukkitSchedulerMock()) {
-            final DebugConfig debugConfig = new SimpleDebugConfig(false);
-            historyHandler = new HistoryHandler(debugConfig, mock(BetonQuest.class), scheduler, validator, fixedTime);
+            final ConfigurationFile configurationFile = mock(ConfigurationFile.class);
+            when(configurationFile.getBoolean("debug.enabled", false)).thenReturn(false);
+
+            final HistoryHandlerConfig historyHandlerConfig = spy(new HistoryHandlerConfig(configurationFile, tempDir));
+            doReturn(10).when(historyHandlerConfig).getExpireAfterMinutes();
+            historyHandler = new HistoryHandler(historyHandlerConfig, mock(BetonQuest.class), scheduler, validator, fixedTime);
 
             logger.addHandler(historyHandler);
 
@@ -73,7 +78,7 @@ class HistoryHandlerTest {
 
     private void assertLogMessages(final LogValidator validator, final HistoryHandler historyHandler) throws IOException {
         validator.assertEmpty();
-        historyHandler.getDebugConfig().startDebug();
+        historyHandler.startLogging();
         validator.assertLogEntry(Level.INFO, HistoryHandler.START_OF_HISTORY);
         validator.assertLogEntry(Level.INFO, "Message 2");
         validator.assertLogEntry(Level.INFO, HistoryHandler.END_OF_HISTORY);

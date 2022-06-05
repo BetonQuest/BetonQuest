@@ -1,14 +1,20 @@
-package org.betonquest.betonquest.modules.logger.custom.debug.config;
+package org.betonquest.betonquest.modules.logger.custom.debug;
 
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.LogRecord;
 
 /**
  * This is a debug configuration based on a {@link ConfigurationFile}.
  */
-public class FileDebugConfig extends SimpleDebugConfig {
+@SuppressWarnings({"PMD.DataClass"})
+public class HistoryHandlerConfig {
+    /**
+     * Default value for the expire after minutes value.
+     */
+    public static final int EXPIRE_AFTER_DEFAULT = 10;
     /**
      * The file path to the latest.log.
      */
@@ -35,42 +41,55 @@ public class FileDebugConfig extends SimpleDebugConfig {
     private final File logFile;
 
     /**
-     * Create a new {@link DebugConfig} that is based on a {@link ConfigurationFile}.
+     * Whether debugging is enabled.
+     */
+    private boolean debugging;
+
+    /**
+     * Create a new {@link LogPublishingController} that is based on a {@link ConfigurationFile}.
      *
      * @param config        the related {@link ConfigurationFile}
      * @param logFileFolder the folder where to write the logfile.
      */
-    public FileDebugConfig(final ConfigurationFile config, final File logFileFolder) {
-        super(config.getBoolean(CONFIG_ENABLED_PATH, false));
+    public HistoryHandlerConfig(final ConfigurationFile config, final File logFileFolder) {
+        this.debugging = config.getBoolean(CONFIG_ENABLED_PATH, false);
         this.config = config;
         this.logFile = new File(logFileFolder, LOG_FILE_PATH);
     }
 
-    @Override
-    public void startDebug() throws IOException {
-        super.startDebug();
-        saveDebuggingToConfig();
-    }
-
-    @Override
-    public void stopDebug() throws IOException {
-        super.stopDebug();
-        saveDebuggingToConfig();
-    }
-
-    @Override
+    /**
+     * Gets how long {@link LogRecord}s stay in a cache.
+     * <p>
+     * If it is 0, no history will be saved at all.
+     *
+     * @return duration until expiration in minutes
+     */
     public int getExpireAfterMinutes() {
-        return config.getInt(CONFIG_HISTORY_PATH, super.getExpireAfterMinutes());
+        return config.getInt(CONFIG_HISTORY_PATH, EXPIRE_AFTER_DEFAULT);
+    }
+
+    /**
+     * @return True, if debugging is enabled
+     */
+    public boolean isDebugging() {
+        return debugging;
     }
 
     /**
      * Saves the current debugging state to the configuration file.
      *
+     * @param debugging value to set
+     * @return True if the debugging
      * @throws IOException Is thrown if the configuration file could not be saved
      */
-    private void saveDebuggingToConfig() throws IOException {
-        if (!config.isBoolean(CONFIG_ENABLED_PATH) || config.getBoolean(CONFIG_ENABLED_PATH) != isDebugging()) {
-            config.set(CONFIG_ENABLED_PATH, isDebugging());
+    public void setDebugging(final boolean debugging) throws IOException {
+        this.debugging = debugging;
+        saveDebuggingToConfig(debugging);
+    }
+
+    private void saveDebuggingToConfig(final boolean debugging) throws IOException {
+        if (!config.isBoolean(CONFIG_ENABLED_PATH) || config.getBoolean(CONFIG_ENABLED_PATH) != debugging) {
+            config.set(CONFIG_ENABLED_PATH, debugging);
             config.save();
         }
     }

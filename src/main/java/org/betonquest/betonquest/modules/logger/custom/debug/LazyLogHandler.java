@@ -68,9 +68,8 @@ public class LazyLogHandler extends ResettableHandler {
         }
     }
 
-    @SuppressWarnings("PMD.AvoidUncheckedExceptionsInSignatures")
     @Override
-    public void close() throws SecurityException {
+    public void close() {
         if (target != null) {
             target.close();
             closed = true;

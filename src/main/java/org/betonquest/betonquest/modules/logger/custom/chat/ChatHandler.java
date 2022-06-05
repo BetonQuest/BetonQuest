@@ -10,7 +10,8 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
 /**
- * This is a simple log formatting class for the in-game chat.
+ * This {@link Handler} can send log messages to the ingame chat
+ * to specified players defined by a given {@link PlayerFilter}.
  */
 public class ChatHandler extends Handler {
 
@@ -62,7 +63,7 @@ public class ChatHandler extends Handler {
 
     private void filterPlayers(final LogRecord record, final String msg, final String pack) {
         for (final UUID uuid : playerFilter.getUUIDs()) {
-            if (playerFilter.filter(uuid, pack, record.getLevel())) {
+            if (playerFilter.match(uuid, pack, record.getLevel())) {
                 bukkitAudiences.player(uuid).sendMessage(GsonComponentSerializer.gson().deserialize(msg));
             }
         }

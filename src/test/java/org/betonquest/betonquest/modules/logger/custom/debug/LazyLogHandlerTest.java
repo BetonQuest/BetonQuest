@@ -22,7 +22,7 @@ class LazyLogHandlerTest {
 
     @Test
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
-    void test() {
+    void testLazyInstantiation() {
         final AtomicBoolean created = new AtomicBoolean(false);
         final ResettableHandler handler = new LazyLogHandler(() -> {
             created.set(true);

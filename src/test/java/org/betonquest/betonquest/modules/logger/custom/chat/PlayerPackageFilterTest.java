@@ -2,7 +2,6 @@ package org.betonquest.betonquest.modules.logger.custom.chat;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -44,8 +43,8 @@ class PlayerPackageFilterTest {
         playerFilter.addFilter(uuid2, FILTER2, Level.WARNING);
         playerFilter.addFilter(uuid2, FILTER3, Level.WARNING);
 
-        assertEquals(List.of(FILTER2), playerFilter.getFilters(uuid1), "The list if filters should match");
-        assertEquals(List.of(FILTER2, FILTER3), playerFilter.getFilters(uuid2), "The list if filters should match");
+        assertEquals(Set.of(FILTER2), playerFilter.getFilters(uuid1), "The list if filters should match");
+        assertEquals(Set.of(FILTER2, FILTER3), playerFilter.getFilters(uuid2), "The list if filters should match");
         assertEquals(Set.of(uuid1, uuid2), playerFilter.getUUIDs(), "Players should be in the list");
 
         playerFilter.removeFilter(uuid1, FILTER2);
@@ -60,15 +59,15 @@ class PlayerPackageFilterTest {
         final PlayerFilter playerFilter = new PlayerPackageFilter();
         final UUID uuid = UUID.randomUUID();
         playerFilter.addFilter(uuid, FILTER2, Level.INFO);
-        assertMatch(false, playerFilter.filter(uuid, FILTER1, Level.FINE));
-        assertMatch(false, playerFilter.filter(uuid, FILTER1, Level.INFO));
-        assertMatch(false, playerFilter.filter(uuid, FILTER1, Level.WARNING));
-        assertMatch(false, playerFilter.filter(uuid, FILTER2, Level.FINE));
-        assertMatch(true, playerFilter.filter(uuid, FILTER2, Level.INFO));
-        assertMatch(true, playerFilter.filter(uuid, FILTER2, Level.WARNING));
-        assertMatch(false, playerFilter.filter(uuid, FILTER3, Level.FINE));
-        assertMatch(false, playerFilter.filter(uuid, FILTER3, Level.INFO));
-        assertMatch(false, playerFilter.filter(uuid, FILTER3, Level.WARNING));
+        assertMatch(false, playerFilter.match(uuid, FILTER1, Level.FINE));
+        assertMatch(false, playerFilter.match(uuid, FILTER1, Level.INFO));
+        assertMatch(false, playerFilter.match(uuid, FILTER1, Level.WARNING));
+        assertMatch(false, playerFilter.match(uuid, FILTER2, Level.FINE));
+        assertMatch(true, playerFilter.match(uuid, FILTER2, Level.INFO));
+        assertMatch(true, playerFilter.match(uuid, FILTER2, Level.WARNING));
+        assertMatch(false, playerFilter.match(uuid, FILTER3, Level.FINE));
+        assertMatch(false, playerFilter.match(uuid, FILTER3, Level.INFO));
+        assertMatch(false, playerFilter.match(uuid, FILTER3, Level.WARNING));
     }
 
     @Test
@@ -76,15 +75,15 @@ class PlayerPackageFilterTest {
         final PlayerFilter playerFilter = new PlayerPackageFilter();
         final UUID uuid = UUID.randomUUID();
         playerFilter.addFilter(uuid, FILTER2 + "*", Level.INFO);
-        assertMatch(false, playerFilter.filter(uuid, FILTER1, Level.FINE));
-        assertMatch(false, playerFilter.filter(uuid, FILTER1, Level.INFO));
-        assertMatch(false, playerFilter.filter(uuid, FILTER1, Level.WARNING));
-        assertMatch(false, playerFilter.filter(uuid, FILTER2, Level.FINE));
-        assertMatch(true, playerFilter.filter(uuid, FILTER2, Level.INFO));
-        assertMatch(true, playerFilter.filter(uuid, FILTER2, Level.WARNING));
-        assertMatch(false, playerFilter.filter(uuid, FILTER3, Level.FINE));
-        assertMatch(true, playerFilter.filter(uuid, FILTER3, Level.INFO));
-        assertMatch(true, playerFilter.filter(uuid, FILTER3, Level.WARNING));
+        assertMatch(false, playerFilter.match(uuid, FILTER1, Level.FINE));
+        assertMatch(false, playerFilter.match(uuid, FILTER1, Level.INFO));
+        assertMatch(false, playerFilter.match(uuid, FILTER1, Level.WARNING));
+        assertMatch(false, playerFilter.match(uuid, FILTER2, Level.FINE));
+        assertMatch(true, playerFilter.match(uuid, FILTER2, Level.INFO));
+        assertMatch(true, playerFilter.match(uuid, FILTER2, Level.WARNING));
+        assertMatch(false, playerFilter.match(uuid, FILTER3, Level.FINE));
+        assertMatch(true, playerFilter.match(uuid, FILTER3, Level.INFO));
+        assertMatch(true, playerFilter.match(uuid, FILTER3, Level.WARNING));
     }
 
     @Test
@@ -92,15 +91,15 @@ class PlayerPackageFilterTest {
         final PlayerFilter playerFilter = new PlayerPackageFilter();
         final UUID uuid = UUID.randomUUID();
         playerFilter.addFilter(uuid, "*", Level.INFO);
-        assertMatch(false, playerFilter.filter(uuid, FILTER1, Level.FINE));
-        assertMatch(true, playerFilter.filter(uuid, FILTER1, Level.INFO));
-        assertMatch(true, playerFilter.filter(uuid, FILTER1, Level.WARNING));
-        assertMatch(false, playerFilter.filter(uuid, FILTER2, Level.FINE));
-        assertMatch(true, playerFilter.filter(uuid, FILTER2, Level.INFO));
-        assertMatch(true, playerFilter.filter(uuid, FILTER2, Level.WARNING));
-        assertMatch(false, playerFilter.filter(uuid, FILTER3, Level.FINE));
-        assertMatch(true, playerFilter.filter(uuid, FILTER3, Level.INFO));
-        assertMatch(true, playerFilter.filter(uuid, FILTER3, Level.WARNING));
+        assertMatch(false, playerFilter.match(uuid, FILTER1, Level.FINE));
+        assertMatch(true, playerFilter.match(uuid, FILTER1, Level.INFO));
+        assertMatch(true, playerFilter.match(uuid, FILTER1, Level.WARNING));
+        assertMatch(false, playerFilter.match(uuid, FILTER2, Level.FINE));
+        assertMatch(true, playerFilter.match(uuid, FILTER2, Level.INFO));
+        assertMatch(true, playerFilter.match(uuid, FILTER2, Level.WARNING));
+        assertMatch(false, playerFilter.match(uuid, FILTER3, Level.FINE));
+        assertMatch(true, playerFilter.match(uuid, FILTER3, Level.INFO));
+        assertMatch(true, playerFilter.match(uuid, FILTER3, Level.WARNING));
     }
 
     private void assertMatch(final boolean expected, final boolean actual) {

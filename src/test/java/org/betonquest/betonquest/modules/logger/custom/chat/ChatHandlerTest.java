@@ -35,7 +35,7 @@ class ChatHandlerTest {
     }
 
     @Test
-    void test() {
+    void testLoggingToPlayersChat() {
         try (BukkitAudiences audiences = mock(BukkitAudiences.class)) {
             final PlayerFilter playerFilter = mock(PlayerFilter.class);
             final UUID uuid1 = UUID.randomUUID();
@@ -57,7 +57,7 @@ class ChatHandlerTest {
 
     private Audience getAudience(final PlayerFilter playerFilter, final BukkitAudiences audiences, final UUID uuid, final String... packs) {
         for (final String pack : packs) {
-            when(playerFilter.filter(uuid, pack, Level.INFO)).thenReturn(true);
+            when(playerFilter.match(uuid, pack, Level.INFO)).thenReturn(true);
         }
 
         final Audience audience = mock(Audience.class);

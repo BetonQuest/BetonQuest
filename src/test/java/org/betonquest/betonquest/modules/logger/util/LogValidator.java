@@ -108,7 +108,7 @@ public class LogValidator extends ResettableHandler {
     }
 
     private LogRecord popLogRecord() {
-        assertFalse(records.isEmpty(), "There is no left LogRecord to query for assertion!");
+        assertFalse(records.isEmpty(), "There is no LogRecord left to query for assertion!");
         return records.remove();
     }
 

@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.modules.logger.custom.debug;
 
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
-import org.betonquest.betonquest.modules.logger.custom.debug.config.DebugConfig;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import java.io.IOException;
 import java.time.InstantSource;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -22,7 +22,7 @@ import java.util.logging.LogRecord;
  * The history can then be pushed to the target handler at any time.
  * It is automatically pushed if the filter returns true for any subsequent LogRecord.
  */
-public class HistoryHandler extends Handler {
+public class HistoryHandler extends Handler implements LogPublishingController {
     /**
      * The message printed before the history is printed.
      */
@@ -46,31 +46,30 @@ public class HistoryHandler extends Handler {
     private final ResettableHandler target;
 
     /**
-     * The {@link DebugConfig} for this {@link Handler}.
+     * The {@link HistoryHandlerConfig} for this {@link Handler}.
      */
-    private final DebugConfig debugConfig;
+    private final HistoryHandlerConfig historyHandlerConfig;
 
     /**
      * Creates a new {@link HistoryHandler}.
      *
-     * @param debugConfig   the config for the settings
-     * @param plugin        the plugin, that should own the task for cleanups
-     * @param scheduler     the scheduler for the cleanup task
-     * @param target        the Handler to log the history to
-     * @param instantSource the {@link InstantSource} to get the {@link java.time.Instant} from
+     * @param historyHandlerConfig the config for the settings
+     * @param plugin               the plugin, that should own the task for cleanups
+     * @param scheduler            the scheduler for the cleanup task
+     * @param target               the Handler to log the history to
+     * @param instantSource        the {@link InstantSource} to get the {@link java.time.Instant} from
      */
-    public HistoryHandler(final DebugConfig debugConfig, final Plugin plugin, final BukkitScheduler scheduler, final ResettableHandler target,
+    public HistoryHandler(final HistoryHandlerConfig historyHandlerConfig, final Plugin plugin,
+                          final BukkitScheduler scheduler, final ResettableHandler target,
                           final InstantSource instantSource) {
         super();
-        this.debugConfig = debugConfig;
-        debugConfig.addOnStartHandler(this, new PushHistoryRunnable());
-        debugConfig.addOnStopHandler(this, new ResetTargetRunnable());
-        if (debugConfig.getExpireAfterMinutes() == 0) {
+        this.historyHandlerConfig = historyHandlerConfig;
+        if (historyHandlerConfig.getExpireAfterMinutes() == 0) {
             this.records = null;
         } else {
             this.records = new ConcurrentLinkedQueue<>();
             scheduler.runTaskTimerAsynchronously(plugin, () -> {
-                while (isExpired(records.peek(), instantSource, debugConfig.getExpireAfterMinutes() * 60 * 1000L)) {
+                while (isExpired(records.peek(), instantSource, historyHandlerConfig.getExpireAfterMinutes() * 60 * 1000L)) {
                     records.remove();
                 }
             }, 20, 20);
@@ -93,7 +92,7 @@ public class HistoryHandler extends Handler {
         if (!(record instanceof BetonQuestLogRecord) || !isLoggable(record)) {
             return;
         }
-        if (debugConfig.isDebugging()) {
+        if (isLogging()) {
             publishLock.lock();
             try {
                 target.publish(record);
@@ -131,70 +130,42 @@ public class HistoryHandler extends Handler {
      */
     @Override
     public void close() {
-        debugConfig.removeOnStartHandler(this);
         target.close();
     }
 
     /**
-     * Get the {@link DebugConfig} related to this {@link HistoryHandler}
+     * Get the {@link LogPublishingController} related to this {@link HistoryHandler}
      *
-     * @return a {@link DebugConfig} instance
+     * @return a {@link LogPublishingController} instance
      */
-    public DebugConfig getDebugConfig() {
-        return debugConfig;
+    @Override
+    public boolean isLogging() {
+        return historyHandlerConfig.isDebugging();
     }
 
-    /**
-     * Implementation of {@link DebugConfig.PrePostRunnable} for publishing the history.
-     */
-    private class PushHistoryRunnable implements DebugConfig.PrePostRunnable {
-        /**
-         * Default constructor.
-         */
-        public PushHistoryRunnable() {
-            // Empty
-        }
-
-        @Override
-        public void preRun() {
-            publishLock.lock();
-        }
-
-        @Override
-        public void postRun() {
+    @Override
+    public void startLogging() throws IOException {
+        publishLock.lock();
+        try {
+            if (!isLogging()) {
+                historyHandlerConfig.setDebugging(true);
+                push();
+            }
+        } finally {
             publishLock.unlock();
-        }
-
-        @Override
-        public void run() {
-            push();
         }
     }
 
-    /**
-     * Implementation for {@link DebugConfig.PrePostRunnable} for resetting the target handler.
-     */
-    private class ResetTargetRunnable implements DebugConfig.PrePostRunnable {
-        /**
-         * Default constructor.
-         */
-        public ResetTargetRunnable() {
-            // Empty
-        }
-
-        @Override
-        public void preRun() {
-            publishLock.lock();
-        }
-
-        @Override
-        public void postRun() {
+    @Override
+    public void stopLogging() throws IOException {
+        publishLock.lock();
+        try {
+            if (isLogging()) {
+                historyHandlerConfig.setDebugging(false);
+                target.reset();
+            }
+        } finally {
             publishLock.unlock();
-        }
-
-        @Override
-        public void run() {
-            target.reset();
         }
     }
 }
