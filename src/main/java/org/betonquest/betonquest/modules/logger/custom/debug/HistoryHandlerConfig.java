@@ -79,7 +79,6 @@ public class HistoryHandlerConfig {
      * Saves the current debugging state to the configuration file.
      *
      * @param debugging value to set
-     * @return True if the debugging
      * @throws IOException Is thrown if the configuration file could not be saved
      */
     public void setDebugging(final boolean debugging) throws IOException {
