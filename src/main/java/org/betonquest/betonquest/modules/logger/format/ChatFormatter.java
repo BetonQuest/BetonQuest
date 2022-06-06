@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.logger.custom.chat;
+package org.betonquest.betonquest.modules.logger.format;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -7,19 +7,19 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
-import org.betonquest.betonquest.modules.logger.custom.debug.LogfileFormatter;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 /**
  * This is a simple log formatting class for the in-game chat.
  */
-public class ChatFormatter extends LogfileFormatter {
+public final class ChatFormatter extends Formatter {
     /**
      * The name of the plugin that is the source of this formatter.
      */
@@ -94,11 +94,11 @@ public class ChatFormatter extends LogfileFormatter {
      * @param record The record to format
      * @return The formatted component
      */
-    protected Component formatComponentThrowable(final LogRecord record) {
+    private Component formatComponentThrowable(final LogRecord record) {
         if (record.getThrown() == null) {
             return Component.empty();
         }
-        final String throwable = formatThrowable(record);
+        final String throwable = FormatterUtils.formatThrowable(record.getThrown());
         return Component.text(" Hover for Stacktrace!", NamedTextColor.RED)
                 .hoverEvent(Component.text(throwable.replace("\t", "  ").replace("\r", ""))
                         .append(Component.newline()).append(Component.newline())

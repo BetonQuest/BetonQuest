@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.logger.custom.chat;
+package org.betonquest.betonquest.modules.logger.format;
 
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
