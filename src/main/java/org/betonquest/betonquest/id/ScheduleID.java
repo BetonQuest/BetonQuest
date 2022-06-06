@@ -18,7 +18,7 @@ public class ScheduleID extends ID {
      * @param identifier string that defines the id
      * @throws ObjectNotFoundException if no schedule with this id exists
      */
-    public ScheduleID(QuestPackage pack, String identifier) throws ObjectNotFoundException {
+    public ScheduleID(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
         super(pack, identifier);
         try {
             if (getPackage().getConfig().getSourceConfigurationSection("schedules." + getBaseID()) == null) {
