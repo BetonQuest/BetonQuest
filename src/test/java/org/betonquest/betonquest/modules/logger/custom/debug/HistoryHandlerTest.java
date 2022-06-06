@@ -3,6 +3,7 @@ package org.betonquest.betonquest.modules.logger.custom.debug;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
+import org.betonquest.betonquest.modules.logger.handler.ResettableLogHandler;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.betonquest.betonquest.util.scheduler.BukkitSchedulerMock;
 import org.bukkit.plugin.Plugin;
@@ -56,7 +57,7 @@ class HistoryHandlerTest {
 
             final HistoryHandlerConfig historyHandlerConfig = spy(new HistoryHandlerConfig(configurationFile, tempDir));
             doReturn(10).when(historyHandlerConfig).getExpireAfterMinutes();
-            historyHandler = new HistoryHandler(historyHandlerConfig, mock(BetonQuest.class), scheduler, validator, fixedTime);
+            historyHandler = new HistoryHandler(historyHandlerConfig, mock(BetonQuest.class), scheduler, new ResettableLogHandler(() -> validator), fixedTime);
 
             logger.addHandler(historyHandler);
 

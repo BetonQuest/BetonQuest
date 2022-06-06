@@ -11,7 +11,7 @@ import org.betonquest.betonquest.modules.logger.custom.debug.HistoryHandler;
 import org.betonquest.betonquest.modules.logger.custom.debug.HistoryHandlerConfig;
 import org.betonquest.betonquest.modules.logger.custom.debug.LazyLogHandler;
 import org.betonquest.betonquest.modules.logger.custom.debug.LogfileFormatter;
-import org.betonquest.betonquest.modules.logger.custom.debug.ResettableHandler;
+import org.betonquest.betonquest.modules.logger.handler.ResettableLogHandler;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -62,7 +62,9 @@ public final class LogWatcherFactory {
      */
     public static HistoryHandler createHistoryHandler(final Plugin plugin, final BukkitScheduler scheduler, final ConfigurationFile config, final File logFileFolder, final InstantSource instantSource) {
         final HistoryHandlerConfig historyHandlerConfig = new HistoryHandlerConfig(config, logFileFolder);
-        final ResettableHandler targetHandler = new LazyLogHandler(() -> setupFileHandler(historyHandlerConfig, instantSource));
+        final ResettableLogHandler targetHandler = new ResettableLogHandler(
+                () -> new LazyLogHandler(() -> setupFileHandler(historyHandlerConfig, instantSource))
+        );
         return new HistoryHandler(historyHandlerConfig, plugin, scheduler, targetHandler, instantSource);
     }
 

@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.modules.logger.custom.debug;
 
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
+import org.betonquest.betonquest.modules.logger.handler.ResettableLogHandler;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -43,7 +44,7 @@ public class HistoryHandler extends Handler implements LogPublishingController {
     /**
      * The target Handler to log the history to.
      */
-    private final ResettableHandler target;
+    private final ResettableLogHandler target;
 
     /**
      * The {@link HistoryHandlerConfig} for this {@link Handler}.
@@ -60,7 +61,7 @@ public class HistoryHandler extends Handler implements LogPublishingController {
      * @param instantSource        the {@link InstantSource} to get the {@link java.time.Instant} from
      */
     public HistoryHandler(final HistoryHandlerConfig historyHandlerConfig, final Plugin plugin,
-                          final BukkitScheduler scheduler, final ResettableHandler target,
+                          final BukkitScheduler scheduler, final ResettableLogHandler target,
                           final InstantSource instantSource) {
         super();
         this.historyHandlerConfig = historyHandlerConfig;
