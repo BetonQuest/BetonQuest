@@ -31,8 +31,10 @@ A full guide on extensions can be found <a href="https://code.visualstudio.com/d
 
 ### Setup
 
-Open up any of your quests using *File > Open Folder...* (if you haven't made any yet, select the default quest in *plugin/BetonQuest/default*).
-Then click on any file to open it.
+Now you need to open any `yml` file by clicking on *File > Open Folder...*.
+Than you can choose if you want to open the BetonQuest root directory, only the `QuestPackages` folder or a specific quest.
+If you don't have any quest files yet, simply open the `config.yml` file.
+You can open that file by clicking on it on the left side.
 There are a few general things to keep in mind when editing files.
 VSCode does a really nice job at exposing these directly to the user. They are all listed in the bottom right corner 
 of the editor window:
