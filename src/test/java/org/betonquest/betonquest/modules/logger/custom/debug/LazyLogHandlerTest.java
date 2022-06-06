@@ -1,17 +1,32 @@
 package org.betonquest.betonquest.modules.logger.custom.debug;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Supplier;
 import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Test for a {@link LazyLogHandler}.
  */
+@ExtendWith(MockitoExtension.class)
 class LazyLogHandlerTest {
+    /**
+     * Example record to use with tests.
+     */
+    private final LogRecord record = new LogRecord(Level.INFO, "test message");
+
+    /**
+     * Handler for the supplier to test with.
+     */
+    @Mock
+    private Handler internalHandler;
 
     /**
      * Default constructor.
@@ -20,15 +35,55 @@ class LazyLogHandlerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
-    void testLazyInstantiation() {
-        final AtomicBoolean created = new AtomicBoolean(false);
-        final LazyLogHandler handler = new LazyLogHandler(() -> {
-            created.set(true);
-            return Mockito.mock(Handler.class);
-        });
-        assertFalse(created.get(), "Should not be created yet");
-        handler.publish(null);
-        assertTrue(created.get(), "Should be created");
+    void testLazyInstantiation(@Mock final Supplier<Handler> handlerSupplier) {
+        when(handlerSupplier.get()).thenReturn(internalHandler);
+        final LazyLogHandler handler = new LazyLogHandler(handlerSupplier);
+        verify(handlerSupplier, never()).get();
+        handler.publish(record);
+        verify(handlerSupplier).get();
+    }
+
+    @Test
+    void testFlushDoesNotCauseInitialization(@Mock final Supplier<Handler> handlerSupplier) {
+        final LazyLogHandler handler = new LazyLogHandler(handlerSupplier);
+        handler.flush();
+        verify(handlerSupplier, never()).get();
+    }
+
+    @Test
+    void testCloseDoesNotCauseInitialization(@Mock final Supplier<Handler> handlerSupplier) {
+        final LazyLogHandler handler = new LazyLogHandler(handlerSupplier);
+        handler.close();
+        verify(handlerSupplier, never()).get();
+    }
+
+    @Test
+    void testPublishAfterClosingDoesNotCauseInitialization(@Mock final Supplier<Handler> handlerSupplier) {
+        final LazyLogHandler handler = new LazyLogHandler(handlerSupplier);
+        handler.close();
+        verify(handlerSupplier, never()).get();
+    }
+
+    @Test
+    void testPublishIsPropagated() {
+        final LazyLogHandler handler = new LazyLogHandler(() -> internalHandler);
+        handler.publish(record);
+        verify(internalHandler).publish(record);
+    }
+
+    @Test
+    void testFlushIsPropagated() {
+        final LazyLogHandler handler = new LazyLogHandler(() -> internalHandler);
+        handler.publish(record);
+        handler.flush();
+        verify(internalHandler).flush();
+    }
+
+    @Test
+    void testCloseIsPropagated() {
+        final LazyLogHandler handler = new LazyLogHandler(() -> internalHandler);
+        handler.publish(record);
+        handler.close();
+        verify(internalHandler).close();
     }
 }
