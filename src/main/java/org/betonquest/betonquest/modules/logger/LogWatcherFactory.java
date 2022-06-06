@@ -6,12 +6,15 @@ import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.modules.logger.custom.chat.ChatHandler;
 import org.betonquest.betonquest.modules.logger.custom.chat.PlayerFilter;
 import org.betonquest.betonquest.modules.logger.custom.chat.PlayerPackageFilter;
-import org.betonquest.betonquest.modules.logger.custom.debug.HistoryHandler;
-import org.betonquest.betonquest.modules.logger.custom.debug.HistoryHandlerConfig;
 import org.betonquest.betonquest.modules.logger.format.ChatFormatter;
 import org.betonquest.betonquest.modules.logger.format.LogfileFormatter;
+import org.betonquest.betonquest.modules.logger.handler.HistoryLogHandler;
+import org.betonquest.betonquest.modules.logger.handler.HistoryLogHandlerConfig;
 import org.betonquest.betonquest.modules.logger.handler.LazyLogHandler;
 import org.betonquest.betonquest.modules.logger.handler.ResettableLogHandler;
+import org.betonquest.betonquest.modules.logger.queue.BukkitSchedulerCleaningLogQueue;
+import org.betonquest.betonquest.modules.logger.queue.DiscardingLogQueue;
+import org.betonquest.betonquest.modules.logger.queue.LogRecordQueue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -21,8 +24,10 @@ import java.nio.file.Files;
 import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.InstantSource;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
@@ -51,35 +56,48 @@ public final class LogWatcherFactory {
     }
 
     /**
-     * Create a new {@link HistoryHandler} with the related instances.
+     * Create a new {@link HistoryLogHandler} with the related instances.
      *
      * @param plugin        {@link Plugin} instance
      * @param scheduler     {@link BukkitScheduler} instance
      * @param config        {@link ConfigurationFile} instance
      * @param logFileFolder {@link File} to the log folder
      * @param instantSource {@link InstantSource} instance
-     * @return a new {@link HistoryHandler}
+     * @return a new {@link HistoryLogHandler}
      */
-    public static HistoryHandler createHistoryHandler(final Plugin plugin, final BukkitScheduler scheduler, final ConfigurationFile config, final File logFileFolder, final InstantSource instantSource) {
-        final HistoryHandlerConfig historyHandlerConfig = new HistoryHandlerConfig(config, logFileFolder);
-        final ResettableLogHandler targetHandler = new ResettableLogHandler(
-                () -> new LazyLogHandler(() -> setupFileHandler(historyHandlerConfig, instantSource))
-        );
-        return new HistoryHandler(historyHandlerConfig, plugin, scheduler, targetHandler, instantSource);
+    public static HistoryLogHandler createHistoryHandler(final Plugin plugin, final BukkitScheduler scheduler, final ConfigurationFile config, final File logFileFolder, final InstantSource instantSource) {
+        final HistoryLogHandlerConfig historyHandlerConfig = new HistoryLogHandlerConfig(config, logFileFolder);
+        final LogRecordQueue logQueue = createLogRecordQueue(plugin, scheduler, instantSource, historyHandlerConfig.getExpireAfterMinutes());
+        final ResettableLogHandler targetHandler = createDebugLogFileHandler(historyHandlerConfig.getLogFile(), instantSource);
+        return new HistoryLogHandler(historyHandlerConfig, logQueue, targetHandler);
     }
 
-    private static Handler setupFileHandler(final HistoryHandlerConfig historyHandlerConfig, final InstantSource instantSource) {
+    private static ResettableLogHandler createDebugLogFileHandler(final File logFile, final InstantSource instantSource) {
+        return new ResettableLogHandler(() -> new LazyLogHandler(() -> setupFileHandler(logFile, instantSource)));
+    }
+
+    private static LogRecordQueue createLogRecordQueue(final Plugin plugin, final BukkitScheduler scheduler, final InstantSource instantSource, final int keepMinutes) {
+        if (keepMinutes == 0) {
+            return new DiscardingLogQueue();
+        } else {
+            final BukkitSchedulerCleaningLogQueue bukkitQueue = new BukkitSchedulerCleaningLogQueue(instantSource, Duration.of(keepMinutes, ChronoUnit.MINUTES));
+            bukkitQueue.runCleanupTimerAsynchronously(scheduler, plugin, 20, 20);
+            return bukkitQueue;
+        }
+    }
+
+    private static Handler setupFileHandler(final File logFile, final InstantSource instantSource) {
         try {
-            renameLogFile(historyHandlerConfig.getLogFile(), instantSource);
-            final FileHandler fileHandler = new FileHandler(historyHandlerConfig.getLogFile().getAbsolutePath());
+            renameLogFile(logFile, instantSource);
+            final FileHandler fileHandler = new FileHandler(logFile.getAbsolutePath());
             fileHandler.setFormatter(new LogfileFormatter());
             return fileHandler;
         } catch (final IOException e) {
-            LOG.error("It was not possible to create the '" + historyHandlerConfig.getLogFile().getName() + "' or to register the plugin's internal logger. "
+            LOG.error("It was not possible to create the '" + logFile.getName() + "' or to register the plugin's internal logger. "
                     + "This is not a critical error, the server can still run, but it is not possible to use the '/q debug true' command. "
                     + "Reason: " + e.getMessage(), e);
+            return null;
         }
-        return null;
     }
 
     private static void renameLogFile(final File logFile, final InstantSource instantSource) throws IOException {

@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.logger.custom.debug;
+package org.betonquest.betonquest.modules.logger.handler;
 
 import java.io.IOException;
 

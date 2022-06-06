@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.logger.custom.debug;
+package org.betonquest.betonquest.modules.logger.handler;
 
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,10 +18,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Test for the {@link HistoryHandlerConfig}.
+ * Test for the {@link HistoryLogHandlerConfig}.
  */
 @ExtendWith(MockitoExtension.class)
-class HistoryHandlerConfigTest {
+class HistoryLogHandlerConfigTest {
     /**
      * Path where to expect the debug config value.
      */
@@ -41,7 +41,7 @@ class HistoryHandlerConfigTest {
     /**
      * Default constructor.
      */
-    public HistoryHandlerConfigTest() {
+    public HistoryLogHandlerConfigTest() {
         super();
     }
 
@@ -58,7 +58,7 @@ class HistoryHandlerConfigTest {
     @ValueSource(booleans = {true, false})
     void testInitialValueIsReadFromConfig(final boolean initialValue) {
         when(configurationFile.getBoolean(eq(DEBUG_ACTIVE_CONFIG_PATH), anyBoolean())).thenReturn(initialValue);
-        final HistoryHandlerConfig historyHandlerConfig = new HistoryHandlerConfig(configurationFile, logDirectory);
+        final HistoryLogHandlerConfig historyHandlerConfig = new HistoryLogHandlerConfig(configurationFile, logDirectory);
         assertEquals(initialValue, historyHandlerConfig.isDebugging(), "Initial value was not successfully loaded");
     }
 
@@ -66,7 +66,7 @@ class HistoryHandlerConfigTest {
     @MethodSource("debugValueChanges")
     void testToggleDebugging(final boolean initialValue, final boolean newValue) throws IOException {
         when(configurationFile.getBoolean(eq(DEBUG_ACTIVE_CONFIG_PATH), anyBoolean())).thenReturn(initialValue);
-        final HistoryHandlerConfig historyHandlerConfig = new HistoryHandlerConfig(configurationFile, logDirectory);
+        final HistoryLogHandlerConfig historyHandlerConfig = new HistoryLogHandlerConfig(configurationFile, logDirectory);
         historyHandlerConfig.setDebugging(newValue);
         assertEquals(newValue, historyHandlerConfig.isDebugging(), "Initial value was not successfully loaded");
         verify(configurationFile).set(DEBUG_ACTIVE_CONFIG_PATH, newValue);
