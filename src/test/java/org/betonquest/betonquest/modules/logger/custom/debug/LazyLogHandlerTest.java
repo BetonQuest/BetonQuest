@@ -17,22 +17,17 @@ class LazyLogHandlerTest {
      * Default constructor.
      */
     public LazyLogHandlerTest() {
-        // Empty
     }
 
     @Test
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     void testLazyInstantiation() {
         final AtomicBoolean created = new AtomicBoolean(false);
-        final ResettableHandler handler = new LazyLogHandler(() -> {
+        final LazyLogHandler handler = new LazyLogHandler(() -> {
             created.set(true);
             return Mockito.mock(Handler.class);
         });
         assertFalse(created.get(), "Should not be created yet");
-        handler.publish(null);
-        assertTrue(created.get(), "Should be created");
-        handler.reset();
-        created.set(false);
         handler.publish(null);
         assertTrue(created.get(), "Should be created");
     }

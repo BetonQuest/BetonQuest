@@ -9,7 +9,7 @@ import java.util.logging.LogRecord;
 /**
  * {@link Handler} that creates the target {@link Handler}, when needed.
  */
-public class LazyLogHandler extends ResettableHandler {
+public class LazyLogHandler extends Handler {
 
     /**
      * {@link Lock} instance, when the target {@link Handler} is created
@@ -73,17 +73,6 @@ public class LazyLogHandler extends ResettableHandler {
         if (target != null) {
             target.close();
             closed = true;
-        }
-    }
-
-    @Override
-    public void reset() {
-        if (closed) {
-            return;
-        }
-        if (target != null) {
-            target.close();
-            target = null;
         }
     }
 }

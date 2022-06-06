@@ -1,9 +1,8 @@
 package org.betonquest.betonquest.modules.logger.util;
 
-import org.betonquest.betonquest.modules.logger.custom.debug.ResettableHandler;
-
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
@@ -15,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Then it is possible to check for {@link LogRecord}s to assert that the right things are logged.
  */
 @SuppressWarnings("PMD.TooManyMethods")
-public class LogValidator extends ResettableHandler {
+public class LogValidator extends Handler {
     /**
      * The queue of all left {@link LogRecord}s.
      */
@@ -127,10 +126,5 @@ public class LogValidator extends ResettableHandler {
         assertNotNull(record, "The record is unexpected null!");
         assertEquals(level, record.getLevel(), "Expected log level does not equal!");
         assertEquals(message, record.getMessage(), "Expected log message does not equal!");
-    }
-
-    @Override
-    public void reset() {
-        records.clear();
     }
 }
