@@ -209,6 +209,17 @@ If you want to add a font style (bold, italic etc.) do so after placing a comma.
   By default only or official tutorial repo [BetonQuest/Quest-Tutorials](https://github.com/BetonQuest/Quest-Tutorials)
   is on this list.
 
+### Items
+
+`items` gives the possibility to override default items, that are defined and used by BetonQuest.
+The items need to be defined in a package, and then you need to reference the item here with an absolute path.
+
+* `backpack` items that are used by the backpack.
+  - `previous_button` the item to go to the previous page of items in the backpack.
+  - `next_button` the item to go to the next page of items in the backpack.
+  - `cancel_button` the item to show the quest cancelers.  
+  - `compass_button` the item to show the quest compass.
+
 ### Misc settings
 
 * `date_format` is the Java [date format](https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html)

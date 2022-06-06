@@ -181,16 +181,21 @@ public class Backpack implements Listener {
 
             // if there are other pages, place the buttons
             if (page > 1) {
-                ItemStack previous;
-                try {
-                    previous = new QuestItem(new ItemID(null, "previous_button")).generate(1);
-                } catch (final ObjectNotFoundException e) {
-                    LOG.warn("Could not find item: " + e.getMessage(), e);
+                ItemStack previous = null;
+                final String previousButton = Config.getString("config.items.backpack.previous_button");
+                if (previousButton != null && !previousButton.isEmpty()) {
+                    try {
+                        previous = new QuestItem(new ItemID(null, previousButton)).generate(1);
+                    } catch (final ObjectNotFoundException e) {
+                        LOG.warn("Could not find item: " + e.getMessage(), e);
+                    } catch (final InstructionParseException e) {
+                        LOG.warn("Could not load previous button: " + e.getMessage(), e);
+                        player.closeInventory();
+                        return;
+                    }
+                }
+                if (previous == null) {
                     previous = new ItemStack(Material.GLOWSTONE_DUST);
-                } catch (final InstructionParseException e) {
-                    LOG.warn("Could not load previous button: " + e.getMessage(), e);
-                    player.closeInventory();
-                    return;
                 }
                 final ItemMeta meta = previous.getItemMeta();
                 meta.setDisplayName(Config.getMessage(lang, "previous").replaceAll("&", "§"));
@@ -198,16 +203,21 @@ public class Backpack implements Listener {
                 content[48] = previous;
             }
             if (page < pages) {
-                ItemStack next;
-                try {
-                    next = new QuestItem(new ItemID(null, "next_button")).generate(1);
-                } catch (final ObjectNotFoundException e) {
-                    LOG.warn("Could not find item: " + e.getMessage(), e);
+                ItemStack next = null;
+                final String nextButton = Config.getString("config.items.backpack.next_button");
+                if (nextButton != null && !nextButton.isEmpty()) {
+                    try {
+                        next = new QuestItem(new ItemID(null, nextButton)).generate(1);
+                    } catch (final ObjectNotFoundException e) {
+                        LOG.warn("Could not find item: " + e.getMessage(), e);
+                    } catch (final InstructionParseException e) {
+                        LOG.warn("Could not load next button: " + e.getMessage(), e);
+                        player.closeInventory();
+                        return;
+                    }
+                }
+                if (next == null) {
                     next = new ItemStack(Material.REDSTONE);
-                } catch (final InstructionParseException e) {
-                    LOG.warn("Could not load next button: " + e.getMessage(), e);
-                    player.closeInventory();
-                    return;
                 }
                 final ItemMeta meta = next.getItemMeta();
                 meta.setDisplayName(Config.getMessage(lang, "next").replaceAll("&", "§"));
@@ -215,32 +225,42 @@ public class Backpack implements Listener {
                 content[50] = next;
             }
             // set "cancel quest" button
-            ItemStack cancel;
-            try {
-                cancel = new QuestItem(new ItemID(null, "cancel_button")).generate(1);
-            } catch (final ObjectNotFoundException e) {
-                LOG.warn("Could not find object: " + e.getMessage(), e);
+            ItemStack cancel = null;
+            final String cancelButton = Config.getString("config.items.backpack.cancel_button");
+            if (cancelButton != null && !cancelButton.isEmpty()) {
+                try {
+                    cancel = new QuestItem(new ItemID(null, cancelButton)).generate(1);
+                } catch (final ObjectNotFoundException e) {
+                    LOG.warn("Could not find object: " + e.getMessage(), e);
+                } catch (final InstructionParseException e) {
+                    LOG.warn("Could not load cancel button: " + e.getMessage(), e);
+                    player.closeInventory();
+                    return;
+                }
+            }
+            if (cancel == null) {
                 cancel = new ItemStack(Material.BONE);
-            } catch (final InstructionParseException e) {
-                LOG.warn("Could not load cancel button: " + e.getMessage(), e);
-                player.closeInventory();
-                return;
             }
             final ItemMeta meta = cancel.getItemMeta();
             meta.setDisplayName(Config.getMessage(lang, "cancel").replaceAll("&", "§"));
             cancel.setItemMeta(meta);
             content[45] = cancel;
             // set "compass targets" button
-            ItemStack compassItem;
-            try {
-                compassItem = new QuestItem(new ItemID(null, "compass_button")).generate(1);
-            } catch (final ObjectNotFoundException e) {
-                LOG.warn("Could not find item: " + e.getMessage(), e);
+            ItemStack compassItem = null;
+            final String compassButton = Config.getString("config.items.backpack.compass_button");
+            if (compassButton != null && !compassButton.isEmpty()) {
+                try {
+                    compassItem = new QuestItem(new ItemID(null, compassButton)).generate(1);
+                } catch (final ObjectNotFoundException e) {
+                    LOG.warn("Could not find item: " + e.getMessage(), e);
+                } catch (final InstructionParseException e) {
+                    LOG.warn("Could not load compass button: " + e.getMessage(), e);
+                    player.closeInventory();
+                    return;
+                }
+            }
+            if (compassItem == null) {
                 compassItem = new ItemStack(Material.COMPASS);
-            } catch (final InstructionParseException e) {
-                LOG.warn("Could not load compass button: " + e.getMessage(), e);
-                player.closeInventory();
-                return;
             }
             final ItemMeta compassMeta = compassItem.getItemMeta();
             compassMeta.setDisplayName(Config.getMessage(lang, "compass").replace('&', '&'));

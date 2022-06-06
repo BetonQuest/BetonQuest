@@ -97,3 +97,9 @@ download:
   pull_requests: false
   repo_whitelist:
     - BetonQuest/Quest-Tutorials
+items:
+  backpack:
+    previous_button: ''
+    next_button: ''
+    cancel_button: ''
+    compass_button: ''
