@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.logger.custom.debug;
+package org.betonquest.betonquest.modules.logger.handler;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;

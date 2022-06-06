@@ -9,7 +9,7 @@ import org.betonquest.betonquest.modules.logger.custom.chat.PlayerFilter;
 import org.betonquest.betonquest.modules.logger.custom.chat.PlayerPackageFilter;
 import org.betonquest.betonquest.modules.logger.custom.debug.HistoryHandler;
 import org.betonquest.betonquest.modules.logger.custom.debug.HistoryHandlerConfig;
-import org.betonquest.betonquest.modules.logger.custom.debug.LazyLogHandler;
+import org.betonquest.betonquest.modules.logger.handler.LazyLogHandler;
 import org.betonquest.betonquest.modules.logger.custom.debug.LogfileFormatter;
 import org.betonquest.betonquest.modules.logger.handler.ResettableLogHandler;
 import org.bukkit.plugin.Plugin;
