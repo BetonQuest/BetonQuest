@@ -183,7 +183,7 @@ public class Backpack implements Listener {
             if (page > 1) {
                 ItemStack previous;
                 try {
-                    previous = new QuestItem(new ItemID(Config.getDefaultPackage(), "previous_button")).generate(1);
+                    previous = new QuestItem(new ItemID(null, "previous_button")).generate(1);
                 } catch (final ObjectNotFoundException e) {
                     LOG.warn("Could not find item: " + e.getMessage(), e);
                     previous = new ItemStack(Material.GLOWSTONE_DUST);
@@ -200,7 +200,7 @@ public class Backpack implements Listener {
             if (page < pages) {
                 ItemStack next;
                 try {
-                    next = new QuestItem(new ItemID(Config.getDefaultPackage(), "next_button")).generate(1);
+                    next = new QuestItem(new ItemID(null, "next_button")).generate(1);
                 } catch (final ObjectNotFoundException e) {
                     LOG.warn("Could not find item: " + e.getMessage(), e);
                     next = new ItemStack(Material.REDSTONE);
@@ -217,7 +217,7 @@ public class Backpack implements Listener {
             // set "cancel quest" button
             ItemStack cancel;
             try {
-                cancel = new QuestItem(new ItemID(Config.getDefaultPackage(), "cancel_button")).generate(1);
+                cancel = new QuestItem(new ItemID(null, "cancel_button")).generate(1);
             } catch (final ObjectNotFoundException e) {
                 LOG.warn("Could not find object: " + e.getMessage(), e);
                 cancel = new ItemStack(Material.BONE);
@@ -233,7 +233,7 @@ public class Backpack implements Listener {
             // set "compass targets" button
             ItemStack compassItem;
             try {
-                compassItem = new QuestItem(new ItemID(Config.getDefaultPackage(), "compass_button")).generate(1);
+                compassItem = new QuestItem(new ItemID(null, "compass_button")).generate(1);
             } catch (final ObjectNotFoundException e) {
                 LOG.warn("Could not find item: " + e.getMessage(), e);
                 compassItem = new ItemStack(Material.COMPASS);

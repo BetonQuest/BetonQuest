@@ -40,7 +40,6 @@ public final class Config {
     private static ConfigurationFile messages;
     private static ConfigAccessor internal;
     private static String lang;
-    private static String defaultPackage = "default";
 
     private Config() {
     }
@@ -73,7 +72,6 @@ public final class Config {
         }
 
         final File packages = new File(root, "QuestPackages");
-        defaultPackage = plugin.getPluginConfig().getString("default_package", defaultPackage);
 
         // Create QuestPackages folder
         if (!packages.exists() && !packages.mkdir()) {
@@ -81,43 +79,11 @@ public final class Config {
             return;
         }
 
-        // save example package
-        createDefaultPackage(packages, defaultPackage);
-
         // load packages
         try {
             searchForPackages(packages, packages, "package", ".yml");
         } catch (final IOException e) {
             LOG.error("Error while loading '" + packages.getPath() + "'!", e);
-        }
-    }
-
-    /**
-     * Creates package with the given name and populates it with default quest
-     *
-     * @param packName name of the new package
-     */
-    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
-    public static void createDefaultPackage(final File packages, final String packName) {
-        final File def = new File(packages, packName.replace(CONFIG_PACKAGE_SEPARATOR, File.separator));
-        if (!def.exists()) {
-            LOG.info("Deploying " + packName + " package!");
-            createDefaultPackageFile(def, "package.yml");
-            createDefaultPackageFile(def, "events.yml");
-            createDefaultPackageFile(def, "conditions.yml");
-            createDefaultPackageFile(def, "journal.yml");
-            createDefaultPackageFile(def, "items.yml");
-            createDefaultPackageFile(def, "objectives.yml");
-            createDefaultPackageFile(def, "custom.yml");
-            createDefaultPackageFile(def, "conversations/innkeeper.yml");
-        }
-    }
-
-    private static void createDefaultPackageFile(final File root, final String resource) {
-        try {
-            ConfigAccessor.create(new File(root, resource), plugin, "default/" + resource);
-        } catch (final InvalidConfigurationException | FileNotFoundException e) {
-            LOG.warn(e.getMessage(), e);
         }
     }
 
@@ -432,12 +398,6 @@ public final class Config {
         return LANGUAGES;
     }
 
-    /**
-     * @return the default package, as specified in the config
-     */
-    public static QuestPackage getDefaultPackage() {
-        return getPackages().get(defaultPackage);
-    }
 
     @SuppressWarnings("PMD.CognitiveComplexity")
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")

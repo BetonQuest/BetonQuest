@@ -267,7 +267,7 @@ public class QuestCanceler {
             questName = name.get("en");
         }
         if (questName == null) {
-            LOG.warn("Default quest name not defined in canceler " + pack.getPackagePath() + "." + cancelerID);
+            LOG.warn("Quest name is not defined in canceler " + pack.getPackagePath() + "." + cancelerID);
             questName = "Quest";
         }
         return questName.replace("_", " ").replace("&", "§");

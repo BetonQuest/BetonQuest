@@ -109,9 +109,6 @@ Read [this page](Conversations.md) for more information about chat interceptors.
 `notify_pullback` will display a message every time the player is pulled back by the `stop` option in conversations (in the case of chat-based conversations).
 It notifies players that they are in a conversation, and the pullback is not a bug.
 
-### Default Package name
-`default_package` is a name of the package that should be used when a package is not specified in /q command. This is for your convenience.
-
 ### Adjusting the backpack to the KeepInventory gamerule
 `remove_items_after_respawn` option should be turned on if "keepInventory" gamerule is not being used. 
 It prevents other plugins from duplicating quest items after death.

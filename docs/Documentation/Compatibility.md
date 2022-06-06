@@ -788,7 +788,6 @@ If you have this plugin, BetonQuest will add a `betonquest` placeholder to it an
 You can use all BetonQuest variables in any other plugin that supports PlaceholderAPI.
 You can even use BetonQuests conditions using the [condition variable](Variables-List.md#expose-conditions-to-3rd-party-plugins-condition)!    
 This works using the `%betonquest_package:variable%` placeholder. The `package:` part is the name of a package.
-If you don't specify this, the plugin will assume you're using that variable in `default` package.
 The `variable` part is just a BetonQuest variable without percentage characters, like `point.beton.amount`.
 
 Testing your placeholder is easy using this command:    

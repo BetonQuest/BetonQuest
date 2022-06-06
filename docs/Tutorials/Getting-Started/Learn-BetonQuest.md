@@ -195,7 +195,7 @@ knowledge to write your fisrt conversation.
 ## Writing your first conversation
 
 Now that you have seen BetonQuest in action and understood events, conditions and objectives, it's time for writing your
-first conversation. There's a _conversations_ directory inside the default package. It contains a single file,
+first conversation. There's a _conversations_ directory inside the `default` package. It contains a single file,
 _innkeeper.yml_. This is the conversation with Innkeeper, the one who asks you to cut some trees. Open it, we'll use
 that for reference. Now create a new file, let's say _miner.yml_. Now type
 (don't copy-paste it, you'll learn better while typing) that into the file:
