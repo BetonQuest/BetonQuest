@@ -129,7 +129,7 @@ public class EventScheduling {
                         .getConstructor(ScheduleID.class, ConfigurationSection.class)
                         .newInstance(scheduleID, scheduleConfig);
             } catch (final InvocationTargetException e) {
-                if (e.getCause() instanceof final InstructionParseException cause) {
+                if (e.getCause() instanceof InstructionParseException cause) {
                     throw cause;
                 } else {
                     throw e;
@@ -139,7 +139,7 @@ public class EventScheduling {
 
         private void createAndScheduleNewInstance(final ScheduleID scheduleID, final ConfigurationSection scheduleConfig)
                 throws InstructionParseException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-            scheduler.schedule(newScheduleInstance(scheduleID, scheduleConfig));
+            scheduler.addSchedule(newScheduleInstance(scheduleID, scheduleConfig));
         }
     }
 }

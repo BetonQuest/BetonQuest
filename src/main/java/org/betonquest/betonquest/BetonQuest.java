@@ -15,6 +15,8 @@ import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.schedule.Schedule;
+import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.bstats.BStatsMetrics;
 import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
@@ -149,6 +151,11 @@ import org.betonquest.betonquest.item.QuestItemHandler;
 import org.betonquest.betonquest.mechanics.PlayerHider;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.modules.logger.LogWatcher;
+import org.betonquest.betonquest.modules.schedule.EventScheduling;
+import org.betonquest.betonquest.modules.schedule.impl.realtime.RealtimeSchedule;
+import org.betonquest.betonquest.modules.schedule.impl.realtime.RealtimeScheduler;
+import org.betonquest.betonquest.modules.schedule.impl.simple.SimpleSchedule;
+import org.betonquest.betonquest.modules.schedule.impl.simple.SimpleScheduler;
 import org.betonquest.betonquest.modules.versioning.Updater;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.notify.ActionBarNotifyIO;
@@ -237,7 +244,8 @@ import java.util.regex.Pattern;
  * Represents BetonQuest plugin
  */
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength", "PMD.GodClass",
-        "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidFieldNameMatchingMethodName", "PMD.AtLeastOneConstructor"})
+        "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidFieldNameMatchingMethodName",
+        "PMD.AtLeastOneConstructor", "PMD.ExcessivePublicCount", "PMD.TooManyFields"})
 public class BetonQuest extends JavaPlugin {
     private static final Map<String, Class<? extends Condition>> CONDITION_TYPES = new HashMap<>();
     private static final Map<String, Class<? extends Objective>> OBJECTIVE_TYPES = new HashMap<>();
@@ -295,6 +303,11 @@ public class BetonQuest extends JavaPlugin {
     private PlayerHider playerHider;
     @Getter
     private RPGMenu rpgMenu;
+
+    /**
+     * Event scheduling module
+     */
+    private final EventScheduling eventScheduling = new EventScheduling();
 
     public static boolean conditions(final String playerID, final Collection<ConditionID> conditionIDs) {
         final ConditionID[] ids = new ConditionID[conditionIDs.size()];
@@ -660,9 +673,6 @@ public class BetonQuest extends JavaPlugin {
         // instantiate journal handler
         new QuestItemHandler();
 
-        // initialize static events
-        new StaticEvents();
-
         // initialize global objectives
         new GlobalObjectives();
 
@@ -849,6 +859,10 @@ public class BetonQuest extends JavaPlugin {
         registerVariable("location", LocationVariable.class);
         registerVariable("math", MathVariable.class);
 
+        //register schedule types
+        registerScheduleType("simple", SimpleSchedule.class, new SimpleScheduler(this));
+        registerScheduleType("realtime", RealtimeSchedule.class, new RealtimeScheduler(this));
+
         // initialize compatibility with other plugins
         new Compatibility();
 
@@ -912,6 +926,9 @@ public class BetonQuest extends JavaPlugin {
      */
     @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     public void loadData() {
+        //stop all schedules
+        eventScheduling.stopAll();
+
         // save data of all objectives to the players
         for (final Objective objective : OBJECTIVES.values()) {
             objective.close();
@@ -1072,6 +1089,8 @@ public class BetonQuest extends JavaPlugin {
                     }
                 }
             }
+            // load schedules
+            eventScheduling.loadData(pack);
             // check external pointers
             ConversationData.postEnableCheck();
             log.debug(pack, "Everything in package " + packName + " loaded");
@@ -1084,6 +1103,8 @@ public class BetonQuest extends JavaPlugin {
         for (final PlayerData playerData : playerDataMap.values()) {
             playerData.startObjectives();
         }
+        //start all schedules
+        eventScheduling.startAll();
 
         rpgMenu.reloadData();
 
@@ -1107,8 +1128,6 @@ public class BetonQuest extends JavaPlugin {
 
         // reload updater settings
         BetonQuest.getInstance().getUpdater().searchUpdate();
-        // load new static events
-        new StaticEvents();
         // stop current global locations listener
         // and start new one with reloaded configs
         log.debug("Restarting global locations");
@@ -1138,6 +1157,8 @@ public class BetonQuest extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        //stop all schedules
+        eventScheduling.stopAll();
         // suspend all conversations
         for (final Player player : Bukkit.getOnlinePlayers()) {
             final Conversation conv = Conversation.getConversation(PlayerConverter.getID(player));
@@ -1154,9 +1175,6 @@ public class BetonQuest extends JavaPlugin {
         if (database != null) {
             database.closeConnection();
         }
-        // cancel static events (they are registered outside of Bukkit so it
-        // won't happen automatically)
-        StaticEvents.stop();
         if (playerHider != null) {
             playerHider.stop();
         }
@@ -1332,6 +1350,18 @@ public class BetonQuest extends JavaPlugin {
     public void registerVariable(final String name, final Class<? extends Variable> variable) {
         log.debug("Registering " + name + " variable type");
         VARIABLE_TYPES.put(name, variable);
+    }
+
+    /**
+     * Register a new schedule type.
+     *
+     * @param name      name of the schedule type
+     * @param schedule  class object of the schedule type
+     * @param scheduler instance of the scheduler
+     * @param <S>       type of schedule
+     */
+    public <S extends Schedule> void registerScheduleType(final String name, final Class<S> schedule, final Scheduler<S> scheduler) {
+        eventScheduling.registerScheduleType(name, schedule, scheduler);
     }
 
     /**

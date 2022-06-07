@@ -15,7 +15,7 @@ import java.util.Map;
  * </p>
  * <p>
  * When loading the configs,
- * new schedules are parsed and registered in the matching Scheduler by calling {@link #schedule(Schedule)}.
+ * new schedules are parsed and registered in the matching Scheduler by calling {@link #addSchedule(Schedule)}.
  * After everything is loaded {@link #start()} is called. It should start the scheduler.
  * Once a time defined in the schedule is met,
  * the referenced events shall be executed using {@link #executeEvents(Schedule)}.
@@ -25,6 +25,7 @@ import java.util.Map;
  *
  * @param <S> Type of Schedule
  */
+@SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
 public abstract class Scheduler<S extends Schedule> {
 
     /**
@@ -33,9 +34,15 @@ public abstract class Scheduler<S extends Schedule> {
     protected final Map<ScheduleID, S> schedules = new HashMap<>();
 
     /**
+     * Flag stating if this scheduler is currently running.
+     */
+    private boolean running;
+
+    /**
      * Default constructor
      */
     public Scheduler() {
+        running = false;
     }
 
 
@@ -45,7 +52,7 @@ public abstract class Scheduler<S extends Schedule> {
      *
      * @param schedule schedule object to register
      */
-    public void schedule(final S schedule) {
+    public void addSchedule(final S schedule) {
         schedules.put(schedule.scheduleID, schedule);
     }
 
@@ -58,19 +65,25 @@ public abstract class Scheduler<S extends Schedule> {
      * As well as handling the actual scheduling logic this method shall also handle catching up schedules that
      * were missed during reloading or shutdown of the server, based on their {@link CatchupStrategy}.
      * </p>
+     * <p><b>
+     * When overriding this method, make sure to call {@code super.start()} at some point to update the running flag.
+     * </b></p>
      */
-    public abstract void start();
+    public void start() {
+        running = true;
+    }
 
     /**
      * <p>
      * Stop the scheduler and unregister all schedules that belong to this scheduler.
      * Typically this method is called on reload and server shutdown.
      * </p>
-     * <p>
+     * <p><b>
      * When overriding this method, make sure to call {@code super.stop()} at some point to clear the map of schedules.
-     * </p>
+     * </b></p>
      */
     public void stop() {
+        running = false;
         schedules.clear();
     }
 
@@ -84,5 +97,14 @@ public abstract class Scheduler<S extends Schedule> {
         for (final EventID eventID : schedule.events) {
             BetonQuest.event(null, eventID);
         }
+    }
+
+    /**
+     * Check if this scheduler is currently running
+     *
+     * @return true if currently running, false if not (e.g. during startup or reloading)
+     */
+    public boolean isRunning() {
+        return running;
     }
 }
