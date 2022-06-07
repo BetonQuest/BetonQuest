@@ -54,14 +54,17 @@ public abstract class ExecutorServiceScheduler<S extends Schedule> extends Sched
      * Start all schedules that have been added to this scheduler.
      * This method is called on startup and reload of BetonQuest to activate/resume all schedules.
      * </p>
-     * <p><b>
+     * <p>
      * Override this method to handle catching up schedules that were missed during reloading or shutdown of the server,
      * based on their {@link CatchupStrategy}.
+     * </p>
+     * <p><b>
      * Make sure to call {@code super.start()}, otherwise the executor will not be instantiated.
      * </b></p>
      */
     @Override
     public void start() {
+        super.start();
         executor = Executors.newSingleThreadScheduledExecutor();
         schedules.values().forEach(this::schedule);
     }

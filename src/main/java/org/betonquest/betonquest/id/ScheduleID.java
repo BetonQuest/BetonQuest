@@ -4,7 +4,6 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
-import org.bukkit.configuration.InvalidConfigurationException;
 
 /**
  * ID identifying a {@link Schedule}
@@ -20,12 +19,8 @@ public class ScheduleID extends ID {
      */
     public ScheduleID(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
         super(pack, identifier);
-        try {
-            if (getPackage().getConfig().getSourceConfigurationSection("schedules." + getBaseID()) == null) {
-                throw new ObjectNotFoundException("Schedule '" + getFullID() + "' is not defined");
-            }
-        } catch (InvalidConfigurationException e) {
-            throw new ObjectNotFoundException("Multiple schedules with id '" + this + "' exist in the same package!", e);
+        if (getPackage().getConfig().getConfigurationSection("schedules." + getBaseID()) == null) {
+            throw new ObjectNotFoundException("Schedule '" + getFullID() + "' is not defined");
         }
     }
 

@@ -1365,7 +1365,7 @@ public class BetonQuest extends JavaPlugin {
      * @param <S>       type of schedule
      */
     public <S extends Schedule> void registerScheduleType(final String name, final Class<S> schedule, final Scheduler<S> scheduler) {
-        SCHEDULE_TYPES.put("name", new EventScheduling.ScheduleType<>(schedule, scheduler));
+        SCHEDULE_TYPES.put(name, new EventScheduling.ScheduleType<>(schedule, scheduler));
     }
 
     /**

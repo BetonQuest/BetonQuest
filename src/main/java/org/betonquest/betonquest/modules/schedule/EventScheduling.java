@@ -9,7 +9,6 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ScheduleID;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.InvalidConfigurationException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
@@ -56,14 +55,14 @@ public class EventScheduling {
                 final ScheduleID scheduleID = new ScheduleID(questPackage, key);
                 try {
                     final ConfigurationSection scheduleConfig = new UnmodifiableConfigurationSection(
-                            questPackage.getConfig().getSourceConfigurationSection("schedules." + scheduleID.getBaseID())
+                            questPackage.getConfig().getConfigurationSection("schedules." + scheduleID.getBaseID())
                     );
                     final String type = Optional.ofNullable(scheduleConfig.getString("type"))
                             .orElseThrow(() -> new InstructionParseException("Missing type instruction"));
                     final ScheduleType<?> scheduleType = Optional.ofNullable(scheduleTypes.get(type))
                             .orElseThrow(() -> new InstructionParseException("The schedule type '" + type + "' is not defined"));
                     scheduleType.createAndScheduleNewInstance(scheduleID, scheduleConfig);
-                } catch (final InstructionParseException | InvalidConfigurationException e) {
+                } catch (final InstructionParseException e) {
                     LOG.warn(questPackage, "Error loading schedule '" + scheduleID + "':" + e.getMessage(), e);
                 } catch (final InvocationTargetException | NoSuchMethodException | InstantiationException |
                                IllegalAccessException e) {
