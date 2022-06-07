@@ -253,6 +253,7 @@ public class BetonQuest extends JavaPlugin {
     private static final Map<String, Class<? extends Interceptor>> INTERCEPTOR_TYPES = new HashMap<>();
     private static final Map<String, Class<? extends NotifyIO>> NOTIFY_IO_TYPES = new HashMap<>();
     private static final Map<String, Class<? extends Variable>> VARIABLE_TYPES = new HashMap<>();
+    private static final Map<String, EventScheduling.ScheduleType<?>> SCHEDULE_TYPES = new HashMap<>();
     private static final Map<ConditionID, Condition> CONDITIONS = new HashMap<>();
     private static final Map<EventID, QuestEvent> EVENTS = new HashMap<>();
     private static final Map<ObjectiveID, Objective> OBJECTIVES = new HashMap<>();
@@ -307,7 +308,7 @@ public class BetonQuest extends JavaPlugin {
     /**
      * Event scheduling module
      */
-    private final EventScheduling eventScheduling = new EventScheduling();
+    private EventScheduling eventScheduling;
 
     public static boolean conditions(final String playerID, final Collection<ConditionID> conditionIDs) {
         final ConditionID[] ids = new ConditionID[conditionIDs.size()];
@@ -672,6 +673,9 @@ public class BetonQuest extends JavaPlugin {
 
         // instantiate journal handler
         new QuestItemHandler();
+
+        // initialize event scheduling
+        eventScheduling = new EventScheduling(SCHEDULE_TYPES);
 
         // initialize global objectives
         new GlobalObjectives();
@@ -1361,7 +1365,7 @@ public class BetonQuest extends JavaPlugin {
      * @param <S>       type of schedule
      */
     public <S extends Schedule> void registerScheduleType(final String name, final Class<S> schedule, final Scheduler<S> scheduler) {
-        eventScheduling.registerScheduleType(name, schedule, scheduler);
+        SCHEDULE_TYPES.put("name", new EventScheduling.ScheduleType<>(schedule, scheduler));
     }
 
     /**

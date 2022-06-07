@@ -12,7 +12,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -26,25 +25,15 @@ public class EventScheduling {
      * Map that contains all types of schedulers,
      * with keys being their names and values holding the scheduler and schedule class.
      */
-    private final Map<String, ScheduleType<?>> scheduleTypes = new HashMap<>();
+    private final Map<String, ScheduleType<?>> scheduleTypes;
 
     /**
-     * Default Constructor
-     */
-    public EventScheduling() {
-    }
-
-    /**
-     * Register a new type of schedule with its name, the class used to create new instances of the schedule and a scheduler
-     * that provides the scheduling logic.
+     * Creates a new instance of the event scheduling class.
      *
-     * @param type      name of the schedule type, used to define the schedule in the config
-     * @param schedule  class object of the schedule type
-     * @param scheduler scheduler for managing the schedules
-     * @param <S>       generic, the schedule class
+     * @param scheduleTypes map containing the schedule types, provided by {@link org.betonquest.betonquest.BetonQuest}
      */
-    public <S extends Schedule> void registerScheduleType(final String type, final Class<S> schedule, final Scheduler<S> scheduler) {
-        scheduleTypes.put(type, new ScheduleType<>(schedule, scheduler));
+    public EventScheduling(final Map<String, ScheduleType<?>> scheduleTypes) {
+        this.scheduleTypes = scheduleTypes;
     }
 
     /**
@@ -121,7 +110,7 @@ public class EventScheduling {
      * @param scheduler     instance of the scheduler
      * @param <S>           type of the schedule.
      */
-    private record ScheduleType<S extends Schedule>(Class<S> scheduleClass, Scheduler<S> scheduler) {
+    public record ScheduleType<S extends Schedule>(Class<S> scheduleClass, Scheduler<S> scheduler) {
         private S newScheduleInstance(final ScheduleID scheduleID, final ConfigurationSection scheduleConfig)
                 throws InstructionParseException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
             try {
