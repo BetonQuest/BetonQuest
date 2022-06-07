@@ -71,11 +71,9 @@ public class EventScheduling {
                     );
                     final String type = Optional.ofNullable(scheduleConfig.getString("type"))
                             .orElseThrow(() -> new InstructionParseException("Missing type instruction"));
-                    //FIXME FIX OR WORK AROUND TYPE ERASURE
-                    final ScheduleType scheduleType = Optional.ofNullable(scheduleTypes.get(type))
+                    final ScheduleType<?> scheduleType = Optional.ofNullable(scheduleTypes.get(type))
                             .orElseThrow(() -> new InstructionParseException("The schedule type '" + type + "' is not defined"));
-                    final Schedule schedule = scheduleType.newScheduleInstance(scheduleID, scheduleConfig);
-                    scheduleType.scheduler.schedule(schedule);
+                    scheduleType.createAndScheduleNewInstance(scheduleID, scheduleConfig);
                 } catch (final InstructionParseException | InvalidConfigurationException e) {
                     LOG.warn(questPackage, "Error loading schedule '" + scheduleID + "':" + e.getMessage(), e);
                 } catch (final InvocationTargetException | NoSuchMethodException | InstantiationException |
@@ -137,6 +135,11 @@ public class EventScheduling {
                     throw e;
                 }
             }
+        }
+
+        private void createAndScheduleNewInstance(final ScheduleID scheduleID, final ConfigurationSection scheduleConfig)
+                throws InstructionParseException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+            scheduler.schedule(newScheduleInstance(scheduleID, scheduleConfig));
         }
     }
 }
