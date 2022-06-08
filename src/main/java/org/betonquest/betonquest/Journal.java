@@ -380,9 +380,9 @@ public class Journal {
             }
         } else {
             try {
-                Config.sendNotify(null, playerID, "inventory_full", null, "inventory_full,error");
+                Config.sendNotify(null, playerID, "inventory_full_backpack", null, "inventory_full_backpack,inventory_full,error");
             } catch (final QuestRuntimeException e) {
-                LOG.warn("The notify system was unable to play a sound for the 'inventory_full' category. Error was: '" + e.getMessage() + "'", e);
+                LOG.warn("The notify system was unable to play a sound for the 'inventory_full_backpack' category. Error was: '" + e.getMessage() + "'", e);
             }
         }
     }
