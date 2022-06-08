@@ -67,6 +67,12 @@ public class GiveEvent extends QuestEvent {
                     } else {
                         player.getWorld().dropItem(player.getLocation(), itemStack);
                     }
+                    final String type = Utils.isQuestItem(itemStack) ? "backpack" : "drop";
+                    try {
+                        Config.sendNotify(null, playerID, "inventory_full_" + type, null, "inventory_full_" + type + ",inventory_full,error");
+                    } catch (final QuestRuntimeException e) {
+                        LOG.warn("The notify system was unable to play a sound for the 'inventory_full_" + type + "' category. Error was: '" + e.getMessage() + "'", e);
+                    }
                 }
                 amountInt = amountInt - stackSize;
             }

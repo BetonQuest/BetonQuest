@@ -31,6 +31,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - config option `journal.lock_default_journal_slot` to lock the journal to the `default_journal_slot`
 - config option `journal.give_on_respawn` to add the journal to the inventory after the player respawns
 - compass now supports items from other packages
+- new messages.yml entries `inventory_full_backpack` and `inventory_full_drop` to have more specific messages,
+  when the inventory of the player is full
 - `menu` conversationIO option `npc_name_newline_separator`
 - added `q download` command
 - `freeze` event - ProtocolLib compatibility feature: Blocks the player from moving for the specified amount of ticks
