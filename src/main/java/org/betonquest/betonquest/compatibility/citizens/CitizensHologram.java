@@ -94,40 +94,21 @@ public class CitizensHologram extends BukkitRunnable {
         }
     }
 
-    @SuppressWarnings("PMD.CognitiveComplexity")
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     private void initHolograms() {
-        int interval = 100;
+        int interval = 0;
         for (final QuestPackage pack : Config.getPackages().values()) {
-            final ConfigurationSection npcsSection = pack.getConfig().getConfigurationSection("npcs");
-            if (npcsSection != null) {
-                for (final String npcIdString : npcsSection.getKeys(false)) {
-                    try {
-                        final int npcId = Integer.parseInt(npcIdString);
-                        npcs.putIfAbsent(npcId, new ArrayList<>());
-                    } catch (final NumberFormatException exception) {
-                        LOG.warn(pack, "Could not parse number of NPC '" + npcIdString + "'");
-                    }
-                }
-            }
-
             final ConfigurationSection hologramsSection = pack.getConfig().getConfigurationSection("npc_holograms");
-            if (hologramsSection == null) {
+            if (hologramsSection == null || "true".equalsIgnoreCase(hologramsSection.getString("disabled"))) {
                 continue;
             }
-            if ("true".equalsIgnoreCase(hologramsSection.getString("disabled"))) {
-                return;
-            }
-            interval = hologramsSection.getInt("check_interval", 100);
-            if (interval <= 0) {
-                LOG.warn(pack, "Could not load npc holograms of package " + pack.getPackagePath() + ": " +
-                        "Check interval must be bigger than 0.");
-                return;
-            }
+            interval = hologramsSection.getInt("check_interval", interval);
             follow = hologramsSection.getBoolean("follow", false);
-
             initHologramsConfig(pack, hologramsSection);
         }
-
+        if (interval <= 0) {
+            interval = 100;
+        }
         updateTask = runTaskTimer(BetonQuest.getInstance(), 1, interval);
     }
 
@@ -141,16 +122,10 @@ public class CitizensHologram extends BukkitRunnable {
             final List<String> lines = settingsSection.getStringList("lines");
             final List<ConditionID> conditions = initHologramsConfigConditions(pack, key, settingsSection.getString("conditions"));
 
-            final List<Integer> affectedNpcs = new ArrayList<>();
             for (final int id : settingsSection.getIntegerList("npcs")) {
-                if (npcs.containsKey(id)) {
-                    affectedNpcs.add(id);
-                }
+                npcs.putIfAbsent(id, new ArrayList<>());
+                npcs.get(id).add(new NPCHologram(pack, vector, lines, conditions));
             }
-            for (final int npcID : affectedNpcs.isEmpty() ? npcs.keySet() : affectedNpcs) {
-                npcs.get(npcID).add(new NPCHologram(pack, vector, lines, conditions));
-            }
-
         }
     }
 
