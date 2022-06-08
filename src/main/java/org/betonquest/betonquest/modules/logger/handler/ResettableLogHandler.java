@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.modules.logger.handler;
 
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Supplier;
@@ -8,32 +7,41 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
 /**
- * {@link Handler} that creates the target {@link Handler}, when needed.
+ * Resettable {@link Handler} that can be reset by calling {@link #reset()}.
+ * Resetting will close the previous handler and replace it with a newly
+ * created {@link Handler}.
  */
 public class ResettableLogHandler extends Handler {
 
     /**
-     * {@link Lock} instance, when the target {@link Handler} is created
+     * Lock to prevent invalid states caused by multithreading:
+     * <ul>
+     *     <li>Publishing while reset</li>
+     *     <li>Closing while reset</li>
+     *     <li>Publishing while closing</li>
+     * </ul>
      */
     private final ReadWriteLock lock;
 
     /**
-     * {@link Supplier} for the {@link Handler} creation.
+     * Factory that creates the internal {@link Handler} every time it is reset.
      */
     private final Supplier<Handler> handlerFactory;
 
     /**
-     * Weather this {@link Handler} is closed.
+     * Marker that the {@link Handler} is closed to prevent resets that would
+     * unclose the internal {@link Handler}.
      */
     private boolean closed;
 
     /**
-     * The created target {@link Handler}.
+     * The current internal {@link Handler}.
      */
     private Handler internalHandler;
 
     /**
-     * Create a new {@link ResettableLogHandler} with a given {@link Supplier}.
+     * Create a new {@link ResettableLogHandler} that will create the internal
+     * {@link Handler} by calling the given {@link Supplier}.
      *
      * @param handlerFactory the {@link Supplier} to use for creation
      */
@@ -84,7 +92,7 @@ public class ResettableLogHandler extends Handler {
 
     private void requireNotClosed() {
         if (closed) {
-            throw new IllegalStateException("ResettableHandler was closed, it can not be reset anymore.");
+            throw new IllegalStateException("Cannot publish log record: ResettableHandler was closed, it can not be reset anymore.");
         }
     }
 
