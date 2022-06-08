@@ -24,7 +24,7 @@ softdepend:
   - WorldGuard
   - mcMMO
   - Shopkeepers
-  - SkillAPI
+  - ProSkillAPI
   - Quests
   - PlaceholderAPI
   - HolographicDisplays

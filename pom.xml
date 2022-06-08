@@ -275,9 +275,9 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>com.github.Sentropic</groupId>
-      <artifactId>SkillAPI-s</artifactId>
-      <version>1.96</version>
+      <groupId>com.github.promcteam</groupId>
+      <artifactId>proskillapi</artifactId>
+      <version>1.98</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
