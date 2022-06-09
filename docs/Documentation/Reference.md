@@ -257,7 +257,7 @@ variables:
 
 If you want to let your players cancel their quest there is a function for that. In _package.yml_ file there is `cancel`
 branch. You can specify there quests, which can be canceled, as well as actions that need to be done to actually cancel
-them. You can find an example in the `default` package. The arguments you can specify are:
+them. The arguments you can specify are:
 
 * `name` - this will be the name displayed to the player. All `_` characters will be converted to spaces. If you want to include other languages you can add here additional options (`en` for English etc.)
 * `conditions` - this is a list of conditions separated by commas. The player needs to meet all those conditions to be able to cancel this quest. Place there the ones which detect that the player has started the quest, but he has not finished it yet. 
@@ -268,7 +268,7 @@ them. You can find an example in the `default` package. The arguments you can sp
 * `events` - if you want to do something else when canceling the quest (like punishing the player), list the events here.
 * `loc` - this is a location to which the player will be teleported when canceling the quest (defined as in teleport event);
 
-To cancel the quest you need to open your backpack and select a "cancel" button (by default a bone, can be changes by naming an item "cancel_button" inside default package). There will be a list of quests which can be canceled. Just select the one that interests you and it will be canceled.
+To cancel the quest you need to open your backpack and select a "cancel" button. There will be a list of quests which can be canceled. Just select the one that interests you and it will be canceled.
 
 ## Global objectives
 
@@ -336,7 +336,7 @@ If you want to manually wrap the page, use the pipe `|` character. Use \n to go 
 
 ## Tags
 
-Tags are little pieces of text you can assign to player and then check if he has them. They are particularly useful to determine if player has started or completed quest. They are given with `tag` event and checked with `tag` condition. All tags are bound to a package, so if you add `beton` tag from within the `default` package, the tag will look like `default.beton`. If you're checking for `beton` tag from within `default` package, you're actually checking for `default.beton`. If you want to check a tag from another package, then you just need to prefix it's name with that package, for example `quest.beton`.
+Tags are little pieces of text you can assign to player and then check if he has them. They are particularly useful to determine if player has started or completed quest. They are given with `tag` event and checked with `tag` condition. All tags are bound to a package, so if you add `beton` tag from within a package named `example`, the tag will look like `example.beton`. If you're checking for `beton` tag from within `example` package, you're actually checking for `example.beton`. If you want to check a tag from another package, then you just need to prefix it's name with that package, for example `quest.beton`.
 
 ## Points
 
@@ -387,7 +387,7 @@ These are arguments that can be applied to every item:
     
     You can require the item not to have any enchantments by using `none` keyword. You can also add `+`/`-` character to the enchantment level to make the check require levels greater/less (and equal) than specified. If you don't care about the level, replace the number with a question mark.
     
-    By default all specified enchantments are required. If you want to check if the item contains a matching enchantment (and/or more enchants), add `enchants-containing` argument to the instruction string. Each specified enchantment will be required on the item by default unless you prefix its name with `none-`, for example `none-knockback` means that the item must not have any knockback enchantment. **Do not use `none-` prefix unless you're using `enchants-containing` argument**, it doesn't make any sense and will break the check!
+    By default, all specified enchantments are required. If you want to check if the item contains a matching enchantment (and/or more enchants), add `enchants-containing` argument to the instruction string. Each specified enchantment will be required on the item by default unless you prefix its name with `none-`, for example `none-knockback` means that the item must not have any knockback enchantment. **Do not use `none-` prefix unless you're using `enchants-containing` argument**, it doesn't make any sense and will break the check!
 
 - `unbreakable` - this makes the item unbreakable. You can specify it either as `unbreakable` or `unbreakable:true` to require an item to be unbreakable. If you want to check if the item is breakable, use `unbreakable:false`.
 
@@ -448,7 +448,7 @@ _This applies to potions, splash potions and lingering potions._
 
     If you want to target only potions without custom effects, use `none` keyword. You can target potions with level and time greater/less (and equal) than specified with `+`/`-` character after the number. If you don't care about the level/time, you can replace them with question mark.
     
-    By default all specified effects are required. If you want to check if the potion contains these effects among others, add `effects-containing` argument to the instruction string. Now if you want to make sure the potion doesn't contain a specific effect, prefix the effect name with `none-`. **Don't use that prefix unless you're also using `effects-containing` argument**, it doesn't make any sense and it will break the check.
+    By default, all specified effects are required. If you want to check if the potion contains these effects among others, add `effects-containing` argument to the instruction string. Now if you want to make sure the potion doesn't contain a specific effect, prefix the effect name with `none-`. **Don't use that prefix unless you're also using `effects-containing` argument**, it doesn't make any sense and it will break the check.
 
 **Examples**:
 
@@ -503,7 +503,7 @@ _This applies to fireworks._
     
     If you want to target fireworks without any effects, use `none` keyword. If you want to target any effect type, use question mark instead of the effect name. If you don't want the effect to have any main/fade colors, use `none` keyword in the place of colors. If you don't care about main/fade colors, use question marks in that place. If you don't care about trail/flicker effect, use question marks instead of `true`/`false` keyword.
     
-    By default the check will require all specified effects to be present on the firework. You can check if the firework contains specified effects among others by adding `firework-containing` argument to the instruction string. To match the item which must not have an effect, prefix the effect name with `none-` keyword. **Don't use that prefix unless you're also using `firework-containing` argument**, it doesn't make any sense and will break the check.
+    By default, the check will require all specified effects to be present on the firework. You can check if the firework contains specified effects among others by adding `firework-containing` argument to the instruction string. To match the item which must not have an effect, prefix the effect name with `none-` keyword. **Don't use that prefix unless you're also using `firework-containing` argument**, it doesn't make any sense and will break the check.
 
 - `power` - flight duration of the firework, in levels. You can use `+`/`-` character to target greater/less (and equal) levels.
 

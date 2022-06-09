@@ -12,7 +12,12 @@ There are two ways to get started with BetonQuest:
 
 ## Checking out the "default" example quest. 
 
-Let's start by checking out the build in example quest. You can find it in the BetonQuest directory that has been
+First you need to execute the following command to download the example quest:
+````
+/q download BetonQuest/Quest-Tutorials main QuestPackages /default
+````
+
+Let's start by checking out the downloaded example quest. You can find it in the BetonQuest directory that has been
 generated in your plugins folder. The folder you are looking for is named "_QuestPackages/default/_".
 
 Open it up and find a file called _package.yml_. It contains a lot of options, but you only need to look at this section:
@@ -195,7 +200,7 @@ knowledge to write your fisrt conversation.
 ## Writing your first conversation
 
 Now that you have seen BetonQuest in action and understood events, conditions and objectives, it's time for writing your
-first conversation. There's a _conversations_ directory inside the default package. It contains a single file,
+first conversation. There's a _conversations_ directory inside the `default` package. It contains a single file,
 _innkeeper.yml_. This is the conversation with Innkeeper, the one who asks you to cut some trees. Open it, we'll use
 that for reference. Now create a new file, let's say _miner.yml_. Now type
 (don't copy-paste it, you'll learn better while typing) that into the file:
@@ -322,7 +327,7 @@ conversations:
 ```
 
 Now you should experiment some more with this conversation, you can help yourself by looking at the
-<a href="https://github.com/BetonQuest/BetonQuest/blob/master/src/main/resources/default/conversations/innkeeper.yml" target="_blank">innkeeper.yml</a> file.
+<a href="https://github.com/BetonQuest/Quest-Tutorials/blob/main/QuestPackages/default/conversations/innkeeper.yml" target="_blank">innkeeper.yml</a> file.
 Try to understand how that conversation works step by step. As the excercise you should complete the Miner NPC, so he
 asks you to mine some iron ore, then smelt it in the furnace, next craft an armor with it and return to him wearing this armor.
 

@@ -79,12 +79,10 @@ public abstract class ID {
             }
             this.identifier = identifier.substring(dotIndex + 1);
         } else {
-            // id does not specify package, use supplied package
             if (pack == null) {
-                this.pack = Config.getDefaultPackage();
-            } else {
-                this.pack = pack;
+                throw new ObjectNotFoundException("No package specified for id '" + identifier + "'!");
             }
+            this.pack = pack;
             this.identifier = identifier;
         }
 

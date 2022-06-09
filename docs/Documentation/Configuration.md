@@ -109,9 +109,6 @@ Read [this page](Conversations.md) for more information about chat interceptors.
 `notify_pullback` will display a message every time the player is pulled back by the `stop` option in conversations (in the case of chat-based conversations).
 It notifies players that they are in a conversation, and the pullback is not a bug.
 
-### Default Package name
-`default_package` is a name of the package that should be used when a package is not specified in /q command. This is for your convenience.
-
 ### Adjusting the backpack to the KeepInventory gamerule
 `remove_items_after_respawn` option should be turned on if "keepInventory" gamerule is not being used. 
 It prevents other plugins from duplicating quest items after death.
@@ -211,6 +208,17 @@ If you want to add a font style (bold, italic etc.) do so after placing a comma.
 * `repo_whitelist` is a list of trusted github repositories from which quests and templates can be downloaded.  
   By default only or official tutorial repo [BetonQuest/Quest-Tutorials](https://github.com/BetonQuest/Quest-Tutorials)
   is on this list.
+
+### Items
+
+`items` gives the possibility to override default items, that are defined and used by BetonQuest.
+The items need to be defined in a package, and then you need to reference the item here with an absolute path.
+
+* `backpack` items that are used by the backpack.
+  - `previous_button` the item to go to the previous page of items in the backpack.
+  - `next_button` the item to go to the next page of items in the backpack.
+  - `cancel_button` the item to show the quest cancelers.  
+  - `compass_button` the item to show the quest compass.
 
 ### Misc settings
 

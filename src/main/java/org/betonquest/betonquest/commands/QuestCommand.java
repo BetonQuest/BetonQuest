@@ -81,7 +81,6 @@ import java.util.stream.Stream;
 public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     private final BetonQuest instance = BetonQuest.getInstance();
-    private String defaultPack = Config.getString("config.default_package");
     private final BukkitAudiences bukkitAudiences;
 
     /**
@@ -265,7 +264,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     break;
                 case "reload":
                     // just reloading
-                    defaultPack = Config.getString("config.default_package");
                     final PlayerLogHandler playerHandler = BetonQuest.getInstance().getLogWatcher().getPlayerLogHandler();
                     final UUID uuid = sender instanceof Player ? ((Player) sender).getUniqueId() : null;
                     final boolean noFilters = uuid != null && playerHandler.getFilters(uuid).isEmpty();
@@ -538,7 +536,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_pointer");
             return;
         }
-        final String pointerName = args[3].contains(".") ? args[3] : defaultPack + '.' + args[3];
+        final String pointerName = args[3];
         // if there are arguments, handle them
         switch (args[2].toLowerCase(Locale.ROOT)) {
             case "add":
@@ -637,7 +635,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_category");
             return;
         }
-        final String category = args[3].contains(".") ? args[3] : defaultPack + '.' + args[3];
+        final String category = args[3];
         // if there are arguments, handle them
         switch (args[2].toLowerCase(Locale.ROOT)) {
             case "add":
@@ -704,7 +702,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_category");
             return;
         }
-        final String category = args[2].contains(".") ? args[2] : defaultPack + '.' + args[2];
+        final String category = args[2];
         // if there are arguments, handle them
         switch (args[1].toLowerCase(Locale.ROOT)) {
             case "add":
@@ -798,7 +796,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             pack = parts[0];
             name = parts[1];
         } else {
-            pack = defaultPack;
+            pack = null;
             name = itemID;
         }
         // define parts of the final string
@@ -973,7 +971,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_tag");
             return;
         }
-        final String tag = args[3].contains(".") ? args[3] : defaultPack + '.' + args[3];
+        final String tag = args[3];
         // if there are arguments, handle them
         switch (args[2].toLowerCase(Locale.ROOT)) {
             case "add":
@@ -1031,7 +1029,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_tag");
             return;
         }
-        final String tag = args[2].contains(".") ? args[2] : defaultPack + '.' + args[2];
+        final String tag = args[2];
         // if there are arguments, handle them
         switch (args[1].toLowerCase(Locale.ROOT)) {
             case "add":
@@ -1236,14 +1234,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         final String type = args[1].toLowerCase(Locale.ROOT);
-        String name = args[2];
-        String rename = args[3];
-        if (!name.contains(".")) {
-            name = defaultPack + '.' + name;
-        }
-        if (!rename.contains(".")) {
-            rename = defaultPack + '.' + rename;
-        }
+        final String name = args[2];
+        final String rename = args[3];
         final UpdateType updateType;
         switch (type) {
             case "tags":
@@ -1415,10 +1407,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         final String type = args[1].toLowerCase(Locale.ROOT);
-        String name = args[2];
-        if (!name.contains(".")) {
-            name = defaultPack + '.' + name;
-        }
+        final String name = args[2];
         final UpdateType updateType;
         switch (type) {
             case "tags":
@@ -1777,7 +1766,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             } catch (DownloadFailedException | SecurityException e) {
                 sendMessage(sender, "download_failed", e.getMessage());
                 LOG.debug(errSummary, e);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 sendMessage(sender, "download_failed", e.getClass().getSimpleName() + ": " + e.getMessage());
                 if (sender instanceof Player player) {
                     final BetonQuestLogRecord record = new BetonQuestLogRecord(instance, null, Level.FINE, "");

@@ -52,7 +52,7 @@ When an NPC wants to say something he will check conditions for the first option
 
 If there are no possible options for player or NPC (either from not meeting any conditions or being not defined) the conversations ends. If the conversation ends unexpectedly, check the console - it could be an error in the configuration.
 
-This can and will be a little confusing, so you should name your options, conditions and events in a way which you will understand in the future. Don't worry though, if you make some mistake in configuration, the plugin will tell you this in console when testing a conversation. Also, study the default conversation included with the plugin to fully understand how powerful this system can be.
+This can and will be a little confusing, so you should name your options, conditions and events in a way which you will understand in the future. Don't worry though, if you make some mistake in configuration, the plugin will tell you this in console when testing a conversation.
 
 ## Cross-conversation pointers
 
@@ -72,7 +72,7 @@ You can use variables in the conversations. They will be resolved and displayed 
 
 ## Translations
 
-As you can see in default conversation, there are additional messages in other languages. That's because you can translate your conversations into multiple languages. The players will be albe to choose their preferred one with **/questlang** command. You can translate every NPC/player option and quester's name. You do this like this:
+As you can see in this example conversation, there are additional messages in other languages. That's because you can translate your conversations into multiple languages. The players will be able to choose their preferred one with **/questlang** command. You can translate every NPC/player option and quester's name. You do this like this:
 
 ```YAML
 quester:

@@ -2,7 +2,6 @@ package org.betonquest.betonquest.compatibility.placeholderapi;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 
@@ -76,7 +75,7 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
         final String placeholderIdentifier;
         final int index = identifier.indexOf(':');
         if (index == -1) {
-            pack = Config.getDefaultPackage().getPackagePath();
+            pack = null;
             placeholderIdentifier = identifier;
         } else {
             pack = identifier.substring(0, index);
