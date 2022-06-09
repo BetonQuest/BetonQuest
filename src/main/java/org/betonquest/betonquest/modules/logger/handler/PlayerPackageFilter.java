@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.logger.custom.chat;
+package org.betonquest.betonquest.modules.logger.handler;
 
 import org.apache.commons.lang3.StringUtils;
 

@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.logger.custom.chat;
+package org.betonquest.betonquest.modules.logger.handler;
 
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
@@ -13,7 +13,7 @@ import java.util.logging.LogRecord;
  * This {@link Handler} can send log messages to the ingame chat
  * to specified players defined by a given {@link PlayerFilter}.
  */
-public class ChatHandler extends Handler {
+public class BukkitChatHandler extends Handler {
 
     /**
      * The {@link PlayerFilter} for this {@link Handler}.
@@ -26,12 +26,12 @@ public class ChatHandler extends Handler {
     private final BukkitAudiences bukkitAudiences;
 
     /**
-     * Creates a new {@link ChatHandler}.
+     * Creates a new {@link BukkitChatHandler}.
      *
      * @param playerFilter    A filter instance for this handler.
      * @param bukkitAudiences The {@link BukkitAudiences} instance for sending messages.
      */
-    public ChatHandler(final PlayerFilter playerFilter, final BukkitAudiences bukkitAudiences) {
+    public BukkitChatHandler(final PlayerFilter playerFilter, final BukkitAudiences bukkitAudiences) {
         super();
         this.playerFilter = playerFilter;
         this.bukkitAudiences = bukkitAudiences;
@@ -80,7 +80,7 @@ public class ChatHandler extends Handler {
     }
 
     /**
-     * Get the {@link PlayerFilter} related to this {@link ChatHandler}
+     * Get the {@link PlayerFilter} related to this {@link BukkitChatHandler}
      *
      * @return a {@link PlayerFilter} instance
      */

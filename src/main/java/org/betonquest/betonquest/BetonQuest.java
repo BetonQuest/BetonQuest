@@ -150,8 +150,8 @@ import org.betonquest.betonquest.mechanics.PlayerHider;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.modules.logger.LogWatcher;
 import org.betonquest.betonquest.modules.logger.LogWatcherFactory;
-import org.betonquest.betonquest.modules.logger.custom.chat.ChatHandler;
-import org.betonquest.betonquest.modules.logger.handler.HistoryLogHandler;
+import org.betonquest.betonquest.modules.logger.handler.BukkitChatHandler;
+import org.betonquest.betonquest.modules.logger.handler.HistoryHandler;
 import org.betonquest.betonquest.modules.versioning.Updater;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.notify.ActionBarNotifyIO;
@@ -619,8 +619,8 @@ public class BetonQuest extends JavaPlugin {
         pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
         adventure = BukkitAudiences.create(this);
 
-        final HistoryLogHandler historyHandler = LogWatcherFactory.createHistoryHandler(this, this.getServer().getScheduler(), config, new File(getDataFolder(), "/logs"), InstantSource.system());
-        final ChatHandler chatHandler = LogWatcherFactory.createChatHandler(this, adventure);
+        final HistoryHandler historyHandler = LogWatcherFactory.createHistoryHandler(this, this.getServer().getScheduler(), config, new File(getDataFolder(), "/logs"), InstantSource.system());
+        final BukkitChatHandler chatHandler = LogWatcherFactory.createChatHandler(this, adventure);
         logWatcher = new LogWatcher(this, historyHandler, chatHandler);
 
         // load configuration

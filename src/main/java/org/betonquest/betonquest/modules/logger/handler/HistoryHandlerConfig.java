@@ -10,7 +10,7 @@ import java.util.logging.LogRecord;
  * This is a debug configuration based on a {@link ConfigurationFile}.
  */
 @SuppressWarnings({"PMD.DataClass"})
-public class HistoryLogHandlerConfig implements DebugConfig {
+public class HistoryHandlerConfig implements DebugConfig {
     /**
      * Default value for the expire after minutes value.
      */
@@ -57,7 +57,7 @@ public class HistoryLogHandlerConfig implements DebugConfig {
      * @param config        the related {@link ConfigurationFile}
      * @param logFileFolder the folder where to write the logfile.
      */
-    public HistoryLogHandlerConfig(final ConfigurationFile config, final File logFileFolder) {
+    public HistoryHandlerConfig(final ConfigurationFile config, final File logFileFolder) {
         this.debugging = config.getBoolean(CONFIG_ENABLED_PATH, false);
         this.config = config;
         this.logFile = new File(logFileFolder, LOG_FILE_PATH);

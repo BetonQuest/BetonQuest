@@ -17,10 +17,10 @@ import java.util.logging.Logger;
 import static org.mockito.Mockito.*;
 
 /**
- * A test for the {@link HistoryLogHandler}.
+ * A test for the {@link HistoryHandler}.
  */
 @ExtendWith(MockitoExtension.class)
-class HistoryLogHandlerTest {
+class HistoryHandlerTest {
     /**
      * The debug config.
      */
@@ -29,7 +29,7 @@ class HistoryLogHandlerTest {
     /**
      * Default constructor.
      */
-    public HistoryLogHandlerTest() {
+    public HistoryHandlerTest() {
     }
 
     @Test
@@ -37,7 +37,7 @@ class HistoryLogHandlerTest {
     void testStartLoggingPrintsHistoryInCorrectOrder(@Mock final DebugConfig debugConfig) throws IOException {
         final LogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());
         final LogValidator validator = new LogValidator();
-        final HistoryLogHandler historyHandler = new HistoryLogHandler(debugConfig, logQueue, new ResettableLogHandler(() -> validator));
+        final HistoryHandler historyHandler = new HistoryHandler(debugConfig, logQueue, new ResettableHandler(() -> validator));
 
         final Logger logger = LogValidator.getSilentLogger();
         logger.addHandler(historyHandler);
@@ -52,9 +52,9 @@ class HistoryLogHandlerTest {
     }
 
     @Test
-    void testStartLoggingPublishesHistory(@Mock final ResettableLogHandler internalHandler) throws IOException {
+    void testStartLoggingPublishesHistory(@Mock final ResettableHandler internalHandler) throws IOException {
         final LogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());
-        final HistoryLogHandler historyHandler = new HistoryLogHandler(debugConfig, logQueue, internalHandler);
+        final HistoryHandler historyHandler = new HistoryHandler(debugConfig, logQueue, internalHandler);
         final LogRecord logRecord = new LogRecord(Level.INFO, "record");
         historyHandler.publish(logRecord);
 
@@ -67,9 +67,9 @@ class HistoryLogHandlerTest {
     }
 
     @Test
-    void testNoHistoryMarkersWhenStartingWithEmptyHistory(@Mock final ResettableLogHandler internalHandler) throws IOException {
+    void testNoHistoryMarkersWhenStartingWithEmptyHistory(@Mock final ResettableHandler internalHandler) throws IOException {
         final LogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());
-        final HistoryLogHandler historyHandler = new HistoryLogHandler(debugConfig, logQueue, internalHandler);
+        final HistoryHandler historyHandler = new HistoryHandler(debugConfig, logQueue, internalHandler);
         historyHandler.startLogging();
         verifyNoInteractions(internalHandler);
     }

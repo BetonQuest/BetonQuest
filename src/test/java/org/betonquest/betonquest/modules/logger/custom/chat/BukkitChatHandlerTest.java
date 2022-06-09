@@ -7,6 +7,8 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
 import org.betonquest.betonquest.modules.logger.format.ChatFormatter;
+import org.betonquest.betonquest.modules.logger.handler.BukkitChatHandler;
+import org.betonquest.betonquest.modules.logger.handler.PlayerFilter;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.bukkit.plugin.Plugin;
@@ -24,14 +26,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * A test for the {@link ChatHandler}.
+ * A test for the {@link BukkitChatHandler}.
  */
 @ExtendWith(BetonQuestLoggerService.class)
-class ChatHandlerTest {
+class BukkitChatHandlerTest {
     /**
      * Default constructor.
      */
-    public ChatHandlerTest() {
+    public BukkitChatHandlerTest() {
         // Empty
     }
 
@@ -45,7 +47,7 @@ class ChatHandlerTest {
             final Audience audience1 = getAudience(playerFilter, audiences, uuid1, "Package1", "Package3");
             final Audience audience2 = getAudience(playerFilter, audiences, uuid2, "Package2", "Package3");
 
-            final ChatHandler playerHandler = new ChatHandler(playerFilter, audiences);
+            final BukkitChatHandler playerHandler = new BukkitChatHandler(playerFilter, audiences);
             playerHandler.setFormatter(new ChatFormatter());
 
             final Logger logger = LogValidator.getSilentLogger();

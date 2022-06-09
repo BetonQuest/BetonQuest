@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.modules.logger.custom.chat;
 
+import org.betonquest.betonquest.modules.logger.handler.PlayerFilter;
+import org.betonquest.betonquest.modules.logger.handler.PlayerPackageFilter;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;

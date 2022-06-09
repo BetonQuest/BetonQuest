@@ -13,10 +13,10 @@ import java.util.logging.LogRecord;
 import static org.mockito.Mockito.*;
 
 /**
- * Test for a {@link LazyLogHandler}.
+ * Test for a {@link LazyHandler}.
  */
 @ExtendWith(MockitoExtension.class)
-class LazyLogHandlerTest {
+class LazyHandlerTest {
     /**
      * Example record to use with tests.
      */
@@ -31,13 +31,13 @@ class LazyLogHandlerTest {
     /**
      * Default constructor.
      */
-    public LazyLogHandlerTest() {
+    public LazyHandlerTest() {
     }
 
     @Test
     void testLazyInstantiation(@Mock final Supplier<Handler> handlerSupplier) {
         when(handlerSupplier.get()).thenReturn(internalHandler);
-        final LazyLogHandler handler = new LazyLogHandler(handlerSupplier);
+        final LazyHandler handler = new LazyHandler(handlerSupplier);
         verify(handlerSupplier, never()).get();
         handler.publish(record);
         verify(handlerSupplier).get();
@@ -45,35 +45,35 @@ class LazyLogHandlerTest {
 
     @Test
     void testFlushDoesNotCauseInitialization(@Mock final Supplier<Handler> handlerSupplier) {
-        final LazyLogHandler handler = new LazyLogHandler(handlerSupplier);
+        final LazyHandler handler = new LazyHandler(handlerSupplier);
         handler.flush();
         verify(handlerSupplier, never()).get();
     }
 
     @Test
     void testCloseDoesNotCauseInitialization(@Mock final Supplier<Handler> handlerSupplier) {
-        final LazyLogHandler handler = new LazyLogHandler(handlerSupplier);
+        final LazyHandler handler = new LazyHandler(handlerSupplier);
         handler.close();
         verify(handlerSupplier, never()).get();
     }
 
     @Test
     void testPublishAfterClosingDoesNotCauseInitialization(@Mock final Supplier<Handler> handlerSupplier) {
-        final LazyLogHandler handler = new LazyLogHandler(handlerSupplier);
+        final LazyHandler handler = new LazyHandler(handlerSupplier);
         handler.close();
         verify(handlerSupplier, never()).get();
     }
 
     @Test
     void testPublishIsPropagated() {
-        final LazyLogHandler handler = new LazyLogHandler(() -> internalHandler);
+        final LazyHandler handler = new LazyHandler(() -> internalHandler);
         handler.publish(record);
         verify(internalHandler).publish(record);
     }
 
     @Test
     void testFlushIsPropagated() {
-        final LazyLogHandler handler = new LazyLogHandler(() -> internalHandler);
+        final LazyHandler handler = new LazyHandler(() -> internalHandler);
         handler.publish(record);
         handler.flush();
         verify(internalHandler).flush();
@@ -81,7 +81,7 @@ class LazyLogHandlerTest {
 
     @Test
     void testCloseIsPropagated() {
-        final LazyLogHandler handler = new LazyLogHandler(() -> internalHandler);
+        final LazyHandler handler = new LazyHandler(() -> internalHandler);
         handler.publish(record);
         handler.close();
         verify(internalHandler).close();

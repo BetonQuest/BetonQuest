@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.modules.logger;
 
-import org.betonquest.betonquest.modules.logger.custom.chat.ChatHandler;
-import org.betonquest.betonquest.modules.logger.custom.chat.PlayerFilter;
-import org.betonquest.betonquest.modules.logger.handler.HistoryLogHandler;
+import org.betonquest.betonquest.modules.logger.handler.BukkitChatHandler;
+import org.betonquest.betonquest.modules.logger.handler.PlayerFilter;
+import org.betonquest.betonquest.modules.logger.handler.HistoryHandler;
 import org.betonquest.betonquest.modules.logger.handler.LogPublishingController;
 import org.bukkit.plugin.Plugin;
 
@@ -17,22 +17,22 @@ public final class LogWatcher implements AutoCloseable {
      */
     private final Logger parentLogger;
     /**
-     * The {@link HistoryLogHandler} that holds old LogRecords.
+     * The {@link HistoryHandler} that holds old LogRecords.
      */
-    private final HistoryLogHandler historyHandler;
+    private final HistoryHandler historyHandler;
     /**
-     * The {@link ChatHandler} that holds old LogRecords.
+     * The {@link BukkitChatHandler} that holds old LogRecords.
      */
-    private final ChatHandler chatHandler;
+    private final BukkitChatHandler chatHandler;
 
     /**
      * Setups the debug and in-game chat log.
      *
      * @param plugin         The {@link Plugin} to link this setup to
-     * @param historyHandler {@link HistoryLogHandler} instance
-     * @param chatHandler    {@link ChatHandler} instance
+     * @param historyHandler {@link HistoryHandler} instance
+     * @param chatHandler    {@link BukkitChatHandler} instance
      */
-    public LogWatcher(final Plugin plugin, final HistoryLogHandler historyHandler, final ChatHandler chatHandler) {
+    public LogWatcher(final Plugin plugin, final HistoryHandler historyHandler, final BukkitChatHandler chatHandler) {
         this.parentLogger = plugin.getServer().getLogger().getParent();
         this.historyHandler = historyHandler;
         this.chatHandler = chatHandler;
@@ -42,7 +42,7 @@ public final class LogWatcher implements AutoCloseable {
     }
 
     /**
-     * Get the {@link PlayerFilter} instance for the {@link ChatHandler}.
+     * Get the {@link PlayerFilter} instance for the {@link BukkitChatHandler}.
      *
      * @return the instance of the {@link PlayerFilter}
      */
@@ -51,7 +51,7 @@ public final class LogWatcher implements AutoCloseable {
     }
 
     /**
-     * Get the {@link LogPublishingController} instance for the {@link HistoryLogHandler}.
+     * Get the {@link LogPublishingController} instance for the {@link HistoryHandler}.
      *
      * @return the instance of the {@link LogPublishingController}
      */

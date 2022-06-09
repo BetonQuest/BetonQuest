@@ -34,7 +34,7 @@ import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.modules.downloader.DownloadFailedException;
 import org.betonquest.betonquest.modules.downloader.Downloader;
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
-import org.betonquest.betonquest.modules.logger.custom.chat.PlayerFilter;
+import org.betonquest.betonquest.modules.logger.handler.PlayerFilter;
 import org.betonquest.betonquest.modules.logger.format.ChatFormatter;
 import org.betonquest.betonquest.modules.logger.handler.LogPublishingController;
 import org.betonquest.betonquest.modules.versioning.Updater;

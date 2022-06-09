@@ -12,7 +12,7 @@ import java.util.logging.LogRecord;
  * methods are silently ignored when the internal {@link Handler} was not
  * yet initialized.
  */
-public class LazyLogHandler extends Handler {
+public class LazyHandler extends Handler {
 
     /**
      * {@link Lock} to ensure mutual exclusion of initialization and
@@ -37,12 +37,12 @@ public class LazyLogHandler extends Handler {
     private Handler internalHandler;
 
     /**
-     * Create a new {@link LazyLogHandler} that will create the actual
+     * Create a new {@link LazyHandler} that will create the actual
      * {@link Handler} on demand by calling the given {@link Supplier}.
      *
      * @param handlerFactory the {@link Supplier} to use for creation
      */
-    public LazyLogHandler(final Supplier<Handler> handlerFactory) {
+    public LazyHandler(final Supplier<Handler> handlerFactory) {
         super();
         this.lock = new ReentrantLock();
         this.handlerFactory = handlerFactory;

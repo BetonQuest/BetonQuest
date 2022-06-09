@@ -17,7 +17,7 @@ import java.util.logging.LogRecord;
  * The history can then be pushed to the target handler at any time.
  * It is automatically pushed if the filter returns true for any subsequent LogRecord.
  */
-public class HistoryLogHandler extends Handler implements LogPublishingController {
+public class HistoryHandler extends Handler implements LogPublishingController {
     /**
      * The message printed before the history is printed.
      */
@@ -38,7 +38,7 @@ public class HistoryLogHandler extends Handler implements LogPublishingControlle
     /**
      * The target Handler to log the history to.
      */
-    private final ResettableLogHandler target;
+    private final ResettableHandler target;
 
     /**
      * The debugging configuration for this {@link Handler}.
@@ -46,14 +46,14 @@ public class HistoryLogHandler extends Handler implements LogPublishingControlle
     private final DebugConfig debugConfig;
 
     /**
-     * Creates a new {@link HistoryLogHandler}.
+     * Creates a new {@link HistoryHandler}.
      *
      * @param debugConfig the config for the settings
      * @param recordQueue          the queue for storing records while not logging
      * @param target               the Handler to log the history to
      */
-    public HistoryLogHandler(final DebugConfig debugConfig, final LogRecordQueue recordQueue,
-                             final ResettableLogHandler target) {
+    public HistoryHandler(final DebugConfig debugConfig, final LogRecordQueue recordQueue,
+                          final ResettableHandler target) {
         super();
         this.debugConfig = debugConfig;
         this.recordQueue = recordQueue;
@@ -105,7 +105,7 @@ public class HistoryLogHandler extends Handler implements LogPublishingControlle
     }
 
     /**
-     * Get the {@link LogPublishingController} related to this {@link HistoryLogHandler}
+     * Get the {@link LogPublishingController} related to this {@link HistoryHandler}
      *
      * @return a {@link LogPublishingController} instance
      */

@@ -11,7 +11,7 @@ import java.util.logging.LogRecord;
  * Resetting will close the previous handler and replace it with a newly
  * created {@link Handler}.
  */
-public class ResettableLogHandler extends Handler {
+public class ResettableHandler extends Handler {
 
     /**
      * Lock to prevent invalid states caused by multithreading:
@@ -40,12 +40,12 @@ public class ResettableLogHandler extends Handler {
     private Handler internalHandler;
 
     /**
-     * Create a new {@link ResettableLogHandler} that will create the internal
+     * Create a new {@link ResettableHandler} that will create the internal
      * {@link Handler} by calling the given {@link Supplier}.
      *
      * @param handlerFactory the {@link Supplier} to use for creation
      */
-    public ResettableLogHandler(final Supplier<Handler> handlerFactory) {
+    public ResettableHandler(final Supplier<Handler> handlerFactory) {
         super();
         this.lock = new ReentrantReadWriteLock();
         this.handlerFactory = handlerFactory;

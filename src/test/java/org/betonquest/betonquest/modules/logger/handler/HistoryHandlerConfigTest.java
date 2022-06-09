@@ -18,10 +18,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Test for the {@link HistoryLogHandlerConfig}.
+ * Test for the {@link HistoryHandlerConfig}.
  */
 @ExtendWith(MockitoExtension.class)
-class HistoryLogHandlerConfigTest {
+class HistoryHandlerConfigTest {
     /**
      * Path where to expect the debug config value.
      */
@@ -41,7 +41,7 @@ class HistoryLogHandlerConfigTest {
     /**
      * Default constructor.
      */
-    public HistoryLogHandlerConfigTest() {
+    public HistoryHandlerConfigTest() {
         super();
     }
 
@@ -58,7 +58,7 @@ class HistoryLogHandlerConfigTest {
     @ValueSource(booleans = {true, false})
     void testInitialValueIsReadFromConfig(final boolean initialValue) {
         when(configurationFile.getBoolean(eq(DEBUG_ACTIVE_CONFIG_PATH), anyBoolean())).thenReturn(initialValue);
-        final HistoryLogHandlerConfig historyHandlerConfig = new HistoryLogHandlerConfig(configurationFile, logDirectory);
+        final HistoryHandlerConfig historyHandlerConfig = new HistoryHandlerConfig(configurationFile, logDirectory);
         assertEquals(initialValue, historyHandlerConfig.isDebugging(), "Initial value was not successfully loaded");
     }
 
@@ -66,7 +66,7 @@ class HistoryLogHandlerConfigTest {
     @MethodSource("debugValueChanges")
     void testToggleDebugging(final boolean initialValue, final boolean newValue) throws IOException {
         when(configurationFile.getBoolean(eq(DEBUG_ACTIVE_CONFIG_PATH), anyBoolean())).thenReturn(initialValue);
-        final HistoryLogHandlerConfig historyHandlerConfig = new HistoryLogHandlerConfig(configurationFile, logDirectory);
+        final HistoryHandlerConfig historyHandlerConfig = new HistoryHandlerConfig(configurationFile, logDirectory);
         historyHandlerConfig.setDebugging(newValue);
         assertEquals(newValue, historyHandlerConfig.isDebugging(), "Initial value was not successfully loaded");
         verify(configurationFile).set(DEBUG_ACTIVE_CONFIG_PATH, newValue);

@@ -3,15 +3,15 @@ package org.betonquest.betonquest.modules.logger;
 import lombok.CustomLog;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
-import org.betonquest.betonquest.modules.logger.custom.chat.ChatHandler;
-import org.betonquest.betonquest.modules.logger.custom.chat.PlayerFilter;
-import org.betonquest.betonquest.modules.logger.custom.chat.PlayerPackageFilter;
+import org.betonquest.betonquest.modules.logger.handler.BukkitChatHandler;
+import org.betonquest.betonquest.modules.logger.handler.PlayerFilter;
+import org.betonquest.betonquest.modules.logger.handler.PlayerPackageFilter;
 import org.betonquest.betonquest.modules.logger.format.ChatFormatter;
 import org.betonquest.betonquest.modules.logger.format.LogfileFormatter;
-import org.betonquest.betonquest.modules.logger.handler.HistoryLogHandler;
-import org.betonquest.betonquest.modules.logger.handler.HistoryLogHandlerConfig;
-import org.betonquest.betonquest.modules.logger.handler.LazyLogHandler;
-import org.betonquest.betonquest.modules.logger.handler.ResettableLogHandler;
+import org.betonquest.betonquest.modules.logger.handler.HistoryHandler;
+import org.betonquest.betonquest.modules.logger.handler.HistoryHandlerConfig;
+import org.betonquest.betonquest.modules.logger.handler.LazyHandler;
+import org.betonquest.betonquest.modules.logger.handler.ResettableHandler;
 import org.betonquest.betonquest.modules.logger.queue.BukkitSchedulerCleaningLogQueue;
 import org.betonquest.betonquest.modules.logger.queue.DiscardingLogQueue;
 import org.betonquest.betonquest.modules.logger.queue.LogRecordQueue;
@@ -42,38 +42,38 @@ public final class LogWatcherFactory {
     }
 
     /**
-     * Create a new {@link ChatHandler} with the related instances.
+     * Create a new {@link BukkitChatHandler} with the related instances.
      *
      * @param plugin          {@link Plugin} instance
      * @param bukkitAudiences {@link BukkitAudiences} instance
-     * @return a new {@link ChatHandler}
+     * @return a new {@link BukkitChatHandler}
      */
-    public static ChatHandler createChatHandler(final Plugin plugin, final BukkitAudiences bukkitAudiences) {
+    public static BukkitChatHandler createChatHandler(final Plugin plugin, final BukkitAudiences bukkitAudiences) {
         final PlayerFilter playerFilter = new PlayerPackageFilter();
-        final ChatHandler handler = new ChatHandler(playerFilter, bukkitAudiences);
+        final BukkitChatHandler handler = new BukkitChatHandler(playerFilter, bukkitAudiences);
         handler.setFormatter(new ChatFormatter(ChatFormatter.PluginDisplayMethod.ROOT_PLUGIN_AND_PLUGIN, plugin, "BQ"));
         return handler;
     }
 
     /**
-     * Create a new {@link HistoryLogHandler} with the related instances.
+     * Create a new {@link HistoryHandler} with the related instances.
      *
      * @param plugin        {@link Plugin} instance
      * @param scheduler     {@link BukkitScheduler} instance
      * @param config        {@link ConfigurationFile} instance
      * @param logFileFolder {@link File} to the log folder
      * @param instantSource {@link InstantSource} instance
-     * @return a new {@link HistoryLogHandler}
+     * @return a new {@link HistoryHandler}
      */
-    public static HistoryLogHandler createHistoryHandler(final Plugin plugin, final BukkitScheduler scheduler, final ConfigurationFile config, final File logFileFolder, final InstantSource instantSource) {
-        final HistoryLogHandlerConfig historyHandlerConfig = new HistoryLogHandlerConfig(config, logFileFolder);
+    public static HistoryHandler createHistoryHandler(final Plugin plugin, final BukkitScheduler scheduler, final ConfigurationFile config, final File logFileFolder, final InstantSource instantSource) {
+        final HistoryHandlerConfig historyHandlerConfig = new HistoryHandlerConfig(config, logFileFolder);
         final LogRecordQueue logQueue = createLogRecordQueue(plugin, scheduler, instantSource, historyHandlerConfig.getExpireAfterMinutes());
-        final ResettableLogHandler targetHandler = createDebugLogFileHandler(historyHandlerConfig.getLogFile(), instantSource);
-        return new HistoryLogHandler(historyHandlerConfig, logQueue, targetHandler);
+        final ResettableHandler targetHandler = createDebugLogFileHandler(historyHandlerConfig.getLogFile(), instantSource);
+        return new HistoryHandler(historyHandlerConfig, logQueue, targetHandler);
     }
 
-    private static ResettableLogHandler createDebugLogFileHandler(final File logFile, final InstantSource instantSource) {
-        return new ResettableLogHandler(() -> new LazyLogHandler(() -> setupFileHandler(logFile, instantSource)));
+    private static ResettableHandler createDebugLogFileHandler(final File logFile, final InstantSource instantSource) {
+        return new ResettableHandler(() -> new LazyHandler(() -> setupFileHandler(logFile, instantSource)));
     }
 
     private static LogRecordQueue createLogRecordQueue(final Plugin plugin, final BukkitScheduler scheduler, final InstantSource instantSource, final int keepMinutes) {

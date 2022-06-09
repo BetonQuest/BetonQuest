@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.logger.custom.chat;
+package org.betonquest.betonquest.modules.logger.handler;
 
 import java.util.Set;
 import java.util.UUID;
