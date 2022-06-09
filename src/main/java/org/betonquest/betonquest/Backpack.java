@@ -186,12 +186,8 @@ public class Backpack implements Listener {
                 if (previousButton != null && !previousButton.isEmpty()) {
                     try {
                         previous = new QuestItem(new ItemID(null, previousButton)).generate(1);
-                    } catch (final ObjectNotFoundException e) {
-                        LOG.warn("Could not find item: " + e.getMessage(), e);
-                    } catch (final InstructionParseException e) {
+                    } catch (final ObjectNotFoundException | InstructionParseException e) {
                         LOG.warn("Could not load previous button: " + e.getMessage(), e);
-                        player.closeInventory();
-                        return;
                     }
                 }
                 if (previous == null) {
@@ -208,12 +204,8 @@ public class Backpack implements Listener {
                 if (nextButton != null && !nextButton.isEmpty()) {
                     try {
                         next = new QuestItem(new ItemID(null, nextButton)).generate(1);
-                    } catch (final ObjectNotFoundException e) {
-                        LOG.warn("Could not find item: " + e.getMessage(), e);
-                    } catch (final InstructionParseException e) {
+                    } catch (final ObjectNotFoundException | InstructionParseException e) {
                         LOG.warn("Could not load next button: " + e.getMessage(), e);
-                        player.closeInventory();
-                        return;
                     }
                 }
                 if (next == null) {
@@ -230,12 +222,8 @@ public class Backpack implements Listener {
             if (cancelButton != null && !cancelButton.isEmpty()) {
                 try {
                     cancel = new QuestItem(new ItemID(null, cancelButton)).generate(1);
-                } catch (final ObjectNotFoundException e) {
-                    LOG.warn("Could not find object: " + e.getMessage(), e);
-                } catch (final InstructionParseException e) {
+                } catch (final ObjectNotFoundException | InstructionParseException e) {
                     LOG.warn("Could not load cancel button: " + e.getMessage(), e);
-                    player.closeInventory();
-                    return;
                 }
             }
             if (cancel == null) {
@@ -251,12 +239,8 @@ public class Backpack implements Listener {
             if (compassButton != null && !compassButton.isEmpty()) {
                 try {
                     compassItem = new QuestItem(new ItemID(null, compassButton)).generate(1);
-                } catch (final ObjectNotFoundException e) {
-                    LOG.warn("Could not find item: " + e.getMessage(), e);
-                } catch (final InstructionParseException e) {
+                } catch (final ObjectNotFoundException | InstructionParseException e) {
                     LOG.warn("Could not load compass button: " + e.getMessage(), e);
-                    player.closeInventory();
-                    return;
                 }
             }
             if (compassItem == null) {
