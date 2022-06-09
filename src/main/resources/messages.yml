@@ -328,34 +328,34 @@ nl:
   backpack_title: Rugzak
   previous: '&2Vorige'
   next: '&2Volgende'
-  inventory_full_backpack: '&e*&bJe inventaris is vol! The item was moved to your backpack.&e*' # TODO: missing translation
-  inventory_full_drop: '&e*&bJe inventaris is vol! The item was dropped on the ground.&e*' # TODO: missing translation
+  inventory_full_backpack: '&e*&bJe inventaris is vol! Het item is in je rugzak geplaatst.&e*'
+  inventory_full_drop: '&e*&bJe inventaris is vol! Het item is op de grond gedropt.&e*'
   changelog: '&f[BetonQuest]: &e*&bEr is een nieuw wijzigingslog beschikbaar in de plugin''s folder. Lees de wijzigingen en verwijder of hernoem het bestand om dit bericht te voorkomen!&e*'
-  pullback: '&cRondt eerst je gesprek af!'
+  pullback: '&cRond eerst je gesprek af!'
   items_given: '&2Ontvangen {1}&2 x{2}'
   items_taken: '&2Afgegeven {1}&2 x{2}'
-  money_given: '&2Received {1} {2}' # TODO: missing translation
-  money_taken: '&2Lost {1} {2}' # TODO: missing translation
-  point_given: '&2You received {1} points to {2}' # TODO: missing translation
-  point_taken: '&2You lost {1} points to {2}' # TODO: missing translation
-  point_multiplied: '&2Your points {2} are multiplied by {1}' # TODO: missing translation
+  money_given: '&2Geld ontvangen: {1} {2}'
+  money_taken: '&2Geld verloren: {1} {2}'
+  point_given: '&2Je hebt {1} punten ontvangen voor {2}'
+  point_taken: '&2Je hebt {1} punten verloren voor {2}'
+  point_multiplied: '&2Je punten voor {2} zijn vermenigvuldigd met {1}'
   blocks_to_break: '&2{1} blokken over om te breken.'
   blocks_to_place: '&2{1} blokken over om te plaatsen.'
   mobs_to_kill: '&2{1} monsters over om te doden.'
-  mobs_to_click: '&2{1} mobs left to click' # TODO: missing translation
+  mobs_to_click: '&2{1} mobs over om op te klikken'
   players_to_kill: '&2{1} spelers over om te doden.'
   fish_to_catch: '&2{1} vissen over om te vangen.'
   sheep_to_shear: '&2{1} schapen over om te scheren.'
   potions_to_brew: '&2{1} drankjes over om te brouwen.'
-  animals_to_breed: '&2{1} animals left to breed' # TODO: missing translation
-  items_to_pickup: '&2{1} items left to pickup' # TODO: missing translation
-  items_to_smelt: '&2{1} items left to smelt' # TODO: missing translation
-  items_to_craft: '&2{1} items left to craft' # TODO: missing translation
+  animals_to_breed: '&2{1} dieren over om te broeden'
+  items_to_pickup: '&2{1} items over om op te pakken'
+  items_to_smelt: '&2{1} items over om te smelten'
+  items_to_craft: '&2{1} items over om te craften'
   busy: '&cJe kunt niet praten tijdens het vechten.'
   quest_canceled: '&2Quest {1}&2 geannuleerd!'
   cancel: '&cAnnuleer de quest'
   cancel_page: Quests annuleren
-  compass: '&cCompas doelen'
+  compass: '&cKompasdoelen'
   compass_page: Kies doel
   command_blocked: '&cJe kunt dat commando niet gebruiken terwijl je in gesprek bent.'
   language_changed: '&2Taal gewijzigd!'
@@ -367,8 +367,8 @@ nl:
   seconds: 'seconden'
   and: 'en'
   password: 'wachtwoord: '
-  condition_variable_met: 'yes' # TODO: missing translation
-  condition_variable_not_met: 'no' # TODO: missing translation
+  condition_variable_met: 'ja'
+  condition_variable_not_met: 'nee'
 it:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bConversazione con {1}&b iniziata!&e===='
