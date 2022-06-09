@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.objectives;
 
 import lombok.CustomLog;
+import org.apache.commons.lang.time.DurationFormatUtils;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
@@ -13,6 +14,10 @@ import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.Locale;
@@ -134,54 +139,13 @@ public class DelayObjective extends Objective {
         final String hoursWord = Config.getMessage(lang, "hours");
         final String minutesWord = Config.getMessage(lang, "minutes");
         final String secondsWord = Config.getMessage(lang, "seconds");
-        final double timeLeft = ((DelayData) dataMap.get(playerID)).getTime() - new Date().getTime();
-        final double seconds = (timeLeft / (1000)) % 60;
-        final double minutes = (timeLeft / (1000 * 60)) % 60;
-        final double hours = (timeLeft / (1000 * 60 * 60)) % 24;
-        final double days = timeLeft / (1000 * 60 * 60 * 24);
-        final StringBuilder time = new StringBuilder();
-        final String[] words = new String[3];
-        if (days > 0) {
-            words[0] = days + " " + daysWord;
-        }
-        if (hours > 0) {
-            words[1] = hours + " " + hoursWord;
-        }
-        if (minutes > 0) {
-            words[2] = minutes + " " + minutesWord;
-        }
-        int count = 0;
-        for (final String word : words) {
-            if (word != null) {
-                count++;
-            }
-        }
-        if (count == 0) {
-            time.append(seconds).append(' ').append(secondsWord);
-        } else if (count == 1) {
-            for (final String word : words) {
-                if (word == null) {
-                    continue;
-                }
-                time.append(word);
-            }
-        } else if (count == 2) {
-            boolean second = false;
-            for (final String word : words) {
-                if (word == null) {
-                    continue;
-                }
-                if (second) {
-                    time.append(' ').append(word);
-                } else {
-                    time.append(word).append(' ').append(Config.getMessage(lang, "and"));
-                    second = true;
-                }
-            }
-        } else {
-            time.append(words[0]).append(", ").append(words[1]).append(' ').append(Config.getMessage(lang, "and")).append(' ').append(words[2]);
-        }
-        return time.toString();
+
+        final long endTimestamp = (long) ((DelayData) dataMap.get(playerID)).getTime();
+        final LocalDateTime end = LocalDateTime.ofInstant(Instant.ofEpochMilli(endTimestamp), ZoneId.systemDefault());
+        final Duration duration = Duration.between(LocalDateTime.now(), end);
+        final String text = DurationFormatUtils.formatDurationWords(duration.toMillis(), true, true);
+        return text.replace("days", daysWord).replace("hours", hoursWord).replace("minutes", minutesWord)
+                .replace("seconds", secondsWord);
     }
 
     private String parseVariableDate(final String playerID) {
