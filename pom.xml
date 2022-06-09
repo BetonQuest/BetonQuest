@@ -294,6 +294,11 @@
       <version>Beta1.2.5</version>
       <optional>true</optional>
     </dependency>
+    <dependency>
+      <groupId>com.github.jmrozanec</groupId>
+      <artifactId>cron-utils</artifactId>
+      <version>7592624089</version>
+    </dependency>
 
     <!-- from sonatype repository -->
     <dependency>
@@ -387,11 +392,6 @@
       <artifactId>spotbugs-annotations</artifactId>
       <version>4.5.3</version>
       <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>com.cronutils</groupId>
-      <artifactId>cron-utils</artifactId>
-      <version>9.1.6</version>
     </dependency>
 
     <!-- only dependencies from maven central that are for testing -->
@@ -613,7 +613,7 @@
                   <include>net.kyori</include>
                   <include>com.comphenix.packetwrapper</include>
                   <include>io.papermc:paperlib</include>
-                  <include>com.cronutils</include>
+                  <include>com.github.jmrozanec:cron-utils</include>
                 </includes>
               </artifactSet>
               <filters>
