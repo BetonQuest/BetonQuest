@@ -13,6 +13,10 @@ import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.Locale;
@@ -131,57 +135,28 @@ public class DelayObjective extends Objective {
     private String parseVariableLeft(final String playerID) {
         final String lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
         final String daysWord = Config.getMessage(lang, "days");
+        final String daysWordSingular = Config.getMessage(lang, "days_singular");
         final String hoursWord = Config.getMessage(lang, "hours");
+        final String hoursWordSingular = Config.getMessage(lang, "hours_singular");
         final String minutesWord = Config.getMessage(lang, "minutes");
+        final String minutesWordSingular = Config.getMessage(lang, "minutes_singular");
         final String secondsWord = Config.getMessage(lang, "seconds");
-        final double timeLeft = ((DelayData) dataMap.get(playerID)).getTime() - new Date().getTime();
-        final double seconds = (timeLeft / (1000)) % 60;
-        final double minutes = (timeLeft / (1000 * 60)) % 60;
-        final double hours = (timeLeft / (1000 * 60 * 60)) % 24;
-        final double days = timeLeft / (1000 * 60 * 60 * 24);
-        final StringBuilder time = new StringBuilder();
-        final String[] words = new String[3];
-        if (days > 0) {
-            words[0] = days + " " + daysWord;
-        }
-        if (hours > 0) {
-            words[1] = hours + " " + hoursWord;
-        }
-        if (minutes > 0) {
-            words[2] = minutes + " " + minutesWord;
-        }
-        int count = 0;
-        for (final String word : words) {
-            if (word != null) {
-                count++;
-            }
-        }
-        if (count == 0) {
-            time.append(seconds).append(' ').append(secondsWord);
-        } else if (count == 1) {
-            for (final String word : words) {
-                if (word == null) {
-                    continue;
-                }
-                time.append(word);
-            }
-        } else if (count == 2) {
-            boolean second = false;
-            for (final String word : words) {
-                if (word == null) {
-                    continue;
-                }
-                if (second) {
-                    time.append(' ').append(word);
-                } else {
-                    time.append(word).append(' ').append(Config.getMessage(lang, "and"));
-                    second = true;
-                }
-            }
-        } else {
-            time.append(words[0]).append(", ").append(words[1]).append(' ').append(Config.getMessage(lang, "and")).append(' ').append(words[2]);
-        }
-        return time.toString();
+        final String secondsWordSingular = Config.getMessage(lang, "seconds_singular");
+
+        final long endTimestamp = (long) ((DelayData) dataMap.get(playerID)).getTime();
+        final LocalDateTime end = LocalDateTime.ofInstant(Instant.ofEpochMilli(endTimestamp), ZoneId.systemDefault());
+        final Duration duration = Duration.between(LocalDateTime.now(), end);
+
+        final String days = buildTimeDescription(daysWord, daysWordSingular, duration.toDaysPart());
+        final String hours = buildTimeDescription(hoursWord, hoursWordSingular, duration.toHoursPart());
+        final String minutes = buildTimeDescription(minutesWord, minutesWordSingular, duration.toMinutesPart());
+        final String seconds = buildTimeDescription(secondsWord, secondsWordSingular, duration.toSecondsPart());
+        return days + hours + minutes + seconds;
+    }
+
+
+    private String buildTimeDescription(final String timeUnitWord, final String timeUnitSingularWord, final long timeAmount) {
+        return timeAmount >= 1 ? timeAmount + " " + (timeAmount == 1 ? timeUnitSingularWord : timeUnitWord + " ") : "";
     }
 
     private String parseVariableDate(final String playerID) {

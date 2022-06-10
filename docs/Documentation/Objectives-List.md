@@ -143,22 +143,22 @@ next login.
 | _unit_      | Keyword         | minutes                | The unit of time. Either `minutes`, `seconds` or `ticks`.                                                                                          |
 | _precision_ | interval:number | interval:200           | The interval in which the objective checks if the time is up. Measured in ticks. Low values cost more performance but make the objective preciser. |
 
-!!! example annotate
-    ```YAML
-    delay 1440 events:resetDaily (2)
-    delay 1000 ticks interval:5 events:failQuest (1) 
-    ```
-    
-1. Runs the `failQuest` event after 1000 ticks (50 seconds) have passed. The objective checks every 5 ticks (250ms) if the time is up.
-2. Runs the `resetDaily` event after 1440 minutes (24 hours).
+``` YAML title="Example"
+objectives:
+  waitDay: "delay 1440 events:resetDaily" #(1)!
+  wait50sec: "delay 1000 ticks interval:5 events:failQuest" #(2)! 
+```
+   
+1. Runs the `resetDaily` event after 1440 minutes (24 hours).
+2. Runs the `failQuest` event after 1000 ticks (50 seconds) have passed. The objective checks every 5 ticks (250ms) if the time is up.
 
 <h5> Variable Properties </h5> 
 
-| Name         | Example Output                  | Explanation                                                                                                              |
-|--------------|---------------------------------|--------------------------------------------------------------------------------------------------------------------------|
-| _left_       | 23 days, 5 hours and 45 minutes | Shows the time left until the objective is completed.                                                                    |
-| _date_       | 17.04.2022 16:14                | Shows the date the objective is completed at using the config's `date_format` [setting](Configuration.md#misc-settings). |
-| _rawSeconds_ | 5482                            | Shows the amount of seconds until objective completion.                                                                  |
+| Name         | Example Output                        | Explanation                                                                                                              |
+|--------------|---------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
+| _left_       | 23 days 5 hours 45 minutes 17 seconds | Shows the time left until the objective is completed.                                                                    |
+| _date_       | 17.04.2022 16:14                      | Shows the date the objective is completed at using the config's `date_format` [setting](Configuration.md#misc-settings). |
+| _rawSeconds_ | 5482                                  | Shows the amount of seconds until objective completion.                                                                  |
 
 
 ## Death: `die`
