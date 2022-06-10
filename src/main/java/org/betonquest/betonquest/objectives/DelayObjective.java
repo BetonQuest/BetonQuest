@@ -148,15 +148,16 @@ public class DelayObjective extends Objective {
         final LocalDateTime end = LocalDateTime.ofInstant(Instant.ofEpochMilli(endTimestamp), ZoneId.systemDefault());
         final Duration duration = Duration.between(LocalDateTime.now(), end);
 
-        final String days = buildTimeDescription(daysWord, daysWordSingular, duration.toDaysPart(), ", ");
-        final String hours = buildTimeDescription(hoursWord, hoursWordSingular, duration.toHoursPart(), ", ");
-        final String minutes = buildTimeDescription(minutesWord, minutesWordSingular, duration.toMinutesPart(), andWord + " ");
-        final String seconds = buildTimeDescription(secondsWord, secondsWordSingular, duration.toSecondsPart(), "");
+        final String days = buildTimeDescription(daysWord, daysWordSingular, duration.toDaysPart());
+        final String hours = buildTimeDescription(hoursWord, hoursWordSingular, duration.toHoursPart());
+        final String minutes = buildTimeDescription(minutesWord, minutesWordSingular, duration.toMinutesPart());
+        final String seconds = buildTimeDescription(secondsWord, secondsWordSingular, duration.toSecondsPart());
         return days + hours + minutes + seconds;
     }
 
-    private String buildTimeDescription(final String timeUnitWord, final String timeUnitSingularWord, final long timeAmount, final String concatenationWord) {
-        return timeAmount >= 1 ? timeAmount + " " + (timeAmount == 1 ? timeUnitSingularWord : timeUnitWord) + concatenationWord : "";
+
+    private String buildTimeDescription(final String timeUnitWord, final String timeUnitSingularWord, final long timeAmount) {
+        return timeAmount >= 1 ? timeAmount + " " + (timeAmount == 1 ? timeUnitSingularWord : timeUnitWord + " ") : "";
     }
 
     private String parseVariableDate(final String playerID) {
