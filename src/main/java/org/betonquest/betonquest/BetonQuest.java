@@ -152,6 +152,7 @@ import org.betonquest.betonquest.mechanics.PlayerHider;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.modules.logger.LogWatcher;
 import org.betonquest.betonquest.modules.schedule.EventScheduling;
+import org.betonquest.betonquest.modules.schedule.LastExecutionCache;
 import org.betonquest.betonquest.modules.schedule.impl.realtime.RealtimeSchedule;
 import org.betonquest.betonquest.modules.schedule.impl.realtime.RealtimeScheduler;
 import org.betonquest.betonquest.modules.schedule.impl.simple.SimpleSchedule;
@@ -309,6 +310,11 @@ public class BetonQuest extends JavaPlugin {
      * Event scheduling module
      */
     private EventScheduling eventScheduling;
+
+    /**
+     * Cache for event schedulers, holding the last execution of an event
+     */
+    private LastExecutionCache lastExecutionCache;
 
     public static boolean conditions(final String playerID, final Collection<ConditionID> conditionIDs) {
         final ConditionID[] ids = new ConditionID[conditionIDs.size()];
@@ -676,6 +682,7 @@ public class BetonQuest extends JavaPlugin {
 
         // initialize event scheduling
         eventScheduling = new EventScheduling(SCHEDULE_TYPES);
+        lastExecutionCache = new LastExecutionCache(getDataFolder());
 
         // initialize global objectives
         new GlobalObjectives();
@@ -1129,6 +1136,7 @@ public class BetonQuest extends JavaPlugin {
         }
         Config.setup(this);
         Notify.load();
+        lastExecutionCache.reload();
 
         // reload updater settings
         BetonQuest.getInstance().getUpdater().searchUpdate();
@@ -1208,6 +1216,15 @@ public class BetonQuest extends JavaPlugin {
 
     public Updater getUpdater() {
         return updater;
+    }
+
+    /**
+     * Returns the schedules cache instance.
+     *
+     * @return LastExecutionCache instance
+     */
+    public LastExecutionCache getLastExecutionCache() {
+        return lastExecutionCache;
     }
 
     /**
