@@ -52,7 +52,6 @@ public class SimpleScheduler extends ExecutorServiceScheduler<SimpleSchedule> {
     private void catchupMissedSchedules() {
         final List<SimpleSchedule> missedSchedules = listMissedSchedules();
         if (!missedSchedules.isEmpty()) {
-            //fixme has same limitations as realtime schedule
             Bukkit.getScheduler().runTaskLater(betonQuestInstance, () -> {
                 for (final SimpleSchedule schedule : missedSchedules) {
                     lastExecutionCache.cacheExecutionTime(schedule.getId(), Instant.now());

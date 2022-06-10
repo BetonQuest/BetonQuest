@@ -32,6 +32,11 @@ public class RealtimeScheduler extends ExecutorServiceScheduler<RealtimeSchedule
     private final LastExecutionCache lastExecutionCache;
 
     /**
+     * Flag that states if this start is a reboot (true) or only a reload (false)
+     */
+    private boolean reboot = true;
+
+    /**
      * Create a new realtime scheduler and pass BetonQuest instance to it
      *
      * @param betonQuestInstance BetonQuest instance
@@ -44,15 +49,17 @@ public class RealtimeScheduler extends ExecutorServiceScheduler<RealtimeSchedule
     @Override
     public void start() {
         super.start();
+        if (reboot) {
+            reboot = false;
+            runRebootSchedules();
+        }
         catchupMissedSchedules();
-        runRebootSchedules();
     }
 
     /**
      * Run schedules with '@reboot' time instruction on reboot.
      */
     private void runRebootSchedules() {
-        //fixme runs at every reload instead of only reboots
         final List<RealtimeSchedule> rebootSchedules = schedules.values().stream()
                 .filter(CronSchedule::shouldRunOnReboot).toList();
         if (!rebootSchedules.isEmpty()) {
@@ -71,8 +78,6 @@ public class RealtimeScheduler extends ExecutorServiceScheduler<RealtimeSchedule
     private void catchupMissedSchedules() {
         final List<RealtimeSchedule> missedSchedules = listMissedSchedules();
         if (!missedSchedules.isEmpty()) {
-            //fixme should they all run at the same tick??? -> server overload -> skips ticks -> schedules get dropped
-            //fixme order of runs does differ when mixing realtime & simple schedules
             Bukkit.getScheduler().runTaskLater(betonQuestInstance, () -> missedSchedules.forEach(missed -> {
                 lastExecutionCache.cacheExecutionTime(missed.getId(), Instant.now());
                 for (final EventID eventID : missed.getEvents()) {
