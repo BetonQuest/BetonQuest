@@ -134,7 +134,6 @@ public class DelayObjective extends Objective {
     @NotNull
     private String parseVariableLeft(final String playerID) {
         final String lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
-        final String andWord = Config.getMessage(lang, "and");
         final String daysWord = Config.getMessage(lang, "days");
         final String daysWordSingular = Config.getMessage(lang, "days_singular");
         final String hoursWord = Config.getMessage(lang, "hours");

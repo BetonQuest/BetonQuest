@@ -51,7 +51,6 @@ pl:
   minutes_singular: 'minut' # TODO: Missing translation
   seconds: 'sekund'
   seconds_singular: 'sekund' # TODO: Missing translation
-  and: 'i'
   password: 'haslo: '
   condition_variable_met: 'yes' # TODO: missing translation
   condition_variable_not_met: 'no' # TODO: missing translation
@@ -108,7 +107,6 @@ en:
   minutes_singular: 'minute'
   seconds: 'seconds'
   seconds_singular: 'second'
-  and: 'and'
 
   password: 'password: '
   condition_variable_met: 'yes'
@@ -166,7 +164,6 @@ de:
   minutes_singular: 'Minute'
   seconds: 'Sekunden'
   seconds_singular: 'Sekunde'
-  and: 'und'
   password: 'Passwort: '
   condition_variable_met: 'ja'
   condition_variable_not_met: 'nein'
@@ -223,7 +220,6 @@ fr:
   minutes_singular: 'minutes' # TODO: Missing translation
   seconds: 'secondes'
   seconds_singular: 'secondes' # TODO: Missing translation
-  and: 'et'
   password: 'mot de passe : '
   condition_variable_met: 'oui'
   condition_variable_not_met: 'non'
@@ -280,7 +276,6 @@ cn:
   minutes_singular: "\u5206\u949f" # TODO: missing translation
   seconds: "\u79d2"
   seconds_singular: "\u79d2" # TODO: missing translation
-  and: "\u548c"
   password: "\u5bc6\u7801: "
   condition_variable_met: 'yes' # TODO: missing translation
   condition_variable_not_met: 'no' # TODO: missing translation
@@ -337,7 +332,6 @@ es:
   minutes_singular: 'minutos' # TODO: missing translation
   seconds: 'segundos'
   seconds_singular: 'segundos' # TODO: missing translation
-  and: 'y'
   password: 'clave: '
   condition_variable_met: 'si'
   condition_variable_not_met: 'no'
@@ -394,7 +388,6 @@ nl:
   minutes_singular: 'minuten' # TODO: missing translation
   seconds: 'seconden'
   seconds_singular: 'seconden' # TODO: missing translation
-  and: 'en'
   password: 'wachtwoord: '
   condition_variable_met: 'yes' # TODO: missing translation
   condition_variable_not_met: 'no' # TODO: missing translation
@@ -451,7 +444,6 @@ it:
   minutes_singular: minuti # TODO: Missing translation
   seconds: secondi
   seconds_singular: secondi # TODO: Missing translation
-  and: e
   password: 'password: '
   condition_variable_met: 'si'
   condition_variable_not_met: 'no'
@@ -508,7 +500,6 @@ hu:
   minutes_singular: 'perc' # TODO: missing translation
   seconds: 'másodperc'
   seconds_singular: 'másodperc' # TODO: missing translation
-  and: 'és'
   password: 'jelszó: '
   condition_variable_met: 'yes' # TODO: missing translation
   condition_variable_not_met: 'no' # TODO: missing translation
@@ -565,7 +556,6 @@ vi:
   minutes_singular: 'phút' # TODO: missing translation
   seconds: 'giây'
   seconds_singular: 'giây' # TODO: missing translation
-  and: 'và'
   password: 'mật khẩu: '
   condition_variable_met: 'có'
   condition_variable_not_met: 'không'
