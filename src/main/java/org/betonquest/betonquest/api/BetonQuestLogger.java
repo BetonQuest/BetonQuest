@@ -176,7 +176,7 @@ public interface BetonQuestLogger {
      * Logs an error message with the {@link Level#SEVERE} level to the log.
      * <p>
      * Use this if the underlying problem affects the servers security or functionality.
-     * Usage is also allowed if you don't know how the user can fix the underlying problem.
+     * Usage is also allowed if you don't know how the user can fix the underlying issue.
      * <p>
      * If you can provide an exception use {@link BetonQuestLogger#error(String, Throwable)} instead.
      * <p>
@@ -192,7 +192,7 @@ public interface BetonQuestLogger {
      * The {@link Throwable} is logged together with the message.
      * <p>
      * Use this if the underlying problem affects the servers security or functionality.
-     * Usage is also allowed if you don't know how the user can fix the underlying problem.
+     * Usage is also allowed if you don't know how the user can fix the underlying issue.
      * <p>
      * If you cannot provide an exception use {@link BetonQuestLogger#error(String)} instead.
      * <p>
@@ -208,7 +208,7 @@ public interface BetonQuestLogger {
      * Logs an error message with the {@link Level#SEVERE} level to the log.
      * <p>
      * Use this if the underlying problem affects the servers security or functionality.
-     * Usage is also allowed if you don't know how the user can fix the underlying problem.
+     * Usage is also allowed if you don't know how the user can fix the underlying issue.
      * <p>
      * If you can provide an exception use {@link BetonQuestLogger#error(QuestPackage, String, Throwable)} instead.
      *
@@ -222,7 +222,7 @@ public interface BetonQuestLogger {
      * The {@link Throwable} is logged together with the message.
      * <p>
      * Use this if the underlying problem affects the servers security or functionality.
-     * Usage is also allowed if you don't know how the user can fix the underlying problem.
+     * Usage is also allowed if you don't know how the user can fix the underlying issue.
      * <p>
      * If you cannot provide an exception use {@link BetonQuestLogger#error(QuestPackage, String)} instead.
      *

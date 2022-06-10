@@ -8,6 +8,7 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
+import com.comphenix.protocol.wrappers.EnumWrappers;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.ArrayUtils;
@@ -71,8 +72,11 @@ public class PacketInterceptor implements Interceptor, Listener {
                         return;
                     }
 
-                    // Else save message to replay later
                     final WrapperPlayServerChat chat = new WrapperPlayServerChat(packet);
+                    if (chat.getChatType() == EnumWrappers.ChatType.GAME_INFO) {
+                        return;
+                    }
+
                     event.setCancelled(true);
                     messages.add(chat);
                 }

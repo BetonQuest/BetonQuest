@@ -95,6 +95,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - first slot in backpack stays empty when journal is in player inventory
 - npc_holograms are not shown correctly with multiple defined npcs
 - spectator mode is now disabled for chest conversation io to prevent being stuck in the conversation
+- packet chat interceptor does not catch action bar anymore
 - `location` objective - is now more robust if the player changes a world
 - `brew` objective - now counts newly brewed potions even if there were already some potions of the desired type in
   other slots present
