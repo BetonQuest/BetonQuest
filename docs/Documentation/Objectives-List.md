@@ -154,11 +154,11 @@ objectives:
 
 <h5> Variable Properties </h5> 
 
-| Name         | Example Output                              | Explanation                                                                                                              |
-|--------------|---------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
-| _left_       | 23 days, 5 hours, 45 minutes and 23 seconds | Shows the time left until the objective is completed.                                                                    |
-| _date_       | 17.04.2022 16:14                            | Shows the date the objective is completed at using the config's `date_format` [setting](Configuration.md#misc-settings). |
-| _rawSeconds_ | 5482                                        | Shows the amount of seconds until objective completion.                                                                  |
+| Name         | Example Output                        | Explanation                                                                                                              |
+|--------------|---------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
+| _left_       | 23 days 5 hours 45 minutes 17 seconds | Shows the time left until the objective is completed.                                                                    |
+| _date_       | 17.04.2022 16:14                      | Shows the date the objective is completed at using the config's `date_format` [setting](Configuration.md#misc-settings). |
+| _rawSeconds_ | 5482                                  | Shows the amount of seconds until objective completion.                                                                  |
 
 
 ## Death: `die`
