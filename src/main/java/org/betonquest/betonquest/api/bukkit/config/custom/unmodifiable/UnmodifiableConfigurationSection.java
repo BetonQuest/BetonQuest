@@ -13,7 +13,6 @@ import java.util.Map;
  * This is an extension of {@link ConfigurationSectionDecorator},
  * that makes the {@link ConfigurationSection} unmodifiable.
  */
-@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class UnmodifiableConfigurationSection extends ConfigurationSectionDecorator {
     /**
      * Exception message for unmodifiable behaviours.
