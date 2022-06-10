@@ -44,9 +44,13 @@ pl:
   language_missing: '&cPodaj jezyk'
   language_not_exist: '&cTen jezyk nie jest zdefiniowany, oto lista dostepnych opcji: '
   days: 'dni'
+  days_singular: 'dni' # TODO: Missing translation
   hours: 'godzin'
+  hours_singular: 'godzin' # TODO: Missing translation
   minutes: 'minut'
+  minutes_singular: 'minut' # TODO: Missing translation
   seconds: 'sekund'
+  seconds_singular: 'sekund' # TODO: Missing translation
   and: 'i'
   password: 'haslo: '
   condition_variable_met: 'yes' # TODO: missing translation
@@ -97,10 +101,15 @@ en:
   language_missing: '&cSpecify language'
   language_not_exist: '&cThis language is not defined, possible options: '
   days: 'days'
+  days_singular: 'day'
   hours: 'hours'
+  hours_singular: 'hour'
   minutes: 'minutes'
+  minutes_singular: 'minute'
   seconds: 'seconds'
+  seconds_singular: 'second'
   and: 'and'
+
   password: 'password: '
   condition_variable_met: 'yes'
   condition_variable_not_met: 'no'
@@ -150,9 +159,13 @@ de:
   language_missing: '&cBitte eine Sprache angeben.'
   language_not_exist: '&cDiese Sprache ist nicht definiert. Mögliche Optionen: '
   days: 'Tage'
+  days_singular: 'Tag'
   hours: 'Stunden'
+  hours_singular: 'Stunde'
   minutes: 'Minuten'
+  minutes_singular: 'Minute'
   seconds: 'Sekunden'
+  seconds_singular: 'Sekunde'
   and: 'und'
   password: 'Passwort: '
   condition_variable_met: 'ja'
@@ -203,9 +216,13 @@ fr:
   language_missing: '&cChoix de la langue'
   language_not_exist: '&cCette langue n''est pas disponible, choix possibles: '
   days: 'jours'
+  days_singular: 'jours' # TODO: Missing translation
   hours: 'heures'
+  hours_singular: 'heures' # TODO: Missing translation
   minutes: 'minutes'
+  minutes_singular: 'minutes' # TODO: Missing translation
   seconds: 'secondes'
+  seconds_singular: 'secondes' # TODO: Missing translation
   and: 'et'
   password: 'mot de passe : '
   condition_variable_met: 'oui'
@@ -256,9 +273,13 @@ cn:
   language_missing: "&c\u8bf7\u6ce8\u660e\u8bed\u8a00\u7684\u540d\u5b57"
   language_not_exist: "&c\u8fd9\u4e2a\u8bed\u8a00\u4e0d\u5b58\u5728\uff0c\u53ef\u7528\u7684\u8bed\u8a00\u6709\uff1a"
   days: "\u5929"
+  days_singular: "\u5929" # TODO: missing translation
   hours: "\u5c0f\u65f6"
+  hours_singular: "\u5c0f\u65f6" # TODO: missing translation
   minutes: "\u5206\u949f"
+  minutes_singular: "\u5206\u949f" # TODO: missing translation
   seconds: "\u79d2"
+  seconds_singular: "\u79d2" # TODO: missing translation
   and: "\u548c"
   password: "\u5bc6\u7801: "
   condition_variable_met: 'yes' # TODO: missing translation
@@ -309,9 +330,13 @@ es:
   language_missing: '&cEspecifica un lenguaje'
   language_not_exist: '&cEste lenguaje no esta definido, opciones posibles: '
   days: 'dias'
+  days_singular: 'dias' # TODO: missing translation
   hours: 'horas'
+  hours_singular: 'horas' # TODO: missing translation
   minutes: 'minutos'
+  minutes_singular: 'minutos' # TODO: missing translation
   seconds: 'segundos'
+  seconds_singular: 'segundos' # TODO: missing translation
   and: 'y'
   password: 'clave: '
   condition_variable_met: 'si'
@@ -362,9 +387,13 @@ nl:
   language_missing: '&cSpecificeer taal'
   language_not_exist: '&cDeze taal is niet gedefinieerd, mogelijke opties: '
   days: 'dagen'
+  days_singular: 'dagen' # TODO: missing translation
   hours: 'uren'
+  hours_singular: 'uren' # TODO: missing translation
   minutes: 'minuten'
+  minutes_singular: 'minuten' # TODO: missing translation
   seconds: 'seconden'
+  seconds_singular: 'seconden' # TODO: missing translation
   and: 'en'
   password: 'wachtwoord: '
   condition_variable_met: 'yes' # TODO: missing translation
@@ -415,9 +444,13 @@ it:
   language_missing: '&cSpecifica la lingua'
   language_not_exist: '&cQuesta lingua non è presente, opzioni disponibili: '
   days: giorni
+  days_singular: giorni # TODO: Missing translation
   hours: ore
+  hours_singular: ore # TODO: Missing translation
   minutes: minuti
+  minutes_singular: minuti # TODO: Missing translation
   seconds: secondi
+  seconds_singular: secondi # TODO: Missing translation
   and: e
   password: 'password: '
   condition_variable_met: 'si'
@@ -468,9 +501,13 @@ hu:
   language_missing: '&cAdja meg a nyelvet'
   language_not_exist: '&cEz a nyelv nincs meghatározva, lehetséges opciók: '
   days: 'nap'
+  days_singular: 'nap' # TODO: missing translation
   hours: 'óra'
+  hours_singular: 'óra' # TODO: missing translation
   minutes: 'perc'
+  minutes_singular: 'perc' # TODO: missing translation
   seconds: 'másodperc'
+  seconds_singular: 'másodperc' # TODO: missing translation
   and: 'és'
   password: 'jelszó: '
   condition_variable_met: 'yes' # TODO: missing translation
@@ -521,9 +558,13 @@ vi:
   language_missing: '&cHãy chọn ngôn ngữ'
   language_not_exist: '&cNgôn ngữ không hợp lệ, các ngôn ngữ hiện có: '
   days: 'ngày'
+  days_singular: 'ngày' # TODO: missing translation
   hours: 'giờ'
+  hours_singular: 'giờ' # TODO: missing translation
   minutes: 'phút'
+  minutes_singular: 'phút' # TODO: missing translation
   seconds: 'giây'
+  seconds_singular: 'giây' # TODO: missing translation
   and: 'và'
   password: 'mật khẩu: '
   condition_variable_met: 'có'
