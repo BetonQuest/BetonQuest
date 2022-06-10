@@ -5,6 +5,7 @@ import org.betonquest.betonquest.modules.versioning.Version;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -13,7 +14,7 @@ public class BetonQuestDevSource implements UpdateSourceDevelopmentHandler {
     /**
      * The API URL path to the latest versions.
      */
-    public static final String DEV_API_LATEST = "builds/latest";
+    public static final String DEV_API_LATEST = "/builds/latest";
     /**
      * The API URL path to the real file for download.
      */
@@ -31,7 +32,7 @@ public class BetonQuestDevSource implements UpdateSourceDevelopmentHandler {
     @Override
     public Map<Version, String> getDevelopmentVersions() throws IOException {
         final Map<Version, String> versions = new HashMap<>();
-        final JSONObject json = new JSONObject(readStringFromURL(apiUrl + DEV_API_LATEST));
+        final JSONObject json = new JSONObject(readStringFromURL(new URL(apiUrl + DEV_API_LATEST)));
         final Iterator<String> keys = json.keys();
         while (keys.hasNext()) {
             final String coreVersion = keys.next();

@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +20,7 @@ public class GitHubReleasesSource implements UpdateSourceReleaseHandler {
     @Override
     public Map<Version, String> getReleaseVersions() throws IOException {
         final Map<Version, String> versions = new HashMap<>();
-        final JSONArray releaseArray = new JSONArray(readStringFromURL(apiUrl));
+        final JSONArray releaseArray = new JSONArray(readStringFromURL(new URL(apiUrl)));
         for (int index = 0; index < releaseArray.length(); index++) {
             final JSONObject release = releaseArray.getJSONObject(index);
             final Version version = new Version(release.getString("tag_name").substring(1));
@@ -37,7 +38,7 @@ public class GitHubReleasesSource implements UpdateSourceReleaseHandler {
 
     @Override
     public void handleResponseCode(final int responseCode) throws IOException {
-        if (responseCode == 403) {
+        if (responseCode == RESPONSE_CODE_403) {
             throw new IOException("It looks like too many requests were made to the update server, please wait until you have been unblocked.");
         }
     }

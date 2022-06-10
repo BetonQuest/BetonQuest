@@ -1,0 +1,57 @@
+// 20211031195552
+// https://raw.githubusercontent.com/Wolf2323/BetonQuest/AutoUpdaterJUnitTest/src/test/resources/updater/github.json
+
+[
+  {
+    "tag_name": "v1.12.0",
+    "assets": [
+      {
+        "name": "BetonQuest.jar",
+        "browser_download_url": "https://github.com/BetonQuest/BetonQuest/releases/download/v1.12.0/BetonQuest.jar"
+      },
+      {
+        "name": "Documentation.zip",
+        "browser_download_url": "https://github.com/BetonQuest/BetonQuest/releases/download/v1.12.0/Documentation.zip"
+      }
+    ]
+  },
+  {
+    "tag_name": "v1.11.0",
+    "assets": [
+      {
+        "name": "BetonQuest.jar",
+        "browser_download_url": "https://github.com/BetonQuest/BetonQuest/releases/download/v1.11.0/BetonQuest.jar"
+      },
+      {
+        "name": "Documentation.zip",
+        "browser_download_url": "https://github.com/BetonQuest/BetonQuest/releases/download/v1.11.0/Documentation.zip"
+      }
+    ]
+  },
+  {
+    "tag_name": "v1.10.1",
+    "assets": [
+      {
+        "name": "BetonQuest.jar",
+        "browser_download_url": "https://github.com/BetonQuest/BetonQuest/releases/download/v1.10.1/BetonQuest.jar"
+      },
+      {
+        "name": "Documentation.zip",
+        "browser_download_url": "https://github.com/BetonQuest/BetonQuest/releases/download/v1.10.1/Documentation.zip"
+      }
+    ]
+  },
+  {
+    "tag_name": "v1.10.0",
+    "assets": [
+      {
+        "name": "BetonQuest.jar",
+        "browser_download_url": "https://github.com/BetonQuest/BetonQuest/releases/download/v1.10.0/BetonQuest.jar"
+      },
+      {
+        "name": "Documentation.zip",
+        "browser_download_url": "https://github.com/BetonQuest/BetonQuest/releases/download/v1.10.0/Documentation.zip"
+      }
+    ]
+  }
+]

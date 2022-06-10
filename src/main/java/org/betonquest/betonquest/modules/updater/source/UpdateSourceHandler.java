@@ -9,8 +9,9 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 public interface UpdateSourceHandler {
-    default String readStringFromURL(final String stringUrl) throws IOException {
-        final URL url = new URL(stringUrl);
+    int RESPONSE_CODE_403 = 403;
+
+    default String readStringFromURL(final URL url) throws IOException {
         final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.connect();
         try {
@@ -24,6 +25,7 @@ public interface UpdateSourceHandler {
     }
 
     default void handleResponseCode(final int responseCode) throws IOException {
+        // Empty
     }
 
 }

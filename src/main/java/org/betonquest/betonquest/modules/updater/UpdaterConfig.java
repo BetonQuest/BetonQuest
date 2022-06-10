@@ -10,6 +10,7 @@ import java.util.Locale;
 /**
  * Represents the config for the @{@link Updater}.
  */
+@SuppressWarnings("PMD.DataClass")
 @CustomLog
 public class UpdaterConfig {
     /**
