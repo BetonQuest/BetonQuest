@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.objectives;
 
 import lombok.CustomLog;
-import org.apache.commons.lang.time.DurationFormatUtils;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
@@ -135,17 +134,29 @@ public class DelayObjective extends Objective {
     @NotNull
     private String parseVariableLeft(final String playerID) {
         final String lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
+        final String andWord = Config.getMessage(lang, "and");
         final String daysWord = Config.getMessage(lang, "days");
+        final String daysWordSingular = Config.getMessage(lang, "days_singular");
         final String hoursWord = Config.getMessage(lang, "hours");
+        final String hoursWordSingular = Config.getMessage(lang, "hours_singular");
         final String minutesWord = Config.getMessage(lang, "minutes");
+        final String minutesWordSingular = Config.getMessage(lang, "minutes_singular");
         final String secondsWord = Config.getMessage(lang, "seconds");
+        final String secondsWordSingular = Config.getMessage(lang, "seconds_singular");
 
         final long endTimestamp = (long) ((DelayData) dataMap.get(playerID)).getTime();
         final LocalDateTime end = LocalDateTime.ofInstant(Instant.ofEpochMilli(endTimestamp), ZoneId.systemDefault());
         final Duration duration = Duration.between(LocalDateTime.now(), end);
-        final String text = DurationFormatUtils.formatDurationWords(duration.toMillis(), true, true);
-        return text.replace("days", daysWord).replace("hours", hoursWord).replace("minutes", minutesWord)
-                .replace("seconds", secondsWord);
+
+        final String days = buildTimeDescription(daysWord, daysWordSingular, duration.toDaysPart(), ", ");
+        final String hours = buildTimeDescription(hoursWord, hoursWordSingular, duration.toHoursPart(), ", ");
+        final String minutes = buildTimeDescription(minutesWord, minutesWordSingular, duration.toMinutesPart(), andWord + " ");
+        final String seconds = buildTimeDescription(secondsWord, secondsWordSingular, duration.toSecondsPart(), "");
+        return days + hours + minutes + seconds;
+    }
+
+    private String buildTimeDescription(final String timeUnitWord, final String timeUnitSingularWord, final long timeAmount, final String concatenationWord) {
+        return timeAmount >= 1 ? timeAmount + " " + (timeAmount == 1 ? timeUnitSingularWord : timeUnitWord) + concatenationWord : "";
     }
 
     private String parseVariableDate(final String playerID) {
