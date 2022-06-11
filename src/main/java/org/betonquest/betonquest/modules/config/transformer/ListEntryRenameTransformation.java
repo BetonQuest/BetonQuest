@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.modules.config.transformer;
 
+import org.betonquest.betonquest.modules.config.PatchException;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Map;
@@ -18,12 +19,12 @@ public class ListEntryRenameTransformation implements PatchTransformation {
     }
 
     @Override
-    public void transform(final Map<String, String> options, final ConfigurationSection config) {
+    public void transform(final Map<String, String> options, final ConfigurationSection config) throws PatchException {
         final String key = options.get("key");
 
         final var list = config.getStringList(key);
         if (list.isEmpty()) {
-            return;
+            throw new PatchException("The list '" + key + "' did not exist, skipping transformation.");
         }
 
         final String regex = options.get("oldEntryRegex");
@@ -37,7 +38,7 @@ public class ListEntryRenameTransformation implements PatchTransformation {
             }
             index++;
             if (index == list.size()) {
-                return;
+                throw new PatchException("Unable to find an entry for the given regex, skipping transformation.");
             }
 
         }

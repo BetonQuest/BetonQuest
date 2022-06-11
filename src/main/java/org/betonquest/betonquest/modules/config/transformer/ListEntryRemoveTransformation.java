@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.modules.config.transformer;
 
+import org.betonquest.betonquest.modules.config.PatchException;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.List;
@@ -17,12 +18,12 @@ public class ListEntryRemoveTransformation implements PatchTransformation {
     }
 
     @Override
-    public void transform(final Map<String, String> options, final ConfigurationSection config) {
+    public void transform(final Map<String, String> options, final ConfigurationSection config) throws PatchException {
         final String targetList = options.get("key");
 
         final List<?> list = config.getList(targetList);
         if (list == null) {
-            return;
+            throw new PatchException("The list '" + targetList + "' did not exist, skipping transformation.");
         }
 
         final String deleteEntry = options.get("entry");

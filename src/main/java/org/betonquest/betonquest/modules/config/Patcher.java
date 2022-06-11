@@ -170,6 +170,7 @@ public class Patcher {
         if (!transformers.containsKey(transformationType)) {
             throw new PatchException("Unknown transformation type '" + transformationType + "' used!");
         }
+        LOG.info("Applying patch of type '" + transformationType + "'...");
         transformers.get(transformationType).transform(transformationData, pluginConfig);
     }
 

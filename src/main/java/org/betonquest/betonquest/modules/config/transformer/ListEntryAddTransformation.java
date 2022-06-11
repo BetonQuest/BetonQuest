@@ -23,7 +23,7 @@ public class ListEntryAddTransformation implements PatchTransformation {
     }
 
     @Override
-    public void transform(final Map<String, String> options, final ConfigurationSection config) {
+    public void transform(final Map<String, String> options, final ConfigurationSection config) throws PatchException {
         final String key = options.get("key");
         final String entry = options.get("entry");
         String position = options.get("position");
@@ -33,10 +33,8 @@ public class ListEntryAddTransformation implements PatchTransformation {
         position = position.toUpperCase(Locale.ROOT);
 
         final List<String> list = config.getStringList(key);
-        if (list.isEmpty()) {
-            throw new PatchException("List ");
-        }
-        if ("LAST".equals(position)) {
+        final boolean listIsEmpty = list.isEmpty();
+        if ("LAST".equals(position) || listIsEmpty) {
             list.add(entry);
             config.set(key, list);
         } else if ("FIRST".equals(position)) {
@@ -44,6 +42,10 @@ public class ListEntryAddTransformation implements PatchTransformation {
             newList.add(entry);
             newList.addAll(list);
             config.set(key, newList);
+        }
+
+        if (listIsEmpty) {
+            throw new PatchException("List '" + key + "' did not exist, so it was created.");
         }
     }
 }
