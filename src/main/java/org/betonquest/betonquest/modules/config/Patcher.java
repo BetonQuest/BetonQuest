@@ -45,9 +45,10 @@ public class Patcher {
     private final ConfigurationSection patchConfig;
 
     /**
-     * A pair of versions with the corresponding config path from the patch.
+     * Contains all versions that are newer then the config's current version.
+     * A pair of patchable versions with the corresponding config path in the patch file.
      */
-    private final Map<Version, String> versionIndex = new TreeMap<>(new VersionComparator(UpdateStrategy.MAJOR, "CONFIG-"));
+    private final Map<Version, String> patchableVersions = new TreeMap<>(new VersionComparator(UpdateStrategy.MAJOR, "CONFIG-"));
     /**
      * The {@link VersionComparator} that compares the versions of patches.
      */
@@ -90,7 +91,7 @@ public class Patcher {
      * @return if there is a patch newer than the config
      */
     public boolean hasUpdate() {
-        return !versionIndex.isEmpty();
+        return !patchableVersions.isEmpty();
     }
 
 
@@ -117,7 +118,7 @@ public class Patcher {
             final String result = matcher.group(1) + "-CONFIG-" + matcher.group(2);
             final Version discoveredVersion = new Version(result);
             if (comparator.isOtherNewerThanCurrent(configVersion, discoveredVersion)) {
-                versionIndex.put(discoveredVersion, currentKey);
+                patchableVersions.put(discoveredVersion, currentKey);
             }
         }
     }
@@ -128,11 +129,15 @@ public class Patcher {
      * @return whether the patch could be applied successfully
      */
     public boolean patch() {
-        for (final String key : versionIndex.values()) {
+        boolean encounteredErrors = false;
+        for (final String key : patchableVersions.values()) {
+            LOG.info("Applying patches to update to '" + key + "'...");
+            if (applyPatch(key)) {
+                encounteredErrors = true;
+            }
             pluginConfig.set("configVersion", getNewVersion(key));
-            return applyPatch(key);
         }
-        return true;
+        return encounteredErrors;
     }
 
     private String getNewVersion(final String key) {

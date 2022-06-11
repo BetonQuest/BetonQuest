@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.modules.config.transformer;
 
+import org.betonquest.betonquest.modules.config.PatchException;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Map;
@@ -16,11 +17,14 @@ public class KeyRenameTransformation implements PatchTransformation {
     }
 
     @Override
-    public void transform(final Map<String, String> options, final ConfigurationSection config) {
+    public void transform(final Map<String, String> options, final ConfigurationSection config) throws PatchException {
         final String oldKey = options.get("oldKey");
         final String newKey = options.get("newKey");
 
         final String value = config.getString(oldKey);
+        if (value == null) {
+            throw new PatchException("Key '" + oldKey + "' was not set, skipping transformation to '" + newKey + "'.");
+        }
         config.set(oldKey, null);
         config.set(newKey, value);
     }

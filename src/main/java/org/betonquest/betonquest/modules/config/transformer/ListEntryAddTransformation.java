@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.modules.config.transformer;
 
 import lombok.CustomLog;
+import org.betonquest.betonquest.modules.config.PatchException;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
@@ -32,7 +33,9 @@ public class ListEntryAddTransformation implements PatchTransformation {
         position = position.toUpperCase(Locale.ROOT);
 
         final List<String> list = config.getStringList(key);
-
+        if (list.isEmpty()) {
+            throw new PatchException("List ");
+        }
         if ("LAST".equals(position)) {
             list.add(entry);
             config.set(key, list);

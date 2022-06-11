@@ -91,7 +91,10 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
     private boolean patchConfig(final ConfigurationSection patchAccessorConfig) {
         final Patcher patcher = new Patcher(accessor.getConfig(), patchAccessorConfig);
         if (patcher.hasUpdate()) {
-            LOG.debug("Patch found, applying...");
+            //TODO: Backup here
+            final String currentVersion = accessor.getConfig().getString("configVersion");
+            final String configName = accessor.getConfigurationFile().getName();
+            LOG.info("Patch for configuration '" + configName + "' with current version '" + currentVersion + "' found, applying...");
             return patcher.patch();
         }
         LOG.debug("No patch found.");
