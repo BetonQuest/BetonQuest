@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.api.schedule;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ScheduleID;
@@ -25,6 +26,7 @@ import java.util.Map;
  *
  * @param <S> Type of Schedule
  */
+@CustomLog(topic = "Schedules")
 @SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
 public abstract class Scheduler<S extends Schedule> {
 
@@ -94,6 +96,7 @@ public abstract class Scheduler<S extends Schedule> {
      * @param schedule a schedule that reached execution time, providing a list of events to run
      */
     protected void executeEvents(final S schedule) {
+        LOG.debug(schedule.getId().getPackage(), "Schedule '" + schedule.getId() + "' runs its events...");
         for (final EventID eventID : schedule.events) {
             BetonQuest.event(null, eventID);
         }

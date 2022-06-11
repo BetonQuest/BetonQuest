@@ -48,22 +48,27 @@ public class RealtimeScheduler extends ExecutorServiceScheduler<RealtimeSchedule
 
     @Override
     public void start() {
+        LOG.debug("Starting realtime scheduler.");
         super.start();
         if (reboot) {
             reboot = false;
             runRebootSchedules();
         }
         catchupMissedSchedules();
+        LOG.debug("Realtime scheduler start complete.");
     }
 
     /**
      * Run schedules with '@reboot' time instruction on reboot.
      */
     private void runRebootSchedules() {
+        LOG.debug("Collecting reboot schedules...");
         final List<RealtimeSchedule> rebootSchedules = schedules.values().stream()
                 .filter(CronSchedule::shouldRunOnReboot).toList();
+        LOG.debug("Found " + rebootSchedules.size() + " reboot schedules. They will be run on next server tick.");
         if (!rebootSchedules.isEmpty()) {
             Bukkit.getScheduler().runTaskLater(betonQuestInstance, () -> rebootSchedules.forEach(schedule -> {
+                LOG.debug(schedule.getId().getPackage(), "Schedule " + schedule.getId() + " runs its events...");
                 for (final EventID eventID : schedule.getEvents()) {
                     BetonQuest.event(null, eventID);
                 }
@@ -77,13 +82,18 @@ public class RealtimeScheduler extends ExecutorServiceScheduler<RealtimeSchedule
      */
     private void catchupMissedSchedules() {
         final List<RealtimeSchedule> missedSchedules = listMissedSchedules();
+        LOG.debug("Found " + missedSchedules.size() + " missed schedule runs that will be caught up.");
         if (!missedSchedules.isEmpty()) {
-            Bukkit.getScheduler().runTaskLater(betonQuestInstance, () -> missedSchedules.forEach(missed -> {
-                lastExecutionCache.cacheExecutionTime(missed.getId(), Instant.now());
-                for (final EventID eventID : missed.getEvents()) {
-                    BetonQuest.event(null, eventID);
+            Bukkit.getScheduler().runTaskLater(betonQuestInstance, () -> {
+                LOG.debug("Running missed schedules to catch up...");
+                for (final RealtimeSchedule missed : missedSchedules) {
+                    lastExecutionCache.cacheExecutionTime(missed.getId(), Instant.now());
+                    LOG.debug(missed.getId().getPackage(), "Schedule '" + missed.getId() + "' runs its events...");
+                    for (final EventID eventID : missed.getEvents()) {
+                        BetonQuest.event(null, eventID);
+                    }
                 }
-            }), 1L);
+            }, 1L);
         }
     }
 
@@ -117,6 +127,8 @@ public class RealtimeScheduler extends ExecutorServiceScheduler<RealtimeSchedule
         while (!missedRuns.isEmpty()) {
             final MissedRun earliest = missedRuns.poll();
             missed.add(earliest.schedule);
+            LOG.debug(earliest.schedule.getId().getPackage(),
+                    "Schedule '" + earliest.schedule.getId() + "' run missed at " + earliest.runTime);
             if (earliest.schedule.getCatchup() == CatchupStrategy.ALL) {
                 final Optional<ZonedDateTime> nextExecution = earliest.schedule.getExecutionTime().nextExecution(earliest.runTime);
                 if (nextExecution.isPresent() && nextExecution.get().isBefore(ZonedDateTime.now())) {

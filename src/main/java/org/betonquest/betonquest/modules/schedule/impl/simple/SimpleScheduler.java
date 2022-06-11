@@ -41,8 +41,10 @@ public class SimpleScheduler extends ExecutorServiceScheduler<SimpleSchedule> {
 
     @Override
     public void start() {
+        LOG.debug("Starting simple scheduler.");
         super.start();
         catchupMissedSchedules();
+        LOG.debug("Simple scheduler start complete.");
     }
 
     /**
@@ -50,11 +52,15 @@ public class SimpleScheduler extends ExecutorServiceScheduler<SimpleSchedule> {
      * The method should guarantee that the schedules are executed in the order they would have occurred.
      */
     private void catchupMissedSchedules() {
+        LOG.debug("Collecting missed schedules...");
         final List<SimpleSchedule> missedSchedules = listMissedSchedules();
+        LOG.debug("Found " + missedSchedules.size() + " missed schedule runs that will be caught up.");
         if (!missedSchedules.isEmpty()) {
             Bukkit.getScheduler().runTaskLater(betonQuestInstance, () -> {
+                LOG.debug("Running missed schedules to catch up...");
                 for (final SimpleSchedule schedule : missedSchedules) {
                     lastExecutionCache.cacheExecutionTime(schedule.getId(), Instant.now());
+                    LOG.debug(schedule.getId().getPackage(), "Schedule '" + schedule + "' runs its events.");
                     for (final EventID event : schedule.getEvents()) {
                         BetonQuest.event(null, event);
                     }
@@ -92,6 +98,8 @@ public class SimpleScheduler extends ExecutorServiceScheduler<SimpleSchedule> {
         while (!missedRuns.isEmpty()) {
             final MissedRun earliest = missedRuns.poll();
             missed.add(earliest.schedule);
+            LOG.debug(earliest.schedule.getId().getPackage(),
+                    "Schedule '" + earliest.schedule.getId() + "' run missed at " + earliest.runTime);
             if (earliest.schedule.getCatchup() == CatchupStrategy.ALL) {
                 final Instant nextExecution = earliest.runTime.plus(1, ChronoUnit.DAYS);
                 if (nextExecution.isBefore(Instant.now())) {

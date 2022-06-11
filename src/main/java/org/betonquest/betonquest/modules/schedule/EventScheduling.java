@@ -41,13 +41,17 @@ public class EventScheduling {
      * @param questPackage package to load
      */
     public void loadData(final QuestPackage questPackage) {
+        LOG.debug(questPackage, "Parsing schedules for package '" + questPackage.getPackagePath() + "'.");
         final ConfigurationSection configuration = questPackage.getConfig().getConfigurationSection("schedules");
         if (configuration == null) {
+            LOG.debug(questPackage, "Package contains no schedules.");
             return;
         }
+        int count = 0;
         for (final String key : configuration.getKeys(false)) {
             if (key.contains(" ")) {
-                LOG.warn(questPackage, "Schedule name cannot contain spaces: '" + key + "' (in " + questPackage + " package)");
+                LOG.warn(questPackage,
+                        "Schedule name cannot contain spaces: '" + key + "' (in " + questPackage + " package)");
                 continue;
             }
 
@@ -62,6 +66,8 @@ public class EventScheduling {
                     final ScheduleType<?> scheduleType = Optional.ofNullable(scheduleTypes.get(type))
                             .orElseThrow(() -> new InstructionParseException("The schedule type '" + type + "' is not defined"));
                     scheduleType.createAndScheduleNewInstance(scheduleID, scheduleConfig);
+                    count++;
+                    LOG.debug(questPackage, "Parsed schedule '" + scheduleID + "'.");
                 } catch (final InstructionParseException e) {
                     LOG.warn(questPackage, "Error loading schedule '" + scheduleID + "':" + e.getMessage(), e);
                 } catch (final InvocationTargetException | NoSuchMethodException | InstantiationException |
@@ -69,9 +75,12 @@ public class EventScheduling {
                     LOG.reportException(questPackage, e);
                 }
             } catch (final ObjectNotFoundException e) {
-                LOG.warn(questPackage, "Cannot load schedule with name '" + key + "' (in " + questPackage + " package): " + e.getMessage(), e);
+                LOG.warn(questPackage,
+                        "Cannot load schedule with name '" + key + "' (in " + questPackage + " package): " + e.getMessage(), e);
             }
         }
+        LOG.debug(questPackage,
+                "Successfully loaded " + count + " schedules from package '" + questPackage.getPackagePath() + "'.");
     }
 
     /**
@@ -79,6 +88,7 @@ public class EventScheduling {
      */
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public void startAll() {
+        LOG.debug("Starting schedulers...");
         for (final ScheduleType<?> type : scheduleTypes.values()) {
             try {
                 type.scheduler.start();
@@ -93,6 +103,7 @@ public class EventScheduling {
      */
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public void stopAll() {
+        LOG.debug("Stopping schedulers...");
         for (final ScheduleType<?> type : scheduleTypes.values()) {
             try {
                 type.scheduler.stop();

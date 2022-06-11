@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.modules.schedule.impl.simple.SimpleScheduler;
 import org.bukkit.Bukkit;
 
+import java.util.Locale;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -107,16 +108,20 @@ public abstract class ExecutorServiceScheduler<S extends Schedule> extends Sched
     @Override
     public void stop() {
         if (isRunning()) {
+            LOG.debug("Stopping " + getClass().getSimpleName().toLowerCase(Locale.ROOT).replace("scheduler", "")
+                    + " scheduler.");
             executor.shutdownNow();
             try {
                 final boolean terminated = executor.awaitTermination(TERMINATION_TIMEOUT_MS, TimeUnit.MILLISECONDS);
                 if (!terminated) {
                     throw new TimeoutException("Not all schedules could be terminated within time constraints");
                 }
+                LOG.debug("Successfully shut down executor service.");
             } catch (final InterruptedException | TimeoutException e) {
                 LOG.reportException(e);
             }
             super.stop();
+            LOG.debug("Stop complete.");
         }
     }
 }

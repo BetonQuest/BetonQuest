@@ -64,7 +64,7 @@ public abstract class Schedule {
                 .orElseThrow(() -> new InstructionParseException("Missing time instruction"));
 
         final String eventsString = Optional.ofNullable(instruction.getString("events"))
-                .orElseThrow(() -> new InstructionParseException(""));
+                .orElseThrow(() -> new InstructionParseException("Missing events"));
         final List<EventID> events = new ArrayList<>();
         for (final String eventId : eventsString.split(",")) {
             try {

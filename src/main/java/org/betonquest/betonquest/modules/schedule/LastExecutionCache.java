@@ -44,6 +44,7 @@ public class LastExecutionCache {
                 Files.createFile(cacheFile);
             }
             this.cache = ConfigAccessor.create(cacheFile.toFile());
+            LOG.debug("Successfully loaded schedule cache.");
         } catch (IOException | InvalidConfigurationException e) {
             LOG.error("Error while loading schedule cache: " + e.getMessage(), e);
         }
@@ -58,6 +59,7 @@ public class LastExecutionCache {
                 LOG.error("Schedule cache not present!");
             } else {
                 cache.reload();
+                LOG.debug("Successfully reloaded schedule cache.");
             }
         } catch (IOException e) {
             LOG.error("Could not reload schedule cache: " + e.getMessage(), e);
