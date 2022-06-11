@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.modules.config.transformer;
 
+import org.betonquest.betonquest.modules.config.PatchException;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Map;
@@ -15,5 +16,5 @@ public interface PatchTransformation {
      * @param options options for the transformer
      * @param config  to transform
      */
-    void transform(Map<String, String> options, ConfigurationSection config);
+    void transform(Map<String, String> options, ConfigurationSection config) throws PatchException;
 }

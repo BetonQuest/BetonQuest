@@ -38,7 +38,9 @@ public class Patcher {
     private final ConfigurationSection pluginConfig;
     /**
      * A config that contains one or more patches that will be applied to the pluginConfig.
-     * Each patch inside this config has a version that determines if the patch will be applied.
+     * <br>
+     * A patch consists of one or multiple list entries of which each contains options for a {@link PatchTransformation}.
+     * Additionally, each patch has a version that determines if the patch will be applied.
      */
     private final ConfigurationSection patchConfig;
 
@@ -127,8 +129,8 @@ public class Patcher {
      */
     public boolean patch() {
         for (final String key : versionIndex.values()) {
-            applyPatch(key);
             pluginConfig.set("configVersion", getNewVersion(key));
+            return applyPatch(key);
         }
         return true;
     }
@@ -140,27 +142,30 @@ public class Patcher {
         return first + "-CONFIG-" + second;
     }
 
-    private void applyPatch(final String patchDataPath) {
+    private boolean applyPatch(final String patchDataPath) {
         final var patchData = patchConfig.getMapList(patchDataPath);
-        patchData.forEach(transformationData -> {
+
+        boolean hasEncounteredProblems = false;
+        for (final Map<?, ?> transformationData : patchData) {
             final Map<String, String> typeSafeTransformationData = new HashMap<>();
-            transformationData.forEach((key, value) -> {
-                typeSafeTransformationData.put(String.valueOf(key), String.valueOf(value));
-            });
+            transformationData.forEach((key, value) -> typeSafeTransformationData.put(String.valueOf(key), String.valueOf(value)));
 
-            final String transformationType = transformationData.get("type").toString().toUpperCase(Locale.ROOT);
-            applyTransformation(typeSafeTransformationData, transformationType);
-        });
-    }
-
-    private void applyTransformation(final Map<String, String> transformationData, final String transformationType) {
-        for (final Map.Entry<String, PatchTransformation> transformer : transformers.entrySet()) {
-            if (transformer.getKey().equals(transformationType)) {
-                transformer.getValue().transform(transformationData, pluginConfig);
-                return;
+            final String transformationType = typeSafeTransformationData.get("type").toUpperCase(Locale.ROOT);
+            try {
+                applyTransformation(typeSafeTransformationData, transformationType);
+            } catch (final PatchException e) {
+                hasEncounteredProblems = true;
+                LOG.warn("There has been an issue while applying the patches for" + patchDataPath + ": " + e.getMessage());
             }
         }
-        LOG.warn("The patch file for a config contains invalid patch types!");
+        return hasEncounteredProblems;
+    }
+
+    private void applyTransformation(final Map<String, String> transformationData, final String transformationType) throws PatchException {
+        if (!transformers.containsKey(transformationType)) {
+            throw new PatchException("Unknown transformation type '" + transformationType + "' used!");
+        }
+        transformers.get(transformationType).transform(transformationData, pluginConfig);
     }
 
     private void registerDefaultTransformers() {

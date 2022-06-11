@@ -36,7 +36,10 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
     private ConfigurationFileImpl(final ConfigAccessor accessor, final ConfigAccessor patchAccessor) throws InvalidConfigurationException {
         super(accessor.getConfig());
         this.accessor = accessor;
-        if (patchAccessor != null && patchConfig(patchAccessor.getConfig())) {
+        if (patchAccessor != null) {
+            if (!patchConfig(patchAccessor.getConfig())) {
+
+            }
             try {
                 accessor.save();
             } catch (final IOException e) {
@@ -88,8 +91,10 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
     private boolean patchConfig(final ConfigurationSection patchAccessorConfig) {
         final Patcher patcher = new Patcher(accessor.getConfig(), patchAccessorConfig);
         if (patcher.hasUpdate()) {
+            LOG.debug("Patch found, applying...");
             return patcher.patch();
         }
+        LOG.debug("No patch found.");
         return true;
     }
 

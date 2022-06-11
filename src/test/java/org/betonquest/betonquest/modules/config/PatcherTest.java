@@ -30,4 +30,19 @@ class PatcherTest {
         final Patcher anotherPatcher = new Patcher(configFromTheFuture, patch);
         assertFalse(anotherPatcher.hasUpdate(), "Patcher recognised invalid possible updates.");
     }
+
+    @Test
+    void appliesUpdate() {
+
+    }
+
+    @Test
+    void appliesUpdates() {
+
+    }
+
+    @Test
+    void generatesErrors() {
+
+    }
 }
