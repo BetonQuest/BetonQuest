@@ -2,7 +2,6 @@ package org.betonquest.betonquest.modules.schedule;
 
 import lombok.CustomLog;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.id.ScheduleID;
 import org.bukkit.configuration.InvalidConfigurationException;
 
 import java.io.File;

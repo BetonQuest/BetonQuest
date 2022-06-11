@@ -2,7 +2,7 @@ package org.betonquest.betonquest.modules.schedule.impl.realtime;
 
 import org.betonquest.betonquest.api.schedule.CronSchedule;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.id.ScheduleID;
+import org.betonquest.betonquest.modules.schedule.ScheduleID;
 import org.bukkit.configuration.ConfigurationSection;
 
 /**

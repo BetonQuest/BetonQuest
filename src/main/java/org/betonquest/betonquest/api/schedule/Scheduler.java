@@ -3,7 +3,7 @@ package org.betonquest.betonquest.api.schedule;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.id.EventID;
-import org.betonquest.betonquest.id.ScheduleID;
+import org.betonquest.betonquest.modules.schedule.ScheduleID;
 
 import java.util.HashMap;
 import java.util.Map;

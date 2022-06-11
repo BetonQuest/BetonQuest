@@ -1,12 +1,11 @@
 package org.betonquest.betonquest.modules.schedule.impl;
 
 import lombok.CustomLog;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.modules.schedule.impl.simple.SimpleScheduler;
-import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 
 import java.util.Locale;
 import java.util.concurrent.Executors;
@@ -31,9 +30,9 @@ public abstract class ExecutorServiceScheduler<S extends Schedule> extends Sched
     private static final int TERMINATION_TIMEOUT_MS = 5;
 
     /**
-     * BetonQuest instance
+     * Plugin instance to be used for bukkit scheduling, should be BetonQuest instance.
      */
-    protected final BetonQuest betonQuestInstance;
+    protected final Plugin plugin;
 
     /**
      * Executor service that can be used to run code at a specific time in the future.
@@ -43,11 +42,11 @@ public abstract class ExecutorServiceScheduler<S extends Schedule> extends Sched
     /**
      * Constructor to create a new instance of this scheduler.
      *
-     * @param betonQuestInstance BetonQuest instance
+     * @param plugin plugin used for bukkit scheduling, should be BetonQuest instance!
      */
-    public ExecutorServiceScheduler(final BetonQuest betonQuestInstance) {
+    public ExecutorServiceScheduler(final Plugin plugin) {
         super();
-        this.betonQuestInstance = betonQuestInstance;
+        this.plugin = plugin;
     }
 
     /**
@@ -78,7 +77,7 @@ public abstract class ExecutorServiceScheduler<S extends Schedule> extends Sched
      */
     @Override
     protected void executeEvents(final S schedule) {
-        Bukkit.getScheduler().runTask(betonQuestInstance, () -> super.executeEvents(schedule));
+        plugin.getServer().getScheduler().runTask(plugin, () -> super.executeEvents(schedule));
     }
 
     /**

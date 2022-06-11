@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.modules.schedule.LastExecutionCache;
 import org.betonquest.betonquest.modules.schedule.impl.ExecutorServiceScheduler;
-import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -32,11 +32,12 @@ public class SimpleScheduler extends ExecutorServiceScheduler<SimpleSchedule> {
     /**
      * Create a new simple scheduler and pass BetonQuest instance to it.
      *
-     * @param betonQuestInstance BetonQuest instance
+     * @param plugin             plugin used for bukkit scheduling, should be BetonQuest instance!
+     * @param lastExecutionCache cache where the last execution times of a schedule are stored
      */
-    public SimpleScheduler(final BetonQuest betonQuestInstance) {
-        super(betonQuestInstance);
-        this.lastExecutionCache = betonQuestInstance.getLastExecutionCache();
+    public SimpleScheduler(final Plugin plugin, final LastExecutionCache lastExecutionCache) {
+        super(plugin);
+        this.lastExecutionCache = lastExecutionCache;
     }
 
     @Override
@@ -56,7 +57,7 @@ public class SimpleScheduler extends ExecutorServiceScheduler<SimpleSchedule> {
         final List<SimpleSchedule> missedSchedules = listMissedSchedules();
         LOG.debug("Found " + missedSchedules.size() + " missed schedule runs that will be caught up.");
         if (!missedSchedules.isEmpty()) {
-            Bukkit.getScheduler().runTaskLater(betonQuestInstance, () -> {
+            plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
                 LOG.debug("Running missed schedules to catch up...");
                 for (final SimpleSchedule schedule : missedSchedules) {
                     lastExecutionCache.cacheExecutionTime(schedule.getId(), Instant.now());

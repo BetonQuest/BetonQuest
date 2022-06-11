@@ -7,7 +7,7 @@ import com.cronutils.model.definition.CronDefinitionBuilder;
 import com.cronutils.model.time.ExecutionTime;
 import com.cronutils.parser.CronParser;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.id.ScheduleID;
+import org.betonquest.betonquest.modules.schedule.ScheduleID;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.time.Instant;

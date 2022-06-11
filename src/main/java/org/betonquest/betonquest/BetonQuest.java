@@ -871,8 +871,8 @@ public class BetonQuest extends JavaPlugin {
         registerVariable("math", MathVariable.class);
 
         //register schedule types
-        registerScheduleType("simple", SimpleSchedule.class, new SimpleScheduler(this));
-        registerScheduleType("realtime", RealtimeSchedule.class, new RealtimeScheduler(this));
+        registerScheduleType("simple", SimpleSchedule.class, new SimpleScheduler(this, lastExecutionCache));
+        registerScheduleType("realtime", RealtimeSchedule.class, new RealtimeScheduler(this, lastExecutionCache));
 
         // initialize compatibility with other plugins
         new Compatibility();

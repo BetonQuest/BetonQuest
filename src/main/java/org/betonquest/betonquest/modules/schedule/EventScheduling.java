@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
-import org.betonquest.betonquest.id.ScheduleID;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.lang.reflect.InvocationTargetException;
@@ -47,11 +46,10 @@ public class EventScheduling {
             LOG.debug(questPackage, "Package contains no schedules.");
             return;
         }
-        int count = 0;
         for (final String key : configuration.getKeys(false)) {
             if (key.contains(" ")) {
                 LOG.warn(questPackage,
-                        "Schedule name cannot contain spaces: '" + key + "' (in " + questPackage + " package)");
+                        "Schedule name cannot contain spaces: '" + key + "' (in " + questPackage.getPackagePath() + " package)");
                 continue;
             }
 
@@ -66,7 +64,6 @@ public class EventScheduling {
                     final ScheduleType<?> scheduleType = Optional.ofNullable(scheduleTypes.get(type))
                             .orElseThrow(() -> new InstructionParseException("The schedule type '" + type + "' is not defined"));
                     scheduleType.createAndScheduleNewInstance(scheduleID, scheduleConfig);
-                    count++;
                     LOG.debug(questPackage, "Parsed schedule '" + scheduleID + "'.");
                 } catch (final InstructionParseException e) {
                     LOG.warn(questPackage, "Error loading schedule '" + scheduleID + "':" + e.getMessage(), e);
@@ -75,12 +72,10 @@ public class EventScheduling {
                     LOG.reportException(questPackage, e);
                 }
             } catch (final ObjectNotFoundException e) {
-                LOG.warn(questPackage,
-                        "Cannot load schedule with name '" + key + "' (in " + questPackage + " package): " + e.getMessage(), e);
+                LOG.warn(questPackage, "Cannot load schedule with name '" + key + "': " + e.getMessage(), e);
             }
         }
-        LOG.debug(questPackage,
-                "Successfully loaded " + count + " schedules from package '" + questPackage.getPackagePath() + "'.");
+        LOG.debug(questPackage, "Finished loading schedules from package '" + questPackage.getPackagePath() + "'.");
     }
 
     /**
