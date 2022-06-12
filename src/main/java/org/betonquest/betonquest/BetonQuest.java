@@ -158,7 +158,7 @@ import org.betonquest.betonquest.modules.updater.Updater;
 import org.betonquest.betonquest.modules.updater.source.UpdateSourceDevelopmentHandler;
 import org.betonquest.betonquest.modules.updater.source.UpdateSourceReleaseHandler;
 import org.betonquest.betonquest.modules.updater.source.implementations.BetonQuestDevSource;
-import org.betonquest.betonquest.modules.updater.source.implementations.GitHubReleasesSource;
+import org.betonquest.betonquest.modules.updater.source.implementations.GitHubReleaseSource;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.notify.ActionBarNotifyIO;
 import org.betonquest.betonquest.notify.AdvancementNotifyIO;
@@ -918,7 +918,7 @@ public class BetonQuest extends JavaPlugin {
 
         // updater
         final Version pluginVersion = new Version(this.getDescription().getVersion());
-        final List<UpdateSourceReleaseHandler> releaseHandlers = List.of(new GitHubReleasesSource("https://api.github.com/repos/BetonQuest/BetonQuest/releases"));
+        final List<UpdateSourceReleaseHandler> releaseHandlers = List.of(new GitHubReleaseSource("https://api.github.com/repos/BetonQuest/BetonQuest/releases"));
         final List<UpdateSourceDevelopmentHandler> developmentHandlers = List.of(new BetonQuestDevSource("https://dev.betonquest.org/api/v1"));
         updater = new Updater(config, this.getFile(), pluginVersion, releaseHandlers, developmentHandlers, InstantSource.system());
 

@@ -10,10 +10,10 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GitHubReleasesSource implements UpdateSourceReleaseHandler {
+public class GitHubReleaseSource implements UpdateSourceReleaseHandler {
     private final String apiUrl;
 
-    public GitHubReleasesSource(final String apiUrl) {
+    public GitHubReleaseSource(final String apiUrl) {
         this.apiUrl = apiUrl;
     }
 

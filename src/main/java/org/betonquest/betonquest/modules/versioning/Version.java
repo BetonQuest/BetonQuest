@@ -2,6 +2,7 @@ package org.betonquest.betonquest.modules.versioning;
 
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -128,5 +129,22 @@ public class Version {
      */
     public boolean hasBuildNumber() {
         return buildNumber != null;
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (other == null || getClass() != other.getClass()) {
+            return false;
+        }
+        final Version version = (Version) other;
+        return artifactVersion.equals(version.artifactVersion) && Objects.equals(qualifier, version.qualifier) && Objects.equals(buildNumber, version.buildNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(artifactVersion, qualifier, buildNumber);
     }
 }
