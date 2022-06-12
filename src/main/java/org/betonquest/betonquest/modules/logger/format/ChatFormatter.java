@@ -12,6 +12,7 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
 import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -62,9 +63,14 @@ public final class ChatFormatter extends Formatter {
     @Override
     public String format(final LogRecord record) {
         final String color = formatColor(record.getLevel());
-        final BetonQuestLogRecord logRecord = record instanceof BetonQuestLogRecord ? (BetonQuestLogRecord) record : null;
-        final String plugin = logRecord == null ? "?" : logRecord.getPlugin();
-        final String questPackage = logRecord == null || logRecord.getPack().isEmpty() ? "" : "<" + logRecord.getPack() + "> ";
+        final Optional<BetonQuestLogRecord> betonRecord = BetonQuestLogRecord.safeCast(record);
+        final String plugin = betonRecord
+                .map(BetonQuestLogRecord::getPlugin)
+                .orElse("?");
+        final String questPackage = betonRecord
+                .flatMap(BetonQuestLogRecord::getPack)
+                .map(pack -> "<" + pack + "> ")
+                .orElse("");
 
         final String message = record.getMessage();
         final Component throwable = formatComponentThrowable(record);

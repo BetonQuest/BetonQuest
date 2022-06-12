@@ -3,6 +3,7 @@ package org.betonquest.betonquest.modules.logger.format;
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
 
 import java.util.Date;
+import java.util.Optional;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
@@ -26,9 +27,12 @@ public final class LogfileFormatter extends Formatter {
     @Override
     public String format(final LogRecord record) {
         date.setTime(record.getMillis());
-        final BetonQuestLogRecord logRecord = record instanceof BetonQuestLogRecord ? (BetonQuestLogRecord) record : null;
-        final String plugin = "[" + (logRecord == null ? "?" : logRecord.getPlugin()) + "] ";
-        final String questPackage = logRecord == null || logRecord.getPack().isEmpty() ? "" : "<" + logRecord.getPack() + "> ";
+        final Optional<BetonQuestLogRecord> betonRecord = BetonQuestLogRecord.safeCast(record);
+        final String plugin = "[" + betonRecord.map(BetonQuestLogRecord::getPlugin).orElse("?") + "] ";
+        final String questPackage = betonRecord
+                .flatMap(BetonQuestLogRecord::getPack)
+                .map(pack -> "<" + pack + "> ")
+                .orElse("");
         final String message = formatMessage(record);
         final String throwable = record.getThrown() == null ? "" : FormatterUtils.formatThrowable(record.getThrown());
 

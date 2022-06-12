@@ -6,11 +6,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serial;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 /**
- * Custom {@link LogRecord} for BetonQuest that adds a {@link QuestPackage} name.
+ * Custom {@link LogRecord} for BetonQuest that adds a {@link Plugin} name and {@link QuestPackage} name.
  */
 public class BetonQuestLogRecord extends LogRecord {
     /**
@@ -25,35 +26,75 @@ public class BetonQuestLogRecord extends LogRecord {
     private final String plugin;
 
     /**
-     * The name of the originating {@link QuestPackage}.
+     * The fully qualified name of the quest package that this log record is
+     * about or null if the record is not specific to a quest package.
      */
     private final String pack;
 
     /**
-     * Creates a custom {@link LogRecord} that contains a {@link QuestPackage} and {@link Plugin} name.
+     * Creates a custom {@link LogRecord} that comes from a {@link Plugin} and may be specific to a {@link QuestPackage}.
      *
-     * @param plugin The {@link Plugin}, that logged this message.
-     * @param pack   The {@link QuestPackage} that belongs to this LogRecord.
-     * @param level  A log {@link Level}.
-     * @param msg    The raw non-localized logging message (may be null).
+     * @param plugin plugin that logged this LogRecord
+     * @param pack   quest package this LogRecord is about; or null if it is not about any specific package
+     * @param level  level of the LogRecord
+     * @param msg    raw non-localized logging message (may be null)
      */
     public BetonQuestLogRecord(@NotNull final Plugin plugin, @Nullable final QuestPackage pack, final Level level, final String msg) {
-        super(level, msg);
-        this.plugin = plugin.getName();
-        this.pack = pack == null ? "" : pack.getPackagePath();
+        this(level, msg, plugin.getName(), pack == null ? null : pack.getPackagePath());
     }
 
     /**
-     * Gets the {@link QuestPackage} name.
+     * Creates a custom {@link LogRecord} that comes from a plugin and is not specific to any quest package.
      *
-     * @return Returns the package name.
+     * @param level       level of the LogRecord
+     * @param message     raw non-localized logging message (may be null)
+     * @param pluginName  name of the plugin that logged this LogRecord
      */
-    public String getPack() {
-        return pack;
+    public BetonQuestLogRecord(final Level level, final String message, @NotNull final String pluginName) {
+        this(level, message, pluginName, null);
     }
 
     /**
-     * Gets the {@link Plugin}, that logged this message.
+     * Creates a custom {@link LogRecord} that comes from a plugin and may be specific to a quest package.
+     *
+     * @param level       level of the LogRecord
+     * @param message     raw non-localized logging message (may be null)
+     * @param pluginName  name of the plugin that logged this LogRecord
+     * @param packageName fully qualified name of the quest package this LogRecord is about;
+     *                    or null if it is not about any specific package
+     */
+    public BetonQuestLogRecord(final Level level, final String message, @NotNull final String pluginName, @Nullable final String packageName) {
+        super(level, message);
+        this.plugin = pluginName;
+        this.pack = packageName;
+    }
+
+    /**
+     * Try to cast a {@link LogRecord} into a {@link BetonQuestLogRecord} and return an {@link Optional} that contains
+     * the cast record if successful.
+     *
+     * @param record record that may be a {@link BetonQuestLogRecord}
+     * @return optional containing the same record as {@link BetonQuestLogRecord} if possible
+     */
+    public static Optional<BetonQuestLogRecord> safeCast(LogRecord record) {
+        if (record instanceof BetonQuestLogRecord) {
+            return Optional.of((BetonQuestLogRecord) record);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Gets the fully qualified name of the quest package if present that this record is about.
+     *
+     * @return optional containing the fully qualified package name
+     */
+    public Optional<String> getPack() {
+        return Optional.ofNullable(pack);
+    }
+
+    /**
+     * Gets the name of the plugin that logged this record.
      *
      * @return The plugin.
      */
