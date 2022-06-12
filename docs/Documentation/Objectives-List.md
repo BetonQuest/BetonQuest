@@ -341,7 +341,7 @@ All entities work, make sure to use their <a href="https://hub.spigotmc.org/java
 | Parameter | Syntax                  | Default Value          | Explanation                                                                                                       |
 |-----------|-------------------------|------------------------|-------------------------------------------------------------------------------------------------------------------|
 | _type_    | ENTITY_TYPE,ENTITY_TYPE | :octicons-x-circle-16: | A list of entities, e.g. `ZOMBIE,SKELETON`.                                                                       |
-| _amount_  | Positive Number         | :octicons-x-circle-16: | Amount of mobs to kill.                                                                                           |
+| _amount_  | Positive Number         | :octicons-x-circle-16: | Amount of mobs to kill in total.                                                                                  |
 | _name_    | name:text               | Disabled               | Only count named mobs. Spaces must be replaced with `_`.                                                          |
 | _marked_  | marked:keyword          | Disabled               | Only count marked mobs. See the [spawn event](Events-List.md#spawn-mob-spawn) for more information.               |
 | _notify_  | notify:interval         | Disabled               | Display a message to the player each time they kill a mob. Optionally with the notification interval after colon. |
