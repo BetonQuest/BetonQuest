@@ -27,13 +27,13 @@ import java.util.List;
 @CustomLog
 public class MobKillObjective extends CountingObjective implements Listener {
 
-    protected EntityType mobType;
+    private final List<EntityType> entities;
     protected String name;
     protected String marked;
 
     public MobKillObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "mobs_to_kill");
-        mobType = instruction.getEnum(EntityType.class);
+        entities = instruction.getList(mob -> instruction.getEnum(mob, EntityType.class));
         targetAmount = instruction.getPositive();
         name = instruction.getOptional("name");
         if (name != null) {
@@ -51,7 +51,7 @@ public class MobKillObjective extends CountingObjective implements Listener {
     public void onMobKill(final MobKilledEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
         if (!containsPlayer(playerID)
-                || event.getEntity().getType() != mobType
+                || !entities.contains(event.getEntity().getType())
                 || name != null && (event.getEntity().getCustomName() == null
                 || !event.getEntity().getCustomName().equals(name))) {
             return;
