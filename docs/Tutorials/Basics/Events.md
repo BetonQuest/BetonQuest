@@ -10,7 +10,7 @@ and make the quest more authentic through the different types. Therefore these a
     There are no further requirements for this part of the tutorial, but it is advisable to first look at the 
     [conversations tutorial](Conversations.md) if not already done.
 
-## 1. Create your first event!
+## 1. Create your first event! 
 
 To successfully create an event in a conversation it is important to implement it at the right place.
 You have to create a `event` category in your conversation, and you have to define what exactly the event should do
