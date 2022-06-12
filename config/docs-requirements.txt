@@ -1,5 +1,5 @@
 #MkDocs and the MkDocs-material theme
-mkdocs-material==8.2.16
+mkdocs-material==8.3.4
 
 #Tool for MkDocs versioning
 mike==1.1.2
