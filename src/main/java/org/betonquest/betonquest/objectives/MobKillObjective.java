@@ -10,15 +10,13 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.metadata.MetadataValue;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Player has to kill specified amount of specified mobs. It can also require
@@ -29,13 +27,13 @@ import java.util.Set;
 @CustomLog
 public class MobKillObjective extends CountingObjective implements Listener {
 
-    private final Set<String> entities = new HashSet<>();
+    private final List<EntityType> entities;
     protected String name;
     protected String marked;
 
     public MobKillObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "mobs_to_kill");
-        Collections.addAll(entities, instruction.getArray());
+        entities = instruction.getList(mob -> instruction.getEnum(mob, EntityType.class));
         targetAmount = instruction.getPositive();
         name = instruction.getOptional("name");
         if (name != null) {
@@ -53,7 +51,7 @@ public class MobKillObjective extends CountingObjective implements Listener {
     public void onMobKill(final MobKilledEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
         if (!containsPlayer(playerID)
-                || !entities.contains(event.getEntity().getType().toString())
+                || !entities.contains(event.getEntity().getType())
                 || name != null && (event.getEntity().getCustomName() == null
                 || !event.getEntity().getCustomName().equals(name))) {
             return;
