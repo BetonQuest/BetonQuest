@@ -133,6 +133,10 @@ extra:
     title: Cookie consent
     cookies:
       analytics: Google Analytics
+    actions:
+      - manage
+      - reject
+      - accept
     description: >
       <p style="margin-top: 0px; margin-bottom: 0px;">We use cookies to:</p>
       <ul style="margin-top: 0px; margin-bottom: 0px;">
