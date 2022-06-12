@@ -173,7 +173,7 @@ add them right after type of objective.
     die cancel respawn:100;200;300;world;90;0 events:teleport
     ```
 
-## Fishing: `fish`
+## :fontawesome-solid-fish-fins: Fishing: `fish`
 
 Requires the player to catch something with the fishing rod. It doesn't have to be a fish, it can also be any other item.
 
@@ -186,11 +186,12 @@ Requires the player to catch something with the fishing rod. It doesn't have to 
 | _range_         | range:number                                                       | Everywhere             | The range around the `hookLocation`.                                                                                   |
 
 
-!!! example annotate
-    ```YAML
-    fish SALMON 5 notify events:tag_fish_caught (1)
-    fish COD 5 hookLocation:123;456;789;fishWorld range:10 events:giveSpecialFish (2)
-    ```
+
+```YAML title="Example"
+objectives:
+  fisherman: "fish SALMON 5 notify events:tag_fish_caught" #(1)!
+  fishAtPond: "fish COD 5 hookLocation:123;456;789;fishWorld range:10 events:giveSpecialFish" #(2)!
+```
 
 1. Requires the player to catch 5 salmon. The player will get a notification for every caught fish.
 2. Requires the player to catch 5 cod. The rod's hook must be used in a 10 block radius around `x:123 y:456 z:789` in a world named `fishWorld`.
@@ -332,23 +333,40 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
     pickup emerald,diamond amount:6 events:reward notify
     ```
 
-## Mob Kill: `mobkill`
+## :material-skull: Entity Kill: `mobkill`
 
-The player must kill specified amount of mobs You must specify mob type first and then amount. You can find possible mob
-types here: [mob types](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html). Additionally you
-can specify names for mobs with `name:Uber_Zombie`, so only killing properly named mobs counts. All `_` are replaced
-with spaces, so in this example you would have to kill 5 zombies with "Uber Zombie" above their heads. You can also
-specify `notify` keyword to display messages to the player each time he kills a mob, optionally with the notification
-interval after colon. If you want to accept only mobs marked with `spawn` event, use `marked:` argument followed by the
-keyword used in that event.
+The player must kill the specified amount of entities (living creatures).
+All entities work, make sure to use their <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html" target="_blank">correct types</a>.
 
-This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of mob already killed,
-`left` is the amount of mobs still needed to kill and `total` is the amount of mobs initially required.
+| Parameter | Syntax                  | Default Value          | Explanation                                                                                                       |
+|-----------|-------------------------|------------------------|-------------------------------------------------------------------------------------------------------------------|
+| _type_    | ENTITY_TYPE,ENTITY_TYPE | :octicons-x-circle-16: | A list of entities, e.g. `ZOMBIE,SKELETON`.                                                                       |
+| _amount_  | Positive Number         | :octicons-x-circle-16: | Amount of mobs to kill.                                                                                           |
+| _name_    | name:text               | Disabled               | Only count named mobs. Spaces must be replaced with `_`.                                                          |
+| _marked_  | marked:keyword          | Disabled               | Only count marked mobs. See the [spawn event](Events-List.md#spawn-mob-spawn) for more information.               |
+| _notify_  | notify:interval         | Disabled               | Display a message to the player each time they kill a mob. Optionally with the notification interval after colon. |
 
-!!! example
-    ```YAML
-    mobkill ZOMBIE 5 name:Uber_Zombie conditions:night
-    ```
+``` YAML title="Example"
+objectives:
+  monsterHunter: "mobkill ZOMBIE,SKELETON,SPIDER 10 notify" #(1)!
+  specialMob: "mobkill PIG 1 marked:special" #(2)!
+  bossZombie: "mobkill ZOMBIE 1 name:Uber_Zombie" #(3)!
+```
+   
+1. The player must kill a zombie,skeleton or a spider to progress this objective. In total, they must kill 10 entities. Additionally, there will be a notification after each kill.
+2. The player must kill a pig that was spawned with the [spawn event](Events-List.md#spawn-mob-spawn) and has a marker. 
+3. The player must kill a zombie named "Uber Zombie".
+
+
+<h5> Variable Properties </h5> 
+
+| Name     | Example Output | Explanation                                            |
+|----------|----------------|--------------------------------------------------------|
+| _amount_ | 2              | Shows the amount of mobs already killed.               |
+| _left_   | 8              | Shows the amount of mobs that still need to be killed. |
+| _total_  | 10             | Shows the amount of mobs initially required to kill.   |
+
+
 
 ## Potion brewing: `brew`
 
