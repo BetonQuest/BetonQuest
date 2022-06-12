@@ -13,7 +13,7 @@ import java.util.Map;
  * Adds an entry to the given list at the given position.
  */
 @CustomLog
-@SuppressWarnings({"PMD.SwitchStmtsShouldHaveDefault"})
+@SuppressWarnings({"PMD.AvoidLiteralsInIfCondition"})
 public class ListEntryAddTransformation implements PatchTransformation {
 
     /**
@@ -34,6 +34,7 @@ public class ListEntryAddTransformation implements PatchTransformation {
 
         final List<String> list = config.getStringList(key);
         final boolean listIsEmpty = list.isEmpty();
+
         if ("LAST".equals(position) || listIsEmpty) {
             list.add(entry);
             config.set(key, list);

@@ -1,3 +1,11 @@
+"3.4.5.6":
+  - type: SET
+    key: journalLock
+    value: megaTrue
+  - type: SET
+    key: additionalVal
+    value: 42
+
 "2.0.0.1":
   - type: SET
     key: journalLock
@@ -22,6 +30,6 @@
     position: LAST
 
   - type: VALUE_RENAME
-    key: testKey
+    key: section.testKey
     oldValueRegex: test
     newValue: newTest

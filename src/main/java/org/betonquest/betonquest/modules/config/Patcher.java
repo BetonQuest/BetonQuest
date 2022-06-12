@@ -160,7 +160,7 @@ public class Patcher {
                 applyTransformation(typeSafeTransformationData, transformationType);
             } catch (final PatchException e) {
                 hasEncounteredProblems = true;
-                LOG.warn("There has been an issue while applying the patches for" + patchDataPath + ": " + e.getMessage());
+                LOG.warn("There has been an issue while applying the patches for '" + patchDataPath + "': " + e.getMessage());
             }
         }
         return hasEncounteredProblems;

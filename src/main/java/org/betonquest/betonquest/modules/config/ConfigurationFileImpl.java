@@ -37,9 +37,7 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
         super(accessor.getConfig());
         this.accessor = accessor;
         if (patchAccessor != null) {
-            if (!patchConfig(patchAccessor.getConfig())) {
-
-            }
+            patchConfig(patchAccessor.getConfig());
             try {
                 accessor.save();
             } catch (final IOException e) {
@@ -88,17 +86,24 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
     }
 
     @SuppressWarnings("PMD.UnusedFormalParameter")
-    private boolean patchConfig(final ConfigurationSection patchAccessorConfig) {
+    private void patchConfig(final ConfigurationSection patchAccessorConfig) {
         final Patcher patcher = new Patcher(accessor.getConfig(), patchAccessorConfig);
         if (patcher.hasUpdate()) {
-            //TODO: Backup here
-            final String currentVersion = accessor.getConfig().getString("configVersion");
+
             final String configName = accessor.getConfigurationFile().getName();
-            LOG.info("Patch for configuration '" + configName + "' with current version '" + currentVersion + "' found, applying...");
-            return patcher.patch();
+            final String currentVersion = accessor.getConfig().getString("configVersion");
+            LOG.info("Patch for configuration '" + configName + "' with current version '" + currentVersion + "' found.");
+            LOG.info("Backing up current config...");
+            //TODO: Backup here
+
+            final boolean flawless = patcher.patch();
+            if (!flawless) {
+                LOG.warn("The patching progress did not go flawlessly. However, this does not mean your configs " +
+                        "are now corrupted. Please check the errors above to see what the patcher did. " +
+                        "You might want to adjust your config manually depending on that information.");
+            }
         }
         LOG.debug("No patch found.");
-        return true;
     }
 
     @Override

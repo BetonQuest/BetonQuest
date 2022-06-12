@@ -24,7 +24,7 @@ public class ListEntryRenameTransformation implements PatchTransformation {
 
         final var list = config.getStringList(key);
         if (list.isEmpty()) {
-            throw new PatchException("The list '" + key + "' did not exist, skipping transformation.");
+            throw new PatchException("List '" + key + "' did not exist, skipping transformation.");
         }
 
         final String regex = options.get("oldEntryRegex");
@@ -40,7 +40,6 @@ public class ListEntryRenameTransformation implements PatchTransformation {
             if (index == list.size()) {
                 throw new PatchException("Unable to find an entry for the given regex, skipping transformation.");
             }
-
         }
 
         final String newEntry = options.get("newEntry");
