@@ -103,7 +103,11 @@ public class Updater {
         final String automaticDone = "it was downloaded and will be " + automatic;
         final String command = "it will be installed, if you execute '/q update'!";
 
-        updateNotification = version + (config.isAutomatic() ? automaticDone : command);
+        if (config.isIngameNotification()) {
+            updateNotification = version + (config.isAutomatic() ? automaticDone : command);
+        } else {
+            updateNotification = null;
+        }
         return version + (config.isAutomatic() ? automaticProgress : command);
     }
 
@@ -200,7 +204,7 @@ public class Updater {
      * @param player The player, that should receive the message.
      */
     public void sendUpdateNotification(final Player player) {
-        if (isUpdateAvailable()) {
+        if (updateNotification != null && isUpdateAvailable()) {
             final Instant currentTime = instantSource.instant();
             if (lastNotification.containsKey(player.getUniqueId()) && lastNotification.get(player.getUniqueId()).plus(NOTIFICATION_DELAY).isAfter(currentTime)) {
                 return;
