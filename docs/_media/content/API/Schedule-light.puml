@@ -1,0 +1,114 @@
+@startuml "Schedule-light"
+skinparam ArrowColor black
+skinparam BackgroundColor transparent
+skinparam class {
+    StereotypeFontColor black
+    FontColor black
+    BackgroundColor #E5F8FB
+    HeaderBackgroundColor #00B8D4
+    BorderColor black
+}
+skinparam note {
+    FontColor black
+    BackgroundColor #ECF3FF
+}
+
+
+package "org.betonquest.betonquest.api.schedule" <<Frame>> {
+    abstract class Schedule {
+        + Schedule(ScheduleID, ConfigurationSection)
+        ..
+        # scheduleId : ScheduleID
+        # time : String
+        # events : List<EventID>
+        # catchup : CatchupStrategy
+        ..
+        + getId() : ScheduleID
+        + getTime() : String
+        + getEvents() : List<EventID>
+        + getCatchup() : CatchupStrategy
+    }
+
+    note right of Schedule::"Schedule(ScheduleID, ConfigurationSection)"
+        ❗ Each Schedule must define a
+        constructor that takes 
+        exactly these two arguments.
+
+        Otherwise BetonQuest will not
+        be  able to construct a new 
+        instance while parsing the 
+        configuration.
+    end note
+
+    enum CatchupStrategy {
+        NONE
+        ..
+        ONE
+        ..
+        ALL
+    }
+
+    abstract class CronSchedule extends Schedule {
+        + {static} DEFAULT_CRON_DEFINITION : CronDefinition
+        ..
+        # timeCron : Cron
+        # executionTime : ExecutionTime
+        # onReboot : boolean
+        ..
+        + getTimeCron() : Cron
+        + getExecutionTime() : ExecutionTime
+        + shouldRunOnReboot(): boolean
+        ..
+        + getNextExecution() : Optional<Instant>
+        + getLastExecution() : Optional<Instant>
+    }
+
+    abstract class Scheduler <S extends Schedule> {
+        # schedules : Map<ScheduleID, S>
+        # running : boolean
+        ..
+        + isRunning() : boolean
+        ..
+        + start() : void
+        + stop() : void
+        + addSchedule(S) : void
+        + executeEvents(S) : void
+    }
+
+    note as N2
+        💡 For each schdeule type
+        a Schedule and a Scheduler
+        class are needed. 
+
+        The schedule class is used
+        to parse schedule settings
+        and should hold all the
+        schedules data. 
+
+        The scheduler holds all
+        parsed schedules and
+        contains all scheduling,
+        catchup & execution logic.
+    end note
+
+    note as N3
+        🖋️ To register a new schedule type implement a schedule & scheduler class,
+        instantiate a schdeuler object and call the following method to register the type:
+        
+        <i>BetonQuest::registerScheduleType<<S extends Schedule>>(String, Class<<S>>, Scheduler<<S>>)</i>
+        
+    end note
+
+    Schedule o-down- CatchupStrategy
+    Scheduler o-right- Schedule
+    CronSchedule -[hidden]right- CatchupStrategy 
+
+    N2 -[hidden]up- Scheduler
+    N2 -[hidden]up- Schedule
+
+    N3 -[hidden]up- N2
+    N3 -[hidden]up- CronSchedule
+    N3 -[hidden]up- CatchupStrategy
+}
+
+@enduml

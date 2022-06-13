@@ -27,7 +27,7 @@ This problem is solved by dividing all events into two categories:
 All static events have a static flag in the docs, so you can easily distinguish them from non-static ones.
 
 !!! example
-    ## Set Block: `setblock` { data-search-exclude #markdown data-toc-label='Example: static event flag'}
+    <h2>Set Block: `setblock`</h2>
 
     **persistent**, ==**static**== (1)
     { .annotate }

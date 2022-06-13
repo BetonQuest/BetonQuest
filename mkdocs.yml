@@ -210,6 +210,7 @@ nav:
       - 'Overview': API/Overview.md
       - 'API': API/API.md
       - 'Logging': API/Logging.md
+      - 'Schedules': API/Schdeules.md
   - 'Participate':
       - 'Overview': Participate/Overview.md
       - 'Setup Project': Participate/Setup-Project.md
