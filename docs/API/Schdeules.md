@@ -7,8 +7,8 @@ icon: octicons/clock-16
 If the native [schedule](../Documentation/Schedules.md) types are not enough for you, this API enables you to create your own type.
 
 ## API Overview
-![](../_media/content/API/Schedule-dark.svg#only-dark)
-![](../_media/content/API/Schedule-light.svg#only-light)
+![](../_media/content/API/Schedules/Schedule-dark.svg#only-dark)
+![](../_media/content/API/Schedules/Schedule-light.svg#only-light)
 
 ## Creating a new schedule type
 To implement a new schedule type you have to create both the Schedule and the Scheduler class.

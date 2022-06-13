@@ -104,7 +104,7 @@ For mixed types the **order** can **not** be **guaranteed**.
 
     _As it's just an announcement we don't care what hapens after restart._
 
-=== "ONCE"
+=== "ONE"
 
     ```YAML title="Example"
     schedules:
@@ -112,7 +112,7 @@ For mixed types the **order** can **not** be **guaranteed**.
         type: simple
         time: '03:00'
         events: pasteQuarry
-        catchup: once #(1)!
+        catchup: one #(1)!
     ```
 
     1.  If the schedule was missed (no matter how often) run it **once** after reboot.
