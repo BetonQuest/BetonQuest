@@ -70,7 +70,7 @@ public class Compatibility implements Listener {
         integrators.put("Heroes", new HeroesIntegrator());
         integrators.put("Magic", new MagicIntegrator());
         integrators.put("Denizen", new DenizenIntegrator());
-        integrators.put("SkillAPI", new SkillAPIIntegrator());
+        integrators.put("ProSkillAPI", new SkillAPIIntegrator());
         integrators.put("Quests", new QuestsIntegrator());
         integrators.put("Shopkeepers", new ShopkeepersIntegrator());
         integrators.put("PlaceholderAPI", new PlaceholderAPIIntegrator());
