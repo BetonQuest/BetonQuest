@@ -8,7 +8,7 @@ BetonQuest hooks into other plugins by itself to provide more events, conditions
 25 plugins are supported right now:    
 _AureliumSkills, Brewery, Citizens, Denizen, EffectLib, Heroes, HolographicDisplays, JobsReborn, LuckPerms, Magic,
 mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, ProtocolLib, Quests,
-Shopkeepers, SkillAPI, Skript, Vault, WorldEdit, FastAsyncWorldEdit and WorldGuard._
+Shopkeepers, ProSkillAPI, Skript, Vault, WorldEdit, FastAsyncWorldEdit and WorldGuard._
 
 Some plugins also hook into BetonQuest and provide support by themselves:  
 [_nuNPCDestinations_](https://www.spigotmc.org/resources/13863/),
@@ -957,9 +957,9 @@ This event opens a trading window of a Villager. The only argument is the unique
     shopkeeper b687538e-14ce-4b77-ae9f-e83b12f0b929
     ```
 
-## [SkillAPI](https://github.com/Sentropic/SkillAPI-s/releases)
+## :material-sword-cross: [ProSkillAPI](https://www.spigotmc.org/resources/proskillapi-create-custom-races-classes-skills-spells-with-an-easy-online-editor.91913/)
 
-This adds support for [Sentropics SkillAPI fork](https://github.com/Sentropic/SkillAPI-s/releases). They still update SkillAPI.  
+This adds support for [ProMCTeam's SkillAPI fork](https://www.spigotmc.org/resources/proskillapi-create-custom-races-classes-skills-spells-with-an-easy-online-editor.91913/). They still update SkillAPI.  
 
 ### Conditions
 
