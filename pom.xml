@@ -277,7 +277,7 @@
     <dependency>
       <groupId>com.github.promcteam</groupId>
       <artifactId>proskillapi</artifactId>
-      <version>1.98</version>
+      <version>-75674d1f35-1</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
