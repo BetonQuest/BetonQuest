@@ -403,8 +403,8 @@ it:
   backpack_title: 'Zaino'
   previous: '&2Precedente'
   next: '&2Successivo'
-  inventory_full_backpack: '&e*&bIl tuo inventario è pieno! The item was moved to your backpack.&e*' # TODO: missing translation
-  inventory_full_drop: '&e*&bIl tuo inventario è pieno! The item was dropped on the ground.&e*' # TODO: missing translation
+  inventory_full_backpack: '&e*&bIl tuo inventario è pieno! L''oggetto è stato spostato nel tuo zaino.&e*'
+  inventory_full_drop: '&e*&bIl tuo inventario è pieno! L''oggetto è caduto per terra.&e*'
   changelog: '&f[BetonQuest]: &e*&bLa lista dei cambiamenti è disponibile nella cartella del plugin. Leggi i cambiamenti, elimina o rinomina il file per disabilitare questo messaggio!&e*'
   pullback: '&cDevi finire la conversazione!'
   items_given: '&2Hai ricevuto {1}&2 x{2}'
@@ -437,13 +437,13 @@ it:
   language_missing: '&cSpecifica la lingua'
   language_not_exist: '&cQuesta lingua non è presente, opzioni disponibili: '
   days: giorni
-  days_singular: giorni # TODO: Missing translation
+  days_singular: giorno 
   hours: ore
-  hours_singular: ore # TODO: Missing translation
+  hours_singular: ora 
   minutes: minuti
-  minutes_singular: minuti # TODO: Missing translation
+  minutes_singular: minuto 
   seconds: secondi
-  seconds_singular: secondi # TODO: Missing translation
+  seconds_singular: secondo 
   password: 'password: '
   condition_variable_met: 'si'
   condition_variable_not_met: 'no'
