@@ -19,9 +19,9 @@ Now we have to create two more files. The first file is called `package.yml` and
 The second one is called `jack.yml` and goes to the `conversations` folder.
 After creating the folders/files your structure should look like this:
 
-* :material-folder-open: tutorialQuest (Folder)  
+* :material-folder-open: tutorialQuest
     - :material-file: package.yml
-    - :material-folder-open: conversations (Folder)  
+    - :material-folder-open: conversations
         - :material-file: jack.yml  
     
 
