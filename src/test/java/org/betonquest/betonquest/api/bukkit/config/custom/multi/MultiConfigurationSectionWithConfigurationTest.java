@@ -5,14 +5,12 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,7 +30,7 @@ public class MultiConfigurationSectionWithConfigurationTest extends Configuratio
             final MultiConfiguration multiConfiguration = new MultiConfiguration(new ArrayList<>(configs.keySet()));
             final Configuration defaults = defaultConfig.getDefaults();
             assertNotNull(defaults);
-            multiConfiguration.setMultiDefaults(List.of(defaults));
+            multiConfiguration.setDefaults(defaults);
             return multiConfiguration;
         } catch (final KeyConflictException e) {
             fail(e.resolvedMessage(configs), e);
@@ -40,23 +38,6 @@ public class MultiConfigurationSectionWithConfigurationTest extends Configuratio
             fail(e);
         }
         return null;
-    }
-
-    private void assertThrowsUnmodifiableException(final Executable executable) {
-        final Exception exception = assertThrows(UnsupportedOperationException.class, executable);
-        assertEquals(MultiConfiguration.UNMODIFIABLE_MESSAGE, exception.getMessage());
-    }
-
-    @Test
-    @Override
-    public void testAddDefault() {
-        assertThrowsUnmodifiableException(super::testAddDefault);
-    }
-
-    @Test
-    @Override
-    public void testAddDefaultOnExistingConfigPath() {
-        assertThrowsUnmodifiableException(super::testAddDefaultOnExistingConfigPath);
     }
 
     @Test
