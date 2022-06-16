@@ -2,23 +2,22 @@ package org.betonquest.betonquest.modules.logger.handler;
 
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
-import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
 
+import java.util.Set;
 import java.util.UUID;
 import java.util.logging.ErrorManager;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
 /**
- * This {@link Handler} can send log messages to the ingame chat
- * to specified players defined by a given {@link PlayerFilter}.
+ * This {@link Handler} can send log messages via the ingame chat to a dynamic set of players.
  */
 public class BukkitChatHandler extends Handler {
 
     /**
-     * The {@link PlayerFilter} for this {@link Handler}.
+     * Selector to decide the players that should receive a given {@link LogRecord}.
      */
-    private final PlayerFilter playerFilter;
+    private final RecordReceiverSelector receiverSelector;
 
     /**
      * The {@link BukkitAudiences} instance responsible for sending messages.
@@ -28,12 +27,12 @@ public class BukkitChatHandler extends Handler {
     /**
      * Creates a new {@link BukkitChatHandler}.
      *
-     * @param playerFilter    A filter instance for this handler.
+     * @param receiverSelector a selector to decide the receiving players
      * @param bukkitAudiences The {@link BukkitAudiences} instance for sending messages.
      */
-    public BukkitChatHandler(final PlayerFilter playerFilter, final BukkitAudiences bukkitAudiences) {
+    public BukkitChatHandler(final RecordReceiverSelector receiverSelector, final BukkitAudiences bukkitAudiences) {
         super();
-        this.playerFilter = playerFilter;
+        this.receiverSelector = receiverSelector;
         this.bukkitAudiences = bukkitAudiences;
     }
 
@@ -45,27 +44,33 @@ public class BukkitChatHandler extends Handler {
      * @param record The LogRecord to log
      */
     @Override
-    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public void publish(final LogRecord record) {
-        if (!(record instanceof BetonQuestLogRecord) || playerFilter.getUUIDs().isEmpty() || !isLoggable(record)) {
+        if (!isLoggable(record)) {
             return;
         }
-        final String msg;
-        try {
-            msg = getFormatter().format(record);
-        } catch (final Exception ex) {
-            reportError(null, ex, ErrorManager.FORMAT_FAILURE);
+
+        final String message = format(record);
+        if (message == null) {
             return;
         }
-        final String pack = ((BetonQuestLogRecord) record).getPack();
-        filterPlayers(record, msg, pack);
+
+        sendMessageToPlayers(record, message);
     }
 
-    private void filterPlayers(final LogRecord record, final String msg, final String pack) {
-        for (final UUID uuid : playerFilter.getUUIDs()) {
-            if (playerFilter.match(uuid, pack, record.getLevel())) {
-                bukkitAudiences.player(uuid).sendMessage(GsonComponentSerializer.gson().deserialize(msg));
-            }
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
+    private String format(final LogRecord record) {
+        try {
+            return getFormatter().format(record);
+        } catch (final RuntimeException ex) {
+            reportError(null, ex, ErrorManager.FORMAT_FAILURE);
+            return null;
+        }
+    }
+
+    private void sendMessageToPlayers(final LogRecord record, final String msg) {
+        final Set<UUID> receivers = receiverSelector.findReceivers(record);
+        for (final UUID uuid : receivers) {
+            bukkitAudiences.player(uuid).sendMessage(GsonComponentSerializer.gson().deserialize(msg));
         }
     }
 
@@ -77,14 +82,5 @@ public class BukkitChatHandler extends Handler {
     @Override
     public void close() {
         // Empty
-    }
-
-    /**
-     * Get the {@link PlayerFilter} related to this {@link BukkitChatHandler}
-     *
-     * @return a {@link PlayerFilter} instance
-     */
-    public PlayerFilter getPlayerFilter() {
-        return playerFilter;
     }
 }

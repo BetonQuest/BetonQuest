@@ -35,9 +35,9 @@ public class BetonQuestLogRecord extends LogRecord {
      * Creates a custom {@link LogRecord} that comes from a {@link Plugin} and may be specific to a {@link QuestPackage}.
      *
      * @param plugin plugin that logged this LogRecord
-     * @param pack   quest package this LogRecord is about; or null if it is not about any specific package
-     * @param level  level of the LogRecord
-     * @param msg    raw non-localized logging message (may be null)
+     * @param pack quest package this LogRecord is about; or null if it is not about any specific package
+     * @param level level of the LogRecord
+     * @param msg raw non-localized logging message (may be null)
      */
     public BetonQuestLogRecord(@NotNull final Plugin plugin, @Nullable final QuestPackage pack, final Level level, final String msg) {
         this(level, msg, plugin.getName(), pack == null ? null : pack.getPackagePath());
@@ -46,9 +46,9 @@ public class BetonQuestLogRecord extends LogRecord {
     /**
      * Creates a custom {@link LogRecord} that comes from a plugin and is not specific to any quest package.
      *
-     * @param level       level of the LogRecord
-     * @param message     raw non-localized logging message (may be null)
-     * @param pluginName  name of the plugin that logged this LogRecord
+     * @param level level of the LogRecord
+     * @param message raw non-localized logging message (may be null)
+     * @param pluginName name of the plugin that logged this LogRecord
      */
     public BetonQuestLogRecord(final Level level, final String message, @NotNull final String pluginName) {
         this(level, message, pluginName, null);
@@ -57,11 +57,11 @@ public class BetonQuestLogRecord extends LogRecord {
     /**
      * Creates a custom {@link LogRecord} that comes from a plugin and may be specific to a quest package.
      *
-     * @param level       level of the LogRecord
-     * @param message     raw non-localized logging message (may be null)
-     * @param pluginName  name of the plugin that logged this LogRecord
+     * @param level level of the LogRecord
+     * @param message raw non-localized logging message (may be null)
+     * @param pluginName name of the plugin that logged this LogRecord
      * @param packageName fully qualified name of the quest package this LogRecord is about;
-     *                    or null if it is not about any specific package
+     * or null if it is not about any specific package
      */
     public BetonQuestLogRecord(final Level level, final String message, @NotNull final String pluginName, @Nullable final String packageName) {
         super(level, message);
@@ -76,7 +76,7 @@ public class BetonQuestLogRecord extends LogRecord {
      * @param record record that may be a {@link BetonQuestLogRecord}
      * @return optional containing the same record as {@link BetonQuestLogRecord} if possible
      */
-    public static Optional<BetonQuestLogRecord> safeCast(LogRecord record) {
+    public static Optional<BetonQuestLogRecord> safeCast(final LogRecord record) {
         if (record instanceof BetonQuestLogRecord) {
             return Optional.of((BetonQuestLogRecord) record);
         } else {

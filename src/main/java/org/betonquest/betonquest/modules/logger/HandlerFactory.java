@@ -3,14 +3,13 @@ package org.betonquest.betonquest.modules.logger;
 import lombok.CustomLog;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
-import org.betonquest.betonquest.modules.logger.handler.BukkitChatHandler;
-import org.betonquest.betonquest.modules.logger.handler.PlayerFilter;
-import org.betonquest.betonquest.modules.logger.handler.PlayerPackageFilter;
 import org.betonquest.betonquest.modules.logger.format.ChatFormatter;
 import org.betonquest.betonquest.modules.logger.format.LogfileFormatter;
+import org.betonquest.betonquest.modules.logger.handler.BukkitChatHandler;
 import org.betonquest.betonquest.modules.logger.handler.HistoryHandler;
 import org.betonquest.betonquest.modules.logger.handler.HistoryHandlerConfig;
 import org.betonquest.betonquest.modules.logger.handler.LazyHandler;
+import org.betonquest.betonquest.modules.logger.handler.RecordReceiverSelector;
 import org.betonquest.betonquest.modules.logger.handler.ResettableHandler;
 import org.betonquest.betonquest.modules.logger.queue.BukkitSchedulerCleaningLogQueue;
 import org.betonquest.betonquest.modules.logger.queue.DiscardingLogQueue;
@@ -33,34 +32,34 @@ import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 
 /**
- * A factory to create instances for the creation of a {@link LogWatcher}.
+ * A static helper class to create {@link Handler}s in the way they are usually used by BetonQuest.
  */
 @CustomLog(topic = "LogWatcherFactory")
-public final class LogWatcherFactory {
-    private LogWatcherFactory() {
+public final class HandlerFactory {
+    private HandlerFactory() {
         // Empty
     }
 
     /**
-     * Create a new {@link BukkitChatHandler} with the related instances.
+     * Create a {@link BukkitChatHandler}.
      *
-     * @param plugin          {@link Plugin} instance
-     * @param bukkitAudiences {@link BukkitAudiences} instance
+     * @param plugin the main plugin
+     * @param receiverSelector the receiver selector
+     * @param bukkitAudiences the audience provider
      * @return a new {@link BukkitChatHandler}
      */
-    public static BukkitChatHandler createChatHandler(final Plugin plugin, final BukkitAudiences bukkitAudiences) {
-        final PlayerFilter playerFilter = new PlayerPackageFilter();
-        final BukkitChatHandler handler = new BukkitChatHandler(playerFilter, bukkitAudiences);
+    public static BukkitChatHandler createChatHandler(final Plugin plugin, final RecordReceiverSelector receiverSelector, final BukkitAudiences bukkitAudiences) {
+        final BukkitChatHandler handler = new BukkitChatHandler(receiverSelector, bukkitAudiences);
         handler.setFormatter(new ChatFormatter(ChatFormatter.PluginDisplayMethod.ROOT_PLUGIN_AND_PLUGIN, plugin, "BQ"));
         return handler;
     }
 
     /**
-     * Create a new {@link HistoryHandler} with the related instances.
+     * Create a {@link HistoryHandler}.
      *
-     * @param plugin        {@link Plugin} instance
-     * @param scheduler     {@link BukkitScheduler} instance
-     * @param config        {@link ConfigurationFile} instance
+     * @param plugin {@link Plugin} instance
+     * @param scheduler {@link BukkitScheduler} instance
+     * @param config {@link ConfigurationFile} instance
      * @param logFileFolder {@link File} to the log folder
      * @param instantSource {@link InstantSource} instance
      * @return a new {@link HistoryHandler}

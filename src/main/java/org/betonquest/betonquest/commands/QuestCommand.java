@@ -34,7 +34,7 @@ import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.modules.downloader.DownloadFailedException;
 import org.betonquest.betonquest.modules.downloader.Downloader;
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
-import org.betonquest.betonquest.modules.logger.handler.PlayerFilter;
+import org.betonquest.betonquest.modules.logger.PlayerLogWatcher;
 import org.betonquest.betonquest.modules.logger.format.ChatFormatter;
 import org.betonquest.betonquest.modules.logger.handler.LogPublishingController;
 import org.betonquest.betonquest.modules.versioning.Updater;
@@ -81,14 +81,26 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     private final BetonQuest instance = BetonQuest.getInstance();
     private final BukkitAudiences bukkitAudiences;
+
+    /**
+     * The PlayerLogWatcher that controls which players receive which log messages.
+     */
+    private final PlayerLogWatcher logWatcher;
+
+    /**
+     * The LogPublishingController to control the debug log.
+     */
+    private final LogPublishingController debuggingController;
     private String defaultPack = Config.getString("config.default_package");
 
     /**
      * Registers a new executor and a new tab completer of the /betonquest command.
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public QuestCommand(final BukkitAudiences bukkitAudiences) {
+    public QuestCommand(final BukkitAudiences bukkitAudiences, final PlayerLogWatcher logWatcher, final LogPublishingController debuggingController) {
         this.bukkitAudiences = bukkitAudiences;
+        this.logWatcher = logWatcher;
+        this.debuggingController = debuggingController;
         BetonQuest.getInstance().getCommand("betonquest").setExecutor(this);
         BetonQuest.getInstance().getCommand("betonquest").setTabCompleter(this);
     }
@@ -264,16 +276,15 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     break;
                 case "reload":
                     // just reloading
-                    final PlayerFilter playerHandler = BetonQuest.getInstance().getLogWatcher().getPlayerFilter();
                     final UUID uuid = sender instanceof Player ? ((Player) sender).getUniqueId() : null;
-                    final boolean noFilters = uuid != null && playerHandler.getFilters(uuid).isEmpty();
+                    final boolean noFilters = uuid != null && logWatcher.hasActiveFilters(uuid);
                     if (noFilters) {
-                        playerHandler.addFilter(uuid, "*", Level.WARNING);
+                        logWatcher.addFilter(uuid, "*", Level.WARNING);
                     }
                     instance.reload();
                     sendMessage(sender, "reloaded");
                     if (noFilters) {
-                        playerHandler.removeFilter(uuid, "*");
+                        logWatcher.removeFilter(uuid, "*");
                     }
                     break;
                 case "backup":
@@ -395,7 +406,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      *
      * @param args
      * @param type - the type of the Id (item/event/journal/condition/objective),
-     *             null for unspecific
+     * null for unspecific
      * @return
      */
     private List<String> completeId(final String[] args, final AccessorType type) {
@@ -1637,7 +1648,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     }
 
     private void handleDebug(final CommandSender sender, final String... args) {
-        final LogPublishingController debuggingController = BetonQuest.getInstance().getLogWatcher().getDebuggingController();
         if (args.length == 1) {
             sender.sendMessage(
                     "§2Debugging mode is currently " + (debuggingController.isLogging() ? "enabled" : "disabled") + '!');
@@ -1648,27 +1658,19 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 LOG.debug("Cannot continue, sender must be player");
                 return;
             }
-            final PlayerFilter playerHandler = BetonQuest.getInstance().getLogWatcher().getPlayerFilter();
             final UUID uuid = ((Player) sender).getUniqueId();
             if (args.length < 3) {
-                sender.sendMessage("§2Active Filters: " + String.join(", ", playerHandler.getFilters(uuid)));
+                sender.sendMessage("§2Active Filters: " + String.join(", ", logWatcher.getActivePatterns(uuid)));
                 return;
             }
             final String filter = args[2];
-            final boolean exist = playerHandler.getFilters(uuid).contains(filter);
-            if (exist && args.length == 3) {
-                if (!playerHandler.removeFilter(uuid, filter)) {
-                    sender.sendMessage("§2Filter could not be removed!");
-                    return;
-                }
+            if (logWatcher.isActivePattern(uuid, filter) && args.length == 3) {
+                logWatcher.removeFilter(uuid, filter);
                 sender.sendMessage("§2Filter removed!");
                 return;
             }
             final Level level = getLogLevel(args.length > 3 ? args[3] : null);
-            if (!playerHandler.addFilter(uuid, filter, level)) {
-                sender.sendMessage("§2Filter could not be added!");
-                return;
-            }
+            logWatcher.addFilter(uuid, filter, level);
             sender.sendMessage("§2Filter added!");
             return;
         }
