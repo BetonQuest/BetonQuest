@@ -1,6 +1,5 @@
-package org.betonquest.betonquest.modules.logger.handler;
+package org.betonquest.betonquest.modules.logger.handler.history;
 
-import org.betonquest.betonquest.modules.logger.handler.history.BukkitSchedulerCleaningLogQueue;
 import org.betonquest.betonquest.util.scheduler.BukkitSchedulerMock;
 import org.bukkit.plugin.Plugin;
 import org.junit.jupiter.api.Test;

@@ -1,9 +1,7 @@
-package org.betonquest.betonquest.modules.logger.handler;
+package org.betonquest.betonquest.modules.logger.handler.history;
 
 import org.betonquest.betonquest.modules.config.ConfigUpdater;
-import org.betonquest.betonquest.modules.logger.handler.history.HistoryHandler;
-import org.betonquest.betonquest.modules.logger.handler.history.LogRecordQueue;
-import org.betonquest.betonquest.modules.logger.handler.history.QueueBackedLogRecordQueue;
+import org.betonquest.betonquest.modules.logger.handler.ResettableHandler;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
