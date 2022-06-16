@@ -437,7 +437,7 @@ formatted like `X: 100, Y: 200, Z:300`.
 ## Taming: `tame`
 
 To complete this objective player must tame some amount of mobs. First argument is type, second is amount. The mob must
-be tameable for the objective to be valid, e.g. on 1.16.5: `CAT`, `DONKEY`, `HORSE`, `LLAMA`, `PARROT` or `WOLF`. You
+be tamable for the objective to be valid, e.g.: `CAT`, `DONKEY`, `HORSE`, `LLAMA`, `PARROT` or `WOLF`. You
 can use the `notify` keyword to display a message each time the player advances the objective, optionally with the
 notification interval after a colon.
 

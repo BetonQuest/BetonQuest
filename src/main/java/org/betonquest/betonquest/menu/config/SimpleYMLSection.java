@@ -194,15 +194,9 @@ public abstract class SimpleYMLSection {
             throw new Invalid(key, "Material numbers can no longer be supported! Please use the names instead.");
         }
         final String stringMaterial = this.getString(key);
-        Material material;
-        try {
-            material = Material.matchMaterial(stringMaterial.replace(" ", "_"));
-            if (material == null) {
-                material = Material.matchMaterial(stringMaterial.replace(" ", "_"), true);
-            }
-        } catch (final LinkageError error) {
-            //pre 1.13
-            material = Material.getMaterial(stringMaterial.toUpperCase(Locale.ROOT).replace(" ", "_"));
+        Material material = Material.matchMaterial(stringMaterial.replace(" ", "_"));
+        if (material == null) {
+            material = Material.matchMaterial(stringMaterial.replace(" ", "_"), true);
         }
         if (material == null) {
             throw new Invalid(key, "'" + stringMaterial + "' isn't a material");
