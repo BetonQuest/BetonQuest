@@ -17,15 +17,15 @@ import java.util.logging.LogRecord;
 import static org.mockito.Mockito.*;
 
 /**
- * Test {@link BukkitChatHandler}.
+ * Test {@link ChatHandler}.
  */
 @ExtendWith(BetonQuestLoggerService.class)
 @ExtendWith(MockitoExtension.class)
-class BukkitChatHandlerTest {
+class ChatHandlerTest {
     /**
      * Default constructor.
      */
-    public BukkitChatHandlerTest() {
+    public ChatHandlerTest() {
         // Empty
     }
 
@@ -40,7 +40,7 @@ class BukkitChatHandlerTest {
         final String message = "test message";
         final LogRecord record = new LogRecord(Level.INFO, message);
 
-        final BukkitChatHandler handler = new BukkitChatHandler(selector, audiences);
+        final ChatHandler handler = new ChatHandler(selector, audiences);
         handler.setFormatter(new ChatFormatter());
 
         handler.publish(record);

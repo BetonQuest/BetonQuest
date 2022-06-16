@@ -151,7 +151,7 @@ import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.modules.logger.HandlerFactory;
 import org.betonquest.betonquest.modules.logger.PlayerLogWatcher;
 import org.betonquest.betonquest.modules.logger.handler.chat.AccumulatingReceiverSelector;
-import org.betonquest.betonquest.modules.logger.handler.chat.BukkitChatHandler;
+import org.betonquest.betonquest.modules.logger.handler.chat.ChatHandler;
 import org.betonquest.betonquest.modules.logger.handler.history.HistoryHandler;
 import org.betonquest.betonquest.modules.versioning.Updater;
 import org.betonquest.betonquest.modules.versioning.Version;
@@ -283,7 +283,7 @@ public class BetonQuest extends JavaPlugin {
     /**
      * Handler that sends LogRecords to players.
      */
-    private BukkitChatHandler chatHandler;
+    private ChatHandler chatHandler;
     private String pluginTag;
     /**
      * The adventure instance.

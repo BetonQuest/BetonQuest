@@ -7,7 +7,7 @@ import org.betonquest.betonquest.modules.logger.format.ChatFormatter;
 import org.betonquest.betonquest.modules.logger.format.LogfileFormatter;
 import org.betonquest.betonquest.modules.logger.handler.LazyHandler;
 import org.betonquest.betonquest.modules.logger.handler.ResettableHandler;
-import org.betonquest.betonquest.modules.logger.handler.chat.BukkitChatHandler;
+import org.betonquest.betonquest.modules.logger.handler.chat.ChatHandler;
 import org.betonquest.betonquest.modules.logger.handler.chat.RecordReceiverSelector;
 import org.betonquest.betonquest.modules.logger.handler.history.BukkitSchedulerCleaningLogQueue;
 import org.betonquest.betonquest.modules.logger.handler.history.DiscardingLogQueue;
@@ -40,15 +40,15 @@ public final class HandlerFactory {
     }
 
     /**
-     * Create a {@link BukkitChatHandler}.
+     * Create a {@link ChatHandler}.
      *
      * @param plugin the main plugin
      * @param receiverSelector the receiver selector
      * @param bukkitAudiences the audience provider
-     * @return a new {@link BukkitChatHandler}
+     * @return a new {@link ChatHandler}
      */
-    public static BukkitChatHandler createChatHandler(final Plugin plugin, final RecordReceiverSelector receiverSelector, final BukkitAudiences bukkitAudiences) {
-        final BukkitChatHandler handler = new BukkitChatHandler(receiverSelector, bukkitAudiences);
+    public static ChatHandler createChatHandler(final Plugin plugin, final RecordReceiverSelector receiverSelector, final BukkitAudiences bukkitAudiences) {
+        final ChatHandler handler = new ChatHandler(receiverSelector, bukkitAudiences);
         handler.setFormatter(new ChatFormatter(ChatFormatter.PluginDisplayMethod.ROOT_PLUGIN_AND_PLUGIN, plugin, "BQ"));
         return handler;
     }

@@ -12,7 +12,7 @@ import java.util.logging.LogRecord;
 /**
  * This {@link Handler} can send log messages via the ingame chat to a dynamic set of players.
  */
-public class BukkitChatHandler extends Handler {
+public class ChatHandler extends Handler {
 
     /**
      * Selector to decide the players that should receive a given {@link LogRecord}.
@@ -25,12 +25,12 @@ public class BukkitChatHandler extends Handler {
     private final BukkitAudiences bukkitAudiences;
 
     /**
-     * Creates a new {@link BukkitChatHandler}.
+     * Creates a new {@link ChatHandler}.
      *
      * @param receiverSelector a selector to decide the receiving players
      * @param bukkitAudiences The {@link BukkitAudiences} instance for sending messages.
      */
-    public BukkitChatHandler(final RecordReceiverSelector receiverSelector, final BukkitAudiences bukkitAudiences) {
+    public ChatHandler(final RecordReceiverSelector receiverSelector, final BukkitAudiences bukkitAudiences) {
         super();
         this.receiverSelector = receiverSelector;
         this.bukkitAudiences = bukkitAudiences;
