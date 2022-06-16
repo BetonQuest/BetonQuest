@@ -20,7 +20,7 @@ public class ScheduleID extends ID {
      */
     public ScheduleID(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
         super(pack, identifier);
-        if (getPackage().getConfig().getConfigurationSection("schedules." + getBaseID()) == null) {
+        if (!getPackage().getConfig().isConfigurationSection("schedules." + getBaseID())) {
             throw new ObjectNotFoundException("Schedule '" + getFullID() + "' is not defined");
         }
     }

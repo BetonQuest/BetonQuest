@@ -10,6 +10,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.modules.schedule.ScheduleID;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -32,7 +33,8 @@ public abstract class CronSchedule extends Schedule {
             .withDayOfWeek().withValidRange(0, 7).withMondayDoWValue(1).withIntMapping(7, 0).withStrictRange().and()
             .withSupportedNicknameYearly().withSupportedNicknameAnnually()
             .withSupportedNicknameMonthly().withSupportedNicknameWeekly()
-            .withSupportedNicknameDaily().withSupportedNicknameHourly()
+            .withSupportedNicknameMidnight().withSupportedNicknameDaily()
+            .withSupportedNicknameHourly()
             .instance();
 
     /**
@@ -85,15 +87,16 @@ public abstract class CronSchedule extends Schedule {
         if (rebootSupported && REBOOT_ALIAS.equals(super.time.trim().toLowerCase(Locale.ROOT))) {
             this.timeCron = new SingleCron(cronDefinition, List.of());
             this.onReboot = true;
+            this.executionTime = new NoExecutionTime();
         } else {
             try {
                 this.timeCron = new CronParser(cronDefinition).parse(super.time).validate();
                 this.onReboot = false;
+                this.executionTime = ExecutionTime.forCron(timeCron);
             } catch (final IllegalArgumentException e) {
                 throw new InstructionParseException("Time is no valid cron syntax: '" + super.time + "'", e);
             }
         }
-        this.executionTime = ExecutionTime.forCron(timeCron);
     }
 
     /**
@@ -140,5 +143,38 @@ public abstract class CronSchedule extends Schedule {
      */
     public Optional<Instant> getLastExecution() {
         return executionTime.lastExecution(ZonedDateTime.now()).map(Instant::from);
+    }
+
+    /**
+     * Implementation for {@link ExecutionTime} that cannot calculate any execution times.
+     * <p>
+     * Used for {@code @reboot} schedules
+     */
+    private static class NoExecutionTime implements ExecutionTime {
+
+        @Override
+        public Optional<ZonedDateTime> nextExecution(final ZonedDateTime date) {
+            return Optional.empty();
+        }
+
+        @Override
+        public Optional<Duration> timeToNextExecution(final ZonedDateTime date) {
+            return Optional.empty();
+        }
+
+        @Override
+        public Optional<ZonedDateTime> lastExecution(final ZonedDateTime date) {
+            return Optional.empty();
+        }
+
+        @Override
+        public Optional<Duration> timeFromLastExecution(final ZonedDateTime date) {
+            return Optional.empty();
+        }
+
+        @Override
+        public boolean isMatch(final ZonedDateTime date) {
+            return false;
+        }
     }
 }
