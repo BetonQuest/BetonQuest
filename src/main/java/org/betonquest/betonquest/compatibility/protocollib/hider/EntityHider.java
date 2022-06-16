@@ -36,7 +36,6 @@ public class EntityHider implements Listener {
 
     /**
      * Packets to suppress for hidden entities. It contains all packets that update remote player entities.<br>
-     * This list is used for Minecraft versions 1.17 and above.
      */
     private static final PacketType[] ENTITY_PACKETS = {
             PacketType.Play.Server.ENTITY_EQUIPMENT,
@@ -60,39 +59,6 @@ public class EntityHider implements Listener {
             PacketType.Play.Server.REMOVE_ENTITY_EFFECT,
             PacketType.Play.Server.BLOCK_BREAK_ANIMATION,
             PacketType.Play.Server.PLAYER_COMBAT_KILL,
-
-            // We don't handle DESTROY_ENTITY though
-    };
-
-    /**
-     * Packets to suppress for hidden entities. It contains all packets that update remote player entities.<br>
-     * This list is used for Minecraft versions 1.13 to 1.16.
-     */
-    //TODO version switch:
-    // remove if minecraft version support below 1.17 is dropped
-    @SuppressWarnings("deprecation")
-    private static final PacketType[] ENTITY_PACKETS_PRE_17 = {
-            PacketType.Play.Server.ENTITY_EQUIPMENT,
-            PacketType.Play.Server.ANIMATION,
-            PacketType.Play.Server.NAMED_ENTITY_SPAWN,
-            PacketType.Play.Server.COLLECT,
-            PacketType.Play.Server.SPAWN_ENTITY,
-            PacketType.Play.Server.SPAWN_ENTITY_LIVING,
-            PacketType.Play.Server.SPAWN_ENTITY_PAINTING,
-            PacketType.Play.Server.SPAWN_ENTITY_EXPERIENCE_ORB,
-            PacketType.Play.Server.ENTITY_VELOCITY,
-            PacketType.Play.Server.REL_ENTITY_MOVE,
-            PacketType.Play.Server.ENTITY_LOOK,
-            PacketType.Play.Server.REL_ENTITY_MOVE_LOOK,
-            PacketType.Play.Server.ENTITY_TELEPORT,
-            PacketType.Play.Server.ENTITY_HEAD_ROTATION,
-            PacketType.Play.Server.ENTITY_STATUS,
-            PacketType.Play.Server.ATTACH_ENTITY,
-            PacketType.Play.Server.ENTITY_METADATA,
-            PacketType.Play.Server.ENTITY_EFFECT,
-            PacketType.Play.Server.REMOVE_ENTITY_EFFECT,
-            PacketType.Play.Server.BLOCK_BREAK_ANIMATION,
-            PacketType.Play.Server.COMBAT_EVENT,
 
             // We don't handle DESTROY_ENTITY though
     };
@@ -254,13 +220,8 @@ public class EntityHider implements Listener {
     private PacketAdapter constructProtocol(final Plugin plugin) {
         final PacketType[] packetList;
         final PacketType combatEvent;
-        if (PaperLib.isVersion(17)) {
-            packetList = ENTITY_PACKETS;
-            combatEvent = PacketType.Play.Server.PLAYER_COMBAT_KILL;
-        } else {
-            packetList = ENTITY_PACKETS_PRE_17;
-            combatEvent = PacketType.Play.Server.COMBAT_EVENT;
-        }
+        packetList = ENTITY_PACKETS;
+        combatEvent = PacketType.Play.Server.PLAYER_COMBAT_KILL;
         return new PacketAdapter(plugin, packetList) {
             @Override
             public void onPacketSending(final PacketEvent event) {

@@ -317,7 +317,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - fixed notify couldn't use variables that contain `:`
 - improved stability for brew objective when other plugins affect brewing
 - fixed region and npcregion condition
-- fixed debugging dose not start on server startup
+- fixed debugging does not start on server startup
 - fixed ghost holograms caused by reloading BQ
 - fixed deadlock(Server crash) in Conversations with a large amount of npc and player options with a large amount of
   conditions
