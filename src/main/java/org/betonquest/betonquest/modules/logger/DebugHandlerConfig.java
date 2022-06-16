@@ -1,19 +1,20 @@
-package org.betonquest.betonquest.modules.logger.handler.history;
+package org.betonquest.betonquest.modules.logger;
 
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
 /**
- * This is a debug configuration based on a {@link ConfigurationFile}.
+ * Configuration facade for the debug {@link Handler} backed by a {@link ConfigurationFile}.
  */
-public class HistoryHandlerConfig implements LogPublishingController {
+public class DebugHandlerConfig {
     /**
      * Default value for the expire after minutes value.
      */
-    public static final int EXPIRE_AFTER_DEFAULT = 10;
+    private static final int EXPIRE_AFTER_DEFAULT = 10;
 
     /**
      * The file path to the latest.log.
@@ -46,49 +47,32 @@ public class HistoryHandlerConfig implements LogPublishingController {
     private final File logFile;
 
     /**
-     * Whether debugging is enabled.
-     */
-    private boolean debugging;
-
-    /**
-     * Create a new {@link LogPublishingController} that is based on a {@link ConfigurationFile}.
+     * Wrap the given {@link ConfigurationFile} to easily access the relevant options for the debug {@link Handler}.
      *
      * @param config        the related {@link ConfigurationFile}
      * @param logFileFolder the folder where to write the logfile.
      */
-    public HistoryHandlerConfig(final ConfigurationFile config, final File logFileFolder) {
-        this.debugging = config.getBoolean(CONFIG_ENABLED_PATH, false);
+    public DebugHandlerConfig(final ConfigurationFile config, final File logFileFolder) {
         this.config = config;
         this.logFile = new File(logFileFolder, LOG_FILE_PATH);
     }
 
-    @Override
-    public boolean isLogging() {
-        return debugging;
+    /**
+     * Get logging state.
+     *
+     * @return true if debugging is enabled in the config; false otherwise
+     */
+    public boolean isDebugging() {
+        return config.getBoolean(CONFIG_ENABLED_PATH, false);
     }
 
     /**
      * Set logging state.
      *
-     * @param logging enabled state to set
+     * @param debugging enabled state to set
      * @throws IOException when persisting the changed state fails
      */
-    public void setLogging(final boolean logging) throws IOException {
-        this.debugging = logging;
-        saveDebuggingToConfig(logging);
-    }
-
-    @Override
-    public void startLogging() throws IOException {
-        setLogging(true);
-    }
-
-    @Override
-    public void stopLogging() throws IOException {
-        setLogging(false);
-    }
-
-    private void saveDebuggingToConfig(final boolean debugging) throws IOException {
+    public void setDebugging(final boolean debugging) throws IOException {
         if (!config.isBoolean(CONFIG_ENABLED_PATH) || config.getBoolean(CONFIG_ENABLED_PATH) != debugging) {
             config.set(CONFIG_ENABLED_PATH, debugging);
             config.save();

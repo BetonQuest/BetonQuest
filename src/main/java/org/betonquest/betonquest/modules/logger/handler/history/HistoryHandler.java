@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.modules.logger.handler.history;
 
+import org.betonquest.betonquest.modules.config.ConfigUpdater;
 import org.betonquest.betonquest.modules.logger.handler.ResettableHandler;
 
 import java.io.IOException;
@@ -22,6 +23,7 @@ public class HistoryHandler extends Handler implements LogPublishingController {
      * The message printed before the history is printed.
      */
     private static final String START_OF_HISTORY = "=====START OF HISTORY=====";
+
     /**
      * The message printed after the history is printed.
      */
@@ -31,31 +33,40 @@ public class HistoryHandler extends Handler implements LogPublishingController {
      * The {@link LogRecord} history.
      */
     private final LogRecordQueue recordQueue;
+
     /**
      * Lock for publishing {@link LogRecord}s to maintain chronological order while publishing the accumulated history.
      */
     private final Lock publishLock;
+
     /**
      * The target Handler to log the history to.
      */
     private final ResettableHandler target;
 
     /**
-     * The debugging configuration for this {@link Handler}.
+     * The configuration updater for the debugging mode.
      */
-    private final LogPublishingController publishingController;
+    private final ConfigUpdater<Boolean> loggingStateUpdater;
+
+    /**
+     * Whether debugging is enabled.
+     */
+    private boolean logging;
 
     /**
      * Creates a new {@link HistoryHandler}.
      *
-     * @param publishingController the config for the settings
-     * @param recordQueue          the queue for storing records while not logging
-     * @param target               the Handler to log the history to
+     * @param logging the initial logging state
+     * @param loggingStateUpdater the config for the settings
+     * @param recordQueue the queue for storing records while not logging
+     * @param target the Handler to log the history to
      */
-    public HistoryHandler(final LogPublishingController publishingController, final LogRecordQueue recordQueue,
-                          final ResettableHandler target) {
+    public HistoryHandler(final boolean logging, final ConfigUpdater<Boolean> loggingStateUpdater,
+                          final LogRecordQueue recordQueue, final ResettableHandler target) {
         super();
-        this.publishingController = publishingController;
+        this.logging = logging;
+        this.loggingStateUpdater = loggingStateUpdater;
         this.recordQueue = recordQueue;
         this.target = target;
         this.publishLock = new ReentrantLock(true);
@@ -83,17 +94,6 @@ public class HistoryHandler extends Handler implements LogPublishingController {
         }
     }
 
-    /**
-     * Publishes any available history to the target handler.
-     */
-    private void push() {
-        if (recordQueue.canPublish()) {
-            target.publish(new LogRecord(Level.INFO, START_OF_HISTORY));
-            recordQueue.publishAll(target);
-            target.publish(new LogRecord(Level.INFO, END_OF_HISTORY));
-        }
-    }
-
     @Override
     public void flush() {
         target.flush();
@@ -111,7 +111,12 @@ public class HistoryHandler extends Handler implements LogPublishingController {
      */
     @Override
     public boolean isLogging() {
-        return publishingController.isLogging();
+        return logging;
+    }
+
+    private void setLogging(final boolean logging) throws IOException {
+        loggingStateUpdater.update(logging);
+        this.logging = logging;
     }
 
     @Override
@@ -119,7 +124,7 @@ public class HistoryHandler extends Handler implements LogPublishingController {
         publishLock.lock();
         try {
             if (!isLogging()) {
-                publishingController.startLogging();
+                setLogging(true);
                 push();
             }
         } finally {
@@ -132,11 +137,22 @@ public class HistoryHandler extends Handler implements LogPublishingController {
         publishLock.lock();
         try {
             if (isLogging()) {
-                publishingController.stopLogging();
+                setLogging(false);
                 target.reset();
             }
         } finally {
             publishLock.unlock();
+        }
+    }
+
+    /**
+     * Publishes any available history to the target handler.
+     */
+    private void push() {
+        if (recordQueue.canPublish()) {
+            target.publish(new LogRecord(Level.INFO, START_OF_HISTORY));
+            recordQueue.publishAll(target);
+            target.publish(new LogRecord(Level.INFO, END_OF_HISTORY));
         }
     }
 }

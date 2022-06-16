@@ -12,7 +12,6 @@ import org.betonquest.betonquest.modules.logger.handler.chat.RecordReceiverSelec
 import org.betonquest.betonquest.modules.logger.handler.history.BukkitSchedulerCleaningLogQueue;
 import org.betonquest.betonquest.modules.logger.handler.history.DiscardingLogQueue;
 import org.betonquest.betonquest.modules.logger.handler.history.HistoryHandler;
-import org.betonquest.betonquest.modules.logger.handler.history.HistoryHandlerConfig;
 import org.betonquest.betonquest.modules.logger.handler.history.LogRecordQueue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -65,10 +64,10 @@ public final class HandlerFactory {
      * @return a new {@link HistoryHandler}
      */
     public static HistoryHandler createHistoryHandler(final Plugin plugin, final BukkitScheduler scheduler, final ConfigurationFile config, final File logFileFolder, final InstantSource instantSource) {
-        final HistoryHandlerConfig historyHandlerConfig = new HistoryHandlerConfig(config, logFileFolder);
-        final LogRecordQueue logQueue = createLogRecordQueue(plugin, scheduler, instantSource, historyHandlerConfig.getExpireAfterMinutes());
-        final ResettableHandler targetHandler = createDebugLogFileHandler(historyHandlerConfig.getLogFile(), instantSource);
-        return new HistoryHandler(historyHandlerConfig, logQueue, targetHandler);
+        final DebugHandlerConfig debugHandlerConfig = new DebugHandlerConfig(config, logFileFolder);
+        final LogRecordQueue logQueue = createLogRecordQueue(plugin, scheduler, instantSource, debugHandlerConfig.getExpireAfterMinutes());
+        final ResettableHandler targetHandler = createDebugLogFileHandler(debugHandlerConfig.getLogFile(), instantSource);
+        return new HistoryHandler(debugHandlerConfig.isDebugging(), debugHandlerConfig::setDebugging, logQueue, targetHandler);
     }
 
     private static ResettableHandler createDebugLogFileHandler(final File logFile, final InstantSource instantSource) {
