@@ -3,6 +3,8 @@ package org.betonquest.betonquest.modules.logger.handler;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.betonquest.betonquest.modules.logger.format.ChatFormatter;
+import org.betonquest.betonquest.modules.logger.handler.chat.BukkitChatHandler;
+import org.betonquest.betonquest.modules.logger.handler.chat.RecordReceiverSelector;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

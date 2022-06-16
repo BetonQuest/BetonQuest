@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.logger.handler;
+package org.betonquest.betonquest.modules.logger.handler.history;
 
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 
@@ -9,8 +9,7 @@ import java.util.logging.LogRecord;
 /**
  * This is a debug configuration based on a {@link ConfigurationFile}.
  */
-@SuppressWarnings({"PMD.DataClass"})
-public class HistoryHandlerConfig implements DebugConfig {
+public class HistoryHandlerConfig implements LogPublishingController {
     /**
      * Default value for the expire after minutes value.
      */
@@ -32,7 +31,7 @@ public class HistoryHandlerConfig implements DebugConfig {
     private static final String CONFIG_ENABLED_PATH = CONFIG_SECTION + ".enabled";
 
     /**
-     * The full path to the config setting, that defined the history expiration time in minutes,
+     * The full path to the config setting, that defined the history expiration time in minutes.
      */
     private static final String CONFIG_HISTORY_PATH = CONFIG_SECTION + ".history_in_minutes";
 
@@ -64,14 +63,29 @@ public class HistoryHandlerConfig implements DebugConfig {
     }
 
     @Override
-    public boolean isDebugging() {
+    public boolean isLogging() {
         return debugging;
     }
 
+    /**
+     * Set logging state.
+     *
+     * @param logging enabled state to set
+     * @throws IOException when persisting the changed state fails
+     */
+    public void setLogging(final boolean logging) throws IOException {
+        this.debugging = logging;
+        saveDebuggingToConfig(logging);
+    }
+
     @Override
-    public void setDebugging(final boolean debugging) throws IOException {
-        this.debugging = debugging;
-        saveDebuggingToConfig(debugging);
+    public void startLogging() throws IOException {
+        setLogging(true);
+    }
+
+    @Override
+    public void stopLogging() throws IOException {
+        setLogging(false);
     }
 
     private void saveDebuggingToConfig(final boolean debugging) throws IOException {

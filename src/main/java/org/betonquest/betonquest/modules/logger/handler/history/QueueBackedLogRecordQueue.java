@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.logger.queue;
+package org.betonquest.betonquest.modules.logger.handler.history;
 
 import java.util.Queue;
 import java.util.logging.Handler;

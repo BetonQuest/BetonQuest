@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.modules.logger;
 
-import org.betonquest.betonquest.modules.logger.handler.PlayerPackageReceiverSelector;
-import org.betonquest.betonquest.modules.logger.handler.ReceiverSelectorRegistry;
-import org.betonquest.betonquest.modules.logger.handler.RecordReceiverSelector;
+import org.betonquest.betonquest.modules.logger.handler.chat.PlayerPackageReceiverSelector;
+import org.betonquest.betonquest.modules.logger.handler.chat.ReceiverSelectorRegistry;
+import org.betonquest.betonquest.modules.logger.handler.chat.RecordReceiverSelector;
 
 import java.util.HashMap;
 import java.util.Map;

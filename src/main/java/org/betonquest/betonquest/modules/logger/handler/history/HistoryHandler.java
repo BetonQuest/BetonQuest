@@ -1,6 +1,6 @@
-package org.betonquest.betonquest.modules.logger.handler;
+package org.betonquest.betonquest.modules.logger.handler.history;
 
-import org.betonquest.betonquest.modules.logger.queue.LogRecordQueue;
+import org.betonquest.betonquest.modules.logger.handler.ResettableHandler;
 
 import java.io.IOException;
 import java.util.concurrent.locks.Lock;
@@ -43,19 +43,19 @@ public class HistoryHandler extends Handler implements LogPublishingController {
     /**
      * The debugging configuration for this {@link Handler}.
      */
-    private final DebugConfig debugConfig;
+    private final LogPublishingController publishingController;
 
     /**
      * Creates a new {@link HistoryHandler}.
      *
-     * @param debugConfig the config for the settings
+     * @param publishingController the config for the settings
      * @param recordQueue          the queue for storing records while not logging
      * @param target               the Handler to log the history to
      */
-    public HistoryHandler(final DebugConfig debugConfig, final LogRecordQueue recordQueue,
+    public HistoryHandler(final LogPublishingController publishingController, final LogRecordQueue recordQueue,
                           final ResettableHandler target) {
         super();
-        this.debugConfig = debugConfig;
+        this.publishingController = publishingController;
         this.recordQueue = recordQueue;
         this.target = target;
         this.publishLock = new ReentrantLock(true);
@@ -105,13 +105,13 @@ public class HistoryHandler extends Handler implements LogPublishingController {
     }
 
     /**
-     * Get the {@link LogPublishingController} related to this {@link HistoryHandler}
+     * Get the {@link LogPublishingController} related to this {@link HistoryHandler}.
      *
      * @return a {@link LogPublishingController} instance
      */
     @Override
     public boolean isLogging() {
-        return debugConfig.isDebugging();
+        return publishingController.isLogging();
     }
 
     @Override
@@ -119,7 +119,7 @@ public class HistoryHandler extends Handler implements LogPublishingController {
         publishLock.lock();
         try {
             if (!isLogging()) {
-                debugConfig.setDebugging(true);
+                publishingController.startLogging();
                 push();
             }
         } finally {
@@ -132,7 +132,7 @@ public class HistoryHandler extends Handler implements LogPublishingController {
         publishLock.lock();
         try {
             if (isLogging()) {
-                debugConfig.setDebugging(false);
+                publishingController.stopLogging();
                 target.reset();
             }
         } finally {

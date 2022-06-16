@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.logger.handler;
+package org.betonquest.betonquest.modules.logger.handler.history;
 
 import java.io.IOException;
 
@@ -8,6 +8,8 @@ import java.io.IOException;
 public interface LogPublishingController {
 
     /**
+     * Check whether logging is enabled.
+     *
      * @return True, if debugging is enabled
      */
     boolean isLogging();

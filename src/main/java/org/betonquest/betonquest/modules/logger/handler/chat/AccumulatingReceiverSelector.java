@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.logger.handler;
+package org.betonquest.betonquest.modules.logger.handler.chat;
 
 import java.util.HashSet;
 import java.util.Set;

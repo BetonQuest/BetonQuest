@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.modules.logger.handler;
 
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
+import org.betonquest.betonquest.modules.logger.handler.chat.PlayerPackageReceiverSelector;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;

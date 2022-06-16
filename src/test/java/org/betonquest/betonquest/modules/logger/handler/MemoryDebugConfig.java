@@ -1,31 +1,38 @@
 package org.betonquest.betonquest.modules.logger.handler;
 
+import org.betonquest.betonquest.modules.logger.handler.history.LogPublishingController;
+
 /**
  * Debug configuration that is kept in memory only and not persisted.
  */
-public class MemoryDebugConfig implements DebugConfig {
+public class MemoryDebugConfig implements LogPublishingController {
 
     /**
      * Storage for the debugging state.
      */
-    private boolean debugging;
+    private boolean logging;
 
     /**
-     * Create a memory debugging config.
+     * Create a memory logging config.
      *
-     * @param debugging initial value for debugging
+     * @param logging initial value for logging
      */
-    public MemoryDebugConfig(final boolean debugging) {
-        this.debugging = debugging;
+    public MemoryDebugConfig(final boolean logging) {
+        this.logging = logging;
     }
 
     @Override
-    public boolean isDebugging() {
-        return debugging;
+    public boolean isLogging() {
+        return logging;
     }
 
     @Override
-    public void setDebugging(final boolean debugging) {
-        this.debugging = debugging;
+    public void startLogging() {
+        logging = true;
+    }
+
+    @Override
+    public void stopLogging() {
+        logging = false;
     }
 }

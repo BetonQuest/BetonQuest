@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.logger.handler;
+package org.betonquest.betonquest.modules.logger.handler.chat;
 
 /**
  * A registry for {@link RecordReceiverSelector}s.

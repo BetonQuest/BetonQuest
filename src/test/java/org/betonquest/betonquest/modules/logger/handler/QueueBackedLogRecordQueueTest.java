@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.modules.logger.handler;
 
-import org.betonquest.betonquest.modules.logger.queue.QueueBackedLogRecordQueue;
+import org.betonquest.betonquest.modules.logger.handler.history.QueueBackedLogRecordQueue;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;

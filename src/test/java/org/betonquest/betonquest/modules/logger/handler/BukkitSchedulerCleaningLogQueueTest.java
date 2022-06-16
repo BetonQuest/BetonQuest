@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.modules.logger.handler;
 
-import org.betonquest.betonquest.modules.logger.queue.BukkitSchedulerCleaningLogQueue;
+import org.betonquest.betonquest.modules.logger.handler.history.BukkitSchedulerCleaningLogQueue;
 import org.betonquest.betonquest.util.scheduler.BukkitSchedulerMock;
 import org.bukkit.plugin.Plugin;
 import org.junit.jupiter.api.Test;
@@ -23,25 +23,22 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 class BukkitSchedulerCleaningLogQueueTest {
     /**
-     * Plugin to use.
-     */
-    @Mock
-    private Plugin plugin;
-
-    /**
      * Fixed instant representing now.
      */
     private final Instant now = Instant.now();
-
     /**
      * Fixed instant source returning {@link #now}.
      */
     private final InstantSource nowSource = InstantSource.fixed(now);
-
     /**
      * Duration that log entries are valid for.
      */
     private final Duration validFor = Duration.of(10, ChronoUnit.MINUTES);
+    /**
+     * Plugin to use.
+     */
+    @Mock
+    private Plugin plugin;
 
     /**
      * Default constructor.

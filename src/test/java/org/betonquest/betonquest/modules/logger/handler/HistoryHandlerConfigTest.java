@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.modules.logger.handler;
 
 import org.betonquest.betonquest.api.config.ConfigurationFile;
+import org.betonquest.betonquest.modules.logger.handler.history.HistoryHandlerConfig;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -59,7 +60,7 @@ class HistoryHandlerConfigTest {
     void testInitialValueIsReadFromConfig(final boolean initialValue) {
         when(configurationFile.getBoolean(eq(DEBUG_ACTIVE_CONFIG_PATH), anyBoolean())).thenReturn(initialValue);
         final HistoryHandlerConfig historyHandlerConfig = new HistoryHandlerConfig(configurationFile, logDirectory);
-        assertEquals(initialValue, historyHandlerConfig.isDebugging(), "Initial value was not successfully loaded");
+        assertEquals(initialValue, historyHandlerConfig.isLogging(), "Initial value was not successfully loaded");
     }
 
     @ParameterizedTest
@@ -67,8 +68,8 @@ class HistoryHandlerConfigTest {
     void testToggleDebugging(final boolean initialValue, final boolean newValue) throws IOException {
         when(configurationFile.getBoolean(eq(DEBUG_ACTIVE_CONFIG_PATH), anyBoolean())).thenReturn(initialValue);
         final HistoryHandlerConfig historyHandlerConfig = new HistoryHandlerConfig(configurationFile, logDirectory);
-        historyHandlerConfig.setDebugging(newValue);
-        assertEquals(newValue, historyHandlerConfig.isDebugging(), "Initial value was not successfully loaded");
+        historyHandlerConfig.setLogging(newValue);
+        assertEquals(newValue, historyHandlerConfig.isLogging(), "Initial value was not successfully loaded");
         verify(configurationFile).set(DEBUG_ACTIVE_CONFIG_PATH, newValue);
     }
 }

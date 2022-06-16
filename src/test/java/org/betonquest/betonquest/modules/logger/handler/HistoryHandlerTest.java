@@ -1,7 +1,9 @@
 package org.betonquest.betonquest.modules.logger.handler;
 
-import org.betonquest.betonquest.modules.logger.queue.LogRecordQueue;
-import org.betonquest.betonquest.modules.logger.queue.QueueBackedLogRecordQueue;
+import org.betonquest.betonquest.modules.logger.handler.history.HistoryHandler;
+import org.betonquest.betonquest.modules.logger.handler.history.LogPublishingController;
+import org.betonquest.betonquest.modules.logger.handler.history.LogRecordQueue;
+import org.betonquest.betonquest.modules.logger.handler.history.QueueBackedLogRecordQueue;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,7 +26,7 @@ class HistoryHandlerTest {
     /**
      * The debug config.
      */
-    private final DebugConfig debugConfig = new MemoryDebugConfig(false);
+    private final LogPublishingController publishingController = new MemoryDebugConfig(false);
 
     /**
      * Default constructor.
@@ -34,10 +36,10 @@ class HistoryHandlerTest {
 
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
-    void testStartLoggingPrintsHistoryInCorrectOrder(@Mock final DebugConfig debugConfig) throws IOException {
+    void testStartLoggingPrintsHistoryInCorrectOrder() throws IOException {
         final LogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());
         final LogValidator validator = new LogValidator();
-        final HistoryHandler historyHandler = new HistoryHandler(debugConfig, logQueue, new ResettableHandler(() -> validator));
+        final HistoryHandler historyHandler = new HistoryHandler(publishingController, logQueue, new ResettableHandler(() -> validator));
 
         final Logger logger = LogValidator.getSilentLogger();
         logger.addHandler(historyHandler);
@@ -54,7 +56,7 @@ class HistoryHandlerTest {
     @Test
     void testStartLoggingPublishesHistory(@Mock final ResettableHandler internalHandler) throws IOException {
         final LogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());
-        final HistoryHandler historyHandler = new HistoryHandler(debugConfig, logQueue, internalHandler);
+        final HistoryHandler historyHandler = new HistoryHandler(publishingController, logQueue, internalHandler);
         final LogRecord logRecord = new LogRecord(Level.INFO, "record");
         historyHandler.publish(logRecord);
 
@@ -69,7 +71,7 @@ class HistoryHandlerTest {
     @Test
     void testNoHistoryMarkersWhenStartingWithEmptyHistory(@Mock final ResettableHandler internalHandler) throws IOException {
         final LogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());
-        final HistoryHandler historyHandler = new HistoryHandler(debugConfig, logQueue, internalHandler);
+        final HistoryHandler historyHandler = new HistoryHandler(publishingController, logQueue, internalHandler);
         historyHandler.startLogging();
         verifyNoInteractions(internalHandler);
     }
