@@ -33,7 +33,7 @@ class LogfileFormatterTest {
 
     @Test
     void testDebugFormatting() {
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(plugin, null, Level.INFO, "Message1");
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.INFO, "Message1", plugin);
         assertLogMessage(record, "INFO]: [BetonQuest] Message1\n");
     }
 
@@ -47,7 +47,7 @@ class LogfileFormatterTest {
     void testDebugFormattingPlugin() {
         final Plugin plugin = mock(Plugin.class);
         when(plugin.getName()).thenReturn("CustomPlugin");
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(plugin, null, Level.INFO, "Message2");
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.INFO, "Message2", plugin);
         assertLogMessage(record, "INFO]: [CustomPlugin] Message2\n");
     }
 
@@ -55,13 +55,13 @@ class LogfileFormatterTest {
     void testDebugFormattingPackage() {
         final QuestPackage pack = mock(QuestPackage.class);
         when(pack.getPackagePath()).thenReturn("TestPackage");
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(plugin, pack, Level.INFO, "Message3");
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.INFO, "Message3", plugin, pack);
         assertLogMessage(record, "INFO]: [BetonQuest] <TestPackage> Message3\n");
     }
 
     @Test
     void testDebugFormattingException() {
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(plugin, null, Level.INFO, "Message4");
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.INFO, "Message4", plugin);
         record.setThrown(new NullPointerException("Exception Message"));
         final String message = getFormattedMessage(record);
         final String start = """

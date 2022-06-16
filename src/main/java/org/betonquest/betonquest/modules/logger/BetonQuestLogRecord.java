@@ -32,26 +32,26 @@ public class BetonQuestLogRecord extends LogRecord {
     private final String pack;
 
     /**
-     * Creates a custom {@link LogRecord} that comes from a {@link Plugin} and may be specific to a {@link QuestPackage}.
-     *
-     * @param plugin plugin that logged this LogRecord
-     * @param pack quest package this LogRecord is about; or null if it is not about any specific package
-     * @param level level of the LogRecord
-     * @param msg raw non-localized logging message (may be null)
-     */
-    public BetonQuestLogRecord(@NotNull final Plugin plugin, @Nullable final QuestPackage pack, final Level level, final String msg) {
-        this(level, msg, plugin.getName(), pack == null ? null : pack.getPackagePath());
-    }
-
-    /**
-     * Creates a custom {@link LogRecord} that comes from a plugin and is not specific to any quest package.
+     * Creates a custom {@link LogRecord} that comes from a {@link Plugin} and is not specific to any {@link QuestPackage}.
      *
      * @param level level of the LogRecord
      * @param message raw non-localized logging message (may be null)
-     * @param pluginName name of the plugin that logged this LogRecord
+     * @param plugin plugin that logged this LogRecord
      */
-    public BetonQuestLogRecord(final Level level, final String message, @NotNull final String pluginName) {
-        this(level, message, pluginName, null);
+    public BetonQuestLogRecord(final Level level, final String message, @NotNull final Plugin plugin) {
+        this(level, message, plugin, null);
+    }
+
+    /**
+     * Creates a custom {@link LogRecord} that comes from a {@link Plugin} and may be specific to a {@link QuestPackage}.
+     *
+     * @param level level of the LogRecord
+     * @param message raw non-localized logging message (may be null)
+     * @param plugin plugin that logged this LogRecord
+     * @param pack quest package this LogRecord is about; or null if it is not about any specific package
+     */
+    public BetonQuestLogRecord(final Level level, final String message, @NotNull final Plugin plugin, @Nullable final QuestPackage pack) {
+        this(level, message, plugin.getName(), pack == null ? null : pack.getPackagePath());
     }
 
     /**

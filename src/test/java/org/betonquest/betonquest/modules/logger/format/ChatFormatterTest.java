@@ -48,7 +48,7 @@ class ChatFormatterTest {
     @Test
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     void testChatFormatting() {
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(plugin, null, Level.INFO, MESSAGE);
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.INFO, MESSAGE, plugin);
         final String expected1 = "{\"text\":\"" + FORMATTED_MESSAGE;
         final String expected2 = "{\"text\":\"§7[§8BQ§7]§r " + FORMATTED_MESSAGE;
         final String expected3 = "{\"text\":\"§7[§8BetonQuest§7]§r " + FORMATTED_MESSAGE;
@@ -83,7 +83,7 @@ class ChatFormatterTest {
     @Test
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     void testChatFormattingPlugin() {
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(pluginExtension, null, Level.INFO, MESSAGE);
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.INFO, MESSAGE, pluginExtension);
         final String expected1 = "{\"text\":\"" + FORMATTED_MESSAGE;
         final String expected2 = "{\"text\":\"§7[§8Extension§7]§r " + FORMATTED_MESSAGE;
         final String expected3 = "{\"text\":\"§7[§8BQ§7]§r " + FORMATTED_MESSAGE;
@@ -103,14 +103,14 @@ class ChatFormatterTest {
     void testChatFormattingPackage() {
         final QuestPackage pack = mock(QuestPackage.class);
         when(pack.getPackagePath()).thenReturn("TestPackage");
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(plugin, pack, Level.INFO, MESSAGE);
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.INFO, MESSAGE, plugin, pack);
         final String expected = "{\"text\":\"\\u003cTestPackage\\u003e " + FORMATTED_MESSAGE;
         assertLogMessage(ChatFormatter.PluginDisplayMethod.NONE, null, null, record, expected);
     }
 
     @Test
     void testChatFormattingException() {
-        final BetonQuestLogRecord record = new BetonQuestLogRecord(plugin, null, Level.INFO, MESSAGE);
+        final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.INFO, MESSAGE, plugin);
         record.setThrown(new NullPointerException("Exception Message"));
         final String message = getFormattedMessage(ChatFormatter.PluginDisplayMethod.NONE, null, null, record);
         final String start = "{\"extra\":[{\"color\":\"red\",\"clickEvent\":{\"action\":\"copy_to_clipboard\",\"value\":\"\\n"
