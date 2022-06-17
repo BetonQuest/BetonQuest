@@ -7,23 +7,27 @@ and a NPC. Therefore these are the basic tool for story telling.
 
 !!! danger "Requirements"
     For this part of the tutorial you have to go through the [Setup Guide](../Getting-Started/Setting-up-a-local-test-server.md).
-    After you finished setting up your local server, editor and installing the plugin you can start with this tutorial.
+    After you finished setting up your local server, editor and installed the plugin you can start with this tutorial.
 
     You don't need any experience in creating quest. This is the very beginning.
 
 ## 1. Creating the folder structure for the first quest
 
-Let's start with creating new folders for this tutorial. First create a `tutorialQuest` folder and inside this
-folder create another folder named `conversations` this is helpful to separate things.
-Now we have to create two more files. The first file is called `package.yml` and this goes into the `tutorialQuest` folder.
-The second one is called `jack.yml` and goes to the `conversations` folder.
-After creating the folders/files your structure should look like this:
+Let's start by creating a folder structure for this tutorial. 
+All files related to quests must be placed inside the :material-folder-home: *QuestPackages* directory, which is
+automatically created by the plugin.
 
-* :material-folder-open: tutorialQuest
-    - :material-file: package.yml
-    - :material-folder-open: conversations
-        - :material-file: jack.yml  
+Please create folders and files so your file structure looks like this:
+
+* :material-folder-home: QuestPackages *(already there)*
+    - :material-folder-open: tutorialQuest
+        - :material-file: package.yml
+          - :material-folder-open: conversations
+              - :material-file: jack.yml  
     
+
+This means that QuestPackages must contain a folder called tutorialQuest. This folder contains a file named package.yml
+and another directory called conversations. The conversations directory must contain another file named jack.yml.
 
 Now that we have the folder and file structure we can move on to create our first conversation.
 First we need to create the `npcs` section in the `package.yml` so that the quest package knows which Citizens NPC
@@ -38,9 +42,9 @@ Save the file after editing.
 
 ??? info "How to find out the Citizens NPC ID"
     
-    * Stay close to the NPC you want to select
-    * Type the command `/npc select` to select the nearby NPC
-    * Type the command `/npc id` to get the ID from your NPC
+    1. Stay close to the NPC you want to select
+    2. Type the command `/npc select` to select the nearby NPC
+    3. Type the command `/npc id` to get the ID from your NPC
 
 
 ## 2. Creating your first conversation
