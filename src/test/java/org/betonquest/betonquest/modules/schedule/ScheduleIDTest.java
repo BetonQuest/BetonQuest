@@ -1,10 +1,9 @@
-package org.betonquest.betonquest.modules.schedules;
+package org.betonquest.betonquest.modules.schedule;
 
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
-import org.betonquest.betonquest.modules.schedule.ScheduleID;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 

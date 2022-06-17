@@ -55,7 +55,7 @@ public abstract class Scheduler<S extends Schedule> {
      * @param schedule schedule object to register
      */
     public void addSchedule(final S schedule) {
-        schedules.put(schedule.scheduleID, schedule);
+        schedules.put(schedule.getId(), schedule);
     }
 
     /**
@@ -97,7 +97,7 @@ public abstract class Scheduler<S extends Schedule> {
      */
     protected void executeEvents(final S schedule) {
         LOG.debug(schedule.getId().getPackage(), "Schedule '" + schedule.getId() + "' runs its events...");
-        for (final EventID eventID : schedule.events) {
+        for (final EventID eventID : schedule.getEvents()) {
             BetonQuest.event(null, eventID);
         }
     }

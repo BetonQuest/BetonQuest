@@ -116,7 +116,7 @@ public class EventScheduling {
      * @param <S>           type of the schedule.
      */
     public record ScheduleType<S extends Schedule>(Class<S> scheduleClass, Scheduler<S> scheduler) {
-        private S newScheduleInstance(final ScheduleID scheduleID, final ConfigurationSection scheduleConfig)
+        S newScheduleInstance(final ScheduleID scheduleID, final ConfigurationSection scheduleConfig)
                 throws InstructionParseException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
             try {
                 return scheduleClass
@@ -131,7 +131,7 @@ public class EventScheduling {
             }
         }
 
-        private void createAndScheduleNewInstance(final ScheduleID scheduleID, final ConfigurationSection scheduleConfig)
+        void createAndScheduleNewInstance(final ScheduleID scheduleID, final ConfigurationSection scheduleConfig)
                 throws InstructionParseException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
             scheduler.addSchedule(newScheduleInstance(scheduleID, scheduleConfig));
         }

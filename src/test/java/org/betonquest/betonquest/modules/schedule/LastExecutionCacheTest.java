@@ -1,0 +1,142 @@
+package org.betonquest.betonquest.modules.schedule;
+
+import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.MockedStatic;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.Instant;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+/**
+ * Test that the LastExecutionCache is properly loading & saving to cache file.
+ */
+@ExtendWith(BetonQuestLoggerService.class)
+@SuppressWarnings({"PMD.JUnitTestContainsTooManyAsserts", "PMD.AvoidDuplicateLiterals", "PMD.TooManyStaticImports"})
+class LastExecutionCacheTest {
+
+    /**
+     * The cache to test.
+     */
+    private LastExecutionCache lastExecutionCache;
+
+    /**
+     * Config Accessor used by the cache to access the file.
+     */
+    private ConfigAccessor cacheAccessor;
+
+    /**
+     * Config provided by the {@link #cacheAccessor} to write & read from the cache
+     */
+    private YamlConfiguration cacheContent;
+
+    /**
+     * ID of the schedule to load and save from
+     */
+    private ScheduleID scheduleID;
+
+    /**
+     * Default constructor.
+     */
+    public LastExecutionCacheTest() {
+    }
+
+    @BeforeEach
+    void setUp() {
+        try (MockedStatic<ConfigAccessor> configAccessor = mockStatic(ConfigAccessor.class);
+             MockedStatic<Files> files = mockStatic(Files.class)) {
+            cacheAccessor = mock(ConfigAccessor.class);
+            cacheContent = mock(YamlConfiguration.class);
+            scheduleID = mock(ScheduleID.class);
+            when(cacheAccessor.getConfig()).thenReturn(cacheContent);
+            configAccessor.when(() -> ConfigAccessor.create(any(File.class))).thenReturn(cacheAccessor);
+            files.when(() -> Files.exists(any(Path.class))).thenReturn(true);
+            lastExecutionCache = new LastExecutionCache(new File("."));
+        }
+    }
+
+    @Test
+    void testRawExecutionTime() {
+        final String expected = "2022-06-17T08:45:49.000000000Z";
+        when(scheduleID.getFullID()).thenReturn("test-package.testRawExecutionTime");
+        when(cacheContent.getString("test-package.testRawExecutionTime")).thenReturn(expected);
+        assertEquals(Optional.of(expected), lastExecutionCache.getRawLastExecutionTime(scheduleID), "Cache should return cached time");
+    }
+
+    @Test
+    void testExecutionTime() {
+        final String expected = "1997-02-02T02:02:02.020202020Z";
+        when(scheduleID.getFullID()).thenReturn("test-package.testExecutionTime");
+        when(cacheContent.getString("test-package.testExecutionTime")).thenReturn(expected);
+        assertEquals(Optional.of(Instant.parse(expected)), lastExecutionCache.getLastExecutionTime(scheduleID), "Cache should return cached time");
+    }
+
+    @Test
+    void testRawNotCached() {
+        when(scheduleID.getFullID()).thenReturn("test-package.testRawNotCached");
+        when(cacheContent.getString("test-package.testRawNotCached")).thenReturn(null);
+        assertEquals(Optional.empty(), lastExecutionCache.getRawLastExecutionTime(scheduleID), "Cache should return empty optional");
+    }
+
+    @Test
+    void testNotCached() {
+        when(scheduleID.getFullID()).thenReturn("test-package.testNotCached");
+        when(cacheContent.getString("test-package.testNotCached")).thenReturn(null);
+        assertEquals(Optional.empty(), lastExecutionCache.getLastExecutionTime(scheduleID), "Cache should return empty optional");
+    }
+
+    @Test
+    void testIsContained() {
+        final String expected = "2000-01-01T00:00:00.000000000Z";
+        when(scheduleID.getFullID()).thenReturn("test-package.testIsContained");
+        when(cacheContent.getString("test-package.testIsContained")).thenReturn(expected);
+        assertTrue(lastExecutionCache.isCached(scheduleID), "isCached() should return true");
+    }
+
+    @Test
+    void testIsNotContained() {
+        when(scheduleID.getFullID()).thenReturn("test-package.testIsNotContained");
+        when(cacheContent.getString("test-package.testIsNotContained")).thenReturn(null);
+        assertFalse(lastExecutionCache.isCached(scheduleID), "isCached() should return false");
+    }
+
+    @Test
+    void testCacheRaw() throws IOException {
+        final String expected = "2014-10-16T14:28:00Z";
+        when(scheduleID.getFullID()).thenReturn("test-package.testCacheRaw");
+        lastExecutionCache.cacheRawExecutionTime(scheduleID, expected);
+        verify(cacheContent).set("test-package.testCacheRaw", expected);
+        verify(cacheAccessor).save();
+    }
+
+    @Test
+    void testCacheInstant() throws IOException {
+        final Instant toCache = Instant.parse("1970-01-01T00:00:00.000000000Z");
+        when(scheduleID.getFullID()).thenReturn("test-package.testCacheInstant");
+        lastExecutionCache.cacheExecutionTime(scheduleID, toCache);
+        verify(cacheContent).set("test-package.testCacheInstant", toCache.toString());
+        verify(cacheAccessor).save();
+    }
+
+    @Test
+    void reload() throws IOException {
+        lastExecutionCache.reload();
+        verify(cacheAccessor).reload();
+    }
+}
