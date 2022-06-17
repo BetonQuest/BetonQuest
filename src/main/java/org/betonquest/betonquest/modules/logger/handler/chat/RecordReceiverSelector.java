@@ -10,10 +10,10 @@ import java.util.logging.LogRecord;
 public interface RecordReceiverSelector {
 
     /**
-     * Find players that should reveice the given LogRecord.
+     * Find players that should receive the given LogRecord.
      *
      * @param record the record to filter for
-     * @return a set of players that should reveive the record
+     * @return a set of players that should receive the record
      */
     Set<UUID> findReceivers(LogRecord record);
 }
