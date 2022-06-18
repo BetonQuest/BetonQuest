@@ -3,6 +3,7 @@ package org.betonquest.betonquest.modules.logger;
 import lombok.CustomLog;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
+import org.betonquest.betonquest.modules.logger.filter.LogRecordTypeFilter;
 import org.betonquest.betonquest.modules.logger.format.ChatFormatter;
 import org.betonquest.betonquest.modules.logger.format.LogfileFormatter;
 import org.betonquest.betonquest.modules.logger.handler.LazyHandler;
@@ -49,6 +50,7 @@ public final class HandlerFactory {
      */
     public static ChatHandler createChatHandler(final Plugin plugin, final RecordReceiverSelector receiverSelector, final BukkitAudiences bukkitAudiences) {
         final ChatHandler handler = new ChatHandler(receiverSelector, bukkitAudiences);
+        handler.setFilter(new LogRecordTypeFilter(BetonQuestLogRecord.class));
         handler.setFormatter(new ChatFormatter(ChatFormatter.PluginDisplayMethod.ROOT_PLUGIN_AND_PLUGIN, plugin, "BQ"));
         return handler;
     }
@@ -67,7 +69,9 @@ public final class HandlerFactory {
         final DebugHandlerConfig debugHandlerConfig = new DebugHandlerConfig(config, logFileFolder);
         final LogRecordQueue logQueue = createLogRecordQueue(plugin, scheduler, instantSource, debugHandlerConfig.getExpireAfterMinutes());
         final ResettableHandler targetHandler = createDebugLogFileHandler(debugHandlerConfig.getLogFile(), instantSource);
-        return new HistoryHandler(debugHandlerConfig.isDebugging(), debugHandlerConfig::setDebugging, logQueue, targetHandler);
+        final HistoryHandler historyHandler = new HistoryHandler(debugHandlerConfig.isDebugging(), debugHandlerConfig::setDebugging, logQueue, targetHandler);
+        historyHandler.setFilter(new LogRecordTypeFilter(BetonQuestLogRecord.class));
+        return historyHandler;
     }
 
     private static ResettableHandler createDebugLogFileHandler(final File logFile, final InstantSource instantSource) {
