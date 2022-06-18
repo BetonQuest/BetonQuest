@@ -1189,6 +1189,10 @@ public class BetonQuest extends JavaPlugin {
             rpgMenu.onDisable();
         }
         FreezeEvent.cleanup();
+
+        final java.util.logging.Logger serverLogger = getServer().getLogger().getParent();
+        serverLogger.removeHandler(debugHistoryHandler);
+        serverLogger.removeHandler(chatHandler);
         debugHistoryHandler.close();
         chatHandler.close();
     }
