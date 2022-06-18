@@ -91,7 +91,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * The LogPublishingController to control the debug log.
      */
     private final LogPublishingController debuggingController;
-    private String defaultPack = Config.getString("config.default_package");
 
     /**
      * Registers a new executor and a new tab completer of the /betonquest command.
@@ -406,7 +405,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      *
      * @param args
      * @param type - the type of the Id (item/event/journal/condition/objective),
-     * null for unspecific
+     *             null for unspecific
      * @return
      */
     private List<String> completeId(final String[] args, final AccessorType type) {
