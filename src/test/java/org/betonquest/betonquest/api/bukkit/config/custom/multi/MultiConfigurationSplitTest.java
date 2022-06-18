@@ -19,12 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @SuppressWarnings({"PMD.JUnit5TestShouldBePackagePrivate", "PMD.JUnitAssertionsShouldIncludeMessage"})
 public class MultiConfigurationSplitTest extends MultiConfigurationTest {
-    /**
-     * Empty constructor
-     */
-    public MultiConfigurationSplitTest() {
-        super();
-    }
 
     /**
      * Get the default configuration values as {@link Configuration}.

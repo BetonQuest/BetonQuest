@@ -134,6 +134,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - QuestItems could be eaten, this was caused by a changed mc behaviour
     - notify IO `subtitle` and `title` with only a subtitle was not send
     - npcHider not working for citizens with a ModelEngine trait
+    - 1.19 ProtocolLib warnings about deprecated packages
     - `npcrange` objective - is triggered at wrong time
     - `command` event - includes 'conditions:...' into the command
     - `craft` objective - multi-craft, drop-craft, hotbar/offhand-craft, shift-Q-craft and any illegal crafting is
@@ -318,7 +319,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - fixed notify couldn't use variables that contain `:`
 - improved stability for brew objective when other plugins affect brewing
 - fixed region and npcregion condition
-- fixed debugging dose not start on server startup
+- fixed debugging does not start on server startup
 - fixed ghost holograms caused by reloading BQ
 - fixed deadlock(Server crash) in Conversations with a large amount of npc and player options with a large amount of
   conditions

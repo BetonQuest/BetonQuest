@@ -41,12 +41,6 @@ class BetonQuestLoggerTest {
      */
     private static final String EXCEPTION_MESSAGE = "Test Exception";
 
-    /**
-     * Default constructor.
-     */
-    public BetonQuestLoggerTest() {
-    }
-
     private QuestPackage mockQuestPackage() {
         final QuestPackage questPackage = mock(QuestPackage.class);
         when(questPackage.getPackagePath()).thenReturn(CUSTOM_CONFIG_PACKAGE);

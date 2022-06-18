@@ -19,13 +19,6 @@ public class HandleModificationConfigurationTest extends ConfigurationBaseTest {
      */
     private HandleModificationToConfiguration setter;
 
-    /**
-     * Empty constructor
-     */
-    public HandleModificationConfigurationTest() {
-        super();
-    }
-
     @Override
     public Configuration getConfig() {
         setter = new HandleModificationToConfiguration();

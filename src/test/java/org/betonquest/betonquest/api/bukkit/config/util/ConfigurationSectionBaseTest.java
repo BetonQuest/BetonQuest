@@ -32,12 +32,6 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @SuppressWarnings({"PMD.GodClass", "PMD.JUnitAssertionsShouldIncludeMessage", "PMD.AvoidDuplicateLiterals", "PMD.JUnit5TestShouldBePackagePrivate"})
 public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<ConfigurationSection> implements ConfigurationSectionTestInterface {
-    /**
-     * Empty constructor
-     */
-    public ConfigurationSectionBaseTest() {
-        super();
-    }
 
     @Override
     public ConfigurationSection getConfig() {
