@@ -39,12 +39,6 @@ class BukkitSchedulerCleaningLogQueueTest {
     @Mock
     private Plugin plugin;
 
-    /**
-     * Default constructor.
-     */
-    public BukkitSchedulerCleaningLogQueueTest() {
-    }
-
     @Test
     void testSchedulerClearsOldRecords() {
         try (BukkitSchedulerMock scheduler = new BukkitSchedulerMock()) {

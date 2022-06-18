@@ -45,13 +45,6 @@ class PlayerPackageReceiverSelectorTest {
      */
     private final Set<UUID> uuids = Set.of(UUID.randomUUID(), UUID.randomUUID());
 
-    /**
-     * Default constructor.
-     */
-    public PlayerPackageReceiverSelectorTest() {
-        // Empty
-    }
-
     static Stream<BetonQuestLogRecord> fineLevelRecordSource() {
         return Stream.of(
                 recordWith(Level.FINE, OUTER_PACKAGE),

@@ -22,12 +22,6 @@ import static org.mockito.Mockito.*;
 @ExtendWith(BetonQuestLoggerService.class)
 @ExtendWith(MockitoExtension.class)
 class ChatHandlerTest {
-    /**
-     * Default constructor.
-     */
-    public ChatHandlerTest() {
-        // Empty
-    }
 
     @Test
     void testLoggingToPlayersChat(

@@ -18,12 +18,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(BetonQuestLoggerService.class)
 class UtilsTest {
 
-    /**
-     * Default constructor.
-     */
-    public UtilsTest() {
-    }
-
     private void prepareConfig(final MockedStatic<Config> config) {
         config.when(() -> Config.getString("config.journal.lines_per_page")).thenReturn("13");
         config.when(() -> Config.getString("config.journal.chars_per_line")).thenReturn("19");

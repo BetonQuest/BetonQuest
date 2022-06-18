@@ -20,13 +20,6 @@ public class HandleModificationConfigurationSectionTest extends ConfigurationSec
      */
     protected HandleModificationToConfiguration setter;
 
-    /**
-     * Empty constructor
-     */
-    public HandleModificationConfigurationSectionTest() {
-        super();
-    }
-
     @Override
     public ConfigurationSection getConfig() {
         setter = new HandleModificationToConfiguration();

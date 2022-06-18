@@ -27,13 +27,6 @@ public class UnmodifiableConfigurationSectionTest extends ConfigurationSectionBa
      */
     private Map<String, Object> valuesDefault;
 
-    /**
-     * Empty constructor
-     */
-    public UnmodifiableConfigurationSectionTest() {
-        super();
-    }
-
     @Override
     public ConfigurationSection getConfig() {
         return new UnmodifiableConfigurationSection(super.getDefaultConfig());

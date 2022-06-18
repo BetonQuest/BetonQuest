@@ -28,12 +28,6 @@ class LazyHandlerTest {
     @Mock
     private Handler internalHandler;
 
-    /**
-     * Default constructor.
-     */
-    public LazyHandlerTest() {
-    }
-
     @Test
     void testLazyInstantiation(@Mock final Supplier<Handler> handlerSupplier) {
         when(handlerSupplier.get()).thenReturn(internalHandler);

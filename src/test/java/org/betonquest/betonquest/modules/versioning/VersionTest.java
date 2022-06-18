@@ -40,12 +40,6 @@ class VersionTest {
     private static final Version V_1_1_1_99 = new Version("1.1.1-99");
 
     /**
-     * Empty constructor
-     */
-    public VersionTest() {
-    }
-
-    /**
      * Test if the {@link Version}'s have the correct string version
      */
     @Test
