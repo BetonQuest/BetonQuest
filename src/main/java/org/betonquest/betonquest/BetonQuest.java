@@ -628,6 +628,10 @@ public class BetonQuest extends JavaPlugin {
         final AccumulatingReceiverSelector receiverSelector = new AccumulatingReceiverSelector();
         chatHandler = HandlerFactory.createChatHandler(this, receiverSelector, adventure);
 
+        final java.util.logging.Logger serverLogger = getServer().getLogger().getParent();
+        serverLogger.addHandler(debugHistoryHandler);
+        serverLogger.addHandler(chatHandler);
+
         // load configuration
         Config.setup(this);
         Notify.load();
