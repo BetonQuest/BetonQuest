@@ -1664,14 +1664,20 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 return;
             }
             final String filter = args[2];
-            if (logWatcher.isActivePattern(uuid, filter) && args.length == 3) {
-                logWatcher.removeFilter(uuid, filter);
-                sender.sendMessage("§2Filter removed!");
-                return;
+            if (logWatcher.isActivePattern(uuid, filter)) {
+                if (args.length == 3) {
+                    logWatcher.removeFilter(uuid, filter);
+                    sender.sendMessage("§2Filter removed!");
+                } else {
+                    final Level level = getLogLevel(args[3]);
+                    logWatcher.addFilter(uuid, filter, level);
+                    sender.sendMessage("§2Filter replaced!");
+                }
+            } else {
+                final Level level = getLogLevel(args.length > 3 ? args[3] : null);
+                logWatcher.addFilter(uuid, filter, level);
+                sender.sendMessage("§2Filter added!");
             }
-            final Level level = getLogLevel(args.length > 3 ? args[3] : null);
-            logWatcher.addFilter(uuid, filter, level);
-            sender.sendMessage("§2Filter added!");
             return;
         }
         final Boolean input = "true".equalsIgnoreCase(args[1]) ? Boolean.TRUE
