@@ -148,7 +148,11 @@ import org.betonquest.betonquest.id.VariableID;
 import org.betonquest.betonquest.item.QuestItemHandler;
 import org.betonquest.betonquest.mechanics.PlayerHider;
 import org.betonquest.betonquest.menu.RPGMenu;
-import org.betonquest.betonquest.modules.logger.LogWatcher;
+import org.betonquest.betonquest.modules.logger.HandlerFactory;
+import org.betonquest.betonquest.modules.logger.PlayerLogWatcher;
+import org.betonquest.betonquest.modules.logger.handler.chat.AccumulatingReceiverSelector;
+import org.betonquest.betonquest.modules.logger.handler.chat.ChatHandler;
+import org.betonquest.betonquest.modules.logger.handler.history.HistoryHandler;
 import org.betonquest.betonquest.modules.versioning.Updater;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.notify.ActionBarNotifyIO;
@@ -221,6 +225,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.time.InstantSource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -234,10 +239,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Represents BetonQuest plugin
+ * Represents BetonQuest plugin.
  */
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength", "PMD.GodClass",
-        "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidFieldNameMatchingMethodName", "PMD.AtLeastOneConstructor"})
+        "PMD.TooManyMethods", "PMD.TooManyFields", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals",
+        "PMD.AvoidFieldNameMatchingMethodName", "PMD.AtLeastOneConstructor"})
 public class BetonQuest extends JavaPlugin {
     private static final Map<String, Class<? extends Condition>> CONDITION_TYPES = new HashMap<>();
     private static final Map<String, Class<? extends Objective>> OBJECTIVE_TYPES = new HashMap<>();
@@ -268,14 +274,16 @@ public class BetonQuest extends JavaPlugin {
     private final Map<String, QuestEventFactory> eventTypes = new HashMap<>();
     private final ConcurrentHashMap<String, PlayerData> playerDataMap = new ConcurrentHashMap<>();
     private ConfigurationFile config;
+
     /**
-     * -- GETTER --
-     * Get the LogWatcher instance.
-     *
-     * @return The LogWatcher instance.
+     * Handler that keeps the recent debug log history to write it to a file if needed.
      */
-    @Getter
-    private LogWatcher logWatcher;
+    private HistoryHandler debugHistoryHandler;
+
+    /**
+     * Handler that sends LogRecords to players.
+     */
+    private ChatHandler chatHandler;
     private String pluginTag;
     /**
      * The adventure instance.
@@ -614,7 +622,15 @@ public class BetonQuest extends JavaPlugin {
 
         pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
         adventure = BukkitAudiences.create(this);
-        logWatcher = new LogWatcher(this, new File(getDataFolder(), "/logs"), config, adventure);
+
+        debugHistoryHandler = HandlerFactory.createHistoryHandler(this, this.getServer().getScheduler(), config, new File(getDataFolder(), "/logs"), InstantSource.system());
+
+        final AccumulatingReceiverSelector receiverSelector = new AccumulatingReceiverSelector();
+        chatHandler = HandlerFactory.createChatHandler(this, receiverSelector, adventure);
+
+        final java.util.logging.Logger serverLogger = getServer().getLogger().getParent();
+        serverLogger.addHandler(debugHistoryHandler);
+        serverLogger.addHandler(chatHandler);
 
         // load configuration
         Config.setup(this);
@@ -679,7 +695,7 @@ public class BetonQuest extends JavaPlugin {
         new CustomDropListener();
 
         // register commands
-        new QuestCommand(adventure);
+        new QuestCommand(adventure, new PlayerLogWatcher(receiverSelector), debugHistoryHandler);
         new JournalCommand();
         new BackpackCommand();
         new CancelQuestCommand();
@@ -1173,6 +1189,12 @@ public class BetonQuest extends JavaPlugin {
             rpgMenu.onDisable();
         }
         FreezeEvent.cleanup();
+
+        final java.util.logging.Logger serverLogger = getServer().getLogger().getParent();
+        serverLogger.removeHandler(debugHistoryHandler);
+        serverLogger.removeHandler(chatHandler);
+        debugHistoryHandler.close();
+        chatHandler.close();
     }
 
     /**

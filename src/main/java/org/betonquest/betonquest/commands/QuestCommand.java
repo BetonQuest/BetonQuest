@@ -34,10 +34,9 @@ import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.modules.downloader.DownloadFailedException;
 import org.betonquest.betonquest.modules.downloader.Downloader;
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
-import org.betonquest.betonquest.modules.logger.LogWatcher;
-import org.betonquest.betonquest.modules.logger.custom.ChatLogFormatter;
-import org.betonquest.betonquest.modules.logger.custom.HistoryLogHandler;
-import org.betonquest.betonquest.modules.logger.custom.PlayerLogHandler;
+import org.betonquest.betonquest.modules.logger.PlayerLogWatcher;
+import org.betonquest.betonquest.modules.logger.format.ChatFormatter;
+import org.betonquest.betonquest.modules.logger.handler.history.LogPublishingController;
 import org.betonquest.betonquest.modules.versioning.Updater;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
@@ -84,11 +83,23 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private final BukkitAudiences bukkitAudiences;
 
     /**
+     * The PlayerLogWatcher that controls which players receive which log messages.
+     */
+    private final PlayerLogWatcher logWatcher;
+
+    /**
+     * The LogPublishingController to control the debug log.
+     */
+    private final LogPublishingController debuggingController;
+
+    /**
      * Registers a new executor and a new tab completer of the /betonquest command.
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public QuestCommand(final BukkitAudiences bukkitAudiences) {
+    public QuestCommand(final BukkitAudiences bukkitAudiences, final PlayerLogWatcher logWatcher, final LogPublishingController debuggingController) {
         this.bukkitAudiences = bukkitAudiences;
+        this.logWatcher = logWatcher;
+        this.debuggingController = debuggingController;
         BetonQuest.getInstance().getCommand("betonquest").setExecutor(this);
         BetonQuest.getInstance().getCommand("betonquest").setTabCompleter(this);
     }
@@ -264,16 +275,15 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     break;
                 case "reload":
                     // just reloading
-                    final PlayerLogHandler playerHandler = BetonQuest.getInstance().getLogWatcher().getPlayerLogHandler();
                     final UUID uuid = sender instanceof Player ? ((Player) sender).getUniqueId() : null;
-                    final boolean noFilters = uuid != null && playerHandler.getFilters(uuid).isEmpty();
+                    final boolean noFilters = uuid != null && logWatcher.hasActiveFilters(uuid);
                     if (noFilters) {
-                        playerHandler.addFilter(uuid, "*", Level.WARNING);
+                        logWatcher.addFilter(uuid, "*", Level.WARNING);
                     }
                     instance.reload();
                     sendMessage(sender, "reloaded");
                     if (noFilters) {
-                        playerHandler.removeFilter(uuid, "*");
+                        logWatcher.removeFilter(uuid, "*");
                     }
                     break;
                 case "backup":
@@ -1637,11 +1647,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     }
 
     private void handleDebug(final CommandSender sender, final String... args) {
-        final LogWatcher logWatcher = BetonQuest.getInstance().getLogWatcher();
-        final HistoryLogHandler historyHandler = logWatcher.getHistoryLogHandler();
         if (args.length == 1) {
             sender.sendMessage(
-                    "§2Debugging mode is currently " + (historyHandler.isDebugging() ? "enabled" : "disabled") + '!');
+                    "§2Debugging mode is currently " + (debuggingController.isLogging() ? "enabled" : "disabled") + '!');
             return;
         }
         if ("ingame".equalsIgnoreCase(args[1])) {
@@ -1649,52 +1657,49 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 LOG.debug("Cannot continue, sender must be player");
                 return;
             }
-            final PlayerLogHandler playerHandler = logWatcher.getPlayerLogHandler();
             final UUID uuid = ((Player) sender).getUniqueId();
             if (args.length < 3) {
-                sender.sendMessage("§2Active Filters: " + String.join(", ", playerHandler.getFilters(uuid)));
+                sender.sendMessage("§2Active Filters: " + String.join(", ", logWatcher.getActivePatterns(uuid)));
                 return;
             }
             final String filter = args[2];
-            final boolean exist = playerHandler.getFilters(uuid).contains(filter);
-            if (exist && args.length == 3) {
-                if (!playerHandler.removeFilter(uuid, filter)) {
-                    sender.sendMessage("§2Filter could not be removed!");
-                    return;
+            if (logWatcher.isActivePattern(uuid, filter)) {
+                if (args.length == 3) {
+                    logWatcher.removeFilter(uuid, filter);
+                    sender.sendMessage("§2Filter removed!");
+                } else {
+                    final Level level = getLogLevel(args[3]);
+                    logWatcher.addFilter(uuid, filter, level);
+                    sender.sendMessage("§2Filter replaced!");
                 }
-                sender.sendMessage("§2Filter removed!");
-                return;
+            } else {
+                final Level level = getLogLevel(args.length > 3 ? args[3] : null);
+                logWatcher.addFilter(uuid, filter, level);
+                sender.sendMessage("§2Filter added!");
             }
-            final Level level = getLogLevel(args.length > 3 ? args[3] : null);
-            if (!playerHandler.addFilter(uuid, filter, level)) {
-                sender.sendMessage("§2Filter could not be added!");
-                return;
-            }
-            sender.sendMessage("§2Filter added!");
             return;
         }
         final Boolean input = "true".equalsIgnoreCase(args[1]) ? Boolean.TRUE
                 : "false".equalsIgnoreCase(args[1]) ? Boolean.FALSE : null;
         if (input != null && args.length == 2) {
 
-            if (historyHandler.isDebugging() && input || !historyHandler.isDebugging() && !input) {
+            if (debuggingController.isLogging() && input || !debuggingController.isLogging() && !input) {
                 sender.sendMessage(
-                        "§2Debugging mode is already " + (historyHandler.isDebugging() ? "enabled" : "disabled") + '!');
+                        "§2Debugging mode is already " + (debuggingController.isLogging() ? "enabled" : "disabled") + '!');
                 return;
             }
-            if (input) {
-                historyHandler.startDebug();
-            } else {
-                historyHandler.endDebug();
-            }
             try {
-                logWatcher.saveDebuggingToConfig();
+                if (input) {
+                    debuggingController.startLogging();
+                } else {
+                    debuggingController.stopLogging();
+                }
             } catch (final IOException e) {
                 sender.sendMessage("Could not save new debugging state to configuration file!");
                 LOG.warn("Could not save new debugging state to configuration file! " + e.getMessage(), e);
             }
-            sender.sendMessage("§2Debugging mode was " + (historyHandler.isDebugging() ? "enabled" : "disabled") + '!');
-            LOG.info("Debuging mode was " + (historyHandler.isDebugging() ? "enabled" : "disabled") + '!');
+            sender.sendMessage("§2Debugging mode was " + (debuggingController.isLogging() ? "enabled" : "disabled") + '!');
+            LOG.info("Debuging mode was " + (debuggingController.isLogging() ? "enabled" : "disabled") + '!');
             return;
         }
         sendMessage(sender, "unknown_argument");
@@ -1769,9 +1774,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             } catch (final Exception e) {
                 sendMessage(sender, "download_failed", e.getClass().getSimpleName() + ": " + e.getMessage());
                 if (sender instanceof Player player) {
-                    final BetonQuestLogRecord record = new BetonQuestLogRecord(instance, null, Level.FINE, "");
+                    final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.FINE, "", instance);
                     record.setThrown(e);
-                    final String msgJson = new ChatLogFormatter(instance, "BQ").format(record);
+                    final String msgJson = new ChatFormatter().format(record);
                     bukkitAudiences.player(player).sendMessage(GsonComponentSerializer.gson().deserialize(msgJson));
                     LOG.debug(errSummary, e);
                 } else {
