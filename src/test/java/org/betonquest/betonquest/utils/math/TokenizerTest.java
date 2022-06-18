@@ -44,12 +44,6 @@ class TokenizerTest {
      */
     public static final String TEST_PLAYER_ID = "player";
 
-    /**
-     * Create the TokenizerTest.
-     */
-    public TokenizerTest() {
-    }
-
     private static void withVariables(final Executable executable, final ProtoVariable... variables) throws Throwable {
         try (MockedStatic<Config> config = mockStatic(Config.class);
              MockedStatic<BetonQuest> betonQuest = mockStatic(BetonQuest.class)) {

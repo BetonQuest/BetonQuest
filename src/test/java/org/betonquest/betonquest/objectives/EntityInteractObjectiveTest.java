@@ -14,12 +14,6 @@ class EntityInteractObjectiveTest {
      */
     private static final String NO_PROGRESS_ON_SIMPLE_INTERACT_SERIALIZED = "1/1/1/0;";
 
-    /**
-     * Create the test class.
-     */
-    public EntityInteractObjectiveTest() {
-    }
-
     @Test
     void testCreateFromMinimalCountingDataWithoutInteractAppendix() {
         final EntityInteractObjective.EntityInteractData data = new EntityInteractObjective.EntityInteractData("1", null, null);

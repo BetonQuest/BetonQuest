@@ -69,7 +69,11 @@
   <rule ref="category/java/bestpractices.xml/UseVarargs"/>
   <rule ref="category/java/bestpractices.xml/WhileLoopWithLiteralBoolean"/>
 
-  <rule ref="category/java/codestyle.xml/AtLeastOneConstructor"/>
+  <rule ref="category/java/codestyle.xml/AtLeastOneConstructor">
+    <properties>
+      <property name="violationSuppressXPath" value="//ClassOrInterfaceDeclaration[matches(@Image, '^.*Test$')]"/>
+    </properties>
+  </rule>
   <rule ref="category/java/codestyle.xml/AvoidDollarSigns"/>
   <rule ref="category/java/codestyle.xml/AvoidProtectedFieldInFinalClass"/>
   <rule ref="category/java/codestyle.xml/AvoidProtectedMethodInFinalClassNotExtending"/>

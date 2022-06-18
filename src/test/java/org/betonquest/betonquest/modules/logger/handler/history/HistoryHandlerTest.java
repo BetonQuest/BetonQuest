@@ -29,12 +29,6 @@ class HistoryHandlerTest {
     @Mock
     private WriteOperation<Boolean> loggingUpdater;
 
-    /**
-     * Default constructor.
-     */
-    public HistoryHandlerTest() {
-    }
-
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     void testStartLoggingPrintsHistoryInCorrectOrder() throws IOException {

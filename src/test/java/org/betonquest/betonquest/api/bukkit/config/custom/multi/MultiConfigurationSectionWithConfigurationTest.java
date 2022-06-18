@@ -22,12 +22,6 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @SuppressWarnings({"PMD.JUnit5TestShouldBePackagePrivate", "PMD.JUnitAssertionsShouldIncludeMessage"})
 public class MultiConfigurationSectionWithConfigurationTest extends ConfigurationSectionBaseTest {
-    /**
-     * Empty constructor
-     */
-    public MultiConfigurationSectionWithConfigurationTest() {
-        super();
-    }
 
     @Override
     public Configuration getConfig() {

@@ -72,12 +72,6 @@ class VersionComparatorTest {
     private static final Version V_1_1_0_99 = new Version("1.1.0-99");
 
     /**
-     * Empty constructor
-     */
-    public VersionComparatorTest() {
-    }
-
-    /**
      * Compares all version combinations with the
      * {@link UpdateStrategy#MAJOR} strategy.
      */

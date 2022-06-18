@@ -27,13 +27,6 @@ public class UnmodifiableConfigurationTest extends ConfigurationBaseTest {
      */
     private Map<String, Object> valuesDefault;
 
-    /**
-     * Empty constructor
-     */
-    public UnmodifiableConfigurationTest() {
-        super();
-    }
-
     @Override
     public Configuration getConfig() {
         return new UnmodifiableConfiguration(super.getDefaultConfig());

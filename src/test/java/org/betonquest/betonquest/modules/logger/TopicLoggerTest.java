@@ -29,12 +29,6 @@ class TopicLoggerTest {
      */
     private static final String EXCEPTION_MESSAGE = "Test Exception";
 
-    /**
-     * Default constructor.
-     */
-    public TopicLoggerTest() {
-    }
-
     private TopicLogger getTopicLogger() {
         return new TopicLogger(LogValidator.getSilentLogger(), TopicLoggerTest.class, LOGGER_TOPIC);
     }

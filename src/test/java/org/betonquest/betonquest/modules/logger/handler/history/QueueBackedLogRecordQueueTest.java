@@ -18,11 +18,6 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(MockitoExtension.class)
 class QueueBackedLogRecordQueueTest {
-    /**
-     * Default constructor.
-     */
-    public QueueBackedLogRecordQueueTest() {
-    }
 
     @Test
     void testLogEntriesAreInOrder(@Mock final Handler handler) {

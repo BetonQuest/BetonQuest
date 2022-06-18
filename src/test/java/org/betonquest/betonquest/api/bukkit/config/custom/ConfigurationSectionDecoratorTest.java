@@ -8,13 +8,6 @@ import org.bukkit.configuration.ConfigurationSection;
  */
 public class ConfigurationSectionDecoratorTest extends ConfigurationSectionBaseTest {
 
-    /**
-     * Empty constructor
-     */
-    public ConfigurationSectionDecoratorTest() {
-        super();
-    }
-
     @Override
     public ConfigurationSection getConfig() {
         return new ConfigurationSectionDecorator(super.getDefaultConfig());

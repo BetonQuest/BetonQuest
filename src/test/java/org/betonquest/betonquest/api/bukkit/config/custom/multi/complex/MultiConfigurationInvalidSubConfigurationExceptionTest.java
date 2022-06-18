@@ -20,13 +20,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
 class MultiConfigurationInvalidSubConfigurationExceptionTest {
 
-    /**
-     * Empty constructor
-     */
-    public MultiConfigurationInvalidSubConfigurationExceptionTest() {
-        super();
-    }
-
     @Test
     void testInvalidPathSeparator() {
         final YamlConfiguration configuration = new YamlConfiguration();

@@ -49,13 +49,6 @@ class MultiConfigurationKeyConflictExceptionTest {
                 key5: value5
             """;
 
-    /**
-     * Empty constructor
-     */
-    public MultiConfigurationKeyConflictExceptionTest() {
-        super();
-    }
-
     @Test
     void testKeyConflictException() {
         final Map<ConfigurationSection, String> configs = new HashMap<>();
