@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.modules.logger.handler.history;
 
-import org.betonquest.betonquest.modules.config.ConfigUpdater;
 import org.betonquest.betonquest.modules.logger.handler.ResettableHandler;
+import org.betonquest.betonquest.utils.WriteOperation;
 
 import java.io.IOException;
 import java.util.concurrent.locks.Lock;
@@ -47,7 +47,7 @@ public class HistoryHandler extends Handler implements LogPublishingController {
     /**
      * The configuration updater for the debugging mode.
      */
-    private final ConfigUpdater<Boolean> loggingStateUpdater;
+    private final WriteOperation<Boolean> loggingStateUpdater;
 
     /**
      * Whether debugging is enabled.
@@ -62,7 +62,7 @@ public class HistoryHandler extends Handler implements LogPublishingController {
      * @param recordQueue the queue for storing records while not logging
      * @param target the Handler to log the history to
      */
-    public HistoryHandler(final boolean logging, final ConfigUpdater<Boolean> loggingStateUpdater,
+    public HistoryHandler(final boolean logging, final WriteOperation<Boolean> loggingStateUpdater,
                           final LogRecordQueue recordQueue, final ResettableHandler target) {
         super();
         this.logging = logging;
@@ -115,7 +115,7 @@ public class HistoryHandler extends Handler implements LogPublishingController {
     }
 
     private void setLogging(final boolean logging) throws IOException {
-        loggingStateUpdater.update(logging);
+        loggingStateUpdater.write(logging);
         this.logging = logging;
     }
 

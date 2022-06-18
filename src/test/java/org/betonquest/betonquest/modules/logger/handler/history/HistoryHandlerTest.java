@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.modules.logger.handler.history;
 
-import org.betonquest.betonquest.modules.config.ConfigUpdater;
 import org.betonquest.betonquest.modules.logger.handler.ResettableHandler;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
+import org.betonquest.betonquest.utils.WriteOperation;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -27,7 +27,7 @@ class HistoryHandlerTest {
      * The logging enabled config value updater.
      */
     @Mock
-    private ConfigUpdater<Boolean> loggingUpdater;
+    private WriteOperation<Boolean> loggingUpdater;
 
     /**
      * Default constructor.
@@ -67,7 +67,7 @@ class HistoryHandlerTest {
         verify(internalHandler).publish(argThat((record) -> "=====START OF HISTORY=====".equals(record.getMessage())));
         verify(internalHandler).publish(logRecord);
         verify(internalHandler).publish(argThat((record) -> "=====END OF HISTORY=====".equals(record.getMessage())));
-        verify(loggingUpdater).update(true);
+        verify(loggingUpdater).write(true);
         verifyNoMoreInteractions(internalHandler);
         verifyNoMoreInteractions(loggingUpdater);
     }
@@ -95,7 +95,7 @@ class HistoryHandlerTest {
                                        @Mock final ResettableHandler internalHandler) throws IOException {
         final HistoryHandler historyHandler = new HistoryHandler(false, loggingUpdater, logQueue, internalHandler);
         historyHandler.startLogging();
-        verify(loggingUpdater).update(true);
+        verify(loggingUpdater).write(true);
         verifyNoMoreInteractions(loggingUpdater);
     }
 
@@ -104,7 +104,7 @@ class HistoryHandlerTest {
                                       @Mock final ResettableHandler internalHandler) throws IOException {
         final HistoryHandler historyHandler = new HistoryHandler(true, loggingUpdater, logQueue, internalHandler);
         historyHandler.stopLogging();
-        verify(loggingUpdater).update(false);
+        verify(loggingUpdater).write(false);
         verifyNoMoreInteractions(loggingUpdater);
     }
 
