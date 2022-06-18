@@ -4,18 +4,14 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.schedule.ScheduleID;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockedStatic;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.mockStatic;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Test Scheduler class
@@ -43,7 +39,7 @@ class SchedulerTest {
         final Schedule schedule = mockSchedule(scheduleID);
         scheduler.addSchedule(schedule);
         assertTrue(scheduler.schedules.containsValue(schedule), "Schedules map should contain schedule");
-        Assertions.assertEquals(schedule, scheduler.schedules.get(scheduleID), "ScheduleID should be key of schedule");
+        assertEquals(schedule, scheduler.schedules.get(scheduleID), "ScheduleID should be key of schedule");
     }
 
     @Test
