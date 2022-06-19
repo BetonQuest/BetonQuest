@@ -21,8 +21,8 @@ final class UpdaterConfigTest {
     public static final String MINOR = "MINOR";
     public static final String MAJOR_DEV = "MAJOR_DEV";
     public static final String MAJOR = "MAJOR";
-    public static final String VERSION2 = "2.0.0-DEV-1";
-    public static final String VERSION1 = "2.0.0";
+    public static final Version VERSION1 = new Version("2.0.0");
+    public static final Version VERSION2 = new Version("2.0.0-DEV-1");
     private static final String DEV_INDICATOR = "DEV";
 
     private UpdaterConfigTest() {
@@ -31,72 +31,142 @@ final class UpdaterConfigTest {
 
     private static Stream<Arguments> combinations() {
         return Stream.of(
-                Arguments.of(new Version(VERSION1), true, true, MAJOR, true,
-                        true, UpdateStrategy.MAJOR, false, true, true, false),
-                Arguments.of(new Version(VERSION1), true, true, MAJOR, false,
-                        true, UpdateStrategy.MAJOR, false, false, true, false),
-                Arguments.of(new Version(VERSION1), true, true, MAJOR_DEV, true,
-                        true, UpdateStrategy.MAJOR, true, true, true, false),
-                Arguments.of(new Version(VERSION1), true, true, MAJOR_DEV, false,
-                        true, UpdateStrategy.MAJOR, true, false, true, false),
-                Arguments.of(new Version(VERSION1), true, false, MAJOR, true,
-                        true, UpdateStrategy.MAJOR, false, true, false, false),
-                Arguments.of(new Version(VERSION1), true, false, MAJOR, false,
-                        true, UpdateStrategy.MAJOR, false, false, false, false),
-                Arguments.of(new Version(VERSION1), true, false, MAJOR_DEV, true,
-                        true, UpdateStrategy.MAJOR, true, true, false, false),
-                Arguments.of(new Version(VERSION1), true, false, MAJOR_DEV, false,
-                        true, UpdateStrategy.MAJOR, true, false, false, false),
-                Arguments.of(new Version(VERSION2), false, true, MINOR, true,
-                        false, UpdateStrategy.MINOR, true, false, true, true),
-                Arguments.of(new Version(VERSION2), false, true, MINOR, false,
-                        false, UpdateStrategy.MINOR, true, false, true, true),
-                Arguments.of(new Version(VERSION2), false, true, MINOR_DEV, true,
-                        false, UpdateStrategy.MINOR, true, true, true, false),
-                Arguments.of(new Version(VERSION2), false, true, MINOR_DEV, false,
-                        false, UpdateStrategy.MINOR, true, false, true, false),
-                Arguments.of(new Version(VERSION2), false, false, MINOR, true,
-                        false, UpdateStrategy.MINOR, true, false, false, true),
-                Arguments.of(new Version(VERSION2), false, false, MINOR, false,
-                        false, UpdateStrategy.MINOR, true, false, false, true),
-                Arguments.of(new Version(VERSION2), false, false, MINOR_DEV, true,
-                        false, UpdateStrategy.MINOR, true, true, false, false),
-                Arguments.of(new Version(VERSION2), false, false, MINOR_DEV, false,
-                        false, UpdateStrategy.MINOR, true, false, false, false),
-                Arguments.of(new Version(VERSION2), false, false, INVALID, false,
-                        false, UpdateStrategy.MINOR, true, false, false, true)
+                Arguments.of(
+                        new Input(VERSION1, true, true, MAJOR, true),
+                        new Expected(true, UpdateStrategy.MAJOR, false, true, true, false)),
+                Arguments.of(
+                        new Input(VERSION1, true, true, MAJOR, false),
+                        new Expected(true, UpdateStrategy.MAJOR, false, false, true, false)),
+                Arguments.of(
+                        new Input(VERSION1, true, true, MAJOR_DEV, true),
+                        new Expected(true, UpdateStrategy.MAJOR, true, true, true, false)),
+                Arguments.of(
+                        new Input(VERSION1, true, true, MAJOR_DEV, false),
+                        new Expected(true, UpdateStrategy.MAJOR, true, false, true, false)),
+                Arguments.of(
+                        new Input(VERSION1, true, false, MAJOR, true),
+                        new Expected(true, UpdateStrategy.MAJOR, false, true, false, false)),
+                Arguments.of(
+                        new Input(VERSION1, true, false, MAJOR, false),
+                        new Expected(true, UpdateStrategy.MAJOR, false, false, false, false)),
+                Arguments.of(
+                        new Input(VERSION1, true, false, MAJOR_DEV, true),
+                        new Expected(true, UpdateStrategy.MAJOR, true, true, false, false)),
+                Arguments.of(
+                        new Input(VERSION1, true, false, MAJOR_DEV, false),
+                        new Expected(true, UpdateStrategy.MAJOR, true, false, false, false)),
+                Arguments.of(
+                        new Input(VERSION1, false, true, MAJOR, true),
+                        new Expected(false, UpdateStrategy.MAJOR, false, true, true, false)),
+                Arguments.of(
+                        new Input(VERSION1, false, true, MAJOR, false),
+                        new Expected(false, UpdateStrategy.MAJOR, false, false, true, false)),
+                Arguments.of(
+                        new Input(VERSION1, false, true, MAJOR_DEV, true),
+                        new Expected(false, UpdateStrategy.MAJOR, true, true, true, false)),
+                Arguments.of(
+                        new Input(VERSION1, false, true, MAJOR_DEV, false),
+                        new Expected(false, UpdateStrategy.MAJOR, true, false, true, false)),
+                Arguments.of(
+                        new Input(VERSION1, false, false, MAJOR, true),
+                        new Expected(false, UpdateStrategy.MAJOR, false, true, false, false)),
+                Arguments.of(
+                        new Input(VERSION1, false, false, MAJOR, false),
+                        new Expected(false, UpdateStrategy.MAJOR, false, false, false, false)),
+                Arguments.of(
+                        new Input(VERSION1, false, false, MAJOR_DEV, true),
+                        new Expected(false, UpdateStrategy.MAJOR, true, true, false, false)),
+                Arguments.of(
+                        new Input(VERSION1, false, false, MAJOR_DEV, false),
+                        new Expected(false, UpdateStrategy.MAJOR, true, false, false, false)),
+                Arguments.of(
+                        new Input(VERSION2, true, true, MINOR, true),
+                        new Expected(true, UpdateStrategy.MINOR, true, false, true, true)),
+                Arguments.of(
+                        new Input(VERSION2, true, true, MINOR, false),
+                        new Expected(true, UpdateStrategy.MINOR, true, false, true, true)),
+                Arguments.of(
+                        new Input(VERSION2, true, true, MINOR_DEV, true),
+                        new Expected(true, UpdateStrategy.MINOR, true, true, true, false)),
+                Arguments.of(
+                        new Input(VERSION2, true, true, MINOR_DEV, false),
+                        new Expected(true, UpdateStrategy.MINOR, true, false, true, false)),
+                Arguments.of(
+                        new Input(VERSION2, true, false, MINOR, true),
+                        new Expected(true, UpdateStrategy.MINOR, true, false, false, true)),
+                Arguments.of(
+                        new Input(VERSION2, true, false, MINOR, false),
+                        new Expected(true, UpdateStrategy.MINOR, true, false, false, true)),
+                Arguments.of(
+                        new Input(VERSION2, true, false, MINOR_DEV, true),
+                        new Expected(true, UpdateStrategy.MINOR, true, true, false, false)),
+                Arguments.of(
+                        new Input(VERSION2, true, false, MINOR_DEV, false),
+                        new Expected(true, UpdateStrategy.MINOR, true, false, false, false)),
+                Arguments.of(
+                        new Input(VERSION2, true, false, INVALID, false),
+                        new Expected(true, UpdateStrategy.MINOR, true, false, false, true)),
+                Arguments.of(
+                        new Input(VERSION2, false, true, MINOR, true),
+                        new Expected(false, UpdateStrategy.MINOR, true, false, true, true)),
+                Arguments.of(
+                        new Input(VERSION2, false, true, MINOR, false),
+                        new Expected(false, UpdateStrategy.MINOR, true, false, true, true)),
+                Arguments.of(
+                        new Input(VERSION2, false, true, MINOR_DEV, true),
+                        new Expected(false, UpdateStrategy.MINOR, true, true, true, false)),
+                Arguments.of(
+                        new Input(VERSION2, false, true, MINOR_DEV, false),
+                        new Expected(false, UpdateStrategy.MINOR, true, false, true, false)),
+                Arguments.of(
+                        new Input(VERSION2, false, false, MINOR, true),
+                        new Expected(false, UpdateStrategy.MINOR, true, false, false, true)),
+                Arguments.of(
+                        new Input(VERSION2, false, false, MINOR, false),
+                        new Expected(false, UpdateStrategy.MINOR, true, false, false, true)),
+                Arguments.of(
+                        new Input(VERSION2, false, false, MINOR_DEV, true),
+                        new Expected(false, UpdateStrategy.MINOR, true, true, false, false)),
+                Arguments.of(
+                        new Input(VERSION2, false, false, MINOR_DEV, false),
+                        new Expected(false, UpdateStrategy.MINOR, true, false, false, false)),
+                Arguments.of(
+                        new Input(VERSION2, false, false, INVALID, false),
+                        new Expected(false, UpdateStrategy.MINOR, true, false, false, true))
         );
     }
 
     @ParameterizedTest
     @MethodSource("combinations")
-    @SuppressWarnings("PMD.ExcessiveParameterList")
-    void testUpdaterConfig(final Version version, final boolean enabled, final boolean ingameNotification,
-                           final String strategy, final boolean automatic, final boolean expectedEnabled,
-                           final UpdateStrategy expectedStrategy, final boolean expectedDevDownloadEnabled,
-                           final boolean expectedAutomatic, final boolean expectedIngameNotification,
-                           final boolean expectedForcedStrategy) {
-        final ConfigurationFile config = getMockedConfig(enabled, ingameNotification, strategy, automatic);
-        final UpdaterConfig updaterConfig = new UpdaterConfig(config, version, DEV_INDICATOR);
-        assertSettings(expectedEnabled, expectedStrategy, expectedDevDownloadEnabled, expectedAutomatic, expectedIngameNotification, expectedForcedStrategy, updaterConfig);
+    void testUpdaterConfig(final Input input, final Expected expected) {
+        final ConfigurationFile config = getMockedConfig(input);
+        final UpdaterConfig updaterConfig = new UpdaterConfig(config, input.version, DEV_INDICATOR);
+        assertSettings(expected, updaterConfig);
     }
 
-    private ConfigurationFile getMockedConfig(final boolean enabled, final boolean ingameNotification,
-                                              final String strategy, final boolean automatic) {
+    private ConfigurationFile getMockedConfig(final Input input) {
         final ConfigurationFile config = mock(ConfigurationFile.class);
-        when(config.getBoolean("update.enabled", true)).thenReturn(enabled);
-        when(config.getBoolean("update.ingameNotification", true)).thenReturn(ingameNotification);
-        when(config.getString("update.strategy", MINOR)).thenReturn(strategy);
-        when(config.getBoolean("update.automatic", false)).thenReturn(automatic);
+        when(config.getBoolean("update.enabled", true)).thenReturn(input.enabled);
+        when(config.getBoolean("update.ingameNotification", true)).thenReturn(input.ingameNotification);
+        when(config.getString("update.strategy", MINOR)).thenReturn(input.strategy);
+        when(config.getBoolean("update.automatic", false)).thenReturn(input.automatic);
         return config;
     }
 
-    private void assertSettings(final boolean expectedEnabled, final UpdateStrategy expectedStrategy, final boolean expectedDevDownloadEnabled, final boolean expectedAutomatic, final boolean expectedIngameNotification, final boolean expectedForcedStrategy, final UpdaterConfig updaterConfig) {
-        assertEquals(expectedEnabled, updaterConfig.isEnabled(), "Expected isEnabled is '" + expectedEnabled + "'");
-        assertEquals(expectedStrategy, updaterConfig.getStrategy(), "Expected getStrategy is '" + expectedStrategy + "'");
-        assertEquals(expectedDevDownloadEnabled, updaterConfig.isDevDownloadEnabled(), "Expected isDevDownloadEnabled is '" + expectedDevDownloadEnabled + "'");
-        assertEquals(expectedAutomatic, updaterConfig.isAutomatic(), "Expected isAutomatic is '" + expectedAutomatic + "'");
-        assertEquals(expectedIngameNotification, updaterConfig.isIngameNotification(), "Expected isIngameNotification is '" + expectedIngameNotification + "'");
-        assertEquals(expectedForcedStrategy, updaterConfig.isForcedStrategy(), "Expected isForcedStrategy is '" + expectedForcedStrategy + "'");
+    private void assertSettings(final Expected expected, final UpdaterConfig updaterConfig) {
+        assertEquals(expected.enabled, updaterConfig.isEnabled(), "Expected isEnabled is '" + expected.enabled + "'");
+        assertEquals(expected.strategy, updaterConfig.getStrategy(), "Expected getStrategy is '" + expected.strategy + "'");
+        assertEquals(expected.devDownloadEnabled, updaterConfig.isDevDownloadEnabled(), "Expected isDevDownloadEnabled is '" + expected.devDownloadEnabled + "'");
+        assertEquals(expected.automatic, updaterConfig.isAutomatic(), "Expected isAutomatic is '" + expected.automatic + "'");
+        assertEquals(expected.ingameNotification, updaterConfig.isIngameNotification(), "Expected isIngameNotification is '" + expected.ingameNotification + "'");
+        assertEquals(expected.forcedStrategy, updaterConfig.isForcedStrategy(), "Expected isForcedStrategy is '" + expected.forcedStrategy + "'");
+    }
+
+    private record Input(Version version, boolean enabled, boolean ingameNotification, String strategy,
+                         boolean automatic) {
+    }
+
+    private record Expected(boolean enabled, UpdateStrategy strategy, boolean devDownloadEnabled, boolean automatic,
+                            boolean ingameNotification, boolean forcedStrategy) {
     }
 }

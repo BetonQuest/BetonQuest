@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.modules.updater;
 
 import lombok.CustomLog;
-import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.modules.versioning.UpdateStrategy;
 import org.betonquest.betonquest.modules.versioning.Version;
+import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Locale;
 
@@ -13,30 +13,10 @@ import java.util.Locale;
 @SuppressWarnings("PMD.DataClass")
 @CustomLog
 public class UpdaterConfig {
-    /**
-     * True, if the updater is enabled.
-     */
-    private final boolean enabled;
-    /**
-     * The selected {@link UpdateStrategy}.
-     */
-    private final UpdateStrategy strategy;
-    /**
-     * True if dev versions should be downloaded.
-     */
-    private final boolean devDownloadEnabled;
-    /**
-     * True, if updated should be downloaded automatic.
-     */
-    private final boolean automatic;
-    /**
-     * Should the player be notified ingame.
-     */
-    private final boolean ingameNotification;
-    /**
-     * True, if the {@link UpdateStrategy} was forced to a DEV UpdateStrategy.
-     */
-    private final boolean forcedStrategy;
+
+    private final ConfigurationSection config;
+    private final String devIndicator;
+    private final Version current;
 
     /**
      * Reads the configuration file.
@@ -45,76 +25,97 @@ public class UpdaterConfig {
      * @param current      the current {@link Version} of the plugin
      * @param devIndicator the string qualifier that represents dev versions
      */
-    public UpdaterConfig(final ConfigurationFile config, final Version current, final String devIndicator) {
-        enabled = config.getBoolean("update.enabled", true);
-        ingameNotification = config.getBoolean("update.ingameNotification", true);
+    public UpdaterConfig(final ConfigurationSection config, final Version current, final String devIndicator) {
+        this.config = config;
+        this.current = current;
+        this.devIndicator = "_" + devIndicator.toUpperCase(Locale.ROOT);
+    }
 
-        String updateStrategy = config.getString("update.strategy", "MINOR").toUpperCase(Locale.ROOT);
-        final String devIndicatorSuffix = "_" + devIndicator;
-        boolean devDownloadEnabled = updateStrategy.endsWith(devIndicatorSuffix);
-        if (devDownloadEnabled) {
-            updateStrategy = updateStrategy.substring(0, updateStrategy.length() - (devIndicatorSuffix.length()));
-        }
-        UpdateStrategy strategy;
-        try {
-            strategy = UpdateStrategy.valueOf(updateStrategy);
-        } catch (final IllegalArgumentException exception) {
-            LOG.error("Could not parse 'update.strategy' in 'config.yml'!", exception);
-            strategy = UpdateStrategy.MINOR;
-        }
-        this.strategy = strategy;
+    private boolean isCurrentDev() {
+        return (devIndicator + "-").equals(current.getQualifier());
+    }
 
-        final boolean isDev = (devIndicator + "-").equals(current.getQualifier());
-        if (isDev && !devDownloadEnabled || !isDev && current.hasQualifier()) {
-            devDownloadEnabled = true;
-            automatic = false;
-            forcedStrategy = true;
-        } else {
-            automatic = config.getBoolean("update.automatic", false);
-            forcedStrategy = false;
+    private boolean isForced() {
+        return isDevForced() || isCustomBuild();
+    }
+
+    private boolean isDevForced() {
+        return isCurrentDev() && !isDevStrategy();
+    }
+
+    private boolean isCustomBuild() {
+        return !isDevStrategy() && current.hasQualifier();
+    }
+
+    private String getUpdateStrategy() {
+        final String updateStrategy = loadUpdateStrategy();
+        if (isDevDownloadEnabled()) {
+            return updateStrategy.substring(0, updateStrategy.length() - (this.devIndicator.length()));
         }
-        this.devDownloadEnabled = devDownloadEnabled;
+        return updateStrategy;
     }
 
     /**
      * @return true if the updater is enabled
      */
     public boolean isEnabled() {
-        return enabled;
+        return config.getBoolean("update.enabled", true);
     }
 
     /**
      * @return the {@link UpdateStrategy}
      */
     public UpdateStrategy getStrategy() {
-        return strategy;
+        final String updateStrategy = getUpdateStrategy();
+        try {
+            return UpdateStrategy.valueOf(updateStrategy);
+        } catch (final IllegalArgumentException exception) {
+            LOG.error("Could not parse 'update.strategy' in 'config.yml'!", exception);
+            return UpdateStrategy.MINOR;
+        }
     }
 
     /**
      * @return true if dev-versions should be downloaded
      */
     public boolean isDevDownloadEnabled() {
-        return devDownloadEnabled;
+        return isForced() || isDevStrategy();
+    }
+
+    private boolean isDevStrategy() {
+        return loadUpdateStrategy().endsWith(devIndicator);
     }
 
     /**
      * @return true if updates should be downloaded automatically
      */
     public boolean isAutomatic() {
-        return automatic;
+        return !isForced() && loadAutomatic();
     }
 
     /**
      * @return true if admins should be notified ingame
      */
     public boolean isIngameNotification() {
-        return ingameNotification;
+        return loadIngameNotification();
     }
 
     /**
      * @return true if the {@link UpdateStrategy} forced by the plugin
      */
     public boolean isForcedStrategy() {
-        return forcedStrategy;
+        return isForced();
+    }
+
+    private boolean loadIngameNotification() {
+        return config.getBoolean("update.ingameNotification", true);
+    }
+
+    private String loadUpdateStrategy() {
+        return config.getString("update.strategy", "MINOR").toUpperCase(Locale.ROOT);
+    }
+
+    private boolean loadAutomatic() {
+        return config.getBoolean("update.automatic", false);
     }
 }
