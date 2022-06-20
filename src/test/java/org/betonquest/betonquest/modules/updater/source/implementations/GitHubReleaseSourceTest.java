@@ -14,10 +14,6 @@ import static org.mockito.Mockito.*;
 
 class GitHubReleaseSourceTest {
 
-    public GitHubReleaseSourceTest() {
-        // Empty
-    }
-
     @SuppressWarnings({"PMD.JUnitTestContainsTooManyAsserts"})
     @Test
     void testGitHubReleaseSource() throws IOException {

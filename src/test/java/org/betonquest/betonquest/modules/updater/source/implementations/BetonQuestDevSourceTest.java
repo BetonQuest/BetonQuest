@@ -14,10 +14,6 @@ import static org.mockito.Mockito.*;
 
 class BetonQuestDevSourceTest {
 
-    public BetonQuestDevSourceTest() {
-        // Empty
-    }
-
     @SuppressWarnings({"PMD.JUnitTestContainsTooManyAsserts"})
     @Test
     void testBetonQuestDevSource() throws IOException {

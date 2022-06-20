@@ -14,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -49,7 +50,7 @@ public class Updater {
     /**
      * The plugins {@link ConfigurationFile} for the debugging settings.
      */
-    private final ConfigurationFile config;
+    private final UpdaterConfig config;
     /**
      * The file name of the plugin in the plugin's folder.
      */
@@ -78,25 +79,25 @@ public class Updater {
     /**
      * Create a new Updater instance.
      *
-     * @param config                 The config file that contains the updater config section.
+     * @param config                 The {@link ConfigurationSection} that contains the updater section.
      * @param file                   The file of the plugin in the plugin's folder.
      * @param currentVersion         The current plugin version.
      * @param releaseHandlerList     A list of {@link UpdateSourceReleaseHandler}
      * @param developmentHandlerList A list of {@link UpdateSourceDevelopmentHandler}
      */
-    public Updater(final ConfigurationFile config, final File file, final Version currentVersion,
+    public Updater(final ConfigurationSection config, final File file, final Version currentVersion,
                    final List<UpdateSourceReleaseHandler> releaseHandlerList,
                    final List<UpdateSourceDevelopmentHandler> developmentHandlerList, final InstantSource instantSource) {
-        this.config = config;
         this.fileName = file.getName();
         this.latest = Pair.of(currentVersion, null);
         this.instantSource = instantSource;
         this.releaseHandlerList = releaseHandlerList;
         this.developmentHandlerList = developmentHandlerList;
+        this.config = new UpdaterConfig(config, latest.getKey(), DEV_INDICATOR);
         searchUpdate();
     }
 
-    private String getUpdateNotification(final UpdaterConfig config) {
+    private String getUpdateNotification(final boolean automaticDownload) {
         final String version = "Found newer version '" + latest.getKey().getVersion() + "', ";
         final String automatic = " automatically installed on the next restart!";
         final String automaticProgress = "it will be downloaded and" + automatic;
@@ -104,18 +105,17 @@ public class Updater {
         final String command = "it will be installed, if you execute '/q update'!";
 
         if (config.isIngameNotification()) {
-            updateNotification = version + (config.isAutomatic() ? automaticDone : command);
+            updateNotification = version + (automaticDownload ? automaticDone : command);
         } else {
             updateNotification = null;
         }
-        return version + (config.isAutomatic() ? automaticProgress : command);
+        return version + (automaticDownload ? automaticProgress : command);
     }
 
     /**
      * Starts an asynchronous search for updates.
      */
     public final void searchUpdate() {
-        final UpdaterConfig config = new UpdaterConfig(this.config, latest.getKey(), DEV_INDICATOR);
         if (!config.isEnabled()) {
             return;
         }
@@ -126,27 +126,28 @@ public class Updater {
         lastCheck = currentTime;
 
         Bukkit.getScheduler().runTaskAsynchronously(BetonQuest.getInstance(), () -> {
-            searchUpdateTask(config);
+            searchUpdateTask();
             if (latest.getValue() != null) {
-                LOG.info(getUpdateNotification(config));
-                if (config.isAutomatic()) {
+                final boolean automatic = config.isAutomatic();
+                LOG.info(getUpdateNotification(automatic));
+                if (automatic) {
                     update(Bukkit.getConsoleSender());
                 }
             }
         });
     }
 
-    private void searchUpdateTask(final UpdaterConfig config) {
+    private void searchUpdateTask() {
         try {
-            searchUpdateTaskRelease(config);
+            searchUpdateTaskRelease();
         } catch (final UnknownHostException e) {
             LOG.warn("The update server for release builds is currently not available!");
         } catch (final IOException e) {
             LOG.warn("Could not get the latest release! " + e.getMessage(), e);
         }
-        if (!(isUpdateAvailable() && config.isForcedStrategy()) && config.isDevDownloadEnabled()) {
+        if (config.isDevDownloadEnabled() && !(isUpdateAvailable() && config.isForcedStrategy())) {
             try {
-                searchUpdateTaskDev(config);
+                searchUpdateTaskDev();
             } catch (final UnknownHostException e) {
                 LOG.warn("The update server for dev builds is currently not available!");
             } catch (final IOException e) {
@@ -155,19 +156,19 @@ public class Updater {
         }
     }
 
-    private void searchUpdateTaskRelease(final UpdaterConfig config) throws IOException {
+    private void searchUpdateTaskRelease() throws IOException {
         for (final UpdateSourceReleaseHandler updateSourceReleaseHandler : releaseHandlerList) {
-            compareVersionList(config, updateSourceReleaseHandler.getReleaseVersions());
+            compareVersionList(updateSourceReleaseHandler.getReleaseVersions());
         }
     }
 
-    private void searchUpdateTaskDev(final UpdaterConfig config) throws IOException {
+    private void searchUpdateTaskDev() throws IOException {
         for (final UpdateSourceDevelopmentHandler updateSourceDevelopmentHandler : developmentHandlerList) {
-            compareVersionList(config, updateSourceDevelopmentHandler.getDevelopmentVersions());
+            compareVersionList(updateSourceDevelopmentHandler.getDevelopmentVersions());
         }
     }
 
-    private void compareVersionList(final UpdaterConfig config, final Map<Version, String> versionList) {
+    private void compareVersionList(final Map<Version, String> versionList) {
         for (final Map.Entry<Version, String> entry : versionList.entrySet()) {
             final VersionComparator comparator = new VersionComparator(config.getStrategy(), DEV_INDICATOR + "-");
             if (comparator.isOtherNewerThanCurrent(latest.getKey(), entry.getKey())) {
@@ -222,14 +223,13 @@ public class Updater {
     public void update(final CommandSender sender) {
         Bukkit.getScheduler().runTaskAsynchronously(BetonQuest.getInstance(), () -> {
             try {
-                final UpdaterConfig config = new UpdaterConfig(this.config, latest.getKey(), DEV_INDICATOR);
                 if (!config.isEnabled()) {
                     throw new QuestRuntimeException("The updater is disabled! Change config entry 'update.enabled' to 'true' to enable it.");
                 }
                 final Version version = latest.getKey();
-                searchUpdateTask(config);
+                searchUpdateTask();
                 if (!version.equals(latest.getKey())) {
-                    getUpdateNotification(config);
+                    getUpdateNotification(config.isAutomatic());
                     throw new QuestRuntimeException("Update aborted! A newer version was found. New version '"
                             + getUpdateVersion() + "'! You can execute '/q update' again to update.");
                 }

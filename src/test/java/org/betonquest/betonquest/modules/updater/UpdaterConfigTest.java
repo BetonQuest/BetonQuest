@@ -25,10 +25,7 @@ final class UpdaterConfigTest {
     public static final Version VERSION2 = new Version("2.0.0-DEV-1");
     private static final String DEV_INDICATOR = "DEV";
 
-    private UpdaterConfigTest() {
-        // Empty
-    }
-
+    @SuppressWarnings("PMD.ExcessiveMethodLength")
     private static Stream<Arguments> combinations() {
         return Stream.of(
                 Arguments.of(
@@ -146,10 +143,10 @@ final class UpdaterConfigTest {
 
     private ConfigurationFile getMockedConfig(final Input input) {
         final ConfigurationFile config = mock(ConfigurationFile.class);
-        when(config.getBoolean("update.enabled", true)).thenReturn(input.enabled);
-        when(config.getBoolean("update.ingameNotification", true)).thenReturn(input.ingameNotification);
-        when(config.getString("update.strategy", MINOR)).thenReturn(input.strategy);
-        when(config.getBoolean("update.automatic", false)).thenReturn(input.automatic);
+        when(config.getBoolean("enabled", true)).thenReturn(input.enabled);
+        when(config.getBoolean("ingameNotification", true)).thenReturn(input.ingameNotification);
+        when(config.getString("strategy", MINOR)).thenReturn(input.strategy);
+        when(config.getBoolean("automatic", false)).thenReturn(input.automatic);
         return config;
     }
 

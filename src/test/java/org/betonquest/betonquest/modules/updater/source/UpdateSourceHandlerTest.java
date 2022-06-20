@@ -13,10 +13,6 @@ import static org.mockito.Mockito.*;
 
 class UpdateSourceHandlerTest {
 
-    public UpdateSourceHandlerTest() {
-        // Empty
-    }
-
     @Test
     void testReadStringFromURL() throws IOException {
         final Path filePath = Path.of("src/test/resources/modules/updater/latest.json");
@@ -37,7 +33,7 @@ class UpdateSourceHandlerTest {
                   1.12.1: "3"
                 }
                 """;
-        assertEquals(version, response, "Content from readStringFromURL does not match expectation");
+        assertEquals(version, getFormattedMessage(response), "Content from readStringFromURL does not match expectation");
 
         verify(httpURLConnection, times(1)).connect();
         verify(httpURLConnection, times(1)).disconnect();
@@ -61,5 +57,9 @@ class UpdateSourceHandlerTest {
         verify(httpURLConnection, times(1)).connect();
         verify(httpURLConnection, times(1)).disconnect();
         verify(handler, times(1)).handleResponseCode(UpdateSourceHandler.RESPONSE_CODE_403);
+    }
+
+    private String getFormattedMessage(final String message) {
+        return message.replace("\r\n", "\n").replace("\r", "\n");
     }
 }

@@ -13,6 +13,7 @@ import java.util.Locale;
 @SuppressWarnings("PMD.DataClass")
 @CustomLog
 public class UpdaterConfig {
+    private final static String DEV_SEPERATOR = "_";
 
     private final ConfigurationSection config;
     private final String devIndicator;
@@ -21,45 +22,28 @@ public class UpdaterConfig {
     /**
      * Reads the configuration file.
      *
-     * @param config       the related configuration file
+     * @param config       the {@link ConfigurationSection} that contains the updater settings
      * @param current      the current {@link Version} of the plugin
      * @param devIndicator the string qualifier that represents dev versions
      */
     public UpdaterConfig(final ConfigurationSection config, final Version current, final String devIndicator) {
         this.config = config;
         this.current = current;
-        this.devIndicator = "_" + devIndicator.toUpperCase(Locale.ROOT);
-    }
-
-    private boolean isCurrentDev() {
-        return (devIndicator + "-").equals(current.getQualifier());
-    }
-
-    private boolean isForced() {
-        return isDevForced() || isCustomBuild();
-    }
-
-    private boolean isDevForced() {
-        return isCurrentDev() && !isDevStrategy();
-    }
-
-    private boolean isCustomBuild() {
-        return !isDevStrategy() && current.hasQualifier();
-    }
-
-    private String getUpdateStrategy() {
-        final String updateStrategy = loadUpdateStrategy();
-        if (isDevDownloadEnabled()) {
-            return updateStrategy.substring(0, updateStrategy.length() - (this.devIndicator.length()));
-        }
-        return updateStrategy;
+        this.devIndicator = devIndicator.toUpperCase(Locale.ROOT);
     }
 
     /**
      * @return true if the updater is enabled
      */
     public boolean isEnabled() {
-        return config.getBoolean("update.enabled", true);
+        return config.getBoolean("enabled", true);
+    }
+
+    /**
+     * @return true if admins should be notified ingame
+     */
+    public boolean isIngameNotification() {
+        return config.getBoolean("ingameNotification", true);
     }
 
     /**
@@ -79,43 +63,40 @@ public class UpdaterConfig {
      * @return true if dev-versions should be downloaded
      */
     public boolean isDevDownloadEnabled() {
-        return isForced() || isDevStrategy();
-    }
-
-    private boolean isDevStrategy() {
-        return loadUpdateStrategy().endsWith(devIndicator);
+        return isForcedStrategy() || isDevUpdateStrategy();
     }
 
     /**
      * @return true if updates should be downloaded automatically
      */
     public boolean isAutomatic() {
-        return !isForced() && loadAutomatic();
-    }
-
-    /**
-     * @return true if admins should be notified ingame
-     */
-    public boolean isIngameNotification() {
-        return loadIngameNotification();
+        return !isForcedStrategy() && config.getBoolean("automatic", false);
     }
 
     /**
      * @return true if the {@link UpdateStrategy} forced by the plugin
      */
     public boolean isForcedStrategy() {
-        return isForced();
+        return isCurrentVersionDev() ? !isDevUpdateStrategy() : current.hasQualifier();
     }
 
-    private boolean loadIngameNotification() {
-        return config.getBoolean("update.ingameNotification", true);
+    private boolean isDevUpdateStrategy() {
+        return loadUpdateStrategy().endsWith(DEV_SEPERATOR + devIndicator);
     }
 
     private String loadUpdateStrategy() {
-        return config.getString("update.strategy", "MINOR").toUpperCase(Locale.ROOT);
+        return config.getString("strategy", "MINOR").toUpperCase(Locale.ROOT);
     }
 
-    private boolean loadAutomatic() {
-        return config.getBoolean("update.automatic", false);
+    private boolean isCurrentVersionDev() {
+        return (devIndicator + "-").equals(current.getQualifier());
+    }
+
+    private String getUpdateStrategy() {
+        final String updateStrategy = loadUpdateStrategy();
+        if (isDevDownloadEnabled()) {
+            return updateStrategy.substring(0, updateStrategy.length() - (this.devIndicator.length() + DEV_SEPERATOR.length()));
+        }
+        return updateStrategy;
     }
 }
