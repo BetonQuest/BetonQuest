@@ -372,7 +372,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 return completeRenaming(args);
             case "purge":
                 if (args.length == 2) {
-                    return null;
+                    return Optional.empty();
                 } else {
                     return Optional.of(new ArrayList<>());
                 }
@@ -601,7 +601,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      */
     private Optional<List<String>> completeJournals(final String... args) {
         if (args.length == 2) {
-            return null;
+            return Optional.empty();
         }
         if (args.length == 3) {
             return Optional.of(Arrays.asList("add", "list", "del"));
@@ -754,7 +754,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      */
     private Optional<List<String>> completePoints(final String... args) {
         if (args.length == 2) {
-            return null;
+            return Optional.empty();
         }
         if (args.length == 3) {
             return Optional.of(Arrays.asList("add", "list", "del"));
@@ -1077,7 +1077,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      */
     private Optional<List<String>> completeTags(final String... args) {
         if (args.length == 2) {
-            return null;
+            return Optional.empty();
         }
         if (args.length == 3) {
             return Optional.of(Arrays.asList("list", "add", "del"));
