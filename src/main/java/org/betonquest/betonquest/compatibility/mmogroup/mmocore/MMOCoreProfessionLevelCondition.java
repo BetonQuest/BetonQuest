@@ -10,20 +10,16 @@ import org.betonquest.betonquest.utils.PlayerConverter;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class MMOCoreProfessionLevelCondition extends Condition {
-
-
     private final String professionName;
     private final VariableNumber targetLevelVar;
-    private boolean mustBeEqual;
+    private final boolean mustBeEqual;
 
     public MMOCoreProfessionLevelCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
 
         professionName = instruction.next();
         targetLevelVar = instruction.getVarNum();
-        if (instruction.hasArgument("equal")) {
-            mustBeEqual = true;
-        }
+        mustBeEqual = instruction.hasArgument("equal");
     }
 
     @Override

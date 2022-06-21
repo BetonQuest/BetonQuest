@@ -13,7 +13,7 @@ import java.util.Locale;
 @SuppressWarnings("PMD.CommentRequired")
 public class MoneyVariable extends Variable {
 
-    private Type type;
+    private final Type type;
     private int amount;
 
     public MoneyVariable(final Instruction instruction) throws InstructionParseException {
@@ -24,9 +24,11 @@ public class MoneyVariable extends Variable {
             type = Type.LEFT;
             try {
                 amount = Integer.parseInt(instruction.current().substring(5));
-            } catch (NumberFormatException e) {
+            } catch (final NumberFormatException e) {
                 throw new InstructionParseException("Could not parse money amount", e);
             }
+        } else {
+            type = null;
         }
     }
 

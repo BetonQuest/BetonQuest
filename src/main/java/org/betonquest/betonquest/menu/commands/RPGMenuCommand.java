@@ -47,12 +47,7 @@ public class RPGMenuCommand extends SimpleCommand {
             return Arrays.asList("reload", "open", "list");
         }
         if (args.length > 2) {
-            if ("open".equalsIgnoreCase(args[0]) || "o".equalsIgnoreCase(args[0])) {
-                //return player names
-                return null;
-            } else {
-                return new ArrayList<>();
-            }
+            return new ArrayList<>();
         }
         switch (args[0].toLowerCase(Locale.ROOT)) {
             //complete menu ids

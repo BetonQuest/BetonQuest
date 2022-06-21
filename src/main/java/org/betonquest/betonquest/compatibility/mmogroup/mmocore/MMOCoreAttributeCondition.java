@@ -13,7 +13,7 @@ public class MMOCoreAttributeCondition extends Condition {
 
     private final String attribute;
     private final VariableNumber targetLevelVar;
-    private boolean mustBeEqual;
+    private final boolean mustBeEqual;
 
     public MMOCoreAttributeCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
@@ -22,9 +22,7 @@ public class MMOCoreAttributeCondition extends Condition {
         MMOCoreUtils.isMMOConfigValidForAttribute(attribute);
 
         targetLevelVar = instruction.getVarNum();
-        if (instruction.hasArgument("equal")) {
-            mustBeEqual = true;
-        }
+        mustBeEqual = instruction.hasArgument("equal");
     }
 
     @Override

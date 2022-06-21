@@ -28,7 +28,7 @@ public class EntityCondition extends Condition {
     private final CompoundLocation loc;
     private final VariableNumber range;
     private final String name;
-    private String marked;
+    private final String marked;
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition"})
     public EntityCondition(final Instruction instruction) throws InstructionParseException {
@@ -62,10 +62,8 @@ public class EntityCondition extends Condition {
         loc = instruction.getLocation();
         range = instruction.getVarNum();
         name = instruction.getOptional("name");
-        marked = instruction.getOptional("marked");
-        if (marked != null) {
-            marked = Utils.addPackage(instruction.getPackage(), marked);
-        }
+        final String markedString = instruction.getOptional("marked");
+        marked = markedString == null ? null : Utils.addPackage(instruction.getPackage(), markedString);
     }
 
     private VariableNumber getAmount(final String typePart) throws InstructionParseException {

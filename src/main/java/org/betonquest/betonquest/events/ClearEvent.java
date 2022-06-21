@@ -29,7 +29,7 @@ public class ClearEvent extends QuestEvent {
     private final VariableNumber range;
     private final String name;
     private final boolean kill;
-    private String marked;
+    private final String marked;
 
     public ClearEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
@@ -48,10 +48,8 @@ public class ClearEvent extends QuestEvent {
         range = instruction.getVarNum();
         name = instruction.getOptional("name");
         kill = instruction.hasArgument("kill");
-        marked = instruction.getOptional("marked");
-        if (marked != null) {
-            marked = Utils.addPackage(instruction.getPackage(), marked);
-        }
+        final String markedString = instruction.getOptional("marked");
+        marked = markedString == null ? null : Utils.addPackage(instruction.getPackage(), markedString);
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})

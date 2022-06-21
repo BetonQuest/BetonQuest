@@ -39,6 +39,7 @@ public final class Utils {
      * @return the field for the given class with the given name
      * @throws NoSuchFieldException if the field with the specified name cant be found
      */
+    @SuppressWarnings("PMD.AvoidAccessibilityAlteration")
     public static Field getField(final Class<?> clazz, final String name) throws NoSuchFieldException {
         Class<?> superClazz = clazz;
         do {
@@ -61,6 +62,7 @@ public final class Utils {
      * @return the method for the given class with given name and parameters
      * @throws NoSuchMethodException if the method with the specified name and parameters cant be found
      */
+    @SuppressWarnings("PMD.AvoidAccessibilityAlteration")
     public static Method getMethod(final Class<?> clazz, final String name, final int paramlength) throws NoSuchMethodException {
         Class<?> superClazz = clazz;
         do {

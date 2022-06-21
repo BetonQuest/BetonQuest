@@ -13,7 +13,7 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 @CustomLog
 public class VariableNumber {
 
-    private double number;
+    private final double number;
     private Variable variable;
 
     /**
@@ -34,6 +34,7 @@ public class VariableNumber {
             if (this.variable == null) {
                 throw new InstructionParseException("Could not create variable");
             }
+            number = 0.0;
         } else {
             number = Double.parseDouble(variable);
         }

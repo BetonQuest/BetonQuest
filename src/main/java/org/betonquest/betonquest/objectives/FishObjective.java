@@ -31,8 +31,8 @@ import org.bukkit.inventory.ItemStack;
 public class FishObjective extends CountingObjective implements Listener {
 
     private final BlockSelector blockSelector;
-    private CompoundLocation hookTargetLocation;
-    private VariableNumber rangeVar;
+    private final CompoundLocation hookTargetLocation;
+    private final VariableNumber rangeVar;
 
     public FishObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "fish_to_catch");
@@ -45,6 +45,9 @@ public class FishObjective extends CountingObjective implements Listener {
         if (loc != null && range != null) {
             hookTargetLocation = new CompoundLocation(pack, loc);
             rangeVar = new VariableNumber(pack, range);
+        } else {
+            hookTargetLocation = null;
+            rangeVar = null;
         }
 
         if (targetAmount <= 0) {

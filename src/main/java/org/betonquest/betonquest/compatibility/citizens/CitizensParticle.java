@@ -241,6 +241,7 @@ public class CitizensParticle extends BukkitRunnable {
         }
     }
 
+    @SuppressWarnings("PMD.ImmutableField")
     private static class Effect {
 
         private String name;

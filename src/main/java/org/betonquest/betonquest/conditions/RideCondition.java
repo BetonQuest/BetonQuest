@@ -12,8 +12,8 @@ import java.util.Locale;
 @SuppressWarnings("PMD.CommentRequired")
 public class RideCondition extends Condition {
 
+    private final boolean any;
     private EntityType vehicle;
-    private boolean any;
 
     public RideCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
@@ -21,6 +21,7 @@ public class RideCondition extends Condition {
         if ("any".equalsIgnoreCase(name)) {
             any = true;
         } else {
+            any = false;
             try {
                 vehicle = EntityType.valueOf(name.toUpperCase(Locale.ROOT));
             } catch (final IllegalArgumentException e) {

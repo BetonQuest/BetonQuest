@@ -22,6 +22,7 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
     }
 
     @Override
+    @SuppressWarnings("PMD.AvoidAccessibilityAlteration")
     protected SkullMeta updateSkullMeta(final SkullMeta meta) {
         // this only applied to Citizens NPC conversations
         if (conv instanceof CitizensConversation) {
@@ -60,8 +61,8 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
                     return meta;
                 }
             } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
-                    | InstantiationException | InvocationTargetException | NoSuchMethodException
-                    | ClassNotFoundException | InterruptedException | ExecutionException e) {
+                     | InstantiationException | InvocationTargetException | NoSuchMethodException
+                     | ClassNotFoundException | InterruptedException | ExecutionException e) {
                 LOG.debug(citizensConv.getPackage(), "Could not resolve a skin Texture!", e);
             }
         }

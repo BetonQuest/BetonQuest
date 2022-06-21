@@ -209,7 +209,7 @@ public class Instruction {
         return getEnchantments(next());
     }
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({"deprecation", "PMD.ReturnEmptyCollectionRatherThanNull"})
     public Map<Enchantment, Integer> getEnchantments(final String string) throws InstructionParseException {
         if (string == null) {
             return null;
@@ -240,6 +240,7 @@ public class Instruction {
         return getEffects(next());
     }
 
+    @SuppressWarnings("PMD.ReturnEmptyCollectionRatherThanNull")
     public List<PotionEffect> getEffects(final String string) throws InstructionParseException {
         if (string == null) {
             return null;

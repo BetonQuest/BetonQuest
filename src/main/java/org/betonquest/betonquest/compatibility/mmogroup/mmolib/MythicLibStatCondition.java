@@ -13,16 +13,14 @@ public class MythicLibStatCondition extends Condition {
 
     private final String statName;
     private final double targetLevel;
-    private boolean mustBeEqual;
+    private final boolean mustBeEqual;
 
     public MythicLibStatCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
 
         statName = instruction.next();
         targetLevel = instruction.getDouble();
-        if (instruction.hasArgument("equal")) {
-            mustBeEqual = true;
-        }
+        mustBeEqual = instruction.hasArgument("equal");
     }
 
     @Override

@@ -17,7 +17,7 @@ public class AureliumSkillsStatsCondition extends Condition {
     private final VariableNumber targetLevelVar;
     private final Stat stat;
 
-    private boolean mustBeEqual;
+    private final boolean mustBeEqual;
 
 
     public AureliumSkillsStatsCondition(final Instruction instruction) throws InstructionParseException {
@@ -32,9 +32,7 @@ public class AureliumSkillsStatsCondition extends Condition {
             throw new InstructionParseException("Invalid stat name");
         }
 
-        if (instruction.hasArgument("equal")) {
-            mustBeEqual = true;
-        }
+        mustBeEqual = instruction.hasArgument("equal");
     }
 
     @Override
