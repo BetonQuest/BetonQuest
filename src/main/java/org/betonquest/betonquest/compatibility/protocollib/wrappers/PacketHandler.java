@@ -27,7 +27,7 @@ public interface PacketHandler {
      * @param receiver - the receiver.
      * @throws UncheckedPacketException If the packet cannot be sent.
      */
-    void sendPacket(final Player receiver);
+    void sendPacket(Player receiver);
 
     /**
      * Send the current packet to all online players.
@@ -42,5 +42,5 @@ public interface PacketHandler {
      * @param sender - the sender.
      * @throws UncheckedPacketException if the packet cannot be received.
      */
-    void receivePacket(final Player sender);
+    void receivePacket(Player sender);
 }

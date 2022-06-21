@@ -10,5 +10,5 @@ public interface Event {
      *
      * @param playerId player the event is done for
      */
-    void execute(final String playerId);
+    void execute(String playerId);
 }

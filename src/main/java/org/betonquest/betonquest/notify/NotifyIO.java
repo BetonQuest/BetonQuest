@@ -43,7 +43,7 @@ public abstract class NotifyIO {
         sound.sendSound(player);
     }
 
-    protected abstract void notifyPlayer(final String message, final Player player);
+    protected abstract void notifyPlayer(String message, Player player);
 
     protected float getFloatData(final String dataKey, final float defaultData) throws InstructionParseException {
         final String dataString = data.get(dataKey);

@@ -171,7 +171,7 @@ public abstract class Objective {
      * @param playerID ID of the player for whom the property is to be returned
      * @return the property with given name
      */
-    abstract public String getProperty(final String name, final String playerID);
+    abstract public String getProperty(String name, String playerID);
 
     /**
      * This method fires events for the objective and removes it from player's
@@ -290,7 +290,8 @@ public abstract class Objective {
     private Optional<ObjectiveData> createObjectiveData(final String playerID, final String instructionString) {
         try {
             return Optional.of(constructObjectiveDataUnsafe(playerID, instructionString));
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException exception) {
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
+                 InvocationTargetException exception) {
             handleObjectiveDataConstructionError(playerID, exception);
             return Optional.empty();
         }
