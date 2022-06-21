@@ -64,6 +64,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.StringJoiner;
 import java.util.TreeMap;
@@ -313,11 +314,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     @SuppressWarnings("PMD.NcssCount")
     @Override
-    public List<String> simpleTabComplete(final CommandSender sender, final Command command, final String alias, final String... args) {
+    public Optional<List<String>> simpleTabComplete(final CommandSender sender, final Command command, final String alias, final String... args) {
         if (args.length == 1) {
-            return Arrays.asList("condition", "event", "item", "give", "objective", "globaltag",
+            return Optional.of(Arrays.asList("condition", "event", "item", "give", "objective", "globaltag",
                     "globalpoint", "tag", "point", "journal", "delete", "rename", "version", "purge",
-                    "update", "reload", "backup", "debug", "download");
+                    "update", "reload", "backup", "debug", "download"));
         }
         switch (args[0].toLowerCase(Locale.ROOT)) {
             case "conditions":
@@ -371,9 +372,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 return completeRenaming(args);
             case "purge":
                 if (args.length == 2) {
-                    return null;
+                    return Optional.empty();
                 } else {
-                    return new ArrayList<>();
+                    return Optional.of(new ArrayList<>());
                 }
             case "debug":
                 return completeDebug(args);
@@ -387,7 +388,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "backup":
             case "package":
             default:
-                return new ArrayList<>();
+                return Optional.of(new ArrayList<>());
         }
     }
 
@@ -396,8 +397,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      *
      * @return
      */
-    private List<String> completePackage() {
-        return new ArrayList<>(Config.getPackages().keySet());
+    private Optional<List<String>> completePackage() {
+        return Optional.of(new ArrayList<>(Config.getPackages().keySet()));
     }
 
     /**
@@ -408,7 +409,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      *             null for unspecific
      * @return
      */
-    private List<String> completeId(final String[] args, final AccessorType type) {
+    private Optional<List<String>> completeId(final String[] args, final AccessorType type) {
         final String last = args[args.length - 1];
         if (last == null || !last.contains(".")) {
             return completePackage();
@@ -416,12 +417,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             final String pack = last.substring(0, last.indexOf('.'));
             final QuestPackage configPack = Config.getPackages().get(pack);
             if (configPack == null) {
-                return new ArrayList<>();
+                return Optional.of(new ArrayList<>());
             }
             if (type == null) {
-                final List<String> completations = new ArrayList<>();
-                completations.add(pack + '.');
-                return completations;
+                final List<String> completions = new ArrayList<>();
+                completions.add(pack + '.');
+                return Optional.of(completions);
             }
             final ConfigurationSection configuration;
             switch (type) {
@@ -441,7 +442,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     configuration = configPack.getConfig().getConfigurationSection("objectives");
                     break;
                 default:
-                    return new ArrayList<>();
+                    return Optional.of(new ArrayList<>());
             }
             final List<String> completions = new ArrayList<>();
             if (configuration != null) {
@@ -449,7 +450,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     completions.add(pack + '.' + key);
                 }
             }
-            return completions;
+            return Optional.of(completions);
         }
     }
 
@@ -598,17 +599,17 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param args
      * @return
      */
-    private List<String> completeJournals(final String... args) {
+    private Optional<List<String>> completeJournals(final String... args) {
         if (args.length == 2) {
-            return null;
+            return Optional.empty();
         }
         if (args.length == 3) {
-            return Arrays.asList("add", "list", "del");
+            return Optional.of(Arrays.asList("add", "list", "del"));
         }
         if (args.length == 4) {
             return completeId(args, AccessorType.JOURNAL);
         }
-        return new ArrayList<>();
+        return Optional.of(new ArrayList<>());
     }
 
     /**
@@ -751,17 +752,17 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param args
      * @return
      */
-    private List<String> completePoints(final String... args) {
+    private Optional<List<String>> completePoints(final String... args) {
         if (args.length == 2) {
-            return null;
+            return Optional.empty();
         }
         if (args.length == 3) {
-            return Arrays.asList("add", "list", "del");
+            return Optional.of(Arrays.asList("add", "list", "del"));
         }
         if (args.length == 4) {
             return completeId(args, null);
         }
-        return new ArrayList<>();
+        return Optional.of(new ArrayList<>());
     }
 
     /**
@@ -771,14 +772,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param args
      * @return
      */
-    private List<String> completeGlobalPoints(final String... args) {
+    private Optional<List<String>> completeGlobalPoints(final String... args) {
         if (args.length == 2) {
-            return Arrays.asList("add", "list", "del");
+            return Optional.of(Arrays.asList("add", "list", "del"));
         }
         if (args.length == 3) {
             return completeId(args, null);
         }
-        return new ArrayList<>();
+        return Optional.of(new ArrayList<>());
     }
 
     /**
@@ -846,11 +847,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param args
      * @return
      */
-    private List<String> completeItems(final String... args) {
+    private Optional<List<String>> completeItems(final String... args) {
         if (args.length == 2) {
             return completeId(args, AccessorType.ITEMS);
         }
-        return new ArrayList<>();
+        return Optional.of(new ArrayList<>());
     }
 
     /**
@@ -889,14 +890,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param args
      * @return
      */
-    private List<String> completeEvents(final String... args) {
+    private Optional<List<String>> completeEvents(final String... args) {
         if (args.length == 2) {
-            return null;
+            return Optional.empty();
         }
         if (args.length == 3) {
             return completeId(args, AccessorType.EVENTS);
         }
-        return new ArrayList<>();
+        return Optional.of(new ArrayList<>());
     }
 
     /**
@@ -936,14 +937,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param args
      * @return
      */
-    private List<String> completeConditions(final String... args) {
+    private Optional<List<String>> completeConditions(final String... args) {
         if (args.length == 2) {
-            return null;
+            return Optional.empty();
         }
         if (args.length == 3) {
             return completeId(args, AccessorType.CONDITIONS);
         }
-        return new ArrayList<>();
+        return Optional.of(new ArrayList<>());
     }
 
     /**
@@ -1074,17 +1075,17 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param args
      * @return
      */
-    private List<String> completeTags(final String... args) {
+    private Optional<List<String>> completeTags(final String... args) {
         if (args.length == 2) {
-            return null;
+            return Optional.empty();
         }
         if (args.length == 3) {
-            return Arrays.asList("list", "add", "del");
+            return Optional.of(Arrays.asList("list", "add", "del"));
         }
         if (args.length == 4) {
             return completeId(args, null);
         }
-        return new ArrayList<>();
+        return Optional.of(new ArrayList<>());
     }
 
     /**
@@ -1094,14 +1095,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param args
      * @return
      */
-    private List<String> completeGlobalTags(final String... args) {
+    private Optional<List<String>> completeGlobalTags(final String... args) {
         if (args.length == 2) {
-            return Arrays.asList("list", "add", "del");
+            return Optional.of(Arrays.asList("list", "add", "del"));
         }
         if (args.length == 3) {
             return completeId(args, null);
         }
-        return new ArrayList<>();
+        return Optional.of(new ArrayList<>());
     }
 
     /**
@@ -1221,17 +1222,17 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param args
      * @return
      */
-    private List<String> completeObjectives(final String... args) {
+    private Optional<List<String>> completeObjectives(final String... args) {
         if (args.length == 2) {
-            return null;
+            return Optional.empty();
         }
         if (args.length == 3) {
-            return Arrays.asList("list", "add", "del", "complete");
+            return Optional.of(Arrays.asList("list", "add", "del", "complete"));
         }
         if (args.length == 4) {
             return completeId(args, AccessorType.OBJECTIVES);
         }
-        return new ArrayList<>();
+        return Optional.of(new ArrayList<>());
     }
 
     /**
@@ -1397,14 +1398,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param args
      * @return
      */
-    private List<String> completeRenaming(final String... args) {
+    private Optional<List<String>> completeRenaming(final String... args) {
         if (args.length <= 3) {
             return completeDeleting(args);
         }
         if (args.length == 4) {
             return completeId(args, null);
         }
-        return new ArrayList<>();
+        return Optional.of(new ArrayList<>());
     }
 
     /**
@@ -1485,9 +1486,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * @param args
      * @return
      */
-    private List<String> completeDeleting(final String... args) {
+    private Optional<List<String>> completeDeleting(final String... args) {
         if (args.length == 2) {
-            return Arrays.asList("tag", "point", "objective", "entry");
+            return Optional.of(Arrays.asList("tag", "point", "objective", "entry"));
         }
         if (args.length == 3) {
             switch (args[1].toLowerCase(Locale.ROOT)) {
@@ -1513,7 +1514,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     break;
             }
         }
-        return new ArrayList<>();
+        return Optional.of(new ArrayList<>());
     }
 
     /**
@@ -1786,15 +1787,16 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         });
     }
 
-    private List<String> completeDownload(final String... args) {
+    private Optional<List<String>> completeDownload(final String... args) {
         return switch (args.length) {
-            case 2 -> instance.getPluginConfig().getStringList("download.repo_whitelist");
-            case 3 -> List.of("main", "refs/heads/", "refs/tags/");
-            case 4 -> Downloader.ALLOWED_OFFSET_PATHS;
-            case 5 -> List.of("/");
-            case 6 -> List.of("/", "overwrite", "recursive");
-            case 7, 8 -> Stream.of("overwrite", "recursive").filter(tag -> !Arrays.asList(args).contains(tag)).toList();
-            default -> List.of();
+            case 2 -> Optional.of(instance.getPluginConfig().getStringList("download.repo_whitelist"));
+            case 3 -> Optional.of(List.of("main", "refs/heads/", "refs/tags/"));
+            case 4 -> Optional.of(Downloader.ALLOWED_OFFSET_PATHS);
+            case 5 -> Optional.of(List.of("/"));
+            case 6 -> Optional.of(List.of("/", "overwrite", "recursive"));
+            case 7, 8 ->
+                    Optional.of(Stream.of("overwrite", "recursive").filter(tag -> !Arrays.asList(args).contains(tag)).toList());
+            default -> Optional.of(List.of());
         };
     }
 
@@ -1808,17 +1810,17 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         return Level.WARNING;
     }
 
-    private List<String> completeDebug(final String... args) {
+    private Optional<List<String>> completeDebug(final String... args) {
         if (args.length == 2) {
-            return Arrays.asList("true", "false", "ingame");
+            return Optional.of(Arrays.asList("true", "false", "ingame"));
         }
         if (args.length == 3) {
             return completePackage();
         }
         if (args.length == 4) {
-            return Arrays.asList("error", "info", "debug");
+            return Optional.of(Arrays.asList("error", "info", "debug"));
         }
-        return new ArrayList<>();
+        return Optional.of(new ArrayList<>());
     }
 
     private void sendMessage(final CommandSender sender, final String messageName) {

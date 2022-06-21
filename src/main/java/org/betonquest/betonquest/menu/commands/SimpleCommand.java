@@ -105,15 +105,12 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
         if (sender == null || alias == null || args == null) {
             return super.tabComplete(sender, alias, args);
         }
-        final List<String> completations = this.simpleTabComplete(sender, alias, args);
-        if (completations == null) {
-            return new ArrayList<>();
-        }
+        final List<String> completions = this.simpleTabComplete(sender, alias, args);
         final List<String> out = new ArrayList<>();
         final String lastArg = args[args.length - 1];
-        for (final String completation : completations) {
-            if (lastArg == null || lastArg.matches(" *") || completation.startsWith(lastArg)) {
-                out.add(completation);
+        for (final String completion : completions) {
+            if (lastArg == null || lastArg.matches(" *") || completion.startsWith(lastArg)) {
+                out.add(completion);
             }
         }
         return out;
@@ -152,7 +149,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
      *
      * @return Whether the command was successfully unregistered
      */
-    @SuppressWarnings({"unchecked", "PMD.AvoidLiteralsInIfCondition"})
+    @SuppressWarnings({"unchecked", "PMD.AvoidLiteralsInIfCondition", "PMD.AvoidAccessibilityAlteration"})
     public boolean unregister() {
         if (this.commandMap == null) {
             return false;

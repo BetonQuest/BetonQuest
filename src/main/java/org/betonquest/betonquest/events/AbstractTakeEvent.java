@@ -119,7 +119,7 @@ public abstract class AbstractTakeEvent extends QuestEvent {
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    protected abstract ItemStack[] takeDesiredAmount(final Player player, final ItemStack... items);
+    protected abstract ItemStack[] takeDesiredAmount(Player player, ItemStack... items);
 
     protected enum CheckType {
         INVENTORY,

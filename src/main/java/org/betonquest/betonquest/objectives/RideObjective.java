@@ -18,8 +18,8 @@ import java.util.Locale;
 @SuppressWarnings("PMD.CommentRequired")
 public class RideObjective extends Objective implements Listener {
 
+    private final boolean any;
     private EntityType vehicle;
-    private boolean any;
 
     public RideObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
@@ -28,6 +28,7 @@ public class RideObjective extends Objective implements Listener {
         if ("any".equalsIgnoreCase(name)) {
             any = true;
         } else {
+            any = false;
             try {
                 vehicle = EntityType.valueOf(name.toUpperCase(Locale.ROOT));
             } catch (final IllegalArgumentException e) {

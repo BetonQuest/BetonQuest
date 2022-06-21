@@ -42,8 +42,8 @@ public class QuestCanceler {
     private final Map<String, String> name = new HashMap<>();
     private final QuestPackage pack;
     private final String cancelerID;
-    private String item;
-    private Location loc;
+    private final String item;
+    private final Location loc;
 
     /**
      * Creates a new canceler with given name.
@@ -73,10 +73,8 @@ public class QuestCanceler {
             name.put(Config.getLanguage(), pack.getString("cancel." + cancelerID + ".name"));
         }
         // get the item
-        item = pack.getString("cancel." + cancelerID + ".item");
-        if (item == null) {
-            item = Config.getString(pack.getPackagePath() + ".items.cancel_button");
-        }
+        final String itemString = pack.getString("cancel." + cancelerID + ".item");
+        item = itemString == null ? Config.getString(pack.getPackagePath() + ".items.cancel_button") : itemString;
         // parse it to get the data
         if (rawEvents == null) {
             events = new EventID[0];
@@ -131,6 +129,7 @@ public class QuestCanceler {
         if (locParts != null) {
             if (locParts.length != 4 && locParts.length != 6) {
                 LOG.warn(pack, "Wrong location format in quest canceler " + name);
+                loc = null;
                 return;
             }
             final double locX;
@@ -142,11 +141,13 @@ public class QuestCanceler {
                 locZ = Double.parseDouble(locParts[2]);
             } catch (final NumberFormatException e) {
                 LOG.warn(pack, "Could not parse location in quest canceler " + name, e);
+                loc = null;
                 return;
             }
             final World world = Bukkit.getWorld(locParts[3]);
             if (world == null) {
                 LOG.warn(pack, "The world doesn't exist in quest canceler " + name);
+                loc = null;
                 return;
             }
             float yaw = 0;
@@ -162,6 +163,8 @@ public class QuestCanceler {
                 }
             }
             loc = new Location(world, locX, locY, locZ, yaw, pitch);
+        } else {
+            loc = null;
         }
     }
 

@@ -399,7 +399,7 @@ public class MultiConfiguration extends HandleModificationConfiguration {
          * @param path  the absolut path to the value
          * @param value the value to set
          */
-        void set(final @NotNull String path, final @Nullable Object value);
+        void set(@NotNull String path, @Nullable Object value);
 
         /**
          * Consumer for a call of the setComment method.
@@ -407,7 +407,7 @@ public class MultiConfiguration extends HandleModificationConfiguration {
          * @param path     the absolut path to the comments
          * @param comments the comments to set
          */
-        void setComment(final @NotNull String path, final List<String> comments);
+        void setComment(@NotNull String path, List<String> comments);
 
         /**
          * Consumer for a call of the setInlineComment method.
@@ -415,7 +415,7 @@ public class MultiConfiguration extends HandleModificationConfiguration {
          * @param path     the absolut path to the comments
          * @param comments the comments to set
          */
-        void setInlineComment(final @NotNull String path, final List<String> comments);
+        void setInlineComment(@NotNull String path, List<String> comments);
     }
 
     /**

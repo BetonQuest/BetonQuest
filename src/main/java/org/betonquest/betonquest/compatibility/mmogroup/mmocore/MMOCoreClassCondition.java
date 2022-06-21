@@ -14,8 +14,8 @@ import java.util.List;
 public class MMOCoreClassCondition extends Condition {
 
     private final String targetClassName;
+    private final boolean mustBeEqual;
     private int targetClassLevel = -1;
-    private boolean mustBeEqual;
 
     public MMOCoreClassCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
@@ -26,9 +26,7 @@ public class MMOCoreClassCondition extends Condition {
             targetClassLevel = potentialLevel.get(0);
         }
 
-        if (instruction.hasArgument("equal")) {
-            mustBeEqual = true;
-        }
+        mustBeEqual = instruction.hasArgument("equal");
     }
 
     @Override

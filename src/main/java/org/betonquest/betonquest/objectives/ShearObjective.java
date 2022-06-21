@@ -27,16 +27,13 @@ public class ShearObjective extends CountingObjective implements Listener {
     private final String color;
     private final Pattern underscore = Pattern.compile("(?<!\\\\)_");
     private final Pattern escapedUnderscore = Pattern.compile("(\\\\)_");
-    private String name;
+    private final String name;
 
     public ShearObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "sheep_to_shear");
         targetAmount = instruction.getPositive();
         final String rawName = instruction.getOptional("name");
-        if (rawName != null) {
-            name = underscore.matcher(rawName).replaceAll(" ");
-            name = escapedUnderscore.matcher(name).replaceAll("_");
-        }
+        name = rawName != null ? escapedUnderscore.matcher(underscore.matcher(rawName).replaceAll(" ")).replaceAll("_") : null;
         color = instruction.getOptional("color");
     }
 

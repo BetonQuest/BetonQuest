@@ -82,28 +82,28 @@ class PlayerPackageReceiverSelectorTest {
     @MethodSource("middlePackageRecordSource")
     void testExactMatchFilterMatches(final BetonQuestLogRecord record) {
         final PlayerPackageReceiverSelector playerFilter = new PlayerPackageReceiverSelector(uuids, Level.INFO, MIDDLE_PACKAGE);
-        assertEquals(uuids, playerFilter.findReceivers(record));
+        assertEquals(uuids, playerFilter.findReceivers(record), "There should be two uuids in the list of receivers");
     }
 
     @ParameterizedTest
     @MethodSource({"outerPackageRecordSource", "innerPackageRecordSource", "fineLevelRecordSource"})
     void testExactMatchFilterIgnores(final BetonQuestLogRecord record) {
         final PlayerPackageReceiverSelector playerFilter = new PlayerPackageReceiverSelector(uuids, Level.INFO, MIDDLE_PACKAGE);
-        assertEquals(Collections.emptySet(), playerFilter.findReceivers(record));
+        assertEquals(Collections.emptySet(), playerFilter.findReceivers(record), "Receivers should be empty");
     }
 
     @ParameterizedTest
     @MethodSource({"middlePackageRecordSource", "innerPackageRecordSource"})
     void testSubPackageFilterMatches(final BetonQuestLogRecord record) {
         final PlayerPackageReceiverSelector playerFilter = new PlayerPackageReceiverSelector(uuids, Level.INFO, MIDDLE_PACKAGE + "*");
-        assertEquals(uuids, playerFilter.findReceivers(record));
+        assertEquals(uuids, playerFilter.findReceivers(record), "There should be two uuids in the list of receivers");
     }
 
     @ParameterizedTest
     @MethodSource({"outerPackageRecordSource", "fineLevelRecordSource"})
     void testSubPackageFilterIgnores(final BetonQuestLogRecord record) {
         final PlayerPackageReceiverSelector playerFilter = new PlayerPackageReceiverSelector(uuids, Level.INFO, MIDDLE_PACKAGE + "*");
-        assertEquals(Collections.emptySet(), playerFilter.findReceivers(record));
+        assertEquals(Collections.emptySet(), playerFilter.findReceivers(record), "Receivers should be empty");
     }
 
     @ParameterizedTest
@@ -111,13 +111,13 @@ class PlayerPackageReceiverSelectorTest {
     void testStarFilterMatches(final BetonQuestLogRecord record) {
         final PlayerPackageReceiverSelector playerFilter = new PlayerPackageReceiverSelector(uuids, Level.INFO, "*");
 
-        assertEquals(uuids, playerFilter.findReceivers(record));
+        assertEquals(uuids, playerFilter.findReceivers(record), "There should be two uuids in the list of receivers");
     }
 
     @ParameterizedTest
     @MethodSource("fineLevelRecordSource")
     void testStarFilterIgnores(final BetonQuestLogRecord record) {
         final PlayerPackageReceiverSelector playerFilter = new PlayerPackageReceiverSelector(uuids, Level.INFO, "*");
-        assertEquals(Collections.emptySet(), playerFilter.findReceivers(record));
+        assertEquals(Collections.emptySet(), playerFilter.findReceivers(record), "Receivers should be empty");
     }
 }

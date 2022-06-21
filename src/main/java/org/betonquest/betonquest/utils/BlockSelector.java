@@ -72,7 +72,7 @@ public class BlockSelector {
      */
     @Override
     public String toString() {
-        return materials.toString() + (states == null ? "" : "[" + states + "]");
+        return materials.toString() + (states.isEmpty() ? "" : "[" + states + "]");
     }
 
     /**
@@ -115,7 +115,7 @@ public class BlockSelector {
      * @return A {@link BlockData}
      */
     public BlockData getBlockData() {
-        if (states == null) {
+        if (states.isEmpty()) {
             return Bukkit.createBlockData(getRandomMaterial());
         } else {
             return Bukkit.createBlockData(getRandomMaterial(), getStateAsString());
@@ -165,8 +165,8 @@ public class BlockSelector {
         }
 
         final Map<String, String> blockStates = getStates(getSelectorParts(block.getBlockData().getAsString())[2]);
-        if (states == null) {
-            return !exactMatch || blockStates == null;
+        if (states.isEmpty()) {
+            return !exactMatch || blockStates.isEmpty();
         }
         if (exactMatch && states.size() != blockStates.size()) {
             return false;
@@ -279,10 +279,10 @@ public class BlockSelector {
     }
 
     private Map<String, String> getStates(final String statesString) {
-        if (statesString == null || statesString.isEmpty()) {
-            return null;
-        }
         final Map<String, String> states = new HashMap<>();
+        if (statesString == null || statesString.isEmpty()) {
+            return states;
+        }
         for (final String state : statesString.split(",")) {
             final String[] parts = state.split("=", 2);
             states.put(parts[0].trim(), parts[1].trim());

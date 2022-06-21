@@ -21,7 +21,7 @@ public class MoneyEvent extends QuestEvent {
 
     private final VariableNumber amount;
     private final boolean notify;
-    private boolean multi;
+    private final boolean multi;
 
     public MoneyEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
@@ -29,6 +29,8 @@ public class MoneyEvent extends QuestEvent {
         if (!string.isEmpty() && string.charAt(0) == '*') {
             multi = true;
             string = string.replace("*", "");
+        } else {
+            multi = false;
         }
         try {
             amount = new VariableNumber(instruction.getPackage().getPackagePath(), string);

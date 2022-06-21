@@ -92,7 +92,7 @@ abstract class AbstractData<T extends Cloneable> {
      * @throws InstructionParseException Is thrown when the objectString is not in the right format or if
      *                                   the values couldn't be parsed.
      */
-    public abstract T parse(final String objectString) throws InstructionParseException;
+    public abstract T parse(String objectString) throws InstructionParseException;
 
     /**
      * Clones the object to prevent illegal modification.
@@ -100,7 +100,7 @@ abstract class AbstractData<T extends Cloneable> {
      * @param object The object
      * @return The cloned object
      */
-    protected abstract T clone(final T object);
+    protected abstract T clone(T object);
 
     /**
      * Gets the object

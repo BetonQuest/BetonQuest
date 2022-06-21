@@ -1,11 +1,13 @@
 package org.betonquest.betonquest.compatibility.placeholderapi;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("PMD.CommentRequired")
+@SuppressFBWarnings("HE_INHERITS_EQUALS_USE_HASHCODE")
 public class BetonQuestPlaceholder extends PlaceholderExpansion {
 
     public BetonQuestPlaceholder() {
@@ -83,5 +85,4 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
         }
         return BetonQuest.getInstance().getVariableValue(pack, '%' + placeholderIdentifier + '%', PlayerConverter.getID(player));
     }
-
 }

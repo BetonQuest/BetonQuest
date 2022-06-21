@@ -39,7 +39,7 @@ public interface ConfigurationSectionModificationHandler {
      * @param path    The path of the value
      * @param value   The value to set
      */
-    void set(@NotNull ConfigurationSection section, @NotNull final String path, @Nullable final Object value);
+    void set(@NotNull ConfigurationSection section, @NotNull String path, @Nullable Object value);
 
     /**
      * Handles the {@link ConfigurationSection#addDefault(String, Object)} method.
@@ -58,7 +58,7 @@ public interface ConfigurationSectionModificationHandler {
      * @return The created section
      */
     @NotNull
-    ConfigurationSection createSection(@NotNull ConfigurationSection section, @NotNull final String path);
+    ConfigurationSection createSection(@NotNull ConfigurationSection section, @NotNull String path);
 
     /**
      * Handles the {@link ConfigurationSection#set(String, Object)} method.
@@ -69,7 +69,7 @@ public interface ConfigurationSectionModificationHandler {
      * @return The created section
      */
     @NotNull
-    ConfigurationSection createSection(@NotNull ConfigurationSection section, @NotNull final String path, @NotNull final Map<?, ?> map);
+    ConfigurationSection createSection(@NotNull ConfigurationSection section, @NotNull String path, @NotNull Map<?, ?> map);
 
     /**
      * Handles the {@link ConfigurationSection#setComments(String, List)} method.
@@ -78,7 +78,7 @@ public interface ConfigurationSectionModificationHandler {
      * @param path     The path to the section
      * @param comments The comments to set
      */
-    void setComments(@NotNull ConfigurationSection section, @NotNull final String path, @Nullable final List<String> comments);
+    void setComments(@NotNull ConfigurationSection section, @NotNull String path, @Nullable List<String> comments);
 
     /**
      * Handles the {@link ConfigurationSection#setInlineComments(String, List)} method.
@@ -87,5 +87,5 @@ public interface ConfigurationSectionModificationHandler {
      * @param path     The path to the section
      * @param comments The comments to set
      */
-    void setInlineComments(@NotNull ConfigurationSection section, @NotNull final String path, @Nullable final List<String> comments);
+    void setInlineComments(@NotNull ConfigurationSection section, @NotNull String path, @Nullable List<String> comments);
 }
