@@ -10,6 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated
 ### Removed
 ### Fixed
+### Security
+
+## [1.12.9] - 2022-06-22
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
 - `weather` event - storm did not work
 - 1.19 ProtocolLib warnings about deprecated packages
 ### Security
