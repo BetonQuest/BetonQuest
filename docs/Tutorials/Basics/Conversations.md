@@ -1,8 +1,12 @@
+---
+icon: material/message-processing
+---
+
 ## About
 :octicons-clock-24:  30 minutes · :octicons-tag-16: Basics
 
 In this tutorial you will learn the basics of the conversations. These allow you to create a dialog between the player
-and a NPC. Therefore these are the basic tool for story telling.
+and a NPC. Therefore, these are the basic tool for story telling.
 
 
 !!! danger "Requirements"
@@ -26,21 +30,21 @@ Please create folders and files so your file structure looks like this:
               - :material-file: jack.yml  
     
 
-This means that QuestPackages must contain a folder called tutorialQuest. This folder contains a file named package.yml
-and another directory called conversations. The conversations directory must contain another file named jack.yml.
+This means that the _QuestPackages_ folder must contain a folder called _tutorialQuest_. This folder contains a file named _package.yml_
+and another directory called _conversations_. The _conversations_ directory must contain another file named _jack.yml_.
 
-Now that we have the folder and file structure we can move on to create our first conversation.
-First we need to create the `npcs` section in the `package.yml` so that the quest package knows which Citizens NPC
-we want to talk with. This links the NPC with the given ID to the conversation with the given ID.
-This is how it works:
+Now that we have the folder and file structure we can create our first conversation.
+First we need to create the `npcs` section in the _package.yml_ so that the plugin knows which Citizens NPC
+we want to talk with. This is how it works:
 
 ``` YAML title="package.yml" linenums="1"
 npcs:
   '1': Jack
 ```
+This links the NPC with the given ID to the conversation with the given ID.
 Save the file after editing.
 
-??? info "How to find out the Citizens NPC ID"
+??? info "How to find the Citizens NPC ID"
     
     1. Stay close to the NPC you want to select
     2. Type the command `/npc select` to select the nearby NPC
