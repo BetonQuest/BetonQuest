@@ -38,14 +38,34 @@ class HistoryHandlerTest {
 
         final Logger logger = LogValidator.getSilentLogger();
         logger.addHandler(historyHandler);
-        logger.log(new LogRecord(Level.INFO, "record"));
+        logger.log(new LogRecord(Level.INFO, "record1"));
 
         validator.assertEmpty();
         historyHandler.startLogging();
         validator.assertLogEntry(Level.INFO, "=====START OF HISTORY=====");
-        validator.assertLogEntry(Level.INFO, "record");
+        validator.assertLogEntry(Level.INFO, "record1");
         validator.assertLogEntry(Level.INFO, "=====END OF HISTORY=====");
         validator.assertEmpty();
+        historyHandler.flush();
+        historyHandler.close();
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    void testLoggingAfterStart() throws IOException {
+        final LogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());
+        final LogValidator validator = new LogValidator();
+        final HistoryHandler historyHandler = new HistoryHandler(false, loggingUpdater, logQueue, new ResettableHandler(() -> validator));
+
+        final Logger logger = LogValidator.getSilentLogger();
+        logger.addHandler(historyHandler);
+        historyHandler.startLogging();
+        logger.log(new LogRecord(Level.INFO, "record2"));
+
+        validator.assertLogEntry(Level.INFO, "record2");
+        validator.assertEmpty();
+        historyHandler.flush();
+        historyHandler.close();
     }
 
     @Test
