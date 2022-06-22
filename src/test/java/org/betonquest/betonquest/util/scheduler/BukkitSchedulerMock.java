@@ -144,19 +144,28 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
     }
 
     /**
-     * Gets the number of async tasks which are awaiting execution.
-     *
-     * @return The number of async tasks which are pending execution.
+     * Waits until all asynchronous tasks have finished executing or the timeout elapses.
+     * The default timeout is one second.
      */
-    public int getNumberOfQueuedAsyncTasks() {
-        int queuedAsync = 0;
-        for (final ScheduledTask task : scheduledTasks.getCurrentTaskList()) {
-            if (task.isSync() || task.isCancelled() || task.isRunning()) {
-                continue;
+    public void waitAsyncTasksFinished() {
+        waitAsyncTasksFinished(1000L);
+    }
+
+    /**
+     * Waits until all asynchronous tasks have finished executing or the timeout elapses.
+     *
+     * @param timeout the timeout in milliseconds
+     */
+    public void waitAsyncTasksFinished(final long timeout) {
+        final long untilTimeMillis = System.currentTimeMillis() + timeout;
+        while (pool.getActiveCount() > 0 && System.currentTimeMillis() < untilTimeMillis) {
+            try {
+                Thread.sleep(10L);
+            } catch (final InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
             }
-            queuedAsync++;
         }
-        return queuedAsync;
     }
 
     @Override

@@ -104,9 +104,7 @@ To use the `BukkitSchedulerMock` you need to create the following setup:
 ````java linenums="1" hl_lines="3-5"
 @Test
 void testMethod {
-    final BukkitSchedulerMock scheduler = new BukkitSchedulerMock();
-    try (MockedStatic<Bukkit> bukkit = mockStatic(Bukkit.class)) {
-        bukkit.when(Bukkit::getScheduler).thenReturn(scheduler);
+    try (BukkitSchedulerMock scheduler = new BukkitSchedulerMock()) {
         ...
     }
 }
@@ -129,8 +127,11 @@ scheduler.getCurrentTick();
 There are some additional features of this scheduler:
 
 ````java linenums="1"
-scheduler.shutdown();
-scheduler.setShutdownTimeout(long);
-scheduler.waitAsyncTasksFinished();
-scheduler.getNumberOfQueuedAsyncTasks();
+scheduler.close(); // (1)
+scheduler.waitAsyncTasksFinished(long); // (2)
+scheduler.waitAsyncTasksFinished(); // (3)
 ````
+
+1. Shutdown the scheduler. Already called with try with ressource
+2. Wait for all async tasks to finish.
+3. One second timeout
