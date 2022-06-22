@@ -297,7 +297,7 @@
     <dependency>
       <groupId>com.github.jmrozanec</groupId>
       <artifactId>cron-utils</artifactId>
-      <version>7592624089</version>
+      <version>ec7bea6d49</version>
     </dependency>
 
     <!-- from sonatype repository -->

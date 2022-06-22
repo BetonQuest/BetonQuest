@@ -8,7 +8,6 @@ import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.schedule.ScheduleID;
 import org.bukkit.configuration.ConfigurationSection;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -33,7 +32,7 @@ class CronScheduleTest {
     private ScheduleID scheduleID;
 
     /**
-     * Configuration section of the schedule to test
+     * Configuration section of the schedule to test.
      */
     private ConfigurationSection section;
 
@@ -128,8 +127,6 @@ class CronScheduleTest {
     }
 
     @Test
-    @Disabled("fails due to https://github.com/jmrozanec/cron-utils/issues/522")
-        //fixme update & enable test
     void testCronMonthly() throws InstructionParseException {
         when(section.getString("time")).thenReturn("@monthly");
         final CronSchedule schedule = new MockedRebootSchedule(scheduleID, section);
@@ -155,7 +152,7 @@ class CronScheduleTest {
 
 
     /**
-     * Class extending a cron schedule without any changes
+     * Class extending a cron schedule without any changes.
      */
     private static class MockedSchedule extends CronSchedule {
         private MockedSchedule(final ScheduleID scheduleId, final ConfigurationSection instruction) throws InstructionParseException {
@@ -164,7 +161,7 @@ class CronScheduleTest {
     }
 
     /**
-     * Class extending a cron schedule with {@code @reboot} expression support
+     * Class extending a cron schedule with {@code @reboot} expression support.
      */
     private static class MockedRebootSchedule extends CronSchedule {
         private MockedRebootSchedule(final ScheduleID scheduleID, final ConfigurationSection instruction) throws InstructionParseException {
