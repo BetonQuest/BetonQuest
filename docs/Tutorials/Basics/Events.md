@@ -1,3 +1,6 @@
+---
+icon: fontawesome/solid/play
+---
 ## About
 :octicons-clock-24:  30 minutes · :octicons-tag-16: Basics
 
