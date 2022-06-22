@@ -46,12 +46,6 @@ class LastExecutionCacheTest {
      */
     private ScheduleID scheduleID;
 
-    /**
-     * Default constructor.
-     */
-    public LastExecutionCacheTest() {
-    }
-
     @BeforeEach
     void setUp() {
         try (MockedStatic<ConfigAccessor> configAccessor = mockStatic(ConfigAccessor.class);

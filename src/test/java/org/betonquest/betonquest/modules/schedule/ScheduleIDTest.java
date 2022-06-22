@@ -17,12 +17,6 @@ import static org.mockito.Mockito.*;
 @ExtendWith(BetonQuestLoggerService.class)
 class ScheduleIDTest {
 
-    /**
-     * Default constructor.
-     */
-    public ScheduleIDTest() {
-    }
-
     @Test
     void testSectionExists() {
         final QuestPackage pack = mock(QuestPackage.class);

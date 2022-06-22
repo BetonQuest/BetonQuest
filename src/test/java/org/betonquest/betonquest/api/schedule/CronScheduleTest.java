@@ -17,21 +17,14 @@ import java.util.Optional;
 import static com.cronutils.model.field.expression.FieldExpression.always;
 import static com.cronutils.model.field.expression.FieldExpressionFactory.on;
 import static org.betonquest.betonquest.api.schedule.CronSchedule.DEFAULT_CRON_DEFINITION;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 /**
  * These tests should ensure that the parsing of cron schedules works properly.
  */
 @ExtendWith(BetonQuestLoggerService.class)
-@SuppressWarnings({"PMD.JUnitTestContainsTooManyAsserts", "PMD.AvoidDuplicateLiterals", "PMD.TooManyStaticImports"})
+@SuppressWarnings({"PMD.JUnitTestContainsTooManyAsserts", "PMD.AvoidDuplicateLiterals"})
 class CronScheduleTest {
 
     /**
@@ -43,12 +36,6 @@ class CronScheduleTest {
      * Configuration section of the schedule to test
      */
     private ConfigurationSection section;
-
-    /**
-     * Default Constructor.
-     */
-    public CronScheduleTest() {
-    }
 
     @BeforeEach
     void prepareConfig() {

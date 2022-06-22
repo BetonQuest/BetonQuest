@@ -17,15 +17,8 @@ import static org.mockito.Mockito.*;
  * Test Scheduler class
  */
 @ExtendWith(BetonQuestLoggerService.class)
-@SuppressWarnings({"PMD.JUnitTestContainsTooManyAsserts", "PMD.TooManyStaticImports"})
+@SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
 class SchedulerTest {
-
-    /**
-     * Default constructor
-     */
-    public SchedulerTest() {
-    }
-
     private Schedule mockSchedule(final ScheduleID scheduleID) {
         final Schedule schedule = mock(Schedule.class);
         when(schedule.getId()).thenReturn(scheduleID);
