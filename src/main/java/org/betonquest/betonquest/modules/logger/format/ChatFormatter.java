@@ -137,6 +137,9 @@ public final class ChatFormatter extends Formatter {
          */
         ROOT_PLUGIN_AND_PLUGIN((params) -> Pair.of(getPluginNameOrShortName(params), params.match ? "" : params.otherPluginName));
 
+        /**
+         * A function, that create the two tag parts.
+         */
         private final Function<Parameters, Pair<String, String>> producer;
 
         PluginDisplayMethod(final Function<Parameters, Pair<String, String>> producer) {
@@ -165,6 +168,14 @@ public final class ChatFormatter extends Formatter {
             return ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + tag + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
         }
 
+        /**
+         * All data that should be passed to the producer function.
+         *
+         * @param pluginName      The name of the own plugin
+         * @param otherPluginName The name of the actual plugin that logged the message
+         * @param shortName       A short tag for the own plugin
+         * @param match           true when pluginName and otherPluginName do match
+         */
         private record Parameters(String pluginName, String otherPluginName, String shortName, boolean match) {
         }
     }
