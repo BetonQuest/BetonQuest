@@ -109,7 +109,7 @@ en:
   seconds_singular: 'second'
 
   password: 'password: '
-  condion_variable_met: 'yes'
+  condition_variable_met: 'yes'
   condition_variable_not_met: 'no'
 de:
   conversation_prefix: '&2[&9{1}&2] '
