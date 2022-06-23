@@ -7,12 +7,12 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ID;
 
 /**
- * ID identifying a {@link Schedule}
+ * ID identifying a {@link Schedule}.
  */
 public class ScheduleID extends ID {
 
     /**
-     * Construct a new ScheduleID in the given package from the provided identifier
+     * Construct a new ScheduleID in the given package from the provided identifier.
      *
      * @param pack       package where the id is defined
      * @param identifier string that defines the id

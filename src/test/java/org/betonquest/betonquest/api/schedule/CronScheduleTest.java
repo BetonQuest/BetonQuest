@@ -10,6 +10,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
@@ -22,36 +24,44 @@ import static org.mockito.Mockito.*;
 /**
  * These tests should ensure that the parsing of cron schedules works properly.
  */
+@ExtendWith(MockitoExtension.class)
 @ExtendWith(BetonQuestLoggerService.class)
-@SuppressWarnings({"PMD.JUnitTestContainsTooManyAsserts", "PMD.AvoidDuplicateLiterals"})
+@SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.TooManyStaticImports"})
 class CronScheduleTest {
 
     /**
      * ID of the schedule to test.
      */
+    @Mock
     private ScheduleID scheduleID;
+
+    /**
+     * Quest package of the schedule to test.
+     */
+    @Mock
+    private QuestPackage questPackage;
+
 
     /**
      * Configuration section of the schedule to test.
      */
+    @Mock
     private ConfigurationSection section;
 
     @BeforeEach
     void prepareConfig() {
-        final QuestPackage questPackage = mock(QuestPackage.class);
         when(questPackage.getString("events.bell_ring")).thenReturn("folder bell_lever_toggle,bell_lever_toggle period:0.5");
         when(questPackage.getString("events.notify_goodNight")).thenReturn("notify &6Good night, sleep well!");
 
-        scheduleID = mock(ScheduleID.class);
         when(scheduleID.getPackage()).thenReturn(questPackage);
 
-        section = mock(ConfigurationSection.class);
         when(section.getString("time")).thenReturn("0 22 * * *");
         when(section.getString("events")).thenReturn("bell_ring,notify_goodNight");
         when(section.getString("catchup")).thenReturn(null);
     }
 
     @Test
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     void testScheduleValidLoad() throws InstructionParseException {
         final CronSchedule schedule = new MockedSchedule(scheduleID, section);
         assertEquals("0 22 * * *", schedule.getTime(), "Returned time should be correct");
@@ -82,6 +92,7 @@ class CronScheduleTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     void testRebootCron() throws InstructionParseException {
         when(section.getString("time")).thenReturn("@reboot");
         final CronSchedule schedule = new MockedRebootSchedule(scheduleID, section);

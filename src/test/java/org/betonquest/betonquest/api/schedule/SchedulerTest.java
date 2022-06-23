@@ -14,10 +14,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Test Scheduler class
+ * Test Scheduler class.
  */
 @ExtendWith(BetonQuestLoggerService.class)
-@SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
 class SchedulerTest {
     private Schedule mockSchedule(final ScheduleID scheduleID) {
         final Schedule schedule = mock(Schedule.class);
@@ -44,6 +43,7 @@ class SchedulerTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     void testStop() {
         final Scheduler<Schedule> scheduler = new MockedScheduler();
         final ScheduleID scheduleID = mock(ScheduleID.class);
@@ -72,7 +72,7 @@ class SchedulerTest {
     }
 
     /**
-     * Class extending a scheduler without any changes
+     * Class extending a scheduler without any changes.
      */
     private static class MockedScheduler extends Scheduler<Schedule> {
     }

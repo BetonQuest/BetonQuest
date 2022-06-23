@@ -30,10 +30,11 @@ import static org.mockito.Mockito.*;
  * Tests if starting & stopping EventScheduling works reliable and if loading Schedules works as intended.
  */
 @ExtendWith(BetonQuestLoggerService.class)
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 class EventSchedulingTest {
 
     /**
-     * Event Scheduling instance
+     * Event Scheduling instance.
      */
     private EventScheduling scheduling;
 
@@ -132,8 +133,8 @@ class EventSchedulingTest {
         final ScheduleType<?> cronType = registerSpyType("cron-realtime");
         final QuestPackage pack = mockQuestPackage("src/test/resources/modules.schedule/packageExample.yml");
         scheduling.loadData(pack);
-        verify(simpleType).createAndScheduleNewInstance(argThat(id -> id.getBaseID().equals("testSimple")), any());
-        verify(cronType).createAndScheduleNewInstance(argThat(id -> id.getBaseID().equals("testRealtime")), any());
+        verify(simpleType).createAndScheduleNewInstance(argThat(id -> "testSimple".equals(id.getBaseID())), any());
+        verify(cronType).createAndScheduleNewInstance(argThat(id -> "testRealtime".equals(id.getBaseID())), any());
     }
 
     @Test
@@ -144,8 +145,8 @@ class EventSchedulingTest {
         final QuestPackage pack = mockQuestPackage("src/test/resources/modules.schedule/packageExample.yml");
         doThrow(new InstructionParseException("error parsing schedule")).when(simpleType).createAndScheduleNewInstance(any(), any());
         scheduling.loadData(pack);
-        verify(simpleType).createAndScheduleNewInstance(argThat(id -> id.getBaseID().equals("testSimple")), any());
-        verify(cronType).createAndScheduleNewInstance(argThat(id -> id.getBaseID().equals("testRealtime")), any());
+        verify(simpleType).createAndScheduleNewInstance(argThat(id -> "testSimple".equals(id.getBaseID())), any());
+        verify(cronType).createAndScheduleNewInstance(argThat(id -> "testRealtime".equals(id.getBaseID())), any());
     }
 
 
@@ -157,8 +158,8 @@ class EventSchedulingTest {
         final QuestPackage pack = mockQuestPackage("src/test/resources/modules.schedule/packageExample.yml");
         doThrow(new InvocationTargetException(new IllegalArgumentException())).when(simpleType).createAndScheduleNewInstance(any(), any());
         scheduling.loadData(pack);
-        verify(simpleType).createAndScheduleNewInstance(argThat(id -> id.getBaseID().equals("testSimple")), any());
-        verify(cronType).createAndScheduleNewInstance(argThat(id -> id.getBaseID().equals("testRealtime")), any());
+        verify(simpleType).createAndScheduleNewInstance(argThat(id -> "testSimple".equals(id.getBaseID())), any());
+        verify(cronType).createAndScheduleNewInstance(argThat(id -> "testRealtime".equals(id.getBaseID())), any());
     }
 
     @Test
@@ -169,8 +170,8 @@ class EventSchedulingTest {
         final QuestPackage pack = mockQuestPackage("src/test/resources/modules.schedule/packageExample.yml");
         doThrow(new NoSuchMethodException()).when(simpleType).createAndScheduleNewInstance(any(), any());
         scheduling.loadData(pack);
-        verify(simpleType).createAndScheduleNewInstance(argThat(id -> id.getBaseID().equals("testSimple")), any());
-        verify(cronType).createAndScheduleNewInstance(argThat(id -> id.getBaseID().equals("testRealtime")), any());
+        verify(simpleType).createAndScheduleNewInstance(argThat(id -> "testSimple".equals(id.getBaseID())), any());
+        verify(cronType).createAndScheduleNewInstance(argThat(id -> "testRealtime".equals(id.getBaseID())), any());
     }
 
     @Test
@@ -192,12 +193,12 @@ class EventSchedulingTest {
         final QuestPackage pack = mockQuestPackage("src/test/resources/modules.schedule/packageNameWithSpace.yml");
         scheduling.loadData(pack);
         verify(simpleType, times(0)).createAndScheduleNewInstance(any(), any());
-        verify(cronType).createAndScheduleNewInstance(argThat(id -> id.getBaseID().equals("testRealtime")), any());
+        verify(cronType).createAndScheduleNewInstance(argThat(id -> "testRealtime".equals(id.getBaseID())), any());
 
     }
 
     /**
-     * Class extending a schedule without any changes
+     * Class extending a schedule without any changes.
      */
     private static class MockedSchedule extends Schedule {
 

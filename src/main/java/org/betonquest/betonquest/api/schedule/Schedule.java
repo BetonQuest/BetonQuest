@@ -32,7 +32,7 @@ public abstract class Schedule {
     protected final ScheduleID scheduleID;
 
     /**
-     * Instruction string defining at which time the events should be scheduled to run
+     * Instruction string defining at which time the events should be scheduled to run.
      */
     protected final String time;
 
@@ -69,7 +69,7 @@ public abstract class Schedule {
         for (final String eventId : eventsString.split(",")) {
             try {
                 events.add(new EventID(scheduleID.getPackage(), eventId));
-            } catch (ObjectNotFoundException e) {
+            } catch (final ObjectNotFoundException e) {
                 throw new InstructionParseException("Error while loading events: " + e.getMessage(), e);
             }
         }
@@ -78,7 +78,7 @@ public abstract class Schedule {
         final String catchupString = instruction.getString("catchup");
         try {
             this.catchup = Optional.ofNullable(catchupString).map(String::toUpperCase).map(CatchupStrategy::valueOf).orElse(CatchupStrategy.NONE);
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             throw new InstructionParseException("There is no such catchup strategy: " + catchupString, e);
         }
     }

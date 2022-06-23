@@ -8,6 +8,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -19,10 +21,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Tests for the simple schedule
+ * Tests for the simple schedule.
  */
+@ExtendWith(MockitoExtension.class)
 @ExtendWith(BetonQuestLoggerService.class)
-@SuppressWarnings({"PMD.JUnitTestContainsTooManyAsserts", "PMD.AvoidDuplicateLiterals"})
+@SuppressWarnings({"PMD.AvoidDuplicateLiterals"})
 class SimpleScheduleTest {
 
     /**
@@ -33,31 +36,30 @@ class SimpleScheduleTest {
     /**
      * ID of the schedule to test.
      */
+    @Mock
     private ScheduleID scheduleID;
 
     /**
-     * Configuration section of the schedule to test
+     * Package of the schedule to test.
      */
-    private ConfigurationSection section;
+    @Mock
+    private QuestPackage questPackage;
 
     /**
-     * Default constructor.
+     * Configuration section of the schedule to test.
      */
-    public SimpleScheduleTest() {
-    }
+    @Mock
+    private ConfigurationSection section;
 
     @BeforeEach
     void prepareConfig() {
-        final QuestPackage questPackage = mock(QuestPackage.class);
         when(questPackage.getString("events.bell_ring"))
                 .thenReturn("folder bell_lever_toggle,bell_lever_toggle period:0.5");
         when(questPackage.getString("events.notify_goodNight"))
                 .thenReturn("notify &6Good night, sleep well!");
 
-        scheduleID = mock(ScheduleID.class);
         when(scheduleID.getPackage()).thenReturn(questPackage);
 
-        section = mock(ConfigurationSection.class);
         when(section.getString("time")).thenReturn("22:00");
         when(section.getString("events")).thenReturn("bell_ring,notify_goodNight");
         when(section.getString("catchup")).thenReturn("NONE");

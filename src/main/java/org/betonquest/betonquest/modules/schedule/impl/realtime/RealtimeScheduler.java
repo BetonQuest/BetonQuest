@@ -32,12 +32,12 @@ public class RealtimeScheduler extends ExecutorServiceScheduler<RealtimeSchedule
     private final LastExecutionCache lastExecutionCache;
 
     /**
-     * Flag that states if this start is a reboot (true) or only a reload (false)
+     * Flag that states if this start is a reboot (true) or only a reload (false).
      */
     private boolean reboot = true;
 
     /**
-     * Create a new realtime scheduler and pass BetonQuest instance to it
+     * Create a new realtime scheduler and pass BetonQuest instance to it.
      *
      * @param plugin             plugin used for bukkit scheduling, should be BetonQuest instance!
      * @param lastExecutionCache cache where the last execution times of a schedule are stored

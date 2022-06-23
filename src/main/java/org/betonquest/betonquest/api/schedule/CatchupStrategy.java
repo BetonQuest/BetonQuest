@@ -7,12 +7,12 @@ package org.betonquest.betonquest.api.schedule;
 public enum CatchupStrategy {
 
     /**
-     * Do not catch up any missed schedules
+     * Do not catch up any missed schedules.
      */
     NONE,
 
     /**
-     * Catch up only once, even if schedule was missed multiple times
+     * Catch up only once, even if schedule was missed multiple times.
      */
     ONE,
 

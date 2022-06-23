@@ -92,7 +92,7 @@ public abstract class ExecutorServiceScheduler<S extends Schedule> extends Sched
      *
      * @param schedule a schedule from {@link #schedules} map
      */
-    protected abstract void schedule(final S schedule);
+    protected abstract void schedule(S schedule);
 
     /**
      * <p>

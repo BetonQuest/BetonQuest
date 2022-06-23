@@ -50,7 +50,7 @@ public class LastExecutionCache {
     }
 
     /**
-     * reload execution cache in case it was modified externally
+     * reload execution cache in case it was modified externally.
      */
     public void reload() {
         try {
@@ -60,7 +60,7 @@ public class LastExecutionCache {
                 cache.reload();
                 LOG.debug("Successfully reloaded schedule cache.");
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LOG.error("Could not reload schedule cache: " + e.getMessage(), e);
         }
     }
@@ -79,7 +79,7 @@ public class LastExecutionCache {
         cache.getConfig().set(schedule.getFullID(), rawTime);
         try {
             cache.save();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LOG.error("Could not save schedule cache: " + e.getMessage(), e);
         }
     }

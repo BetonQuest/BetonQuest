@@ -6,7 +6,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.MockedStatic;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,8 +24,9 @@ import static org.mockito.Mockito.*;
 /**
  * Test that the LastExecutionCache is properly loading & saving to cache file.
  */
+@ExtendWith(MockitoExtension.class)
 @ExtendWith(BetonQuestLoggerService.class)
-@SuppressWarnings({"PMD.JUnitTestContainsTooManyAsserts", "PMD.AvoidDuplicateLiterals"})
+@SuppressWarnings({"PMD.AvoidDuplicateLiterals"})
 class LastExecutionCacheTest {
 
     /**
@@ -34,26 +37,26 @@ class LastExecutionCacheTest {
     /**
      * Config Accessor used by the cache to access the file.
      */
+    @Mock
     private ConfigAccessor cacheAccessor;
 
     /**
-     * Config provided by the {@link #cacheAccessor} to write & read from the cache
+     * Config provided by the {@link #cacheAccessor} to write & read from the cache.
      */
+    @Mock
     private YamlConfiguration cacheContent;
 
     /**
-     * ID of the schedule to load and save from
+     * ID of the schedule to load and save from.
      */
+    @Mock
     private ScheduleID scheduleID;
 
     @BeforeEach
     void setUp() {
         try (MockedStatic<ConfigAccessor> configAccessor = mockStatic(ConfigAccessor.class);
              MockedStatic<Files> files = mockStatic(Files.class)) {
-            cacheAccessor = mock(ConfigAccessor.class);
-            cacheContent = mock(YamlConfiguration.class);
-            scheduleID = mock(ScheduleID.class);
-            when(cacheAccessor.getConfig()).thenReturn(cacheContent);
+            lenient().when(cacheAccessor.getConfig()).thenReturn(cacheContent);
             configAccessor.when(() -> ConfigAccessor.create(any(File.class))).thenReturn(cacheAccessor);
             files.when(() -> Files.exists(any(Path.class))).thenReturn(true);
             lastExecutionCache = new LastExecutionCache(new File("."));
@@ -92,7 +95,7 @@ class LastExecutionCacheTest {
 
     @Test
     void testIsContained() {
-        final String expected = "2000-01-01T00:00:00.000000000Z";
+        final String expected = "2000-01-01T00:00:00Z";
         when(scheduleID.getFullID()).thenReturn("test-package.testIsContained");
         when(cacheContent.getString("test-package.testIsContained")).thenReturn(expected);
         assertTrue(lastExecutionCache.isCached(scheduleID), "isCached() should return true");
@@ -116,7 +119,7 @@ class LastExecutionCacheTest {
 
     @Test
     void testCacheInstant() throws IOException {
-        final Instant toCache = Instant.parse("1970-01-01T00:00:00.000000000Z");
+        final Instant toCache = Instant.parse("1970-01-01T00:00:00Z");
         when(scheduleID.getFullID()).thenReturn("test-package.testCacheInstant");
         lastExecutionCache.cacheExecutionTime(scheduleID, toCache);
         verify(cacheContent).set("test-package.testCacheInstant", toCache.toString());

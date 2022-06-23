@@ -31,7 +31,7 @@ import java.util.Map;
 public abstract class Scheduler<S extends Schedule> {
 
     /**
-     * Map containing all schedules that belong to this scheduler
+     * Map containing all schedules that belong to this scheduler.
      */
     protected final Map<ScheduleID, S> schedules = new HashMap<>();
 
@@ -41,7 +41,7 @@ public abstract class Scheduler<S extends Schedule> {
     private boolean running;
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     public Scheduler() {
         running = false;
@@ -103,7 +103,7 @@ public abstract class Scheduler<S extends Schedule> {
     }
 
     /**
-     * Check if this scheduler is currently running
+     * Check if this scheduler is currently running.
      *
      * @return true if currently running, false if not (e.g. during startup or reloading)
      */

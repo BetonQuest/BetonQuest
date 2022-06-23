@@ -23,7 +23,7 @@ import java.util.Optional;
 public abstract class CronSchedule extends Schedule {
 
     /**
-     * The unix cron syntax shall be used by default
+     * The unix cron syntax shall be used by default.
      */
     public static final CronDefinition DEFAULT_CRON_DEFINITION = CronDefinitionBuilder.defineCron()
             .withMinutes().withValidRange(0, 59).withStrictRange().and()
@@ -38,22 +38,22 @@ public abstract class CronSchedule extends Schedule {
             .instance();
 
     /**
-     * Statement that means that the schedule should run on reboot
+     * Statement that means that the schedule should run on reboot.
      */
     private static final String REBOOT_ALIAS = "@reboot";
 
     /**
-     * Cron expression that defines when the events from this schedule shall run
+     * Cron expression that defines when the events from this schedule shall run.
      */
     protected final Cron timeCron;
 
     /**
-     * If events from this schedule shall run on reboot
+     * If events from this schedule shall run on reboot.
      */
     protected final boolean onReboot;
 
     /**
-     * Provides information when the events from this schedule shall be executed
+     * Provides information when the events from this schedule shall be executed.
      */
     protected final ExecutionTime executionTime;
 

@@ -9,6 +9,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -16,43 +18,45 @@ import static org.mockito.Mockito.*;
 /**
  * These tests should ensure that the basic parsing of schedules works properly.
  */
+@ExtendWith(MockitoExtension.class)
 @ExtendWith(BetonQuestLoggerService.class)
-@SuppressWarnings({"PMD.JUnitTestContainsTooManyAsserts", "PMD.AvoidDuplicateLiterals"})
+@SuppressWarnings({"PMD.AvoidDuplicateLiterals"})
 class ScheduleTest {
 
     /**
      * ID of the schedule to test.
      */
+    @Mock
     private ScheduleID scheduleID;
 
     /**
-     * Quest package of the schedule to test
+     * Quest package of the schedule to test.
      */
+    @Mock
     private QuestPackage questPackage;
 
     /**
-     * Configuration section of the schedule to test
+     * Configuration section of the schedule to test.
      */
+    @Mock
     private ConfigurationSection section;
 
     @BeforeEach
     void prepareConfig() {
-        questPackage = mock(QuestPackage.class);
-        when(questPackage.getString("events.bell_ring"))
+        lenient().when(questPackage.getString("events.bell_ring"))
                 .thenReturn("folder bell_lever_toggle,bell_lever_toggle period:0.5");
-        when(questPackage.getString("events.notify_goodNight"))
+        lenient().when(questPackage.getString("events.notify_goodNight"))
                 .thenReturn("notify &6Good night, sleep well!");
 
-        scheduleID = mock(ScheduleID.class);
-        when(scheduleID.getPackage()).thenReturn(questPackage);
+        lenient().when(scheduleID.getPackage()).thenReturn(questPackage);
 
-        section = mock(ConfigurationSection.class);
-        when(section.getString("time")).thenReturn("22:00");
-        when(section.getString("events")).thenReturn("bell_ring,notify_goodNight");
-        when(section.getString("catchup")).thenReturn("NONE");
+        lenient().when(section.getString("time")).thenReturn("22:00");
+        lenient().when(section.getString("events")).thenReturn("bell_ring,notify_goodNight");
+        lenient().when(section.getString("catchup")).thenReturn("NONE");
     }
 
     @Test
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     void testScheduleValidLoad() throws InstructionParseException {
         final Schedule schedule = new MockedSchedule(scheduleID, section);
         assertEquals(scheduleID, schedule.getId(), "Schedule should return the id it was constructed with");
