@@ -5,8 +5,8 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
-import org.betonquest.betonquest.modules.updater.source.UpdateSourceDevelopmentHandler;
-import org.betonquest.betonquest.modules.updater.source.UpdateSourceReleaseHandler;
+import org.betonquest.betonquest.modules.updater.source.UpdateSourceDevelopment;
+import org.betonquest.betonquest.modules.updater.source.UpdateSourceRelease;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.util.scheduler.BukkitSchedulerMock;
 import org.junit.jupiter.api.Disabled;
@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(BetonQuestLoggerService.class)
+@Disabled
 class UpdaterTest {
     private static final String UPDATE_FILE = "src/test/resources/updater/BetonQuest.jar";
 
@@ -35,19 +36,21 @@ class UpdaterTest {
         final ConfigurationFile config = UpdaterConfigTest.getMockedConfig(new UpdaterConfigTest.Input(null, true, true, "PATCH_DEV", false));
         final String file = "BetonQuest.jar";
         final Version version = new Version("2.0.0-DEV-3");
-        final List<UpdateSourceReleaseHandler> releaseHandlerList = new ArrayList<>();
-        final List<UpdateSourceDevelopmentHandler> developmentHandlerList = new ArrayList<>();
+        final List<UpdateSourceRelease> releaseHandlerList = new ArrayList<>();
+        final List<UpdateSourceDevelopment> developmentHandlerList = new ArrayList<>();
         final BetonQuest plugin = mock(BetonQuest.class);
         final InstantSource instantSource = InstantSource.system();
 
-        final UpdateSourceDevelopmentHandler developmentHandler = mock(UpdateSourceDevelopmentHandler.class);
+        final UpdateSourceDevelopment developmentHandler = mock(UpdateSourceDevelopment.class);
         final Map<Version, String> versions = new HashMap<>();
         versions.put(new Version("2.0.0-DEV-201"), "https://betonquest.org");
         when(developmentHandler.getDevelopmentVersions()).thenReturn(versions);
         developmentHandlerList.add(developmentHandler);
+        final UpdateSourceHandler handler = new UpdateSourceHandler(releaseHandlerList, developmentHandlerList);
 
         try (BukkitSchedulerMock scheduler = new BukkitSchedulerMock()) {
-            final Updater updater = new Updater(config, file, tempDir, version, releaseHandlerList, developmentHandlerList, plugin, scheduler, instantSource);
+
+            final Updater updater = new Updater(config, file, tempDir, version, handler, plugin, scheduler, instantSource);
             scheduler.waitAsyncTasksFinished();
             scheduler.assertNoExceptions();
             assertTrue(updater.isUpdateAvailable());
@@ -62,19 +65,20 @@ class UpdaterTest {
         final ConfigurationFile config = UpdaterConfigTest.getMockedConfig(new UpdaterConfigTest.Input(null, true, true, "PATCH_DEV", false));
         final String file = "BetonQuest.jar";
         final Version version = new Version("2.0.0-DEV-3");
-        final List<UpdateSourceReleaseHandler> releaseHandlerList = new ArrayList<>();
-        final List<UpdateSourceDevelopmentHandler> developmentHandlerList = new ArrayList<>();
+        final List<UpdateSourceRelease> releaseHandlerList = new ArrayList<>();
+        final List<UpdateSourceDevelopment> developmentHandlerList = new ArrayList<>();
         final BetonQuest plugin = mock(BetonQuest.class);
         final InstantSource instantSource = InstantSource.system();
 
-        final UpdateSourceDevelopmentHandler developmentHandler = mock(UpdateSourceDevelopmentHandler.class);
+        final UpdateSourceDevelopment developmentHandler = mock(UpdateSourceDevelopment.class);
         final Map<Version, String> versions = new HashMap<>();
         versions.put(new Version("2.0.0-DEV-3"), "https://betonquest.org");
         when(developmentHandler.getDevelopmentVersions()).thenReturn(versions);
         developmentHandlerList.add(developmentHandler);
+        final UpdateSourceHandler handler = new UpdateSourceHandler(releaseHandlerList, developmentHandlerList);
 
         try (BukkitSchedulerMock scheduler = new BukkitSchedulerMock()) {
-            final Updater updater = new Updater(config, file, tempDir, version, releaseHandlerList, developmentHandlerList, plugin, scheduler, instantSource);
+            final Updater updater = new Updater(config, file, tempDir, version, handler, plugin, scheduler, instantSource);
             scheduler.waitAsyncTasksFinished();
             scheduler.assertNoExceptions();
             assertFalse(updater.isUpdateAvailable());
@@ -88,19 +92,20 @@ class UpdaterTest {
         final ConfigurationFile config = UpdaterConfigTest.getMockedConfig(new UpdaterConfigTest.Input(null, true, true, "PATCH_DEV", false));
         final String file = "BetonQuest.jar";
         final Version version = new Version("2.0.0-DEV-3");
-        final List<UpdateSourceReleaseHandler> releaseHandlerList = new ArrayList<>();
-        final List<UpdateSourceDevelopmentHandler> developmentHandlerList = new ArrayList<>();
+        final List<UpdateSourceRelease> releaseHandlerList = new ArrayList<>();
+        final List<UpdateSourceDevelopment> developmentHandlerList = new ArrayList<>();
         final BetonQuest plugin = mock(BetonQuest.class);
         final InstantSource instantSource = InstantSource.system();
 
-        final UpdateSourceReleaseHandler releaseHandler = mock(UpdateSourceReleaseHandler.class);
+        final UpdateSourceRelease releaseHandler = mock(UpdateSourceRelease.class);
         final Map<Version, String> versions = new HashMap<>();
         versions.put(new Version("2.0.0"), "https://betonquest.org");
         when(releaseHandler.getReleaseVersions()).thenReturn(versions);
         releaseHandlerList.add(releaseHandler);
+        final UpdateSourceHandler handler = new UpdateSourceHandler(releaseHandlerList, developmentHandlerList);
 
         try (BukkitSchedulerMock scheduler = new BukkitSchedulerMock()) {
-            final Updater updater = new Updater(config, file, tempDir, version, releaseHandlerList, developmentHandlerList, plugin, scheduler, instantSource);
+            final Updater updater = new Updater(config, file, tempDir, version, handler, plugin, scheduler, instantSource);
             scheduler.waitAsyncTasksFinished();
             scheduler.assertNoExceptions();
             assertTrue(updater.isUpdateAvailable());
@@ -115,19 +120,20 @@ class UpdaterTest {
         final ConfigurationFile config = UpdaterConfigTest.getMockedConfig(new UpdaterConfigTest.Input(null, true, true, "PATCH_DEV", false));
         final String file = "BetonQuest.jar";
         final Version version = new Version("2.0.0");
-        final List<UpdateSourceReleaseHandler> releaseHandlerList = new ArrayList<>();
-        final List<UpdateSourceDevelopmentHandler> developmentHandlerList = new ArrayList<>();
+        final List<UpdateSourceRelease> releaseHandlerList = new ArrayList<>();
+        final List<UpdateSourceDevelopment> developmentHandlerList = new ArrayList<>();
         final BetonQuest plugin = mock(BetonQuest.class);
         final InstantSource instantSource = InstantSource.system();
 
-        final UpdateSourceReleaseHandler releaseHandler = mock(UpdateSourceReleaseHandler.class);
+        final UpdateSourceRelease releaseHandler = mock(UpdateSourceRelease.class);
         final Map<Version, String> versions = new HashMap<>();
         versions.put(new Version("2.0.0"), "https://betonquest.org");
         when(releaseHandler.getReleaseVersions()).thenReturn(versions);
         releaseHandlerList.add(releaseHandler);
+        final UpdateSourceHandler handler = new UpdateSourceHandler(releaseHandlerList, developmentHandlerList);
 
         try (BukkitSchedulerMock scheduler = new BukkitSchedulerMock()) {
-            final Updater updater = new Updater(config, file, tempDir, version, releaseHandlerList, developmentHandlerList, plugin, scheduler, instantSource);
+            final Updater updater = new Updater(config, file, tempDir, version, handler, plugin, scheduler, instantSource);
             scheduler.waitAsyncTasksFinished();
             scheduler.assertNoExceptions();
             assertFalse(updater.isUpdateAvailable());
@@ -141,13 +147,13 @@ class UpdaterTest {
         final ConfigurationFile config = UpdaterConfigTest.getMockedConfig(new UpdaterConfigTest.Input(null, true, true, "PATCH", false));
         final String file = "BetonQuest.jar";
         final Version version = new Version("2.0.0-DEV-3");
-        final List<UpdateSourceReleaseHandler> releaseHandlerList = new ArrayList<>();
-        final List<UpdateSourceDevelopmentHandler> developmentHandlerList = new ArrayList<>();
+        final List<UpdateSourceRelease> releaseHandlerList = new ArrayList<>();
+        final List<UpdateSourceDevelopment> developmentHandlerList = new ArrayList<>();
         final BetonQuest plugin = mock(BetonQuest.class);
         final InstantSource instantSource = InstantSource.system();
 
-        final UpdateSourceReleaseHandler releaseHandler = mock(UpdateSourceReleaseHandler.class);
-        final UpdateSourceDevelopmentHandler developmentHandler = mock(UpdateSourceDevelopmentHandler.class);
+        final UpdateSourceRelease releaseHandler = mock(UpdateSourceRelease.class);
+        final UpdateSourceDevelopment developmentHandler = mock(UpdateSourceDevelopment.class);
         final Map<Version, String> releaseVersions = new HashMap<>();
         final Map<Version, String> developmentVersions = new HashMap<>();
         releaseVersions.put(new Version("2.0.0"), "https://betonquest.org");
@@ -157,9 +163,10 @@ class UpdaterTest {
 
         releaseHandlerList.add(releaseHandler);
         developmentHandlerList.add(developmentHandler);
+        final UpdateSourceHandler handler = new UpdateSourceHandler(releaseHandlerList, developmentHandlerList);
 
         try (BukkitSchedulerMock scheduler = new BukkitSchedulerMock()) {
-            final Updater updater = new Updater(config, file, tempDir, version, releaseHandlerList, developmentHandlerList, plugin, scheduler, instantSource);
+            final Updater updater = new Updater(config, file, tempDir, version, handler, plugin, scheduler, instantSource);
             scheduler.waitAsyncTasksFinished();
             scheduler.assertNoExceptions();
             assertTrue(updater.isUpdateAvailable());
@@ -174,13 +181,13 @@ class UpdaterTest {
         final ConfigurationFile config = UpdaterConfigTest.getMockedConfig(new UpdaterConfigTest.Input(null, true, true, "PATCH_DEV", false));
         final String file = "BetonQuest.jar";
         final Version version = new Version("2.0.0-DEV-3");
-        final List<UpdateSourceReleaseHandler> releaseHandlerList = new ArrayList<>();
-        final List<UpdateSourceDevelopmentHandler> developmentHandlerList = new ArrayList<>();
+        final List<UpdateSourceRelease> releaseHandlerList = new ArrayList<>();
+        final List<UpdateSourceDevelopment> developmentHandlerList = new ArrayList<>();
         final BetonQuest plugin = mock(BetonQuest.class);
         final InstantSource instantSource = InstantSource.system();
 
-        final UpdateSourceReleaseHandler releaseHandler = mock(UpdateSourceReleaseHandler.class);
-        final UpdateSourceDevelopmentHandler developmentHandler = mock(UpdateSourceDevelopmentHandler.class);
+        final UpdateSourceRelease releaseHandler = mock(UpdateSourceRelease.class);
+        final UpdateSourceDevelopment developmentHandler = mock(UpdateSourceDevelopment.class);
         final Map<Version, String> releaseVersions = new HashMap<>();
         final Map<Version, String> developmentVersions = new HashMap<>();
         releaseVersions.put(new Version("2.0.0"), "https://betonquest.org");
@@ -190,9 +197,10 @@ class UpdaterTest {
 
         releaseHandlerList.add(releaseHandler);
         developmentHandlerList.add(developmentHandler);
+        final UpdateSourceHandler handler = new UpdateSourceHandler(releaseHandlerList, developmentHandlerList);
 
         try (BukkitSchedulerMock scheduler = new BukkitSchedulerMock()) {
-            final Updater updater = new Updater(config, file, tempDir, version, releaseHandlerList, developmentHandlerList, plugin, scheduler, instantSource);
+            final Updater updater = new Updater(config, file, tempDir, version, handler, plugin, scheduler, instantSource);
             scheduler.waitAsyncTasksFinished();
             scheduler.assertNoExceptions();
             assertTrue(updater.isUpdateAvailable());
@@ -207,21 +215,22 @@ class UpdaterTest {
         final ConfigurationFile config = UpdaterConfigTest.getMockedConfig(new UpdaterConfigTest.Input(null, true, true, "PATCH_DEV", false));
         final String file = "BetonQuest.jar";
         final Version version = new Version("2.0.0-DEV-3");
-        final List<UpdateSourceReleaseHandler> releaseHandlerList = new ArrayList<>();
-        final List<UpdateSourceDevelopmentHandler> developmentHandlerList = new ArrayList<>();
+        final List<UpdateSourceRelease> releaseHandlerList = new ArrayList<>();
+        final List<UpdateSourceDevelopment> developmentHandlerList = new ArrayList<>();
         final BetonQuest plugin = mock(BetonQuest.class);
         final InstantSource instantSource = InstantSource.system();
 
-        final UpdateSourceReleaseHandler releaseHandler = mock(UpdateSourceReleaseHandler.class);
-        final UpdateSourceDevelopmentHandler developmentHandler = mock(UpdateSourceDevelopmentHandler.class);
+        final UpdateSourceRelease releaseHandler = mock(UpdateSourceRelease.class);
+        final UpdateSourceDevelopment developmentHandler = mock(UpdateSourceDevelopment.class);
         final Map<Version, String> releaseVersions = new HashMap<>();
         final Map<Version, String> developmentVersions = new HashMap<>();
 
         releaseHandlerList.add(releaseHandler);
         developmentHandlerList.add(developmentHandler);
+        final UpdateSourceHandler handler = new UpdateSourceHandler(releaseHandlerList, developmentHandlerList);
 
         try (BukkitSchedulerMock scheduler = new BukkitSchedulerMock()) {
-            final Updater updater = new Updater(config, file, tempDir, version, releaseHandlerList, developmentHandlerList, plugin, scheduler, instantSource);
+            final Updater updater = new Updater(config, file, tempDir, version, handler, plugin, scheduler, instantSource);
             scheduler.waitAsyncTasksFinished();
             scheduler.assertNoExceptions();
             assertFalse(updater.isUpdateAvailable());
@@ -236,20 +245,21 @@ class UpdaterTest {
         final ConfigurationFile config = UpdaterConfigTest.getMockedConfig(new UpdaterConfigTest.Input(null, true, true, "PATCH", true));
         final String file = "BetonQuest.jar";
         final Version version = new Version("2.0.0-DEV-3");
-        final List<UpdateSourceReleaseHandler> releaseHandlerList = new ArrayList<>();
-        final List<UpdateSourceDevelopmentHandler> developmentHandlerList = new ArrayList<>();
+        final List<UpdateSourceRelease> releaseHandlerList = new ArrayList<>();
+        final List<UpdateSourceDevelopment> developmentHandlerList = new ArrayList<>();
         final BetonQuest plugin = mock(BetonQuest.class);
         final InstantSource instantSource = InstantSource.system();
 
-        final UpdateSourceReleaseHandler releaseHandler = mock(UpdateSourceReleaseHandler.class);
-        final UpdateSourceDevelopmentHandler developmentHandler = mock(UpdateSourceDevelopmentHandler.class);
+        final UpdateSourceRelease releaseHandler = mock(UpdateSourceRelease.class);
+        final UpdateSourceDevelopment developmentHandler = mock(UpdateSourceDevelopment.class);
         final Map<Version, String> releaseVersions = new HashMap<>();
         releaseVersions.put(new Version("2.0.0"), "https://betonquest.org");
         when(releaseHandler.getReleaseVersions()).thenReturn(releaseVersions);
         releaseHandlerList.add(releaseHandler);
+        final UpdateSourceHandler handler = new UpdateSourceHandler(releaseHandlerList, developmentHandlerList);
 
         try (BukkitSchedulerMock scheduler = new BukkitSchedulerMock()) {
-            final Updater updater = new Updater(config, file, tempDir, version, releaseHandlerList, developmentHandlerList, plugin, scheduler, instantSource);
+            final Updater updater = new Updater(config, file, tempDir, version, handler, plugin, scheduler, instantSource);
             scheduler.waitAsyncTasksFinished();
             scheduler.assertNoExceptions();
             assertTrue(updater.isUpdateAvailable());

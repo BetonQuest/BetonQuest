@@ -11,20 +11,20 @@ import java.nio.file.Path;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class UpdateSourceHandlerTest {
+class UpdateSourceTest {
 
     @Test
     void testReadStringFromURL() throws IOException {
         final Path filePath = Path.of("src/test/resources/modules/updater/latest.json");
 
-        final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
+        final UpdateSource handler = mock(UpdateSource.class);
         when(handler.readStringFromURL(any())).thenCallRealMethod();
         doCallRealMethod().when(handler).handleResponseCode(anyInt());
         final URL url = mock(URL.class);
         final HttpURLConnection httpURLConnection = mock(HttpURLConnection.class);
         when(httpURLConnection.getInputStream()).thenReturn(Files.newInputStream(filePath));
         when(url.openConnection()).thenReturn(httpURLConnection);
-        when(httpURLConnection.getResponseCode()).thenReturn(UpdateSourceHandler.RESPONSE_CODE_403);
+        when(httpURLConnection.getResponseCode()).thenReturn(UpdateSource.RESPONSE_CODE_403);
 
         final String response = handler.readStringFromURL(url);
         final String version = """
@@ -37,26 +37,26 @@ class UpdateSourceHandlerTest {
 
         verify(httpURLConnection, times(1)).connect();
         verify(httpURLConnection, times(1)).disconnect();
-        verify(handler, times(1)).handleResponseCode(UpdateSourceHandler.RESPONSE_CODE_403);
+        verify(handler, times(1)).handleResponseCode(UpdateSource.RESPONSE_CODE_403);
     }
 
     @Test
     void testReadStringFromURLThrowsException() throws IOException {
         final IOException ioException = new IOException("Test IOException");
 
-        final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
+        final UpdateSource handler = mock(UpdateSource.class);
         when(handler.readStringFromURL(any())).thenCallRealMethod();
-        doThrow(ioException).when(handler).handleResponseCode(UpdateSourceHandler.RESPONSE_CODE_403);
+        doThrow(ioException).when(handler).handleResponseCode(UpdateSource.RESPONSE_CODE_403);
         final URL url = mock(URL.class);
         final HttpURLConnection httpURLConnection = mock(HttpURLConnection.class);
         when(url.openConnection()).thenReturn(httpURLConnection);
-        when(httpURLConnection.getResponseCode()).thenReturn(UpdateSourceHandler.RESPONSE_CODE_403);
+        when(httpURLConnection.getResponseCode()).thenReturn(UpdateSource.RESPONSE_CODE_403);
 
         assertThrowsExactly(IOException.class, () -> handler.readStringFromURL(url), ioException.getMessage());
 
         verify(httpURLConnection, times(1)).connect();
         verify(httpURLConnection, times(1)).disconnect();
-        verify(handler, times(1)).handleResponseCode(UpdateSourceHandler.RESPONSE_CODE_403);
+        verify(handler, times(1)).handleResponseCode(UpdateSource.RESPONSE_CODE_403);
     }
 
     private String getFormattedMessage(final String message) {

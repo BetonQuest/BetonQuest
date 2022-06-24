@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.modules.updater.source.implementations;
 
-import org.betonquest.betonquest.modules.updater.source.UpdateSourceDevelopmentHandler;
+import org.betonquest.betonquest.modules.updater.source.UpdateSourceDevelopment;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.json.JSONObject;
 
@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class BetonQuestDevSource implements UpdateSourceDevelopmentHandler {
+public class BetonQuestDevSource implements UpdateSourceDevelopment {
     /**
      * The API URL path to the latest versions.
      */

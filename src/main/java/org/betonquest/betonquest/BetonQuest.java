@@ -153,9 +153,10 @@ import org.betonquest.betonquest.modules.logger.PlayerLogWatcher;
 import org.betonquest.betonquest.modules.logger.handler.chat.AccumulatingReceiverSelector;
 import org.betonquest.betonquest.modules.logger.handler.chat.ChatHandler;
 import org.betonquest.betonquest.modules.logger.handler.history.HistoryHandler;
+import org.betonquest.betonquest.modules.updater.UpdateSourceHandler;
 import org.betonquest.betonquest.modules.updater.Updater;
-import org.betonquest.betonquest.modules.updater.source.UpdateSourceDevelopmentHandler;
-import org.betonquest.betonquest.modules.updater.source.UpdateSourceReleaseHandler;
+import org.betonquest.betonquest.modules.updater.source.UpdateSourceDevelopment;
+import org.betonquest.betonquest.modules.updater.source.UpdateSourceRelease;
 import org.betonquest.betonquest.modules.updater.source.implementations.BetonQuestDevSource;
 import org.betonquest.betonquest.modules.updater.source.implementations.GitHubReleaseSource;
 import org.betonquest.betonquest.modules.versioning.Version;
@@ -917,10 +918,11 @@ public class BetonQuest extends JavaPlugin {
 
         // updater
         final Version pluginVersion = new Version(this.getDescription().getVersion());
-        final List<UpdateSourceReleaseHandler> releaseHandlers = List.of(new GitHubReleaseSource("https://api.github.com/repos/BetonQuest/BetonQuest/releases"));
-        final List<UpdateSourceDevelopmentHandler> developmentHandlers = List.of(new BetonQuestDevSource("https://dev.betonquest.org/api/v1"));
+        final List<UpdateSourceRelease> releaseHandlers = List.of(new GitHubReleaseSource("https://api.github.com/repos/BetonQuest/BetonQuest/releases"));
+        final List<UpdateSourceDevelopment> developmentHandlers = List.of(new BetonQuestDevSource("https://dev.betonquest.org/api/v1"));
+        final UpdateSourceHandler updateSourceHandler = new UpdateSourceHandler(releaseHandlers, developmentHandlers);
         updater = new Updater(config, this.getFile().getName(), getServer().getUpdateFolderFile(), pluginVersion,
-                releaseHandlers, developmentHandlers, this, getServer().getScheduler(), InstantSource.system());
+                updateSourceHandler, this, getServer().getScheduler(), InstantSource.system());
 
         //RPGMenu integration
         rpgMenu = new RPGMenu();
@@ -1129,7 +1131,7 @@ public class BetonQuest extends JavaPlugin {
         Notify.load();
 
         // reload updater settings
-        BetonQuest.getInstance().getUpdater().searchUpdate();
+        BetonQuest.getInstance().getUpdater().search();
         // load new static events
         new StaticEvents();
         // stop current global locations listener

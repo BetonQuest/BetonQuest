@@ -5,7 +5,7 @@ import org.betonquest.betonquest.modules.versioning.Version;
 import java.io.IOException;
 import java.util.Map;
 
-public interface UpdateSourceDevelopmentHandler extends UpdateSourceHandler {
+public interface UpdateSourceRelease extends UpdateSource {
 
-    Map<Version, String> getDevelopmentVersions() throws IOException;
+    Map<Version, String> getReleaseVersions() throws IOException;
 }

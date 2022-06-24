@@ -8,7 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-public interface UpdateSourceHandler {
+public interface UpdateSource {
     int RESPONSE_CODE_403 = 403;
 
     default String readStringFromURL(final URL url) throws IOException {

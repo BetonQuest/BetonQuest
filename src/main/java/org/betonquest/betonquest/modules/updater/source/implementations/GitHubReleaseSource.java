@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.modules.updater.source.implementations;
 
-import org.betonquest.betonquest.modules.updater.source.UpdateSourceReleaseHandler;
+import org.betonquest.betonquest.modules.updater.source.UpdateSourceRelease;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -10,7 +10,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GitHubReleaseSource implements UpdateSourceReleaseHandler {
+public class GitHubReleaseSource implements UpdateSourceRelease {
     private final String apiUrl;
 
     public GitHubReleaseSource(final String apiUrl) {

@@ -6,10 +6,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.modules.updater.source.UpdateSourceDevelopmentHandler;
-import org.betonquest.betonquest.modules.updater.source.UpdateSourceReleaseHandler;
 import org.betonquest.betonquest.modules.versioning.Version;
-import org.betonquest.betonquest.modules.versioning.VersionComparator;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -19,13 +16,11 @@ import org.bukkit.scheduler.BukkitScheduler;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.InstantSource;
 import java.time.temporal.TemporalAmount;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -55,8 +50,7 @@ public class Updater {
      */
     private final String fileName;
     private final File updateFolderFile;
-    private final List<UpdateSourceReleaseHandler> releaseHandlerList;
-    private final List<UpdateSourceDevelopmentHandler> developmentHandlerList;
+    private final UpdateSourceHandler updateSourceHandler;
     private final BetonQuest plugin;
     private final BukkitScheduler scheduler;
     private final InstantSource instantSource;
@@ -81,28 +75,24 @@ public class Updater {
     /**
      * Create a new Updater instance.
      *
-     * @param config                 The {@link ConfigurationSection} that contains the updater section.
-     * @param fileName               The fileName of the plugin in the plugin's folder.
-     * @param currentVersion         The current plugin version.
-     * @param releaseHandlerList     A list of {@link UpdateSourceReleaseHandler}
-     * @param developmentHandlerList A list of {@link UpdateSourceDevelopmentHandler}
+     * @param config         The {@link ConfigurationSection} that contains the updater section.
+     * @param fileName       The fileName of the plugin in the plugin's folder.
+     * @param currentVersion The current plugin version.
      */
     public Updater(final ConfigurationFile config, final String fileName, final File updateFolderFile,
-                   final Version currentVersion, final List<UpdateSourceReleaseHandler> releaseHandlerList,
-                   final List<UpdateSourceDevelopmentHandler> developmentHandlerList, final BetonQuest plugin, final BukkitScheduler scheduler,
-                   final InstantSource instantSource) {
+                   final Version currentVersion, final UpdateSourceHandler updateSourceHandler,
+                   final BetonQuest plugin, final BukkitScheduler scheduler, final InstantSource instantSource) {
         this.latest = Pair.of(currentVersion, null);
         this.config = new UpdaterConfig(config, latest.getKey(), DEV_INDICATOR);
         this.fileName = fileName;
         this.updateFolderFile = updateFolderFile;
-        this.releaseHandlerList = releaseHandlerList;
-        this.developmentHandlerList = developmentHandlerList;
+        this.updateSourceHandler = updateSourceHandler;
         this.plugin = plugin;
         this.scheduler = scheduler;
         this.instantSource = instantSource;
         this.lastNotification = new HashMap<>();
 
-        searchUpdate();
+        search();
     }
 
     private String getUpdateNotification(final boolean automaticDownload) {
@@ -123,15 +113,14 @@ public class Updater {
     /**
      * Starts an asynchronous search for updates.
      */
-    public final void searchUpdate() {
+    public final void search() {
         config.reloadFromConfig();
         if (!config.isEnabled() || !shouldCheckVersion()) {
             return;
         }
 
         scheduler.runTaskAsynchronously(plugin, () -> {
-            searchUpdateTask();
-            if (isUpdateAvailable()) {
+            if (searchUpdate()) {
                 final boolean automatic = config.isAutomatic();
                 LOG.info(getUpdateNotification(automatic));
                 if (automatic) {
@@ -139,6 +128,15 @@ public class Updater {
                 }
             }
         });
+    }
+
+    private boolean searchUpdate() {
+        final Pair<Version, String> newLatest = updateSourceHandler.searchUpdate(config, latest.getKey(), DEV_INDICATOR);
+        if (latest.getValue() == null) {
+            return false;
+        }
+        latest = newLatest;
+        return true;
     }
 
     private boolean shouldCheckVersion() {
@@ -150,45 +148,6 @@ public class Updater {
         return true;
     }
 
-    private void searchUpdateTask() {
-        final VersionComparator comparator = new VersionComparator(config.getStrategy(), DEV_INDICATOR + "-");
-        try {
-            searchUpdateTaskRelease(comparator);
-        } catch (final UnknownHostException e) {
-            LOG.warn("The update server for release builds is currently not available!");
-        } catch (final IOException e) {
-            LOG.warn("Could not get the latest release! " + e.getMessage(), e);
-        }
-        if (config.isDevDownloadEnabled() && !(isUpdateAvailable() && config.isForcedStrategy())) {
-            try {
-                searchUpdateTaskDev(comparator);
-            } catch (final UnknownHostException e) {
-                LOG.warn("The update server for dev builds is currently not available!");
-            } catch (final IOException e) {
-                LOG.warn("Could not get the latest dev build! " + e.getMessage(), e);
-            }
-        }
-    }
-
-    private void searchUpdateTaskRelease(final VersionComparator comparator) throws IOException {
-        for (final UpdateSourceReleaseHandler updateSourceReleaseHandler : releaseHandlerList) {
-            compareVersionList(comparator, updateSourceReleaseHandler.getReleaseVersions());
-        }
-    }
-
-    private void searchUpdateTaskDev(final VersionComparator comparator) throws IOException {
-        for (final UpdateSourceDevelopmentHandler updateSourceDevelopmentHandler : developmentHandlerList) {
-            compareVersionList(comparator, updateSourceDevelopmentHandler.getDevelopmentVersions());
-        }
-    }
-
-    private void compareVersionList(final VersionComparator comparator, final Map<Version, String> versionList) {
-        for (final Map.Entry<Version, String> entry : versionList.entrySet()) {
-            if (comparator.isOtherNewerThanCurrent(latest.getKey(), entry.getKey())) {
-                latest = Pair.of(entry.getKey(), entry.getValue());
-            }
-        }
-    }
 
     /**
      * Return if a new version is available.
@@ -240,9 +199,7 @@ public class Updater {
                 if (!config.isEnabled()) {
                     throw new QuestRuntimeException("The updater is disabled! Change config entry 'update.enabled' to 'true' to enable it.");
                 }
-                final Version version = latest.getKey();
-                searchUpdateTask();
-                if (!version.equals(latest.getKey())) {
+                if (searchUpdate()) {
                     getUpdateNotification(config.isAutomatic());
                     throw new QuestRuntimeException("Update aborted! A newer version was found. New version '"
                             + getUpdateVersion() + "'! You can execute '/q update' again to update.");
