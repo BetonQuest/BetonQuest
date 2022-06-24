@@ -10,12 +10,11 @@ import org.betonquest.betonquest.modules.updater.source.UpdateSourceDevelopmentH
 import org.betonquest.betonquest.modules.updater.source.UpdateSourceReleaseHandler;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.modules.versioning.VersionComparator;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,13 +54,16 @@ public class Updater {
      * The file name of the plugin in the plugin's folder.
      */
     private final String fileName;
+    private final File updateFolderFile;
+    private final List<UpdateSourceReleaseHandler> releaseHandlerList;
+    private final List<UpdateSourceDevelopmentHandler> developmentHandlerList;
+    private final BetonQuest plugin;
+    private final BukkitScheduler scheduler;
+    private final InstantSource instantSource;
     /**
      * The last timestamp, when a player was notified.
      */
-    private final Map<UUID, Instant> lastNotification = new HashMap<>();
-    private final InstantSource instantSource;
-    private final List<UpdateSourceReleaseHandler> releaseHandlerList;
-    private final List<UpdateSourceDevelopmentHandler> developmentHandlerList;
+    private final Map<UUID, Instant> lastNotification;
     /**
      * The latest version, the key is a {@link Version} and the value is the URL for the download.
      * If the URL is empty, the version is the current installed one or the already downloaded one.
@@ -80,20 +82,26 @@ public class Updater {
      * Create a new Updater instance.
      *
      * @param config                 The {@link ConfigurationSection} that contains the updater section.
-     * @param file                   The file of the plugin in the plugin's folder.
+     * @param fileName               The fileName of the plugin in the plugin's folder.
      * @param currentVersion         The current plugin version.
      * @param releaseHandlerList     A list of {@link UpdateSourceReleaseHandler}
      * @param developmentHandlerList A list of {@link UpdateSourceDevelopmentHandler}
      */
-    public Updater(final ConfigurationSection config, final File file, final Version currentVersion,
-                   final List<UpdateSourceReleaseHandler> releaseHandlerList,
-                   final List<UpdateSourceDevelopmentHandler> developmentHandlerList, final InstantSource instantSource) {
-        this.fileName = file.getName();
+    public Updater(final ConfigurationFile config, final String fileName, final File updateFolderFile,
+                   final Version currentVersion, final List<UpdateSourceReleaseHandler> releaseHandlerList,
+                   final List<UpdateSourceDevelopmentHandler> developmentHandlerList, final BetonQuest plugin, final BukkitScheduler scheduler,
+                   final InstantSource instantSource) {
         this.latest = Pair.of(currentVersion, null);
-        this.instantSource = instantSource;
+        this.config = new UpdaterConfig(config, latest.getKey(), DEV_INDICATOR);
+        this.fileName = fileName;
+        this.updateFolderFile = updateFolderFile;
         this.releaseHandlerList = releaseHandlerList;
         this.developmentHandlerList = developmentHandlerList;
-        this.config = new UpdaterConfig(config, latest.getKey(), DEV_INDICATOR);
+        this.plugin = plugin;
+        this.scheduler = scheduler;
+        this.instantSource = instantSource;
+        this.lastNotification = new HashMap<>();
+
         searchUpdate();
     }
 
@@ -116,30 +124,36 @@ public class Updater {
      * Starts an asynchronous search for updates.
      */
     public final void searchUpdate() {
-        if (!config.isEnabled()) {
+        config.reloadFromConfig();
+        if (!config.isEnabled() || !shouldCheckVersion()) {
             return;
         }
-        final Instant currentTime = instantSource.instant();
-        if (lastCheck != null && lastCheck.plus(CHECK_DELAY).isAfter(currentTime)) {
-            return;
-        }
-        lastCheck = currentTime;
 
-        Bukkit.getScheduler().runTaskAsynchronously(BetonQuest.getInstance(), () -> {
+        scheduler.runTaskAsynchronously(plugin, () -> {
             searchUpdateTask();
-            if (latest.getValue() != null) {
+            if (isUpdateAvailable()) {
                 final boolean automatic = config.isAutomatic();
                 LOG.info(getUpdateNotification(automatic));
                 if (automatic) {
-                    update(Bukkit.getConsoleSender());
+                    update(null);
                 }
             }
         });
     }
 
+    private boolean shouldCheckVersion() {
+        final Instant currentTime = instantSource.instant();
+        if (lastCheck != null && lastCheck.plus(CHECK_DELAY).isAfter(currentTime)) {
+            return false;
+        }
+        lastCheck = currentTime;
+        return true;
+    }
+
     private void searchUpdateTask() {
+        final VersionComparator comparator = new VersionComparator(config.getStrategy(), DEV_INDICATOR + "-");
         try {
-            searchUpdateTaskRelease();
+            searchUpdateTaskRelease(comparator);
         } catch (final UnknownHostException e) {
             LOG.warn("The update server for release builds is currently not available!");
         } catch (final IOException e) {
@@ -147,7 +161,7 @@ public class Updater {
         }
         if (config.isDevDownloadEnabled() && !(isUpdateAvailable() && config.isForcedStrategy())) {
             try {
-                searchUpdateTaskDev();
+                searchUpdateTaskDev(comparator);
             } catch (final UnknownHostException e) {
                 LOG.warn("The update server for dev builds is currently not available!");
             } catch (final IOException e) {
@@ -156,27 +170,25 @@ public class Updater {
         }
     }
 
-    private void searchUpdateTaskRelease() throws IOException {
+    private void searchUpdateTaskRelease(final VersionComparator comparator) throws IOException {
         for (final UpdateSourceReleaseHandler updateSourceReleaseHandler : releaseHandlerList) {
-            compareVersionList(updateSourceReleaseHandler.getReleaseVersions());
+            compareVersionList(comparator, updateSourceReleaseHandler.getReleaseVersions());
         }
     }
 
-    private void searchUpdateTaskDev() throws IOException {
+    private void searchUpdateTaskDev(final VersionComparator comparator) throws IOException {
         for (final UpdateSourceDevelopmentHandler updateSourceDevelopmentHandler : developmentHandlerList) {
-            compareVersionList(updateSourceDevelopmentHandler.getDevelopmentVersions());
+            compareVersionList(comparator, updateSourceDevelopmentHandler.getDevelopmentVersions());
         }
     }
 
-    private void compareVersionList(final Map<Version, String> versionList) {
+    private void compareVersionList(final VersionComparator comparator, final Map<Version, String> versionList) {
         for (final Map.Entry<Version, String> entry : versionList.entrySet()) {
-            final VersionComparator comparator = new VersionComparator(config.getStrategy(), DEV_INDICATOR + "-");
             if (comparator.isOtherNewerThanCurrent(latest.getKey(), entry.getKey())) {
                 latest = Pair.of(entry.getKey(), entry.getValue());
             }
         }
     }
-
 
     /**
      * Return if a new version is available.
@@ -205,13 +217,14 @@ public class Updater {
      * @param player The player, that should receive the message.
      */
     public void sendUpdateNotification(final Player player) {
-        if (updateNotification != null && isUpdateAvailable()) {
+        if (updateNotification != null) {
             final Instant currentTime = instantSource.instant();
             if (lastNotification.containsKey(player.getUniqueId()) && lastNotification.get(player.getUniqueId()).plus(NOTIFICATION_DELAY).isAfter(currentTime)) {
                 return;
             }
             lastNotification.put(player.getUniqueId(), currentTime);
-            player.sendMessage(BetonQuest.getInstance().getPluginTag() + ChatColor.DARK_GREEN + updateNotification);
+
+            player.sendMessage(plugin.getPluginTag() + ChatColor.DARK_GREEN + updateNotification);
         }
     }
 
@@ -221,8 +234,9 @@ public class Updater {
      * @param sender The {@link CommandSender} that should receive the update related messages.
      */
     public void update(final CommandSender sender) {
-        Bukkit.getScheduler().runTaskAsynchronously(BetonQuest.getInstance(), () -> {
+        scheduler.runTaskAsynchronously(plugin, () -> {
             try {
+                config.reloadFromConfig();
                 if (!config.isEnabled()) {
                     throw new QuestRuntimeException("The updater is disabled! Change config entry 'update.enabled' to 'true' to enable it.");
                 }
@@ -239,12 +253,11 @@ public class Updater {
                             + " This can depend on your update_strategy, check config entry 'update.update_strategy'.");
                 }
                 sendMessage(sender, ChatColor.DARK_GREEN + "Started update to version '" + latest.getKey().getVersion() + "'...");
-                final File folder = Bukkit.getUpdateFolderFile();
-                if (!folder.exists() && !folder.mkdirs()) {
-                    throw new QuestRuntimeException("The updater could not create the folder '" + folder.getName() + "'!");
+                if (!updateFolderFile.exists() && !updateFolderFile.mkdirs()) {
+                    throw new QuestRuntimeException("The updater could not create the folder '" + updateFolderFile.getName() + "'!");
                 }
 
-                updateDownloadToFile(folder);
+                updateDownloadToFile(updateFolderFile);
                 sendMessage(sender, ChatColor.DARK_GREEN + "...download finished. Restart the server to update the plugin.");
             } catch (final QuestRuntimeException e) {
                 sendMessage(sender, ChatColor.RED + e.getMessage());
@@ -255,12 +268,11 @@ public class Updater {
 
     private void sendMessage(final CommandSender sender, final String message) {
         LOG.info(message);
-        if (sender != null && !(sender instanceof ConsoleCommandSender)) {
-            sender.sendMessage(BetonQuest.getInstance().getPluginTag() + message);
+        if (sender != null) {
+            sender.sendMessage(plugin.getPluginTag() + message);
         }
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     private void updateDownloadToFile(final File folder) throws QuestRuntimeException {
         final File file = new File(folder, fileName + ".tmp");
         file.deleteOnExit();

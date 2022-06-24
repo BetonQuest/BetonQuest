@@ -70,7 +70,10 @@ public class LogValidator extends Handler {
      * Assert that the {@link LogValidator} does not have any LogRecord left to check.
      */
     public void assertEmpty() {
-        assertTrue(records.isEmpty(), "The records list should be empty!");
+        final LogRecord record = records.peek();
+        if (record != null) {
+            fail("The records list should be empty! Message: [" + record.getLevel() + "] " + record.getMessage());
+        }
     }
 
     /**

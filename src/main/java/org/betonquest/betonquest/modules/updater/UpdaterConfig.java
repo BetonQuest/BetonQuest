@@ -4,6 +4,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.modules.versioning.UpdateStrategy;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
@@ -13,11 +14,16 @@ import java.util.Locale;
 @SuppressWarnings("PMD.DataClass")
 @CustomLog
 public class UpdaterConfig {
+    private static final String UPDATE_SECTION = "update.";
     private final static String DEV_SEPERATOR = "_";
-
     private final ConfigurationSection config;
     private final String devIndicator;
     private final Version current;
+    private boolean enabled;
+    private boolean ingameNotification;
+    private boolean automatic;
+    private UpdateStrategy strategy = UpdateStrategy.MINOR;
+    private boolean devDownloadEnabled;
 
     /**
      * Reads the configuration file.
@@ -33,70 +39,73 @@ public class UpdaterConfig {
     }
 
     /**
+     * Reload the settings from the config file.
+     */
+    public void reloadFromConfig() {
+        enabled = config.getBoolean(UPDATE_SECTION + "enabled", true);
+        ingameNotification = config.getBoolean(UPDATE_SECTION + "ingameNotification", true);
+        automatic = config.getBoolean(UPDATE_SECTION + "automatic", false);
+
+        final String updateStrategyRaw = config.getString(UPDATE_SECTION + "strategy", "MINOR").toUpperCase(Locale.ROOT);
+        final String updateStrategy = getUpdateStrategy(updateStrategyRaw);
+        devDownloadEnabled = !updateStrategyRaw.equals(updateStrategy);
+        try {
+            strategy = UpdateStrategy.valueOf(updateStrategy);
+        } catch (final IllegalArgumentException exception) {
+            LOG.error("Could not parse 'update.strategy' in 'config.yml'!", exception);
+        }
+    }
+
+    private String getUpdateStrategy(final String updateStrategy) {
+        if (updateStrategy.endsWith(DEV_SEPERATOR + devIndicator)) {
+            return updateStrategy.substring(0, updateStrategy.length() - (this.devIndicator.length() + DEV_SEPERATOR.length()));
+        }
+        return updateStrategy;
+    }
+
+    /**
      * @return true if the updater is enabled
      */
     public boolean isEnabled() {
-        return config.getBoolean("enabled", true);
+        return enabled;
     }
 
     /**
      * @return true if admins should be notified ingame
      */
     public boolean isIngameNotification() {
-        return config.getBoolean("ingameNotification", true);
+        return ingameNotification;
     }
 
     /**
      * @return the {@link UpdateStrategy}
      */
-    public UpdateStrategy getStrategy() {
-        final String updateStrategy = getUpdateStrategy();
-        try {
-            return UpdateStrategy.valueOf(updateStrategy);
-        } catch (final IllegalArgumentException exception) {
-            LOG.error("Could not parse 'update.strategy' in 'config.yml'!", exception);
-            return UpdateStrategy.MINOR;
-        }
+    public @NotNull UpdateStrategy getStrategy() {
+        return strategy;
     }
 
     /**
      * @return true if dev-versions should be downloaded
      */
     public boolean isDevDownloadEnabled() {
-        return isForcedStrategy() || isDevUpdateStrategy();
+        return isForcedStrategy() || devDownloadEnabled;
     }
 
     /**
      * @return true if updates should be downloaded automatically
      */
     public boolean isAutomatic() {
-        return !isForcedStrategy() && config.getBoolean("automatic", false);
+        return !isForcedStrategy() && automatic;
     }
 
     /**
      * @return true if the {@link UpdateStrategy} forced by the plugin
      */
     public boolean isForcedStrategy() {
-        return isCurrentVersionDev() ? !isDevUpdateStrategy() : current.hasQualifier();
-    }
-
-    private boolean isDevUpdateStrategy() {
-        return loadUpdateStrategy().endsWith(DEV_SEPERATOR + devIndicator);
-    }
-
-    private String loadUpdateStrategy() {
-        return config.getString("strategy", "MINOR").toUpperCase(Locale.ROOT);
+        return isCurrentVersionDev() ? !devDownloadEnabled : current.hasQualifier();
     }
 
     private boolean isCurrentVersionDev() {
         return (devIndicator + "-").equals(current.getQualifier());
-    }
-
-    private String getUpdateStrategy() {
-        final String updateStrategy = loadUpdateStrategy();
-        if (isDevDownloadEnabled()) {
-            return updateStrategy.substring(0, updateStrategy.length() - (this.devIndicator.length() + DEV_SEPERATOR.length()));
-        }
-        return updateStrategy;
     }
 }

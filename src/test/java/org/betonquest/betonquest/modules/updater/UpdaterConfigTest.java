@@ -129,8 +129,23 @@ final class UpdaterConfigTest {
                         new Expected(false, UpdateStrategy.MINOR, true, false, false, false)),
                 Arguments.of(
                         new Input(VERSION2, false, false, INVALID, false),
-                        new Expected(false, UpdateStrategy.MINOR, true, false, false, true))
+                        new Expected(false, UpdateStrategy.MINOR, true, false, false, true)),
+                // Special cases
+                Arguments.of(
+                        new Input(VERSION2, true, false, "PATCH", false),
+                        new Expected(true, UpdateStrategy.PATCH, true, false, false, true))
+
         );
+    }
+
+    /* default */
+    static ConfigurationFile getMockedConfig(final Input input) {
+        final ConfigurationFile config = mock(ConfigurationFile.class);
+        when(config.getBoolean("update.enabled", true)).thenReturn(input.enabled);
+        when(config.getBoolean("update.ingameNotification", true)).thenReturn(input.ingameNotification);
+        when(config.getString("update.strategy", MINOR)).thenReturn(input.strategy);
+        when(config.getBoolean("update.automatic", false)).thenReturn(input.automatic);
+        return config;
     }
 
     @ParameterizedTest
@@ -138,16 +153,8 @@ final class UpdaterConfigTest {
     void testUpdaterConfig(final Input input, final Expected expected) {
         final ConfigurationFile config = getMockedConfig(input);
         final UpdaterConfig updaterConfig = new UpdaterConfig(config, input.version, DEV_INDICATOR);
+        updaterConfig.reloadFromConfig();
         assertSettings(expected, updaterConfig);
-    }
-
-    private ConfigurationFile getMockedConfig(final Input input) {
-        final ConfigurationFile config = mock(ConfigurationFile.class);
-        when(config.getBoolean("enabled", true)).thenReturn(input.enabled);
-        when(config.getBoolean("ingameNotification", true)).thenReturn(input.ingameNotification);
-        when(config.getString("strategy", MINOR)).thenReturn(input.strategy);
-        when(config.getBoolean("automatic", false)).thenReturn(input.automatic);
-        return config;
     }
 
     private void assertSettings(final Expected expected, final UpdaterConfig updaterConfig) {
@@ -159,8 +166,8 @@ final class UpdaterConfigTest {
         assertEquals(expected.forcedStrategy, updaterConfig.isForcedStrategy(), "Expected isForcedStrategy is '" + expected.forcedStrategy + "'");
     }
 
-    private record Input(Version version, boolean enabled, boolean ingameNotification, String strategy,
-                         boolean automatic) {
+    /* default */ record Input(Version version, boolean enabled, boolean ingameNotification, String strategy,
+                               boolean automatic) {
     }
 
     private record Expected(boolean enabled, UpdateStrategy strategy, boolean devDownloadEnabled, boolean automatic,
