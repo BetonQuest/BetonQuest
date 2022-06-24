@@ -1,2 +1,4 @@
-!!! hint "Run this command to download the complete example"
-    The example is not working? Get the complete solution by running this command.<br>
+??? hint "Is the example not working?"
+    Get the correct configs by running the following command.<br>
+    :warning: _This will overwrite any changes you have made to the example.<br>_
+
