@@ -231,7 +231,7 @@ Then right-click Jack.
 
 ## Further Information
 !!! info ""
-    You want some more information about conversations? [Conversation Reference](/Documentation/Conversations/)
+    You want some more information about conversations? [Conversation Reference](../../Documentation/Conversations.md)
 
 ## Summary
 
