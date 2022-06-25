@@ -15,7 +15,7 @@ import java.util.Locale;
 @CustomLog
 public class UpdaterConfig {
     private static final String UPDATE_SECTION = "update.";
-    private final static String DEV_SEPERATOR = "_";
+    private final static String DEV_SEPARATOR = "_";
     private final ConfigurationSection config;
     private final String devIndicator;
     private final Version current;
@@ -57,8 +57,8 @@ public class UpdaterConfig {
     }
 
     private String getUpdateStrategy(final String updateStrategy) {
-        if (updateStrategy.endsWith(DEV_SEPERATOR + devIndicator)) {
-            return updateStrategy.substring(0, updateStrategy.length() - (this.devIndicator.length() + DEV_SEPERATOR.length()));
+        if (updateStrategy.endsWith(DEV_SEPARATOR + devIndicator)) {
+            return updateStrategy.substring(0, updateStrategy.length() - (this.devIndicator.length() + DEV_SEPARATOR.length()));
         }
         return updateStrategy;
     }

@@ -56,16 +56,17 @@ public class UpdateSourceHandler {
     }
 
     private <T extends UpdateSource> Pair<Version, String>
-    searchUpdateFor(Pair<Version, String> latest, final List<T> updateSources, final VersionComparator comparator,
+    searchUpdateFor(final Pair<Version, String> latest, final List<T> updateSources, final VersionComparator comparator,
                     final UpdateSourceConsumer<T> consumer) throws IOException {
+        Pair<Version, String> currentLatest = latest;
         for (final T updateSource : updateSources) {
             for (final Map.Entry<Version, String> entry : consumer.consume(updateSource).entrySet()) {
                 if (comparator.isOtherNewerThanCurrent(latest.getKey(), entry.getKey())) {
-                    latest = Pair.of(entry.getKey(), entry.getValue());
+                    currentLatest = Pair.of(entry.getKey(), entry.getValue());
                 }
             }
         }
-        return latest;
+        return currentLatest;
     }
 
     /**
@@ -78,10 +79,10 @@ public class UpdateSourceHandler {
         /**
          * Applies this function to the given argument.
          *
-         * @param t the function argument
+         * @param updateSource the function argument
          * @return the function result
          * @throws IOException when there is something wrong during this operation.
          */
-        Map<Version, String> consume(T t) throws IOException;
+        Map<Version, String> consume(T updateSource) throws IOException;
     }
 }

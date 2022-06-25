@@ -132,7 +132,7 @@ public class Updater {
 
     private boolean searchUpdate() {
         final Pair<Version, String> newLatest = updateSourceHandler.searchUpdate(config, latest.getKey(), DEV_INDICATOR);
-        if (latest.getValue() == null) {
+        if (newLatest.getValue() == null) {
             return false;
         }
         latest = newLatest;
