@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.modules.updater;
 
 import lombok.CustomLog;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
@@ -13,8 +12,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import java.io.File;
-import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.time.Instant;
@@ -45,11 +43,7 @@ public class Updater {
      * The plugins {@link ConfigurationFile} for the debugging settings.
      */
     private final UpdaterConfig config;
-    /**
-     * The file name of the plugin in the plugin's folder.
-     */
-    private final String fileName;
-    private final File updateFolderFile;
+    private final UpdateDownloader updateDownloader;
     private final UpdateSourceHandler updateSourceHandler;
     private final BetonQuest plugin;
     private final BukkitScheduler scheduler;
@@ -76,16 +70,14 @@ public class Updater {
      * Create a new Updater instance.
      *
      * @param config         The {@link ConfigurationSection} that contains the updater section.
-     * @param fileName       The fileName of the plugin in the plugin's folder.
      * @param currentVersion The current plugin version.
      */
-    public Updater(final ConfigurationFile config, final String fileName, final File updateFolderFile,
-                   final Version currentVersion, final UpdateSourceHandler updateSourceHandler,
-                   final BetonQuest plugin, final BukkitScheduler scheduler, final InstantSource instantSource) {
+    public Updater(final ConfigurationFile config, final Version currentVersion, final UpdateDownloader updateDownloader,
+                   final UpdateSourceHandler updateSourceHandler, final BetonQuest plugin,
+                   final BukkitScheduler scheduler, final InstantSource instantSource) {
         this.latest = Pair.of(currentVersion, null);
         this.config = new UpdaterConfig(config, latest.getKey(), DEV_INDICATOR);
-        this.fileName = fileName;
-        this.updateFolderFile = updateFolderFile;
+        this.updateDownloader = updateDownloader;
         this.updateSourceHandler = updateSourceHandler;
         this.plugin = plugin;
         this.scheduler = scheduler;
@@ -210,15 +202,14 @@ public class Updater {
                             + " This can depend on your update_strategy, check config entry 'update.update_strategy'.");
                 }
                 sendMessage(sender, ChatColor.DARK_GREEN + "Started update to version '" + latest.getKey().getVersion() + "'...");
-                if (!updateFolderFile.exists() && !updateFolderFile.mkdirs()) {
-                    throw new QuestRuntimeException("The updater could not create the folder '" + updateFolderFile.getName() + "'!");
-                }
 
-                updateDownloadToFile(updateFolderFile);
+                updateDownloader.downloadToFile(new URL(latest.getValue()));
                 sendMessage(sender, ChatColor.DARK_GREEN + "...download finished. Restart the server to update the plugin.");
             } catch (final QuestRuntimeException e) {
                 sendMessage(sender, ChatColor.RED + e.getMessage());
                 LOG.debug("Error while performing update!", e);
+            } catch (final MalformedURLException e) {
+                throw new RuntimeException(e);
             }
         });
     }
@@ -230,38 +221,5 @@ public class Updater {
         }
     }
 
-    private void updateDownloadToFile(final File folder) throws QuestRuntimeException {
-        final File file = new File(folder, fileName + ".tmp");
-        file.deleteOnExit();
-        try {
-            if (file.exists()) {
-                throw new QuestRuntimeException("The file '" + file.getName() + "' already exists!" +
-                        " Please wait for the currently running update to finish. If no update is running delete the file manually.");
-            }
-            if (!file.createNewFile()) {
-                throw new QuestRuntimeException("The updater could not create the file '" + file.getName() + "'!");
-            }
-            downloadToFileFromURL(latest.getValue(), file);
-            if (!file.renameTo(new File(folder, fileName))) {
-                throw new QuestRuntimeException("Could not rename the downloaded file."
-                        + " Try running '/q update' again. If it still does not work use a manual download.");
-            }
-            latest = Pair.of(latest.getKey(), null);
-        } catch (final IOException e) {
-            if (file.exists()) {
-                final boolean deleted = file.delete();
-                if (!deleted) {
-                    throw new QuestRuntimeException("Download was interrupted! A broken file is in '/plugins/update'."
-                            + " Delete this file or the updater will not work anymore. Afterwards you can try running"
-                            + " '/q update' again. If it still does not work use a manual download.", e);
-                }
-            }
-            throw new QuestRuntimeException("Could not download the file. Try running '/q update' again."
-                    + " If it still does not work use a manual download.", e);
-        }
-    }
 
-    private void downloadToFileFromURL(final String url, final File file) throws IOException {
-        FileUtils.copyURLToFile(new URL(url), file, 5000, 5000);
-    }
 }

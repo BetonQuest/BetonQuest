@@ -13,11 +13,31 @@ import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Two lists of {@link UpdateSource}s can be passed to this class in the constructor.
+ * One is for releases and one is for Development builds.
+ * <p>
+ * If an update is searched, it will then first search in the list of {@link UpdateSourceRelease} instances
+ * and then in the list of {@link UpdateSourceDevelopment} instances.
+ * Development builds are only searched, if the {@link UpdaterConfig} is configured for it.
+ */
 @CustomLog
 public class UpdateSourceHandler {
+    /**
+     * A list of {@link UpdateSourceRelease} instances.
+     */
     private final List<UpdateSourceRelease> releaseHandlerList;
+    /**
+     * A list of {@link UpdateSourceDevelopment} instances.
+     */
     private final List<UpdateSourceDevelopment> developmentHandlerList;
 
+    /**
+     * Create a new {@link UpdateSourceHandler} with the given {@link UpdateSource} lists.
+     *
+     * @param releaseHandlerList     A list of {@link UpdateSourceRelease} instances
+     * @param developmentHandlerList A list of {@link UpdateSourceDevelopment} instances
+     */
     public UpdateSourceHandler(final List<UpdateSourceRelease> releaseHandlerList, final List<UpdateSourceDevelopment> developmentHandlerList) {
         this.releaseHandlerList = releaseHandlerList;
         this.developmentHandlerList = developmentHandlerList;

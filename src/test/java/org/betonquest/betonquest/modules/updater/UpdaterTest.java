@@ -37,13 +37,13 @@ class UpdaterTest {
         final String file = "BetonQuest.jar";
         final Version version = new Version("2.0.0-DEV-3");
         final BetonQuest plugin = mock(BetonQuest.class);
+        final UpdateDownloader downloader = mock(UpdateDownloader.class);
         final InstantSource instantSource = InstantSource.system();
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         when(handler.searchUpdate(any(), any(), any())).thenReturn(Pair.of(new Version("2.0.0-DEV-5"), "https://betonquest.org"));
-
         try (BukkitSchedulerMock scheduler = new BukkitSchedulerMock()) {
 
-            final Updater updater = new Updater(config, file, tempDir, version, handler, plugin, scheduler, instantSource);
+            final Updater updater = new Updater(config, version, downloader, handler, plugin, scheduler, instantSource);
             scheduler.waitAsyncTasksFinished();
             scheduler.assertNoExceptions();
             assertTrue(updater.isUpdateAvailable());
@@ -59,12 +59,13 @@ class UpdaterTest {
         final String file = "BetonQuest.jar";
         final Version version = new Version("2.0.0-DEV-3");
         final BetonQuest plugin = mock(BetonQuest.class);
+        final UpdateDownloader downloader = mock(UpdateDownloader.class);
         final InstantSource instantSource = InstantSource.system();
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         when(handler.searchUpdate(any(), any(), any())).thenReturn(Pair.of(new Version("2.0.0-DEV-3"), null));
 
         try (BukkitSchedulerMock scheduler = new BukkitSchedulerMock()) {
-            final Updater updater = new Updater(config, file, tempDir, version, handler, plugin, scheduler, instantSource);
+            final Updater updater = new Updater(config, version, downloader, handler, plugin, scheduler, instantSource);
             scheduler.waitAsyncTasksFinished();
             scheduler.assertNoExceptions();
             assertFalse(updater.isUpdateAvailable());
@@ -79,6 +80,7 @@ class UpdaterTest {
         final ConfigurationFile config = UpdaterConfigTest.getMockedConfig(new UpdaterConfigTest.Input(null, true, true, "PATCH", true));
         final String file = "BetonQuest.jar";
         final Version version = new Version("2.0.0-DEV-3");
+        final UpdateDownloader downloader = mock(UpdateDownloader.class);
         final List<UpdateSourceRelease> releaseHandlerList = new ArrayList<>();
         final List<UpdateSourceDevelopment> developmentHandlerList = new ArrayList<>();
         final BetonQuest plugin = mock(BetonQuest.class);
@@ -93,7 +95,7 @@ class UpdaterTest {
         final UpdateSourceHandler handler = new UpdateSourceHandler(releaseHandlerList, developmentHandlerList);
 
         try (BukkitSchedulerMock scheduler = new BukkitSchedulerMock()) {
-            final Updater updater = new Updater(config, file, tempDir, version, handler, plugin, scheduler, instantSource);
+            final Updater updater = new Updater(config, version, downloader, handler, plugin, scheduler, instantSource);
             scheduler.waitAsyncTasksFinished();
             scheduler.assertNoExceptions();
             assertTrue(updater.isUpdateAvailable());
@@ -101,7 +103,7 @@ class UpdaterTest {
         }
 
         final File updateFile = new File(tempDir, file);
-        assertTrue(updateFile.exists());
+        assertTrue(updateFile.exists(), "Expected BetonQuest.jar existing");
         assertTrue(FileUtils.contentEquals(updateFile, new File(UPDATE_FILE)),
                 "The received file is not equal to the expected one!");
 

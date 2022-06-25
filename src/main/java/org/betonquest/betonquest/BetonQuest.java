@@ -153,6 +153,7 @@ import org.betonquest.betonquest.modules.logger.PlayerLogWatcher;
 import org.betonquest.betonquest.modules.logger.handler.chat.AccumulatingReceiverSelector;
 import org.betonquest.betonquest.modules.logger.handler.chat.ChatHandler;
 import org.betonquest.betonquest.modules.logger.handler.history.HistoryHandler;
+import org.betonquest.betonquest.modules.updater.UpdateDownloader;
 import org.betonquest.betonquest.modules.updater.UpdateSourceHandler;
 import org.betonquest.betonquest.modules.updater.Updater;
 import org.betonquest.betonquest.modules.updater.source.UpdateSourceDevelopment;
@@ -918,11 +919,12 @@ public class BetonQuest extends JavaPlugin {
 
         // updater
         final Version pluginVersion = new Version(this.getDescription().getVersion());
+        final UpdateDownloader updateDownloader = new UpdateDownloader(this.getFile().getName(), getServer().getUpdateFolderFile());
         final List<UpdateSourceRelease> releaseHandlers = List.of(new GitHubReleaseSource("https://api.github.com/repos/BetonQuest/BetonQuest/releases"));
         final List<UpdateSourceDevelopment> developmentHandlers = List.of(new BetonQuestDevSource("https://dev.betonquest.org/api/v1"));
         final UpdateSourceHandler updateSourceHandler = new UpdateSourceHandler(releaseHandlers, developmentHandlers);
-        updater = new Updater(config, this.getFile().getName(), getServer().getUpdateFolderFile(), pluginVersion,
-                updateSourceHandler, this, getServer().getScheduler(), InstantSource.system());
+        updater = new Updater(config, pluginVersion, updateDownloader, updateSourceHandler, this,
+                getServer().getScheduler(), InstantSource.system());
 
         //RPGMenu integration
         rpgMenu = new RPGMenu();
