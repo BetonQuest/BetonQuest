@@ -63,6 +63,6 @@ With other words, don't mix up different changes.
 
 ---
 ## Where to Continue?
-If you also want to adjust the code switch to [Changing Code](../Code/index.md).
+If you also want to adjust the code switch to [Changing Code](../Code/Workflow.md).
 Once you are done with all changes, continue with [Maintaining Changelog](../Maintaining-the-Changelog.md).
 In case you already did that: Continue with [Submitting Changes](../Submitting-Changes.md).  

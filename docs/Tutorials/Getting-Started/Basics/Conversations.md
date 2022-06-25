@@ -10,14 +10,15 @@ and a NPC. Therefore, these are the basic tool for story telling.
 
 
 !!! danger "Requirements"
-    * You must have completed the [Setup Guide](../Getting-Started/Setting-up-a-local-test-server.md) and all following
-    setup steps!
+    Setup of:
     
-    * You don't need any experience in creating quests. This is the very beginning.
+    * [Setup Guide](../Getting-Started/Setting-up-a-local-test-server.md)
+
+    You don't need any experience in creating quests. This is the very beginning.
 
 ## 1. Package Setup
 
-//TODO: Replace these instructions with a package downloader insturction
+//TODO: Replace these instructions with a package downloader instruction
 Let's start with a bit of preparation creating a folder structure for this tutorial. 
 All files related to quests must be placed inside the :material-folder-home: *QuestPackages* directory, which is
 automatically created by the plugin.
@@ -34,9 +35,9 @@ Please create folders and files so your file structure looks like this:
 This means that the _QuestPackages_ folder must contain a folder called _tutorialQuest_. This folder contains a file named _package.yml_
 and another directory called _conversations_. The _conversations_ directory must contain another file named _jack.yml_.
 
-## 2. Linking a conversation to an NPC
+## 2. Linking a conversation to a NPC
 
-Usually, conversations happen between an NPC and the player. 
+Usually, conversations happen between a NPC and the player. 
 Therefore, we need to create the `npcs` section in the _package.yml_ so that the plugin knows which Citizens NPC
 uses which conversation. This is how it works:
 
@@ -48,9 +49,8 @@ This links the NPC with the given ID (`1`) to the conversation with the given id
 Save the file after editing.
 
 ??? info "How to find the Citizens NPC ID"
-    ??? info "How to create a NPC" 
-        Execute this command: `/npc create Jack`
-                
+    Execute this command if you haven't created an NPC yet: `/npc create Jack`  
+    
     1. Stay close to the NPC you want to select
     2. Type the command `/npc select` to select the nearest NPC.
     3. Type the command `/npc id` to get the ID from your NPC.
@@ -60,29 +60,6 @@ Save the file after editing.
 
 It's time to create the first conversation with Jack! This chapter will teach you the basic structure of a conversation.
 
-A conversation always starts with an `NPC_option`, which is text the NPC says to the player. Now the player must
-answer the NPC using a `player_option` which is also some text. Usually, a player has more than one answer to choose from.
-These are determined by the `pointer` argument, that points from the initial `NPC_option` to all possible `player_options`.
-After the player responded, they are shown another `NPC_option` that the previously chosen `player_option` points to.
-  
-As you can see, a conversation mainly consists of three elements: `NPC_options`, `player_options` and 
-the `pointer` argument. 
-
-Whenever either a `player_option` or a `NPC_option` point to no other option the conversation ends as there are no more
-responses or answers.
-
-!!! info "The Conversation Cycle"
-    ``` mermaid
-    graph LR
-    X{Conversation Starts} --> C
-    C[Initial NPC_option] --> A
-    A[player_option] --> |Pointer|B[NPC_option];
-    B --> |Pointer|A;
-    A -.No pointer present .-> D
-    B -.No pointer present .-> D
-    D{Conversation Ends}
-    ```
-    
 Let's take a look at how a conversation is defined in the plugin's files:
 
 !!! question ""
@@ -109,17 +86,48 @@ conversations:
 5. Defines which `player_option` is shown next. 
 6. This section contains everything the player says.
 
+
+A BetonQuest conversation is a cycle of responses between the NPC and the player.
+Anything the NPC says is called `NPC_options`, all player text is called `player_options`.
+
+A conversation always starts with an `NPC_option`. 
+Now the player must answer the NPC using a `player_option`.
+
+Options point to each other using the `pointer` argument. In the case of an NPC_option, the pointer argument would contain
+the name of a `player_option`. 
+Usually, a player has more than one answer to choose from. This is done by adding multiple `player_option` names to a
+`NPC_option`.
+
+After the player responded, they are shown another `NPC_option` that the previously chosen `player_option` points to.
+  
+Whenever either a `player_option` or a `NPC_option` point to no other option the conversation ends as there are no more
+responses or answers.
+
+!!! info "The Conversation Cycle"
+    ``` mermaid
+    graph LR
+    X{Conversation Starts} --> C
+    C[First NPC_option] --> A
+    A[player_option] --> |Pointer|B[NPC_option];
+    B --> |Pointer|A;
+    A -.No pointer present .-> D
+    B -.No pointer present .-> D
+    D{Conversation Ends}
+    ```
+    
 You can easily check if your quest is working on the server.
 Open the file "_jack.yml_" in the "_conversations_" folder.
 Copy the above conversation into it and save the file.
 Now type `/bq reload` in the chat and right-click the NPC.
 
+//TODO: Explain Menu Conv IO
+
 ## 4. Conversations with multiple choices
 
 Let's see how to create multiple responses for the player to choose from using the `pointer` argument.
 
-Such responses are just player options that are linked to from a NPC_option. As soon as a pointer argument
-contains more than one player option, the player can choose.
+A NPC_option can point to multiple player options at the same time.
+As soon as a pointer argument contains more than one player option, the player can choose.
 
 !!! question ""
     **Tip:** Highlighted lines are new compared with the previous example. 
@@ -153,8 +161,8 @@ conversations:
 ```
 
 1. This npc_option points to multiple player_options. This allows the player to choose. The names of the player_options must be comma seperated.
-2. I get pointed on by the `whoAmI` npc_option.
-3. get pointed on by the `whoAmI` npc_option.
+2. The `whoAmI` npc_option points to me.
+3. Gets pointed on by the `whoAmI` npc_option.
 4. Points to `islandAnswer` `NPC_option`.
 5. Points to the `cityAnswer` `NPC_option`.
 
@@ -200,9 +208,9 @@ conversations:
         pointer: foodAnswer
 ```
 
-1. I am pointing to `yesPlease` in the `player_options` section.
-2. I'm also pointing to `yesPlease` in the `player_options` section.
-3. I get pointed on by two `NPC_options`.
+1. I point to `yesPlease` in the `player_options` section.
+2. I also point to `yesPlease` in the `player_options` section.
+3. Two `NPC_options` point to me.
 
 The following graph shows the paths through the conversation. Since there are two pointers assigned to the `whoAmI` option,
 the player can choose between one of the paths.
@@ -231,15 +239,13 @@ Then right-click Jack.
 
 ## Further Information
 !!! info ""
-    You want some more information about conversations? [Conversation Reference](../../Documentation/Conversations.md)
+    More information about conversations can be found in the [Conversation Reference](../../Documentation/Conversations.md)
 
 ## Summary
 
 !!! abstract ""
     You've learned how to create simple conversations in which the player can choose different paths.
     In the next part of the basics tutorial you will learn how Jack the mayor can give food to the player using **events**!
-
-
 
 ## What`s next?
 [:octicons-arrow-right-16: Events Tutorial ](Events.md){ .md-button .md-button--primary}

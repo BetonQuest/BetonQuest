@@ -8,9 +8,9 @@ After you learned how to create conversations we will now take a look at events.
 world.
 
 !!! danger "Requirements"
-    This is step two of the basics tutorial.
+    Knowledge and setup of:
     
-    * Step one: [Conversations Tutorial](Conversations.md)
+    * [Conversations Tutorial](Conversations.md)
 
 ## 1. What is an event?
 Events are BetonQuest's way to change the game world. This can be anything from modifying a player's inventory
