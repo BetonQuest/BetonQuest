@@ -169,14 +169,14 @@ Please let us know if there is any outdated information.
 *[Clientside NPCs]: Is it possible to show NPCs only for certain players based on conditions?
 *[Clientside Players]: Can player be hidden from each other using conditions?
 *[Clientside Holograms]: Can HolographicDisplays holograms be hidden using conditions?
-[L1]: https://www.spigotmc.org/resources/betonquest.2117/
-[L2]: https://www.spigotmc.org/resources/quests.3711/
-[L3]: https://www.spigotmc.org/resources/quests.23696/
-[L4]: https://www.spigotmc.org/resources/notquests.95872/
-[L5]: https://www.spigotmc.org/resources/beautyquests.39255/
+[L1]: https://www.spigotmc.org/resources/2117/
+[L2]: https://www.spigotmc.org/resources/3711/
+[L3]: https://www.spigotmc.org/resources/23696/
+[L4]: https://www.spigotmc.org/resources/95872/
+[L5]: https://www.spigotmc.org/resources/39255/
 [L6]: https://github.com/Cutiemango/MangoQuest
-[L7]: https://www.spigotmc.org/resources/questcreator.38734/
-[L8]: https://www.spigotmc.org/resources/proquests.18249/
+[L7]: https://www.spigotmc.org/resources/38734/
+[L8]: https://www.spigotmc.org/resources/18249/
 [^1]: Private API, this means that other plugins cannot add support.
 [^2]: Limited to Quest related context.
 [^3]: There are conversations, but they are not multi-path.

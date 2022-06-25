@@ -11,6 +11,9 @@ icon: octicons/download-24
    Just give the first paragraph of their Spigot page a good read, and you will find the link.
    Also put the "_Citizens.jar_" file in your server's "_plugins_" folder.
 
+3. You also need <a href="https://www.spigotmc.org/resources/1997/" target="_blank">ProtocolLib</a> for this
+   tutorial. Also put the "_ProtocolLib.jar_" file in your server's "_plugins_" folder.
+
 Once you have installed these start up your server!
 
 ---
