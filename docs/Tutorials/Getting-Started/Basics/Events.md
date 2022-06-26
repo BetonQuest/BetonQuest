@@ -19,7 +19,7 @@ In this tutorial, we will give the player items and teleport them to different l
 
 ## 2. Creating the folder structure for your first event
 
-Add a new file to your `QuestPackage` named `events.yml`.
+Add a new file to your `QuestPackage` named "_events.yml_".
 Here is an overview of what your directory structure should look like now:
 
 * :material-folder-open: tutorialQuest
@@ -36,7 +36,7 @@ Open the `events.yml` now that we have created it and add the following content:
 
 ``` YAML title="events.yml" linenums="1"
 events: # (1)!
-  giveFoodToPlayer: "give steak:16"
+  giveFoodToPlayer: give steak:16
 ```
 
 1. All events must be defined in an `events` section.
@@ -92,8 +92,10 @@ This command will give you the specified amount of steak if you've done everythi
 
 You can also run this command from the console (without the slash at the start). 
 
---8<-- "Tutorials/download.md"
-    `Download Link`
+--8<-- "Tutorials/download-broken.md"
+    ```
+    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Events/1-FirstEvent /tutorialQuest overwrite
+    ```
 
 
 ## 6. Integrating events into conversations
@@ -138,14 +140,14 @@ conversations:
     NPC_options:
       #...
       foodAnswer:
-        text: Your welcome! Take it... &7*gives food*
+        text: You're welcome! Take it... &7*gives food*
         events: giveFoodToPlayer
         pointer: thankYou
       townTour:
-        text: Yeah that's true. You know what also smells good? The fresh air in this town! Would you like to take a little tour?
+        text: Yeah that's true. You know what also smells good? The fresh air in my town! Would you like to take a little tour?
         pointer: enoughTime,noTimeForThat # (1)!
       startTheTour:
-        text: That sounds great! It is a honor for me to guide you through the town.
+        text: Great! It is a honor for me to guide you through the town.
         events: townTourEvent # (2)!
       noProblem:
         text: That's fine! Maybe you have time another day... Just talk to me again. See you!
@@ -158,7 +160,7 @@ conversations:
         text: Yes of course! Show me everything.
         pointer: startTheTour
       noTimeForThat:
-        text: Sorry, but I don't have time now...
+        text: Sorry but I don't have time now...
         pointer: noProblem
 ```
 
@@ -193,8 +195,10 @@ until we get to our final destination, the blacksmith. After the `blacksmith` ev
 
 Now speak with the NPC again to take the city tour.
 
---8<-- "Tutorials/download.md"
-    `Download Link`
+--8<-- "Tutorials/download-broken.md"
+    ```
+    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Events/2-TownTour /tutorialQuest overwrite
+    ```
 
 
 ## Further Information
