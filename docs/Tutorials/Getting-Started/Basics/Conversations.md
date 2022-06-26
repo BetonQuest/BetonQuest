@@ -1,10 +1,8 @@
 ---
 icon: material/message-processing
+tags:
+  - Conversations
 ---
-
-## About
-:octicons-clock-24:  30 minutes · :octicons-tag-16: Basics
-
 In this tutorial you will learn the basics of the conversations. These allow you to create a dialog between the player
 and a NPC. Therefore, these are the basic tool for story telling.
 

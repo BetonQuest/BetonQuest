@@ -56,6 +56,8 @@ theme:
   logo: '_media/brand/Icon/Icon1K.png'
   favicon: '_media/brand/Icon/Icon32.ico'
   icon:
+    tag:
+      conversations: material/message-processing
     admonition:
       example: fontawesome/regular/eye
 
@@ -107,12 +109,16 @@ markdown_extensions:
 
 plugins:
   - search
+  - tags:
+      tags_file: Tutorials/Overview.md
   - exclude:
       glob:
         - _snippets/*
         - _custom_theme/*
 
 extra:
+  tags:
+    Conversations: conversations
   version:
     provider: mike
   analytics:
