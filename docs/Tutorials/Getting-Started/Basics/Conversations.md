@@ -18,22 +18,13 @@ and a NPC. Therefore, these are the basic tool for story telling.
 
 ## 1. Package Setup
 
-//TODO: Replace these instructions with a package downloader instruction
-Let's start with a bit of preparation creating a folder structure for this tutorial. 
-All files related to quests must be placed inside the :material-folder-home: *QuestPackages* directory, which is
-automatically created by the plugin.
+--8<-- "Tutorials/download-setup.md"
+    ```
+    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conversations/1-DirectoryStructure /tutorialQuest overwrite
+    ```
 
-Please create folders and files so your file structure looks like this:
-
-* :material-folder-home: QuestPackages *(already there)*
-    - :material-folder-open: tutorialQuest
-        - :material-file: package.yml
-          - :material-folder-open: conversations
-              - :material-file: jack.yml  
-    
-
-This means that the _QuestPackages_ folder must contain a folder called _tutorialQuest_. This folder contains a file named _package.yml_
-and another directory called _conversations_. The _conversations_ directory must contain another file named _jack.yml_.
+You can now find all files needed for this tutorial in this location:
+"_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/tutorialQuest_"    
 
 ## 2. Linking a conversation to a NPC
 
@@ -237,9 +228,10 @@ Then right-click Jack.
 Select different options using ++w++ and ++s++. Confirm them using ++space++.
 
 
---8<-- "Tutorials/download.md"
-    `Download Link`
-
+--8<-- "Tutorials/download-broken.md"
+    ```
+    /q download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conversations/2-FullExample /tutorialQuest overwrite
+    ```
 
 ## Further Information
 !!! info ""
