@@ -919,7 +919,9 @@ public class BetonQuest extends JavaPlugin {
 
         // updater
         final Version pluginVersion = new Version(this.getDescription().getVersion());
-        final UpdateDownloader updateDownloader = new UpdateDownloader(this.getFile().getName(), getServer().getUpdateFolderFile());
+        final File tempFile = new File(getServer().getUpdateFolderFile(), this.getFile().getName() + ".temp");
+        final File finalFile = new File(getServer().getUpdateFolderFile(), this.getFile().getName());
+        final UpdateDownloader updateDownloader = new UpdateDownloader(getServer().getPluginsFolder().toURI(), tempFile, finalFile);
         final List<UpdateSourceRelease> releaseHandlers = List.of(new GitHubReleaseSource("https://api.github.com/repos/BetonQuest/BetonQuest/releases"));
         final List<UpdateSourceDevelopment> developmentHandlers = List.of(new BetonQuestDevSource("https://dev.betonquest.org/api/v1"));
         final UpdateSourceHandler updateSourceHandler = new UpdateSourceHandler(releaseHandlers, developmentHandlers);

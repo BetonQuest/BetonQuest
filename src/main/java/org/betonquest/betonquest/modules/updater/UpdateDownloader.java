@@ -5,6 +5,7 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -12,28 +13,34 @@ import java.nio.file.StandardCopyOption;
 /**
  * Bukkit has a 'update' (default) folder, where jar's that have the exact same name as a jar in the 'plugins' folder,
  * will be moved to the `plugins` folder on server startup.
- * This downloader helps to download a jar from a given {@link URL} that is first saved as `NAME.tmp` file and
- * then renamed to `NAME` when the download was successful.
+ * This downloader helps to download a jar from a given {@link URL} that is first saved as temporary file and
+ * then renamed to the final name when the download was successful.
  */
 public class UpdateDownloader {
     /**
-     * The name of the jar file in the `plugins` folder
+     * The root of the files for better path description in exceptions.
      */
-    private final String fileName;
+    private final URI relativeRoot;
     /**
-     * The folder of the `update` (default) folder
+     * A {@link File} where to create the temporary file for the download.
      */
-    private final File updateFolder;
+    private final File tempFile;
+    /**
+     * The final {@link File} for the download.
+     */
+    private final File finalFile;
 
     /**
-     * Creates a new {@link UpdateDownloader} with the given properties.
+     * Creates a new {@link UpdateDownloader} with the given file locations.
      *
-     * @param fileName     The name of the jar file in the `plugins` folder
-     * @param updateFolder The folder of the `update` (default) folder
+     * @param relativeRoot The root of the files for better path description in exceptions.
+     * @param tempFile     A {@link File} where to create the temporary file for the download.
+     * @param finalFile    The final {@link File} for the download.
      */
-    public UpdateDownloader(final String fileName, final File updateFolder) {
-        this.fileName = fileName;
-        this.updateFolder = updateFolder;
+    public UpdateDownloader(final URI relativeRoot, final File tempFile, final File finalFile) {
+        this.relativeRoot = relativeRoot;
+        this.tempFile = tempFile;
+        this.finalFile = finalFile;
     }
 
     /**
@@ -43,52 +50,50 @@ public class UpdateDownloader {
      * @throws QuestRuntimeException Is thrown if there was any exception during the download process.
      */
     public void downloadToFile(final URL url) throws QuestRuntimeException {
-        checkAndCreateFolder();
-        final File tmpFile = new File(updateFolder, fileName + ".tmp");
-        tmpFile.deleteOnExit();
+        checkAndCreateFolder(tempFile.getParentFile());
+        checkAndCreateFolder(finalFile.getParentFile());
+        tempFile.deleteOnExit();
 
+        checkAndCreateFile();
         try {
-            checkAndCreateFile(tmpFile);
-            downloadToFileFromURL(url, tmpFile);
-            renameFile(tmpFile, new File(updateFolder, fileName));
+            downloadToFileFromURL(url, tempFile);
+            Files.move(tempFile.toPath(), finalFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (final IOException e) {
-            if (tmpFile.exists() && !tmpFile.delete()) {
-                throw new QuestRuntimeException("Download was interrupted! There is a broken file '"
-                        + tmpFile.getAbsolutePath() + "'."
-                        + " Delete this file otherwise a new download is not possible."
-                        + " If it still does not work use a manual download.", e);
+            final String prefix = "The download was interrupted! ";
+            final String suffix = " The original exception was: " + e.getMessage();
+            if (tempFile.exists() && !tempFile.delete()) {
+                throw new QuestRuntimeException(prefix + "There is a broken file at '" + getRelativePath(tempFile)
+                        + "'. Delete this file otherwise a new download is not possible." + suffix, e);
             }
-            throw new QuestRuntimeException("The updater could not download the file, try it again!"
-                    + " If it still does not work use a manual download.", e);
+            throw new QuestRuntimeException(prefix + "The updater could not download the file!"
+                    + " You can try if again, if it still does not work use a manual download." + suffix, e);
         }
     }
 
-    private void renameFile(final File tmpFile, final File targetFile) throws QuestRuntimeException {
+    private void checkAndCreateFile() throws QuestRuntimeException {
         try {
-            Files.move(tmpFile.toPath(), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            if (!tempFile.createNewFile()) {
+                throw new QuestRuntimeException("The file '" + getRelativePath(tempFile) + "' already exists!"
+                        + " Please wait for the active download to finish."
+                        + " If there is no active download delete the file manually.");
+            }
         } catch (final IOException e) {
-            throw new QuestRuntimeException("Could not rename the downloaded file, try it again!"
-                    + " If it still does not work use a manual download.", e);
+            throw new QuestRuntimeException("The updater could not create the file '" + getRelativePath(tempFile)
+                    + "'! Reason: " + e.getMessage(), e);
         }
     }
 
-    private void checkAndCreateFile(final File tmpFile) throws QuestRuntimeException, IOException {
-        if (tmpFile.exists()) {
-            throw new QuestRuntimeException("The file '" + tmpFile.getName() + "' already exists!" +
-                    " Please wait for the currently running update to finish. If no update is running delete the file manually.");
-        }
-        if (!tmpFile.createNewFile()) {
-            throw new QuestRuntimeException("The updater could not create the file '" + tmpFile.getName() + "'!");
-        }
-    }
-
-    private void checkAndCreateFolder() throws QuestRuntimeException {
-        if (!updateFolder.exists() && !updateFolder.mkdirs()) {
-            throw new QuestRuntimeException("The updater could not create the folder '" + updateFolder.getName() + "'!");
+    private void checkAndCreateFolder(final File file) throws QuestRuntimeException {
+        if (!file.exists() && !file.mkdirs()) {
+            throw new QuestRuntimeException("The updater could not create the folder '" + getRelativePath(file) + "'!");
         }
     }
 
     private void downloadToFileFromURL(final URL url, final File file) throws IOException {
         FileUtils.copyURLToFile(url, file, 5000, 5000);
+    }
+
+    private String getRelativePath(final File file) {
+        return relativeRoot.relativize(file.toURI()).getPath();
     }
 }
