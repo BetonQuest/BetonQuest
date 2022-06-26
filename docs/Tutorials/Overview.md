@@ -14,6 +14,12 @@ However, help is not far if you get stuck. We have a
     **The tutorials are currently getting redesigned.**
     
     Therefore, the "Basic" section does not actually contain all basics yet. 
+    
+    - [X] Conversations
+    - [X] Events
+    - [ ] Objectives
+    - [ ] Conditions
+    - [ ] YAML for questers (old page still in place)
 
     The [old tutorial](./Getting-Started/Learn-BetonQuest.md) is still available in the mean time.
     We appreciate any feedback on the new tutorials!

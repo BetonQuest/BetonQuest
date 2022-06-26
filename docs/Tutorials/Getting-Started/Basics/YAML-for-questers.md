@@ -14,7 +14,7 @@ write it down. Let me show you an example:
         name: "your thing"
         ```
 
-These keys and values can also be nested into each other by indenting them with a few spaces:
+These keys and values can also be nested into each other by indenting them with two spaces:
 
 !!! example "Nested YAML"
         ```YAML
@@ -23,9 +23,4 @@ These keys and values can also be nested into each other by indenting them with 
           anotherInnerName: "BetonQuest is great!"
         ```
 
-
-
-YAML also cares a lot about spaces and tabs! The rules are pretty complicated.
 It's best not to use tabs in your YAML files at all. Use spaces instead. 
- 
-**Next step: [Learn BetonQuest](../Learn-BetonQuest.md)**
