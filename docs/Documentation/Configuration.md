@@ -57,10 +57,10 @@ The `update` section controls the Auto-Updater. It has the following settings:
 * `enabled` (default `true`). Enables or disables the Updater. If set to false, it is not possible to update with the
   updater and no version checks are executed.
 * `strategy` (default `MINOR`). The update strategy is the most important feature of the Auto-Updater. An explanation is
-  available [here](Updating/index.md#choose-an-update-strategy).
+  available [here](./Updating.md#choose-an-update-strategy).
 * `automatic` (default `true`). If true the updater will download new Versions automatically. Otherwise, the updater
   will only download new versions when the update command is executed. Advice is
-  available [here](Updating/index.md#enable-or-disable-automatic-updates).
+  available [here](./Updating.md#enable-or-disable-automatic-updates).
 
 ### Journal slots
 

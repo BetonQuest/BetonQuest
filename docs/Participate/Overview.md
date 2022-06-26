@@ -23,7 +23,7 @@ There are two options to support projects like this one:
 
     After that, you can follow the `Process` chapter. It explains every step in the contributing process.
     Start by [creating a new branch](Process/Create-a-new-Branch.md), then change
-    [Code](Process/Code/index.md) and finally [submit any changes](Process/Submitting-Changes.md) you made.
+    [Code](./Process/Code/Workflow.md) and finally [submit any changes](./Process/Submitting-Changes.md) you made.
 
 ??? abstract "Write Documentation"
     We have written a guide about contributing documentation:
@@ -31,7 +31,7 @@ There are two options to support projects like this one:
     Please follow our detailed [Setup Project](Setup-Project.md) guide to obtain a local working environment. 
 
     After that, you can follow the `Process` chapter. It explains every step in the contributing process.
-    Start by [creating a new branch](Process/Create-a-new-Branch.md), then change [Docs](Process/Docs/index.md)
+    Start by [creating a new branch](Process/Create-a-new-Branch.md), then change [Docs](./Process/Docs/Workflow.md)
     and finally [submit any changes](Process/Submitting-Changes.md) you made.
 
 

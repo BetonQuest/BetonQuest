@@ -42,7 +42,7 @@ Changes introduced in:
   ```
 - Quest packages can now contain nested quest packages in sub folders. You can also have any file and folder structure
   with any file and folder names you want. Only the `package.yml` is reserved as indicator for a quest
-  package. [DOCS](../Reference.md#packages)
+  package. [DOCS](./Reference.md#packages)
 
 ### 2.0.0-DEV-98
 All existing RPGMenu users must update their RPGMenu config file. Simply rename it from `rpgmenu.config.yml` to

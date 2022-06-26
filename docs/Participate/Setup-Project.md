@@ -110,4 +110,4 @@ Then visit <a href="http://127.0.0.1:8000" target="_blank">127.0.0.1:8000</a> to
 ---
 ## Where to Continue?
 You should now continue with [Create a new Branch](Process/Create-a-new-Branch.md),
-before you start changing [Code](Process/Code/index.md) or [Docs](Process/Docs/index.md).
+before you start changing [Code](Process/Code/Workflow.md) or [Docs](Process/Docs/Workflow.md).

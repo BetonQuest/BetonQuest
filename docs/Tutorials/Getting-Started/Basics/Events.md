@@ -128,7 +128,7 @@ Make these changes to your conversation, reload and test! The NPC should now giv
 
 Now we will create a tour through the mayors city. Meanwhile, we will learn about the teleport and folder events.
 
- [folder event](../../Documentation/Events-List.md#folder-folder).
+ [folder event](../../../Documentation/Events-List.md#folder-folder).
 
 ``` YAML title="jack.yml" hl_lines="11-18 23-29" linenums="1" 
 conversations:
@@ -183,8 +183,8 @@ events:
 ```
 
 As you can see, there are a few new events of the types `folder` and `teleport`. 
-Every event type is documented in the events list, read what the [folder](../../Documentation/Events-List.md#run-multiple-events-folder)
-and [teleport](../../Documentation/Events-List.md#teleport-teleport) events do there. 
+Every event type is documented in the events list, read what the [folder](../../../Documentation/Events-List.md#run-multiple-events-folder)
+and [teleport](../../../Documentation/Events-List.md#teleport-teleport) events do there. 
 
 You probably want to adjust the coordinates and the world name to your test server's world.
 
@@ -199,8 +199,8 @@ Now speak with the NPC again to take the city tour.
 
 ## Further Information
 !!! info ""
-    * You can find more information about what events are in the [events reference](../../Documentation/Reference.md#events)
-    * All events can be found in the [events list](../../Documentation/Events-List.md)
+    * You can find more information about what events are in the [events reference](../../../Documentation/Reference.md#events)
+    * All events can be found in the [events list](../../../Documentation/Events-List.md)
 
 ## Summary
 

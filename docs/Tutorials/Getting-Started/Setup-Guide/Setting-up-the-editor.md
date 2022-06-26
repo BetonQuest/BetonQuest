@@ -3,7 +3,7 @@ icon: material/wrench
 ---
 #Setting up the editor
 
-In theory, you can edit quests with any editor. However, using the feature-packed but lightweight 
+In theory, you can edit quests with any editor. However, using the feature-packed 
 Visual Studio Code is highly recommended!
 We even made our own **^^Visual Studio Code BetonQuest addon^^** 
 that enables some neat productivity advantages over any other editor.
@@ -17,19 +17,16 @@ that enables some neat productivity advantages over any other editor.
   <a href="https://marketplace.visualstudio.com/items?itemName=BetonQuest.betonquest-code-snippets" target="_blank">Visual Studio Marketplace</a>.
   Just click the big green "Install" button and allow the site to open Visual Studio Code.
 
-![Marketplace Screenshot](../../_media/content/Tutorials/addon-marketplace.png){ width=60% }
+![Marketplace Screenshot](../../../_media/content/Tutorials/addon-marketplace.png){ width=60% }
 
 * Just click "Install" again after Visual Studio Code has opened. 
 
-![VSCode Install Screenshot](../../_media/content/Tutorials/addon-in-editor.png){ width=60% }
+![VSCode Install Screenshot](../../../_media/content/Tutorials/addon-in-editor.png){ width=60% }
  
-If this does not work for some reason go to the extensions view in VSCode (++ctrl+shift+x++) and search for `BetonQuest`.
+If this does not work for some reason go to the extensions view in VSCode (Windows and Linux: ++ctrl+shift+x++ | Mac: ++cmd+shift+x++) and search for `BetonQuest`.
 A full guide on extensions can be found <a href="https://code.visualstudio.com/docs/editor/extension-gallery" target="_blank">here</a>.
 
-
-## Usage
-
-### Setup
+## Setup
 
 Now you need to open any `yml` file by clicking on *File > Open Folder...*.
 Than you can choose if you want to open the BetonQuest root directory, only the `QuestPackages` folder or a specific quest.
@@ -50,11 +47,13 @@ of the editor window:
     
     `YAML` language module.
 
-![Shows the location of the settings](../../_media/content/Tutorials/vscode.png){width=60%}
+![Shows the location of the settings](../../../_media/content/Tutorials/vscode.png){width=60%}
 
 These ensure that the extension is activated.
 Additionally, your configuration works with all unique language characters (a german example: ä, ü, ö)
 and the file can be read on any server running on Linux.
+
+## Usage
 
 ### Snippets 
 The main feature of our extension are so called "code snippets". These are basically pre-defined events, conditions etc.
@@ -69,12 +68,12 @@ If you want to go backwards you can invert the movement of the cursor by pressin
 
 An option will be fully highlighted if it needs to be replaced with material names, messages... They will not show a drop-down menu.
 If an option does, you need to choose between the offered options. Optional options are displayed as an empty field in the drop down.
-These optional options can also contain a colon (`:`). You have to specify something behind them depending on the context 
-if they do. An example might be provided after the colon (`:`). Just replace it with the value you want.
+These optional options can also contain a colon (`:`). You have to specify something behind them depending on the context.
+ An example might be provided after the colon (`:`). Just replace it with the value you want.
 
 **Neat features:** 
 
-* You will automatically jump to the next line if you press tab one last time after any option.
+* You will automatically jump to the next line if you press tab after the last option.
 * The snippet automatically surrounds the event/condition... with `""`.
 * There are not only snippets for `events`, `objectives` and `conditions` but also for conversations!
 * Pressing ++alt++ + ++b++ creates a new conversationOption.
@@ -86,10 +85,11 @@ if they do. An example might be provided after the colon (`:`). Just replace it 
 
 <div style="text-align: center">
  <video controls loop
-     src="../../../_media/content/Tutorials/VSCodeExtension.mp4"
+     src="../../../../_media/content/Tutorials/VSCodeExtension.mp4"
      width="780" height="500">
  Sorry, your browser doesn't support embedded videos.
  </video>
 </div>
 
-**Next step: [YAML-for-questers](./YAML-for-questers.md)**
+---
+[:material-arrow-right: Next Step: Basic Tutorial](../Basics/Conversations.md){ .md-button .md-button--primary }
