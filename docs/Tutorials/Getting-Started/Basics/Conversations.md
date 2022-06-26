@@ -5,26 +5,23 @@ tags:
 ---
 In this tutorial you will learn the basics of the conversations. These allow you to create a dialog between the player
 and a NPC. Therefore, these are the basic tool for story telling.
-
-
+      
+<div class="grid" markdown>
 !!! danger "Requirements"
-    Setup of:
-    
     * [Setup Guide](../Setup-Guide/Setting-up-a-test-server.md)
 
-    You don't need any experience in creating quests. This is the very beginning.
-
-## 1. Package Setup
+!!! example "Related Docs"
+    * [Conversations](../../../Documentation/Conversations.md)
+</div>
 
 --8<-- "Tutorials/download-setup.md"
     ```
     /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conversations/1-DirectoryStructure /tutorialQuest overwrite
     ```
+    You can now find all files needed for this tutorial in this location:
+    "_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/tutorialQuest_"
 
-You can now find all files needed for this tutorial in this location:
-"_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/tutorialQuest_"    
-
-## 2. Linking a conversation to a NPC
+## 1. Linking a conversation to a NPC
 
 Usually, conversations happen between a NPC and the player. 
 Therefore, we need to create the `npcs` section in the _package.yml_ so that the plugin knows which Citizens NPC
@@ -45,7 +42,7 @@ Save the file after editing.
     3. Type the command `/npc id` to get the ID from your NPC.
 
 
-## 3. Creating your first conversation
+## 2. Creating your first conversation
 
 It's time to create the first conversation with Jack! This chapter will teach you the basic structure of a conversation.
 
@@ -70,28 +67,27 @@ conversations:
 ```
 
 1. This is the identifier of the conversation. Make sure this equals the conversation identifier in "_package.yml_". 
-2. Defines the name of the NPC that displayed during the conversation.
+2. Defines the name that is displayed during the conversation.
 3. Defines which `NPC_option` should be used as the start of the conversation.
 4. This section contains everything the NPC says.
 5. Defines which `player_option` is shown next. 
 6. This section contains everything the player says.
 
-
 A BetonQuest conversation is a cycle of responses between the NPC and the player.
-Anything the NPC says is called `NPC_options`, all player text is called `player_options`.
-
+Anything the NPC says is called `NPC_options`, everything the player answers is called `player_options`.
+  
 A conversation always starts with an `NPC_option`. 
 Now the player must answer the NPC using a `player_option`.
-
+  
 Options point to each other using the `pointer` argument. In the case of an NPC_option, the pointer argument would contain
 the name of a `player_option`. 
 Usually, a player has more than one answer to choose from. This is done by adding multiple `player_option` names to a
 `NPC_option`.
-
-After the player responded, they are shown another `NPC_option` that the previously chosen `player_option` points to.
   
+After the player responded, they are shown another `NPC_option` that the previously chosen `player_option` points to.
+
 Whenever either a `player_option` or a `NPC_option` point to no other option the conversation ends as there are no more
-responses or answers.
+  responses or answers.
 
 !!! info "The Conversation Cycle"
     ``` mermaid
@@ -110,14 +106,14 @@ Open the file "_jack.yml_" in the "_conversations_" folder.
 Copy the above conversation into it and save the file.
 Now type `/bq reload` in the chat and right-click the NPC.
 
-You can select the answer by pressing ++space++.
+You can select the answer by pressing the jump key (++space++ by default).
 
-## 4. Conversations with multiple choices
+## 3. Conversations with multiple choices
 
 Let's see how to create multiple responses for the player to choose from using the `pointer` argument.
 
-A NPC_option can point to multiple player options at the same time.
-As soon as a pointer argument contains more than one player option, the player can choose.
+A `NPC_option` can point to multiple player options at the same time.
+As soon as a pointer argument contains more than one `player_option`, the player can choose.
 
 !!! question ""
     **Tip:** Highlighted lines are new compared with the previous example. 
@@ -151,10 +147,10 @@ conversations:
         pointer: cityAnswer # (5)!
 ```
 
-1. This npc_option points to multiple player_options. This allows the player to choose. The names of the player_options must be comma seperated.
-2. The `whoAmI` npc_option points to me.
-3. Gets pointed on by the `whoAmI` npc_option.
-4. Points to `islandAnswer` `NPC_option`.
+1. This `NPC_option` points to multiple `player_options`. This allows the player to choose. The names of the `player_options` must be comma seperated.
+2. The `whoAmI` `npc_option` points to me.
+3. Gets pointed on by the `whoAmI` `npc_option`.
+4. Points to the `islandAnswer` `NPC_option`.
 5. Points to the `cityAnswer` `NPC_option`.
 
 
@@ -163,7 +159,7 @@ The player can either say that they are from a `smallIsland` or from a
 `bigCity`. This creates two different paths through the conversation. 
 
 Let's join these paths again to show the same ending:<br>
-Add the same pointer argument to both paths' NPC_options. They point to the new `yesPlease` player_option.
+Add the same `pointer` argument to both paths' `NPC_options`. They point to the new `yesPlease` `player_option`.
 ``` YAML title="jack.yml" hl_lines="14 17-19 30-32" linenums="1" 
 conversations:
   Jack:
@@ -204,7 +200,7 @@ conversations:
 2. I also point to `yesPlease` in the `player_options` section.
 3. Two `NPC_options` point to me.
 
-The following graph shows the paths through the conversation. Since there are two pointers assigned to the `whoAmI` option,
+The following graph shows the paths through the conversation. Since there are two `pointers` assigned to the `whoAmI` option,
 the player can choose between one of the paths.
 
 !!! info "Conversation Flow Graph"
@@ -219,27 +215,23 @@ the player can choose between one of the paths.
         bigCity --> cityAnswer: points to
         islandAnswer --> yesPlease: points to
         cityAnswer --> yesPlease: points to
+        yesPlease --> foodAnswer: points to
     ```
 
 Try the conversation ingame by saving the file and executing the `/bq reload` command!
 Then right-click Jack.
-Select different options using ++w++ and ++s++. Confirm them using ++space++.
+Select different options by using the keys for walking forwards and backwards (++w++ and ++s++ by default). Confirm 
+options by jumping (++space++ by default).
 
 
---8<-- "Tutorials/download-broken.md"
+--8<-- "Tutorials/download-solution.md"
     ```
     /q download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conversations/2-FullExample /tutorialQuest overwrite
     ```
 
-## Further Information
-!!! info ""
-    More information about conversations can be found in the [Conversation Reference](../../../Documentation/Conversations.md)
-
 ## Summary
 
-!!! abstract ""
-    You've learned how to create simple conversations in which the player can choose different paths.
-    In the next part of the basics tutorial you will learn how Jack the mayor can give food to the player using **events**!
-
-## What`s next?
-[:octicons-arrow-right-16: Events Tutorial ](Events.md){ .md-button .md-button--primary}
+You've learned how to create simple conversations in which the player can choose different paths.
+In the next part of the basics tutorial you will learn how Jack the mayor can give food to the player using **events**!
+---
+[:octicons-arrow-right-16: Events ](./Events.md){ .md-button .md-button--primary}
