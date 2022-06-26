@@ -1,12 +1,19 @@
 ---
 icon: material/hand-wave
 ---
-# Welcome!
-Welcome to BetonQuest! Thank you for trying it out. This plugin can do some really 
-cool stuff and therefore requires some learning.
- 
- **If you ever struggle with anything please don't hesitate to ask in the 
- [Discord :fontawesome-brands-discord:](https://discordapp.com/invite/rK6mfHq) !**    
- It's best to join it now before you forget we have one!
+# :material-hand-wave: Welcome to the Tutorials
+Thanks for using BetonQuest! The plugin has tons of features and therefore requires some learning.
+This documentation provides you with a large number of high quality tutorials that will make you a great quest writer.
 
-Start your journey by [setting up a local test server](./Getting-Started/Setting-up-a-local-test-server.md).
+However, help is not far if you get stuck. We have a
+[Discord :fontawesome-brands-discord:](https://discordapp.com/invite/rK6mfHq) for questions.
+
+[:material-cog-play: Start the Tutorial Setup](Getting-Started/Setup-Guide/Setting-up-a-test-server.md){ .md-button } 
+!!! caution "Work in Progress! :construction: :construction_worker:  :construction_site:"
+
+    **The tutorials are currently getting redesigned.**
+    
+    Therefore, the "Basic" section does not actually contain all basics yet. 
+
+    The [old tutorial](./Getting-Started/Learn-BetonQuest.md) is still available in the mean time.
+    We appreciate any feedback on the new tutorials!

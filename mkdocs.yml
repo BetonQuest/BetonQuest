@@ -176,16 +176,19 @@ extra:
 nav:
   - 'Home': index.md
   - 'Tutorials':
-      - 'Welcome!': Tutorials/Welcome.md
-      - 'Getting Started':
-          - 'Setting up a local test server': Tutorials/Getting-Started/Setting-up-a-local-test-server.md
-          - 'Installing BetonQuest': Tutorials/Getting-Started/Installing-BetonQuest.md
-          - 'Setting up the editor': Tutorials/Getting-Started/Setting-up-the-editor.md
-          - 'YAML for questers': Tutorials/Getting-Started/YAML-for-questers.md
-          - 'Learn BetonQuest': Tutorials/Getting-Started/Learn-BetonQuest.md
-      - 'Basics':
-          - 'Conversations': Tutorials/Basics/Conversations.md
-          - 'Events': Tutorials/Basics/Events.md
+      - 'Overview': Tutorials/Overview.md
+      - 'Getting-Started':
+          - 'Setup Guide':
+              - 'Setting up a test server': Tutorials/Getting-Started/Setup-Guide/Setting-up-a-test-server.md
+              - 'Installing BetonQuest': Tutorials/Getting-Started/Setup-Guide/Installing-Dependencies.md
+              - 'Setting up the editor': Tutorials/Getting-Started/Setup-Guide/Setting-up-the-editor.md
+          - 'Basics':
+              - 'Conversations': Tutorials/Getting-Started/Basics/Conversations.md
+              - 'Events': Tutorials/Getting-Started/Basics/Events.md
+              - 'Objectives': Tutorials/Getting-Started/Basics/Events.md
+              - 'Conditions': Tutorials/Getting-Started/Basics/Events.md
+              - 'YAML': Tutorials/Getting-Started/Basics/YAML-for-questers.md
+          - 'Old Tutorial': Tutorials/Getting-Started/Learn-BetonQuest.md
       - 'Frequently Asked Questions':
           - 'General FAQ': Tutorials/Frequently-Asked-Questions.md
   - 'Documentation':
@@ -209,9 +212,8 @@ nav:
           - 'Config': Documentation/Menu-Config.md
       - 'Technical':
           - 'Permissions & Commands': Documentation/Commands-and-permissions.md
-          - 'Updating':
-              - Documentation/Updating/index.md
-              - 'Migration': Documentation/Updating/Migration.md
+          - 'Updating': Documentation/Updating.md
+          - 'Migration': Documentation/Migration.md
           - 'Configuration': Documentation/Configuration.md
           - 'Changelog': Documentation/CHANGELOG.md
   - 'API':
@@ -225,12 +227,12 @@ nav:
       - Process:
           - 'Create a new Branch': Participate/Process/Create-a-new-Branch.md
           - 'Changing Code':
-              - Participate/Process/Code/index.md
+              - 'Workflow': Participate/Process/Code/Workflow.md
               - 'Checking Requirements': Participate/Process/Code/Checking-Requirements.md
               - 'Adding a Dependency': Participate/Process/Code/Adding-a-new-Dependency.md
               - 'Writing JUnit Tests': Participate/Process/Code/Writing-JUnit-Tests.md
           - 'Changing Docs':
-              - Participate/Process/Docs/index.md
+              - 'Workflow': Participate/Process/Docs/Workflow.md
               - 'Fundamental Principles': Participate/Process/Docs/Principles.md
               - 'Guidelines': Participate/Process/Docs/Guidelines.md
           - 'Maintaining the Changelog': Participate/Process/Maintaining-the-Changelog.md

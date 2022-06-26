@@ -12,7 +12,7 @@ and a NPC. Therefore, these are the basic tool for story telling.
 !!! danger "Requirements"
     Setup of:
     
-    * [Setup Guide](../Getting-Started/Setting-up-a-local-test-server.md)
+    * [Setup Guide](../Setup-Guide/Setting-up-a-test-server.md)
 
     You don't need any experience in creating quests. This is the very beginning.
 
@@ -239,7 +239,7 @@ Then right-click Jack.
 
 ## Further Information
 !!! info ""
-    More information about conversations can be found in the [Conversation Reference](../../Documentation/Conversations.md)
+    More information about conversations can be found in the [Conversation Reference](../../../Documentation/Conversations.md)
 
 ## Summary
 
