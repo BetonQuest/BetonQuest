@@ -72,8 +72,9 @@ conversations:
     first: firstGreeting # (3)!
     NPC_options: # (4)!
       firstGreeting:
-        text: Hello and welcome to my town traveler. Nice to see you. But first where are you from?
+        text: Hello and welcome to my town traveler! Nice to see you. Where are you from?
         pointer: whereYouFrom # (5)!
+   
     player_options: # (6)!
       whereYouFrom:
         text: First I want to know who you are!
@@ -120,7 +121,7 @@ Open the file "_jack.yml_" in the "_conversations_" folder.
 Copy the above conversation into it and save the file.
 Now type `/bq reload` in the chat and right-click the NPC.
 
-//TODO: Explain Menu Conv IO
+You can select the answer by pressing ++space++.
 
 ## 4. Conversations with multiple choices
 
@@ -139,15 +140,16 @@ conversations:
     first: firstGreeting
     NPC_options:
       firstGreeting:
-        text: Hello and welcome to my town traveler. Nice to see you. But first where are you from?
+        text: Hello and welcome to my town traveler! Nice to see you. Where are you from?
         pointer: whereYouFrom
       whoAmI:
-        text: I am &6Jack&r. The mayor of this beautiful town here. We have some big farms and good old taverns and these are well worth checking out! So now where are you from?
+        text: I am &6Jack&r. The mayor of this beautiful town. We have some big farms and good old taverns well worth checking out! So now where are you from?
         pointer: smallIsland,bigCity # (1)!
       islandAnswer: 
-        text: Thats sounds familiar to me because I also grow up in a small town with few people. So we already have a good connection! And because of that I want to give you some food!
+        text: That sounds familiar! I grew up in a small town with few people. So we already have something in common! Do you want something to eat?
       cityAnswer: 
-        text: Oh I know! I think you're from Kayra, right? Nice city to be honest but I prefer country life. However... You look a bit hungry do you want some food from the best chef out here?
+        text: Oh I know! I think you're from Kayra, right? Nice city but to be honest I prefer country life... You look a bit hungry. Do you want something to eat?
+    
     player_options:
       whereYouFrom: 
         text: First I want to know who you are!
@@ -180,19 +182,20 @@ conversations:
     first: firstGreeting
     NPC_options:
       firstGreeting:
-        text: Hello and welcome to my town traveler. Nice to see you. But first where are you from?
+        text: Hello and welcome to my town traveler! Nice to see you. Where are you from?
         pointer: whereYouFrom
       whoAmI:
-        text: I am &6Jack&r. The mayor of this beautiful town here. We have some big farms and good old taverns and these are well worth checking out! So now where are you from?
+        text: I am &6Jack&r. The mayor of this beautiful town. We have some big farms and good old taverns well worth checking out! So now where are you from?
         pointer: smallIsland,bigCity
       islandAnswer:
-        text: Thats sounds familiar to me because I also grow up in a small town with few people. So we already have a good connection! And because of that I want to give you some food!
+        text: That sounds familiar! I grew up in a small town with few people. So we already have something in common! Do you want something to eat?
         pointer: yesPlease # (1)!
       cityAnswer:
-        text: Oh I know! I think you're from Kayra, right? Nice city to be honest but I prefer country life. However... You look a bit hungry do you want some food from the best chef out here?
+        text: Oh I know! I think you're from Kayra, right? Nice city but to be honest I prefer country life... You look a bit hungry. Do you want something to eat?
         pointer: yesPlease # (2)!
       foodAnswer:
-        text: Your welcome! Take it... &7*gives food*
+        text: You're welcome! Take it... &7*gives food*
+    
     player_options:
       whereYouFrom:
         text: First I want to know who you are!
@@ -204,7 +207,7 @@ conversations:
         text: From a big city located west.
         pointer: cityAnswer
       yesPlease: # (3)!
-        text: Oh yes I am starving! Thank you.
+        text: Oh yes I'm starving! Thank you.
         pointer: foodAnswer
 ```
 
@@ -231,6 +234,7 @@ the player can choose between one of the paths.
 
 Try the conversation ingame by saving the file and executing the `/bq reload` command!
 Then right-click Jack.
+Select different options using ++w++ and ++s++. Confirm them using ++space++.
 
 
 --8<-- "Tutorials/download.md"
