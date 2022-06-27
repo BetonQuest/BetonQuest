@@ -43,13 +43,13 @@ public class Updater {
      */
     private final UpdaterConfig config;
     /**
-     * The {@link UpdateDownloader} to download new versions
-     */
-    private final UpdateDownloader updateDownloader;
-    /**
      * The {@link UpdateSourceHandler} to get all available versions
      */
     private final UpdateSourceHandler updateSourceHandler;
+    /**
+     * The {@link UpdateDownloader} to download new versions
+     */
+    private final UpdateDownloader updateDownloader;
     /**
      * The {@link org.bukkit.plugin.Plugin} instance.
      */
@@ -85,19 +85,19 @@ public class Updater {
      *
      * @param config              The {@link ConfigurationFile} that contains the 'update' section
      * @param currentVersion      The current plugin {@link Version}
-     * @param updateDownloader    The {@link UpdateDownloader} to download new versions
      * @param updateSourceHandler The {@link UpdateSourceHandler} to get all available versions
+     * @param updateDownloader    The {@link UpdateDownloader} to download new versions
      * @param plugin              The {@link org.bukkit.plugin.Plugin} instance
      * @param scheduler           The {@link BukkitScheduler} instance
      * @param instantSource       The {@link InstantSource} instance
      */
-    public Updater(final ConfigurationFile config, final Version currentVersion, final UpdateDownloader updateDownloader,
-                   final UpdateSourceHandler updateSourceHandler, final BetonQuest plugin,
+    public Updater(final ConfigurationFile config, final Version currentVersion, final UpdateSourceHandler updateSourceHandler,
+                   final UpdateDownloader updateDownloader, final BetonQuest plugin,
                    final BukkitScheduler scheduler, final InstantSource instantSource) {
         this.latest = Pair.of(currentVersion, null);
         this.config = new UpdaterConfig(config, latest.getKey(), DEV_INDICATOR);
-        this.updateDownloader = updateDownloader;
         this.updateSourceHandler = updateSourceHandler;
+        this.updateDownloader = updateDownloader;
         this.plugin = plugin;
         this.scheduler = scheduler;
         this.instantSource = instantSource;

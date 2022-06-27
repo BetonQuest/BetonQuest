@@ -925,7 +925,7 @@ public class BetonQuest extends JavaPlugin {
         final List<ReleaseUpdateSource> releaseHandlers = List.of(new GitHubReleaseSource("https://api.github.com/repos/BetonQuest/BetonQuest/releases"));
         final List<DevelopmentUpdateSource> developmentHandlers = List.of(new BetonQuestDevelopmentSource("https://dev.betonquest.org/api/v1"));
         final UpdateSourceHandler updateSourceHandler = new UpdateSourceHandler(releaseHandlers, developmentHandlers);
-        updater = new Updater(config, pluginVersion, updateDownloader, updateSourceHandler, this,
+        updater = new Updater(config, pluginVersion, updateSourceHandler, updateDownloader, this,
                 getServer().getScheduler(), InstantSource.system());
 
         //RPGMenu integration
