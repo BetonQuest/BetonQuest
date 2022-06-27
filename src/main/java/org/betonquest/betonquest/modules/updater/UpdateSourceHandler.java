@@ -2,9 +2,9 @@ package org.betonquest.betonquest.modules.updater;
 
 import lombok.CustomLog;
 import org.apache.commons.lang3.tuple.Pair;
+import org.betonquest.betonquest.modules.updater.source.DevelopmentUpdateSource;
+import org.betonquest.betonquest.modules.updater.source.ReleaseUpdateSource;
 import org.betonquest.betonquest.modules.updater.source.UpdateSource;
-import org.betonquest.betonquest.modules.updater.source.UpdateSourceDevelopment;
-import org.betonquest.betonquest.modules.updater.source.UpdateSourceRelease;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.modules.versioning.VersionComparator;
 
@@ -17,34 +17,34 @@ import java.util.Map;
  * Two lists of {@link UpdateSource}s can be passed to this class in the constructor.
  * One is for releases and one is for Development builds.
  * <p>
- * If an update is searched, it will then first search in the list of {@link UpdateSourceRelease} instances
- * and then in the list of {@link UpdateSourceDevelopment} instances.
+ * If an update is searched, it will then first search in the list of {@link ReleaseUpdateSource} instances
+ * and then in the list of {@link DevelopmentUpdateSource} instances.
  * Development builds are only searched, if the {@link UpdaterConfig} is configured for it.
  */
 @CustomLog
 public class UpdateSourceHandler {
     /**
-     * A list of {@link UpdateSourceRelease} instances.
+     * A list of {@link ReleaseUpdateSource} instances.
      */
-    private final List<UpdateSourceRelease> releaseHandlerList;
+    private final List<ReleaseUpdateSource> releaseHandlerList;
     /**
-     * A list of {@link UpdateSourceDevelopment} instances.
+     * A list of {@link DevelopmentUpdateSource} instances.
      */
-    private final List<UpdateSourceDevelopment> developmentHandlerList;
+    private final List<DevelopmentUpdateSource> developmentHandlerList;
 
     /**
      * Create a new {@link UpdateSourceHandler} with the given {@link UpdateSource} lists.
      *
-     * @param releaseHandlerList     A list of {@link UpdateSourceRelease} instances
-     * @param developmentHandlerList A list of {@link UpdateSourceDevelopment} instances
+     * @param releaseHandlerList     A list of {@link ReleaseUpdateSource} instances
+     * @param developmentHandlerList A list of {@link DevelopmentUpdateSource} instances
      */
-    public UpdateSourceHandler(final List<UpdateSourceRelease> releaseHandlerList, final List<UpdateSourceDevelopment> developmentHandlerList) {
+    public UpdateSourceHandler(final List<ReleaseUpdateSource> releaseHandlerList, final List<DevelopmentUpdateSource> developmentHandlerList) {
         this.releaseHandlerList = releaseHandlerList;
         this.developmentHandlerList = developmentHandlerList;
     }
 
     /**
-     * Search for updates in the provided {@link UpdateSourceRelease} list and {@link UpdateSourceDevelopment} list
+     * Search for updates in the provided {@link ReleaseUpdateSource} list and {@link DevelopmentUpdateSource} list
      * and returns the latest version with the URL to download it from.
      * If there is no update available the URL in the pair is null.
      *
@@ -57,7 +57,7 @@ public class UpdateSourceHandler {
         final VersionComparator comparator = new VersionComparator(config.getStrategy(), devIndicator + "-");
         Pair<Version, String> latest = Pair.of(current, null);
         try {
-            latest = searchUpdateFor(latest, releaseHandlerList, comparator, UpdateSourceRelease::getReleaseVersions);
+            latest = searchUpdateFor(latest, releaseHandlerList, comparator, ReleaseUpdateSource::getReleaseVersions);
         } catch (final UnknownHostException e) {
             LOG.warn("The update server for release builds is currently not available!");
         } catch (final IOException e) {
@@ -65,7 +65,7 @@ public class UpdateSourceHandler {
         }
         if (config.isDevDownloadEnabled() && !(latest.getValue() != null && config.isForcedStrategy())) {
             try {
-                latest = searchUpdateFor(latest, developmentHandlerList, comparator, UpdateSourceDevelopment::getDevelopmentVersions);
+                latest = searchUpdateFor(latest, developmentHandlerList, comparator, DevelopmentUpdateSource::getDevelopmentVersions);
             } catch (final UnknownHostException e) {
                 LOG.warn("The update server for dev builds is currently not available!");
             } catch (final IOException e) {

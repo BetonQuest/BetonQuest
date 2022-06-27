@@ -3,8 +3,8 @@ package org.betonquest.betonquest.modules.updater;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
-import org.betonquest.betonquest.modules.updater.source.UpdateSourceDevelopment;
-import org.betonquest.betonquest.modules.updater.source.UpdateSourceRelease;
+import org.betonquest.betonquest.modules.updater.source.DevelopmentUpdateSource;
+import org.betonquest.betonquest.modules.updater.source.ReleaseUpdateSource;
 import org.betonquest.betonquest.modules.versioning.UpdateStrategy;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.jetbrains.annotations.NotNull;
@@ -33,8 +33,8 @@ class UpdateSourceHandlerTest {
     void testDevelopmentUpdateAvailable(final LogValidator validator) throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.PATCH, true, false);
         final Version version = new Version("2.0.0-DEV-3");
-        final List<UpdateSourceRelease> releaseHandlerList = new ArrayList<>();
-        final List<UpdateSourceDevelopment> developmentHandlerList = getUpdateSourceDevelopment("2.0.0-DEV-201");
+        final List<ReleaseUpdateSource> releaseHandlerList = new ArrayList<>();
+        final List<DevelopmentUpdateSource> developmentHandlerList = getUpdateSourceDevelopment("2.0.0-DEV-201");
 
         final UpdateSourceHandler handler = new UpdateSourceHandler(releaseHandlerList, developmentHandlerList);
         final Pair<Version, String> latest = handler.searchUpdate(config, version, "DEV");
@@ -51,8 +51,8 @@ class UpdateSourceHandlerTest {
     void testNoDevelopmentUpdateAvailable(final LogValidator validator) throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MINOR, true, false);
         final Version version = new Version("2.0.0-DEV-3");
-        final List<UpdateSourceRelease> releaseHandlerList = new ArrayList<>();
-        final List<UpdateSourceDevelopment> developmentHandlerList = getUpdateSourceDevelopment("2.0.0-DEV-3");
+        final List<ReleaseUpdateSource> releaseHandlerList = new ArrayList<>();
+        final List<DevelopmentUpdateSource> developmentHandlerList = getUpdateSourceDevelopment("2.0.0-DEV-3");
 
         final UpdateSourceHandler handler = new UpdateSourceHandler(releaseHandlerList, developmentHandlerList);
         final Pair<Version, String> latest = handler.searchUpdate(config, version, "DEV");
@@ -68,8 +68,8 @@ class UpdateSourceHandlerTest {
     void testReleaseUpdateAvailable(final LogValidator validator) throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MAJOR, false, false);
         final Version version = new Version("2.0.0-DEV-3");
-        final List<UpdateSourceRelease> releaseHandlerList = getUpdateSourceRelease();
-        final List<UpdateSourceDevelopment> developmentHandlerList = new ArrayList<>();
+        final List<ReleaseUpdateSource> releaseHandlerList = getUpdateSourceRelease();
+        final List<DevelopmentUpdateSource> developmentHandlerList = new ArrayList<>();
 
         final UpdateSourceHandler handler = new UpdateSourceHandler(releaseHandlerList, developmentHandlerList);
         final Pair<Version, String> latest = handler.searchUpdate(config, version, "DEV");
@@ -86,8 +86,8 @@ class UpdateSourceHandlerTest {
     void testNoReleaseUpdateAvailable(final LogValidator validator) throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.PATCH, true, false);
         final Version version = new Version("2.0.0");
-        final List<UpdateSourceRelease> releaseHandlerList = getUpdateSourceRelease();
-        final List<UpdateSourceDevelopment> developmentHandlerList = new ArrayList<>();
+        final List<ReleaseUpdateSource> releaseHandlerList = getUpdateSourceRelease();
+        final List<DevelopmentUpdateSource> developmentHandlerList = new ArrayList<>();
 
         final UpdateSourceHandler handler = new UpdateSourceHandler(releaseHandlerList, developmentHandlerList);
         final Pair<Version, String> latest = handler.searchUpdate(config, version, "DEV");
@@ -103,8 +103,8 @@ class UpdateSourceHandlerTest {
     void testReleaseAndDevelopmentUpdateAvailableForced(final LogValidator validator) throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MINOR, true, true);
         final Version version = new Version("2.0.0-DEV-3");
-        final List<UpdateSourceRelease> releaseHandlerList = getUpdateSourceRelease();
-        final List<UpdateSourceDevelopment> developmentHandlerList = getUpdateSourceDevelopment("2.0.1-DEV-201");
+        final List<ReleaseUpdateSource> releaseHandlerList = getUpdateSourceRelease();
+        final List<DevelopmentUpdateSource> developmentHandlerList = getUpdateSourceDevelopment("2.0.1-DEV-201");
 
         final UpdateSourceHandler handler = new UpdateSourceHandler(releaseHandlerList, developmentHandlerList);
         final Pair<Version, String> latest = handler.searchUpdate(config, version, "DEV");
@@ -121,8 +121,8 @@ class UpdateSourceHandlerTest {
     void testReleaseAndDevelopmentUpdateAvailableNotForced(final LogValidator validator) throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MAJOR, true, false);
         final Version version = new Version("2.0.0-DEV-3");
-        final List<UpdateSourceRelease> releaseHandlerList = getUpdateSourceRelease();
-        final List<UpdateSourceDevelopment> developmentHandlerList = getUpdateSourceDevelopment("2.0.1-DEV-201");
+        final List<ReleaseUpdateSource> releaseHandlerList = getUpdateSourceRelease();
+        final List<DevelopmentUpdateSource> developmentHandlerList = getUpdateSourceDevelopment("2.0.1-DEV-201");
 
         final UpdateSourceHandler handler = new UpdateSourceHandler(releaseHandlerList, developmentHandlerList);
         final Pair<Version, String> latest = handler.searchUpdate(config, version, "DEV");
@@ -138,8 +138,8 @@ class UpdateSourceHandlerTest {
     void testReleaseAndDevelopmentNoUpdateAvailable(final LogValidator validator) {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.PATCH, true, false);
         final Version version = new Version("2.0.0-DEV-3");
-        final List<UpdateSourceRelease> releaseHandlerList = new ArrayList<>();
-        final List<UpdateSourceDevelopment> developmentHandlerList = new ArrayList<>();
+        final List<ReleaseUpdateSource> releaseHandlerList = new ArrayList<>();
+        final List<DevelopmentUpdateSource> developmentHandlerList = new ArrayList<>();
 
         final UpdateSourceHandler handler = new UpdateSourceHandler(releaseHandlerList, developmentHandlerList);
         final Pair<Version, String> latest = handler.searchUpdate(config, version, "DEV");
@@ -155,10 +155,10 @@ class UpdateSourceHandlerTest {
     void testReleaseThrowsUnknownHostException(final LogValidator validator) throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MINOR, false, false);
         final Version version = new Version("2.0.0-DEV-3");
-        final List<UpdateSourceRelease> releaseHandlerList = new ArrayList<>();
-        final List<UpdateSourceDevelopment> developmentHandlerList = new ArrayList<>();
+        final List<ReleaseUpdateSource> releaseHandlerList = new ArrayList<>();
+        final List<DevelopmentUpdateSource> developmentHandlerList = new ArrayList<>();
 
-        final UpdateSourceRelease releaseHandler = mock(UpdateSourceRelease.class);
+        final ReleaseUpdateSource releaseHandler = mock(ReleaseUpdateSource.class);
         when(releaseHandler.getReleaseVersions()).thenThrow(new UnknownHostException("Unknown host Test"));
         releaseHandlerList.add(releaseHandler);
 
@@ -176,10 +176,10 @@ class UpdateSourceHandlerTest {
     void testReleaseThrowsIOException(final LogValidator validator) throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MAJOR, false, false);
         final Version version = new Version("2.0.0-DEV-3");
-        final List<UpdateSourceRelease> releaseHandlerList = new ArrayList<>();
-        final List<UpdateSourceDevelopment> developmentHandlerList = new ArrayList<>();
+        final List<ReleaseUpdateSource> releaseHandlerList = new ArrayList<>();
+        final List<DevelopmentUpdateSource> developmentHandlerList = new ArrayList<>();
 
-        final UpdateSourceRelease releaseHandler = mock(UpdateSourceRelease.class);
+        final ReleaseUpdateSource releaseHandler = mock(ReleaseUpdateSource.class);
         when(releaseHandler.getReleaseVersions()).thenThrow(new IOException("Unexpected problem"));
         releaseHandlerList.add(releaseHandler);
 
@@ -198,10 +198,10 @@ class UpdateSourceHandlerTest {
     void testDevelopmentThrowsUnknownHostException(final LogValidator validator) throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.PATCH, true, false);
         final Version version = new Version("2.0.0-DEV-3");
-        final List<UpdateSourceRelease> releaseHandlerList = new ArrayList<>();
-        final List<UpdateSourceDevelopment> developmentHandlerList = new ArrayList<>();
+        final List<ReleaseUpdateSource> releaseHandlerList = new ArrayList<>();
+        final List<DevelopmentUpdateSource> developmentHandlerList = new ArrayList<>();
 
-        final UpdateSourceDevelopment developmentHandler = mock(UpdateSourceDevelopment.class);
+        final DevelopmentUpdateSource developmentHandler = mock(DevelopmentUpdateSource.class);
         when(developmentHandler.getDevelopmentVersions()).thenThrow(new UnknownHostException("Unknown host Test"));
         developmentHandlerList.add(developmentHandler);
 
@@ -219,10 +219,10 @@ class UpdateSourceHandlerTest {
     void testDevelopmentThrowsIOException(final LogValidator validator) throws IOException {
         final UpdaterConfig config = getUpdaterConfig(UpdateStrategy.MINOR, true, false);
         final Version version = new Version("2.0.0-DEV-3");
-        final List<UpdateSourceRelease> releaseHandlerList = new ArrayList<>();
-        final List<UpdateSourceDevelopment> developmentHandlerList = new ArrayList<>();
+        final List<ReleaseUpdateSource> releaseHandlerList = new ArrayList<>();
+        final List<DevelopmentUpdateSource> developmentHandlerList = new ArrayList<>();
 
-        final UpdateSourceDevelopment developmentHandler = mock(UpdateSourceDevelopment.class);
+        final DevelopmentUpdateSource developmentHandler = mock(DevelopmentUpdateSource.class);
         when(developmentHandler.getDevelopmentVersions()).thenThrow(new IOException("Unexpected problem"));
         developmentHandlerList.add(developmentHandler);
 
@@ -247,10 +247,10 @@ class UpdateSourceHandlerTest {
     }
 
     @NotNull
-    private List<UpdateSourceRelease> getUpdateSourceRelease() throws IOException {
-        final List<UpdateSourceRelease> handlerList = new ArrayList<>();
+    private List<ReleaseUpdateSource> getUpdateSourceRelease() throws IOException {
+        final List<ReleaseUpdateSource> handlerList = new ArrayList<>();
 
-        final UpdateSourceRelease handler = mock(UpdateSourceRelease.class);
+        final ReleaseUpdateSource handler = mock(ReleaseUpdateSource.class);
         final Map<Version, String> versions = new HashMap<>();
         versions.put(new Version("2.0.0"), "https://betonquest.org/release");
         when(handler.getReleaseVersions()).thenReturn(versions);
@@ -260,10 +260,10 @@ class UpdateSourceHandlerTest {
     }
 
     @NotNull
-    private List<UpdateSourceDevelopment> getUpdateSourceDevelopment(final String version) throws IOException {
-        final List<UpdateSourceDevelopment> handlerList = new ArrayList<>();
+    private List<DevelopmentUpdateSource> getUpdateSourceDevelopment(final String version) throws IOException {
+        final List<DevelopmentUpdateSource> handlerList = new ArrayList<>();
 
-        final UpdateSourceDevelopment handler = mock(UpdateSourceDevelopment.class);
+        final DevelopmentUpdateSource handler = mock(DevelopmentUpdateSource.class);
         final Map<Version, String> versions = new HashMap<>();
         versions.put(new Version(version), "https://betonquest.org/development");
         when(handler.getDevelopmentVersions()).thenReturn(versions);

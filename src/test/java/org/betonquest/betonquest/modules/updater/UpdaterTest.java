@@ -6,8 +6,8 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
-import org.betonquest.betonquest.modules.updater.source.UpdateSourceDevelopment;
-import org.betonquest.betonquest.modules.updater.source.UpdateSourceRelease;
+import org.betonquest.betonquest.modules.updater.source.DevelopmentUpdateSource;
+import org.betonquest.betonquest.modules.updater.source.ReleaseUpdateSource;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.util.scheduler.BukkitSchedulerMock;
 import org.junit.jupiter.api.Disabled;
@@ -81,13 +81,13 @@ class UpdaterTest {
         final String file = "BetonQuest.jar";
         final Version version = new Version("2.0.0-DEV-3");
         final UpdateDownloader downloader = mock(UpdateDownloader.class);
-        final List<UpdateSourceRelease> releaseHandlerList = new ArrayList<>();
-        final List<UpdateSourceDevelopment> developmentHandlerList = new ArrayList<>();
+        final List<ReleaseUpdateSource> releaseHandlerList = new ArrayList<>();
+        final List<DevelopmentUpdateSource> developmentHandlerList = new ArrayList<>();
         final BetonQuest plugin = mock(BetonQuest.class);
         final InstantSource instantSource = InstantSource.system();
 
-        final UpdateSourceRelease releaseHandler = mock(UpdateSourceRelease.class);
-        final UpdateSourceDevelopment developmentHandler = mock(UpdateSourceDevelopment.class);
+        final ReleaseUpdateSource releaseHandler = mock(ReleaseUpdateSource.class);
+        final DevelopmentUpdateSource developmentHandler = mock(DevelopmentUpdateSource.class);
         final Map<Version, String> releaseVersions = new HashMap<>();
         releaseVersions.put(new Version("2.0.0"), "https://betonquest.org");
         when(releaseHandler.getReleaseVersions()).thenReturn(releaseVersions);

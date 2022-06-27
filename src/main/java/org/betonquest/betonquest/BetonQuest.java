@@ -156,9 +156,9 @@ import org.betonquest.betonquest.modules.logger.handler.history.HistoryHandler;
 import org.betonquest.betonquest.modules.updater.UpdateDownloader;
 import org.betonquest.betonquest.modules.updater.UpdateSourceHandler;
 import org.betonquest.betonquest.modules.updater.Updater;
-import org.betonquest.betonquest.modules.updater.source.UpdateSourceDevelopment;
-import org.betonquest.betonquest.modules.updater.source.UpdateSourceRelease;
-import org.betonquest.betonquest.modules.updater.source.implementations.BetonQuestDevSource;
+import org.betonquest.betonquest.modules.updater.source.DevelopmentUpdateSource;
+import org.betonquest.betonquest.modules.updater.source.ReleaseUpdateSource;
+import org.betonquest.betonquest.modules.updater.source.implementations.BetonQuestDevelopmentSource;
 import org.betonquest.betonquest.modules.updater.source.implementations.GitHubReleaseSource;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.notify.ActionBarNotifyIO;
@@ -922,8 +922,8 @@ public class BetonQuest extends JavaPlugin {
         final File tempFile = new File(getServer().getUpdateFolderFile(), this.getFile().getName() + ".temp");
         final File finalFile = new File(getServer().getUpdateFolderFile(), this.getFile().getName());
         final UpdateDownloader updateDownloader = new UpdateDownloader(getServer().getPluginsFolder().toURI(), tempFile, finalFile);
-        final List<UpdateSourceRelease> releaseHandlers = List.of(new GitHubReleaseSource("https://api.github.com/repos/BetonQuest/BetonQuest/releases"));
-        final List<UpdateSourceDevelopment> developmentHandlers = List.of(new BetonQuestDevSource("https://dev.betonquest.org/api/v1"));
+        final List<ReleaseUpdateSource> releaseHandlers = List.of(new GitHubReleaseSource("https://api.github.com/repos/BetonQuest/BetonQuest/releases"));
+        final List<DevelopmentUpdateSource> developmentHandlers = List.of(new BetonQuestDevelopmentSource("https://dev.betonquest.org/api/v1"));
         final UpdateSourceHandler updateSourceHandler = new UpdateSourceHandler(releaseHandlers, developmentHandlers);
         updater = new Updater(config, pluginVersion, updateDownloader, updateSourceHandler, this,
                 getServer().getScheduler(), InstantSource.system());

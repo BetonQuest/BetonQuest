@@ -12,7 +12,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class BetonQuestDevSourceTest {
+class BetonQuestDevelopmentSourceTest {
 
     @SuppressWarnings({"PMD.JUnitTestContainsTooManyAsserts"})
     @Test
@@ -20,9 +20,9 @@ class BetonQuestDevSourceTest {
         final Path filePath = Path.of("src/test/resources/modules/updater/latest.json");
         final String apiUrl = "https://betonquest.org";
 
-        final BetonQuestDevSource devSource = spy(new BetonQuestDevSource(apiUrl));
+        final BetonQuestDevelopmentSource devSource = spy(new BetonQuestDevelopmentSource(apiUrl));
         doReturn(Files.readString(filePath)).when(devSource)
-                .readStringFromURL(new URL(apiUrl + BetonQuestDevSource.DEV_API_LATEST));
+                .readStringFromURL(new URL(apiUrl + BetonQuestDevelopmentSource.DEV_API_LATEST));
 
         final Map<Version, String> versions = devSource.getDevelopmentVersions();
 
