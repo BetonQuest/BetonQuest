@@ -8,7 +8,6 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -43,10 +42,25 @@ public class Updater {
      * The plugins {@link ConfigurationFile} for the debugging settings.
      */
     private final UpdaterConfig config;
+    /**
+     * The {@link UpdateDownloader} to download new versions
+     */
     private final UpdateDownloader updateDownloader;
+    /**
+     * The {@link UpdateSourceHandler} to get all available versions
+     */
     private final UpdateSourceHandler updateSourceHandler;
+    /**
+     * The {@link org.bukkit.plugin.Plugin} instance.
+     */
     private final BetonQuest plugin;
+    /**
+     * The {@link BukkitScheduler} instance.
+     */
     private final BukkitScheduler scheduler;
+    /**
+     * The {@link InstantSource} instance.
+     */
     private final InstantSource instantSource;
     /**
      * The last timestamp, when a player was notified.
@@ -62,15 +76,20 @@ public class Updater {
      */
     private Instant lastCheck;
     /**
-     * The update notification
+     * The update notification.
      */
     private String updateNotification;
 
     /**
      * Create a new Updater instance.
      *
-     * @param config         The {@link ConfigurationSection} that contains the updater section.
-     * @param currentVersion The current plugin version.
+     * @param config              The {@link ConfigurationFile} that contains the 'update' section
+     * @param currentVersion      The current plugin {@link Version}
+     * @param updateDownloader    The {@link UpdateDownloader} to download new versions
+     * @param updateSourceHandler The {@link UpdateSourceHandler} to get all available versions
+     * @param plugin              The {@link org.bukkit.plugin.Plugin} instance
+     * @param scheduler           The {@link BukkitScheduler} instance
+     * @param instantSource       The {@link InstantSource} instance
      */
     public Updater(final ConfigurationFile config, final Version currentVersion, final UpdateDownloader updateDownloader,
                    final UpdateSourceHandler updateSourceHandler, final BetonQuest plugin,
@@ -187,31 +206,40 @@ public class Updater {
     public void update(final CommandSender sender) {
         scheduler.runTaskAsynchronously(plugin, () -> {
             try {
-                config.reloadFromConfig();
-                if (!config.isEnabled()) {
-                    throw new QuestRuntimeException("The updater is disabled! Change config entry 'update.enabled' to 'true' to enable it.");
-                }
-                if (searchUpdate()) {
-                    getUpdateNotification(config.isAutomatic());
-                    throw new QuestRuntimeException("Update aborted! A newer version was found. New version '"
-                            + getUpdateVersion() + "'! You can execute '/q update' again to update.");
-                }
+                checkUpdateRequirements();
 
-                if (latest.getValue() == null) {
-                    throw new QuestRuntimeException("The updater did not find an update!"
-                            + " This can depend on your update_strategy, check config entry 'update.update_strategy'.");
-                }
                 sendMessage(sender, ChatColor.DARK_GREEN + "Started update to version '" + latest.getKey().getVersion() + "'...");
-
-                updateDownloader.downloadToFile(new URL(latest.getValue()));
+                executeUpdate();
                 sendMessage(sender, ChatColor.DARK_GREEN + "...download finished. Restart the server to update the plugin.");
             } catch (final QuestRuntimeException e) {
                 sendMessage(sender, ChatColor.RED + e.getMessage());
                 LOG.debug("Error while performing update!", e);
-            } catch (final MalformedURLException e) {
-                throw new RuntimeException(e);
             }
         });
+    }
+
+    private void checkUpdateRequirements() throws QuestRuntimeException {
+        config.reloadFromConfig();
+        if (!config.isEnabled()) {
+            throw new QuestRuntimeException("The updater is disabled! Change config entry 'update.enabled' to 'true' to enable it.");
+        }
+        if (searchUpdate()) {
+            getUpdateNotification(config.isAutomatic());
+            throw new QuestRuntimeException("Update aborted! A newer version was found. New version '"
+                    + getUpdateVersion() + "'! You can execute '/q update' again to update.");
+        }
+        if (latest.getValue() == null) {
+            throw new QuestRuntimeException("The updater did not find an update!"
+                    + " This can depend on your update_strategy, check config entry 'update.update_strategy'.");
+        }
+    }
+
+    private void executeUpdate() throws QuestRuntimeException {
+        try {
+            updateDownloader.downloadToFile(new URL(latest.getValue()));
+        } catch (final MalformedURLException e) {
+            throw new QuestRuntimeException("There was an error resolving the url '" + latest.getValue() + "'! Reason: " + e.getMessage(), e);
+        }
     }
 
     private void sendMessage(final CommandSender sender, final String message) {
