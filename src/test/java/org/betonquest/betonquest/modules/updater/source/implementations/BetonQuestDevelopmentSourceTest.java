@@ -12,6 +12,9 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * This class test the {@link BetonQuestDevelopmentSourceTest}.
+ */
 class BetonQuestDevelopmentSourceTest {
 
     @SuppressWarnings({"PMD.JUnitTestContainsTooManyAsserts"})

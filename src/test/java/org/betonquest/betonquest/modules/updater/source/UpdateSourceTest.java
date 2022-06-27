@@ -11,6 +11,9 @@ import java.nio.file.Path;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * This class test the {@link UpdateSourceTest}.
+ */
 class UpdateSourceTest {
 
     @Test

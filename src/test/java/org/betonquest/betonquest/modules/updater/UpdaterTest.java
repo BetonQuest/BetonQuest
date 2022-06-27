@@ -27,6 +27,9 @@ import java.util.logging.Level;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * This class test the {@link UpdaterTest}.
+ */
 @ExtendWith(BetonQuestLoggerService.class)
 class UpdaterTest {
     private static final String UPDATE_FILE = "src/test/resources/updater/BetonQuest.jar";
