@@ -64,7 +64,7 @@ the variable will resolve.
 
 This variable allows you to perform a calculation based on other variables (for example point or objective variables)
 and resolves to the result of the specified calculation. The variable always starts with `math.calc:`, followed by the
-calculation which should be calculated. Supported operations are `+`, `-`, `*`, `/` and  `^`. You can use `( )` and
+calculation which should be calculated. Supported operations are `+`, `-`, `*`, `/`, `^` and `%`. You can use `( )` and
 `[ ]` braces and also calculate absolute values with `| |`. But be careful, don't use absolute values in the command
 event as it splits the commands at every `|` and don't nest them without parenthesis (`|4*|3-5||` wont work, but
 `|4*(|3-5|)|` does). Additionally, you can use the round operator `~` to round everything left of it to the number of
@@ -80,6 +80,7 @@ braces `{ }`. Inside the curly braces you have to escape with `\`, so to have a 
     %math.calc:100*(15-point.reputation.amount)%
     %math.calc:objective.kill_zombies.left/objective.kill_zombies.total*100~2%
     %math.calc:-{ph.myplugin_stragee+placeholder}%
+    %math.calc:64%32%
     ```
 
 ## NPC: `npc`
