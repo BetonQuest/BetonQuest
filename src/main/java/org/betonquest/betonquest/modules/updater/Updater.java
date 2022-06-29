@@ -245,7 +245,7 @@ public class Updater {
     }
 
     private void sendMessage(final CommandSender sender, final String message) {
-        LOG.info(message);
+        LOG.info(ChatColor.stripColor(message));
         if (sender != null && !(sender instanceof ConsoleCommandSender)) {
             sender.sendMessage(plugin.getPluginTag() + message);
         }

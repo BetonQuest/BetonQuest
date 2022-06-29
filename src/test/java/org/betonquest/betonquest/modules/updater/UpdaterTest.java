@@ -92,8 +92,8 @@ class UpdaterTest {
         }
 
         validator.assertLogEntry(Level.INFO, "Found newer version '2.0.0-DEV-5', it will be installed, if you execute '/q update'!");
-        validator.assertLogEntry(Level.INFO, "§2Started update to version '2.0.0-DEV-5'...");
-        validator.assertLogEntry(Level.INFO, "§2...download finished. Restart the server to update the plugin.");
+        validator.assertLogEntry(Level.INFO, "Started update to version '2.0.0-DEV-5'...");
+        validator.assertLogEntry(Level.INFO, "...download finished. Restart the server to update the plugin.");
         validator.assertEmpty();
     }
 }
