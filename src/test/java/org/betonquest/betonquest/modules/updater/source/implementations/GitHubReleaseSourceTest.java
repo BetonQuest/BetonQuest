@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * This class test the {@link GitHubReleaseSourceTest}.
+ * This class test the {@link GitHubReleaseSource}.
  */
 class GitHubReleaseSourceTest {
 

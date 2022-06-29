@@ -8,6 +8,7 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -237,6 +238,7 @@ public class Updater {
     private void executeUpdate() throws QuestRuntimeException {
         try {
             updateDownloader.downloadToFile(new URL(latest.getValue()));
+            latest = Pair.of(latest.getKey(), null);
         } catch (final MalformedURLException e) {
             throw new QuestRuntimeException("There was an error resolving the url '" + latest.getValue() + "'! Reason: " + e.getMessage(), e);
         }
@@ -244,7 +246,7 @@ public class Updater {
 
     private void sendMessage(final CommandSender sender, final String message) {
         LOG.info(message);
-        if (sender != null) {
+        if (sender != null && !(sender instanceof ConsoleCommandSender)) {
             sender.sendMessage(plugin.getPluginTag() + message);
         }
     }

@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * This class test the {@link UpdateSourceTest}.
+ * This class test the {@link UpdateSource}.
  */
 class UpdateSourceTest {
 

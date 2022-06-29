@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * This class test the {@link BetonQuestDevelopmentSourceTest}.
+ * This class test the {@link BetonQuestDevelopmentSource}.
  */
 class BetonQuestDevelopmentSourceTest {
 

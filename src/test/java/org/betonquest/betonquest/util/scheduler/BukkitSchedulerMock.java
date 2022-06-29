@@ -56,6 +56,11 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
      */
     private final Deque<ExecutionException> asyncExceptions;
     /**
+     * List of all {@link Future} {@link BukkitTask}s that have been executed async with the
+     * {@link ThreadPoolExecutor#execute(Runnable)} method.
+     */
+    private final List<Future<?>> asyncTasks;
+    /**
      * The current tick that should be executed.
      */
     private long currentTick;
@@ -71,6 +76,7 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
         pool = new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS, new SynchronousQueue<>());
         scheduledTasks = new TaskList();
         asyncExceptions = new LinkedList<>();
+        asyncTasks = new ArrayList<>();
     }
 
     private static Runnable wrapTask(final ScheduledTask task) {
@@ -146,6 +152,10 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
     /**
      * Waits until all asynchronous tasks have finished executing or the timeout elapses.
      * The default timeout is one second.
+     * <p>
+     * Keep in mind if you debug your test, and you wait to long at a break point,
+     * the timeout still take effect, and can effect the execution order of you test,
+     * compared to the normal execution!
      */
     public void waitAsyncTasksFinished() {
         waitAsyncTasksFinished(1000L);
@@ -153,12 +163,17 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
 
     /**
      * Waits until all asynchronous tasks have finished executing or the timeout elapses.
+     * <p>
+     * Keep in mind if you debug your test, and you wait to long at a break point,
+     * the timeout still take effect, and can effect the execution order of you test,
+     * compared to the normal execution!
      *
      * @param timeout the timeout in milliseconds
      */
     public void waitAsyncTasksFinished(final long timeout) {
         final long untilTimeMillis = System.currentTimeMillis() + timeout;
-        while (pool.getActiveCount() > 0 && System.currentTimeMillis() < untilTimeMillis) {
+        while (!asyncTasks.isEmpty() && System.currentTimeMillis() < untilTimeMillis) {
+            asyncTasks.removeIf(Future::isDone);
             try {
                 Thread.sleep(10L);
             } catch (final InterruptedException e) {
@@ -298,7 +313,7 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
     public @NotNull
     BukkitTask runTaskAsynchronously(@NotNull final Plugin plugin, @NotNull final Runnable task) {
         final ScheduledTask scheduledTask = new ScheduledTask(taskId++, plugin, false, currentTick, task);
-        pool.execute(wrapTask(scheduledTask));
+        asyncTasks.add(pool.submit(wrapTask(scheduledTask)));
         return scheduledTask;
     }
 

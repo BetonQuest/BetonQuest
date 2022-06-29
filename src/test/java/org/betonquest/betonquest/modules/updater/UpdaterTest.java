@@ -7,7 +7,6 @@ import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.util.scheduler.BukkitSchedulerMock;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -18,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * This class test the {@link UpdaterTest}.
+ * This class test the {@link Updater}.
  */
 @ExtendWith(BetonQuestLoggerService.class)
 class UpdaterTest {
@@ -66,7 +65,6 @@ class UpdaterTest {
     }
 
     @Test
-    @Disabled
     void testUpdate(final LogValidator validator) {
         final ConfigurationFile config = UpdaterConfigTest.getMockedConfig(new UpdaterConfigTest.Input(null, true, true, "PATCH_DEV", false));
         final Version version = new Version("2.0.0-DEV-3");
@@ -85,13 +83,17 @@ class UpdaterTest {
             scheduler.assertNoExceptions();
             assertTrue(updater.isUpdateAvailable());
             assertEquals("2.0.0-DEV-5", updater.getUpdateVersion());
-            validator.assertLogEntry(Level.INFO, "Found newer version '2.0.0-DEV-5', it will be installed, if you execute '/q update'!");
 
             updater.update(null);
             scheduler.waitAsyncTasksFinished();
             scheduler.assertNoExceptions();
+            assertFalse(updater.isUpdateAvailable());
+            assertNull(updater.getUpdateVersion());
         }
 
+        validator.assertLogEntry(Level.INFO, "Found newer version '2.0.0-DEV-5', it will be installed, if you execute '/q update'!");
+        validator.assertLogEntry(Level.INFO, "§2Started update to version '2.0.0-DEV-5'...");
+        validator.assertLogEntry(Level.INFO, "§2...download finished. Restart the server to update the plugin.");
         validator.assertEmpty();
     }
 }

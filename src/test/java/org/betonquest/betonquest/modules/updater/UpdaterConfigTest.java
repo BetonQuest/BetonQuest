@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * This class test the {@link UpdaterConfigTest}.
+ * This class test the {@link UpdaterConfig}.
  */
 @ExtendWith(BetonQuestLoggerService.class)
 final class UpdaterConfigTest {
