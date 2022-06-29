@@ -76,7 +76,8 @@ public class UpdaterConfig {
         ingameNotification = config.getBoolean(UPDATE_SECTION + "ingameNotification", true);
         automatic = config.getBoolean(UPDATE_SECTION + "automatic", false);
 
-        final String updateStrategyRaw = config.getString(UPDATE_SECTION + "strategy", "MINOR").toUpperCase(Locale.ROOT);
+        String updateStrategyRaw = config.getString(UPDATE_SECTION + "strategy", null);
+        updateStrategyRaw = updateStrategyRaw == null ? "MINOR" : updateStrategyRaw.toUpperCase(Locale.ROOT);
         final String updateStrategy = getUpdateStrategy(updateStrategyRaw);
         devDownloadEnabled = !updateStrategyRaw.equals(updateStrategy);
         try {

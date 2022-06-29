@@ -170,7 +170,7 @@ final class UpdaterConfigTest {
         final ConfigurationFile config = mock(ConfigurationFile.class);
         when(config.getBoolean("update.enabled", true)).thenReturn(input.enabled);
         when(config.getBoolean("update.ingameNotification", true)).thenReturn(input.ingameNotification);
-        when(config.getString("update.strategy", MINOR)).thenReturn(input.strategy);
+        when(config.getString("update.strategy", null)).thenReturn(input.strategy);
         when(config.getBoolean("update.automatic", false)).thenReturn(input.automatic);
         return config;
     }
@@ -193,10 +193,29 @@ final class UpdaterConfigTest {
         assertEquals(expected.forcedStrategy, updaterConfig.isForcedStrategy(), "Expected isForcedStrategy is '" + expected.forcedStrategy + "'");
     }
 
+    /**
+     * Utility record for input values.
+     *
+     * @param version            version
+     * @param enabled            enabled
+     * @param ingameNotification ingameNotification
+     * @param strategy           strategy
+     * @param automatic          automatic
+     */
     /* default */ record Input(Version version, boolean enabled, boolean ingameNotification, String strategy,
                                boolean automatic) {
     }
 
+    /**
+     * Utility record for expected values.
+     *
+     * @param enabled            enabled
+     * @param strategy           strategy
+     * @param devDownloadEnabled devDownloadEnabled
+     * @param automatic          automatic
+     * @param ingameNotification ingameNotification
+     * @param forcedStrategy     forcedStrategy
+     */
     private record Expected(boolean enabled, UpdateStrategy strategy, boolean devDownloadEnabled, boolean automatic,
                             boolean ingameNotification, boolean forcedStrategy) {
     }
