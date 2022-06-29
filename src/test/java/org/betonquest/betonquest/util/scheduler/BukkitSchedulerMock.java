@@ -156,9 +156,11 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
      * Keep in mind if you debug your test, and you wait to long at a break point,
      * the timeout still take effect, and can effect the execution order of you test,
      * compared to the normal execution!
+     *
+     * @return true when all async tasks have finished
      */
-    public void waitAsyncTasksFinished() {
-        waitAsyncTasksFinished(1000L);
+    public boolean waitAsyncTasksFinished() {
+        return waitAsyncTasksFinished(1000L);
     }
 
     /**
@@ -169,8 +171,9 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
      * compared to the normal execution!
      *
      * @param timeout the timeout in milliseconds
+     * @return true when all async tasks have finished
      */
-    public void waitAsyncTasksFinished(final long timeout) {
+    public boolean waitAsyncTasksFinished(final long timeout) {
         final long untilTimeMillis = System.currentTimeMillis() + timeout;
         while (!asyncTasks.isEmpty() && System.currentTimeMillis() < untilTimeMillis) {
             asyncTasks.removeIf(Future::isDone);
@@ -181,6 +184,7 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
                 break;
             }
         }
+        return asyncTasks.isEmpty();
     }
 
     @Override

@@ -34,7 +34,7 @@ class UpdaterTest {
 
         try (BukkitSchedulerMock scheduler = new BukkitSchedulerMock()) {
             final Updater updater = new Updater(config, version, handler, null, plugin, scheduler, instantSource);
-            scheduler.waitAsyncTasksFinished();
+            assertTrue(scheduler.waitAsyncTasksFinished());
             scheduler.assertNoExceptions();
             assertTrue(updater.isUpdateAvailable());
             assertEquals("2.0.0-DEV-5", updater.getUpdateVersion());
@@ -56,7 +56,7 @@ class UpdaterTest {
 
         try (BukkitSchedulerMock scheduler = new BukkitSchedulerMock()) {
             final Updater updater = new Updater(config, version, handler, null, plugin, scheduler, instantSource);
-            scheduler.waitAsyncTasksFinished();
+            assertTrue(scheduler.waitAsyncTasksFinished());
             scheduler.assertNoExceptions();
             assertFalse(updater.isUpdateAvailable());
         }
@@ -79,13 +79,13 @@ class UpdaterTest {
 
         try (BukkitSchedulerMock scheduler = new BukkitSchedulerMock()) {
             final Updater updater = new Updater(config, version, handler, downloader, plugin, scheduler, instantSource);
-            scheduler.waitAsyncTasksFinished();
+            assertTrue(scheduler.waitAsyncTasksFinished());
             scheduler.assertNoExceptions();
             assertTrue(updater.isUpdateAvailable());
             assertEquals("2.0.0-DEV-5", updater.getUpdateVersion());
 
             updater.update(null);
-            scheduler.waitAsyncTasksFinished();
+            assertTrue(scheduler.waitAsyncTasksFinished());
             scheduler.assertNoExceptions();
             assertFalse(updater.isUpdateAvailable());
             assertNull(updater.getUpdateVersion());
