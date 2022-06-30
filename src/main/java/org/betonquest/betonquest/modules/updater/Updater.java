@@ -212,7 +212,9 @@ public class Updater {
                 sendMessage(sender, ChatColor.DARK_GREEN + "Started update to version '" + latest.getKey().getVersion() + "'...");
                 executeUpdate();
                 sendMessage(sender, ChatColor.DARK_GREEN + "...download finished. Restart the server to update the plugin.");
-                updateNotification = "Update was downloaded! Restart the server to update the plugin.";
+                if (config.isIngameNotification()) {
+                    updateNotification = "Update was downloaded! Restart the server to update the plugin.";
+                }
             } catch (final QuestRuntimeException e) {
                 sendMessage(sender, ChatColor.RED + e.getMessage());
                 LOG.debug("Error while performing update!", e);
