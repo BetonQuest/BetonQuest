@@ -114,11 +114,7 @@ public class Updater {
         final String automaticDone = "it was downloaded and will be " + automatic;
         final String command = "it will be installed, if you execute '/q update'!";
 
-        if (config.isIngameNotification()) {
-            updateNotification = version + (automaticDownload ? automaticDone : command);
-        } else {
-            updateNotification = null;
-        }
+        updateNotification = version + (automaticDownload ? automaticDone : command);
         return version + (automaticDownload ? automaticProgress : command);
     }
 
@@ -188,7 +184,7 @@ public class Updater {
      * @param player The player, that should receive the message.
      */
     public void sendUpdateNotification(final Player player) {
-        if (updateNotification != null) {
+        if (config.isIngameNotification()) {
             final Instant currentTime = instantSource.instant();
             if (lastNotification.containsKey(player.getUniqueId()) && lastNotification.get(player.getUniqueId()).plus(NOTIFICATION_DELAY).isAfter(currentTime)) {
                 return;
@@ -212,9 +208,7 @@ public class Updater {
                 sendMessage(sender, ChatColor.DARK_GREEN + "Started update to version '" + latest.getKey().getVersion() + "'...");
                 executeUpdate();
                 sendMessage(sender, ChatColor.DARK_GREEN + "...download finished. Restart the server to update the plugin.");
-                if (config.isIngameNotification()) {
-                    updateNotification = "Update was downloaded! Restart the server to update the plugin.";
-                }
+                updateNotification = "Update was downloaded! Restart the server to update the plugin.";
             } catch (final QuestRuntimeException e) {
                 sendMessage(sender, ChatColor.RED + e.getMessage());
                 LOG.debug("Error while performing update!", e);
