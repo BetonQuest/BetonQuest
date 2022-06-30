@@ -55,7 +55,8 @@ class UpdateSourceTest {
         when(url.openConnection()).thenReturn(httpURLConnection);
         when(httpURLConnection.getResponseCode()).thenReturn(UpdateSource.RESPONSE_CODE_403);
 
-        assertThrowsExactly(IOException.class, () -> handler.readStringFromURL(url), ioException.getMessage());
+        final IOException exception = assertThrowsExactly(IOException.class, () -> handler.readStringFromURL(url), "Expected IOException");
+        assertEquals(ioException.getMessage(), exception.getMessage(), "Exceptionmessage does not equal");
 
         verify(httpURLConnection, times(1)).connect();
         verify(httpURLConnection, times(1)).disconnect();
