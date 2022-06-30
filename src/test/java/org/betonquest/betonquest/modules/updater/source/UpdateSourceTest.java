@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * This class test the {@link UpdateSource}.
+ * This class tests the {@link UpdateSource}.
  */
 class UpdateSourceTest {
 
@@ -56,7 +56,7 @@ class UpdateSourceTest {
         when(httpURLConnection.getResponseCode()).thenReturn(UpdateSource.RESPONSE_CODE_403);
 
         final IOException exception = assertThrowsExactly(IOException.class, () -> handler.readStringFromURL(url), "Expected IOException");
-        assertEquals(ioException.getMessage(), exception.getMessage(), "Exceptionmessage does not equal");
+        assertEquals(ioException.getMessage(), exception.getMessage(), "Exception messages are not equal");
 
         verify(httpURLConnection, times(1)).connect();
         verify(httpURLConnection, times(1)).disconnect();

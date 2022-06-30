@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * This class test the {@link GitHubReleaseSource}.
+ * This class tests the {@link GitHubReleaseSource}.
  */
 class GitHubReleaseSourceTest {
 
@@ -36,12 +36,12 @@ class GitHubReleaseSourceTest {
     }
 
     @Test
-    void testReadStringFromURLThrowsException() throws IOException {
+    void testReadStringFromURLThrowsException() {
         final String apiUrl = "https://github.com/BetonQuest/BetonQuest/releases/download";
         final GitHubReleaseSource handler = new GitHubReleaseSource(apiUrl);
 
         final IOException exception = assertThrowsExactly(IOException.class, () -> handler.handleResponseCode(UpdateSource.RESPONSE_CODE_403), "Expected IOException");
-        assertEquals("It looks like too many requests were made to the update server, please wait until you have been unblocked.", exception.getMessage(), "Exceptionmessage does not equal");
+        assertEquals("It looks like too many requests were made to the update server, please wait until you have been unblocked.", exception.getMessage(), "Exception messages are not equal");
 
     }
 }

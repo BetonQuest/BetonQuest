@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.modules.updater.source.implementations;
 
 import org.betonquest.betonquest.modules.updater.source.DevelopmentUpdateSource;
+import org.betonquest.betonquest.modules.updater.source.UpdateSource;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.json.JSONObject;
 
@@ -13,30 +14,35 @@ import java.util.Map;
 /**
  * This is a {@link DevelopmentUpdateSource} for the BetonQuest API backend.
  */
-public class BetonQuestDevelopmentSource implements DevelopmentUpdateSource {
+public class BetonQuestDevelopmentSource extends UpdateSource implements DevelopmentUpdateSource {
+
     /**
      * The API URL path to the latest versions.
      */
     public static final String DEV_API_LATEST = "/builds/latest";
+
     /**
      * The API URL path to the real file for download.
      */
     public static final String DEV_API_DOWNLOAD = "/builds/download/:version/:versionNumber/BetonQuest.jar";
+
     /**
      * The indicator for dev versions.
      */
     private static final String DEV_INDICATOR = "-DEV-";
+
     /**
      * The base apiUrl of this BetonQuest update source.
      */
     private final String apiUrl;
 
     /**
-     * Create a {@link BetonQuestDevelopmentSource} with the given apiUrl.
+     * Creates a {@link BetonQuestDevelopmentSource} with the given apiUrl.
      *
      * @param apiUrl root to the BetonQuest update source
      */
     public BetonQuestDevelopmentSource(final String apiUrl) {
+        super();
         this.apiUrl = apiUrl;
     }
 

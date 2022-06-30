@@ -15,7 +15,7 @@ import java.util.Map;
 
 /**
  * Two lists of {@link UpdateSource}s can be passed to this class in the constructor.
- * One is for releases and one is for Development builds.
+ * One is for release builds, the other for development builds.
  * <p>
  * If an update is searched, it will then first search in the list of {@link ReleaseUpdateSource} instances
  * and then in the list of {@link DevelopmentUpdateSource} instances.
@@ -23,6 +23,7 @@ import java.util.Map;
  */
 @CustomLog
 public class UpdateSourceHandler {
+
     /**
      * A list of {@link ReleaseUpdateSource} instances.
      */
@@ -33,7 +34,7 @@ public class UpdateSourceHandler {
     private final List<DevelopmentUpdateSource> developmentHandlerList;
 
     /**
-     * Create a new {@link UpdateSourceHandler} with the given {@link UpdateSource} lists.
+     * Creates a new {@link UpdateSourceHandler} with the given {@link UpdateSource} lists.
      *
      * @param releaseHandlerList     A list of {@link ReleaseUpdateSource} instances
      * @param developmentHandlerList A list of {@link DevelopmentUpdateSource} instances
@@ -44,9 +45,9 @@ public class UpdateSourceHandler {
     }
 
     /**
-     * Search for updates in the provided {@link ReleaseUpdateSource} list and {@link DevelopmentUpdateSource} list
+     * Searches for updates in the provided {@link ReleaseUpdateSource} and {@link DevelopmentUpdateSource} lists
      * and returns the latest version with the URL to download it from.
-     * If there is no update available the URL in the pair is null.
+     * If there is no update available, the URL in the pair is null.
      *
      * @param config       The {@link UpdaterConfig} containing all settings
      * @param current      The current {@link Version}
@@ -75,7 +76,7 @@ public class UpdateSourceHandler {
         return latest;
     }
 
-    private <T extends UpdateSource> Pair<Version, String>
+    private <T> Pair<Version, String>
     searchUpdateFor(final Pair<Version, String> latest, final List<T> updateSources, final VersionComparator comparator,
                     final UpdateSourceConsumer<T> consumer) throws IOException {
         Pair<Version, String> currentLatest = latest;
@@ -94,7 +95,7 @@ public class UpdateSourceHandler {
      *
      * @param <T> something implementing {@link UpdateSource}
      */
-    private interface UpdateSourceConsumer<T extends UpdateSource> {
+    private interface UpdateSourceConsumer<T> {
 
         /**
          * Applies this function to the given argument.

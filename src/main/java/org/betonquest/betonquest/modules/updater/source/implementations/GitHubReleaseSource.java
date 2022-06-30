@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.modules.updater.source.implementations;
 
 import org.betonquest.betonquest.modules.updater.source.ReleaseUpdateSource;
+import org.betonquest.betonquest.modules.updater.source.UpdateSource;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -11,20 +12,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This is a {@link ReleaseUpdateSource} for a GitHub releases API.
+ * This is a {@link ReleaseUpdateSource} for GitHub's releases API.
  */
-public class GitHubReleaseSource implements ReleaseUpdateSource {
+public class GitHubReleaseSource extends UpdateSource implements ReleaseUpdateSource {
+
     /**
-     * The apiUrl to the GitHub release API target.
+     * The apiUrl to the GitHub releases API target.
      */
     private final String apiUrl;
 
     /**
-     * Create a {@link GitHubReleaseSource} with the given apiUrl.
+     * Creates a {@link GitHubReleaseSource} with the given apiUrl.
      *
-     * @param apiUrl to the GitHub release API target
+     * @param apiUrl to the GitHub releases API target
      */
     public GitHubReleaseSource(final String apiUrl) {
+        super();
         this.apiUrl = apiUrl;
     }
 

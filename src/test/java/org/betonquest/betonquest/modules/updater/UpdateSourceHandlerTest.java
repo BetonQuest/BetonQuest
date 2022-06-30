@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * This class test the {@link UpdateSourceHandler}.
+ * This class tests the {@link UpdateSourceHandler}.
  */
 @ExtendWith(BetonQuestLoggerService.class)
 class UpdateSourceHandlerTest {

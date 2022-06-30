@@ -11,12 +11,13 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
 /**
- * Bukkit has a 'update' (default) folder, where jar's that have the exact same name as a jar in the 'plugins' folder,
+ * Bukkit has a 'update' (default) folder, where jars that have the exact same name as a jar in the 'plugins' folder,
  * will be moved to the `plugins` folder on server startup.
  * This downloader helps to download a jar from a given {@link URL} that is first saved as temporary file and
  * then renamed to the final name when the download was successful.
  */
 public class UpdateDownloader {
+
     /**
      * The root of the files for better path description in exceptions.
      */

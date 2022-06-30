@@ -153,8 +153,8 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
      * Waits until all asynchronous tasks have finished executing or the timeout elapses.
      * The default timeout is one second.
      * <p>
-     * Keep in mind if you debug your test, and you wait to long at a break point,
-     * the timeout still take effect, and can effect the execution order of you test,
+     * Keep in mind that the timeout still takes effect while debugging tests!
+     * Waiting too long at a break point can affect the execution order of your test
      * compared to the normal execution!
      *
      * @return true when all async tasks have finished
@@ -166,8 +166,8 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
     /**
      * Waits until all asynchronous tasks have finished executing or the timeout elapses.
      * <p>
-     * Keep in mind if you debug your test, and you wait to long at a break point,
-     * the timeout still take effect, and can effect the execution order of you test,
+     * Keep in mind that the timeout still takes effect while debugging tests!
+     * Waiting too long at a break point can affect the execution order of your test
      * compared to the normal execution!
      *
      * @param timeout the timeout in milliseconds

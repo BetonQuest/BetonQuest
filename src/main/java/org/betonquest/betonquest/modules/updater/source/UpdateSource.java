@@ -9,22 +9,31 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 /**
- * This is an interface that give basic methods to read information from a given {@link URL} to get update information.
+ * This is an interface that provides basic methods to read update information from a given {@link URL}.
  */
-public interface UpdateSource {
-    /**
-     * The response code 403 as a constant
-     */
-    int RESPONSE_CODE_403 = 403;
+@SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
+public abstract class UpdateSource {
 
     /**
-     * This method can read s String from a given {@link URL}.
+     * The response code 403 as a constant.
+     */
+    public static final int RESPONSE_CODE_403 = 403;
+
+    /**
+     * Default contstuctor
+     */
+    public UpdateSource() {
+        // Empty
+    }
+
+    /**
+     * This method can read a String from a given {@link URL}.
      *
      * @param url that should be read as {@link String}
      * @return the {@link String} represented by the given {@link URL}
      * @throws IOException is thrown if any problem occurred while reading the String from the {@link URL}
      */
-    default String readStringFromURL(final URL url) throws IOException {
+    public final String readStringFromURL(final URL url) throws IOException {
         final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.connect();
         try {
@@ -39,13 +48,13 @@ public interface UpdateSource {
 
     /**
      * This method is called from the default implementation of the {@link UpdateSource#readStringFromURL(URL)} method.
-     * In default, it will ignore oll response codes.
+     * By default, it will ignore all response codes.
      *
      * @param responseCode the response code that occurred
      * @throws IOException This can be thrown, if the response code prevents a successful download.
      */
-    default void handleResponseCode(final int responseCode) throws IOException {
-        // Empty
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
+    protected void handleResponseCode(final int responseCode) throws IOException {
+        // default behaviour is to ignore the response code
     }
-
 }

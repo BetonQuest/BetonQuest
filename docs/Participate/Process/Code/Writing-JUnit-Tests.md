@@ -127,11 +127,11 @@ scheduler.getCurrentTick();
 There are some additional features of this scheduler:
 
 ````java linenums="1"
-scheduler.close(); // (1)
-scheduler.waitAsyncTasksFinished(long); // (2)
-scheduler.waitAsyncTasksFinished(); // (3)
+scheduler.close(); //(1)!
+scheduler.waitAsyncTasksFinished(long); //(2)!
+scheduler.waitAsyncTasksFinished(); //(3)!
 ````
 
-1. Shutdown the scheduler. Already called with try with ressource
+1. Shuts down the scheduler. Already called thanks to with "try with resources".
 2. Wait for all async tasks to finish.
-3. One second timeout
+3. One second timeout.
