@@ -37,7 +37,7 @@ import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
 import org.betonquest.betonquest.modules.logger.PlayerLogWatcher;
 import org.betonquest.betonquest.modules.logger.format.ChatFormatter;
 import org.betonquest.betonquest.modules.logger.handler.history.LogPublishingController;
-import org.betonquest.betonquest.modules.versioning.Updater;
+import org.betonquest.betonquest.modules.updater.Updater;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
