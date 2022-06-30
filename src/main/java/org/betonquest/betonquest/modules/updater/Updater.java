@@ -212,6 +212,7 @@ public class Updater {
                 sendMessage(sender, ChatColor.DARK_GREEN + "Started update to version '" + latest.getKey().getVersion() + "'...");
                 executeUpdate();
                 sendMessage(sender, ChatColor.DARK_GREEN + "...download finished. Restart the server to update the plugin.");
+                updateNotification = "Update was downloaded! Restart the server to update the plugin.";
             } catch (final QuestRuntimeException e) {
                 sendMessage(sender, ChatColor.RED + e.getMessage());
                 LOG.debug("Error while performing update!", e);
@@ -230,6 +231,9 @@ public class Updater {
                     + getUpdateVersion() + "'! You can execute '/q update' again to update.");
         }
         if (latest.getValue() == null) {
+            if (updateDownloader.alreadyDownloaded()) {
+                throw new QuestRuntimeException("The update was already downloaded! Restart the server to update the plugin.");
+            }
             throw new QuestRuntimeException("The updater did not find an update!"
                     + " This can depend on your update_strategy, check config entry 'update.update_strategy'.");
         }

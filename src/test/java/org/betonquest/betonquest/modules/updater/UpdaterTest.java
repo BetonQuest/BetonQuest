@@ -93,6 +93,7 @@ class UpdaterTest {
 
             final Player player = mock(Player.class);
             when(player.getUniqueId()).thenReturn(UUID.randomUUID());
+            updater.sendUpdateNotification(player);
 
             updater.update(player);
             assertTrue(scheduler.waitAsyncTasksFinished(), "Expected async tasks to finish");
@@ -140,7 +141,7 @@ class UpdaterTest {
 
             final InOrder inOrder = inOrder(player);
             inOrder.verify(player, times(2)).getUniqueId();
-            inOrder.verify(player, times(1)).sendMessage("§2Found newer version '2.0.0-DEV-5', it was downloaded and will be  automatically installed on the next restart!");
+            inOrder.verify(player, times(1)).sendMessage("§2Update was downloaded! Restart the server to update the plugin.");
             inOrder.verify(player, times(2)).getUniqueId();
         }
 
@@ -183,7 +184,7 @@ class UpdaterTest {
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
-    void testUpdateExceptionInvalidUrl(final LogValidator validator) {
+    void testUpdateWithInvalidUrl(final LogValidator validator) {
         final ConfigurationFile config = UpdaterConfigTest.getMockedConfig(new UpdaterConfigTest.Input(null, true, false, "PATCH_DEV", true));
         final Version version = new Version("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
@@ -250,13 +251,14 @@ class UpdaterTest {
         final ConfigurationFile config = UpdaterConfigTest.getMockedConfig(new UpdaterConfigTest.Input(null, true, false, "PATCH_DEV", false));
         final Version version = new Version("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
+        final UpdateDownloader downloader = mock(UpdateDownloader.class);
         final BetonQuest plugin = mock(BetonQuest.class);
         final InstantSource instantSource = InstantSource.system();
 
         when(handler.searchUpdate(any(), any(), any())).thenReturn(Pair.of(new Version("2.0.0-DEV-3"), null));
 
         try (BukkitSchedulerMock scheduler = new BukkitSchedulerMock()) {
-            final Updater updater = new Updater(config, version, handler, null, plugin, scheduler, instantSource);
+            final Updater updater = new Updater(config, version, handler, downloader, plugin, scheduler, instantSource);
             assertTrue(scheduler.waitAsyncTasksFinished(), "Expected async tasks to finish");
             scheduler.assertNoExceptions();
             assertFalse(updater.isUpdateAvailable(), "Expected no available update");
@@ -269,6 +271,37 @@ class UpdaterTest {
         }
 
         validator.assertLogEntry(Level.INFO, "The updater did not find an update! This can depend on your update_strategy, check config entry 'update.update_strategy'.");
+        validator.assertLogEntry(Level.FINE, "Error while performing update!");
+        validator.assertEmpty();
+    }
+
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    @Test
+    void testUpdateAlreadyDownloaded(final LogValidator validator) {
+        final ConfigurationFile config = UpdaterConfigTest.getMockedConfig(new UpdaterConfigTest.Input(null, true, false, "PATCH_DEV", false));
+        final Version version = new Version("2.0.0-DEV-3");
+        final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
+        final UpdateDownloader downloader = mock(UpdateDownloader.class);
+        final BetonQuest plugin = mock(BetonQuest.class);
+        final InstantSource instantSource = InstantSource.system();
+
+        when(handler.searchUpdate(any(), any(), any())).thenReturn(Pair.of(new Version("2.0.0-DEV-3"), null));
+        when(downloader.alreadyDownloaded()).thenReturn(true);
+
+        try (BukkitSchedulerMock scheduler = new BukkitSchedulerMock()) {
+            final Updater updater = new Updater(config, version, handler, downloader, plugin, scheduler, instantSource);
+            assertTrue(scheduler.waitAsyncTasksFinished(), "Expected async tasks to finish");
+            scheduler.assertNoExceptions();
+            assertFalse(updater.isUpdateAvailable(), "Expected no available update");
+
+            updater.update(null);
+            assertTrue(scheduler.waitAsyncTasksFinished(), "Expected async tasks to finish");
+            scheduler.assertNoExceptions();
+            assertFalse(updater.isUpdateAvailable(), "Expected no available update");
+            assertNull(updater.getUpdateVersion(), "Expected no update version");
+        }
+
+        validator.assertLogEntry(Level.INFO, "The update was already downloaded! Restart the server to update the plugin.");
         validator.assertLogEntry(Level.FINE, "Error while performing update!");
         validator.assertEmpty();
     }
