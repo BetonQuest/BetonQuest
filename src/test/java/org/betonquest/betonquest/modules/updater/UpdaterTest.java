@@ -270,7 +270,7 @@ class UpdaterTest {
             assertNull(updater.getUpdateVersion(), "Expected no update version");
         }
 
-        validator.assertLogEntry(Level.INFO, "The updater did not find an update! This can depend on your update_strategy, check config entry 'update.update_strategy'.");
+        validator.assertLogEntry(Level.INFO, "The updater did not find an update! This can depend on your update.strategy, check config entry 'update.strategy'.");
         validator.assertLogEntry(Level.FINE, "Error while performing update!");
         validator.assertEmpty();
     }

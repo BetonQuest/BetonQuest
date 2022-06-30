@@ -231,7 +231,7 @@ public class Updater {
                 throw new QuestRuntimeException("The update was already downloaded! Restart the server to update the plugin.");
             }
             throw new QuestRuntimeException("The updater did not find an update!"
-                    + " This can depend on your update_strategy, check config entry 'update.update_strategy'.");
+                    + " This can depend on your update.strategy, check config entry 'update.strategy'.");
         }
     }
 
