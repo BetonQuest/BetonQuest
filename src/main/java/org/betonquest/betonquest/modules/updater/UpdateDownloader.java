@@ -72,7 +72,7 @@ public class UpdateDownloader {
     }
 
     /**
-     * Check if the final {@link File} was already downloaded, by checking for its existence
+     * Checks if the final {@link File} was already downloaded, by checking for it's existence.
      *
      * @return true if a successful download was already done
      */
