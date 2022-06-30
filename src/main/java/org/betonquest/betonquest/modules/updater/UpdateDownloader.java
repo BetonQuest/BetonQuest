@@ -70,6 +70,15 @@ public class UpdateDownloader {
         }
     }
 
+    /**
+     * Check if the final {@link File} was already downloaded, by checking for its existence
+     *
+     * @return true if a successful download was already done
+     */
+    public boolean alreadyDownloaded() {
+        return finalFile.exists();
+    }
+
     private void checkAndCreateFile() throws QuestRuntimeException {
         try {
             if (!tempFile.createNewFile()) {

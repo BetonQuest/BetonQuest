@@ -29,6 +29,7 @@ class UpdateDownloaderTest {
      */
     private static final Path UPDATE_FILE_PATH = UPDATE_FILE.toPath();
 
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     @Test
     void testDownloadFile(@TempDir final File tempDir) throws IOException, QuestRuntimeException {
         final File updateFolder = new File(tempDir, "updater");
@@ -36,9 +37,10 @@ class UpdateDownloaderTest {
         final File finalFile = new File(updateFolder, "BetonQuest.jar");
 
         final UpdateDownloader downloader = new UpdateDownloader(tempDir.toURI(), tempFile, finalFile);
+        assertFalse(downloader.alreadyDownloaded(), "There should be no a BetonQuest.jar file");
         downloader.downloadToFile(getUrl());
 
-        assertTrue(finalFile.exists(), "There should be a BetonQuest.jar file");
+        assertTrue(downloader.alreadyDownloaded(), "There should be a BetonQuest.jar file");
         assertTrue(FileUtils.contentEquals(finalFile, UPDATE_FILE),
                 "The received file is not equal to the expected one!");
     }
@@ -54,9 +56,10 @@ class UpdateDownloaderTest {
         assertTrue(finalFile.createNewFile(), "Expected successfully creation of a BetonQuest.jar");
 
         final UpdateDownloader downloader = new UpdateDownloader(tempDir.toURI(), tempFile, finalFile);
+        assertTrue(downloader.alreadyDownloaded(), "There should be a BetonQuest.jar file");
         downloader.downloadToFile(getUrl());
 
-        assertTrue(finalFile.exists(), "There should be a BetonQuest.jar file");
+        assertTrue(downloader.alreadyDownloaded(), "There should be a BetonQuest.jar file");
         assertTrue(FileUtils.contentEquals(finalFile, UPDATE_FILE),
                 "The received file is not equal to the expected one!");
     }
@@ -75,7 +78,7 @@ class UpdateDownloaderTest {
 
         final QuestRuntimeException exception = assertThrows(QuestRuntimeException.class, () -> downloader.downloadToFile(mock(URL.class)), "Expected QuestRuntimeException");
         assertEquals("The updater could not create the folder 'updater'!", exception.getMessage(), "Expected exception message does not Match");
-        assertFalse(finalFile.exists(), "There should be no a BetonQuest.jar file");
+        assertFalse(downloader.alreadyDownloaded(), "There should be no a BetonQuest.jar file");
     }
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
@@ -92,7 +95,7 @@ class UpdateDownloaderTest {
         final QuestRuntimeException exception = assertThrows(QuestRuntimeException.class, () -> downloader.downloadToFile(mock(URL.class)), "Expected QuestRuntimeException");
         assertEquals("The updater could not create the file 'updater/BetonQuest.jar.temp'! Reason: Test Exception", exception.getMessage(),
                 "Expected exception message does not Match");
-        assertFalse(finalFile.exists(), "There should be no a BetonQuest.jar file");
+        assertFalse(downloader.alreadyDownloaded(), "There should be no a BetonQuest.jar file");
     }
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
@@ -110,7 +113,7 @@ class UpdateDownloaderTest {
         final QuestRuntimeException exception = assertThrows(QuestRuntimeException.class, () -> downloader.downloadToFile(mock(URL.class)), "Expected QuestRuntimeException");
         assertEquals("The file 'updater/BetonQuest.jar.temp' already exists! Please wait for the active download to finish. If there is no active download delete the file manually.", exception.getMessage(),
                 "Expected exception message does not Match");
-        assertFalse(finalFile.exists(), "There should be no a BetonQuest.jar file");
+        assertFalse(downloader.alreadyDownloaded(), "There should be no a BetonQuest.jar file");
     }
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
@@ -127,7 +130,7 @@ class UpdateDownloaderTest {
         final QuestRuntimeException exception = assertThrows(QuestRuntimeException.class, () -> downloader.downloadToFile(url), "Expected QuestRuntimeException");
         assertEquals("The download was interrupted! The updater could not download the file! You can try if again, if it still does not work use a manual download. The original exception was: Test Exception", exception.getMessage(),
                 "Expected exception message does not Match");
-        assertFalse(finalFile.exists(), "There should be no a BetonQuest.jar file");
+        assertFalse(downloader.alreadyDownloaded(), "There should be no a BetonQuest.jar file");
     }
 
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
@@ -146,7 +149,7 @@ class UpdateDownloaderTest {
         final QuestRuntimeException exception = assertThrows(QuestRuntimeException.class, () -> downloader.downloadToFile(url), "Expected QuestRuntimeException");
         assertEquals("The download was interrupted! There is a broken file at 'updater/BetonQuest.jar.temp'. Delete this file otherwise a new download is not possible. The original exception was: Test Exception", exception.getMessage(),
                 "Expected exception message does not Match");
-        assertFalse(finalFile.exists(), "There should be no a BetonQuest.jar file");
+        assertFalse(downloader.alreadyDownloaded(), "There should be no a BetonQuest.jar file");
     }
 
     @NotNull
