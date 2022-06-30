@@ -6,6 +6,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -70,9 +71,11 @@ public class LogValidator extends Handler {
      * Assert that the {@link LogValidator} does not have any LogRecord left to check.
      */
     public void assertEmpty() {
-        final LogRecord record = records.peek();
-        if (record != null) {
-            fail("The records list should be empty! Message: [" + record.getLevel() + "] " + record.getMessage());
+        if (!records.isEmpty()) {
+            final String recordsString = records.stream()
+                    .map(logRecord -> "        [" + logRecord.getLevel() + "] " + logRecord.getMessage())
+                    .collect(Collectors.joining("\n"));
+            fail("The records list should be empty! It contains:\n" + recordsString);
         }
     }
 
