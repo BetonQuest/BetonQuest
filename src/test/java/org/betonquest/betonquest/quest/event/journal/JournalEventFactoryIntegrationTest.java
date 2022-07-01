@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.events;
+package org.betonquest.betonquest.quest.event.journal;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
-import org.betonquest.betonquest.quest.event.journal.JournalEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactoryAdapter;
 import org.bukkit.Server;
 import org.bukkit.configuration.InvalidConfigurationException;
