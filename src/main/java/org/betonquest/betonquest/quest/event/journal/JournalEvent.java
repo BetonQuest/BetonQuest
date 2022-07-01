@@ -12,6 +12,11 @@ import org.betonquest.betonquest.quest.event.NotificationSender;
 public class JournalEvent implements Event {
 
     /**
+     * BetonQuest instance used to get the {@link PlayerData}.
+     */
+    private final BetonQuest betonQuest;
+
+    /**
      * Change to apply to a journal when the event is executed.
      */
     private final JournalChanger journalChanger;
@@ -24,17 +29,19 @@ public class JournalEvent implements Event {
     /**
      * Create a journal event.
      *
-     * @param journalChanger     change to apply to a journal
+     * @param betonQuest BetonQuest instance
+     * @param journalChanger change to apply to a journal
      * @param notificationSender notification to send
      */
-    public JournalEvent(final JournalChanger journalChanger, final NotificationSender notificationSender) {
+    public JournalEvent(final BetonQuest betonQuest, final JournalChanger journalChanger, final NotificationSender notificationSender) {
+        this.betonQuest = betonQuest;
         this.journalChanger = journalChanger;
         this.notificationSender = notificationSender;
     }
 
     @Override
     public void execute(final String playerId) {
-        final PlayerData playerData = BetonQuest.getInstance().getOfflinePlayerData(playerId);
+        final PlayerData playerData = betonQuest.getOfflinePlayerData(playerId);
         final Journal journal = playerData.getJournal();
         journalChanger.changeJournal(journal);
         journal.update();

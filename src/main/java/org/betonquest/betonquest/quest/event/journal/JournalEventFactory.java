@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.event.journal;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
@@ -26,6 +27,11 @@ import java.util.Locale;
  */
 public class JournalEventFactory implements EventFactory {
     /**
+     * BetonQuest instance to provide to events.
+     */
+    private final BetonQuest betonQuest;
+
+    /**
      * The instant source to provide to events.
      */
     private final InstantSource instantSource;
@@ -43,11 +49,13 @@ public class JournalEventFactory implements EventFactory {
     /**
      * Create the journal event factory.
      *
+     * @param betonQuest BetonQuest instance to pass on
      * @param instantSource instant source to pass on
      * @param saver database saver to use
      * @param server server to refer to
      */
-    public JournalEventFactory(final InstantSource instantSource, final Saver saver, final Server server) {
+    public JournalEventFactory(final BetonQuest betonQuest, final InstantSource instantSource, final Saver saver, final Server server) {
+        this.betonQuest = betonQuest;
         this.instantSource = instantSource;
         this.saver = saver;
         this.server = server;
@@ -79,7 +87,7 @@ public class JournalEventFactory implements EventFactory {
         final String entryName = Utils.addPackage(instruction.getPackage(), instruction.next());
         final JournalChanger journalChanger = new RemoveEntryJournalChanger(entryName);
         final NotificationSender notificationSender = new NoNotificationSender();
-        return new JournalEvent(journalChanger, notificationSender);
+        return new JournalEvent(betonQuest, journalChanger, notificationSender);
     }
 
     @NotNull
@@ -87,14 +95,14 @@ public class JournalEventFactory implements EventFactory {
         final String entryName = Utils.addPackage(instruction.getPackage(), instruction.next());
         final JournalChanger journalChanger = new AddEntryJournalChanger(instantSource, entryName);
         final NotificationSender notificationSender = new InfoNotificationSender("new_journal_entry", instruction.getPackage(), instruction.getID().getFullID());
-        return new JournalEvent(journalChanger, notificationSender);
+        return new JournalEvent(betonQuest, journalChanger, notificationSender);
     }
 
     @NotNull
     private JournalEvent createJournalUpdateEvent() {
         final JournalChanger journalChanger = new NoActionJournalChanger();
         final NotificationSender notificationSender = new NoNotificationSender();
-        return new JournalEvent(journalChanger, notificationSender);
+        return new JournalEvent(betonQuest, journalChanger, notificationSender);
     }
 
     @NotNull

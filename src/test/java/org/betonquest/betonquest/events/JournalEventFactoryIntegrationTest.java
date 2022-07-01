@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.events;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.database.Saver;
@@ -25,28 +26,31 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * JournalEvent tests.
+ * Integration test for {@link org.betonquest.betonquest.quest.event.journal}.
  */
 @ExtendWith(BetonQuestLoggerService.class)
 @ExtendWith(MockitoExtension.class)
 class JournalEventFactoryIntegrationTest {
 
     /**
+     * Fixed present time instant.
+     */
+    private final Instant now = Instant.now();
+    /**
+     * Mocked BetonQuest plugin.
+     */
+    @Mock
+    private BetonQuest betonQuest;
+    /**
      * Mocked Minecraft Bukkit server.
      */
     @Mock
     private Server server;
-
     /**
      * Mocked database Saver.
      */
     @Mock
     private Saver saver;
-
-    /**
-     * Fixed present time instant.
-     */
-    private final Instant now = Instant.now();
 
     /**
      * Create JournalEvent test class.
@@ -67,7 +71,7 @@ class JournalEventFactoryIntegrationTest {
     }
 
     private QuestEventFactoryAdapter createJournalEventFactory() {
-        return new QuestEventFactoryAdapter(new JournalEventFactory(InstantSource.fixed(now), saver, server));
+        return new QuestEventFactoryAdapter(new JournalEventFactory(betonQuest, InstantSource.fixed(now), saver, server));
 
     }
 
