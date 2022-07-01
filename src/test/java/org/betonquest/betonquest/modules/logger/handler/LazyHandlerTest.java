@@ -10,6 +10,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -79,5 +80,14 @@ class LazyHandlerTest {
         handler.publish(record);
         handler.close();
         verify(internalHandler).close();
+    }
+
+    @Test
+    void testRequireNotClosed() {
+        final LazyHandler handler = new LazyHandler(() -> internalHandler);
+        handler.close();
+        final Exception exception = assertThrows(IllegalStateException.class, () -> handler.publish(null), "Expected IllegalStateException is thrown");
+        assertEquals("Cannot publish log record: LazyLogHandler was closed and had not been initialized before closing."
+                , exception.getMessage(), "Expected other exception message");
     }
 }

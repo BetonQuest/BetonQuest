@@ -14,7 +14,9 @@ import java.util.logging.LogRecord;
 public class ResettableHandler extends Handler {
 
     /**
-     * Lock to prevent invalid states caused by multithreading:
+     * Lock to prevent invalid states caused by multithreading.
+     * <p>
+     * Those states include but are not limited to:
      * <ul>
      *     <li>Publishing while reset</li>
      *     <li>Closing while reset</li>
