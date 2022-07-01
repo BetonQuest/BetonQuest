@@ -286,7 +286,7 @@ jobs:
             ]
       - name: Publish to Maven Repository
         run: |
-          mvn -B deploy
+          mvn -Pskip-verification -B deploy
         env:
           REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
           REPOSITORY_USER: ${{ secrets.REPOSITORY_USER }}
