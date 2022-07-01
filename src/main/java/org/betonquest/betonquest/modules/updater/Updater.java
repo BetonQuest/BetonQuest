@@ -184,7 +184,7 @@ public class Updater {
      * @param player The player, that should receive the message.
      */
     public void sendUpdateNotification(final Player player) {
-        if (config.isIngameNotification()) {
+        if (config.isIngameNotification() && updateNotification != null) {
             final Instant currentTime = instantSource.instant();
             if (lastNotification.containsKey(player.getUniqueId()) && lastNotification.get(player.getUniqueId()).plus(NOTIFICATION_DELAY).isAfter(currentTime)) {
                 return;
