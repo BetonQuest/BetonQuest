@@ -9,8 +9,6 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.PlayerTagAddEvent;
 import org.betonquest.betonquest.api.PlayerTagRemoveEvent;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.database.Connector.QueryType;
-import org.betonquest.betonquest.database.Connector.UpdateType;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;

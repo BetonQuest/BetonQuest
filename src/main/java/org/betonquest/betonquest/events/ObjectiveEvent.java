@@ -4,9 +4,9 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
-import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.Saver;
+import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ObjectiveID;
@@ -52,7 +52,7 @@ public class ObjectiveEvent extends QuestEvent {
                     final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(p));
                     playerData.removeRawObjective(objective);
                 }
-                BetonQuest.getInstance().getSaver().add(new Saver.Record(Connector.UpdateType.REMOVE_ALL_OBJECTIVES, objective.toString()));
+                BetonQuest.getInstance().getSaver().add(new Saver.Record(UpdateType.REMOVE_ALL_OBJECTIVES, objective.toString()));
             } else {
                 LOG.warn(instruction.getPackage(), "You tried to call an objective add / finish event in a static context! Only objective delete works here.");
             }

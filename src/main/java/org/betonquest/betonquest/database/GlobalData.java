@@ -3,8 +3,6 @@ package org.betonquest.betonquest.database;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Point;
-import org.betonquest.betonquest.database.Connector.QueryType;
-import org.betonquest.betonquest.database.Connector.UpdateType;
 import org.betonquest.betonquest.database.Saver.Record;
 
 import java.sql.ResultSet;

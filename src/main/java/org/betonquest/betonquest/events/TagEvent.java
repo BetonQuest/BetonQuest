@@ -3,9 +3,9 @@ package org.betonquest.betonquest.events;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
-import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.Saver;
+import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
@@ -43,7 +43,7 @@ public class TagEvent extends QuestEvent {
                         final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(p));
                         playerData.removeTag(tag);
                     }
-                    BetonQuest.getInstance().getSaver().add(new Saver.Record(Connector.UpdateType.REMOVE_ALL_TAGS, tag));
+                    BetonQuest.getInstance().getSaver().add(new Saver.Record(UpdateType.REMOVE_ALL_TAGS, tag));
                 }
             }
         } else if (PlayerConverter.getPlayer(playerID) == null) {
