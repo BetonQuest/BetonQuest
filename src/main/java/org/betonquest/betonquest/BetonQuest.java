@@ -15,6 +15,7 @@ import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.bstats.BStatsMetrics;
 import org.betonquest.betonquest.bstats.CompositeInstructionMetricsSupplier;
 import org.betonquest.betonquest.bstats.InstructionMetricsSupplier;
@@ -758,7 +759,8 @@ public class BetonQuest extends JavaPlugin {
         registerEvents("command", CommandEvent.class);
         registerEvents("tag", TagEvent.class);
         registerEvents("globaltag", GlobalTagEvent.class);
-        registerEvent("journal", new JournalEventFactory(this, InstantSource.system(), getSaver(), getServer()));
+        final JournalEventFactory journalEventFactory = new JournalEventFactory(this, InstantSource.system(), getSaver(), getServer());
+        registerEvent("journal", journalEventFactory, journalEventFactory);
         registerEvents("teleport", TeleportEvent.class);
         registerEvents("explosion", ExplosionEvent.class);
         registerEvents("lightning", LightningEvent.class);
@@ -1303,7 +1305,7 @@ public class BetonQuest extends JavaPlugin {
      *
      * @param name       name of the event type
      * @param eventClass class object for the event
-     * @deprecated replaced by {@link #registerEvent(String, EventFactory)}
+     * @deprecated replaced by {@link #registerEvent(String, EventFactory, StaticEventFactory)}
      */
     @Deprecated
     public void registerEvents(final String name, final Class<? extends QuestEvent> eventClass) {
@@ -1314,12 +1316,13 @@ public class BetonQuest extends JavaPlugin {
     /**
      * Registers an event with its name and a factory to create new instances of the event.
      *
-     * @param name         name of the event
+     * @param name name of the event
      * @param eventFactory factory to create the event
+     * @param staticEventFactory factory to create the static event
      */
-    public void registerEvent(final String name, final EventFactory eventFactory) {
+    public void registerEvent(final String name, final EventFactory eventFactory, final StaticEventFactory staticEventFactory) {
         log.debug("Registering " + name + " event type");
-        eventTypes.put(name, new QuestEventFactoryAdapter(eventFactory));
+        eventTypes.put(name, new QuestEventFactoryAdapter(eventFactory, staticEventFactory));
     }
 
     /**

@@ -70,7 +70,8 @@ class JournalEventFactoryIntegrationTest {
     }
 
     private QuestEventFactoryAdapter createJournalEventFactory() {
-        return new QuestEventFactoryAdapter(new JournalEventFactory(betonQuest, InstantSource.fixed(now), saver, server));
+        final JournalEventFactory journalEventFactory = new JournalEventFactory(betonQuest, InstantSource.fixed(now), saver, server);
+        return new QuestEventFactoryAdapter(journalEventFactory, journalEventFactory);
 
     }
 

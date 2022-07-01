@@ -4,6 +4,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -19,7 +20,7 @@ import org.bukkit.entity.Player;
  * </p>
  * <p>
  * Registering your events is done through
- * {@link BetonQuest#registerEvent(String, EventFactory) registerEvent()} method.
+ * {@link BetonQuest#registerEvent(String, EventFactory, StaticEventFactory) registerEvent()} method.
  * </p>
  */
 @SuppressWarnings("PMD.CommentRequired")

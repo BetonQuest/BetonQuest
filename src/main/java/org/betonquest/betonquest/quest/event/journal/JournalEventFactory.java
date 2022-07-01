@@ -5,6 +5,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
+import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -25,7 +26,7 @@ import java.util.Locale;
 /**
  * Factory to create journal events from {@link Instruction}s.
  */
-public class JournalEventFactory implements EventFactory {
+public class JournalEventFactory implements EventFactory, StaticEventFactory {
     /**
      * BetonQuest instance to provide to events.
      */
