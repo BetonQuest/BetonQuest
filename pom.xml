@@ -407,6 +407,11 @@
       <artifactId>cron-utils</artifactId>
       <version>9.2.0</version>
     </dependency>
+    <dependency>
+      <groupId>com.zaxxer</groupId>
+      <artifactId>HikariCP</artifactId>
+      <version>5.0.1</version>
+    </dependency>
 
     <!-- only dependencies from maven central that are for testing -->
     <dependency>
@@ -632,6 +637,7 @@
                   <include>com.comphenix.packetwrapper</include>
                   <include>io.papermc:paperlib</include>
                   <include>com.cronutils:cron-utils</include>
+                  <include>com.zaxxer</include>
                 </includes>
               </artifactSet>
               <filters>
@@ -690,6 +696,10 @@
                 <relocation>
                   <pattern>com.cronutils</pattern>
                   <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.com.cronutils</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.zaxxer.hikari</pattern>
+                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.com.zaxxer.hikari</shadedPattern>
                 </relocation>
               </relocations>
             </configuration>
