@@ -124,7 +124,7 @@ de:
   previous: '&2Zurück'
   next: '&2Vor'
   inventory_full_backpack: '&e*&bDein Inventar ist voll! Das Item wurde in deinen Rucksack gelegt.&e*'
-  inventory_full_drop: '&e*&bDein Inventar ist voll! Das Item wurde auf den Boden gedroppt.&e*'
+  inventory_full_drop: '&e*&bDein Inventar ist voll! Das Item wurde auf den Boden gelegt.&e*'
   changelog: '&f[BetonQuest]: &e*&bEin neuer Changelog ist im Ordner des Plugins. Schaue dir die Änderungen an und/oder lösche/benenne die Datei um, um diese Meldung zu entfernen!&e*'
   pullback: '&cDu musst das Gespräch erst beenden!'
   items_given: '&2{1}&2 x{2} erhalten.'
@@ -179,8 +179,8 @@ fr:
   backpack_title: 'Sac à dos'
   previous: '&2Précédent'
   next: '&2Suivant'
-  inventory_full_backpack: '&e*&bVotre inventaire est plein! The item was moved to your backpack.&e*' # TODO: missing translation
-  inventory_full_drop: '&e*&bVotre inventaire est plein! The item was dropped on the ground.&e*' # TODO: missing translation
+  inventory_full_backpack: '&e*&bVotre inventaire est plein! L''objet était posé dans votre sac á dos.&e*'
+  inventory_full_drop: '&e*&bVotre inventaire est plein! L''objet était posé au plancher.&e*'
   changelog: '&f[BetonQuest]: &e*&bLa liste des modifications est dans le repertoire du plugin. Lisez bien ce fichier des changements puis supprimez le pour masquer ce message!&e*'
   pullback: '&cVous devez terminer la conversation!'
   items_given: '&2Vous recevez {1}&2 x{2}'
@@ -213,13 +213,13 @@ fr:
   language_missing: '&cChoix de la langue'
   language_not_exist: '&cCette langue n''est pas disponible, choix possibles: '
   days: 'jours'
-  days_singular: 'jours' # TODO: Missing translation
+  days_singular: 'jour'
   hours: 'heures'
-  hours_singular: 'heures' # TODO: Missing translation
+  hours_singular: 'heure'
   minutes: 'minutes'
-  minutes_singular: 'minutes' # TODO: Missing translation
+  minutes_singular: 'minute'
   seconds: 'secondes'
-  seconds_singular: 'secondes' # TODO: Missing translation
+  seconds_singular: 'seconde'
   password: 'mot de passe : '
   condition_variable_met: 'oui'
   condition_variable_not_met: 'non'
@@ -325,13 +325,13 @@ es:
   language_missing: '&cEspecifica un lenguaje'
   language_not_exist: '&cEste lenguaje no esta definido, opciones posibles: '
   days: 'dias'
-  days_singular: 'dias' # TODO: missing translation
+  days_singular: 'dia'
   hours: 'horas'
-  hours_singular: 'horas' # TODO: missing translation
+  hours_singular: 'hora'
   minutes: 'minutos'
-  minutes_singular: 'minutos' # TODO: missing translation
+  minutes_singular: 'minuto'
   seconds: 'segundos'
-  seconds_singular: 'segundos' # TODO: missing translation
+  seconds_singular: 'segundo'
   password: 'clave: '
   condition_variable_met: 'si'
   condition_variable_not_met: 'no'
@@ -465,7 +465,7 @@ hu:
   pullback: '&cBe kell fejeznie a beszélgetést!'
   items_given: '&2Kapott {1}&2 x{2}'
   items_taken: '&2Veszített {1}&2 x{2}'
-  money_given: '&2Received {1} {2}' # TODO: missing translation
+  money_given: '&2Kapott {1} {2}'
   money_taken: '&2Lost {1} {2}' # TODO: missing translation
   point_given: '&2You received {1} points to {2}' # TODO: missing translation
   point_taken: '&2You lost {1} points to {2}' # TODO: missing translation
@@ -493,16 +493,16 @@ hu:
   language_missing: '&cAdja meg a nyelvet'
   language_not_exist: '&cEz a nyelv nincs meghatározva, lehetséges opciók: '
   days: 'nap'
-  days_singular: 'nap' # TODO: missing translation
+  days_singular: 'nap'
   hours: 'óra'
-  hours_singular: 'óra' # TODO: missing translation
+  hours_singular: 'óra'
   minutes: 'perc'
-  minutes_singular: 'perc' # TODO: missing translation
+  minutes_singular: 'perc'
   seconds: 'másodperc'
-  seconds_singular: 'másodperc' # TODO: missing translation
+  seconds_singular: 'másodperc'
   password: 'jelszó: '
-  condition_variable_met: 'yes' # TODO: missing translation
-  condition_variable_not_met: 'no' # TODO: missing translation
+  condition_variable_met: 'igen'
+  condition_variable_not_met: 'nem'
 vi:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bĐối thoại với {1}&b bắt đầu!&e===='
