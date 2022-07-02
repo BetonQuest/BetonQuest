@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event.tag;
 
-import org.betonquest.betonquest.database.PlayerData;
+import org.betonquest.betonquest.database.TagData;
 
 /**
  * A tag changer that will add specified tags.
@@ -21,9 +21,9 @@ public class AddTagChanger implements TagChanger {
     }
 
     @Override
-    public void changeTags(PlayerData playerData) {
+    public void changeTags(TagData tagData) {
         for (final String tag : tags) {
-            playerData.addTag(tag);
+            tagData.addTag(tag);
         }
     }
 }
