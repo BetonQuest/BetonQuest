@@ -14,22 +14,12 @@ public class GlobalTagEvent extends TagEvent {
 
     public GlobalTagEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction);
-        staticness = true;
-        persistent = true;
     }
 
     @Override
     protected Void execute(final Profile profile) {
         final GlobalData globalData = BetonQuest.getInstance().getGlobalData();
-        if (add) {
-            for (final String tag : tags) {
-                globalData.addTag(tag);
-            }
-        } else {
-            for (final String tag : tags) {
-                globalData.removeTag(tag);
-            }
-        }
+        tagChanger.changeTags(globalData);
         return null;
     }
 }

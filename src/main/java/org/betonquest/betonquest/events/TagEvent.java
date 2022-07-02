@@ -21,9 +21,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CommentRequired"})
 public class TagEvent extends QuestEvent {
 
-    protected final String[] tags;
-    protected final boolean add;
-    private final TagChanger tagChanger;
+    private final String[] tags;
+    private final boolean add;
+    protected final TagChanger tagChanger;
 
     public TagEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
