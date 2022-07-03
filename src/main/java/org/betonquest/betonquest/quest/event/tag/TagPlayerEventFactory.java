@@ -1,0 +1,129 @@
+package org.betonquest.betonquest.quest.event.tag;
+
+import lombok.CustomLog;
+import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.quest.event.Event;
+import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.StaticEvent;
+import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
+import org.betonquest.betonquest.database.Saver;
+import org.betonquest.betonquest.database.UpdateType;
+import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.quest.event.DatabaseSaverStaticEvent;
+import org.betonquest.betonquest.quest.event.DoNothingStaticEvent;
+import org.betonquest.betonquest.quest.event.OnlinePlayerGroupStaticEventAdapter;
+import org.betonquest.betonquest.quest.event.SequentialStaticEvent;
+import org.betonquest.betonquest.utils.Utils;
+import org.bukkit.Server;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+/**
+ * Factory to create tag events from {@link Instruction}s.
+ */
+@CustomLog
+public class TagPlayerEventFactory implements EventFactory, StaticEventFactory {
+    /**
+     * BetonQuest instance to provide to events.
+     */
+    private final BetonQuest betonQuest;
+
+    /**
+     * The saver to inject into database-using events.
+     */
+    private final Saver saver;
+
+    /**
+     * The server to use for fetching server-data.
+     */
+    private final Server server;
+
+    /**
+     * Create the tag player event factory.
+     *
+     * @param betonQuest    BetonQuest instance to pass on
+     * @param saver         database saver to use
+     * @param server        server to refer to
+     */
+    public TagPlayerEventFactory(final BetonQuest betonQuest, final Saver saver, final Server server) {
+        this.betonQuest = betonQuest;
+        this.saver = saver;
+        this.server = server;
+    }
+
+    @Override
+    public Event parseEvent(Instruction instruction) throws InstructionParseException {
+        final String action = instruction.next();
+        final String[] tags = getTags(instruction);
+        return switch (action.toLowerCase(Locale.ROOT)) {
+            case "add" -> createAddTagEvent(tags);
+            case "delete" -> createDeleteTagEvent(tags);
+            case "del" ->
+                    createDeprecatedDeleteTagEvent(instruction.getID().getFullID(), instruction.getPackage(), tags);
+            default -> throw new InstructionParseException("Unknown tag action: " + action);
+        };
+    }
+
+    @Override
+    public StaticEvent parseStaticEvent(Instruction instruction) throws InstructionParseException {
+        final String action = instruction.next();
+        final String[] tags = getTags(instruction);
+        return switch (action.toLowerCase(Locale.ROOT)) {
+            case "add" -> new DoNothingStaticEvent();
+            case "delete" -> createStaticDeleteTagEvent(tags);
+            case "del" ->
+                    createDeprecatedStaticDeleteTagEvent(instruction.getID().getFullID(), instruction.getPackage(), tags);
+            default -> throw new InstructionParseException("Unknown tag action: " + action);
+        };
+    }
+
+    @NotNull
+    private String[] getTags(Instruction instruction) throws InstructionParseException {
+        final String[] tags;
+        tags = instruction.getArray();
+        for (int ii = 0; ii < tags.length; ii++) {
+            tags[ii] = Utils.addPackage(instruction.getPackage(), tags[ii]);
+        }
+        return tags;
+    }
+
+    @NotNull
+    private TagEvent createAddTagEvent(String... tags) {
+        TagChanger tagChanger = new AddTagChanger(tags);
+        return new TagEvent(betonQuest::getOfflinePlayerData, tagChanger);
+    }
+
+    @NotNull
+    private TagEvent createDeleteTagEvent(String... tags) {
+        TagChanger tagChanger = new DeleteTagChanger(tags);
+        return new TagEvent(betonQuest::getOfflinePlayerData, tagChanger);
+    }
+
+    @NotNull
+    private TagEvent createDeprecatedDeleteTagEvent(final String fullId, final QuestPackage questPackage, final String... tags) {
+        LOG.warn(questPackage, fullId + ": Replace Tag event argument 'del' by argument 'delete'. Support for 'del' will be removed in future versions.");
+        return createDeleteTagEvent(tags);
+    }
+
+    @NotNull
+    private StaticEvent createStaticDeleteTagEvent(String... tags) {
+        final TagEvent deleteTagEvent = createDeleteTagEvent(tags);
+        final List<StaticEvent> staticEvents = new ArrayList<>(tags.length + 1);
+        staticEvents.add(new OnlinePlayerGroupStaticEventAdapter(server::getOnlinePlayers, deleteTagEvent));
+        for (final String tag : tags) {
+            staticEvents.add(new DatabaseSaverStaticEvent(saver, () -> new Saver.Record(UpdateType.REMOVE_ALL_TAGS, tag)));
+        }
+        return new SequentialStaticEvent(staticEvents.toArray(new StaticEvent[0]));
+    }
+
+    @NotNull
+    private StaticEvent createDeprecatedStaticDeleteTagEvent(final String fullId, final QuestPackage questPackage, String... tags) {
+        LOG.warn(questPackage, fullId + ": Replace Tag event argument 'del' by argument 'delete'. Support for 'del' will be removed in future versions.");
+        return createStaticDeleteTagEvent(tags);
+    }
+}
