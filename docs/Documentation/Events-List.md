@@ -645,6 +645,9 @@ storing variables. This event will do nothing if the player does not already hav
 
 **persistent**, **static**  
 
+Sets the weather in the world the player is currently in. The argument is `sun` for clear, sunny weather, `rain` for pure rain,
+`storm` for storm with rain, lightning and thunder or `thunder` for just lighting and thunder with no rain.
+
 | Parameter  | Syntax            | Default Value               | Explanation                                                                                                   |
 |------------|-------------------|-----------------------------|---------------------------------------------------------------------------------------------------------------|
 | _type_     | Keyword           | :octicons-x-circle-16:      | The type of weather to set. Either `sun`, `rain` or `storm`.                                                  |
