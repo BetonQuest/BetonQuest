@@ -15,13 +15,4 @@ public interface EventFactory {
      * @throws InstructionParseException when the instruction cannot be parsed
      */
     Event parseEvent(Instruction instruction) throws InstructionParseException;
-
-    /**
-     * Parses an instruction to create a {@link StaticEvent}.
-     *
-     * @param instruction instruction to parse
-     * @return "static" event represented by the instruction
-     * @throws InstructionParseException when the instruction cannot be parsed
-     */
-    StaticEvent parseStaticEvent(Instruction instruction) throws InstructionParseException;
 }

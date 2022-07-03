@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.api.quest.event;
 
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+
 /**
  * Interface for "static" quest-events.
  * It represents the "static" event as described in the BetonQuest user documentation.
@@ -9,6 +11,7 @@ package org.betonquest.betonquest.api.quest.event;
 public interface StaticEvent {
     /**
      * Executes the "static" event.
+     * @throws QuestRuntimeException when the event execution fails
      */
-    void execute();
+    void execute() throws QuestRuntimeException;
 }
