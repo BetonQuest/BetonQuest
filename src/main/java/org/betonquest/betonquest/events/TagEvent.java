@@ -9,7 +9,7 @@ import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.quest.event.tag.AddTagChanger;
-import org.betonquest.betonquest.quest.event.tag.RemoveTagChanger;
+import org.betonquest.betonquest.quest.event.tag.DeleteTagChanger;
 import org.betonquest.betonquest.quest.event.tag.TagChanger;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
@@ -41,7 +41,7 @@ public class TagEvent extends QuestEvent {
         if (add) {
             this.tagChanger = new AddTagChanger(tags);
         } else {
-            this.tagChanger = new RemoveTagChanger(tags);
+            this.tagChanger = new DeleteTagChanger(tags);
         }
     }
 

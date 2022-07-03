@@ -5,7 +5,7 @@ import org.betonquest.betonquest.database.TagData;
 /**
  * A tag changer that will remove specified tags.
  */
-public class RemoveTagChanger implements TagChanger {
+public class DeleteTagChanger implements TagChanger {
 
     /**
      * Tags to remove from the player.
@@ -16,7 +16,7 @@ public class RemoveTagChanger implements TagChanger {
      * Create the tag changer that removes tags.
      * @param tags tags to remove
      */
-    public RemoveTagChanger(String... tags) {
+    public DeleteTagChanger(String... tags) {
         this.tags = tags;
     }
 
