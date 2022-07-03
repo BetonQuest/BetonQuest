@@ -13,7 +13,6 @@ import org.betonquest.betonquest.quest.event.tag.RemoveTagChanger;
 import org.betonquest.betonquest.quest.event.tag.TagChanger;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
-import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  * Adds or removes tags from the player
@@ -21,8 +20,13 @@ import org.bukkit.scheduler.BukkitRunnable;
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CommentRequired"})
 public class TagEvent extends QuestEvent {
 
+
     private final String[] tags;
     private final boolean add;
+
+    /**
+     * Tags changer that will add or remove the defined tags.
+     */
     protected final TagChanger tagChanger;
 
     public TagEvent(final Instruction instruction) throws InstructionParseException {
@@ -44,24 +48,18 @@ public class TagEvent extends QuestEvent {
     @SuppressWarnings("PMD.CognitiveComplexity")
     @Override
     protected Void execute(final Profile profile) {
-        if (profile == null && !add) {
-            for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
-                final PlayerData playerData = BetonQuest.getInstance().getPlayerData(onlineProfile);
-                tagChanger.changeTags(playerData);
-            }
-            for (final String tag : tags) {
-                BetonQuest.getInstance().getSaver().add(new Saver.Record(UpdateType.REMOVE_ALL_TAGS, tag));
-            }
-        } else if (profile.getPlayer().isEmpty()) {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    final PlayerData playerData = new PlayerData(profile);
+        if (profile == null) {
+            if (!add) {
+                for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                    final PlayerData playerData = BetonQuest.getInstance().getPlayerData(onlineProfile);
                     tagChanger.changeTags(playerData);
                 }
-            }.runTaskAsynchronously(BetonQuest.getInstance());
+                for (final String tag : tags) {
+                    BetonQuest.getInstance().getSaver().add(new Saver.Record(UpdateType.REMOVE_ALL_TAGS, tag));
+                }
+            }
         } else {
-            final PlayerData playerData = BetonQuest.getInstance().getPlayerData(profile);
+            final PlayerData playerData = BetonQuest.getInstance().getOfflinePlayerData(profile);
             tagChanger.changeTags(playerData);
         }
         return null;
