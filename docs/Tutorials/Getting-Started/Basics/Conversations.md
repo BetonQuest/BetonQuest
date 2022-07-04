@@ -121,7 +121,7 @@ As soon as a pointer argument contains more than one `player_option`, the player
 !!! question ""
     **Tip:** Highlighted lines in {==blue==} are new compared with the previous example. 
 
-``` YAMl title="jack.yml" hl_lines="9-15 19-25" linenums="1"
+``` YAMl title="jack.yml" hl_lines="9-15 20-26" linenums="1"
 conversations:
   Jack:
     quester: Jack
