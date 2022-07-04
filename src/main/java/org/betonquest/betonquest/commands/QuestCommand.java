@@ -277,7 +277,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 case "reload":
                     // just reloading
                     final UUID uuid = sender instanceof Player ? ((Player) sender).getUniqueId() : null;
-                    final boolean noFilters = uuid != null && logWatcher.hasActiveFilters(uuid);
+                    final boolean noFilters = uuid != null && !logWatcher.hasActiveFilters(uuid);
                     if (noFilters) {
                         logWatcher.addFilter(uuid, "*", Level.WARNING);
                     }
