@@ -5,6 +5,9 @@ icon: octicons/download-24
 1. In order to use [BetonQuest](https://www.spigotmc.org/resources/betonquest.2117/) you (obviously)
    need to add the "_BetonQuest.jar_" that you downloaded from Spigot to the "_plugins_" folder in the server.
 
+    !!! warning "Dev Build Documentation Disclaimer"
+        You need the latest BetonQuest 2.0.0 [dev build](https://betonquest.org/) for this tutorial.
+
 2. You also need [Citizens](https://www.spigotmc.org/resources/citizens.13811/) for this
    tutorial. If you can't afford to buy it you can download it for free.
    Just give the first paragraph of their Spigot page a good read, and you will find the link to the free download.
