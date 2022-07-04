@@ -31,6 +31,7 @@ Here is an overview of what your directory structure should look like now:
     - :material-file: package.yml
     - :material-file: {==events.yml==}
     - :material-folder-open: conversations
+        - :material-file: jack.yml
 
 We now have our file structure ready and can start writing events!
 
@@ -50,8 +51,8 @@ So what do we see here?
 * `giveFoodToPlayer`  is the name of the event. You are free to choose any name. However, it is  recommended to name 
    it after what it does. That just makes it easier to understand your quest.
 *  The Event Instruction. 
-    - `give` The first value in the instruction is always the event type.
-    - `steak:16` This is an option of the give event. It defines which item you want to give and which amount 
+    - `give` The first value in the instruction is always the **event type**.
+    - `steak:16` This is an **option** of the give event. It defines which item you want to give and which amount 
       seperated by a colon.
 
 Before we can test if the event works ingame we have to create the item `steak` because BetonQuest doesn't know what a `steak` is.
@@ -72,39 +73,14 @@ items:
 
 1. Links the `steak` item name from your BetonQuest configs to the ingame `minecraft:COOKED_BEEF` item.
 
-Now `steak` is an item name that can be used throughout BetonQuest.
+Now `steak` is an item name that can be used throughout your quest.
 
-## 4. Testing your first event ingame
+## 4. Integrating events into conversations
 
-Now let's see how to run events.
+Let's run the event from your conversation.
 
-!!! warning ""
-    It is very important to save all files everytime you test something!
-    Type `/bq reload` on your server after saving.     
- 
-The easiest way to do this is by running a command:
-
-Enter `/bq event NAME tutorialQuest.giveFoodToPlayer` on the server.
-This command will give you the specified amount of steak if you've done everything right!
-
-| Command Part       | Meaning                                                                                                                           |
-|--------------------|-----------------------------------------------------------------------------------------------------------------------------------|
-| `/bq event`        | Tells BetonQuest that some event should be executed.                                                                              |
-| `NAME`             | A player's name.                                                                                                                  |
-| `tutorialQuest`    | The name of a QuestPackage. This is required because you could have events with the same name in different packages.              |
-| `giveFoodToPlayer` | The name of the event to execute. Don't forget to separate it with a dot from the package `tutorialQuest{==.==}giveFoodToPlayer`. |
-
-You can also run this command from the console (without the slash at the start). 
-
---8<-- "Tutorials/download-solution.md"
-    ```
-    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Events/1-FirstEvent /tutorialQuest overwrite
-    ```
-
-
-## 5. Integrating events into conversations
-
-Events can also be run from conversations.
+!!! question ""
+    **Tip:** Highlighted lines in {==blue==} are new compared with the previous example. 
 
 ``` YAML title="jack.yml" hl_lines="9-10 13-14" linenums="1" 
 conversations:
@@ -130,6 +106,34 @@ conversations:
 
 Make these changes to your conversation, reload and test! The NPC should now give the player food.
 
+## 5. Testing your first event ingame
+
+You can also run events using commands.
+
+!!! warning ""
+    It is very important to save all files everytime you test something!
+    Type `/bq reload` on your server after saving.     
+ 
+The easiest way to do this is by running a command:
+
+Enter `/bq event NAME tutorialQuest.giveFoodToPlayer` on the server.
+This command will give you the specified amount of steak if you've done everything right!
+
+| Command Part       | Meaning                                                                                                                           |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| `/bq event`        | Tells BetonQuest that some event should be executed.                                                                              |
+| `NAME`             | A player's name.                                                                                                                  |
+| `tutorialQuest`    | The name of a QuestPackage. This is required because you could have events with the same name in different packages.              |
+| `giveFoodToPlayer` | The name of the event to execute. Don't forget to separate it with a dot from the package `tutorialQuest{==.==}giveFoodToPlayer`. |
+
+You can also run this command from the console (without the slash at the start). 
+
+--8<-- "Tutorials/download-solution.md"
+    ```
+    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Events/1-FirstEvent /tutorialQuest overwrite
+    ```
+
+
 ## 6. Creating folder events
 
 Now we will create a tour through the mayors city. Meanwhile, we will learn about the teleport and folder events.
@@ -138,24 +142,25 @@ Open the "_events.yml_" file and add these lines:
 ``` YAML title="events.yml" hl_lines="3-7" linenums="1"
 events:
   giveFoodToPlayer: give steak:16
-  townTourEvent: folder location1,location2,location3,blacksmith delay:2 period:5
-  location1: teleport 100;70;100;world # (1)!
-  location2: teleport 200;73;200;world # (2)!
-  location3: teleport 300;71;300;world # (3)!
-  blacksmith: teleport 50;70;50;world # (4)!
+  townTour: folder tpLocation1,tpLocation2,tpLocation3,tpBlacksmith delay:2 period:5
+  tpLocation1: teleport 100;70;100;world # (1)!
+  tpLocation2: teleport 200;73;200;world # (2)!
+  tpLocation3: teleport 300;71;300;world # (3)!
+  tpBlacksmith: teleport 50;70;50;world # (4)!
 ```
 
-1. Adjust this to your world.
-2. Adjust this to your world.
-3. Adjust this to your world.
-4. Adjust this to your world.
+1. Adjust this to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating).
+2. Adjust this to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating)
+3. Adjust this to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating)
+4. Adjust this to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating)
 
-As you can see, there are a few new events of the types `folder` and `teleport`. 
-Every event type is documented in the events list, read what the [folder](../../../Documentation/Events-List.md#run-multiple-events-folder)
-and [teleport](../../../Documentation/Events-List.md#teleport-teleport) events do there. 
+As you can see, there are a few new events of the types `folder` and `teleport`.
+The folder event wraps multiple events inside itself. Once triggered, it simply executes it's events. 
+Every event type is documented in the events list, read more about the [folder](../../../Documentation/Events-List.md#run-multiple-events-folder)
+and [teleport](../../../Documentation/Events-List.md#teleport-teleport) events there. 
 
-Running the `townTourEvent` will teleport you to a new location every five seconds
-until we get to our final destination, the blacksmith. The folder event is done after the `blacksmith` event was run.
+Running the `townTour` event will teleport you to a new location every five seconds
+until we get to our final destination, the blacksmith. The folder event is done after the `tpBlacksmith` event was run.
 
 Now we will add the folder event to Jack's conversation.
 ``` YAML title="jack.yml" hl_lines="11-18 23-29" linenums="1" 
@@ -174,7 +179,7 @@ conversations:
         pointer: enoughTime,noTimeForThat # (1)!
       startTheTour:
         text: Great! It is a honor for me to guide you through the town.
-        events: townTourEvent # (2)!
+        events: townTour # (2)!
       noProblem:
         text: That's fine! Maybe you have time another day... Just talk to me again. See you!
     player_options:

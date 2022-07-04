@@ -31,7 +31,7 @@ uses which conversation. This is how it works:
 npcs:
   '1': Jack
 ```
-This links the NPC with the given ID (`1`) to the conversation with the given identifier (`Jack`).
+This links the NPC with the given Citizens ID (`1`) to the conversation with the given identifier (`Jack`).
 Save the file after editing.
 
 ??? info "How to find the Citizens NPC ID"
@@ -100,15 +100,18 @@ Whenever either a `player_option` or a `NPC_option` point to no other option the
     B -.No pointer present .-> D
     D{Conversation Ends}
     ```
-    
+
+## 3. Trying the Conversation ingame
+
 You can easily check if your quest is working on the server.
 Open the file "_jack.yml_" in the "_conversations_" folder.
 Copy the above conversation into it and save the file.
+
 Now type `/bq reload` in the chat and right-click the NPC.
 
 You can select the answer by pressing the jump key (++space++ by default).
 
-## 3. Conversations with multiple choices
+## 4. Conversations with multiple choices
 
 Let's see how to create multiple responses for the player to choose from using the `pointer` argument.
 
@@ -116,7 +119,7 @@ A `NPC_option` can point to multiple player options at the same time.
 As soon as a pointer argument contains more than one `player_option`, the player can choose.
 
 !!! question ""
-    **Tip:** Highlighted lines are new compared with the previous example. 
+    **Tip:** Highlighted lines in {==blue==} are new compared with the previous example. 
 
 ``` YAMl title="jack.yml" hl_lines="9-15 19-25" linenums="1"
 conversations:
@@ -157,6 +160,8 @@ conversations:
 With these changes, the mayor asks the player where he is from.
 The player can either say that they are from a `smallIsland` or from a
 `bigCity`. This creates two different paths through the conversation. 
+
+## 5. Joining conversation paths
 
 Let's join these paths again to show the same ending:<br>
 Add the same `pointer` argument to both paths' `NPC_options`. They point to the new `yesPlease` `player_option`.
