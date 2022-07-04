@@ -1,26 +1,27 @@
 ---
 icon: material/newspaper
+tags: 
+  - YAML
 ---
-##YAML Syntax
+# YAML Syntax
+This plugin uses the YAML format for all files. You may already know it from other plugins as most use this format.
 Before we can start you need to understand the fundamentals of YAML.
-You have no idea what that is? Well YAML is the format most plugins store their config data in.
 
-Its `key:value` based which means that you will always have to name the thing that you write down before you actually
-write it down. Let me show you an example:
+YAML is `key: "value"` based. This means you use a :octicons-key-16: to get a certain value.
+Let me show you an example:
 
-!!! example "YAML Key:Value"
-        ```YAML
-        key: "value"
-        name: "your thing"
-        ```
+```YAML title="YAML Data Format"
+key: "value"
+Jack: "Some data about Jack"
+```
+Now you can use the :octicons-key-16: `Jack` to obtain `Some data about Jack`.
 
-These keys and values can also be nested into each other by indenting them with two spaces:
+Keys and values can also be nested into each other. Then they **must** be indented with two spaces.
 
-!!! example "Nested YAML"
-        ```YAML
-        outerName:
-          innerName: "innerValue"
-          anotherInnerName: "BetonQuest is great!"
-        ```
+```YAML title="Nested YAML"
+outerName:
+  innerName: "innerValue"
+  anotherInnerName: "BetonQuest is great!"
+```
 
 It's best not to use tabs in your YAML files at all. Use spaces instead. 
