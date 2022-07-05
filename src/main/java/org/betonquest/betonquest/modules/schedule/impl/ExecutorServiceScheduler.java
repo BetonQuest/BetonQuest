@@ -4,7 +4,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
-import org.betonquest.betonquest.modules.schedule.impl.simple.SimpleScheduler;
+import org.betonquest.betonquest.modules.schedule.impl.realtime.daily.RealtimeDailyScheduler;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Locale;
@@ -83,7 +83,7 @@ public abstract class ExecutorServiceScheduler<S extends Schedule> extends Sched
     /**
      * <p>
      * Method that takes a registered schedule and tells the executor when and how to run it.
-     * See {@link SimpleScheduler} for an example how to implement.
+     * See {@link RealtimeDailyScheduler} for an example how to implement.
      * </p>
      * <p><b>
      * Do not confuse this with {@link #addSchedule(Schedule)}, which does only add a schedule to the list of registered

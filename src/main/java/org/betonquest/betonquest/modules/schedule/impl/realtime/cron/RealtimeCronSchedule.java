@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.schedule.impl.realtime;
+package org.betonquest.betonquest.modules.schedule.impl.realtime.cron;
 
 import org.betonquest.betonquest.api.schedule.CronSchedule;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -8,7 +8,7 @@ import org.bukkit.configuration.ConfigurationSection;
 /**
  * Schedules events to occur at a specific real time, using cron syntax.
  */
-public class RealtimeSchedule extends CronSchedule {
+public class RealtimeCronSchedule extends CronSchedule {
 
     /**
      * Creates a new instance of the schedule.
@@ -17,7 +17,7 @@ public class RealtimeSchedule extends CronSchedule {
      * @param instruction config defining the schedule
      * @throws InstructionParseException if parsing the config failed
      */
-    public RealtimeSchedule(final ScheduleID scheduleID, final ConfigurationSection instruction) throws InstructionParseException {
+    public RealtimeCronSchedule(final ScheduleID scheduleID, final ConfigurationSection instruction) throws InstructionParseException {
         super(scheduleID, instruction, DEFAULT_CRON_DEFINITION, true);
     }
 }

@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.schedule.impl.simple;
+package org.betonquest.betonquest.modules.schedule.impl.realtime.daily;
 
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -17,7 +17,7 @@ import java.time.format.DateTimeParseException;
  * Time is just {@code HH:mm} format (e.g. 14:45)
  * and defines the time of day when the events from this schedule will be run.
  */
-public class SimpleSchedule extends Schedule {
+public class RealtimeDailySchedule extends Schedule {
 
     /**
      * The DateTimeFormatter used for parsing the time strings.
@@ -36,7 +36,7 @@ public class SimpleSchedule extends Schedule {
      * @param instruction config defining the schedule
      * @throws InstructionParseException if parsing the config failed
      */
-    public SimpleSchedule(final ScheduleID scheduleID, final ConfigurationSection instruction) throws InstructionParseException {
+    public RealtimeDailySchedule(final ScheduleID scheduleID, final ConfigurationSection instruction) throws InstructionParseException {
         super(scheduleID, instruction);
         try {
             this.timeToRun = LocalTime.parse(super.time, TIME_FORMAT);

@@ -157,10 +157,10 @@ import org.betonquest.betonquest.modules.logger.handler.chat.ChatHandler;
 import org.betonquest.betonquest.modules.logger.handler.history.HistoryHandler;
 import org.betonquest.betonquest.modules.schedule.EventScheduling;
 import org.betonquest.betonquest.modules.schedule.LastExecutionCache;
-import org.betonquest.betonquest.modules.schedule.impl.realtime.RealtimeSchedule;
-import org.betonquest.betonquest.modules.schedule.impl.realtime.RealtimeScheduler;
-import org.betonquest.betonquest.modules.schedule.impl.simple.SimpleSchedule;
-import org.betonquest.betonquest.modules.schedule.impl.simple.SimpleScheduler;
+import org.betonquest.betonquest.modules.schedule.impl.realtime.cron.RealtimeCronSchedule;
+import org.betonquest.betonquest.modules.schedule.impl.realtime.cron.RealtimeCronScheduler;
+import org.betonquest.betonquest.modules.schedule.impl.realtime.daily.RealtimeDailySchedule;
+import org.betonquest.betonquest.modules.schedule.impl.realtime.daily.RealtimeDailyScheduler;
 import org.betonquest.betonquest.modules.updater.UpdateDownloader;
 import org.betonquest.betonquest.modules.updater.UpdateSourceHandler;
 import org.betonquest.betonquest.modules.updater.Updater;
@@ -894,8 +894,8 @@ public class BetonQuest extends JavaPlugin {
         registerVariable("math", MathVariable.class);
 
         //register schedule types
-        registerScheduleType("simple", SimpleSchedule.class, new SimpleScheduler(this, lastExecutionCache));
-        registerScheduleType("realtime", RealtimeSchedule.class, new RealtimeScheduler(this, lastExecutionCache));
+        registerScheduleType("realtime-daily", RealtimeDailySchedule.class, new RealtimeDailyScheduler(this, lastExecutionCache));
+        registerScheduleType("realtime-cron", RealtimeCronSchedule.class, new RealtimeCronScheduler(this, lastExecutionCache));
 
         // initialize compatibility with other plugins
         new Compatibility();

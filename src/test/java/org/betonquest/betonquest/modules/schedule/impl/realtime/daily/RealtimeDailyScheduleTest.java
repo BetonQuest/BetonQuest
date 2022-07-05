@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.schedule.impl.simple;
+package org.betonquest.betonquest.modules.schedule.impl.realtime.daily;
 
 import org.betonquest.betonquest.api.schedule.ScheduleBaseTest;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -17,11 +17,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Tests for the simple schedule.
+ * Tests for the daily realtime schedule.
  */
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(BetonQuestLoggerService.class)
-class SimpleScheduleTest extends ScheduleBaseTest {
+class RealtimeDailyScheduleTest extends ScheduleBaseTest {
 
     /**
      * The DateTimeFormatter used for parsing the time strings.
@@ -29,8 +29,8 @@ class SimpleScheduleTest extends ScheduleBaseTest {
     private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm");
 
     @Override
-    protected SimpleSchedule createSchedule() throws InstructionParseException {
-        return new SimpleSchedule(scheduleID, section);
+    protected RealtimeDailySchedule createSchedule() throws InstructionParseException {
+        return new RealtimeDailySchedule(scheduleID, section);
     }
 
     @Override
@@ -45,7 +45,7 @@ class SimpleScheduleTest extends ScheduleBaseTest {
     @Override
     @SuppressWarnings("PMD.JUnit5TestShouldBePackagePrivate")
     public void testScheduleValidLoad() throws InstructionParseException {
-        final SimpleSchedule schedule = createSchedule();
+        final RealtimeDailySchedule schedule = createSchedule();
         assertEquals(LocalTime.of(22, 0), schedule.getTimeToRun(), "Returned time should be correct");
     }
 
@@ -53,7 +53,7 @@ class SimpleScheduleTest extends ScheduleBaseTest {
     @Test
     void testScheduleInvalidLoad() {
         when(section.getString("time")).thenReturn("0 22 * * * *");
-        final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> new SimpleSchedule(scheduleID, section), "Schedule should throw instruction parse exception for invalid time format");
+        final InstructionParseException exception = assertThrows(InstructionParseException.class, () -> new RealtimeDailySchedule(scheduleID, section), "Schedule should throw instruction parse exception for invalid time format");
         final String expected = "Unable to parse time '0 22 * * * *': ";
         assertTrue(exception.getMessage().startsWith(expected), "InstructionParseException should have correct reason message");
     }
@@ -62,7 +62,7 @@ class SimpleScheduleTest extends ScheduleBaseTest {
     void testScheduleNextExecutionIn1H() throws InstructionParseException {
         final LocalDateTime targetTime = LocalDateTime.now().plusHours(1).withSecond(0).withNano(0);
         when(section.getString("time")).thenReturn(targetTime.format(TIME_FORMAT));
-        final SimpleSchedule schedule = new SimpleSchedule(scheduleID, section);
+        final RealtimeDailySchedule schedule = new RealtimeDailySchedule(scheduleID, section);
         assertEquals(targetTime.toLocalTime(), schedule.getTimeToRun(), "Returned time should be correct");
         final Instant expected = targetTime.toInstant(OffsetDateTime.now().getOffset());
         assertEquals(expected, schedule.getNextExecution(), "Next execution time should be as expected");
@@ -72,7 +72,7 @@ class SimpleScheduleTest extends ScheduleBaseTest {
     void testScheduleNextExecutionIn23H() throws InstructionParseException {
         final LocalDateTime targetTime = LocalDateTime.now().plusHours(23).withSecond(0).withNano(0);
         when(section.getString("time")).thenReturn(targetTime.format(TIME_FORMAT));
-        final SimpleSchedule schedule = new SimpleSchedule(scheduleID, section);
+        final RealtimeDailySchedule schedule = new RealtimeDailySchedule(scheduleID, section);
         assertEquals(targetTime.toLocalTime(), schedule.getTimeToRun(), "Returned time should be correct");
         final Instant expected = targetTime.toInstant(OffsetDateTime.now().getOffset());
         assertEquals(expected, schedule.getNextExecution(), "Next execution time should be as expected");

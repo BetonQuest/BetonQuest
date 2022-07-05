@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.schedule.impl.realtime;
+package org.betonquest.betonquest.modules.schedule.impl.realtime.cron;
 
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
@@ -20,11 +20,11 @@ import java.util.PriorityQueue;
 import java.util.concurrent.TimeUnit;
 
 /**
- * The scheduler for {@link RealtimeSchedule}.
+ * The scheduler for {@link RealtimeCronSchedule}.
  */
 @SuppressWarnings("PMD.DoNotUseThreads")
 @CustomLog(topic = "Schedules")
-public class RealtimeScheduler extends ExecutorServiceScheduler<RealtimeSchedule> {
+public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCronSchedule> {
 
     /**
      * A cache where the last execution times of a schedule are stored.
@@ -42,7 +42,7 @@ public class RealtimeScheduler extends ExecutorServiceScheduler<RealtimeSchedule
      * @param plugin             plugin used for bukkit scheduling, should be BetonQuest instance!
      * @param lastExecutionCache cache where the last execution times of a schedule are stored
      */
-    public RealtimeScheduler(final Plugin plugin, final LastExecutionCache lastExecutionCache) {
+    public RealtimeCronScheduler(final Plugin plugin, final LastExecutionCache lastExecutionCache) {
         super(plugin);
         this.lastExecutionCache = lastExecutionCache;
     }
@@ -64,7 +64,7 @@ public class RealtimeScheduler extends ExecutorServiceScheduler<RealtimeSchedule
      */
     private void runRebootSchedules() {
         LOG.debug("Collecting reboot schedules...");
-        final List<RealtimeSchedule> rebootSchedules = schedules.values().stream()
+        final List<RealtimeCronSchedule> rebootSchedules = schedules.values().stream()
                 .filter(CronSchedule::shouldRunOnReboot).toList();
         LOG.debug("Found " + rebootSchedules.size() + " reboot schedules. They will be run on next server tick.");
         if (!rebootSchedules.isEmpty()) {
@@ -82,12 +82,12 @@ public class RealtimeScheduler extends ExecutorServiceScheduler<RealtimeSchedule
      * The method should guarantee that the schedules are executed in the order they would have occurred.
      */
     private void catchupMissedSchedules() {
-        final List<RealtimeSchedule> missedSchedules = listMissedSchedules();
+        final List<RealtimeCronSchedule> missedSchedules = listMissedSchedules();
         LOG.debug("Found " + missedSchedules.size() + " missed schedule runs that will be caught up.");
         if (!missedSchedules.isEmpty()) {
             plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
                 LOG.debug("Running missed schedules to catch up...");
-                for (final RealtimeSchedule missed : missedSchedules) {
+                for (final RealtimeCronSchedule missed : missedSchedules) {
                     lastExecutionCache.cacheExecutionTime(missed.getId(), Instant.now());
                     LOG.debug(missed.getId().getPackage(), "Schedule '" + missed.getId() + "' runs its events...");
                     for (final EventID eventID : missed.getEvents()) {
@@ -120,8 +120,8 @@ public class RealtimeScheduler extends ExecutorServiceScheduler<RealtimeSchedule
      *
      * @return list of schedules that should be run to catch up any missed schedules
      */
-    private List<RealtimeSchedule> listMissedSchedules() {
-        final List<RealtimeSchedule> missed = new ArrayList<>();
+    private List<RealtimeCronSchedule> listMissedSchedules() {
+        final List<RealtimeCronSchedule> missed = new ArrayList<>();
 
         final PriorityQueue<MissedRun> missedRuns = oldestMissedRuns();
 
@@ -156,7 +156,7 @@ public class RealtimeScheduler extends ExecutorServiceScheduler<RealtimeSchedule
      */
     private PriorityQueue<MissedRun> oldestMissedRuns() {
         final PriorityQueue<MissedRun> missedRuns = new PriorityQueue<>(schedules.size() + 1, Comparator.comparing(MissedRun::runTime));
-        for (final RealtimeSchedule schedule : schedules.values()) {
+        for (final RealtimeCronSchedule schedule : schedules.values()) {
             if (schedule.getCatchup() != CatchupStrategy.NONE) {
                 final Optional<ZonedDateTime> cachedExecutionTime = lastExecutionCache.getLastExecutionTime(schedule.getId())
                         .map(cachedTime -> cachedTime.atZone(ZoneId.systemDefault()));
@@ -171,7 +171,7 @@ public class RealtimeScheduler extends ExecutorServiceScheduler<RealtimeSchedule
     }
 
     @Override
-    protected void schedule(final RealtimeSchedule schedule) {
+    protected void schedule(final RealtimeCronSchedule schedule) {
         schedule.getExecutionTime().timeToNextExecution(ZonedDateTime.now()).ifPresent(durationToNextRun ->
                 executor.schedule(() -> {
                     lastExecutionCache.cacheExecutionTime(schedule.getId(), Instant.now());
@@ -186,6 +186,6 @@ public class RealtimeScheduler extends ExecutorServiceScheduler<RealtimeSchedule
      * @param schedule the schedule to which the missed run belongs
      * @param runTime  the time when the missed run should have taken place.
      */
-    record MissedRun(RealtimeSchedule schedule, ZonedDateTime runTime) {
+    record MissedRun(RealtimeCronSchedule schedule, ZonedDateTime runTime) {
     }
 }

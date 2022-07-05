@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.schedule.impl.simple;
+package org.betonquest.betonquest.modules.schedule.impl.realtime.daily;
 
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
@@ -18,11 +18,11 @@ import java.util.PriorityQueue;
 import java.util.concurrent.TimeUnit;
 
 /**
- * The scheduler for {@link SimpleSchedule}.
+ * The scheduler for {@link RealtimeDailySchedule}.
  */
 @SuppressWarnings("PMD.DoNotUseThreads")
 @CustomLog(topic = "Schedules")
-public class SimpleScheduler extends ExecutorServiceScheduler<SimpleSchedule> {
+public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDailySchedule> {
 
     /**
      * A cache where the last execution times of a schedule are stored.
@@ -35,7 +35,7 @@ public class SimpleScheduler extends ExecutorServiceScheduler<SimpleSchedule> {
      * @param plugin             plugin used for bukkit scheduling, should be BetonQuest instance!
      * @param lastExecutionCache cache where the last execution times of a schedule are stored
      */
-    public SimpleScheduler(final Plugin plugin, final LastExecutionCache lastExecutionCache) {
+    public RealtimeDailyScheduler(final Plugin plugin, final LastExecutionCache lastExecutionCache) {
         super(plugin);
         this.lastExecutionCache = lastExecutionCache;
     }
@@ -54,12 +54,12 @@ public class SimpleScheduler extends ExecutorServiceScheduler<SimpleSchedule> {
      */
     private void catchupMissedSchedules() {
         LOG.debug("Collecting missed schedules...");
-        final List<SimpleSchedule> missedSchedules = listMissedSchedules();
+        final List<RealtimeDailySchedule> missedSchedules = listMissedSchedules();
         LOG.debug("Found " + missedSchedules.size() + " missed schedule runs that will be caught up.");
         if (!missedSchedules.isEmpty()) {
             plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
                 LOG.debug("Running missed schedules to catch up...");
-                for (final SimpleSchedule schedule : missedSchedules) {
+                for (final RealtimeDailySchedule schedule : missedSchedules) {
                     lastExecutionCache.cacheExecutionTime(schedule.getId(), Instant.now());
                     LOG.debug(schedule.getId().getPackage(), "Schedule '" + schedule + "' runs its events.");
                     for (final EventID event : schedule.getEvents()) {
@@ -92,8 +92,8 @@ public class SimpleScheduler extends ExecutorServiceScheduler<SimpleSchedule> {
      *
      * @return list of schedules that should be run to catch up any missed schedules
      */
-    private List<SimpleSchedule> listMissedSchedules() {
-        final List<SimpleSchedule> missed = new ArrayList<>();
+    private List<RealtimeDailySchedule> listMissedSchedules() {
+        final List<RealtimeDailySchedule> missed = new ArrayList<>();
         final PriorityQueue<MissedRun> missedRuns = oldestMissedRuns();
 
         while (!missedRuns.isEmpty()) {
@@ -119,7 +119,7 @@ public class SimpleScheduler extends ExecutorServiceScheduler<SimpleSchedule> {
      */
     private PriorityQueue<MissedRun> oldestMissedRuns() {
         final PriorityQueue<MissedRun> missedRuns = new PriorityQueue<>(schedules.size() + 1, Comparator.comparing(MissedRun::runTime));
-        for (final SimpleSchedule schedule : schedules.values()) {
+        for (final RealtimeDailySchedule schedule : schedules.values()) {
             if (schedule.getCatchup() != CatchupStrategy.NONE) {
                 final Optional<Instant> lastExecutionTime = lastExecutionCache.getLastExecutionTime(schedule.getId());
                 if (lastExecutionTime.isPresent()
@@ -133,7 +133,7 @@ public class SimpleScheduler extends ExecutorServiceScheduler<SimpleSchedule> {
 
 
     @Override
-    protected void schedule(final SimpleSchedule schedule) {
+    protected void schedule(final RealtimeDailySchedule schedule) {
         executor.schedule(() -> {
             lastExecutionCache.cacheExecutionTime(schedule.getId(), Instant.now());
             executeEvents(schedule);
@@ -147,6 +147,6 @@ public class SimpleScheduler extends ExecutorServiceScheduler<SimpleSchedule> {
      * @param schedule the schedule to which the missed run belongs
      * @param runTime  the time when the missed run should have taken place.
      */
-    private record MissedRun(SimpleSchedule schedule, Instant runTime) {
+    private record MissedRun(RealtimeDailySchedule schedule, Instant runTime) {
     }
 }
