@@ -51,7 +51,7 @@ All existing RPGMenu users must update their RPGMenu config file. Simply rename 
 
 ### _latest_
 - All your static events need to be converted to the new schedules system.
-  The [`simple`](../Schedules.md#simple-schedule-simple) schedule makes this easy:
+  The [`realtime-daily`](../Schedules.md#daily-realtime-schedule-realtime-daily) schedule makes this easy:
   ```YAML title="Old Syntax"
   static:
     '09:00': beton
@@ -60,7 +60,7 @@ All existing RPGMenu users must update their RPGMenu config file. Simply rename 
   ```YAML title="New Syntax"
   schedules:
     betonAt09: #(1)!
-      type: simple #(2)!
+      type: realtime-daily #(2)!
       time: '09:00' #(3)!
       events: beton #(4)!
     cmdAt1123:
@@ -68,14 +68,14 @@ All existing RPGMenu users must update their RPGMenu config file. Simply rename 
       time: '11:23'
       events: some_command,command_announcement
   ```
-    1.  A name for the new schedule.  
-        Can be anything you want for organizing your schedules.
+  1. A name for the new schedule.  
+     Can be anything you want for organizing your schedules.
 
-    2.  The type schedule `simple` was created for easy updating.   
-        It behaves just like the old static events.
+  2. The type schedule `realtime-daily` was created for easy updating.   
+     It behaves just like the old static events.
 
-    3.  The former key is now the time value.  
-        You still have to put it in 'quotes'.
-    
-    4.  The former value is now the events value.
+  3. The former key is now the time value.  
+     You still have to put it in 'quotes'.
+
+  4. The former value is now the events value.
 
