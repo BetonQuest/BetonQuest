@@ -2,16 +2,16 @@
 icon: octicons/clock-16
 ---
 # Schedules
-Schedules allow you to run some events periodically at specific times.
+Schedules allow you to run events periodically at specific times.
 
 ## Static Events
 When running events from a schedule it is unclear how events should behave:  
 Should an event be run once for each player on the server?  
-For events like `setblock` this would mean that the event is executed 20 times if 20 players are online.  
+For events like `setblock` this would mean that the event is executed 20 times if 20 players are online. 
 
 This problem is solved by dividing all events into two categories:
 
-1. **Static events** are not tied to a specific player, meaning they could be run independent.  
+1. **Static events** are not tied to a specific player, meaning they can be run independent.  
    `setblock` for example always changes the same block, no matter for who it was called.  
    When run by a schedule a static event will fire exactly once.
 
@@ -40,7 +40,7 @@ All static events have a static flag in the docs, so you can easily distinguish 
 
 Realtime schedules are, as the name already says, schedules that run at a specific real world time, for example at 12
 o'clock each day.
-Do not confuse this with minecraft time!
+Do not confuse these with Minecraft's ingame time!
 
 ### Daily realtime schedule: `realtime-daily`
 
@@ -70,12 +70,10 @@ Just specify the time of the day when the events should run, and they will run e
 === "Full Example"
 
     ```YAML
-    # This example works out of the box. You can just copy-paste it to try out how it works.
-    variables:
-      lever_location: '18;4;7;world'  # change the location of the lever that powers the bell to work with your world
+    # This example works out of the box. Copy-paste to try out how it works.
     events:
-      bell_ring: 'folder bell_lever_toggle,bell_lever_toggle,bell_lever_toggle,bell_lever_toggle period:0.5'
-      bell_lever_toggle: 'lever $lever_location$ toggle'
+      bell_sound: 'notify io:sound sound:block.bell.use'
+      bell_ring: 'folder bell_sound,bell_sound,bell_sound,bell_sound period:0.5'
       notify_goodNight: 'notify &6Good night, sleep well!'
     schedules:
       sayGoodNight:
@@ -90,15 +88,17 @@ Just specify the time of the day when the events should run, and they will run e
 ### Cron realtime schedule: `realtime-cron`
 
 The cron realtime schedule is an incredibly flexible tool to define when events shall run.  
-It is similar to the [`realtime-daily`](#daily-realtime-schedule-realtime-daily) schedule but the time is defined as [**
-cron expression**](https://en.wikipedia.org/wiki/Cron).  
+It is similar to the [`realtime-daily`](#daily-realtime-schedule-realtime-daily) schedule but the time is defined as a
+<a href="https://en.wikipedia.org/wiki/Cron" target="_blank">cron expression</a>.  
 The supported syntax is identical to the original unix crontab syntax.
 
 !!! tip
 
-    **https://crontab.guru/** is a great tool for learning and testing cron expressions.
-    It also provides a long list of [**examples**](https://crontab.guru/examples.html).  
-    We do support all features listed there, **even the non-standard ones!**
+    <a href="https://crontab.guru/" target="_blank">**Crontab Guru**</a>
+    is a great tool for learning and testing cron expressions.
+    It also provides a long list of
+    <a href="https://crontab.guru/examples.html" target="_blank">**examples**</a>.
+    BetonQuest supports all features listed there, **even the non-standard ones!**
 
 === "Simple Example"
 
@@ -124,12 +124,10 @@ The supported syntax is identical to the original unix crontab syntax.
 === "Full Example"
 
     ```YAML
-    # This example works out of the box. You can just copy-paste it to try out how it works.
-    variables:
-      lever_location: '18;4;7;world'  # change the location of the lever that powers the bell to work with your world
+    # This example works out of the box. Copy-paste to try out how it works.
     events:
-      bell_ring: 'folder bell_lever_toggle,bell_lever_toggle,bell_lever_toggle,bell_lever_toggle period:0.5'
-      bell_lever_toggle: 'lever $lever_location$ toggle'
+      bell_sound: 'notify io:sound sound:block.bell.use'
+      bell_ring: 'folder bell_sound,bell_sound,bell_sound,bell_sound period:0.5'
       notify_goodNight: 'notify &6Good night, sleep well!'
     schedules:
       sayGoodNight:
@@ -150,12 +148,10 @@ The following special expressions were added for extended functionality or simpl
 
 ### Catchup Strategies
 
-While the server is shut down, of course no events can be run so some runs of a schedule might get missed.  
-If you want to be sure that a schedule will be executed, even if the server has been shut down at that time it should
-have run,
-you can define a **catchup strategy**.
+Obviously, scheduled events can't be run while the server is shut down.  
+If you want to be sure that a schedule will nevertheless be run, you can define a **catchup strategy**.
 
-On startup, it is checked which schedules have been missed and (if needed) they will be run on the first tick.  
+On startup, BetonQuest checks which schedules have been missed and (if needed) they will be run on the first tick.  
 Schedules of the same type will be run in the order they were missed.
 For mixed types the **order** can **not** be **guaranteed**.
 
@@ -173,7 +169,7 @@ For mixed types the **order** can **not** be **guaranteed**.
     1.  Don't catch up any missed schedules after reboot.  
         _(default value, can be ommitted)_
 
-    _As it's just an announcement we don't care what hapens after restart._
+    _As it's just an announcement we don't need to repeat it. The right time has passed._
 
 === "ONE"
 
@@ -188,7 +184,7 @@ For mixed types the **order** can **not** be **guaranteed**.
 
     1.  If the schedule was missed (no matter how often) run it **once** after reboot.
 
-    _The quarry should be reset every day at 3am. If the server was shut down at that time, run the event once at reboot._
+    _The quarry should be reset every day at 3am. Even if the server was shut down at that time, run the event once at reboot._
 
 === "ALL"
 

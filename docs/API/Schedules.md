@@ -49,13 +49,13 @@ public class MyCustomSchedule extends Schedule/* (1)! */ {
 }
 ```
 
-1.  You can extend either `Schedule` or `CronSchedule` class.   
+1.  You can extend either `Schedule` or `CronSchedule`.   
     The latter has already implemented all cron parsing logic.
 
 2.  You need to define a Constructor that matches **exactly** this one.  
     **Otherwise BetonQuest can't parse your schedule!**
 
-3.  `getTime()`/`super.time` provide the raw time string.  
+3.  `getTime()`/`super.time` provides the raw time string.  
     You'll need to parse it and add your own logic.  
     _In this example we just use it as interval of ticks._
 
@@ -118,7 +118,7 @@ public class MyCustomScheduler extends Scheduler<MyCustomSchedule>/* (1)! */ {
 
 2.  **Always remember to call `super.start()` in your `start()` method!**
 
-3.  An easy way iterate over all loaded schedules.
+3.  An easy way to iterate over all loaded schedules.
 
 4.  Schedule your events to run when their time instruction says.
 
