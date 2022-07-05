@@ -15,6 +15,7 @@ import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
+import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.bstats.BStatsMetrics;
@@ -115,7 +116,6 @@ import org.betonquest.betonquest.events.GiveJournalEvent;
 import org.betonquest.betonquest.events.GlobalPointEvent;
 import org.betonquest.betonquest.events.GlobalTagEvent;
 import org.betonquest.betonquest.events.IfElseEvent;
-import org.betonquest.betonquest.events.JournalEvent;
 import org.betonquest.betonquest.events.KillEvent;
 import org.betonquest.betonquest.events.KillMobEvent;
 import org.betonquest.betonquest.events.LanguageEvent;
@@ -161,7 +161,13 @@ import org.betonquest.betonquest.modules.schedule.impl.realtime.RealtimeSchedule
 import org.betonquest.betonquest.modules.schedule.impl.realtime.RealtimeScheduler;
 import org.betonquest.betonquest.modules.schedule.impl.simple.SimpleSchedule;
 import org.betonquest.betonquest.modules.schedule.impl.simple.SimpleScheduler;
-import org.betonquest.betonquest.modules.versioning.Updater;
+import org.betonquest.betonquest.modules.updater.UpdateDownloader;
+import org.betonquest.betonquest.modules.updater.UpdateSourceHandler;
+import org.betonquest.betonquest.modules.updater.Updater;
+import org.betonquest.betonquest.modules.updater.source.DevelopmentUpdateSource;
+import org.betonquest.betonquest.modules.updater.source.ReleaseUpdateSource;
+import org.betonquest.betonquest.modules.updater.source.implementations.BetonQuestDevelopmentSource;
+import org.betonquest.betonquest.modules.updater.source.implementations.GitHubReleaseSource;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.notify.ActionBarNotifyIO;
 import org.betonquest.betonquest.notify.AdvancementNotifyIO;
@@ -205,6 +211,7 @@ import org.betonquest.betonquest.objectives.SmeltingObjective;
 import org.betonquest.betonquest.objectives.StepObjective;
 import org.betonquest.betonquest.objectives.TameObjective;
 import org.betonquest.betonquest.objectives.VariableObjective;
+import org.betonquest.betonquest.quest.event.journal.JournalEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.FromClassQuestEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactoryAdapter;
@@ -772,7 +779,8 @@ public class BetonQuest extends JavaPlugin {
         registerEvents("command", CommandEvent.class);
         registerEvents("tag", TagEvent.class);
         registerEvents("globaltag", GlobalTagEvent.class);
-        registerEvents("journal", JournalEvent.class);
+        final JournalEventFactory journalEventFactory = new JournalEventFactory(this, InstantSource.system(), getSaver(), getServer());
+        registerEvent("journal", journalEventFactory, journalEventFactory);
         registerEvents("teleport", TeleportEvent.class);
         registerEvents("explosion", ExplosionEvent.class);
         registerEvents("lightning", LightningEvent.class);
@@ -937,7 +945,14 @@ public class BetonQuest extends JavaPlugin {
 
         // updater
         final Version pluginVersion = new Version(this.getDescription().getVersion());
-        updater = new Updater(config, this.getFile(), pluginVersion);
+        final File tempFile = new File(getServer().getUpdateFolderFile(), this.getFile().getName() + ".temp");
+        final File finalFile = new File(getServer().getUpdateFolderFile(), this.getFile().getName());
+        final UpdateDownloader updateDownloader = new UpdateDownloader(getServer().getPluginsFolder().toURI(), tempFile, finalFile);
+        final List<ReleaseUpdateSource> releaseHandlers = List.of(new GitHubReleaseSource("https://api.github.com/repos/BetonQuest/BetonQuest/releases"));
+        final List<DevelopmentUpdateSource> developmentHandlers = List.of(new BetonQuestDevelopmentSource("https://dev.betonquest.org/api/v1"));
+        final UpdateSourceHandler updateSourceHandler = new UpdateSourceHandler(releaseHandlers, developmentHandlers);
+        updater = new Updater(config, pluginVersion, updateSourceHandler, updateDownloader, this,
+                getServer().getScheduler(), InstantSource.system());
 
         //RPGMenu integration
         rpgMenu = new RPGMenu();
@@ -1154,7 +1169,7 @@ public class BetonQuest extends JavaPlugin {
         lastExecutionCache.reload();
 
         // reload updater settings
-        BetonQuest.getInstance().getUpdater().searchUpdate();
+        BetonQuest.getInstance().getUpdater().search();
         // stop current global locations listener
         // and start new one with reloaded configs
         log.debug("Restarting global locations");
@@ -1286,6 +1301,14 @@ public class BetonQuest extends JavaPlugin {
         return playerData;
     }
 
+    public PlayerData getOfflinePlayerData(final String playerID) {
+        final PlayerData playerData = getPlayerData(playerID);
+        if (playerData == null) {
+            return new PlayerData(playerID);
+        }
+        return playerData;
+    }
+
     /**
      * Retrieves GlobalData object which handles all global tags and points
      *
@@ -1320,7 +1343,7 @@ public class BetonQuest extends JavaPlugin {
      *
      * @param name       name of the event type
      * @param eventClass class object for the event
-     * @deprecated replaced by {@link #registerEvent(String, EventFactory)}
+     * @deprecated replaced by {@link #registerEvent(String, EventFactory, StaticEventFactory)}
      */
     @Deprecated
     public void registerEvents(final String name, final Class<? extends QuestEvent> eventClass) {
@@ -1331,12 +1354,13 @@ public class BetonQuest extends JavaPlugin {
     /**
      * Registers an event with its name and a factory to create new instances of the event.
      *
-     * @param name         name of the event
-     * @param eventFactory factory to create the event
+     * @param name               name of the event
+     * @param eventFactory       factory to create the event
+     * @param staticEventFactory factory to create the static event
      */
-    public void registerEvent(final String name, final EventFactory eventFactory) {
+    public void registerEvent(final String name, final EventFactory eventFactory, final StaticEventFactory staticEventFactory) {
         log.debug("Registering " + name + " event type");
-        eventTypes.put(name, new QuestEventFactoryAdapter(eventFactory));
+        eventTypes.put(name, new QuestEventFactoryAdapter(eventFactory, staticEventFactory));
     }
 
     /**

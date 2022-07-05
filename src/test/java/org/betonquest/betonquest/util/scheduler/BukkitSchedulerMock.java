@@ -56,6 +56,11 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
      */
     private final Deque<ExecutionException> asyncExceptions;
     /**
+     * List of all {@link Future} {@link BukkitTask}s that have been executed async with the
+     * {@link ThreadPoolExecutor#execute(Runnable)} method.
+     */
+    private final List<Future<?>> asyncTasks;
+    /**
      * The current tick that should be executed.
      */
     private long currentTick;
@@ -71,6 +76,7 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
         pool = new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS, new SynchronousQueue<>());
         scheduledTasks = new TaskList();
         asyncExceptions = new LinkedList<>();
+        asyncTasks = new ArrayList<>();
     }
 
     private static Runnable wrapTask(final ScheduledTask task) {
@@ -144,19 +150,41 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
     }
 
     /**
-     * Gets the number of async tasks which are awaiting execution.
+     * Waits until all asynchronous tasks have finished executing or the timeout elapses.
+     * The default timeout is one second.
+     * <p>
+     * Keep in mind that the timeout still takes effect while debugging tests!
+     * Waiting too long at a break point can affect the execution order of your test
+     * compared to the normal execution!
      *
-     * @return The number of async tasks which are pending execution.
+     * @return true when all async tasks have finished
      */
-    public int getNumberOfQueuedAsyncTasks() {
-        int queuedAsync = 0;
-        for (final ScheduledTask task : scheduledTasks.getCurrentTaskList()) {
-            if (task.isSync() || task.isCancelled() || task.isRunning()) {
-                continue;
+    public boolean waitAsyncTasksFinished() {
+        return waitAsyncTasksFinished(1000L);
+    }
+
+    /**
+     * Waits until all asynchronous tasks have finished executing or the timeout elapses.
+     * <p>
+     * Keep in mind that the timeout still takes effect while debugging tests!
+     * Waiting too long at a break point can affect the execution order of your test
+     * compared to the normal execution!
+     *
+     * @param timeout the timeout in milliseconds
+     * @return true when all async tasks have finished
+     */
+    public boolean waitAsyncTasksFinished(final long timeout) {
+        final long untilTimeMillis = System.currentTimeMillis() + timeout;
+        while (!asyncTasks.isEmpty() && System.currentTimeMillis() < untilTimeMillis) {
+            asyncTasks.removeIf(Future::isDone);
+            try {
+                Thread.sleep(10L);
+            } catch (final InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
             }
-            queuedAsync++;
         }
-        return queuedAsync;
+        return asyncTasks.isEmpty();
     }
 
     @Override
@@ -289,7 +317,7 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
     public @NotNull
     BukkitTask runTaskAsynchronously(@NotNull final Plugin plugin, @NotNull final Runnable task) {
         final ScheduledTask scheduledTask = new ScheduledTask(taskId++, plugin, false, currentTick, task);
-        pool.execute(wrapTask(scheduledTask));
+        asyncTasks.add(pool.submit(wrapTask(scheduledTask)));
         return scheduledTask;
     }
 

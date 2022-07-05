@@ -11,6 +11,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.ErrorManager;
+import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
@@ -40,5 +42,20 @@ class ChatHandlerTest {
         handler.publish(record);
 
         verify(audience).sendMessage(any());
+        handler.flush();
+        handler.close();
+    }
+
+    @Test
+    void testFormatException() {
+        final ChatHandler handler = new ChatHandler(mock(RecordReceiverSelector.class), mock(BukkitAudiences.class));
+        final Formatter formatter = mock(Formatter.class);
+        when(formatter.format(any())).thenThrow(new RuntimeException());
+        handler.setFormatter(formatter);
+        final ErrorManager errorManager = mock(ErrorManager.class);
+        handler.setErrorManager(errorManager);
+
+        handler.publish(new LogRecord(Level.INFO, ""));
+        verify(errorManager).error(any(), any(RuntimeException.class), anyInt());
     }
 }

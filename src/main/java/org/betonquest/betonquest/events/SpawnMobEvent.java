@@ -37,8 +37,8 @@ public class SpawnMobEvent extends QuestEvent {
     private final QuestItem mainHand;
     private final QuestItem offHand;
     private final Item[] drops;
-    private String name;
-    private String marked;
+    private final String name;
+    private final String marked;
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     public SpawnMobEvent(final Instruction instruction) throws InstructionParseException {
@@ -53,14 +53,10 @@ public class SpawnMobEvent extends QuestEvent {
             throw new InstructionParseException("Entity type '" + entity + "' does not exist", e);
         }
         amount = instruction.getVarNum();
-        name = instruction.getOptional("name");
-        if (name != null) {
-            name = Utils.format(name, true, false).replace('_', ' ');
-        }
-        marked = instruction.getOptional("marked");
-        if (marked != null) {
-            marked = Utils.addPackage(instruction.getPackage(), marked);
-        }
+        final String nameString = instruction.getOptional("name");
+        name = nameString == null ? null : Utils.format(nameString, true, false).replace('_', ' ');
+        final String markedString = instruction.getOptional("marked");
+        marked = markedString == null ? null : Utils.addPackage(instruction.getPackage(), markedString);
         ItemID item;
         item = instruction.getItem(instruction.getOptional("h"));
         helmet = item == null ? null : new QuestItem(item);

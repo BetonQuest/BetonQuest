@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -75,7 +76,7 @@ public final class ChatFormatter extends Formatter {
         final String message = record.getMessage();
         final Component throwable = formatComponentThrowable(record);
 
-        final TextComponent formattedRecord = Component.text(getPluginTag(plugin) + questPackage + color + message)
+        final TextComponent formattedRecord = Component.text(displayMethod.getPluginTag(pluginName, plugin, shortName) + questPackage + color + message)
                 .append(throwable);
         return GsonComponentSerializer.gson().serialize(formattedRecord);
     }
@@ -112,44 +113,6 @@ public final class ChatFormatter extends Formatter {
                 .clickEvent(ClickEvent.copyToClipboard(throwable));
     }
 
-    private String getPluginTag(final String plugin) {
-        final boolean match = pluginName != null && pluginName.equals(plugin);
-        final Pair<String, String> tagParts = getPluginTagParts(plugin, match);
-        if (tagParts == null) {
-            return "";
-        }
-        final String tag = tagParts.getLeft() + (tagParts.getLeft().isEmpty() || tagParts.getRight().isEmpty() ? "" : " | ") + tagParts.getRight();
-        return ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + tag + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
-    }
-
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.SwitchStmtsShouldHaveDefault"})
-    private Pair<String, String> getPluginTagParts(final String plugin, final boolean match) {
-        final String left;
-        final String right;
-        switch (displayMethod) {
-            case NONE -> {
-                return null;
-            }
-            case PLUGIN -> {
-                left = match && shortName != null ? shortName : plugin;
-                right = "";
-            }
-            case ROOT_PLUGIN -> {
-                left = shortName == null ? pluginName : shortName;
-                right = "";
-            }
-            case ROOT_PLUGIN_AND_PLUGIN -> {
-                left = shortName == null ? pluginName : shortName;
-                right = match ? "" : plugin;
-            }
-            default -> {
-                left = "";
-                right = "";
-            }
-        }
-        return Pair.of(left, right);
-    }
-
     /**
      * Display methods for the plugin name before the log message.
      */
@@ -157,18 +120,63 @@ public final class ChatFormatter extends Formatter {
         /**
          * Non plugin name before log messages.
          */
-        NONE,
+        NONE((params) -> null),
         /**
          * The plugin that created the log message.
          */
-        PLUGIN,
+        PLUGIN((params) -> {
+            final String plugin = params.match ? getPluginNameOrShortName(params) : params.otherPluginName();
+            return Pair.of(plugin, "");
+        }),
         /**
          * Only the root plugin that created this formatter.
          */
-        ROOT_PLUGIN,
+        ROOT_PLUGIN((params) -> Pair.of(getPluginNameOrShortName(params), "")),
         /**
          * The root plugin that created this formatter and the plugin that created the log message.
          */
-        ROOT_PLUGIN_AND_PLUGIN,
+        ROOT_PLUGIN_AND_PLUGIN((params) -> Pair.of(getPluginNameOrShortName(params), params.match ? "" : params.otherPluginName));
+
+        /**
+         * A function, that create the two tag parts.
+         */
+        private final Function<Parameters, Pair<String, String>> producer;
+
+        PluginDisplayMethod(final Function<Parameters, Pair<String, String>> producer) {
+            this.producer = producer;
+        }
+
+        private static String getPluginNameOrShortName(final Parameters params) {
+            return params.shortName == null ? params.pluginName : params.shortName;
+        }
+
+        /**
+         * Get the tag to display, related to the {@link PluginDisplayMethod}.
+         *
+         * @param pluginName      The plugin name of this plugin
+         * @param otherPluginName The plugin name of the other plugin
+         * @param shortName       The short tag of the pluginName
+         * @return the processed plugin tag
+         */
+        public String getPluginTag(final String pluginName, final String otherPluginName, final String shortName) {
+            final boolean match = pluginName != null && pluginName.equals(otherPluginName);
+            final Pair<String, String> tagParts = producer.apply(new Parameters(pluginName, otherPluginName, shortName, match));
+            if (tagParts == null) {
+                return "";
+            }
+            final String tag = tagParts.getLeft() + (tagParts.getLeft().isEmpty() || tagParts.getRight().isEmpty() ? "" : " | ") + tagParts.getRight();
+            return ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + tag + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
+        }
+
+        /**
+         * All data that should be passed to the producer function.
+         *
+         * @param pluginName      The name of the own plugin
+         * @param otherPluginName The name of the actual plugin that logged the message
+         * @param shortName       A short tag for the own plugin
+         * @param match           true when pluginName and otherPluginName do match
+         */
+        private record Parameters(String pluginName, String otherPluginName, String shortName, boolean match) {
+        }
     }
 }

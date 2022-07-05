@@ -21,8 +21,8 @@ public class HeroesClassCondition extends Condition {
     private final boolean primary;
     private final boolean mastered;
     private final VariableNumber level;
-    private HeroClass heroClass;
-    private boolean any;
+    private final HeroClass heroClass;
+    private final boolean any;
 
     public HeroesClassCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
@@ -32,7 +32,9 @@ public class HeroesClassCondition extends Condition {
         string = instruction.next();
         if ("any".equalsIgnoreCase(string)) {
             any = true;
+            heroClass = null;
         } else {
+            any = false;
             heroClass = Heroes.getInstance().getClassManager().getClass(string);
             if (heroClass == null) {
                 throw new InstructionParseException("Class '" + string + "' does not exist");

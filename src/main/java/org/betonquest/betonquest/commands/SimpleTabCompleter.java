@@ -7,6 +7,7 @@ import org.bukkit.command.TabCompleter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 /**
  * Interface which handles tab complete for commands.
@@ -14,22 +15,22 @@ import java.util.Locale;
 @SuppressWarnings("PMD.CommentRequired")
 public interface SimpleTabCompleter extends TabCompleter {
 
-
     @Override
+    @SuppressWarnings("PMD.ReturnEmptyCollectionRatherThanNull")
     default List<String> onTabComplete(final CommandSender sender, final Command command, final String alias, final String[] args) {
-        final List<String> completations = this.simpleTabComplete(sender, command, alias, args);
-        if (completations == null) {
+        final Optional<List<String>> completions = this.simpleTabComplete(sender, command, alias, args);
+        if (completions.isEmpty()) {
             return null;
         }
         final List<String> out = new ArrayList<>();
         final String lastArg = args[args.length - 1];
-        for (final String completation : completations) {
-            if (lastArg == null || lastArg.matches(" *") || completation.toLowerCase(Locale.ROOT).startsWith(lastArg.toLowerCase(Locale.ROOT))) {
-                out.add(completation);
+        for (final String completion : completions.get()) {
+            if (lastArg == null || lastArg.matches(" *") || completion.toLowerCase(Locale.ROOT).startsWith(lastArg.toLowerCase(Locale.ROOT))) {
+                out.add(completion);
             }
         }
         return out;
     }
 
-    List<String> simpleTabComplete(CommandSender sender, Command command, String alias, String... args);
+    Optional<List<String>> simpleTabComplete(CommandSender sender, Command command, String alias, String... args);
 }

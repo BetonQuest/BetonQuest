@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * This is a test for the {@link MultiConfiguration} and it's thrown {@link KeyConflictException}s.
  */
-@SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.AvoidDuplicateLiterals"})
+@SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage"})
 class MultiConfigurationKeyConflictExceptionTest {
     /**
      * Config with key3 as value

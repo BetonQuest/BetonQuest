@@ -1,11 +1,12 @@
 package org.betonquest.betonquest.modules.logger;
 
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import org.betonquest.betonquest.modules.logger.handler.chat.PlayerPackageReceiverSelector;
 import org.betonquest.betonquest.modules.logger.handler.chat.ReceiverSelectorRegistry;
 import org.betonquest.betonquest.modules.logger.handler.chat.RecordReceiverSelector;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collections;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -18,7 +19,7 @@ public class PlayerLogWatcher {
     /**
      * Storage for active selectors for ease of removing / changing them.
      */
-    private final Map<UUID, Map<String, RecordReceiverSelector>> activeSelectors;
+    private final Table<UUID, String, RecordReceiverSelector> activeSelectors;
 
     /**
      * Selector registry that is being controlled by this facade.
@@ -32,7 +33,7 @@ public class PlayerLogWatcher {
      * @param selectorRegistry registry to be controlled
      */
     public PlayerLogWatcher(final ReceiverSelectorRegistry selectorRegistry) {
-        activeSelectors = new HashMap<>();
+        activeSelectors = HashBasedTable.create();
         this.selectorRegistry = selectorRegistry;
     }
 
@@ -43,7 +44,7 @@ public class PlayerLogWatcher {
      * @return true if at least one filter is currently registered for the player; false otherwise
      */
     public boolean hasActiveFilters(final UUID subject) {
-        return !getSelectorsFor(subject).isEmpty();
+        return activeSelectors.containsRow(subject);
     }
 
     /**
@@ -53,7 +54,7 @@ public class PlayerLogWatcher {
      * @return all filters registered for the player
      */
     public Set<String> getActivePatterns(final UUID subject) {
-        return getSelectorsFor(subject).keySet();
+        return activeSelectors.row(subject).keySet();
     }
 
     /**
@@ -64,7 +65,7 @@ public class PlayerLogWatcher {
      * @return true if the pattern is active for the player; false otherwise
      */
     public boolean isActivePattern(final UUID subject, final String packagePattern) {
-        return getSelectorsFor(subject).containsKey(packagePattern);
+        return activeSelectors.contains(subject, packagePattern);
     }
 
     /**
@@ -80,9 +81,10 @@ public class PlayerLogWatcher {
      * @param minimumLevel the minimum logging level to filter for
      */
     public void addFilter(final UUID subject, final String packagePattern, final Level minimumLevel) {
-        final PlayerPackageReceiverSelector newSelector = new PlayerPackageReceiverSelector(Set.of(subject), minimumLevel, packagePattern);
+        final PlayerPackageReceiverSelector newSelector = new PlayerPackageReceiverSelector(
+                Collections.singleton(subject), minimumLevel, packagePattern);
         selectorRegistry.addSelector(newSelector);
-        final RecordReceiverSelector oldSelector = getSelectorsFor(subject).put(packagePattern, newSelector);
+        final RecordReceiverSelector oldSelector = activeSelectors.put(subject, packagePattern, newSelector);
         unregisterSelector(oldSelector);
     }
 
@@ -94,7 +96,7 @@ public class PlayerLogWatcher {
      * @param packagePattern the package pattern to be removed
      */
     public void removeFilter(final UUID subject, final String packagePattern) {
-        final RecordReceiverSelector oldSelector = getSelectorsFor(subject).remove(packagePattern);
+        final RecordReceiverSelector oldSelector = activeSelectors.remove(subject, packagePattern);
         unregisterSelector(oldSelector);
     }
 
@@ -102,9 +104,5 @@ public class PlayerLogWatcher {
         if (oldSelector != null) {
             selectorRegistry.removeSelector(oldSelector);
         }
-    }
-
-    private Map<String, RecordReceiverSelector> getSelectorsFor(final UUID subject) {
-        return activeSelectors.computeIfAbsent(subject, uuid -> new HashMap<>());
     }
 }

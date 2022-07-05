@@ -20,5 +20,5 @@ public interface Token {
      * @throws QuestRuntimeException if the Token contained variables that could not be resolved
      *                               due to an Quest Runtime exception
      */
-    double resolve(final String playerID) throws QuestRuntimeException;
+    double resolve(String playerID) throws QuestRuntimeException;
 }

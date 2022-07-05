@@ -2,18 +2,19 @@
 icon: material/handshake
 ---
 # Compatibility
-**In total 30 plugins have dedicated support for BetonQuest.**
+**In total 31 plugins have dedicated support for BetonQuest.**
 
 BetonQuest hooks into other plugins by itself to provide more events, conditions and objectives or other features. 
 25 plugins are supported right now:    
 _AureliumSkills, Brewery, Citizens, Denizen, EffectLib, Heroes, HolographicDisplays, JobsReborn, LuckPerms, Magic,
-mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, ProtocolLib, Quests,
-Shopkeepers, ProSkillAPI, Skript, Vault, WorldEdit, FastAsyncWorldEdit and WorldGuard._
+mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, ProtocolLib, Quests, Shopkeepers, ProSkillAPI,
+Skript, Vault, WorldEdit, FastAsyncWorldEdit and WorldGuard._
 
 Some plugins also hook into BetonQuest and provide support by themselves:  
 [_nuNPCDestinations_](https://www.spigotmc.org/resources/13863/),
 [_CalebCompass_](https://www.spigotmc.org/resources/82674/),
-[NotQuests](https://www.spigotmc.org/resources/95872/)
+[NotQuests](https://www.spigotmc.org/resources/95872/),
+[HonnyCompass](https://github.com/honnisha/HonnyCompass)
 
 There are also plugins that hook into BetonQuest that require a clientside mod:  
 [_BetonQuestGUI_](https://github.com/giovanni-bozzano/betonquest-gui-plugin),

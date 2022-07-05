@@ -19,16 +19,14 @@ public class AureliumSkillsLevelCondition extends Condition {
 
     private final VariableNumber targetLevelVar;
     private final Skill skill;
-    private boolean mustBeEqual;
+    private final boolean mustBeEqual;
 
     public AureliumSkillsLevelCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
 
         final String skillName = instruction.next();
         targetLevelVar = instruction.getVarNum();
-        if (instruction.hasArgument("equal")) {
-            mustBeEqual = true;
-        }
+        mustBeEqual = instruction.hasArgument("equal");
 
         final AureliumSkills aureliumSkills = AureliumAPI.getPlugin();
         skill = aureliumSkills.getSkillRegistry().getSkill(skillName);

@@ -1,0 +1,28 @@
+[
+  {
+    "tag_name": "v1.12.0",
+    "assets": [
+      {
+        "name": "BetonQuest.jar",
+        "browser_download_url": "https://github.com/BetonQuest/BetonQuest/releases/download/v1.12.0/BetonQuest.jar"
+      },
+      {
+        "name": "Documentation.zip",
+        "browser_download_url": "https://github.com/BetonQuest/BetonQuest/releases/download/v1.12.0/Documentation.zip"
+      }
+    ]
+  },
+  {
+    "tag_name": "v1.12.1",
+    "assets": [
+      {
+        "name": "BetonQuest.jar",
+        "browser_download_url": "https://github.com/BetonQuest/BetonQuest/releases/download/v1.12.1/BetonQuest.jar"
+      },
+      {
+        "name": "Documentation.zip",
+        "browser_download_url": "https://github.com/BetonQuest/BetonQuest/releases/download/v1.12.1/Documentation.zip"
+      }
+    ]
+  }
+]

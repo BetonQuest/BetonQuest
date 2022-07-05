@@ -163,6 +163,6 @@ class NotifySound {
 
     @FunctionalInterface
     private interface SoundPlayer {
-        void play(final Player player) throws QuestRuntimeException;
+        void play(Player player) throws QuestRuntimeException;
     }
 }

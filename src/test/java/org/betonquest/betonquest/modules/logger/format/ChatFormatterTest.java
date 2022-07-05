@@ -16,6 +16,7 @@ import static org.mockito.Mockito.*;
 /**
  * A test for the {@link ChatFormatter}.
  */
+@SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
 @ExtendWith(BetonQuestLoggerService.class)
 class ChatFormatterTest {
     /**
@@ -46,7 +47,6 @@ class ChatFormatterTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     void testChatFormatting() {
         final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.INFO, MESSAGE, plugin);
         final String expected1 = "{\"text\":\"" + FORMATTED_MESSAGE;
@@ -62,7 +62,6 @@ class ChatFormatterTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     void testChatFormattingLogRecord() {
         final LogRecord record = new LogRecord(Level.INFO, MESSAGE);
         final String expected1 = "{\"text\":\"" + FORMATTED_MESSAGE;
@@ -81,7 +80,6 @@ class ChatFormatterTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     void testChatFormattingPlugin() {
         final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.INFO, MESSAGE, pluginExtension);
         final String expected1 = "{\"text\":\"" + FORMATTED_MESSAGE;
@@ -118,6 +116,29 @@ class ChatFormatterTest {
         final String end = "}},\"text\":\" Hover for Stacktrace!\"}],\"text\":\"" + FORMATTED_MESSAGE;
         assertEquals(start, message.substring(0, start.length()), "The start of the log message is not correct formatted");
         assertEquals(end, message.substring(message.length() - end.length()), "The end of the log message is not correct formatted");
+    }
+
+    @Test
+    void testConstructorThrowsException() {
+        final Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> new ChatFormatter(ChatFormatter.PluginDisplayMethod.PLUGIN, null, "BQ"),
+                "Expected IllegalArgumentException is thrown");
+        assertEquals("Plugin must be non null if displayMethod is not NONE", exception.getMessage(), "Expected other exception message");
+    }
+
+    @SuppressWarnings({"PMD.AvoidDuplicateLiterals"})
+    @Test
+    void testLevelColors() {
+        final ChatFormatter formatter = new ChatFormatter();
+        assertEquals("{\"text\":\"§4\"}", formatter.format(new LogRecord(Level.OFF, "")), "Expected color 4");
+        assertEquals("{\"text\":\"§4\"}", formatter.format(new LogRecord(Level.SEVERE, "")), "Expected color 4");
+        assertEquals("{\"text\":\"§c\"}", formatter.format(new LogRecord(Level.WARNING, "")), "Expected color c");
+        assertEquals("{\"text\":\"§f\"}", formatter.format(new LogRecord(Level.INFO, "")), "Expected color f");
+        assertEquals("{\"text\":\"§7\"}", formatter.format(new LogRecord(Level.CONFIG, "")), "Expected color 7");
+        assertEquals("{\"text\":\"§7\"}", formatter.format(new LogRecord(Level.FINE, "")), "Expected color 7");
+        assertEquals("{\"text\":\"§7\"}", formatter.format(new LogRecord(Level.FINER, "")), "Expected color 7");
+        assertEquals("{\"text\":\"§7\"}", formatter.format(new LogRecord(Level.FINEST, "")), "Expected color 7");
+        assertEquals("{\"text\":\"§7\"}", formatter.format(new LogRecord(Level.ALL, "")), "Expected color 7");
     }
 
     private void assertLogMessage(final ChatFormatter.PluginDisplayMethod displayMethod, final Plugin plugin,

@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmocore;
 
 import net.Indyuce.mmocore.api.event.PlayerLevelUpEvent;
+import net.Indyuce.mmocore.experience.Profession;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
@@ -32,11 +33,12 @@ public class MMOCoreProfessionObjective extends Objective implements Listener {
         if (!containsPlayer(playerID) || !checkConditions(playerID)) {
             return;
         }
-        if (event.getProfession() == null) {
+        final Profession profession = event.getProfession();
+        if (profession == null) {
             return;
         }
 
-        if (!event.getProfession().getName().equalsIgnoreCase(professionName) || event.getNewLevel() < targetLevel) {
+        if (!profession.getName().equalsIgnoreCase(professionName) || event.getNewLevel() < targetLevel) {
             return;
         }
         completeObjective(playerID);

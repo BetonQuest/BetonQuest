@@ -16,8 +16,8 @@ import org.betonquest.betonquest.id.ObjectiveID;
 @CustomLog
 public class ObjectivePropertyVariable extends Variable {
 
-    private String propertyName;
-    private ObjectiveID objective;
+    private final String propertyName;
+    private final ObjectiveID objective;
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public ObjectivePropertyVariable(final Instruction instruction) throws InstructionParseException {
@@ -32,13 +32,17 @@ public class ObjectivePropertyVariable extends Variable {
         } else if (parts.length == 4) {
             objectiveID = parts[1] + "." + parts[2];
             propertyName = parts[3];
+        } else {
+            propertyName = null;
         }
 
+        ObjectiveID tempObjective = null;
         try {
-            objective = new ObjectiveID(instruction.getPackage(), objectiveID);
+            tempObjective = new ObjectiveID(instruction.getPackage(), objectiveID);
         } catch (final ObjectNotFoundException e) {
             LOG.warn(instruction.getPackage(), "Error in objective property variable '" + instruction + "' " + e.getMessage());
         }
+        objective = tempObjective;
     }
 
     @Override
