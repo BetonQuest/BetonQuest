@@ -1,14 +1,10 @@
 package org.betonquest.betonquest.modules.schedule.impl.simple;
 
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.schedule.ScheduleBaseTest;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
-import org.betonquest.betonquest.modules.schedule.ScheduleID;
-import org.bukkit.configuration.ConfigurationSection;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Instant;
@@ -26,49 +22,31 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(BetonQuestLoggerService.class)
 @SuppressWarnings({"PMD.AvoidDuplicateLiterals"})
-class SimpleScheduleTest {
+class SimpleScheduleTest extends ScheduleBaseTest {
 
     /**
      * The DateTimeFormatter used for parsing the time strings.
      */
     private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm");
 
-    /**
-     * ID of the schedule to test.
-     */
-    @Mock
-    private ScheduleID scheduleID;
+    @Override
+    protected SimpleSchedule createSchedule() throws InstructionParseException {
+        return new SimpleSchedule(scheduleID, section);
+    }
 
-    /**
-     * Package of the schedule to test.
-     */
-    @Mock
-    private QuestPackage questPackage;
-
-    /**
-     * Configuration section of the schedule to test.
-     */
-    @Mock
-    private ConfigurationSection section;
-
-    @BeforeEach
-    void prepareConfig() {
-        when(questPackage.getString("events.bell_ring"))
-                .thenReturn("folder bell_lever_toggle,bell_lever_toggle period:0.5");
-        when(questPackage.getString("events.notify_goodNight"))
-                .thenReturn("notify &6Good night, sleep well!");
-
-        when(scheduleID.getPackage()).thenReturn(questPackage);
-
-        when(section.getString("time")).thenReturn("22:00");
-        when(section.getString("events")).thenReturn("bell_ring,notify_goodNight");
-        when(section.getString("catchup")).thenReturn("NONE");
+    @Override
+    protected void prepareConfig() {
+        super.prepareConfig();
+        lenient().when(section.getString("catchup")).thenReturn("NONE");
+        lenient().when(section.getString("time")).thenReturn("22:00");
     }
 
 
     @Test
-    void testScheduleValidLoad() throws InstructionParseException {
-        final SimpleSchedule schedule = new SimpleSchedule(scheduleID, section);
+    @Override
+    @SuppressWarnings("PMD.JUnit5TestShouldBePackagePrivate")
+    public void testScheduleValidLoad() throws InstructionParseException {
+        final SimpleSchedule schedule = createSchedule();
         assertEquals(LocalTime.of(22, 0), schedule.getTimeToRun(), "Returned time should be correct");
     }
 
