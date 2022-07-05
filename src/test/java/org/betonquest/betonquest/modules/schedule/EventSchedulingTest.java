@@ -30,7 +30,6 @@ import static org.mockito.Mockito.*;
  * Tests if starting & stopping EventScheduling works reliable and if loading Schedules works as intended.
  */
 @ExtendWith(BetonQuestLoggerService.class)
-@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 class EventSchedulingTest {
 
     /**

@@ -21,7 +21,6 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(BetonQuestLoggerService.class)
-@SuppressWarnings({"PMD.AvoidDuplicateLiterals"})
 class SimpleScheduleTest extends ScheduleBaseTest {
 
     /**
