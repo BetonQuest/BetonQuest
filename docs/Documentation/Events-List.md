@@ -603,10 +603,14 @@ storing variables. This event will do nothing if the player does not already hav
 ## Weather: `weather`
 
 Sets weather. The argument is `sun`, `rain` or `storm`.
+You can add a duration, which can be a variable and is specified in seconds.
+Additionally, you can set the targeted world. If no target word is defined, the players world is used.  
 
 !!! example
     ```YAML
-    weather rain
+    weather sun
+    weather rain duration:60 world:rpgworld
+    weather storm duration:%rain_time%
     ```
     
 ## Give experience: `experience`
