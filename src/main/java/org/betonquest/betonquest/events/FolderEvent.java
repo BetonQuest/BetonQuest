@@ -58,13 +58,15 @@ public class FolderEvent extends QuestEvent {
         } else {
             chosenList.addAll(Arrays.asList(events));
         }
-        double execDelay = (delay == null) ? 0d : delay.getDouble(playerID);
-        if (minutes) {
-            execDelay *= 20 * 60;
-        } else if (!ticks) {
-            execDelay *= 20;
-        }
-        if (period == null) {
+
+        final Long execDelay = getInTicks(delay, playerID);
+        final Long execPeriod = getInTicks(period, playerID);
+
+        if (execDelay == null && execPeriod == null) {
+            for (final EventID event : chosenList) {
+                BetonQuest.event(playerID, event);
+            }
+        } else if (execPeriod == null) {
             new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -72,13 +74,11 @@ public class FolderEvent extends QuestEvent {
                         BetonQuest.event(playerID, event);
                     }
                 }
-            }.runTaskLater(BetonQuest.getInstance(), (int) execDelay);
+            }.runTaskLater(BetonQuest.getInstance(), execDelay);
         } else {
-            double execPeriod = period.getDouble(playerID);
-            if (minutes) {
-                execPeriod *= 20 * 60;
-            } else if (!ticks) {
-                execPeriod *= 20;
+            if (execDelay == null) {
+                final EventID event = chosenList.remove(0);
+                BetonQuest.event(playerID, event);
             }
             new BukkitRunnable() {
                 @Override
@@ -89,9 +89,28 @@ public class FolderEvent extends QuestEvent {
                         this.cancel();
                     }
                 }
-            }.runTaskTimer(BetonQuest.getInstance(), (int) execDelay, (int) execPeriod);
+            }.runTaskTimer(BetonQuest.getInstance(), execDelay == null ? execPeriod : execDelay, execPeriod);
         }
         return null;
+    }
+
+    private Long getInTicks(final VariableNumber timeVariable, final String playerID) {
+        if (timeVariable == null) {
+            return null;
+        }
+
+        long time = timeVariable.getInt(playerID);
+        if (time == 0) {
+            return null;
+        }
+
+        if (minutes) {
+            time *= 20 * 60;
+        }
+        if (!ticks) {
+            time *= 20;
+        }
+        return time;
     }
 
 }

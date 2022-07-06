@@ -76,6 +76,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Items now support AIR
 - Menus now support new `click` options `shiftLeft`, `shiftRight` and `middleMouse` to execute events on item clicks
     - Therefore `left` and `right` in the `click` section no longer include shift clicks
+- `folder` event - now executes events immediately if no delay is set
 - Things that are also changed in 1.12.X:
     - math variable now allows rounding output with the ~ operator
     - French translation has been updated
