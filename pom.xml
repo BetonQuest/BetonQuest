@@ -677,8 +677,8 @@
                   <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.io.papermc.lib</shadedPattern>
                 </relocation>
                 <relocation>
-                  <pattern>com.github.jmrozanec</pattern>
-                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.com.github.jmrozanec</shadedPattern>
+                  <pattern>com.cronutils</pattern>
+                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.com.cronutils</shadedPattern>
                 </relocation>
               </relocations>
             </configuration>
