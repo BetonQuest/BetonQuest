@@ -14,7 +14,7 @@ Changes introduced in:
 
 - [2.0.0-DEV-98](#200-dev-98)
 - [2.0.0-DEV-238](#200-dev-238)
-- [_latest_]()
+- [2.0.0-DEV-337](#200-dev-337)
 
 ### 2.0.0-DEV-98
 All existing RPGMenu users must update their RPGMenu config file. Simply rename it from `rpgmenu.config.yml` to
@@ -49,7 +49,7 @@ All existing RPGMenu users must update their RPGMenu config file. Simply rename 
   with any file and folder names you want. Only the `package.yml` is reserved as indicator for a quest
   package. [DOCS](../Reference.md#packages)
 
-### _latest_
+### 2.0.0-DEV-337
 - All your static events need to be converted to the new schedules system.
   The [`realtime-daily`](../Schedules.md#daily-realtime-schedule-realtime-daily) schedule makes this easy:
   ```YAML title="Old Syntax"
