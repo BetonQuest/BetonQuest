@@ -21,7 +21,7 @@ This problem is solved by dividing all events into two categories:
 !!! warning
 
     **Static events used by schedules cannot have conditions defined,
-    as the plugin cannot check any condition without the player.**
+    as the plugin cannot check any condition for a player who is offline.**
 
 All static events have a static flag in the docs, so you can easily distinguish them from non-static ones.
 
@@ -67,6 +67,8 @@ Just specify the time of the day when the events should run, and they will run e
 
     _Runs every day at 10pm, will ring a bell and wish everyone a good night._
 
+    ---
+
 === "Full Example"
 
     ```YAML
@@ -81,6 +83,8 @@ Just specify the time of the day when the events should run, and they will run e
         time: '22:00'
         events: bell_ring,notify_goodNight
     ```
+    
+    ---
 
 !!! warning
     **The time must always be in `''` to avoid problems. It needs leading zero if less than 10.**
@@ -121,6 +125,8 @@ The supported syntax is identical to the original unix crontab syntax.
 
     _Runs every day at 10pm, will ring a bell and wish everyone a good night._
 
+    ---
+
 === "Full Example"
 
     ```YAML
@@ -135,6 +141,9 @@ The supported syntax is identical to the original unix crontab syntax.
         time: '0 22 * * *'
         events: bell_ring,notify_goodNight
     ```
+
+    ---
+
 The following special expressions were added for extended functionality or simpler usage:
 
 | Expression              | Description                                                    | Equivalent to |
@@ -171,6 +180,9 @@ For mixed types the **order** can **not** be **guaranteed**.
 
     _As it's just an announcement we don't need to repeat it. The right time has passed._
 
+    ---
+
+
 === "ONE"
 
     ```YAML title="Example"
@@ -186,6 +198,9 @@ For mixed types the **order** can **not** be **guaranteed**.
 
     _The quarry should be reset every day at 3am. Even if the server was shut down at that time, run the event once at reboot._
 
+    ---
+
+
 === "ALL"
 
     ```YAML title="Example"
@@ -200,6 +215,9 @@ For mixed types the **order** can **not** be **guaranteed**.
     1.  Run the schedule as often as it was missed after reboot.
 
     _Inflation! The fuel marchant increases it's price every day at 3am. If the sever was shut down, prices should increase at the same pace._
+
+    ---
+
 
 !!! danger
 

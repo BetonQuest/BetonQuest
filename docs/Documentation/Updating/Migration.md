@@ -68,14 +68,15 @@ All existing RPGMenu users must update their RPGMenu config file. Simply rename 
       time: '11:23'
       events: some_command,command_announcement
   ```
-  1. A name for the new schedule.  
-     Can be anything you want for organizing your schedules.
 
-  2. The type schedule `realtime-daily` was created for easy updating.   
-     It behaves just like the old static events.
+    1. A name for the new schedule.  
+      Can be anything you want for organizing your schedules.
 
-  3. The former key is now the time value.  
-     You still have to put it in 'quotes'.
+    2. The type schedule `realtime-daily` was created for easy updating.   
+      It behaves just like the old static events.
 
-  4. The former value is now the events value.
+    3. The former key is now the time value.  
+      You still have to put it in 'quotes'.
+
+    4. The former value is now the events value.
 

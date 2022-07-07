@@ -96,7 +96,7 @@ public class MyCustomScheduler extends Scheduler<MyCustomSchedule>/* (1)! */ {
                 public void run() {
                     executeEvents(schedule);
                 }
-            }.runTaskTimer(BetonQuest.getInstance()/* (5)! */, schedule.getRebootSleep(), schedule.getTicks());
+            }.runTaskTimer(MyPlugin.getInstance()/* (5)! */, schedule.getRebootSleep(), schedule.getTicks());
             
             tasks.add(task);// (6)!
         }
@@ -122,7 +122,7 @@ public class MyCustomScheduler extends Scheduler<MyCustomSchedule>/* (1)! */ {
 
 4.  Schedule your events to run when their time instruction says.
 
-5. If you are using the Bukkit-Scheduler, please pass BetonQuest instance as plugin.
+5. Pass your plugin instance for the Bukkit-Scheduler.
 
 6. Keep a list of all your active schedules somewhere, so you can easily cancel them.
 
@@ -133,7 +133,7 @@ public class MyCustomScheduler extends Scheduler<MyCustomSchedule>/* (1)! */ {
 ### Register the type
 To register the new schedule type to BetonQuest, use the following method:
 ```java
-BetonQuest.getInstance().registerScheduleType("myScheduler"/* (1)! */,
+BetonQuest.getInstance().registerScheduleType("redstoneScheduler"/* (1)! */,
   MyCustomSchedule.class/* (2)! */,new MyCustomScheduler()/* (3)! */);
 ```
 
