@@ -604,7 +604,7 @@ storing variables. This event will do nothing if the player does not already hav
 
 Sets weather. The argument is `sun`, `rain` or `storm`.
 You can add a duration, which can be a variable and is specified in seconds.
-Additionally, you can set the targeted world. If no target word is defined, the players world is used.  
+Additionally, you can set the targeted world. If no target world is defined, the players world is used.  
 
 !!! example
     ```YAML
