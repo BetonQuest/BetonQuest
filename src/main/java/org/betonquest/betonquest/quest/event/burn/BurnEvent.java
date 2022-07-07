@@ -16,7 +16,7 @@ public class BurnEvent implements Event {
     private final VariableNumber duration;
 
     /**
-     * Crate a burn event that sets the player on fire for the given duration.
+     * Create a burn event that sets the player on fire for the given duration.
      *
      * @param duration duration of burn
      */
