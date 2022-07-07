@@ -604,11 +604,11 @@ storing variables. This event will do nothing if the player does not already hav
 
 **persistent**, **static**  
 
-| Parameter  | Syntax            | Default Value               | Explanation                                                                                      |
-|------------|-------------------|-----------------------------|--------------------------------------------------------------------------------------------------|
-| _type_     | Keyword           | :octicons-x-circle-16:      | The type of weather to set. Either `sun`, `rain` or `storm`.                                     |
-| _duration_ | `duration:number` | Minecraft decides randomly. | The duration the weather will last. Can be a variable.<br> Is handled form minecraft afterwards. |
-| _world_    | `world:worldName` | The player's current world. | The world to change the weather in.                                                              |
+| Parameter  | Syntax            | Default Value               | Explanation                                                                                                   |
+|------------|-------------------|-----------------------------|---------------------------------------------------------------------------------------------------------------|
+| _type_     | Keyword           | :octicons-x-circle-16:      | The type of weather to set. Either `sun`, `rain` or `storm`.                                                  |
+| _duration_ | `duration:number` | Minecraft decides randomly. | The duration the weather will last (in seconds). Can be a variable.<br> Is handled from minecraft afterwards. |
+| _world_    | `world:worldName` | The player's current world. | The world to change the weather in.                                                                           |
 
 ```YAML title="Example"
 events:
