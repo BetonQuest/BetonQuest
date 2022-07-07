@@ -467,9 +467,9 @@ This event also supports an optional `notify` argument that will display informa
 
 **persistent**, **static**
 
-This event allows you to specify multiple instructions in one, long instruction. Each instruction must be started 
+This event allows you to specify multiple instructions in one, long instruction. Each instruction must be started
 with the `^` character (it divides all the instructions). It's not the same as the `folder` event, because you have to
-specify the actual instruction, not an event name. It is also fired on the same tick, not on the next one like in `folder`.
+specify the actual instruction, not an event name.
 Don't use conditions here, it behaves strangely. We will fix this in 2.0.
 
 !!! example
@@ -600,14 +600,22 @@ storing variables. This event will do nothing if the player does not already hav
     variable other_var_obj desc ""
     ```
 
-## Weather: `weather`
+## :fontawesome-solid-cloud-sun-rain: Weather: `weather`
 
-Sets weather. The argument is `sun`, `rain` or `storm`.
+**persistent**, **static**  
 
-!!! example
-    ```YAML
-    weather rain
-    ```
+| Parameter  | Syntax            | Default Value               | Explanation                                                                                                   |
+|------------|-------------------|-----------------------------|---------------------------------------------------------------------------------------------------------------|
+| _type_     | Keyword           | :octicons-x-circle-16:      | The type of weather to set. Either `sun`, `rain` or `storm`.                                                  |
+| _duration_ | `duration:number` | Minecraft decides randomly. | The duration the weather will last (in seconds). Can be a variable.<br> Is handled from minecraft afterwards. |
+| _world_    | `world:worldName` | The player's current world. | The world to change the weather in.                                                                           |
+
+```YAML title="Example"
+events:
+  setSun: "weather sun"
+  setShortRain: "weather rain duration:60 world:rpgworld"
+  setStorm: "weather storm duration:%point.tribute.left:150%"
+```
     
 ## Give experience: `experience`
 
