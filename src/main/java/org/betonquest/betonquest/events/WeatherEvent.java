@@ -24,6 +24,8 @@ public class WeatherEvent extends QuestEvent {
     @SuppressWarnings("PMD.SwitchStmtsShouldHaveDefault")
     public WeatherEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
+        staticness = true;
+        persistent = true;
         final String part = instruction.next();
         switch (part) {
             case "sun", "clear" -> {

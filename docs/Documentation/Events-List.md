@@ -601,7 +601,9 @@ storing variables. This event will do nothing if the player does not already hav
     ```
 
 ## :fontawesome-solid-cloud-sun-rain: Weather: `weather`
-  
+
+**persistent**, **static**  
+
 | Parameter  | Syntax            | Default Value               | Explanation                                                                                      |
 |------------|-------------------|-----------------------------|--------------------------------------------------------------------------------------------------|
 | _type_     | Keyword           | :octicons-x-circle-16:      | The type of weather to set. Either `sun`, `rain` or `storm`.                                     |
