@@ -600,14 +600,22 @@ storing variables. This event will do nothing if the player does not already hav
     variable other_var_obj desc ""
     ```
 
-## Weather: `weather`
+## :fontawesome-solid-cloud-sun-rain: Weather: `weather`
 
-Sets weather. The argument is `sun`, `rain` or `storm`.
+**persistent**, **static**  
 
-!!! example
-    ```YAML
-    weather rain
-    ```
+| Parameter  | Syntax            | Default Value               | Explanation                                                                                      |
+|------------|-------------------|-----------------------------|--------------------------------------------------------------------------------------------------|
+| _type_     | Keyword           | :octicons-x-circle-16:      | The type of weather to set. Either `sun`, `rain` or `storm`.                                     |
+| _duration_ | `duration:number` | Minecraft decides randomly. | The duration the weather will last. Can be a variable.<br> Is handled form minecraft afterwards. |
+| _world_    | `world:worldName` | The player's current world. | The world to change the weather in.                                                              |
+
+```YAML title="Example"
+events:
+  setSun: "weather sun"
+  setShortRain: "weather rain duration:60 world:rpgworld"
+  setStorm: "weather storm duration:%point.tribute.left:150%"
+```
     
 ## Give experience: `experience`
 
