@@ -33,7 +33,7 @@ public abstract class Scheduler<S extends Schedule> {
     /**
      * Map containing all schedules that belong to this scheduler.
      */
-    protected final Map<ScheduleID, S> schedules = new HashMap<>();
+    protected final Map<ScheduleID, S> schedules;
 
     /**
      * Flag stating if this scheduler is currently running.
@@ -44,6 +44,7 @@ public abstract class Scheduler<S extends Schedule> {
      * Default constructor.
      */
     public Scheduler() {
+        schedules = new HashMap<>();
         running = false;
     }
 

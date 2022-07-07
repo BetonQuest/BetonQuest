@@ -2,6 +2,7 @@ package org.betonquest.betonquest.modules.schedule;
 
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
+import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,11 +12,13 @@ import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.util.Optional;
+import java.util.logging.Level;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -60,6 +63,38 @@ class LastExecutionCacheTest {
             files.when(() -> Files.exists(any(Path.class))).thenReturn(true);
             lastExecutionCache = new LastExecutionCache(new File("."));
         }
+    }
+
+    @Test
+    void testLoadIOException(final LogValidator validator) {
+        try (MockedStatic<ConfigAccessor> configAccessor = mockStatic(ConfigAccessor.class);
+             MockedStatic<Files> files = mockStatic(Files.class)) {
+            lenient().when(cacheAccessor.getConfig()).thenReturn(cacheContent);
+            configAccessor.when(() -> ConfigAccessor.create(any(File.class))).thenThrow(new FileNotFoundException("filenotfound"));
+            files.when(() -> Files.exists(any(Path.class))).thenReturn(true);
+            lastExecutionCache = new LastExecutionCache(new File("."));
+            validator.assertLogEntry(Level.SEVERE, "(cache) Error while loading schedule cache: filenotfound");
+            final Optional<Instant> result = lastExecutionCache.getLastExecutionTime(scheduleID);
+            assertEquals(Optional.empty(), result, "result should be empty");
+            validator.assertLogEntry(Level.SEVERE, "(cache) Schedule cache not present!");
+        }
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    void testSaveIOException(final LogValidator validator) throws IOException {
+        when(scheduleID.getFullID()).thenReturn("test-package.testCacheIOException");
+        when(cacheAccessor.save()).thenThrow(new IOException("ioexception"));
+        lastExecutionCache.cacheExecutionTime(scheduleID, Instant.parse("1970-01-01T00:00:00Z"));
+        validator.assertLogEntry(Level.SEVERE, "(cache) Could not save schedule cache: ioexception");
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    void testReloadIOException(final LogValidator validator) throws IOException {
+        when(cacheAccessor.reload()).thenThrow(new IOException("ioexception"));
+        lastExecutionCache.reload();
+        validator.assertLogEntry(Level.SEVERE, "(cache) Could not reload schedule cache: ioexception");
     }
 
     @Test

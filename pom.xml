@@ -676,6 +676,10 @@
                   <pattern>io.papermc.lib</pattern>
                   <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.io.papermc.lib</shadedPattern>
                 </relocation>
+                <relocation>
+                  <pattern>com.github.jmrozanec</pattern>
+                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.com.github.jmrozanec</shadedPattern>
+                </relocation>
               </relocations>
             </configuration>
           </execution>

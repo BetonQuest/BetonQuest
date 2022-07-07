@@ -113,7 +113,7 @@ class EventSchedulingTest {
     @Test
     void testStopWithError() {
         final Scheduler<?> throwingScheduler = registerMockedType("throwing");
-        doThrow(RuntimeException.class).when(throwingScheduler).start();
+        doThrow(RuntimeException.class).when(throwingScheduler).stop();
         final List<? extends Scheduler<?>> schedulers = IntStream.range(0, 10)
                 .mapToObj(i -> "type" + (char) (i + 'A'))
                 .map(this::registerMockedType)
