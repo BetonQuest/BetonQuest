@@ -1,0 +1,38 @@
+package org.betonquest.betonquest.api.schedule;
+
+import com.cronutils.model.Cron;
+import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.junit.jupiter.api.Test;
+
+import java.util.Optional;
+
+import static org.betonquest.betonquest.api.schedule.CronSchedule.DEFAULT_CRON_DEFINITION;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+/**
+ * Test for {@link CronSchedule} that support reboot & custom nicknames
+ */
+@SuppressWarnings("PMD.JUnit5TestShouldBePackagePrivate")
+public class CronRebootScheduleTest extends CronScheduleBaseTest {
+
+    @Override
+    protected CronSchedule createSchedule() throws InstructionParseException {
+        return new CronSchedule(scheduleID, section, DEFAULT_CRON_DEFINITION, true) {
+        };
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    void testRebootScheduleValidLoad() throws InstructionParseException {
+        when(section.getString("time")).thenReturn("@reboot");
+        final CronSchedule schedule = createSchedule();
+
+        assertTrue(schedule.shouldRunOnReboot(), "Schedules onReboot flag should be true");
+        final Cron cron = schedule.getTimeCron();
+        assertNotNull(cron, "time cron should not be null");
+        assertDoesNotThrow(cron::validate, "Cron should be valid");
+        assertEquals(Optional.empty(), schedule.getNextExecution(), "Schedule should not provide a next execution time");
+        assertEquals(Optional.empty(), schedule.getLastExecution(), "Schedule should not provide a last execution time");
+    }
+}

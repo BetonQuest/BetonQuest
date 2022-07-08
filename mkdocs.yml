@@ -190,6 +190,7 @@ nav:
           - 'Conditions List': Documentation/Conditions-List.md
           - 'Compatibility List': Documentation/Compatibility.md
           - 'Variables List': Documentation/Variables-List.md
+          - 'Schedules': Documentation/Schedules.md
       - 'Notifications':
           - 'Settings': Documentation/Notification-Settings.md
           - "IO's & Categories": Documentation/Notification-IO's-&-Categories.md
@@ -209,6 +210,7 @@ nav:
       - 'Overview': API/Overview.md
       - 'API': API/API.md
       - 'Logging': API/Logging.md
+      - 'Schedules': API/Schedules.md
   - 'Participate':
       - 'Overview': Participate/Overview.md
       - 'Setup Project': Participate/Setup-Project.md
