@@ -2,7 +2,7 @@
 icon: octicons/clock-16
 ---
 # Schedules
-Schedules allow you to run events periodically at specific times.
+Schedules allow you to run events periodically at specific times for the entire server.
 
 ## Static Events
 When running events from a schedule it is unclear how events should behave:  
@@ -41,6 +41,8 @@ All static events have a static flag in the docs, so you can easily distinguish 
 Realtime schedules are, as the name already says, schedules that run at a specific real world time, for example at 12
 o'clock each day.
 Do not confuse these with Minecraft's ingame time!
+
+The time is provided by the system time of the computer your minecraft server is running on, in the systems time zone.  
 
 ### Daily realtime schedule: `realtime-daily`
 
