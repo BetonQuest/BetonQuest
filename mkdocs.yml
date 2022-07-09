@@ -188,9 +188,9 @@ nav:
               - 'Installing BetonQuest': Tutorials/Getting-Started/Setup-Guide/Installing-Dependencies.md
               - 'Setting up the editor': Tutorials/Getting-Started/Setup-Guide/Setting-up-the-editor.md
           - 'Basics':
+              - 'YAML': Tutorials/Getting-Started/Basics/YAML-for-questers.md
               - 'Conversations': Tutorials/Getting-Started/Basics/Conversations.md
               - 'Events': Tutorials/Getting-Started/Basics/Events.md
-              - 'YAML': Tutorials/Getting-Started/Basics/YAML-for-questers.md
           - 'Old Tutorial': Tutorials/Getting-Started/Learn-BetonQuest.md
       - 'Frequently Asked Questions':
           - 'General FAQ': Tutorials/Frequently-Asked-Questions.md
