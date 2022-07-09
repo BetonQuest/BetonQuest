@@ -41,7 +41,7 @@ Open the `events.yml` now that we have created it and add the following content:
 
 ``` YAML title="events.yml" linenums="1"
 events: # (1)!
-  giveFoodToPlayer: give steak:16
+  giveFoodToPlayer: "give steak:16"
 ```
 
 1. All events must be defined in an `events` section.
@@ -65,10 +65,10 @@ We will create the item section in the "_package.yml_" file.
 
 ``` YAML title="package.yml" hl_lines="4-5" linenums="1"
 npcs:
-  '1': Jack
+  '1': "Jack"
 
 items:
-  steak: COOKED_BEEF # (1)!
+  steak: "COOKED_BEEF" # (1)!
 ```
 
 1. Links the `steak` item name from your BetonQuest configs to the ingame `minecraft:COOKED_BEEF` item.
@@ -85,18 +85,18 @@ Let's run the event from your conversation.
 ``` YAML title="jack.yml" hl_lines="9-10 13-14" linenums="1" 
 conversations:
   Jack:
-    quester: Jack
-    first: firstGreeting
+    quester: "Jack"
+    first: "firstGreeting"
     NPC_options:
       #... (1)
       foodAnswer:
-        text: Your welcome! Take it... &7*gives food*
-        events: giveFoodToPlayer # (2)!
-        pointer: thankYou
+        text: "Your welcome! Take it... &7*gives food*"
+        events: "giveFoodToPlayer" # (2)!
+        pointer: "thankYou"
     player_options:
       #...
       thankYou: 
-        text: Oh that smells really good!
+        text: "Oh that smells really good!"
 ```
 
 1. The tutorial will only show relevant parts of the examples from now on. 
@@ -141,15 +141,15 @@ Now we will create a tour through the mayors city. Meanwhile, we will learn abou
 Open the "_events.yml_" file and add these lines:                                                                                      
 ``` YAML title="events.yml" hl_lines="3-7" linenums="1"
 events:
-  giveFoodToPlayer: give steak:16
-  townTour: folder tpLocation1,tpLocation2,tpLocation3,tpBlacksmith delay:2 period:5
-  tpLocation1: teleport 100;70;100;world # (1)!
-  tpLocation2: teleport 200;73;200;world # (2)!
-  tpLocation3: teleport 300;71;300;world # (3)!
-  tpBlacksmith: teleport 50;70;50;world # (4)!
+  giveFoodToPlayer: "give steak:16"
+  townTour: "folder tpLocation1,tpLocation2,tpLocation3,tpBlacksmith delay:2 period:5"
+  tpLocation1: "teleport 100;70;100;world" # (1)!
+  tpLocation2: "teleport 200;73;200;world" # (2)!
+  tpLocation3: "teleport 300;71;300;world" # (3)!
+  tpBlacksmith: "teleport 50;70;50;world" # (4)!
 ```
 
-1. Adjust this to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating).
+1. Adjust this to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating)
 2. Adjust this to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating)
 3. Adjust this to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating)
 4. Adjust this to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating)
@@ -166,33 +166,33 @@ Now we will add the folder event to Jack's conversation.
 ``` YAML title="jack.yml" hl_lines="11-18 23-29" linenums="1" 
 conversations:
   Jack:
-    quester: Jack
-    first: firstGreeting
+    quester: "Jack"
+    first: "firstGreeting"
     NPC_options:
       #...
       foodAnswer:
-        text: You're welcome! Take it... &7*gives food*
-        events: giveFoodToPlayer
-        pointer: thankYou
+        text: "You're welcome! Take it... &7*gives food*"
+        events: "giveFoodToPlayer"
+        pointer: "thankYou"
       townTour:
-        text: Yeah that's true. You know what also smells good? The fresh air in my town! Would you like to take a little tour?
-        pointer: enoughTime,noTimeForThat # (1)!
+        text: "Yeah that's true. You know what also smells good? The fresh air in my town! Would you like to take a little tour?"
+        pointer: "enoughTime,noTimeForThat" # (1)!
       startTheTour:
-        text: Great! It is a honor for me to guide you through the town.
-        events: townTour # (2)!
+        text: "Great! It is a honor for me to guide you through the town."
+        events: "townTour" # (2)!
       noProblem:
-        text: That's fine! Maybe you have time another day... Just talk to me again. See you!
+        text: "That's fine! Maybe you have time another day... Just talk to me again. See you!"
     player_options:
       #...
       thankYou:
-        text: Oh that smells really good!
-        pointer: townTour # (3)!
+        text: "Oh that smells really good!"
+        pointer: "townTour" # (3)!
       enoughTime:
-        text: Yes of course! Show me everything.
-        pointer: startTheTour
+        text: "Yes of course! Show me everything."
+        pointer: "startTheTour"
       noTimeForThat:
-        text: Sorry but I don't have time now...
-        pointer: noProblem
+        text: "Sorry but I don't have time now..."
+        pointer: "noProblem"
 ```
 
 1. The player once again has a choice.
