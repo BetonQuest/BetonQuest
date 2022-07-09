@@ -29,7 +29,7 @@ uses which conversation. This is how it works:
 
 ``` YAML title="package.yml" linenums="1"
 npcs:
-  '1': Jack
+  '1': "Jack"
 ```
 This links the NPC with the given Citizens ID (`1`) to the conversation with the given identifier (`Jack`).
 Save the file after editing.
@@ -54,16 +54,16 @@ Let's take a look at how a conversation is defined in the plugin's files:
 ``` YAML title="jack.yml" linenums="1"
 conversations:
   Jack: # (1)!
-    quester: Jack # (2)!
-    first: firstGreeting # (3)!
+    quester: "Jack" # (2)!
+    first: "firstGreeting" # (3)!
     NPC_options: # (4)!
       firstGreeting:
-        text: Hello and welcome to my town traveler! Nice to see you. Where are you from?
-        pointer: whereYouFrom # (5)!
+        text: "Hello and welcome to my town traveler! Nice to see you. Where are you from?"
+        pointer: "whereYouFrom" # (5)!
    
     player_options: # (6)!
       whereYouFrom:
-        text: First I want to know who you are!
+        text: "First I want to know who you are!"
 ```
 
 1. This is the identifier of the conversation. Make sure this equals the conversation identifier in "_package.yml_". 
@@ -124,30 +124,30 @@ As soon as a pointer argument contains more than one `player_option`, the player
 ``` YAMl title="jack.yml" hl_lines="9-15 20-26" linenums="1"
 conversations:
   Jack:
-    quester: Jack
-    first: firstGreeting
+    quester: "Jack"
+    first: "firstGreeting"
     NPC_options:
       firstGreeting:
-        text: Hello and welcome to my town traveler! Nice to see you. Where are you from?
-        pointer: whereYouFrom
+        text: "Hello and welcome to my town traveler! Nice to see you. Where are you from?"
+        pointer: "whereYouFrom"
       whoAmI:
-        text: I am &6Jack&r. The mayor of this beautiful town. We have some big farms and good old taverns well worth checking out! So now where are you from?
-        pointer: smallIsland,bigCity # (1)!
+        text: "I am &6Jack&r. The mayor of this beautiful town. We have some big farms and good old taverns well worth checking out! So now where are you from?"
+        pointer: "smallIsland,bigCity" # (1)!
       islandAnswer: 
-        text: That sounds familiar! I grew up in a small town with few people. So we already have something in common! Do you want something to eat?
+        text: "That sounds familiar! I grew up in a small town with few people. So we already have something in common! Do you want something to eat?"
       cityAnswer: 
-        text: Oh I know! I think you're from Kayra, right? Nice city but to be honest I prefer country life... You look a bit hungry. Do you want something to eat?
+        text: "Oh I know! I think you're from Kayra, right? Nice city but to be honest I prefer country life... You look a bit hungry. Do you want something to eat?"
     
     player_options:
       whereYouFrom: 
-        text: First I want to know who you are!
-        pointer: whoAmI 
+        text: "First I want to know who you are!"
+        pointer: "whoAmI" 
       smallIsland: # (2)!
-        text: From a small island located east.
-        pointer: islandAnswer # (4)!
+        text: "From a small island located east."
+        pointer: "islandAnswer" # (4)!
       bigCity:  # (3)!
-        text: From a big city located west.
-        pointer: cityAnswer # (5)!
+        text: "From a big city located west."
+        pointer: "cityAnswer" # (5)!
 ```
 
 1. This `NPC_option` points to multiple `player_options`. This allows the player to choose. The names of the `player_options` must be comma seperated.
@@ -168,37 +168,37 @@ Add the same `pointer` argument to both paths' `NPC_options`. They point to the 
 ``` YAML title="jack.yml" hl_lines="14 17-19 30-32" linenums="1" 
 conversations:
   Jack:
-    quester: Jack
-    first: firstGreeting
+    quester: "Jack"
+    first: "firstGreeting"
     NPC_options:
       firstGreeting:
-        text: Hello and welcome to my town traveler! Nice to see you. Where are you from?
-        pointer: whereYouFrom
+        text: "Hello and welcome to my town traveler! Nice to see you. Where are you from?"
+        pointer: "whereYouFrom"
       whoAmI:
-        text: I am &6Jack&r. The mayor of this beautiful town. We have some big farms and good old taverns well worth checking out! So now where are you from?
-        pointer: smallIsland,bigCity
+        text: "I am &6Jack&r. The mayor of this beautiful town. We have some big farms and good old taverns well worth checking out! So now where are you from?"
+        pointer: "smallIsland,bigCity"
       islandAnswer:
-        text: That sounds familiar! I grew up in a small town with few people. So we already have something in common! Do you want something to eat?
-        pointer: yesPlease # (1)!
+        text: "That sounds familiar! I grew up in a small town with few people. So we already have something in common! Do you want something to eat?"
+        pointer: "yesPlease" # (1)!
       cityAnswer:
-        text: Oh I know! I think you're from Kayra, right? Nice city but to be honest I prefer country life... You look a bit hungry. Do you want something to eat?
-        pointer: yesPlease # (2)!
+        text: "Oh I know! I think you're from Kayra, right? Nice city but to be honest I prefer country life... You look a bit hungry. Do you want something to eat?"
+        pointer: "yesPlease" # (2)!
       foodAnswer:
-        text: You're welcome! Take it... &7*gives food*
+        text: "You're welcome! Take it... &7*gives food*"
     
     player_options:
       whereYouFrom:
-        text: First I want to know who you are!
-        pointer: whoAmI
+        text: "First I want to know who you are!"
+        pointer: "whoAmI"
       smallIsland:
-        text: From a small island located east.
-        pointer: islandAnswer
+        text: "From a small island located east."
+        pointer: "islandAnswer"
       bigCity:
-        text: From a big city located west.
-        pointer: cityAnswer
+        text: "From a big city located west."
+        pointer: "cityAnswer"
       yesPlease: # (3)!
-        text: Oh yes I'm starving! Thank you.
-        pointer: foodAnswer
+        text: "Oh yes I'm starving! Thank you."
+        pointer: "foodAnswer"
 ```
 
 1. I point to `yesPlease` in the `player_options` section.
