@@ -568,11 +568,12 @@ You can also specify `notify` keyword to display a simple message to the player 
 
 Sets or adds time. The only argument is time to be set (integer) or time to be added (integer prefixed with +),
 in 24 hours format. Subtracting time is done by adding more time (if you think of this, it actually makes sense).
-Minutes can be achieved with floating point.
+Minutes can be achieved with floating point. Six minutes equals 0.1 hours.
 
 !!! example
     ```YAML
     time +6
+    time +0.1
     ```
 
 ## Teleport: `teleport`
