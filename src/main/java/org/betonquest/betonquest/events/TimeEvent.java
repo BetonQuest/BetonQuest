@@ -12,7 +12,7 @@ import org.bukkit.World;
 @SuppressWarnings("PMD.CommentRequired")
 public class TimeEvent extends QuestEvent {
 
-    private final long amount;
+    private final float amount;
     private final boolean add;
 
     public TimeEvent(final Instruction instruction) throws InstructionParseException {
@@ -21,11 +21,11 @@ public class TimeEvent extends QuestEvent {
         add = !time.isEmpty() && time.charAt(0) == '+';
         try {
             if (add) {
-                amount = Long.parseLong(time.substring(1)) * 1000;
+                amount = Float.parseFloat(time.substring(1)) * 1000;
             } else {
-                amount = Long.parseLong(time) * 1000 + 18_000;
+                amount = Float.parseFloat(time) * 1000 + 18_000;
             }
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             throw new InstructionParseException("Could not parse time amount", e);
         }
     }
@@ -33,7 +33,7 @@ public class TimeEvent extends QuestEvent {
     @Override
     protected Void execute(final String playerID) {
         final World world = PlayerConverter.getPlayer(playerID).getWorld();
-        long time = amount;
+        long time = (long) amount;
         if (add) {
             time += world.getTime();
         }
