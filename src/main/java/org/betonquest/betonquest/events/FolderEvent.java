@@ -76,20 +76,22 @@ public class FolderEvent extends QuestEvent {
                 }
             }.runTaskLater(BetonQuest.getInstance(), execDelay);
         } else {
-            if (execDelay == null) {
+            if (execDelay == null && !chosenList.isEmpty()) {
                 final EventID event = chosenList.remove(0);
                 BetonQuest.event(playerID, event);
             }
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    final EventID event = chosenList.remove(0);
-                    BetonQuest.event(playerID, event);
-                    if (chosenList.isEmpty()) {
-                        this.cancel();
+            if (!chosenList.isEmpty()) {
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        final EventID event = chosenList.remove(0);
+                        BetonQuest.event(playerID, event);
+                        if (chosenList.isEmpty()) {
+                            this.cancel();
+                        }
                     }
-                }
-            }.runTaskTimer(BetonQuest.getInstance(), execDelay == null ? execPeriod : execDelay, execPeriod);
+                }.runTaskTimer(BetonQuest.getInstance(), execDelay == null ? execPeriod : execDelay, execPeriod);
+            }
         }
         return null;
     }
