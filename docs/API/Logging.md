@@ -65,11 +65,17 @@ These advantages are mainly for BetonQuest, but it is also very useful for 3rd p
                 ````java linenums="1"
                 @CustomLog
                 public final class MyCustomEvent {
+                //...
+                    LOG.info("Hello Log!");
+                //...
                 ````
             === "With topic"
                 ````java linenums="1"
                 @CustomLog(topic = "MyCustomTopic")
                 public final class MyCustomEvent {
+                //...
+                    LOG.info("Hello Log!");
+                //...
                 ````
     
     === "Using plain Java"    
