@@ -380,7 +380,7 @@ These are arguments that can be applied to every item:
 - `lore` - text under the item's name. Default styling of lore is purple and italic. All underscores will be replaced with spaces and you can use `&` color codes. To make a new line use `;` character. If you require the item not to have lore at all, use `none` keyword. By default lore will match only if all lines are exactly the same. If you want to accept all items which contain specified lines (and/or more lines), add `lore-containing` argument to the instruction string.
 
 - `enchants` - a list of enchantments and their levels. Each enchantment consists of these things, separated by colons:
-    - [name](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html)
+    - <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html" target="_blank">name</a>
     - level (a positive number)
     
     For example `damage_all:3` is _Sharpness III_. You can specify additional enchantments by separating them with commas.
@@ -432,7 +432,7 @@ text:Lorem_ipsum_dolor_sit_amet,\nconsectetur_adipiscing_elit.|Pellentesque_ligu
 
 _This applies to potions, splash potions and lingering potions._
 
-- `type` - type of a potion. Here's [the list](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/potion/PotionType.html) of possible types. Do not mistake this for a custom effect, this argument corresponds to the default vanilla potion types.
+- `type` - type of a potion. Here's <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/potion/PotionType.html" target="_blank">the list</a> of possible types. Do not mistake this for a custom effect, this argument corresponds to the default vanilla potion types.
 
 - `extended` - extended property of the potion (you can achieve it in-game by adding redstone). It can be specified as `extended` or `extended:true`. If you want to check the potion that is NOT extended, use `extended:false`.
 
@@ -440,7 +440,7 @@ _This applies to potions, splash potions and lingering potions._
 
 - `effects` - a list of custom effects. These are independent of the potion type. The effects must be separated by commas. Each effect consists of these things, separated by colons:
 
-    - [type](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html) (this is different stuff that the link above!)
+    - <a href="https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html" target="_blank">type</a> (this is different stuff that the link above!)
     - power
     - duration (in seconds)
     
@@ -477,7 +477,7 @@ owner:none
 
 _This applies to all parts of leather armor._
 
-- `color` - this is the color of the armor piece. It can be either one of [these values](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/DyeColor.html), a hexadecimal RGB value prefixed with `#` character or its decimal representation without the prefix. You can also check if the armor piece doesn't have any color with `none` keyword.
+- `color` - this is the color of the armor piece. It can be either one of <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/DyeColor.html" target="_blank">these values</a>, a hexadecimal RGB value prefixed with `#` character or its decimal representation without the prefix. You can also check if the armor piece doesn't have any color with `none` keyword.
 
 **Examples**:
 
@@ -493,7 +493,7 @@ _This applies to fireworks._
 
 - `firework` - this is a list of effects of the firework rocket. They are separated by commas. Each effect consists of these things separated by colons:
 
-    - [effect type](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/FireworkEffect.Type.html)
+    - <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/FireworkEffect.Type.html" target="_blank">effect type</a>
     - a list of main colors (refer to leather armor colors above for syntax) separated by semicolons
     - a list of fade colors
     - `true`/`false` keyword for trail effect
@@ -569,14 +569,14 @@ The format of a block selector is: `namespace:material[state=value,...]`
 Where:
 
   - `namespace` - (optional) The material namespace. If left out then it will be assumed to be 'minecraft'.
-   Can be a [regex](https://medium.com/factory-mind/regex-tutorial-a-simple-cheatsheet-by-examples-649dc1c3f285).
+   Can be a <a href="https://medium.com/factory-mind/regex-tutorial-a-simple-cheatsheet-by-examples-649dc1c3f285" target="_blank">regex</a>.
   
   - `material` - The material the block is made of. All materials can be found in
-  [Spigots Javadocs](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html). 
-  It can be a [regex](https://medium.com/factory-mind/regex-tutorial-a-simple-cheatsheet-by-examples-649dc1c3f285).
+  <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html" target="_blank">Spigots Javadocs</a>. 
+  It can be a <a href="https://medium.com/factory-mind/regex-tutorial-a-simple-cheatsheet-by-examples-649dc1c3f285" target="_blank">regex</a>.
   If the regex ends with square brackets you have to add another pair of empty square brackets even if you don't want to 
   use the state argument (`[regex][]`).  
-  Instead of using a regex to match multiple materials you can also define a [tag](https://minecraft.gamepedia.com/Tag).
+  Instead of using a regex to match multiple materials you can also define a <a href="https://minecraft.gamepedia.com/Tag" target="_blank">tag</a>.
   Every tag matches a special group of blocks or items that can be grouped together logically. They can be used using this format `:blocks:flowers` or `minecraft:blocks:flowers`.
   Be aware that a tag always starts with either `:` or a namespace. 
   

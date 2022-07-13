@@ -7,7 +7,7 @@ icon: octicons/question-16
 
 This condition checks if the player has specified advancement. The only argument is the full name of the advancement.
 This includes the namespace, the tab and the name of the advancement as configured on your server. 
-[List of all vanilla advancements](https://minecraft.gamepedia.com/Advancement#List_of_advancements).
+<a href="https://minecraft.gamepedia.com/Advancement#List_of_advancements" target="_blank">List of all vanilla advancements</a>.
 
 !!! example
     ```YAML
@@ -34,7 +34,7 @@ The armor condition requires the player to wear an armor that has been specified
 
 ## Biome: `biome`
 
-This condition will check if the player is in specified biome. The only argument is the [biome type](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/block/Biome.html).
+This condition will check if the player is in specified biome. The only argument is the <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/block/Biome.html" target="_blank">biome type</a>.
 
 !!! example
     ```YAML
@@ -81,7 +81,7 @@ It must be a specific day of the week that this condition returns true. You can 
  
 ## Potion Effect: `effect`
 
-To meet this condition the player must have an active potion effect. There is only one argument and it takes values from this page: [potion types](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/potion/PotionEffectType.html).
+To meet this condition the player must have an active potion effect. There is only one argument and it takes values from this page: <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/potion/PotionEffectType.html" target="_blank">potion types</a>.
 
 !!! example
     ```YAML
@@ -104,7 +104,7 @@ If you want to check for a specific amount (for example for a full inventory wit
 
 This condition will return true only if there is a specified amount (or more) of specified entities in the specified area. 
 There are three required arguments - entity type, location and range. Entities are defined as a list separated by commas.
-Each entity type (taken from [here](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html))
+Each entity type (taken from <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html" target="_blank">here</a>)
 can have an additional amount suffix, for example `ZOMBIE:5,SKELETON:2` means 5 or more zombies and 2 or more skeletons.
 The location is defined as usual. The number after the location is the range around the location in which will be checked for these entities. You can also specify additional `name:` argument,
 with the name of the required entity. Replace all spaces with `_` here. You can use `marked:` argument to check only for entities marked in `spawn` event.
@@ -240,7 +240,7 @@ Checks if the player is looking at a block with the given location or material. 
 
 ## Moon Cycle: `mooncycle`
 
-This condition checks the players moon cycle (1 is full moon, 8 is Waxing Gibbous) and returns if the player is under that moon. A list of phases can be found [here](https://minecraft.gamepedia.com/Moon).
+This condition checks the players moon cycle (1 is full moon, 8 is Waxing Gibbous) and returns if the player is under that moon. A list of phases can be found <a href="https://minecraft.gamepedia.com/Moon" target="_blank">here</a>.
 
 !!! example
     ```YAML
@@ -393,7 +393,7 @@ There must be specific (Minecraft) time on the player's world for this condition
 
 ## Variable: `variable`
 
-This condition checks if a variable value matches given [pattern](https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html). The first argument is a variable (with `%` characters). Second one is the pattern (for example, if you want to check if it's "word", the patter would simply be `word`, but if you want to check if it's a number (positive or negative) you would use `-?\d+` pattern - `-?` means a dash or no dash, `\d` means any digit and `+` allows that digit to be repeated one or more times).
+This condition checks if a variable value matches given <a href="https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html" target="_blank">pattern</a>. The first argument is a variable (with `%` characters). Second one is the pattern (for example, if you want to check if it's "word", the patter would simply be `word`, but if you want to check if it's a number (positive or negative) you would use `-?\d+` pattern - `-?` means a dash or no dash, `\d` means any digit and `+` allows that digit to be repeated one or more times).
 
 !!! example
     ```YAML

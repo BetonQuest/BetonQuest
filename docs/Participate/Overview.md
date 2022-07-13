@@ -7,10 +7,10 @@ There are two options to support projects like this one:
 
 ??? bug "Report Bugs"
     You just need to follow the bug report template on GitHub to
-    [submit a bug report](https://github.com/BetonQuest/BetonQuest/issues/new?assignees=&labels=Bug&template=bug-report.yml).
+    <a href="https://github.com/BetonQuest/BetonQuest/issues/new?assignees=&labels=Bug&template=bug-report.yml" target="_blank">submit a bug report</a>.
 
 ??? info "Suggest Features"
-    Features can be requested on [our Github discussions page](https://github.com/BetonQuest/BetonQuest/discussions). 
+    Features can be requested on <a href="https://github.com/BetonQuest/BetonQuest/discussions" target="_blank">our Github discussions page</a>.  
     Please make sure that:
     
     * The feature does not exist yet (Search docs / Ask on Discord)

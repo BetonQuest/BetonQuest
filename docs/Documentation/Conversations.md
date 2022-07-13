@@ -33,7 +33,7 @@ conversations:
 ```
 
 !!! note
-    Configuration files use YAML syntax. Google it if you don't know anything about it. Main rule is that you must use two spaces instead of tabs when going deeper into the hierarchy tree. If you want to write `'` character, you must double it and surround the whole text with another `'` characters. When writing `true` or `false` it also needs to be surrounded with `'`. If you want to start the line with `&` character, the whole line needs to be surrounded with `'`. You can check if the file is correct using [this tool](http://www.yamllint.com).
+    Configuration files use YAML syntax. Google it if you don't know anything about it. Main rule is that you must use two spaces instead of tabs when going deeper into the hierarchy tree. If you want to write `'` character, you must double it and surround the whole text with another `'` characters. When writing `true` or `false` it also needs to be surrounded with `'`. If you want to start the line with `&` character, the whole line needs to be surrounded with `'`. You can check if the file is correct using <a href="http://www.yamllint.com" target="_blank">this tool</a>.
 * `conversations` defines the section as a conversation section.
 * `ConversationName` is the name of the conversation, which you assign then to an NPC in the `npcs` section. Alternatively, you can combine `conversations` and `ConversationName` and use `conversations.ConversationName` instead.
 * `quester` is name of NPC. It should be the same as name of NPC this conversation is assigned to for greater immersion, but it's your call.

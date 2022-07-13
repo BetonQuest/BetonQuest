@@ -143,7 +143,7 @@ This section defines what sounds will be played on these occasions:
   * `full` is played when the player executes `/journal` but his inventory is full.
   
   
-A list of all possible sounds for the latest Minecraft version can be found [here](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html).
+A list of all possible sounds for the latest Minecraft version can be found <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html" target="_blank">here</a>.
     
 ### Conversation Command Banlist
 `cmd_blacklist` is a list of commands that cannot be used during a conversation. Remember that you can only type single words (command names) here!
@@ -181,7 +181,7 @@ A list of all possible sounds for the latest Minecraft version can be found [her
   * `text` is the text of the entry
     
 ### Conversation Colors
-`conversation_colors` controls the colors of the conversation. It takes [color names](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/ChatColor.html). 
+`conversation_colors` controls the colors of the conversation. It takes <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/ChatColor.html" target="_blank">color names</a>. 
 If you want to add a font style (bold, italic etc.) do so after placing a comma.
 
   * `npc` is the name of the NPC
@@ -206,7 +206,7 @@ If you want to add a font style (bold, italic etc.) do so after placing a comma.
   Everyone can open pull requests that could contain malicious files and if a permission misconfiguration occurs this
   will make your server vulnerable to attacks.
 * `repo_whitelist` is a list of trusted github repositories from which quests and templates can be downloaded.  
-  By default only or official tutorial repo [BetonQuest/Quest-Tutorials](https://github.com/BetonQuest/Quest-Tutorials)
+  By default only or official tutorial repo <a href="https://github.com/BetonQuest/Quest-Tutorials" target="_blank">BetonQuest/Quest-Tutorials</a>
   is on this list.
 
 ### Items
@@ -222,7 +222,7 @@ The items need to be defined in a package, and then you need to reference the it
 
 ### Misc settings
 
-* `date_format` is the Java [date format](https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html)
+* `date_format` is the Java <a href="https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html" target="_blank">date format</a>
   used in journal dates. It needs to have a space between the day and hour.
 * `debug` is responsible for logging the plugin's activity to _debug.log_ file in _logs_ directory. Turning this on can
   slow your server down. However, if you experience any errors, turn this on and let the plugin gather the data and send

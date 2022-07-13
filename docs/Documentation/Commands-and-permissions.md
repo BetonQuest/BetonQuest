@@ -113,7 +113,7 @@ shows all `WARNINGS` and `ERRORS` from the log. If you want to see more informat
 Beware though, the debug level might be spammy.
 
 The download command (`/q download`) can be used to download tutorial quests & quest templates from
-the [Quest-Tutorials](https://github.com/BetonQuest/Quest-Tutorials) repository. For
+the <a href="https://github.com/BetonQuest/Quest-Tutorials" target="_blank">Quest-Tutorials</a> repository. For
 example `/q download BetonQuest/Quest-Tutorials main QuestPackages /default` will download the `default` tutorial quest and
 place it in the same folder. The first argument (`gitHubNamespace`) is the github repository in the format user/repo or
 organisation/repo. Before you can download from a repo you need to add the namespace to

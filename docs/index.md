@@ -171,14 +171,14 @@ Please let us know if there is any outdated information.
 *[Clientside NPCs]: Is it possible to show NPCs only for certain players based on conditions?
 *[Clientside Players]: Can player be hidden from each other using conditions?
 *[Clientside Holograms]: Can HolographicDisplays holograms be hidden using conditions?
-[L1]: https://www.spigotmc.org/resources/betonquest.2117/
-[L2]: https://www.spigotmc.org/resources/quests.3711/
-[L3]: https://www.spigotmc.org/resources/quests.23696/
-[L4]: https://www.spigotmc.org/resources/notquests.95872/
-[L5]: https://www.spigotmc.org/resources/beautyquests.39255/
+[L1]: https://www.spigotmc.org/resources/2117/
+[L2]: https://www.spigotmc.org/resources/3711/
+[L3]: https://www.spigotmc.org/resources/23696/
+[L4]: https://www.spigotmc.org/resources/95872/
+[L5]: https://www.spigotmc.org/resources/39255/
 [L6]: https://github.com/Cutiemango/MangoQuest
-[L7]: https://www.spigotmc.org/resources/questcreator.38734/
-[L8]: https://www.spigotmc.org/resources/proquests.18249/
+[L7]: https://www.spigotmc.org/resources/38734/
+[L8]: https://www.spigotmc.org/resources/18249/
 [^1]: Private API, this means that other plugins cannot add support.
 [^2]: Limited to Quest related context.
 [^3]: There are conversations, but they are not multi-path.
@@ -198,7 +198,7 @@ Please let us know if there is any outdated information.
     #### BetonQuest vs. Script Plugins
     While BetonQuest can be used for scripting, it stays a quest plugin. It's a compromise, the best of both worlds.
     Plugins with a full focus on scripting - such as
-    <a href="https://www.spigotmc.org/resources/denizen.21039/" target="_blank">Denizen</a>
+    <a href="https://www.spigotmc.org/resources/21039/" target="_blank">Denizen</a>
     and <a href="https://github.com/SkriptLang/Skript/" target="_blank">Skript</a>
     are suited better in certain scenarios. Many users even use these alongside BetonQuest as there is
     integration for such scripting plugins.

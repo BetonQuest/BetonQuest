@@ -133,7 +133,7 @@ conditions:
 You either actually did not define the `quester: someName` option at the top of your conversation, or your YAML syntax is invalid.
 YAML Syntax Errors are the HUGE red lines that you see when you do /q reload.
 They lead to the file not being properly read -> All kinds of errors like "can't find quester etc."
-Copy your file into http://www.yamllint.com/ to confirm that it is actually a YAML error and fix your syntax.
+Copy your file into <a href="http://www.yamllint.com/" target="_blank">http://www.yamllint.com/</a> to confirm that it is actually a YAML error and fix your syntax.
 Best practise is to define all options like this: `myOptionName: "myData"` The double quotes prevent YAMl issues with e.g. `!`.
 
 ## Other plugins override BetonQuest commands / BetonQuest overrides other commands!
@@ -291,5 +291,5 @@ Or you could define separate items for open and finished quests or even to show 
 ## Menus displaying players stats
 You may also use menus to display the stats of a player. Just use [variables](../Documentation/Variables-List.md) in the text or for the amount of an item.
 
-For example try displaying a players money using the varible from [Vault integration](http://dev.bukkit.org/bukkit-plugins/vault/)
+For example try displaying a players money using the varible from <a href="https://dev.bukkit.org/bukkit-plugins/vault/" target="_blank">Vault integration</a>
 or use [PlaceholderAPI](../Documentation/Compatibility.md#placeholderapi) to show placeholders from many other plugins.

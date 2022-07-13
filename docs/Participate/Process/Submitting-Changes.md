@@ -14,9 +14,9 @@ You can do this using
 There are three ways to create a pull request:
 
 1. If you recently pushed to your fork, you see a `Create Pull Request` hint on our
-   [repository page](https://github.com/BetonQuest/BetonQuest).
+   <a href="https://github.com/BetonQuest/BetonQuest" target="_blank">repository page</a>.
 
-2. You can go to the [Pull Request](https://github.com/BetonQuest/BetonQuest/pulls) page on our repository and click on
+2. You can go to the <a href="https://github.com/BetonQuest/BetonQuest/pulls" target="_blank">Pull Request</a>] page on our repository and click on
    `New Pull Request`. But then you need to click on `Compare across Forks` and then select your `Head Repository`.
 
 3. You can also click on `New Pull Request` in your fork, then it already compares it to the BetonQuest repository.
@@ -75,7 +75,7 @@ Do not click any of these boxes on GitHub, we will do that.
     Then you now need to do an `Interactive Rebase`. This changes the commit history. Here is the general
     <a href="https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History" target="_blank">git documentation</a>
     for changing the history. But if you use IntelliJ, you should read
-    [edit Git project history](https://www.jetbrains.com/help/idea/edit-project-history.html).  
+    <a href="https://www.jetbrains.com/help/idea/edit-project-history.html" target="_blank">edit Git project history</a>.  
     
     In case you don't understand, read this
     <a href="https://medium.com/@catalinaturlea/clean-git-history-a-step-by-step-guide-eefc0ad8696d" target="_blank">guide</a>

@@ -7,7 +7,7 @@ There are two ways to get started with BetonQuest:
 2. Quick-Start-Tutorial: Provides a brief overview about the building blocks. Recommended for experienced plugin scripters and programmers. 
 
 
-[Full beginner guide :material-school:](https://mcmodels.net/how-to-tutorials/betonquest-tutorials/betonquest-full-beginners-guide/?wpam_id=3){: .md-button .md-button--primary }
+<a href="https://mcmodels.net/how-to-tutorials/betonquest-tutorials/betonquest-full-beginners-guide/?wpam_id=3" target="_blank">Full beginner guide :material-school:</a>{: .md-button .md-button--primary }
 [Quick start tutorial :octicons-stopwatch-16:](#checking-out-the-default-example-quest){: .md-button .md-button--primary }
 
 ## Checking out the "default" example quest. 

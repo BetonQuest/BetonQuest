@@ -33,8 +33,8 @@ The preview updates whenever you click outside of IntelliJ or trigger a file sav
     mkdocs serve -a 0.0.0.0:8000
     ```
 
-We use the [Material for MkDocs theme](https://squidfunk.github.io/mkdocs-material/) for our documentation.
-Check [their documentation](https://squidfunk.github.io/mkdocs-material/) to see all custom elements and features.
+We use the <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank">Material for MkDocs theme</a> for our documentation.
+Check <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank">their documentation</a> to see all custom elements and features.
 
 
 

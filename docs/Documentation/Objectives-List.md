@@ -55,7 +55,7 @@ Note that it follows the same rules as the amount argument, meaning that blocks 
 ## Breed animals: `breed`
 
 This objective is completed by breeding animals of specified type. The first argument is the
-[animal type](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html) and the second argument is the
+<a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html" target="_blank">animal type</a> and the second argument is the
 amount (positive integer). You can add the `notify` argument to display a message with the remaining amount each time
 the animal is bred, optionally with the notification interval after a colon. While you can specify any entity, the
 objective will be completable only for breedable ones.
@@ -108,7 +108,7 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 
 This objectie is completed when the player enchants specified item with specified enchantment. The first argument is an
 item name, as defined it the _items_ section. Second one is the
-[enchantment](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html) and a level, separated
+<a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html" target="_blank">enchantment</a> and a level, separated
 with a colon. If you need to check for multiple enchantments you can add a list of them, separated by colons.
 
 !!! example
@@ -208,7 +208,7 @@ objectives:
 
 The player must click on an entity to complete this objective. The first argument is the type of a click.
 Available values are `right`, `left` and `any`.
-Second required argument is the [mob type](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html).
+Second required argument is the <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html" target="_blank">mob type</a>.
 Next is an amount of mobs required to click on. These must be unique, so the player can't simply click twenty times on
 the same zombie to complete it. There is also an optional `name:` parameter which specifies what custom name the entity must have
 (you need to write `_` instead of the space character). To check for the real name (e.g. if you renamed players to include
@@ -288,10 +288,10 @@ Solution: The Cake is a lie!
 The objective's instruction string is defined as follows:
 
 1. The first argument is the password, use underscore characters (`_`) instead of spaces.
-   The password is a [regular expression](https://medium.com/factory-mind/regex-tutorial-a-simple-cheatsheet-by-examples-649dc1c3f285).
+   The password is a <a href="https://medium.com/factory-mind/regex-tutorial-a-simple-cheatsheet-by-examples-649dc1c3f285" target="_blank">regular expression</a>.
    They are a little complicated but worth the effort if you want more control over what exactly matches. 
-   Websites like [regex101.com](https://regex101.com/) help with that complexity though.
-   The offical [documentation](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/regex/Pattern.html#sum) for regular expressions
+   Websites like <a href="https://regex101.com/" target="_blank">regex101.com</a> help with that complexity though.
+   The official <a href="https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/regex/Pattern.html#sum" target="_blank">documentation</a> for regular expressions
    in Java might also help you.
    If you don't want to get into them just write down the password but keep in mind that the players answer needs to be an exact match! 
 
@@ -391,7 +391,7 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 To complete this objective the player has to shear specified amount of sheep, optionally with specified color and/or
 name. The first, required argument is amount (integer). Optionally, you can add a `name:` argument to only count specific sheep.
 All underscores will be replaced by spaces - if you want to use underscores, put a `\` before them.
-You can also check for the sheep's `color:` using these [color names](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/DyeColor.html).
+You can also check for the sheep's `color:` using these <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/DyeColor.html" target="_blank">color names</a>.
 You can use the `notify` keyword to display a message each time the player advances the objective,
 optionally with the notification interval after a colon.
 
@@ -451,7 +451,7 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
    
 
 ## Player must Jump: `jump`
-**:fontawesome-solid-list-check:{.task} Objective  ·  :fontawesome-solid-paper-plane: Requires [Paper](https://papermc.io)**
+**:fontawesome-solid-list-check:{.task} Objective  ·  :fontawesome-solid-paper-plane: Requires <a href="https://papermc.io" target="_blank"Paper></a>**
 
 To complete this objective the player must jump. The only argument is amount. You can use the `notify` keyword to display a
 message each time the player advances the objective, optionally with the notification interval after a colon.
@@ -518,7 +518,7 @@ Optional arguments:
     `eventName: {=="==}command /enchant_@s_minecraft:aqua_affinity{=="==}` :arrow_right: `eventName: {=="==}command /enchant_@s_minecraft:aqua{++\\++}_affinity{=="==}`<br>
 
 ## Equip Armor Item: `equip`
-**:fontawesome-solid-list-check:{.task} Objective  ·  :fontawesome-solid-paper-plane: Requires [Paper](https://papermc.io)**
+**:fontawesome-solid-list-check:{.task} Objective  ·  :fontawesome-solid-paper-plane: Requires <a href="https://papermc.io" target="_blank">Paper</a>**
 
 The player must equip the specified quest item in the specified slot.
 The item must be any quest item as defined in the _items_ section.

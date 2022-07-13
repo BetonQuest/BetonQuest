@@ -4,7 +4,7 @@ icon: material/factory
 #Versioning and Releasing
 
 ##Versioning
-BetonQuest follows the [Semantic Versioning](https://semver.org/) specification.
+BetonQuest follows the <a href="https://semver.org/" target="_blank">Semantic Versioning</a> specification.
 
 We adapt the specification with these version types:
 

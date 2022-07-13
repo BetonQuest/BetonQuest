@@ -118,7 +118,7 @@ The supported syntax is identical to the original unix crontab syntax.
     2.  The `type` of this schedule is always `realtime-cron`.
 
     3.  `time` is the cron expression that defines when the schedule should be run.  
-        **Use [crontab.guru](https://crontab.guru/)!**
+        **Use <a href="https://crontab.guru/" target="_blank">crontab.guru</a>!**
 
     4.  An event (or multiple separated by `,`) that should run at the given time.
 

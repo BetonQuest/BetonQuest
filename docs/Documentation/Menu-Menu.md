@@ -8,7 +8,7 @@ Nearly everything can be done with these, from simple selection, over warp syste
 information dialogs that display player stats.
 
 Many new features will be added to the menu system in 2.0. You can see the ongoing discussion on what
-features to add on our [GitHub discussion](https://github.com/BetonQuest/BetonQuest/discussions) page.
+features to add on our <a href="https://github.com/BetonQuest/BetonQuest/discussions" target="_blank">GitHub discussion</a> page.
 
 # Creating a menu
 To create a new menu just create a `menus` section in any file.
@@ -27,7 +27,7 @@ This section tells you about each setting which has to be set (or can optionally
 * `title`: *(string)*  
   Fist of all you have to set the title of your menu.
   It will be displayed in the top left corner of your menu.
-  You can use [color codes](https://minecraft.gamepedia.com/Formatting_codes) with `&` instead of `§` to color the
+  You can use <a href="https://minecraft.gamepedia.com/Formatting_codes" target="_blank">color codes</a> with `&` instead of `§` to color the
   title.  
   **Example:** `title: '&6&lQuests'`
 
@@ -112,7 +112,7 @@ If you want to have other events when you left click than when you right click c
    In the text section you can specify the text that is displayed if you hover over the item.
    The lore and the display name of the item specified in `items.yml` will be overwritten by this.
    If no text is specified the items default name and lore from `items.yml` will be kept.
-   You can use [color codes](https://minecraft.gamepedia.com/Formatting_codes) with `&` and [variables](Variables-List.md)
+   You can use <a href="https://minecraft.gamepedia.com/Formatting_codes" target="_blank">color codes</a> with `&` and [variables](Variables-List.md)
 
    ``` YAML title="Example"
     text:
@@ -158,7 +158,7 @@ items:
 
 ## The `slots` section
 In the slots section you define which items from the items section should be displayed in which slot.  
-On [this image](http://wiki.vg/images/b/bb/DoubleChest-slots.png) you can easily find out the number for each slot.  
+On <a href="https://wiki.vg/images/b/bb/DoubleChest-slots.png" target="_blank">this image</a> you can easily find out the number for each slot.  
 You can also assign multiple items to the same slot and use conditions in [the items section](#the-items-section) specify which one should be used.
 If you assign multiple items the first one for which all conditions are true will be displayed.
 
@@ -171,7 +171,7 @@ In addition you can also assign items to a rectangle of slots. Just like with th
 Here is a example:
 `14*25: 'quest1,quest2,quest3'`
 
-![rectangle-example](https://cdn.discordapp.com/attachments/420985429840625676/430808651545182208/Unbenannt.png)
+![RectangleExample](../_media/content/Documentation/Menu/RectangleExample.png)
 
 ### An example for a `slots` section:
 
@@ -184,7 +184,7 @@ slots:
 # Example menu
 
 **How the menu looks ingame:**  
-![image](https://cdn.discordapp.com/attachments/420985429840625676/424927791948234772/giphy.gif)
+![IngameMenuExample](../_media/content/Documentation/Menu/IngameMenuExample.gif)
 
 ``` YAML
 height: 3

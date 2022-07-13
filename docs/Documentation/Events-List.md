@@ -63,7 +63,7 @@ This event works the same as `take` event, but it takes items from a chest at sp
 
 ## Clear entities: `clear`
 
-This event removes all specified mobs from the specified area. The first required argument is a list of mobs (taken from [here](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html)) separated by commas. Next is location. After that there is the radius around the location (a positive number or a variable). You can also optionally specify `name:` argument, followed by name which removed mobs must have. You can use `marked:` argument to remove only mobs marked in `spawn` event.
+This event removes all specified mobs from the specified area. The first required argument is a list of mobs (taken from <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html" target="_blank">here</a>) separated by commas. Next is location. After that there is the radius around the location (a positive number or a variable). You can also optionally specify `name:` argument, followed by name which removed mobs must have. You can use `marked:` argument to remove only mobs marked in `spawn` event.
 
 !!! example
     ```YAML
@@ -158,7 +158,7 @@ Removes the specified potion effects from the player. Use `any` instead of a lis
 
 ## Potion Effect: `effect`
 
-Adds a specified potion effect to player. First argument is potion type. You can find all available types [here](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html). Second is integer defining how long the effect will last in seconds. Third argument, also integer, defines level of the effect (1 means first level). Add a parameter `ambient` to make potion particles appear more invisible (just like beacon effects). To hide particles add a parameter `hidden`. To hide the icon for the effect add `noicon`.
+Adds a specified potion effect to player. First argument is potion type. You can find all available types <a href="https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html" target="_blank">here</a>. Second is integer defining how long the effect will last in seconds. Third argument, also integer, defines level of the effect (1 means first level). Add a parameter `ambient` to make potion particles appear more invisible (just like beacon effects). To hide particles add a parameter `hidden`. To hide the icon for the effect add `noicon`.
 
 !!! example
     ```YAML
@@ -274,7 +274,7 @@ Kills the player. Nothing else.
 **persistent**, **static**
 
 Kills all mobs of given type at the location. First argument is
-the [type of the mob](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html). Next argument is the
+the <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html" target="_blank">type of the mob</a>. Next argument is the
 location. Third argument is the radius around the location, in which the mobs must be to get killed.  
 You can also specify `name:` argument, followed by the name of the mob which should get killed. All `_` characters will
 be replaced with spaces. If you want to kill only mobs that have been marked using the spawn mob event use `marked:`
@@ -503,7 +503,7 @@ Very powerful if used to trigger redstone contraptions.
 
 **persistent**, **static**
 
-Spawns specified amount of mobs of given type at the location. First argument is a location. Next is [type of the mob](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html). The last, third argument is integer for amount of mobs to be spawned. You can also specify `name:` argument, followed by the name of the mob. All `_` characters will be replaced with spaces. You can also mark the spawned mob with a keyword using `marked:` argument. It won't show anywhere, and you can check for only marked mobs in `mobkill` objective.
+Spawns specified amount of mobs of given type at the location. First argument is a location. Next is <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html" target="_blank">type of the mob</a>. The last, third argument is integer for amount of mobs to be spawned. You can also specify `name:` argument, followed by the name of the mob. All `_` characters will be replaced with spaces. You can also mark the spawned mob with a keyword using `marked:` argument. It won't show anywhere, and you can check for only marked mobs in `mobkill` objective.
 
 You can specify armor which the mob will wear and items it will hold with `h:` (helmet), `c:` (chestplate), `l:` (leggings), `b:` (boots), `m:` (main hand) and `o:` (off hand) optional arguments. These take a single item without amount, as defined in the _items_ section. You can also add a list of drops with `drops:` argument, followed by a list of items with amounts after colons, separated by commas.
 
