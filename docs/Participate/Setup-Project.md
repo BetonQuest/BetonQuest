@@ -39,20 +39,29 @@ In the new window you already see a remote called `origin`. This remote is your 
 Now add a new repository with the name `upstream` and the url `https://github.com/BetonQuest/BetonQuest.git`.
 
 ## IntelliJ settings
-Go to `File/Settings/Editor/Code Style` then go to the `Formatter` tab and add `*.md` to the `Do not format:` input.
+Formatting for .md (Markdown) files can break some features of
+<a href="https://squidfunk.github.io/mkdocs-material/" target="_blank">Material for MkDocs</a>, so we disable it for these files.
+Go to `File/Settings/Editor/Code Style` then go to the `Formatter` tab and add `*.md` to the `Do not format:` field.
 
 In `File/Settings/Editor/Code Style/Java` navigate to the `Imports` tab.
-Now set `Class count to use import with '*':` and `Names count to use static import with '*':` to `9999999`.
-Under `Packages to Use Import with '*'` configure the following:
+You will now configure when to use star imports, in general we don't want them at all, but there are some exceptions.
+Set `Class count to use import with '*':` and `Names count to use static import with '*':` to `9999999`.
+And under `Packages to Use Import with '*'` configure the following:
 
-|           Static           |              Package               |         With Subpackages          |
-|:--------------------------:|:----------------------------------:|:---------------------------------:|
-| :material-checkbox-marked: |   `org.mockito.ArgumentMatchers`   | :material-checkbox-blank-outline: |
-| :material-checkbox-marked: | `org.junit.jupiter.api.Assertions` | :material-checkbox-blank-outline: |
-| :material-checkbox-marked: |       `org.mockito.Mockito`        | :material-checkbox-blank-outline: |
+|           Static           |             Package              |         With Subpackages          |
+|:--------------------------:|:--------------------------------:|:---------------------------------:|
+| :material-checkbox-marked: |   org.mockito.ArgumentMatchers   | :material-checkbox-blank-outline: |
+| :material-checkbox-marked: | org.junit.jupiter.api.Assertions | :material-checkbox-blank-outline: |
+| :material-checkbox-marked: |       org.mockito.Mockito        | :material-checkbox-blank-outline: |
 
+Now we enable some automatic checks, when you commit things, that ensures everything is fine.
 In the `Commit` tab click on the three settings dots, near the `Amend` checkbox and then check the following entries under `Before Commit`:
-`Reformat Code`, `Rearrange Code`, `Optimize Imports`, `Analyze Code` and `Check TODO (Show All)`.
+
+- Reformat Code
+- Rearrange Code
+- Optimize Imports
+- Analyze Code
+- Check TODO (Show All)
 
 ## Building the Plugin jar
 You can build the plugin with Maven. Sometimes, IntelliJ auto-detects that BetonQuest is a Maven project. You can see
@@ -109,7 +118,7 @@ if you are on Windows.
 
 Install all other dependencies by entering `pip install -r config/docs-requirements.txt` in the terminal on the project's root directory.
 
-??? "In case you are a material-mkdocs insider (paid premium version)"  
+??? "In case you are a <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank">Material for MkDocs</a> insider (paid premium version)"  
     Set your license key by executing `setx MKDOCS_MATERIAL_INSIDERS LICENSE_KEY_HERE /M` (Windows) in the terminal.
     Now you need to restart IntelliJ for the changes to take effect. 
     Then run `pip install -r config/docs-requirements-insiders.txt` instead of `docs-requirements.txt`.
