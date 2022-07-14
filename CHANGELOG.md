@@ -138,6 +138,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - notify IO `subtitle` and `title` with only a subtitle was not send
     - npcHider not working for citizens with a ModelEngine trait
     - 1.19 ProtocolLib warnings about deprecated packages
+    - conversation IO chest did not show the correct NPC heads
     - `npcrange` objective - is triggered at wrong time
     - `command` event - includes 'conditions:...' into the command
     - `craft` objective - multi-craft, drop-craft, hotbar/offhand-craft, shift-Q-craft and any illegal crafting is
