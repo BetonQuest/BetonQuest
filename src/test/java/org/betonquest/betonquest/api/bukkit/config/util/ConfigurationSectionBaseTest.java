@@ -76,7 +76,8 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
     public void testGetValuesDeepTrue() {
         final ConfigurationSection section = config.getConfigurationSection("childSection");
         assertNotNull(section);
-        assertEquals("[nestedChildSection, nestedChildSection.key]", section.getKeys(true).toString());
+        assertEquals("{nestedChildSection=MemorySection[path='childSection.nestedChildSection', root='YamlConfiguration'], nestedChildSection.key=value}",
+                section.getValues(true).toString());
     }
 
     @Test
