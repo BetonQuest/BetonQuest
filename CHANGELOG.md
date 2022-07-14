@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated
 ### Removed
 ### Fixed
+- conversation IO chest did not show the correct NPC heads
 ### Security
 
 ## [1.12.9] - 2022-06-22
