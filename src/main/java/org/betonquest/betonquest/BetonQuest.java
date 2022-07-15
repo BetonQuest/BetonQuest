@@ -41,6 +41,7 @@ import org.betonquest.betonquest.conditions.ConversationCondition;
 import org.betonquest.betonquest.conditions.DayOfWeekCondition;
 import org.betonquest.betonquest.conditions.EffectCondition;
 import org.betonquest.betonquest.conditions.EmptySlotsCondition;
+import org.betonquest.betonquest.conditions.EnderChestItemCondition;
 import org.betonquest.betonquest.conditions.EntityCondition;
 import org.betonquest.betonquest.conditions.ExperienceCondition;
 import org.betonquest.betonquest.conditions.FacingCondition;
