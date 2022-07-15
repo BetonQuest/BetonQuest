@@ -16,7 +16,7 @@ IntelliJ may also show something like `Failed to execute goal`. Here's a guide h
 
 !!! note ""
     === "PMD"
-        Visit the <a href="https://pmd.github.io/latest/" target="_blank">**PMD Page**</a> for general info.
+        Visit the **[PMD Page](https://pmd.github.io/latest/)** for general info.
         <br><br>
         PMD mainly checks for code smells. PMD's errors look like this:
         ````
@@ -27,12 +27,12 @@ IntelliJ may also show something like `Failed to execute goal`. Here's a guide h
         [INFO] PMD Failure: org.betonquest.betonquest.BetonQuest:143 Rule:AvoidLiteralsInIfCondition Priority:3 Avoid using Literals in Conditional Statements.
         ````
         If you read this, you may know what is wrong. If you don't know why, visit the
-        <a href="https://pmd.github.io/latest/" target="_blank">PMD</a> page.
+        [PMD](https://pmd.github.io/latest/) page.
         Then you type in the rule e.g. `AvoidLiteralsInIfCondition` in the search bar and click on the rule.
         You will get a detailed description about what is wrong.
         If you still don't know how to solve it, ask the developers on Discord for help with PMD.
     === "SpotBugs"
-        Visit the <a href="https://spotbugs.readthedocs.io/en/stable/index.html" target="_blank">**SpotBugs Page**</a> for general info.
+        Visit the **[SpotBugs Page](https://spotbugs.readthedocs.io/en/stable/index.html)** for general info.
         <br><br>
         SpotBugs searches for additional problems, most of them are potential bugs. SpotBugs' errors look like this:
         ````
@@ -44,10 +44,10 @@ IntelliJ may also show something like `Failed to execute goal`. Here's a guide h
         ````
         SpotBugs errors are a little complicated to read,
         but if you find e.g. `NP_NULL_PARAM_DEREF` at the end of the line you can simply search it on the
-        <a href="https://spotbugs.readthedocs.io/en/stable/bugDescriptions.html" target="_blank">SpotBugs</a> page.
+        [SpotBugs](https://spotbugs.readthedocs.io/en/stable/bugDescriptions.html) page.
         If you have problems solving these kinds of issues you can ask on our Discord for help with SpotBugs.
     === "CheckStyle"
-        Visit the <a href="https://checkstyle.sourceforge.io/checks.html" target="_blank">**CheckStyle Page**</a> for general info.
+        Visit the **[CheckStyle Page](https://checkstyle.sourceforge.io/checks.html)** for general info.
         <br><br>
         CheckStyle checks the code formatting and style. We have only configured two checks.
         The first check is the import order, and the second check is that you do not use star imports,
@@ -58,11 +58,11 @@ IntelliJ may also show something like `Failed to execute goal`. Here's a guide h
         ````
         CheckStyle is very simple to read, normally it is in your language and self explaining.  
         In the above error you can find e.g `ImportOrder` and you can search on the
-        <a href="https://checkstyle.sourceforge.io/checks.html" target="_blank">CheckStyle</a> page for it.
+        [CheckStyle](https://checkstyle.sourceforge.io/checks.html) page for it.
         If you need help solving an issue here, you can also ask us on our Discord for help with CheckStyle.
         <br><br><br>
     === "EditorConfig"
-        Visit the <a href="https://editorconfig.org/" target="_blank">**EditorConfig Page**</a> for general info.
+        Visit the **[EditorConfig Page](https://editorconfig.org/)** for general info.
         <br><br>
         EditorConfig it natively supported by many IDEs and editors.
         It checks for some really basic formatting like brackets, line endings, indention and some more.

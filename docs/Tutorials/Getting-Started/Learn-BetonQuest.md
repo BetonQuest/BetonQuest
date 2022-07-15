@@ -327,7 +327,7 @@ conversations:
 ```
 
 Now you should experiment some more with this conversation, you can help yourself by looking at the
-<a href="https://github.com/BetonQuest/Quest-Tutorials/blob/main/QuestPackages/default/conversations/innkeeper.yml" target="_blank">innkeeper.yml</a> file.
+[innkeeper.yml](https://github.com/BetonQuest/Quest-Tutorials/blob/main/QuestPackages/default/conversations/innkeeper.yml) file.
 Try to understand how that conversation works step by step. As the excercise you should complete the Miner NPC, so he
 asks you to mine some iron ore, then smelt it in the furnace, next craft an armor with it and return to him wearing this armor.
 

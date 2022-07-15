@@ -1,35 +1,35 @@
 ---
 icon: material/flag
 ---
-The BetonQuest Organisation recommends <a href="https://www.jetbrains.com/idea/" target="_blank">IntelliJ</a>
+The BetonQuest Organisation recommends [IntelliJ](https://www.jetbrains.com/idea/)
 (Community Edition) as the IDE (Integrated Development Environment).
 The advantage of using IntelliJ is that this guide contains some steps and the project contains some files
 that help to fulfill our requirements regarding code and documentation style.
 You can still use your preferred IDE, but then you need to check on your own that your changes fulfill our requirements.
 
-## Installing IntelliJ 
-First download <a href="https://www.jetbrains.com/idea/download/" target="_blank">IntelliJ</a> and install it.
+##Installing IntelliJ 
+First download [IntelliJ](https://www.jetbrains.com/idea/download) and install it.
 
 After you installed IntelliJ, we recommend installing the plugin
-<a href="https://plugins.jetbrains.com/plugin/7642-save-actions" target="_blank">Save Actions</a>.
+[Save Actions](https://plugins.jetbrains.com/plugin/7642-save-actions).
 The plugin automatically formats code, organizes imports, adds final modifiers, and fulfils some other requirements we have.
 You don't need to configure that plugin, the project contains the configuration file.
 
 ## Check out the repository
 You need a Git installation to be able to check out code from GitHub.
-You can follow this <a href="https://docs.github.com/en/get-started/quickstart/set-up-git" target="_blank">guide</a>
+You can follow this [guide](https://docs.github.com/en/get-started/quickstart/set-up-git)
 if you don't know how to install Git.  
 
-Then you should <a href="https://docs.github.com/en/get-started/quickstart/fork-a-repo" target="_blank">fork</a>
+Then you should [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo)
 the BetonQuest repository to your own account on GitHub.
 
 After you have setup the IDE,
-<a href="https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository" target="_blank">clone</a>
+[clone](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository)
 the BetonQuest repository from your account. You can also directly
-<a href="https://blog.jetbrains.com/idea/2020/10/clone-a-project-from-github/" target="_blank">clone the repository in IntelliJ</a>.
+[clone the repository in IntelliJ](https://blog.jetbrains.com/idea/2020/10/clone-a-project-from-github/).
 
 ??? "In case videos and images are missing after cloning"
-    We use <a href="https://git-lfs.github.com/" target="_blank">Git LFS</a> to store big files like media files, so you need to install that too.
+    We use [Git LFS](https://git-lfs.github.com/) to store big files like media files, so you need to install that too.
     Once you have executed the file that you downloaded from the Git LFS website, just run `git lfs install`.
     Then use `git lfs pull` to actually download the files.
 
@@ -108,13 +108,13 @@ into the field `Command line`. Then confirm with `Ok` twice.
 Now after starting IntelliJ the `BetonQuest Resolve Dependencies` task should run automatically.
 
 
-## Building the Documentation
-Make sure <a href="https://www.python.org/downloads/" target="_blank">Python3</a> is installed on your local system
+
+##Building the Documentation
+Make sure [Python3](https://www.python.org/downloads/) is installed on your local system
 and added to the PATH environment variable. The Python installer allows you to do so with a checkbox called something like
 "Add Python to environment variables".
-You also need to install <a href="https://www.gtk.org/" target="_blank">GTK</a>, the easiest way is to use this 
-<a href="https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer/" target="_blank">GTK installer</a>
-if you are on Windows. 
+You also need to install [GTK](https://www.gtk.org/), the easiest way is to use this 
+[GTK installer](https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer/) if you are on Windows. 
 
 Install all other dependencies by entering `pip install -r config/docs-requirements.txt` in the terminal on the project's root directory.
 
@@ -130,7 +130,7 @@ Run this command in IntelliJ's integrated terminal (at the bottom) to create a d
 mkdocs serve
 ```
 
-Then visit <a href="http://127.0.0.1:8000" target="_blank">127.0.0.1:8000</a> to make sure that everything works.
+Then visit [127.0.0.1:8000](http://127.0.0.1:8000) to make sure that everything works.
 
 ---
 ## Where to Continue?

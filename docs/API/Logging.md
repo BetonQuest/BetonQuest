@@ -40,8 +40,7 @@ These advantages are mainly for BetonQuest, but it is also very useful for 3rd p
 
 !!! note ""
     === "Using Lombock"
-        Using Lombock enables you to use the handy
-        <a href="https://projectlombok.org/features/log" target="_blank">@CustomLog</a>
+        Using Lombock enables you to use the handy [@CustomLog](https://projectlombok.org/features/log)
         annotation on each class you want a logger for.
         This requires a Lombock setup in your project and in your IDE.
     

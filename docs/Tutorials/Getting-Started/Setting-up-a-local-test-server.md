@@ -18,7 +18,7 @@ change plugin configurations as you wish etc.
 
 - **Step 1:** You have propably heard of Spigot, the biggest server software for 
 Minecraft. We are going to install Paper (an improved version of Spigot) on your computer. 
-Head over to <a href="https://papermc.io/downloads" target="_blank">Papers download page</a> and click on the button you
+Head over to [Papers download page](https://papermc.io/downloads) and click on the button you
 see in the image below (the numbers will not match up, ignore that).
 <span class="centered">![PaperMCDownload](../../_media/content/Tutorials/papermc.png)</span>
 

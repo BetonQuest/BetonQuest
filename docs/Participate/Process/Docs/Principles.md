@@ -19,7 +19,7 @@ A brief overview of basic documentation principles.
     * Foo and Bar as synonyms for "example words" are likely unknown to non-native speakers and translation software.
     
     Take a look at the 
-    <a href="https://docs.microsoft.com/en-us/style-guide/global-communications/" target="_blank">Microsoft Style Guide for Global Communications</a>
+    [Microsoft Style Guide for Global Communications](https://docs.microsoft.com/en-us/style-guide/global-communications/)
     to learn more.
 
 

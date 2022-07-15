@@ -336,7 +336,7 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 ## :material-skull: Entity Kill: `mobkill`
 
 The player must kill the specified amount of entities (living creatures).
-All entities work, make sure to use their <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html" target="_blank">correct types</a>.
+All entities work, make sure to use their [correct types](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html).
 
 | Parameter | Syntax                  | Default Value          | Explanation                                                                                                       |
 |-----------|-------------------------|------------------------|-------------------------------------------------------------------------------------------------------------------|
@@ -467,7 +467,7 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 ## Ride an entity: `ride`
 
 This objective can be completed by riding the specified
-<a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html" target="_blank_">entity</a>.
+[entity](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html).
 `any` is also a valid input and matches any entity.
 
 !!! example
