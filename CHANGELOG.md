@@ -7,18 +7,18 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased] - ${current-date}
 ### Added
 - Logging
-    - Ingame logging
-        - Logging during `/q reload`
-    - New command `/q debug ingame`
-    - Debug logging to separate file
-    - Log history length can be freely configured
+	- Ingame logging
+		- Logging during `/q reload`
+	- New command `/q debug ingame`
+	- Debug logging to separate file
+	- Log history length can be freely configured
 - add AureliumSkills Compatiblity
-    - added AureliumSkillsLevelCondition
-    - All existing users must add aureliumskills: 'true' to their config.yml's hook section.
-    - added AureliumStatsLevelCondition
-    - added AureliumSkillsLevelExperienceEvent
+	- added AureliumSkillsLevelCondition
+	- All existing users must add aureliumskills: 'true' to their config.yml's hook section.
+	- added AureliumStatsLevelCondition
+	- added AureliumSkillsLevelExperienceEvent
 - add LuckPerms context integration for tags
-    - All existing users must add luckperms: 'true' to their config.yml's hook section.
+	- All existing users must add luckperms: 'true' to their config.yml's hook section.
 - added Event Schedules to replace old static-events system
 - NotifyIO "totemIO"
 - Support for MythicLib
@@ -46,43 +46,43 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `delay` objective property: `rawSeconds`
 - `fish` objective now has `hookLocation` and `range` settings.
 - Things that are also added in 1.12.X:
-    - new line support for `journal_lore` in `messages.yml`
-    - FastAsyncWorldEdit compatibility
-    - curly braces in math.calc variables for using variables with math symbols
-    - Vietnamese translation
-    - added invOrder setting to (mmoitem)take event
-    - Version checks for ProtocolLib and Shopkeepers support
-    - `mmoitemtake` event and `mmoitem` condition - now also check the backpack
-        - this will not work until the item rework / until the backpack contains NBT data
+	- new line support for `journal_lore` in `messages.yml`
+	- FastAsyncWorldEdit compatibility
+	- curly braces in math.calc variables for using variables with math symbols
+	- Vietnamese translation
+	- added invOrder setting to (mmoitem)take event
+	- Version checks for ProtocolLib and Shopkeepers support
+	- `mmoitemtake` event and `mmoitem` condition - now also check the backpack
+		- this will not work until the item rework / until the backpack contains NBT data
 ### Changed
 - Java 17 is now required
 - changed package names from `pl.betoncraft.betonquest` to `org.betonquest.betonquest`
 - Changed quest package structure
-    - Quest packages are now searched and loaded from the folder `BetonQuest/QuestPackages/`
-    - Quest packages can now contain more quest packages in sub folders
-    - Relative paths can now navigate downwards and not only upwards
-    - `main.yml` was renamed to `package.yml`
-    - Any file and folder structure with any file and folder names is now allowed, except `package.yml`, as that file
-      indicates a quest package
-    - `events`, `objectives`, `conditions`, `journal` and `items` are now defined in a config section matching their
-      names
-    - `conversations` and `menus` are now defined in a config section matching their names and a unique identifier like
-      the file name before
+	- Quest packages are now searched and loaded from the folder `BetonQuest/QuestPackages/`
+	- Quest packages can now contain more quest packages in sub folders
+	- Relative paths can now navigate downwards and not only upwards
+	- `main.yml` was renamed to `package.yml`
+	- Any file and folder structure with any file and folder names is now allowed, except `package.yml`, as that file
+	  indicates a quest package
+	- `events`, `objectives`, `conditions`, `journal` and `items` are now defined in a config section matching their
+	  names
+	- `conversations` and `menus` are now defined in a config section matching their names and a unique identifier like
+	  the file name before
 - all objectives that can be advanced without directly completing now support notify
 - all objectives that can be advanced without directly completing now support `left`, `amount` and `total` variables
-    - the `left` and `amount` variables of some objectives were swapped and have been corrected: `left` is the amount
-      left, `amount` is the amount done
+	- the `left` and `amount` variables of some objectives were swapped and have been corrected: `left` is the amount
+	  left, `amount` is the amount done
 - AureliumSkills updated to version Beta1.2.5
 - PikaMug Quests updated to version 4.1.3
 - Items now support AIR
 - Menus now support new `click` options `shiftLeft`, `shiftRight` and `middleMouse` to execute events on item clicks
-    - Therefore `left` and `right` in the `click` section no longer include shift clicks
+	- Therefore `left` and `right` in the `click` section no longer include shift clicks
 - `folder` event - now executes events immediately if no delay is set
 - `weather` event - now has an optional variable duration (in seconds) and an optional world param
 - Things that are also changed in 1.12.X:
-    - math variable now allows rounding output with the ~ operator
-    - French translation has been updated
-    - `action` objective - cancels now the event, before other plugins check for it (better third-party support)
+	- math variable now allows rounding output with the ~ operator
+	- French translation has been updated
+	- `action` objective - cancels now the event, before other plugins check for it (better third-party support)
 ### Deprecated
 ### Removed
 - deprecated internals, code and old features
@@ -105,58 +105,58 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   other slots present
 - `menu`(open) event - showed the previous menu again
 - Things that are also fixed in 1.12.X:
-    - parsing of math variable
-    - Citizens compatibility for not spawned NPCs
-    - NotifyIOs are case-sensitive
-    - all mmo objectives trigger for everyone
-    - tags and points are now thread safe
-    - compatibility for packet interceptor on papermc
-    - NPC hider for not spawned NPCs
-    - Conversation IO Chest load NPC skull async from Citizens instead of sync
-    - block selector didn't respect regex boundary
-    - block selector regex errors are now properly handled
-    - `default_journal_slot: -1` now uses the first free slot instead of the last hotbar slot
-    - PacketInterceptor sync wait lag
-    - notifications using the chatIO were catched by the conversation interceptor
-    - global variables didn't work in quester names
-    - quest items couldn't interact with any blocks, which also prevented them from mining blocks
-    - backpack passing references instead of clones
-    - fixed combat event packet that changed with MC 1.17
-    - fixed hooking in ProtocolLib
-    - max_npc_distance was set to 5.3 to prevent instant quiting of conversations
-    - conversation IO menu sometimes leave an armorstand spawned
-    - sometimes messages in a conversation are not send when packet interceptor is used
-    - added missing config options to the default config
-    - quest item empty name comparison
-    - customized built-in messages that use the advancementIO
-    - fix books not parsing color codes
-    - BlockSelector without a namespace but starting with `:` did not work and threw an exception
-    - exception during reload, when npc_holograms are disabled
-    - mmoitems item creation only worked with uppercase id's
-    - reload with an invalid PlayerHider causes a NPE
-    - QuestItems could be eaten, this was caused by a changed mc behaviour
-    - notify IO `subtitle` and `title` with only a subtitle was not send
-    - npcHider not working for citizens with a ModelEngine trait
-    - 1.19 ProtocolLib warnings about deprecated packages
-    - conversation IO chest did not show the correct NPC heads
-    - `npcrange` objective - is triggered at wrong time
-    - `command` event - includes 'conditions:...' into the command
-    - `craft` objective - multi-craft, drop-craft, hotbar/offhand-craft, shift-Q-craft and any illegal crafting is
-      correctly detected
-    - `mmobkill` objective - notify argument not working correctly
-    - `mmoclass` condition - used the class display name instead of the class ID to compare classes
-    - `mmoitemgive` event - did not check if the item actually exists
-    - `fish` objective - didn't count the amount of fish caught in one go (if modified by e.g. mcMMO)
-    - `smelt` objective - only taking out normally did count, shift-extract got canceled
-    - `variable` objective - empty values don't break on player join
-    - `password` objective - case insensitive did not work if the password contained upper case letters
-    - `shear` objective - sheep couldn't have underscores in their names
-    - `compass` event - now allows global variables
-    - `entities` condition and `clear` event - now support not living entities
-    - `command`, `sudo` and `opsudo` events - didn't work with conditions
-    - `interact` objective - did not work with armorstands
-    - `action` objective - for `any` block ignored location
-    - `weather` event - storm did not work
+	- parsing of math variable
+	- Citizens compatibility for not spawned NPCs
+	- NotifyIOs are case-sensitive
+	- all mmo objectives trigger for everyone
+	- tags and points are now thread safe
+	- compatibility for packet interceptor on papermc
+	- NPC hider for not spawned NPCs
+	- Conversation IO Chest load NPC skull async from Citizens instead of sync
+	- block selector didn't respect regex boundary
+	- block selector regex errors are now properly handled
+	- `default_journal_slot: -1` now uses the first free slot instead of the last hotbar slot
+	- PacketInterceptor sync wait lag
+	- notifications using the chatIO were catched by the conversation interceptor
+	- global variables didn't work in quester names
+	- quest items couldn't interact with any blocks, which also prevented them from mining blocks
+	- backpack passing references instead of clones
+	- fixed combat event packet that changed with MC 1.17
+	- fixed hooking in ProtocolLib
+	- max_npc_distance was set to 5.3 to prevent instant quiting of conversations
+	- conversation IO menu sometimes leave an armorstand spawned
+	- sometimes messages in a conversation are not send when packet interceptor is used
+	- added missing config options to the default config
+	- quest item empty name comparison
+	- customized built-in messages that use the advancementIO
+	- fix books not parsing color codes
+	- BlockSelector without a namespace but starting with `:` did not work and threw an exception
+	- exception during reload, when npc_holograms are disabled
+	- mmoitems item creation only worked with uppercase id's
+	- reload with an invalid PlayerHider causes a NPE
+	- QuestItems could be eaten, this was caused by a changed mc behaviour
+	- notify IO `subtitle` and `title` with only a subtitle was not send
+	- npcHider not working for citizens with a ModelEngine trait
+	- 1.19 ProtocolLib warnings about deprecated packages
+	- conversation IO chest did not show the correct NPC heads
+	- `npcrange` objective - is triggered at wrong time
+	- `command` event - includes 'conditions:...' into the command
+	- `craft` objective - multi-craft, drop-craft, hotbar/offhand-craft, shift-Q-craft and any illegal crafting is
+	  correctly detected
+	- `mmobkill` objective - notify argument not working correctly
+	- `mmoclass` condition - used the class display name instead of the class ID to compare classes
+	- `mmoitemgive` event - did not check if the item actually exists
+	- `fish` objective - didn't count the amount of fish caught in one go (if modified by e.g. mcMMO)
+	- `smelt` objective - only taking out normally did count, shift-extract got canceled
+	- `variable` objective - empty values don't break on player join
+	- `password` objective - case insensitive did not work if the password contained upper case letters
+	- `shear` objective - sheep couldn't have underscores in their names
+	- `compass` event - now allows global variables
+	- `entities` condition and `clear` event - now support not living entities
+	- `command`, `sudo` and `opsudo` events - didn't work with conditions
+	- `interact` objective - did not work with armorstands
+	- `action` objective - for `any` block ignored location
+	- `weather` event - storm did not work
 ### Security
 - it was possible to put a QuestItem into a chest
 - bump log4j dependency 2.15.0 to fix CVE-2021-44228
@@ -185,34 +185,34 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [1.12.0] - 2021-01-10
 ### Added
 - Tags and Objectives can now be removed with a static event for all players, even if they are not online
-    - deletepoint event can now also be called to delete all points for all players
-    - journal del event can now also be called as static
+	- deletepoint event can now also be called to delete all points for all players
+	- journal del event can now also be called as static
 - Added integration for TeamRequiem plugins (MMOCore, MMOItems, MMOLib)
-    - Conditions:
-        - MMOClass condition (type & class)
-        - MMOProfession condition
-        - MMOAttribute condition
-        - MMOItems item condition (item in inventory)
-        - MMOItems hand condition (item in main/offhand)
-        - MMOLib stats condition  (a ton of stats from Core and Items combined)
-    - Objectives:
-        - Level X Profession to X Level
-        - Craft / Upgrade X Item within Inventory
-        - Craft X item
-        - Apply Gem Stone to Item
-        - Upgrade Item via Consumable
-        - Cast Item ability
-        - Cast Class ability
-        - Mine MMOBlock
-    - Events:
-        - Add mmo class level or exp
-        - Add mmo professional level or exp
-        - Add Skill points
-        - Add attribute points
-        - Add attribute reallocation points
-        - Add class points
-        - Give Item ️
-        - Take Item
+	- Conditions:
+		- MMOClass condition (type & class)
+		- MMOProfession condition
+		- MMOAttribute condition
+		- MMOItems item condition (item in inventory)
+		- MMOItems hand condition (item in main/offhand)
+		- MMOLib stats condition  (a ton of stats from Core and Items combined)
+	- Objectives:
+		- Level X Profession to X Level
+		- Craft / Upgrade X Item within Inventory
+		- Craft X item
+		- Apply Gem Stone to Item
+		- Upgrade Item via Consumable
+		- Cast Item ability
+		- Cast Class ability
+		- Mine MMOBlock
+	- Events:
+		- Add mmo class level or exp
+		- Add mmo professional level or exp
+		- Add Skill points
+		- Add attribute points
+		- Add attribute reallocation points
+		- Add class points
+		- Give Item ️
+		- Take Item
 - equal argument for condition 'empty'
 - Condition 'wand' can now have an option '
 - Implementing 1.15 support for Events and Conditions
@@ -260,7 +260,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Renamed 'monsters' condition to 'entities'
 - Renamed 'xp' event to 'experience'
 - new config option mysql.enabled
-    - if you already have an installation, you can add this manually to get rid of the mysql warning during startup
+	- if you already have an installation, you can add this manually to get rid of the mysql warning during startup
 - events in conversation options are now executed before npc or player responses are printed
 - message event now ignores chat interceptors during conversation
 - tame objective now works with all tamable mobs, including possible future ones
@@ -789,10 +789,10 @@ Notes:
 - Items are now aware of leather armor color, head owner and enchantments in books
 ### Changes
 - Added and changed a lot of subcommands in /q command:
-    - event and condition can be run for every online player
-    - tag, point, objective and (new) journal can edit every (even offline) player
-    - config (new) can set configuration files from command line
-    - backup (new) backups the whole configuration and database
+	- event and condition can be run for every online player
+	- tag, point, objective and (new) journal can edit every (even offline) player
+	- config (new) can set configuration files from command line
+	- backup (new) backups the whole configuration and database
 - Folder event now runs these events even after the player logs out: command, tag, objective, delete, point, setblock
 - Changed /j command to open the backpack instead of just giving the journal
 - Tellraw clicking on options in conversation now ignores old (used) options
@@ -885,9 +885,9 @@ Notes:
 - Added SetBlock event for setting a block at specified location
 - Improved Material matching in configs
 - Modified Action objective for greater flexibility:
-    - It is now possible to detect clicking in air
-    - It is no longer possible to detect clicking on any block (as this accepts clicking on air)
-    - Can be used to detect book reading (with help of updated Hand condition)
+	- It is now possible to detect clicking in air
+	- It is no longer possible to detect clicking on any block (as this accepts clicking on air)
+	- Can be used to detect book reading (with help of updated Hand condition)
 - Added AutoUpdater; it's disabled by default Notes:
 - Conversion of configuration should have been done automatically, you don't have to worry about anything. If something
   went wrong you can revert changes from generated backup file, which contains all your previous configs.
@@ -927,9 +927,9 @@ Notes:
 
 ## [1.1] - 2014-11-08
 - Fixed many bugs including but not limited to:
-    - negated conjunction condition
-    - unnecessary debug messages
-    - not working global locations
+	- negated conjunction condition
+	- unnecessary debug messages
+	- not working global locations
 - Replaced config examples with default quest
 - Leaving data values in item's definition will make plugin ignore data value in most cases
 - Improved journal to stop text leaks

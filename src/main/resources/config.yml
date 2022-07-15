@@ -28,8 +28,8 @@ conversation_colors:
   option: aqua
 conversation_IO_config:
   chest:
-    show_number: true
-    show_npc_text: true
+	show_number: true
+	show_npc_text: true
 default_interceptor: packet,simple
 display_chat_after_conversation: 'true'
 combat_delay: '10'
@@ -85,8 +85,8 @@ journal:
   give_on_respawn: 'false'
 journal_colors:
   date:
-    day: '9'
-    hour: '6'
+	day: '9'
+	hour: '6'
   line: '4'
   text: '0'
 date_format: dd.MM.yyyy HH:mm
@@ -96,10 +96,10 @@ debug:
 download:
   pull_requests: false
   repo_whitelist:
-    - BetonQuest/Quest-Tutorials
+	- BetonQuest/Quest-Tutorials
 items:
   backpack:
-    previous_button: ''
-    next_button: ''
-    cancel_button: ''
-    compass_button: ''
+	previous_button: ''
+	next_button: ''
+	cancel_button: ''
+	compass_button: ''

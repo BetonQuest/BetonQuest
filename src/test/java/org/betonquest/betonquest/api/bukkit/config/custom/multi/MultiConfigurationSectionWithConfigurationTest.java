@@ -23,72 +23,72 @@ import static org.junit.jupiter.api.Assertions.*;
 @SuppressWarnings({"PMD.JUnit5TestShouldBePackagePrivate", "PMD.JUnitAssertionsShouldIncludeMessage"})
 public class MultiConfigurationSectionWithConfigurationTest extends ConfigurationSectionBaseTest {
 
-    @Override
-    public Configuration getConfig() {
-        final Configuration defaultConfig = super.getDefaultConfig();
-        final Map<ConfigurationSection, String> configs = new HashMap<>();
-        configs.put(defaultConfig, "config.yml");
-        try {
-            final MultiConfiguration multiConfiguration = new MultiConfiguration(new ArrayList<>(configs.keySet()));
-            final Configuration defaults = defaultConfig.getDefaults();
-            assertNotNull(defaults);
-            multiConfiguration.setMultiDefaults(List.of(defaults));
-            return multiConfiguration;
-        } catch (final KeyConflictException e) {
-            fail(e.resolvedMessage(configs), e);
-        } catch (final InvalidConfigurationException e) {
-            fail(e);
-        }
-        return null;
-    }
+	@Override
+	public Configuration getConfig() {
+		final Configuration defaultConfig = super.getDefaultConfig();
+		final Map<ConfigurationSection, String> configs = new HashMap<>();
+		configs.put(defaultConfig, "config.yml");
+		try {
+			final MultiConfiguration multiConfiguration = new MultiConfiguration(new ArrayList<>(configs.keySet()));
+			final Configuration defaults = defaultConfig.getDefaults();
+			assertNotNull(defaults);
+			multiConfiguration.setMultiDefaults(List.of(defaults));
+			return multiConfiguration;
+		} catch (final KeyConflictException e) {
+			fail(e.resolvedMessage(configs), e);
+		} catch (final InvalidConfigurationException e) {
+			fail(e);
+		}
+		return null;
+	}
 
-    private void assertThrowsUnmodifiableException(final Executable executable) {
-        final Exception exception = assertThrows(UnsupportedOperationException.class, executable);
-        assertEquals(MultiConfiguration.UNMODIFIABLE_MESSAGE, exception.getMessage());
-    }
+	private void assertThrowsUnmodifiableException(final Executable executable) {
+		final Exception exception = assertThrows(UnsupportedOperationException.class, executable);
+		assertEquals(MultiConfiguration.UNMODIFIABLE_MESSAGE, exception.getMessage());
+	}
 
-    @Test
-    @Override
-    public void testAddDefault() {
-        assertThrowsUnmodifiableException(super::testAddDefault);
-    }
+	@Test
+	@Override
+	public void testAddDefault() {
+		assertThrowsUnmodifiableException(super::testAddDefault);
+	}
 
-    @Test
-    @Override
-    public void testAddDefaultOnExistingConfigPath() {
-        assertThrowsUnmodifiableException(super::testAddDefaultOnExistingConfigPath);
-    }
+	@Test
+	@Override
+	public void testAddDefaultOnExistingConfigPath() {
+		assertThrowsUnmodifiableException(super::testAddDefaultOnExistingConfigPath);
+	}
 
-    @Test
-    @Override
-    public void testGetValuesDeepFalse() {
-        final ConfigurationSection section = config.getConfigurationSection("childSection");
-        assertNotNull(section);
-        assertEquals("{nestedChildSection=MemorySection[path='childSection.nestedChildSection', root='MemoryConfiguration']}",
-                section.getValues(false).toString());
-    }
+	@Test
+	@Override
+	public void testGetValuesDeepFalse() {
+		final ConfigurationSection section = config.getConfigurationSection("childSection");
+		assertNotNull(section);
+		assertEquals("{nestedChildSection=MemorySection[path='childSection.nestedChildSection', root='MemoryConfiguration']}",
+				section.getValues(false).toString());
+	}
 
-    @Test
-    @Override
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
-    public void testGetKeysDeepFalse() {
-        assertEquals("[boolean, booleanList, characterList, childSection, color, default, double, doubleList, existingSet, get, integer, integerList, item, list, location, long, mapList, object, offlinePlayer, section, string, stringList, vector]",
-                config.getKeys(false).stream().sorted().toList().toString());
+	@Test
+	@Override
+	@SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+	public void testGetKeysDeepFalse() {
+		assertEquals("[boolean, booleanList, characterList, childSection, color, default, double, doubleList, existingSet, get, integer, integerList, item, list, location, long, mapList, object, offlinePlayer, section, string, stringList, vector]",
+				config.getKeys(false).stream().sorted().toList().toString());
 
-        final ConfigurationSection section = config.getConfigurationSection("childSection");
-        assertNotNull(section);
-        assertEquals(new HashSet<>(Collections.singletonList("nestedChildSection")), section.getKeys(false));
-    }
+		final ConfigurationSection section = config.getConfigurationSection("childSection");
+		assertNotNull(section);
+		assertEquals(new HashSet<>(Collections.singletonList("nestedChildSection")), section.getKeys(false));
+	}
 
-    @Test
-    @Override
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
-    public void testGetKeysDeepTrue() {
-        assertEquals("[boolean, booleanList, characterList, childSection, childSection.nestedChildSection, childSection.nestedChildSection.key, color, default, default.key, double, doubleList, existingSet, get, integer, integerList, item, list, location, long, mapList, object, offlinePlayer, section, section.key, string, stringList, vector]",
-                config.getKeys(true).stream().sorted().toList().toString());
+	@Test
+	@Override
+	@SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+	public void testGetKeysDeepTrue() {
+		assertEquals("[boolean, booleanList, characterList, childSection, childSection.nestedChildSection, childSection.nestedChildSection.key, color, default, default.key, double, doubleList, existingSet, get, integer, integerList, item, list, location, long, mapList, object, offlinePlayer, section, section.key, string, stringList, vector]",
+				config.getKeys(true).stream().sorted().toList().toString());
 
-        final ConfigurationSection section = config.getConfigurationSection("childSection");
-        assertNotNull(section);
-        assertEquals(new HashSet<>(Arrays.asList("nestedChildSection", "nestedChildSection.key")), section.getKeys(true));
-    }
+		final ConfigurationSection section = config.getConfigurationSection("childSection");
+		assertNotNull(section);
+		assertEquals(new HashSet<>(Arrays.asList("nestedChildSection", "nestedChildSection.key")), section.getKeys(true));
+	}
 }

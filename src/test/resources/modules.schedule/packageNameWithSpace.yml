@@ -6,10 +6,10 @@ events:
   notify_goodNight: 'notify &6Good night, sleep well!'
 schedules:
   test Simple:
-    type: realtime-daily
-    time: '22:00'
-    events: bell_ring,notify_goodNight
+	type: realtime-daily
+	time: '22:00'
+	events: bell_ring,notify_goodNight
   testRealtime:
-    type: realtime-cron
-    time: '1 22 * * *'
-    events: bell_ring,notify_goodNight
+	type: realtime-cron
+	time: '1 22 * * *'
+	events: bell_ring,notify_goodNight

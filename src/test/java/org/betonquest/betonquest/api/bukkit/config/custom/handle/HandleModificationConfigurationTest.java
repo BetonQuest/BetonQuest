@@ -14,85 +14,85 @@ import static org.junit.jupiter.api.Assertions.*;
 @SuppressWarnings({"PMD.JUnitTestsShouldIncludeAssert", "PMD.JUnitAssertionsShouldIncludeMessage", "PMD.JUnit5TestShouldBePackagePrivate"})
 public class HandleModificationConfigurationTest extends ConfigurationBaseTest {
 
-    /**
-     * The instance of the setter.
-     */
-    private HandleModificationToConfiguration setter;
+	/**
+	 * The instance of the setter.
+	 */
+	private HandleModificationToConfiguration setter;
 
-    @Override
-    public Configuration getConfig() {
-        setter = new HandleModificationToConfiguration();
-        return new HandleModificationConfiguration(super.getDefaultConfig(), setter);
-    }
+	@Override
+	public Configuration getConfig() {
+		setter = new HandleModificationToConfiguration();
+		return new HandleModificationConfiguration(super.getDefaultConfig(), setter);
+	}
 
-    /**
-     * The test is supposed to roll back all changes made to the setter.
-     * Therefore, it must be empty after each test.
-     */
-    @AfterEach
-    public void afterEach() {
-        assertTrue(setter.getSection().getKeys(true).isEmpty());
-        final Configuration defaultSection = setter.getSection().getDefaults();
-        if (defaultSection != null) {
-            assertTrue(defaultSection.getKeys(true).isEmpty());
-        }
-        assertTrue(setter.getComments().isEmpty());
-        assertTrue(setter.getInlineComments().isEmpty());
-    }
+	/**
+	 * The test is supposed to roll back all changes made to the setter.
+	 * Therefore, it must be empty after each test.
+	 */
+	@AfterEach
+	public void afterEach() {
+		assertTrue(setter.getSection().getKeys(true).isEmpty());
+		final Configuration defaultSection = setter.getSection().getDefaults();
+		if (defaultSection != null) {
+			assertTrue(defaultSection.getKeys(true).isEmpty());
+		}
+		assertTrue(setter.getComments().isEmpty());
+		assertTrue(setter.getInlineComments().isEmpty());
+	}
 
-    @Test
-    @Override
-    public void testAddDefaultOnRootSection() {
-        super.testAddDefaultOnRootSection();
-        setter.getSection().addDefault("default", null);
-    }
+	@Test
+	@Override
+	public void testAddDefaultOnRootSection() {
+		super.testAddDefaultOnRootSection();
+		setter.getSection().addDefault("default", null);
+	}
 
-    @Test
-    @Override
-    public void testAddDefaultOnRootSectionOnExistingConfigPath() {
-        super.testAddDefaultOnRootSectionOnExistingConfigPath();
-        setter.getSection().addDefault("default", null);
-    }
+	@Test
+	@Override
+	public void testAddDefaultOnRootSectionOnExistingConfigPath() {
+		super.testAddDefaultOnRootSectionOnExistingConfigPath();
+		setter.getSection().addDefault("default", null);
+	}
 
-    @Test
-    @Override
-    public void testAddDefaultsAsConfiguration() {
-        super.testAddDefaultsAsConfiguration();
-        setter.getSection().addDefault("default", null);
-    }
+	@Test
+	@Override
+	public void testAddDefaultsAsConfiguration() {
+		super.testAddDefaultsAsConfiguration();
+		setter.getSection().addDefault("default", null);
+	}
 
-    @Test
-    @Override
-    public void testAddDefaultsAsConfigurationOnExistingConfigPath() {
-        super.testAddDefaultsAsConfigurationOnExistingConfigPath();
-        setter.getSection().addDefault("default", null);
-    }
+	@Test
+	@Override
+	public void testAddDefaultsAsConfigurationOnExistingConfigPath() {
+		super.testAddDefaultsAsConfigurationOnExistingConfigPath();
+		setter.getSection().addDefault("default", null);
+	}
 
-    @Test
-    @Override
-    public void testAddDefaultsAsMap() {
-        super.testAddDefaultsAsMap();
-        setter.getSection().addDefault("default", null);
-    }
+	@Test
+	@Override
+	public void testAddDefaultsAsMap() {
+		super.testAddDefaultsAsMap();
+		setter.getSection().addDefault("default", null);
+	}
 
-    @Test
-    @Override
-    public void testAddDefaultsAsMapOnExistingConfigPath() {
-        super.testAddDefaultsAsMapOnExistingConfigPath();
-        setter.getSection().addDefault("default", null);
-    }
+	@Test
+	@Override
+	public void testAddDefaultsAsMapOnExistingConfigPath() {
+		super.testAddDefaultsAsMapOnExistingConfigPath();
+		setter.getSection().addDefault("default", null);
+	}
 
-    @Test
-    @Override
-    public void testSetDefaults() {
-        super.testSetDefaults();
-        setter.getSection().addDefault("default", null);
-    }
+	@Test
+	@Override
+	public void testSetDefaults() {
+		super.testSetDefaults();
+		setter.getSection().addDefault("default", null);
+	}
 
-    @Test
-    @Override
-    public void testSetDefaultsOnExistingConfigPath() {
-        super.testSetDefaultsOnExistingConfigPath();
-        setter.getSection().addDefault("default", null);
-    }
+	@Test
+	@Override
+	public void testSetDefaultsOnExistingConfigPath() {
+		super.testSetDefaultsOnExistingConfigPath();
+		setter.getSection().addDefault("default", null);
+	}
 }

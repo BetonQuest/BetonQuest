@@ -18,27 +18,27 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(BetonQuestLoggerService.class)
 class UtilsTest {
 
-    private void prepareConfig(final MockedStatic<Config> config) {
-        config.when(() -> Config.getString("config.journal.lines_per_page")).thenReturn("13");
-        config.when(() -> Config.getString("config.journal.chars_per_line")).thenReturn("19");
-    }
+	private void prepareConfig(final MockedStatic<Config> config) {
+		config.when(() -> Config.getString("config.journal.lines_per_page")).thenReturn("13");
+		config.when(() -> Config.getString("config.journal.chars_per_line")).thenReturn("19");
+	}
 
-    @Test
-    void testPagesFromString() {
-        try (MockedStatic<Config> config = Mockito.mockStatic(Config.class)) {
-            prepareConfig(config);
-            final String journalText = "&aActive Quest: &aFlint &1wants you to visit the Farm located at 191, 23, -167!";
+	@Test
+	void testPagesFromString() {
+		try (MockedStatic<Config> config = Mockito.mockStatic(Config.class)) {
+			prepareConfig(config);
+			final String journalText = "&aActive Quest: &aFlint &1wants you to visit the Farm located at 191, 23, -167!";
 
-            final List<String> journalTextFormatted = new ArrayList<>();
-            journalTextFormatted.add("""
-                    &aActive Quest: &aFlint
-                    &1wants you to visit
-                    the Farm located at
-                    191, 23, -167!
-                    """);
+			final List<String> journalTextFormatted = new ArrayList<>();
+			journalTextFormatted.add("""
+					&aActive Quest: &aFlint
+					&1wants you to visit
+					the Farm located at
+					191, 23, -167!
+					""");
 
-            final List<String> journal = Utils.pagesFromString(journalText);
-            assertEquals(journalTextFormatted, journal, "Formatted text does not equal expected result!");
-        }
-    }
+			final List<String> journal = Utils.pagesFromString(journalText);
+			assertEquals(journalTextFormatted, journal, "Formatted text does not equal expected result!");
+		}
+	}
 }

@@ -18,76 +18,76 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(MockitoExtension.class)
 class LazyHandlerTest {
-    /**
-     * Example record to use with tests.
-     */
-    private final LogRecord record = new LogRecord(Level.INFO, "test message");
+	/**
+	 * Example record to use with tests.
+	 */
+	private final LogRecord record = new LogRecord(Level.INFO, "test message");
 
-    /**
-     * Handler for the supplier to test with.
-     */
-    @Mock
-    private Handler internalHandler;
+	/**
+	 * Handler for the supplier to test with.
+	 */
+	@Mock
+	private Handler internalHandler;
 
-    @Test
-    void testLazyInstantiation(@Mock final Supplier<Handler> handlerSupplier) {
-        when(handlerSupplier.get()).thenReturn(internalHandler);
-        final LazyHandler handler = new LazyHandler(handlerSupplier);
-        verify(handlerSupplier, never()).get();
-        handler.publish(record);
-        verify(handlerSupplier).get();
-    }
+	@Test
+	void testLazyInstantiation(@Mock final Supplier<Handler> handlerSupplier) {
+		when(handlerSupplier.get()).thenReturn(internalHandler);
+		final LazyHandler handler = new LazyHandler(handlerSupplier);
+		verify(handlerSupplier, never()).get();
+		handler.publish(record);
+		verify(handlerSupplier).get();
+	}
 
-    @Test
-    void testFlushDoesNotCauseInitialization(@Mock final Supplier<Handler> handlerSupplier) {
-        final LazyHandler handler = new LazyHandler(handlerSupplier);
-        handler.flush();
-        verify(handlerSupplier, never()).get();
-    }
+	@Test
+	void testFlushDoesNotCauseInitialization(@Mock final Supplier<Handler> handlerSupplier) {
+		final LazyHandler handler = new LazyHandler(handlerSupplier);
+		handler.flush();
+		verify(handlerSupplier, never()).get();
+	}
 
-    @Test
-    void testCloseDoesNotCauseInitialization(@Mock final Supplier<Handler> handlerSupplier) {
-        final LazyHandler handler = new LazyHandler(handlerSupplier);
-        handler.close();
-        verify(handlerSupplier, never()).get();
-    }
+	@Test
+	void testCloseDoesNotCauseInitialization(@Mock final Supplier<Handler> handlerSupplier) {
+		final LazyHandler handler = new LazyHandler(handlerSupplier);
+		handler.close();
+		verify(handlerSupplier, never()).get();
+	}
 
-    @Test
-    void testPublishAfterClosingDoesNotCauseInitialization(@Mock final Supplier<Handler> handlerSupplier) {
-        final LazyHandler handler = new LazyHandler(handlerSupplier);
-        handler.close();
-        verify(handlerSupplier, never()).get();
-    }
+	@Test
+	void testPublishAfterClosingDoesNotCauseInitialization(@Mock final Supplier<Handler> handlerSupplier) {
+		final LazyHandler handler = new LazyHandler(handlerSupplier);
+		handler.close();
+		verify(handlerSupplier, never()).get();
+	}
 
-    @Test
-    void testPublishIsPropagated() {
-        final LazyHandler handler = new LazyHandler(() -> internalHandler);
-        handler.publish(record);
-        verify(internalHandler).publish(record);
-    }
+	@Test
+	void testPublishIsPropagated() {
+		final LazyHandler handler = new LazyHandler(() -> internalHandler);
+		handler.publish(record);
+		verify(internalHandler).publish(record);
+	}
 
-    @Test
-    void testFlushIsPropagated() {
-        final LazyHandler handler = new LazyHandler(() -> internalHandler);
-        handler.publish(record);
-        handler.flush();
-        verify(internalHandler).flush();
-    }
+	@Test
+	void testFlushIsPropagated() {
+		final LazyHandler handler = new LazyHandler(() -> internalHandler);
+		handler.publish(record);
+		handler.flush();
+		verify(internalHandler).flush();
+	}
 
-    @Test
-    void testCloseIsPropagated() {
-        final LazyHandler handler = new LazyHandler(() -> internalHandler);
-        handler.publish(record);
-        handler.close();
-        verify(internalHandler).close();
-    }
+	@Test
+	void testCloseIsPropagated() {
+		final LazyHandler handler = new LazyHandler(() -> internalHandler);
+		handler.publish(record);
+		handler.close();
+		verify(internalHandler).close();
+	}
 
-    @Test
-    void testRequireNotClosed() {
-        final LazyHandler handler = new LazyHandler(() -> internalHandler);
-        handler.close();
-        final Exception exception = assertThrows(IllegalStateException.class, () -> handler.publish(null), "Expected IllegalStateException is thrown");
-        assertEquals("Cannot publish log record: LazyLogHandler was closed and had not been initialized before closing."
-                , exception.getMessage(), "Expected other exception message");
-    }
+	@Test
+	void testRequireNotClosed() {
+		final LazyHandler handler = new LazyHandler(() -> internalHandler);
+		handler.close();
+		final Exception exception = assertThrows(IllegalStateException.class, () -> handler.publish(null), "Expected IllegalStateException is thrown");
+		assertEquals("Cannot publish log record: LazyLogHandler was closed and had not been initialized before closing."
+				, exception.getMessage(), "Expected other exception message");
+	}
 }

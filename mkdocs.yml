@@ -27,37 +27,37 @@ theme:
   custom_dir: 'docs/_custom_theme/'
   language: en
   features:
-    - content.code.annotate
-    - navigation.tabs
-    - navigation.tabs.sticky
-    - navigation.tracking
-    - navigation.sections
-    - navigation.top
-    - search.share
-    - navigation.indexes
-    - search.suggest
-    - content.tooltips
+	- content.code.annotate
+	- navigation.tabs
+	- navigation.tabs.sticky
+	- navigation.tracking
+	- navigation.sections
+	- navigation.top
+	- search.share
+	- navigation.indexes
+	- search.suggest
+	- content.tooltips
   palette:
-    - scheme: slate
-      primary: indigo
-      accent: teal
-      toggle:
-        icon: material/lightbulb
-        name: Switch to light mode
-    - scheme: default
-      primary: blue
-      accent: teal
-      toggle:
-        icon: fontawesome/solid/moon
-        name: Switch to dark mode
+	- scheme: slate
+	  primary: indigo
+	  accent: teal
+	  toggle:
+		icon: material/lightbulb
+		name: Switch to light mode
+	- scheme: default
+	  primary: blue
+	  accent: teal
+	  toggle:
+		icon: fontawesome/solid/moon
+		name: Switch to dark mode
   font:
-    text: Roboto
-    code: Roboto Mono
+	text: Roboto
+	code: Roboto Mono
   logo: '_media/brand/Icon/Icon1K.png'
   favicon: '_media/brand/Icon/Icon32.ico'
   icon:
-    admonition:
-      example: fontawesome/regular/eye
+	admonition:
+	  example: fontawesome/regular/eye
 
 
 
@@ -66,166 +66,166 @@ markdown_extensions:
   - admonition
   - attr_list
   - codehilite:
-      linenums: true
+	  linenums: true
   - footnotes
   - markdown.extensions.md_in_html
   - meta
   - pymdownx.highlight
   - pymdownx.arithmatex:
-      generic: true
+	  generic: true
   - pymdownx.betterem:
-      smart_enable: all
+	  smart_enable: all
   - pymdownx.caret
   - pymdownx.critic
   - pymdownx.details
   - pymdownx.keys
   - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
-      options:
-        custom_icons:
-          - custom_theme/.icons
+	  emoji_index: !!python/name:materialx.emoji.twemoji
+	  emoji_generator: !!python/name:materialx.emoji.to_svg
+	  options:
+		custom_icons:
+		  - custom_theme/.icons
   - pymdownx.inlinehilite
   - pymdownx.magiclink
   - pymdownx.mark
   - pymdownx.smartsymbols
   - pymdownx.superfences
   - pymdownx.tabbed:
-      alternate_style: true
+	  alternate_style: true
   - pymdownx.tasklist:
-      custom_checkbox: true
+	  custom_checkbox: true
   - pymdownx.tilde
   - pymdownx.snippets:
-      base_path: docs/_snippets
+	  base_path: docs/_snippets
   - abbr
   - toc:
-      permalink: 🔗
+	  permalink: 🔗
 
 plugins:
   - search
   - exclude:
-      glob:
-        - _snippets/*
-        - _custom_theme/*
+	  glob:
+		- _snippets/*
+		- _custom_theme/*
 
 extra:
   version:
-    provider: mike
+	provider: mike
   analytics:
-    provider: google
-    property: G-VEBGTNXWEL
-    feedback:
-      title: Was this page helpful?
-      ratings:
-        - icon: material/emoticon-happy-outline
-          name: This page was helpful
-          data: 1
-          note: >-
-            Thanks for your feedback!
-        - icon: material/emoticon-sad-outline
-          name: This page could be improved
-          data: 0
-          note: >-
-            Thanks for your feedback! Help us improve this page by using our 
-            <a href="https://github.com/BetonQuest/BetonQuest/issues/new/?template=docs-feedback.yml&title=[Docs Feedback]+{title}+-+{url}&version=%VERSION%">
-            feedback form</a>.
+	provider: google
+	property: G-VEBGTNXWEL
+	feedback:
+	  title: Was this page helpful?
+	  ratings:
+		- icon: material/emoticon-happy-outline
+		  name: This page was helpful
+		  data: 1
+		  note: >-
+			Thanks for your feedback!
+		- icon: material/emoticon-sad-outline
+		  name: This page could be improved
+		  data: 0
+		  note: >-
+			Thanks for your feedback! Help us improve this page by using our 
+			<a href="https://github.com/BetonQuest/BetonQuest/issues/new/?template=docs-feedback.yml&title=[Docs Feedback]+{title}+-+{url}&version=%VERSION%">
+			feedback form</a>.
   consent:
-    title: Cookie consent
-    cookies:
-      analytics: Google Analytics
-    actions:
-      - manage
-      - reject
-      - accept
-    description: >
-      <p style="margin-top: 0px; margin-bottom: 0px;">We use cookies to:</p>
-      <ul style="margin-top: 0px; margin-bottom: 0px;">
-        <li>
-          <p>Save your preferences (light / dark mode etc.)</p>
-        </li>
-        <p style="margin-top: 0px; margin-bottom: 0px;">Additionally, you can allow us to:</p>
-        <li>
-          <p>Measure the effectiveness of our documentation</p>
-        </li>
-        <li>
-          <p>See if users find what they're searching for.</p>
-        </li>
-      </ul>
-      <b>With your consent, you're helping us to make this documentation better for everyone.</b>
+	title: Cookie consent
+	cookies:
+	  analytics: Google Analytics
+	actions:
+	  - manage
+	  - reject
+	  - accept
+	description: >
+	  <p style="margin-top: 0px; margin-bottom: 0px;">We use cookies to:</p>
+	  <ul style="margin-top: 0px; margin-bottom: 0px;">
+		<li>
+		  <p>Save your preferences (light / dark mode etc.)</p>
+		</li>
+		<p style="margin-top: 0px; margin-bottom: 0px;">Additionally, you can allow us to:</p>
+		<li>
+		  <p>Measure the effectiveness of our documentation</p>
+		</li>
+		<li>
+		  <p>See if users find what they're searching for.</p>
+		</li>
+	  </ul>
+	  <b>With your consent, you're helping us to make this documentation better for everyone.</b>
   social:
-    - icon: fontawesome/brands/discord
-      link: https://discord.gg/rK6mfHq
-    - icon: brands/opencollective-icon
-      link: https://opencollective.com/betonquest
-    - icon: fontawesome/brands/github
-      link: https://github.com/BetonQuest/BetonQuest
-    - icon: fontawesome/solid/faucet
-      link: https://spigotmc.org/resources/betonquest.2117/
-    - icon: fontawesome/solid/box-archive
-      link: https://dev.betonquest.org
-    - icon: fontawesome/solid/envelope
-      link: mailto://contact@betonquest.org
+	- icon: fontawesome/brands/discord
+	  link: https://discord.gg/rK6mfHq
+	- icon: brands/opencollective-icon
+	  link: https://opencollective.com/betonquest
+	- icon: fontawesome/brands/github
+	  link: https://github.com/BetonQuest/BetonQuest
+	- icon: fontawesome/solid/faucet
+	  link: https://spigotmc.org/resources/betonquest.2117/
+	- icon: fontawesome/solid/box-archive
+	  link: https://dev.betonquest.org
+	- icon: fontawesome/solid/envelope
+	  link: mailto://contact@betonquest.org
 
 #Notice that here are a few strange looking hairspaces in here.
 #They make the space between the emojis and the text look equal
 nav:
   - 'Home': index.md
   - 'Tutorials':
-      - 'Welcome!': Tutorials/Welcome.md
-      - 'Getting Started':
-          - 'Setting up a local test server': Tutorials/Getting-Started/Setting-up-a-local-test-server.md
-          - 'Installing BetonQuest': Tutorials/Getting-Started/Installing-BetonQuest.md
-          - 'Setting up the editor': Tutorials/Getting-Started/Setting-up-the-editor.md
-          - 'YAML for questers': Tutorials/Getting-Started/YAML-for-questers.md
-          - 'Learn BetonQuest': Tutorials/Getting-Started/Learn-BetonQuest.md
-      - 'Frequently Asked Questions':
-          - 'General FAQ': Tutorials/Frequently-Asked-Questions.md
+	  - 'Welcome!': Tutorials/Welcome.md
+	  - 'Getting Started':
+		  - 'Setting up a local test server': Tutorials/Getting-Started/Setting-up-a-local-test-server.md
+		  - 'Installing BetonQuest': Tutorials/Getting-Started/Installing-BetonQuest.md
+		  - 'Setting up the editor': Tutorials/Getting-Started/Setting-up-the-editor.md
+		  - 'YAML for questers': Tutorials/Getting-Started/YAML-for-questers.md
+		  - 'Learn BetonQuest': Tutorials/Getting-Started/Learn-BetonQuest.md
+	  - 'Frequently Asked Questions':
+		  - 'General FAQ': Tutorials/Frequently-Asked-Questions.md
   - 'Documentation':
-      - 'General':
-          - 'Conversations': Documentation/Conversations.md
-          - 'Reference': Documentation/Reference.md
-      - 'Types':
-          - 'Objectives List': Documentation/Objectives-List.md
-          - 'Events List': Documentation/Events-List.md
-          - 'Conditions List': Documentation/Conditions-List.md
-          - 'Compatibility List': Documentation/Compatibility.md
-          - 'Variables List': Documentation/Variables-List.md
-          - 'Schedules': Documentation/Schedules.md
-      - 'Notifications':
-          - 'Settings': Documentation/Notification-Settings.md
-          - "IO's & Categories": Documentation/Notification-IO's-&-Categories.md
-      - 'Menus':
-          - 'Menus': Documentation/Menu-Menu.md
-          - 'Elements': Documentation/Menu-Elements.md
-          - 'Commands': Documentation/Menu-Commands.md
-          - 'Config': Documentation/Menu-Config.md
-      - 'Technical':
-          - 'Permissions & Commands': Documentation/Commands-and-permissions.md
-          - 'Updating':
-              - Documentation/Updating/index.md
-              - 'Migration': Documentation/Updating/Migration.md
-          - 'Configuration': Documentation/Configuration.md
-          - 'Changelog': Documentation/CHANGELOG.md
+	  - 'General':
+		  - 'Conversations': Documentation/Conversations.md
+		  - 'Reference': Documentation/Reference.md
+	  - 'Types':
+		  - 'Objectives List': Documentation/Objectives-List.md
+		  - 'Events List': Documentation/Events-List.md
+		  - 'Conditions List': Documentation/Conditions-List.md
+		  - 'Compatibility List': Documentation/Compatibility.md
+		  - 'Variables List': Documentation/Variables-List.md
+		  - 'Schedules': Documentation/Schedules.md
+	  - 'Notifications':
+		  - 'Settings': Documentation/Notification-Settings.md
+		  - "IO's & Categories": Documentation/Notification-IO's-&-Categories.md
+	  - 'Menus':
+		  - 'Menus': Documentation/Menu-Menu.md
+		  - 'Elements': Documentation/Menu-Elements.md
+		  - 'Commands': Documentation/Menu-Commands.md
+		  - 'Config': Documentation/Menu-Config.md
+	  - 'Technical':
+		  - 'Permissions & Commands': Documentation/Commands-and-permissions.md
+		  - 'Updating':
+			  - Documentation/Updating/index.md
+			  - 'Migration': Documentation/Updating/Migration.md
+		  - 'Configuration': Documentation/Configuration.md
+		  - 'Changelog': Documentation/CHANGELOG.md
   - 'API':
-      - 'Overview': API/Overview.md
-      - 'API': API/API.md
-      - 'Logging': API/Logging.md
-      - 'Schedules': API/Schedules.md
+	  - 'Overview': API/Overview.md
+	  - 'API': API/API.md
+	  - 'Logging': API/Logging.md
+	  - 'Schedules': API/Schedules.md
   - 'Participate':
-      - 'Overview': Participate/Overview.md
-      - 'Setup Project': Participate/Setup-Project.md
-      - Process:
-          - 'Create a new Branch': Participate/Process/Create-a-new-Branch.md
-          - 'Changing Code':
-              - Participate/Process/Code/index.md
-              - 'Checking Requirements': Participate/Process/Code/Checking-Requirements.md
-              - 'Adding a Dependency': Participate/Process/Code/Adding-a-new-Dependency.md
-              - 'Writing JUnit Tests': Participate/Process/Code/Writing-JUnit-Tests.md
-          - 'Changing Docs':
-              - Participate/Process/Docs/index.md
-              - 'Fundamental Principles': Participate/Process/Docs/Principles.md
-              - 'Guidelines': Participate/Process/Docs/Guidelines.md
-          - 'Maintaining the Changelog': Participate/Process/Maintaining-the-Changelog.md
-          - 'Submitting Changes': Participate/Process/Submitting-Changes.md
-      - Misc:
-          - 'Versioning & Releasing': Participate/Misc/Versioning-and-Releasing.md
+	  - 'Overview': Participate/Overview.md
+	  - 'Setup Project': Participate/Setup-Project.md
+	  - Process:
+		  - 'Create a new Branch': Participate/Process/Create-a-new-Branch.md
+		  - 'Changing Code':
+			  - Participate/Process/Code/index.md
+			  - 'Checking Requirements': Participate/Process/Code/Checking-Requirements.md
+			  - 'Adding a Dependency': Participate/Process/Code/Adding-a-new-Dependency.md
+			  - 'Writing JUnit Tests': Participate/Process/Code/Writing-JUnit-Tests.md
+		  - 'Changing Docs':
+			  - Participate/Process/Docs/index.md
+			  - 'Fundamental Principles': Participate/Process/Docs/Principles.md
+			  - 'Guidelines': Participate/Process/Docs/Guidelines.md
+		  - 'Maintaining the Changelog': Participate/Process/Maintaining-the-Changelog.md
+		  - 'Submitting Changes': Participate/Process/Submitting-Changes.md
+	  - Misc:
+		  - 'Versioning & Releasing': Participate/Misc/Versioning-and-Releasing.md

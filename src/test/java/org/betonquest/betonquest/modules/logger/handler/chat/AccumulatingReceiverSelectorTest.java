@@ -13,22 +13,22 @@ import static org.mockito.Mockito.*;
  */
 class AccumulatingReceiverSelectorTest {
 
-    @Test
-    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
-    void testAccumulatingReceiverSelector() {
-        final UUID uuid = UUID.randomUUID();
+	@Test
+	@SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+	void testAccumulatingReceiverSelector() {
+		final UUID uuid = UUID.randomUUID();
 
-        final AccumulatingReceiverSelector receiverSelector = new AccumulatingReceiverSelector();
-        final RecordReceiverSelector selector = mock(RecordReceiverSelector.class);
-        when(selector.findReceivers(any())).thenReturn(Set.of(uuid));
+		final AccumulatingReceiverSelector receiverSelector = new AccumulatingReceiverSelector();
+		final RecordReceiverSelector selector = mock(RecordReceiverSelector.class);
+		when(selector.findReceivers(any())).thenReturn(Set.of(uuid));
 
-        assertEquals(0, receiverSelector.findReceivers(null).size(), "There should be no receivers");
-        receiverSelector.addSelector(selector);
-        final Set<UUID> receivers = receiverSelector.findReceivers(null);
-        assertEquals(1, receivers.size(), "There should be exactly one receiver");
-        assertEquals(uuid, receivers.iterator().next(), "The uuid does not match the expected uuid");
-        receiverSelector.removeSelector(selector);
-        assertEquals(0, receiverSelector.findReceivers(null).size(), "There should be no receivers");
+		assertEquals(0, receiverSelector.findReceivers(null).size(), "There should be no receivers");
+		receiverSelector.addSelector(selector);
+		final Set<UUID> receivers = receiverSelector.findReceivers(null);
+		assertEquals(1, receivers.size(), "There should be exactly one receiver");
+		assertEquals(uuid, receivers.iterator().next(), "The uuid does not match the expected uuid");
+		receiverSelector.removeSelector(selector);
+		assertEquals(0, receiverSelector.findReceivers(null).size(), "There should be no receivers");
 
-    }
+	}
 }

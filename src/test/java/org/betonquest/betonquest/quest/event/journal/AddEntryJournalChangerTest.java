@@ -21,19 +21,19 @@ import static org.mockito.Mockito.*;
 @ExtendWith(BetonQuestLoggerService.class)
 @ExtendWith(MockitoExtension.class)
 class AddEntryJournalChangerTest {
-    @Test
-    void testChangeJournalAddsPointer(@Mock final Journal journal) {
-        final Instant now = Instant.now();
-        final String entryName = "test_entry";
-        final AddEntryJournalChanger changer = new AddEntryJournalChanger(InstantSource.fixed(now), entryName);
-        final ArgumentCaptor<Pointer> captor = ArgumentCaptor.forClass(Pointer.class);
+	@Test
+	void testChangeJournalAddsPointer(@Mock final Journal journal) {
+		final Instant now = Instant.now();
+		final String entryName = "test_entry";
+		final AddEntryJournalChanger changer = new AddEntryJournalChanger(InstantSource.fixed(now), entryName);
+		final ArgumentCaptor<Pointer> captor = ArgumentCaptor.forClass(Pointer.class);
 
-        changer.changeJournal(journal);
+		changer.changeJournal(journal);
 
-        verify(journal).addPointer(captor.capture());
-        verifyNoMoreInteractions(journal);
-        final Pointer pointer = captor.getValue();
-        assertEquals(entryName, pointer.getPointer(), "The added entry should be the one provided.");
-        assertEquals(now.toEpochMilli(), pointer.getTimestamp(), "The added entry should be dated to the time from the InstantSource.");
-    }
+		verify(journal).addPointer(captor.capture());
+		verifyNoMoreInteractions(journal);
+		final Pointer pointer = captor.getValue();
+		assertEquals(entryName, pointer.getPointer(), "The added entry should be the one provided.");
+		assertEquals(now.toEpochMilli(), pointer.getTimestamp(), "The added entry should be dated to the time from the InstantSource.");
+	}
 }

@@ -28,22 +28,22 @@ All existing RPGMenu users must update their RPGMenu config file. Simply rename 
   with an extra prefix matching their file name:
   ```YAML
   events:
-    myEvent1: ...
-    ....
+	myEvent1: ...
+	....
   ```
 - Change the `conversations` and `menus` to the following format with an extra prefix matching there type and the file
   name:
   ```YAML
   conversations:
-    ConversationName:
-      NPC_options: ....
-      ....
+	ConversationName:
+	  NPC_options: ....
+	  ....
   ```
   or alternatively:
   ```YAML
   conversations.ConversationName:
-    NPC_options: ....
-    ....
+	NPC_options: ....
+	....
   ```
 - Quest packages can now contain nested quest packages in sub folders. You can also have any file and folder structure
   with any file and folder names you want. Only the `package.yml` is reserved as indicator for a quest
@@ -54,29 +54,29 @@ All existing RPGMenu users must update their RPGMenu config file. Simply rename 
   The [`realtime-daily`](../Schedules.md#daily-realtime-schedule-realtime-daily) schedule makes this easy:
   ```YAML title="Old Syntax"
   static:
-    '09:00': beton
-    '11:23': some_command,command_announcement
+	'09:00': beton
+	'11:23': some_command,command_announcement
   ```
   ```YAML title="New Syntax"
   schedules:
-    betonAt09: #(1)!
-      type: realtime-daily #(2)!
-      time: '09:00' #(3)!
-      events: beton #(4)!
-    cmdAt1123:
-      type: simple
-      time: '11:23'
-      events: some_command,command_announcement
+	betonAt09: #(1)!
+	  type: realtime-daily #(2)!
+	  time: '09:00' #(3)!
+	  events: beton #(4)!
+	cmdAt1123:
+	  type: simple
+	  time: '11:23'
+	  events: some_command,command_announcement
   ```
 
-    1. A name for the new schedule.  
-      Can be anything you want for organizing your schedules.
+	1. A name for the new schedule.  
+	  Can be anything you want for organizing your schedules.
 
-    2. The type schedule `realtime-daily` was created for easy updating.   
-      It behaves just like the old static events.
+	2. The type schedule `realtime-daily` was created for easy updating.   
+	  It behaves just like the old static events.
 
-    3. The former key is now the time value.  
-      You still have to put it in 'quotes'.
+	3. The former key is now the time value.  
+	  You still have to put it in 'quotes'.
 
-    4. The former value is now the events value.
+	4. The former value is now the events value.
 

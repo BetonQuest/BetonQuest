@@ -14,39 +14,39 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 @CustomLog
 public class QuestEventAdapter extends QuestEvent {
 
-    /**
-     * The normal event to be adapted.
-     */
-    private final Event event;
+	/**
+	 * The normal event to be adapted.
+	 */
+	private final Event event;
 
-    /**
-     * The "static" event to be adapted if present. May be {@code null}!
-     */
-    private final StaticEvent staticEvent;
+	/**
+	 * The "static" event to be adapted if present. May be {@code null}!
+	 */
+	private final StaticEvent staticEvent;
 
-    /**
-     * Create a quest event from an {@link Event} and a {@link StaticEvent}. If the event does not support "static"
-     * execution ({@code staticness = false}) then no {@link StaticEvent} instance must be provided.
-     *
-     * @param instruction instruction used to create the events
-     * @param event event to use
-     * @param staticEvent static event to use or null if no static execution is supported
-     * @throws InstructionParseException if the instruction contains errors
-     */
-    public QuestEventAdapter(final Instruction instruction, final Event event, final StaticEvent staticEvent) throws InstructionParseException {
-        super(instruction, false);
-        this.event = event;
-        this.staticEvent = staticEvent;
-        staticness = staticEvent != null;
-    }
+	/**
+	 * Create a quest event from an {@link Event} and a {@link StaticEvent}. If the event does not support "static"
+	 * execution ({@code staticness = false}) then no {@link StaticEvent} instance must be provided.
+	 *
+	 * @param instruction instruction used to create the events
+	 * @param event event to use
+	 * @param staticEvent static event to use or null if no static execution is supported
+	 * @throws InstructionParseException if the instruction contains errors
+	 */
+	public QuestEventAdapter(final Instruction instruction, final Event event, final StaticEvent staticEvent) throws InstructionParseException {
+		super(instruction, false);
+		this.event = event;
+		this.staticEvent = staticEvent;
+		staticness = staticEvent != null;
+	}
 
-    @Override
-    protected Void execute(final String playerId) throws QuestRuntimeException {
-        if (playerId == null) {
-            staticEvent.execute();
-        } else {
-            event.execute(playerId);
-        }
-        return null;
-    }
+	@Override
+	protected Void execute(final String playerId) throws QuestRuntimeException {
+		if (playerId == null) {
+			staticEvent.execute();
+		} else {
+			event.execute(playerId);
+		}
+		return null;
+	}
 }

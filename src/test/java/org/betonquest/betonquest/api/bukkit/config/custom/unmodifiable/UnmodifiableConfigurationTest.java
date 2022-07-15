@@ -18,100 +18,100 @@ import static org.junit.jupiter.api.Assertions.*;
 @SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.JUnit5TestShouldBePackagePrivate"})
 public class UnmodifiableConfigurationTest extends ConfigurationBaseTest {
 
-    /**
-     * The values in the configuration before the test did run.
-     */
-    private Map<String, Object> values;
-    /**
-     * The values of the default section in the configuration before the test did run.
-     */
-    private Map<String, Object> valuesDefault;
+	/**
+	 * The values in the configuration before the test did run.
+	 */
+	private Map<String, Object> values;
+	/**
+	 * The values of the default section in the configuration before the test did run.
+	 */
+	private Map<String, Object> valuesDefault;
 
-    @Override
-    public Configuration getConfig() {
-        return new UnmodifiableConfiguration(super.getDefaultConfig());
-    }
+	@Override
+	public Configuration getConfig() {
+		return new UnmodifiableConfiguration(super.getDefaultConfig());
+	}
 
-    /**
-     * Get a copy of the values in the config, before the test did run.
-     */
-    @BeforeEach
-    public void beforeEach() {
-        values = config.getValues(true);
-        valuesDefault = Objects.requireNonNull(config.getDefaultSection()).getValues(true);
-    }
+	/**
+	 * Get a copy of the values in the config, before the test did run.
+	 */
+	@BeforeEach
+	public void beforeEach() {
+		values = config.getValues(true);
+		valuesDefault = Objects.requireNonNull(config.getDefaultSection()).getValues(true);
+	}
 
-    /**
-     * Compare the start values with the values after the test.
-     * They should not have been changed.
-     */
-    @AfterEach
-    public void afterEach() {
-        assertEquals(values, config.getValues(true));
-        assertEquals(valuesDefault, Objects.requireNonNull(config.getDefaultSection()).getValues(true));
-    }
+	/**
+	 * Compare the start values with the values after the test.
+	 * They should not have been changed.
+	 */
+	@AfterEach
+	public void afterEach() {
+		assertEquals(values, config.getValues(true));
+		assertEquals(valuesDefault, Objects.requireNonNull(config.getDefaultSection()).getValues(true));
+	}
 
-    private void assertThrowsUnmodifiableException(final Executable executable) {
-        assertThrowsUnmodifiableException(executable, UnmodifiableConfigurationSection.UNMODIFIABLE_MESSAGE);
-    }
+	private void assertThrowsUnmodifiableException(final Executable executable) {
+		assertThrowsUnmodifiableException(executable, UnmodifiableConfigurationSection.UNMODIFIABLE_MESSAGE);
+	}
 
-    private void assertThrowsUnmodifiableException(final Executable executable, final String message) {
-        final Exception exception = assertThrows(UnsupportedOperationException.class, executable);
-        assertEquals(message, exception.getMessage());
-    }
+	private void assertThrowsUnmodifiableException(final Executable executable, final String message) {
+		final Exception exception = assertThrows(UnsupportedOperationException.class, executable);
+		assertEquals(message, exception.getMessage());
+	}
 
-    @Test
-    @Override
-    public void testAddDefaultOnRootSection() {
-        assertThrowsUnmodifiableException(super::testAddDefaultOnRootSection);
-    }
+	@Test
+	@Override
+	public void testAddDefaultOnRootSection() {
+		assertThrowsUnmodifiableException(super::testAddDefaultOnRootSection);
+	}
 
-    @Test
-    @Override
-    public void testAddDefaultOnRootSectionOnExistingConfigPath() {
-        assertThrowsUnmodifiableException(super::testAddDefaultOnRootSectionOnExistingConfigPath);
-    }
+	@Test
+	@Override
+	public void testAddDefaultOnRootSectionOnExistingConfigPath() {
+		assertThrowsUnmodifiableException(super::testAddDefaultOnRootSectionOnExistingConfigPath);
+	}
 
-    @Test
-    @Override
-    public void testAddDefaultsAsConfiguration() {
-        assertThrowsUnmodifiableException(super::testAddDefaultsAsConfiguration);
-    }
+	@Test
+	@Override
+	public void testAddDefaultsAsConfiguration() {
+		assertThrowsUnmodifiableException(super::testAddDefaultsAsConfiguration);
+	}
 
-    @Test
-    @Override
-    public void testAddDefaultsAsConfigurationOnExistingConfigPath() {
-        assertThrowsUnmodifiableException(super::testAddDefaultsAsConfigurationOnExistingConfigPath);
-    }
+	@Test
+	@Override
+	public void testAddDefaultsAsConfigurationOnExistingConfigPath() {
+		assertThrowsUnmodifiableException(super::testAddDefaultsAsConfigurationOnExistingConfigPath);
+	}
 
-    @Test
-    @Override
-    public void testAddDefaultsAsMap() {
-        assertThrowsUnmodifiableException(super::testAddDefaultsAsMap);
-    }
+	@Test
+	@Override
+	public void testAddDefaultsAsMap() {
+		assertThrowsUnmodifiableException(super::testAddDefaultsAsMap);
+	}
 
-    @Test
-    @Override
-    public void testAddDefaultsAsMapOnExistingConfigPath() {
-        assertThrowsUnmodifiableException(super::testAddDefaultsAsMapOnExistingConfigPath);
-    }
+	@Test
+	@Override
+	public void testAddDefaultsAsMapOnExistingConfigPath() {
+		assertThrowsUnmodifiableException(super::testAddDefaultsAsMapOnExistingConfigPath);
+	}
 
-    @Test
-    @Override
-    public void testOptions() {
-        assertThrowsUnmodifiableException(super::testOptions,
-                UnmodifiableConfigurationSection.UNMODIFIABLE_MESSAGE + " and options are not implemented");
-    }
+	@Test
+	@Override
+	public void testOptions() {
+		assertThrowsUnmodifiableException(super::testOptions,
+				UnmodifiableConfigurationSection.UNMODIFIABLE_MESSAGE + " and options are not implemented");
+	}
 
-    @Test
-    @Override
-    public void testSetDefaults() {
-        assertThrowsUnmodifiableException(super::testSetDefaults);
-    }
+	@Test
+	@Override
+	public void testSetDefaults() {
+		assertThrowsUnmodifiableException(super::testSetDefaults);
+	}
 
-    @Test
-    @Override
-    public void testSetDefaultsOnExistingConfigPath() {
-        assertThrowsUnmodifiableException(super::testSetDefaultsOnExistingConfigPath);
-    }
+	@Test
+	@Override
+	public void testSetDefaultsOnExistingConfigPath() {
+		assertThrowsUnmodifiableException(super::testSetDefaultsOnExistingConfigPath);
+	}
 }

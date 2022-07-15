@@ -21,49 +21,49 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @ExtendWith(MockitoExtension.class)
 class BukkitSchedulerCleaningLogQueueTest {
-    /**
-     * Fixed instant representing now.
-     */
-    private final Instant now = Instant.now();
-    /**
-     * Fixed instant source returning {@link #now}.
-     */
-    private final InstantSource nowSource = InstantSource.fixed(now);
-    /**
-     * Duration that log entries are valid for.
-     */
-    private final Duration validFor = Duration.of(10, ChronoUnit.MINUTES);
-    /**
-     * Plugin to use.
-     */
-    @Mock
-    private Plugin plugin;
+	/**
+	 * Fixed instant representing now.
+	 */
+	private final Instant now = Instant.now();
+	/**
+	 * Fixed instant source returning {@link #now}.
+	 */
+	private final InstantSource nowSource = InstantSource.fixed(now);
+	/**
+	 * Duration that log entries are valid for.
+	 */
+	private final Duration validFor = Duration.of(10, ChronoUnit.MINUTES);
+	/**
+	 * Plugin to use.
+	 */
+	@Mock
+	private Plugin plugin;
 
-    @Test
-    void testSchedulerClearsOldRecords() {
-        try (BukkitSchedulerMock scheduler = new BukkitSchedulerMock()) {
-            final BukkitSchedulerCleaningLogQueue logQueue = new BukkitSchedulerCleaningLogQueue(nowSource, validFor);
-            logQueue.runCleanupTimerAsynchronously(scheduler, plugin, 20, 20);
-            final LogRecord record = new LogRecord(Level.INFO, "old log record");
-            record.setInstant(now.minus(validFor).minus(1, ChronoUnit.MINUTES));
-            logQueue.push(record);
-            scheduler.performTicks(20);
-            scheduler.assertNoExceptions();
-            assertFalse(logQueue.canPublish(), "the old record should have been discarded by the timed task");
-        }
-    }
+	@Test
+	void testSchedulerClearsOldRecords() {
+		try (BukkitSchedulerMock scheduler = new BukkitSchedulerMock()) {
+			final BukkitSchedulerCleaningLogQueue logQueue = new BukkitSchedulerCleaningLogQueue(nowSource, validFor);
+			logQueue.runCleanupTimerAsynchronously(scheduler, plugin, 20, 20);
+			final LogRecord record = new LogRecord(Level.INFO, "old log record");
+			record.setInstant(now.minus(validFor).minus(1, ChronoUnit.MINUTES));
+			logQueue.push(record);
+			scheduler.performTicks(20);
+			scheduler.assertNoExceptions();
+			assertFalse(logQueue.canPublish(), "the old record should have been discarded by the timed task");
+		}
+	}
 
-    @Test
-    void testSchedulerKeepsRecentRecords() {
-        try (BukkitSchedulerMock scheduler = new BukkitSchedulerMock()) {
-            final BukkitSchedulerCleaningLogQueue logQueue = new BukkitSchedulerCleaningLogQueue(nowSource, validFor);
-            logQueue.runCleanupTimerAsynchronously(scheduler, plugin, 20, 20);
-            final LogRecord record = new LogRecord(Level.INFO, "recent log record");
-            record.setInstant(now.minus(validFor));
-            logQueue.push(record);
-            scheduler.performTicks(20);
-            scheduler.assertNoExceptions();
-            assertTrue(logQueue.canPublish(), "the recent record should have been kept by the timed task");
-        }
-    }
+	@Test
+	void testSchedulerKeepsRecentRecords() {
+		try (BukkitSchedulerMock scheduler = new BukkitSchedulerMock()) {
+			final BukkitSchedulerCleaningLogQueue logQueue = new BukkitSchedulerCleaningLogQueue(nowSource, validFor);
+			logQueue.runCleanupTimerAsynchronously(scheduler, plugin, 20, 20);
+			final LogRecord record = new LogRecord(Level.INFO, "recent log record");
+			record.setInstant(now.minus(validFor));
+			logQueue.push(record);
+			scheduler.performTicks(20);
+			scheduler.assertNoExceptions();
+			assertTrue(logQueue.canPublish(), "the recent record should have been kept by the timed task");
+		}
+	}
 }

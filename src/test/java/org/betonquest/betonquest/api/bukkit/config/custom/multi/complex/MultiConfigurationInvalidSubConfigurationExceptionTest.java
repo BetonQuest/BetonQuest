@@ -20,31 +20,31 @@ import static org.junit.jupiter.api.Assertions.*;
 @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
 class MultiConfigurationInvalidSubConfigurationExceptionTest {
 
-    @Test
-    void testInvalidPathSeparator() {
-        final YamlConfiguration configuration = new YamlConfiguration();
-        configuration.options().pathSeparator('/');
-        try {
-            new MultiConfiguration(List.of(configuration));
-        } catch (final InvalidSubConfigurationException e) {
-            assertEquals("At least one source config does not have valid path separator!", e.getMessage());
-            return;
-        } catch (final KeyConflictException e) {
-            fail(e);
-        }
-        fail("Expected an Exception!");
-    }
+	@Test
+	void testInvalidPathSeparator() {
+		final YamlConfiguration configuration = new YamlConfiguration();
+		configuration.options().pathSeparator('/');
+		try {
+			new MultiConfiguration(List.of(configuration));
+		} catch (final InvalidSubConfigurationException e) {
+			assertEquals("At least one source config does not have valid path separator!", e.getMessage());
+			return;
+		} catch (final KeyConflictException e) {
+			fail(e);
+		}
+		fail("Expected an Exception!");
+	}
 
-    @Test
-    void testNoRoot() {
-        try {
-            new MultiConfiguration(List.of(Mockito.mock(ConfigurationSection.class)));
-        } catch (final InvalidSubConfigurationException e) {
-            assertEquals("At least one source config does not have a root!", e.getMessage());
-            return;
-        } catch (final InvalidConfigurationException e) {
-            fail(e);
-        }
-        fail("Expected an Exception!");
-    }
+	@Test
+	void testNoRoot() {
+		try {
+			new MultiConfiguration(List.of(Mockito.mock(ConfigurationSection.class)));
+		} catch (final InvalidSubConfigurationException e) {
+			assertEquals("At least one source config does not have a root!", e.getMessage());
+			return;
+		} catch (final InvalidConfigurationException e) {
+			fail(e);
+		}
+		fail("Expected an Exception!");
+	}
 }

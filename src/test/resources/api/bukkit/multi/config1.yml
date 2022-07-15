@@ -1,6 +1,6 @@
 childSection:
   nestedChildSection:
-    key: value
+	key: value
 string: Custom String
 double: 123.45
 stringList:

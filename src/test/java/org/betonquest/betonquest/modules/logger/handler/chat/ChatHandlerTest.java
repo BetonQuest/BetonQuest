@@ -25,37 +25,37 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class ChatHandlerTest {
 
-    @Test
-    void testLoggingToPlayersChat(
-            @Mock final RecordReceiverSelector selector,
-            @Mock final BukkitAudiences audiences,
-            @Mock final Audience audience) {
-        final UUID uuid = UUID.randomUUID();
-        when(selector.findReceivers(any())).thenReturn(Set.of(uuid));
-        when(audiences.player(uuid)).thenReturn(audience);
-        final String message = "test message";
-        final LogRecord record = new LogRecord(Level.INFO, message);
+	@Test
+	void testLoggingToPlayersChat(
+			@Mock final RecordReceiverSelector selector,
+			@Mock final BukkitAudiences audiences,
+			@Mock final Audience audience) {
+		final UUID uuid = UUID.randomUUID();
+		when(selector.findReceivers(any())).thenReturn(Set.of(uuid));
+		when(audiences.player(uuid)).thenReturn(audience);
+		final String message = "test message";
+		final LogRecord record = new LogRecord(Level.INFO, message);
 
-        final ChatHandler handler = new ChatHandler(selector, audiences);
-        handler.setFormatter(new ChatFormatter());
+		final ChatHandler handler = new ChatHandler(selector, audiences);
+		handler.setFormatter(new ChatFormatter());
 
-        handler.publish(record);
+		handler.publish(record);
 
-        verify(audience).sendMessage(any());
-        handler.flush();
-        handler.close();
-    }
+		verify(audience).sendMessage(any());
+		handler.flush();
+		handler.close();
+	}
 
-    @Test
-    void testFormatException() {
-        final ChatHandler handler = new ChatHandler(mock(RecordReceiverSelector.class), mock(BukkitAudiences.class));
-        final Formatter formatter = mock(Formatter.class);
-        when(formatter.format(any())).thenThrow(new RuntimeException());
-        handler.setFormatter(formatter);
-        final ErrorManager errorManager = mock(ErrorManager.class);
-        handler.setErrorManager(errorManager);
+	@Test
+	void testFormatException() {
+		final ChatHandler handler = new ChatHandler(mock(RecordReceiverSelector.class), mock(BukkitAudiences.class));
+		final Formatter formatter = mock(Formatter.class);
+		when(formatter.format(any())).thenThrow(new RuntimeException());
+		handler.setFormatter(formatter);
+		final ErrorManager errorManager = mock(ErrorManager.class);
+		handler.setErrorManager(errorManager);
 
-        handler.publish(new LogRecord(Level.INFO, ""));
-        verify(errorManager).error(any(), any(RuntimeException.class), anyInt());
-    }
+		handler.publish(new LogRecord(Level.INFO, ""));
+		verify(errorManager).error(any(), any(RuntimeException.class), anyInt());
+	}
 }

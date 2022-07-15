@@ -11,40 +11,40 @@ import org.betonquest.betonquest.quest.event.NotificationSender;
  */
 public class JournalEvent implements Event {
 
-    /**
-     * BetonQuest instance used to get the {@link PlayerData}.
-     */
-    private final BetonQuest betonQuest;
+	/**
+	 * BetonQuest instance used to get the {@link PlayerData}.
+	 */
+	private final BetonQuest betonQuest;
 
-    /**
-     * Change to apply to a journal when the event is executed.
-     */
-    private final JournalChanger journalChanger;
+	/**
+	 * Change to apply to a journal when the event is executed.
+	 */
+	private final JournalChanger journalChanger;
 
-    /**
-     * Notification to send after the journal was changed.
-     */
-    private final NotificationSender notificationSender;
+	/**
+	 * Notification to send after the journal was changed.
+	 */
+	private final NotificationSender notificationSender;
 
-    /**
-     * Create a journal event.
-     *
-     * @param betonQuest BetonQuest instance
-     * @param journalChanger change to apply to a journal
-     * @param notificationSender notification to send
-     */
-    public JournalEvent(final BetonQuest betonQuest, final JournalChanger journalChanger, final NotificationSender notificationSender) {
-        this.betonQuest = betonQuest;
-        this.journalChanger = journalChanger;
-        this.notificationSender = notificationSender;
-    }
+	/**
+	 * Create a journal event.
+	 *
+	 * @param betonQuest BetonQuest instance
+	 * @param journalChanger change to apply to a journal
+	 * @param notificationSender notification to send
+	 */
+	public JournalEvent(final BetonQuest betonQuest, final JournalChanger journalChanger, final NotificationSender notificationSender) {
+		this.betonQuest = betonQuest;
+		this.journalChanger = journalChanger;
+		this.notificationSender = notificationSender;
+	}
 
-    @Override
-    public void execute(final String playerId) {
-        final PlayerData playerData = betonQuest.getOfflinePlayerData(playerId);
-        final Journal journal = playerData.getJournal();
-        journalChanger.changeJournal(journal);
-        journal.update();
-        notificationSender.sendNotification(playerId);
-    }
+	@Override
+	public void execute(final String playerId) {
+		final PlayerData playerData = betonQuest.getOfflinePlayerData(playerId);
+		final Journal journal = playerData.getJournal();
+		journalChanger.changeJournal(journal);
+		journal.update();
+		notificationSender.sendNotification(playerId);
+	}
 }

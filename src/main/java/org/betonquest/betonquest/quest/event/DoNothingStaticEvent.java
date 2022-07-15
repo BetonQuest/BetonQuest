@@ -7,14 +7,14 @@ import org.betonquest.betonquest.api.quest.event.StaticEvent;
  * or in the case that explicitly nothing should happen.
  */
 public class DoNothingStaticEvent implements StaticEvent {
-    /**
-     * Create a static event placeholder that doesn't do anything.
-     */
-    public DoNothingStaticEvent() {
-    }
+	/**
+	 * Create a static event placeholder that doesn't do anything.
+	 */
+	public DoNothingStaticEvent() {
+	}
 
-    @Override
-    public void execute() {
-        // null object pattern
-    }
+	@Override
+	public void execute() {
+		// null object pattern
+	}
 }

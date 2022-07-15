@@ -1,6 +1,6 @@
 childSection:
   nestedChildSection:
-    key: value
+	key: value
 # Test Comment
 get: getValue # Test Inline Comment
 existingSet: setValue
@@ -35,9 +35,9 @@ characterList:
   - c
 mapList:
   - one: 1
-    two: 2
+	two: 2
   - three: 3
-    four: 4
+	four: 4
 object:
   ==: org.betonquest.betonquest.api.bukkit.config.util.AbstractConfigBaseTest$TestObject
   name: Test

@@ -21,43 +21,43 @@ import static org.mockito.Mockito.*;
 @ExtendWith(BetonQuestLoggerService.class)
 public abstract class AbstractScheduleTest {
 
-    /**
-     * ID of the schedule to test.
-     */
-    @Mock
-    protected ScheduleID scheduleID;
+	/**
+	 * ID of the schedule to test.
+	 */
+	@Mock
+	protected ScheduleID scheduleID;
 
-    /**
-     * Quest package of the schedule to test.
-     */
-    @Mock
-    protected QuestPackage questPackage;
+	/**
+	 * Quest package of the schedule to test.
+	 */
+	@Mock
+	protected QuestPackage questPackage;
 
-    /**
-     * Configuration section of the schedule to test.
-     */
-    @Mock
-    protected ConfigurationSection section;
+	/**
+	 * Configuration section of the schedule to test.
+	 */
+	@Mock
+	protected ConfigurationSection section;
 
-    /**
-     * Before each test run prepare config and all mocks.
-     */
-    @BeforeEach
-    protected void beforeEach() {
-        lenient().when(scheduleID.getPackage()).thenReturn(questPackage);
-        prepareConfig();
-    }
+	/**
+	 * Before each test run prepare config and all mocks.
+	 */
+	@BeforeEach
+	protected void beforeEach() {
+		lenient().when(scheduleID.getPackage()).thenReturn(questPackage);
+		prepareConfig();
+	}
 
-    /**
-     * Method that creates a schedule instance with the provided ScheduleID and QuestPackage
-     *
-     * @return the new created schedule instance
-     * @throws InstructionParseException if parsing the schedule from the config failed
-     */
-    protected abstract Schedule createSchedule() throws InstructionParseException;
+	/**
+	 * Method that creates a schedule instance with the provided ScheduleID and QuestPackage
+	 *
+	 * @return the new created schedule instance
+	 * @throws InstructionParseException if parsing the schedule from the config failed
+	 */
+	protected abstract Schedule createSchedule() throws InstructionParseException;
 
-    /**
-     * Prepare the configuration section by configuring the mocks.
-     */
-    protected abstract void prepareConfig();
+	/**
+	 * Prepare the configuration section by configuring the mocks.
+	 */
+	protected abstract void prepareConfig();
 }

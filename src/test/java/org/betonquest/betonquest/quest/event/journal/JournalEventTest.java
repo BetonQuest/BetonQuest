@@ -19,22 +19,22 @@ import static org.mockito.Mockito.*;
 @ExtendWith(BetonQuestLoggerService.class)
 @ExtendWith(MockitoExtension.class)
 class JournalEventTest {
-    @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
-    void testJournalEventChangesUpdatesAndNotifiesInOrder(
-            @Mock final BetonQuest betonQuest, @Mock final PlayerData data, @Mock final Journal journal,
-            @Mock final JournalChanger changer, @Mock final NotificationSender sender) {
-        final String playerId = "fake-id";
-        when(betonQuest.getOfflinePlayerData(playerId)).thenReturn(data);
-        when(data.getJournal()).thenReturn(journal);
+	@Test
+	@SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+	void testJournalEventChangesUpdatesAndNotifiesInOrder(
+			@Mock final BetonQuest betonQuest, @Mock final PlayerData data, @Mock final Journal journal,
+			@Mock final JournalChanger changer, @Mock final NotificationSender sender) {
+		final String playerId = "fake-id";
+		when(betonQuest.getOfflinePlayerData(playerId)).thenReturn(data);
+		when(data.getJournal()).thenReturn(journal);
 
-        final JournalEvent event = new JournalEvent(betonQuest, changer, sender);
+		final JournalEvent event = new JournalEvent(betonQuest, changer, sender);
 
-        event.execute(playerId);
+		event.execute(playerId);
 
-        final InOrder order = inOrder(journal, changer, sender);
-        order.verify(changer).changeJournal(journal);
-        order.verify(journal).update();
-        order.verify(sender).sendNotification(playerId);
-    }
+		final InOrder order = inOrder(journal, changer, sender);
+		order.verify(changer).changeJournal(journal);
+		order.verify(journal).update();
+		order.verify(sender).sendNotification(playerId);
+	}
 }

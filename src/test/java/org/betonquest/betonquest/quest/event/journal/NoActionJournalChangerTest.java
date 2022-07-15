@@ -15,10 +15,10 @@ import static org.mockito.Mockito.*;
 @ExtendWith(BetonQuestLoggerService.class)
 @ExtendWith(MockitoExtension.class)
 class NoActionJournalChangerTest {
-    @Test
-    void testChangeJournalDoesNothing(@Mock final Journal journal) {
-        final NoActionJournalChanger changer = new NoActionJournalChanger();
-        changer.changeJournal(journal);
-        verifyNoInteractions(journal);
-    }
+	@Test
+	void testChangeJournalDoesNothing(@Mock final Journal journal) {
+		final NoActionJournalChanger changer = new NoActionJournalChanger();
+		changer.changeJournal(journal);
+		verifyNoInteractions(journal);
+	}
 }

@@ -17,29 +17,29 @@ import java.util.Locale;
 @CustomLog
 public class MathVariable extends Variable {
 
-    private final Token calculation;
+	private final Token calculation;
 
-    public MathVariable(final Instruction instruction) throws InstructionParseException {
-        super(instruction);
-        final String instructionString = instruction.getInstruction();
-        if (!instructionString.matches("math\\.calc:.+")) {
-            throw new InstructionParseException("invalid format");
-        }
-        final String expression = instructionString.substring("math.calc:".length());
-        this.calculation = new Tokenizer(instruction.getPackage().getPackagePath()).tokenize(expression);
-    }
+	public MathVariable(final Instruction instruction) throws InstructionParseException {
+		super(instruction);
+		final String instructionString = instruction.getInstruction();
+		if (!instructionString.matches("math\\.calc:.+")) {
+			throw new InstructionParseException("invalid format");
+		}
+		final String expression = instructionString.substring("math.calc:".length());
+		this.calculation = new Tokenizer(instruction.getPackage().getPackagePath()).tokenize(expression);
+	}
 
-    @Override
-    public String getValue(final String playerID) {
-        try {
-            final double value = this.calculation.resolve(playerID);
-            if (value % 1 == 0) {
-                return String.format(Locale.US, "%.0f", value);
-            }
-            return String.valueOf(value);
-        } catch (final QuestRuntimeException e) {
-            LOG.warn(instruction.getPackage(), "Could not calculate '" + calculation + "' (" + e.getMessage() + "). Returning 0 instead.", e);
-            return "0";
-        }
-    }
+	@Override
+	public String getValue(final String playerID) {
+		try {
+			final double value = this.calculation.resolve(playerID);
+			if (value % 1 == 0) {
+				return String.format(Locale.US, "%.0f", value);
+			}
+			return String.valueOf(value);
+		} catch (final QuestRuntimeException e) {
+			LOG.warn(instruction.getPackage(), "Could not calculate '" + calculation + "' (" + e.getMessage() + "). Returning 0 instead.", e);
+			return "0";
+		}
+	}
 }

@@ -12,17 +12,17 @@ import org.bukkit.entity.Player;
 @SuppressWarnings("PMD.CommentRequired")
 public class PlayerNameVariable extends Variable {
 
-    private final boolean display;
+	private final boolean display;
 
-    public PlayerNameVariable(final Instruction instruction) {
-        super(instruction);
-        display = instruction.hasArgument("display");
-    }
+	public PlayerNameVariable(final Instruction instruction) {
+		super(instruction);
+		display = instruction.hasArgument("display");
+	}
 
-    @Override
-    public String getValue(final String playerID) {
-        final Player player = PlayerConverter.getPlayer(playerID);
-        return display ? player.getDisplayName() : player.getName();
-    }
+	@Override
+	public String getValue(final String playerID) {
+		final Player player = PlayerConverter.getPlayer(playerID);
+		return display ? player.getDisplayName() : player.getName();
+	}
 
 }

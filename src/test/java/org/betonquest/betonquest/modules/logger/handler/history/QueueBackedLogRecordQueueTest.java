@@ -19,39 +19,39 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class QueueBackedLogRecordQueueTest {
 
-    @Test
-    void testLogEntriesAreInOrder(@Mock final Handler handler) {
-        final QueueBackedLogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());
-        final LogRecord firstRecord = new LogRecord(Level.INFO, "record 1");
-        final LogRecord secondRecord = new LogRecord(Level.INFO, "record 2");
-        logQueue.push(firstRecord);
-        logQueue.push(secondRecord);
-        logQueue.publishNext(handler);
-        verify(handler).publish(firstRecord);
-        verify(handler, never()).publish(secondRecord);
-        logQueue.publishNext(handler);
-        verify(handler).publish(firstRecord);
-        verify(handler).publish(secondRecord);
-    }
+	@Test
+	void testLogEntriesAreInOrder(@Mock final Handler handler) {
+		final QueueBackedLogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());
+		final LogRecord firstRecord = new LogRecord(Level.INFO, "record 1");
+		final LogRecord secondRecord = new LogRecord(Level.INFO, "record 2");
+		logQueue.push(firstRecord);
+		logQueue.push(secondRecord);
+		logQueue.publishNext(handler);
+		verify(handler).publish(firstRecord);
+		verify(handler, never()).publish(secondRecord);
+		logQueue.publishNext(handler);
+		verify(handler).publish(firstRecord);
+		verify(handler).publish(secondRecord);
+	}
 
-    @Test
-    void testPublishAllEmptiesTheQueue(@Mock final Handler handler) {
-        final QueueBackedLogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());
-        final LogRecord firstRecord = new LogRecord(Level.INFO, "record 1");
-        final LogRecord secondRecord = new LogRecord(Level.INFO, "record 2");
-        logQueue.push(firstRecord);
-        logQueue.push(secondRecord);
-        logQueue.publishAll(handler);
-        assertFalse(logQueue.canPublish(), "queue should be empty after publishing all records");
-        verify(handler).publish(firstRecord);
-        verify(handler).publish(secondRecord);
-    }
+	@Test
+	void testPublishAllEmptiesTheQueue(@Mock final Handler handler) {
+		final QueueBackedLogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());
+		final LogRecord firstRecord = new LogRecord(Level.INFO, "record 1");
+		final LogRecord secondRecord = new LogRecord(Level.INFO, "record 2");
+		logQueue.push(firstRecord);
+		logQueue.push(secondRecord);
+		logQueue.publishAll(handler);
+		assertFalse(logQueue.canPublish(), "queue should be empty after publishing all records");
+		verify(handler).publish(firstRecord);
+		verify(handler).publish(secondRecord);
+	}
 
-    @Test
-    void testCanPublishWithAtLeastOneRecord() {
-        final QueueBackedLogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());
-        assertFalse(logQueue.canPublish(), "empty queue should not allow publishing");
-        logQueue.push(new LogRecord(Level.INFO, "record"));
-        assertTrue(logQueue.canPublish(), "filled queue should allow publishing");
-    }
+	@Test
+	void testCanPublishWithAtLeastOneRecord() {
+		final QueueBackedLogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());
+		assertFalse(logQueue.canPublish(), "empty queue should not allow publishing");
+		logQueue.push(new LogRecord(Level.INFO, "record"));
+		assertTrue(logQueue.canPublish(), "filled queue should allow publishing");
+	}
 }

@@ -14,31 +14,31 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
  */
 public class QuestEventFactoryAdapter implements QuestEventFactory {
 
-    /**
-     * The event factory to be adapted.
-     */
-    private final EventFactory factory;
+	/**
+	 * The event factory to be adapted.
+	 */
+	private final EventFactory factory;
 
-    /**
-     * The static event factory to be adapted.
-     */
-    private final StaticEventFactory staticFactory;
+	/**
+	 * The static event factory to be adapted.
+	 */
+	private final StaticEventFactory staticFactory;
 
-    /**
-     * Create the factory from an {@link EventFactory}.
-     *
-     * @param factory event factory to use
-     * @param staticFactory static event factory to use
-     */
-    public QuestEventFactoryAdapter(final EventFactory factory, final StaticEventFactory staticFactory) {
-        this.factory = factory;
-        this.staticFactory = staticFactory;
-    }
+	/**
+	 * Create the factory from an {@link EventFactory}.
+	 *
+	 * @param factory event factory to use
+	 * @param staticFactory static event factory to use
+	 */
+	public QuestEventFactoryAdapter(final EventFactory factory, final StaticEventFactory staticFactory) {
+		this.factory = factory;
+		this.staticFactory = staticFactory;
+	}
 
-    @Override
-    public QuestEventAdapter parseEventInstruction(final Instruction instruction) throws InstructionParseException {
-        final Event event = factory.parseEvent(instruction.copy());
-        final StaticEvent staticEvent = staticFactory.parseStaticEvent(instruction.copy());
-        return new QuestEventAdapter(instruction, event, staticEvent);
-    }
+	@Override
+	public QuestEventAdapter parseEventInstruction(final Instruction instruction) throws InstructionParseException {
+		final Event event = factory.parseEvent(instruction.copy());
+		final StaticEvent staticEvent = staticFactory.parseStaticEvent(instruction.copy());
+		return new QuestEventAdapter(instruction, event, staticEvent);
+	}
 }

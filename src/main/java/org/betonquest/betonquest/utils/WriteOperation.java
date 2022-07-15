@@ -9,11 +9,11 @@ import java.io.IOException;
  */
 public interface WriteOperation<T> {
 
-    /**
-     * Write the value.
-     *
-     * @param value the value
-     * @throws IOException when writing the value fails
-     */
-    void write(T value) throws IOException;
+	/**
+	 * Write the value.
+	 *
+	 * @param value the value
+	 * @throws IOException when writing the value fails
+	 */
+	void write(T value) throws IOException;
 }

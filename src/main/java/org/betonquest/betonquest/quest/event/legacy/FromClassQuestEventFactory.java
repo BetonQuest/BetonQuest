@@ -19,35 +19,35 @@ import java.lang.reflect.InvocationTargetException;
 @Deprecated
 public class FromClassQuestEventFactory<T extends QuestEvent> implements QuestEventFactory {
 
-    /**
-     * Class of the event to create.
-     */
-    private final Class<T> eventClass;
+	/**
+	 * Class of the event to create.
+	 */
+	private final Class<T> eventClass;
 
-    /**
-     * Create the factory for a specific event class.
-     *
-     * @param eventClass event class to create with this factory
-     */
-    public FromClassQuestEventFactory(final Class<T> eventClass) {
-        this.eventClass = eventClass;
-    }
+	/**
+	 * Create the factory for a specific event class.
+	 *
+	 * @param eventClass event class to create with this factory
+	 */
+	public FromClassQuestEventFactory(final Class<T> eventClass) {
+		this.eventClass = eventClass;
+	}
 
-    @Override
-    public QuestEvent parseEventInstruction(final Instruction instruction) throws InstructionParseException {
-        final Throwable error;
-        try {
-            return eventClass.getConstructor(Instruction.class).newInstance(instruction);
-        } catch (final InvocationTargetException e) {
-            final Throwable cause = e.getCause();
-            if (cause instanceof InstructionParseException) {
-                throw (InstructionParseException) cause;
-            }
-            error = e;
-        } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-            error = e;
-        }
-        LOG.reportException(instruction.getPackage(), error);
-        throw new InstructionParseException("A broken event prevents the creation of " + instruction, error);
-    }
+	@Override
+	public QuestEvent parseEventInstruction(final Instruction instruction) throws InstructionParseException {
+		final Throwable error;
+		try {
+			return eventClass.getConstructor(Instruction.class).newInstance(instruction);
+		} catch (final InvocationTargetException e) {
+			final Throwable cause = e.getCause();
+			if (cause instanceof InstructionParseException) {
+				throw (InstructionParseException) cause;
+			}
+			error = e;
+		} catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
+			error = e;
+		}
+		LOG.reportException(instruction.getPackage(), error);
+		throw new InstructionParseException("A broken event prevents the creation of " + instruction, error);
+	}
 }

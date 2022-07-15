@@ -26,88 +26,88 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class OnlinePlayerGroupStaticEventAdapterTest {
 
-    /**
-     * Internal non-static event mock that is adapted to a static event by the tested class.
-     */
-    @Mock
-    private Event internalEvent;
+	/**
+	 * Internal non-static event mock that is adapted to a static event by the tested class.
+	 */
+	@Mock
+	private Event internalEvent;
 
-    /**
-     * Create test class instance.
-     */
-    public OnlinePlayerGroupStaticEventAdapterTest() {
-    }
+	/**
+	 * Create test class instance.
+	 */
+	public OnlinePlayerGroupStaticEventAdapterTest() {
+	}
 
-    @ParameterizedTest
-    @EmptySource
-    @MethodSource("playerListSource")
-    void testInternalEventIsExecutedForEachPlayerExactlyOnce(final List<Player> playerList) throws QuestRuntimeException {
-        final OnlinePlayerGroupStaticEventAdapter subject = new OnlinePlayerGroupStaticEventAdapter(() -> playerList, internalEvent);
-        subject.execute();
+	@ParameterizedTest
+	@EmptySource
+	@MethodSource("playerListSource")
+	void testInternalEventIsExecutedForEachPlayerExactlyOnce(final List<Player> playerList) throws QuestRuntimeException {
+		final OnlinePlayerGroupStaticEventAdapter subject = new OnlinePlayerGroupStaticEventAdapter(() -> playerList, internalEvent);
+		subject.execute();
 
-        verifyExecutedOnceForPlayers(playerList);
-        verifyNoMoreInteractions(internalEvent);
-    }
+		verifyExecutedOnceForPlayers(playerList);
+		verifyNoMoreInteractions(internalEvent);
+	}
 
-    static Stream<List<Player>> playerListSource() {
-        return Stream.of(
-                List.of(createRandomPlayer()),
-                List.of(createRandomPlayer(), createRandomPlayer()),
-                List.of(createRandomPlayer(), createRandomPlayer(), createRandomPlayer(), createRandomPlayer())
-        );
-    }
+	static Stream<List<Player>> playerListSource() {
+		return Stream.of(
+				List.of(createRandomPlayer()),
+				List.of(createRandomPlayer(), createRandomPlayer()),
+				List.of(createRandomPlayer(), createRandomPlayer(), createRandomPlayer(), createRandomPlayer())
+		);
+	}
 
-    @Test
-    void testSupplierIsCalledEveryTime() throws QuestRuntimeException {
-        final List<Player> firstExecution = List.of(createRandomPlayer(), createRandomPlayer());
-        final List<Player> secondExecution = List.of(createRandomPlayer(), createRandomPlayer(), createRandomPlayer());
-        final Iterator<List<Player>> playerListsForSupplier = List.of(
-                firstExecution, secondExecution
-        ).iterator();
+	@Test
+	void testSupplierIsCalledEveryTime() throws QuestRuntimeException {
+		final List<Player> firstExecution = List.of(createRandomPlayer(), createRandomPlayer());
+		final List<Player> secondExecution = List.of(createRandomPlayer(), createRandomPlayer(), createRandomPlayer());
+		final Iterator<List<Player>> playerListsForSupplier = List.of(
+				firstExecution, secondExecution
+		).iterator();
 
-        final OnlinePlayerGroupStaticEventAdapter subject = new OnlinePlayerGroupStaticEventAdapter(playerListsForSupplier::next, internalEvent);
-        subject.execute();
-        verifyExecutedOnceForPlayers(firstExecution);
-        verifyNotExecutedForPlayers(secondExecution);
+		final OnlinePlayerGroupStaticEventAdapter subject = new OnlinePlayerGroupStaticEventAdapter(playerListsForSupplier::next, internalEvent);
+		subject.execute();
+		verifyExecutedOnceForPlayers(firstExecution);
+		verifyNotExecutedForPlayers(secondExecution);
 
-        subject.execute();
-        // the event was executed once during the first call for the first batch of players,
-        // but it would be more than once if the second call did execute for the players of the first batch too
-        verifyExecutedOnceForPlayers(firstExecution);
-        verifyExecutedOnceForPlayers(secondExecution);
-    }
+		subject.execute();
+		// the event was executed once during the first call for the first batch of players,
+		// but it would be more than once if the second call did execute for the players of the first batch too
+		verifyExecutedOnceForPlayers(firstExecution);
+		verifyExecutedOnceForPlayers(secondExecution);
+	}
 
-    @Test
-    void testAdapterFailsOnFirstEventFailure() throws QuestRuntimeException {
-        final List<Player> playerList = List.of(createRandomPlayer(), createRandomPlayer(), createRandomPlayer());
-        final String firstPlayerId = PlayerConverter.getID(playerList.get(0));
-        final String failingPlayerId = PlayerConverter.getID(playerList.get(1));
-        final Exception eventFailureException = new QuestRuntimeException("test exception");
+	@Test
+	void testAdapterFailsOnFirstEventFailure() throws QuestRuntimeException {
+		final List<Player> playerList = List.of(createRandomPlayer(), createRandomPlayer(), createRandomPlayer());
+		final String firstPlayerId = PlayerConverter.getID(playerList.get(0));
+		final String failingPlayerId = PlayerConverter.getID(playerList.get(1));
+		final Exception eventFailureException = new QuestRuntimeException("test exception");
 
-        doNothing().when(internalEvent).execute(firstPlayerId);
-        doThrow(eventFailureException).when(internalEvent).execute(failingPlayerId);
+		doNothing().when(internalEvent).execute(firstPlayerId);
+		doThrow(eventFailureException).when(internalEvent).execute(failingPlayerId);
 
-        final OnlinePlayerGroupStaticEventAdapter subject = new OnlinePlayerGroupStaticEventAdapter(() -> playerList, internalEvent);
-        assertThrows(QuestRuntimeException.class, subject::execute);
-        verify(internalEvent).execute(firstPlayerId);
-        verify(internalEvent, never()).execute(PlayerConverter.getID(playerList.get(2)));
-    }
+		final OnlinePlayerGroupStaticEventAdapter subject = new OnlinePlayerGroupStaticEventAdapter(() -> playerList, internalEvent);
+		assertThrows(QuestRuntimeException.class, subject::execute);
+		verify(internalEvent).execute(firstPlayerId);
+		verify(internalEvent, never()).execute(PlayerConverter.getID(playerList.get(2)));
+	}
 
-    static Player createRandomPlayer() {
-        final Player player = mock(Player.class);
-        when(player.getUniqueId()).thenReturn(UUID.randomUUID());
-        return player;
-    }
+	static Player createRandomPlayer() {
+		final Player player = mock(Player.class);
+		when(player.getUniqueId()).thenReturn(UUID.randomUUID());
+		return player;
+	}
 
-    private void verifyExecutedOnceForPlayers(final Iterable<Player> playerList) throws QuestRuntimeException {
-        for (final Player player : playerList) {
-            verify(internalEvent).execute(PlayerConverter.getID(player));
-        }
-    }
+	private void verifyExecutedOnceForPlayers(final Iterable<Player> playerList) throws QuestRuntimeException {
+		for (final Player player : playerList) {
+			verify(internalEvent).execute(PlayerConverter.getID(player));
+		}
+	}
 
-    private void verifyNotExecutedForPlayers(final Iterable<Player> playerList) throws QuestRuntimeException {
-        for (final Player player : playerList) {
-            verify(internalEvent, never()).execute(PlayerConverter.getID(player));
-        }
-    }
+	private void verifyNotExecutedForPlayers(final Iterable<Player> playerList) throws QuestRuntimeException {
+		for (final Player player : playerList) {
+			verify(internalEvent, never()).execute(PlayerConverter.getID(player));
+		}
+	}
 }

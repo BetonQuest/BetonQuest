@@ -11,13 +11,13 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 @SuppressWarnings("PMD.CommentRequired")
 public class GlobalPointVariable extends PointVariable {
 
-    public GlobalPointVariable(final Instruction instruction) throws InstructionParseException {
-        super(instruction);
-    }
+	public GlobalPointVariable(final Instruction instruction) throws InstructionParseException {
+		super(instruction);
+	}
 
-    @Override
-    public String getValue(final String playerID) {
-        return getValue(BetonQuest.getInstance().getGlobalData().getPoints());
-    }
+	@Override
+	public String getValue(final String playerID) {
+		return getValue(BetonQuest.getInstance().getGlobalData().getPoints());
+	}
 
 }

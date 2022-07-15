@@ -15,14 +15,14 @@ import static org.mockito.Mockito.*;
 @ExtendWith(BetonQuestLoggerService.class)
 @ExtendWith(MockitoExtension.class)
 class RemoveEntryJournalChangerTest {
-    @Test
-    void testChangeJournalRemovesPointer(@Mock final Journal journal) {
-        final String entryName = "test_entry";
-        final RemoveEntryJournalChanger changer = new RemoveEntryJournalChanger(entryName);
+	@Test
+	void testChangeJournalRemovesPointer(@Mock final Journal journal) {
+		final String entryName = "test_entry";
+		final RemoveEntryJournalChanger changer = new RemoveEntryJournalChanger(entryName);
 
-        changer.changeJournal(journal);
+		changer.changeJournal(journal);
 
-        verify(journal).removePointer(entryName);
-        verifyNoMoreInteractions(journal);
-    }
+		verify(journal).removePointer(entryName);
+		verifyNoMoreInteractions(journal);
+	}
 }

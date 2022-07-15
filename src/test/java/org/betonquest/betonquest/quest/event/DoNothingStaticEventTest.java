@@ -9,9 +9,9 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test {@link DoNothingStaticEvent}.
  */
 class DoNothingStaticEventTest {
-    @Test
-    void testExecuteDoesNothing() {
-        final StaticEvent event = new DoNothingStaticEvent();
-        assertDoesNotThrow(event::execute, "Doing nothing should not thrown an exception.");
-    }
+	@Test
+	void testExecuteDoesNothing() {
+		final StaticEvent event = new DoNothingStaticEvent();
+		assertDoesNotThrow(event::execute, "Doing nothing should not thrown an exception.");
+	}
 }

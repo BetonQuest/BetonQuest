@@ -5,10 +5,10 @@ package org.betonquest.betonquest.quest.event;
  */
 public interface NotificationSender {
 
-    /**
-     * Send the notification.
-     *
-     * @param playerID player to receive the notification
-     */
-    void sendNotification(String playerID);
+	/**
+	 * Send the notification.
+	 *
+	 * @param playerID player to receive the notification
+	 */
+	void sendNotification(String playerID);
 }

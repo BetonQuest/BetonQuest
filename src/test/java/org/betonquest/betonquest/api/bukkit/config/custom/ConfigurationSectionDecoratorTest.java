@@ -8,8 +8,8 @@ import org.bukkit.configuration.ConfigurationSection;
  */
 public class ConfigurationSectionDecoratorTest extends ConfigurationSectionBaseTest {
 
-    @Override
-    public ConfigurationSection getConfig() {
-        return new ConfigurationSectionDecorator(super.getDefaultConfig());
-    }
+	@Override
+	public ConfigurationSection getConfig() {
+		return new ConfigurationSectionDecorator(super.getDefaultConfig());
+	}
 }

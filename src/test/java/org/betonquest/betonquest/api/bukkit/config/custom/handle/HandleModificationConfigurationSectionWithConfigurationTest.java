@@ -8,9 +8,9 @@ import org.bukkit.configuration.ConfigurationSection;
  */
 public class HandleModificationConfigurationSectionWithConfigurationTest extends HandleModificationConfigurationSectionTest {
 
-    @Override
-    public ConfigurationSection getConfig() {
-        setter = new HandleModificationToConfiguration();
-        return new HandleModificationConfiguration(super.getDefaultConfig(), setter);
-    }
+	@Override
+	public ConfigurationSection getConfig() {
+		setter = new HandleModificationToConfiguration();
+		return new HandleModificationConfiguration(super.getDefaultConfig(), setter);
+	}
 }

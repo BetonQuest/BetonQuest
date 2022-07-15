@@ -20,32 +20,32 @@ import static org.junit.jupiter.api.Assertions.*;
 @SuppressWarnings({"PMD.JUnit5TestShouldBePackagePrivate", "PMD.JUnitAssertionsShouldIncludeMessage"})
 public class MultiConfigurationSplitTest extends MultiConfigurationTest {
 
-    /**
-     * Get the default configuration values as {@link Configuration}.
-     *
-     * @return the default values
-     */
-    public static Configuration getDefault() {
-        final Configuration defaultSection = new MemoryConfiguration();
-        defaultSection.set("default.key", "value");
-        return defaultSection;
-    }
+	/**
+	 * Get the default configuration values as {@link Configuration}.
+	 *
+	 * @return the default values
+	 */
+	public static Configuration getDefault() {
+		final Configuration defaultSection = new MemoryConfiguration();
+		defaultSection.set("default.key", "value");
+		return defaultSection;
+	}
 
-    @Override
-    public Configuration getConfig() {
-        final Map<ConfigurationSection, String> configs = new HashMap<>();
-        configs.put(YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/multi/config1.yml")), "config1.yml");
-        configs.put(YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/multi/config2.yml")), "config1.yml");
-        configs.put(YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/multi/config3.yml")), "config1.yml");
-        try {
-            final MultiConfiguration multiConfiguration = new MultiConfiguration(new ArrayList<>(configs.keySet()));
-            multiConfiguration.setMultiDefaults(List.of(getDefault()));
-            return multiConfiguration;
-        } catch (final KeyConflictException e) {
-            fail(e.resolvedMessage(configs), e);
-        } catch (final InvalidConfigurationException e) {
-            fail(e);
-        }
-        return null;
-    }
+	@Override
+	public Configuration getConfig() {
+		final Map<ConfigurationSection, String> configs = new HashMap<>();
+		configs.put(YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/multi/config1.yml")), "config1.yml");
+		configs.put(YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/multi/config2.yml")), "config1.yml");
+		configs.put(YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/multi/config3.yml")), "config1.yml");
+		try {
+			final MultiConfiguration multiConfiguration = new MultiConfiguration(new ArrayList<>(configs.keySet()));
+			multiConfiguration.setMultiDefaults(List.of(getDefault()));
+			return multiConfiguration;
+		} catch (final KeyConflictException e) {
+			fail(e.resolvedMessage(configs), e);
+		} catch (final InvalidConfigurationException e) {
+			fail(e);
+		}
+		return null;
+	}
 }

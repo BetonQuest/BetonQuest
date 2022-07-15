@@ -11,25 +11,25 @@ import java.util.Arrays;
  */
 public class SequentialStaticEvent implements StaticEvent {
 
-    /**
-     * Events to be executed.
-     */
-    private final StaticEvent[] staticEvents;
+	/**
+	 * Events to be executed.
+	 */
+	private final StaticEvent[] staticEvents;
 
-    /**
-     * Create a static event sequence. The events at the front of the array will be executed first, at the end will be
-     * executed last.
-     *
-     * @param staticEvents events to be executed
-     */
-    public SequentialStaticEvent(final StaticEvent... staticEvents) {
-        this.staticEvents = Arrays.copyOf(staticEvents, staticEvents.length);
-    }
+	/**
+	 * Create a static event sequence. The events at the front of the array will be executed first, at the end will be
+	 * executed last.
+	 *
+	 * @param staticEvents events to be executed
+	 */
+	public SequentialStaticEvent(final StaticEvent... staticEvents) {
+		this.staticEvents = Arrays.copyOf(staticEvents, staticEvents.length);
+	}
 
-    @Override
-    public void execute() throws QuestRuntimeException {
-        for (final StaticEvent staticEvent : staticEvents) {
-            staticEvent.execute();
-        }
-    }
+	@Override
+	public void execute() throws QuestRuntimeException {
+		for (final StaticEvent staticEvent : staticEvents) {
+			staticEvent.execute();
+		}
+	}
 }

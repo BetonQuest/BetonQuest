@@ -8,8 +8,8 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
  */
 public class RealtimeCronScheduleTest extends CronRebootScheduleTest {
 
-    @Override
-    protected RealtimeCronSchedule createSchedule() throws InstructionParseException {
-        return new RealtimeCronSchedule(scheduleID, section);
-    }
+	@Override
+	protected RealtimeCronSchedule createSchedule() throws InstructionParseException {
+		return new RealtimeCronSchedule(scheduleID, section);
+	}
 }

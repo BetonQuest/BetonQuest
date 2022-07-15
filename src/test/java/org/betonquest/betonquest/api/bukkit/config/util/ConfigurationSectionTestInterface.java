@@ -3,287 +3,287 @@ package org.betonquest.betonquest.api.bukkit.config.util;
 @SuppressWarnings({"unused", "javadoc", "PMD.CommentRequired", "PMD.JUnit4TestShouldUseTestAnnotation", "PMD.TooManyMethods", "PMD.ExcessivePublicCount"})
 public interface ConfigurationSectionTestInterface {
 
-    void testGetKeysDeepFalse();
+	void testGetKeysDeepFalse();
 
-    void testGetKeysDeepTrue();
+	void testGetKeysDeepTrue();
 
-    void testGetValuesDeepFalse();
+	void testGetValuesDeepFalse();
 
-    void testGetValuesDeepTrue();
+	void testGetValuesDeepTrue();
 
-    void testContains();
+	void testContains();
 
-    void testContainsOnInvalidConfigPath();
+	void testContainsOnInvalidConfigPath();
 
-    void testContainsIgnoreDefaultFalse();
+	void testContainsIgnoreDefaultFalse();
 
-    void testContainsIgnoreDefaultFalseOnInvalidConfigPath();
+	void testContainsIgnoreDefaultFalseOnInvalidConfigPath();
 
-    void testContainsIgnoreDefaultTrue();
+	void testContainsIgnoreDefaultTrue();
 
-    void testContainsIgnoreDefaultTrueOnInvalidConfigPath();
+	void testContainsIgnoreDefaultTrueOnInvalidConfigPath();
 
-    void testContainsOnDefault();
+	void testContainsOnDefault();
 
-    void testContainsOnDefaultOnInvalidConfigPath();
+	void testContainsOnDefaultOnInvalidConfigPath();
 
-    void testContainsIgnoreDefaultFalseOnDefault();
+	void testContainsIgnoreDefaultFalseOnDefault();
 
-    void testContainsIgnoreDefaultFalseOnDefaultOnInvalidConfigPath();
+	void testContainsIgnoreDefaultFalseOnDefaultOnInvalidConfigPath();
 
-    void testContainsIgnoreDefaultTrueOnDefault();
+	void testContainsIgnoreDefaultTrueOnDefault();
 
-    void testContainsIgnoreDefaultTrueOnDefaultOnInvalidConfigPath();
+	void testContainsIgnoreDefaultTrueOnDefaultOnInvalidConfigPath();
 
-    void testIsSet();
+	void testIsSet();
 
-    void testIsSetOnInvalidConfigPath();
+	void testIsSetOnInvalidConfigPath();
 
-    void testGetCurrentPath();
+	void testGetCurrentPath();
 
-    void testGetName();
+	void testGetName();
 
-    void testGetRoot();
+	void testGetRoot();
 
-    void testGetParent();
+	void testGetParent();
 
-    void testGet();
+	void testGet();
 
-    void testGetOnInvalidConfigPath();
+	void testGetOnInvalidConfigPath();
 
-    void testGetWithDefault();
+	void testGetWithDefault();
 
-    void testGetWithDefaultOnInvalidConfigPath();
+	void testGetWithDefaultOnInvalidConfigPath();
 
-    void testSet();
+	void testSet();
 
-    void testSetOnExistingConfigPath();
+	void testSetOnExistingConfigPath();
 
-    void testCreateSection();
+	void testCreateSection();
 
-    void testCreateSectionOnExistingConfigPath();
+	void testCreateSectionOnExistingConfigPath();
 
-    void testCreateSectionWithValues();
+	void testCreateSectionWithValues();
 
-    void testCreateSectionWithValuesOnExistingConfigPath();
+	void testCreateSectionWithValuesOnExistingConfigPath();
 
-    void testGetString();
+	void testGetString();
 
-    void testGetStringOnInvalidConfigPath();
+	void testGetStringOnInvalidConfigPath();
 
-    void testGetStringWithDefault();
+	void testGetStringWithDefault();
 
-    void testGetStringWithDefaultOnInvalidConfigPath();
+	void testGetStringWithDefaultOnInvalidConfigPath();
 
-    void testIsString();
+	void testIsString();
 
-    void testIsStringOnInvalidConfigPath();
+	void testIsStringOnInvalidConfigPath();
 
-    void testGetInt();
+	void testGetInt();
 
-    void testGetIntOnInvalidConfigPath();
+	void testGetIntOnInvalidConfigPath();
 
-    void testGetIntWithDefault();
+	void testGetIntWithDefault();
 
-    void testGetIntWithDefaultOnInvalidConfigPath();
+	void testGetIntWithDefaultOnInvalidConfigPath();
 
-    void testIsInt();
+	void testIsInt();
 
-    void testIsIntOnInvalidConfigPath();
+	void testIsIntOnInvalidConfigPath();
 
-    void testGetBoolean();
+	void testGetBoolean();
 
-    void testGetBooleanOnInvalidConfigPath();
+	void testGetBooleanOnInvalidConfigPath();
 
-    void testGetBooleanWithDefault();
+	void testGetBooleanWithDefault();
 
-    void testGetBooleanWithDefaultOnInvalidConfigPath();
+	void testGetBooleanWithDefaultOnInvalidConfigPath();
 
-    void testIsBoolean();
+	void testIsBoolean();
 
-    void testIsBooleanOnInvalidConfigPath();
+	void testIsBooleanOnInvalidConfigPath();
 
-    void testGetDouble();
+	void testGetDouble();
 
-    void testGetDoubleOnInvalidConfigPath();
+	void testGetDoubleOnInvalidConfigPath();
 
-    void testGetDoubleWithDefault();
+	void testGetDoubleWithDefault();
 
-    void testGetDoubleWithDefaultOnInvalidConfigPath();
+	void testGetDoubleWithDefaultOnInvalidConfigPath();
 
-    void testIsDouble();
+	void testIsDouble();
 
-    void testIsDoubleOnInvalidConfigPath();
+	void testIsDoubleOnInvalidConfigPath();
 
-    void testGetLong();
+	void testGetLong();
 
-    void testGetLongOnInvalidConfigPath();
+	void testGetLongOnInvalidConfigPath();
 
-    void testGetLongWithDefault();
+	void testGetLongWithDefault();
 
-    void testGetLongWithDefaultOnInvalidConfigPath();
+	void testGetLongWithDefaultOnInvalidConfigPath();
 
-    void testIsLong();
+	void testIsLong();
 
-    void testIsLongOnInvalidConfigPath();
+	void testIsLongOnInvalidConfigPath();
 
-    void testGetList();
+	void testGetList();
 
-    void testGetListOnInvalidConfigPath();
+	void testGetListOnInvalidConfigPath();
 
-    void testGetListWithDefault();
+	void testGetListWithDefault();
 
-    void testGetListWithDefaultOnInvalidConfigPath();
+	void testGetListWithDefaultOnInvalidConfigPath();
 
-    void testIsList();
+	void testIsList();
 
-    void testIsListOnInvalidConfigPath();
+	void testIsListOnInvalidConfigPath();
 
-    void testGetStringList();
+	void testGetStringList();
 
-    void testGetStringListOnInvalidConfigPath();
+	void testGetStringListOnInvalidConfigPath();
 
-    void testGetIntegerList();
+	void testGetIntegerList();
 
-    void testGetIntegerListOnInvalidConfigPath();
+	void testGetIntegerListOnInvalidConfigPath();
 
-    void testGetBooleanList();
+	void testGetBooleanList();
 
-    void testGetBooleanListOnInvalidConfigPath();
+	void testGetBooleanListOnInvalidConfigPath();
 
-    void testGetDoubleList();
+	void testGetDoubleList();
 
-    void testGetDoubleListOnInvalidConfigPath();
+	void testGetDoubleListOnInvalidConfigPath();
 
-    void testGetFloatList();
+	void testGetFloatList();
 
-    void testGetFloatListOnInvalidConfigPath();
+	void testGetFloatListOnInvalidConfigPath();
 
-    void testGetLongList();
+	void testGetLongList();
 
-    void testGetLongListOnInvalidConfigPath();
+	void testGetLongListOnInvalidConfigPath();
 
-    void testGetByteList();
+	void testGetByteList();
 
-    void testGetByteListOnInvalidConfigPath();
+	void testGetByteListOnInvalidConfigPath();
 
-    void testGetCharacterList();
+	void testGetCharacterList();
 
-    void testGetCharacterListOnInvalidConfigPath();
+	void testGetCharacterListOnInvalidConfigPath();
 
-    void testGetShortList();
+	void testGetShortList();
 
-    void testGetShortListOnInvalidConfigPath();
+	void testGetShortListOnInvalidConfigPath();
 
-    void testGetMapList();
+	void testGetMapList();
 
-    void testGetMapListOnInvalidConfigPath();
+	void testGetMapListOnInvalidConfigPath();
 
-    void testGetObject();
+	void testGetObject();
 
-    void testGetObjectOnInvalidConfigPath();
+	void testGetObjectOnInvalidConfigPath();
 
-    void testGetObjectWithDefault();
+	void testGetObjectWithDefault();
 
-    void testGetObjectWithDefaultOnInvalidConfigPath();
+	void testGetObjectWithDefaultOnInvalidConfigPath();
 
-    void testGetSerializable();
+	void testGetSerializable();
 
-    void testGetSerializableOnInvalidConfigPath();
+	void testGetSerializableOnInvalidConfigPath();
 
-    void testGetSerializableWithDefault();
+	void testGetSerializableWithDefault();
 
-    void testGetSerializableWithDefaultOnInvalidConfigPath();
+	void testGetSerializableWithDefaultOnInvalidConfigPath();
 
-    void testGetVector();
+	void testGetVector();
 
-    void testGetVectorOnInvalidConfigPath();
+	void testGetVectorOnInvalidConfigPath();
 
-    void testGetVectorWithDefault();
+	void testGetVectorWithDefault();
 
-    void testGetVectorWithDefaultOnInvalidConfigPath();
+	void testGetVectorWithDefaultOnInvalidConfigPath();
 
-    void testIsVector();
+	void testIsVector();
 
-    void testIsVectorOnInvalidConfigPath();
+	void testIsVectorOnInvalidConfigPath();
 
-    void testGetOfflinePlayer();
+	void testGetOfflinePlayer();
 
-    void testGetOfflinePlayerOnInvalidConfigPath();
+	void testGetOfflinePlayerOnInvalidConfigPath();
 
-    void testGetOfflinePlayerWithDefault();
+	void testGetOfflinePlayerWithDefault();
 
-    void testGetOfflinePlayerWithDefaultOnInvalidConfigPath();
+	void testGetOfflinePlayerWithDefaultOnInvalidConfigPath();
 
-    void testIsOfflinePlayer();
+	void testIsOfflinePlayer();
 
-    void testIsOfflinePlayerOnInvalidConfigPath();
+	void testIsOfflinePlayerOnInvalidConfigPath();
 
-    void testGetItemStack();
+	void testGetItemStack();
 
-    void testGetItemStackOnInvalidConfigPath();
+	void testGetItemStackOnInvalidConfigPath();
 
-    void testGetItemStackWithDefault();
+	void testGetItemStackWithDefault();
 
-    void testGetItemStackWithDefaultOnInvalidConfigPath();
+	void testGetItemStackWithDefaultOnInvalidConfigPath();
 
-    void testIsItemStack();
+	void testIsItemStack();
 
-    void testIsItemStackOnInvalidConfigPath();
+	void testIsItemStackOnInvalidConfigPath();
 
-    void testGetColor();
+	void testGetColor();
 
-    void testGetColorOnInvalidConfigPath();
+	void testGetColorOnInvalidConfigPath();
 
-    void testGetColorWithDefault();
+	void testGetColorWithDefault();
 
-    void testGetColorWithDefaultOnInvalidConfigPath();
+	void testGetColorWithDefaultOnInvalidConfigPath();
 
-    void testIsColor();
+	void testIsColor();
 
-    void testIsColorOnInvalidConfigPath();
+	void testIsColorOnInvalidConfigPath();
 
-    void testGetLocation();
+	void testGetLocation();
 
-    void testGetLocationOnInvalidConfigPath();
+	void testGetLocationOnInvalidConfigPath();
 
-    void testGetLocationWithDefault();
+	void testGetLocationWithDefault();
 
-    void testGetLocationWithDefaultOnInvalidConfigPath();
+	void testGetLocationWithDefaultOnInvalidConfigPath();
 
-    void testIsLocation();
+	void testIsLocation();
 
-    void testIsLocationOnInvalidConfigPath();
+	void testIsLocationOnInvalidConfigPath();
 
-    void testGetConfigurationSection();
+	void testGetConfigurationSection();
 
-    void testGetConfigurationSectionOnInvalidConfigPath();
+	void testGetConfigurationSectionOnInvalidConfigPath();
 
-    void testIsConfigurationSection();
+	void testIsConfigurationSection();
 
-    void testIsConfigurationSectionOnInvalidConfigPath();
+	void testIsConfigurationSectionOnInvalidConfigPath();
 
-    void testGetDefaultSection();
+	void testGetDefaultSection();
 
-    void testGetDefaultSectionOnInvalidConfigPath();
+	void testGetDefaultSectionOnInvalidConfigPath();
 
-    void testAddDefault();
+	void testAddDefault();
 
-    void testAddDefaultOnExistingConfigPath();
+	void testAddDefaultOnExistingConfigPath();
 
-    void testSetComments();
+	void testSetComments();
 
-    void testSetCommentsOnInvalid();
+	void testSetCommentsOnInvalid();
 
-    void testSetInlineComments();
+	void testSetInlineComments();
 
-    void testSetInlineCommentsOnInvalid();
+	void testSetInlineCommentsOnInvalid();
 
-    void testGetComments();
+	void testGetComments();
 
-    void testGetCommentsOnInvalid();
+	void testGetCommentsOnInvalid();
 
-    void testGetInlineComments();
+	void testGetInlineComments();
 
-    void testGetInlineCommentsOnInvalid();
+	void testGetInlineCommentsOnInvalid();
 }

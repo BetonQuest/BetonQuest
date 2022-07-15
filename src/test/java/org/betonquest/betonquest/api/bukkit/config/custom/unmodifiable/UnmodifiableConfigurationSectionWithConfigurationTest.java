@@ -7,8 +7,8 @@ import org.bukkit.configuration.ConfigurationSection;
  */
 public class UnmodifiableConfigurationSectionWithConfigurationTest extends UnmodifiableConfigurationSectionTest {
 
-    @Override
-    public ConfigurationSection getConfig() {
-        return new UnmodifiableConfiguration(getDefaultConfig());
-    }
+	@Override
+	public ConfigurationSection getConfig() {
+		return new UnmodifiableConfiguration(getDefaultConfig());
+	}
 }

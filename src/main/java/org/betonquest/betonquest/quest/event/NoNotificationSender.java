@@ -5,13 +5,13 @@ package org.betonquest.betonquest.quest.event;
  */
 public class NoNotificationSender implements NotificationSender {
 
-    /**
-     * Create the no notification sender.
-     */
-    public NoNotificationSender() {}
+	/**
+	 * Create the no notification sender.
+	 */
+	public NoNotificationSender() {}
 
-    @Override
-    public void sendNotification(final String playerID) {
-        // null object pattern
-    }
+	@Override
+	public void sendNotification(final String playerID) {
+		// null object pattern
+	}
 }

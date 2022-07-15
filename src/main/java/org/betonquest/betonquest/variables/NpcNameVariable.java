@@ -11,17 +11,17 @@ import org.betonquest.betonquest.conversation.Conversation;
 @SuppressWarnings("PMD.CommentRequired")
 public class NpcNameVariable extends Variable {
 
-    public NpcNameVariable(final Instruction instruction) {
-        super(instruction);
-    }
+	public NpcNameVariable(final Instruction instruction) {
+		super(instruction);
+	}
 
-    @Override
-    public String getValue(final String playerID) {
-        final Conversation conv = Conversation.getConversation(playerID);
-        if (conv == null) {
-            return "";
-        }
-        return conv.getData().getQuester(BetonQuest.getInstance().getPlayerData(playerID).getLanguage());
-    }
+	@Override
+	public String getValue(final String playerID) {
+		final Conversation conv = Conversation.getConversation(playerID);
+		if (conv == null) {
+			return "";
+		}
+		return conv.getData().getQuester(BetonQuest.getInstance().getPlayerData(playerID).getLanguage());
+	}
 
 }

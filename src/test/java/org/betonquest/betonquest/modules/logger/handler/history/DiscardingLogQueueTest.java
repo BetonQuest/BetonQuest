@@ -14,21 +14,21 @@ import static org.mockito.Mockito.*;
  */
 class DiscardingLogQueueTest {
 
-    @Test
-    void testCanPush() {
-        final DiscardingLogQueue logQueue = new DiscardingLogQueue();
-        assertFalse(logQueue.canPublish(), "canPublish should be false");
-        logQueue.push(new LogRecord(Level.INFO, ""));
-        assertFalse(logQueue.canPublish(), "canPublish should still be false");
-    }
+	@Test
+	void testCanPush() {
+		final DiscardingLogQueue logQueue = new DiscardingLogQueue();
+		assertFalse(logQueue.canPublish(), "canPublish should be false");
+		logQueue.push(new LogRecord(Level.INFO, ""));
+		assertFalse(logQueue.canPublish(), "canPublish should still be false");
+	}
 
-    @Test
-    void testPublishNext() {
-        final DiscardingLogQueue logQueue = new DiscardingLogQueue();
-        assertThrows(UnsupportedOperationException.class, () -> logQueue.publishNext(mock(Handler.class)),
-                "publishNext should throw UnsupportedOperationException exception");
-        logQueue.push(new LogRecord(Level.INFO, ""));
-        assertThrows(UnsupportedOperationException.class, () -> logQueue.publishNext(mock(Handler.class)),
-                "publishNext should still throw UnsupportedOperationException exception");
-    }
+	@Test
+	void testPublishNext() {
+		final DiscardingLogQueue logQueue = new DiscardingLogQueue();
+		assertThrows(UnsupportedOperationException.class, () -> logQueue.publishNext(mock(Handler.class)),
+				"publishNext should throw UnsupportedOperationException exception");
+		logQueue.push(new LogRecord(Level.INFO, ""));
+		assertThrows(UnsupportedOperationException.class, () -> logQueue.publishNext(mock(Handler.class)),
+				"publishNext should still throw UnsupportedOperationException exception");
+	}
 }

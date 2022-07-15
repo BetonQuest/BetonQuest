@@ -11,38 +11,38 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 @CustomLog
 public class InfoNotificationSender implements NotificationSender {
 
-    /**
-     * Message package to send the message from.
-     */
-    private final String messageName;
-    /**
-     * Quest package to send the message from.
-     */
-    private final QuestPackage questPackage;
-    /**
-     * Full ID of the message sending object.
-     */
-    private final String fullId;
+	/**
+	 * Message package to send the message from.
+	 */
+	private final String messageName;
+	/**
+	 * Quest package to send the message from.
+	 */
+	private final QuestPackage questPackage;
+	/**
+	 * Full ID of the message sending object.
+	 */
+	private final String fullId;
 
-    /**
-     * Create the info-category notification sender.
-     *
-     * @param messageName message package to send the message from
-     * @param questPackage quest package to send the message from
-     * @param fullId full ID of the message sending object
-     */
-    public InfoNotificationSender(final String messageName, final QuestPackage questPackage, final String fullId) {
-        this.messageName = messageName;
-        this.questPackage = questPackage;
-        this.fullId = fullId;
-    }
+	/**
+	 * Create the info-category notification sender.
+	 *
+	 * @param messageName message package to send the message from
+	 * @param questPackage quest package to send the message from
+	 * @param fullId full ID of the message sending object
+	 */
+	public InfoNotificationSender(final String messageName, final QuestPackage questPackage, final String fullId) {
+		this.messageName = messageName;
+		this.questPackage = questPackage;
+		this.fullId = fullId;
+	}
 
-    @Override
-    public void sendNotification(final String playerID) {
-        try {
-            Config.sendNotify(questPackage.getPackagePath(), playerID, messageName, null, messageName + ",info");
-        } catch (final QuestRuntimeException e) {
-            LOG.warn(questPackage, "The notify system was unable to play a sound for the '" + messageName + "' category in '" + fullId + "'. Error was: '" + e.getMessage() + "'", e);
-        }
-    }
+	@Override
+	public void sendNotification(final String playerID) {
+		try {
+			Config.sendNotify(questPackage.getPackagePath(), playerID, messageName, null, messageName + ",info");
+		} catch (final QuestRuntimeException e) {
+			LOG.warn(questPackage, "The notify system was unable to play a sound for the '" + messageName + "' category in '" + fullId + "'. Error was: '" + e.getMessage() + "'", e);
+		}
+	}
 }

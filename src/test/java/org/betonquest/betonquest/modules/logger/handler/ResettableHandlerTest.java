@@ -21,77 +21,77 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class ResettableHandlerTest {
 
-    @Test
-    void testPublishPassesThrough(@Mock final Handler internal) {
-        final LogRecord record = new LogRecord(Level.INFO, "message");
-        final ResettableHandler handler = new ResettableHandler(() -> internal);
+	@Test
+	void testPublishPassesThrough(@Mock final Handler internal) {
+		final LogRecord record = new LogRecord(Level.INFO, "message");
+		final ResettableHandler handler = new ResettableHandler(() -> internal);
 
-        handler.publish(record);
+		handler.publish(record);
 
-        verify(internal).publish(record);
-    }
+		verify(internal).publish(record);
+	}
 
-    @Test
-    void testFlushPassesThrough(@Mock final Handler internal) {
-        final ResettableHandler handler = new ResettableHandler(() -> internal);
-        handler.flush();
-        verify(internal).flush();
-    }
+	@Test
+	void testFlushPassesThrough(@Mock final Handler internal) {
+		final ResettableHandler handler = new ResettableHandler(() -> internal);
+		handler.flush();
+		verify(internal).flush();
+	}
 
-    @Test
-    void testInternalHandlerIsEagerlyLoaded(@Mock final Handler internal, @Mock final Supplier<Handler> supplier) {
-        when(supplier.get()).thenReturn(internal);
-        new ResettableHandler(supplier);
-        verify(supplier).get();
-    }
+	@Test
+	void testInternalHandlerIsEagerlyLoaded(@Mock final Handler internal, @Mock final Supplier<Handler> supplier) {
+		when(supplier.get()).thenReturn(internal);
+		new ResettableHandler(supplier);
+		verify(supplier).get();
+	}
 
-    @Test
-    void testResetClosesOldHandler(@Mock final Handler internal) {
-        final ResettableHandler handler = new ResettableHandler(() -> internal);
-        verifyNoInteractions(internal);
-        handler.reset();
-        verify(internal).close();
-    }
+	@Test
+	void testResetClosesOldHandler(@Mock final Handler internal) {
+		final ResettableHandler handler = new ResettableHandler(() -> internal);
+		verifyNoInteractions(internal);
+		handler.reset();
+		verify(internal).close();
+	}
 
-    @Test
-    void testResetFetchesNewHandler(@Mock final Handler internal, @Mock final Supplier<Handler> supplier) {
-        when(supplier.get()).thenReturn(internal);
-        final ResettableHandler handler = new ResettableHandler(supplier);
+	@Test
+	void testResetFetchesNewHandler(@Mock final Handler internal, @Mock final Supplier<Handler> supplier) {
+		when(supplier.get()).thenReturn(internal);
+		final ResettableHandler handler = new ResettableHandler(supplier);
 
-        handler.reset();
+		handler.reset();
 
-        verify(supplier, times(2)).get();
-    }
+		verify(supplier, times(2)).get();
+	}
 
-    @Test
-    void testCorrectHandlerIsUsedAfterReset(@Mock final Handler handlerBeforeReset, @Mock final Handler handlerAfterReset) {
-        final Iterator<Handler> supplier = List.of(handlerBeforeReset, handlerAfterReset).iterator();
+	@Test
+	void testCorrectHandlerIsUsedAfterReset(@Mock final Handler handlerBeforeReset, @Mock final Handler handlerAfterReset) {
+		final Iterator<Handler> supplier = List.of(handlerBeforeReset, handlerAfterReset).iterator();
 
-        final ResettableHandler handler = new ResettableHandler(supplier::next);
+		final ResettableHandler handler = new ResettableHandler(supplier::next);
 
-        final LogRecord firstRecord = new LogRecord(Level.INFO, "first");
-        handler.publish(firstRecord);
-        handler.reset();
+		final LogRecord firstRecord = new LogRecord(Level.INFO, "first");
+		handler.publish(firstRecord);
+		handler.reset();
 
-        verifyNoInteractions(handlerAfterReset);
-        final LogRecord secondRecord = new LogRecord(Level.WARNING, "second");
-        handler.publish(secondRecord);
-        verify(handlerAfterReset).publish(secondRecord);
-    }
+		verifyNoInteractions(handlerAfterReset);
+		final LogRecord secondRecord = new LogRecord(Level.WARNING, "second");
+		handler.publish(secondRecord);
+		verify(handlerAfterReset).publish(secondRecord);
+	}
 
-    @Test
-    void testCloseClosesUnderlyingHandler(@Mock final Handler internal) {
-        final ResettableHandler handler = new ResettableHandler(() -> internal);
-        verifyNoInteractions(internal);
-        handler.close();
-        verify(internal).close();
-    }
+	@Test
+	void testCloseClosesUnderlyingHandler(@Mock final Handler internal) {
+		final ResettableHandler handler = new ResettableHandler(() -> internal);
+		verifyNoInteractions(internal);
+		handler.close();
+		verify(internal).close();
+	}
 
-    @Test
-    void testResetFailsAfterClose(@Mock final Handler internal) {
-        final ResettableHandler handler = new ResettableHandler(() -> internal);
-        handler.close();
+	@Test
+	void testResetFailsAfterClose(@Mock final Handler internal) {
+		final ResettableHandler handler = new ResettableHandler(() -> internal);
+		handler.close();
 
-        assertThrows(IllegalStateException.class, handler::reset, "Resetting a closed handler should fail.");
-    }
+		assertThrows(IllegalStateException.class, handler::reset, "Resetting a closed handler should fail.");
+	}
 }

@@ -10,9 +10,9 @@ booleanList:
   - true
 mapList:
   - one: 1
-    two: 2
+	two: 2
   - three: 3
-    four: 4
+	four: 4
 color:
   ==: Color
   RED: 255

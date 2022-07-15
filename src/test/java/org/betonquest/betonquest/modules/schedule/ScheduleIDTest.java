@@ -17,25 +17,25 @@ import static org.mockito.Mockito.*;
 @ExtendWith(BetonQuestLoggerService.class)
 class ScheduleIDTest {
 
-    @Test
-    void testSectionExists() {
-        final QuestPackage pack = mock(QuestPackage.class);
-        final MultiConfiguration config = mock(MultiConfiguration.class);
-        when(pack.getConfig()).thenReturn(config);
-        when(config.isConfigurationSection("schedules.testSchedule")).thenReturn(true);
+	@Test
+	void testSectionExists() {
+		final QuestPackage pack = mock(QuestPackage.class);
+		final MultiConfiguration config = mock(MultiConfiguration.class);
+		when(pack.getConfig()).thenReturn(config);
+		when(config.isConfigurationSection("schedules.testSchedule")).thenReturn(true);
 
-        assertDoesNotThrow(() -> new ScheduleID(pack, "testSchedule"),
-                "Should not throw any exception on constructing a valid schedule id");
-    }
+		assertDoesNotThrow(() -> new ScheduleID(pack, "testSchedule"),
+				"Should not throw any exception on constructing a valid schedule id");
+	}
 
-    @Test
-    void testNotaSection() {
-        final QuestPackage pack = mock(QuestPackage.class);
-        final MultiConfiguration config = mock(MultiConfiguration.class);
-        when(pack.getConfig()).thenReturn(config);
-        when(config.isConfigurationSection("schedules.testSchedule")).thenReturn(false);
+	@Test
+	void testNotaSection() {
+		final QuestPackage pack = mock(QuestPackage.class);
+		final MultiConfiguration config = mock(MultiConfiguration.class);
+		when(pack.getConfig()).thenReturn(config);
+		when(config.isConfigurationSection("schedules.testSchedule")).thenReturn(false);
 
-        assertThrows(ObjectNotFoundException.class, () -> new ScheduleID(pack, "testSchedule"),
-                "Should throw an exception if no schedule with this id exists");
-    }
+		assertThrows(ObjectNotFoundException.class, () -> new ScheduleID(pack, "testSchedule"),
+				"Should throw an exception if no schedule with this id exists");
+	}
 }
