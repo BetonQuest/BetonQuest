@@ -9,9 +9,7 @@ fix something or make other changes.
 
 ## Live Preview
 Run this command in IntelliJ's terminal window (at the bottom) to start a live preview of the documentation.
-It will be available on 
-<a href="http://127.0.0.1:8000/" target="_blank">127.0.0.1:8000</a>
-by default.
+It will be available on [127.0.0.1:8000](http://127.0.0.1:8000/) by default.
 
 ``` bash linenums="1" 
 mkdocs serve --dirtyreload # (1)
@@ -45,7 +43,7 @@ good documentation.
 ## Commit
 You need to commit your changes once they are done.
 You can do this with
-<a href="https://www.jetbrains.com/help/idea/commit-and-push-changes.html" target="_blank">IntelliJ's Git integration</a>.
+[IntelliJ's Git integration](https://www.jetbrains.com/help/idea/commit-and-push-changes.html).
 
 **Here are a few tips how to make good commits:**
 

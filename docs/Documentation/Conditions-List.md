@@ -306,7 +306,7 @@ Requires the player to have amount of points equal to the specified category or 
 ## Ride an entity: `ride`
 
 This condition checks if the player rides the specified
-<a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html" target="_blank_">entity</a>.
+[entity](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html).
 `any` is also a valid input and matches any entity.
 
 !!! example

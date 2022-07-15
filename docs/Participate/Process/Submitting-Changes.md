@@ -7,7 +7,7 @@ A pull request basically is asking us to pull your changes into our codebase. Le
 ## Push your changes
 The first step is to push your changes to your fork on GitHub.
 You can do this using
-<a href="https://www.jetbrains.com/help/idea/commit-and-push-changes.html#push" target="_blank">IntelliJ's Git integration</a>.
+[IntelliJ's Git integration](https://www.jetbrains.com/help/idea/commit-and-push-changes.html#push).
 
 
 ## Creating a Pull Request
@@ -73,12 +73,12 @@ Do not click any of these boxes on GitHub, we will do that.
     You did multiple commits, that look like `progress fixing the bug`? Or you did a commit with a wrong description?  
     
     Then you now need to do an `Interactive Rebase`. This changes the commit history. Here is the general
-    <a href="https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History" target="_blank">git documentation</a>
+    [git documentation](https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History)
     for changing the history. But if you use IntelliJ, you should read
     [edit Git project history](https://www.jetbrains.com/help/idea/edit-project-history.html).  
     
     In case you don't understand, read this
-    <a href="https://medium.com/@catalinaturlea/clean-git-history-a-step-by-step-guide-eefc0ad8696d" target="_blank">guide</a>
+    [guide](https://medium.com/@catalinaturlea/clean-git-history-a-step-by-step-guide-eefc0ad8696d)
     that explains, why and how you clean the commit history.
 
 ### Submit your Pull Request

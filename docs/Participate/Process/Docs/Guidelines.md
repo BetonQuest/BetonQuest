@@ -37,23 +37,12 @@ Tables and other special syntax are exempt from this rule.
 
 ##Links
 
-###Internal
-
-Links to internal pages can be opened in the same tab. This works using Markdown link syntax:
+Links can be created using Markdown's link syntax:
 
 ``` linenums="1"
 Click the [highlighted words](Contributing.md).
 ```
 Result: Click the [highlighted words](../../Overview.md).
-
-###External
-Links to external sites must be opened in new tabs using this HTML code:
-
-``` HTML linenums="1"
-<a href="https://betonquest.org/" target="_blank">Clickable text that opens a new tab</a>
-```
-Result: <a href="https://betonquest.org/" target="_blank">Clickable text that opens a new tab</a>
-
 
 
 ##Displaying (YAML) code

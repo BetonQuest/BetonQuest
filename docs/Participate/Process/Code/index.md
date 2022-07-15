@@ -30,7 +30,7 @@ You should also add a [changelog](../Maintaining-the-Changelog.md) entry at this
 
 You need to commit your changes once they are done.
 You can do this with
-<a href="https://www.jetbrains.com/help/idea/commit-and-push-changes.html" target="_blank">IntelliJ's Git integration</a>.
+[IntelliJ's Git integration](https://www.jetbrains.com/help/idea/commit-and-push-changes.html).
 
 **Here are a few tips how to make good commits:**
 

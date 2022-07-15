@@ -92,15 +92,15 @@ Just specify the time of the day when the events should run, and they will run e
 
 The cron realtime schedule is an incredibly flexible tool to define when events shall run.  
 It is similar to the [`realtime-daily`](#daily-realtime-schedule-realtime-daily) schedule but the time is defined as a
-<a href="https://en.wikipedia.org/wiki/Cron" target="_blank">cron expression</a>.  
+[cron expression](https://en.wikipedia.org/wiki/Cron).  
 The supported syntax is identical to the original unix crontab syntax.
 
 !!! tip
 
-    <a href="https://crontab.guru/" target="_blank">**Crontab Guru**</a>
+    **[Crontab Guru](https://crontab.guru/)**
     is a great tool for learning and testing cron expressions.
     It also provides a long list of
-    <a href="https://crontab.guru/examples.html" target="_blank">**examples**</a>.
+    **[examples](https://crontab.guru/examples.html)**.
     BetonQuest supports all features listed there, **even the non-standard ones!**
 
 === "Simple Example"

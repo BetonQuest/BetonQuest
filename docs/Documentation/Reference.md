@@ -581,9 +581,9 @@ Where:
   Be aware that a tag always starts with either `:` or a namespace. 
   
   - `state` - (optional) The block states can be provided in a comma separated `key=value` list surrounded by square brackets.
-   You can look up states in the Minecraft <a href="https://minecraft.gamepedia.com/Block_states" target="_blank">wiki</a>.
+   You can look up states in the Minecraft [wiki](https://minecraft.gamepedia.com/Block_states).
    Any states left out will be ignored when matching.
-   *Values* can be a <a href="https://medium.com/factory-mind/regex-tutorial-a-simple-cheatsheet-by-examples-649dc1c3f285" target="_blank">regex</a>.
+   *Values* can be a [regex](https://medium.com/factory-mind/regex-tutorial-a-simple-cheatsheet-by-examples-649dc1c3f285).
 
 Examples:
 

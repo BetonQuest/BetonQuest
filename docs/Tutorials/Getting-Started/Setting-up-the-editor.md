@@ -10,11 +10,11 @@ that enables some neat productivity advantages over any other editor.
 
 ## Installation
 
-* Head over to <a href="https://code.visualstudio.com" target="_blank">Visual Studio Code's site</a>
+* Head over to [Visual Studio Code's site](https://code.visualstudio.com)
   to install the latest version.
 
 * Then install the BetonQuest extension from the
-  <a href="https://marketplace.visualstudio.com/items?itemName=BetonQuest.betonquest-code-snippets" target="_blank">Visual Studio Marketplace</a>.
+  [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=BetonQuest.betonquest-code-snippets).
   Just click the big green "Install" button and allow the site to open Visual Studio Code.
 
 ![Marketplace Screenshot](../../_media/content/Tutorials/addon-marketplace.png){ width=60% }
@@ -24,7 +24,7 @@ that enables some neat productivity advantages over any other editor.
 ![VSCode Install Screenshot](../../_media/content/Tutorials/addon-in-editor.png){ width=60% }
  
 If this does not work for some reason go to the extensions view in VSCode (++ctrl+shift+x++) and search for `BetonQuest`.
-A full guide on extensions can be found <a href="https://code.visualstudio.com/docs/editor/extension-gallery" target="_blank">here</a>.
+A full guide on extensions can be found [here](https://code.visualstudio.com/docs/editor/extension-gallery).
 
 
 ## Usage

@@ -5,7 +5,7 @@ icon: material/chat-question
 If you have any questions please read this page first. You can easily look for your questions using the table of contents 
 to the right. It's very likely that it has been already asked and answered. 
 If not, feel free to ask us in the
-<a href="https://discordapp.com/invite/rK6mfHq" target="_blank">discord :fontawesome-brands-discord:</a> !.
+[Discord :fontawesome-brands-discord:](https://discordapp.com/invite/rK6mfHq)
 
 ## Where is the command for creating quests?
 There is no such command. BetonQuest is too complex to edit it using commands or chest GUI's.

@@ -95,7 +95,7 @@ Removes the specified drink from the players inventory. An amount needs to be sp
 takebrew 2 MY_OTHER_BREW 
 ```
 
-## NPC's using <a href="https://www.spigotmc.org/resources/citizens.13811/" target="_blank">Citizens</a>
+## NPC's using [Citizens](https://www.spigotmc.org/resources/citizens.13811/)
 
 If you have this plugin you can use it's NPCs for conversations. I highly recommend you installing it,
 it's NPCs are way more immersive. Having Citizens also allows you to use NPCKill objective and to have moving NPC's.
@@ -238,9 +238,9 @@ With this event you can fire Denizen task scripts. Don't confuse it with `skript
 If you install this plugin on your server you will be able to set a particle effect on NPCs with conversations and use `particle` event.
 
 EffectLib is not a normal plugin, it's a developer tool - there are no official docs. However, the Magic plugin has a
-<a href="https://reference.elmakers.com/#effectlib" target="_blank">wiki</a> for EffectLib.
+[wiki](https://reference.elmakers.com/#effectlib) for EffectLib.
 It does contain a few magic specific settings though so please don't be confused if some stuff does not work.
-There is also a <a href="https://sandbox.elmakers.com/#betonquestEffectLibTemplate" target="_blank">magic editor</a> with autocompletion for EffectLib.
+There is also a [magic editor](https://sandbox.elmakers.com/#betonquestEffectLibTemplate) with autocompletion for EffectLib.
 
 You can control the behaviour of particles around the NPCs in the `npc_effects` section.
 Each effect is defined as a separate subsection and consists of EffectLib options (described on the EffectLib page) and several BetonQuest settings.
@@ -486,7 +486,7 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 Any BetonQuest tag (global and per-player) can be used as a LuckPerms context. This means that a player needs the specified tag for a permission
 to be true - this removes the need for tons of `permission add ...` events as you can hook your existing
 quest progress tags right into LuckPerms permission
-<a href="https://luckperms.net/wiki/Context" target="_blank">contexts</a>.
+[contexts](https://luckperms.net/wiki/Context).
 The syntax is as follows:
 
 | key             | value                   |
@@ -496,8 +496,7 @@ The syntax is as follows:
 | betonquest:tag:myPackage.tagName| true |
 | betonquest:globaltag:myQuest.someTag | true |
 
-Check the 
-<a href="https://luckperms.net/wiki/Context" target="_blank">Luck Perms documentation</a>
+Check the [Luck Perms documentation](https://luckperms.net/wiki/Context)
 for an in-depth explanation on what contexts are and how to add them to permission.
 
 ## [Magic](http://dev.bukkit.org/bukkit-plugins/magic/)
@@ -587,7 +586,7 @@ mmohand GEMS SPEED_GEM 3 offhand
 ```
 
 #### MythicLib stat: `mmostat`
-Checks <a href="https://github.com/mmopluginteam/mmolib/blob/master/src/main/java/net/mmogroup/mmolib/api/stat/SharedStat.java" target="_blank">these</a>
+Checks [these](https://gitlab.com/phoenix-dvpmt/mythiclib/-/blob/master/plugin/src/main/java/io/lumine/mythic/lib/api/stat/SharedStat.java)
 stats that combine all sorts of stats from MMOCore and MMOItems.
 The player needs to be on the specified level or higher in order to meet this condition.
 You can disable this behaviour by adding the `equal` argument. 
@@ -595,12 +594,11 @@ You can disable this behaviour by adding the `equal` argument.
 mmostat DAMAGE_REDUCTION 3
 ```
 
+### Objectives
 
-###Objectives
-
-####Break Special Blocks: `mmocorebreakblock`
+#### Break Special Blocks: `mmocorebreakblock`
 This objective requires the player to break 
-<a href="https://git.lumine.io/mythiccraft/mmocore/-/wikis/Mining%20and%20Block%20Regen" target="_blank">special blocks from MMOCore</a>.
+[special blocks from MMOCore](https://gitlab.com/phoenix-dvpmt/mmocore/-/wikis/Mining%20and%20Block%20Regen).
 All three different block types and an amount can be defined. You can also send notifications to the player by appending
 the `notify` keyword optionally with the notification interval after a colon.
 
@@ -613,13 +611,13 @@ mmocorebreakblock 64 block:STONE  #vanilla material
 mmocorebreakblock 1 block:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVy #... this is a heads texture data
 ```
 
-####MMOCore Profession levelup: `mmoprofessionlevelup`
+#### MMOCore Profession levelup: `mmoprofessionlevelup`
 This objective requires the player to level the given profession to the specified level.
 ```YAML linenums="1"
 mmoprofessionlevelup MINING 10
 ```
 
-####Craft item: `mmoitemcraft`
+#### Craft item: `mmoitemcraft`
 This objective requires the player to craft the item with the given type and id.
 It supports any MMOItem that was crafted using vanilla crafting methods, MMOItems "recipe-amounts" crafting and MMOItems station crafting.
 An amount can also be set if it shall differ from the default (which is one) by adding the `amount:` argument.
@@ -635,35 +633,35 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 mmoitemcraft SWORD STEEL_SWORD
 mmoitemcraft HEALTH_POTION_RECIPE amount:5
 ```
-####Upgrade Item: `mmoitemupgrade`
+#### Upgrade Item: `mmoitemupgrade`
 This objective tracks if a player upgrades the given item with an upgrade consumable.  
 ```YAML linenums="1"
 mmoitemupgrade SWORD FALCON_BLADE
 ```
 
-####Apply gemstone: `mmoitemapplygem`
+#### Apply gemstone: `mmoitemapplygem`
 This objective is completed when the player applies the gemstone with the given gemstoneID to an item with the given
 itemType and itemID.
 ```YAML linenums="1"
 mmoitemapplygem SWORD CUTLASS GEM_OF_ACCURACY
 ```
 
-####Cast item ability: `mmoitemcastability`
+#### Cast item ability: `mmoitemcastability`
 This objective requires the player to cast an ability using an item. The only argument is the abilityID.
 ```YAML linenums="1"
 mmoitemcastability LIFE_ENDER
 ```
 
-####Cast class skill: `mmocorecastskill`
+#### Cast class skill: `mmocorecastskill`
 This objective requires the player to cast a class skill. The only argument is the abilityID.
 ```YAML linenums="1"
 mmocorecastskill BACKSTAB
 ```
 
 
-###Events
+### Events
 
-####Give MMOCore class experience: `mmoclassexperience`
+#### Give MMOCore class experience: `mmoclassexperience`
 Adds experience to the players class. The amount can be a variable or a number. The `level` argument
 is optional and would convert the amount to levels instead of XP points.
 ```YAML linenums="1"
@@ -671,7 +669,7 @@ mmoclassexperience 150
 mmoclassexperience 1 level
 ```
 
-####Give MMOCore profession experience: `mmoprofessionexperience`
+#### Give MMOCore profession experience: `mmoprofessionexperience`
 Adds experience in the specified player profession. The amount can be a variable or a number. The `level` argument
 is optional and would convert the amount to levels instead of XP points.
 ```YAML linenums="1"
@@ -679,31 +677,31 @@ mmoprofessionexperience MINING 100
 mmoprofessionexperience CUSTOM_PROFESSION_NAME 1 level
 ```
 
-####Give class points: `mmocoreclasspoints`
+#### Give class points: `mmocoreclasspoints`
 Gives the player class points. The amount can be a variable or a number.
 ```YAML linenums="1"
 mmocoreclasspoints 1
 ```
 
-####Give skill points: `mmocoreskillpoints`
+#### Give skill points: `mmocoreskillpoints`
 Gives the player skill points. The amount can be a variable or a number.
 ```YAML linenums="1"
 mmocoreskillpoints 10
 ```
 
-####Give attribute points: `mmocoreattributepoints`
+#### Give attribute points: `mmocoreattributepoints`
 Gives the player attribute points. The amount can be a variable or a number.
 ```YAML linenums="1"
 mmocoreattributepoints 2
 ```
 
-####Give attribute reallocation points: `mmocoreattributereallocationpoints`
+#### Give attribute reallocation points: `mmocoreattributereallocationpoints`
 Gives the player attribute reallocation points. The amount can be a variable or a number.
 ```YAML linenums="1"
 mmocoreattributereallocationpoints 1
 ```
 
-####Give MMOItem: `mmoitemgive`
+#### Give MMOItem: `mmoitemgive`
 Gives the player predefined item. Default amount is one and can be set manually to a higher amount or a variable.
 The item can be adjusted to the players level by adding the `scale` option. If you want all items to be stacked together 
 the `singleStack` option can be set. If the player doesn't have required space in the inventory, the items will be dropped on the ground.
@@ -712,7 +710,7 @@ You can also specify the `notify` keyword to display a message to the player abo
 mmoitemgive CONSUMABLE MANA_POTION
 ```
 
-####Take MMOItem: `mmoitemtake`
+#### Take MMOItem: `mmoitemtake`
 
 Removes the specified item from the players inventory. Optional arguments are an amount and `notify` to send a notification
 to the player.
