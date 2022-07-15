@@ -38,7 +38,32 @@ In IntelliJ click on `Git` in the left upper corner and then `Manage Remotes...`
 In the new window you already see a remote called `origin`. This remote is your fork of BetonQuest.
 Now add a new repository with the name `upstream` and the url `https://github.com/BetonQuest/BetonQuest.git`.
 
-##Building the Plugin jar
+## IntelliJ settings
+Formatting for .md (Markdown) files can break some features of
+<a href="https://squidfunk.github.io/mkdocs-material/" target="_blank">Material for MkDocs</a>, so we disable it for these files.
+Go to `File/Settings/Editor/Code Style` then go to the `Formatter` tab and add `*.md` to the `Do not format:` field.
+
+In `File/Settings/Editor/Code Style/Java` navigate to the `Imports` tab.
+You will now configure when to use star imports, in general we don't want them at all, but there are some exceptions.
+Set `Class count to use import with '*':` and `Names count to use static import with '*':` to `9999999`.
+And under `Packages to Use Import with '*'` configure the following:
+
+|           Static           |             Package              |         With Subpackages          |
+|:--------------------------:|:--------------------------------:|:---------------------------------:|
+| :material-checkbox-marked: |   org.mockito.ArgumentMatchers   | :material-checkbox-blank-outline: |
+| :material-checkbox-marked: | org.junit.jupiter.api.Assertions | :material-checkbox-blank-outline: |
+| :material-checkbox-marked: |       org.mockito.Mockito        | :material-checkbox-blank-outline: |
+
+Now we enable some automatic checks, when you commit things, that ensures everything is fine.
+In the `Commit` tab click on the three settings dots, near the `Amend` checkbox and then check the following entries under `Before Commit`:
+
+- Reformat Code
+- Rearrange Code
+- Optimize Imports
+- Analyze Code
+- Check TODO (Show All)
+
+## Building the Plugin jar
 You can build the plugin with Maven. Sometimes, IntelliJ auto-detects that BetonQuest is a Maven project. You can see
 a "Maven" tab on the right side of the editor if that's the case. Otherwise, do this:
 First, open the "Project" tab on the left site. Then right-click the `pom.xml` file in the projects root folder. 
@@ -48,7 +73,7 @@ To build the BetonQuest jar, you simply need to run `mvn verify`.
 You can do this from the command line or use IntelliJ's `Maven` tab (double-click on `BetonQuest/Lifecycle/verify`).
 You can then find a `BetonQuest.jar` in the newly created folder `/target/artifacts`.
 
-###Build speed up
+### Build speed up
 As BetonQuest has a lot of dependencies, the build can take a long lime, especially for the first build.
 You can speed this up with the following configuration, that downloads all dependencies from our own Repository Manager
 instead of searching through all repositories that are defined in the project.
@@ -74,13 +99,14 @@ Then adopt or copy the following into the file:
 </settings>
 ````
 
-###Build on Start
+### Build on Start
 The first build of a day can take a while, because every version gets re-checked once every day.
 This is the reason, why an automatic build on startup reduces the time of following builds. It is really worth it to set it up.
 In IntelliJ navigate to `File/Settings/Tools/Startup Tasks` click on the `Add` button and click `Add New Config`.
 Now select `Maven`, set a `Name` like `BetonQuest Resolve Dependencies` and write `dependency:resolve`
 into the field `Command line`. Then confirm with `Ok` twice.
 Now after starting IntelliJ the `BetonQuest Resolve Dependencies` task should run automatically.
+
 
 
 ##Building the Documentation
@@ -92,7 +118,7 @@ You also need to install [GTK](https://www.gtk.org/), the easiest way is to use 
 
 Install all other dependencies by entering `pip install -r config/docs-requirements.txt` in the terminal on the project's root directory.
 
-??? "In case you are a material-mkdocs insider (paid premium version)"  
+??? "In case you are a <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank">Material for MkDocs</a> insider (paid premium version)"  
     Set your license key by executing `setx MKDOCS_MATERIAL_INSIDERS LICENSE_KEY_HERE /M` (Windows) in the terminal.
     Now you need to restart IntelliJ for the changes to take effect. 
     Then run `pip install -r config/docs-requirements-insiders.txt` instead of `docs-requirements.txt`.
