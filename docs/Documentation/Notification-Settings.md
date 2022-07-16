@@ -6,9 +6,7 @@ You can freely choose between many NotifyIO's like simple chat output, (sub)titl
 with unique options that allow you to customize them. Just take a look at this example configuration:
 
 <div style="text-align: center">
- <video controls loop
-     src="../../_media/content/Documentation/Notifications/NotifySystemOverview.mp4"
-     width="780" height="500">
+ <video controls loop src="../../_media/content/Documentation/Notifications/NotifySystemOverview.mp4" width="100%">
  Sorry, your browser doesn't support embedded videos.
  </video>
 </div>

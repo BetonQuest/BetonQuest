@@ -619,9 +619,7 @@ A regex is allowed in any block state value when the block selector is used to m
 
 ## Hiding Players
 
-<video controls loop
-src="../../_media/content/Documentation/Compatibility/PlayerHider.mp4"
-width="780">
+<video controls loop src="../../_media/content/Documentation/Compatibility/PlayerHider.mp4" width="100%">
 Sorry, your browser doesn't support embedded videos.
 </video>
 

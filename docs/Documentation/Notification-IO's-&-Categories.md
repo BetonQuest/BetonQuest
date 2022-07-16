@@ -7,9 +7,7 @@ A NotifyIO is a method of displaying a notification to the player. Here's a demo
 of all NotifyIO's.
 
 <div style="text-align: center">
- <video controls loop
-     src="../../_media/content/Documentation/Notifications/NotifySystemOverview.mp4"
-     width="780" height="500">
+ <video controls loop src="../../_media/content/Documentation/Notifications/NotifySystemOverview.mp4" width="100%">
  Sorry, your browser doesn't support embedded videos.
  </video>
 </div>
@@ -112,9 +110,7 @@ during the animation.
 
 ??? info "Preview"
     <div style="text-align: center">
-        <video controls loop
-        src="../../_media/content/Documentation/Notifications/TotemIO.mp4"
-        width="780" height="500">
+        <video controls loop src="../../_media/content/Documentation/Notifications/TotemIO.mp4" width="100%">
         Sorry, your browser doesn't support embedded videos.
     </video>
     </div>
@@ -188,9 +184,7 @@ Here is a small example:
     *soundplayeroffset = (0,0,5)*
 
     <div style="text-align: center">
-    <video controls loop
-    src="../../_media/content/Documentation/Notifications/RelativeVectorExample.mp4"
-    width="780" height="500">
+    <video controls loop src="../../_media/content/Documentation/Notifications/RelativeVectorExample.mp4" width="100%">
     Sorry, your browser doesn't support embedded videos.
     </video>
     </div>

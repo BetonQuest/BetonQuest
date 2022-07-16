@@ -95,9 +95,7 @@ is the way the user interacts with them.
         A modern conversation style that works with some of Minecraft's native controls.
         All options can be found in the [compatibility](Compatibility.md#conversation-io-menu) section.
         This is a video of it in action: <br/>
-        <video controls loop
-             src="../../_media/content/Documentation/Conversations/MenuConvIO.mp4"
-            width="780" height="500">
+        <video controls loop src="../../_media/content/Documentation/Conversations/MenuConvIO.mp4" width="100%">
         Sorry, your browser doesn't support embedded videos.
         </video>
     === "simple"
