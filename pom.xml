@@ -58,7 +58,6 @@
       <groupId>io.papermc</groupId>
       <artifactId>paperlib</artifactId>
       <version>1.0.7</version>
-      <scope>compile</scope>
     </dependency>
 
     <!-- from enginehub repository -->
@@ -340,6 +339,7 @@
       <artifactId>api</artifactId>
       <version>5.4</version>
       <scope>provided</scope>
+      <optional>true</optional>
     </dependency>
 
     <!-- only dependencies from maven central that are no MC Plugins -->
@@ -401,7 +401,6 @@
       <groupId>com.github.spotbugs</groupId>
       <artifactId>spotbugs-annotations</artifactId>
       <version>4.7.0</version>
-      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.cronutils</groupId>
