@@ -660,19 +660,21 @@ events:
   punishing_fire: "burn duration:%point.punishment.amount%"
 ```
     
-## Velocity: `velocity`
+## :fontawesome-solid-wind: Move the player: `velocity`
 
 | Parameter      | Syntax                          | Default Value          | Explanation                                                                                                                                                                                                                                                                                                               |
 |----------------|---------------------------------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| _vector_       | `vector:(x;y;z)`                | :octicons-x-circle-16: | The values of the vector, which are decimal numbers, can be interpreted as absolute numbers like the coordinate or as relative directions. For more understanding the relative direction is similar to `^ ^ ^` in minecraft or in other words `(sideways;upwards;forwards)`. (Can be a variable)                          |
+| _vector_       | `vector:(x;y;z)`                | :octicons-x-circle-16: | The values of the vector, which are decimal numbers, can be interpreted as absolute numbers like the coordinate or as relative directions. For more understanding the relative direction is similar to `^ ^ ^` in minecraft or in other words `(sideways;upwards;forwards)`. Can be a variable.                           |
 | _direction_    | `direction:directionType`       | `absolute`             | There are 3 types how the vector can get applied to the player:<br> `absolute` won't change the vector at all.<br> `relative` will redirect the vector to the view of the player.<br> `relative_y` is a mix between absolute and relative. It will still direct to the view but only horizontally, so y will be absolute. |
-| _modification_ | `modification:modificationType` | `set`                  | Possible modifications are `set` and `add`. The modification type how the vector should get merged with the player-velocity. The player-velocity is the external force applied on the player.                                                                                                                             |
+| _modification_ | `modification:modificationType` | `set`                  | Possible modifications are `set` and `add`. The modification type determines how the vector should be merged with the player's velocity. The player's velocity is the external force applied on the player.                                                                                                               |
+
+--8<-- "Documentation/Vector-Explanation.md"
 
 ```YAML title="Example"
 events:
   jumppad: "velocity vector:(2;0.8;4)"
   dash: "velocity vector:(0;0.1;1.3) direction:relative_y"
-  variable_dash: "velocity vector:%objective.CustomVaribale.testvector% direction:relative_y"
+  variable_dash: "velocity vector:%objective.customVariable.dashLength% direction:relative_y"
   fly: "velocity vector:(0;0.1;2) direction:relative modification:add"
   
 ```
