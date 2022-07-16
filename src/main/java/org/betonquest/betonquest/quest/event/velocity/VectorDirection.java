@@ -56,11 +56,11 @@ public enum VectorDirection {
      */
     private interface Calculator {
         /**
-         * Applies a modification to the given vector
+         * Calculate the rotation of the vector. Eventual depends on the players view
          *
-         * @param player the player to calculate the vector for
-         * @param vector the vector to modify
-         * @return the modified vector
+         * @param player the player to rotate the vector for
+         * @param vector the vector to rotate
+         * @return the rotated vector
          */
         Vector calculate(Player player, Vector vector);
     }
