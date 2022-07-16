@@ -84,10 +84,8 @@ if they do. An example might be provided after the colon (`:`). Just replace it 
 
 *Note: This video is slightly outdated and does not show some newer features!*
 
-<div style="text-align: center">
- <video controls loop src="../../../_media/content/Tutorials/VSCodeExtension.mp4" width="100%">
- Sorry, your browser doesn't support embedded videos.
- </video>
-</div>
+<video controls loop src="../../../_media/content/Tutorials/VSCodeExtension.mp4" width="100%">
+  Sorry, your browser doesn't support embedded videos.
+</video>
 
 **Next step: [YAML-for-questers](./YAML-for-questers.md)**

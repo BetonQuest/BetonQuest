@@ -620,7 +620,7 @@ A regex is allowed in any block state value when the block selector is used to m
 ## Hiding Players
 
 <video controls loop src="../../_media/content/Documentation/Compatibility/PlayerHider.mp4" width="100%">
-Sorry, your browser doesn't support embedded videos.
+  Sorry, your browser doesn't support embedded videos.
 </video>
 
 You can also hide players for specific players in the `player_hider` section of your package. When the `source_player` meets the conditions,

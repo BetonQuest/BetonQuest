@@ -5,11 +5,9 @@ BetonQuest features a powerful notify system that allows you to display any info
 You can freely choose between many NotifyIO's like simple chat output, (sub)titles, advancements or sounds. They all come
 with unique options that allow you to customize them. Just take a look at this example configuration:
 
-<div style="text-align: center">
- <video controls loop src="../../_media/content/Documentation/Notifications/NotifySystemOverview.mp4" width="100%">
- Sorry, your browser doesn't support embedded videos.
- </video>
-</div>
+<video controls loop src="../../_media/content/Documentation/Notifications/NotifySystemOverview.mp4" width="100%">
+  Sorry, your browser doesn't support embedded videos.
+</video>
 
 
 ## Sending custom notifications

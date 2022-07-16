@@ -96,7 +96,7 @@ is the way the user interacts with them.
         All options can be found in the [compatibility](Compatibility.md#conversation-io-menu) section.
         This is a video of it in action: <br/>
         <video controls loop src="../../_media/content/Documentation/Conversations/MenuConvIO.mp4" width="100%">
-        Sorry, your browser doesn't support embedded videos.
+          Sorry, your browser doesn't support embedded videos.
         </video>
     === "simple"
         A chat output. The user has to write a number into their chat to select an option.

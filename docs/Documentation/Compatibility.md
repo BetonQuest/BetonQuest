@@ -828,8 +828,8 @@ on large servers if used together with the [npc hider interval](./Configuration.
 ProtocolLib also enables a conversation IO that makes use of a chat menu system.
 
 <video controls loop src="../../_media/content/Documentation/Conversations/MenuConvIO.mp4" width="100%">
- Sorry, your browser doesn't support embedded videos.
- </video>
+  Sorry, your browser doesn't support embedded videos.
+</video>
 
 Customize how it looks by adding the following lines:
 

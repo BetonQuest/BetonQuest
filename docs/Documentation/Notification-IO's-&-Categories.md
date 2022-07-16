@@ -6,11 +6,9 @@ icon: material/party-popper
 A NotifyIO is a method of displaying a notification to the player. Here's a demo video showing an example configuration
 of all NotifyIO's.
 
-<div style="text-align: center">
- <video controls loop src="../../_media/content/Documentation/Notifications/NotifySystemOverview.mp4" width="100%">
- Sorry, your browser doesn't support embedded videos.
- </video>
-</div>
+<video controls loop src="../../_media/content/Documentation/Notifications/NotifySystemOverview.mp4" width="100%">
+  Sorry, your browser doesn't support embedded videos.
+</video>
 
 Most NotifyIO's have unique settings that somehow change how a notification is displayed.    
 **Additionally, they all allow any setting from the SoundIO to be used!**
@@ -109,11 +107,9 @@ Shows a totem with a "customModelData" NBT tag. This allows you to replace the t
 during the animation.
 
 ??? info "Preview"
-    <div style="text-align: center">
-        <video controls loop src="../../_media/content/Documentation/Notifications/TotemIO.mp4" width="100%">
-        Sorry, your browser doesn't support embedded videos.
+    <video controls loop src="../../_media/content/Documentation/Notifications/TotemIO.mp4" width="100%">
+      Sorry, your browser doesn't support embedded videos.
     </video>
-    </div>
 
 | Option | Description |
 |--------|-------------|
@@ -183,11 +179,9 @@ Here is a small example:
     🔴  = the actual location the sound is played at    
     *soundplayeroffset = (0,0,5)*
 
-    <div style="text-align: center">
     <video controls loop src="../../_media/content/Documentation/Notifications/RelativeVectorExample.mp4" width="100%">
-    Sorry, your browser doesn't support embedded videos.
+      Sorry, your browser doesn't support embedded videos.
     </video>
-    </div>
     The sound is always played 5 block away from the soundlocation. The direction is however based on where the player is looking.
 
 ### Suppress
