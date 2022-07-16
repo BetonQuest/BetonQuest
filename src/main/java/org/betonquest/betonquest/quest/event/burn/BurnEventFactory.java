@@ -43,7 +43,7 @@ public class BurnEventFactory implements EventFactory {
 
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
-        final VariableNumber duration = instruction.getVarNum();
+        final VariableNumber duration = instruction.getVarNum(instruction.getOptional("duration"));
         return new PrimaryServerThreadEvent(
                 new OnlinePlayerRequiredEvent(
                         new BurnEvent(duration), instruction.getPackage()),

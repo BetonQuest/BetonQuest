@@ -650,12 +650,12 @@ Gives the specified amount of experience points to the player. You can give whol
     ```
 ## Burn: `burn`
 
-| Parameter  | Syntax     | Default Value               | Explanation                                                        |
-|------------|------------|-----------------------------|--------------------------------------------------------------------|
-| _duration_ | `number`   | :octicons-x-circle-16:      | The duration the player will burn (in seconds). Can be a variable. |
+| Parameter  | Syntax            | Default Value               | Explanation                                                        |
+|------------|-------------------|-----------------------------|--------------------------------------------------------------------|
+| _duration_ | `duration:number` | :octicons-x-circle-16:      | The duration the player will burn (in seconds). Can be a variable. |
 
 ```YAML title="Example"
 events:
-  burn: "burn 4"
-  punishing_fire: "burn %point.punishment.amount%"
+  burn: "burn duration:4"
+  punishing_fire: "burn duration:%point.punishment.amount%"
 ```
