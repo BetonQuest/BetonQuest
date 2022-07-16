@@ -4,6 +4,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.utils.Utils;
 
 /**
  * Checks if the player is in a conversation or, if specified, in the specified conversation
@@ -22,7 +23,8 @@ public class InConversationCondition extends Condition {
      */
     public InConversationCondition(final Instruction instruction) {
         super(instruction, false);
-        this.conversationID = instruction.getOptional("conversation");
+        final String rawConversationID = instruction.getOptional("conversation");
+        this.conversationID = rawConversationID == null ? null : Utils.addPackage(instruction.getPackage(), rawConversationID);
     }
 
     @Override

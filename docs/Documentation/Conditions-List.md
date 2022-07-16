@@ -212,16 +212,17 @@ This condition requires the player to be _below_ specific Y height. The required
     ```
     
 ## In Conversation: `inconversation`
-| Parameter      | Syntax                | Default Value            | Explanation                                                                                                               |
-|----------------|-----------------------|--------------------------|---------------------------------------------------------------------------------------------------------------------------|
-| _conversation_ | `conversation:Name`   | :octicons-x-circle-16:   | Checks, if the player is in a conversation. <br>If a conversation is specified, it will only check for this conversation. |
 
-This condition checks, if the player is a conversation. If specified you can check for a specific conversation.
+This condition checks, if the player is in a conversation.
+
+| Parameter      | Syntax              | Default Value            | Explanation                                                                                          |
+|----------------|---------------------|--------------------------|------------------------------------------------------------------------------------------------------|
+| _conversation_ | `conversation:name` | :octicons-x-circle-16:   | Optional name of the conversation. Is specified, it will check only for the specific conversation.   |
 
 ```YAML title="Example"
 conditions:
   isInConversation: "inconversation"
-  talksToInnkeeper: "inconversation conversation:default.innkeeper"
+  talksToInnkeeper: "inconversation conversation:innkeeper"
 ```
 
 ## Item in Inventory: `item`
