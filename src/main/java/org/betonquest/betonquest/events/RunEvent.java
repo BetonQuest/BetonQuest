@@ -64,7 +64,7 @@ public class RunEvent extends QuestEvent {
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
         for (final QuestEvent event : internalEvents) {
-            event.handle(playerID);
+            event.fire(playerID);
         }
         return null;
     }

@@ -157,6 +157,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - `interact` objective - did not work with armorstands
     - `action` objective - for `any` block ignored location
     - `weather` event - storm did not work
+    - `run` event - NPE when run as static event / schedule
 ### Security
 - it was possible to put a QuestItem into a chest
 - bump log4j dependency 2.15.0 to fix CVE-2021-44228
