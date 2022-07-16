@@ -13,6 +13,7 @@ extra_css:
   - '_webCode/css/centered.css'
   - '_webCode/css/contentAreaFullWidth.css'
   - '_webCode/css/coloredIcons.css'
+  - '_webCode/css/ExternalLinkIcon.css'
 
 extra_javascript:
   - '_webCode/js/copyLinkToClipboard.js'
