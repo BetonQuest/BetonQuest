@@ -69,11 +69,9 @@ thead span {
 }
 </style>
 
-<div style="text-align: center;">
-  <video loop controls poster="_media/content/Home/OverviewVideoPreview.jpg" src="_media/content/Home/Features/Trailer.mp4" width="100%" style="box-shadow: 0px 0px 30px black;">
-    Sorry, your browser doesn't support embedded videos.
-  </video>
-</div>
+<video controls loop src="_media/content/Home/Features/Trailer.mp4" poster="_media/content/Home/OverviewVideoPreview.jpg" style="box-shadow: 0px 0px 30px black;" width="100%">
+  Sorry, your browser doesn't support embedded videos.
+</video>
 
 ## What server owners say
 
@@ -210,9 +208,8 @@ Please let us know if there is any outdated information.
 ## Beautiful multi-path Conversations
 
 !!! example inline end bq-inline-example-container note ""
-    <video controls loop src="_media/content/Documentation/Conversations/MenuConvIO.mp4"
-    width="100%">
-    Sorry, your browser doesn't support embedded videos.
+    <video controls loop src="_media/content/Documentation/Conversations/MenuConvIO.mp4" width="100%">
+      Sorry, your browser doesn't support embedded videos.
     </video>
 
 Players can have immersive conversation with NPC's by utilizing BetonQuests Multi-Path-Conversation System. Questers can
@@ -231,9 +228,8 @@ See the full list of integrations [here](Documentation/Compatibility.md).
 ## Custom Notification System
 
 !!! example inline end bq-inline-example-container note ""
-    <video controls loop src="_media/content/Documentation/Notifications/NotifySystemOverview.mp4"
-    width="100%">
-    Sorry, your browser doesn't support embedded videos.
+    <video controls loop src="_media/content/Documentation/Notifications/NotifySystemOverview.mp4" width="100%">
+      Sorry, your browser doesn't support embedded videos.
     </video>
 
 * Questers can make use of BetonQuests notifyIO system that provides access to all of Minecafts GUI elements to display
@@ -247,9 +243,8 @@ See the full list of integrations [here](Documentation/Compatibility.md).
 
 ## Player, NPC and Hologram Hider
 !!! example inline end bq-inline-example-container note ""
-    <video controls loop src="_media/content/Documentation/Compatibility/PlayerHider.mp4"
-    width="100%">
-    Sorry, your browser doesn't support embedded videos.
+    <video controls loop src="_media/content/Documentation/Compatibility/PlayerHider.mp4" width="100%">
+      Sorry, your browser doesn't support embedded videos.
     </video>
 
 BetonQuest allows you to hide players from each other based on conditions. This can be used to create story-regions
@@ -270,64 +265,54 @@ Some members even made machines with this quest plugin - that really shows that 
 Take a look at this handpicked selection:
 
 <div class="examples"> 
-    <div>
-      <h3> Wandering Trader by Ley </h3>
-        <video controls loop
-        src="_media/content/Home/Features/WanderingTrader.mp4"
-        width="100%">
-        Sorry, your browser doesn't support embedded videos.
-      </video>
-      The trader appears for a few minutes and then leaves until the next day.
+  <div>
+    <h3> Wandering Trader by Ley </h3>
+    <video controls loop src="_media/content/Home/Features/WanderingTrader.mp4" width="100%">
+      Sorry, your browser doesn't support embedded videos.
+    </video>
+    The trader appears for a few minutes and then leaves until the next day.
   </div>
   <div>
     <h3> Bookshop by Esron </h3>
-      <video controls loop src="_media/content/Home/Features/BookShop.mp4"
-      width="100%">
+    <video controls loop src="_media/content/Home/Features/BookShop.mp4" width="100%">
       Sorry, your browser doesn't support embedded videos.
-      </video>
-      A daily quest with NPC voice acting using OpenAudioMC.
+    </video>
+    A daily quest with NPC voice acting using OpenAudioMC.
   </div>
   <div>
     <h3> Menu by Esron </h3>
-      <video controls loop poster="_media/content/Home/Features/RPGMenuVideoThumbnail.png" src="_media/content/Home/Features/RPGMenu.mp4"
-      width="100%">
+    <video controls loop src="_media/content/Home/Features/RPGMenu.mp4" poster="_media/content/Home/Features/RPGMenuVideoThumbnail.png" width="100%">
       Sorry, your browser doesn't support embedded videos.
-      </video>
-      A server / quest menu made with the menu feature.
+    </video>
+    A server / quest menu made with the menu feature.
   </div>
   <div>
     <h3> Bards by Esron </h3>
-      <video controls loop src="_media/content/Home/Features/Bards.mp4"
-      width="100%">
+    <video controls loop src="_media/content/Home/Features/Bards.mp4" width="100%">
       Sorry, your browser doesn't support embedded videos.
-      </video>
-      A bar setup with musicians and other NPC's. The player can use the conversation system to select a song.  The audio is made with OpenAudioMC. 
+    </video>
+    A bar setup with musicians and other NPC's. The player can use the conversation system to select a song.  The audio is made with OpenAudioMC. 
   </div>
   <div>
     <h3>Water Well by Titanium</h3>
-      <video controls loop src="_media/content/Home/Features/WaterWell.mp4"
-      width="100%">
+    <video controls loop src="_media/content/Home/Features/WaterWell.mp4" width="100%">
       Sorry, your browser doesn't support embedded videos.
-      </video>
-      A functional well as part of a quest.
+    </video>
+    A functional well as part of a quest.
   </div>
   <div>
     <h3> Elevator by Titanium </h3>
-        <video controls loop
-        src="_media/content/Home/Features/Elevator.mp4"
-        width="100%">
-        Sorry, your browser doesn't support embedded videos.
-      </video>
+    <video controls loop src="_media/content/Home/Features/Elevator.mp4" width="100%">
+      Sorry, your browser doesn't support embedded videos.
+    </video>
     A functional elevator.
   </div>
   <div>
-      <h3> Corpse Quest by Titanium </h3>
-          <video controls loop
-          src="_media/content/Home/Features/Corpse.mp4"
-          width="100%">
-          Sorry, your browser doesn't support embedded videos.
-        </video>
-      The player needs to collect corpses.
+    <h3> Corpse Quest by Titanium </h3>
+    <video controls loop src="_media/content/Home/Features/Corpse.mp4" width="100%">
+      Sorry, your browser doesn't support embedded videos.
+    </video>
+    The player needs to collect corpses.
   </div>
 </div>
 
