@@ -52,6 +52,7 @@ import org.betonquest.betonquest.conditions.GlobalTagCondition;
 import org.betonquest.betonquest.conditions.HandCondition;
 import org.betonquest.betonquest.conditions.HealthCondition;
 import org.betonquest.betonquest.conditions.HeightCondition;
+import org.betonquest.betonquest.conditions.InConversationCondition;
 import org.betonquest.betonquest.conditions.ItemCondition;
 import org.betonquest.betonquest.conditions.JournalCondition;
 import org.betonquest.betonquest.conditions.LocationCondition;
@@ -775,6 +776,7 @@ public class BetonQuest extends JavaPlugin {
         registerConditions("mooncycle", MooncycleCondition.class);
         registerConditions("fly", FlyingCondition.class);
         registerConditions("burning", BurningCondition.class);
+        registerConditions("inconversation", InConversationCondition.class);
 
         // register events
         registerEvents("objective", ObjectiveEvent.class);
