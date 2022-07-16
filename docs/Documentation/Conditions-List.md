@@ -215,9 +215,9 @@ This condition requires the player to be _below_ specific Y height. The required
 
 This condition checks, if the player is in a conversation.
 
-| Parameter      | Syntax              | Default Value            | Explanation                                                                                          |
-|----------------|---------------------|--------------------------|------------------------------------------------------------------------------------------------------|
-| _conversation_ | `conversation:name` | :octicons-x-circle-16:   | Optional name of the conversation. Is specified, it will check only for the specific conversation.   |
+| Parameter      | Syntax              | Default Value            | Explanation                                                                                        |
+|----------------|---------------------|--------------------------|----------------------------------------------------------------------------------------------------|
+| _conversation_ | `conversation:name` | :octicons-x-circle-16:   | Optional name of the conversation. If specified, it will check only for the specific conversation. |
 
 ```YAML title="Example"
 conditions:

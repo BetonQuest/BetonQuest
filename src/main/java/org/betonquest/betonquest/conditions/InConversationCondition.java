@@ -30,9 +30,6 @@ public class InConversationCondition extends Condition {
     @Override
     protected Boolean execute(final String playerID) throws QuestRuntimeException {
         final Conversation conversation = Conversation.getConversation(playerID);
-        if (conversation != null) {
-            return conversationID == null || conversation.getID().equals(conversationID);
-        }
-        return false;
+        return conversation != null && (conversationID == null || conversation.getID().equals(conversationID));
     }
 }
