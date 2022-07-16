@@ -34,6 +34,7 @@ import org.betonquest.betonquest.conditions.AlternativeCondition;
 import org.betonquest.betonquest.conditions.ArmorCondition;
 import org.betonquest.betonquest.conditions.ArmorRatingCondition;
 import org.betonquest.betonquest.conditions.BiomeCondition;
+import org.betonquest.betonquest.conditions.BurningCondition;
 import org.betonquest.betonquest.conditions.CheckCondition;
 import org.betonquest.betonquest.conditions.ChestItemCondition;
 import org.betonquest.betonquest.conditions.ConjunctionCondition;
@@ -773,6 +774,7 @@ public class BetonQuest extends JavaPlugin {
         registerConditions("conversation", ConversationCondition.class);
         registerConditions("mooncycle", MooncycleCondition.class);
         registerConditions("fly", FlyingCondition.class);
+        registerConditions("burning", BurningCondition.class);
 
         // register events
         registerEvents("objective", ObjectiveEvent.class);

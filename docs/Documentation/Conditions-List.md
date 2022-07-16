@@ -40,7 +40,14 @@ This condition will check if the player is in specified biome. The only argument
     ```YAML
     biome savanna_rock
     ```
+## Burning: `burning`
 
+This condition will check if the player is on fire.
+
+!!! example
+    ```YAML
+    burning
+    ```
 ## Check conditions: `check`
 
 This condition allow for specifying multiple instruction strings in one, longer string. Each instruction must be started with `^` character and no other dividers should be used. The condition will be met if all inner conditions are met. It's not the same as `and` condition, because you can specify an instruction string, not a condition name.
