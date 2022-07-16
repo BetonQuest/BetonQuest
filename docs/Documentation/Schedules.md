@@ -109,8 +109,8 @@ The supported syntax is identical to the original unix crontab syntax.
     schedules:
       sayGoodNight: #(1)!
         type: realtime-cron #(2)!
-          time: '0 22 * * *' #(3)!
-          events: bell_ring,notify_goodNight #(4)!
+        time: '0 22 * * *' #(3)!
+        events: bell_ring,notify_goodNight #(4)!
     ```
 
     1.  The name of the schedule.
