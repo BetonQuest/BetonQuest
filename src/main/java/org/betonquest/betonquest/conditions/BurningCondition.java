@@ -8,9 +8,13 @@ import org.betonquest.betonquest.utils.PlayerConverter;
 /**
  * Requires the player to burn
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class BurningCondition extends Condition {
 
+    /**
+     * Constructor of the BurningCondition
+     *
+     * @param instruction the instruction
+     */
     public BurningCondition(final Instruction instruction) {
         super(instruction, true);
     }
