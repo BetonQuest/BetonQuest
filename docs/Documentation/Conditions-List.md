@@ -40,6 +40,15 @@ This condition will check if the player is in specified biome. The only argument
     ```YAML
     biome savanna_rock
     ```
+    
+## Burning: `burning`
+
+This condition will check if the player is on fire.
+
+```YAML title="Example"
+conditions:
+  isOnFire: "burning"
+```
 
 ## Check conditions: `check`
 
