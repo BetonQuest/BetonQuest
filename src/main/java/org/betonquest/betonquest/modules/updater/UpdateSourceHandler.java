@@ -2,6 +2,7 @@ package org.betonquest.betonquest.modules.updater;
 
 import lombok.CustomLog;
 import org.apache.commons.lang3.tuple.Pair;
+import org.betonquest.betonquest.api.annotation.VisibleForTesting;
 import org.betonquest.betonquest.modules.updater.source.DevelopmentUpdateSource;
 import org.betonquest.betonquest.modules.updater.source.ReleaseUpdateSource;
 import org.betonquest.betonquest.modules.updater.source.UpdateSource;
@@ -54,7 +55,8 @@ public class UpdateSourceHandler {
      * @param devIndicator The version qualifier for a dev build
      * @return a par of the latest version and the corresponding download url
      */
-    /* package */ Pair<Version, String> searchUpdate(final UpdaterConfig config, final Version current, final String devIndicator) {
+    @VisibleForTesting
+    Pair<Version, String> searchUpdate(final UpdaterConfig config, final Version current, final String devIndicator) {
         final VersionComparator comparator = new VersionComparator(config.getStrategy(), devIndicator + "-");
         Pair<Version, String> latest = Pair.of(current, null);
         try {

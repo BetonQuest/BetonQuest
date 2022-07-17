@@ -83,6 +83,7 @@
   <rule ref="category/java/codestyle.xml/ClassNamingConventions"/>
   <rule ref="category/java/codestyle.xml/CommentDefaultAccessModifier">
     <properties>
+      <property name="ignoredAnnotations" value="org.betonquest.betonquest.api.annotation.VisibleForTesting"/>
       <property name="violationSuppressXPath" value="//ClassOrInterfaceDeclaration[matches(@Image, '^.*Test$')]"/>
     </properties>
   </rule>
