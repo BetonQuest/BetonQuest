@@ -171,7 +171,7 @@ In addition you can also assign items to a rectangle of slots. Just like with th
 Here is a example:
 `14*25: 'quest1,quest2,quest3'`
 
-![rectangle-example](https://cdn.discordapp.com/attachments/420985429840625676/430808651545182208/Unbenannt.png)
+![RectangleExample](../_media/content/Documentation/Menu/RectangleExample.png)
 
 ### An example for a `slots` section:
 
@@ -184,7 +184,7 @@ slots:
 # Example menu
 
 **How the menu looks ingame:**  
-![image](https://cdn.discordapp.com/attachments/420985429840625676/424927791948234772/giphy.gif)
+![ExampleMenu](../_media/content/Documentation/Menu/ExampleMenu.gif)
 
 ``` YAML
 height: 3
