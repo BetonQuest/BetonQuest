@@ -40,7 +40,7 @@ Now add a new repository with the name `upstream` and the url `https://github.co
 
 ## IntelliJ settings
 Formatting for .md (Markdown) files can break some features of
-<a href="https://squidfunk.github.io/mkdocs-material/" target="_blank">Material for MkDocs</a>, so we disable it for these files.
+[Material for MkDocs](https://squidfunk.github.io/mkdocs-material), so we disable it for these files.
 Go to `File/Settings/Editor/Code Style` then go to the `Formatter` tab and add `*.md` to the `Do not format:` field.
 
 In `File/Settings/Editor/Code Style/Java` navigate to the `Imports` tab.
@@ -118,7 +118,7 @@ You also need to install [GTK](https://www.gtk.org/), the easiest way is to use 
 
 Install all other dependencies by entering `pip install -r config/docs-requirements.txt` in the terminal on the project's root directory.
 
-??? "In case you are a <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank">Material for MkDocs</a> insider (paid premium version)"  
+??? "In case you are a [Material for MkDocs](https://squidfunk.github.io/mkdocs-material) insider (paid premium version)"  
     Set your license key by executing `setx MKDOCS_MATERIAL_INSIDERS LICENSE_KEY_HERE /M` (Windows) in the terminal.
     Now you need to restart IntelliJ for the changes to take effect. 
     Then run `pip install -r config/docs-requirements-insiders.txt` instead of `docs-requirements.txt`.
