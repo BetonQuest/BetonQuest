@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.modules.schedule.LastExecutionCache;
 import org.betonquest.betonquest.modules.schedule.impl.ExecutorServiceScheduler;
-import org.bukkit.plugin.Plugin;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -32,11 +31,10 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
     /**
      * Create a new simple scheduler and pass BetonQuest instance to it.
      *
-     * @param plugin             plugin used for bukkit scheduling, should be BetonQuest instance!
      * @param lastExecutionCache cache where the last execution times of a schedule are stored
      */
-    public RealtimeDailyScheduler(final Plugin plugin, final LastExecutionCache lastExecutionCache) {
-        super(plugin);
+    public RealtimeDailyScheduler(final LastExecutionCache lastExecutionCache) {
+        super();
         this.lastExecutionCache = lastExecutionCache;
     }
 
@@ -57,16 +55,14 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
         final List<RealtimeDailySchedule> missedSchedules = listMissedSchedules();
         LOG.debug("Found " + missedSchedules.size() + " missed schedule runs that will be caught up.");
         if (!missedSchedules.isEmpty()) {
-            plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-                LOG.debug("Running missed schedules to catch up...");
-                for (final RealtimeDailySchedule schedule : missedSchedules) {
-                    lastExecutionCache.cacheExecutionTime(schedule.getId(), Instant.now());
-                    LOG.debug(schedule.getId().getPackage(), "Schedule '" + schedule + "' runs its events.");
-                    for (final EventID event : schedule.getEvents()) {
-                        BetonQuest.event(null, event);
-                    }
+            LOG.debug("Running missed schedules to catch up...");
+            for (final RealtimeDailySchedule schedule : missedSchedules) {
+                lastExecutionCache.cacheExecutionTime(schedule.getId(), Instant.now());
+                LOG.debug(schedule.getId().getPackage(), "Schedule '" + schedule + "' runs its events.");
+                for (final EventID event : schedule.getEvents()) {
+                    BetonQuest.event(null, event);
                 }
-            }, 1L);
+            }
         }
     }
 
