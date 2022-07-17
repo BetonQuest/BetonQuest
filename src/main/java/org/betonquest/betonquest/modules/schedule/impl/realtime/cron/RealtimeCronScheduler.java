@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.schedule.CronSchedule;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.modules.schedule.LastExecutionCache;
 import org.betonquest.betonquest.modules.schedule.impl.ExecutorServiceScheduler;
-import org.bukkit.plugin.Plugin;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -39,11 +38,10 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
     /**
      * Create a new realtime scheduler and pass BetonQuest instance to it.
      *
-     * @param plugin             plugin used for bukkit scheduling, should be BetonQuest instance!
      * @param lastExecutionCache cache where the last execution times of a schedule are stored
      */
-    public RealtimeCronScheduler(final Plugin plugin, final LastExecutionCache lastExecutionCache) {
-        super(plugin);
+    public RealtimeCronScheduler(final LastExecutionCache lastExecutionCache) {
+        super();
         this.lastExecutionCache = lastExecutionCache;
     }
 
@@ -68,12 +66,12 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
                 .filter(CronSchedule::shouldRunOnReboot).toList();
         LOG.debug("Found " + rebootSchedules.size() + " reboot schedules. They will be run on next server tick.");
         if (!rebootSchedules.isEmpty()) {
-            plugin.getServer().getScheduler().runTaskLater(plugin, () -> rebootSchedules.forEach(schedule -> {
+            rebootSchedules.forEach(schedule -> {
                 LOG.debug(schedule.getId().getPackage(), "Schedule " + schedule.getId() + " runs its events...");
                 for (final EventID eventID : schedule.getEvents()) {
                     BetonQuest.event(null, eventID);
                 }
-            }), 1L);
+            });
         }
     }
 
@@ -85,16 +83,14 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
         final List<RealtimeCronSchedule> missedSchedules = listMissedSchedules();
         LOG.debug("Found " + missedSchedules.size() + " missed schedule runs that will be caught up.");
         if (!missedSchedules.isEmpty()) {
-            plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-                LOG.debug("Running missed schedules to catch up...");
-                for (final RealtimeCronSchedule missed : missedSchedules) {
-                    lastExecutionCache.cacheExecutionTime(missed.getId(), Instant.now());
-                    LOG.debug(missed.getId().getPackage(), "Schedule '" + missed.getId() + "' runs its events...");
-                    for (final EventID eventID : missed.getEvents()) {
-                        BetonQuest.event(null, eventID);
-                    }
+            LOG.debug("Running missed schedules to catch up...");
+            for (final RealtimeCronSchedule missed : missedSchedules) {
+                lastExecutionCache.cacheExecutionTime(missed.getId(), Instant.now());
+                LOG.debug(missed.getId().getPackage(), "Schedule '" + missed.getId() + "' runs its events...");
+                for (final EventID eventID : missed.getEvents()) {
+                    BetonQuest.event(null, eventID);
                 }
-            }, 1L);
+            }
         }
     }
 
