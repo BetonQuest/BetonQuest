@@ -4,6 +4,7 @@ import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -18,9 +19,20 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @ExtendWith(BetonQuestLoggerService.class)
 class PatcherTest {
-    final YamlConfiguration config = YamlConfiguration.loadConfiguration(new File("src/test/resources/modules.config/config.yml"));
+
+    /**
+     * The patch file for this test.
+     */
     final YamlConfiguration patch = YamlConfiguration.loadConfiguration(new File("src/test/resources/modules.config/config.patch.yml"));
-    final YamlConfiguration invalidPatch = YamlConfiguration.loadConfiguration(new File("src/test/resources/modules.config/config.invalidPatch.yml"));
+    /**
+     * The config that will be patched.
+     */
+    YamlConfiguration config;
+
+    @BeforeEach
+    void cleanConfig() {
+        config = YamlConfiguration.loadConfiguration(new File("src/test/resources/modules.config/config.yml"));
+    }
 
     @Test
     void testHasUpdate() throws InvalidConfigurationException {
@@ -29,18 +41,36 @@ class PatcherTest {
 
         final Patcher patcher = new Patcher(config, patch);
         assertTrue(patcher.hasUpdate(), "Patcher did not recognise the possible update.");
-
-        final YamlConfiguration configFromTheFuture = new YamlConfiguration();
-        configFromTheFuture.loadFromString("configVersion: \"6.2.3-CONFIG-12\"");
-
-        final Patcher anotherPatcher = new Patcher(configFromTheFuture, patch);
-        assertFalse(anotherPatcher.hasUpdate(), "Patcher recognised invalid possible updates.");
-
-        assertEquals(configBeforeTest.saveToString(), config.saveToString());
+        assertEquals(configBeforeTest.saveToString(), config.saveToString(), "The patcher must only patch when patcher.patch() is called.");
     }
 
     @Test
-    void appliesUpdates() throws InvalidConfigurationException {
+    void testHasNoUpdateForNewerConfigs() throws InvalidConfigurationException {
+        final YamlConfiguration configFromTheFuture = new YamlConfiguration();
+        configFromTheFuture.loadFromString("""
+                configVersion: 6.2.3-CONFIG-12
+                journalLock: false
+                """);
+
+        final YamlConfiguration patch = new YamlConfiguration();
+        patch.loadFromString("""
+                "2.0.0.1":
+                  - type: SET
+                    key: journalLock
+                    value: true
+                """)
+        ;
+        final Patcher anotherPatcher = new Patcher(configFromTheFuture, patch);
+        assertFalse(anotherPatcher.hasUpdate(), "Patcher recognised patches from outdated versions as possible updates.");
+
+        assertEquals(configFromTheFuture.saveToString(), """
+                configVersion: 6.2.3-CONFIG-12
+                journalLock: false
+                """, "The patcher must only patch when patcher.patch() is called.");
+    }
+
+    @Test
+    void testAppliesUpdates() throws InvalidConfigurationException {
         final YamlConfiguration expectedConfig = new YamlConfiguration();
         expectedConfig.loadFromString(config.saveToString());
 
@@ -59,13 +89,68 @@ class PatcherTest {
         expectedConfig.set("section.testKey", "newTest");
         expectedConfig.set("additionalVal", "42");
 
-        assertEquals(expectedConfig.saveToString(), config.saveToString());
+        assertEquals(expectedConfig.saveToString(), config.saveToString(), "The patcher must only patch when patcher.patch() is called.");
 
     }
 
+
     @Test
-    void generatesErrors(final LogValidator validator) {
-        final Patcher patcher = new Patcher(config, invalidPatch);
-        validator.assertLogEntry(Level.SEVERE, "Invalid patch file! A version number is too short.");
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    void testPatchVersionNumberTooShort(final LogValidator validator) throws InvalidConfigurationException {
+        final String patch = """
+                "1.0":
+                  - type: SET
+                    key: journalLock
+                    value: true
+                """;
+        final var invalidConfig = new YamlConfiguration();
+        invalidConfig.loadFromString(patch);
+
+        new Patcher(config, invalidConfig);
+        validator.assertLogEntry(Level.SEVERE, "Invalid patch file! A version number is too short or too long.");
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    void testPatchMalformed(final LogValidator validator) throws InvalidConfigurationException {
+        final String patch = """
+                "1.0": Nonsense
+                """;
+        final var invalidConfig = new YamlConfiguration();
+        invalidConfig.loadFromString(patch);
+
+        new Patcher(config, invalidConfig);
+        validator.assertLogEntry(Level.SEVERE, "Invalid patch file! The patch is malformed.");
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    void testPatchIsNonsense(final LogValidator validator) throws InvalidConfigurationException {
+        final String patch = """
+                1:
+                  - Nonsense
+                """;
+        final var invalidConfig = new YamlConfiguration();
+        invalidConfig.loadFromString(patch);
+
+        new Patcher(config, invalidConfig);
+        validator.assertLogEntry(Level.SEVERE, "Invalid patch file! A version number is too short or too long.");
+    }
+
+    @Test
+    void testUnknownTransformerType(final LogValidator validator) throws InvalidConfigurationException {
+        final String patch = """
+                3.4.5.6:
+                  - type: INVALID
+                    key: journalLock
+                    value: megaTrue
+                """;
+        final var invalidConfig = new YamlConfiguration();
+        invalidConfig.loadFromString(patch);
+        final var patcher = new Patcher(config, invalidConfig);
+        final boolean patchNoError = patcher.patch();
+        assertFalse(patchNoError, "Patcher says there were no problems although there were.");
+        validator.assertLogEntry(Level.INFO, "Applying patches to update to '3.4.5.6'...");
+        validator.assertLogEntry(Level.WARNING, "There has been an issue while applying the patches for '3.4.5.6': Unknown transformation type 'INVALID' used!");
     }
 }

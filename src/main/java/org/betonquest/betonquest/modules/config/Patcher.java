@@ -80,7 +80,7 @@ public class Patcher {
         try {
             buildVersionIndex(this.patchConfig, "");
         } catch (final InvalidConfigurationException e) {
-            LOG.error("Invalid patch file! A version number is too short.", e);
+            LOG.error("Invalid patch file! " + e.getMessage(), e);
         }
         registerDefaultTransformers();
     }
@@ -94,7 +94,7 @@ public class Patcher {
         return !patchableVersions.isEmpty();
     }
 
-
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     private void buildVersionIndex(final ConfigurationSection section, final String previousKeys) throws InvalidConfigurationException {
         for (final String key : section.getKeys(false)) {
             final String currentKey = "".equals(previousKeys) ? key : previousKeys + "." + key;
@@ -102,12 +102,14 @@ public class Patcher {
             if (section.getList(key) == null) {
                 final ConfigurationSection nestedSection = section.getConfigurationSection(key);
                 if (nestedSection == null) {
-                    throw new InvalidConfigurationException("Invalid patch file! A version number is too short.");
+                    throw new InvalidConfigurationException("The patch is malformed.");
                 } else {
                     buildVersionIndex(nestedSection, currentKey);
                 }
-            } else {
+            } else if (currentKey.split("\\.").length == 4) {
                 collectVersion(currentKey);
+            } else {
+                throw new InvalidConfigurationException("A version number is too short or too long.");
             }
         }
     }
@@ -129,15 +131,15 @@ public class Patcher {
      * @return whether the patch could be applied successfully
      */
     public boolean patch() {
-        boolean encounteredErrors = false;
+        boolean noErrors = true;
         for (final String key : patchableVersions.values()) {
             LOG.info("Applying patches to update to '" + key + "'...");
-            if (applyPatch(key)) {
-                encounteredErrors = true;
+            if (!applyPatch(key)) {
+                noErrors = false;
             }
             pluginConfig.set("configVersion", getNewVersion(key));
         }
-        return encounteredErrors;
+        return noErrors;
     }
 
     private String getNewVersion(final String key) {
@@ -147,10 +149,16 @@ public class Patcher {
         return first + "-CONFIG-" + second;
     }
 
+    /**
+     * Applies the patches from the given patchDataPath.
+     *
+     * @param patchDataPath the path to the patches to apply
+     * @return whether the patches were applied successfully
+     */
     private boolean applyPatch(final String patchDataPath) {
         final var patchData = patchConfig.getMapList(patchDataPath);
 
-        boolean hasEncounteredProblems = false;
+        boolean noErrors = true;
         for (final Map<?, ?> transformationData : patchData) {
             final Map<String, String> typeSafeTransformationData = new HashMap<>();
             transformationData.forEach((key, value) -> typeSafeTransformationData.put(String.valueOf(key), String.valueOf(value)));
@@ -159,11 +167,11 @@ public class Patcher {
             try {
                 applyTransformation(typeSafeTransformationData, transformationType);
             } catch (final PatchException e) {
-                hasEncounteredProblems = true;
+                noErrors = false;
                 LOG.warn("There has been an issue while applying the patches for '" + patchDataPath + "': " + e.getMessage());
             }
         }
-        return hasEncounteredProblems;
+        return noErrors;
     }
 
     private void applyTransformation(final Map<String, String> transformationData, final String transformationType) throws PatchException {
