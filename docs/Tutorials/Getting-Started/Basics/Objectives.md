@@ -3,11 +3,10 @@ icon: fontawesome/solid/play
 tags:
 - Objectives
 ---
-In the last part of the basics tutorials, you've learned how to write your own events
-and how to test them on the server directly without any conversation as well as built
-in a conversation.
-In this part you will learn how to create your very first objectives and how to test
-them as well as triggering this objective with an event in a conversation.
+You have learned how to create your own events, test them on the server directly without a conversation, 
+and integrate an event into your own conversations.
+This section will teach you how to construct your first objectives, how to test them, and how to 
+activate this objective with an event in a conversation.
 
 <div class="grid" markdown>
 !!! danger "Requirements"
@@ -45,7 +44,7 @@ We now have our file structure ready and can start writing objectives and a new 
 
 ## 2. Defining your first objective
 
-To define your first objective open the new created file `objectives.yml` and add the following text to it.
+To define your first objective open the new created file "_objectives.yml_" and add the following text to it.
 
 ``` YAML title="objectives.yml" linenums="1"
 objectives: # (1)!
@@ -58,19 +57,37 @@ Let me explain this to you:
 
 * `fishingObj`  is the name of the objective. You can choose any name you want. However, it is  recommended to name
   it after what it does. That just makes it easier to understand your quest.
-*  The Objective Instruction.
-  - `fish` The first value in the instruction is always the **objective type**.
-  - `cod 10` This is an **option** of the objective `fish`. It defines which item you have to fish and which amount
-    seperated by a space.
+  * The Objective Instruction.
+    - `fish` The first value in the instruction is always the **objective type**.
+    - `cod 10` This is an **option** of the objective `fish`. It defines which item you have to fish and which amount
+      seperated by a space.
 
 As we learned in the previous tutorial we have to define `cod` in the item section because BetonQuest don't know what `cod` is.
 
-## 3. Creating the item in the items section
+## 3. Testing your first objective ingame
+
+You can also add objectives to a player using commands.
+
+The easiest way to do this is by running a command:
+
+Enter `/bq objective NAME tutorialQuest.fishObj` on the server.
+This command will add's the objective to the player to fish 10 cod.
+
+| Command Part    | Meaning                                                                                                                               |
+|-----------------|---------------------------------------------------------------------------------------------------------------------------------------|
+| `/bq event`     | Tells BetonQuest that some event should be executed.                                                                                  |
+| `NAME`          | A player's name.                                                                                                                      |
+| `tutorialQuest` | The name of a QuestPackage. This is required because you could have events with the same name in different packages.                  |
+| `fishObj`       | The name of the objective to execute. Don't forget to separate it with a dot from the package `tutorialQuest{==.==}giveFoodToPlayer`. |
+
+You can also run the `/bq objective NAME` to check what objectives a player has.
+
+## 4. Creating the item in the items section
 
 We already know that it's crucial to include an item to the `items` section for specific objective kinds, like `fish`.
 To add the item to the list, let's reopen the "_package.yml_" file.
 
-``` YAML title="package.yml" hl_lines="4-5" linenums="1"
+``` YAML title="package.yml" hl_lines="6" linenums="1"
 npcs:
   '1': "Jack"
 
@@ -83,26 +100,93 @@ items:
 
 Now, `cod` is a defined item that can be utilized throughout the entire quest.
 
-## 4. Integrating objectives into conversations
+## 5. Integrating objectives into conversations
 
-Let's run the event from your conversation.
+Let's run the event from your conversation. In this case we will add some more smalltalk conversation.
+In our example we arrived at the end of the city tour so we need a new npc for that.
+Let's work with the new created file named "_blacksmith.yml_" in the conversation folder.
+You should now already know how to create the npc in
+"_package.yml_". If not, repeat the further tutorials!
 
-!!! question ""
-    **Tip:** Highlighted lines in {==blue==} are new compared with the previous example.
 
-``` YAML title="jack.yml" hl_lines="9-10 13-14" linenums="1" 
+``` YAML title="blacksmith.yml" linenums="1" 
 conversations:
-  Jack:
-    quester: "Jack"
-    first: "firstGreeting"
+  Blacksmith:
+    quester: Blacksmith
+    first: firstGreeting
     NPC_options:
-      #... (1)
-      
+      firstGreeting:
+        text: Welcome %player% in Valencia! The mayor already told me that you are new to our town.
+        pointer: thatsRight
+      newArmorForNewCitizens:
+        text: So every new citizens in our town will get a new armour from me but you have to do something for me in order to get this really nice upgrade!
+        pointer: whatToDo
+      collectFish:
+        text: You will have to fish 10 fresh cod for me and bring them to me. After that I will give you the nice new armour! Is that a deal?
+        pointer: accept,deny # (1)!
+      maybeLater:
+        text: No problem! You can comeback later aswell. Bye!
+      goodLuck:
+        text: Good luck and I will see you later!
     player_options:
-      #...
-      
+      thatsRight:
+        text: Yeah thats true. Thank you!
+        pointer: newArmorForNewCitizens
+      whatToDo:
+        text: What can I do for you?
+        pointer: collectFish
+      accept:
+        text: Sure! I could use a new armour.
+        event: startFishingObj # (2)!
+        pointer: goodLuck
+      deny:
+        text: I dont have time right now.
+        pointer: maybeLater
 ```
 
-1. The tutorial will only show relevant parts of the examples from now on.
-2. The event argument must contain one or multiple event names. These events are executed when the corresponding
-   option is shown to the player.<br>This argument can be used on both player and npc options.
+1. The player have the choice to say yes or no.
+2. This is the event to start your actual objective task to fish 10 fresh cod.
+
+!!! warning ""
+    It is very important to save all files everytime you test something!
+    Type `/bq reload` on your server after saving.
+
+We've added the conversation to the new created file and also added a `startFishingObj` event to it.
+This is necessary because you cannot write the objective name into the conversation. It is important to start
+or maybe stop an objective with an event.
+No worries! Open your "_events.yml_" and let me show you how simple this is:
+
+``` YAML title="events.yml" hl_lines="8" linenums="1"
+events:
+  giveFoodToPlayer: "give steak:16"
+  townTour: "folder tpLocation1,tpLocation2,tpLocation3,tpBlacksmith delay:2 period:5"
+  tpLocation1: "teleport 100;70;100;world"
+  tpLocation2: "teleport 200;73;200;world"
+  tpLocation3: "teleport 300;71;300;world"
+  tpBlacksmith: "teleport 50;70;50;world"
+  startFishingObj: "objective start fishingObj" # (1)!
+```
+
+1. This is the event to start the objective for the interacting player.
+
+Now that we have finished this, you can type `/q reload` ingame and talk to the blacksmith npc!
+
+!!! danger ""
+    If something not working. Try to find out what you have done wrong on your own!
+    If you still dont know where the problem is you can simply download our solution.
+
+--8<-- "Tutorials/download-solution.md"
+    ```
+    link goes skrr
+    ```
+
+## Summary
+
+You've learned what objectives are and how to create them. You can now give a player an 
+objective to have a more advanced quest! More objectives can be found in the [objectives list](../../../Documentation/Objectives-List.md).
+In the next turotial you will learn how **conditions** works and how to use them.
+---
+[:construction: :construction_worker: ~~Conditions Tutorial~~ ](#summary){ .md-button .md-button--primary}
+
+This is the end of the current basic tutorial, you can find more information in the [old tutorial](../Learn-BetonQuest.md).
+
