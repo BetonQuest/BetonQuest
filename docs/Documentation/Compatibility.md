@@ -297,7 +297,7 @@ be displayed to the player for which you ran the event.
       playEffect: particle beton loc:100;200;300;world;180;-90 private
     ```
 
-## [Heroes](https://www.spigotmc.org/resources/%E2%9A%94-heroes-premium-%E2%9A%94-10-off-best-rpg-plugin-ever.24734/)
+## [Heroes](https://www.spigotmc.org/resources/24734/)
 
 When you install Heroes, all kills done via this plugin's skills will be counted in MobKill objectives.
 
@@ -314,7 +314,7 @@ This condition checks the classes of the player. The first argument must be `pri
 
 #### Heroes Attribute: `heroesattribute`
 
-This condition checks if the player's attribute of the specified type meets the specified level requirement. The first argument is the name of the attribute, the second argument is the minimum required level of said attribute.
+This condition check's the level of a player's attribute. The first argument must be `strength`, `constitution`, `endurance`, `dexterity`, `intellect`, `wisdom`, or `charisma`. Second argument is the required level of the attribute.
 
 !!! example
     ```YAML
