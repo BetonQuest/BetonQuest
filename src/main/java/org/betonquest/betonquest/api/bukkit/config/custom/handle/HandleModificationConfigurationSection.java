@@ -42,13 +42,13 @@ public class HandleModificationConfigurationSection extends ConfigurationSection
     @Override
     public @Nullable
     Configuration getRoot() {
-        return new HandleModificationConfiguration(original.getRoot(), (ConfigurationModificationHandler) handler);
+        return (Configuration) wrapModifiable(original.getRoot());
     }
 
     @Override
     public @Nullable
     ConfigurationSection getParent() {
-        return original.getParent() == null ? null : (ConfigurationSection) wrapModifiable(original.getParent());
+        return (ConfigurationSection) wrapModifiable(original.getParent());
     }
 
     @Override
@@ -117,7 +117,13 @@ public class HandleModificationConfigurationSection extends ConfigurationSection
         handler.setInlineComments(original, path, comments);
     }
 
-    private Object wrapModifiable(final Object obj) {
+    /**
+     * Warps a given object to an instance of this class.
+     *
+     * @param obj the raw object
+     * @return the wrapped object
+     */
+    protected Object wrapModifiable(final Object obj) {
         if (obj instanceof HandleModificationConfigurationSection) {
             return obj;
         }

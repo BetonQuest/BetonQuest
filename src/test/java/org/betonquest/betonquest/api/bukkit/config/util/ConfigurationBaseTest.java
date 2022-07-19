@@ -163,9 +163,11 @@ public class ConfigurationBaseTest extends AbstractConfigBaseTest<Configuration>
         assertFalse(config.options().copyDefaults());
         config.options().copyDefaults(true);
         assertTrue(config.options().copyDefaults());
+        config.options().copyDefaults(false);
 
         assertEquals('.', config.options().pathSeparator());
         config.options().pathSeparator('-');
         assertEquals('-', config.options().pathSeparator());
+        config.options().pathSeparator('.');
     }
 }

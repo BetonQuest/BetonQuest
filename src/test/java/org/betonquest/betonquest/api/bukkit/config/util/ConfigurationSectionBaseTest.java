@@ -273,7 +273,6 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
     @Override
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     public void testCreateSectionOnExistingConfigPath() {
-
         final ConfigurationSection section = config.createSection("createdSectionExist");
         section.set("key", "created value");
         assertEquals("created value", config.getString("createdSectionExist.key"));
