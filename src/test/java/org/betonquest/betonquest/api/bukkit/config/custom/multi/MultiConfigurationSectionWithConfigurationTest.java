@@ -42,24 +42,6 @@ public class MultiConfigurationSectionWithConfigurationTest extends Configuratio
 
     @Test
     @Override
-    public void testGetValuesDeepFalse() {
-        final ConfigurationSection section = config.getConfigurationSection("childSection");
-        assertNotNull(section);
-        assertEquals("{nestedChildSection=MemorySection[path='childSection.nestedChildSection', root='MemoryConfiguration']}",
-                section.getValues(false).toString());
-    }
-
-    @Test
-    @Override
-    public void testGetValuesDeepTrue() {
-        final ConfigurationSection section = config.getConfigurationSection("childSection");
-        assertNotNull(section);
-        assertEquals("{nestedChildSection=MemorySection[path='childSection.nestedChildSection', root='MemoryConfiguration'], nestedChildSection.key=value}",
-                section.getValues(true).toString());
-    }
-
-    @Test
-    @Override
     @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     public void testGetKeysDeepFalse() {
         assertEquals("[boolean, booleanList, characterList, childSection, color, default, double, doubleList, existingSet, get, integer, integerList, item, list, location, long, mapList, object, offlinePlayer, section, string, stringList, vector]",

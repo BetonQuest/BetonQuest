@@ -53,7 +53,7 @@ public class HandleModificationConfiguration extends HandleModificationConfigura
     @Override
     public @Nullable
     Configuration getDefaults() {
-        return original.getDefaults();
+        return new HandleModificationConfiguration(original.getDefaults(), handler);
     }
 
     @Override

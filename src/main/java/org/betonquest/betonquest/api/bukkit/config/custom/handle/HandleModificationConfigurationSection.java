@@ -31,6 +31,14 @@ public class HandleModificationConfigurationSection extends ConfigurationSection
         this.handler = handler;
     }
 
+    @NotNull
+    @Override
+    public Map<String, Object> getValues(final boolean deep) {
+        final Map<String, Object> values = original.getValues(deep);
+        values.replaceAll((k, v) -> wrapModifiable(v));
+        return values;
+    }
+
     @Override
     public @Nullable
     Configuration getRoot() {

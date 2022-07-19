@@ -19,6 +19,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -67,8 +69,12 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
     public void testGetValuesDeepFalse() {
         final ConfigurationSection section = config.getConfigurationSection("childSection");
         assertNotNull(section);
-        assertEquals("{nestedChildSection=MemorySection[path='childSection.nestedChildSection', root='YamlConfiguration']}",
-                section.getValues(false).toString());
+        final Pattern pattern = Pattern.compile(Pattern.quote("{nestedChildSection=") + "\\w+"
+                + Pattern.quote("[path='childSection.nestedChildSection', root='") + "\\w+"
+                + Pattern.quote("']}"));
+        final String sectionString = section.getValues(false).toString();
+        final Matcher matcher = pattern.matcher(sectionString);
+        assertTrue(matcher.matches(), "Expected regex: " + pattern + "\n" + "Actual string: " + sectionString);
     }
 
     @Test
@@ -76,8 +82,12 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
     public void testGetValuesDeepTrue() {
         final ConfigurationSection section = config.getConfigurationSection("childSection");
         assertNotNull(section);
-        assertEquals("{nestedChildSection=MemorySection[path='childSection.nestedChildSection', root='YamlConfiguration'], nestedChildSection.key=value}",
-                section.getValues(true).toString());
+        final Pattern pattern = Pattern.compile(Pattern.quote("{nestedChildSection=") + "\\w+"
+                + Pattern.quote("[path='childSection.nestedChildSection', root='") + "\\w+"
+                + Pattern.quote("'], nestedChildSection.key=value}"));
+        final String sectionString = section.getValues(true).toString();
+        final Matcher matcher = pattern.matcher(sectionString);
+        assertTrue(matcher.matches(), "Expected regex: " + pattern + "\n" + "Actual string: " + sectionString);
     }
 
     @Test
@@ -190,13 +200,13 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
     public void testGetRoot() {
         final ConfigurationSection root = config.getRoot();
         assertNotNull(root);
-        assertEquals(config.getValues(true), root.getValues(true));
+        assertEquals(config.getValues(true).toString(), root.getValues(true).toString());
 
         final ConfigurationSection nestedChild = config.getConfigurationSection("childSection.nestedChildSection");
         assertNotNull(nestedChild);
         final ConfigurationSection nestedChildRoot = nestedChild.getRoot();
         assertNotNull(nestedChildRoot);
-        assertEquals(config.getValues(true), nestedChildRoot.getValues(true));
+        assertEquals(config.getValues(true).toString(), nestedChildRoot.getValues(true).toString());
     }
 
     @Test
@@ -211,7 +221,7 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
         assertNotNull(nestedChildParent);
         final ConfigurationSection parentSection = config.getConfigurationSection("childSection");
         assertNotNull(parentSection);
-        assertEquals(parentSection.getValues(true), nestedChildParent.getValues(true));
+        assertEquals(parentSection.getValues(true).toString(), nestedChildParent.getValues(true).toString());
     }
 
     @Test
