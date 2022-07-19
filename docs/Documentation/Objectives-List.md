@@ -73,11 +73,13 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 This objective requires the player to put specified items in a specified chest. First argument is a location of the
 chest, second argument is a list of items (from _items_ section), separated with a comma. You can also add amount of
 items after a colon. The items will be removed upon completing the objective unless you add `items-stay` optional
-argument.
+argument. By default, only one player can look into the chest at the same time. You can change it by adding the key 
+`multipleaccess`.
 
 !!! example
     ```YAML
     chestput 100;200;300;world emerald:5,sword events:tag,message
+    chestput 0;50;100;world apple:42 events:message multipleaccess:true
     ```
 
 ## Eat/drink: `consume`
