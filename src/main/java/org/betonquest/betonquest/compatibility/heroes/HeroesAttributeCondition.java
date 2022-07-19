@@ -17,8 +17,8 @@ import org.betonquest.betonquest.utils.PlayerConverter;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class HeroesAttributeCondition extends Condition {
-    private AttributeType attribute;
-    private VariableNumber level;
+    private final AttributeType attribute;
+    private final VariableNumber level;
 
     /**
      * Creates new instance of the condition. The condition should parse
@@ -31,26 +31,24 @@ public class HeroesAttributeCondition extends Condition {
      *                    ID.generateInstruction()} or create it from an instruction
      *                    string
      */
-    public HeroesAttributeCondition(Instruction instruction) throws InstructionParseException {
+    public HeroesAttributeCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
-        String string = instruction.next();
-        for(AttributeType t : AttributeType.values()) {
-            if(t.name().equalsIgnoreCase(string)) {
-                attribute = t;
-                break;
-            }
-        }
-        if(attribute == null) {
-            throw new InstructionParseException("Attribute '" + string + "' does not exist!");
-        }
-
+        attribute = findAttribute(instruction.next());
         level = instruction.getVarNum(instruction.next());
     }
 
-    @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
-        final Hero hero = Heroes.getInstance().getCharacterManager().getHero(PlayerConverter.getPlayer(playerID));
+    private AttributeType findAttribute(final String string) throws InstructionParseException {
+        for (final AttributeType t : AttributeType.values()) {
+            if (t.name().equalsIgnoreCase(string)) {
+                return t;
+            }
+        }
+        throw new InstructionParseException("Attribute '" + string + "' does not exist!");
+    }
 
+    @Override
+    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+        final Hero hero = Heroes.getInstance().getCharacterManager().getHero(PlayerConverter.getPlayer(playerID));
         return hero.getAttributeValue(attribute) >= level.getInt(playerID);
     }
 }
