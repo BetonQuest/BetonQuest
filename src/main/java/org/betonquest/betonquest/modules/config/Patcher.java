@@ -16,8 +16,10 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -76,7 +78,8 @@ public class Patcher {
     public Patcher(final ConfigurationSection config, final ConfigurationSection patchConfig) {
         this.pluginConfig = config;
         this.patchConfig = patchConfig;
-        this.configVersion = new Version(config.getString("configVersion"));
+        final String configVersion = config.getString("configVersion");
+        this.configVersion = new Version(Objects.requireNonNullElse(configVersion, "2.0.0-CONFIG-0"));
         try {
             buildVersionIndex(this.patchConfig, "");
         } catch (final InvalidConfigurationException e) {
@@ -134,10 +137,11 @@ public class Patcher {
         boolean noErrors = true;
         for (final String key : patchableVersions.values()) {
             LOG.info("Applying patches to update to '" + key + "'...");
+            pluginConfig.set("configVersion", getNewVersion(key));
+            pluginConfig.setInlineComments("configVersion", List.of("Don't change this! The plugin's automatic config updater handles it."));
             if (!applyPatch(key)) {
                 noErrors = false;
             }
-            pluginConfig.set("configVersion", getNewVersion(key));
         }
         return noErrors;
     }

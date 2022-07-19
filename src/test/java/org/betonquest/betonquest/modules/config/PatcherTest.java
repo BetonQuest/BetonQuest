@@ -97,14 +97,12 @@ class PatcherTest {
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     void testPatchVersionNumberTooShort(final LogValidator validator) throws InvalidConfigurationException {
-        final String patch = """
+        final var invalidConfig = createConfigFromString("""
                 "1.0":
                   - type: SET
                     key: journalLock
                     value: true
-                """;
-        final var invalidConfig = new YamlConfiguration();
-        invalidConfig.loadFromString(patch);
+                """);
 
         new Patcher(config, invalidConfig);
         validator.assertLogEntry(Level.SEVERE, "Invalid patch file! A version number is too short or too long.");
@@ -113,11 +111,9 @@ class PatcherTest {
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     void testPatchMalformed(final LogValidator validator) throws InvalidConfigurationException {
-        final String patch = """
+        final var invalidConfig = createConfigFromString("""
                 "1.0": Nonsense
-                """;
-        final var invalidConfig = new YamlConfiguration();
-        invalidConfig.loadFromString(patch);
+                """);
 
         new Patcher(config, invalidConfig);
         validator.assertLogEntry(Level.SEVERE, "Invalid patch file! The patch is malformed.");
@@ -152,5 +148,42 @@ class PatcherTest {
         assertFalse(patchNoError, "Patcher says there were no problems although there were.");
         validator.assertLogEntry(Level.INFO, "Applying patches to update to '3.4.5.6'...");
         validator.assertLogEntry(Level.WARNING, "There has been an issue while applying the patches for '3.4.5.6': Unknown transformation type 'INVALID' used!");
+    }
+
+    @Test
+    void testEmptyPatchFile() throws InvalidConfigurationException {
+        final String patch = "";
+        final var patchConfig = new YamlConfiguration();
+        patchConfig.loadFromString(patch);
+        final var Patcher = new Patcher(config, patchConfig);
+        assertFalse(Patcher.hasUpdate(), "An empty patch cannot provide updates.");
+    }
+
+
+    @Test
+    void testLegacyConfig() throws InvalidConfigurationException {
+        final var emptyConfig = createConfigFromString("");
+
+        final var patchConfig = createConfigFromString("""
+                2.0.0.1:
+                - type: SET
+                  key: newKey
+                  value: newValue
+                """);
+
+        final var patcher = new Patcher(emptyConfig, patchConfig);
+        patcher.patch();
+        final YamlConfiguration desiredResult = createConfigFromString("""
+                configVersion: 2.0.0-CONFIG-1 #Don't change this! The plugin's automatic config updater handles it.
+                newKey: newValue
+                """);
+
+        assertEquals(desiredResult.saveToString(), emptyConfig.saveToString());
+    }
+
+    private YamlConfiguration createConfigFromString(final String content) throws InvalidConfigurationException {
+        final var config = new YamlConfiguration();
+        config.loadFromString(content);
+        return config;
     }
 }
