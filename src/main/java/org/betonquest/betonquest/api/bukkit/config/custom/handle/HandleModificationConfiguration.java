@@ -64,6 +64,6 @@ public class HandleModificationConfiguration extends HandleModificationConfigura
     @Override
     public @NotNull
     ConfigurationOptions options() {
-        return original.options();
+        return new HandleConfigurationOptions(this, original.options());
     }
 }
