@@ -106,14 +106,12 @@ All existing RPGMenu users must update their RPGMenu config file. Simply rename 
   The [`realtime-daily`](./Schedules.md#daily-realtime-schedule-realtime-daily) schedule makes this easy:
   
     !!! info "Example"
-        === "Old Syntax"
-            ```YAML
+            ```YAML title="Old Syntax"
             static:
               '09:00': beton
               '11:23': some_command,command_announcement
             ```
-        === "New Syntax"
-            ```YAML 
+            ```YAML title="New Syntax"
             schedules:
               betonAt09: #(1)!
                 type: realtime-daily #(2)!
