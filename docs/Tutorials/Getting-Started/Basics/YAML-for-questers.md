@@ -1,7 +1,7 @@
 ---
 icon: material/newspaper
 tags: 
-  - YAML
+  - YAML-Tutorials
 ---
 # YAML Syntax
 This plugin uses the YAML format for all files. You may already know it from other plugins as most use this format.

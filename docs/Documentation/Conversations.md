@@ -1,6 +1,9 @@
 ---
 icon: material/message-text
+tags:
+  - Conversation-Docs
 ---
+
 ## General Information
 Each conversation must define name of the NPC 
 (some conversations can be not bound to any NPC, so it’s important to specify it even though an NPC will have a name) and his initial options.

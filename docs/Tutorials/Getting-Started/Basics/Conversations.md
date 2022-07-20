@@ -1,7 +1,7 @@
 ---
 icon: material/message-processing
 tags:
-  - Conversations
+  - Conversation-Tutorials
 ---
 In this tutorial you will learn the basics of the conversations. These allow you to create a dialog between the player
 and a NPC. Therefore, these are the basic tool for story telling.

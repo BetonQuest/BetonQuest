@@ -1,7 +1,7 @@
 ---
 icon: fontawesome/solid/play
 tags:
-  - Events
+  - Event-Tutorials
 ---
 After you learned how to create conversations we will now take a look at events. These allow you to change the game 
 world. This can be anything from modifying a player's inventory to placing blocks.  
