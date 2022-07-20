@@ -47,6 +47,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `fish` objective now has `hookLocation` and `range` settings.
 - `burning` condition
 - `inconversation` condition
+- `mmspawn` event now has argument `target` Makes the spawned mob target the player
+- `mmspawn` event now has argument `private` Visually hides the spawned mob from other players. Does not stop sound or particles
+- `mmspawn` event now supports the `marked` argument
+- `mmobkill` condition now supports the `marked` argument
 - Things that are also added in 1.12.X:
     - new line support for `journal_lore` in `messages.yml`
     - FastAsyncWorldEdit compatibility
