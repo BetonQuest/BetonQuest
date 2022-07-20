@@ -133,10 +133,6 @@ jobs:
                 "url": "https://betonquest.org/nexus/repository/default/"
               }
             ]
-      - name: Build with Maven. Phase 'package'
-        if: "github.event_name == 'pull_request'"
-        run: |
-          mvn -B package
       - name: Build with Maven. Phase 'verify'
         run: |
           mvn -B verify
@@ -163,8 +159,6 @@ jobs:
           echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
       - name: Checkout source code
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
       - name: Create LFS file list
         run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
       - name: Restore LFS cache
@@ -204,7 +198,7 @@ jobs:
           sed -i "s~## \[Unreleased\]~## \[${VERSION}\]~g" ./CHANGELOG.md
           DATE=$(date +%Y-%m-%d)
           sed -i "s~\${current-date}~$DATE~g" ./CHANGELOG.md
-          cp ./CHANGELOG.md './docs/Documentation/CHANGELOG.md'
+          echo "$(cat ./CHANGELOG.md)" >> './docs/Documentation/CHANGELOG.md'
       - name: Set mkdocs.yml version
         run: |
           sed -i "s~%VERSION%~${VERSION}~g" ./mkdocs.yml
@@ -308,8 +302,6 @@ jobs:
           echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
       - name: Checkout source code
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
       - name: Create LFS file list
         run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
       - name: Restore LFS cache
