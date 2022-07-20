@@ -133,10 +133,6 @@ jobs:
                 "url": "https://betonquest.org/nexus/repository/default/"
               }
             ]
-      - name: Build with Maven. Phase 'package'
-        if: "github.event_name == 'pull_request'"
-        run: |
-          mvn -B package
       - name: Build with Maven. Phase 'verify'
         run: |
           mvn -B verify
