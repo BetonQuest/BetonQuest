@@ -71,7 +71,7 @@ public class ChestPutObjective extends Objective implements Listener {
     }
 
     /**
-     * Permits mutable players to look into the chest, if set
+     * Permits multiple players to look into the chest, if set.
      *
      * @param event InventoryOpenEvent
      */
