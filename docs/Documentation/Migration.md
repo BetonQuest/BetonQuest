@@ -38,6 +38,7 @@ All existing RPGMenu users must update their RPGMenu config file. Simply rename 
         === "Old Way"
             ``` YAML title="events.yml"
             myEvent: "teleport 1;2;3;world"
+            myOtherEvent: "point level 1"
             ```
             ``` YAML title="conditions.yml"
             myCondition: "location 300;200;300;world"
@@ -46,7 +47,7 @@ All existing RPGMenu users must update their RPGMenu config file. Simply rename 
             ``` YAML title="events.yml"
             events:
               myEvent: "teleport 1;2;3;world"
-              myOtherEvent: "point "
+              myOtherEvent: "point level 1"
             ```
             ``` YAML title="conditions.yml"
             conditions:
@@ -57,6 +58,7 @@ All existing RPGMenu users must update their RPGMenu config file. Simply rename 
             ``` YAML title="anyFileName.yml"
             events:
               myEvent: "teleport 1;2;3;world"
+              myOtherEvent: "point level 1"
             conditions:
               myCondition: "location 300;200;300;world"
             ```
