@@ -12,9 +12,9 @@ The migration must be done manually. This will not change while BQ 2.0 is in dev
 
 Skip to the first version that is newer than the version that you're migrating from:
 
-- [2.0.0-DEV-98 - RPGMenu Merge](#200-dev-98)
-- [2.0.0-DEV-238 - Package Structure Rework](#200-dev-238)
-- [2.0.0-DEV-337 - Event Scheduling Rework](#200-dev-337)
+- [2.0.0-DEV-98 - RPGMenu Merge](#200-dev-98-rpgmenu-merge)
+- [2.0.0-DEV-238 - Package Structure Rework](#200-dev-238-package-structure-rework)
+- [2.0.0-DEV-337 - Event Scheduling Rework](#200-dev-337-event-scheduling-rework)
 
 ### 2.0.0-DEV-98 - RPGMenu Merge
 
