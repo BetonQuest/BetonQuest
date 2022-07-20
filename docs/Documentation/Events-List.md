@@ -176,25 +176,39 @@ Creates an explosion. It can make fire and destroy blocks. You can also define p
     explosion 0 1 4 100;64;-100;survival
     ```
 
-## Folder: `folder`
+## :material-folder-play: Run multiple events: `folder`
 
 **persistent**, **static**
 
-It's something like a container for multiple events. You can use it to clarify your code.
-It also features optional delay and period measured in seconds (you can use ticks or minutes if you add `ticks` or `minutes` argument).
-It is persistent for events marked as _persistent_, which means that the events will be fired even after the player logs out.
+This event wraps multiple events inside itself. Once triggered, it simply executes it's events.
+This is usefully to easily refer to a bunch of events at once, e.g. in a conversation.
+
+Events marked as _persistent_ will be fired even after the player logs out.
 Beware though, all conditions are false when the player is offline (even inverted ones),
 so those events should not be blocked by any conditions!
-The only required argument is a list of events separated by commas.
 
-There are also three optional arguments: `delay:`, `period:` and `random:`.
-Delay and Period is a number of seconds. Delay is the time before execution and period is the time between each event. It's optional and leaving it blank is the same as `delay:0` or `period:0`.
-Random is the amount of events, that will be randomly chosen to fire. It's optional and leaving it blank or omit it will fire all events.
 
-!!! example
-    ```YAML
-    folder event1,event2,event3 delay:5 period:5 random:1
-    ```
+| Parameter       | Syntax            | Default Value          | Explanation                                                                                     |
+|-----------------|-------------------|------------------------|-------------------------------------------------------------------------------------------------|
+| _events to run_ | eventName1,event2 | :octicons-x-circle-16: | One or multiple events to run. Contains event names seperated by commas.                        |
+| _delay_         | Keyword           | 1 tick                 | The delay before the folder starts executing it's events.                                       |
+| _period_        | period:number     | 1 tick                 | The time between each event. Minimum value is one tick (~20ms).                                 |
+| _time unit_     | Keyword           | Seconds                | The unit of time to use for delay and period. Either `ticks` or `minutes`. Omit to use seconds. |
+| _random_        | random:number     | Disabled               | Enables "random mode". Will randomly pick the defined amount of events .                        |
+
+
+```YAML title="Examples" 
+events:
+  simpleFolder: "folder event1,event2,event3" # (1)!
+  runEvents: "folder event1,event2,event3 delay:5 period:1" # (2)!
+  troll: "folder killPlayer,banPlayer,kickPlayer delay:5 random:1" # (3)!
+  wait: "folder messagePlayer,giveReward delay:1 minutes" # (4)!
+```
+
+1. Runs all events after one tick with a delay of one tick between each event.
+2. Runs `event1` after an initial delay of 5 seconds, then waits one second before executing each leftover event.
+3. Randomly executes one of the three events after 5 seconds.
+4. Executes the events after one minute.
 
 ## Give Items: `give`
 
@@ -576,15 +590,23 @@ Minutes can be achieved with floating point. Six minutes equals 0.1 hours.
     time +0.1
     ```
 
-## Teleport: `teleport`
+## :fontawesome-solid-person-walking-dashed-line-arrow-right: Teleport: `teleport`
 
-Teleports the player to a specified location, with or without head rotation. It will also end the conversation,
-if the player has one active.The first and only argument must be location. It's a good idea to use yaw and pitch here.
+Teleports the player to the specified location. 
+Ends any active conversations.
 
-!!! example
-    ```YAML
-    teleport 123;32;-789;world_the_nether;180;45
-    ```
+| Parameter  | Syntax                                                                 | Default Value          | Explanation                                          |
+|------------|------------------------------------------------------------------------|------------------------|------------------------------------------------------|
+| _location_ | [Unified Location Formatting](Reference.md#unified-location-formating) | :octicons-x-circle-16: | The location to which the player will be teleported. |
+
+```YAML title="Example"
+events:
+  toCity: "teleport 432;121;532;world" # (1)!
+  toHell: "teleport 123;32;-789;world_the_nether;180;45" # (2)!
+```
+
+1. Teleports the player to X: 432, Y: 121, Z: 532 in the world named 'world'.
+2. Teleports the player to X: 123, Y: 32, Z: -789 in the world named 'world_the_nether'. Also sets the head rotation to yaw 180 and pitch 45.
 
 ## Variable: `variable`
 

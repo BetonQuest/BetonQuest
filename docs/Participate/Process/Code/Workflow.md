@@ -1,5 +1,5 @@
 ---
-icon: material/code-json
+icon: octicons/workflow-16
 ---
 # Changing Code
 
@@ -48,7 +48,7 @@ Also, you shouldn't write `cleaned the code`, instead you should write things li
 
 ---
 ## Where to Continue?
-If you also want to adjust the documentation switch to [Changing Docs](../Docs/index.md).
+If you also want to adjust the documentation switch to [Changing Docs](../Docs/Workflow.md).
 Once you are done with all changes, continue with [Maintaining Changelog](../Maintaining-the-Changelog.md)
 In case you already did that: Continue with [Submitting Changes](../Submitting-Changes.md).  
 

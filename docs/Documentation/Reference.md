@@ -224,15 +224,29 @@ enabled: false
 ```
 
 
-## Unified location formating
+## :octicons-location-16: Unified location formating
 
-Whenever you want to define some location in your events, conditions, objectives or any other things, you will define it with this specific format. The location can consist of 2 things: base and vector. Only the base is always required.
+Whenever you want to define some location in your events, conditions, objectives or any other things, you will define it
+with this specific format. The location consists of 2 things: base and vector. Only the base is always required.
 
-The base is a core location. Currently there are two types: absolute coordinates and variables. Absolute coordinates are defined like `100;200;300;world`, where `100` is X coordinate, `200` is Y, `300` is Z and `world` is the name of the world. These can have decimal values. If you want you can also add two more numbers at the end, yaw and pitch (these are controlling the rotation, for example in teleportation event, both are needed if you decide to add them; example: `0.5;64;0.5;world;90;-270`).
+### Base Location
+The base is a core location. There are two types: absolute coordinates and variables. Absolute coordinates are
+defined like `100;200;300;world`, where `100` is X coordinate, `200` is Y, `300` is Z and `world` is the name of the
+world. These can have decimal values. If you want you can also add two more numbers at the end, yaw and pitch 
+(these are controlling the rotation, for example in teleportation event, both are needed if you decide to add them;
+example: `0.5;64;0.5;world;90;-270`).
 
-To use a variable as the location's base it must resolve to a valid absolute coordinates. An example of such variable is `%location%`, which shows player's exact location. Simply place it instead of coordinates. There is one rule though: you can't use variable base types in events running without players (for example static events or the ones run from folder event after their player left the server). BetonQuest won't be able to resolve the location variable without the player!
+### Variables as Base Location
+To use a variable as the location's base it must resolve to valid absolute coordinates. An example of such variable 
+is `%location%`, which shows player's exact location. Simply place it instead of coordinates. There is one rule though:
+you can't use variable base types in events running without players (for example static events or the ones run from
+folder event after the player left the server). BetonQuest won't be able to resolve the location variable without the
+player!
 
-The vector is a modification of the location. It will be useful if you use global variables instead of base (described in the next subsection) or the base itself is variable, like `player`. Vectors look like `->(10;2.5;-13)` and are added to the end of the base. This will modify the location, X by 10, Y by 2.5 and Z by -13. For example, location written as `100;200;300;world_nether->(10;2.5;-13)` will generate a location with X=110, Y=202.5 and Z=287 on `world_nether` world.
+### Vectors
+The vector is a modification of the location. Vectors look like `->(10;2.5;-13)` and are added
+to the end of the base. This will modify the location, X by 10, Y by 2.5 and Z by -13. For example, location written as
+`100;200;300;world_nether->(10;2.5;-13)` will generate a location with X=110, Y=202.5 and Z=287 in the world `world_nether`.
 
 ## Global variables
 
