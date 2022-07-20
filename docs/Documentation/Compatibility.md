@@ -95,7 +95,7 @@ Removes the specified drink from the players inventory. An amount needs to be sp
 takebrew 2 MY_OTHER_BREW 
 ```
 
-## NPC's using [Citizens](https://www.spigotmc.org/resources/citizens.13811/)
+## NPC's using [Citizens](https://www.spigotmc.org/resources/13811/)
 
 If you have this plugin you can use it's NPCs for conversations. I highly recommend you installing it,
 it's NPCs are way more immersive. Having Citizens also allows you to use NPCKill objective and to have moving NPC's.
