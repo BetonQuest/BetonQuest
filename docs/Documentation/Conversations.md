@@ -1,7 +1,7 @@
 ---
 icon: material/message-text
 tags:
-  - Conversation-Docs
+  - Conversation
 ---
 
 ## General Information
