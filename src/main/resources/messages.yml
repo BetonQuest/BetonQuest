@@ -54,6 +54,7 @@ pl:
   password: 'haslo: '
   condition_variable_met: 'yes' # TODO: missing translation
   condition_variable_not_met: 'no' # TODO: missing translation
+  chest_occupied: 'This chest is already in use' # TODO: missing translation
 en:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bConversation with {1}&b started!&e===='
@@ -111,6 +112,7 @@ en:
   password: 'password: '
   condition_variable_met: 'yes'
   condition_variable_not_met: 'no'
+  chest_occupied: 'This chest is already in use'
 de:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bGespräch mit {1}&b begonnen!&e===='
@@ -167,6 +169,7 @@ de:
   password: 'Passwort: '
   condition_variable_met: 'ja'
   condition_variable_not_met: 'nein'
+  chest_occupied: 'Die Truhe wird bereits benutzt'
 fr:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bLa conversation avec {1}&b est engagée!&e===='
@@ -223,6 +226,7 @@ fr:
   password: 'mot de passe : '
   condition_variable_met: 'oui'
   condition_variable_not_met: 'non'
+  chest_occupied: 'This chest is already in use' # TODO: missing translation
 cn:
   conversation_prefix: "&2[&9{1}&2] "
   conversation_start: "&e====&b\u4e0e{1}&b\u5bf9\u8bdd\u4e2d&e===="
@@ -279,6 +283,7 @@ cn:
   password: "\u5bc6\u7801: "
   condition_variable_met: 'yes' # TODO: missing translation
   condition_variable_not_met: 'no' # TODO: missing translation
+  chest_occupied: 'This chest is already in use' # TODO: missing translation
 es:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bLa conversacion con {1}&b ha comenzado.&e===='
@@ -335,6 +340,7 @@ es:
   password: 'clave: '
   condition_variable_met: 'si'
   condition_variable_not_met: 'no'
+  chest_occupied: 'This chest is already in use' # TODO: missing translation
 nl:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bGesprek met {1}&b begonnen!&e===='
@@ -391,6 +397,7 @@ nl:
   password: 'wachtwoord: '
   condition_variable_met: 'ja'
   condition_variable_not_met: 'nee'
+  chest_occupied: 'This chest is already in use' # TODO: missing translation
 it:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bConversazione con {1}&b iniziata!&e===='
@@ -437,16 +444,17 @@ it:
   language_missing: '&cSpecifica la lingua'
   language_not_exist: '&cQuesta lingua non è presente, opzioni disponibili: '
   days: giorni
-  days_singular: giorno 
+  days_singular: giorno
   hours: ore
-  hours_singular: ora 
+  hours_singular: ora
   minutes: minuti
-  minutes_singular: minuto 
+  minutes_singular: minuto
   seconds: secondi
-  seconds_singular: secondo 
+  seconds_singular: secondo
   password: 'password: '
   condition_variable_met: 'si'
   condition_variable_not_met: 'no'
+  chest_occupied: 'This chest is already in use' # TODO: missing translation
 hu:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bBeszélgetés a következővel {1}&b elkezdve!&e===='
@@ -503,6 +511,7 @@ hu:
   password: 'jelszó: '
   condition_variable_met: 'igen'
   condition_variable_not_met: 'nem'
+  chest_occupied: 'This chest is already in use' # TODO: missing translation
 vi:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bĐối thoại với {1}&b bắt đầu!&e===='
@@ -559,6 +568,7 @@ vi:
   password: 'mật khẩu: '
   condition_variable_met: 'có'
   condition_variable_not_met: 'không'
+  chest_occupied: 'This chest is already in use' # TODO: missing translation
 pt-br:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bComeçou a conversar com {1}&b!&e===='
@@ -611,3 +621,4 @@ pt-br:
   password: 'senha: '
   condition_variable_met: 'sim'
   condition_variable_not_met: 'não'
+  chest_occupied: 'This chest is already in use' # TODO: missing translation
