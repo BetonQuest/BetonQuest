@@ -155,8 +155,8 @@ class PatcherTest {
         final String patch = "";
         final var patchConfig = new YamlConfiguration();
         patchConfig.loadFromString(patch);
-        final var Patcher = new Patcher(config, patchConfig);
-        assertFalse(Patcher.hasUpdate(), "An empty patch cannot provide updates.");
+        final var patcher = new Patcher(config, patchConfig);
+        assertFalse(patcher.hasUpdate(), "An empty patch cannot provide updates.");
     }
 
 
@@ -178,7 +178,7 @@ class PatcherTest {
                 newKey: newValue
                 """);
 
-        assertEquals(desiredResult.saveToString(), emptyConfig.saveToString());
+        assertEquals(desiredResult.saveToString(), emptyConfig.saveToString(), "The Patcher did not set the configVersion variable on a legacy config.");
     }
 
     private YamlConfiguration createConfigFromString(final String content) throws InvalidConfigurationException {
