@@ -1,82 +1,135 @@
 ---
 icon: material/upload
 ---
-This migration guide currently needs to be done manually. As long as BQ 2.0 is in development, this will not change!
+This guide explains how to migrate from BetonQuest 1.12.X or any BetonQuest 2.0.0 dev build to the latest BetonQuest
+2.0.0 dev build.
+The migration must be done manually. This will not change while BQ 2.0 is in development!
 
-Before you start migrating, you should **backup your system**!
-
-Also check your current version, so you know which migration steps you need to do.
+!!! warning 
+    Before you start migrating, you should **backup your server**!
 
 ## Changes
-Skip to the first version that is above the version that you used before starting the migration:
 
-Changes introduced in:
+Skip to the first version that is newer than the version that you're migrating from:
 
-- [2.0.0-DEV-98](#200-dev-98)
-- [2.0.0-DEV-238](#200-dev-238)
-- [2.0.0-DEV-337](#200-dev-337)
+- [2.0.0-DEV-98 - RPGMenu Merge](#200-dev-98-rpgmenu-merge)
+- [2.0.0-DEV-238 - Package Structure Rework](#200-dev-238-package-structure-rework)
+- [2.0.0-DEV-337 - Event Scheduling Rework](#200-dev-337-event-scheduling-rework)
 
-### 2.0.0-DEV-98
+### 2.0.0-DEV-98 - RPGMenu Merge
+
 All existing RPGMenu users must update their RPGMenu config file. Simply rename it from `rpgmenu.config.yml` to
 `menuConfig.yml`.
 
-### 2.0.0-DEV-238
-- Ensure your server is running on __java 17__
-- Move your current Quests to the folder `BetonQuest/QuestPackages/`, as quests are now loaded from there
-- Rename `main.yml` to `package.yml`
-- Change the `events.yml`, `objectives.yml`, `conditions.yml`, `journal.yml` and `items.yml` to the following format
-  with an extra prefix matching their file name:
-  ```YAML
-  events:
-    myEvent1: ...
-    ....
-  ```
-- Change the `conversations` and `menus` to the following format with an extra prefix matching there type and the file
-  name:
-  ```YAML
-  conversations:
-    ConversationName:
-      NPC_options: ....
-      ....
-  ```
-  or alternatively:
-  ```YAML
-  conversations.ConversationName:
-    NPC_options: ....
-    ....
-  ```
+### 2.0.0-DEV-238 - Package Structure Rework
+
+- Ensure your server is running on **Java 17**
+- Move your current Quests to the folder "_BetonQuest/QuestPackages_"`, as quests are now loaded from there
+- Rename all "_main.yml_" files to "_package.yml_"
 - Quest packages can now contain nested quest packages in sub folders. You can also have any file and folder structure
-  with any file and folder names you want. Only the `package.yml` is reserved as indicator for a quest
-  package. [DOCS](./Reference.md#packages)
+  with any file and folder names you want. Only the "_package.yml_" is reserved as indicator for a quest
+  package. Learn more in the [Reference](./Reference.md#packages).
+  * Therefore, the "_events.yml_`, "_objectives.yml_", "_conditions.yml_", "_journal.yml_" and "_items.yml_" files must
+    be updated to the following format:
+    Every type that was previously a separate file with a special name is now identified by a "parent-section". It's
+    the names of the types / the names the file previously had. Let's take a look at an example for events and conditions:
+  
+    !!! info "Example"
+        === "Old Way"
+            ``` YAML title="events.yml"
+            myEvent: "teleport 1;2;3;world"
+            myOtherEvent: "point level 1"
+            ```
+            ``` YAML title="conditions.yml"
+            myCondition: "location 300;200;300;world"
+            ```
+        === "New Way"
+            ``` YAML title="events.yml"
+            events:
+              myEvent: "teleport 1;2;3;world"
+              myOtherEvent: "point level 1"
+            ```
+            ``` YAML title="conditions.yml"
+            conditions:
+              myCondition: "location 300;200;300;world"
+            ```
+            As described in the previous paragraph, the events and conditions must not be in the same file anymore.
+            You could also do this or use any file structure:
+            ``` YAML title="anyFileName.yml"
+            events:
+              myEvent: "teleport 1;2;3;world"
+              myOtherEvent: "point level 1"
+            conditions:
+              myCondition: "location 300;200;300;world"
+            ```
+    !!! warning 
+        You must do this change for all types, not just events and conditions! 
 
-### 2.0.0-DEV-337
-- All your static events need to be converted to the new schedules system.
+- Alongside the previous change, **conversations** and **menus** must also be updated to the following format:
+  Add an extra prefix matching their type and the file name:
+
+    !!! info "Example"
+        === "Old Syntax" 
+            ``` YAML title="lisa.yml" 
+            quester: Lisa
+            first: option1, option2
+            NPC_options:
+              option1:
+              # ...
+            ```
+        === "New Syntax"
+            ``` YAML title="anyFileName.yml"
+            conversations:
+              lisa: #(1)!
+                quester: Lisa
+                first: option1, option2
+                NPC_options:
+                  option1:
+                  # ...
+            ```
+
+            1. This key is now the conversation name that you must refer to when linking NPCs to conversations. 
+
+            Or alternatively:
+            ``` YAML
+            conversations.lisa:
+              quester: Lisa
+              first: option1, option2
+              NPC_options:
+                option1:
+                # ...
+            ```
+                  
+### 2.0.0-DEV-337 - Event Scheduling Rework
+
+- All your static events need to be converted to the new scheduling system.
   The [`realtime-daily`](./Schedules.md#daily-realtime-schedule-realtime-daily) schedule makes this easy:
-  ```YAML title="Old Syntax"
-  static:
-    '09:00': beton
-    '11:23': some_command,command_announcement
-  ```
-  ```YAML title="New Syntax"
-  schedules:
-    betonAt09: #(1)!
-      type: realtime-daily #(2)!
-      time: '09:00' #(3)!
-      events: beton #(4)!
-    cmdAt1123:
-      type: simple
-      time: '11:23'
-      events: some_command,command_announcement
-  ```
-
-    1. A name for the new schedule.  
-      Can be anything you want for organizing your schedules.
-
-    2. The type schedule `realtime-daily` was created for easy updating.   
-      It behaves just like the old static events.
-
-    3. The former key is now the time value.  
-      You still have to put it in 'quotes'.
-
-    4. The former value is now the events value.
-
+  
+    !!! info "Example"
+            ```YAML title="Old Syntax"
+            static:
+              '09:00': beton
+              '11:23': some_command,command_announcement
+            ```
+            ```YAML title="New Syntax"
+            schedules:
+              betonAt09: #(1)!
+                type: realtime-daily #(2)!
+                time: '09:00' #(3)!
+                events: beton #(4)!
+              cmdAt1123:
+                type: realtime-daily
+                time: '11:23'
+                events: some_command,command_announcement
+            ```
+  
+            1. A name for the new schedule.  
+              Can be anything you want for organizing your schedules.
+        
+            2. The type schedule `realtime-daily` was created for easy updating.   
+              It behaves just like the old static events.
+        
+            3. The former key is now the time value.  
+              You still have to put it in 'quotes'.
+        
+            4. The former value is now the events value.
