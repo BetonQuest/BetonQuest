@@ -41,7 +41,7 @@ public class ChestPutObjective extends Objective implements Listener {
     private final QuestEvent chestTakeEvent;
     private final CompoundLocation loc;
     /**
-     * Argument to manage the chest access for one or multiple players. By default, false = only one player at the time
+     * Argument to manage the chest access for one or multiple players. False by default which means only one player can acess the chest at the same time.
      */
     private final boolean multipleAccess;
 
