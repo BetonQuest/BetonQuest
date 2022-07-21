@@ -1,0 +1,107 @@
+---
+icon: material/note-edit
+---
+The config patcher automatically updates BetonQuest's main plugin config or those of BetonQuest's addons.
+This is needed when changes are made to the existing config format.
+
+## The Patch File
+The Patcher uses a patch file to update the corresponding config.
+Whenever a resource file is loaded using BetonQuest's `ConfigurationFile` class, a "_filename.patch.yml"_ file 
+is searched in the same directory as the resource file. It contains the configuration for all patches that need to be
+applied.
+
+Different types of changes are called "transformations" and are applied by "transformers". You can configure transformers
+in a patch file.
+The patch file contains a list of config versions that each have a number of transformer settings.
+
+``` YAML title="config.patch.yml"
+2.0.0.1: #(1)!
+  - type: SET #(2)!
+    key: defaultConversationColor
+    value: BLUE
+  - type: REMOVE
+    key: hook.mmocore
+1.12.9.1: #(3)!
+  - type: LIST_ENTRY_ADD
+    key: cmdBlacklist
+    entry: teleport
+```
+
+1. These transformers will be applied for a config on any version older than 2.0.0-CONFIG-1
+2. This is the `SET` transformer. It will set `defaultConversationColor` to `BLUE`.
+3. This is the `LIST_ENTRY_ADD` transformer. It will append `teleport` to the list with the key `cmdBlacklist`.
+
+## Config Versions
+The versions in the patch file have four digits (`1.2.3.4`). The first three are the semantic version of the BetonQuest 
+version that this patch updates the config to. The last digit is used to version multiple patches during the
+development phase of a semantic versioning release.
+
+The config's version is shown as the value of the `configVersion` key. It is automatically set by the patcher.
+It uses a slightly different format: `1.2.3.4` in the patch file is `1.2.3-CONFIG-4` in the config.
+
+Example:
+
+* `2.0.0.1`: Patch that updates the config to a state required for a `2.0.0` dev build.
+* `2.0.0.2`: Patch that updates the config to a state required for a `2.0.0` dev build.
+* `2.0.0` is released. Therefore `2.0.0-CONFIG-2` becomes the final config version of `2.0.0`.
+* `2.0.1.1`: Patch that updates the config to a state required for a `2.0.1` dev build.
+* `2.0.1` is released. Therefore `2.0.1-CONFIG-1` becomes the final config version of `2.0.1`.
+
+## Transformer Types
+### SET
+
+``` YAML title="Syntax"
+- type: SET
+  key: journalLocked
+  value: true
+```
+
+### KEY_RENAME
+
+``` YAML title="Syntax"
+- type: KEY_RENAME
+  oldKey: journalLocked
+  newKey: journalLockedOnSlot
+```
+
+### LIST_ENTRY_ADD
+
+``` YAML title="Syntax"
+- type: LIST_ENTRY_ADD
+  key: section.myList
+  entry: newEntry
+  position: LAST | LAST | def:LAST
+```
+
+### LIST_ENTRY_RENAME
+
+``` YAML title="Syntax"
+- type: LIST_ENTRY_RENAME
+  key: section.myList
+  oldEntryRegex: currentEntry
+  newEntry: newEntry
+```
+
+### LIST_ENTRY_REMOVE
+
+``` YAML title="Syntax"
+- type: LIST_ENTRY_REMOVE
+  key: section.myList
+  entry: removedEntry
+```
+
+### VALUE_RENAME
+
+``` YAML title="Syntax" 
+- type: VALUE_RENAME
+  key: section.testKey
+  oldValueRegex: test
+  newValue: newTest
+```
+
+### REMOVE
+
+``` YAML title="Syntax"
+- type: REMOVE
+  key: section.myList
+```
