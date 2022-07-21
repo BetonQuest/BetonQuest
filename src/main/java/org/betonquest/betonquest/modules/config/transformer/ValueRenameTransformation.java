@@ -22,7 +22,7 @@ public class ValueRenameTransformation implements PatchTransformation {
     public void transform(final Map<String, String> options, final ConfigurationSection config) throws PatchException {
         final String key = options.get("key");
 
-        final String value = config.getString(key);
+        final Object value = config.get(key);
         if (value == null) {
             throw new PatchException("The key '" + key + "' did not exist, skipping transformation.");
         }
@@ -31,7 +31,7 @@ public class ValueRenameTransformation implements PatchTransformation {
         final Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
         final String newEntry = options.get("newValue");
 
-        final Matcher matcher = pattern.matcher(value);
+        final Matcher matcher = pattern.matcher(value.toString());
         if (matcher.matches()) {
             config.set(key, newEntry);
         } else {

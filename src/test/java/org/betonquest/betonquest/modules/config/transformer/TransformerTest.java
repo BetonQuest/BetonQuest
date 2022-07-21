@@ -265,6 +265,24 @@ class TransformerTest {
     }
 
     @Test
+    void testKeyRenameList() throws InvalidConfigurationException {
+        final String patch = """
+                2.0.0.1:
+                    - type: KEY_RENAME
+                      oldKey: section.myList
+                      newKey: section.newList
+                """;
+        final String serializedConfig = getSerializedPatchedConfig(patch);
+
+
+        final Object value = CONFIG.get("section.myList");
+        CONFIG.set("section.myList", null);
+        CONFIG.set("section.newList", value);
+
+        assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
+    }
+
+    @Test
     void testKeyRename(final LogValidator validator) throws InvalidConfigurationException {
         final String patch = """
                 2.0.0.1:

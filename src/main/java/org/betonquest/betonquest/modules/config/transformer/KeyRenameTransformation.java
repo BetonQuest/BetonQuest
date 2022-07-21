@@ -21,7 +21,7 @@ public class KeyRenameTransformation implements PatchTransformation {
         final String oldKey = options.get("oldKey");
         final String newKey = options.get("newKey");
 
-        final String value = config.getString(oldKey);
+        final Object value = config.get(oldKey);
         if (value == null) {
             throw new PatchException("Key '" + oldKey + "' was not set, skipping transformation to '" + newKey + "'.");
         }
