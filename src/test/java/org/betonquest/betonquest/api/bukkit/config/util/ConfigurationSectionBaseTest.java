@@ -74,7 +74,7 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
                 + Pattern.quote("']}"));
         final String sectionString = section.getValues(false).toString();
         final Matcher matcher = pattern.matcher(sectionString);
-        assertTrue(matcher.matches(), "Expected regex: " + pattern + "\n" + "Actual string: " + sectionString);
+        assertTrue(matcher.matches(), "Didn't match regex: " + pattern + "\n" + "Actual string: " + sectionString);
     }
 
     @Test
@@ -87,7 +87,7 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
                 + Pattern.quote("'], nestedChildSection.key=value}"));
         final String sectionString = section.getValues(true).toString();
         final Matcher matcher = pattern.matcher(sectionString);
-        assertTrue(matcher.matches(), "Expected regex: " + pattern + "\n" + "Actual string: " + sectionString);
+        assertTrue(matcher.matches(), "Didn't match regex: " + pattern + "\n" + "Actual string: " + sectionString);
     }
 
     @Test

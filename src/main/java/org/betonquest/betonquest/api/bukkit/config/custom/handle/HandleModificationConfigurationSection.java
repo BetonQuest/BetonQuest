@@ -118,7 +118,7 @@ public class HandleModificationConfigurationSection extends ConfigurationSection
     }
 
     /**
-     * Warps a given object to an instance of this class.
+     * Wraps a given object into an instance of this class.
      *
      * @param obj the raw object
      * @return the wrapped object

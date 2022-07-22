@@ -5,13 +5,13 @@ import org.bukkit.configuration.ConfigurationOptions;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * This {@link ConfigurationOptions} implementation guarantee that it is not possible to break out of the
+ * This {@link ConfigurationOptions} implementation guarantees that it is not possible to break out of the
  * {@link HandleModificationConfiguration} instance.
  */
 public class HandleConfigurationOptions extends ConfigurationOptions {
 
     /**
-     * The original {@link ConfigurationOptions} hidden behind this.
+     * The original {@link ConfigurationOptions} hidden behind this decorator.
      */
     private final ConfigurationOptions original;
 

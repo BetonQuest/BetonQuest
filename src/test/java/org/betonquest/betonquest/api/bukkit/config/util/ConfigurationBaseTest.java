@@ -118,7 +118,7 @@ public class ConfigurationBaseTest extends AbstractConfigBaseTest<Configuration>
                 + Pattern.quote("'], default.key=value}"));
         final String sectionString = defaults.getValues(true).toString();
         final Matcher matcher = pattern.matcher(sectionString);
-        assertTrue(matcher.matches(), "Expected regex: " + pattern + "\n" + "Actual string: " + sectionString);
+        assertTrue(matcher.matches(), "Didn't match regex: " + pattern + "\n" + "Actual string: " + sectionString);
     }
 
     @Test
