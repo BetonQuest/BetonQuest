@@ -135,4 +135,4 @@ Then visit [127.0.0.1:8000](http://127.0.0.1:8000) to make sure that everything 
 ---
 ## Where to Continue?
 You should now continue with [Create a new Branch](Process/Create-a-new-Branch.md),
-before you start changing [Code](Process/Code/index.md) or [Docs](Process/Docs/index.md).
+before you start changing [Code](Process/Code/Workflow.md) or [Docs](Process/Docs/Workflow.md).

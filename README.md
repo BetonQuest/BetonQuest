@@ -6,7 +6,7 @@
     <a href="https://bstats.org/plugin/bukkit/BetonQuest/551/" title="See how many servers run this plugin.">
         <img src="https://img.shields.io/bstats/servers/551?style=plastic"/>
      </a>
-    <a href="https://www.spigotmc.org/resources/betonquest.2117/" title="See our Spigot rating.">
+    <a href="https://www.spigotmc.org/resources/2117/" title="See our Spigot rating.">
         <img src="https://img.shields.io/spiget/stars/2117?style=plastic"/>
     </a>
     <a href="https://discord.gg/MvmkHEu" title="Join our discord for support.">

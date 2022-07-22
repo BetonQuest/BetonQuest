@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.conditions.ChestItemCondition;
+import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.events.ChestTakeEvent;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -23,7 +24,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.InventoryHolder;
+
+import java.util.List;
 
 /**
  * Requires the player to put items in the chest. Items can optionally NOT
@@ -36,6 +40,11 @@ public class ChestPutObjective extends Objective implements Listener {
     private final Condition chestItemCondition;
     private final QuestEvent chestTakeEvent;
     private final CompoundLocation loc;
+    /**
+     * Argument to manage the chest access for one or multiple players. False by default which means only one player
+     * can acess the chest at the same time.
+     */
+    private final boolean multipleAccess;
 
     public ChestPutObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
@@ -44,6 +53,7 @@ public class ChestPutObjective extends Objective implements Listener {
         loc = instruction.getLocation();
         final String location = instruction.current();
         final String items = instruction.next();
+        multipleAccess = Boolean.parseBoolean(instruction.getOptional("multipleaccess"));
         try {
             chestItemCondition = new ChestItemCondition(new Instruction(instruction.getPackage(), new NoID(instruction.getPackage()), "chestitem " + location + " " + items));
         } catch (InstructionParseException | ObjectNotFoundException e) {
@@ -59,6 +69,34 @@ public class ChestPutObjective extends Objective implements Listener {
             }
         }
 
+    }
+
+    /**
+     * Permits multiple players to look into the chest, if set.
+     *
+     * @param event InventoryOpenEvent
+     */
+    @EventHandler
+    public void onChestOpen(final InventoryOpenEvent event) {
+        if (!multipleAccess && !checkForNoOtherPlayer(event)) {
+            try {
+                Config.sendNotify(null, (Player) event.getPlayer(), "chest_occupied", null);
+            } catch (final QuestRuntimeException e) {
+                LOG.warn("The notify system was unable to send the message for 'chest_occupied'. Error was: '"
+                        + e.getMessage() + "'", e);
+            }
+            event.setCancelled(true);
+        }
+    }
+
+    /**
+     * Checks if there is no other player that has this inventory open
+     *
+     * @param event InventoryOpenEvent
+     * @return true, if no other player using the inventory, else false
+     */
+    private boolean checkForNoOtherPlayer(final InventoryOpenEvent event) {
+        return event.getInventory().getViewers().equals(List.of(event.getPlayer()));
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
