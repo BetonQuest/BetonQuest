@@ -6,6 +6,7 @@ import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.protocollib.conversation.MenuConvIO;
 import org.betonquest.betonquest.compatibility.protocollib.conversation.PacketInterceptor;
+import org.betonquest.betonquest.compatibility.protocollib.hider.MythicHider;
 import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
 import org.betonquest.betonquest.compatibility.protocollib.hider.UpdateVisibilityNowEvent;
 import org.betonquest.betonquest.exceptions.HookException;
@@ -39,7 +40,9 @@ public class ProtocolLibIntegrator implements Integrator {
             NPCHider.start();
             plugin.registerEvents("updatevisibility", UpdateVisibilityNowEvent.class);
         }
-
+        if (Compatibility.getHooked().contains("MythicMobs")) {
+            MythicHider.start();
+        }
         plugin.registerConversationIO("menu", MenuConvIO.class);
         plugin.registerInterceptor("packet", PacketInterceptor.class);
     }
@@ -49,6 +52,10 @@ public class ProtocolLibIntegrator implements Integrator {
         //if NPCHider is running, reload it
         if (NPCHider.getInstance() != null) {
             NPCHider.start();
+        }
+        //if MythicHider is running, reload it
+        if (MythicHider.getInstance() != null) {
+            MythicHider.start();
         }
     }
 

@@ -21,7 +21,7 @@ There are also plugins that hook into BetonQuest that require a clientside mod:
 [NGVexJournal](https://www.spigotmc.org/resources/76938/)
 
 
-## [AureliumSkills](https://www.spigotmc.org/resources/aurelium-skills-advanced-skills-stats-abilities-and-more.81069/)
+## [AureliumSkills](https://www.spigotmc.org/resources/81069/)
 
 ###Conditions
 
@@ -54,7 +54,7 @@ aureliumskillsxp farming 10 level
 ```
 
 
-## [Brewery](https://www.spigotmc.org/resources/brewery.3082/)
+## [Brewery](https://www.spigotmc.org/resources/3082/)
 
 ### Conditions
 
@@ -95,7 +95,7 @@ Removes the specified drink from the players inventory. An amount needs to be sp
 takebrew 2 MY_OTHER_BREW 
 ```
 
-## NPC's using [Citizens](https://www.spigotmc.org/resources/citizens.13811/)
+## NPC's using [Citizens](https://www.spigotmc.org/resources/13811/)
 
 If you have this plugin you can use it's NPCs for conversations. I highly recommend you installing it,
 it's NPCs are way more immersive. Having Citizens also allows you to use NPCKill objective and to have moving NPC's.
@@ -336,7 +336,7 @@ This event simply gives the player specified amount of Heroes experience. The fi
 
 
 ### Hidden Holograms
-Installing this plugin will enable you to create hidden holograms, which will be shown to players only if they meet specified conditions. Note that you need to have [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/) installed in order to hide holograms from certain players.
+Installing this plugin will enable you to create hidden holograms, which will be shown to players only if they meet specified conditions. Note that you need to have [ProtocolLib](https://www.spigotmc.org/resources/1997/) installed in order to hide holograms from certain players.
 
 In order to create a hologram, you have to add a `holograms` section. Add a node named as your hologram to this section and define `lines`, `conditions` and `location` subnodes. The fist one should be a list of texts - these will be the lines of a hologram. Color codes are supported. Second is a list of conditions separated by commas. Third is a location in a standard format, like in `teleport` event. An example of such hologram definition:
 
@@ -391,7 +391,7 @@ npc_holograms:
 
 Item lines are also supported here.
 
-## [JobsReborn](https://www.spigotmc.org/resources/jobs-reborn.4216/)
+## [JobsReborn](https://www.spigotmc.org/resources/4216/)
 
 Requires adding the following to _config.yml_:
 ```YAML
@@ -512,7 +512,7 @@ This condition can check wands. The first argument is either `hand`, `inventory`
     wand hand name:master spells:flare,missile:2
     ```
 
-## [McMMO](https://www.spigotmc.org/resources/official-mcmmo-original-author-returns.64348/)
+## [McMMO](https://www.spigotmc.org/resources/64348/)
 
 ### Conditions
 
@@ -536,7 +536,7 @@ This event adds experience points in a specified skill. The first argument is th
     mcmmoexp swords 1500
     ```
 
-## TeamRequiem ([MMOCore](https://www.spigotmc.org/resources/mmocore.70575/), [MMOItem](https://www.spigotmc.org/resources/mmoitems-premium.39267/), [MythicLib](https://www.spigotmc.org/resources/mmolib.73855/))
+## TeamRequiem ([MMOCore](https://www.spigotmc.org/resources/70575/), [MMOItem](https://www.spigotmc.org/resources/39267/), [MythicLib](https://www.spigotmc.org/resources/73855/))
 
 
 ### Conditions
@@ -754,7 +754,7 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 !!! example
     ```YAML
     mmobkill SkeletalKnight amount:2 events:reward
-    mmobkill SnekBoss amount:2 minlevel:4 maxlevel:6 events:reward
+    mmobkill SnekBoss amount:2 minlevel:4 maxlevel:6 events:reward marked:%player%
     ```
 
 ### Conditions
@@ -777,16 +777,16 @@ You can also add the optional argument `target` which will make the mob target t
 
 There is also the `private` argument which will hide the mob from all other players until restart. This does not hide particles or block sound from the mob however.
 
-You can also mark the spawned mob with a keyword using marked: argument. 
+You can also mark the spawned mob with a keyword using `marked` argument.
 It won't show anywhere, and you can check for only marked mobs in mmobkill objective.
 
 !!! example
     ```YAML
     mspawnmob 100;200;300;world SkeletalKnight:1 5
-    mspawnmob 100;200;300;world SkeletonKing:1 5 target private marked::%player%
+    mspawnmob 100;200;300;world SkeletonKing:1 5 target private marked:%player%
     ```
 
-## [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/)
+## [PlaceholderAPI](https://www.spigotmc.org/resources/6245/)
 
 If you have this plugin, BetonQuest will add a `betonquest` placeholder to it and you will be able to use `ph` variable in your conversations.
 
@@ -812,7 +812,7 @@ You can also use placeholders from other plugins in BetonQuest. Simply insert a 
     %ph.player_item_in_hand%
     ```
 
-## [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/)
+## [ProtocolLib](https://www.spigotmc.org/resources/1997/)
 
 ### Hiding NPC's
 Having ProtocolLib installed will let you hide Citizens NPCs if specified conditions are met.
@@ -904,7 +904,7 @@ freezeMe: "freeze 100" #Freezes the player for 5 seconds
 ```
 
 
-## [Quests](https://www.spigotmc.org/resources/quests.3711/)
+## [Quests](https://www.spigotmc.org/resources/3711/)
 
 Quests is another questing plugin, which offers very simple creation of quests. If you don't want to spend a lot of time to write advanced quests in BetonQuest but you need a specific thing from this plugin you can use Custom Event Reward or Custom Condition Requirement. Alternatively, if you have a lot of quests written in Quests, but want to integrate them with the conversation system, you can use `quest` event and `quest` condition.
 
@@ -962,9 +962,9 @@ This event opens a trading window of a Villager. The only argument is the unique
     shopkeeper b687538e-14ce-4b77-ae9f-e83b12f0b929
     ```
 
-## :material-sword-cross: [ProSkillAPI](https://www.spigotmc.org/resources/proskillapi-create-custom-races-classes-skills-spells-with-an-easy-online-editor.91913/)
+## :material-sword-cross: [ProSkillAPI](https://www.spigotmc.org/resources/91913/)
 
-This adds support for [ProMCTeam's SkillAPI fork](https://www.spigotmc.org/resources/proskillapi-create-custom-races-classes-skills-spells-with-an-easy-online-editor.91913/). They still update SkillAPI.  
+This adds support for [ProMCTeam's SkillAPI fork](https://www.spigotmc.org/resources/91913/). They still update SkillAPI.  
 
 ### Conditions
 
@@ -1086,7 +1086,7 @@ There is only one argument in this variable, `amount` for showing money amount o
     %money.left:500%
     ```
 
-## [WorldEdit](http://dev.bukkit.org/bukkit-plugins/worldedit/) or [FastAsyncWorldEdit](https://www.spigotmc.org/resources/fast-async-worldedit.13932/)
+## [WorldEdit](http://dev.bukkit.org/bukkit-plugins/worldedit/) or [FastAsyncWorldEdit](https://www.spigotmc.org/resources/13932/)
 
 ### Events
 
