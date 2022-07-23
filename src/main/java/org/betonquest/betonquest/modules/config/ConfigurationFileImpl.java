@@ -94,7 +94,16 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
             final String currentVersion = accessor.getConfig().getString("configVersion");
             LOG.info("Patch for configuration '" + configName + "' with current version '" + currentVersion + "' found.");
             LOG.info("Backing up current config...");
-            //TODO: Backup here
+
+            final File configFile = accessor.getConfigurationFile();
+            final File backupFolder = new File(configFile.getAbsolutePath(), "Backups");
+            if (!backupFolder.isDirectory()) {
+                backupFolder.mkdir();
+            }
+            final String configVersion = accessor.getConfig().getString("configVersion", "2.0.0-CONFIG-0");
+
+            final String path = backupFolder.getAbsolutePath() + "/" + configVersion;
+            Zipper.zip(accessor.getConfigurationFile(), path);
 
             final boolean flawless = patcher.patch();
             if (!flawless) {

@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -78,8 +77,8 @@ public class Patcher {
     public Patcher(final ConfigurationSection config, final ConfigurationSection patchConfig) {
         this.pluginConfig = config;
         this.patchConfig = patchConfig;
-        final String configVersion = config.getString("configVersion");
-        this.configVersion = new Version(Objects.requireNonNullElse(configVersion, "2.0.0-CONFIG-0"));
+        final String configVersion = config.getString("configVersion", "2.0.0-CONFIG-0");
+        this.configVersion = new Version(configVersion);
         try {
             buildVersionIndex(this.patchConfig, "");
         } catch (final InvalidConfigurationException e) {
