@@ -12,15 +12,18 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
+import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.metadata.MetadataValue;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -35,6 +38,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
     private final double neutralDeathRadiusAllPlayersSquared;
     private final VariableNumber minMobLevel;
     private final VariableNumber maxMobLevel;
+    protected String marked;
 
     public MythicMobKillObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "mobs_to_kill");
@@ -51,15 +55,30 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
 
         minMobLevel = unsafeMinMobLevel == null ? new VariableNumber(Double.NEGATIVE_INFINITY) : new VariableNumber(packName, unsafeMinMobLevel);
         maxMobLevel = unsafeMaxMobLevel == null ? new VariableNumber(Double.POSITIVE_INFINITY) : new VariableNumber(packName, unsafeMaxMobLevel);
+        marked = instruction.getOptional("marked");
+        if (marked != null) {
+            marked = Utils.addPackage(instruction.getPackage(), marked);
+        }
     }
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @EventHandler(ignoreCancelled = true)
     public void onBossKill(final MythicMobDeathEvent event) {
         if (!names.contains(event.getMobType().getInternalName())) {
             return;
         }
-
+        if (marked != null) {
+            if (!event.getEntity().hasMetadata("betonquest-marked")) {
+                return;
+            }
+            final List<MetadataValue> meta = event.getEntity().getMetadata("betonquest-marked");
+            for (final MetadataValue m : meta) {
+                if (!m.asString().equals(marked)) {
+                    return;
+                }
+            }
+        }
         if (event.getKiller() instanceof Player) {
             handlePlayerKill((Player) event.getKiller(), event.getMob());
         } else {

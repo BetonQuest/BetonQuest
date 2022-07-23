@@ -755,6 +755,7 @@ argument to specify how many of these mobs need to be killed. It's also possible
 You can also add an optional `neutralDeathRadiusAllPlayers` argument to complete the objective for each nearby player
 within the defined radius when the mob is killed by any non-player source.
 You can add a `notify` keyword if you want to send a notification to players whenever the objective progresses.
+You can also add an optional `marked` argument to only count kills marked with the `mspawn` event.
 
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of mythic mobs already killed,
 `left` is the amount of mythic mobs still needed to kill and `total` is the amount of mythic mobs initially required.
@@ -762,7 +763,7 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 !!! example
     ```YAML
     mmobkill SkeletalKnight amount:2 events:reward
-    mmobkill SnekBoss amount:2 minlevel:4 maxlevel:6 events:reward
+    mmobkill SnekBoss amount:2 minlevel:4 maxlevel:6 events:reward marked:DungeonBoss3
     ```
 
 ### Conditions
@@ -781,10 +782,17 @@ Check whether the player is near a specific MythicMobs entity. The first argumen
 #### SpawnMob: `mspawnmob`
 
 Spawn specified amount of MythicMobs at given location. The first argument is a location defined like `100;200;300;world`. Second is MythicMobs internal name (the one defined in MythicMobs' configuration) followed by a colon and a level. Third one is amount and it's required!
+You can also add the optional argument `target` which will make the mob target the player. 
+
+There is also the `private` argument which will hide the mob from all other players until restart. This does not hide particles or block sound from the mob however.
+
+You can also mark the spawned mob with a keyword using `marked` argument.
+It won't show anywhere, and you can check for only marked mobs in mmobkill objective.
 
 !!! example
     ```YAML
     mspawnmob 100;200;300;world SkeletalKnight:1 5
+    mspawnmob 100;200;300;world SkeletonKing:1 5 target private marked:DungeonBoss3
     ```
 
 ## [PlaceholderAPI](https://www.spigotmc.org/resources/6245/)
