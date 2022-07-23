@@ -15,6 +15,7 @@ public class HeroesIntegrator implements Integrator {
 
     @Override
     public void hook() {
+        plugin.registerConditions("heroesattribute", HeroesAttributeCondition.class);
         plugin.registerConditions("heroesclass", HeroesClassCondition.class);
         plugin.registerConditions("heroesskill", HeroesSkillCondition.class);
         plugin.registerEvents("heroesexp", HeroesExperienceEvent.class);
