@@ -1,18 +1,18 @@
 ---
 icon: material/note-edit
 ---
+
+## Usage
 The config patcher automatically updates BetonQuest's main plugin config or those of BetonQuest's addons.
 This is needed when changes are made to the existing config format.
+This patcher only works on configuration files! It's not used for files that contain quests.
+
 
 ## The Patch File
-The Patcher uses a patch file to update the corresponding config.
-Whenever a resource file is loaded using BetonQuest's `ConfigurationFile` class, a "_filename.patch.yml"_ file 
-is searched in the same directory as the resource file. It contains the configuration for all patches that need to be
-applied.
-
-Different types of changes are called "transformations" and are applied by "transformers". You can configure transformers
-in a patch file.
-The patch file contains a list of config versions that each have a number of transformer settings.
+Whenever a resource file is loaded using BetonQuest's `ConfigurationFile` API, a "_resourceFilename.patch.yml"_ file 
+is searched in the same directory the resource file is located. It contains the configuration for all patches
+that need to be applied. Each patch contains configurations for "transformers" that apply changes to the resource
+file before it's loaded. Let's take a look at an example:
 
 ``` YAML title="config.patch.yml"
 2.0.0.1: #(1)!
@@ -34,9 +34,9 @@ The patch file contains a list of config versions that each have a number of tra
 ## Config Versions
 The versions in the patch file have four digits (`1.2.3.4`). The first three are the semantic version of the BetonQuest 
 version that this patch updates the config to. The last digit is used to version multiple patches during the
-development phase of a semantic versioning release.
+development phase of a semantic versioning release. 
 
-The config's version is shown as the value of the `configVersion` key. It is automatically set by the patcher.
+The config's version is shown inside each config as the value of the `configVersion` key. It is automatically set by the patcher.
 It uses a slightly different format: `1.2.3.4` in the patch file is `1.2.3-CONFIG-4` in the config.
 
 Example:
@@ -70,8 +70,10 @@ Example:
 - type: LIST_ENTRY_ADD
   key: section.myList
   entry: newEntry
-  position: LAST | LAST | def:LAST
+  position: LAST #(1)!
 ```
+
+1. Can be `FIRST` or `LAST`. Default value is `LAST`.
 
 ### LIST_ENTRY_RENAME
 
