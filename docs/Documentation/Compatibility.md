@@ -754,7 +754,7 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 !!! example
     ```YAML
     mmobkill SkeletalKnight amount:2 events:reward
-    mmobkill SnekBoss amount:2 minlevel:4 maxlevel:6 events:reward marked:%player%
+    mmobkill SnekBoss amount:2 minlevel:4 maxlevel:6 events:reward marked:DungeonBoss3
     ```
 
 ### Conditions
@@ -783,7 +783,7 @@ It won't show anywhere, and you can check for only marked mobs in mmobkill objec
 !!! example
     ```YAML
     mspawnmob 100;200;300;world SkeletalKnight:1 5
-    mspawnmob 100;200;300;world SkeletonKing:1 5 target private marked:%player%
+    mspawnmob 100;200;300;world SkeletonKing:1 5 target private marked:DungeonBoss3
     ```
 
 ## [PlaceholderAPI](https://www.spigotmc.org/resources/6245/)
