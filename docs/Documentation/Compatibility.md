@@ -314,7 +314,7 @@ This condition checks the classes of the player. The first argument must be `pri
 
 #### Heroes Attribute: `heroesattribute`
 
-This condition check's the level of a player's attribute. The first argument must be `strength`, `constitution`, `endurance`, `dexterity`, `intellect`, `wisdom`, or `charisma`. Second argument is the required level of the attribute.
+This condition check's the level of a player's attribute. The first argument must be `strength`, `constitution`, `endurance`, `dexterity`, `intellect`, `wisdom`, or `charisma`. Second argument is the required level of the attribute. Must be greater than or equal the specified number.
 
 !!! example
     ```YAML
