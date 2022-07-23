@@ -297,7 +297,7 @@ be displayed to the player for which you ran the event.
       playEffect: particle beton loc:100;200;300;world;180;-90 private
     ```
 
-## [Heroes](http://dev.bukkit.org/bukkit-plugins/heroes/)
+## [Heroes](https://www.spigotmc.org/resources/24734/)
 
 When you install Heroes, all kills done via this plugin's skills will be counted in MobKill objectives.
 
@@ -310,6 +310,15 @@ This condition checks the classes of the player. The first argument must be `pri
 !!! example
     ```YAML
     heroesclass mastered warrior
+    ```
+
+#### Heroes Attribute: `heroesattribute`
+
+This condition check's the level of a player's attribute. The first argument must be `strength`, `constitution`, `endurance`, `dexterity`, `intellect`, `wisdom`, or `charisma`. Second argument is the required level of the attribute.
+
+!!! example
+    ```YAML
+    heroesattribute strength 5
     ```
 
 #### Skill: `heroesskill`
