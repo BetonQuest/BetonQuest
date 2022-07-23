@@ -9,7 +9,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,7 +38,7 @@ public class MultiConfigurationSplitTest extends MultiConfigurationTest {
         configs.put(YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/multi/config3.yml")), "config1.yml");
         try {
             final MultiConfiguration multiConfiguration = new MultiConfiguration(new ArrayList<>(configs.keySet()));
-            multiConfiguration.setMultiDefaults(List.of(getDefault()));
+            multiConfiguration.setDefaults(getDefault());
             return multiConfiguration;
         } catch (final KeyConflictException e) {
             fail(e.resolvedMessage(configs), e);

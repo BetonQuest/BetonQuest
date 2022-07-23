@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -111,7 +113,12 @@ public class ConfigurationBaseTest extends AbstractConfigBaseTest<Configuration>
     public void testGetDefaults() {
         final Configuration defaults = config.getDefaults();
         assertNotNull(defaults);
-        assertEquals("{default=MemorySection[path='default', root='MemoryConfiguration'], default.key=value}", defaults.getValues(true).toString());
+        final Pattern pattern = Pattern.compile(Pattern.quote("{default=") + "\\w+"
+                + Pattern.quote("[path='default', root='") + "\\w+"
+                + Pattern.quote("'], default.key=value}"));
+        final String sectionString = defaults.getValues(true).toString();
+        final Matcher matcher = pattern.matcher(sectionString);
+        assertTrue(matcher.matches(), "Didn't match regex: " + pattern + "\n" + "Actual string: " + sectionString);
     }
 
     @Test
@@ -156,9 +163,11 @@ public class ConfigurationBaseTest extends AbstractConfigBaseTest<Configuration>
         assertFalse(config.options().copyDefaults());
         config.options().copyDefaults(true);
         assertTrue(config.options().copyDefaults());
+        config.options().copyDefaults(false);
 
         assertEquals('.', config.options().pathSeparator());
         config.options().pathSeparator('-');
         assertEquals('-', config.options().pathSeparator());
+        config.options().pathSeparator('.');
     }
 }

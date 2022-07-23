@@ -23,7 +23,6 @@ import org.mockito.MockedStatic;
 import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.*;
@@ -149,34 +148,12 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
 
     /**
      * This is a {@link TestObject} for the related {@link ConfigurationSection} methods.
+     *
+     * @param name   The pseudo name
+     * @param amount The pseudo amount
+     * @param sum    The pseudo sum
      */
-    public static class TestObject implements ConfigurationSerializable {
-        /**
-         * The pseudo name
-         */
-        public final String name;
-        /**
-         * The pseudo amount
-         */
-        public final int amount;
-        /**
-         * The pseudo sum
-         */
-        public final long sum;
-
-        /**
-         * Create a new {@link TestObject}
-         *
-         * @param name   The pseudo name
-         * @param amount The pseudo amount
-         * @param sum    The pseudo sum
-         */
-        public TestObject(final String name, final int amount, final long sum) {
-            this.name = name;
-            this.amount = amount;
-            this.sum = sum;
-        }
-
+    public record TestObject(String name, int amount, long sum) implements ConfigurationSerializable {
         /**
          * Method to deserialize a {@link TestObject}.
          *
@@ -197,23 +174,6 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
             map.put("amount", amount);
             map.put("sum", sum);
             return map;
-        }
-
-        @Override
-        public boolean equals(final Object obj) {
-            if (this == obj) {
-                return true;
-            }
-            if (obj == null || getClass() != obj.getClass()) {
-                return false;
-            }
-            final TestObject that = (TestObject) obj;
-            return amount == that.amount && sum == that.sum && Objects.equals(name, that.name);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(name, amount, sum);
         }
     }
 }

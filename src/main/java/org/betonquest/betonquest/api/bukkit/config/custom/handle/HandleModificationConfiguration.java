@@ -53,7 +53,7 @@ public class HandleModificationConfiguration extends HandleModificationConfigura
     @Override
     public @Nullable
     Configuration getDefaults() {
-        return original.getDefaults();
+        return (Configuration) wrapModifiable(original.getDefaults());
     }
 
     @Override
@@ -64,6 +64,6 @@ public class HandleModificationConfiguration extends HandleModificationConfigura
     @Override
     public @NotNull
     ConfigurationOptions options() {
-        return original.options();
+        return new HandleConfigurationOptions(this, original.options());
     }
 }

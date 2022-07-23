@@ -4,7 +4,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.bukkit.config.custom.handle.ConfigurationModificationHandler;
 import org.betonquest.betonquest.api.bukkit.config.custom.handle.HandleModificationConfiguration;
 import org.betonquest.betonquest.api.bukkit.config.custom.handle.HandleModificationConfigurationSection;
-import org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable.UnmodifiableConfigurationSection;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -31,11 +30,6 @@ import static org.betonquest.betonquest.api.bukkit.config.custom.handle.Configur
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public class MultiConfiguration extends HandleModificationConfiguration {
-
-    /**
-     * Exception message for unmodifiable behaviours.
-     */
-    public static final String UNMODIFIABLE_MESSAGE = "The defaults of this config can not be modified";
     /**
      * All keys and a list of files that contains them.
      */
@@ -110,24 +104,6 @@ public class MultiConfiguration extends HandleModificationConfiguration {
                 }
             }
         };
-    }
-
-    /**
-     * Applies all templates to this {@link MultiConfiguration}.
-     *
-     * @param templates all templates, the weakest first
-     */
-    public void setMultiDefaults(final List<ConfigurationSection> templates) {
-        for (final ConfigurationSection template : templates) {
-            for (final String key : template.getKeys(true)) {
-                if (!template.isConfigurationSection(key)) {
-                    original.addDefault(key, template.get(key));
-                    if (!keyIndex.containsKey(key)) {
-                        addToList(keyIndex, key, null);
-                    }
-                }
-            }
-        }
     }
 
     /**
@@ -381,12 +357,6 @@ public class MultiConfiguration extends HandleModificationConfiguration {
         }
     }
 
-    @Override
-    public @Nullable
-    ConfigurationSection getDefaultSection() {
-        return new UnmodifiableConfigurationSection(original.getDefaultSection());
-    }
-
     /**
      * This class is designed to get called when the method
      * {@link MultiConfigurationHandler#set(ConfigurationSection, String, Object)}  or the method
@@ -475,22 +445,22 @@ public class MultiConfiguration extends HandleModificationConfiguration {
 
         @Override
         public void addDefault(@NotNull final ConfigurationSection section, @NotNull final String path, @Nullable final Object value) {
-            throw new UnsupportedOperationException(UNMODIFIABLE_MESSAGE);
+            section.addDefault(path, value);
         }
 
         @Override
         public void addDefaults(@NotNull final Configuration section, @NotNull final Map<String, Object> defaults) {
-            throw new UnsupportedOperationException(UNMODIFIABLE_MESSAGE);
+            section.addDefaults(defaults);
         }
 
         @Override
         public void addDefaults(@NotNull final Configuration section, @NotNull final Configuration defaults) {
-            throw new UnsupportedOperationException(UNMODIFIABLE_MESSAGE);
+            section.addDefaults(defaults);
         }
 
         @Override
         public void setDefaults(@NotNull final Configuration section, @NotNull final Configuration defaults) {
-            throw new UnsupportedOperationException(UNMODIFIABLE_MESSAGE);
+            section.setDefaults(defaults);
         }
     }
 }
