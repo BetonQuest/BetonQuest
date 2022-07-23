@@ -47,6 +47,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `fish` objective now has `hookLocation` and `range` settings.
 - `burning` condition
 - `inconversation` condition
+- `heroesattribute` condition
 - Things that are also added in 1.12.X:
     - new line support for `journal_lore` in `messages.yml`
     - FastAsyncWorldEdit compatibility
