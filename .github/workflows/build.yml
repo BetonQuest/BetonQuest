@@ -222,7 +222,6 @@ jobs:
           path: |
             target/docs/
             !target/docs/changes.patch
-
   deploy-artifacts:
     name: Deploy Artifacts
     if: "needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'developement' && needs.prepare.outputs.CHANGES_IN_DOCS_ONLY == 'false'"
