@@ -21,6 +21,7 @@ import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static org.betonquest.betonquest.api.bukkit.config.custom.handle.ConfigurationSectionModificationHandler.getAbsolutePath;
@@ -87,7 +88,7 @@ public class MultiConfiguration extends HandleModificationConfiguration {
                 if (keyIndex.containsKey(path)) {
                     final ConfigurationSection config = keyIndex.get(path).get(0);
                     if (config != null && config.isSet(path)) {
-                        config.setComments(path, comments);
+                        config.setComments(getReplacedPath(path, config), comments);
                         unsavedConfigs.add(config);
                     }
                 }
@@ -98,7 +99,7 @@ public class MultiConfiguration extends HandleModificationConfiguration {
                 if (keyIndex.containsKey(path)) {
                     final ConfigurationSection config = keyIndex.get(path).get(0);
                     if (config != null && config.isSet(path)) {
-                        config.setInlineComments(path, comments);
+                        config.setInlineComments(getReplacedPath(path, config), comments);
                         unsavedConfigs.add(config);
                     }
                 }
@@ -313,14 +314,14 @@ public class MultiConfiguration extends HandleModificationConfiguration {
         if (keyIndex.containsKey(path)) {
             final ConfigurationSection associatedConfig = keyIndex.get(path).get(0);
             if (associatedConfig != null && associatedConfig.isSet(path)) {
-                associatedConfig.set(path, null);
+                associatedConfig.set(getReplacedPath(path, associatedConfig), null);
                 unsavedConfigs.add(associatedConfig);
             }
             keyIndex.get(path).set(0, targetConfig);
         } else {
             addToList(keyIndex, path, targetConfig);
         }
-        targetConfig.set(path, original.get(path));
+        targetConfig.set(getReplacedPath(path, targetConfig), original.get(path));
         unsavedConfigs.add(targetConfig);
     }
 
@@ -340,7 +341,7 @@ public class MultiConfiguration extends HandleModificationConfiguration {
         if (keyIndex.containsKey(path)) {
             final ConfigurationSection config = keyIndex.get(path).get(0);
             if (config != null && config.isSet(path)) {
-                config.set(path, value);
+                config.set(getReplacedPath(path, config), value);
                 unsavedConfigs.add(config);
             }
         }
@@ -351,10 +352,19 @@ public class MultiConfiguration extends HandleModificationConfiguration {
         for (final Map.Entry<String, List<ConfigurationSection>> entry : keyIndex.entrySet()) {
             final ConfigurationSection config = entry.getValue().get(0);
             if (config != null && config.isSet(path)) {
-                config.set(path, null);
+                config.set(getReplacedPath(path, config), null);
                 unsavedConfigs.add(config);
             }
         }
+    }
+
+    @NotNull
+    private String getReplacedPath(final String path, final ConfigurationSection config) {
+        final Configuration root = config.getRoot();
+        if (root == null) {
+            throw new IllegalStateException("One source config does not have a root!");
+        }
+        return path.replaceAll(Pattern.quote(String.valueOf(options().pathSeparator())), String.valueOf(root.options().pathSeparator()));
     }
 
     /**
