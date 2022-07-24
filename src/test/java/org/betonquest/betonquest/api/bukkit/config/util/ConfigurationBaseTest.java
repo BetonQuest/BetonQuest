@@ -170,4 +170,17 @@ public class ConfigurationBaseTest extends AbstractConfigBaseTest<Configuration>
         assertEquals('-', config.options().pathSeparator());
         config.options().pathSeparator('.');
     }
+
+    @Test
+    @Override
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    public void testOptionsPathSeparator() {
+        assertEquals('.', config.options().pathSeparator());
+        assertEquals("value", config.getString("childSection.nestedChildSection.key"));
+
+        config.options().pathSeparator('-');
+        assertEquals('-', config.options().pathSeparator());
+        assertEquals("value", config.getString("childSection-nestedChildSection-key"));
+        config.options().pathSeparator('.');
+    }
 }

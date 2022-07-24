@@ -2,9 +2,11 @@ package org.betonquest.betonquest.api.bukkit.config.custom.multi;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.bukkit.config.custom.handle.ConfigurationModificationHandler;
+import org.betonquest.betonquest.api.bukkit.config.custom.handle.HandleConfigurationOptions;
 import org.betonquest.betonquest.api.bukkit.config.custom.handle.HandleModificationConfiguration;
 import org.betonquest.betonquest.api.bukkit.config.custom.handle.HandleModificationConfigurationSection;
 import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.ConfigurationOptions;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -367,6 +369,12 @@ public class MultiConfiguration extends HandleModificationConfiguration {
         return path.replaceAll(Pattern.quote(String.valueOf(options().pathSeparator())), String.valueOf(root.options().pathSeparator()));
     }
 
+    @Override
+    public @NotNull
+    ConfigurationOptions options() {
+        return new MultiConfigurationOptions(this, original.options());
+    }
+
     /**
      * This class is designed to get called when the method
      * {@link MultiConfigurationHandler#set(ConfigurationSection, String, Object)}  or the method
@@ -471,6 +479,35 @@ public class MultiConfiguration extends HandleModificationConfiguration {
         @Override
         public void setDefaults(@NotNull final Configuration section, @NotNull final Configuration defaults) {
             section.setDefaults(defaults);
+        }
+    }
+
+    /**
+     * {@link ConfigurationOptions} for a {@link MultiConfiguration},
+     * that converts all entries in the {@link MultiConfigurationOptions#keyIndex}
+     */
+    private class MultiConfigurationOptions extends HandleConfigurationOptions {
+
+        /**
+         * Creates a new {@link ConfigurationOptions} instance, that maps to the original one.
+         *
+         * @param configuration The {@link Configuration} instance that should be returned by the configuration method
+         * @param original      The original {@link Configuration}, to apply the options to
+         */
+        protected MultiConfigurationOptions(@NotNull final Configuration configuration, final ConfigurationOptions original) {
+            super(configuration, original);
+        }
+
+        @NotNull
+        @Override
+        public ConfigurationOptions pathSeparator(final char value) {
+            final Map<String, List<ConfigurationSection>> newKeyIndex = new ConcurrentHashMap<>();
+            keyIndex.forEach((key, mapValue) -> newKeyIndex.put(key.replace(options().pathSeparator(), value), mapValue));
+
+            keyIndex.clear();
+            keyIndex.putAll(newKeyIndex);
+
+            return super.pathSeparator(value);
         }
     }
 }
