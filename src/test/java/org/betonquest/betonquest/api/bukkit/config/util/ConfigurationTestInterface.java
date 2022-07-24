@@ -22,4 +22,6 @@ public interface ConfigurationTestInterface {
     void testSetDefaultsOnExistingConfigPath();
 
     void testOptions();
+
+    void testOptionsPathSeparator();
 }

@@ -2,9 +2,11 @@ package org.betonquest.betonquest.api.bukkit.config.custom.multi;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.bukkit.config.custom.handle.ConfigurationModificationHandler;
+import org.betonquest.betonquest.api.bukkit.config.custom.handle.HandleConfigurationOptions;
 import org.betonquest.betonquest.api.bukkit.config.custom.handle.HandleModificationConfiguration;
 import org.betonquest.betonquest.api.bukkit.config.custom.handle.HandleModificationConfigurationSection;
 import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.ConfigurationOptions;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -21,6 +23,7 @@ import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static org.betonquest.betonquest.api.bukkit.config.custom.handle.ConfigurationSectionModificationHandler.getAbsolutePath;
@@ -87,7 +90,7 @@ public class MultiConfiguration extends HandleModificationConfiguration {
                 if (keyIndex.containsKey(path)) {
                     final ConfigurationSection config = keyIndex.get(path).get(0);
                     if (config != null && config.isSet(path)) {
-                        config.setComments(path, comments);
+                        config.setComments(getReplacedPath(path, config), comments);
                         unsavedConfigs.add(config);
                     }
                 }
@@ -98,7 +101,7 @@ public class MultiConfiguration extends HandleModificationConfiguration {
                 if (keyIndex.containsKey(path)) {
                     final ConfigurationSection config = keyIndex.get(path).get(0);
                     if (config != null && config.isSet(path)) {
-                        config.setInlineComments(path, comments);
+                        config.setInlineComments(getReplacedPath(path, config), comments);
                         unsavedConfigs.add(config);
                     }
                 }
@@ -313,14 +316,14 @@ public class MultiConfiguration extends HandleModificationConfiguration {
         if (keyIndex.containsKey(path)) {
             final ConfigurationSection associatedConfig = keyIndex.get(path).get(0);
             if (associatedConfig != null && associatedConfig.isSet(path)) {
-                associatedConfig.set(path, null);
+                associatedConfig.set(getReplacedPath(path, associatedConfig), null);
                 unsavedConfigs.add(associatedConfig);
             }
             keyIndex.get(path).set(0, targetConfig);
         } else {
             addToList(keyIndex, path, targetConfig);
         }
-        targetConfig.set(path, original.get(path));
+        targetConfig.set(getReplacedPath(path, targetConfig), original.get(path));
         unsavedConfigs.add(targetConfig);
     }
 
@@ -340,7 +343,7 @@ public class MultiConfiguration extends HandleModificationConfiguration {
         if (keyIndex.containsKey(path)) {
             final ConfigurationSection config = keyIndex.get(path).get(0);
             if (config != null && config.isSet(path)) {
-                config.set(path, value);
+                config.set(getReplacedPath(path, config), value);
                 unsavedConfigs.add(config);
             }
         }
@@ -351,10 +354,25 @@ public class MultiConfiguration extends HandleModificationConfiguration {
         for (final Map.Entry<String, List<ConfigurationSection>> entry : keyIndex.entrySet()) {
             final ConfigurationSection config = entry.getValue().get(0);
             if (config != null && config.isSet(path)) {
-                config.set(path, null);
+                config.set(getReplacedPath(path, config), null);
                 unsavedConfigs.add(config);
             }
         }
+    }
+
+    @NotNull
+    private String getReplacedPath(final String path, final ConfigurationSection config) {
+        final Configuration root = config.getRoot();
+        if (root == null) {
+            throw new IllegalStateException("One source config does not have a root!");
+        }
+        return path.replaceAll(Pattern.quote(String.valueOf(options().pathSeparator())), String.valueOf(root.options().pathSeparator()));
+    }
+
+    @Override
+    public @NotNull
+    ConfigurationOptions options() {
+        return new MultiConfigurationOptions(this, original.options());
     }
 
     /**
@@ -461,6 +479,35 @@ public class MultiConfiguration extends HandleModificationConfiguration {
         @Override
         public void setDefaults(@NotNull final Configuration section, @NotNull final Configuration defaults) {
             section.setDefaults(defaults);
+        }
+    }
+
+    /**
+     * {@link ConfigurationOptions} for a {@link MultiConfiguration},
+     * that converts all entries in the {@link MultiConfigurationOptions#keyIndex}
+     */
+    private class MultiConfigurationOptions extends HandleConfigurationOptions {
+
+        /**
+         * Creates a new {@link ConfigurationOptions} instance, that maps to the original one.
+         *
+         * @param configuration The {@link Configuration} instance that should be returned by the configuration method
+         * @param original      The original {@link Configuration}, to apply the options to
+         */
+        protected MultiConfigurationOptions(@NotNull final Configuration configuration, final ConfigurationOptions original) {
+            super(configuration, original);
+        }
+
+        @NotNull
+        @Override
+        public ConfigurationOptions pathSeparator(final char value) {
+            final Map<String, List<ConfigurationSection>> newKeyIndex = new ConcurrentHashMap<>();
+            keyIndex.forEach((key, mapValue) -> newKeyIndex.put(key.replace(options().pathSeparator(), value), mapValue));
+
+            keyIndex.clear();
+            keyIndex.putAll(newKeyIndex);
+
+            return super.pathSeparator(value);
         }
     }
 }
