@@ -461,7 +461,9 @@ jobs:
           key: ${{ runner.os }}-target/docs-${{ github.run_number }}
       - name: Zip Docs
         run: |
-          zip -r target/docs/Docs.zip target/docs/ -x *.mp4
+          cd build/docs/
+          zip -r Docs.zip . -x *.mp4
+          cd ../..
       - name: Prepare developement variables
         run: |
           IFS='-' read -r -a array <<< "$VERSION"
