@@ -19,7 +19,7 @@ jobs:
           echo "Version tags are not supported in forks!"
           exit 1
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Read version from pom.xml
@@ -96,19 +96,24 @@ jobs:
           echo "PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}" >> $GITHUB_ENV
           echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup JDK 17
         uses: actions/setup-java@v2
         with:
           distribution: 'zulu'
           java-version: 17
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+      - name: Cache target/artifacts
+        uses: actions/cache@v3
+        with:
+          path: target/artifacts
+          key: ${{ runner.os }}-target/artifacts-${{ github.run_number }}
       - name: Remove SNAPSHOT version for Release Build
         if: "env.VERSION_TYPE == 'release'"
         run: |
@@ -123,7 +128,7 @@ jobs:
         run: |
           sed -i "s~#end_of_line = ~end_of_line = ~g" ./.editorconfig
       - name: Set mirror for all repositories in settings.xml
-        uses: whelk-io/maven-settings-xml-action@v15
+        uses: whelk-io/maven-settings-xml-action@v20
         with:
           mirrors: |
             [
@@ -136,15 +141,14 @@ jobs:
       - name: Build with Maven. Phase 'verify'
         run: |
           mvn -B verify
-          mkdir -p build/artifacts
-          cp -r target/artifacts/* build/artifacts/
-          git diff > build/artifacts/changes.patch
+          git diff > target/artifacts/changes.patch
       - name: Upload Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: BetonQuest-Artifacts
-          path: build/artifacts
-
+          path: |
+            target/artifacts/BetonQuest.jar
+            target/artifacts/betonquest-*-*.jar
   build-docs:
     name: Build Docs
     needs: [ prepare ]
@@ -158,11 +162,11 @@ jobs:
           echo "PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}" >> $GITHUB_ENV
           echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Create LFS file list
         run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
       - name: Restore LFS cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: lfs-cache
         with:
           path: .git/lfs
@@ -170,7 +174,7 @@ jobs:
       - name: Git LFS Pull
         run: git lfs pull
       - name: Setup Python 3.10
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: '3.10'
           architecture: 'x64'
@@ -181,12 +185,17 @@ jobs:
         env:
           MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/config/${{ env.TXT }}') }}
           restore-keys: |
             ${{ runner.os }}-pip-
+      - name: Cache target/docs
+        uses: actions/cache@v3
+        with:
+          path: target/docs
+          key: ${{ runner.os }}-target/docs-${{ github.run_number }}
       - name: Install dependencies
         run: |
           python3 -m pip install --upgrade pip
@@ -205,14 +214,14 @@ jobs:
       - name: Build with mkdocs
         run: |
           mkdocs build
-          mkdir -p build/docs
-          cp -r target/docs/* build/docs/
-          git diff > build/docs/changes.patch
+          git diff > target/docs/changes.patch
       - name: Upload Docs
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: BetonQuest-Docs
-          path: build/docs
+          path: |
+            target/docs/
+            !target/docs/changes.patch
 
   deploy-artifacts:
     name: Deploy Artifacts
@@ -228,32 +237,30 @@ jobs:
           echo "PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}" >> $GITHUB_ENV
           echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup JDK 17
         uses: actions/setup-java@v2
         with:
           distribution: 'zulu'
           java-version: 17
-      - name: Download Artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: BetonQuest-Artifacts
-          path: build/artifacts/
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
-      - name: Load target folder and patch file
+      - name: Cache target/artifacts
+        uses: actions/cache@v3
+        with:
+          path: target/artifacts
+          key: ${{ runner.os }}-target/artifacts-${{ github.run_number }}
+      - name: Load patch file
         run: |
-          mkdir -p target/artifacts
-          cp -r build/artifacts/* target/artifacts/
-          git apply build/artifacts/changes.patch
-          rm build/artifacts/changes.patch
+          git apply target/artifacts/changes.patch
+          rm target/artifacts/changes.patch
       - name: Set mirror for all repositories in settings.xml
-        uses: whelk-io/maven-settings-xml-action@v15
+        uses: whelk-io/maven-settings-xml-action@v20
         with:
           servers: |
             [
@@ -285,7 +292,6 @@ jobs:
           REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
           REPOSITORY_USER: ${{ secrets.REPOSITORY_USER }}
           REPOSITORY_PASS: ${{ secrets.REPOSITORY_PASS }}
-
   deploy-docs:
     name: Deploy Docs
     concurrency: gh-pages-deploy
@@ -301,13 +307,13 @@ jobs:
           echo "PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}" >> $GITHUB_ENV
           echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Create LFS file list
         run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
       - name: Restore LFS cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: lfs-cache
         with:
           path: .git/lfs
@@ -315,15 +321,10 @@ jobs:
       - name: Git LFS Pull
         run: git lfs pull
       - name: Setup Python 3.10
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: '3.10'
           architecture: 'x64'
-      - name: Download Docs
-        uses: actions/download-artifact@v2
-        with:
-          name: BetonQuest-Docs
-          path: build/docs/
       - name: Select mkDocs requirements
         run: |
           [ -z $MKDOCS_MATERIAL_INSIDERS ] && TXT=docs-requirements.txt || TXT=docs-requirements-insiders.txt
@@ -331,24 +332,27 @@ jobs:
         env:
           MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/config/${{ env.TXT }}') }}
           restore-keys: |
             ${{ runner.os }}-pip-
+      - name: Cache target/docs
+        uses: actions/cache@v3
+        with:
+          path: target/docs
+          key: ${{ runner.os }}-target/docs-${{ github.run_number }}
       - name: Install dependencies
         run: |
           python3 -m pip install --upgrade pip
           pip install -r ./config/$TXT
         env:
           MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
-      - name: Load target folder and patch file
+      - name: Load patch file
         run: |
-          mkdir -p target/docs
-          cp -r build/docs/* target/docs/
-          git apply build/docs/changes.patch
-          rm build/docs/changes.patch
+          git apply target/docs/changes.patch
+          rm target/docs/changes.patch
       - name: Deploy Release to Github Pages
         if: "env.VERSION_TYPE == 'release'"
         run: |
@@ -380,35 +384,24 @@ jobs:
           echo "PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}" >> $GITHUB_ENV
           echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Check previous Jobs
         if: "needs.deploy-artifacts.result != 'success' || needs.deploy-docs.result != 'success'"
         run: |
           exit 1
-      - name: Download Artifacts
-        uses: actions/download-artifact@v2
+      - name: Cache target/artifacts
+        uses: actions/cache@v3
         with:
-          name: BetonQuest-Artifacts
-          path: build/artifacts/
-      - name: Download Docs
-        uses: actions/download-artifact@v2
+          path: target/artifacts
+          key: ${{ runner.os }}-target/artifacts-${{ github.run_number }}
+      - name: Cache target/docs
+        uses: actions/cache@v3
         with:
-          name: BetonQuest-Docs
-          path: build/docs/
-      - name: Load target folder
-        run: |
-          mkdir -p target/artifacts
-          mkdir -p target/docs
-          cp -r build/artifacts/* target/artifacts/
-          cp -r build/docs/* target/docs/
-          rm build/artifacts/changes.patch
-          rm build/docs/changes.patch
+          path: target/docs
+          key: ${{ runner.os }}-target/docs-${{ github.run_number }}
       - name: Zip Docs
         run: |
-          cd build/docs/
-          find . -name \*.mp4 -type f -delete
-          zip -r Docs.zip .
-          cd ../..
+          zip -r target/docs/Docs.zip target/docs/
       - name: Set CHANGELOG.md version
         run: |
           sed -i "s~## \[Unreleased\]~## \[${VERSION}\]~g" ./CHANGELOG.md
@@ -424,8 +417,8 @@ jobs:
           RELEASE_NAME: BetonQuest ${{ env.VERSION }}
         with:
           args: |
-            build/artifacts/BetonQuest.jar
-            build/docs/Docs.zip
+            target/artifacts/BetonQuest.jar
+            target/docs/Docs.zip
       - name: Delete obsolete git tag
         run: |
           git push origin :${PREVIOUS_VERSION_TAG}
@@ -438,7 +431,6 @@ jobs:
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
           VERSION: ${{ env.VERSION }}
           RELEASE: "release"
-
   create-developement:
     name: Create Developement Build
     if: "always() && !cancelled() && needs.prepare.outputs.VERSION_TYPE == 'developement' && needs.prepare.outputs.CHANGES_IN_DOCS_ONLY != 'true'"
@@ -453,35 +445,24 @@ jobs:
           echo "PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}" >> $GITHUB_ENV
           echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Check previous Jobs
         if: "needs.deploy-artifacts.result != 'success' || needs.deploy-docs.result != 'success'"
         run: |
           exit 1
-      - name: Download Artifacts
-        uses: actions/download-artifact@v2
+      - name: Cache target/artifacts
+        uses: actions/cache@v3
         with:
-          name: BetonQuest-Artifacts
-          path: build/artifacts/
-      - name: Download Docs
-        uses: actions/download-artifact@v2
+          path: target/artifacts
+          key: ${{ runner.os }}-target/artifacts-${{ github.run_number }}
+      - name: Cache target/docs
+        uses: actions/cache@v3
         with:
-          name: BetonQuest-Docs
-          path: build/docs/
-      - name: Load target folder
-        run: |
-          mkdir -p target/artifacts
-          mkdir -p target/docs
-          cp -r build/artifacts/* target/artifacts/
-          cp -r build/docs/* target/docs/
-          rm build/artifacts/changes.patch
-          rm build/docs/changes.patch
+          path: target/docs
+          key: ${{ runner.os }}-target/docs-${{ github.run_number }}
       - name: Zip Docs
         run: |
-          cd build/docs/
-          find . -name \*.mp4 -type f -delete
-          zip -r Docs.zip .
-          cd ../..
+          zip -r target/docs/Docs.zip target/docs/ -x *.mp4
       - name: Prepare developement variables
         run: |
           IFS='-' read -r -a array <<< "$VERSION"
@@ -497,8 +478,8 @@ jobs:
           PASSWORD: ${{ secrets.SNAPSHOT_UPLOAD_PASSWORD }}
           RUN_ID: ${{ github.run_id }}
           COMMIT_HASH: ${{ github.sha }}
-          PLUGIN: "build/artifacts/BetonQuest.jar"
-          DOCS: "build/docs/Docs.zip"
+          PLUGIN: "target/artifacts/BetonQuest.jar"
+          DOCS: "target/docs/Docs.zip"
       - name: Publish to Discord
         if: "always()"
         run: |
