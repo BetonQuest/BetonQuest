@@ -3,6 +3,7 @@ package org.betonquest.betonquest.database;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.bukkit.configuration.Configuration;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -33,9 +34,9 @@ public class Connector {
     /**
      * Opens a new connection to the database.
      */
-    public Connector() {
+    public Connector(final Configuration pluginConfig) {
         final BetonQuest plugin = BetonQuest.getInstance();
-        prefix = plugin.getPluginConfig().getString("mysql.prefix", "");
+        prefix = pluginConfig.getString("mysql.prefix");
         database = plugin.getDB();
         connection = database.getConnection();
         refresh();

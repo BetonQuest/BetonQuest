@@ -1,9 +1,11 @@
 package org.betonquest.betonquest.modules.config;
 
 import lombok.CustomLog;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.config.custom.ConfigurationSectionDecorator;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
+import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.Plugin;
@@ -92,23 +94,19 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
 
             final String configName = accessor.getConfigurationFile().getName();
             final String currentVersion = accessor.getConfig().getString("configVersion", "2.0.0-CONFIG-0");
-            LOG.info("Patch for configuration '" + configName + "' with current version '" + currentVersion + "' found.");
+            LOG.info("Patch for configuration '%s' with current version '%s' found.".formatted(configName, currentVersion));
             LOG.info("Backing up current config...");
 
-            final File configFile = accessor.getConfigurationFile();
-            final File backupFolder = new File(configFile.getParentFile(), "backups");
-            if (!backupFolder.isDirectory()) {
-                backupFolder.mkdir();
-            }
-
-            final String path = backupFolder.getAbsolutePath() + File.separator + currentVersion;
-            Zipper.zip(accessor.getConfigurationFile(), path);
+            final File dataFolder = BetonQuest.getInstance().getDataFolder();
+            Utils.backup(dataFolder, accessor.getConfig(), false);
 
             final boolean flawless = patcher.patch();
             if (!flawless) {
                 LOG.warn("The patching progress did not go flawlessly. However, this does not mean your configs " +
                         "are now corrupted. Please check the errors above to see what the patcher did. " +
                         "You might want to adjust your config manually depending on that information.");
+            } else {
+                LOG.info("Patching complete!");
             }
         }
         LOG.debug("No patch found.");

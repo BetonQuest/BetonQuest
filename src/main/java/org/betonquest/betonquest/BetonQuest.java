@@ -699,7 +699,7 @@ public class BetonQuest extends JavaPlugin {
         saver.start();
 
         // load database backup
-        Utils.loadDatabaseFromBackup();
+        Utils.loadDatabaseFromBackup(instance);
 
         // instantiating of these important things
         new JoinQuitListener();

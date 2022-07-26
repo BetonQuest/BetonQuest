@@ -17,6 +17,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -51,30 +52,33 @@ public final class Utils {
 
     /**
      * Does a full configuration backup.
+     *
+     * @param pluginDataFolder the root folder of the plugin on the server
      */
     @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
-    public static void backup() {
+    public static void backup(final File pluginDataFolder, final Configuration config, final boolean backupDB) {
         LOG.info("Backing up!");
         final long time = new Date().getTime();
-        final BetonQuest instance = BetonQuest.getInstance();
-        if (!backupDatabase(new File(instance.getDataFolder(), "database-backup.yml"))) {
-            LOG.warn("There was an error during backing up the database! This does not affect"
-                    + " the configuration backup, nor damage your database. You should backup"
-                    + " the database maually if you want to be extra safe, but it's not necessary if"
-                    + " you don't want to downgrade later.");
+        if (backupDB) {
+            if (!backupDatabase(new File(pluginDataFolder, "database-backup.yml"), config.getRoot())) {
+                LOG.warn("There was an error during backing up the database! This does not affect"
+                        + " the configuration backup, nor damage your database. You should backup"
+                        + " the database manually if you want to be extra safe, but it's not necessary if"
+                        + " you don't want to downgrade later.");
+            }
         }
         // create Backups folder if it does not exist
-        final File backupFolder = new File(instance.getDataFolder(), "Backups");
+        final File backupFolder = new File(pluginDataFolder, "Backups");
         if (!backupFolder.isDirectory()) {
             backupFolder.mkdir();
         }
-        // zip all the files
-        final String outputPath = backupFolder.getAbsolutePath() + File.separator + "backup-"
-                + instance.getPluginConfig().getString("version", null);
 
-        Zipper.zip(instance.getDataFolder(), outputPath, "^backup.*", "^database\\.db$", "^changelog\\.txt$", "^logs$");
+        final String currentVersion = config.getString("configVersion", "2.0.0-CONFIG-0");
+        final String outputPath = backupFolder.getAbsolutePath() + File.separator + "backup-" + currentVersion;
+
+        Zipper.zip(pluginDataFolder, outputPath, "^backup.*", "^database\\.db$", "^changelog\\.txt$", "^logs$");
         // delete database backup so it doesn't make a mess later on
-        new File(instance.getDataFolder(), "database-backup.yml").delete();
+        new File(pluginDataFolder, "database-backup.yml").delete();
         // done
         LOG.debug("Done in " + (new Date().getTime() - time) + "ms");
         LOG.info("Done, you can find the backup in 'Backups' directory.");
@@ -88,8 +92,7 @@ public final class Utils {
      */
     @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     @SuppressWarnings("PMD.CognitiveComplexity")
-    public static boolean backupDatabase(final File databaseBackupFile) {
-        final BetonQuest instance = BetonQuest.getInstance();
+    public static boolean backupDatabase(final File databaseBackupFile, final Configuration pluginConfig) {
         try {
             boolean done = true;
             // prepare the config file
@@ -100,7 +103,7 @@ public final class Utils {
             final HashMap<String, ResultSet> map = new HashMap<>();
             final String[] tables = {"objectives", "tags", "points", "journals", "player"};
             // open database connection
-            final Connector database = new Connector();
+            final Connector database = new Connector(pluginConfig);
             // load resultsets into the map
             for (final String table : tables) {
                 LOG.debug("Loading " + table);
@@ -148,9 +151,8 @@ public final class Utils {
             return done;
         } catch (IOException | SQLException | InvalidConfigurationException e) {
             LOG.warn("There was an error during database backup: " + e.getMessage(), e);
-            final File brokenFile = new File(instance.getDataFolder(), "database-backup.yml");
-            if (brokenFile.exists()) {
-                brokenFile.delete();
+            if (databaseBackupFile.exists()) {
+                databaseBackupFile.delete();
             }
             return false;
         }
@@ -236,8 +238,7 @@ public final class Utils {
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "PMD.NcssCount", "PMD.ExcessiveMethodLength"})
     @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
-    public static void loadDatabaseFromBackup() {
-        final BetonQuest instance = BetonQuest.getInstance();
+    public static void loadDatabaseFromBackup(final BetonQuest instance) {
         final File file = new File(instance.getDataFolder(), "database-backup.yml");
         // if the backup doesn't exist then there is nothing to load, return
         if (!file.exists()) {
@@ -255,7 +256,7 @@ public final class Utils {
         }
         final String filename = "old-database-" + backupNumber + ".yml";
         LOG.info("Backing up old database!");
-        if (!backupDatabase(new File(backupFolder, filename))) {
+        if (!backupDatabase(new File(backupFolder, filename), instance.getConfig())) {
             LOG.warn("There was an error during old database backup process. This means that"
                     + " if the plugin loaded new database (from backup), the old one would be lost "
                     + "forever. Because of that the loading of backup was aborted!");
@@ -275,7 +276,7 @@ public final class Utils {
         // in a different way...)
         database.createTables(instance.isMySQLUsed());
         // drop all tables
-        final Connector con = new Connector();
+        final Connector con = new Connector(instance.getConfig());
         con.updateSQL(UpdateType.DROP_OBJECTIVES);
         con.updateSQL(UpdateType.DROP_TAGS);
         con.updateSQL(UpdateType.DROP_POINTS);
