@@ -59,14 +59,14 @@ public final class Utils {
     public static void backup(final File pluginDataFolder, final Configuration config, final boolean backupDB) {
         LOG.info("Backing up!");
         final long time = new Date().getTime();
-        if (backupDB) {
-            if (!backupDatabase(new File(pluginDataFolder, "database-backup.yml"), config.getRoot())) {
-                LOG.warn("There was an error during backing up the database! This does not affect"
-                        + " the configuration backup, nor damage your database. You should backup"
-                        + " the database manually if you want to be extra safe, but it's not necessary if"
-                        + " you don't want to downgrade later.");
-            }
+
+        if (backupDB && !backupDatabase(new File(pluginDataFolder, "database-backup.yml"), config.getRoot())) {
+            LOG.warn("There was an error during backing up the database! This does not affect"
+                    + " the configuration backup, nor damage your database. You should backup"
+                    + " the database manually if you want to be extra safe, but it's not necessary if"
+                    + " you don't want to downgrade later.");
         }
+
         // create Backups folder if it does not exist
         final File backupFolder = new File(pluginDataFolder, "Backups");
         if (!backupFolder.isDirectory()) {

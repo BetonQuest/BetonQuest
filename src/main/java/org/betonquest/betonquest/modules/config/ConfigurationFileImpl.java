@@ -101,12 +101,12 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
             Utils.backup(dataFolder, accessor.getConfig(), false);
 
             final boolean flawless = patcher.patch();
-            if (!flawless) {
+            if (flawless) {
+                LOG.info("Patching complete!");
+            } else {
                 LOG.warn("The patching progress did not go flawlessly. However, this does not mean your configs " +
                         "are now corrupted. Please check the errors above to see what the patcher did. " +
                         "You might want to adjust your config manually depending on that information.");
-            } else {
-                LOG.info("Patching complete!");
             }
         }
         LOG.debug("No patch found.");
