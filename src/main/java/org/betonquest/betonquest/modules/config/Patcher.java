@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 /**
  * Patches BetonQuest's configuration file.
  */
-@CustomLog
+@CustomLog(topic = "Config Patcher")
 public class Patcher {
 
     /**
