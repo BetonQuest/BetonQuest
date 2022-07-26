@@ -105,7 +105,7 @@ class PatcherTest {
                 """);
 
         new Patcher(config, invalidConfig);
-        validator.assertLogEntry(Level.SEVERE, "Invalid patch file! A version number is too short or too long.");
+        validator.assertLogEntry(Level.SEVERE, "(Config Patcher) Invalid patch file! A version number is too short or too long.");
     }
 
     @Test
@@ -116,7 +116,7 @@ class PatcherTest {
                 """);
 
         new Patcher(config, invalidConfig);
-        validator.assertLogEntry(Level.SEVERE, "Invalid patch file! The patch is malformed.");
+        validator.assertLogEntry(Level.SEVERE, "(Config Patcher) Invalid patch file! The patch is malformed.");
     }
 
     @Test
@@ -130,7 +130,7 @@ class PatcherTest {
         invalidConfig.loadFromString(patch);
 
         new Patcher(config, invalidConfig);
-        validator.assertLogEntry(Level.SEVERE, "Invalid patch file! A version number is too short or too long.");
+        validator.assertLogEntry(Level.SEVERE, "(Config Patcher) Invalid patch file! A version number is too short or too long.");
     }
 
     @Test
@@ -146,8 +146,8 @@ class PatcherTest {
         final var patcher = new Patcher(config, invalidConfig);
         final boolean patchNoError = patcher.patch();
         assertFalse(patchNoError, "Patcher says there were no problems although there were.");
-        validator.assertLogEntry(Level.INFO, "Applying patches to update to '3.4.5.6'...");
-        validator.assertLogEntry(Level.WARNING, "There has been an issue while applying the patches for '3.4.5.6': Unknown transformation type 'INVALID' used!");
+        validator.assertLogEntry(Level.INFO, "(Config Patcher) Applying patches to update to '3.4.5.6'...");
+        validator.assertLogEntry(Level.WARNING, "(Config Patcher) There has been an issue while applying the patches for '3.4.5.6': Unknown transformation type 'INVALID' used!");
     }
 
     @Test
