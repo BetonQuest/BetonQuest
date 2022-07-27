@@ -40,6 +40,8 @@ public class PasteSchematicEvent extends QuestEvent {
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public PasteSchematicEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
+        staticness = true;
+        persistent = true;
         loc = instruction.getLocation();
         final WorldEditPlugin worldEdit = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
         final File folder = new File(worldEdit.getDataFolder(), "schematics");

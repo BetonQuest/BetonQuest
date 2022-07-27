@@ -86,6 +86,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - Therefore `left` and `right` in the `click` section no longer include shift clicks
 - `folder` event - now executes events immediately if no delay is set
 - `weather` event - now has an optional variable duration (in seconds) and an optional world param
+- `paste` event - can now be static
 - `chestput` objective - can now block other players from accessing a chest while someone is putting items inside
 - Things that are also changed in 1.12.X:
     - math variable now allows rounding output with the ~ operator
