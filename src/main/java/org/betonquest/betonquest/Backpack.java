@@ -5,6 +5,7 @@ import lombok.CustomLog;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.database.PlayerData;
@@ -12,7 +13,6 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.item.QuestItem;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -43,9 +43,9 @@ import java.util.Map;
 public class Backpack implements Listener {
 
     /**
-     * ID of the player
+     * The {@link Profile} of the player
      */
-    private final String playerID;
+    private final Profile profile;
     /**
      * The player object
      */
@@ -70,19 +70,19 @@ public class Backpack implements Listener {
     /**
      * Creates new backpack GUI opened at given page type.
      *
-     * @param playerID ID of the player
-     * @param type     type of the display
+     * @param profile the {@link Profile} of the player
+     * @param type    type of the display
      */
-    public Backpack(final String playerID, final DisplayType type) {
+    public Backpack(final Profile profile, final DisplayType type) {
         // fill required fields
-        this.playerID = playerID;
-        lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
-        player = PlayerConverter.getPlayer(playerID);
+        this.profile = profile;
+        lang = BetonQuest.getInstance().getPlayerData(profile).getLanguage();
+        player = profile.getPlayer();
         /**
          * Instance of the BetonQuest plugin
          */
         final BetonQuest instance = BetonQuest.getInstance();
-        playerData = instance.getPlayerData(playerID);
+        playerData = instance.getPlayerData(profile);
         // create display
         switch (type) {
             case DEFAULT:
@@ -100,10 +100,10 @@ public class Backpack implements Listener {
     /**
      * Creates new backpack GUI.
      *
-     * @param playerID ID of the player
+     * @param profile the {@link Profile} of the player
      */
-    public Backpack(final String playerID) {
-        this(playerID, DisplayType.DEFAULT);
+    public Backpack(final Profile profile) {
+        this(profile, DisplayType.DEFAULT);
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -163,7 +163,7 @@ public class Backpack implements Listener {
             super();
             final boolean showJournalInBackpack = Boolean.parseBoolean(Config.getString("config.journal.show_in_backpack"));
             this.page = page;
-            this.showJournal = showJournalInBackpack && !Journal.hasJournal(playerID);
+            this.showJournal = showJournalInBackpack && !Journal.hasJournal(profile);
             this.backpackItems = playerData.getBackpack();
             if (showJournal) {
                 backpackItems.add(0, playerData.getJournal().getAsItem());
@@ -328,7 +328,7 @@ public class Backpack implements Listener {
                             item.setAmount(item.getAmount() - amount);
                             player.getInventory().setItem(playerSlot, item);
                         }
-                    } else if (!lockJournalSlot && Journal.isJournal(playerID, item)) {
+                    } else if (!lockJournalSlot && Journal.isJournal(profile, item)) {
                         // if it's a journal, remove it so it appears in
                         // backpack again
                         playerData.getJournal().removeFromInv();
@@ -366,7 +366,7 @@ public class Backpack implements Listener {
             final ArrayList<QuestCanceler> cancelers = new ArrayList<>();
             // get all quest cancelers that can be shown to the player
             for (final QuestCanceler canceler : BetonQuest.getCanceler().values()) {
-                if (canceler.show(playerID)) {
+                if (canceler.show(profile)) {
                     cancelers.add(canceler);
                 }
             }
@@ -382,7 +382,7 @@ public class Backpack implements Listener {
             final ItemStack[] content = new ItemStack[numberOfRows * 9];
             int index = 0;
             for (final QuestCanceler canceler : cancelers) {
-                content[index] = canceler.getItem(playerID);
+                content[index] = canceler.getItem(profile);
                 map.put(index, canceler);
                 index++;
             }
@@ -398,7 +398,7 @@ public class Backpack implements Listener {
                 return;
             }
             // cancel the chosen quests
-            cancel.cancel(playerID);
+            cancel.cancel(profile);
             player.closeInventory();
         }
     }

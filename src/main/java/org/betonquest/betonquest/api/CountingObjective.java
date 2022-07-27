@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api;
 
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
 import java.util.Locale;
@@ -50,14 +51,14 @@ public abstract class CountingObjective extends Objective {
     }
 
     @Override
-    public String getProperty(final String name, final String playerId) {
+    public String getProperty(final String name, final Profile profile) {
         switch (name.toLowerCase(Locale.ROOT)) {
             case "amount":
-                return Integer.toString(getCountingData(playerId).getCompletedAmount());
+                return Integer.toString(getCountingData(profile).getCompletedAmount());
             case "left":
-                return Integer.toString(getCountingData(playerId).getAmountLeft());
+                return Integer.toString(getCountingData(profile).getAmountLeft());
             case "total":
-                return Integer.toString(getCountingData(playerId).getTargetAmount());
+                return Integer.toString(getCountingData(profile).getTargetAmount());
             default:
                 return "";
         }
@@ -66,11 +67,11 @@ public abstract class CountingObjective extends Objective {
     /**
      * Get the {@link CountingData} objective data for given player.
      *
-     * @param playerId player UUID as string
+     * @param profile the {@link Profile} of the player
      * @return counting objective data of the player
      */
-    public final CountingData getCountingData(final String playerId) {
-        return (CountingData) dataMap.get(playerId);
+    public final CountingData getCountingData(final Profile profile) {
+        return (CountingData) dataMap.get(profile.getPlayerId());
     }
 
     /**
@@ -78,11 +79,11 @@ public abstract class CountingObjective extends Objective {
      * {@link #defaultNotifyMessageName} if set, otherwise no notification will be sent, even if {@link #notify} is
      * {@code true}.
      *
-     * @param playerId player UUID as string
+     * @param profile the {@link Profile} of the player
      * @return {@code true} if the objective is completed; {@code false} otherwise
      */
-    protected final boolean completeIfDoneOrNotify(final String playerId) {
-        return completeIfDoneOrNotify(playerId, defaultNotifyMessageName);
+    protected final boolean completeIfDoneOrNotify(final Profile profile) {
+        return completeIfDoneOrNotify(profile, defaultNotifyMessageName);
     }
 
     /**
@@ -90,18 +91,18 @@ public abstract class CountingObjective extends Objective {
      * message name. If it is {@code null}, no notification is sent, even if a {@link #defaultNotifyMessageName} was set
      * and a notification should have been sent.
      *
-     * @param playerId          player UUID as string
+     * @param profile           the {@link Profile} of the player
      * @param notifyMessageName message name for notification message
      * @return {@code true} if the objective is completed; {@code false} otherwise
      */
-    protected final boolean completeIfDoneOrNotify(final String playerId, final String notifyMessageName) {
-        final CountingData data = getCountingData(playerId);
+    protected final boolean completeIfDoneOrNotify(final Profile profile, final String notifyMessageName) {
+        final CountingData data = getCountingData(profile);
         if (data.isComplete()) {
-            completeObjective(playerId);
+            completeObjective(profile);
             return true;
         }
         if (notify && notifyMessageName != null && shouldNotify(data)) {
-            sendNotify(playerId, notifyMessageName, Math.abs(data.getAmountLeft()));
+            sendNotify(profile, notifyMessageName, Math.abs(data.getAmountLeft()));
         }
         return false;
     }
@@ -144,11 +145,11 @@ public abstract class CountingObjective extends Objective {
          *
          * @param instruction to {@link Integer} parsable string, containing the units to complete or output from
          *                    {@link #toString()}
-         * @param playerID    to {@link java.util.UUID} parsable string, id of the player who has this objective
+         * @param profile     the {@link Profile} of the player
          * @param objID       id of the objective, used by BetonQuest to store this {@link ObjectiveData} in the database
          */
-        public CountingData(final String instruction, final String playerID, final String objID) {
-            super(instruction, playerID, objID);
+        public CountingData(final String instruction, final Profile profile, final String objID) {
+            super(instruction, profile, objID);
             final String countingInstruction = instruction.split(";", 2)[0];
             final String[] instructionParts = countingInstruction.split("/");
             switch (instructionParts.length) {

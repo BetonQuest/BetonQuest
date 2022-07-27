@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api;
 
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
 /**
@@ -30,10 +31,10 @@ abstract public class Variable {
     /**
      * This method should return a resolved value of variable for given player.
      *
-     * @param playerID ID of the player
+     * @param profile the {@link Profile} of the player
      * @return the value of this variable
      */
-    public abstract String getValue(String playerID);
+    public abstract String getValue(Profile profile);
 
     @Override
     public String toString() {

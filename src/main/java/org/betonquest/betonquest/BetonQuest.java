@@ -14,6 +14,7 @@ import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.schedule.Schedule;
@@ -342,20 +343,20 @@ public class BetonQuest extends JavaPlugin {
      */
     private LastExecutionCache lastExecutionCache;
 
-    public static boolean conditions(final String playerID, final Collection<ConditionID> conditionIDs) {
+    public static boolean conditions(final Profile profile, final Collection<ConditionID> conditionIDs) {
         final ConditionID[] ids = new ConditionID[conditionIDs.size()];
         int index = 0;
         for (final ConditionID id : conditionIDs) {
             ids[index++] = id;
         }
-        return conditions(playerID, ids);
+        return conditions(profile, ids);
     }
 
     @SuppressWarnings("PMD.CognitiveComplexity")
-    public static boolean conditions(final String playerID, final ConditionID... conditionIDs) {
+    public static boolean conditions(final Profile profile, final ConditionID... conditionIDs) {
         if (Bukkit.isPrimaryThread()) {
             for (final ConditionID id : conditionIDs) {
-                if (!condition(playerID, id)) {
+                if (!condition(profile, id)) {
                     return false;
                 }
             }
@@ -388,7 +389,7 @@ public class BetonQuest extends JavaPlugin {
      * @return if the condition is met
      */
     @SuppressWarnings("PMD.NPathComplexity")
-    public static boolean condition(final String playerID, final ConditionID conditionID) {
+    public static boolean condition(final Profile profile, final ConditionID conditionID) {
         // null check
         if (conditionID == null) {
             log.debug("Null condition ID!");
@@ -407,19 +408,19 @@ public class BetonQuest extends JavaPlugin {
             return false;
         }
         // check for null player
-        if (playerID == null && !condition.isStatic()) {
+        if (profile == null && !condition.isStatic()) {
             log.debug(conditionID.getPackage(), "Cannot check non-static condition without a player, returning false");
             return false;
         }
         // check for online player
-        if (playerID != null && PlayerConverter.getPlayer(playerID) == null && !condition.isPersistent()) {
+        if (profile != null && profile.getPlayer() == null && !condition.isPersistent()) {
             log.debug(conditionID.getPackage(), "Player was offline, condition is not persistent, returning false");
             return false;
         }
         // and check if it's met or not
         final boolean outcome;
         try {
-            outcome = condition.handle(playerID);
+            outcome = condition.handle(profile);
         } catch (final QuestRuntimeException e) {
             log.warn(conditionID.getPackage(), "Error while checking '" + conditionID + "' condition: " + e.getMessage(), e);
             return false;
@@ -427,17 +428,17 @@ public class BetonQuest extends JavaPlugin {
         final boolean isMet = outcome != conditionID.inverted();
         log.debug(conditionID.getPackage(),
                 (isMet ? "TRUE" : "FALSE") + ": " + (conditionID.inverted() ? "inverted" : "") + " condition "
-                        + conditionID + " for player " + PlayerConverter.getName(playerID));
+                        + conditionID + " for player " + (profile == null ? null : profile.getPlayerName()));
         return isMet;
     }
 
     /**
      * Fires the event described by eventID
      *
-     * @param eventID  ID of the event to fire
-     * @param playerID ID of the player who the event is firing for
+     * @param eventID ID of the event to fire
+     * @param profile the {@link Profile} of the player who the event is firing for
      */
-    public static void event(final String playerID, final EventID eventID) {
+    public static void event(final Profile profile, final EventID eventID) {
         // null check
         if (eventID == null) {
             log.debug("Null event ID!");
@@ -456,14 +457,14 @@ public class BetonQuest extends JavaPlugin {
             return;
         }
         // fire the event
-        if (playerID == null) {
+        if (profile == null) {
             log.debug(eventID.getPackage(), "Firing static event " + eventID);
         } else {
             log.debug(eventID.getPackage(),
-                    "Firing event " + eventID + " for " + PlayerConverter.getName(playerID));
+                    "Firing event " + eventID + " for " + PlayerConverter.getName(profile));
         }
         try {
-            event.fire(playerID);
+            event.fire(profile);
         } catch (final QuestRuntimeException e) {
             log.warn(eventID.getPackage(), "Error while firing '" + eventID + "' event: " + e.getMessage(), e);
         }
@@ -1310,14 +1311,14 @@ public class BetonQuest extends JavaPlugin {
      * not exist but the player is online, it will create new playerData on the
      * main thread and put it into the map.
      *
-     * @param playerID ID of the player
+     * @param profile the {@link Profile} of the player
      * @return PlayerData object for the player
      */
-    public PlayerData getPlayerData(final String playerID) {
-        PlayerData playerData = playerDataMap.get(playerID);
-        if (playerData == null && PlayerConverter.getPlayer(playerID) != null) {
-            playerData = new PlayerData(playerID);
-            putPlayerData(playerID, playerData);
+    public PlayerData getPlayerData(final Profile profile) {
+        PlayerData playerData = playerDataMap.get(profile);
+        if (playerData == null && PlayerConverter.getPlayer(profile) != null) {
+            playerData = new PlayerData(profile);
+            putPlayerData(profile, playerData);
         }
         return playerData;
     }
@@ -1466,13 +1467,13 @@ public class BetonQuest extends JavaPlugin {
     /**
      * Returns the list of objectives of this player
      *
-     * @param playerID ID of the player
+     * @param profile the {@link Profile} of the player
      * @return list of this player's active objectives
      */
-    public List<Objective> getPlayerObjectives(final String playerID) {
+    public List<Objective> getPlayerObjectives(final Profile profile) {
         final List<Objective> list = new ArrayList<>();
         for (final Objective objective : OBJECTIVES.values()) {
-            if (objective.containsPlayer(playerID)) {
+            if (objective.containsPlayer(profile)) {
                 list.add(objective);
             }
         }
@@ -1532,10 +1533,10 @@ public class BetonQuest extends JavaPlugin {
      *
      * @param packName name of the package
      * @param name     name of the variable (instruction, with % characters)
-     * @param playerID ID of the player
+     * @param profile  the {@link Profile} of the player
      * @return the value of this variable for given player
      */
-    public String getVariableValue(final String packName, final String name, final String playerID) {
+    public String getVariableValue(final String packName, final String name, final Profile profile) {
         if (!Config.getPackages().containsKey(packName)) {
             log.warn("Variable '" + name + "' contains the non-existent package '" + packName + "' !");
             return "";
@@ -1547,7 +1548,7 @@ public class BetonQuest extends JavaPlugin {
                 log.warn(pack, "Could not resolve variable '" + name + "'.");
                 return "";
             }
-            return var.getValue(playerID);
+            return var.getValue(profile);
         } catch (final InstructionParseException e) {
             log.warn(pack, "&cCould not create variable '" + name + "': " + e.getMessage(), e);
             return "";

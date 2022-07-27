@@ -6,6 +6,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.notify.Notify;
@@ -214,11 +215,11 @@ public final class Config {
      * (if previous not found).
      *
      * @param packName    ID of the pack
-     * @param playerID    ID of the player
+     * @param profile     the {@link Profile} of the player
      * @param messageName ID of the message
      */
-    public static void sendMessage(final String packName, final String playerID, final String messageName) {
-        sendMessage(packName, playerID, messageName, (String[]) null, null, null);
+    public static void sendMessage(final String packName, final Profile profile, final String messageName) {
+        sendMessage(packName, profile, messageName, (String[]) null, null, null);
     }
 
     /**
@@ -227,12 +228,12 @@ public final class Config {
      * variables.
      *
      * @param packName    ID of the pack
-     * @param playerID    ID of the player
+     * @param profile     the {@link Profile} of the player
      * @param messageName ID of the message
      * @param variables   array of variables which will be inserted into the string
      */
-    public static void sendMessage(final String packName, final String playerID, final String messageName, final String... variables) {
-        sendMessage(packName, playerID, messageName, variables, null, null, (String) null);
+    public static void sendMessage(final String packName, final Profile profile, final String messageName, final String... variables) {
+        sendMessage(packName, profile, messageName, variables, null, null, (String) null);
     }
 
     /**
@@ -241,13 +242,13 @@ public final class Config {
      * variables and play the sound.
      *
      * @param packName    ID of the pack
-     * @param playerID    ID of the player
+     * @param profile     the {@link Profile} of the player
      * @param messageName ID of the message
      * @param variables   array of variables which will be inserted into the string
      * @param soundName   name of the sound to play to the player
      */
-    public static void sendMessage(final String packName, final String playerID, final String messageName, final String[] variables, final String soundName) {
-        sendMessage(packName, playerID, messageName, variables, soundName, null, (String) null);
+    public static void sendMessage(final String packName, final Profile profile, final String messageName, final String[] variables, final String soundName) {
+        sendMessage(packName, profile, messageName, variables, soundName, null, (String) null);
     }
 
     /**
@@ -256,45 +257,45 @@ public final class Config {
      * variables and play the sound. It will also add a prefix to the message.
      *
      * @param packName        ID of the pack
-     * @param playerID        ID of the player
+     * @param profile         the {@link Profile} of the player
      * @param messageName     ID of the message
      * @param variables       array of variables which will be inserted into the message
      * @param soundName       name of the sound to play to the player
      * @param prefixName      ID of the prefix
      * @param prefixVariables array of variables which will be inserted into the prefix
      */
-    public static void sendMessage(final String packName, final String playerID, final String messageName, final String[] variables, final String soundName,
+    public static void sendMessage(final String packName, final Profile profile, final String messageName, final String[] variables, final String soundName,
                                    final String prefixName, final String... prefixVariables) {
-        final String message = parseMessage(packName, playerID, messageName, variables, prefixName, prefixVariables);
+        final String message = parseMessage(packName, profile, messageName, variables, prefixName, prefixVariables);
         if (message == null || message.length() == 0) {
             return;
         }
 
-        final Player player = PlayerConverter.getPlayer(playerID);
+        final Player player = profile.getPlayer();
         player.sendMessage(message);
         if (soundName != null) {
-            playSound(playerID, soundName);
+            playSound(profile, soundName);
         }
     }
 
-    public static void sendNotify(final String packName, final String playerID, final String messageName, final String category) throws QuestRuntimeException {
-        sendNotify(packName, playerID, messageName, null, category);
+    public static void sendNotify(final String packName, final Profile profile, final String messageName, final String category) throws QuestRuntimeException {
+        sendNotify(packName, profile, messageName, null, category);
     }
 
     public static void sendNotify(final String packName, final Player player, final String messageName, final String category) throws QuestRuntimeException {
         sendNotify(packName, player, messageName, null, category);
     }
 
-    public static void sendNotify(final String packName, final String playerID, final String messageName, final String[] variables, final String category) throws QuestRuntimeException {
-        sendNotify(packName, playerID, messageName, variables, category, null);
+    public static void sendNotify(final String packName, final Profile profile, final String messageName, final String[] variables, final String category) throws QuestRuntimeException {
+        sendNotify(packName, profile, messageName, variables, category, null);
     }
 
     public static void sendNotify(final String packName, final Player player, final String messageName, final String[] variables, final String category) throws QuestRuntimeException {
         sendNotify(packName, player, messageName, variables, category, null);
     }
 
-    public static void sendNotify(final String packName, final String playerID, final String messageName, final String[] variables, final String category, final Map<String, String> data) throws QuestRuntimeException {
-        sendNotify(packName, PlayerConverter.getPlayer(playerID), messageName, variables, category, data);
+    public static void sendNotify(final String packName, final Profile profile, final String messageName, final String[] variables, final String category, final Map<String, String> data) throws QuestRuntimeException {
+        sendNotify(packName, profile.getPlayer(), messageName, variables, category, data);
     }
 
     /**
@@ -319,17 +320,17 @@ public final class Config {
         Notify.get(Config.getPackages().get(packName), category, data).sendNotify(message, player);
     }
 
-    public static String parseMessage(final String packName, final String playerID, final String messageName, final String... variables) {
-        return parseMessage(packName, playerID, messageName, variables, null, (String) null);
+    public static String parseMessage(final String packName, final Profile profile, final String messageName, final String... variables) {
+        return parseMessage(packName, profile, messageName, variables, null, (String) null);
     }
 
     public static String parseMessage(final String packName, final Player player, final String messageName, final String... variables) {
         return parseMessage(packName, player, messageName, variables, null, (String) null);
     }
 
-    public static String parseMessage(final String packName, final String playerID, final String messageName, final String[] variables, final String prefixName,
+    public static String parseMessage(final String packName, final Profile profile, final String messageName, final String[] variables, final String prefixName,
                                       final String... prefixVariables) {
-        return parseMessage(packName, PlayerConverter.getPlayer(playerID), messageName, variables, prefixName, prefixVariables);
+        return parseMessage(packName, profile.getPlayer(), messageName, variables, prefixName, prefixVariables);
     }
 
     /**
@@ -372,11 +373,11 @@ public final class Config {
     /**
      * Plays a sound specified in the plugin's config to the player
      *
-     * @param playerID  the uuid of the player
+     * @param profile   the {@link Profile} of the player
      * @param soundName the name of the sound to play to the player
      */
-    public static void playSound(final String playerID, final String soundName) {
-        final Player player = PlayerConverter.getPlayer(playerID);
+    public static void playSound(final Profile profile, final String soundName) {
+        final Player player = profile.getPlayer();
         if (player == null) {
             return;
         }
