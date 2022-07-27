@@ -1101,6 +1101,8 @@ There is only one argument in this variable, `amount` for showing money amount o
 
 #### Paste schematic: `paste`
 
+**persistent**, **static**
+
 This event will paste a schematic at the given location. The first argument is a location and the second one is the name of schematic file. The file must be located in `WorldEdit/schematics` or `FastAsyncWorldEdit/schematics` and have a name like `some_building.schematic`. An optional `noair` can be added to paste ignoring air blocks.
 If you have only a `.schem` schematic, simply append `.schem` to the schematic name.
 
