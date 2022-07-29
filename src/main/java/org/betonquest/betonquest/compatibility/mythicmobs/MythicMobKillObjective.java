@@ -65,45 +65,32 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @EventHandler(ignoreCancelled = true)
     public void onBossKill(final MythicMobDeathEvent event) {
-        if (!names.contains(event.getMobType().getInternalName())) {
+        if (!names.contains(event.getMobType().getInternalName())
+                || marked != null && !event.getEntity().hasMetadata("betonquest-marked")) {
             return;
         }
         if (event.getKiller() instanceof Player) {
-            if (marked != null) {
-                if (!event.getEntity().hasMetadata("betonquest-marked")) {
-                    return;
-                }
-                final List<MetadataValue> meta = event.getEntity().getMetadata("betonquest-marked");
-                for (final MetadataValue m : meta) {
-                    if (!m.asString().equals(marked.replace("%player%", event.getKiller().getName()))) {
-                        return;
-                    }
-                }
-            }
-            handlePlayerKill((Player) event.getKiller(), event.getMob());
-        } else {
-            if (neutralDeathRadiusAllPlayers > 0) {
-                if (!event.getEntity().hasMetadata("betonquest-marked")) {
-                    return;
-                }
-                final Location center = BukkitAdapter.adapt(event.getMob().getLocation());
-                players:
-                for (final Player player : center.getWorld().getPlayers()) {
-                    if (isValidPlayer(player)
-                            && player.getLocation().distanceSquared(center) <= neutralDeathRadiusAllPlayersSquared) {
-                        if (marked != null) {
-                            final List<MetadataValue> meta = event.getEntity().getMetadata("betonquest-marked");
-                            for (final MetadataValue m : meta) {
-                                if (!m.asString().equals(marked.replace("%player%", player.getName()))) {
-                                    continue players;
-                                }
-                            }
-                        }
-                        handlePlayerKill(player, event.getMob());
-                    }
+            checkKill(event, (Player) event.getKiller());
+        } else if (neutralDeathRadiusAllPlayers > 0) {
+            final Location center = BukkitAdapter.adapt(event.getMob().getLocation());
+            for (final Player player : center.getWorld().getPlayers()) {
+                if (isValidPlayer(player) && player.getLocation().distanceSquared(center) <= neutralDeathRadiusAllPlayersSquared) {
+                    checkKill(event, player);
                 }
             }
         }
+    }
+
+    private void checkKill(final MythicMobDeathEvent event, final Player player) {
+        if (marked != null) {
+            final List<MetadataValue> meta = event.getEntity().getMetadata("betonquest-marked");
+            for (final MetadataValue m : meta) {
+                if (!m.asString().equals(marked.replace("%player%", player.getName()))) {
+                    return;
+                }
+            }
+        }
+        handlePlayerKill(player, event.getMob());
     }
 
     private boolean isValidPlayer(final Player player) {
