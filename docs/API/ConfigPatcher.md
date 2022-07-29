@@ -50,6 +50,7 @@ Example:
 ## Transformer Types
 ### SET
 
+Sets a key to the given value. Already set keys will be overriden.
 ``` YAML title="Syntax"
 - type: SET
   key: journalLocked
@@ -58,6 +59,7 @@ Example:
 
 ### KEY_RENAME
 
+Renames a key while preserving the value.
 ``` YAML title="Syntax"
 - type: KEY_RENAME
   oldKey: journalLocked
@@ -66,6 +68,7 @@ Example:
 
 ### LIST_ENTRY_ADD
 
+Adds an entry to the given list. The list will be created if it did not exist so far.
 ``` YAML title="Syntax"
 - type: LIST_ENTRY_ADD
   key: section.myList
@@ -77,6 +80,7 @@ Example:
 
 ### LIST_ENTRY_RENAME
 
+Renames the first list entry that matches the given regex.
 ``` YAML title="Syntax"
 - type: LIST_ENTRY_RENAME
   key: section.myList
@@ -86,6 +90,7 @@ Example:
 
 ### LIST_ENTRY_REMOVE
 
+Removes a list entry.
 ``` YAML title="Syntax"
 - type: LIST_ENTRY_REMOVE
   key: section.myList
@@ -94,6 +99,7 @@ Example:
 
 ### VALUE_RENAME
 
+Renames the key's value if it matches the given regex.
 ``` YAML title="Syntax" 
 - type: VALUE_RENAME
   key: section.testKey
@@ -103,6 +109,7 @@ Example:
 
 ### REMOVE
 
+Removes both sections and keys (including all nested contents).
 ``` YAML title="Syntax"
 - type: REMOVE
   key: section.myList
