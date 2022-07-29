@@ -332,5 +332,6 @@ class TransformerTest {
         validator.assertLogEntry(Level.INFO, "(Config Patcher) Applying patches to update to '2.0.0.1'...");
         validator.assertLogEntry(Level.INFO, "(Config Patcher) Applying patch of type '" + transformerType + "'...");
         validator.assertLogEntry(Level.WARNING, "(Config Patcher) There has been an issue while applying the patches for '2.0.0.1': " + exceptionMessage);
+        validator.assertEmpty();
     }
 }

@@ -90,7 +90,6 @@ class PatcherTest {
         expectedConfig.set("additionalVal", "42");
 
         assertEquals(expectedConfig.saveToString(), config.saveToString(), "The patcher must only patch when patcher.patch() is called.");
-
     }
 
 
@@ -106,6 +105,7 @@ class PatcherTest {
 
         new Patcher(config, invalidConfig);
         validator.assertLogEntry(Level.SEVERE, "(Config Patcher) Invalid patch file! A version number is too short or too long.");
+        validator.assertEmpty();
     }
 
     @Test
@@ -117,6 +117,7 @@ class PatcherTest {
 
         new Patcher(config, invalidConfig);
         validator.assertLogEntry(Level.SEVERE, "(Config Patcher) Invalid patch file! The patch is malformed.");
+        validator.assertEmpty();
     }
 
     @Test
@@ -131,6 +132,7 @@ class PatcherTest {
 
         new Patcher(config, invalidConfig);
         validator.assertLogEntry(Level.SEVERE, "(Config Patcher) Invalid patch file! A version number is too short or too long.");
+        validator.assertEmpty();
     }
 
     @Test
@@ -148,6 +150,7 @@ class PatcherTest {
         assertFalse(patchNoError, "Patcher says there were no problems although there were.");
         validator.assertLogEntry(Level.INFO, "(Config Patcher) Applying patches to update to '3.4.5.6'...");
         validator.assertLogEntry(Level.WARNING, "(Config Patcher) There has been an issue while applying the patches for '3.4.5.6': Unknown transformation type 'INVALID' used!");
+        validator.assertEmpty();
     }
 
     @Test
