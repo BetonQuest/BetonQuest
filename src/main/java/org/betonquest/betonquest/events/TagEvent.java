@@ -3,6 +3,8 @@ package org.betonquest.betonquest.events;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
@@ -35,8 +37,8 @@ public class TagEvent extends QuestEvent {
 
     @SuppressWarnings("PMD.CognitiveComplexity")
     @Override
-    protected Void execute(final String playerID) {
-        if (playerID == null) {
+    protected Void execute(final Profile profile) {
+        if (profile == null) {
             if (!add) {
                 for (final String tag : tags) {
                     for (final Player p : Bukkit.getOnlinePlayers()) {
@@ -46,11 +48,11 @@ public class TagEvent extends QuestEvent {
                     BetonQuest.getInstance().getSaver().add(new Saver.Record(UpdateType.REMOVE_ALL_TAGS, tag));
                 }
             }
-        } else if (PlayerConverter.getPlayer(playerID) == null) {
+        } else if (profile.getPlayer() == null) {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    final PlayerData playerData = new PlayerData(playerID);
+                    final PlayerData playerData = new PlayerData(profile);
                     if (add) {
                         for (final String tag : tags) {
                             playerData.addTag(tag);
@@ -63,7 +65,7 @@ public class TagEvent extends QuestEvent {
                 }
             }.runTaskAsynchronously(BetonQuest.getInstance());
         } else {
-            final PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
+            final PlayerData playerData = BetonQuest.getInstance().getPlayerData(profile);
             if (add) {
                 for (final String tag : tags) {
                     playerData.addTag(tag);

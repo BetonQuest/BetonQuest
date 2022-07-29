@@ -2,8 +2,8 @@ package org.betonquest.betonquest.compatibility.skript;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -23,8 +23,8 @@ public class BQEventSkript extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final String playerID) {
-        final Player player = PlayerConverter.getPlayer(playerID);
+    protected Void execute(final Profile profile) {
+        final Player player = profile.getPlayer();
         final CustomEventForSkript event = new CustomEventForSkript(player, identifier);
         Bukkit.getServer().getPluginManager().callEvent(event);
         return null;

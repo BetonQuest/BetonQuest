@@ -16,6 +16,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.ChatConvIO;
 import org.betonquest.betonquest.conversation.Conversation;
@@ -98,8 +99,8 @@ public class MenuConvIO extends ChatConvIO {
 
     @SuppressWarnings("PMD.CognitiveComplexity")
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public MenuConvIO(final Conversation conv, final String playerID) {
-        super(conv, playerID);
+    public MenuConvIO(final Conversation conv, final Profile profile) {
+        super(conv, profile);
 
         for (final QuestPackage pack : Stream.concat(
                 Config.getPackages().values().stream().filter(p -> p != conv.getPackage()),

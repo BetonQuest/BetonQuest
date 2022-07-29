@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.api.quest.event;
 
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 /**
@@ -10,8 +11,8 @@ public interface Event {
     /**
      * Executes the event.
      *
-     * @param playerId player the event is done for
+     * @param profile the {@link Profile} of the player the event is done for
      * @throws QuestRuntimeException when the event execution fails
      */
-    void execute(String playerId) throws QuestRuntimeException;
+    void execute(Profile profile) throws QuestRuntimeException;
 }

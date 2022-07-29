@@ -5,8 +5,8 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -31,8 +31,8 @@ public class ConditionHasJob extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) {
-        final Player oPlayer = PlayerConverter.getPlayer(playerID);
+    protected Boolean execute(final Profile profile) {
+        final Player oPlayer = profile.getPlayer();
 
         final List<JobProgression> oJobs = Jobs.getPlayerManager().getJobsPlayer(oPlayer).getJobProgression();
         for (final JobProgression oJob : oJobs) {

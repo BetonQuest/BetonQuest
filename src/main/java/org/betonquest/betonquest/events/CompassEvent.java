@@ -6,10 +6,10 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -51,13 +51,13 @@ public class CompassEvent extends QuestEvent {
 
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    protected Void execute(final String playerID) throws QuestRuntimeException {
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
         switch (action) {
             case ADD:
             case DEL:
                 // Add Tag to player
                 try {
-                    new TagEvent(new Instruction(instruction.getPackage(), null, "tag " + action.toString().toLowerCase(Locale.ROOT) + " compass-" + compass)).handle(playerID);
+                    new TagEvent(new Instruction(instruction.getPackage(), null, "tag " + action.toString().toLowerCase(Locale.ROOT) + " compass-" + compass)).handle(profile);
                 } catch (final InstructionParseException e) {
                     LOG.warn(instruction.getPackage(), "Failed to tag player with compass point: " + compass, e);
                 }
@@ -65,13 +65,13 @@ public class CompassEvent extends QuestEvent {
             case SET:
                 final Location location;
                 try {
-                    location = compassLocation.getLocation(playerID);
+                    location = compassLocation.getLocation(profile);
                 } catch (final QuestRuntimeException e) {
                     LOG.warn(instruction.getPackage(), "Failed to set compass: " + compass, e);
                     return null;
                 }
 
-                final Player player = PlayerConverter.getPlayer(playerID);
+                final Player player = profile.getPlayer();
                 if (player != null) {
                     final QuestCompassTargetChangeEvent event = new QuestCompassTargetChangeEvent(player, location);
                     Bukkit.getServer().getPluginManager().callEvent(event);

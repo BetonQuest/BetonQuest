@@ -4,6 +4,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -76,10 +77,10 @@ public abstract class AbstractTakeEvent extends QuestEvent {
         }
     }
 
-    protected void notifyPlayer(final String playerID, final String itemName, final int amount) {
+    protected void notifyPlayer(final Profile profile, final String itemName, final int amount) {
         if (notify) {
             try {
-                Config.sendNotify(instruction.getPackage().getPackagePath(), playerID, "items_taken",
+                Config.sendNotify(instruction.getPackage().getPackagePath(), profile, "items_taken",
                         new String[]{itemName, String.valueOf(amount)}, "items_taken,info");
             } catch (final QuestRuntimeException exception) {
                 LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'items_taken' category in '" + getFullId() + "'. Error was: '" + exception.getMessage() + "'", exception);
@@ -105,10 +106,10 @@ public abstract class AbstractTakeEvent extends QuestEvent {
         player.getInventory().setItemInOffHand(newOffhand[0]);
     }
 
-    protected void checkBackpack(final String playerID) {
-        final List<ItemStack> backpack = BetonQuest.getInstance().getPlayerData(playerID).getBackpack();
-        final List<ItemStack> newBackpack = removeDesiredAmount(PlayerConverter.getPlayer(playerID), backpack);
-        BetonQuest.getInstance().getPlayerData(playerID).setBackpack(newBackpack);
+    protected void checkBackpack(final Profile profile) {
+        final List<ItemStack> backpack = BetonQuest.getInstance().getPlayerData(profile).getBackpack();
+        final List<ItemStack> newBackpack = removeDesiredAmount(profile.getPlayer(), backpack);
+        BetonQuest.getInstance().getPlayerData(profile).setBackpack(newBackpack);
     }
 
     protected List<ItemStack> removeDesiredAmount(final Player player, final List<ItemStack> items) {

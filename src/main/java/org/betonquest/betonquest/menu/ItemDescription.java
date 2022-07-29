@@ -2,6 +2,7 @@ package org.betonquest.betonquest.menu;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.ChatColor;
 
@@ -29,31 +30,31 @@ public class ItemDescription {
     /**
      * Receive display name of item for specific player
      *
-     * @param playerID id of the player
+     * @param profile the {@link Profile} of the player
      * @return the item's display name for the specified player.
      */
-    public String getDisplayName(final String playerID) {
+    public String getDisplayName(final Profile profile) {
         final Line displayName = this.lines.get(0);
         if (displayName == null) {
             return null;
         }
-        return displayName.resolve(playerID);
+        return displayName.resolve(profile);
     }
 
     /**
      * Receive lore of the item for specific player
      *
-     * @param playerID id of the player
+     * @param profile the {@link Profile} of the player
      * @return the item's lore for the specified player.
      */
-    public List<String> getLore(final String playerID) {
+    public List<String> getLore(final Profile profile) {
         final List<Line> lines = this.lines.subList(1, this.lines.size());
         if (lines.isEmpty()) {
             return new ArrayList<>();
         }
         final List<String> lore = new ArrayList<>(lines.size());
         for (final Line line : lines) {
-            lore.add(line.resolve(playerID));
+            lore.add(line.resolve(profile));
         }
         return lore;
     }
@@ -88,13 +89,13 @@ public class ItemDescription {
         /**
          * Resolves all variables in this line for specified player
          *
-         * @param playerID id of a player
+         * @param profile the {@link Profile} of the player
          * @return
          */
-        public String resolve(final String playerID) {
+        public String resolve(final Profile profile) {
             String line = this.line;
             for (final String variable : variables) {
-                line = line.replace(variable, BetonQuest.getInstance().getVariableValue(pack.getPackagePath(), variable, playerID));
+                line = line.replace(variable, BetonQuest.getInstance().getVariableValue(pack.getPackagePath(), variable, profile));
             }
             return line;
         }

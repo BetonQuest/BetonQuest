@@ -3,6 +3,7 @@ package org.betonquest.betonquest.objectives;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.id.EventID;
@@ -56,19 +57,19 @@ public class PasswordObjective extends Objective implements Listener {
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     private boolean chatInput(final boolean fromCommand, final Player player, final String message) {
-        final String playerID = PlayerConverter.getID(player);
-        if (!containsPlayer(playerID)) {
+        final Profile profile = PlayerConverter.getID(player);
+        if (!containsPlayer(profile)) {
             return false;
         }
         final String prefix = passwordPrefix == null ?
-                Config.getMessage(BetonQuest.getInstance().getPlayerData(playerID).getLanguage(), "password") : passwordPrefix;
+                Config.getMessage(BetonQuest.getInstance().getPlayerData(profile).getLanguage(), "password") : passwordPrefix;
         if (!prefix.isEmpty() && !message.toLowerCase(Locale.ROOT).startsWith(prefix.toLowerCase(Locale.ROOT))) {
             return false;
         }
         final String password = message.substring(prefix.length());
-        if (checkConditions(playerID)) {
+        if (checkConditions(profile)) {
             if (regex.matcher(password).matches()) {
-                Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> completeObjective(playerID));
+                Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> completeObjective(profile));
 
                 if (fromCommand) {
                     return !prefix.isEmpty();
@@ -77,7 +78,7 @@ public class PasswordObjective extends Objective implements Listener {
                 }
             } else {
                 for (final EventID event : failEvents) {
-                    BetonQuest.event(playerID, event);
+                    BetonQuest.event(profile, event);
                 }
             }
         }
@@ -100,7 +101,7 @@ public class PasswordObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(final String name, final String playerID) {
+    public String getProperty(final String name, final Profile profile) {
         return "";
     }
 

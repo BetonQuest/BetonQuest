@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.event;
 
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -38,6 +39,20 @@ class OnlinePlayerGroupStaticEventAdapterTest {
     public OnlinePlayerGroupStaticEventAdapterTest() {
     }
 
+    static Stream<List<Player>> playerListSource() {
+        return Stream.of(
+                List.of(createRandomPlayer()),
+                List.of(createRandomPlayer(), createRandomPlayer()),
+                List.of(createRandomPlayer(), createRandomPlayer(), createRandomPlayer(), createRandomPlayer())
+        );
+    }
+
+    static Player createRandomPlayer() {
+        final Player player = mock(Player.class);
+        when(player.getUniqueId()).thenReturn(UUID.randomUUID());
+        return player;
+    }
+
     @ParameterizedTest
     @EmptySource
     @MethodSource("playerListSource")
@@ -47,14 +62,6 @@ class OnlinePlayerGroupStaticEventAdapterTest {
 
         verifyExecutedOnceForPlayers(playerList);
         verifyNoMoreInteractions(internalEvent);
-    }
-
-    static Stream<List<Player>> playerListSource() {
-        return Stream.of(
-                List.of(createRandomPlayer()),
-                List.of(createRandomPlayer(), createRandomPlayer()),
-                List.of(createRandomPlayer(), createRandomPlayer(), createRandomPlayer(), createRandomPlayer())
-        );
     }
 
     @Test
@@ -80,23 +87,17 @@ class OnlinePlayerGroupStaticEventAdapterTest {
     @Test
     void testAdapterFailsOnFirstEventFailure() throws QuestRuntimeException {
         final List<Player> playerList = List.of(createRandomPlayer(), createRandomPlayer(), createRandomPlayer());
-        final String firstPlayerId = PlayerConverter.getID(playerList.get(0));
-        final String failingPlayerId = PlayerConverter.getID(playerList.get(1));
+        final Profile firstProfile = PlayerConverter.getID(playerList.get(0));
+        final Profile failingProfile = PlayerConverter.getID(playerList.get(1));
         final Exception eventFailureException = new QuestRuntimeException("test exception");
 
-        doNothing().when(internalEvent).execute(firstPlayerId);
-        doThrow(eventFailureException).when(internalEvent).execute(failingPlayerId);
+        doNothing().when(internalEvent).execute(firstProfile);
+        doThrow(eventFailureException).when(internalEvent).execute(failingProfile);
 
         final OnlinePlayerGroupStaticEventAdapter subject = new OnlinePlayerGroupStaticEventAdapter(() -> playerList, internalEvent);
         assertThrows(QuestRuntimeException.class, subject::execute);
-        verify(internalEvent).execute(firstPlayerId);
+        verify(internalEvent).execute(firstProfile);
         verify(internalEvent, never()).execute(PlayerConverter.getID(playerList.get(2)));
-    }
-
-    static Player createRandomPlayer() {
-        final Player player = mock(Player.class);
-        when(player.getUniqueId()).thenReturn(UUID.randomUUID());
-        return player;
     }
 
     private void verifyExecutedOnceForPlayers(final Iterable<Player> playerList) throws QuestRuntimeException {

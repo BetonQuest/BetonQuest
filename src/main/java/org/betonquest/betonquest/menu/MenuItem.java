@@ -5,6 +5,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -252,9 +253,9 @@ public class MenuItem extends SimpleYMLSection {
     @SuppressFBWarnings("DCN_NULLPOINTER_EXCEPTION")
     public ItemStack generateItem(final Player player) {
         try {
-            final String playerId = PlayerConverter.getID(player);
-            final String lang = BetonQuest.getInstance().getPlayerData(playerId).getLanguage();
-            final ItemStack item = this.item.generate(playerId);
+            final Profile profile = PlayerConverter.getID(player);
+            final String lang = BetonQuest.getInstance().getPlayerData(profile).getLanguage();
+            final ItemStack item = this.item.generate(profile);
             final ItemMeta meta = item.getItemMeta();
             if (!descriptions.isEmpty()) {
                 ItemDescription description = this.descriptions.get(lang);
@@ -262,8 +263,8 @@ public class MenuItem extends SimpleYMLSection {
                     description = this.descriptions.get(Config.getLanguage());
                 }
                 try {
-                    meta.setDisplayName(description.getDisplayName(playerId));
-                    meta.setLore(description.getLore(playerId));
+                    meta.setDisplayName(description.getDisplayName(profile));
+                    meta.setLore(description.getLore(profile));
                     item.setItemMeta(meta);
                 } catch (final NullPointerException npe) {
                     LOG.error(pack, "Couldn't add custom text to §7" + name + "§4: No text for language §7" + Config.getLanguage() + "§4 " +
@@ -316,8 +317,8 @@ public class MenuItem extends SimpleYMLSection {
             return amount;
         }
 
-        public ItemStack generate(final String playerID) throws QuestRuntimeException {
-            return questItem.generate(amount.getInt(playerID), playerID);
+        public ItemStack generate(final Profile profile) throws QuestRuntimeException {
+            return questItem.generate(amount.getInt(profile), profile);
         }
     }
 

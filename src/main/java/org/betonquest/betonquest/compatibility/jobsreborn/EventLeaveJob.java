@@ -4,8 +4,8 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.Job;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("PMD.CommentRequired")
@@ -29,8 +29,8 @@ public class EventLeaveJob extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final String playerID) {
-        final Player oPlayer = PlayerConverter.getPlayer(playerID);
+    protected Void execute(final Profile profile) {
+        final Player oPlayer = profile.getPlayer();
         for (final Job job : Jobs.getJobs()) {
             if (job.getName().equalsIgnoreCase(sJobName)) {
                 Jobs.getPlayerManager().getJobsPlayer(oPlayer).leaveJob(job);

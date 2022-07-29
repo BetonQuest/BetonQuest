@@ -3,6 +3,8 @@ package org.betonquest.betonquest.events;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
@@ -29,18 +31,18 @@ public class DeletePointEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final String playerID) throws QuestRuntimeException {
-        if (playerID == null) {
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
+        if (profile == null) {
             for (final Player p : Bukkit.getOnlinePlayers()) {
                 final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(p));
                 playerData.removePointsCategory(category);
             }
             BetonQuest.getInstance().getSaver().add(new Saver.Record(UpdateType.REMOVE_ALL_POINTS, category));
-        } else if (PlayerConverter.getPlayer(playerID) == null) {
-            final PlayerData playerData = new PlayerData(playerID);
+        } else if (profile.getPlayer() == null) {
+            final PlayerData playerData = new PlayerData(profile);
             playerData.removePointsCategory(category);
         } else {
-            final PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
+            final PlayerData playerData = BetonQuest.getInstance().getPlayerData(profile);
             playerData.removePointsCategory(category);
         }
         return null;

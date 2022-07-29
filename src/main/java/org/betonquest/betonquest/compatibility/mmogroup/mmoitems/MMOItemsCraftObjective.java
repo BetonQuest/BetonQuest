@@ -13,6 +13,7 @@ import net.Indyuce.mmoitems.manager.TypeManager;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -51,13 +52,13 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
      */
     @EventHandler
     public void onItemCraft(final CraftItemEvent event) {
-        final String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
+        final Profile profile = PlayerConverter.getID((Player) event.getWhoClicked());
         final ItemStack craftedItem = event.getRecipe().getResult();
         if (event.getSlotType() == InventoryType.SlotType.RESULT
-                && containsPlayer(playerID)
+                && containsPlayer(profile)
                 && isValidItem(craftedItem)
-                && checkConditions(playerID)) {
-            progressCraftObjective(playerID, craftedItem.getAmount());
+                && checkConditions(profile)) {
+            progressCraftObjective(profile, craftedItem.getAmount());
         }
     }
 
@@ -68,13 +69,13 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
      */
     @EventHandler(ignoreCancelled = true)
     public void onRecipeUse(final CraftMMOItemEvent event) {
-        final String playerID = PlayerConverter.getID(event.getPlayer());
+        final Profile profile = PlayerConverter.getID(event.getPlayer());
         final ItemStack craftedItem = event.getResult();
 
-        if (containsPlayer(playerID)
+        if (containsPlayer(profile)
                 && isValidItem(craftedItem)
-                && checkConditions(playerID)) {
-            progressCraftObjective(playerID, craftedItem.getAmount());
+                && checkConditions(profile)) {
+            progressCraftObjective(profile, craftedItem.getAmount());
         }
     }
 
@@ -85,27 +86,27 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
      */
     @EventHandler(ignoreCancelled = true)
     public void onRecipeUse(final PlayerUseCraftingStationEvent event) {
-        final String playerID = PlayerConverter.getID(event.getPlayer());
+        final Profile profile = PlayerConverter.getID(event.getPlayer());
         final StationAction action = event.getInteraction();
         final Recipe usedRecipe = event.getRecipe();
 
-        if (containsPlayer(playerID)
+        if (containsPlayer(profile)
                 && action != StationAction.INTERACT_WITH_RECIPE
                 && action != StationAction.CANCEL_QUEUE
                 && usedRecipe instanceof CraftingRecipe
-                && checkConditions(playerID)) {
+                && checkConditions(profile)) {
             final CraftingRecipe craftingRecipe = (CraftingRecipe) usedRecipe;
 
             final ItemStack craftedItem = craftingRecipe.getOutput().getItemStack(new FriendlyFeedbackProvider(FFPMMOItems.get()));
             if (isValidItem(craftedItem)) {
-                progressCraftObjective(playerID, craftedItem.getAmount());
+                progressCraftObjective(profile, craftedItem.getAmount());
             }
         }
     }
 
-    private void progressCraftObjective(final String playerID, final int craftedAmount) {
-        getCountingData(playerID).progress(craftedAmount);
-        completeIfDoneOrNotify(playerID);
+    private void progressCraftObjective(final Profile profile, final int craftedAmount) {
+        getCountingData(profile).progress(craftedAmount);
+        completeIfDoneOrNotify(profile);
     }
 
     /**

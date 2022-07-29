@@ -14,8 +14,6 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ObjectiveID;
-import org.betonquest.betonquest.utils.PlayerConverter;
-import org.bukkit.Bukkit;
 import org.bukkit.Server;
 
 import java.lang.reflect.InvocationTargetException;
@@ -49,9 +47,9 @@ public abstract class Objective {
     protected QREHandler qreHandler = new QREHandler();
 
     /**
-     * Contains all data objects of the players with this objective active.
+     * Contains all data objects of the profiles with this objective active.
      */
-    protected Map<String, ObjectiveData> dataMap = new HashMap<>();
+    protected Map<Profile, ObjectiveData> dataMap = new HashMap<>();
     /**
      * Should be set with the data class used to hold players' information.
      */
@@ -383,7 +381,7 @@ public abstract class Objective {
         if (dataMap.isEmpty()) {
             start();
         }
-        dataMap.put(profile.getPlayerId(), data);
+        dataMap.put(profile, data);
         start(profile);
     }
 
@@ -446,8 +444,8 @@ public abstract class Objective {
      */
     public void close() {
         stop();
-        for (final Map.Entry<String, ObjectiveData> entry : dataMap.entrySet()) {
-            final Profile profile = PlayerConverter.getID(Bukkit.getOfflinePlayer(entry.getKey()));
+        for (final Map.Entry<Profile, ObjectiveData> entry : dataMap.entrySet()) {
+            final Profile profile = (entry.getKey());
             stop(profile);
             BetonQuest.getInstance().getPlayerData(profile).addRawObjective(instruction.getID().getFullID(),
                     entry.getValue().toString());

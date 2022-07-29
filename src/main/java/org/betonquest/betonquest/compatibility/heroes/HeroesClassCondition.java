@@ -6,9 +6,9 @@ import com.herocraftonline.heroes.characters.classes.HeroClass;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 
 import java.util.ArrayList;
 
@@ -44,8 +44,8 @@ public class HeroesClassCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        final Hero hero = Heroes.getInstance().getCharacterManager().getHero(PlayerConverter.getPlayer(playerID));
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        final Hero hero = Heroes.getInstance().getCharacterManager().getHero(profile.getPlayer());
         if (hero == null) {
             return false;
         }
@@ -64,7 +64,7 @@ public class HeroesClassCondition extends Condition {
         }
         boolean matchingClass = true;
         boolean matchingLevel = true;
-        final int playerLevel = level == null ? -1 : level.getInt(playerID);
+        final int playerLevel = level == null ? -1 : level.getInt(profile);
         if (any) {
             matchingLevel = hero.getHeroLevel() >= playerLevel;
         } else {

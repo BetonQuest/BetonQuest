@@ -3,6 +3,7 @@ package org.betonquest.betonquest.objectives;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -28,9 +29,9 @@ public class ConsumeObjective extends Objective implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onConsume(final PlayerItemConsumeEvent event) {
-        final String playerID = PlayerConverter.getID(event.getPlayer());
-        if (containsPlayer(playerID) && item.compare(event.getItem()) && checkConditions(playerID)) {
-            completeObjective(playerID);
+        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        if (containsPlayer(profile) && item.compare(event.getItem()) && checkConditions(profile)) {
+            completeObjective(profile);
         }
     }
 
@@ -50,7 +51,7 @@ public class ConsumeObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(final String name, final String playerID) {
+    public String getProperty(final String name, final Profile profile) {
         return "";
     }
 

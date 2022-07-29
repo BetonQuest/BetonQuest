@@ -5,6 +5,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
@@ -205,9 +206,9 @@ public class Menu extends SimpleYMLSection implements Listener {
      * @return true if all opening conditions are true, false otherwise
      */
     public boolean mayOpen(final Player player) {
-        final String playerId = PlayerConverter.getID(player);
+        final Profile profile = PlayerConverter.getID(player);
         for (final ConditionID conditionID : openConditions) {
-            if (!BetonQuest.condition(playerId, conditionID)) {
+            if (!BetonQuest.condition(profile, conditionID)) {
                 LOG.debug(getPackage(), "Denied opening of " + name + ": Condition " + conditionID + "returned false.");
                 return false;
             }

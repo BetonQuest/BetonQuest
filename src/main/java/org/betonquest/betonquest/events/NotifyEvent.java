@@ -3,12 +3,12 @@ package org.betonquest.betonquest.events;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.notify.NotifyIO;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -91,18 +91,18 @@ public class NotifyEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final String playerID) throws QuestRuntimeException {
-        final String lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
+        final String lang = BetonQuest.getInstance().getPlayerData(profile).getLanguage();
         String message = messages.get(lang);
         if (message == null) {
             message = messages.get(Config.getLanguage());
         }
         for (final String variable : variables) {
             message = message.replace(variable,
-                    BetonQuest.getInstance().getVariableValue(instruction.getPackage().getPackagePath(), variable, playerID));
+                    BetonQuest.getInstance().getVariableValue(instruction.getPackage().getPackagePath(), variable, profile));
         }
 
-        final Player player = PlayerConverter.getPlayer(playerID);
+        final Player player = profile.getPlayer();
         notifyIO.sendNotify(message, player);
         return null;
     }

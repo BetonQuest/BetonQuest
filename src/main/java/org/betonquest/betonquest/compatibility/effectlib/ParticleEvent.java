@@ -3,9 +3,9 @@ package org.betonquest.betonquest.compatibility.effectlib;
 import de.slikey.effectlib.util.DynamicLocation;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -39,9 +39,9 @@ public class ParticleEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final String playerID) throws QuestRuntimeException {
-        final Player player = PlayerConverter.getPlayer(playerID);
-        final Location location = (loc == null) ? player.getLocation() : loc.getLocation(playerID);
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
+        final Player player = profile.getPlayer();
+        final Location location = (loc == null) ? player.getLocation() : loc.getLocation(profile);
         // This is not used at the moment
         // Entity originEntity = (loc == null) ? p : null;
         final Player targetPlayer = pr1vate ? player : null;

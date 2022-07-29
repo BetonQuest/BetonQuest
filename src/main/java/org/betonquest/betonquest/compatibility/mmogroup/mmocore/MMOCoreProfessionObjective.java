@@ -5,6 +5,7 @@ import net.Indyuce.mmocore.experience.Profession;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -29,8 +30,8 @@ public class MMOCoreProfessionObjective extends Objective implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onLevelUp(final PlayerLevelUpEvent event) {
-        final String playerID = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(playerID) || !checkConditions(playerID)) {
+        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        if (!containsPlayer(profile) || !checkConditions(profile)) {
             return;
         }
         final Profession profession = event.getProfession();
@@ -41,7 +42,7 @@ public class MMOCoreProfessionObjective extends Objective implements Listener {
         if (!profession.getName().equalsIgnoreCase(professionName) || event.getNewLevel() < targetLevel) {
             return;
         }
-        completeObjective(playerID);
+        completeObjective(profile);
     }
 
     @Override
@@ -60,7 +61,7 @@ public class MMOCoreProfessionObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(final String name, final String playerID) {
+    public String getProperty(final String name, final Profile profile) {
         return "";
     }
 

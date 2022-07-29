@@ -9,11 +9,11 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.protocollib.hider.MythicHider;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Bukkit;
@@ -59,11 +59,11 @@ public class MythicSpawnMobEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final String playerID) throws QuestRuntimeException {
-        final Player player = PlayerConverter.getPlayer(playerID); //grabbing the player from id
-        final int pAmount = amount.getInt(playerID);
-        final int level = this.level.getInt(playerID);
-        final Location location = loc.getLocation(playerID);
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
+        final Player player = profile.getPlayer(); //grabbing the player from id
+        final int pAmount = amount.getInt(profile);
+        final int level = this.level.getInt(profile);
+        final Location location = loc.getLocation(profile);
         for (int i = 0; i < pAmount; i++) {
             try {
                 final Entity entity = new BukkitAPIHelper().spawnMythicMob(mob, location, level);

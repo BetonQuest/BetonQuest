@@ -3,6 +3,7 @@ package org.betonquest.betonquest.events;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -24,8 +25,8 @@ public class LanguageEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final String playerID) throws QuestRuntimeException {
-        BetonQuest.getInstance().getPlayerData(playerID).setLanguage(lang);
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
+        BetonQuest.getInstance().getPlayerData(profile).setLanguage(lang);
         return null;
     }
 

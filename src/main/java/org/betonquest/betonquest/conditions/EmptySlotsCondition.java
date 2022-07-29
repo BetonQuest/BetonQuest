@@ -4,9 +4,9 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -27,8 +27,8 @@ public class EmptySlotsCondition extends Condition {
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        final Player player = PlayerConverter.getPlayer(playerID);
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        final Player player = profile.getPlayer();
         final ItemStack[] items = player.getInventory().getStorageContents();
 
         int empty = 0;
@@ -37,7 +37,7 @@ public class EmptySlotsCondition extends Condition {
                 empty++;
             }
         }
-        return equal ? empty == needed.getInt(playerID) : empty >= needed.getInt(playerID);
+        return equal ? empty == needed.getInt(profile) : empty >= needed.getInt(profile);
     }
 
 }

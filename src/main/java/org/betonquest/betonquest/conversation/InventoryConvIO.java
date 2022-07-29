@@ -4,6 +4,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.papermc.lib.PaperLib;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.utils.LocalChatPaginator;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -62,9 +63,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
     protected boolean showNPCText = true;
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public InventoryConvIO(final Conversation conv, final String playerID) {
+    public InventoryConvIO(final Conversation conv, final Profile profile) {
         this.conv = conv;
-        this.player = PlayerConverter.getPlayer(playerID);
+        this.player = profile.getPlayer();
         final Map<String, ChatColor[]> colors = ConversationColors.getColors();
         StringBuilder string = new StringBuilder();
         for (final ChatColor color : colors.get("npc")) {
@@ -131,7 +132,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         if (player.getGameMode() == GameMode.SPECTATOR) {
             conv.endConversation();
             player.closeInventory();
-            conv.getInterceptor().sendMessage(Config.getMessage(PlayerConverter.getID(player), "conversation_spectator"));
+            conv.getInterceptor().sendMessage(Config.getMessage(PlayerConverter.getID(player).getPlayerId(), "conversation_spectator"));
             return;
         }
         if (response == null) {
@@ -370,8 +371,8 @@ public class InventoryConvIO implements Listener, ConversationIO {
      */
     public static class Combined extends InventoryConvIO {
 
-        public Combined(final Conversation conv, final String playerID) {
-            super(conv, playerID);
+        public Combined(final Conversation conv, final Profile profile) {
+            super(conv, profile);
             super.printMessages = true;
         }
     }

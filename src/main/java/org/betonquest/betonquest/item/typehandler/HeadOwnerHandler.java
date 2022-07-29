@@ -24,7 +24,7 @@ public class HeadOwnerHandler {
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public String get(final String playerIdOrName) {
         if (playerIdOrName != null && "%player%".equals(owner)) {
-            return PlayerConverter.getName(playerIdOrName);
+            return PlayerConverter.getID(playerIdOrName).getPlayerName();
         }
         return owner;
     }

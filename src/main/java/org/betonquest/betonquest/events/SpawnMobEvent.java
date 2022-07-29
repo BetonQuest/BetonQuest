@@ -6,6 +6,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ItemID;
@@ -78,10 +79,9 @@ public class SpawnMobEvent extends QuestEvent {
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @Override
-    protected Void execute(final String playerID) throws QuestRuntimeException {
-        final Player player = PlayerConverter.getPlayer(playerID);
-        final Location location = loc.getLocation(playerID);
-        final int pAmount = amount.getInt(playerID);
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
+        final Location location = loc.getLocation(profile);
+        final int pAmount = amount.getInt(profile);
         for (int i = 0; i < pAmount; i++) {
             final Entity entity = location.getWorld().spawnEntity(location, type);
             if (entity instanceof LivingEntity) {
@@ -104,7 +104,7 @@ public class SpawnMobEvent extends QuestEvent {
             for (final Item item : drops) {
                 entity.setMetadata("betonquest-drops-" + dropIndex,
                         new FixedMetadataValue(BetonQuest.getInstance(), item.getID().getFullID() + ":"
-                                + item.getAmount().getInt(playerID)));
+                                + item.getAmount().getInt(profile)));
                 dropIndex++;
             }
             if (name != null && entity instanceof LivingEntity) {

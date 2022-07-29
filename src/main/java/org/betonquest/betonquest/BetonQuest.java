@@ -364,7 +364,7 @@ public class BetonQuest extends JavaPlugin {
             final List<CompletableFuture<Boolean>> conditions = new ArrayList<>();
             for (final ConditionID id : conditionIDs) {
                 final CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(
-                        () -> condition(playerID, id));
+                        () -> condition(profile, id));
                 conditions.add(future);
             }
             for (final CompletableFuture<Boolean> condition : conditions) {
@@ -385,7 +385,7 @@ public class BetonQuest extends JavaPlugin {
      * Checks if the condition described by conditionID is met
      *
      * @param conditionID ID of the condition to check
-     * @param playerID    ID of the player which should be checked
+     * @param profile     the {@link Profile} of the player which should be checked
      * @return if the condition is met
      */
     @SuppressWarnings("PMD.NPathComplexity")
@@ -461,7 +461,7 @@ public class BetonQuest extends JavaPlugin {
             log.debug(eventID.getPackage(), "Firing static event " + eventID);
         } else {
             log.debug(eventID.getPackage(),
-                    "Firing event " + eventID + " for " + PlayerConverter.getName(profile));
+                    "Firing event " + eventID + " for " + profile.getPlayerName());
         }
         try {
             event.fire(profile);
@@ -473,13 +473,13 @@ public class BetonQuest extends JavaPlugin {
     /**
      * Creates new objective for given player
      *
-     * @param playerID    ID of the player
+     * @param profile     the {@link Profile} of the player
      * @param objectiveID ID of the objective
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
-    public static void newObjective(final String playerID, final ObjectiveID objectiveID) {
+    public static void newObjective(final Profile profile, final ObjectiveID objectiveID) {
         // null check
-        if (playerID == null || objectiveID == null) {
+        if (profile == null || objectiveID == null) {
             log.debug(objectiveID.getPackage(), "Null arguments for the objective!");
             return;
         }
@@ -490,25 +490,25 @@ public class BetonQuest extends JavaPlugin {
                 break;
             }
         }
-        if (objective.containsPlayer(playerID)) {
+        if (objective.containsPlayer(profile)) {
             log.debug(objectiveID.getPackage(),
-                    "Player " + PlayerConverter.getName(playerID) + " already has the " + objectiveID +
+                    "Player " + profile.getPlayerName() + " already has the " + objectiveID +
                             " objective");
             return;
         }
-        objective.newPlayer(playerID);
+        objective.newPlayer(profile);
     }
 
     /**
      * Resumes the existing objective for given player
      *
-     * @param playerID    ID of the player
+     * @param profile     the {@link Profile} of the player
      * @param objectiveID ID of the objective
      * @param instruction data instruction string
      */
-    public static void resumeObjective(final String playerID, final ObjectiveID objectiveID, final String instruction) {
+    public static void resumeObjective(final Profile profile, final ObjectiveID objectiveID, final String instruction) {
         // null check
-        if (playerID == null || objectiveID == null || instruction == null) {
+        if (profile == null || objectiveID == null || instruction == null) {
             log.debug("Null arguments for the objective!");
             return;
         }
@@ -523,12 +523,12 @@ public class BetonQuest extends JavaPlugin {
             log.warn(objectiveID.getPackage(), "Objective " + objectiveID + " does not exist");
             return;
         }
-        if (objective.containsPlayer(playerID)) {
+        if (objective.containsPlayer(profile)) {
             log.debug(objectiveID.getPackage(),
-                    "Player " + PlayerConverter.getName(playerID) + " already has the " + objectiveID + " objective!");
+                    "Player " + profile.getPlayerName() + " already has the " + objectiveID + " objective!");
             return;
         }
-        objective.resumeObjectiveForPlayer(playerID, instruction);
+        objective.resumeObjectiveForPlayer(profile, instruction);
     }
 
     /**
@@ -930,13 +930,13 @@ public class BetonQuest extends JavaPlugin {
             globalData = new GlobalData();
             // load data for all online players
             for (final Player player : Bukkit.getOnlinePlayers()) {
-                final String playerID = PlayerConverter.getID(player);
-                final PlayerData playerData = new PlayerData(playerID);
-                playerDataMap.put(playerID, playerData);
+                final Profile profile = PlayerConverter.getID(player);
+                final PlayerData playerData = new PlayerData(profile);
+                playerDataMap.put(profile.getPlayerId(), playerData);
                 playerData.startObjectives();
                 playerData.getJournal().update();
                 if (playerData.getConversation() != null) {
-                    new ConversationResumer(playerID, playerData.getConversation());
+                    new ConversationResumer(profile, playerData.getConversation());
                 }
             }
 
@@ -1202,10 +1202,10 @@ public class BetonQuest extends JavaPlugin {
         loadData();
         // start objectives and update journals for every online player
         for (final Player player : Bukkit.getOnlinePlayers()) {
-            final String playerID = PlayerConverter.getID(player);
-            log.debug("Updating journal for player " + PlayerConverter.getName(playerID));
-            final PlayerData playerData = instance.getPlayerData(playerID);
-            GlobalObjectives.startAll(playerID);
+            final Profile profile = PlayerConverter.getID(player);
+            log.debug("Updating journal for player " + profile.getPlayerName());
+            final PlayerData playerData = instance.getPlayerData(profile);
+            GlobalObjectives.startAll(profile);
             final Journal journal = playerData.getJournal();
             journal.update();
         }
@@ -1298,12 +1298,12 @@ public class BetonQuest extends JavaPlugin {
      * Stores the PlayerData in a map, so it can be retrieved using
      * getPlayerData(String playerID)
      *
-     * @param playerID   ID of the player
+     * @param profile    the {@link Profile} of the player
      * @param playerData PlayerData object to store
      */
-    public void putPlayerData(final String playerID, final PlayerData playerData) {
-        log.debug("Inserting data for " + PlayerConverter.getName(playerID));
-        playerDataMap.put(playerID, playerData);
+    public void putPlayerData(final Profile profile, final PlayerData playerData) {
+        log.debug("Inserting data for " + profile.getPlayerName());
+        playerDataMap.put(profile.getPlayerId(), playerData);
     }
 
     /**
@@ -1315,18 +1315,18 @@ public class BetonQuest extends JavaPlugin {
      * @return PlayerData object for the player
      */
     public PlayerData getPlayerData(final Profile profile) {
-        PlayerData playerData = playerDataMap.get(profile);
-        if (playerData == null && PlayerConverter.getPlayer(profile) != null) {
+        PlayerData playerData = playerDataMap.get(profile.getPlayerId());
+        if (playerData == null && profile.getPlayer() != null) {
             playerData = new PlayerData(profile);
             putPlayerData(profile, playerData);
         }
         return playerData;
     }
 
-    public PlayerData getOfflinePlayerData(final String playerID) {
-        final PlayerData playerData = getPlayerData(playerID);
+    public PlayerData getOfflinePlayerData(final Profile profile) {
+        final PlayerData playerData = getPlayerData(profile);
         if (playerData == null) {
-            return new PlayerData(playerID);
+            return new PlayerData(profile);
         }
         return playerData;
     }
@@ -1343,10 +1343,10 @@ public class BetonQuest extends JavaPlugin {
     /**
      * Removes the database playerData from the map
      *
-     * @param playerID ID of the player whose playerData is to be removed
+     * @param profile the {@link Profile} of the player whose playerData is to be removed
      */
-    public void removePlayerData(final String playerID) {
-        playerDataMap.remove(playerID);
+    public void removePlayerData(final Profile profile) {
+        playerDataMap.remove(profile);
     }
 
     /**

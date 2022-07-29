@@ -3,12 +3,12 @@ package org.betonquest.betonquest.menu.betonquest;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 
 /**
@@ -33,8 +33,8 @@ public class MenuQuestEvent extends QuestEvent {
     }
 
     @Override
-    public Void execute(final String playerID) throws QuestRuntimeException {
-        final Player player = PlayerConverter.getPlayer(playerID);
+    public Void execute(final Profile profile) throws QuestRuntimeException {
+        final Player player = profile.getPlayer();
         if (operation == Operation.OPEN) {
             BetonQuest.getInstance().getRpgMenu().openMenu(player, menu);
         } else {

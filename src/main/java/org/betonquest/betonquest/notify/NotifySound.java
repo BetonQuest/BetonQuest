@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.notify;
 
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -72,14 +73,14 @@ class NotifySound {
     }
 
     private Location getLocation(final Player player, final CompoundLocation compoundLocation, final VectorData playerOffset, final Float playerOffsetDistance) throws QuestRuntimeException {
-        final String playerID = PlayerConverter.getID(player);
-        final Location location = compoundLocation == null ? player.getLocation() : compoundLocation.getLocation(playerID);
+        final Profile profile = PlayerConverter.getID(player);
+        final Location location = compoundLocation == null ? player.getLocation() : compoundLocation.getLocation(profile);
 
         if (playerOffsetDistance != null && player.getLocation().distance(location) > playerOffsetDistance) {
             return getLocationRelativeDistance(location, player, playerOffsetDistance);
         }
         if (playerOffset != null) {
-            return getLocationRelativeVector(location, player, playerID, playerOffset);
+            return getLocationRelativeVector(location, player, profile, playerOffset);
         }
 
         return location;
@@ -91,8 +92,8 @@ class NotifySound {
         return player.getLocation().add(directionVector);
     }
 
-    private Location getLocationRelativeVector(final Location location, final Player player, final String playerID, final VectorData playerOffset) throws QuestRuntimeException {
-        final Vector relative = playerOffset.get(playerID);
+    private Location getLocationRelativeVector(final Location location, final Player player, final Profile profile, final VectorData playerOffset) throws QuestRuntimeException {
+        final Vector relative = playerOffset.get(profile);
         final Location playerLoc = player.getLocation();
 
         relative.rotateAroundY(-Math.toRadians(playerLoc.getYaw()));

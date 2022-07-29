@@ -9,6 +9,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.CountingObjective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -100,18 +101,18 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
     }
 
     private void handlePlayerKill(final Player player, final ActiveMob mob) {
-        final String playerID = PlayerConverter.getID(player);
-        if (containsPlayer(playerID) && matchesMobLevel(playerID, mob) && checkConditions(playerID)) {
-            getCountingData(playerID).progress();
-            completeIfDoneOrNotify(playerID);
+        final Profile profile = PlayerConverter.getID(player);
+        if (containsPlayer(profile) && matchesMobLevel(profile, mob) && checkConditions(profile)) {
+            getCountingData(profile).progress();
+            completeIfDoneOrNotify(profile);
         }
 
     }
 
-    private boolean matchesMobLevel(final String playerID, final ActiveMob mob) {
+    private boolean matchesMobLevel(final Profile profile, final ActiveMob mob) {
         try {
             final double actualMobLevel = mob.getLevel();
-            return minMobLevel.getDouble(playerID) <= actualMobLevel && maxMobLevel.getDouble(playerID) >= actualMobLevel;
+            return minMobLevel.getDouble(profile) <= actualMobLevel && maxMobLevel.getDouble(profile) >= actualMobLevel;
         } catch (final QuestRuntimeException exception) {
             try {
                 LOG.error(instruction.getPackage(), "Unable to resolve minMobLevel / maxMobLevel variable in " + instruction.getObjective().getFullID());

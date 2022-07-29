@@ -6,6 +6,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.MobKillNotifier.MobKilledEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
@@ -49,8 +50,8 @@ public class MobKillObjective extends CountingObjective implements Listener {
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @EventHandler(ignoreCancelled = true)
     public void onMobKill(final MobKilledEvent event) {
-        final String playerID = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(playerID)
+        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        if (!containsPlayer(profile)
                 || !entities.contains(event.getEntity().getType())
                 || name != null && (event.getEntity().getCustomName() == null
                 || !event.getEntity().getCustomName().equals(name))) {
@@ -68,9 +69,9 @@ public class MobKillObjective extends CountingObjective implements Listener {
             }
         }
 
-        if (checkConditions(playerID)) {
-            getCountingData(playerID).progress();
-            completeIfDoneOrNotify(playerID);
+        if (checkConditions(profile)) {
+            getCountingData(profile).progress();
+            completeIfDoneOrNotify(profile);
         }
     }
 
