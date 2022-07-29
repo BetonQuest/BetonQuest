@@ -23,7 +23,7 @@ There are also plugins that hook into BetonQuest that require a clientside mod:
 
 ## [AureliumSkills](https://www.spigotmc.org/resources/81069/)
 
-###Conditions
+### Conditions
 
 #### Skill level: `aureliumskillslevel`
 Checks if the player has the specified skill level. The amount can be a variable or a number.
@@ -756,6 +756,7 @@ You can also add an optional `neutralDeathRadiusAllPlayers` argument to complete
 within the defined radius when the mob is killed by any non-player source.
 You can add a `notify` keyword if you want to send a notification to players whenever the objective progresses.
 You can also add an optional `marked` argument to only count kills marked with the `mspawn` event.
+The only supported variable for the marked argument is `%player%`.
 
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of mythic mobs already killed,
 `left` is the amount of mythic mobs still needed to kill and `total` is the amount of mythic mobs initially required.
