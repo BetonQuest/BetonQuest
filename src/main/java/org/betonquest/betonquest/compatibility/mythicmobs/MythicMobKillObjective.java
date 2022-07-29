@@ -68,18 +68,18 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
         if (!names.contains(event.getMobType().getInternalName())) {
             return;
         }
-        if (marked != null) {
-            if (!event.getEntity().hasMetadata("betonquest-marked")) {
-                return;
-            }
-            final List<MetadataValue> meta = event.getEntity().getMetadata("betonquest-marked");
-            for (final MetadataValue m : meta) {
-                if (!m.asString().equals(marked)) {
+        if (event.getKiller() instanceof Player) {
+            if (marked != null) {
+                if (!event.getEntity().hasMetadata("betonquest-marked")) {
                     return;
                 }
+                final List<MetadataValue> meta = event.getEntity().getMetadata("betonquest-marked");
+                for (final MetadataValue m : meta) {
+                    if (!m.asString().equals(marked.replace("%player%", event.getKiller().getName()))) {
+                        return;
+                    }
+                }
             }
-        }
-        if (event.getKiller() instanceof Player) {
             handlePlayerKill((Player) event.getKiller(), event.getMob());
         } else {
             if (neutralDeathRadiusAllPlayers > 0) {
@@ -87,6 +87,17 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
                 for (final Player player : center.getWorld().getPlayers()) {
                     if (isValidPlayer(player)
                             && player.getLocation().distanceSquared(center) <= neutralDeathRadiusAllPlayersSquared) {
+                        if (marked != null) {
+                            if (!event.getEntity().hasMetadata("betonquest-marked")) {
+                                return;
+                            }
+                            final List<MetadataValue> meta = event.getEntity().getMetadata("betonquest-marked");
+                            for (final MetadataValue m : meta) {
+                                if (!m.asString().equals(marked.replace("%player%", event.getKiller().getName()))) {
+                                    return;
+                                }
+                            }
+                        }
                         handlePlayerKill(player, event.getMob());
                     }
                 }
@@ -102,9 +113,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
 
     private void handlePlayerKill(final Player player, final ActiveMob mob) {
         final String playerID = PlayerConverter.getID(player);
-        if (containsPlayer(playerID)
-                && matchesMobLevel(playerID, mob)
-                && checkConditions(playerID)) {
+        if (containsPlayer(playerID) && matchesMobLevel(playerID, mob) && checkConditions(playerID)) {
             getCountingData(playerID).progress();
             completeIfDoneOrNotify(playerID);
         }

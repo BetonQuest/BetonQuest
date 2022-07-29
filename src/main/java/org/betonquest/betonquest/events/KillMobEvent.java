@@ -9,11 +9,13 @@ import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 
 /**
  * Kills all mobs of given type at location.
@@ -48,6 +50,7 @@ public class KillMobEvent extends QuestEvent {
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected Void execute(final String playerID) throws QuestRuntimeException {
         final Location location = loc.getLocation(playerID);
+        final Player player = PlayerConverter.getPlayer(playerID);
         final double radiusSquared = this.radius.getDouble(playerID) * this.radius.getDouble(playerID);
         location
                 .getWorld()
@@ -70,7 +73,7 @@ public class KillMobEvent extends QuestEvent {
                     return entity
                             .getMetadata("betonquest-marked")
                             .stream()
-                            .anyMatch(metadataValue -> metadataValue.asString().equals(marked));
+                            .anyMatch(metadataValue -> metadataValue.asString().equals(marked.replace("%player%", player.getName())));
                 })
                 //remove them
                 .forEach(Entity::remove);
