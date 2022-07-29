@@ -84,17 +84,18 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
         } else {
             if (neutralDeathRadiusAllPlayers > 0) {
                 final Location center = BukkitAdapter.adapt(event.getMob().getLocation());
+                players:
                 for (final Player player : center.getWorld().getPlayers()) {
                     if (isValidPlayer(player)
                             && player.getLocation().distanceSquared(center) <= neutralDeathRadiusAllPlayersSquared) {
                         if (marked != null) {
                             if (!event.getEntity().hasMetadata("betonquest-marked")) {
-                                return;
+                                continue;
                             }
                             final List<MetadataValue> meta = event.getEntity().getMetadata("betonquest-marked");
                             for (final MetadataValue m : meta) {
-                                if (!m.asString().equals(marked.replace("%player%", event.getKiller().getName()))) {
-                                    return;
+                                if (!m.asString().equals(marked.replace("%player%", player.getName()))) {
+                                    continue players;
                                 }
                             }
                         }
