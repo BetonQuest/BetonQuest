@@ -21,8 +21,8 @@ file before it's loaded. Let's take a look at an example:
     value: BLUE
   - type: REMOVE
     key: hook.mmocore
-1.12.9.1: #(3)!
-  - type: LIST_ENTRY_ADD
+1.12.9.1:
+  - type: LIST_ENTRY_ADD #(3)!
     key: cmdBlacklist
     entry: teleport
 ```
