@@ -38,8 +38,7 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
     private ConfigurationFileImpl(final ConfigAccessor accessor, final ConfigAccessor patchAccessor) throws InvalidConfigurationException {
         super(accessor.getConfig());
         this.accessor = accessor;
-        if (patchAccessor != null) {
-            patchConfig(patchAccessor.getConfig());
+        if (patchAccessor != null && patchConfig(patchAccessor.getConfig())) {
             try {
                 accessor.save();
             } catch (final IOException e) {
@@ -87,13 +86,19 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
         return null;
     }
 
+    /**
+     * Patches the config with the given patch config.
+     *
+     * @param patchAccessorConfig the config that contains patches
+     * @return if the file was modified
+     */
     @SuppressWarnings("PMD.UnusedFormalParameter")
-    private void patchConfig(final ConfigurationSection patchAccessorConfig) {
+    private boolean patchConfig(final ConfigurationSection patchAccessorConfig) {
         final Patcher patcher = new Patcher(accessor.getConfig(), patchAccessorConfig);
-        if (patcher.hasUpdate()) {
 
         if (!patcher.hasUpdate()) {
             LOG.debug("No patch found.");
+            return false;
         } else {
             final String configName = accessor.getConfigurationFile().getName();
             final String currentVersion = accessor.getConfig().getString("configVersion", "2.0.0-CONFIG-0");
@@ -111,6 +116,7 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
                         "are now corrupted. Please check the errors above to see what the patcher did. " +
                         "You might want to adjust your config manually depending on that information.");
             }
+            return true;
         }
     }
 
