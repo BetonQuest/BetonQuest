@@ -13,10 +13,10 @@ update:
   strategy: MINOR
   automatic: true
   ingameNotification: true
-default_journal_slot: '-1'
-max_npc_distance: '5.3'
-citizens_npcs_by_name: 'false'
-acceptNPCLeftClick: 'false'
+default_journal_slot: -1
+max_npc_distance: 5.3
+citizens_npcs_by_name: false
+acceptNPCLeftClick: false
 npcInteractionLimit: 500
 default_conversation_IO: menu,chest
 conversation_colors:
@@ -31,64 +31,64 @@ conversation_IO_config:
     show_number: true
     show_npc_text: true
 default_interceptor: packet,simple
-display_chat_after_conversation: 'true'
-combat_delay: '10'
-notify_pullback: 'true'
-remove_items_after_respawn: 'true'
-quest_items_unbreakable: 'true'
+display_chat_after_conversation: true
+combat_delay: 10
+notify_pullback: true
+remove_items_after_respawn: true
+quest_items_unbreakable: true
 player_hider_check_interval: 20
 npc_hider_check_interval: 100
 sounds:
   start: ENTITY_VILLAGER_AMBIENT
   end: ENTITY_VILLAGER_YES
   journal: ENTITY_BAT_TAKEOFF
-  update: 'false'
-  full: 'false'
+  update: false
+  full: false
 cmd_blacklist:
   - spawn
 hook:
-  citizens: 'true'
-  mythicmobs: 'true'
-  vault: 'true'
-  worldguard: 'true'
-  skript: 'true'
-  mcmmo: 'true'
-  effectlib: 'true'
-  playerpoints: 'true'
-  heroes: 'true'
-  magic: 'true'
-  denizen: 'true'
-  proskillapi: 'true'
-  quests: 'true'
-  shopkeepers: 'true'
-  placeholderapi: 'true'
-  holographicdisplays: 'true'
-  worldedit: 'true'
-  fastasyncworldedit: 'true'
-  protocollib: 'true'
-  brewery: 'true'
-  jobs: 'true'
-  mythiclib: 'true'
-  mmocore: 'true'
-  mmoitems: 'true'
-  luckperms: 'true'
-  aureliumskills: 'true'
+  citizens: true
+  mythicmobs: true
+  vault: true
+  worldguard: true
+  skript: true
+  mcmmo: true
+  effectlib: true
+  playerpoints: true
+  heroes: true
+  magic: true
+  denizen: true
+  proskillapi: true
+  quests: true
+  shopkeepers: true
+  placeholderapi: true
+  holographicdisplays: true
+  worldedit: true
+  fastasyncworldedit: true
+  protocollib: true
+  brewery: true
+  jobs: true
+  mythiclib: true
+  mmocore: true
+  mmoitems: true
+  luckperms: true
+  aureliumskills: true
 journal:
-  chars_per_line: '19'
-  lines_per_page: '13'
-  one_entry_per_page: 'false'
-  reversed_order: 'true'
-  hide_date: 'false'
-  full_main_page: 'false'
-  show_in_backpack: 'true'
-  lock_default_journal_slot: 'false'
-  give_on_respawn: 'false'
+  chars_per_line: 19
+  lines_per_page: 13
+  one_entry_per_page: false
+  reversed_order: true
+  hide_date: false
+  full_main_page: false
+  show_in_backpack: true
+  lock_default_journal_slot: false
+  give_on_respawn: false
 journal_colors:
   date:
-    day: '9'
-    hour: '6'
-  line: '4'
-  text: '0'
+    day: 9
+    hour: 6
+  line: 4
+  text: 0
 date_format: dd.MM.yyyy HH:mm
 debug:
   enabled: false
