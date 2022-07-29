@@ -25,7 +25,11 @@ public class MMOItemsItemCondition extends Condition {
         super(instruction, true);
 
         final TypeManager typeManager = MMOItems.plugin.getTypes();
-        itemType = typeManager.get(instruction.next());
+        final String type = instruction.next();
+        itemType = typeManager.get(type);
+        if (itemType == null) {
+            throw new InstructionParseException("The item type '%s' does not exist.".formatted(type));
+        }
         itemID = instruction.next();
 
         final List<Integer> potentialAmount = instruction.getAllNumbers();
