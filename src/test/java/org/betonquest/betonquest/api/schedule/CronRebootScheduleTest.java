@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static org.betonquest.betonquest.api.schedule.CronSchedule.DEFAULT_CRON_DEFINITION;
+import static org.betonquest.betonquest.api.schedule.CronSchedule.REBOOT_CRON_DEFINITION;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -18,7 +18,7 @@ public class CronRebootScheduleTest extends CronScheduleBaseTest {
 
     @Override
     protected CronSchedule createSchedule() throws InstructionParseException {
-        return new CronSchedule(scheduleID, section, DEFAULT_CRON_DEFINITION, true) {
+        return new CronSchedule(scheduleID, section, REBOOT_CRON_DEFINITION) {
         };
     }
 
