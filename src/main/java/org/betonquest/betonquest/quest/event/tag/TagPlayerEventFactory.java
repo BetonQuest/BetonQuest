@@ -57,7 +57,7 @@ public class TagPlayerEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @Override
-    public Event parseEvent(Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         final String action = instruction.next();
         final String[] tags = getTags(instruction);
         return switch (action.toLowerCase(Locale.ROOT)) {
@@ -70,7 +70,7 @@ public class TagPlayerEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @Override
-    public StaticEvent parseStaticEvent(Instruction instruction) throws InstructionParseException {
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
         final String action = instruction.next();
         final String[] tags = getTags(instruction);
         return switch (action.toLowerCase(Locale.ROOT)) {
@@ -83,7 +83,7 @@ public class TagPlayerEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @NotNull
-    private String[] getTags(Instruction instruction) throws InstructionParseException {
+    private String[] getTags(final Instruction instruction) throws InstructionParseException {
         final String[] tags;
         tags = instruction.getArray();
         for (int ii = 0; ii < tags.length; ii++) {
@@ -93,14 +93,14 @@ public class TagPlayerEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @NotNull
-    private TagEvent createAddTagEvent(String... tags) {
-        TagChanger tagChanger = new AddTagChanger(tags);
+    private TagEvent createAddTagEvent(final String... tags) {
+        final TagChanger tagChanger = new AddTagChanger(tags);
         return new TagEvent(betonQuest::getOfflinePlayerData, tagChanger);
     }
 
     @NotNull
-    private TagEvent createDeleteTagEvent(String... tags) {
-        TagChanger tagChanger = new DeleteTagChanger(tags);
+    private TagEvent createDeleteTagEvent(final String... tags) {
+        final TagChanger tagChanger = new DeleteTagChanger(tags);
         return new TagEvent(betonQuest::getOfflinePlayerData, tagChanger);
     }
 
@@ -111,7 +111,7 @@ public class TagPlayerEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @NotNull
-    private StaticEvent createStaticDeleteTagEvent(String... tags) {
+    private StaticEvent createStaticDeleteTagEvent(final String... tags) {
         final TagEvent deleteTagEvent = createDeleteTagEvent(tags);
         final List<StaticEvent> staticEvents = new ArrayList<>(tags.length + 1);
         staticEvents.add(new OnlinePlayerGroupStaticEventAdapter(server::getOnlinePlayers, deleteTagEvent));
@@ -122,7 +122,7 @@ public class TagPlayerEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @NotNull
-    private StaticEvent createDeprecatedStaticDeleteTagEvent(final String fullId, final QuestPackage questPackage, String... tags) {
+    private StaticEvent createDeprecatedStaticDeleteTagEvent(final String fullId, final QuestPackage questPackage, final String... tags) {
         LOG.warn(questPackage, fullId + ": Replace Tag event argument 'del' by argument 'delete'. Support for 'del' will be removed in future versions.");
         return createStaticDeleteTagEvent(tags);
     }

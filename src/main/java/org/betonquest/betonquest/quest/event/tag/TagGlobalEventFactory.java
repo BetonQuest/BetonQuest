@@ -34,7 +34,7 @@ public class TagGlobalEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @Override
-    public Event parseEvent(Instruction instruction) throws InstructionParseException {
+    public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         final String action = instruction.next();
         final String[] tags = getTags(instruction);
         return switch (action.toLowerCase(Locale.ROOT)) {
@@ -47,7 +47,7 @@ public class TagGlobalEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @Override
-    public StaticEvent parseStaticEvent(Instruction instruction) throws InstructionParseException {
+    public StaticEvent parseStaticEvent(final Instruction instruction) throws InstructionParseException {
         final String action = instruction.next();
         final String[] tags = getTags(instruction);
         return switch (action.toLowerCase(Locale.ROOT)) {
@@ -60,7 +60,7 @@ public class TagGlobalEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @NotNull
-    private String[] getTags(Instruction instruction) throws InstructionParseException {
+    private String[] getTags(final Instruction instruction) throws InstructionParseException {
         final String[] tags;
         tags = instruction.getArray();
         for (int ii = 0; ii < tags.length; ii++) {
@@ -70,37 +70,37 @@ public class TagGlobalEventFactory implements EventFactory, StaticEventFactory {
     }
 
     @NotNull
-    private StaticEvent createStaticAddTagEvent(String... tags) {
-        TagChanger tagChanger = new AddTagChanger(tags);
+    private StaticEvent createStaticAddTagEvent(final String... tags) {
+        final TagChanger tagChanger = new AddTagChanger(tags);
         return new StaticTagEvent(betonQuest.getGlobalData(), tagChanger);
     }
 
     @NotNull
-    private StaticEvent createStaticDeleteTagEvent(String... tags) {
-        TagChanger tagChanger = new DeleteTagChanger(tags);
+    private StaticEvent createStaticDeleteTagEvent(final String... tags) {
+        final TagChanger tagChanger = new DeleteTagChanger(tags);
         return new StaticTagEvent(betonQuest.getGlobalData(), tagChanger);
     }
 
     @NotNull
-    private StaticEvent createDeprecatedStaticDeleteTagEvent(final String fullId, final QuestPackage questPackage, String... tags) {
+    private StaticEvent createDeprecatedStaticDeleteTagEvent(final String fullId, final QuestPackage questPackage, final String... tags) {
         LOG.warn(questPackage, fullId + ": Replace Tag event argument 'del' by argument 'delete'. Support for 'del' will be removed in future versions.");
         return createStaticDeleteTagEvent(tags);
     }
 
     @NotNull
-    private Event createAddTagEvent(String... tags) {
-        TagChanger tagChanger = new AddTagChanger(tags);
+    private Event createAddTagEvent(final String... tags) {
+        final TagChanger tagChanger = new AddTagChanger(tags);
         return new TagEvent(profile -> betonQuest.getGlobalData(), tagChanger);
     }
 
     @NotNull
-    private Event createDeleteTagEvent(String... tags) {
-        TagChanger tagChanger = new DeleteTagChanger(tags);
+    private Event createDeleteTagEvent(final String... tags) {
+        final TagChanger tagChanger = new DeleteTagChanger(tags);
         return new TagEvent(profile -> betonQuest.getGlobalData(), tagChanger);
     }
 
     @NotNull
-    private Event createDeprecatedDeleteTagEvent(final String fullId, final QuestPackage questPackage, String... tags) {
+    private Event createDeprecatedDeleteTagEvent(final String fullId, final QuestPackage questPackage, final String... tags) {
         LOG.warn(questPackage, fullId + ": Replace Tag event argument 'del' by argument 'delete'. Support for 'del' will be removed in future versions.");
         return createDeleteTagEvent(tags);
     }
