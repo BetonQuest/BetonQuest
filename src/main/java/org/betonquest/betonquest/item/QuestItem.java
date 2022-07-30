@@ -449,7 +449,6 @@ public class QuestItem {
      * @param stackSize size of generated stack
      * @return the ItemStack equal to this quest item
      */
-    @SuppressWarnings("PMD.NPathComplexity")
     public ItemStack generate(final int stackSize) {
         return generate(stackSize, null);
     }

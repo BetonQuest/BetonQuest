@@ -445,7 +445,7 @@ public abstract class Objective {
     public void close() {
         stop();
         for (final Map.Entry<Profile, ObjectiveData> entry : dataMap.entrySet()) {
-            final Profile profile = (entry.getKey());
+            final Profile profile = entry.getKey();
             stop(profile);
             BetonQuest.getInstance().getPlayerData(profile).addRawObjective(instruction.getID().getFullID(),
                     entry.getValue().toString());
