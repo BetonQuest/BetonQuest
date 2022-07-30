@@ -5,8 +5,8 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.GlobalObjectives;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.Saver;
+import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -554,8 +554,8 @@ public abstract class Objective {
         @SuppressWarnings("PMD.DoNotUseThreads")
         protected void update() {
             final Saver saver = BetonQuest.getInstance().getSaver();
-            saver.add(new Saver.Record(Connector.UpdateType.REMOVE_OBJECTIVES, playerID, objID));
-            saver.add(new Saver.Record(Connector.UpdateType.ADD_OBJECTIVES, playerID, objID, toString()));
+            saver.add(new Saver.Record(UpdateType.REMOVE_OBJECTIVES, playerID, objID));
+            saver.add(new Saver.Record(UpdateType.ADD_OBJECTIVES, playerID, objID, toString()));
             final QuestDataUpdateEvent event = new QuestDataUpdateEvent(playerID, objID, toString());
             final Server server = BetonQuest.getInstance().getServer();
             server.getScheduler().runTask(BetonQuest.getInstance(), () -> server.getPluginManager().callEvent(event));

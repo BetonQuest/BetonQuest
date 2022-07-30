@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event;
 
-import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.Saver;
+import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 class DatabaseSaverStaticEventTest {
     @Test
     void testAddRecord(@Mock final Saver saver) throws QuestRuntimeException {
-        final Saver.Record record = new Saver.Record(Connector.UpdateType.DELETE_GLOBAL_TAGS);
+        final Saver.Record record = new Saver.Record(UpdateType.DELETE_GLOBAL_TAGS);
         final DatabaseSaverStaticEvent event = new DatabaseSaverStaticEvent(saver, () -> record);
 
         verify(saver, never()).add(record);
@@ -31,8 +31,8 @@ class DatabaseSaverStaticEventTest {
 
     @Test
     void testRecordSupplierIsCalledEveryTime(@Mock final Saver saver) throws QuestRuntimeException {
-        final Saver.Record firstRecord = new Saver.Record(Connector.UpdateType.DELETE_GLOBAL_TAGS);
-        final Saver.Record secondRecord = new Saver.Record(Connector.UpdateType.DELETE_GLOBAL_POINTS);
+        final Saver.Record firstRecord = new Saver.Record(UpdateType.DELETE_GLOBAL_TAGS);
+        final Saver.Record secondRecord = new Saver.Record(UpdateType.DELETE_GLOBAL_POINTS);
         final Iterator<Saver.Record> recordsForSupplier = List.of(firstRecord, secondRecord).iterator();
         final DatabaseSaverStaticEvent event = new DatabaseSaverStaticEvent(saver, recordsForSupplier::next);
 
