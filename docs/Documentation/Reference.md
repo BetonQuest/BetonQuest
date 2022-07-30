@@ -297,24 +297,6 @@ Possible use cases would be a quest which starts if a player reaches a specific 
 ```YAML
 start_quest_mine: 'location 100;200;300;world 5 events:start_quest_mine_folder global'
 ```
-## Static events
-
-Static events are events that will fire at the specified time of the day. It is possible to address multiple events with
-a `,` separated list. They are not tied to a specific player, so not all event types can be used as static.
-(Which player should receive a tag or objective? From which one should the items be taken?)
-Also, static events cannot have conditions defined (`event-conditions:` argument), as the plugin cannot check any
-condition without the player. Events, that can be used as static are flagged with `static` keyword in this
-documentation. You can define your static events in _package.yml_ file under `static` section, as such:
-
-```YAML
-static:
-  '09:00': beton
-  '23:59': lightning_strike
-  '11:23': some_command,command_announcement
-```
-
-The hour must be in `''` to avoid problems, it needs leading zero if less than 10.
-`beton`, `lightnint_strike` etc. are IDs of events.
 
 ## Journal
 
