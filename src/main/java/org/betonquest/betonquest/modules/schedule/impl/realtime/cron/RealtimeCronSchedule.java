@@ -18,6 +18,6 @@ public class RealtimeCronSchedule extends CronSchedule {
      * @throws InstructionParseException if parsing the config failed
      */
     public RealtimeCronSchedule(final ScheduleID scheduleID, final ConfigurationSection instruction) throws InstructionParseException {
-        super(scheduleID, instruction, DEFAULT_CRON_DEFINITION, true);
+        super(scheduleID, instruction, REBOOT_CRON_DEFINITION);
     }
 }
