@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -52,6 +53,16 @@ public final class PlayerConverter {
             @Override
             public String getPlayerName() {
                 return player.getName();
+            }
+
+            @Override
+            public boolean equals(final Object obj) {
+                return obj instanceof Profile profile && getPlayerId().equals(profile.getPlayerId());
+            }
+
+            @Override
+            public int hashCode() {
+                return Objects.hashCode(player.getUniqueId());
             }
         };
     }
