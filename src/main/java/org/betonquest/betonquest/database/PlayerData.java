@@ -66,7 +66,7 @@ public class PlayerData {
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     public final void loadAllPlayerData() {
         try {
-            final Connector con = new Connector(BetonQuest.getInstance().getConfig());
+            final Connector con = new Connector();
 
             try (ResultSet res1 = con.querySQL(QueryType.SELECT_OBJECTIVES, playerID);
                  ResultSet res2 = con.querySQL(QueryType.SELECT_TAGS, playerID);

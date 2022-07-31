@@ -132,7 +132,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         public void run() {
                             handleConditions(sender, args);
                         }
-                    }.runTaskAsynchronously(instance);
+                    }.runTaskAsynchronously(BetonQuest.getInstance());
                     break;
                 case "events":
                 case "event":
@@ -144,7 +144,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         public void run() {
                             handleEvents(sender, args);
                         }
-                    }.runTaskAsynchronously(instance);
+                    }.runTaskAsynchronously(BetonQuest.getInstance());
                     break;
                 case "items":
                 case "item":
@@ -167,7 +167,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         public void run() {
                             handleObjectives(sender, args);
                         }
-                    }.runTaskAsynchronously(instance);
+                    }.runTaskAsynchronously(BetonQuest.getInstance());
                     break;
                 case "globaltags":
                 case "globaltag":
@@ -181,7 +181,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         public void run() {
                             handleGlobalTags(sender, args);
                         }
-                    }.runTaskAsynchronously(instance);
+                    }.runTaskAsynchronously(BetonQuest.getInstance());
                     break;
                 case "globalpoints":
                 case "globalpoint":
@@ -195,7 +195,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         public void run() {
                             handleGlobalPoints(sender, args);
                         }
-                    }.runTaskAsynchronously(instance);
+                    }.runTaskAsynchronously(BetonQuest.getInstance());
                     break;
                 case "tags":
                 case "tag":
@@ -207,7 +207,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         public void run() {
                             handleTags(sender, args);
                         }
-                    }.runTaskAsynchronously(instance);
+                    }.runTaskAsynchronously(BetonQuest.getInstance());
                     break;
                 case "points":
                 case "point":
@@ -219,7 +219,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         public void run() {
                             handlePoints(sender, args);
                         }
-                    }.runTaskAsynchronously(instance);
+                    }.runTaskAsynchronously(BetonQuest.getInstance());
                     break;
                 case "journals":
                 case "journal":
@@ -231,7 +231,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         public void run() {
                             handleJournals(sender, args);
                         }
-                    }.runTaskAsynchronously(instance);
+                    }.runTaskAsynchronously(BetonQuest.getInstance());
                     break;
                 case "delete":
                 case "del":
@@ -243,7 +243,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         public void run() {
                             handleDeleting(sender, args);
                         }
-                    }.runTaskAsynchronously(instance);
+                    }.runTaskAsynchronously(BetonQuest.getInstance());
                     break;
                 case "rename":
                 case "r":
@@ -254,7 +254,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         public void run() {
                             handleRenaming(sender, args);
                         }
-                    }.runTaskAsynchronously(instance);
+                    }.runTaskAsynchronously(BetonQuest.getInstance());
                     break;
                 case "version":
                 case "ver":
@@ -269,10 +269,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         public void run() {
                             purgePlayer(sender, args);
                         }
-                    }.runTaskAsynchronously(instance);
+                    }.runTaskAsynchronously(BetonQuest.getInstance());
                     break;
                 case "update":
-                    instance.getUpdater().update(sender);
+                    BetonQuest.getInstance().getUpdater().update(sender);
                     break;
                 case "reload":
                     // just reloading
@@ -288,11 +288,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     }
                     break;
                 case "backup":
+                    // do a full plugin backup
                     if (sender instanceof Player || Bukkit.getOnlinePlayers().size() > 0) {
                         sendMessage(sender, "offline");
                         break;
                     }
-                    Utils.backup(instance.getDataFolder(), instance.getConfig(), true);
+                    Utils.backup();
                     break;
                 case "debug":
                     handleDebug(sender, args);

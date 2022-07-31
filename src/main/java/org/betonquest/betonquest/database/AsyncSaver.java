@@ -36,11 +36,10 @@ public class AsyncSaver extends Thread implements Listener, Saver {
      */
     public AsyncSaver() {
         super();
-        final BetonQuest instance = BetonQuest.getInstance();
-        this.con = new Connector(instance.getConfig());
+        this.con = new Connector();
         this.queue = new ConcurrentLinkedQueue<>();
         this.running = true;
-        Bukkit.getPluginManager().registerEvents(this, instance);
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
     @Override

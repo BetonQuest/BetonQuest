@@ -1,11 +1,9 @@
 package org.betonquest.betonquest.modules.config;
 
 import lombok.CustomLog;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.bukkit.config.custom.ConfigurationSectionDecorator;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
-import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.Plugin;
@@ -103,10 +101,6 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
             final String configName = accessor.getConfigurationFile().getName();
             final String currentVersion = accessor.getConfig().getString("configVersion", "2.0.0-CONFIG-0");
             LOG.info("Patch for configuration '%s' with current version '%s' found.".formatted(configName, currentVersion));
-            LOG.info("Backing up current config...");
-
-            final File dataFolder = BetonQuest.getInstance().getDataFolder();
-            Utils.backup(dataFolder, accessor.getConfig(), false);
 
             final boolean flawless = patcher.patch();
             if (flawless) {

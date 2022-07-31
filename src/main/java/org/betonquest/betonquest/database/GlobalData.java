@@ -33,7 +33,7 @@ public class GlobalData {
     public final void loadAllGlobalData() {
         try {
             // get connection to the database
-            final Connector con = new Connector(BetonQuest.getInstance().getConfig());
+            final Connector con = new Connector();
             try (ResultSet res2 = con.querySQL(QueryType.LOAD_ALL_GLOBAL_TAGS);
                  ResultSet res4 = con.querySQL(QueryType.LOAD_ALL_GLOBAL_POINTS)) {
                 // put them into the list
