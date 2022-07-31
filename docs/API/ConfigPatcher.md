@@ -31,6 +31,8 @@ file before it's loaded. Let's take a look at an example:
 2. This is the `SET` transformer. It will set `defaultConversationColor` to `BLUE`.
 3. This is the `LIST_ENTRY_ADD` transformer. It will append `teleport` to the list with the key `cmdBlacklist`.
 
+All patches that are newer than the configs current version are applied, starting with the oldest one.    
+
 ## Config Versions
 The versions in the patch file have four digits (`1.2.3.4`). The first three are the semantic version of the BetonQuest 
 version that this patch updates the config to. The last digit is used to version multiple patches during the
@@ -39,13 +41,15 @@ development phase of a semantic versioning release.
 The config's version is shown inside each config as the value of the `configVersion` key. It is automatically set by the patcher.
 It uses a slightly different format: `1.2.3.4` in the patch file is `1.2.3-CONFIG-4` in the config.
 
-Example:
+Example development cycle:
 
-* `2.0.0.1`: Patch that updates the config to a state required for a `2.0.0` dev build.
-* `2.0.0.2`: Patch that updates the config to a state required for a `2.0.0` dev build.
-* `2.0.0` is released. Therefore `2.0.0-CONFIG-2` becomes the final config version of `2.0.0`.
-* `2.0.1.1`: Patch that updates the config to a state required for a `2.0.1` dev build.
-* `2.0.1` is released. Therefore `2.0.1-CONFIG-1` becomes the final config version of `2.0.1`.
+* `2.0.0` is in development...
+    - A change to the config is introduced in a dev build :arrow_right: `configVersion: "2.0.0-CONFIG-1"`
+    - A change to the config is introduced in another dev build :arrow_right: `configVersion: "2.0.0-CONFIG-2"`
+    - `2.0.0` is released. Therefore `2.0.0-CONFIG-2` becomes the final config version of `2.0.0`.
+* `2.0.1` is in development...
+    - A change to the config is introduced :arrow_right: `configVersion: "2.0.1-CONFIG-2"`
+    - `2.0.1` is released. Therefore `2.0.1-CONFIG-1` becomes the final config version of `2.0.1`.
 
 ## Transformer Types
 ### SET
