@@ -94,10 +94,7 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
     private boolean patchConfig(final ConfigurationSection patchAccessorConfig) {
         final Patcher patcher = new Patcher(accessor.getConfig(), patchAccessorConfig);
 
-        if (!patcher.hasUpdate()) {
-            LOG.debug("No patch found.");
-            return false;
-        } else {
+        if (patcher.hasUpdate()) {
             final String configName = accessor.getConfigurationFile().getName();
             final String currentVersion = accessor.getConfig().getString("configVersion", "2.0.0-CONFIG-0");
             LOG.info("Patch for configuration '%s' with current version '%s' found.".formatted(configName, currentVersion));
@@ -111,6 +108,9 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
                         "You might want to adjust your config manually depending on that information.");
             }
             return true;
+        } else {
+            LOG.debug("No patch found.");
+            return false;
         }
     }
 
