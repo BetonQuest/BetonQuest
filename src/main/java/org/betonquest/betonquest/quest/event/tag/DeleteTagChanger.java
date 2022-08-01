@@ -16,6 +16,7 @@ public class DeleteTagChanger implements TagChanger {
 
     /**
      * Create the tag changer that removes tags.
+     *
      * @param tags tags to remove
      */
     public DeleteTagChanger(final String... tags) {

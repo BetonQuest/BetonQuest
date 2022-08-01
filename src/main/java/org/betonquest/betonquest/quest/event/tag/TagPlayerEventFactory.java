@@ -46,9 +46,9 @@ public class TagPlayerEventFactory implements EventFactory, StaticEventFactory {
     /**
      * Create the tag player event factory.
      *
-     * @param betonQuest    BetonQuest instance to pass on
-     * @param saver         database saver to use
-     * @param server        server to refer to
+     * @param betonQuest BetonQuest instance to pass on
+     * @param saver      database saver to use
+     * @param server     server to refer to
      */
     public TagPlayerEventFactory(final BetonQuest betonQuest, final Saver saver, final Server server) {
         this.betonQuest = betonQuest;

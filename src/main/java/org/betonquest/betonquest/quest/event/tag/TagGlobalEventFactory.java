@@ -27,7 +27,7 @@ public class TagGlobalEventFactory implements EventFactory, StaticEventFactory {
     /**
      * Create the global tag event factory.
      *
-     * @param betonQuest    BetonQuest instance to pass on
+     * @param betonQuest BetonQuest instance to pass on
      */
     public TagGlobalEventFactory(final BetonQuest betonQuest) {
         this.betonQuest = betonQuest;

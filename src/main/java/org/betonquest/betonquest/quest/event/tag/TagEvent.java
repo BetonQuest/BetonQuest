@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.event.tag;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.database.TagData;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 import java.util.function.Function;
 
@@ -29,14 +28,14 @@ public class TagEvent implements Event {
      * @param getTagData function providing the tagData for the given player
      * @param tagChanger changes the defined tags
      */
-    public TagEvent (final Function<Profile, TagData> getTagData, final TagChanger tagChanger) {
+    public TagEvent(final Function<Profile, TagData> getTagData, final TagChanger tagChanger) {
 
         this.getTagData = getTagData;
         this.tagChanger = tagChanger;
     }
 
     @Override
-    public void execute(final Profile profile) throws QuestRuntimeException {
+    public void execute(final Profile profile) {
         final TagData tagData = getTagData.apply(profile);
         tagChanger.changeTags(tagData);
     }

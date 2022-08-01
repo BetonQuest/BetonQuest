@@ -16,6 +16,7 @@ public class AddTagChanger implements TagChanger {
 
     /**
      * Create the tag changer that adds tags.
+     *
      * @param tags tags to add
      */
     public AddTagChanger(final String... tags) {
