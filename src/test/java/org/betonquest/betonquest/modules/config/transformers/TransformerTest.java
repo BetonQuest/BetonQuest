@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.config.transformer;
+package org.betonquest.betonquest.modules.config.transformers;
 
 import org.betonquest.betonquest.modules.config.Patcher;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;

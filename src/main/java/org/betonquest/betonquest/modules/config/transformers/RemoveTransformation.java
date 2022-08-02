@@ -1,5 +1,6 @@
-package org.betonquest.betonquest.modules.config.transformer;
+package org.betonquest.betonquest.modules.config.transformers;
 
+import org.betonquest.betonquest.modules.config.PatchTransformation;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Map;

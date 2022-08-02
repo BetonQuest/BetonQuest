@@ -1,0 +1,44 @@
+package org.betonquest.betonquest.modules.config.transformers;
+
+import org.betonquest.betonquest.modules.config.PatchException;
+import org.betonquest.betonquest.modules.config.PatchTransformation;
+import org.bukkit.configuration.ConfigurationSection;
+
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * Removes an entry from a list.
+ */
+public class ListEntryRemoveTransformation implements PatchTransformation {
+
+    /**
+     * Default constructor
+     */
+    public ListEntryRemoveTransformation() {
+    }
+
+    @Override
+    public void transform(final Map<String, String> options, final ConfigurationSection config) throws PatchException {
+        final String key = options.get("key");
+        final String regex = options.get("entry");
+
+        final List<String> list = config.getStringList(key);
+        final boolean listExists = config.isList(key);
+
+
+        final Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        final boolean modified = list.removeIf(entry -> {
+            final Matcher matcher = pattern.matcher(entry);
+            return matcher.matches();
+        });
+
+        list.remove(regex);
+
+        if (!listExists) {
+            throw new PatchException("List '" + key + "' did not exist, so an empty list was created.");
+        }
+    }
+}

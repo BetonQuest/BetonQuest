@@ -84,7 +84,7 @@ Adds an entry to the given list. The list will be created if it did not exist so
 
 ### LIST_ENTRY_RENAME
 
-Renames the first list entry that matches the given regex.
+Renames all list entries that match the given regex.
 ``` YAML title="Syntax"
 - type: LIST_ENTRY_RENAME
   key: section.myList

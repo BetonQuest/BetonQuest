@@ -108,10 +108,9 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
                         "You might want to adjust your config manually depending on that information.");
             }
             return true;
-        } else {
-            LOG.debug("No patch found.");
-            return false;
         }
+        LOG.debug("No patch found.");
+        return false;
     }
 
     @Override

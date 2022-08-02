@@ -1,14 +1,13 @@
 package org.betonquest.betonquest.modules.config;
 
 import lombok.CustomLog;
-import org.betonquest.betonquest.modules.config.transformer.KeyRenameTransformation;
-import org.betonquest.betonquest.modules.config.transformer.ListEntryAddTransformation;
-import org.betonquest.betonquest.modules.config.transformer.ListEntryRemoveTransformation;
-import org.betonquest.betonquest.modules.config.transformer.ListEntryRenameTransformation;
-import org.betonquest.betonquest.modules.config.transformer.PatchTransformation;
-import org.betonquest.betonquest.modules.config.transformer.RemoveTransformation;
-import org.betonquest.betonquest.modules.config.transformer.SetTransformation;
-import org.betonquest.betonquest.modules.config.transformer.ValueRenameTransformation;
+import org.betonquest.betonquest.modules.config.transformers.KeyRenameTransformation;
+import org.betonquest.betonquest.modules.config.transformers.ListEntryAddTransformation;
+import org.betonquest.betonquest.modules.config.transformers.ListEntryRemoveTransformation;
+import org.betonquest.betonquest.modules.config.transformers.ListEntryRenameTransformation;
+import org.betonquest.betonquest.modules.config.transformers.RemoveTransformation;
+import org.betonquest.betonquest.modules.config.transformers.SetTransformation;
+import org.betonquest.betonquest.modules.config.transformers.ValueRenameTransformation;
 import org.betonquest.betonquest.modules.versioning.UpdateStrategy;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.modules.versioning.VersionComparator;
@@ -26,7 +25,7 @@ import java.util.regex.Pattern;
 /**
  * Patches BetonQuest's configuration file.
  */
-@CustomLog(topic = "Config Patcher")
+@CustomLog(topic = "ConfigPatcher")
 public class Patcher {
 
     /**
