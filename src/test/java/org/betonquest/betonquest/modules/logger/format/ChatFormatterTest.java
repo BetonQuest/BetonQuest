@@ -126,7 +126,6 @@ class ChatFormatterTest {
         assertEquals("Plugin must be non null if displayMethod is not NONE", exception.getMessage(), "Expected other exception message");
     }
 
-    @SuppressWarnings({"PMD.AvoidDuplicateLiterals"})
     @Test
     void testLevelColors() {
         final ChatFormatter formatter = new ChatFormatter();
