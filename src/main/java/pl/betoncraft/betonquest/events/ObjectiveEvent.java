@@ -1,7 +1,6 @@
 package pl.betoncraft.betonquest.events;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.betoncraft.betonquest.BetonQuest;
 import pl.betoncraft.betonquest.Instruction;
@@ -43,16 +42,17 @@ public class ObjectiveEvent extends QuestEvent {
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition"})
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
-        if (BetonQuest.getInstance().getObjective(objective) == null) {
+        final BetonQuest betonquest = BetonQuest.getInstance();
+        if (betonquest.getObjective(objective) == null) {
             throw new QuestRuntimeException("Objective '" + objective + "' is not defined, cannot run objective event");
         }
         if (playerID == null) {
             if ("delete".equals(action) || "remove".equals(action)) {
-                for (final Player p : Bukkit.getOnlinePlayers()) {
-                    final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(p));
-                    playerData.removeRawObjective(objective);
-                }
-                BetonQuest.getInstance().getSaver().add(new Saver.Record(Connector.UpdateType.REMOVE_ALL_OBJECTIVES, objective.toString()));
+                Bukkit.getOnlinePlayers().forEach(player -> {
+                    final String uuid = PlayerConverter.getID(player);
+                    cancelObjectiveForOnlinePlayer(uuid, betonquest);
+                });
+                betonquest.getSaver().add(new Saver.Record(Connector.UpdateType.REMOVE_ALL_OBJECTIVES, objective.toString()));
             } else {
                 LogUtils.getLogger().log(Level.WARNING, "You tried to call an objective add / finish event in a static context! Only objective delete works here.");
             }
@@ -78,7 +78,7 @@ public class ObjectiveEvent extends QuestEvent {
                             break;
                     }
                 }
-            }.runTaskAsynchronously(BetonQuest.getInstance());
+            }.runTaskAsynchronously(betonquest);
         } else {
             switch (action.toLowerCase(Locale.ROOT)) {
                 case "start":
@@ -87,8 +87,7 @@ public class ObjectiveEvent extends QuestEvent {
                     break;
                 case "delete":
                 case "remove":
-                    BetonQuest.getInstance().getObjective(objective).removePlayer(playerID);
-                    BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective(objective);
+                    cancelObjectiveForOnlinePlayer(playerID, betonquest);
                     break;
                 case "complete":
                 case "finish":
@@ -99,5 +98,10 @@ public class ObjectiveEvent extends QuestEvent {
             }
         }
         return null;
+    }
+
+    private void cancelObjectiveForOnlinePlayer(final String playerID, final BetonQuest betonquest) {
+        betonquest.getObjective(objective).removePlayer(playerID);
+        betonquest.getPlayerData(playerID).removeRawObjective(objective);
     }
 }
