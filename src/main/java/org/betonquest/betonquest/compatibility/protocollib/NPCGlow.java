@@ -5,7 +5,6 @@ import lombok.CustomLog;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCSpawnEvent;
 import net.citizensnpcs.api.npc.NPC;
-import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.compatibility.protocollib.wrappers.WrapperPlayServerEntityMetadata;
@@ -45,7 +44,7 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
         super();
         npcPlayersMap = new HashMap<>();
         npcs = new HashMap<>();
-        loadFromConfig();
+        Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), this::loadFromConfig, 20L);
         runTaskTimer(BetonQuest.getInstance(), 0, 5);
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
@@ -115,8 +114,8 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
             if (conditions == null || conditions.isEmpty() || !BetonQuest.conditions(PlayerConverter.getID(player), conditions)) {
                 if (npcPlayersMap.containsKey(npcID)
                         && npcPlayersMap.get(npcID).contains(player)) {
-                        npcPlayersMap.get(npcID).remove(player);
-                        applyGlow(npcID, false, player);
+                    npcPlayersMap.get(npcID).remove(player);
+                    applyGlow(npcID, false, player);
                 }
             } else {
                 if (npcPlayersMap.containsKey(npcID)) {
@@ -204,18 +203,18 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
             players
                     .parallelStream()
                     .forEach((player) -> {
-                final WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata();
-                final WrappedDataWatcher watcher = WrappedDataWatcher.getEntityWatcher(entity).deepClone();
-                final WrappedDataWatcher.Serializer serializer = WrappedDataWatcher.Registry.get(Byte.class);
-                watcher.setEntity(entity);
-                byte mask = watcher.getByte(0);
-                mask |= 0x40;
-                watcher.setObject(0, serializer, mask);
+                        final WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata();
+                        final WrappedDataWatcher watcher = WrappedDataWatcher.getEntityWatcher(entity).deepClone();
+                        final WrappedDataWatcher.Serializer serializer = WrappedDataWatcher.Registry.get(Byte.class);
+                        watcher.setEntity(entity);
+                        byte mask = watcher.getByte(0);
+                        mask |= 0x40;
+                        watcher.setObject(0, serializer, mask);
 
-                packet.setEntityID(entity.getEntityId());
-                packet.setMetadata(watcher.getWatchableObjects());
-                packet.sendPacket(player);
-            });
+                        packet.setEntityID(entity.getEntityId());
+                        packet.setMetadata(watcher.getWatchableObjects());
+                        packet.sendPacket(player);
+                    });
         });
     }
 
@@ -228,14 +227,14 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
         npcs
                 .parallelStream()
                 .forEach((npcId) -> {
-            final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
-            if(npc == null){
-                return;
-            }
-            players.forEach((player) -> {
-               applyGlow(npcId, glow, player);
-            });
-        });
+                    final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
+                    if(npc == null){
+                        return;
+                    }
+                    players.forEach((player) -> {
+                        applyGlow(npcId, glow, player);
+                    });
+                });
     }
 
     /**

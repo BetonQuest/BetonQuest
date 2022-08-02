@@ -968,6 +968,19 @@ This event allows you to freeze player for the given amount of ticks:
 freezeMe: "freeze 100" #Freezes the player for 5 seconds
 ```
 
+### Glow NPC's
+If Citizens and Protocollib installed you can make NPCs glow
+if spesific conditions are met. What you have to do is adding 
+a `glow_npc` section in your package.
+```yaml
+glow_npc:
+  tutorial_npc:
+    id: "0"
+    conditions: "tutorialstarted"
+  cool_npc:
+    id: "1"
+    conditions: "cool"
+```
 
 ## [Quests](https://www.spigotmc.org/resources/3711/)
 

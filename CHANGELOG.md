@@ -124,6 +124,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - math variable now allows rounding output with the ~ operator
     - French translation has been updated
     - `action` objective - cancels now the event, before other plugins check for it (better third-party support)
+- `NPC Glow` Glow NPC if spesific conditions met
 ### Deprecated
 ### Removed
 - deprecated internals, code and old features
