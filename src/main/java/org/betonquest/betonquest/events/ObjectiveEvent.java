@@ -12,7 +12,6 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
@@ -43,16 +42,17 @@ public class ObjectiveEvent extends QuestEvent {
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
     @Override
     protected Void execute(final String playerID) throws QuestRuntimeException {
-        if (BetonQuest.getInstance().getObjective(objective) == null) {
+        final BetonQuest betonquest = BetonQuest.getInstance();
+        if (betonquest.getObjective(objective) == null) {
             throw new QuestRuntimeException("Objective '" + objective + "' is not defined, cannot run objective event");
         }
         if (playerID == null) {
             if ("delete".equals(action) || "remove".equals(action)) {
-                for (final Player p : Bukkit.getOnlinePlayers()) {
-                    final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(p));
-                    playerData.removeRawObjective(objective);
-                }
-                BetonQuest.getInstance().getSaver().add(new Saver.Record(UpdateType.REMOVE_ALL_OBJECTIVES, objective.toString()));
+                Bukkit.getOnlinePlayers().forEach(player -> {
+                    final String uuid = PlayerConverter.getID(player);
+                    cancelObjectiveForOnlinePlayer(uuid, betonquest);
+                });
+                betonquest.getSaver().add(new Saver.Record(UpdateType.REMOVE_ALL_OBJECTIVES, objective.toString()));
             } else {
                 LOG.warn(instruction.getPackage(), "You tried to call an objective add / finish event in a static context! Only objective delete works here.");
             }
@@ -62,42 +62,29 @@ public class ObjectiveEvent extends QuestEvent {
                 public void run() {
                     final PlayerData playerData = new PlayerData(playerID);
                     switch (action.toLowerCase(Locale.ROOT)) {
-                        case "start":
-                        case "add":
-                            playerData.addNewRawObjective(objective);
-                            break;
-                        case "delete":
-                        case "remove":
-                            playerData.removeRawObjective(objective);
-                            break;
-                        case "complete":
-                        case "finish":
-                            LOG.warn(instruction.getPackage(), "Cannot complete objective for offline player!");
-                            break;
-                        default:
-                            break;
+                        case "start", "add" -> playerData.addNewRawObjective(objective);
+                        case "delete", "remove" -> playerData.removeRawObjective(objective);
+                        case "complete", "finish" ->
+                                LOG.warn(instruction.getPackage(), "Cannot complete objective for offline player!");
+                        default -> {
+                        }
                     }
                 }
-            }.runTaskAsynchronously(BetonQuest.getInstance());
+            }.runTaskAsynchronously(betonquest);
         } else {
             switch (action.toLowerCase(Locale.ROOT)) {
-                case "start":
-                case "add":
-                    BetonQuest.newObjective(playerID, objective);
-                    break;
-                case "delete":
-                case "remove":
-                    BetonQuest.getInstance().getObjective(objective).cancelObjectiveForPlayer(playerID);
-                    BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective(objective);
-                    break;
-                case "complete":
-                case "finish":
-                    BetonQuest.getInstance().getObjective(objective).completeObjective(playerID);
-                    break;
-                default:
-                    break;
+                case "start", "add" -> BetonQuest.newObjective(playerID, objective);
+                case "delete", "remove" -> cancelObjectiveForOnlinePlayer(playerID, betonquest);
+                case "complete", "finish" -> betonquest.getObjective(objective).completeObjective(playerID);
+                default -> {
+                }
             }
         }
         return null;
+    }
+
+    private void cancelObjectiveForOnlinePlayer(final String playerID, final BetonQuest betonquest) {
+        betonquest.getObjective(objective).cancelObjectiveForPlayer(playerID);
+        betonquest.getPlayerData(playerID).removeRawObjective(objective);
     }
 }
