@@ -21,6 +21,7 @@ import org.bukkit.plugin.Plugin;
 public class ProtocolLibIntegrator implements Integrator {
 
     private final BetonQuest plugin;
+    private NPCGlow npcGlow;
 
     public ProtocolLibIntegrator() {
         plugin = BetonQuest.getInstance();
@@ -39,6 +40,7 @@ public class ProtocolLibIntegrator implements Integrator {
         if (Compatibility.getHooked().contains("Citizens")) {
             NPCHider.start();
             plugin.registerEvents("updatevisibility", UpdateVisibilityNowEvent.class);
+            npcGlow = new NPCGlow();
         }
         if (Compatibility.getHooked().contains("MythicMobs")) {
             MythicHider.start();
@@ -57,6 +59,7 @@ public class ProtocolLibIntegrator implements Integrator {
         if (MythicHider.getInstance() != null) {
             MythicHider.start();
         }
+        npcGlow.stop();
     }
 
     @Override
