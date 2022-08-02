@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.item.QuestItem;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -34,8 +35,11 @@ public class TakeEvent extends AbstractTakeEvent {
     @SuppressWarnings("PMD.PreserveStackTrace")
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getPlayer();
-        final UUID uuid = player.getUniqueId();
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
+        final Player player = profile.getPlayer().get();
+        final UUID uuid = profile.getOfflinePlayer().getUniqueId();
 
         for (final Item item : questItems) {
             final QuestItem questItem = item.getItem();
@@ -53,7 +57,7 @@ public class TakeEvent extends AbstractTakeEvent {
 
 
     @Override
-    protected ItemStack[] takeDesiredAmount(final Player player, final ItemStack... items) {
+    protected ItemStack[] takeDesiredAmount(final OfflinePlayer player, final ItemStack... items) {
         final QuestItem questItem = neededDeletions.get(player.getUniqueId()).getLeft();
         int desiredDeletions = neededDeletions.get(player.getUniqueId()).getRight();
 

@@ -4,6 +4,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 /**
  * Checks if the time is right
@@ -31,8 +32,11 @@ public class TimeCondition extends Condition {
 
     @Override
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    protected Boolean execute(final Profile profile) {
-        double time = profile.getPlayer().getWorld().getTime();
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
+        double time = profile.getPlayer().get().getWorld().getTime();
         if (time >= 18_000) {
             // 18000 minecraft-time is midnight, so there is new
             // normal-time cycle after that; subtracting 18 hours

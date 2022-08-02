@@ -77,12 +77,12 @@ public class ExperienceObjective extends Objective implements Listener {
     public String getProperty(final String name, final Profile profile) {
         switch (name.toLowerCase(Locale.ROOT)) {
             case "amount":
-                return profile.getOptionalPlayer()
+                return profile.getPlayer()
                         .map(toData)
                         .map(String::valueOf)
                         .orElse("");
             case "left":
-                return profile.getOptionalPlayer()
+                return profile.getPlayer()
                         .map(toData)
                         .map(exp -> amount - exp)
                         .map(String::valueOf)

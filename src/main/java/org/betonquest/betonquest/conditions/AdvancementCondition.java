@@ -4,6 +4,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.advancement.Advancement;
@@ -32,8 +33,11 @@ public class AdvancementCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final Profile profile) {
-        final AdvancementProgress progress = profile.getPlayer().getAdvancementProgress(advancement);
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
+        final AdvancementProgress progress = profile.getPlayer().get().getAdvancementProgress(advancement);
         return progress.isDone();
     }
 

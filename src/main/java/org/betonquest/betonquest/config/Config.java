@@ -218,7 +218,7 @@ public final class Config {
      * @param profile     the {@link Profile} of the player
      * @param messageName ID of the message
      */
-    public static void sendMessage(final String packName, final Profile profile, final String messageName) {
+    public static void sendMessage(final String packName, final Profile profile, final String messageName) throws QuestRuntimeException {
         sendMessage(packName, profile, messageName, (String[]) null, null, null);
     }
 
@@ -232,7 +232,7 @@ public final class Config {
      * @param messageName ID of the message
      * @param variables   array of variables which will be inserted into the string
      */
-    public static void sendMessage(final String packName, final Profile profile, final String messageName, final String... variables) {
+    public static void sendMessage(final String packName, final Profile profile, final String messageName, final String... variables) throws QuestRuntimeException {
         sendMessage(packName, profile, messageName, variables, null, null, (String) null);
     }
 
@@ -247,7 +247,7 @@ public final class Config {
      * @param variables   array of variables which will be inserted into the string
      * @param soundName   name of the sound to play to the player
      */
-    public static void sendMessage(final String packName, final Profile profile, final String messageName, final String[] variables, final String soundName) {
+    public static void sendMessage(final String packName, final Profile profile, final String messageName, final String[] variables, final String soundName) throws QuestRuntimeException {
         sendMessage(packName, profile, messageName, variables, soundName, null, (String) null);
     }
 
@@ -265,13 +265,16 @@ public final class Config {
      * @param prefixVariables array of variables which will be inserted into the prefix
      */
     public static void sendMessage(final String packName, final Profile profile, final String messageName, final String[] variables, final String soundName,
-                                   final String prefixName, final String... prefixVariables) {
+                                   final String prefixName, final String... prefixVariables) throws QuestRuntimeException {
         final String message = parseMessage(packName, profile, messageName, variables, prefixName, prefixVariables);
         if (message == null || message.length() == 0) {
             return;
         }
 
-        final Player player = profile.getPlayer();
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
+        final Player player = profile.getPlayer().get();
         player.sendMessage(message);
         if (soundName != null) {
             playSound(profile, soundName);
@@ -295,7 +298,10 @@ public final class Config {
     }
 
     public static void sendNotify(final String packName, final Profile profile, final String messageName, final String[] variables, final String category, final Map<String, String> data) throws QuestRuntimeException {
-        sendNotify(packName, profile.getPlayer(), messageName, variables, category, data);
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
+        sendNotify(packName, profile.getPlayer().get(), messageName, variables, category, data);
     }
 
     /**
@@ -330,7 +336,7 @@ public final class Config {
 
     public static String parseMessage(final String packName, final Profile profile, final String messageName, final String[] variables, final String prefixName,
                                       final String... prefixVariables) {
-        return parseMessage(packName, profile.getPlayer(), messageName, variables, prefixName, prefixVariables);
+        return parseMessage(packName, profile.getPlayer().get(), messageName, variables, prefixName, prefixVariables);
     }
 
     /**
@@ -376,11 +382,12 @@ public final class Config {
      * @param profile   the {@link Profile} of the player
      * @param soundName the name of the sound to play to the player
      */
-    public static void playSound(final Profile profile, final String soundName) {
-        final Player player = profile.getPlayer();
-        if (player == null) {
-            return;
+    public static void playSound(final Profile profile, final String soundName) throws QuestRuntimeException {
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
         }
+        final Player player = profile.getPlayer().get();
+
         final String rawSound = plugin.getPluginConfig().getString("sounds." + soundName);
         if (!"false".equalsIgnoreCase(rawSound)) {
             try {

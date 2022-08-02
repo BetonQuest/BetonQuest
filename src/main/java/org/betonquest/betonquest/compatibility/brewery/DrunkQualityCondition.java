@@ -26,7 +26,10 @@ public class DrunkQualityCondition extends Condition {
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        final BPlayer bPlayer = BPlayer.get(profile.getPlayer());
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
+        final BPlayer bPlayer = BPlayer.get(profile.getPlayer().get());
         return bPlayer.getQuality() >= quality;
     }
 }

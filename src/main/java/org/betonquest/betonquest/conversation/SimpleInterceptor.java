@@ -4,6 +4,7 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,9 +23,12 @@ public class SimpleInterceptor implements Interceptor, Listener {
     protected final Player player;
     private final List<String> messages = new ArrayList<>();
 
-    public SimpleInterceptor(final Conversation conv, final Profile profile) {
+    public SimpleInterceptor(final Conversation conv, final Profile profile) throws QuestRuntimeException {
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
         this.conv = conv;
-        this.player = profile.getPlayer();
+        this.player = profile.getPlayer().get();
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 

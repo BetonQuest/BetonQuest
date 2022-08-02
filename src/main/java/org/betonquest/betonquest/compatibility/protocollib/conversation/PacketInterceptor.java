@@ -16,6 +16,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.Interceptor;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
@@ -43,9 +44,12 @@ public class PacketInterceptor implements Interceptor, Listener {
     private int baseComponentIndex = -1;
 
     @SuppressWarnings("PMD.CognitiveComplexity")
-    public PacketInterceptor(final Conversation conv, final Profile profile) {
+    public PacketInterceptor(final Conversation conv, final Profile profile) throws QuestRuntimeException {
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
         this.conv = conv;
-        this.player = profile.getPlayer();
+        this.player = profile.getPlayer().get();
 
         // Intercept Packets
         packetAdapter = new PacketAdapter(BetonQuest.getInstance(), ListenerPriority.HIGHEST,

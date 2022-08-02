@@ -30,7 +30,10 @@ public class MenuCondition extends Condition {
 
     @Override
     public Boolean execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getPlayer();
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
+        final Player player = profile.getPlayer().get();
         return RPGMenu.hasOpenedMenu(player, menu);
     }
 }

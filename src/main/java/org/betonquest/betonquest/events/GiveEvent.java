@@ -37,7 +37,10 @@ public class GiveEvent extends QuestEvent {
     @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getPlayer();
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
+        final Player player = profile.getPlayer().get();
         for (final Item theItem : questItems) {
             final QuestItem questItem = theItem.getItem();
             final VariableNumber amount = theItem.getAmount();

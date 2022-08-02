@@ -9,6 +9,7 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -108,19 +109,19 @@ public abstract class AbstractTakeEvent extends QuestEvent {
 
     protected void checkBackpack(final Profile profile) {
         final List<ItemStack> backpack = BetonQuest.getInstance().getPlayerData(profile).getBackpack();
-        final List<ItemStack> newBackpack = removeDesiredAmount(profile.getPlayer(), backpack);
+        final List<ItemStack> newBackpack = removeDesiredAmount(profile.getOfflinePlayer(), backpack);
         BetonQuest.getInstance().getPlayerData(profile).setBackpack(newBackpack);
     }
 
-    protected List<ItemStack> removeDesiredAmount(final Player player, final List<ItemStack> items) {
+    protected List<ItemStack> removeDesiredAmount(final OfflinePlayer oPlayer, final List<ItemStack> items) {
         final ItemStack[] itemArray = items.toArray(new ItemStack[0]);
-        final ItemStack[] remainingItems = takeDesiredAmount(player, itemArray);
+        final ItemStack[] remainingItems = takeDesiredAmount(oPlayer, itemArray);
         return Arrays.stream(remainingItems)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    protected abstract ItemStack[] takeDesiredAmount(Player player, ItemStack... items);
+    protected abstract ItemStack[] takeDesiredAmount(OfflinePlayer oPlayer, ItemStack... items);
 
     protected enum CheckType {
         INVENTORY,

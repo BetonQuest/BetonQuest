@@ -35,7 +35,7 @@ public class ScoreboardCondition extends Condition {
         if (obj == null) {
             throw new QuestRuntimeException("Scoreboard objective " + objective + " does not exist!");
         }
-        final Score score = obj.getScore(profile.getPlayerName());
+        final Score score = obj.getScore(profile.getOfflinePlayer());
         return score.getScore() >= count.getInt(profile);
     }
 

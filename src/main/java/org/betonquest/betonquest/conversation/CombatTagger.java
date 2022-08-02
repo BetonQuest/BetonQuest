@@ -44,7 +44,7 @@ public class CombatTagger implements Listener {
      */
     public static boolean isTagged(final Profile profile) {
         boolean result = false;
-        final Boolean state = TAGGED.get(profile.getPlayerId());
+        final Boolean state = TAGGED.get(profile);
         if (state != null) {
             result = state;
         }

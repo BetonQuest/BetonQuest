@@ -6,6 +6,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -17,7 +18,7 @@ import java.util.Locale;
  * Allows you to count items in player's inventory and display number remaining
  * to some amount.
  */
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CommentRequired"})
 public class ItemAmountVariable extends Variable {
 
     private final QuestItem questItem;
@@ -44,8 +45,11 @@ public class ItemAmountVariable extends Variable {
 
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public String getValue(final Profile profile) {
-        final Player player = profile.getPlayer();
+    public String getValue(final Profile profile) throws QuestRuntimeException {
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
+        final Player player = profile.getPlayer().get();
         int playersAmount = 0;
         for (final ItemStack item : player.getInventory().getContents()) {
             if (item == null) {

@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -28,8 +27,10 @@ public class EmptySlotsCondition extends Condition {
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getPlayer();
-        final ItemStack[] items = player.getInventory().getStorageContents();
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
+        final ItemStack[] items = profile.getPlayer().get().getInventory().getStorageContents();
 
         int empty = 0;
         for (final ItemStack item : items) {

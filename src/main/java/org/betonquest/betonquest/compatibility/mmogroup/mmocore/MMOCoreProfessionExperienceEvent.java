@@ -35,7 +35,7 @@ public class MMOCoreProfessionExperienceEvent extends QuestEvent {
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
         final int amount = amountVar.getInt(profile);
-        final PlayerData mmoData = PlayerData.get(profile.getPlayer());
+        final PlayerData mmoData = PlayerData.get(profile.getOfflinePlayer());
 
         if (isLevel) {
             mmoData.getCollectionSkills().giveLevels(profession, amount, EXPSource.QUEST);

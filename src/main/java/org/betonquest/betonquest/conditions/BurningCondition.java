@@ -21,6 +21,9 @@ public class BurningCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        return profile.getPlayer().getFireTicks() > 0;
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
+        return profile.getPlayer().get().getFireTicks() > 0;
     }
 }

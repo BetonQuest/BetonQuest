@@ -1,10 +1,12 @@
 package org.betonquest.betonquest.item;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
@@ -42,6 +44,7 @@ import java.util.ListIterator;
 /**
  * Handler for Journals.
  */
+@CustomLog(topic = "QuestItemHandler")
 @SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.CyclomaticComplexity"})
 public class QuestItemHandler implements Listener {
     private static final HandlerList HANDLERS = new HandlerList();
@@ -215,7 +218,11 @@ public class QuestItemHandler implements Listener {
             }
         }
         if (Boolean.parseBoolean(Config.getString("config.journal.give_on_respawn"))) {
-            BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(event.getPlayer())).getJournal().addToInv();
+            try {
+                BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(event.getPlayer())).getJournal().addToInv();
+            } catch (final QuestRuntimeException e) {
+                LOG.warn("Couldn't addToInv due to: " + e.getMessage(), e);
+            }
         }
     }
 

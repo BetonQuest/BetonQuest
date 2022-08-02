@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Converts playerIDs to Player objects and back to playerIDs.
@@ -18,7 +19,7 @@ public final class PlayerConverter {
     }
 
     /**
-     * Returns playerID of the passed Player.
+     * Returns the {@link Profile} of the passed Player.
      *
      * @param player - Player object from which playerID needs to be extracted
      * @return playerID of the player
@@ -31,33 +32,23 @@ public final class PlayerConverter {
             }
 
             @Override
-            public Player getPlayer() {
-                return player.getPlayer();
+            public Optional<Player> getPlayer() {
+                return Optional.ofNullable(player.getPlayer());
             }
 
             @Override
-            public Optional<Player> getOptionalPlayer() {
-                return Optional.ofNullable(getPlayer());
+            public UUID getProfileUUID() {
+                return player.getUniqueId();
             }
 
             @Override
-            public boolean isOnline() {
-                return false;
-            }
-
-            @Override
-            public String getPlayerId() {
-                return player.getUniqueId().toString();
-            }
-
-            @Override
-            public String getPlayerName() {
+            public String getProfileName() {
                 return player.getName();
             }
 
             @Override
             public boolean equals(final Object obj) {
-                return obj instanceof Profile profile && getPlayerId().equals(profile.getPlayerId());
+                return obj instanceof Profile profile && getProfileUUID().equals(profile.getProfileUUID());
             }
 
             @Override

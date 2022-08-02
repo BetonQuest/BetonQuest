@@ -1,7 +1,9 @@
 package org.betonquest.betonquest.quest.event.journal;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.Pointer;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +22,7 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(BetonQuestLoggerService.class)
 @ExtendWith(MockitoExtension.class)
+@CustomLog(topic = "AddEntryJournalChanger")
 class AddEntryJournalChangerTest {
     @Test
     void testChangeJournalAddsPointer(@Mock final Journal journal) {
@@ -30,7 +33,11 @@ class AddEntryJournalChangerTest {
 
         changer.changeJournal(journal);
 
-        verify(journal).addPointer(captor.capture());
+        try {
+            verify(journal).addPointer(captor.capture());
+        } catch (final QuestRuntimeException e) {
+            LOG.warn("Couldn't addPointer due to: " + e.getMessage(), e);
+        }
         verifyNoMoreInteractions(journal);
         final Pointer pointer = captor.getValue();
         assertEquals(entryName, pointer.getPointer(), "The added entry should be the one provided.");

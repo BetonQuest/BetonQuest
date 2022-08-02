@@ -38,7 +38,7 @@ import java.util.Objects;
 /**
  * Represents player's journal.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition"})
+@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition", "PMD.CyclomaticComplexity"})
 @CustomLog
 public class Journal {
 
@@ -97,11 +97,11 @@ public class Journal {
      * @return true if the player has his journal, false otherwise
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public static boolean hasJournal(final Profile profile) {
-        final Player player = profile.getPlayer();
-        if (player == null) {
-            return false;
+    public static boolean hasJournal(final Profile profile) throws QuestRuntimeException {
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
         }
+        final Player player = profile.getPlayer().get();
         for (final ItemStack item : player.getInventory().getContents()) {
             if (isJournal(profile, item)) {
                 return true;
@@ -124,9 +124,12 @@ public class Journal {
      *
      * @param pointer the pointer to be added
      */
-    public void addPointer(final Pointer pointer) {
+    public void addPointer(final Pointer pointer) throws QuestRuntimeException {
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is not online");
+        }
         BetonQuest.getInstance()
-                .callSyncBukkitEvent(new PlayerJournalAddEvent(profile.getPlayer(), this, pointer));
+                .callSyncBukkitEvent(new PlayerJournalAddEvent(profile.getPlayer().get(), this, pointer));
         pointers.add(pointer);
         // SQLite doesn't accept formatted date and MySQL doesn't accept numeric
         // timestamp
@@ -134,7 +137,7 @@ public class Journal {
                 ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date(pointer.getTimestamp()))
                 : Long.toString(pointer.getTimestamp());
         BetonQuest.getInstance().getSaver()
-                .add(new Record(UpdateType.ADD_JOURNAL, profile.getPlayerId(), pointer.getPointer(), date));
+                .add(new Record(UpdateType.ADD_JOURNAL, profile.getProfileUUID().toString(), pointer.getPointer(), date));
     }
 
     /**
@@ -142,17 +145,20 @@ public class Journal {
      *
      * @param pointerName the name of the pointer to remove
      */
-    public void removePointer(final String pointerName) {
+    public void removePointer(final String pointerName) throws QuestRuntimeException {
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is not online");
+        }
         for (final Iterator<Pointer> iterator = pointers.iterator(); iterator.hasNext(); ) {
             final Pointer pointer = iterator.next();
             if (pointer.getPointer().equalsIgnoreCase(pointerName)) {
                 BetonQuest.getInstance()
-                        .callSyncBukkitEvent(new PlayerJournalDeleteEvent(profile.getPlayer(), this, pointer));
+                        .callSyncBukkitEvent(new PlayerJournalDeleteEvent(profile.getPlayer().get(), this, pointer));
                 final String date = BetonQuest.getInstance().isMySQLUsed()
                         ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date(pointer.getTimestamp()))
                         : Long.toString(pointer.getTimestamp());
                 BetonQuest.getInstance().getSaver()
-                        .add(new Record(UpdateType.REMOVE_JOURNAL, profile.getPlayerId(), pointer.getPointer(), date));
+                        .add(new Record(UpdateType.REMOVE_JOURNAL, profile.getProfileUUID().toString(), pointer.getPointer(), date));
                 pointers.remove(pointer);
                 break;
             }
@@ -183,7 +189,7 @@ public class Journal {
      *
      * @param lang the language to use while generating text
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.CognitiveComplexity"})
     public void generateTexts(final String lang) {
         // remove previous texts
         texts.clear();
@@ -241,7 +247,7 @@ public class Journal {
                     BetonQuest.createVariable(pack, variable);
                 } catch (final InstructionParseException e) {
                     LOG.warn(pack, "Error while creating variable '" + variable + "' on journal page '" + pointerName + "' in "
-                            + profile.getPlayerName() + "'s journal: " + e.getMessage(), e);
+                            + profile.getProfileName() + "'s journal: " + e.getMessage(), e);
                 }
                 text = text.replace(variable,
                         BetonQuest.getInstance().getVariableValue(packName, variable, profile));
@@ -257,7 +263,7 @@ public class Journal {
      *
      * @return the main page string or null, if there is no main page
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     private String generateMainPage() {
         final HashMap<Integer, ArrayList<String>> lines = new HashMap<>(); // holds text lines with their priority
         final HashSet<Integer> numbers = new HashSet<>(); // stores numbers that are used, so there's no need to search them
@@ -311,7 +317,7 @@ public class Journal {
                             BetonQuest.createVariable(pack, variable);
                         } catch (final InstructionParseException e) {
                             LOG.warn(pack, "Error while creating variable '" + variable + "' on main page in "
-                                    + profile.getPlayerName() + "'s journal: " + e.getMessage(), e);
+                                    + profile.getProfileName() + "'s journal: " + e.getMessage(), e);
                         }
                         text = text.replace(variable,
                                 BetonQuest.getInstance().getVariableValue(packName, variable, profile));
@@ -363,10 +369,13 @@ public class Journal {
     /**
      * Adds journal to player inventory.
      */
-    public void addToInv() {
+    public void addToInv() throws QuestRuntimeException {
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
         final int targetSlot = getJournalSlot();
         generateTexts(lang);
-        final Inventory inventory = profile.getPlayer().getInventory();
+        final Inventory inventory = profile.getPlayer().get().getInventory();
         final ItemStack item = getAsItem();
         if (inventory.firstEmpty() >= 0) {
             if (targetSlot < 0) {
@@ -388,7 +397,7 @@ public class Journal {
     }
 
     @SuppressWarnings("PMD.PrematureDeclaration")
-    private int getJournalSlot() {
+    private int getJournalSlot() throws QuestRuntimeException {
         final int slot = Integer.parseInt(Config.getString("config.default_journal_slot"));
         final boolean forceJournalSlot = Boolean.parseBoolean(Config.getString("config.journal.lock_default_journal_slot"));
         final int oldSlot = removeFromInv();
@@ -403,14 +412,14 @@ public class Journal {
      *
      * @return the journal ItemStack
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.CognitiveComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public ItemStack getAsItem() {
         // create the book with default title/author
         final ItemStack item = new ItemStack(Material.WRITTEN_BOOK);
         final BookMeta meta = (BookMeta) item.getItemMeta();
         meta.setTitle(Utils.format(Config.getMessage(lang, "journal_title")));
-        meta.setAuthor(profile.getPlayerName());
+        meta.setAuthor(profile.getOfflinePlayer().getName());
         meta.setLore(getJournalLore(lang));
         // add main page and generate pages from texts
         final List<String> finalList = new ArrayList<>();
@@ -459,8 +468,12 @@ public class Journal {
      * Updates journal by removing it and adding it again
      */
     public void update() {
-        if (hasJournal(profile)) {
-            addToInv();
+        try {
+            if (hasJournal(profile)) {
+                addToInv();
+            }
+        } catch (final QuestRuntimeException e) {
+            LOG.warn("Couldn't update journal due to: " + e.getMessage(), e);
         }
     }
 
@@ -469,9 +482,12 @@ public class Journal {
      *
      * @return the slot from which the journal was removed
      */
-    public int removeFromInv() {
+    public int removeFromInv() throws QuestRuntimeException {
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
         // loop all items and check if any of them is a journal
-        final Inventory inventory = profile.getPlayer().getInventory();
+        final Inventory inventory = profile.getPlayer().get().getInventory();
         for (int i = 0; i < inventory.getSize(); i++) {
             if (isJournal(profile, inventory.getItem(i))) {
                 inventory.setItem(i, new ItemStack(Material.AIR));

@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 
 import java.text.DecimalFormat;
 
@@ -43,7 +43,7 @@ public class MoneyEvent extends QuestEvent {
     @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.CyclomaticComplexity"})
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getPlayer();
+        final OfflinePlayer player = profile.getOfflinePlayer();
         // get the difference between target money and current money
         final double current = VaultIntegrator.getEconomy().getBalance(player);
         final double target;

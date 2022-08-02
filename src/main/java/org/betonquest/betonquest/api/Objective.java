@@ -190,7 +190,7 @@ public abstract class Objective {
         }
         LOG.debug(instruction.getPackage(),
                 "Objective \"" + instruction.getID().getFullID() + "\" has been completed for player "
-                        + profile.getPlayerName()
+                        + profile.getProfileName()
                         + ", firing events.");
         // fire all events
         for (final EventID event : events) {
@@ -198,7 +198,7 @@ public abstract class Objective {
         }
         LOG.debug(instruction.getPackage(),
                 "Firing events in objective \"" + instruction.getID().getFullID() + "\" for player "
-                        + profile.getPlayerName()
+                        + profile.getProfileName()
                         + " finished");
     }
 
@@ -212,7 +212,7 @@ public abstract class Objective {
      */
     public final boolean checkConditions(final Profile profile) {
         LOG.debug(instruction.getPackage(), "Condition check in \"" + instruction.getID().getFullID()
-                + "\" objective for player " + profile.getPlayerName());
+                + "\" objective for player " + profile.getProfileName());
         return BetonQuest.conditions(profile, conditions);
     }
 
@@ -281,9 +281,16 @@ public abstract class Objective {
      * @param previousState     the objective's previous state
      */
     public final void startObjective(final Profile profile, final String instructionString, final ObjectiveState previousState) {
+
         synchronized (this) {
             createObjectiveData(profile, instructionString)
-                    .ifPresent(data -> startObjectiveWithEvent(profile, data, previousState));
+                    .ifPresent(data -> {
+                        try {
+                            startObjectiveWithEvent(profile, data, previousState);
+                        } catch (final QuestRuntimeException e) {
+                            LOG.warn("Couldn't startObjectiveWithEvent due to: " + e.getMessage(), e);
+                        }
+                    });
         }
     }
 
@@ -300,7 +307,7 @@ public abstract class Objective {
     private void handleObjectiveDataConstructionError(final Profile profile, final ReflectiveOperationException exception) {
         if (exception.getCause() instanceof InstructionParseException) {
             LOG.warn(instruction.getPackage(), "Error while loading " + this.instruction.getID().getFullID() + " objective data for player "
-                    + profile.getPlayerName() + ": " + exception.getCause().getMessage(), exception);
+                    + profile.getProfileName() + ": " + exception.getCause().getMessage(), exception);
         } else {
             LOG.reportException(instruction.getPackage(), exception);
         }
@@ -313,7 +320,7 @@ public abstract class Objective {
                 .newInstance(instructionString, profile, fullId);
     }
 
-    private void startObjectiveWithEvent(final Profile profile, final ObjectiveData data, final ObjectiveState previousState) {
+    private void startObjectiveWithEvent(final Profile profile, final ObjectiveData data, final ObjectiveState previousState) throws QuestRuntimeException {
         runObjectiveChangeEvent(profile, previousState, ObjectiveState.ACTIVE);
         activateObjective(profile, data);
     }
@@ -363,18 +370,25 @@ public abstract class Objective {
      */
     public final void stopObjective(final Profile profile, final ObjectiveState newState) {
         synchronized (this) {
-            stopObjectiveWithEvent(profile, newState);
+            try {
+                stopObjectiveWithEvent(profile, newState);
+            } catch (final QuestRuntimeException e) {
+                LOG.warn("Couldn't stopObjective due to: " + e.getMessage(), e);
+            }
         }
     }
 
-    private void stopObjectiveWithEvent(final Profile profile, final ObjectiveState newState) {
+    private void stopObjectiveWithEvent(final Profile profile, final ObjectiveState newState) throws QuestRuntimeException {
         runObjectiveChangeEvent(profile, ObjectiveState.ACTIVE, newState);
         deactivateObjective(profile);
     }
 
-    private void runObjectiveChangeEvent(final Profile profile, final ObjectiveState previousState, final ObjectiveState newState) {
+    private void runObjectiveChangeEvent(final Profile profile, final ObjectiveState previousState, final ObjectiveState newState) throws QuestRuntimeException {
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
         BetonQuest.getInstance()
-                .callSyncBukkitEvent(new PlayerObjectiveChangeEvent(profile.getPlayer(), this, newState, previousState));
+                .callSyncBukkitEvent(new PlayerObjectiveChangeEvent(profile.getPlayer().get(), this, newState, previousState));
     }
 
     private void activateObjective(final Profile profile, final ObjectiveData data) {
@@ -400,7 +414,7 @@ public abstract class Objective {
      * @return true if the player has this objective
      */
     public final boolean containsPlayer(final Profile profile) {
-        return dataMap.containsKey(profile.getPlayerId());
+        return dataMap.containsKey(profile);
     }
 
     /**
@@ -410,7 +424,7 @@ public abstract class Objective {
      * @return the data string for this objective
      */
     public final String getData(final Profile profile) {
-        final ObjectiveData data = dataMap.get(profile.getPlayerId());
+        final ObjectiveData data = dataMap.get(profile);
         if (data == null) {
             return null;
         }
@@ -555,8 +569,8 @@ public abstract class Objective {
         @SuppressWarnings("PMD.DoNotUseThreads")
         protected void update() {
             final Saver saver = BetonQuest.getInstance().getSaver();
-            saver.add(new Saver.Record(UpdateType.REMOVE_OBJECTIVES, profile.getPlayerId(), objID));
-            saver.add(new Saver.Record(UpdateType.ADD_OBJECTIVES, profile.getPlayerId(), objID, toString()));
+            saver.add(new Saver.Record(UpdateType.REMOVE_OBJECTIVES, profile.getProfileUUID().toString(), objID));
+            saver.add(new Saver.Record(UpdateType.ADD_OBJECTIVES, profile.getProfileUUID().toString(), objID, toString()));
             final QuestDataUpdateEvent event = new QuestDataUpdateEvent(profile, objID, toString());
             final Server server = BetonQuest.getInstance().getServer();
             server.getScheduler().runTask(BetonQuest.getInstance(), () -> server.getPluginManager().callEvent(event));

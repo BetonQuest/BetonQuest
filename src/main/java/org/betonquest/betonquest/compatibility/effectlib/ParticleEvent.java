@@ -40,7 +40,10 @@ public class ParticleEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getPlayer();
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
+        final Player player = profile.getPlayer().get();
         final Location location = (loc == null) ? player.getLocation() : loc.getLocation(profile);
         // This is not used at the moment
         // Entity originEntity = (loc == null) ? p : null;

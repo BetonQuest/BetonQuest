@@ -7,7 +7,6 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.bukkit.entity.Player;
 
 import java.util.List;
 
@@ -40,9 +39,7 @@ public class ConditionJobLevel extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) {
-        final Player oPlayer = profile.getPlayer();
-
-        final List<JobProgression> oJobs = Jobs.getPlayerManager().getJobsPlayer(oPlayer).getJobProgression();
+        final List<JobProgression> oJobs = Jobs.getPlayerManager().getJobsPlayer(profile.getOfflinePlayer().getUniqueId()).getJobProgression();
         for (final JobProgression oJob : oJobs) {
             if (oJob.getJob().getName().equalsIgnoreCase(sJobName) && oJob.getLevel() >= nMinLevel && oJob.getLevel() <= nMaxLevel) {
                 return true;

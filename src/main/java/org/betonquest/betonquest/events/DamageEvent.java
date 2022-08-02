@@ -22,7 +22,10 @@ public class DamageEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        profile.getPlayer().damage(Math.abs(damage.getDouble(profile)));
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
+        profile.getPlayer().get().damage(Math.abs(damage.getDouble(profile)));
         return null;
     }
 

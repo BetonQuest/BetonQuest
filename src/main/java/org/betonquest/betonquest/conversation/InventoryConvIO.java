@@ -6,6 +6,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.LocalChatPaginator;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
@@ -34,8 +35,7 @@ import java.util.Map;
 /**
  * Inventory GUI for conversations.
  */
-@SuppressWarnings({"PMD.TooManyFields", "PMD.CommentRequired", "PMD.AvoidFieldNameMatchingMethodName",
-        "PMD.AvoidLiteralsInIfCondition"})
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.TooManyFields", "PMD.CommentRequired", "PMD.AvoidFieldNameMatchingMethodName", "PMD.AvoidLiteralsInIfCondition", "PMD.NPathComplexity"})
 @CustomLog
 public class InventoryConvIO implements Listener, ConversationIO {
     private static final Map<String, ItemStack> SKULL_CACHE = new HashMap<>();
@@ -63,9 +63,12 @@ public class InventoryConvIO implements Listener, ConversationIO {
     protected boolean showNPCText = true;
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public InventoryConvIO(final Conversation conv, final Profile profile) {
+    public InventoryConvIO(final Conversation conv, final Profile profile) throws QuestRuntimeException {
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
         this.conv = conv;
-        this.player = profile.getPlayer();
+        this.player = profile.getPlayer().get();
         final Map<String, ChatColor[]> colors = ConversationColors.getColors();
         StringBuilder string = new StringBuilder();
         for (final ChatColor color : colors.get("npc")) {
@@ -132,7 +135,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         if (player.getGameMode() == GameMode.SPECTATOR) {
             conv.endConversation();
             player.closeInventory();
-            conv.getInterceptor().sendMessage(Config.getMessage(PlayerConverter.getID(player).getPlayerId(), "conversation_spectator"));
+            conv.getInterceptor().sendMessage(Config.getMessage(PlayerConverter.getID(player).getProfileUUID().toString(), "conversation_spectator"));
             return;
         }
         if (response == null) {
@@ -371,7 +374,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
      */
     public static class Combined extends InventoryConvIO {
 
-        public Combined(final Conversation conv, final Profile profile) {
+        public Combined(final Conversation conv, final Profile profile) throws QuestRuntimeException {
             super(conv, profile);
             super.printMessages = true;
         }

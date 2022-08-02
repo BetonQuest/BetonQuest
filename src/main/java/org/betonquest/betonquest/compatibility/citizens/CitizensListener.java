@@ -91,8 +91,12 @@ public class CitizensListener implements Listener {
         }
         if (assignment != null) {
             event.setCancelled(true);
-            new CitizensConversation(profile, assignment, event.getNPC().getEntity().getLocation(),
-                    event.getNPC());
+            try {
+                new CitizensConversation(profile, assignment, event.getNPC().getEntity().getLocation(),
+                        event.getNPC());
+            } catch (final QuestRuntimeException e) {
+                LOG.warn("Couldn't create CitizensConversation due to: " + e.getMessage(), e);
+            }
         }
     }
 

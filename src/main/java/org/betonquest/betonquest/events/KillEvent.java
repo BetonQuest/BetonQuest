@@ -4,6 +4,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.entity.Player;
 
 /**
@@ -17,8 +18,11 @@ public class KillEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final Profile profile) {
-        final Player player = profile.getPlayer();
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
+        final Player player = profile.getPlayer().get();
         player.damage(player.getHealth() + 1);
         return null;
     }

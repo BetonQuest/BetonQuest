@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.events;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
@@ -9,6 +10,7 @@ import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
@@ -18,7 +20,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 /**
  * Adds or removes tags from the player
  */
-@SuppressWarnings("PMD.CommentRequired")
+@CustomLog(topic = "TagEvent")
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CommentRequired"})
 public class TagEvent extends QuestEvent {
 
     protected final String[] tags;
@@ -43,23 +46,35 @@ public class TagEvent extends QuestEvent {
                 for (final String tag : tags) {
                     for (final Player p : Bukkit.getOnlinePlayers()) {
                         final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(p));
-                        playerData.removeTag(tag);
+                        try {
+                            playerData.removeTag(tag);
+                        } catch (final QuestRuntimeException e) {
+                            LOG.warn("Couldn't removeTag due to: " + e.getMessage(), e);
+                        }
                     }
                     BetonQuest.getInstance().getSaver().add(new Saver.Record(UpdateType.REMOVE_ALL_TAGS, tag));
                 }
             }
-        } else if (profile.getPlayer() == null) {
+        } else if (profile.getPlayer().isEmpty()) {
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     final PlayerData playerData = new PlayerData(profile);
                     if (add) {
                         for (final String tag : tags) {
-                            playerData.addTag(tag);
+                            try {
+                                playerData.addTag(tag);
+                            } catch (final QuestRuntimeException e) {
+                                LOG.warn("Couldn't getInt due to: " + e.getMessage(), e);
+                            }
                         }
                     } else {
                         for (final String tag : tags) {
-                            playerData.removeTag(tag);
+                            try {
+                                playerData.removeTag(tag);
+                            } catch (final QuestRuntimeException e) {
+                                LOG.warn("Couldn't removeTag due to: " + e.getMessage(), e);
+                            }
                         }
                     }
                 }
@@ -68,11 +83,19 @@ public class TagEvent extends QuestEvent {
             final PlayerData playerData = BetonQuest.getInstance().getPlayerData(profile);
             if (add) {
                 for (final String tag : tags) {
-                    playerData.addTag(tag);
+                    try {
+                        playerData.addTag(tag);
+                    } catch (final QuestRuntimeException e) {
+                        LOG.warn("Couldn't addTag due to: " + e.getMessage(), e);
+                    }
                 }
             } else {
                 for (final String tag : tags) {
-                    playerData.removeTag(tag);
+                    try {
+                        playerData.removeTag(tag);
+                    } catch (final QuestRuntimeException e) {
+                        LOG.warn("Couldn't removeTag due to: " + e.getMessage(), e);
+                    }
                 }
             }
         }

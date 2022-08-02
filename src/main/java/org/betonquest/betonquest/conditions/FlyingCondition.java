@@ -17,7 +17,10 @@ public class FlyingCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        return profile.getPlayer().isGliding();
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
+        return profile.getPlayer().get().isGliding();
     }
 
 }

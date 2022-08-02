@@ -105,14 +105,14 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
                 for (final Player player : Bukkit.getOnlinePlayers()) {
                     final Profile onlineProfile = PlayerConverter.getID(player);
                     if (!BetonQuest.conditions(onlineProfile, conditions)) {
-                        LOG.debug(instruction.getPackage(), "Event conditions were not met for player " + onlineProfile.getPlayerName());
+                        LOG.debug(instruction.getPackage(), "Event conditions were not met for player " + onlineProfile.getProfileName());
                         continue;
                     }
-                    LOG.debug(instruction.getPackage(), "  Firing this static event for player " + onlineProfile.getPlayerName());
+                    LOG.debug(instruction.getPackage(), "  Firing this static event for player " + onlineProfile.getProfileName());
                     handle(onlineProfile);
                 }
             }
-        } else if (profile.getPlayer() == null) {
+        } else if (profile.getPlayer().isEmpty()) {
             // handle persistent event
             if (!persistent) {
                 LOG.debug(instruction.getPackage(), "Player " + profile.getPlayer() + " is offline, cannot fire event because it's not persistent.");

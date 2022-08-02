@@ -26,16 +26,19 @@ public class ItemCondition extends Condition {
     }
 
     @Override
-    @SuppressWarnings("PMD.CognitiveComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
         int successfulChecks = 0; // Count of successful checks
 
         for (final Item questItem : questItems) {
             int counter = 0; // Reset counter for each item
             final int amount = questItem.getAmount().getInt(profile);
 
-            final ItemStack[] inventoryItems = profile.getPlayer().getInventory().getContents();
+            final ItemStack[] inventoryItems = profile.getPlayer().get().getInventory().getContents();
             for (final ItemStack item : inventoryItems) {
                 if (item == null || !questItem.isItemEqual(item)) {
                     continue;

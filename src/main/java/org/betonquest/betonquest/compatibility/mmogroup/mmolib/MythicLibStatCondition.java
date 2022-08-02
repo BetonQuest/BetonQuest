@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.bukkit.entity.Player;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class MythicLibStatCondition extends Condition {
@@ -25,8 +24,7 @@ public class MythicLibStatCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getPlayer();
-        final MMOPlayerData data = MMOPlayerData.get(player);
+        final MMOPlayerData data = MMOPlayerData.get(profile.getOfflinePlayer());
         if (data == null) {
             return false;
         }

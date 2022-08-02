@@ -48,7 +48,7 @@ public class ScoreboardEvent extends QuestEvent {
         if (obj == null) {
             throw new QuestRuntimeException("Scoreboard objective " + objective + " does not exist!");
         }
-        final Score score = obj.getScore(profile.getPlayerName());
+        final Score score = obj.getScore(profile.getOfflinePlayer());
         if (multi) {
             score.setScore((int) Math.floor(score.getScore() * count.getDouble(profile)));
         } else {

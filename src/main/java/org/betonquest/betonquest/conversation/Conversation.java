@@ -78,7 +78,7 @@ public class Conversation implements Listener {
      * @param conversationID ID of the conversation
      * @param location       location where the conversation has been started
      */
-    public Conversation(final Profile profile, final String conversationID, final Location location) {
+    public Conversation(final Profile profile, final String conversationID, final Location location) throws QuestRuntimeException {
         this(profile, conversationID, location, null);
     }
 
@@ -93,11 +93,14 @@ public class Conversation implements Listener {
      * @param option         ID of the option from where to start
      */
     public Conversation(final Profile profile, final String conversationID,
-                        final Location location, final String option) {
+                        final Location location, final String option) throws QuestRuntimeException {
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
         this.conv = this;
         this.plugin = BetonQuest.getInstance();
         this.profile = profile;
-        this.player = profile.getPlayer();
+        this.player = profile.getPlayer().get();
         this.pack = Config.getPackages().get(conversationID.substring(0, conversationID.indexOf('.')));
         this.language = plugin.getPlayerData(profile).getLanguage();
         this.location = location;
@@ -115,7 +118,7 @@ public class Conversation implements Listener {
 
         // if the player has active conversation, terminate this one
         if (LIST.containsKey(profile)) {
-            LOG.debug(pack, "Player " + profile.getPlayerName() + " is in conversation right now, returning.");
+            LOG.debug(pack, "Player " + profile.getProfileName() + " is in conversation right now, returning.");
             return;
         }
 
@@ -139,11 +142,11 @@ public class Conversation implements Listener {
     /**
      * Checks if the player is in a conversation
      *
-     * @param playerID ID of the player
+     * @param profile the {@link Profile} of the player
      * @return if the player is on the list of active conversations
      */
-    public static boolean containsPlayer(final String playerID) {
-        return LIST.containsKey(playerID);
+    public static boolean containsPlayer(final Profile profile) {
+        return LIST.containsKey(profile);
     }
 
     /**
@@ -153,7 +156,7 @@ public class Conversation implements Listener {
      * @return player's active conversation or null if there is no conversation
      */
     public static Conversation getConversation(final Profile profile) {
-        return LIST.get(profile.getPlayerId());
+        return LIST.get(profile);
     }
 
     /**
@@ -301,7 +304,11 @@ public class Conversation implements Listener {
             conv.inOut.print(Config.parseMessage(pack.getPackagePath(), profile, "conversation_end", data.getQuester(language)));
         }
         //play conversation end sound
-        Config.playSound(profile, "end");
+        try {
+            Config.playSound(profile, "end");
+        } catch (final QuestRuntimeException e) {
+            LOG.warn("Couldn't playSound due to: " + e.getMessage(), e);
+        }
 
         // End interceptor after a second
         if (interceptor != null) {
@@ -389,7 +396,7 @@ public class Conversation implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onQuit(final PlayerQuitEvent event) {
+    public void onQuit(final PlayerQuitEvent event) throws QuestRuntimeException {
         // if player quits, end conversation (why keep listeners running?)
         if (event.getPlayer().equals(player)) {
             if (isMovementBlock()) {
@@ -408,7 +415,7 @@ public class Conversation implements Listener {
     public void suspend() {
         if (inOut == null) {
             LOG.warn(pack, "Conversation IO is not loaded, conversation will end for player "
-                    + profile.getPlayerName());
+                    + profile.getProfileName());
             LIST.remove(profile);
             HandlerList.unregisterAll(this);
             return;
@@ -419,7 +426,7 @@ public class Conversation implements Listener {
         final String loc = location.getX() + ";" + location.getY() + ";" + location.getZ() + ";"
                 + location.getWorld().getName();
         plugin.getSaver().add(new Record(UpdateType.UPDATE_CONVERSATION,
-                convID + " " + option + " " + loc, profile.getPlayerId()));
+                convID + " " + option + " " + loc, profile.getProfileUUID().toString()));
 
         // End interceptor
         if (interceptor != null) {
@@ -517,7 +524,7 @@ public class Conversation implements Listener {
             try {
                 final String name = data.getConversationIO();
                 final Class<? extends ConversationIO> convIO = plugin.getConvIO(name);
-                conv.inOut = convIO.getConstructor(Conversation.class, String.class).newInstance(conv, profile);
+                conv.inOut = convIO.getConstructor(Conversation.class, Profile.class).newInstance(conv, profile);
             } catch (final InstantiationException | IllegalAccessException | IllegalArgumentException
                            | InvocationTargetException | NoSuchMethodException | SecurityException e) {
                 LOG.warn(pack, "Error when loading conversation IO", e);
@@ -532,7 +539,7 @@ public class Conversation implements Listener {
                 try {
                     final String name = data.getInterceptor();
                     final Class<? extends Interceptor> interceptor = plugin.getInterceptor(name);
-                    conv.interceptor = interceptor.getConstructor(Conversation.class, String.class).newInstance(conv, profile);
+                    conv.interceptor = interceptor.getConstructor(Conversation.class, Profile.class).newInstance(conv, profile);
                 } catch (final InstantiationException | IllegalAccessException | IllegalArgumentException
                                | InvocationTargetException | NoSuchMethodException | SecurityException e) {
                     LOG.warn(pack, "Error when loading interceptor", e);
@@ -564,7 +571,11 @@ public class Conversation implements Listener {
                             prefixName, prefixVariables));
                 }
                 //play the conversation start sound
-                Config.playSound(profile, "start");
+                try {
+                    Config.playSound(profile, "start");
+                } catch (final QuestRuntimeException e) {
+                    LOG.warn("Couldn't playSound due to: " + e.getMessage(), e);
+                }
             } else {
                 // don't forget to select the option prior to printing its text
                 selectOption(options, true);

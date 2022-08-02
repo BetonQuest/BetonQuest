@@ -97,7 +97,7 @@ public class FolderEvent extends QuestEvent {
         return null;
     }
 
-    private Long getInTicks(final VariableNumber timeVariable, final Profile profile) {
+    private Long getInTicks(final VariableNumber timeVariable, final Profile profile) throws QuestRuntimeException {
         if (timeVariable == null) {
             return null;
         }

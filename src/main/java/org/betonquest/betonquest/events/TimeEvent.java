@@ -4,6 +4,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.World;
 
 /**
@@ -31,8 +32,11 @@ public class TimeEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final Profile profile) {
-        final World world = profile.getPlayer().getWorld();
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
+        final World world = profile.getPlayer().get().getWorld();
         long time = (long) amount;
         if (add) {
             time += world.getTime();

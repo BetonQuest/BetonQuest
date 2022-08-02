@@ -74,7 +74,10 @@ public class WandCondition extends Condition {
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getPlayer();
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
+        final Player player = profile.getPlayer().get();
         int heldAmount;
 
         switch (type) {
@@ -125,7 +128,7 @@ public class WandCondition extends Condition {
      * @return true if the wand meets the conditions, false otherwise
      */
     @SuppressWarnings("PMD.AvoidBranchingStatementAsLastInLoop")
-    private boolean checkWand(final Wand wand, final Profile profile) {
+    private boolean checkWand(final Wand wand, final Profile profile) throws QuestRuntimeException {
         if (name != null && !name.equalsIgnoreCase(wand.getTemplateKey())) {
             return false;
         }

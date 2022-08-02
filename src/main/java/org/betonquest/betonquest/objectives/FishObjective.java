@@ -67,8 +67,12 @@ public class FishObjective extends CountingObjective implements Listener {
             return;
         }
 
-        if (isInvalidLocation(event, profile)) {
-            return;
+        try {
+            if (isInvalidLocation(event, profile)) {
+                return;
+            }
+        } catch (final QuestRuntimeException e) {
+            LOG.warn("Couldn't check isInvalidLocation due to: " + e.getMessage(), e);
         }
         final ItemStack item = ((Item) event.getCaught()).getItemStack();
         if (blockSelector.match(item.getType()) && checkConditions(profile)) {
@@ -77,7 +81,7 @@ public class FishObjective extends CountingObjective implements Listener {
         }
     }
 
-    private boolean isInvalidLocation(final PlayerFishEvent event, final Profile profile) {
+    private boolean isInvalidLocation(final PlayerFishEvent event, final Profile profile) throws QuestRuntimeException {
         if (hookTargetLocation == null || rangeVar == null) {
             return false;
         }

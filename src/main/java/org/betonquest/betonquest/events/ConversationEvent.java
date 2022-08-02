@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.Utils;
 
 /**
@@ -21,8 +22,11 @@ public class ConversationEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final Profile profile) {
-        new Conversation(profile, conv, profile.getPlayer().getLocation());
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
+        new Conversation(profile, conv, profile.getPlayer().get().getLocation());
         return null;
     }
 }

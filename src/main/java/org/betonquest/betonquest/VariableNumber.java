@@ -66,7 +66,7 @@ public class VariableNumber {
      * @param profile the {@link Profile} of the player for variable resolving
      * @return the integer represented by this variable number
      */
-    public int getInt(final Profile profile) {
+    public int getInt(final Profile profile) throws QuestRuntimeException {
         return (int) Math.floor(resolveVariable(profile));
     }
 
@@ -81,7 +81,7 @@ public class VariableNumber {
         return resolveVariable(profile);
     }
 
-    private double resolveVariable(final Profile profile) {
+    private double resolveVariable(final Profile profile) throws QuestRuntimeException {
         if (variable == null) {
             return number;
         } else if (profile == null) {

@@ -7,7 +7,6 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.bukkit.entity.Player;
 
 import java.util.List;
 
@@ -39,9 +38,7 @@ public class EventSetLevel extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) {
-        final Player oPlayer = profile.getPlayer();
-
-        final List<JobProgression> oJobs = Jobs.getPlayerManager().getJobsPlayer(oPlayer).getJobProgression();
+        final List<JobProgression> oJobs = Jobs.getPlayerManager().getJobsPlayer(profile.getOfflinePlayer().getUniqueId()).getJobProgression();
         for (final JobProgression oJob : oJobs) {
             if (oJob.getJob().getName().equalsIgnoreCase(sJobName) && oJob.getJob().getMaxLevel() <= this.nLevel) {
                 oJob.setLevel(this.nLevel);

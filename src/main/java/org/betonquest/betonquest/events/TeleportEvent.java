@@ -24,13 +24,16 @@ public class TeleportEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
         final Conversation conv = Conversation.getConversation(profile);
         if (conv != null) {
             conv.endConversation();
         }
 
         final Location playerLocation = loc.getLocation(profile);
-        profile.getPlayer().teleport(playerLocation);
+        profile.getPlayer().get().teleport(playerLocation);
         return null;
     }
 }

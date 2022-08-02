@@ -23,7 +23,7 @@ public class QuestsCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) {
-        final ConcurrentSkipListSet<Quest> completedQuests = QuestsIntegrator.getQuestsInstance().getQuester(profile.getPlayer().getUniqueId()).getCompletedQuests();
+        final ConcurrentSkipListSet<Quest> completedQuests = QuestsIntegrator.getQuestsInstance().getQuester(profile.getProfileUUID()).getCompletedQuests();
         for (final Quest q : completedQuests) {
             if (q.getName().replace(' ', '_').equalsIgnoreCase(questName)) {
                 return true;

@@ -4,6 +4,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -40,10 +41,13 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     protected String answerFormat;
     protected String textFormat;
 
-    public ChatConvIO(final Conversation conv, final Profile profile) {
+    public ChatConvIO(final Conversation conv, final Profile profile) throws QuestRuntimeException {
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
         this.options = new HashMap<>();
         this.conv = conv;
-        this.player = profile.getPlayer();
+        this.player = profile.getPlayer().get();
         this.name = player.getName();
         this.colors = ConversationColors.getColors();
         StringBuilder string = new StringBuilder();

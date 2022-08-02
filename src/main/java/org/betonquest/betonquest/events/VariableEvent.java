@@ -48,7 +48,7 @@ public class VariableEvent extends QuestEvent {
                     instruction.getPackage().getPackagePath(), v, profile));
         }
         if (!objective.store(profile, keyReplaced.replace('_', ' '), valueReplaced.replace('_', ' '))) {
-            throw new QuestRuntimeException("Player " + profile.getPlayerName() + " does not have '" +
+            throw new QuestRuntimeException("Player " + profile.getProfileName() + " does not have '" +
                     objectiveID.getFullID() + "' objective, cannot store a variable.");
         }
         return null;

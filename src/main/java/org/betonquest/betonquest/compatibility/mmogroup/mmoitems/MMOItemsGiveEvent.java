@@ -57,11 +57,14 @@ public class MMOItemsGiveEvent extends QuestEvent {
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getPlayer();
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
+        final Player player = profile.getPlayer().get();
         int amount = amountVar.getInt(profile);
 
         if (scale) {
-            mmoItem = mmoPlugin.getItem(itemType, itemID, PlayerData.get(player.getUniqueId()));
+            mmoItem = mmoPlugin.getItem(itemType, itemID, PlayerData.get(profile.getOfflinePlayer()));
         }
 
         if (notify) {

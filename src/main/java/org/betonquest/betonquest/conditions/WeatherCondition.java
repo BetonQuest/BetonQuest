@@ -4,6 +4,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.World;
 
 import java.util.Locale;
@@ -27,8 +28,11 @@ public class WeatherCondition extends Condition {
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override
-    protected Boolean execute(final Profile profile) {
-        final World world = profile.getPlayer().getWorld();
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
+        final World world = profile.getPlayer().get().getWorld();
         switch (weather) {
             case "sun":
             case "clear":

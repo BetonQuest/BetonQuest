@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -29,9 +30,12 @@ public class ConversationResumer implements Listener {
     private final Location loc;
     private final double distance;
 
-    public ConversationResumer(final Profile profile, final String convID) {
+    public ConversationResumer(final Profile profile, final String convID) throws QuestRuntimeException {
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
         this.original = convID;
-        this.player = profile.getPlayer();
+        this.player = profile.getPlayer().get();
         this.profile = profile;
         final String[] parts = convID.split(" ");
         this.conversationID = parts[0];
@@ -50,14 +54,14 @@ public class ConversationResumer implements Listener {
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @EventHandler(ignoreCancelled = true)
-    public void onMove(final PlayerMoveEvent event) {
+    public void onMove(final PlayerMoveEvent event) throws QuestRuntimeException {
         if (!event.getPlayer().equals(player)) {
             return;
         }
         if (event.getTo().getWorld().equals(loc.getWorld()) && event.getTo().distanceSquared(loc) < distance * distance) {
             HandlerList.unregisterAll(this);
             BetonQuest.getInstance().getSaver()
-                    .add(new Record(UpdateType.UPDATE_CONVERSATION, "null", profile.getPlayerId()));
+                    .add(new Record(UpdateType.UPDATE_CONVERSATION, "null", profile.getProfileUUID().toString()));
             new Conversation(profile, conversationID, loc, option);
         }
     }
@@ -69,6 +73,6 @@ public class ConversationResumer implements Listener {
         }
         HandlerList.unregisterAll(this);
         BetonQuest.getInstance().getSaver()
-                .add(new Record(UpdateType.UPDATE_CONVERSATION, original, profile.getPlayerId()));
+                .add(new Record(UpdateType.UPDATE_CONVERSATION, original, profile.getProfileUUID().toString()));
     }
 }

@@ -505,7 +505,7 @@ public class QuestItem {
         }
         if (meta instanceof SkullMeta) {
             final SkullMeta skullMeta = (SkullMeta) meta;
-            final String uuid = profile == null ? null : profile.getPlayer().getUniqueId().toString();
+            final String uuid = profile == null ? null : profile.getProfileUUID().toString();
             skullMeta.setOwner(head.get(uuid));
         }
         if (meta instanceof LeatherArmorMeta) {

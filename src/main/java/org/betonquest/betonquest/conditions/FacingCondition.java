@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
  * <p>
  * Created on 01.10.2018.
  */
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "PMD.CyclomaticComplexity"})
 public class FacingCondition extends Condition {
 
     private final Direction direction;
@@ -25,7 +25,10 @@ public class FacingCondition extends Condition {
     @Override
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getPlayer();
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
+        final Player player = profile.getPlayer().get();
         float rotation = player.getLocation().getYaw();
         final float pitch = player.getLocation().getPitch();
         final Direction facing;

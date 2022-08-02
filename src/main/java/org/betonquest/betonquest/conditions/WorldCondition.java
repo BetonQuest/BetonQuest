@@ -31,8 +31,11 @@ public class WorldCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final Profile profile) {
-        return profile.getPlayer().getWorld().equals(world);
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
+        return profile.getPlayer().get().getWorld().equals(world);
     }
 
 }

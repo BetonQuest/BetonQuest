@@ -6,7 +6,6 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.bukkit.entity.Player;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class EventLeaveJob extends QuestEvent {
@@ -30,10 +29,9 @@ public class EventLeaveJob extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) {
-        final Player oPlayer = profile.getPlayer();
         for (final Job job : Jobs.getJobs()) {
             if (job.getName().equalsIgnoreCase(sJobName)) {
-                Jobs.getPlayerManager().getJobsPlayer(oPlayer).leaveJob(job);
+                Jobs.getPlayerManager().getJobsPlayer(profile.getOfflinePlayer().getUniqueId()).leaveJob(job);
                 return null;
             }
         }

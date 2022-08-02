@@ -3,6 +3,7 @@ package org.betonquest.betonquest.api;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 /**
  * Represents a variable in conversations.
@@ -34,7 +35,7 @@ abstract public class Variable {
      * @param profile the {@link Profile} of the player
      * @return the value of this variable
      */
-    public abstract String getValue(Profile profile);
+    public abstract String getValue(Profile profile) throws QuestRuntimeException;
 
     @Override
     public String toString() {

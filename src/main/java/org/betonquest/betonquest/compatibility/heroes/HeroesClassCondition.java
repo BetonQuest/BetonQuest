@@ -15,7 +15,7 @@ import java.util.ArrayList;
 /**
  * Checks the class of the player and the level.
  */
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "PMD.CyclomaticComplexity"})
 public class HeroesClassCondition extends Condition {
 
     private final boolean primary;
@@ -45,7 +45,10 @@ public class HeroesClassCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        final Hero hero = Heroes.getInstance().getCharacterManager().getHero(profile.getPlayer());
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
+        final Hero hero = Heroes.getInstance().getCharacterManager().getHero(profile.getPlayer().get());
         if (hero == null) {
             return false;
         }

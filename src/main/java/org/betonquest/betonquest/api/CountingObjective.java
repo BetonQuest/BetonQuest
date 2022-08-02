@@ -71,7 +71,7 @@ public abstract class CountingObjective extends Objective {
      * @return counting objective data of the player
      */
     public final CountingData getCountingData(final Profile profile) {
-        return (CountingData) dataMap.get(profile.getPlayerId());
+        return (CountingData) dataMap.get(profile);
     }
 
     /**

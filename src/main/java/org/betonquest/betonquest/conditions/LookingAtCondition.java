@@ -35,7 +35,10 @@ public class LookingAtCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getPlayer();
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
+        final Player player = profile.getPlayer().get();
         final Block lookingAt = player.getTargetBlock(null, 6);
         if (loc != null) {
             final Location targetLocation = loc.getLocation(profile);

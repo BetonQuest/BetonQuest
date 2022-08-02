@@ -6,6 +6,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 /**
  * Checks if the player has access to specified Heroes skill.
@@ -21,8 +22,11 @@ public class HeroesSkillCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final Profile profile) {
-        final Hero hero = Heroes.getInstance().getCharacterManager().getHero(profile.getPlayer());
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
+        final Hero hero = Heroes.getInstance().getCharacterManager().getHero(profile.getPlayer().get());
         if (hero == null) {
             return false;
         }

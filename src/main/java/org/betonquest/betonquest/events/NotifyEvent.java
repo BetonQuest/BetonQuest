@@ -92,6 +92,9 @@ public class NotifyEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
         final String lang = BetonQuest.getInstance().getPlayerData(profile).getLanguage();
         String message = messages.get(lang);
         if (message == null) {
@@ -102,7 +105,7 @@ public class NotifyEvent extends QuestEvent {
                     BetonQuest.getInstance().getVariableValue(instruction.getPackage().getPackagePath(), variable, profile));
         }
 
-        final Player player = profile.getPlayer();
+        final Player player = profile.getPlayer().get();
         notifyIO.sendNotify(message, player);
         return null;
     }

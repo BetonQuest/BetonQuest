@@ -206,7 +206,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
                         @Override
                         public void run() {
-                            handleTags(sender, args);
+                            try {
+                                handleTags(sender, args);
+                            } catch (final QuestRuntimeException e) {
+                                LOG.warn("Couldn't handleTags due to: " + e.getMessage(), e);
+                            }
                         }
                     }.runTaskAsynchronously(BetonQuest.getInstance());
                     break;
@@ -230,7 +234,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
                         @Override
                         public void run() {
-                            handleJournals(sender, args);
+                            try {
+                                handleJournals(sender, args);
+                            } catch (final QuestRuntimeException e) {
+                                LOG.warn("Couldn't handleJournals due to: " + e.getMessage(), e);
+                            }
                         }
                     }.runTaskAsynchronously(BetonQuest.getInstance());
                     break;
@@ -242,7 +250,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
                         @Override
                         public void run() {
-                            handleDeleting(sender, args);
+                            try {
+                                handleDeleting(sender, args);
+                            } catch (final QuestRuntimeException e) {
+                                LOG.warn("Couldn't handleDeleting due to: " + e.getMessage(), e);
+                            }
                         }
                     }.runTaskAsynchronously(BetonQuest.getInstance());
                     break;
@@ -253,7 +265,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
                         @Override
                         public void run() {
-                            handleRenaming(sender, args);
+                            try {
+                                handleRenaming(sender, args);
+                            } catch (final QuestRuntimeException e) {
+                                LOG.warn("Couldn't handleRenaming due to: " + e.getMessage(), e);
+                            }
                         }
                     }.runTaskAsynchronously(BetonQuest.getInstance());
                     break;
@@ -282,7 +298,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     if (noFilters) {
                         logWatcher.addFilter(uuid, "*", Level.WARNING);
                     }
-                    instance.reload();
+                    try {
+                        instance.reload();
+                    } catch (final QuestRuntimeException e) {
+                        LOG.warn("Couldn't reload the instance due to: " + e.getMessage(), e);
+                    }
                     sendMessage(sender, "reloaded");
                     if (noFilters) {
                         logWatcher.removeFilter(uuid, "*");
@@ -515,7 +535,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Lists, adds or removes journal entries of certain profile
      */
-    private void handleJournals(final CommandSender sender, final String... args) {
+    private void handleJournals(final CommandSender sender, final String... args) throws QuestRuntimeException {
         // playerID is required
         if (args.length < 2) {
             LOG.debug("Player's name is missing");
@@ -951,7 +971,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Lists, adds or removes tags
      */
-    private void handleTags(final CommandSender sender, final String... args) {
+    private void handleTags(final CommandSender sender, final String... args) throws QuestRuntimeException {
         // playerID is required
         if (args.length < 2) {
             LOG.debug("Player's name is missing");
@@ -990,7 +1010,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "a":
                 // add the tag
                 LOG.debug(
-                        "Adding tag " + tag + " for player " + profile.getPlayerName());
+                        "Adding tag " + tag + " for player " + profile.getProfileName());
                 playerData.addTag(tag);
                 sendMessage(sender, "tag_added");
                 break;
@@ -1001,7 +1021,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "d":
                 // remove the tag
                 LOG.debug(
-                        "Removing tag " + tag + " for player " + profile.getPlayerName());
+                        "Removing tag " + tag + " for player " + profile.getProfileName());
                 playerData.removeTag(tag);
                 sendMessage(sender, "tag_removed");
                 break;
@@ -1177,7 +1197,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "add":
             case "a":
                 LOG.debug(
-                        "Adding new objective " + objectiveID + " for player " + profile.getPlayerName());
+                        "Adding new objective " + objectiveID + " for player " + profile.getProfileName());
                 // add the objective
                 if (isOnline) {
                     BetonQuest.newObjective(profile, objectiveID);
@@ -1192,7 +1212,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "r":
             case "d":
                 LOG.debug(
-                        "Deleting objective " + objectiveID + " for player " + profile.getPlayerName());
+                        "Deleting objective " + objectiveID + " for player " + profile.getProfileName());
                 objective.cancelObjectiveForPlayer(profile);
                 playerData.removeRawObjective(objectiveID);
                 sendMessage(sender, "objective_removed");
@@ -1200,7 +1220,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "complete":
             case "c":
                 LOG.debug(
-                        "Completing objective " + objectiveID + " for player " + profile.getPlayerName());
+                        "Completing objective " + objectiveID + " for player " + profile.getProfileName());
                 if (isOnline) {
                     objective.completeObjective(profile);
                 } else {
@@ -1240,7 +1260,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Renames stuff.
      */
     @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount"})
-    private void handleRenaming(final CommandSender sender, final String... args) {
+    private void handleRenaming(final CommandSender sender, final String... args) throws QuestRuntimeException {
         if (args.length < 4) {
             sendMessage(sender, "arguments");
             return;
@@ -1413,7 +1433,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Deleted stuff.
      */
     @SuppressWarnings("PMD.NcssCount")
-    private void handleDeleting(final CommandSender sender, final String... args) {
+    private void handleDeleting(final CommandSender sender, final String... args) throws QuestRuntimeException {
         if (args.length < 3) {
             sendMessage(sender, "arguments");
             return;
@@ -1830,7 +1850,11 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     private void sendMessage(final CommandSender sender, final String messageName, final String... variables) {
         if (sender instanceof Player) {
-            Config.sendMessage(null, PlayerConverter.getID((Player) sender), messageName, variables);
+            try {
+                Config.sendMessage(null, PlayerConverter.getID((Player) sender), messageName, variables);
+            } catch (final QuestRuntimeException e) {
+                LOG.warn("Couldn't sendMessage due to: " + e.getMessage(), e);
+            }
         } else {
             final String message = Config.getMessage(Config.getLanguage(), messageName, variables);
             sender.sendMessage(message);

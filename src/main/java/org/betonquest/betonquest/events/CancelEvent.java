@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 /**
  * Cancels the quest for the player.
@@ -21,7 +22,7 @@ public class CancelEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final Profile profile) {
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
         canceler.cancel(profile);
         return null;
     }

@@ -58,8 +58,11 @@ public class WeatherEvent extends QuestEvent {
     }
 
     private @NotNull World getWorld(final Profile profile) throws QuestRuntimeException {
+        if (profile.getPlayer().isEmpty()) {
+            throw new QuestRuntimeException("Player is offline");
+        }
         if (world == null) {
-            return profile.getPlayer().getWorld();
+            return profile.getPlayer().get().getWorld();
         }
         final World resolvedWorld = Bukkit.getWorld(world);
         if (resolvedWorld == null) {
