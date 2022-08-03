@@ -969,9 +969,8 @@ freezeMe: "freeze 100" #Freezes the player for 5 seconds
 ```
 
 ### Glow NPC's
-If Citizens and Protocollib installed you can make NPCs glow
-if spesific conditions are met. What you have to do is adding 
-a `glow_npc` section in your package.
+If Citizens and ProtocolLib is installed you can make NPCs glow
+if spesific conditions are met. For that you have to add a `glow_npc` section
 ```yaml
 glow_npc:
   tutorial_npc:
