@@ -11,14 +11,12 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.item.QuestItem;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.metadata.FixedMetadataValue;
 
@@ -112,7 +110,7 @@ public class SpawnMobEvent extends QuestEvent {
                 livingEntity.setCustomName(name);
             }
             if (marked != null) {
-                entity.setMetadata("betonquest-marked", new FixedMetadataValue(BetonQuest.getInstance(), marked.replace("%player%", player.getName())));
+                entity.setMetadata("betonquest-marked", new FixedMetadataValue(BetonQuest.getInstance(), marked.replace("%player%", profile.getOfflinePlayer().getName())));
             }
         }
         return null;

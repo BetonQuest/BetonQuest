@@ -5,7 +5,6 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
@@ -51,8 +50,8 @@ public class ObjectiveEvent extends QuestEvent {
         if (profile == null) {
             if ("delete".equals(action) || "remove".equals(action)) {
                 Bukkit.getOnlinePlayers().forEach(player -> {
-                    final String uuid = PlayerConverter.getID(player);
-                    cancelObjectiveForOnlinePlayer(uuid, betonquest);
+                    final Profile playerProfile = PlayerConverter.getID(player);
+                    cancelObjectiveForOnlinePlayer(playerProfile, betonquest);
                 });
                 betonquest.getSaver().add(new Saver.Record(UpdateType.REMOVE_ALL_OBJECTIVES, objective.toString()));
             } else {
@@ -85,8 +84,8 @@ public class ObjectiveEvent extends QuestEvent {
         return null;
     }
 
-    private void cancelObjectiveForOnlinePlayer(final String playerID, final BetonQuest betonquest) {
-        betonquest.getObjective(objective).cancelObjectiveForPlayer(playerID);
-        betonquest.getPlayerData(playerID).removeRawObjective(objective);
+    private void cancelObjectiveForOnlinePlayer(final Profile profile, final BetonQuest betonquest) {
+        betonquest.getObjective(objective).cancelObjectiveForPlayer(profile);
+        betonquest.getPlayerData(profile).removeRawObjective(objective);
     }
 }
