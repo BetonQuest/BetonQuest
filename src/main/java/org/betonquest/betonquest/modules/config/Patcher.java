@@ -196,4 +196,14 @@ public class Patcher {
         transformers.put("LIST_ENTRY_REMOVE", new ListEntryRemoveTransformation());
         transformers.put("LIST_ENTRY_RENAME", new ListEntryRenameTransformation());
     }
+
+    /**
+     * Registers a new {@link PatchTransformation} that can be applied by the patcher.
+     *
+     * @param typeName    the name of the transformation type
+     * @param transformer the transformer
+     */
+    public void registerPatchTransformer(final String typeName, final PatchTransformation transformer) {
+        transformers.put(typeName, transformer);
+    }
 }
