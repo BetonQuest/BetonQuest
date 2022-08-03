@@ -55,7 +55,19 @@ Example development cycle:
     - `2.0.2` is released. `2.0.1-CONFIG-1` is still the config version of the `2.0.2` release as no changes have been 
        introduced to the config.
 
+!!! warning
+    Although the `configVersion` of the plugin's config is automatically updated by the Patcher, the resource file in
+    your project must of course be updated manually. Don't forget to do so, otherwise new users may have broken default 
+    configs. 
+
 ## Transformer Types
+
+!!! info "Additional Transformers"
+    New transformers can be added if these default transformers are not sufficient for your use case.
+    Call `registerPatchTransformer(String typeName, PatchTransformation transformer)` on a `Patcher` instance
+    to do so. 
+
+
 ### SET
 
 Sets a key to the given value. Already set keys will be overridden if `override` is set to `true`.
