@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.modules.config.transformers;
 
+import org.betonquest.betonquest.modules.config.PatchException;
 import org.betonquest.betonquest.modules.config.PatchTransformation;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -17,12 +18,16 @@ public class SetTransformation implements PatchTransformation {
     }
 
     @Override
-    public void transform(final Map<String, String> options, final ConfigurationSection config) {
+    public void transform(final Map<String, String> options, final ConfigurationSection config) throws PatchException {
         final String key = options.get("key");
         final String value = options.get("value");
-        final String doOverride = options.get("override");
+        final boolean doOverride = Boolean.parseBoolean(options.get("override"));
 
-        config.set(key, value);
-        //TODO: Overrides
+        if (!config.isSet(key) || doOverride) {
+            config.set(key, value);
+        } else {
+            throw new PatchException("The key '%s' is already set and won't be overridden with '%s' since override is disabled."
+                    .formatted(key, value));
+        }
     }
 }

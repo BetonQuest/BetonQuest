@@ -22,6 +22,8 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.betonquest.betonquest.modules.config.ConfigurationFileImpl.DEFAULT_VERSION;
+
 /**
  * Patches BetonQuest's configuration file.
  */
@@ -32,6 +34,7 @@ public class Patcher {
      * Regex pattern of the internal config version schema.
      */
     public static final Pattern VERSION_PATTERN = Pattern.compile("(\\d*\\.\\d*\\.\\d*)\\.(\\d*)");
+
     /**
      * The config to patch.
      */
@@ -76,7 +79,7 @@ public class Patcher {
     public Patcher(final ConfigurationSection config, final ConfigurationSection patchConfig) {
         this.pluginConfig = config;
         this.patchConfig = patchConfig;
-        final String configVersion = config.getString("configVersion", "2.0.0-CONFIG-0");
+        final String configVersion = config.getString("configVersion", DEFAULT_VERSION);
         this.configVersion = new Version(configVersion);
         try {
             buildVersionIndex(this.patchConfig, "");

@@ -4,6 +4,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.api.bukkit.config.custom.ConfigurationSectionDecorator;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.Plugin;
@@ -11,6 +12,7 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
 
 /**
  * Facade for easy loading and saving of configs.
@@ -18,6 +20,7 @@ import java.io.IOException;
 @CustomLog(topic = "ConfigurationFile")
 public final class ConfigurationFileImpl extends ConfigurationSectionDecorator implements ConfigurationFile {
 
+    public static final String DEFAULT_VERSION = "0.0.0-CONFIG-0";
     /**
      * Holds the config file.
      */
@@ -95,9 +98,12 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
         final Patcher patcher = new Patcher(accessor.getConfig(), patchAccessorConfig);
 
         if (patcher.hasUpdate()) {
-            final String configName = accessor.getConfigurationFile().getName();
-            final String currentVersion = accessor.getConfig().getString("configVersion", "2.0.0-CONFIG-0");
-            LOG.info("Patch for configuration '%s' with current version '%s' found.".formatted(configName, currentVersion));
+            final Path configPath = accessor.getConfigurationFile().getAbsoluteFile().toPath();
+            final Path pluginFolder = Bukkit.getPluginsFolder().toPath();
+            final Path relativePath = pluginFolder.relativize(configPath);
+
+            final String currentVersion = accessor.getConfig().getString("configVersion", DEFAULT_VERSION);
+            LOG.info("Patch for configuration '%s' with current version '%s' found.".formatted(relativePath, currentVersion));
 
             final boolean flawless = patcher.patch();
             if (flawless) {

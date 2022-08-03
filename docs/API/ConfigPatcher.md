@@ -48,17 +48,22 @@ Example development cycle:
     - A change to the config is introduced in another dev build :arrow_right: `configVersion: "2.0.0-CONFIG-2"`
     - `2.0.0` is released. Therefore `2.0.0-CONFIG-2` becomes the final config version of `2.0.0`.
 * `2.0.1` is in development...
-    - A change to the config is introduced :arrow_right: `configVersion: "2.0.1-CONFIG-2"`
+    - A change to the config is introduced :arrow_right: `configVersion: "2.0.1-CONFIG-1"`
     - `2.0.1` is released. Therefore `2.0.1-CONFIG-1` becomes the final config version of `2.0.1`.
+* `2.0.2` is in development...
+    - No changes to the config are introduced.
+    - `2.0.2` is released. `2.0.1-CONFIG-1` is still the config version of the `2.0.2` release as no changes have been 
+       introduced to the config.
 
 ## Transformer Types
 ### SET
 
-Sets a key to the given value. Already set keys will be overriden.
+Sets a key to the given value. Already set keys will be overridden if `override` is set to `true`.
 ``` YAML title="Syntax"
 - type: SET
   key: journalLocked
   value: true
+  override: true
 ```
 
 ### KEY_RENAME
@@ -94,7 +99,7 @@ Renames all list entries that match the given regex.
 
 ### LIST_ENTRY_REMOVE
 
-Removes a list entry.
+Removes all list entries that match the given regex.
 ``` YAML title="Syntax"
 - type: LIST_ENTRY_REMOVE
   key: section.myList
