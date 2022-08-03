@@ -33,7 +33,7 @@ public class Patcher {
     /**
      * Regex pattern of the internal config version schema.
      */
-    public static final Pattern VERSION_PATTERN = Pattern.compile("(\\d*\\.\\d*\\.\\d*)\\.(\\d*)");
+    private static final Pattern VERSION_PATTERN = Pattern.compile("(\\d*\\.\\d*\\.\\d*)\\.(\\d*)");
 
     /**
      * The config to patch.
