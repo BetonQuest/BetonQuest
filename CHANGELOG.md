@@ -87,6 +87,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - Version checks for ProtocolLib and Shopkeepers support
     - `mmoitemtake` event and `mmoitem` condition - now also check the backpack
         - this will not work until the item rework / until the backpack contains NBT data
+- `NPC Glow` Glow NPC if spesific conditions met
 ### Changed
 - Java 17 is now required
 - changed package names from `pl.betoncraft.betonquest` to `org.betonquest.betonquest`
@@ -124,7 +125,6 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - math variable now allows rounding output with the ~ operator
     - French translation has been updated
     - `action` objective - cancels now the event, before other plugins check for it (better third-party support)
-- `NPC Glow` Glow NPC if spesific conditions met
 ### Deprecated
 ### Removed
 - deprecated internals, code and old features

@@ -8,8 +8,8 @@ import org.bukkit.ChatColor;
 import java.util.Collection;
 import java.util.List;
 
-@SuppressWarnings({"PMD.CommentRequired", "PMD.UnusedPrivateField", "PMD.UnusedLocalVariable"})
-public class WrapperPlayServerScoreboardTeam extends PacketHandlerDecorator{
+@SuppressWarnings({"PMD.CommentRequired", "PMD.UnusedPrivateField"})
+public class WrapperPlayServerScoreboardTeam extends PacketHandlerDecorator {
     public static final PacketType TYPE = PacketType.Play.Server.SCOREBOARD_TEAM;
 
     public WrapperPlayServerScoreboardTeam() {
@@ -22,7 +22,6 @@ public class WrapperPlayServerScoreboardTeam extends PacketHandlerDecorator{
             throw new IllegalArgumentException(getPacketHandler().getType() + " is not a packet of type " + TYPE);
         }
     }
-
 
 
     /**
@@ -125,7 +124,8 @@ public class WrapperPlayServerScoreboardTeam extends PacketHandlerDecorator{
      * @param value - new value.
      */
     public void setNameTagVisibility(final String value) {
-        getHandle().getStrings().write(1, value);
+        getHandle().getOptionalStructures().read(0).map((structure) ->
+                structure.getStrings().write(0, value));
     }
 
     /**
@@ -145,12 +145,16 @@ public class WrapperPlayServerScoreboardTeam extends PacketHandlerDecorator{
      * @param value - new value.
      */
     public void setColor(final ChatColor value) {
-        getHandle().getEnumModifier(ChatColor.class, MinecraftReflection.getMinecraftClass("EnumChatFormat")).write(0, value);
+        getHandle().getOptionalStructures().read(0).map((structure) ->
+                structure.getEnumModifier(ChatColor.class,
+                                MinecraftReflection.getMinecraftClass("EnumChatFormat"))
+                        .write(0, value));
     }
 
     /**
      * Get the collision rule.
      * Notes: only if Mode = 0 or 2. always, pushOtherTeams, pushOwnTeam, never.
+     *
      * @return The current collision rule
      */
     public String getCollisionRule() {
@@ -159,6 +163,7 @@ public class WrapperPlayServerScoreboardTeam extends PacketHandlerDecorator{
 
     /**
      * Sets the collision rule.
+     *
      * @param value - new value.
      */
     public void setCollisionRule(final String value) {
