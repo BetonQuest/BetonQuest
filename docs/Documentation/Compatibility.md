@@ -977,12 +977,12 @@ available color in [here](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Ch
 glow_npc:
   tutorial_npc:
     id: "0"
-    conditions: "tutorialstarted"
     color: "white"
+    conditions: "tutorialstarted"
   cool_npc:
     id: "1"
-    conditions: "cool"
     color: "light_purple"
+    conditions: "cool"
 ```
 
 ## [Quests](https://www.spigotmc.org/resources/3711/)

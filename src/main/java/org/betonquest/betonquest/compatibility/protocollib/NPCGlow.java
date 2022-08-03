@@ -3,6 +3,8 @@ package org.betonquest.betonquest.compatibility.protocollib;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import lombok.CustomLog;
 import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.event.NPCDeathEvent;
+import net.citizensnpcs.api.event.NPCDespawnEvent;
 import net.citizensnpcs.api.event.NPCSpawnEvent;
 import net.citizensnpcs.api.npc.NPC;
 import org.apache.commons.lang3.EnumUtils;
@@ -27,6 +29,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,7 +48,7 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
      * List player that can seen glowing npc.
      */
     private final Map<Integer, Set<Player>> npcPlayersMap;
-    private final Map<ChatColor, Set<NPC>> npcColor;
+    private final Map<Integer, ChatColor> npcColor;
 
     public NPCGlow() {
         super();
@@ -100,7 +103,7 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
                     continue;
                 }
                 ChatColor chatColor = ChatColor.WHITE;
-                if(color != null && EnumUtils.isValidEnum(ChatColor.class, color.toUpperCase(Locale.ROOT))){
+                if (color != null && EnumUtils.isValidEnum(ChatColor.class, color.toUpperCase(Locale.ROOT))) {
                     chatColor = ChatColor.valueOf(color.toUpperCase(Locale.ROOT));
                 }
                 if (npcs.containsKey(npcId)) {
@@ -111,16 +114,12 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
                 if (!npcPlayersMap.containsKey(npcId)) {
                     npcPlayersMap.put(npcId, new HashSet<>());
                 }
-                if(npcColor.containsKey(chatColor)){
-                    npcColor.get(chatColor).add(CitizensAPI.getNPCRegistry().getById(npcId));
-                } else {
-                    npcColor.put(chatColor, new HashSet<>());
-                    npcColor.get(chatColor).add(CitizensAPI.getNPCRegistry().getById(npcId));
-                }
+                npcColor.put(npcId, chatColor);
             }
         }
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     public void applyVisibility(final Player player, final Integer npcID) {
         final NPC npc = CitizensAPI.getNPCRegistry().getById(npcID);
 
@@ -136,10 +135,11 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
                         && npcPlayersMap.get(npcID).contains(player)) {
                     npcPlayersMap.get(npcID).remove(player);
                     applyGlow(npcID, false, player);
+                    applyTeamAsync(Mode.TEAM_REMOVED, npcColor.get(npcID), player, npc).join();
                 }
             } else {
-                if (npcPlayersMap.containsKey(npcID)) {
-                    npcPlayersMap.get(npcID).add(player);
+                if (npcPlayersMap.containsKey(npcID) && npcPlayersMap.get(npcID).add(player)) {
+                    applyTeamAsync(Mode.TEAM_CREATED, npcColor.get(npcID), player, npc).join();
                 }
             }
         }
@@ -240,13 +240,13 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
         });
     }
 
-    public void applyTeamAsync(final Mode mode){
-        npcColor.forEach((color, npcs) -> {
-            Bukkit
-                    .getOnlinePlayers()
-                    .parallelStream()
-                    .forEach((player) -> {
-                applyTeamAsync(npcs, mode, color, player).join();
+    public void applyTeamAsync(final Mode mode) {
+        npcPlayersMap.forEach((npcID, players) -> {
+            players.parallelStream().forEach((player) -> {
+                final NPC npc = CitizensAPI.getNPCRegistry().getById(npcID);
+                if (npc.isSpawned()) {
+                    applyTeamAsync(mode, npcColor.get(npcID), player, npc).join();
+                }
             });
         });
     }
@@ -254,22 +254,22 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
     /**
      * Create and Sending Scoreboard Team packet in background (async) for a List of npcs
      *
-     * @param npcs NPCs that will be in the Team
+     * @param npcs   NPCs that will be in the Team
      * @param player player that can see the glowing NPC
      * @return void
      */
-    public CompletableFuture<Void> applyTeamAsync(final Set<NPC> npcs, final Mode mode, final ChatColor color, final Player player){
+    public CompletableFuture<Void> applyTeamAsync(final Mode mode, final ChatColor color, final Player player, final NPC... npcs) {
         return CompletableFuture.runAsync(() -> {
             final WrapperPlayServerScoreboardTeam packet = new WrapperPlayServerScoreboardTeam();
             packet.setMode(mode.ordinal());
             packet.setName("Color#" + color.name());
             packet.setColor(color);
-            if(mode == Mode.TEAM_REMOVED){
+            if (mode == Mode.TEAM_REMOVED) {
                 packet.sendPacket(player);
                 return;
             }
 
-            packet.setPlayers(npcs.parallelStream().map((npc) -> {
+            packet.setPlayers(Arrays.stream(npcs).map((npc) -> {
                 final Entity entity = npc.getEntity();
                 if (entity instanceof OfflinePlayer) {
                     return entity.getName();
@@ -311,6 +311,22 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
         npcColor.clear();
         loadFromConfig();
         applyTeamAsync(Mode.TEAM_CREATED);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onNPCDespawn(final NPCDespawnEvent event) {
+        final NPC npc = event.getNPC();
+        npcPlayersMap.remove(npc.getId());
+        npcs.remove(npc.getId());
+        npcColor.remove(npc.getId());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onNPCDeath(final NPCDeathEvent event) {
+        final NPC npc = event.getNPC();
+        npcPlayersMap.remove(npc.getId());
+        npcs.remove(npc.getId());
+        npcColor.remove(npc.getId());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
