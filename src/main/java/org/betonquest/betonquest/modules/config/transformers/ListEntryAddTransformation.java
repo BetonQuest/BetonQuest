@@ -29,7 +29,7 @@ public class ListEntryAddTransformation implements PatchTransformation {
         final List<String> list = config.getStringList(key);
         final boolean listExists = config.isList(key);
 
-        final int index = position.equalsIgnoreCase("LAST") ? list.size() : 0;
+        final int index = "LAST".equalsIgnoreCase(position) ? list.size() : 0;
         list.add(index, entry);
 
         config.set(key, list);

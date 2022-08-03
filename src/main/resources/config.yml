@@ -1,4 +1,4 @@
-configVersion: 2.0.0-CONFIG-1
+configVersion: ""
 mysql:
   enabled: false
   host: ''

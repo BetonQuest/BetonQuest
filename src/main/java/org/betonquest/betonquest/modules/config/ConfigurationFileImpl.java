@@ -20,6 +20,9 @@ import java.nio.file.Path;
 @CustomLog(topic = "ConfigurationFile")
 public final class ConfigurationFileImpl extends ConfigurationSectionDecorator implements ConfigurationFile {
 
+    /**
+     * Default version that is used when no configVersion is set.
+     */
     public static final String DEFAULT_VERSION = "0.0.0-CONFIG-0";
     /**
      * Holds the config file.
@@ -116,7 +119,8 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
             return true;
         }
         LOG.debug("No patch found.");
-        return false;
+
+        return patcher.updateVersion();
     }
 
     @Override

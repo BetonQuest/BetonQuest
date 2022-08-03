@@ -30,11 +30,11 @@ import static org.betonquest.betonquest.modules.config.ConfigurationFileImpl.DEF
 @CustomLog(topic = "ConfigPatcher")
 public class Patcher {
 
+    public static final String CONFIG_VERSION_PATH = "configVersion";
     /**
      * Regex pattern of the internal config version schema.
      */
     private static final Pattern VERSION_PATTERN = Pattern.compile("(\\d*\\.\\d*\\.\\d*)\\.(\\d*)");
-
     /**
      * The config to patch.
      */
@@ -51,7 +51,7 @@ public class Patcher {
      * Contains all versions that are newer then the config's current version.
      * A pair of patchable versions with the corresponding config path in the patch file.
      */
-    private final Map<Version, String> patchableVersions = new TreeMap<>(new VersionComparator(UpdateStrategy.MAJOR, "CONFIG-"));
+    private final TreeMap<Version, String> patchableVersions = new TreeMap<>(new VersionComparator(UpdateStrategy.MAJOR, "CONFIG-"));
     /**
      * The {@link VersionComparator} that compares the versions of patches.
      */
@@ -79,13 +79,17 @@ public class Patcher {
     public Patcher(final ConfigurationSection config, final ConfigurationSection patchConfig) {
         this.pluginConfig = config;
         this.patchConfig = patchConfig;
-        final String configVersion = config.getString("configVersion", DEFAULT_VERSION);
-        this.configVersion = new Version(configVersion);
         try {
             buildVersionIndex(this.patchConfig, "");
         } catch (final InvalidConfigurationException e) {
             LOG.error("Invalid patch file! " + e.getMessage(), e);
         }
+        String configVersion = config.getString(CONFIG_VERSION_PATH, DEFAULT_VERSION);
+        if ("".equals(configVersion)) {
+            final Map.Entry<Version, String> newestVersion = patchableVersions.lastEntry();
+            configVersion = newestVersion.getValue();
+        }
+        this.configVersion = new Version(configVersion);
         registerDefaultTransformers();
     }
 
@@ -95,7 +99,18 @@ public class Patcher {
      * @return if there is a patch newer than the config
      */
     public boolean hasUpdate() {
-        return !patchableVersions.isEmpty();
+        return patchableVersions.keySet().stream()
+                .anyMatch((patchVersion) -> comparator.isOtherNewerThanCurrent(configVersion, patchVersion));
+    }
+
+    public boolean updateVersion() {
+        final String currentVersion = pluginConfig.getString(CONFIG_VERSION_PATH, DEFAULT_VERSION);
+        if ("".equals(currentVersion)) {
+            final String newVersion = patchableVersions.lastEntry().getValue();
+            pluginConfig.set(CONFIG_VERSION_PATH, newVersion);
+            return true;
+        }
+        return false;
     }
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
@@ -123,9 +138,7 @@ public class Patcher {
         if (matcher.matches()) {
             final String result = matcher.group(1) + "-CONFIG-" + matcher.group(2);
             final Version discoveredVersion = new Version(result);
-            if (comparator.isOtherNewerThanCurrent(configVersion, discoveredVersion)) {
-                patchableVersions.put(discoveredVersion, currentKey);
-            }
+            patchableVersions.put(discoveredVersion, currentKey);
         }
     }
 
@@ -137,9 +150,12 @@ public class Patcher {
     public boolean patch() {
         boolean noErrors = true;
         for (final String key : patchableVersions.values()) {
+            if (!comparator.isOtherNewerThanCurrent(configVersion, new Version(key))) {
+                continue;
+            }
             LOG.info("Applying patches to update to '" + key + "'...");
-            pluginConfig.set("configVersion", getNewVersion(key));
-            pluginConfig.setInlineComments("configVersion", List.of("Don't change this! The plugin's automatic config updater handles it."));
+            pluginConfig.set(CONFIG_VERSION_PATH, getNewVersion(key));
+            pluginConfig.setInlineComments(CONFIG_VERSION_PATH, List.of("Don't change this! The plugin's automatic config updater handles it."));
             if (!applyPatch(key)) {
                 noErrors = false;
             }
