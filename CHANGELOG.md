@@ -17,6 +17,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - All existing users must add aureliumskills: 'true' to their config.yml's hook section.
     - added AureliumStatsLevelCondition
     - added AureliumSkillsLevelExperienceEvent
+- add DecentHolograms Compatibility
+    - All existing users must add decentholograms: 'true' to their config.yml's hook section.
 - add LuckPerms context integration for tags
     - All existing users must add luckperms: 'true' to their config.yml's hook section.
 - added Event Schedules to replace old static-events system
