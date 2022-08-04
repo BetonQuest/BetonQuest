@@ -41,24 +41,22 @@ development phase of a semantic versioning release.
 The config's version is shown inside each config as the value of the `configVersion` key. It is automatically set by the patcher.
 It uses a slightly different format: `1.2.3.4` in the patch file is `1.2.3-CONFIG-4` in the config.
 
-Example development cycle:
+!!! info "Example development cycle:"
+    * `2.0.0` is in development...
+        - A change to the config is introduced in a dev build :arrow_right: `configVersion: "2.0.0-CONFIG-1"`
+        - A change to the config is introduced in another dev build :arrow_right: `configVersion: "2.0.0-CONFIG-2"`
+        - `2.0.0` is released. Therefore `2.0.0-CONFIG-2` becomes the final config version of `2.0.0`.
+    * `2.0.1` is in development...
+        - A change to the config is introduced :arrow_right: `configVersion: "2.0.1-CONFIG-1"`
+        - `2.0.1` is released. Therefore `2.0.1-CONFIG-1` becomes the final config version of `2.0.1`.
+    * `2.0.2` is in development...
+        - No changes to the config are introduced.
+        - `2.0.2` is released. `2.0.1-CONFIG-1` is still the config version of the `2.0.2` release as no changes have been 
+           introduced to the config.
 
-* `2.0.0` is in development...
-    - A change to the config is introduced in a dev build :arrow_right: `configVersion: "2.0.0-CONFIG-1"`
-    - A change to the config is introduced in another dev build :arrow_right: `configVersion: "2.0.0-CONFIG-2"`
-    - `2.0.0` is released. Therefore `2.0.0-CONFIG-2` becomes the final config version of `2.0.0`.
-* `2.0.1` is in development...
-    - A change to the config is introduced :arrow_right: `configVersion: "2.0.1-CONFIG-1"`
-    - `2.0.1` is released. Therefore `2.0.1-CONFIG-1` becomes the final config version of `2.0.1`.
-* `2.0.2` is in development...
-    - No changes to the config are introduced.
-    - `2.0.2` is released. `2.0.1-CONFIG-1` is still the config version of the `2.0.2` release as no changes have been 
-       introduced to the config.
-
-!!! warning
-    Although the `configVersion` of the plugin's config is automatically updated by the Patcher, the resource file in
-    your project must of course be updated manually. Don't forget to do so, otherwise new users may have broken default 
-    configs. 
+The patcher will also automatically set the version to the newest available patch version if the `configVersion` is an empty 
+string. Therefore, setting the configVersion to an empty string in your config's resource file is recommended. The
+patcher will make sure it's always up-to-date. 
 
 ## Transformer Types
 
