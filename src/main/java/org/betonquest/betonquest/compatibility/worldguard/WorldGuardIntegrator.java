@@ -48,7 +48,7 @@ public class WorldGuardIntegrator implements Integrator {
     }
 
     @Override
-    public void hook() {
+    public void hook(final String pluginName) {
         plugin.registerConditions("region", RegionCondition.class);
         plugin.registerObjectives("region", RegionObjective.class);
         if (Compatibility.getHooked().contains("Citizens")) {

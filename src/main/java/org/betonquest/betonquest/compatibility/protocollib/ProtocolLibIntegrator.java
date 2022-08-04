@@ -28,7 +28,7 @@ public class ProtocolLibIntegrator implements Integrator {
 
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public void hook() throws HookException {
+    public void hook(final String pluginName) throws HookException {
         final Plugin protocolLib = Bukkit.getPluginManager().getPlugin("ProtocolLib");
         final Version protocolLibVersion = new Version(protocolLib.getDescription().getVersion());
         final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR, "SNAPSHOT-b");
