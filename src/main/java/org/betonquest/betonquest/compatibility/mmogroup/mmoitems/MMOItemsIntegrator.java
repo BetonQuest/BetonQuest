@@ -13,7 +13,7 @@ public class MMOItemsIntegrator implements Integrator {
     }
 
     @Override
-    public void hook() {
+    public void hook(final String pluginName) {
         plugin.registerConditions("mmoitem", MMOItemsItemCondition.class);
         plugin.registerConditions("mmohand", MMOItemsHandCondition.class);
 

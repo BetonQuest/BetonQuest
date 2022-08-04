@@ -20,7 +20,7 @@ public class MagicIntegrator implements Integrator, Listener {
     }
 
     @Override
-    public void hook() {
+    public void hook(final String pluginName) {
         plugin.registerConditions("wand", WandCondition.class);
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }

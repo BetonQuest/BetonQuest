@@ -11,9 +11,10 @@ public interface Integrator {
     /**
      * Integrate with another plugin.
      *
+     * @param pluginName The name of the plugin that is being hooked to
      * @throws HookException Is thrown, if the hooking was not successful
      */
-    void hook() throws HookException;
+    void hook(String pluginName) throws HookException;
 
     /**
      * Reload the plugin integration.
