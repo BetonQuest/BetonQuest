@@ -14,7 +14,7 @@ public class WorldEditIntegrator implements Integrator {
     }
 
     @Override
-    public void hook() {
+    public void hook(final String pluginName) {
         plugin.registerEvents("paste", PasteSchematicEvent.class);
     }
 

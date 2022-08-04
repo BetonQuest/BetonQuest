@@ -14,7 +14,7 @@ public class PlaceholderAPIIntegrator implements Integrator {
     }
 
     @Override
-    public void hook() {
+    public void hook(final String pluginName) {
         plugin.registerVariable("ph", PlaceholderVariable.class);
         new BetonQuestPlaceholder().register();
     }

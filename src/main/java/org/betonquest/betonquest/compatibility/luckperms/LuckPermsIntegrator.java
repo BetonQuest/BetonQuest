@@ -14,7 +14,7 @@ public class LuckPermsIntegrator implements Integrator {
     private ContextCalculator<Player> tagCalculator;
 
     @Override
-    public void hook() throws HookException {
+    public void hook(final String pluginName) throws HookException {
         final RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
         if (provider != null) {
             api = provider.getProvider();

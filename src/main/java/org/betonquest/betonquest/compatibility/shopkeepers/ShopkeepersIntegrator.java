@@ -23,7 +23,7 @@ public class ShopkeepersIntegrator implements Integrator {
 
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public void hook() throws HookException {
+    public void hook(final String pluginName) throws HookException {
         final Plugin shopkeepers = Bukkit.getPluginManager().getPlugin("Shopkeepers");
         final Version shopkeepersVersion = new Version(shopkeepers.getDescription().getVersion());
         final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR);

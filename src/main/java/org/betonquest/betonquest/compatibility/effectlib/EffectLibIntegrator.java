@@ -28,7 +28,7 @@ public class EffectLibIntegrator implements Integrator {
     }
 
     @Override
-    public void hook() {
+    public void hook(final String pluginName) {
         manager = new EffectManager(BetonQuest.getInstance());
         if (Compatibility.getHooked().contains("Citizens")) {
             new CitizensParticle();

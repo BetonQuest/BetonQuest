@@ -13,7 +13,7 @@ public class MMOCoreIntegrator implements Integrator {
     }
 
     @Override
-    public void hook() {
+    public void hook(final String pluginName) {
         MMOCoreUtils.loadMMOCoreAttributeConfig();
 
         plugin.registerConditions("mmoclass", MMOCoreClassCondition.class);
