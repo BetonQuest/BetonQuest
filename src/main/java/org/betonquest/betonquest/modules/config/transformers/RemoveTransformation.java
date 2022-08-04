@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.modules.config.transformers;
 
+import org.betonquest.betonquest.modules.config.PatchException;
 import org.betonquest.betonquest.modules.config.PatchTransformation;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -17,7 +18,12 @@ public class RemoveTransformation implements PatchTransformation {
     }
 
     @Override
-    public void transform(final Map<String, String> options, final ConfigurationSection config) {
-        config.set(options.get("key"), null);
+    public void transform(final Map<String, String> options, final ConfigurationSection config) throws PatchException {
+        final String key = options.get("key");
+        if (config.isSet(key)) {
+            config.set(key, null);
+        } else {
+            throw new PatchException("Key '" + key + "' did not exist, so it was not deleted.");
+        }
     }
 }

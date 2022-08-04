@@ -55,7 +55,7 @@ It uses a slightly different format: `1.2.3.4` in the patch file is `1.2.3-CONFI
            introduced to the config.
 
 The patcher will also automatically set the version to the newest available patch version if the `configVersion` is an empty 
-string. Therefore, setting the configVersion to an empty string in your config's resource file is recommended. The
+string. Therefore, setting the `configVersion` to an empty string in your config's resource file is recommended. The
 patcher will make sure it's always up-to-date. 
 
 ## Transformer Types

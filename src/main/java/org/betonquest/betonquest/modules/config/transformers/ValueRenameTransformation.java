@@ -29,7 +29,7 @@ public class ValueRenameTransformation implements PatchTransformation {
         }
 
         final String regex = options.get("oldValueRegex");
-        final Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        final Pattern pattern = Pattern.compile(regex);
         final String newEntry = options.get("newValue");
 
         final Matcher matcher = pattern.matcher(value.toString());
