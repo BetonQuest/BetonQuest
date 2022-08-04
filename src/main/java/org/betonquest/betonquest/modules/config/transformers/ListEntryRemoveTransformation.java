@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 /**
  * Removes an entry from a list.
  */
+@SuppressWarnings("PMD.PrematureDeclaration")
 public class ListEntryRemoveTransformation implements PatchTransformation {
 
     /**

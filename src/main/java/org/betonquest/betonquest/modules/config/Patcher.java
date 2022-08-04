@@ -30,6 +30,9 @@ import static org.betonquest.betonquest.modules.config.ConfigurationFileImpl.DEF
 @CustomLog(topic = "ConfigPatcher")
 public class Patcher {
 
+    /**
+     * The path to the configs version in the config.
+     */
     public static final String CONFIG_VERSION_PATH = "configVersion";
     /**
      * Regex pattern of the internal config version schema.
@@ -51,6 +54,7 @@ public class Patcher {
      * Contains all versions that are newer then the config's current version.
      * A pair of patchable versions with the corresponding config path in the patch file.
      */
+    @SuppressWarnings({"PMD.LooseCoupling"})
     private final TreeMap<Version, String> patchableVersions = new TreeMap<>(new VersionComparator(UpdateStrategy.MAJOR, "CONFIG-"));
     /**
      * The {@link VersionComparator} that compares the versions of patches.
@@ -103,6 +107,11 @@ public class Patcher {
                 .anyMatch((patchVersion) -> comparator.isOtherNewerThanCurrent(configVersion, patchVersion));
     }
 
+    /**
+     * Updates the configVersion to the version of the newest available patch if it is an empty string.
+     *
+     * @return if the version was updated
+     */
     public boolean updateVersion() {
         final String currentVersion = pluginConfig.getString(CONFIG_VERSION_PATH, DEFAULT_VERSION);
         if ("".equals(currentVersion)) {
@@ -150,7 +159,7 @@ public class Patcher {
     public boolean patch() {
         boolean noErrors = true;
         for (final String key : patchableVersions.values()) {
-            if (!comparator.isOtherNewerThanCurrent(configVersion, new Version(key))) {
+            if (comparator.isOtherNewerThanCurrent(configVersion, new Version(key))) {
                 continue;
             }
             LOG.info("Applying patches to update to '" + key + "'...");

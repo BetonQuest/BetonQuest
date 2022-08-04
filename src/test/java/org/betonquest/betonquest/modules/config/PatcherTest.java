@@ -75,6 +75,7 @@ class PatcherTest {
         expectedConfig.loadFromString(config.saveToString());
 
         final Patcher patcher = new Patcher(config, patch);
+        assertTrue(patcher.hasUpdate(), "Patcher did not recognise the possible update.");
         patcher.patch();
 
         expectedConfig.set("configVersion", "3.4.5-CONFIG-6");
