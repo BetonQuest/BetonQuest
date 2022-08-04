@@ -63,6 +63,7 @@ hook:
   shopkeepers: true
   placeholderapi: true
   holographicdisplays: true
+  decentholograms: true
   worldedit: true
   fastasyncworldedit: true
   protocollib: true
