@@ -10,28 +10,57 @@ import org.bukkit.inventory.ItemStack;
  */
 public interface BetonHologram {
 
+    /**
+     * Add an item line to the bottom of this hologram
+     */
     void appendLine(ItemStack item);
 
+    /**
+     * Add a text line to the bottom of this hologram
+     */
     void appendLine(String text);
 
+    /**
+     * Replace a line at the index with a new item line
+     */
     void setLine(int index, ItemStack item);
 
+    /**
+     * Replace a line at the index with a new text line
+     */
     void setLine(int index, String text);
 
+    /**
+     * Insert an item line at an index. Lines at this index and below
+     * will be shuffled down
+     */
     void insertLine(int index, ItemStack item);
 
+    /**
+     * Insert a text line at an index. Lines at this index and below
+     * will be shuffled down
+     */
     void insertLine(int index, String text);
 
+    /**
+     * Remove the line at an index from this hologram
+     *
+     * @param index
+     */
     void removeLine(int index);
 
+    /**
+     * Show this hologram to a player
+     */
     void show(Player player);
 
+    /**
+     * Hides this hologram from a player
+     */
     void hide(Player player);
 
     /**
      * Moves this hologram to specified location
-     *
-     * @param location
      */
     void move(Location location);
 
@@ -46,13 +75,7 @@ public interface BetonHologram {
     void hideAll();
 
     /**
-     * Sets the range at which a hologram becomes visible.
-     *
-     * @param range The range or 0 to show the hologram at all times
+     * Destroys and deletes this hologram
      */
-    void setDisplayRange(int range);
-
-    void setUpdateRange(int range);
-
     void delete();
 }
