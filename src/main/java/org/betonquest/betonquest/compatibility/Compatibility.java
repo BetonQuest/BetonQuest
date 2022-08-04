@@ -8,7 +8,11 @@ import org.betonquest.betonquest.compatibility.citizens.CitizensIntegrator;
 import org.betonquest.betonquest.compatibility.denizen.DenizenIntegrator;
 import org.betonquest.betonquest.compatibility.effectlib.EffectLibIntegrator;
 import org.betonquest.betonquest.compatibility.heroes.HeroesIntegrator;
-import org.betonquest.betonquest.compatibility.holographicdisplays.HolographicDisplaysIntegrator;
+import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
+import org.betonquest.betonquest.compatibility.holograms.HologramIntegrator;
+import org.betonquest.betonquest.compatibility.holograms.cmi.CMIHologram;
+import org.betonquest.betonquest.compatibility.holograms.decentholograms.DecentHologramsHologram;
+import org.betonquest.betonquest.compatibility.holograms.holographicdisplays.HolographicDisplaysHologram;
 import org.betonquest.betonquest.compatibility.jobsreborn.JobsRebornIntegrator;
 import org.betonquest.betonquest.compatibility.luckperms.LuckPermsIntegrator;
 import org.betonquest.betonquest.compatibility.magic.MagicIntegrator;
@@ -74,12 +78,20 @@ public class Compatibility implements Listener {
         integrators.put("Quests", new QuestsIntegrator());
         integrators.put("Shopkeepers", new ShopkeepersIntegrator());
         integrators.put("PlaceholderAPI", new PlaceholderAPIIntegrator());
-        integrators.put("HolographicDisplays", new HolographicDisplaysIntegrator());
         integrators.put("ProtocolLib", new ProtocolLibIntegrator());
         integrators.put("Brewery", new BreweryIntegrator());
         integrators.put("Jobs", new JobsRebornIntegrator());
         integrators.put("LuckPerms", new LuckPermsIntegrator());
         integrators.put("AureliumSkills", new AureliumSkillsIntegrator());
+
+        //Multiple plugins may provide Hologram hooks, BetonQuest only needs to use one.
+        final Map<String, Class<? extends BetonHologram>> hologramPlugins = new HashMap<>();
+        hologramPlugins.put("HolographicDisplays", HolographicDisplaysHologram.class);
+        hologramPlugins.put("DecentHolograms", DecentHologramsHologram.class);
+        hologramPlugins.put("CMI", CMIHologram.class);
+
+        final Integrator hologramsIntegrator = new HologramIntegrator(hologramPlugins);
+        hologramPlugins.keySet().forEach(plugin -> integrators.put(plugin, hologramsIntegrator));
 
         // hook into already enabled plugins in case Bukkit messes up the loading order
         for (final Plugin hook : Bukkit.getPluginManager().getPlugins()) {
@@ -157,7 +169,7 @@ public class Compatibility implements Listener {
 
             // log important information in case of an error
             try {
-                integrator.hook();
+                integrator.hook(name);
                 hooked.add(name);
             } catch (final HookException exception) {
                 final String message = String.format("Could not hook into %s %s! %s",
