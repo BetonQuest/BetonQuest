@@ -1,7 +1,5 @@
-package org.betonquest.betonquest.compatibility.holographicdisplays;
+package org.betonquest.betonquest.compatibility.holograms;
 
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.QuestPackage;
@@ -32,9 +30,8 @@ import java.util.Map.Entry;
 @SuppressWarnings("PMD.CommentRequired")
 @CustomLog
 public class HologramLoop {
-
-    private final Map<Hologram, ConditionID[]> holograms = new HashMap<>();
-    private final Map<Hologram, BukkitRunnable> runnables = new HashMap<>();
+    private final Map<BetonHologram, ConditionID[]> holograms = new HashMap<>();
+    private final Map<BetonHologram, BukkitRunnable> runnables = new HashMap<>();
     private final BukkitRunnable runnable;
 
     /**
@@ -84,8 +81,8 @@ public class HologramLoop {
                     LOG.warn(pack, "Could not parse location in " + key + " hologram: " + e.getMessage(), e);
                     continue;
                 }
-                final Hologram hologram = HologramsAPI.createHologram(BetonQuest.getInstance(), location);
-                hologram.getVisibilityManager().setVisibleByDefault(false);
+                final BetonHologram hologram = HologramIntegrator.createHologram(key, location);
+                hologram.hideAll();
                 for (final String line : lines) {
                     // If line begins with 'item:', then we will assume its a
                     // floating item
@@ -100,14 +97,14 @@ public class HologramLoop {
                                 stackSize = 1;
                             }
                             final ItemStack stack = new QuestItem(itemID).generate(stackSize);
-                            hologram.appendItemLine(stack);
+                            hologram.appendLine(stack);
                         } catch (final InstructionParseException e) {
                             LOG.warn(pack, "Could not parse item in " + key + " hologram: " + e.getMessage(), e);
                         } catch (final ObjectNotFoundException e) {
                             LOG.warn(pack, "Could not find item in " + key + " hologram: " + e.getMessage(), e);
                         }
                     } else {
-                        hologram.appendTextLine(line.replace('&', '§'));
+                        hologram.appendLine(line.replace('&', '§'));
                     }
                 }
                 if (checkInterval == 0) {
@@ -120,10 +117,10 @@ public class HologramLoop {
                             for (final Player player : Bukkit.getOnlinePlayers()) {
                                 final String playerID = PlayerConverter.getID(player);
                                 if (!BetonQuest.conditions(playerID, conditionsList)) {
-                                    hologram.getVisibilityManager().hideTo(player);
+                                    hologram.hide(player);
                                     continue;
                                 }
-                                hologram.getVisibilityManager().showTo(player);
+                                hologram.show(player);
                             }
                         }
                     };
@@ -138,12 +135,12 @@ public class HologramLoop {
             public void run() {
                 for (final Player player : Bukkit.getOnlinePlayers()) {
                     final String playerID = PlayerConverter.getID(player);
-                    for (final Entry<Hologram, ConditionID[]> entry : holograms.entrySet()) {
+                    for (final Entry<BetonHologram, ConditionID[]> entry : holograms.entrySet()) {
                         if (!BetonQuest.conditions(playerID, entry.getValue())) {
-                            entry.getKey().getVisibilityManager().hideTo(player);
+                            entry.getKey().hide(player);
                             continue;
                         }
-                        entry.getKey().getVisibilityManager().showTo(player);
+                        entry.getKey().show(player);
                     }
                 }
             }
@@ -158,12 +155,12 @@ public class HologramLoop {
     public void cancel() {
         if (runnable != null) {
             runnable.cancel();
-            for (final Hologram hologram : holograms.keySet()) {
-                hologram.getVisibilityManager().resetVisibilityAll();
+            for (final BetonHologram hologram : holograms.keySet()) {
+                hologram.hideAll();
                 hologram.delete();
             }
         }
-        for (final Entry<Hologram, BukkitRunnable> h : runnables.entrySet()) {
+        for (final Entry<BetonHologram, BukkitRunnable> h : runnables.entrySet()) {
             h.getValue().cancel();
             h.getKey().delete();
         }
