@@ -10,7 +10,6 @@ import org.betonquest.betonquest.compatibility.effectlib.EffectLibIntegrator;
 import org.betonquest.betonquest.compatibility.heroes.HeroesIntegrator;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.betonquest.betonquest.compatibility.holograms.HologramIntegrator;
-import org.betonquest.betonquest.compatibility.holograms.cmi.CMIHologram;
 import org.betonquest.betonquest.compatibility.holograms.decentholograms.DecentHologramsHologram;
 import org.betonquest.betonquest.compatibility.holograms.holographicdisplays.HolographicDisplaysHologram;
 import org.betonquest.betonquest.compatibility.jobsreborn.JobsRebornIntegrator;
@@ -88,7 +87,6 @@ public class Compatibility implements Listener {
         final Map<String, Class<? extends BetonHologram>> hologramPlugins = new HashMap<>();
         hologramPlugins.put("HolographicDisplays", HolographicDisplaysHologram.class);
         hologramPlugins.put("DecentHolograms", DecentHologramsHologram.class);
-        hologramPlugins.put("CMI", CMIHologram.class);
 
         final Integrator hologramsIntegrator = new HologramIntegrator(hologramPlugins);
         hologramPlugins.keySet().forEach(plugin -> integrators.put(plugin, hologramsIntegrator));
