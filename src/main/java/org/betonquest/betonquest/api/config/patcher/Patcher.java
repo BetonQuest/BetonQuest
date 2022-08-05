@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.api.config;
+package org.betonquest.betonquest.api.config.patcher;
 
 import lombok.CustomLog;
 import org.betonquest.betonquest.modules.config.transformers.KeyRenameTransformation;
