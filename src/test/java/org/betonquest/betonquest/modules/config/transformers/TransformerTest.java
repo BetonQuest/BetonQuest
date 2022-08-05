@@ -20,10 +20,8 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * This test tests all config transformers.
  */
-@SuppressWarnings({"PMD.AvoidDuplicateLiterals"})
 @ExtendWith(BetonQuestLoggerService.class)
 class TransformerTest {
-
     /**
      * The file that contains a demo config for this test.
      */

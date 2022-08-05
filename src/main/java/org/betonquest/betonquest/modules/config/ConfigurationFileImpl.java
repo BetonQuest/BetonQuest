@@ -22,10 +22,6 @@ import java.nio.file.Path;
 public final class ConfigurationFileImpl extends ConfigurationSectionDecorator implements ConfigurationFile {
 
     /**
-     * Default version that is used when no configVersion is set.
-     */
-    public static final String DEFAULT_VERSION = "Legacy config";
-    /**
      * Holds the config file.
      */
     private final ConfigAccessor accessor;
@@ -106,8 +102,9 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
             final Path pluginFolder = Bukkit.getPluginsFolder().getAbsoluteFile().toPath();
             final Path relativePath = pluginFolder.relativize(configPath);
 
-            final String currentVersion = accessor.getConfig().getString("configVersion", DEFAULT_VERSION);
-            LOG.info("Updating config file '" + relativePath + "' from version '" + currentVersion + "' to version '" + patcher.getNextConfigVersion().getVersion() + "'");
+
+            LOG.info("Updating config file '" + relativePath + "' from version '" + patcher.getCurrentConfigVersion() +
+                    "' to version '" + patcher.getNextConfigVersion().getVersion() + "'");
 
             final boolean flawless = patcher.patch();
             if (flawless) {

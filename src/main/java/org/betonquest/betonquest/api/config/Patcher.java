@@ -33,13 +33,17 @@ public class Patcher {
      */
     public static final String CONFIG_VERSION_PATH = "configVersion";
     /**
-     * Regex pattern of the internal config version schema.
+     * Default version that is used for logging when no configVersion is set.
      */
-    private static final Pattern VERSION_PATTERN = Pattern.compile("(\\d*\\.\\d*\\.\\d*)\\.(\\d*)");
+    public static final String USER_DEFAULT_VERSION = "Legacy config";
     /**
      * Default version that is used when no configVersion is set.
      */
-    private static final String DEFAULT_VERSION = "0.0.0-CONFIG-0";
+    private static final String TECHNICAL_DEFAULT_VERSION = "0.0.0-CONFIG-0";
+    /**
+     * Regex pattern of the internal config version schema.
+     */
+    private static final Pattern VERSION_PATTERN = Pattern.compile("(\\d*\\.\\d*\\.\\d*)\\.(\\d*)");
     /**
      * The config to patch.
      */
@@ -90,7 +94,7 @@ public class Patcher {
         } catch (final InvalidConfigurationException e) {
             LOG.error("Invalid patch file! " + e.getMessage(), e);
         }
-        String configVersion = config.getString(CONFIG_VERSION_PATH, DEFAULT_VERSION);
+        String configVersion = config.getString(CONFIG_VERSION_PATH, TECHNICAL_DEFAULT_VERSION);
         if ("".equals(configVersion)) {
             final Map.Entry<Version, String> newestVersion = patchableVersions.lastEntry();
             configVersion = newestVersion.getValue();
@@ -109,6 +113,20 @@ public class Patcher {
     }
 
     /**
+     * Gets the version that the config is currently at.
+     * Will return {@link Patcher#USER_DEFAULT_VERSION} if the currentVersion is {@link Patcher#TECHNICAL_DEFAULT_VERSION}.
+     *
+     * @return the version that the config is currently at
+     */
+    public String getCurrentConfigVersion() {
+        if (configVersion.getVersion().equals(TECHNICAL_DEFAULT_VERSION)) {
+            return USER_DEFAULT_VERSION;
+        } else {
+            return configVersion.toString();
+        }
+    }
+
+    /**
      * Checks if the Patcher has a patch that is newer than the configs current version.
      *
      * @return if there is a patch newer than the config
@@ -124,7 +142,7 @@ public class Patcher {
      * @return if the version was updated
      */
     public boolean updateVersion() {
-        final String currentVersion = pluginConfig.getString(CONFIG_VERSION_PATH, DEFAULT_VERSION);
+        final String currentVersion = pluginConfig.getString(CONFIG_VERSION_PATH, TECHNICAL_DEFAULT_VERSION);
         if ("".equals(currentVersion)) {
             final String newVersion = patchableVersions.lastEntry().getValue();
             pluginConfig.set(CONFIG_VERSION_PATH, newVersion);
