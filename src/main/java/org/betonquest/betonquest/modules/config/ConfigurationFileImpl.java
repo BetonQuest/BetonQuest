@@ -93,7 +93,6 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
      * @param patchAccessorConfig the config that contains patches
      * @return if the file was modified
      */
-    @SuppressWarnings("PMD.UnusedFormalParameter")
     private boolean patchConfig(final ConfigurationSection patchAccessorConfig) {
         final Patcher patcher = new Patcher(accessor.getConfig(), patchAccessorConfig);
 

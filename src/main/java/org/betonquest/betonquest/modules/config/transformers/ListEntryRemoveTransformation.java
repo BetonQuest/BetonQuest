@@ -29,8 +29,7 @@ public class ListEntryRemoveTransformation implements PatchTransformation {
         final List<String> list = config.getStringList(key);
         final boolean listExists = config.isList(key);
 
-
-        final Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        final Pattern pattern = Pattern.compile(regex);
         final boolean modified = list.removeIf(entry -> {
             final Matcher matcher = pattern.matcher(entry);
             return matcher.matches();

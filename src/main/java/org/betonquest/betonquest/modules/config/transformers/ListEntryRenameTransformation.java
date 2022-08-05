@@ -31,7 +31,7 @@ public class ListEntryRenameTransformation implements PatchTransformation {
         final boolean listExists = config.isList(key);
 
         final AtomicBoolean match = new AtomicBoolean(false);
-        final Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        final Pattern pattern = Pattern.compile(regex);
         list.replaceAll(entry -> {
             final Matcher matcher = pattern.matcher(entry);
             if (matcher.matches()) {

@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.NavigableMap;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,11 +32,11 @@ public class Patcher {
     /**
      * The path to the configs version in the config.
      */
-    public static final String CONFIG_VERSION_PATH = "configVersion";
+    private static final String CONFIG_VERSION_PATH = "configVersion";
     /**
      * Default version that is used for logging when no configVersion is set.
      */
-    public static final String USER_DEFAULT_VERSION = "Legacy config";
+    private static final String USER_DEFAULT_VERSION = "Legacy config";
     /**
      * Default version that is used when no configVersion is set.
      */
@@ -60,8 +61,7 @@ public class Patcher {
      * Contains all versions that are newer then the config's current version.
      * A pair of patchable versions with the corresponding config path in the patch file.
      */
-    @SuppressWarnings({"PMD.LooseCoupling"})
-    private final TreeMap<Version, String> patchableVersions = new TreeMap<>(new VersionComparator(UpdateStrategy.MAJOR, "CONFIG-"));
+    private final NavigableMap<Version, String> patchableVersions = new TreeMap<>(new VersionComparator(UpdateStrategy.MAJOR, "CONFIG-"));
     /**
      * The {@link VersionComparator} that compares the versions of patches.
      */
