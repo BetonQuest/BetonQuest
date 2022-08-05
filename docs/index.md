@@ -168,7 +168,7 @@ Please let us know if there is any outdated information.
 *[Clientside Particles]: Can particles for NPCs etc. be displayed exclusively to players that meet certain conditions?
 *[Clientside NPCs]: Is it possible to show NPCs only for certain players based on conditions?
 *[Clientside Players]: Can player be hidden from each other using conditions?
-*[Clientside Holograms]: Can HolographicDisplays holograms be hidden using conditions?
+*[Clientside Holograms]: Can DecentHolograms/HolographicDisplays holograms be hidden using conditions?
 [L1]: https://www.spigotmc.org/resources/2117/
 [L2]: https://www.spigotmc.org/resources/3711/
 [L3]: https://www.spigotmc.org/resources/23696/
@@ -249,7 +249,7 @@ See the full list of integrations [here](Documentation/Compatibility.md).
 
 BetonQuest allows you to hide players from each other based on conditions. This can be used to create story-regions
 where players are always alone.  
-It's also possible to hide entire Citizens NPC's and HolographicDisplays holograms.
+It's also possible to hide entire Citizens NPC's and DecentHolograms/HolographicDisplays holograms.
 
 ## Training included
 
