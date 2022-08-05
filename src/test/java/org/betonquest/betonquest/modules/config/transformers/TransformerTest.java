@@ -362,7 +362,7 @@ class TransformerTest {
     }
 
     private void validateLogging(final LogValidator validator, final String transformerType, final String exceptionMessage) {
-        validator.assertLogEntry(Level.INFO, "(ConfigPatcher) Applying patches to update to '2.0.0.1'...");
+        validator.assertLogEntry(Level.INFO, "(ConfigPatcher) Applying patches to update to '2.0.0-CONFIG-1'...");
         validator.assertLogEntry(Level.INFO, "(ConfigPatcher) Applying patch of type '" + transformerType + "'...");
         validator.assertLogEntry(Level.WARNING, "(ConfigPatcher) There has been an issue while applying the patches for '2.0.0.1': " + exceptionMessage);
         validator.assertEmpty();
