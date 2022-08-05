@@ -199,7 +199,7 @@ public class Patcher {
      * @return whether the patches were applied successfully
      */
     private boolean applyPatch(final String patchDataPath) {
-        final var patchData = patchConfig.getMapList(patchDataPath);
+        final List<Map<?, ?>> patchData = patchConfig.getMapList(patchDataPath);
 
         boolean noErrors = true;
         for (final Map<?, ?> transformationData : patchData) {
