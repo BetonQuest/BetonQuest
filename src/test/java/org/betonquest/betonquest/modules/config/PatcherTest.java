@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.modules.config;
 
-import org.betonquest.betonquest.api.config.patcher.Patcher;
+import org.betonquest.betonquest.api.config.patcher.PatchTransformationRegisterer;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -20,6 +20,12 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @ExtendWith(BetonQuestLoggerService.class)
 class PatcherTest {
+
+    /**
+     * Anonymous {@link PatchTransformationRegisterer} for testing.
+     */
+    private static final PatchTransformationRegisterer REGISTERER = new PatchTransformationRegisterer() {
+    };
 
     /**
      * The patch file for this test.
@@ -77,6 +83,7 @@ class PatcherTest {
 
         final Patcher patcher = new Patcher(config, patch);
         assertTrue(patcher.hasUpdate(), "Patcher did not recognise the possible update.");
+        REGISTERER.registerTransformations(patcher);
         patcher.patch();
 
         expectedConfig.set("configVersion", "3.4.5-CONFIG-6");
@@ -178,6 +185,7 @@ class PatcherTest {
                 """);
 
         final Patcher patcher = new Patcher(emptyConfig, patchConfig);
+        REGISTERER.registerTransformations(patcher);
         patcher.patch();
         final YamlConfiguration desiredResult = createConfigFromString("""
                 configVersion: 2.0.0-CONFIG-1 #Don't change this! The plugin's automatic config updater handles it.

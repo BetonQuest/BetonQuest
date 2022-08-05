@@ -1,13 +1,8 @@
-package org.betonquest.betonquest.api.config.patcher;
+package org.betonquest.betonquest.modules.config;
 
 import lombok.CustomLog;
-import org.betonquest.betonquest.modules.config.transformers.KeyRenameTransformation;
-import org.betonquest.betonquest.modules.config.transformers.ListEntryAddTransformation;
-import org.betonquest.betonquest.modules.config.transformers.ListEntryRemoveTransformation;
-import org.betonquest.betonquest.modules.config.transformers.ListEntryRenameTransformation;
-import org.betonquest.betonquest.modules.config.transformers.RemoveTransformation;
-import org.betonquest.betonquest.modules.config.transformers.SetTransformation;
-import org.betonquest.betonquest.modules.config.transformers.ValueRenameTransformation;
+import org.betonquest.betonquest.api.config.patcher.PatchException;
+import org.betonquest.betonquest.api.config.patcher.PatchTransformation;
 import org.betonquest.betonquest.modules.versioning.UpdateStrategy;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.modules.versioning.VersionComparator;
@@ -100,7 +95,6 @@ public class Patcher {
             configVersion = newestVersion.getValue();
         }
         this.configVersion = new Version(configVersion);
-        registerDefaultTransformers();
     }
 
     /**
@@ -243,23 +237,13 @@ public class Patcher {
         transformers.get(transformationType).transform(transformationData, pluginConfig);
     }
 
-    private void registerDefaultTransformers() {
-        transformers.put("SET", new SetTransformation());
-        transformers.put("REMOVE", new RemoveTransformation());
-        transformers.put("KEY_RENAME", new KeyRenameTransformation());
-        transformers.put("VALUE_RENAME", new ValueRenameTransformation());
-        transformers.put("LIST_ENTRY_ADD", new ListEntryAddTransformation());
-        transformers.put("LIST_ENTRY_REMOVE", new ListEntryRemoveTransformation());
-        transformers.put("LIST_ENTRY_RENAME", new ListEntryRenameTransformation());
-    }
-
     /**
      * Registers a new {@link PatchTransformation} that can be applied by the patcher.
      *
      * @param typeName    the name of the transformation type
      * @param transformer the transformer
      */
-    public void registerPatchTransformer(final String typeName, final PatchTransformation transformer) {
+    public void registerTransformer(final String typeName, final PatchTransformation transformer) {
         transformers.put(typeName, transformer);
     }
 }

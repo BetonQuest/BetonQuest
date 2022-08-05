@@ -4,9 +4,8 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.api.bukkit.config.custom.ConfigurationSectionDecorator;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
-import org.betonquest.betonquest.api.config.patcher.Patcher;
+import org.betonquest.betonquest.api.config.patcher.PatchTransformationRegisterer;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.Plugin;
 
@@ -36,14 +35,18 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
      * @param patchAccessor a {@link ConfigAccessor} that holds the patch file
      * @throws InvalidConfigurationException if patch modifications couldn't be saved
      */
-    private ConfigurationFileImpl(final ConfigAccessor accessor, final ConfigAccessor patchAccessor) throws InvalidConfigurationException {
+    private ConfigurationFileImpl(final ConfigAccessor accessor, final ConfigAccessor patchAccessor, final PatchTransformationRegisterer patchTransformationRegisterer) throws InvalidConfigurationException {
         super(accessor.getConfig());
         this.accessor = accessor;
-        if (patchAccessor != null && patchConfig(patchAccessor.getConfig())) {
-            try {
-                accessor.save();
-            } catch (final IOException e) {
-                throw new InvalidConfigurationException("The configuration file was patched but could not be saved! Reason: " + e.getMessage(), e);
+        if (patchAccessor != null) {
+            final Patcher patcher = new Patcher(accessor.getConfig(), patchAccessor.getConfig());
+            patchTransformationRegisterer.registerTransformations(patcher);
+            if (patchConfig(patcher)) {
+                try {
+                    accessor.save();
+                } catch (final IOException e) {
+                    throw new InvalidConfigurationException("The configuration file was patched but could not be saved! Reason: " + e.getMessage(), e);
+                }
             }
         }
     }
@@ -51,7 +54,7 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
     /**
      * @see ConfigurationFile#create(File, Plugin, String)
      */
-    public static ConfigurationFile create(final File configurationFile, final Plugin plugin, final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
+    public static ConfigurationFile create(final File configurationFile, final Plugin plugin, final String resourceFile, final PatchTransformationRegisterer patchTransformationRegisterer) throws InvalidConfigurationException, FileNotFoundException {
         if (configurationFile == null || plugin == null || resourceFile == null) {
             throw new IllegalArgumentException("The configurationFile, plugin and resourceFile must be defined but were null.");
         }
@@ -66,7 +69,9 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
             throw new InvalidConfigurationException("Default values were applied to the config but could not be saved! Reason: " + e.getMessage(), e);
         }
         final ConfigAccessor patchAccessor = createPatchAccessor(plugin, resourceFile);
-        return new ConfigurationFileImpl(accessor, patchAccessor);
+        return new ConfigurationFileImpl(accessor, patchAccessor,
+                patchTransformationRegisterer == null ? new PatchTransformationRegisterer() {
+                } : patchTransformationRegisterer);
     }
 
     private static ConfigAccessor createPatchAccessor(final Plugin plugin, final String resourceFile) throws InvalidConfigurationException {
@@ -90,17 +95,14 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
     /**
      * Patches the config with the given patch config.
      *
-     * @param patchAccessorConfig the config that contains patches
+     * @param patcher the patcher to use
      * @return if the file was modified
      */
-    private boolean patchConfig(final ConfigurationSection patchAccessorConfig) {
-        final Patcher patcher = new Patcher(accessor.getConfig(), patchAccessorConfig);
-
+    private boolean patchConfig(final Patcher patcher) {
         if (patcher.hasUpdate()) {
             final Path configPath = accessor.getConfigurationFile().getAbsoluteFile().toPath();
             final Path pluginFolder = Bukkit.getPluginsFolder().getAbsoluteFile().toPath();
             final Path relativePath = pluginFolder.relativize(configPath);
-
 
             LOG.info("Updating config file '" + relativePath + "' from version '" + patcher.getCurrentConfigVersion() +
                     "' to version '" + patcher.getNextConfigVersion().getVersion() + "'");

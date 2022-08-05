@@ -60,11 +60,25 @@ patcher will make sure it's always up-to-date.
 
 ## Transformer Types
 
-!!! info "Additional Transformers"
-    New transformers can be added if these default transformers are not sufficient for your use case.
-    Call `registerPatchTransformer(String typeName, PatchTransformation transformer)` on a `Patcher` instance
-    to do so. 
+By default, the transformers down below are available. 
+ 
+If you want to use your own transformers, you can pass them to the create method in the form of a `PatchTransformationRegisterer`.
+This is just a functional interface, that registers additional transformers.
+Utilizing this possibility will however override the default transformers. You need to re-add them explicitly. 
 
+```JAVA title="Anonymous PatchTransformationRegisterer Example"
+config = ConfigurationFile.create(configFile, MyPlugin.getInstance(), "config.yml",
+    new PatchTransformationRegisterer() {
+        @Override
+        public void registerTransformations(final Patcher patcher) {
+            PatchTransformationRegisterer.super.registerTransformations(patcher); //(1)!
+            // Register your own transformers here:
+            patcher.registerTransformer("myTransformer", new MyTransformer()); 
+        }
+    });
+```
+  
+1. Call this if you want to use the default transformers alongside your own.
 
 ### SET
 
