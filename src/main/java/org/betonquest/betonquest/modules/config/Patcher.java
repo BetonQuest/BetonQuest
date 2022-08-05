@@ -169,14 +169,16 @@ public class Patcher {
      */
     public boolean patch() {
         boolean noErrors = true;
-        for (final String key : patchableVersions.values()) {
-            if (comparator.isOtherNewerThanCurrent(configVersion, new Version(key))) {
+        for (final Map.Entry<Version, String> versionData : patchableVersions.entrySet()) {
+            final Version version = versionData.getKey();
+            if (!comparator.isOtherNewerThanCurrent(configVersion, version)) {
                 continue;
             }
-            LOG.info("Applying patches to update to '" + key + "'...");
-            pluginConfig.set(CONFIG_VERSION_PATH, getNewVersion(key));
+            LOG.info("Applying patches to update to '" + version.getVersion() + "'...");
+            final String patchDataPath = versionData.getValue();
+            pluginConfig.set(CONFIG_VERSION_PATH, getNewVersion(patchDataPath));
             pluginConfig.setInlineComments(CONFIG_VERSION_PATH, List.of("Don't change this! The plugin's automatic config updater handles it."));
-            if (!applyPatch(key)) {
+            if (!applyPatch(patchDataPath)) {
                 noErrors = false;
             }
         }
@@ -209,6 +211,7 @@ public class Patcher {
                 applyTransformation(typeSafeTransformationData, transformationType);
             } catch (final PatchException e) {
                 noErrors = false;
+                LOG.info("Applying patch of type '" + transformationType + "'...");
                 LOG.warn("There has been an issue while applying the patches for '" + patchDataPath + "': " + e.getMessage());
             }
         }
@@ -219,7 +222,6 @@ public class Patcher {
         if (!transformers.containsKey(transformationType)) {
             throw new PatchException("Unknown transformation type '" + transformationType + "' used!");
         }
-        LOG.info("Applying patch of type '" + transformationType + "'...");
         transformers.get(transformationType).transform(transformationData, pluginConfig);
     }
 
