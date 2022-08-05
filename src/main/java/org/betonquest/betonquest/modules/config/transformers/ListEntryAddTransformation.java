@@ -25,20 +25,16 @@ public class ListEntryAddTransformation implements PatchTransformation {
     public void transform(final Map<String, String> options, final ConfigurationSection config) throws PatchException {
         final String key = options.get("key");
         final String entry = options.get("entry");
-        final String position = options.get("position");
+        final String position = options.getOrDefault("position", "LAST");
 
         final List<String> list = config.getStringList(key);
         final boolean listExists = config.isList(key);
 
         final int index;
-        if (position == null) {
-            index = list.size();
-        } else {
-            switch (position.toUpperCase(Locale.ROOT)) {
-                case "FIRST" -> index = 0;
-                case "LAST" -> index = list.size();
-                default -> index = list.size();
-            }
+        switch (position.toUpperCase(Locale.ROOT)) {
+            case "FIRST" -> index = 0;
+            case "LAST" -> index = list.size();
+            default -> index = list.size();
         }
 
         list.add(index, entry);

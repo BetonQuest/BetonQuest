@@ -3,6 +3,7 @@ package org.betonquest.betonquest.modules.config;
 import org.betonquest.betonquest.api.config.patcher.PatchTransformationRegisterer;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
+import org.betonquest.betonquest.modules.versioning.Version;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,16 +43,19 @@ class PatcherTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     void testHasUpdate() throws InvalidConfigurationException {
         final YamlConfiguration configBeforeTest = new YamlConfiguration();
         configBeforeTest.loadFromString(config.saveToString());
 
         final Patcher patcher = new Patcher(config, patch);
         assertTrue(patcher.hasUpdate(), "Patcher did not recognise the possible update.");
+        assertEquals(new Version("3.4.5-CONFIG-6"), patcher.getNextConfigVersion(), "Patcher did not return the newest patch version as next config version.");
         assertEquals(configBeforeTest.saveToString(), config.saveToString(), "The patcher must only patch when patcher.patch() is called.");
     }
 
     @Test
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     void testHasNoUpdateForNewerConfigs() throws InvalidConfigurationException {
         final YamlConfiguration configFromTheFuture = new YamlConfiguration();
         configFromTheFuture.loadFromString("""
@@ -67,8 +71,9 @@ class PatcherTest {
                     value: true
                 """)
         ;
-        final Patcher anotherPatcher = new Patcher(configFromTheFuture, patch);
-        assertFalse(anotherPatcher.hasUpdate(), "Patcher recognised patches from outdated versions as possible updates.");
+        final Patcher patcher = new Patcher(configFromTheFuture, patch);
+        assertFalse(patcher.hasUpdate(), "Patcher recognised patches from outdated versions as possible updates.");
+        assertFalse(patcher.updateVersion(), "The Patcher updated the configVersion when it should not.");
 
         assertEquals(configFromTheFuture.saveToString(), """
                 configVersion: 6.2.3-CONFIG-12
@@ -77,12 +82,15 @@ class PatcherTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
     void testAppliesUpdates() throws InvalidConfigurationException {
         final YamlConfiguration expectedConfig = new YamlConfiguration();
         expectedConfig.loadFromString(config.saveToString());
 
         final Patcher patcher = new Patcher(config, patch);
         assertTrue(patcher.hasUpdate(), "Patcher did not recognise the possible update.");
+        assertFalse(patcher.updateVersion(), "The Patcher updated the configVersion when it should not.");
+
         REGISTERER.registerTransformations(patcher);
         patcher.patch();
 
@@ -190,6 +198,36 @@ class PatcherTest {
         final YamlConfiguration desiredResult = createConfigFromString("""
                 configVersion: 2.0.0-CONFIG-1 #Don't change this! The plugin's automatic config updater handles it.
                 newKey: newValue
+                """);
+
+        assertEquals(desiredResult.saveToString(), emptyConfig.saveToString(), "The Patcher did not set the configVersion variable on a legacy config.");
+        assertEquals("Legacy config", patcher.getCurrentConfigVersion(), "The Patcher did not correctly return a user friendly default version.");
+    }
+
+    @Test
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    void testConfigFromResourceUpdate() throws InvalidConfigurationException {
+        final YamlConfiguration emptyConfig = createConfigFromString("""
+                        configVersion: ""
+                        someKey: someValue
+                """);
+
+        final YamlConfiguration patchConfig = createConfigFromString("""
+                100.200.300.400:
+                - type: SET
+                  key: newKey
+                  value: newValue
+                """);
+
+        final Patcher patcher = new Patcher(emptyConfig, patchConfig);
+        REGISTERER.registerTransformations(patcher);
+        patcher.patch();
+        assertEquals("100.200.300-CONFIG-400", patcher.getCurrentConfigVersion(), "The Patcher did not return the highest available patch version.");
+        assertTrue(patcher.updateVersion(), "The Patcher did not update the configVersion variable.");
+
+        final YamlConfiguration desiredResult = createConfigFromString("""
+                configVersion: 100.200.300-CONFIG-400 #Don't change this! The plugin's automatic config updater handles it.
+                someKey: someValue
                 """);
 
         assertEquals(desiredResult.saveToString(), emptyConfig.saveToString(), "The Patcher did not set the configVersion variable on a legacy config.");

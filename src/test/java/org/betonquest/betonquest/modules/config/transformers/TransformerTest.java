@@ -141,6 +141,23 @@ class TransformerTest {
     }
 
     @Test
+    void testListEntryAddRubbish() throws InvalidConfigurationException {
+        final String patch = """
+                2.0.0.1:
+                    - type: LIST_ENTRY_ADD
+                      key: section.myList
+                      entry: newEntry
+                      position: rubbish
+                """;
+        final String serializedConfig = getSerializedPatchedConfig(patch);
+
+        final List<String> list = CONFIG.getStringList("section.myList");
+        list.add("newEntry");
+        CONFIG.set("section.myList", list);
+        assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
+    }
+
+    @Test
     void testListEntryAddMissingKey(final LogValidator validator) throws InvalidConfigurationException {
         final String patch = """
                 2.0.0.1:
@@ -241,6 +258,20 @@ class TransformerTest {
     }
 
     @Test
+    void testListRemoveInvalidKey(final LogValidator validator) throws InvalidConfigurationException {
+        final String patch = """
+                  2.0.0.1:
+                    - type: LIST_ENTRY_REMOVE
+                      key: section.myList
+                      entry: invalidEntry
+                """;
+        final String serializedConfig = getSerializedPatchedConfig(patch);
+
+        validateLogging(validator, "LIST_ENTRY_REMOVE", "Tried to remove 'invalidEntry' but there was no such element in the list 'section.myList'.");
+        assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
+    }
+
+    @Test
     void testRemove() throws InvalidConfigurationException {
         final String patch = """
                 2.0.0.1:
@@ -250,6 +281,20 @@ class TransformerTest {
         final String serializedConfig = getSerializedPatchedConfig(patch);
 
         CONFIG.set("section.myList", null);
+
+        assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
+    }
+
+    @Test
+    void testRemoveNonExistent(final LogValidator validator) throws InvalidConfigurationException {
+        final String patch = """
+                2.0.0.1:
+                    - type: REMOVE
+                      key: section.nonExistent
+                """;
+        final String serializedConfig = getSerializedPatchedConfig(patch);
+
+        validateLogging(validator, "REMOVE", "Key 'section.nonExistent' did not exist, so it was not deleted.");
 
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }

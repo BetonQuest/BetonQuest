@@ -89,18 +89,20 @@ public class Patcher {
         } catch (final InvalidConfigurationException e) {
             LOG.error("Invalid patch file! " + e.getMessage(), e);
         }
-        String configVersion = config.getString(CONFIG_VERSION_PATH, TECHNICAL_DEFAULT_VERSION);
+        final String configVersion = config.getString(CONFIG_VERSION_PATH, TECHNICAL_DEFAULT_VERSION);
         if ("".equals(configVersion)) {
             final Map.Entry<Version, String> newestVersion = patchableVersions.lastEntry();
-            configVersion = newestVersion.getValue();
+            this.configVersion = new Version(newestVersion.getKey().getVersion());
+        } else {
+            this.configVersion = new Version(configVersion);
         }
-        this.configVersion = new Version(configVersion);
     }
 
     /**
-     * Gets the version that the config will be patched to.
+     * Gets the highest available patch version.
+     * This is the version that the config can be patched to if {@link Patcher#hasUpdate()} is true.
      *
-     * @return the version that the config will be patched to
+     * @return the highest available patch version
      */
     public Version getNextConfigVersion() {
         return patchableVersions.lastEntry().getKey();
@@ -116,7 +118,7 @@ public class Patcher {
         if (TECHNICAL_DEFAULT_VERSION.equals(configVersion.getVersion())) {
             return USER_DEFAULT_VERSION;
         } else {
-            return configVersion.toString();
+            return configVersion.getVersion();
         }
     }
 
@@ -132,14 +134,16 @@ public class Patcher {
 
     /**
      * Updates the configVersion to the version of the newest available patch if it is an empty string.
+     * This is useful to set the current config version when a default resource file is freshly copied to the plugin's folder.
      *
      * @return if the version was updated
      */
     public boolean updateVersion() {
         final String currentVersion = pluginConfig.getString(CONFIG_VERSION_PATH, TECHNICAL_DEFAULT_VERSION);
         if ("".equals(currentVersion)) {
-            final String newVersion = patchableVersions.lastEntry().getValue();
-            pluginConfig.set(CONFIG_VERSION_PATH, newVersion);
+            final Version newVersion = patchableVersions.lastEntry().getKey();
+            pluginConfig.set(CONFIG_VERSION_PATH, newVersion.getVersion());
+            pluginConfig.setInlineComments(CONFIG_VERSION_PATH, List.of("Don't change this! The plugin's automatic config updater handles it."));
             return true;
         }
         return false;
