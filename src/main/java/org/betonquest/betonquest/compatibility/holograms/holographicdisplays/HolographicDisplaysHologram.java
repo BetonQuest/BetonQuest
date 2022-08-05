@@ -9,9 +9,11 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods"})
 public class HolographicDisplaysHologram implements BetonHologram {
     private final Hologram hologram;
 
+    @SuppressWarnings({"PMD.UnusedFormalParameter"}) //This parameter is necessary due to reflection.
     public HolographicDisplaysHologram(final String name, final Location location) {
         hologram = HologramsAPI.createHologram(BetonQuest.getInstance(), location);
     }

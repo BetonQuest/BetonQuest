@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
  * Interface class to wrap a hologram from another supported plugin
  * When implementing this interface, you MUST declare a constructor with a String and Location parameter
  */
+@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods"})
 public interface BetonHologram {
 
     /**
