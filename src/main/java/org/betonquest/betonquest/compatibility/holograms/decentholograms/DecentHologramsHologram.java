@@ -9,16 +9,18 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
 
+@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods"})
 public class DecentHologramsHologram implements BetonHologram {
     private final Hologram hologram;
 
-    public DecentHologramsHologram(String name, final Location location) {
+    public DecentHologramsHologram(final String name, final Location location) {
         //This API may need to be updated in the near future..
-        if (DHAPI.getHologram(name) != null) {
+        String hologramName = name;
+        if (DHAPI.getHologram(hologramName) != null) {
             //In the rare case that a hologram is created with a name that already exists...
-            name = UUID.randomUUID().toString();
+            hologramName = UUID.randomUUID().toString();
         }
-        hologram = DHAPI.createHologram(name, location);
+        hologram = DHAPI.createHologram(hologramName, location);
         hologram.enable();
     }
 

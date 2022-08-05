@@ -18,7 +18,7 @@ public class HologramIntegrator implements Integrator {
     private static HologramIntegrator instance;
     private final Map<String, Class<? extends BetonHologram>> implementations;
     private HologramLoop hologramLoop;
-    private Class<? extends BetonHologram> hologramType = null;
+    private Class<? extends BetonHologram> hologramType;
 
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public HologramIntegrator(final Map<String, Class<? extends BetonHologram>> implementations) {
