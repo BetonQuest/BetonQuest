@@ -119,7 +119,7 @@ public class Patcher {
      * @return the version that the config is currently at
      */
     public String getCurrentConfigVersion() {
-        if (configVersion.getVersion().equals(TECHNICAL_DEFAULT_VERSION)) {
+        if (TECHNICAL_DEFAULT_VERSION.equals(configVersion.getVersion())) {
             return USER_DEFAULT_VERSION;
         } else {
             return configVersion.toString();
