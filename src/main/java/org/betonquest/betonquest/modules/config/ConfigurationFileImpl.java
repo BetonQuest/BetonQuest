@@ -23,7 +23,7 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
     /**
      * Default version that is used when no configVersion is set.
      */
-    public static final String DEFAULT_VERSION = "0.0.0-CONFIG-0";
+    public static final String DEFAULT_VERSION = "Legacy config";
     /**
      * Holds the config file.
      */
@@ -102,11 +102,11 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
 
         if (patcher.hasUpdate()) {
             final Path configPath = accessor.getConfigurationFile().getAbsoluteFile().toPath();
-            final Path pluginFolder = Bukkit.getPluginsFolder().toPath();
+            final Path pluginFolder = Bukkit.getPluginsFolder().getAbsoluteFile().toPath();
             final Path relativePath = pluginFolder.relativize(configPath);
 
             final String currentVersion = accessor.getConfig().getString("configVersion", DEFAULT_VERSION);
-            LOG.info("Patch for configuration '%s' with current version '%s' found.".formatted(relativePath, currentVersion));
+            LOG.info("Updating config file '" + relativePath + "' from version '" + currentVersion + "' to version '" + patcher.getNextConfigVersion().getVersion() + "'");
 
             final boolean flawless = patcher.patch();
             if (flawless) {
