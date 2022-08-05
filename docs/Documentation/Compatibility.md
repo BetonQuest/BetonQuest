@@ -781,21 +781,30 @@ Check whether the player is near a specific MythicMobs entity. The first argumen
     
 ### Events
 
-#### SpawnMob: `mspawnmob`
+#### :material-skull: Spawn MythicMob: `mspawnmob`
 
-Spawn specified amount of MythicMobs at given location. The first argument is a location defined like `100;200;300;world`. Second is MythicMobs internal name (the one defined in MythicMobs' configuration) followed by a colon and a level. Third one is amount and it's required!
-You can also add the optional argument `target` which will make the mob target the player. 
+| Parameter  | Syntax                                           | Default Value          | Explanation                                                                                                                             |
+|------------|--------------------------------------------------|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| _location_ | [ULF](./Reference.md#unified-location-formating) | :octicons-x-circle-16: | The location to spawn the mob at.                                                                                                       |
+| _name_     | name:level                                       | :octicons-x-circle-16: | MythicMobs mob name. Optionally, a level can be specifed after a colon.                                                                 |
+| _amount_   | Positive Number                                  | :octicons-x-circle-16: | Amount of mobs to spawn.                                                                                                                |
+| _target_   | Keyword                                          | False                  | Will make the mob target the player.                                                                                                    |
+| _private_  | Keyword                                          | Disabled               | Will hide the mob from all other players until restart. This does not hide particles or block sound from the mob. Also see notes below. |
+| _marked_   | notify:interval                                  | None                   | Marks the mob. You can check for marked mobs in mmobkill objective.                                                                     |
 
-There is also the `private` argument which will hide the mob from all other players until restart. This does not hide particles or block sound from the mob however.
 
-You can also mark the spawned mob with a keyword using `marked` argument.
-It won't show anywhere, and you can check for only marked mobs in mmobkill objective.
+```YAML title="Example"
+events::
+  spawnBoss: mspawnmob 100;200;300;world MegaBoss target
+  spawnKnights: mspawnmob 100;200;300;world SkeletalKnight:3 5
+  spawnPrivateDevil: mspawnmob 100;200;300;world Mephisto:1 5 target private marked:DungeonBoss3
+```
 
-!!! example
-    ```YAML
-    mspawnmob 100;200;300;world SkeletalKnight:1 5
-    mspawnmob 100;200;300;world SkeletonKing:1 5 target private marked:DungeonBoss3
-    ```
+!!! warning "Private Argument"
+    The `private` argument requires some MythicMob setup for optimal use.
+    It's best to use the `private` argument in combination with the `target` argument so the mob does not attack 
+    players that cannot see it.
+    Additionally, the mob should be configured to never change its AI target using MythicMobs.
 
 ## [PlaceholderAPI](https://www.spigotmc.org/resources/6245/)
 
