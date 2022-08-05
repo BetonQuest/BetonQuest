@@ -33,8 +33,9 @@ These advantages are mainly for BetonQuest, but it is also very useful for 3rd p
 
 ??? info "Logger Topics"
     The BetonQuestLogger supports topics, which give your log messages a prefix like `(Database)`.
-    You can use a topic for each class or for each BetonQuestLogger instance. The convention is to use _PascalCase_.
+    You can use a topic for each class or for each BetonQuestLogger instance.
     Topics are supposed to give important log messages extra attention by making them stand out.
+    The naming convention is to use _PascalCase_ for topics.
 
 ## Obtaining a BetonQuestLogger Instance
 
