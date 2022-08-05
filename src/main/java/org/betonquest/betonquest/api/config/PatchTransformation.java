@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.config;
+package org.betonquest.betonquest.api.config;
 
 import org.bukkit.configuration.ConfigurationSection;
 

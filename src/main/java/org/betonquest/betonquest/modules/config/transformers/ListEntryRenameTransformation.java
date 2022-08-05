@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.modules.config.transformers;
 
-import org.betonquest.betonquest.modules.config.PatchException;
-import org.betonquest.betonquest.modules.config.PatchTransformation;
+import org.betonquest.betonquest.api.config.PatchException;
+import org.betonquest.betonquest.api.config.PatchTransformation;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.List;

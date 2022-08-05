@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.modules.config.transformers;
 
-import org.betonquest.betonquest.modules.config.Patcher;
+import org.betonquest.betonquest.api.config.Patcher;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.bukkit.configuration.InvalidConfigurationException;
