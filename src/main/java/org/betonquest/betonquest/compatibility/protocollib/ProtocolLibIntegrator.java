@@ -59,7 +59,8 @@ public class ProtocolLibIntegrator implements Integrator {
         if (MythicHider.getInstance() != null) {
             MythicHider.start();
         }
-        npcGlow.stop();
+        //refresh NPCGlow instance
+        npcGlow.refresh();
     }
 
     @Override

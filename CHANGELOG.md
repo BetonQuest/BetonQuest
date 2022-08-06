@@ -41,6 +41,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - compass now supports items from other packages
 - new messages.yml entries `inventory_full_backpack` and `inventory_full_drop` to have more specific messages,
   when the inventory of the player is full
+- `NPC Glow` Glow NPC if spesific conditions met
 - `menu` conversationIO option `npc_name_newline_separator`
 - added `q download` command
 - variable support for menu titles
@@ -87,7 +88,6 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - Version checks for ProtocolLib and Shopkeepers support
     - `mmoitemtake` event and `mmoitem` condition - now also check the backpack
         - this will not work until the item rework / until the backpack contains NBT data
-- `NPC Glow` Glow NPC if spesific conditions met
 ### Changed
 - Java 17 is now required
 - changed package names from `pl.betoncraft.betonquest` to `org.betonquest.betonquest`

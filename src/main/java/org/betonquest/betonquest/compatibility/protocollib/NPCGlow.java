@@ -302,9 +302,9 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
     }
 
     /**
-     * Stops the NPCGlow, cleaning up all listeners, runnables, etc. And Reset all the glowing npc.
+     * Refresh the NPCGlow instance, cleaning up all maps. And Reset all the glowing npc.
      */
-    public void stop() {
+    public void refresh() {
         resetGlow(npcs.keySet(), false, Bukkit.getOnlinePlayers());
         npcPlayersMap.clear();
         npcs.clear();

@@ -971,8 +971,8 @@ freezeMe: "freeze 100" #Freezes the player for 5 seconds
 ### Glow NPC's
 If Citizens and ProtocolLib is installed you can make NPCs glow
 if spesific conditions are met. For that you have to add a `glow_npc` section.
-you can customize the color by adding color argument. You can find all
-available color in [here](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/ChatColor.html)
+You can customize the color by adding color argument. You can find all
+available colors [here](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/ChatColor.html).
 ```yaml
 glow_npc:
   tutorial_npc:
