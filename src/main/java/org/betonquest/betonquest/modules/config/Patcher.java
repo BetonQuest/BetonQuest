@@ -94,9 +94,13 @@ public class Patcher {
             LOG.error("Invalid patch file! " + e.getMessage(), e);
         }
         final String configVersion = config.getString(CONFIG_VERSION_PATH, TECHNICAL_DEFAULT_VERSION);
-        if ("".equals(configVersion)) {
-            final Map.Entry<Version, String> newestVersion = patchableVersions.lastEntry();
-            this.configVersion = newestVersion.getKey();
+        if (configVersion.isEmpty()) {
+            if (patchableVersions.isEmpty()) {
+                this.configVersion = new Version(TECHNICAL_DEFAULT_VERSION);
+            } else {
+                final Map.Entry<Version, String> newestVersion = patchableVersions.lastEntry();
+                this.configVersion = newestVersion.getKey();
+            }
         } else {
             this.configVersion = new Version(configVersion);
         }
@@ -149,8 +153,11 @@ public class Patcher {
             return true;
         }
         if (currentVersion.isEmpty()) {
-            final Version newVersion = patchableVersions.lastEntry().getKey();
-            setConfigVersion(newVersion.getVersion());
+            if (patchableVersions.isEmpty()) {
+                setConfigVersion(TECHNICAL_DEFAULT_VERSION);
+            } else {
+                setConfigVersion(patchableVersions.lastEntry().getKey().getVersion());
+            }
             return true;
         }
         return false;
