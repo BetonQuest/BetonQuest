@@ -948,7 +948,7 @@ public class BetonQuest extends JavaPlugin {
         metricsSuppliers.put("events", new CompositeInstructionMetricsSupplier<>(EVENTS::keySet, eventTypes::keySet));
         metricsSuppliers.put("objectives", new CompositeInstructionMetricsSupplier<>(OBJECTIVES::keySet, OBJECTIVE_TYPES::keySet));
         metricsSuppliers.put("variables", new CompositeInstructionMetricsSupplier<>(VARIABLES::keySet, VARIABLE_TYPES::keySet));
-        new BStatsMetrics(this,  new Metrics(this, BSTATS_METRICS_ID), metricsSuppliers);
+        new BStatsMetrics(this, new Metrics(this, BSTATS_METRICS_ID), metricsSuppliers);
 
         // updater
         final Version pluginVersion = new Version(this.getDescription().getVersion());

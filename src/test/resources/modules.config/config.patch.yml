@@ -1,0 +1,38 @@
+"3.4.5.6":
+  - type: SET
+    key: journalLock
+    value: megaTrue
+    override: true
+  - type: SET
+    key: additionalVal
+    value: 42
+    override: true
+
+"2.0.0.1":
+  - type: SET
+    key: journalLock
+    value: true
+    override: true
+
+  - type: LIST_ENTRY_RENAME
+    key: section.myList
+    oldEntryRegex: currentEntry
+    newEntry: newEntry
+
+  - type: KEY_RENAME
+    oldKey: section.test
+    newKey: testNew
+
+  - type: LIST_ENTRY_REMOVE
+    key: section.myList
+    entry: removedEntry
+
+  - type: LIST_ENTRY_ADD
+    key: section.myList
+    entry: newEntry
+    position: LAST
+
+  - type: VALUE_RENAME
+    key: section.testKey
+    oldValueRegex: test
+    newValue: newTest

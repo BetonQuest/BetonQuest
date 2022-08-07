@@ -4,13 +4,15 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.api.bukkit.config.custom.ConfigurationSectionDecorator;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
-import org.bukkit.configuration.ConfigurationSection;
+import org.betonquest.betonquest.api.config.patcher.PatchTransformationRegisterer;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
 
 /**
  * Facade for easy loading and saving of configs.
@@ -33,14 +35,18 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
      * @param patchAccessor a {@link ConfigAccessor} that holds the patch file
      * @throws InvalidConfigurationException if patch modifications couldn't be saved
      */
-    private ConfigurationFileImpl(final ConfigAccessor accessor, final ConfigAccessor patchAccessor) throws InvalidConfigurationException {
+    private ConfigurationFileImpl(final ConfigAccessor accessor, final ConfigAccessor patchAccessor, final PatchTransformationRegisterer patchTransformationRegisterer) throws InvalidConfigurationException {
         super(accessor.getConfig());
         this.accessor = accessor;
-        if (patchAccessor != null && patchConfig(patchAccessor.getConfig())) {
-            try {
-                accessor.save();
-            } catch (final IOException e) {
-                throw new InvalidConfigurationException("The configuration file was patched but could not be saved! Reason: " + e.getMessage(), e);
+        if (patchAccessor != null) {
+            final Patcher patcher = new Patcher(accessor.getConfig(), patchAccessor.getConfig());
+            patchTransformationRegisterer.registerTransformations(patcher);
+            if (patchConfig(patcher)) {
+                try {
+                    accessor.save();
+                } catch (final IOException e) {
+                    throw new InvalidConfigurationException("The configuration file was patched but could not be saved! Reason: " + e.getMessage(), e);
+                }
             }
         }
     }
@@ -48,7 +54,7 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
     /**
      * @see ConfigurationFile#create(File, Plugin, String)
      */
-    public static ConfigurationFile create(final File configurationFile, final Plugin plugin, final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
+    public static ConfigurationFile create(final File configurationFile, final Plugin plugin, final String resourceFile, final PatchTransformationRegisterer patchTransformationRegisterer) throws InvalidConfigurationException, FileNotFoundException {
         if (configurationFile == null || plugin == null || resourceFile == null) {
             throw new IllegalArgumentException("The configurationFile, plugin and resourceFile must be defined but were null.");
         }
@@ -63,7 +69,9 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
             throw new InvalidConfigurationException("Default values were applied to the config but could not be saved! Reason: " + e.getMessage(), e);
         }
         final ConfigAccessor patchAccessor = createPatchAccessor(plugin, resourceFile);
-        return new ConfigurationFileImpl(accessor, patchAccessor);
+        return new ConfigurationFileImpl(accessor, patchAccessor,
+                patchTransformationRegisterer == null ? new PatchTransformationRegisterer() {
+                } : patchTransformationRegisterer);
     }
 
     private static ConfigAccessor createPatchAccessor(final Plugin plugin, final String resourceFile) throws InvalidConfigurationException {
@@ -84,9 +92,34 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
         return null;
     }
 
-    @SuppressWarnings("PMD.UnusedFormalParameter")
-    private boolean patchConfig(final ConfigurationSection patchAccessorConfig) {
-        return false;
+    /**
+     * Patches the config with the given patch config.
+     *
+     * @param patcher the patcher to use
+     * @return if the file was modified
+     */
+    private boolean patchConfig(final Patcher patcher) {
+        if (patcher.hasUpdate()) {
+            final Path configPath = accessor.getConfigurationFile().getAbsoluteFile().toPath();
+            final Path pluginFolder = Bukkit.getPluginsFolder().getAbsoluteFile().toPath();
+            final Path relativePath = pluginFolder.relativize(configPath);
+
+            LOG.info("Updating config file '" + relativePath + "' from version '" + patcher.getCurrentConfigVersion() +
+                    "' to version '" + patcher.getNextConfigVersion().getVersion() + "'");
+
+            final boolean flawless = patcher.patch();
+            if (flawless) {
+                LOG.info("Patching complete!");
+            } else {
+                LOG.warn("The patching progress did not go flawlessly. However, this does not mean your configs " +
+                        "are now corrupted. Please check the errors above to see what the patcher did. " +
+                        "You might want to adjust your config manually depending on that information.");
+            }
+            return true;
+        }
+        LOG.debug("No patch found.");
+
+        return patcher.updateVersion();
     }
 
     @Override

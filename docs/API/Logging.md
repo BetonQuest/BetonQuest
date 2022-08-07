@@ -35,6 +35,7 @@ These advantages are mainly for BetonQuest, but it is also very useful for 3rd p
     The BetonQuestLogger supports topics, which give your log messages a prefix like `(Database)`.
     You can use a topic for each class or for each BetonQuestLogger instance.
     Topics are supposed to give important log messages extra attention by making them stand out.
+    The naming convention is to use _PascalCase_ for topics.
 
 ## Obtaining a BetonQuestLogger Instance
 
@@ -134,10 +135,10 @@ All methods come in multiple variants. Always provide a package if possible, as 
 message.
  
 
-| Name                              	| Use Case 	                                                                                                                                                 | Example 	                                                 |
-|------------------------------------ |----------------------------------------------------------------------------------------------------------------------------------------------------------- |---------------------------------------------------------- |
-| :shushing_face: Debug               | Used to display internal states or events that may be beneficial for bug-fixing. These messages are only be visible in the debug log.                      | An event has been fired.         	                       |
-| :information_source: Info           | Use this for normal log information in the server's console.                                                                                               | A new integration was successfully hooked.     	         |
-| :warning: Warning                   | You can provide useful information how to fix the underlying problem.                                                                                      | The user wrote an event with syntax errors.               |
-| :x: Error            	              | The underlying problem affects the servers security or functionality. Usage is also allowed if you don't know how the user can fix the underlying problem. | An error occurred while loading an integration.           |
-| :rotating_light: Report Exception 	| Only use this in cases that should never occur and indicate an error that must be reported to the projects issue tracker.                                  | You need to catch an exception that you know should never occur unless something is horribly wrong. | 
+| Name                              | Use Case                                                                                                                                                   | Example                                                                                             |
+|-----------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|
+| :shushing_face: Debug             | Used to display internal states or events that may be beneficial for bug-fixing. These messages are only be visible in the debug log.                      | An event has been fired.                                                                            |
+| :information_source: Info         | Use this for normal log information in the server's console.                                                                                               | A new integration was successfully hooked.                                                          |
+| :warning: Warning                 | You can provide useful information how to fix the underlying problem.                                                                                      | The user wrote an event with syntax errors.                                                         |
+| :x: Error                         | The underlying problem affects the servers security or functionality. Usage is also allowed if you don't know how the user can fix the underlying problem. | An error occurred while loading an integration.                                                     |
+| :rotating_light: Report Exception | Only use this in cases that should never occur and indicate an error that must be reported to the projects issue tracker.                                  | You need to catch an exception that you know should never occur unless something is horribly wrong. | 

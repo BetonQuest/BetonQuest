@@ -1,0 +1,10 @@
+configVersion: "1.12.1-CONFIG-1" # Don't change this! The plugin's automatic config updater handles it.
+section:
+  myList:
+    - someEntry
+    - currentEntry
+    - removedEntry
+  default_conversation_IO: menu
+  test: someValue
+  testKey: test
+

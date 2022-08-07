@@ -2,13 +2,23 @@ package org.betonquest.betonquest.modules.versioning;
 
 import com.google.common.collect.Lists;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 /**
  * Compares two {@link Version}s. This comparator can also be used to sort lists of {@link Version}s.
  */
-public class VersionComparator {
+public class VersionComparator implements Comparator<Version>, Serializable {
+
+    /**
+     * The serialVersionUID of this class.
+     */
+    @Serial
+    private static final long serialVersionUID = 1641779671214600158L;
+
     /**
      * The chosen {@link UpdateStrategy}
      */
@@ -70,6 +80,7 @@ public class VersionComparator {
      * @return 0 if equal; less than 0 if other is newer; more than 0 if current is newer
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
+    @Override
     public int compare(final Version current, final Version other) {
         if (current == null && other == null) {
             return 0;

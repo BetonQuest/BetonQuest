@@ -1,4 +1,4 @@
-version: v61
+configVersion: ""
 mysql:
   enabled: false
   host: ''

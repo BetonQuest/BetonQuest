@@ -219,6 +219,7 @@ nav:
       - 'API': API/API.md
       - 'Logging': API/Logging.md
       - 'Schedules': API/Schedules.md
+      - 'Config Patcher': API/ConfigPatcher.md
   - 'Participate':
       - 'Overview': Participate/Overview.md
       - 'Setup Project': Participate/Setup-Project.md
