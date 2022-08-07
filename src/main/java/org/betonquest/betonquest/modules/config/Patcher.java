@@ -25,7 +25,11 @@ import java.util.regex.Pattern;
 public class Patcher {
 
     /**
-     * The path to the configs version in the config.
+     * The comment at the version entry in the config.
+     */
+    private static final String VERSION_CONFIG_COMMENT = "Don't change this! The plugin's automatic config updater handles it.";
+    /**
+     * The path to the config's version in the config.
      */
     private static final String CONFIG_VERSION_PATH = "configVersion";
     /**
@@ -92,7 +96,7 @@ public class Patcher {
         final String configVersion = config.getString(CONFIG_VERSION_PATH, TECHNICAL_DEFAULT_VERSION);
         if ("".equals(configVersion)) {
             final Map.Entry<Version, String> newestVersion = patchableVersions.lastEntry();
-            this.configVersion = new Version(newestVersion.getKey().getVersion());
+            this.configVersion = newestVersion.getKey();
         } else {
             this.configVersion = new Version(configVersion);
         }
@@ -143,7 +147,7 @@ public class Patcher {
         if ("".equals(currentVersion)) {
             final Version newVersion = patchableVersions.lastEntry().getKey();
             pluginConfig.set(CONFIG_VERSION_PATH, newVersion.getVersion());
-            pluginConfig.setInlineComments(CONFIG_VERSION_PATH, List.of("Don't change this! The plugin's automatic config updater handles it."));
+            pluginConfig.setInlineComments(CONFIG_VERSION_PATH, List.of(VERSION_CONFIG_COMMENT));
             return true;
         }
         return false;
@@ -193,7 +197,7 @@ public class Patcher {
             LOG.info("Applying patches to update to '" + version.getVersion() + "'...");
             final String patchDataPath = versionData.getValue();
             pluginConfig.set(CONFIG_VERSION_PATH, getNewVersion(patchDataPath));
-            pluginConfig.setInlineComments(CONFIG_VERSION_PATH, List.of("Don't change this! The plugin's automatic config updater handles it."));
+            pluginConfig.setInlineComments(CONFIG_VERSION_PATH, List.of(VERSION_CONFIG_COMMENT));
             if (!applyPatch(patchDataPath)) {
                 noErrors = false;
             }

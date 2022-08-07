@@ -14,6 +14,7 @@ public interface PatchTransformation {
      *
      * @param options options for the transformer
      * @param config  to transform
+     * @throws PatchException if the transformation failed
      */
     void transform(Map<String, String> options, ConfigurationSection config) throws PatchException;
 }
