@@ -145,16 +145,20 @@ public class Patcher {
     public boolean updateVersion() {
         final String currentVersion = pluginConfig.getString(CONFIG_VERSION_PATH);
         if (currentVersion == null) {
-            pluginConfig.set(CONFIG_VERSION_PATH, TECHNICAL_DEFAULT_VERSION);
+            setConfigVersion(TECHNICAL_DEFAULT_VERSION);
             return true;
         }
         if (currentVersion.isEmpty()) {
             final Version newVersion = patchableVersions.lastEntry().getKey();
-            pluginConfig.set(CONFIG_VERSION_PATH, newVersion.getVersion());
-            pluginConfig.setInlineComments(CONFIG_VERSION_PATH, List.of(VERSION_CONFIG_COMMENT));
+            setConfigVersion(newVersion.getVersion());
             return true;
         }
         return false;
+    }
+
+    private void setConfigVersion(final String technicalDefaultVersion) {
+        pluginConfig.set(CONFIG_VERSION_PATH, technicalDefaultVersion);
+        pluginConfig.setInlineComments(CONFIG_VERSION_PATH, List.of(VERSION_CONFIG_COMMENT));
     }
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
@@ -200,8 +204,7 @@ public class Patcher {
             }
             LOG.info("Applying patches to update to '" + version.getVersion() + "'...");
             final String patchDataPath = versionData.getValue();
-            pluginConfig.set(CONFIG_VERSION_PATH, getNewVersion(patchDataPath));
-            pluginConfig.setInlineComments(CONFIG_VERSION_PATH, List.of(VERSION_CONFIG_COMMENT));
+            setConfigVersion(getNewVersion(patchDataPath));
             if (!applyPatch(patchDataPath)) {
                 noErrors = false;
             }
