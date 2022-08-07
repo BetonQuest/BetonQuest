@@ -143,8 +143,12 @@ public class Patcher {
      * @return if the version was updated
      */
     public boolean updateVersion() {
-        final String currentVersion = pluginConfig.getString(CONFIG_VERSION_PATH, TECHNICAL_DEFAULT_VERSION);
-        if ("".equals(currentVersion)) {
+        final String currentVersion = pluginConfig.getString(CONFIG_VERSION_PATH);
+        if (currentVersion == null) {
+            pluginConfig.set(CONFIG_VERSION_PATH, TECHNICAL_DEFAULT_VERSION);
+            return true;
+        }
+        if (currentVersion.isEmpty()) {
             final Version newVersion = patchableVersions.lastEntry().getKey();
             pluginConfig.set(CONFIG_VERSION_PATH, newVersion.getVersion());
             pluginConfig.setInlineComments(CONFIG_VERSION_PATH, List.of(VERSION_CONFIG_COMMENT));

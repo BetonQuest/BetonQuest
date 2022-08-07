@@ -1,1 +1,6 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/ConfigPatcher.md
+2.0.0.0:
+  - type: SET
+    key: configVersion
+    value: "2.0.0-CONFIG-0"
+    override: true
