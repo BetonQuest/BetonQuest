@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.modules.config;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.api.config.patcher.PatchException;
 import org.betonquest.betonquest.api.config.patcher.PatchTransformation;
@@ -85,6 +86,7 @@ public class Patcher {
      * @param config      the config that must be patched
      * @param patchConfig the patchConfig that contains patches
      */
+    @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", justification = "False Positive, default value is explicitly set.")
     public Patcher(final ConfigurationSection config, final ConfigurationSection patchConfig) {
         this.pluginConfig = config;
         this.patchConfig = patchConfig;
