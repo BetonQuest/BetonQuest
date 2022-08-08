@@ -5,14 +5,13 @@ import org.betonquest.betonquest.api.bukkit.config.custom.ConfigurationSectionDe
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.config.patcher.PatchTransformationRegisterer;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Path;
+import java.net.URI;
 
 /**
  * Facade for easy loading and saving of configs.
@@ -35,13 +34,13 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
      * @param patchAccessor a {@link ConfigAccessor} that holds the patch file
      * @throws InvalidConfigurationException if patch modifications couldn't be saved
      */
-    private ConfigurationFileImpl(final ConfigAccessor accessor, final ConfigAccessor patchAccessor, final PatchTransformationRegisterer patchTransformationRegisterer) throws InvalidConfigurationException {
+    private ConfigurationFileImpl(final ConfigAccessor accessor, final ConfigAccessor patchAccessor, final PatchTransformationRegisterer patchTransformationRegisterer, final URI relativeRoot) throws InvalidConfigurationException {
         super(accessor.getConfig());
         this.accessor = accessor;
         if (patchAccessor != null) {
             final Patcher patcher = new Patcher(accessor.getConfig(), patchAccessor.getConfig());
             patchTransformationRegisterer.registerTransformations(patcher);
-            if (patchConfig(patcher)) {
+            if (patchConfig(patcher, relativeRoot)) {
                 try {
                     accessor.save();
                 } catch (final IOException e) {
@@ -71,7 +70,7 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
         final ConfigAccessor patchAccessor = createPatchAccessor(plugin, resourceFile);
         return new ConfigurationFileImpl(accessor, patchAccessor,
                 patchTransformationRegisterer == null ? new PatchTransformationRegisterer() {
-                } : patchTransformationRegisterer);
+                } : patchTransformationRegisterer, plugin.getDataFolder().getParentFile().toURI());
     }
 
     private static ConfigAccessor createPatchAccessor(final Plugin plugin, final String resourceFile) throws InvalidConfigurationException {
@@ -98,11 +97,10 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
      * @param patcher the patcher to use
      * @return if the file was modified
      */
-    private boolean patchConfig(final Patcher patcher) {
+    private boolean patchConfig(final Patcher patcher, final URI relativeRoot) {
         if (patcher.hasUpdate()) {
-            final Path configPath = accessor.getConfigurationFile().getAbsoluteFile().toPath();
-            final Path pluginFolder = Bukkit.getPluginsFolder().getAbsoluteFile().toPath();
-            final Path relativePath = pluginFolder.relativize(configPath);
+            final URI configPath = accessor.getConfigurationFile().getAbsoluteFile().toURI();
+            final String relativePath = relativeRoot.relativize(configPath).getPath();
 
             LOG.info("Updating config file '" + relativePath + "' from version '" + patcher.getCurrentConfigVersion() +
                     "' to version '" + patcher.getNextConfigVersion().getVersion() + "'");
