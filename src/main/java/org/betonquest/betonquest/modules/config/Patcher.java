@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.modules.config;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.api.config.patcher.PatchException;
 import org.betonquest.betonquest.api.config.patcher.PatchTransformation;
@@ -85,6 +86,7 @@ public class Patcher {
      * @param config      the config that must be patched
      * @param patchConfig the patchConfig that contains patches
      */
+    @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", justification = "False Positive, default value is explicitly set.")
     public Patcher(final ConfigurationSection config, final ConfigurationSection patchConfig) {
         this.pluginConfig = config;
         this.patchConfig = patchConfig;
@@ -94,9 +96,13 @@ public class Patcher {
             LOG.error("Invalid patch file! " + e.getMessage(), e);
         }
         final String configVersion = config.getString(CONFIG_VERSION_PATH, TECHNICAL_DEFAULT_VERSION);
-        if ("".equals(configVersion)) {
-            final Map.Entry<Version, String> newestVersion = patchableVersions.lastEntry();
-            this.configVersion = newestVersion.getKey();
+        if (configVersion.isEmpty()) {
+            if (patchableVersions.isEmpty()) {
+                this.configVersion = new Version(TECHNICAL_DEFAULT_VERSION);
+            } else {
+                final Map.Entry<Version, String> newestVersion = patchableVersions.lastEntry();
+                this.configVersion = newestVersion.getKey();
+            }
         } else {
             this.configVersion = new Version(configVersion);
         }
@@ -143,14 +149,25 @@ public class Patcher {
      * @return if the version was updated
      */
     public boolean updateVersion() {
-        final String currentVersion = pluginConfig.getString(CONFIG_VERSION_PATH, TECHNICAL_DEFAULT_VERSION);
-        if ("".equals(currentVersion)) {
-            final Version newVersion = patchableVersions.lastEntry().getKey();
-            pluginConfig.set(CONFIG_VERSION_PATH, newVersion.getVersion());
-            pluginConfig.setInlineComments(CONFIG_VERSION_PATH, List.of(VERSION_CONFIG_COMMENT));
+        final String currentVersion = pluginConfig.getString(CONFIG_VERSION_PATH);
+        if (currentVersion == null) {
+            setConfigVersion(TECHNICAL_DEFAULT_VERSION);
+            return true;
+        }
+        if (currentVersion.isEmpty()) {
+            if (patchableVersions.isEmpty()) {
+                setConfigVersion(TECHNICAL_DEFAULT_VERSION);
+            } else {
+                setConfigVersion(patchableVersions.lastEntry().getKey().getVersion());
+            }
             return true;
         }
         return false;
+    }
+
+    private void setConfigVersion(final String technicalDefaultVersion) {
+        pluginConfig.set(CONFIG_VERSION_PATH, technicalDefaultVersion);
+        pluginConfig.setInlineComments(CONFIG_VERSION_PATH, List.of(VERSION_CONFIG_COMMENT));
     }
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
@@ -196,8 +213,7 @@ public class Patcher {
             }
             LOG.info("Applying patches to update to '" + version.getVersion() + "'...");
             final String patchDataPath = versionData.getValue();
-            pluginConfig.set(CONFIG_VERSION_PATH, getNewVersion(patchDataPath));
-            pluginConfig.setInlineComments(CONFIG_VERSION_PATH, List.of(VERSION_CONFIG_COMMENT));
+            setConfigVersion(getNewVersion(patchDataPath));
             if (!applyPatch(patchDataPath)) {
                 noErrors = false;
             }
