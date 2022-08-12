@@ -7,15 +7,27 @@ import org.bukkit.entity.Entity;
 
 import java.util.List;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Wrapper for ENTITY METADATA packet
+ */
 public class WrapperPlayServerEntityMetadata extends PacketHandlerDecorator{
 
+    /**
+     * field of ENTITY METADATA packet type
+     */
     public static final PacketType TYPE = PacketType.Play.Server.ENTITY_METADATA;
 
+    /**
+     * Creating Packet Handler
+     */
     public WrapperPlayServerEntityMetadata() {
         this(new DefaultPacketHandler(TYPE));
     }
 
+    /**
+     * Creating Packet from PacketHandler
+     * @param packetHandler PacketHandler for Creating PacketContainer
+     */
     public WrapperPlayServerEntityMetadata(final PacketHandler packetHandler) {
         super(packetHandler);
         if (getPacketHandler().getType() != TYPE) {

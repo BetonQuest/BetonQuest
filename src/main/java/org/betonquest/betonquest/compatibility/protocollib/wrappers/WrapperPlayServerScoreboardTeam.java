@@ -8,14 +8,26 @@ import org.bukkit.ChatColor;
 import java.util.Collection;
 import java.util.List;
 
-@SuppressWarnings({"PMD.CommentRequired", "PMD.UnusedPrivateField"})
+/**
+ * Wrapper for SCOREBOARD TEAM packet
+ */
 public class WrapperPlayServerScoreboardTeam extends PacketHandlerDecorator {
+    /**
+     * field of SCOREBOARD TEAM packet type
+     */
     public static final PacketType TYPE = PacketType.Play.Server.SCOREBOARD_TEAM;
 
+    /**
+     * Creating Packet Handler
+     */
     public WrapperPlayServerScoreboardTeam() {
         this(new DefaultPacketHandler(TYPE));
     }
 
+    /**
+     * Creating Packet from PacketHandler
+     * @param packetHandler PacketHandler for Creating PacketContainer
+     */
     protected WrapperPlayServerScoreboardTeam(final PacketHandler packetHandler) {
         super(packetHandler);
         if (getPacketHandler().getType() != TYPE) {

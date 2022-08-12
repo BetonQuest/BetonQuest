@@ -26,7 +26,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -40,18 +39,33 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods", "PMD.GodClass"})
+/**
+ * NPCGlow class
+ */
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.GodClass"})
 @CustomLog
 public final class NPCGlow extends BukkitRunnable implements Listener {
 
+    /**
+     * instance of NPCGlow
+     */
     private static NPCGlow instance;
+    /**
+     * List of conditions for spesific NPC that will get glow
+     */
     private final Map<Integer, Set<ConditionID>> npcs;
     /**
      * List player that can seen glowing npc.
      */
     private final Map<Integer, Set<Player>> npcPlayersMap;
+    /**
+     * Store NPCID for each color
+     */
     private final Map<Integer, ChatColor> npcColor;
 
+    /**
+     * Constructor of NPCGlow instance
+     */
     public NPCGlow() {
         super();
         npcPlayersMap = new HashMap<>();
@@ -65,6 +79,9 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
+    /**
+     * Starts (or restarts) the NPCGlow. It loads the current configuration for hidden NPCs
+     */
     public static void start() {
         synchronized (NPCGlow.class) {
             if (instance != null) {
@@ -74,10 +91,16 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
         }
     }
 
+    /**
+     * @return the currently used NPCGlow instance
+     */
     public static NPCGlow getInstance() {
         return instance;
     }
 
+    /**
+     * load all data from config
+     */
     @SuppressWarnings({"PMD.ShortVariable", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
     private void loadFromConfig() {
 
@@ -138,6 +161,12 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
         }
     }
 
+    /**
+     * Checked if player have met the conditions
+     *
+     * @param player player that will get checked
+     * @param npcID  ID of npc that will get checked
+     */
     @SuppressWarnings("PMD.CyclomaticComplexity")
     public void applyVisibility(final Player player, final Integer npcID) {
         final NPC npc = CitizensAPI.getNPCRegistry().getById(npcID);
@@ -191,6 +220,11 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
         packet.sendPacket(player);
     }
 
+    /**
+     * apply glow to all npc for player if conditions are met
+     *
+     * @param player send packet to player
+     */
     public void applyGlow(final Player player) {
         npcs
                 .keySet()
@@ -198,6 +232,11 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
                 .forEach((npcID) -> applyVisibility(player, npcID));
     }
 
+    /**
+     * apply glow to npc for all online players if condition are met
+     *
+     * @param npc npc that get checked
+     */
     public void applyGlow(final NPC npc) {
         if (!npc.getOwningRegistry().equals(CitizensAPI.getNPCRegistry())) {
             return;
@@ -255,6 +294,11 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
                 }));
     }
 
+    /**
+     * Create and Sending Scoreboard Team packet in background (async) for a List of npcs on npcPlayersMap
+     *
+     * @param mode Mode of the Team
+     */
     public void applyTeamAsync(final Mode mode) {
         npcPlayersMap.forEach((npcID, players) -> players.parallelStream().forEach((player) -> {
             final NPC npc = CitizensAPI.getNPCRegistry().getById(npcID);
@@ -296,12 +340,21 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
         });
     }
 
+    /**
+     * Starting the Runnable
+     */
     @Override
     public void run() {
         applyGlow();
     }
 
-    public void resetGlow(final Collection<Integer> npcs, final boolean glow, final Collection<? extends Player> players) {
+    /**
+     * Reset all Glowing NPCs
+     *
+     * @param npcs    List of NPCs that will be unGlow
+     * @param players List of Players that will get the packet
+     */
+    public void resetGlow(final Collection<Integer> npcs, final Collection<? extends Player> players) {
         npcs
                 .parallelStream()
                 .forEach((npcId) -> {
@@ -309,16 +362,16 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
                     if (npc == null) {
                         return;
                     }
-                    players.forEach((player) -> applyGlow(npcId, glow, player));
+                    players.forEach((player) -> applyGlow(npcId, false, player));
                 });
         applyTeamAsync(Mode.TEAM_REMOVED);
     }
 
     /**
-     * stop the NPCGlow instance, cleaning up all maps, Runnables, Listener, etc. And Reset all the glowing npc.
+     * stop the NPCGlow instance, cleaning up all maps, Runnable, Listener, etc. And Reset all the glowing npc.
      */
     public void stop() {
-        resetGlow(npcs.keySet(), false, Bukkit.getOnlinePlayers());
+        resetGlow(npcs.keySet(), Bukkit.getOnlinePlayers());
         npcPlayersMap.clear();
         npcs.clear();
         npcColor.clear();
@@ -326,6 +379,11 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
         HandlerList.unregisterAll(this);
     }
 
+    /**
+     * If NPC got despawn it gets remove the npc from all map.
+     *
+     * @param event NPCDespawn
+     */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onNPCDespawn(final NPCDespawnEvent event) {
         final NPC npc = event.getNPC();
@@ -334,6 +392,11 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
         npcColor.remove(npc.getId());
     }
 
+    /**
+     * If NPC death it gets remove the npc from all map.
+     *
+     * @param event NPCDeath
+     */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onNPCDeath(final NPCDeathEvent event) {
         final NPC npc = event.getNPC();
@@ -342,18 +405,23 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
         npcColor.remove(npc.getId());
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerLogin(final PlayerJoinEvent event) {
-        applyGlow(event.getPlayer());
-        applyTeamAsync(Mode.TEAM_CREATED);
-    }
 
+    /**
+     * apply glowing to npc that just spawn (if it registered on map).
+     *
+     * @param event NPCSpawn
+     */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onNPCSpawn(final NPCSpawnEvent event) {
         applyGlow(event.getNPC());
         applyTeamAsync(Mode.TEAM_CREATED);
     }
 
+    /**
+     * Remove Player that just quit from all map.
+     *
+     * @param event PlayerQuit
+     */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerLogout(final PlayerQuitEvent event) {
         npcPlayersMap
@@ -362,11 +430,29 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
                 .forEach((players) -> players.remove(event.getPlayer()));
     }
 
+    /**
+     * List mode for Team Packet
+     */
     protected enum Mode {
+        /**
+         * Create a Team
+         */
         TEAM_CREATED,
+        /**
+         * Remove Existed Team
+         */
         TEAM_REMOVED,
+        /**
+         * Update Team
+         */
         TEAM_UPDATED,
+        /**
+         * Added players to the Team
+         */
         PLAYERS_ADDED,
+        /**
+         * Remove players from the team
+         */
         PLAYERS_REMOVED
     }
 }
