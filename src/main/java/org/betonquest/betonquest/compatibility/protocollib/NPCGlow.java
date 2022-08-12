@@ -24,6 +24,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -39,10 +40,11 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods"})
+@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods", "PMD.GodClass"})
 @CustomLog
 public final class NPCGlow extends BukkitRunnable implements Listener {
 
+    private static NPCGlow instance;
     private final Map<Integer, Set<ConditionID>> npcs;
     /**
      * List player that can seen glowing npc.
@@ -58,9 +60,18 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
         Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), () -> {
             loadFromConfig();
             applyTeamAsync(Mode.TEAM_CREATED);
-        }, 20L);
+        }, 5L);
         runTaskTimer(BetonQuest.getInstance(), 0, 5);
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+    }
+
+    public static void start(){
+        synchronized (NPCGlow.class) {
+            if (instance != null) {
+                instance.stop();
+            }
+            instance = new NPCGlow();
+        }
     }
 
     @SuppressWarnings({"PMD.ShortVariable", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
@@ -302,15 +313,19 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
     }
 
     /**
-     * Refresh the NPCGlow instance, cleaning up all maps. And Reset all the glowing npc.
+     * stop the NPCGlow instance, cleaning up all maps, Runnables, Listener, etc. And Reset all the glowing npc.
      */
-    public void refresh() {
+    public void stop() {
         resetGlow(npcs.keySet(), false, Bukkit.getOnlinePlayers());
         npcPlayersMap.clear();
         npcs.clear();
         npcColor.clear();
-        loadFromConfig();
-        applyTeamAsync(Mode.TEAM_CREATED);
+        cancel();
+        HandlerList.unregisterAll(this);
+    }
+
+    public static NPCGlow getInstance() {
+        return instance;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
