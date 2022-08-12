@@ -65,13 +65,17 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
-    public static void start(){
+    public static void start() {
         synchronized (NPCGlow.class) {
             if (instance != null) {
                 instance.stop();
             }
             instance = new NPCGlow();
         }
+    }
+
+    public static NPCGlow getInstance() {
+        return instance;
     }
 
     @SuppressWarnings({"PMD.ShortVariable", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
@@ -101,6 +105,10 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
                             LOG.warn(cfgPackage, "Condition '" + condition + "' does not exist, in glow_npc with ID " + id, e);
                         }
                     }
+                }
+                if (id == null) {
+                    LOG.warn(cfgPackage, "No ID found in glow_npc for '" + key + "'");
+                    continue;
                 }
                 final int npcId;
                 try {
@@ -187,9 +195,7 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
         npcs
                 .keySet()
                 .parallelStream()
-                .forEach((npcID) -> {
-                    applyVisibility(player, npcID);
-                });
+                .forEach((npcID) -> applyVisibility(player, npcID));
     }
 
     public void applyGlow(final NPC npc) {
@@ -232,41 +238,39 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
      */
     public CompletableFuture<Void> applyGlowAsync(final NPC npc, final Collection<? extends Player> players) {
         final Entity entity = npc.getEntity();
-        return CompletableFuture.runAsync(() -> {
-            players
-                    .parallelStream()
-                    .forEach((player) -> {
-                        final WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata();
-                        final WrappedDataWatcher watcher = WrappedDataWatcher.getEntityWatcher(entity).deepClone();
-                        final WrappedDataWatcher.Serializer serializer = WrappedDataWatcher.Registry.get(Byte.class);
-                        watcher.setEntity(entity);
-                        byte mask = watcher.getByte(0);
-                        mask |= 0x40;
-                        watcher.setObject(0, serializer, mask);
+        return CompletableFuture.runAsync(() -> players
+                .parallelStream()
+                .forEach((player) -> {
+                    final WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata();
+                    final WrappedDataWatcher watcher = WrappedDataWatcher.getEntityWatcher(entity).deepClone();
+                    final WrappedDataWatcher.Serializer serializer = WrappedDataWatcher.Registry.get(Byte.class);
+                    watcher.setEntity(entity);
+                    byte mask = watcher.getByte(0);
+                    mask |= 0x40;
+                    watcher.setObject(0, serializer, mask);
 
-                        packet.setEntityID(entity.getEntityId());
-                        packet.setMetadata(watcher.getWatchableObjects());
-                        packet.sendPacket(player);
-                    });
-        });
+                    packet.setEntityID(entity.getEntityId());
+                    packet.setMetadata(watcher.getWatchableObjects());
+                    packet.sendPacket(player);
+                }));
     }
 
     public void applyTeamAsync(final Mode mode) {
-        npcPlayersMap.forEach((npcID, players) -> {
-            players.parallelStream().forEach((player) -> {
-                final NPC npc = CitizensAPI.getNPCRegistry().getById(npcID);
-                if (npc.isSpawned()) {
-                    applyTeamAsync(mode, npcColor.get(npcID), player, npc).join();
-                }
-            });
-        });
+        npcPlayersMap.forEach((npcID, players) -> players.parallelStream().forEach((player) -> {
+            final NPC npc = CitizensAPI.getNPCRegistry().getById(npcID);
+            if (npc.isSpawned()) {
+                applyTeamAsync(mode, npcColor.get(npcID), player, npc).join();
+            }
+        }));
     }
 
     /**
      * Create and Sending Scoreboard Team packet in background (async) for a List of npcs
      *
-     * @param npcs   NPCs that will be in the Team
+     * @param color  color of the team
+     * @param mode   Mode of the team
      * @param player player that can see the glowing NPC
+     * @param npcs   NPCs that will be in the Team
      * @return void
      */
     public CompletableFuture<Void> applyTeamAsync(final Mode mode, final ChatColor color, final Player player, final NPC... npcs) {
@@ -305,9 +309,7 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
                     if (npc == null) {
                         return;
                     }
-                    players.forEach((player) -> {
-                        applyGlow(npcId, glow, player);
-                    });
+                    players.forEach((player) -> applyGlow(npcId, glow, player));
                 });
         applyTeamAsync(Mode.TEAM_REMOVED);
     }
@@ -322,10 +324,6 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
         npcColor.clear();
         cancel();
         HandlerList.unregisterAll(this);
-    }
-
-    public static NPCGlow getInstance() {
-        return instance;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -361,9 +359,7 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
         npcPlayersMap
                 .values()
                 .parallelStream()
-                .forEach((players) -> {
-                    players.remove(event.getPlayer());
-                });
+                .forEach((players) -> players.remove(event.getPlayer()));
     }
 
     protected enum Mode {
