@@ -1,12 +1,12 @@
 ---
-icon: fontawesome/solid/play
+icon: material/check-circle
 tags:
 - Objectives
 ---
 You have learned how to create your own events, test them on the server directly without a conversation, 
 and integrate an event into your own conversations.
-This section will teach you how to construct your first objectives, how to test them, and how to 
-activate this objective with an event in a conversation.
+This section is about objectives. Objectives are tasks which you can assign to a player or a group for example 
+a collect or fishing task. The possibilities are nearly endless! You will learn about that in this section.
 
 <div class="grid" markdown>
 !!! danger "Requirements"
@@ -26,9 +26,9 @@ activate this objective with an event in a conversation.
 
 ## 1. Creating the folder structure for your first objective
 Add a new file to your "_tutorialQuest_" `QuestPackage` named "_objectives.yml_" and after that
-add a new file to your "_tutorialQuest_" `Conversations` folder named "_blacksmith.yml_".
+add a new file to your "_tutorialQuest_" Conversations folder named "_blacksmith.yml_".
 You may asking why we add a new file to conversations folder. This is because our created folder event ends
-at the blacksmith. Well, we want to talk to him and get more instructions.
+after the city tour. We now want to talk to the blacksmith and get more instructions.
 
 Here is an overview of what your directory structure should look like now:
 
@@ -48,7 +48,7 @@ To define your first objective open the new created file "_objectives.yml_" and 
 
 ``` YAML title="objectives.yml" linenums="1"
 objectives: # (1)!
-  fishingObj: "fish cod 10 hookLocation:100;50;100;world range:20 events:caughtAllFish"
+  fishingObj: "fish cod 10 notify hookLocation:100;50;100;world range:20 events:caughtAllFish"
 ```
 
 1. All objectives must be defined in an `objectives` section.
@@ -61,24 +61,27 @@ Let me explain this to you:
     - `fish` The first value in the instruction is always the **objective type**.
     - `cod 10` This is an **option** of the objective `fish`. It defines which item you have to fish and which amount
       seperated by a space.
+    - `hookLocation:100;50;100;world` This **option** is to define a hook location. Only catched fish in this specific area counts.
+    - `range:20` If you use the hook location you also have to define the range. This is the range around the hook location coordinate.
+    - `events:caughtAllFish` This event gets triggered after you caught 10 fish at the specific hook location.
 
 As we learned in the previous tutorial we have to define `cod` in the item section because BetonQuest don't know what `cod` is.
 
 ## 3. Testing your first objective ingame
 
-You can also add objectives to a player using commands.
-
 The easiest way to do this is by running a command:
 
 Enter `/bq objective NAME tutorialQuest.fishObj` on the server.
 This command will add's the objective to the player to fish 10 cod.
+If you want to check if you have done it correctly, go to the defined location and fish 10 cod. After you caught 10 cod
+you should get a notification.
 
-| Command Part    | Meaning                                                                                                                               |
-|-----------------|---------------------------------------------------------------------------------------------------------------------------------------|
-| `/bq event`     | Tells BetonQuest that some event should be executed.                                                                                  |
-| `NAME`          | A player's name.                                                                                                                      |
-| `tutorialQuest` | The name of a QuestPackage. This is required because you could have events with the same name in different packages.                  |
-| `fishObj`       | The name of the objective to execute. Don't forget to separate it with a dot from the package `tutorialQuest{==.==}giveFoodToPlayer`. |
+| Command Part    | Meaning                                                                                                                      |
+|-----------------|------------------------------------------------------------------------------------------------------------------------------|
+| `/bq objective` | Tells BetonQuest that some event should be executed.                                                                         |
+| `NAME`          | A player's name.                                                                                                             |
+| `tutorialQuest` | The name of a QuestPackage. This is required because you could have objectives with the same name in different packages.     |
+| `fishObj`       | The name of the objective to execute. Don't forget to separate it with a dot from the package `tutorialQuest{==.==}fishObj`. |
 
 You can also run the `/bq objective NAME` to check what objectives a player has.
 

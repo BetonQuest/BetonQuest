@@ -214,6 +214,4 @@ You've learned what events are and how to create them. You can now give a player
 even teleport him through the whole town! More events can be found in the [events list](../../../Documentation/Events-List.md).
 Next you will learn how to give tasks to the player using **objectives**. 
 ---
-[:construction: :construction_worker: ~~Objectives Tutorial~~ ](#summary){ .md-button .md-button--primary}
-
-This is the end of the current basic tutorial, you can find more information in the [old tutorial](../Learn-BetonQuest.md).
+[Objectives Tutorial](./Objectives.md){ .md-button .md-button--primary}
