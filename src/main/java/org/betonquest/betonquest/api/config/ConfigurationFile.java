@@ -26,7 +26,8 @@ public interface ConfigurationFile extends ConfigurationSection {
      * E.g:
      * {@code  config.yml & config.patch.yml}
      * <br><br>
-     * Available patches can be explicitly overridden by passing a {@link PatchTransformationRegisterer}. Otherwise, the default patches are used.
+     * Available patches can be explicitly overridden by passing a {@link PatchTransformationRegisterer}.
+     * Otherwise, the default patches are used.
      * <br><br>
      *
      * @param configurationFile             where to load and save the config
