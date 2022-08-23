@@ -4,7 +4,8 @@ out/
 *.iml
 modules.xml
 /.idea
-
+# Custom dictionaries
+!/.idea/dictionaries/
 
 
 # Mongo Explorer plugin
