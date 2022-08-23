@@ -34,7 +34,7 @@ If something stopped working before asking for help please do /q reload and READ
 You will be able to see which events etc. loaded and which didn't with the reasons why.
 You may be able to fix it yourself from this or use this information, so we can better help you!
 
-Also double check you saved your files and if needed reupload them to your server.
+Also double check you saved your files and if needed re-upload them to your server.
 This is insanely common and can be overlooked!
 
 ## I have an error which says "Cannot load plugins/BetonQuest/{someFile}.yml", what is wrong?
@@ -56,7 +56,7 @@ The core ideas of that system are:
   It will be deleted using the objective event once it's finished.
     
 * The systems logic is essentially just a point variable that is increased on each completion and a notify event being run.
-  That notify event displays a the current objective progress.
+  That notify event displays the current objective progress.
 
 * The objective gets reset with an event that has a condition bound to it. That means that the event will only be run once
   the condition is true. in this case the player needs 10 points / needs to have mined 10 blocks.
@@ -291,5 +291,5 @@ Or you could define separate items for open and finished quests or even to show 
 ## Menus displaying players stats
 You may also use menus to display the stats of a player. Just use [variables](../Documentation/Variables-List.md) in the text or for the amount of an item.
 
-For example try displaying a players money using the varible from [Vault integration](http://dev.bukkit.org/bukkit-plugins/vault/)
+For example try displaying a players money using the variable from [Vault integration](http://dev.bukkit.org/bukkit-plugins/vault/)
 or use [PlaceholderAPI](../Documentation/Compatibility.md#placeholderapi) to show placeholders from many other plugins.

@@ -40,10 +40,10 @@ These advantages are mainly for BetonQuest, but it is also very useful for 3rd p
 ## Obtaining a BetonQuestLogger Instance
 
 !!! note ""
-    === "Using Lombock"
-        Using Lombock enables you to use the handy [@CustomLog](https://projectlombok.org/features/log)
+    === "Using Lombok"
+        Using Lombok enables you to use the handy [@CustomLog](https://projectlombok.org/features/log)
         annotation on each class you want a logger for.
-        This requires a Lombock setup in your project and in your IDE.
+        This requires a Lombok setup in your project and in your IDE.
     
         !!! abstract "1. Setup"
             The first step is to install a Lombok plugin in your IDE. IntelliJ contains it by default.
@@ -54,7 +54,7 @@ These advantages are mainly for BetonQuest, but it is also very useful for 3rd p
             lombok.log.custom.declaration = org.betonquest.betonquest.api.BetonQuestLogger org.betonquest.betonquest.api.BetonQuestLogger.create(TYPE)(TYPE,TOPIC)
             lombok.log.fieldName = LOG
             ````
-            Additionally, Lombock also needs to be setup for the project. The exact configuration depends on your project
+            Additionally, Lombok also needs to be setup for the project. The exact configuration depends on your project
             setup.
     
         !!! abstract "2. Usage"

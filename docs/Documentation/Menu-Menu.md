@@ -63,11 +63,11 @@ This section tells you about each setting which has to be set (or can optionally
   Have a look at [the items section](#the-items-section) part of the wiki which is covering this topic.
 
 * `slots`: *(configuration section)*   
-  In this section you define which items form the `items` sction should be displayed in which slot.
+  In this section you define which items form the `items` section should be displayed in which slot.
   Have a look at [the slots section](#the-slots-section) part of the wiki which is covering this topic.
 
 ## The `items` section
-The items section contians all items which should be displayed in the menu, defined as individual sections of the config. The names of the items should only contain numbers, letters hyphens and underscores. You shouldn't name a item `yes`, `no`, `true` or `false` as those are yml keywords for booleans.  
+The items section contains all items which should be displayed in the menu, defined as individual sections of the config. The names of the items should only contain numbers, letters hyphens and underscores. You shouldn't name a item `yes`, `no`, `true` or `false` as those are yml keywords for booleans.  
 Each item has the following settings:
 
 * `item`: *([quest item](Reference.md#items))*  

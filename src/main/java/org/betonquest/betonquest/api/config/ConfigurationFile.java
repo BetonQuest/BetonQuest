@@ -25,6 +25,10 @@ public interface ConfigurationFile extends ConfigurationSection {
      * <br>
      * E.g:
      * {@code  config.yml & config.patch.yml}
+     * <br><br>
+     * Available patches can be explicitly overridden by passing a {@link PatchTransformationRegisterer}.
+     * Otherwise, the default patches are used.
+     * <br><br>
      *
      * @param configurationFile             where to load and save the config
      * @param plugin                        to load the jar resources from
@@ -48,6 +52,10 @@ public interface ConfigurationFile extends ConfigurationSection {
      * <br>
      * E.g:
      * {@code  config.yml & config.patch.yml}
+     * <br><br>
+     * The default patches are used when the ConfigurationFile is loaded using this method.
+     * Use {@link #create(File, Plugin, String, PatchTransformationRegisterer)} to override the default patches.
+     * <br><br>
      *
      * @param configurationFile where to load and save the config
      * @param plugin            to load the jar resources from

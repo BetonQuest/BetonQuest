@@ -51,7 +51,27 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
     }
 
     /**
-     * @see ConfigurationFile#create(File, Plugin, String)
+     * Uses {@link ConfigAccessor#create(File, Plugin, String)} to either load or create a {@link ConfigurationFile}.
+     * <br>
+     * Additionally, attempts to patch the {@code configurationFile} with a patch file.
+     * This patch file must exist in the same directory as the {@code resourceFile}.
+     * Its name is the one of the {@code resourceFile} but with
+     * '.patch' inserted between the file name and the file extension.
+     * <br>
+     * E.g:
+     * {@code  config.yml & config.patch.yml}
+     * <br><br>
+     * Available patches can be explicitly overridden by passing a {@link PatchTransformationRegisterer}.
+     * Otherwise, the default patches are used.
+     * <br><br>
+     *
+     * @param configurationFile             where to load and save the config
+     * @param plugin                        to load the jar resources from
+     * @param resourceFile                  path to the default config in the plugin's jar
+     * @param patchTransformationRegisterer a function that registers the transformers to be used for patching
+     * @return a new ConfigurationFile
+     * @throws InvalidConfigurationException if the configuration is invalid or could not be saved
+     * @throws FileNotFoundException         if the {@code configurationFile} or {@code resourceFile} could not be found
      */
     public static ConfigurationFile create(final File configurationFile, final Plugin plugin, final String resourceFile, final PatchTransformationRegisterer patchTransformationRegisterer) throws InvalidConfigurationException, FileNotFoundException {
         if (configurationFile == null || plugin == null || resourceFile == null) {

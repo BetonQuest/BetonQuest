@@ -115,7 +115,7 @@ It prevents other plugins from duplicating quest items after death.
 
 When a player dies, their quest items are removed from drops and stored in the backpack, but some plugins may try to
 restore all items to the player (for example WorldGuard custom flag keep-inventory).
-That is why BetonQuest removes the quest items that are in a player's inventory after they respawn again, to be sure they were not readded. 
+That is why BetonQuest removes the quest items that are in a player's inventory after they respawn again, to be sure they were not re-added. 
 The "keepInventory" gamerule, however, works differently - the items are never dropped, so they cannot be added to backpack. 
 Removing them from the inventory would destroy them forever. Sadly, Bukkit does not allow for gamerule checking, so it is up to you to decide.
 
@@ -193,7 +193,7 @@ If you want to add a font style (bold, italic etc.) do so after placing a comma.
 
 ### Conversation Settings: ChestIO
 
-* `conversation_IO_config` manages settings for individual conoversation IO's:
+* `conversation_IO_config` manages settings for individual conversation IO's:
   - `chest` manages settings for the chest conversation IO
     - `show_number` will show the player number option if true (default: true)
     - `show_npc_text` will show the npc text in every player option if true (default: true)

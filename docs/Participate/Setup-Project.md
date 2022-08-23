@@ -23,7 +23,7 @@ if you don't know how to install Git.
 Then you should [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo)
 the BetonQuest repository to your own account on GitHub.
 
-After you have setup the IDE,
+After you have set up the IDE,
 [clone](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository)
 the BetonQuest repository from your account. You can also directly
 [clone the repository in IntelliJ](https://blog.jetbrains.com/idea/2020/10/clone-a-project-from-github/).

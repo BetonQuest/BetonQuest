@@ -155,7 +155,7 @@ events:
 4. Adjust this to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating)
 
 As you can see, there are a few new events of the types `folder` and `teleport`.
-The folder event wraps multiple events inside itself. Once triggered, it simply executes it's events. 
+The folder event wraps multiple events inside itself. Once triggered, it simply executes its events. 
 Every event type is documented in the events list, read more about the [folder](../../../Documentation/Events-List.md#run-multiple-events-folder)
 and [teleport](../../../Documentation/Events-List.md#teleport-teleport) events there. 
 

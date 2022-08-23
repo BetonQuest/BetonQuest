@@ -10,7 +10,7 @@ First you need to execute the following command to download the example quest:
 ````
 
 Let's start by checking out the downloaded example quest. You can find it in the BetonQuest directory that has been
-generated in your plugins folder. The folder you are looking for is named "_QuestPackages/default/_".
+generated in your "_plugins_" folder. The folder you are looking for is named "_QuestPackages/default/_".
 
 Open it up and find a file called _package.yml_. It contains a lot of options, but you only need to look at this section:
 ```YAML linenums="1"
@@ -85,7 +85,7 @@ Now walk to the location you have defined in the condition. Try to stand on the 
 Issue **/q c {name} default.mega** command (`c` is shortcut for `condition`). It should show you "Condition blah blah
 blah: **true**". We're focusing on that last word, **true**. This means that you're meeting the condition: you're standing within
 5 block radius of the location. Now move 2 blocks away and issue that command again. You should still be meeting the condition. 
-Walk 4 more blocks away and try now. It should show **false**. You are now outside of that 5 block radius. Get it? Great.
+Walk 4 more blocks away and try now. It should show **false**. You are now outside that 5 block radius. Get it? Great.
 
 Now I'll show you the simplest use of those conditions. Open the _events.yml_ file again, and at the end of `mega` 
 instruction add `conditions:mega` argument. By the way, rename your events to something that actually fits the type
@@ -112,14 +112,14 @@ of the event, otherwise it will get confusing really fast. Example:
     ```
 
 
-Now `sayHello` event will run only if it meets `isAtSpawn` condition. Reload the plugin, walk outside of the 5 block
+Now `sayHello` event will run only if it meets `isAtSpawn` condition. Reload the plugin, walk outside the 5 block
 radius and try to run `sayHello` event. Puff, nothing happens. It's because you're not meeting `isAtSpawn` condition.
 Walk into the radius again and try to run that event now. It should happily display the `Hello world!` notification.
 
 It's very nice that we can add such conditions, but the problem is: what if you wanted to display the notification only if the
 player is _outside_ the radius? Don't worry, you don't have to specify `inverted_location` condition or anything like that.
 You can simply negate the condition. Negation makes the condition behave in the exact opposite way, in this case it
-`isAtSpawn` will be met only if the player is outside of the 5 block radius, and it won't be met if he's inside.
+`isAtSpawn` will be met only if the player is outside the 5 block radius, and it won't be met if he's inside.
 Open the _events.yml_ and add an exclamation mark before the `isAtSpawn` condition, so it looks like this:
 
 ```YAML linenums="1"
@@ -127,7 +127,7 @@ Open the _events.yml_ and add an exclamation mark before the `isAtSpawn` conditi
 ```
 
 This means "display the `Hello world!` notification if the `isAtSpawn` condition is _not met_". Save the file, reload the plugin
-and run the event inside and outside of the radius to see how it works.
+and run the event inside and outside the radius to see how it works.
 
 ## Basic tags
 
@@ -147,7 +147,7 @@ of the package in which the tag is, and `beton` is the name of the tag, as defin
 Now run `del_beton_tag` event. Guess what, `default.beton` disappeared from the list! And that's it, you know how to
 add and remove tags. Pretty useless.
 
-Nothing could be more wrong. Tags are one the most powerful things in BetonQuest. They just need to be used with `tag`
+Nothing could be more wrong. Tags are one of the most powerful things in BetonQuest. They just need to be used with `tag`
 condition. Open _conditions.yml_ and add this line:
 
 ```YAML linenums="1"
@@ -181,13 +181,13 @@ tells the plugin to add an objective).
 
 Now you can check if you actually have this objective with **/q o {name}** command, it will show you all your active
 objectives. It should show `default.kill_creepers`. Alright, remove (yes, remove!) the `beton` tag from you and find
-some Creepers to kill. Once you killes 3 of them you will notice that nothing happened. It's because `has_beton_tag`
-condtion is not met, so the objective does not count your progress. Now add the tag again and kill another Creepers.
+some Creepers to kill. Once you killed 3 of them you will notice that nothing happened. It's because `has_beton_tag`
+condition is not met, so the objective does not count your progress. Now add the tag again and kill another Creepers.
 When the third is dead you should be teleported to the location defined in `tp` event.
 
 Congratulations, now you know how to use objectives. You should experiment with other types now, since objectives will
 be used very often in your quests. Once you're done check out the _Writing your first conversation_ chapter to use your
-knowledge to write your fisrt conversation.
+knowledge to write your first conversation.
 
 ## Writing your first conversation
 
@@ -253,7 +253,7 @@ When you save&reload, the Miner should say `Nice weather.` when you tell him `He
         text: I need to go, sorry.
 ```
 
-Now, every time you talk to the Miner, he will say the same thing. It would be nice if the second time you talk to him
+Now, every time you talk to the Miner, he will say the same thing. It would be nice if the second time you talk to him,
 he knew your name. We can do that with tags. Define a `meet_miner` event and `has_met_miner` condition. When you talk
 to the Miner for the first time, he will check if you have met him. If not, he will meet you (with that event) and next
 time you talk, the condition will be passed and he will use your name.
@@ -273,7 +273,7 @@ condition with `''`, because strings cannot start with exclamation marks in YAML
 ```
 
 This means: `first_greeting` should be used if the player **does not** pass `has_met_miner` condition (meaning he
-doesn't have a tag because he haven't talked to the NPC yet). When this option is used, it will fire `meet_miner` event
+doesn't have a tag because he hasn't talked to the NPC yet). When this option is used, it will fire `meet_miner` event
 and display `hello` and `bye` options. Alright, but what happens if the player met the Miner and now negated
 `has_met_miner` condition doesn't work? NPC will try to use next option defined in `first` setting. There is none yet,
 so let's add it.
@@ -320,7 +320,7 @@ conversations:
 
 Now you should experiment some more with this conversation, you can help yourself by looking at the
 [innkeeper.yml](https://github.com/BetonQuest/Quest-Tutorials/blob/main/QuestPackages/default/conversations/innkeeper.yml) file.
-Try to understand how that conversation works step by step. As the excercise you should complete the Miner NPC, so he
+Try to understand how that conversation works step by step. As the exercise you should complete the Miner NPC, so he
 asks you to mine some iron ore, then smelt it in the furnace, next craft an armor with it and return to him wearing this armor.
 
 You might want to check out the [Reference](../../Documentation/Reference.md) chapter to see how to handle items in 

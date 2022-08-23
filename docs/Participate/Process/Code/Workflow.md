@@ -3,7 +3,7 @@ icon: octicons/workflow-16
 ---
 # Changing Code
 
-Make sure to [setup the project](../../Setup-Project.md) before doing this step. 
+Make sure to [set up the project](../../Setup-Project.md) before doing this step. 
 You should always [create a new branch](../Create-a-new-Branch.md) everytime you develop a new feature,
 fix a bug or make other changes.
 

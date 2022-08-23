@@ -26,25 +26,25 @@ Writes the notification in the player's chat.
 ??? info "Preview"
     ![chat image](../_media/content/Documentation/Notifications/chat.png)
 
-| Option  | Description                 |
-|---------|-----------------------------|
+| Option          | Description                            |
+|-----------------|----------------------------------------|
 | [Sound](#sound) | Any option from the [SoundIO](#sound). |
 
 ### Advancement
 Shows the notification using an achievement popup. Unfortunately Minecraft will play the default advancement sound here. 
 It's not possible to stop this sound from playing - if you want to get rid of it, you would have to override / remove
-that sound from your server's ressource pack.
+that sound from your server's resource pack.
 You can still add your own additional sound as usual though.
 It will then be played together with the default advancement sound.
 
 ??? info "Preview"
     ![advancement image](../_media/content/Documentation/Notifications/advancement.png)
 
-| Option | Description |
-|--------|-------------|
-| frame | What Achievement frame to use. Can be: `challenge`, `goal`, `task` |
-| icon | What icon to show. Must be the vanilla name of an item. Example: minecraft:map |
-| [Sound](#sound) | Any option from the [SoundIO](#sound). |
+| Option          | Description                                                                    |
+|-----------------|--------------------------------------------------------------------------------|
+| frame           | What Achievement frame to use. Can be: `challenge`, `goal`, `task`             |
+| icon            | What icon to show. Must be the vanilla name of an item. Example: minecraft:map |
+| [Sound](#sound) | Any option from the [SoundIO](#sound).                                         |
 
 ### Actionbar
 Shows the notification using the actionbar.
@@ -52,8 +52,8 @@ Shows the notification using the actionbar.
 ??? info "Preview"
     ![actionbar image](../_media/content/Documentation/Notifications/actionbar.png)
 
-| Option | Description |
-|--------|-------------|
+| Option          | Description                            |
+|-----------------|----------------------------------------|
 | [Sound](#sound) | Any option from the [SoundIO](#sound). |
 
 ### Bossbar
@@ -81,13 +81,13 @@ Anything after these characters will be shown in the subtitle.
 ??? info "Preview"     
     ![title](../_media/content/Documentation/Notifications/title.png)
 
-| Option | Description |
-|--------|-------------|
-| fadeIn | Ticks to fade the title in. Default 10 |
-| stay | Ticks to keep title on screen. Default 70 |
-| fadeOut | Ticks to fade the title out. Default 20 |
-| fadeOut | Ticks to fade the title out. Default 20 |
-| [Sound](#sound) | Any option from the [SoundIO](#sound). |
+| Option          | Description                               |
+|-----------------|-------------------------------------------|
+| fadeIn          | Ticks to fade the title in. Default 10    |
+| stay            | Ticks to keep title on screen. Default 70 |
+| fadeOut         | Ticks to fade the title out. Default 20   |
+| fadeOut         | Ticks to fade the title out. Default 20   |
+| [Sound](#sound) | Any option from the [SoundIO](#sound).    |
 
 ### SubTitle
 Shows the notification using a subtitle.
@@ -95,12 +95,12 @@ Shows the notification using a subtitle.
 ??? info "Preview"
     ![subtitle](../_media/content/Documentation/Notifications/subtitle.png)
 
-| Option | Description |
-|--------|-------------|
-| fadeIn | Ticks to fade the title in. Default 10 |
-| stay | Ticks to keep title on screen. Default 70 |
-| fadeOut | Ticks to fade the title out. Default 20 |
-| [Sound](#sound) | Any option from the [SoundIO](#sound). |
+| Option          | Description                               |
+|-----------------|-------------------------------------------|
+| fadeIn          | Ticks to fade the title in. Default 10    |
+| stay            | Ticks to keep title on screen. Default 70 |
+| fadeOut         | Ticks to fade the title out. Default 20   |
+| [Sound](#sound) | Any option from the [SoundIO](#sound).    |
 
 ### Totem
 Shows a totem with a "customModelData" NBT tag. This allows you to replace the totem with a custom texture or model 
@@ -111,9 +111,9 @@ during the animation.
       Sorry, your browser doesn't support embedded videos.
     </video>
 
-| Option | Description |
-|--------|-------------|
-| custommodeldata | This CustomModelData will be used. |
+| Option          | Description                            |
+|-----------------|----------------------------------------|
+| customisation   | This CustomModelData will be used.     |
 | [Sound](#sound) | Any option from the [SoundIO](#sound). |
 
 ### Sound

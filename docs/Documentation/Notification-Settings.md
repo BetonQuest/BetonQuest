@@ -64,7 +64,7 @@ Just set `io:` to [`supress`](Notification-IO's-&-Categories.md#suppress) for an
 ###Objective notifications
 Some objectives have a `notify` argument that can be added to their instruction.
 If you do so, the objective will send a notification to the player if they progress in the objective.
-You can also add an intervall (`notify:5`) - in this case the player will get a notification every 5 steps
+You can also add an interval (`notify:5`) - in this case the player will get a notification every 5 steps
 towards the completion of the objective.
 
 The messages.yml values of these notifications look a bit strange:

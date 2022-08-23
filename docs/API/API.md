@@ -1,30 +1,28 @@
 ---
 icon: octicons/gear-16
 ---
-## Accessing the plugin
-
 !!! warning
     All existing API will break in BetonQuest 2.0 which is being worked on while you read this.
     If you plan on doing something with this API please keep in mind that you will need to change it again later.
+    
+## Adding BetonQuest as a dependency
 
-Add this to your pom.xml.
+You can add BetonQuest as a dependency using your build system. Here is the config for Maven:
 
-```XML
-<repositories>
-    <repository>
-        <id>betonquest-repo</id>
-        <url>https://betonquest.org/nexus/repository/betonquest/</url>
-    </repository>
-</repositories>
+```XML title="Add this to your repositories tag"
+<repository>
+    <id>betonquest-repo</id>
+    <url>https://betonquest.org/nexus/repository/betonquest/</url>
+</repository>
+```
 
-<dependencies>
-    <dependency>
-        <groupId>org.betonquest</groupId>
-        <artifactId>betonquest</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
-        <scope>provided</scope>
-    </dependency>
-</dependencies>
+```XML title="Add this to your dependencies tag"
+<dependency>
+    <groupId>org.betonquest</groupId>
+    <artifactId>betonquest</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
+    <scope>provided</scope>
+</dependency>
 ```
 
 ## Writing events
@@ -76,7 +74,7 @@ Objectives are registered the same way as conditions and events, using `register
 
 ## Reading `Instruction` object
 
-The `Instruction` object parses the instruction string defined by the user and splits it into arguments. You can ask it for required arguments one by one with `next()` method or a parser method like `getQuestItem()`. Required arguments are the ones specified at the very beginning of an instruction string, for example `add someTag` in `tag` event. It will automaticly throw `InstructionParseException` for you if it encounters an error, for example when there were no more arguments in user's instruction or it can't parse the argument to the type you asked for.
+The `Instruction` object parses the instruction string defined by the user and splits it into arguments. You can ask it for required arguments one by one with `next()` method or a parser method like `getQuestItem()`. Required arguments are the ones specified at the very beginning of an instruction string, for example `add someTag` in `tag` event. It will automatically throw `InstructionParseException` for you if it encounters an error, for example when there were no more arguments in user's instruction or it can't parse the argument to the type you asked for.
 
 You can also ask for optional arguments: if the instruction string contains argument `arg:something` and you ask for optional `arg`, it will give you `something`. If there is no optional argument, it will return `null`. Don't worry about passing that `null` to parser methods like `getLocation(String)`, they won't throw an error, they'll simply return that `null`.
 
@@ -102,19 +100,19 @@ The `newObjective(String playerID, String objectiveID)` method will launch the o
 
 ## Creating additional conversation input/output methods
 
-In order to register an object as the conversation input/output it needs to implement `ConversationIO` interface. The constructor will receive three arguments: Conversation object, playerID String and NPC name String. It needs to parse the required data here and register all needed listeners. The `setResponse(String response)` method will receive NPC's text from the conversation. The `addOption(String option)` method will be called by the conversation for each reply option for this NPC text. The object must store all this data and when `display()` is called, it must use it to display the player the output. When it detects that the player chose an answer, it should pass it to the conversation using `Conversation.passPlayerAnswer(int number)` method. The integer is the number of the answer, starting at 1. `clear()` method will be called at the beginning of the new conversation cycle. It should clear all the previous options, so they do not overlap. `end()` method will be called when the conversation ends and it should unregister all listeners. You can also call that message when you detect that the player forced conversation ending (for example by moving away from the NPC). Remember to notify the conversation about that using `Conversation.end()`.
+In order to register an object as the conversation input/output it needs to implement `ConversationIO` interface. The constructor will receive three arguments: Conversation object, playerID String and NPC name String. It needs to parse the required data here and register all needed listeners. The `setResponse(String response)` method will receive NPC's text from the conversation. The `addOption(String option)` method will be called by the conversation for each reply option for this NPC text. The object must store all this data and when `display()` is called, it must use it to display the player the output. When it detects that the player chose an answer, it should pass it to the conversation using `Conversation.passPlayerAnswer(int number)` method. The integer is the number of the answer, starting at 1. `clear()` method will be called at the beginning of the new conversation cycle. It should clear all the previous options, so they do not overlap. `end()` method will be called when the conversation ends, and it should unregister all listeners. You can also call that message when you detect that the player forced conversation ending (for example by moving away from the NPC). Remember to notify the conversation about that using `Conversation.end()`.
 
 Registering the conversation inputs/outputs is done in the same way as objectives, events and conditions, through `BetonQuest.registerConversationIO(String name, Class<? extends ConversationIO>)` method.
 
 ## Listening to BetonQuest (Bukkit) events
 
-BetonQuest calls Bukkit events on a few occasions: when a conversation is started, finished and when an option is selected. You can find these events in `org.betonquest.betonquest.api` package and use them in your plugins. If you need any additional events just open and issue on GitHub or send me a pull request.
+BetonQuest calls Bukkit events occasionally: when a conversation is started, finished and when an option is selected. You can find these events in `org.betonquest.betonquest.api` package and use them in your plugins. If you need any additional events just open and issue on GitHub or send me a pull request.
 
 ## Debugging
 
 You can debug your code using `LogUtils` class by simply call `LogUtils.getlogger().log(..)` to log something.
 
-We use the following levels for this aspects:
+We use the following levels for these aspects:
 - `SEVER` - Anything happen, that breaks the plugin, or a main function of the plugin
 - `WARNING` - The most things, where something not normal or unexpected happens, but the plugin still work correctly for the rest(all catch blocks, when not SEVER)
 - `INFO` - Anything you want to log, that also should appear in the normal console

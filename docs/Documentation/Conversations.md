@@ -164,7 +164,7 @@ NPC_options:
     extends: main_menu
 
   ## Main main_menu
- main_menu:
-   pointers: i_have_questions, bye
+  main_menu:
+    pointers: i_have_questions, bye
 ```
 In the above example, the option _start_ is extended by both _tonight_ and _today_, both of whom are extended by _main_menu_. As _tonight_ has a false condition the _today_ option will win. The _start_ option will have the pointers in main_menu added to it just as if they were defined directly in it and the text will be joined together from _today_. If you structure your conversation correctly you can make use of this to minimize duplication.

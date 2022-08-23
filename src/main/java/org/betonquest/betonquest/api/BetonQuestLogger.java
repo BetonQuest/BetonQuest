@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.logging.Level;
 
 /**
- * This is the BetonQuest log facade for manual usage or Lombok's {@link CustomLog} annotation.
+ * This is the BetonQuest log facade for manual usage or for the {@link CustomLog} annotation for usage with Lombok.
  * <p>
  * This facade uses the {@link PluginLogger} from the {@link Plugin#getLogger()} method.
  * It registers a new child logger for each class it's used in.

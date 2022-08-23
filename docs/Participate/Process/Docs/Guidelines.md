@@ -5,7 +5,7 @@ You need to follow these rules in order to contribute to the docs. They are impo
 a consistent baseline for other contributors to work with.
 
 ## Line length
-All lines must be wrapped after 121 character. You can exceed this limit by a few characters where resonable.
+All lines must be wrapped after 121 character. You can exceed this limit by a few characters where reasonable.
 Tables and other special syntax are exempt from this rule.
 
 ## Links
@@ -20,7 +20,7 @@ Result: Click the [highlighted words](../../Overview.md).
 
 ##Displaying (YAML) code
 
-You must use codeboxes with the specific language set in the header (`YAML` in this example).
+You must use code boxes with the specific language set in the header (`YAML` in this example).
 You also have to enable line numbers by adding the `linenums="1"` argument. 
 Sometimes a setting a title using `title="Some Title"` is also useful. 
 ``` linenums="1" title="Example code"

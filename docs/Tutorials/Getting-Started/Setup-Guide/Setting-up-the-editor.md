@@ -55,7 +55,7 @@ and the file can be read on any server running on Linux.
 ## Usage
 
 ### Snippets 
-The main feature of our extension are so called "code snippets". These are basically pre-defined events, conditions etc.
+The main feature of our extension are so-called "code snippets". These are basically pre-defined events, conditions etc.
 that can be filled with any of your custom options.
 
 Start typing the name of an event/condition/objective and press ++ctrl++ + ++space++. VSCode will list possible completions.
@@ -66,7 +66,7 @@ Navigating between options works by pressing ++tab++.
 If you want to go backwards you can invert the movement of the cursor by pressing ++shift++ and ++tab++.
 
 An option will be fully highlighted if it needs to be replaced with material names, messages... They will not show a drop-down menu.
-If an option does, you need to choose between the offered options. Optional options are displayed as an empty field in the drop down.
+If an option does, you need to choose between the offered options. Optional options are displayed as an empty field in the drop-down.
 These optional options can also contain a colon (`:`). You have to specify something behind them depending on the context.
  An example might be provided after the colon (`:`). Just replace it with the value you want.
 
