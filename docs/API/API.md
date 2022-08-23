@@ -1,30 +1,28 @@
 ---
 icon: octicons/gear-16
 ---
-## Accessing the plugin
-
 !!! warning
     All existing API will break in BetonQuest 2.0 which is being worked on while you read this.
     If you plan on doing something with this API please keep in mind that you will need to change it again later.
+    
+## Adding BetonQuest as a dependency
 
-Add this to your pom.xml.
+You can add BetonQuest as a dependency using your build system. Here is the config for Maven:
 
-```XML
-<repositories>
-    <repository>
-        <id>betonquest-repo</id>
-        <url>https://betonquest.org/nexus/repository/betonquest/</url>
-    </repository>
-</repositories>
+```XML title="Add this to your repositories tag"
+<repository>
+    <id>betonquest-repo</id>
+    <url>https://betonquest.org/nexus/repository/betonquest/</url>
+</repository>
+```
 
-<dependencies>
-    <dependency>
-        <groupId>org.betonquest</groupId>
-        <artifactId>betonquest</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
-        <scope>provided</scope>
-    </dependency>
-</dependencies>
+```XML title="Add this to your dependencies tag"
+<dependency>
+    <groupId>org.betonquest</groupId>
+    <artifactId>betonquest</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
+    <scope>provided</scope>
+</dependency>
 ```
 
 ## Writing events

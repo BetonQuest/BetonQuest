@@ -10,7 +10,7 @@ There are two options to support projects like this one:
     [submit a bug report](https://github.com/BetonQuest/BetonQuest/issues/new?assignees=&labels=Bug&template=bug-report.yml).
 
 ??? info "Suggest Features"
-    Features can be requested on [our Github discussions page](https://github.com/BetonQuest/BetonQuest/discussions). 
+    Features can be requested on [our GitHub discussions page](https://github.com/BetonQuest/BetonQuest/discussions). 
     Please make sure that:
     
     * The feature does not exist yet (Search docs / Ask on Discord)

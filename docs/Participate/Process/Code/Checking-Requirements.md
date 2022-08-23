@@ -57,7 +57,7 @@ IntelliJ may also show something like `Failed to execute goal`. Here's a guide h
         [ERROR] src/main/java/org/betonquest/betonquest/BetonQuest.java:[16,1] (imports) ImportOrder: Wrong order for 'edu.umd.cs.findbugs.annotations.SuppressFBWarnings' import.
         ````
         CheckStyle is very simple to read, normally it is in your language and self explaining.  
-        In the above error you can find e.g `ImportOrder` and you can search on the
+        In the above error you can find e.g. `ImportOrder` and you can search on the
         [CheckStyle](https://checkstyle.sourceforge.io/checks.html) page for it.
         If you need help solving an issue here, you can also ask us on our Discord for help with CheckStyle.
         <br><br><br>
