@@ -181,13 +181,13 @@ tells the plugin to add an objective).
 
 Now you can check if you actually have this objective with **/q o {name}** command, it will show you all your active
 objectives. It should show `default.kill_creepers`. Alright, remove (yes, remove!) the `beton` tag from you and find
-some Creepers to kill. Once you killes 3 of them you will notice that nothing happened. It's because `has_beton_tag`
-condtion is not met, so the objective does not count your progress. Now add the tag again and kill another Creepers.
+some Creepers to kill. Once you killed 3 of them you will notice that nothing happened. It's because `has_beton_tag`
+condition is not met, so the objective does not count your progress. Now add the tag again and kill another Creepers.
 When the third is dead you should be teleported to the location defined in `tp` event.
 
 Congratulations, now you know how to use objectives. You should experiment with other types now, since objectives will
 be used very often in your quests. Once you're done check out the _Writing your first conversation_ chapter to use your
-knowledge to write your fisrt conversation.
+knowledge to write your first conversation.
 
 ## Writing your first conversation
 
@@ -320,7 +320,7 @@ conversations:
 
 Now you should experiment some more with this conversation, you can help yourself by looking at the
 [innkeeper.yml](https://github.com/BetonQuest/Quest-Tutorials/blob/main/QuestPackages/default/conversations/innkeeper.yml) file.
-Try to understand how that conversation works step by step. As the excercise you should complete the Miner NPC, so he
+Try to understand how that conversation works step by step. As the exercise you should complete the Miner NPC, so he
 asks you to mine some iron ore, then smelt it in the furnace, next craft an armor with it and return to him wearing this armor.
 
 You might want to check out the [Reference](../../Documentation/Reference.md) chapter to see how to handle items in 

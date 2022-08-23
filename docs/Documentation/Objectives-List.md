@@ -108,7 +108,7 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 
 ## Enchant item: `enchant`
 
-This objectie is completed when the player enchants specified item with specified enchantment. The first argument is an
+This objective is completed when the player enchants specified item with specified enchantment. The first argument is an
 item name, as defined it the _items_ section. Second one is the
 [enchantment](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html) and a level, separated
 with a colon. If you need to check for multiple enchantments you can add a list of them, separated by colons.
@@ -293,7 +293,7 @@ The objective's instruction string is defined as follows:
    The password is a [regular expression](https://medium.com/factory-mind/regex-tutorial-a-simple-cheatsheet-by-examples-649dc1c3f285).
    They are a little complicated but worth the effort if you want more control over what exactly matches. 
    Websites like [regex101.com](https://regex101.com/) help with that complexity though.
-   The offical [documentation](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/regex/Pattern.html#sum) for regular expressions
+   The official [documentation](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/regex/Pattern.html#sum) for regular expressions
    in Java might also help you.
    If you don't want to get into them just write down the password but keep in mind that the players answer needs to be an exact match! 
 

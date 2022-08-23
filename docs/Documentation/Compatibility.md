@@ -498,12 +498,12 @@ quest progress tags right into LuckPerms permission
 [contexts](https://luckperms.net/wiki/Context).
 The syntax is as follows:
 
-| key             | value                   |
-|----------------	|------------------------	|
-| betonquest:tag:PACKAGE_NAME.TAG_NAME      | true     |
-| betonquest:globaltag:PACKAGE_NAME.TAG_NAME| true     |
-| betonquest:tag:myPackage.tagName| true |
-| betonquest:globaltag:myQuest.someTag | true |
+| key                                        | value |
+|--------------------------------------------|-------|
+| betonquest:tag:PACKAGE_NAME.TAG_NAME       | true  |
+| betonquest:globaltag:PACKAGE_NAME.TAG_NAME | true  |
+| betonquest:tag:myPackage.tagName           | true  |
+| betonquest:globaltag:myQuest.someTag       | true  |
 
 Check the [Luck Perms documentation](https://luckperms.net/wiki/Context)
 for an in-depth explanation on what contexts are and how to add them to permission.
@@ -1088,7 +1088,7 @@ Deposits, withdraws or multiplies money on player's account. There is only one a
 
 #### Permission: `permission`
 
-Adds or removes a permission or a group. First argument is `add` or `remove`. It's self-explanatory. Second is `perm` or `group`. It also shouldn't be hard to figure out. Next thing is actual string you want to add/remove. At the end you can also specify world in which you want these permissions. If the world name is ommited then permission/group will be global.
+Adds or removes a permission or a group. First argument is `add` or `remove`. It's self-explanatory. Second is `perm` or `group`. It also shouldn't be hard to figure out. Next thing is actual string you want to add/remove. At the end you can also specify world in which you want these permissions. If the world name is omitted then permission/group will be global.
 
 !!! example
     ```YAML

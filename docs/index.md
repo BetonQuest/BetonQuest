@@ -69,7 +69,7 @@ thead span {
 }
 </style>
 
-<video controls loop src="_media/content/Home/Features/Trailer.mp4" poster="_media/content/Home/OverviewVideoPreview.jpg" style="box-shadow: 0px 0px 30px black;" width="100%">
+<video controls loop src="_media/content/Home/Features/Trailer.mp4" poster="_media/content/Home/OverviewVideoPreview.jpg" style="box-shadow: 0 0 30px black;" width="100%">
   Sorry, your browser doesn't support embedded videos.
 </video>
 
@@ -87,7 +87,7 @@ Sometimes, user reviews describe a plugin better than the author can:
         <li> Easy to make Daily/repeatable quests.</li>
         <li> Great Discord community and staff support.</li>
         <li> Can be used to replace every GUI plugin we've had before.</li>
-        <li> Can be used for a ton of stuff other then quests if you learn the systems.</li>
+        <li> Can be used for a ton of stuff other than quests if you learn the systems.</li>
         </ul>
       
         The story:
@@ -218,7 +218,7 @@ gameplay. Questers can also choose between five different styles to display thei
 
 ## Endless Integrations
 
-BetonQuest supports more then 30 other plugins, ranging from standard plugins like WorldGuard/WorldEdit and Citizens to
+BetonQuest supports more than 30 other plugins, ranging from standard plugins like WorldGuard/WorldEdit and Citizens to
 more advanced ones such as EffectLib. It also offers support for other quest plugins, so you can just keep your old
 quests and create further additions to your quest lines based upon the progress in your old plugin. If just Beton isn't
 enough you can always just hook into Skript or Denizen too.
@@ -232,7 +232,7 @@ See the full list of integrations [here](Documentation/Compatibility.md).
       Sorry, your browser doesn't support embedded videos.
     </video>
 
-* Questers can make use of BetonQuests notifyIO system that provides access to all of Minecafts GUI elements to display
+* Questers can make use of BetonQuests notifyIO system that provides access to all of Minecraft's GUI elements to display
   notifications.
 
 * Provide NPC conversations in any language. Each player can set his own language which means that - if translated - all
@@ -257,7 +257,7 @@ This website provides **in-depth learning material** for your staff which teache
 has guides on related topics such as the setup of a local test server, so your main server's stability will not be threatened
 by staff learning / developing quests.
 
-<p style="clear:both"/>
+<p style="clear:both"></p>
 # Examples
 
 Our community created a lot of cool stuff!
@@ -291,7 +291,7 @@ Take a look at this handpicked selection:
     <video controls loop src="_media/content/Home/Features/Bards.mp4" width="100%">
       Sorry, your browser doesn't support embedded videos.
     </video>
-    A bar setup with musicians and other NPC's. The player can use the conversation system to select a song.  The audio is made with OpenAudioMC. 
+    A bar setup with musicians and other NPCs. The player can use the conversation system to select a song.  The audio is made with OpenAudioMC. 
   </div>
   <div>
     <h3>Water Well by Titanium</h3>

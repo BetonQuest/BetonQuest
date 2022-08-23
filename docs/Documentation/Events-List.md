@@ -169,7 +169,7 @@ Adds a specified potion effect to player. First argument is potion type. You can
 
 **static**
 
-Creates an explosion. It can make fire and destroy blocks. You can also define power, so be careful not to blow your server away. Default TNT power is 4, while Wither on creation is 7. First argument can be 0 or 1 and states if explosion will generate fire (like Ghast’s fireball). Second is also 0 or 1 but this defines if block will be destroyed or not. Third argument is the power (float number). At the end (4th attribute) there is location.
+Creates an explosion. It can make fire and destroy blocks. You can also define power, so be careful not to blow your server away. Default TNT power is 4, while Wither on creation is 7. First argument can be 0 or 1 and states if explosion will generate fire (like Ghast's fireball). Second is also 0 or 1 but this defines if block will be destroyed or not. Third argument is the power (float number). At the end (4th attribute) there is location.
 
 !!! example
     ```YAML
@@ -243,7 +243,7 @@ This works the same way as the normal point event but instead to manipulating th
 
 **persistent**, **static**
 
-Works the same way as a normal tag event, but instead of setting a tag for one player it sets it globaly for all players.
+Works the same way as a normal tag event, but instead of setting a tag for one player it sets it globally for all players.
 
 !!! example
     ```YAML
@@ -347,12 +347,12 @@ Displays a notification using the NotifyIO system.
     `eventName: {=="==}notify Peter:Heya %player%!{=="==}` :arrow_right: `eventName: {=="==}notify Peter{++\\++}:Heya %player%!{=="==}`<br>
     `otherEvent: notify You own %math.calc:5% fish!` :arrow_right: `otherEvent: You own %math.calc{++\++}:5% fish!`
 
-| Option                                                             | Description                                                                                                                                     |
-|--------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
-| message  	                                                         | The message that will be displayed. Supports variables and translations. *Required, must be first*             	                                                                     |
-| category 	                                                         | Will load all settings from that Notification Category. Can be a comma-seperated list. The first existent category will be used. *Optional*                  |   
-| io       	                                                         | Any [NotifyIO](Notification-IO's-&-Categories.md). Overrides the "category" settings. *Optional*                                                                                     |
-| [NotifyIO](Notification-IO's-&-Categories.md#notify-ios) 	         | Any setting from the defined notifyIO. Can be used multiple times. Overrides the "category" settings. *Optional*                                                                     |
+| Option                                                     | Description                                                                                                                                 |
+|------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| message  	                                                 | The message that will be displayed. Supports variables and translations. *Required, must be first*             	                            |
+| category 	                                                 | Will load all settings from that Notification Category. Can be a comma-seperated list. The first existent category will be used. *Optional* |   
+| io       	                                                 | Any [NotifyIO](Notification-IO's-&-Categories.md). Overrides the "category" settings. *Optional*                                            |
+| [NotifyIO](Notification-IO's-&-Categories.md#notify-ios) 	 | Any setting from the defined notifyIO. Can be used multiple times. Overrides the "category" settings. *Optional*                            |
 
 The fallback NotifyIO is `chat` if no argument other than `message` is specified.    
 `message` is the only argument of this event that is not `key:value` based. You can freely add any text with spaces there.
@@ -493,7 +493,7 @@ Don't use conditions here, it behaves strangely. We will fix this in 2.0.
 
 ## Scoreboard: `score`
 
-This event works in the same way as `point` event, the only difference is that is uses scoreboards instead of points. You can add, subtract, multiply and divide scores in objectives on the scoreboard. The first argument is the name of the objective, second one is a number. It can be positive for additon, negative for subtraction or prefixed with an asterisk for multiplication. Multiplying by fractions is the same as dividing.
+This event works in the same way as `point` event, the only difference is that is uses scoreboards instead of points. You can add, subtract, multiply and divide scores in objectives on the scoreboard. The first argument is the name of the objective, second one is a number. It can be positive for addition, negative for subtraction or prefixed with an asterisk for multiplication. Multiplying by fractions is the same as dividing.
 
 !!! example
     ```YAML

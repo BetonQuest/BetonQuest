@@ -34,7 +34,7 @@ If something stopped working before asking for help please do /q reload and READ
 You will be able to see which events etc. loaded and which didn't with the reasons why.
 You may be able to fix it yourself from this or use this information, so we can better help you!
 
-Also double check you saved your files and if needed reupload them to your server.
+Also double check you saved your files and if needed re-upload them to your server.
 This is insanely common and can be overlooked!
 
 ## I have an error which says "Cannot load plugins/BetonQuest/{someFile}.yml", what is wrong?
