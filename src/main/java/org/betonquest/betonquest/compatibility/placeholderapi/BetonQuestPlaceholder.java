@@ -5,6 +5,8 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("PMD.CommentRequired")
 @SuppressFBWarnings("HE_INHERITS_EQUALS_USE_HASHCODE")
@@ -67,12 +69,12 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
     /**
      * A placeholder request has occurred and needs a value
      *
-     * @param player     A {@link org.bukkit.entity.Player Player}.
+     * @param player     A potentially null {@link org.bukkit.entity.Player Player}.
      * @param identifier A String containing the identifier/value.
      * @return possibly-null String of the requested identifier.
      */
     @Override
-    public String onPlaceholderRequest(final Player player, final String identifier) {
+    public @NotNull String onPlaceholderRequest(final @Nullable Player player, final @NotNull String identifier) {
         final String pack;
         final String placeholderIdentifier;
         final int index = identifier.indexOf(':');
@@ -83,6 +85,12 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
             pack = identifier.substring(0, index);
             placeholderIdentifier = identifier.substring(index + 1);
         }
-        return BetonQuest.getInstance().getVariableValue(pack, '%' + placeholderIdentifier + '%', PlayerConverter.getID(player));
+        final String value;
+        if (player == null) {
+            value = BetonQuest.getInstance().getGlobalVariableValue(pack, placeholderIdentifier);
+        } else {
+            value = BetonQuest.getInstance().getVariableValue(pack, '%' + placeholderIdentifier + '%', PlayerConverter.getID(player));
+        }
+        return value;
     }
 }

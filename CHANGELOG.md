@@ -22,6 +22,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - added Event Schedules to replace old static-events system
 - NotifyIO "totemIO"
 - Support for MythicLib
+- added support for `globaltag` and `globalpoint` variables in PAPI
 - player attribute to QuestCompassTargetChangeEvent
 - added PlayerObjectiveChangeEvent, PlayerJournalAddEvent, PlayerJournalDeleteEvent
 - Allow %player% variable for PLAYER_HEAD quest items
