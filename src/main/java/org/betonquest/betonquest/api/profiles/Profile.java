@@ -30,4 +30,12 @@ public interface Profile {
      * @return the name of the profile
      */
     String getProfileName();
+
+    /**
+     * Get the {@link OnlineProfile} of this Profile if the {@link Player} is online.
+     *
+     * @return The {@link OnlineProfile} of this Profile
+     * @throws IllegalStateException is thrown, if the {@link Player} is offline
+     */
+    OnlineProfile getOnlineProfile() throws IllegalStateException;
 }
