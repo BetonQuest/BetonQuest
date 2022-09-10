@@ -11,10 +11,15 @@ import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.vehicle.VehicleMoveEvent;
+
+import java.util.List;
 
 /**
  * Player has to reach certain radius around the specified location
@@ -37,15 +42,31 @@ public class LocationObjective extends Objective implements Listener {
     public void onMove(final PlayerMoveEvent event) {
         qreHandler.handle(() -> {
             final String playerID = PlayerConverter.getID(event.getPlayer());
-            final Location location = loc.getLocation(playerID);
-            final Location toLocation = event.getTo();
-            if (containsPlayer(playerID) && toLocation.getWorld().equals(location.getWorld())) {
-                final double pRange = range.getDouble(playerID);
-                if (toLocation.distanceSquared(location) <= pRange * pRange && super.checkConditions(playerID)) {
-                    completeObjective(playerID);
+            checkLocation(event.getTo(), playerID);
+        });
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onRide(final VehicleMoveEvent event) {
+        qreHandler.handle(() -> {
+            final List<Entity> passengers = event.getVehicle().getPassengers();
+            for (final Entity passenger : passengers) {
+                if (passenger instanceof Player player) {
+                    final String playerID = PlayerConverter.getID(player);
+                    checkLocation(event.getTo(), playerID);
                 }
             }
         });
+    }
+
+    private void checkLocation(final Location toLocation, final String playerID) throws QuestRuntimeException {
+        final Location location = loc.getLocation(playerID);
+        if (containsPlayer(playerID) && toLocation.getWorld().equals(location.getWorld())) {
+            final double pRange = range.getDouble(playerID);
+            if (toLocation.distanceSquared(location) <= pRange * pRange && super.checkConditions(playerID)) {
+                completeObjective(playerID);
+            }
+        }
     }
 
     @Override
