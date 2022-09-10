@@ -12,8 +12,19 @@ import java.util.List;
  */
 public class VariableString {
 
+    /**
+     * The string that may contain variables.
+     */
     private final String string;
+
+    /**
+     * The list of variables in the string.
+     */
     private final List<String> variables = new ArrayList<>();
+
+    /**
+     * The package in which the string is defined.
+     */
     private final QuestPackage questPackage;
 
 

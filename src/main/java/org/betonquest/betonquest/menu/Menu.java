@@ -52,11 +52,6 @@ public class Menu extends SimpleYMLSection implements Listener {
      * The title of the menu
      */
     private final VariableString title;
-    /**
-     * All variables that are included in the title;
-     */
-    private final List<String> titleVariables = new ArrayList<>();
-
     /*
      * Hashmap with a items id as key and the menu item object containing all data of the item
      *
@@ -97,7 +92,7 @@ public class Menu extends SimpleYMLSection implements Listener {
     @SuppressWarnings("PMD.AvoidFieldNameMatchingTypeName")
     private final RPGMenu menu = BetonQuest.getInstance().getRpgMenu();
 
-    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.NPathComplexity", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.NPathComplexity", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity", "PMD.ExcessiveMethodLength", "PMD.Constr"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public Menu(final MenuID menuID) throws InvalidConfigurationException {
         super(menuID.getFullID(), menuID.getConfig());
@@ -109,9 +104,10 @@ public class Menu extends SimpleYMLSection implements Listener {
         }
         //load title
         try {
-            this.title = new VariableString(getPackage(), ChatColor.translateAlternateColorCodes('&', getString("title")));
+            final String title = ChatColor.translateAlternateColorCodes('&', getString("title"));
+            this.title = new VariableString(this.menuID.getPackage(), title);
         } catch (final InstructionParseException e) {
-            throw new InvalidConfigurationException(e.getMessage());
+            throw new InvalidConfigurationException(e.getMessage(), e);
         }
         //load opening conditions
         this.openConditions = new ArrayList<>();
