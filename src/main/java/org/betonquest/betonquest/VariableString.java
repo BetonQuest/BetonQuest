@@ -60,10 +60,10 @@ public class VariableString {
      * @return the string with all variables resolved
      */
     public String getString(final String playerID) {
-        String resolvedString = "";
+        String resolvedString = string;
         for (final String variable : variables) {
             final String resolvedVariable = BetonQuest.getInstance().getVariableValue(questPackage.getPackagePath(), variable, playerID);
-            resolvedString = string.replace(variable, resolvedVariable);
+            resolvedString = resolvedString.replace(variable, resolvedVariable);
         }
         return resolvedString;
     }
