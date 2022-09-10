@@ -3,6 +3,7 @@ package org.betonquest.betonquest.menu;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -50,7 +51,11 @@ public class Menu extends SimpleYMLSection implements Listener {
     /**
      * The title of the menu
      */
-    private final String title;
+    private final VariableString title;
+    /**
+     * All variables that are included in the title;
+     */
+    private final List<String> titleVariables = new ArrayList<>();
 
     /*
      * Hashmap with a items id as key and the menu item object containing all data of the item
@@ -103,7 +108,11 @@ public class Menu extends SimpleYMLSection implements Listener {
             throw new Invalid("height");
         }
         //load title
-        this.title = ChatColor.translateAlternateColorCodes('&', getString("title"));
+        try {
+            this.title = new VariableString(getPackage(), ChatColor.translateAlternateColorCodes('&', getString("title")));
+        } catch (final InstructionParseException e) {
+            throw new InvalidConfigurationException(e.getMessage());
+        }
         //load opening conditions
         this.openConditions = new ArrayList<>();
         try {
@@ -297,8 +306,8 @@ public class Menu extends SimpleYMLSection implements Listener {
     /**
      * @return the title of the menu
      */
-    public String getTitle() {
-        return title;
+    public String getTitle(final String playerID) {
+        return title.getString(playerID);
     }
 
     /**

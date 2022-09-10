@@ -24,6 +24,6 @@ public class MenuVariable extends Variable {
         if (menu == null) {
             return "";
         }
-        return menu.getData().getTitle();
+        return menu.getData().getTitle(playerID);
     }
 }

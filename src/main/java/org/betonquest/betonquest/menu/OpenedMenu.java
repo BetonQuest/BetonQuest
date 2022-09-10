@@ -46,7 +46,7 @@ public class OpenedMenu implements Listener {
 
         this.data = menu;
         this.playerId = player.getUniqueId();
-        final Inventory inventory = Bukkit.createInventory(null, data.getSize(), data.getTitle());
+        final Inventory inventory = Bukkit.createInventory(null, data.getSize(), data.getTitle(playerId.toString()));
         this.update(player, inventory);
         player.openInventory(inventory);
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
