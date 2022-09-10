@@ -3,10 +3,9 @@ icon: octicons/codescan-checkmark-16
 tags:
 - Objectives
 ---
-You have learned how to create your own events, test them on the server directly without a conversation, 
-and integrate an event into your own conversations.
-This section is about objectives. Objectives are tasks which you can assign to a player or a group for example 
-a collect or fishing task. The possibilities are nearly endless! You will learn about that in this section.
+In the last tutorial you learned to create and use events. 
+This tutorial is about objectives. Objectives are tasks which you can assign to a player. For example breaking blocks or
+fishing fish. The possibilities are nearly endless! You will learn about these in this tutorial.
 
 <div class="grid" markdown>
 !!! danger "Requirements"
@@ -25,10 +24,10 @@ a collect or fishing task. The possibilities are nearly endless! You will learn 
     "NEED TO BE SET!!! _YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/tutorialQuest_"
 
 ## 1. Creating the folder structure for your first objective
-Add a new file to your "_tutorialQuest_" `QuestPackage` named "_objectives.yml_" and after that
-add a new file to your "_tutorialQuest_" Conversations folder named "_blacksmith.yml_".
-You may asking why we add a new file to conversations folder. This is because our created folder event ends
-after the city tour. We now want to talk to the blacksmith and get more instructions.
+Add a new file to your "_tutorialQuest_" `QuestPackage` named "_objectives.yml_" and 
+a new file to your "_tutorialQuest_" Conversations folder named "_blacksmith.yml_".
+You may ask why we add a new file to the conversations folder. This is because the city tour currently ends in nothingness. 
+We're going add a blacksmith NPC that the player can talk to.
 
 Here is an overview of what your directory structure should look like now:
 
@@ -44,7 +43,7 @@ We now have our file structure ready and can start writing objectives and a new 
 
 ## 2. Defining your first objective
 
-To define your first objective open the new created file "_objectives.yml_" and add the following text to it.
+Open the newly created file "_objectives.yml_" and add the following:
 
 ``` YAML title="objectives.yml" linenums="1"
 objectives: # (1)!
@@ -53,41 +52,27 @@ objectives: # (1)!
 
 1. All objectives must be defined in an `objectives` section.
 
-Let me explain this to you:
+Let's explain:
 
 * `fishingObj`  is the name of the objective. You can choose any name you want. However, it is  recommended to name
   it after what it does. That just makes it easier to understand your quest.
   * The Objective Instruction.
-    - `fish` The first value in the instruction is always the **objective type**.
-    - `cod 10` This is an **option** of the objective `fish`. It defines which item you have to fish and which amount
-      seperated by a space.
-    - `hookLocation:100;50;100;world` This **option** is to define a hook location. Only catched fish in this specific area counts.
-    - `range:20` If you use the hook location you also have to define the range. This is the range around the hook location coordinate.
-    - `events:caughtAllFish` This event gets triggered after you caught 10 fish at the specific hook location.
+    - `fish`: The first value in the instruction is always the **objective type**.
+    - `cod`: This is an **option** of the objective `fish`. It defines which item you have to fish.
+    - `10`: This is another **option**. It defines the amount to fish.
+    - `hookLocation:100;50;100;world`: This **option** defines where the hook of the fishing rod must be located. Only fish that are 
+       fished in this specific area are counted by the objective.
+    - `range:20`: If you use the hook location you also have to define the range **option**. This is the range around the hook location coordinate
+       where fished things are still counted.
+    - `events:caughtAllFish`: This is not an option of the fish objective but a general objective argument. The defined event(s)
+       get triggered once the objective is completed (after you caught 10 cod at the specified hook location).
 
-As we learned in the previous tutorial we have to define `cod` in the item section because BetonQuest don't know what `cod` is.
 
-## 3. Testing your first objective ingame
 
-The easiest way to do this is by running a command:
+## 3. Creating the item in the items section
 
-Enter `/bq objective NAME tutorialQuest.fishObj` on the server.
-This command will add's the objective to the player to fish 10 cod.
-If you want to check if you have done it correctly, go to the defined location and fish 10 cod. After you caught 10 cod
-you should get a notification.
-
-| Command Part    | Meaning                                                                                                                      |
-|-----------------|------------------------------------------------------------------------------------------------------------------------------|
-| `/bq objective` | Tells BetonQuest that some event should be executed.                                                                         |
-| `NAME`          | A player's name.                                                                                                             |
-| `tutorialQuest` | The name of a QuestPackage. This is required because you could have objectives with the same name in different packages.     |
-| `fishObj`       | The name of the objective to execute. Don't forget to separate it with a dot from the package `tutorialQuest{==.==}fishObj`. |
-
-You can also run the `/bq objective NAME` to check what objectives a player has.
-
-## 4. Creating the item in the items section
-
-We already know that it's crucial to include an item to the `items` section for specific objective kinds, like `fish`.
+As we learned in the [previous tutorial](Events.md#3-creating-the-item-in-the-items-section) we have to define `cod` in
+the item section because BetonQuest doesn't know what `cod` is.
 To add the item to the list, let's reopen the "_package.yml_" file.
 
 ``` YAML title="package.yml" hl_lines="6" linenums="1"
@@ -103,14 +88,50 @@ items:
 
 Now, `cod` is a defined item that can be utilized throughout the entire quest.
 
-## 5. Integrating objectives into conversations
+!!! warning ""
+    It is very important to save all files everytime you test something!
+    Type `/bq reload` on your server after saving.
 
-Let's run the event from your conversation. In this case we will add some more smalltalk conversation.
-In our example we arrived at the end of the city tour so we need a new npc for that.
-Let's work with the new created file named "_blacksmith.yml_" in the conversation folder.
-You should now already know how to create the npc in
-"_package.yml_". If not, repeat the further tutorials!
 
+## 4. Testing your first objective ingame
+
+Objectives must be started before they start watching the player's actions.
+The easiest way to do this is by running a command:
+
+Enter `/bq objective YOUR_NAME tutorialQuest.fishObj` on the server.
+This command will start the objective for the player.
+If you want to check if you have done it correctly, go to the defined location and fish 10 cod. After you caught 10 cod
+you should get a notification.
+
+| Command Part    | Meaning                                                                                                                      |
+|-----------------|------------------------------------------------------------------------------------------------------------------------------|
+| `/bq objective` | Tells BetonQuest that some event should be executed.                                                                         |
+| `NAME`          | A player's name.                                                                                                             |
+| `tutorialQuest` | The name of a QuestPackage. This is required because you could have objectives with the same name in different packages.     |
+| `fishObj`       | The name of the objective to execute. Don't forget to separate it with a dot from the package `tutorialQuest{==.==}fishObj`. |
+
+You can also run the `/bq objective NAME` to list all active objectives of a player.
+ `/bq objective NAME` to list all active objectives of a player.
+
+## 5. Using events to start objectives
+
+Objectives cannot only be started and stopped using commands, but also with events.
+Let's add an event to start the fishing objective:
+
+``` YAML title="events.yml" hl_lines="4" linenums="1"
+events:
+  # Other events not shown here
+  tpBlacksmith: "teleport 50;70;50;world"
+  startFishingObj: "objective start fishingObj" # (1)!
+```
+
+1. Starts the objective `fishingObj` for the player that this event is executed on.
+
+## 6. Integrating objectives into conversations
+
+As you know, we can run events from conversations. We can now use the new event to start an objective from a conversation.
+
+Let's add some dialog to the newly created file named "_blacksmith.yml_" in the conversation folder:
 
 ``` YAML title="blacksmith.yml" linenums="1" 
 conversations:
@@ -150,33 +171,13 @@ conversations:
 1. The player have the choice to say yes or no.
 2. This is the event to start your actual objective task to fish 10 fresh cod.
 
+Now link the conversation to a new NPC that is placed wherever the city tour ends. You should already know how to link
+the dialog to the npc in "_package.yml_". If not, [check the previous tutorials](Conversations.md#1-linking-a-conversation-to-a-npc)!
+
 !!! warning ""
     It is very important to save all files everytime you test something!
     Type `/bq reload` on your server after saving.
 
-We've added the conversation to the new created file and also added a `startFishingObj` event to it.
-This is necessary because you cannot write the objective name into the conversation. It is important to start
-or maybe stop an objective with an event.
-No worries! Open your "_events.yml_" and let me show you how simple this is:
-
-``` YAML title="events.yml" hl_lines="8" linenums="1"
-events:
-  giveFoodToPlayer: "give steak:16"
-  townTour: "folder tpLocation1,tpLocation2,tpLocation3,tpBlacksmith delay:2 period:5"
-  tpLocation1: "teleport 100;70;100;world"
-  tpLocation2: "teleport 200;73;200;world"
-  tpLocation3: "teleport 300;71;300;world"
-  tpBlacksmith: "teleport 50;70;50;world"
-  startFishingObj: "objective start fishingObj" # (1)!
-```
-
-1. This is the event to start the objective for the interacting player.
-
-Now that we have finished this, you can type `/q reload` ingame and talk to the blacksmith npc!
-
-!!! danger ""
-    If something not working. Try to find out what you have done wrong on your own!
-    If you still dont know where the problem is you can simply download our solution.
 
 --8<-- "Tutorials/download-solution.md"
     ```
@@ -187,7 +188,7 @@ Now that we have finished this, you can type `/q reload` ingame and talk to the 
 
 You've learned what objectives are and how to create them. You can now give a player an 
 objective to have a more advanced quest! More objectives can be found in the [objectives list](../../../Documentation/Objectives-List.md).
-In the next turotial you will learn how **conditions** works and how to use them.
+In the next tutorial you will learn how **conditions** work and how to use them to make the Blacksmith react to the completed objective.
 ---
 [:construction: :construction_worker: ~~Conditions Tutorial~~ ](#summary){ .md-button .md-button--primary}
 
