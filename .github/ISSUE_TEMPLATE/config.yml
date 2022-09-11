@@ -2,7 +2,7 @@ blank_issues_enabled: false
 contact_links:
   - name: Feature Request
     about: Suggest new features to help us improve the plugin.
-    url: https://github.com/BetonQuest/BetonQuest/discussions
+    url: https://github.com/BetonQuest/BetonQuest/discussions/new?category=ideas
   - name: BetonQuest Support
     about: Quick, chat-based support for any usage questions.
     url: https://discord.gg/rK6mfHq
