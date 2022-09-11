@@ -28,7 +28,7 @@ This section tells you about each setting which has to be set (or can optionally
   Fist of all you have to set the title of your menu.
   It will be displayed in the top left corner of your menu.
   You can use [color codes](https://minecraft.gamepedia.com/Formatting_codes) with `&` instead of `§` to color the
-  title.  
+  title. Variables are supported.
   **Example:** `title: '&6&lQuests'`
 
 * `height`: *(number from `1` to `6`)*  
