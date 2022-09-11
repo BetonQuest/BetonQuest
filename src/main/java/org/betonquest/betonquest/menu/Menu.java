@@ -92,7 +92,7 @@ public class Menu extends SimpleYMLSection implements Listener {
     @SuppressWarnings("PMD.AvoidFieldNameMatchingTypeName")
     private final RPGMenu menu = BetonQuest.getInstance().getRpgMenu();
 
-    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.NPathComplexity", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity", "PMD.ExcessiveMethodLength", "PMD.Constr"})
+    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.NPathComplexity", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity", "PMD.ExcessiveMethodLength"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public Menu(final MenuID menuID) throws InvalidConfigurationException {
         super(menuID.getFullID(), menuID.getConfig());
