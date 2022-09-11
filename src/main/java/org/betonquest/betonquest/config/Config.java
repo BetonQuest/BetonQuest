@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Handles the configuration of the plugin
@@ -410,24 +409,27 @@ public final class Config {
             throw new IOException("Invalid list of file for directory '\" + file.getPath() + \"'!");
         }
         final List<File> files = new ArrayList<>();
-        File main = null;
+        File packageIndicatorFile = null;
         for (final File subFile : listFiles) {
             if (subFile.isDirectory()) {
                 try {
-                    files.addAll(Objects.requireNonNull(searchForPackages(root, subFile, packageIndicator, fileIndicator)));
+                    files.addAll(searchForPackages(root, subFile, packageIndicator, fileIndicator));
                 } catch (final IOException e) {
                     LOG.warn(e.getMessage(), e);
                 }
             } else {
-                if ((packageIndicator + fileIndicator).equals(subFile.getName())) {
-                    main = subFile;
+                if (!subFile.getName().endsWith(fileIndicator)) {
+                    continue;
+                }
+                if (subFile.getName().equals(packageIndicator + fileIndicator)) {
+                    packageIndicatorFile = subFile;
                 } else {
                     files.add(subFile);
                 }
             }
         }
-        if (main != null) {
-            createPackage(root, main, files);
+        if (packageIndicatorFile != null) {
+            createPackage(root, packageIndicatorFile, files);
             files.clear();
         }
         return files;
