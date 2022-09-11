@@ -89,6 +89,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `weather` event - now has an optional variable duration (in seconds) and an optional world param
 - `paste` event - can now be static
 - `chestput` objective - can now block other players from accessing a chest while someone is putting items inside
+- The location and region objectives now register movement of players inside a vehicle
 - Things that are also changed in 1.12.X:
     - math variable now allows rounding output with the ~ operator
     - French translation has been updated

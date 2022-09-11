@@ -7,6 +7,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -17,8 +18,10 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.vehicle.VehicleMoveEvent;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -79,6 +82,18 @@ public class RegionObjective extends Objective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onMove(final PlayerMoveEvent event) {
         checkLocation(event.getPlayer(), event.getTo());
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onRide(final VehicleMoveEvent event) {
+        qreHandler.handle(() -> {
+            final List<Entity> passengers = event.getVehicle().getPassengers();
+            for (final Entity passenger : passengers) {
+                if (passenger instanceof Player player) {
+                    checkLocation(player, event.getTo());
+                }
+            }
+        });
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
