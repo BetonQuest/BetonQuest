@@ -22,7 +22,6 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - added Event Schedules to replace old static-events system
 - NotifyIO "totemIO"
 - Support for MythicLib
-- added support for `globaltag` and `globalpoint` variables in PAPI
 - player attribute to QuestCompassTargetChangeEvent
 - added PlayerObjectiveChangeEvent, PlayerJournalAddEvent, PlayerJournalDeleteEvent
 - Allow %player% variable for PLAYER_HEAD quest items
@@ -55,6 +54,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `mmobkill` objective now supports the `marked` argument
 - `marked` argument now supports %player% variable
 - variable support for menu titles
+- globaltag and globalpoint variables
 - Things that are also added in 1.12.X:
     - new line support for `journal_lore` in `messages.yml`
     - FastAsyncWorldEdit compatibility
