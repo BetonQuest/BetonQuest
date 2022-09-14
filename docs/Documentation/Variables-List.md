@@ -3,37 +3,97 @@ icon: material/variable-box
 ---
 # Variables List
 
-## Custom Strings
+This page lists all the variables that are available in BetonQuest.
+Some of them are only useful when exported for use in other plugins through the [support for PlaceHolderAPI](Compatibility.md#placeholderapi).
 
-It is possible to save multiple custom strings per player. This works by using the [`variable`](Objectives-List.md#variable-variable) objective and the [`variable`](Events-List.md#variable-variable) event. 
+## BetonQuest Elements
 
-## Expose conditions to 3rd party plugins: `condition`
+### Objective Property Variable
+
+Using this variable you can display a property of an objective. The first argument is an ID of the objective as
+defined in the _objectives_ section (not the type). Make sure that the player has this objective active or it
+will be replaced with nothing (""). Second argument is the name of a property you want to display.
+All properties are described in "Objectives List" chapter.
+
+```
+%objective.kill_zombies.left%
+```
+
+### Condition Variable
 
 You can expose BetonQuest's conditions to 3rd party plugins by using the `condition` variable together with the 
 [PAPI support](Compatibility.md#placeholderapi).
 The variable will return `true` or `false` by default. If you add `papiMode` to the instruction it will return `yes` or `no`.    
-You can translate the papiMode's result by changing the values of `condition_variable_met` `condition_variable_not_met`in 
+You can translate the papiMode's result by changing the values of `condition_variable_met` `condition_variable_not_met` in 
 the *messages.yml* config.
+
+## BetonQuest Data Types
+
+### Point Variable
+
+This variable displays the amount of points you have in some category or amount of points you need to have to reach a
+number. The first argument is the name of a category and the second argument is either `amount` or `left:x`, where `x` is a number.
+
+```
+%point.reputation.left:15%
+```
+
+### Global Point Variable
+
+Works the same as normal point variable but instead of displaying points from a players category it displays points in
+a global, player independent category.
+
+```
+%globalpoint.global_knownusers.left:100%
+```
+
+### Tag Variable
+
+This variable displays whether the player has a tag or not.
+The variable will return true or false by default. If you add papiMode to the instruction it will return yes or no.
+You can translate the papiMode's result by changing the values of `condition_variable_met` and `condition_variable_not_met`
+in the messages.yml config.
+
+```
+%tag.test%
+%tag.test.papiMode%
+```
+
+### Global Tag Variable
+
+This variable displays whether a global tag is set or not.
+The variable will return true or false by default. If you add papiMode to the instruction it will return yes or no.
+You can translate the papiMode's result by changing the values of `condition_variable_met` and `condition_variable_not_met`
+in the messages.yml config.
+
+```
+%globaltag.test%
+%globaltag.test.papiMode%
+```
+
+### Custom Text Variable
+
+It is possible to save text per player. This works by using the [`variable`](Objectives-List.md#variable-variable)
+ objective and the [`variable`](Events-List.md#variable-variable) event. 
+
+
+## Other Variables
 ```
 %condition.myCondition%
 %condition.myCondition.papiMode%
 ``` 
 
-## Global point: `globalpoint`
+### Item Variable
 
-Works the same as normal point variable but instead of displaying points from a players category it displays points in a global, player independent category.
+With this variable you can display amount of specific items in player's inventory or a number needed to reach specific
+amount. The first argument is the name of an item (as defined in the _items_ section) and the second one is either 
+`amount` or `left:x`, where `x` is a number.
 
-!!! example
-    `%globalpoint.global_knownusers.left:100%`
+```
+%item.stick.amount%
+```
 
-## Item: `item`
-
-With this variable you can display amount of specific items in player's inventory or a number needed to reach specific amount. The first argument is the name of an item (as defined in the _items_ section) and the second one is either `amount` or `left:x`, where `x` is a number.
-
-!!! example
-    `%item.stick.amount%`
-
-## Location: `location`
+### Location Variable
 
 This variable resolves to all aspects of the player's location. The x, y and z coordinates, the world name, the yaw and pitch (head rotation).
 There are also modes for the [Unified Location Formatting](Reference.md#unified-location-formating) (ULF from now on)
@@ -42,25 +102,24 @@ If you just specify `%location%` the variables will resolve to a ULF with yaw an
 You can add two options to that base, one will give back parts of the ULF and the other will set to how many decimal places 
 the variable will resolve. 
 
-!!! example
-    ```YAML
-    %location%           # -> 325;121;814;myWorldName;12;6
-    %location.xyz%       # -> 325 121 814 
-    %location.x%         # -> 325
-    %location.y%         # -> 121
-    %location.z%         # -> 814
-    %location.yaw%       # -> 12
-    %location.pitch%     # -> 6
-    %location.world%     # -> myWorldName
-    %location.ulfShort%  # -> 325;121;814;myWorldName
-    %location.ulfLong%   # -> 325;121;814;myWorldName;12;6
+```YAML
+%location%           # -> 325;121;814;myWorldName;12;6
+%location.xyz%       # -> 325 121 814 
+%location.x%         # -> 325
+%location.y%         # -> 121
+%location.z%         # -> 814
+%location.yaw%       # -> 12
+%location.pitch%     # -> 6
+%location.world%     # -> myWorldName
+%location.ulfShort%  # -> 325;121;814;myWorldName
+%location.ulfLong%   # -> 325;121;814;myWorldName;12;6
+
+%location.x.2%       # -> 325.16
+%location.ulfLong.5% # -> 325.54268;121.32186;814.45824;myWorldName;12.0;6.0
+```
     
-    %location.x.2%       # -> 325.16
-    %location.ulfLong.5% # -> 325.54268;121.32186;814.45824;myWorldName;12.0;6.0
-    ```
     
-    
-## Calculate mathematical expression: `math.calc`
+### Math Variable
 
 This variable allows you to perform a calculation based on other variables (for example point or objective variables)
 and resolves to the result of the specified calculation. The variable always starts with `math.calc:`, followed by the
@@ -75,48 +134,34 @@ In cases where this doesn't work, e.g. if the variable contains mathematical ope
 braces `{ }`. Inside the curly braces you have to escape with `\`, so to have a `\` in your variable you need to write
 `\\`, to have a `}` inside your variable you need to write `\}`.
 
-!!! example
-    ```
-    %math.calc:100*(15-point.reputation.amount)%
-    %math.calc:objective.kill_zombies.left/objective.kill_zombies.total*100~2%
-    %math.calc:-{ph.myplugin_stragee+placeholder}%
-    %math.calc:64%32%
-    ```
+```
+%math.calc:100*(15-point.reputation.amount)%
+%math.calc:objective.kill_zombies.left/objective.kill_zombies.total*100~2%
+%math.calc:-{ph.myplugin_stragee+placeholder}%
+%math.calc:64%32%
+```
 
-## NPC: `npc`
+### NPC Name Variable
 
 It's a very simple variable. It's replaced by the name of the NPC in player's language.
 
-!!! example
-    `%npc%`
+```
+%npc%
+```
 
-## Objective: `objective`
-
-Using this variable you can display a property of an objective. The first argument is an ID of the objective as defined in the _objectives_ section (not the type). Make sure that the player has this objective active or it will be replaced with nothing (""). Second argument is the name of a property you want to display. All properties are described in "Objectives List" chapter.
-
-!!! example
-    `%objective.kill_zombies.left%`
-
-## Player: `player`
+### Player Name Variable
 
 This variable will be replaced with the name of the player. If you add `display` argument, it will use display name instead of real name.
 
-!!! example
-    `%player.display%`
+```
+%player.display%
+```
 
-## Point: `point`
 
-This variable displays the amount of points you have in some category or amount of points you need to have to reach a number. The first argument is the name of a category and the second argument is either `amount` or `left:x`, where `x` is a number.
-
-!!! example
-    `%point.reputation.left:15%`
-
-## Version: `version`
+### Version Variable
 
 This variable displays the version of the plugin. You can optionally add the name of the plugin as an argument to display version of another plugin.
 
-!!! example
-    `%version.Citizens%`
-
-
-
+```
+%version.Citizens%
+```

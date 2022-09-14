@@ -815,19 +815,13 @@ If you have this plugin, BetonQuest will add a `betonquest` placeholder to it an
 You can use all BetonQuest variables in any other plugin that supports PlaceholderAPI.
 You can even use BetonQuests conditions using the [condition variable](Variables-List.md#expose-conditions-to-3rd-party-plugins-condition)!    
 This works using the `%betonquest_package:variable%` placeholder. The `package:` part is the name of a package.
-The `variable` part is just a BetonQuest variable without percentage characters, like `point.beton.amount`.
+The `variable` part is just a [BetonQuest variable](Variables-List.md) without percentage characters, like `point.beton.amount`.
 
 Testing your placeholder is easy using this command:    
 `/papi parse <PlayerName> %betonquest_<PackageName>:<VariableType>.<Property>%`
 ```YAML linenums="1"
 %betonquest_someGreatQuest:objective.killZombies.left%
 ```
-
-Global variables may also be called. The `globaltag` type returns `true` or `false`, depending on the presence of the tag.
-The `globalpoint` type will return an integer for the current point total value.
-
-To text these variables you would use this command:    
-`/papi parse --null %betonquest_<PackageName>:<GlobalVariableType>.<Property>%`
 
 ### Variable: `ph`
 
