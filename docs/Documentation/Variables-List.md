@@ -35,15 +35,17 @@ This variable displays the amount of points you have in some category or amount 
 number. The first argument is the name of a category and the second argument is either `amount` or `left:x`, where `x` is a number.
 
 ```
+%point.reputation.amount%
 %point.reputation.left:15%
 ```
 
 ### Global Point Variable
 
-Works the same as normal point variable but instead of displaying points from a players category it displays points in
-a global, player independent category.
+This variable displays the amount of global points in some category or the amount of points needed to reach a number.
+The first argument is the name of a category and the second argument is either `amount` or `left:x`, where `x` is a number.
 
 ```
+%globalpoint.global_knownusers.amount%
 %globalpoint.global_knownusers.left:100%
 ```
 
