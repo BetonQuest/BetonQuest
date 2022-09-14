@@ -221,6 +221,7 @@ import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.variables.ConditionVariable;
 import org.betonquest.betonquest.variables.GlobalPointVariable;
+import org.betonquest.betonquest.variables.GlobalTagVariable;
 import org.betonquest.betonquest.variables.ItemAmountVariable;
 import org.betonquest.betonquest.variables.LocationVariable;
 import org.betonquest.betonquest.variables.MathVariable;
@@ -228,6 +229,7 @@ import org.betonquest.betonquest.variables.NpcNameVariable;
 import org.betonquest.betonquest.variables.ObjectivePropertyVariable;
 import org.betonquest.betonquest.variables.PlayerNameVariable;
 import org.betonquest.betonquest.variables.PointVariable;
+import org.betonquest.betonquest.variables.TagVariable;
 import org.betonquest.betonquest.variables.VersionVariable;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -238,7 +240,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -891,6 +892,8 @@ public class BetonQuest extends JavaPlugin {
 
         // register variable types
         registerVariable("condition", ConditionVariable.class);
+        registerVariable("tag", TagVariable.class);
+        registerVariable("globaltag", GlobalTagVariable.class);
         registerVariable("player", PlayerNameVariable.class);
         registerVariable("npc", NpcNameVariable.class);
         registerVariable("objective", ObjectivePropertyVariable.class);
@@ -1527,51 +1530,6 @@ public class BetonQuest extends JavaPlugin {
         } catch (final InstructionParseException e) {
             log.warn(pack, "&cCould not create variable '" + name + "': " + e.getMessage(), e);
             return "";
-        }
-    }
-
-    /**
-     * Resolves the global variable using the global data context.
-     * Supports both globaltag and globalpoint variable types.
-     *
-     * @param packName name of the package
-     * @param name     name of the variable (without % characters, including type as a prefix)
-     * @return the value of this global variable
-     */
-    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    public @NotNull String getGlobalVariableValue(final @Nullable String packName, final @NotNull String name) {
-        if (!Config.getPackages().containsKey(packName)) {
-            log.warn("Global variable '" + name + "' contains the non-existent package '" + packName + "' !");
-            return "";
-        }
-        final String[] nameParts = name.split("\\.");
-        if (nameParts.length != 2) {
-            log.warn("Global variable '" + name + "' does not specify type! Use a '.' as name delimiter!");
-            return "";
-        }
-        switch (nameParts[0]) {
-            case "globaltags":
-            case "globaltag":
-            case "gtag":
-            case "gtags":
-            case "gt":
-                final String tag = packName + "." + nameParts[1];
-                return Boolean.toString(globalData.getTags().contains(tag));
-            case "globalpoints":
-            case "globalpoint":
-            case "gpoints":
-            case "gpoint":
-            case "gp":
-                final String category = packName + "." + nameParts[1];
-                for (final Point point : globalData.getPoints()) {
-                    if (point.getCategory().equals(category)) {
-                        return Integer.toString(point.getCount());
-                    }
-                }
-                return "";
-            default:
-                log.warn("Global variable '" + name + "' type is invalid!");
-                return "";
         }
     }
 
