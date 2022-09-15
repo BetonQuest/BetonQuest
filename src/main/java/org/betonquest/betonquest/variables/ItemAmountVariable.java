@@ -46,10 +46,7 @@ public class ItemAmountVariable extends Variable {
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public String getValue(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        final Player player = profile.getPlayer().get();
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
         int playersAmount = 0;
         for (final ItemStack item : player.getInventory().getContents()) {
             if (item == null) {

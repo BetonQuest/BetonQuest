@@ -161,15 +161,12 @@ public class PlayerData {
      * @param tag tag to add
      */
     public void addTag(final String tag) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
         synchronized (tags) {
             if (!tags.contains(tag)) {
                 tags.add(tag);
                 saver.add(new Record(UpdateType.ADD_TAGS, profile.getProfileUUID().toString(), tag));
                 BetonQuest.getInstance()
-                        .callSyncBukkitEvent(new PlayerTagAddEvent(profile.getPlayer().get(), tag));
+                        .callSyncBukkitEvent(new PlayerTagAddEvent(profile.getOnlineProfile().getOnlinePlayer(), tag));
             }
         }
     }
@@ -181,15 +178,12 @@ public class PlayerData {
      * @param tag tag to remove
      */
     public void removeTag(final String tag) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
         synchronized (tags) {
             if (tags.contains(tag)) {
                 tags.remove(tag);
                 saver.add(new Record(UpdateType.REMOVE_TAGS, profile.getProfileUUID().toString(), tag));
                 BetonQuest.getInstance()
-                        .callSyncBukkitEvent(new PlayerTagRemoveEvent(profile.getPlayer().get(), tag));
+                        .callSyncBukkitEvent(new PlayerTagRemoveEvent(profile.getOnlineProfile().getOnlinePlayer(), tag));
             }
         }
     }

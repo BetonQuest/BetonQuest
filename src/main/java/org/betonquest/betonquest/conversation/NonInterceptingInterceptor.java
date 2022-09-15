@@ -13,11 +13,8 @@ public class NonInterceptingInterceptor implements Interceptor {
     protected final Player player;
 
     public NonInterceptingInterceptor(final Conversation conv, final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
         this.conv = conv;
-        this.player = profile.getPlayer().get();
+        this.player = profile.getOnlineProfile().getOnlinePlayer();
     }
 
     @Override

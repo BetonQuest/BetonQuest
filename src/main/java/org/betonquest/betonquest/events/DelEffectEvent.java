@@ -43,10 +43,7 @@ public class DelEffectEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        final Player player = profile.getPlayer().get();
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
         if (any) {
             player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
         } else {

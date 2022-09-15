@@ -47,6 +47,7 @@ public final class PlayerConverter {
                 return player.getName();
             }
 
+            @SuppressWarnings("PMD.AvoidUncheckedExceptionsInSignatures")
             @Override
             public OnlineProfile getOnlineProfile() throws IllegalStateException {
                 if (!(player instanceof Player)) {
@@ -78,6 +79,7 @@ public final class PlayerConverter {
                         return player.getName();
                     }
 
+                    @SuppressWarnings("PMD.AvoidUncheckedExceptionsInSignatures")
                     @Override
                     public OnlineProfile getOnlineProfile() throws IllegalStateException {
                         return this;

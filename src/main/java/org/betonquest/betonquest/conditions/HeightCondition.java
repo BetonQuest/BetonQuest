@@ -37,10 +37,7 @@ public class HeightCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        return profile.getPlayer().get().getLocation().getY() < height.getDouble(profile);
+        return profile.getOnlineProfile().getOnlinePlayer().getLocation().getY() < height.getDouble(profile);
     }
 
 }

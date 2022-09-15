@@ -33,10 +33,7 @@ public class OpenShopEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        shopkeeper.openTradingWindow(profile.getPlayer().get());
+        shopkeeper.openTradingWindow(profile.getOnlineProfile().getOnlinePlayer());
         return null;
     }
 

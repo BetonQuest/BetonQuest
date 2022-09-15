@@ -360,11 +360,8 @@ public final class Utils {
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public static List<Profile> getParty(final Profile profile, final double range, final String pack, final ConditionID... conditions) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
         final List<Profile> list = new ArrayList<>();
-        final Player player = profile.getPlayer().get();
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
         final Location loc = player.getLocation();
         final double squared = range * range;
         for (final Player otherPlayer : loc.getWorld().getPlayers()) {

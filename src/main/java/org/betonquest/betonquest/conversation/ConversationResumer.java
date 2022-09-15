@@ -31,11 +31,8 @@ public class ConversationResumer implements Listener {
     private final double distance;
 
     public ConversationResumer(final Profile profile, final String convID) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
         this.original = convID;
-        this.player = profile.getPlayer().get();
+        this.player = profile.getOnlineProfile().getOnlinePlayer();
         this.profile = profile;
         final String[] parts = convID.split(" ");
         this.conversationID = parts[0];
@@ -62,7 +59,7 @@ public class ConversationResumer implements Listener {
             HandlerList.unregisterAll(this);
             BetonQuest.getInstance().getSaver()
                     .add(new Record(UpdateType.UPDATE_CONVERSATION, "null", profile.getProfileUUID().toString()));
-            new Conversation(profile, conversationID, loc, option);
+            new Conversation(profile.getOnlineProfile(), conversationID, loc, option);
         }
     }
 

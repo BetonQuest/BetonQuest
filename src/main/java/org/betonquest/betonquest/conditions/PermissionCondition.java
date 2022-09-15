@@ -21,10 +21,7 @@ public class PermissionCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        return profile.getPlayer().get().hasPermission(permission);
+        return profile.getOnlineProfile().getOnlinePlayer().hasPermission(permission);
     }
 
 }

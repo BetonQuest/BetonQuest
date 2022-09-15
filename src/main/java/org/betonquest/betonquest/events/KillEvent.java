@@ -19,10 +19,7 @@ public class KillEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        final Player player = profile.getPlayer().get();
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
         player.damage(player.getHealth() + 1);
         return null;
     }

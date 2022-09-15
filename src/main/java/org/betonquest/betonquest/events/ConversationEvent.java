@@ -23,10 +23,7 @@ public class ConversationEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        new Conversation(profile, conv, profile.getPlayer().get().getLocation());
+        new Conversation(profile.getOnlineProfile(), conv, profile.getOnlineProfile().getOnlinePlayer().getLocation());
         return null;
     }
 }

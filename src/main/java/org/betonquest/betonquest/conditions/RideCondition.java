@@ -33,10 +33,7 @@ public class RideCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        final Entity entity = profile.getPlayer().get().getVehicle();
+        final Entity entity = profile.getOnlineProfile().getOnlinePlayer().getVehicle();
         return entity != null && (any || entity.getType() == vehicle);
     }
 

@@ -25,10 +25,7 @@ public class FacingCondition extends Condition {
     @Override
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        final Player player = profile.getPlayer().get();
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
         float rotation = player.getLocation().getYaw();
         final float pitch = player.getLocation().getPitch();
         final Direction facing;

@@ -24,11 +24,8 @@ public class SimpleInterceptor implements Interceptor, Listener {
     private final List<String> messages = new ArrayList<>();
 
     public SimpleInterceptor(final Conversation conv, final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
         this.conv = conv;
-        this.player = profile.getPlayer().get();
+        this.player = profile.getOfflinePlayer().getPlayer();
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 

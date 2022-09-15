@@ -32,10 +32,8 @@ public class McMMOSkillLevelCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        return ExperienceAPI.getLevel(profile.getPlayer().get(), PrimarySkillType.valueOf(skillType.toUpperCase(Locale.ROOT))) >= level.getInt(profile);
+        return ExperienceAPI.getLevel(profile.getOnlineProfile().getOnlinePlayer(),
+                PrimarySkillType.valueOf(skillType.toUpperCase(Locale.ROOT))) >= level.getInt(profile);
     }
 
 }

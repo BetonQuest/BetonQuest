@@ -34,10 +34,7 @@ public class MenuQuestEvent extends QuestEvent {
 
     @Override
     public Void execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        final Player player = profile.getPlayer().get();
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
         if (operation == Operation.OPEN) {
             BetonQuest.getInstance().getRpgMenu().openMenu(player, menu);
         } else {

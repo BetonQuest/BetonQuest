@@ -37,5 +37,6 @@ public interface Profile {
      * @return The {@link OnlineProfile} of this Profile
      * @throws IllegalStateException is thrown, if the {@link Player} is offline
      */
+    @SuppressWarnings("PMD.AvoidUncheckedExceptionsInSignatures")
     OnlineProfile getOnlineProfile() throws IllegalStateException;
 }

@@ -5,6 +5,7 @@ import lombok.CustomLog;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.QuestCanceler;
@@ -71,22 +72,19 @@ public class Backpack implements Listener {
     /**
      * Creates new backpack GUI opened at given page type.
      *
-     * @param profile the {@link Profile} of the player
-     * @param type    type of the display
+     * @param onlineProfile the {@link OnlineProfile} of the player
+     * @param type          type of the display
      */
-    public Backpack(final Profile profile, final DisplayType type) throws QuestRuntimeException {
+    public Backpack(final OnlineProfile onlineProfile, final DisplayType type) throws QuestRuntimeException {
         // fill required fields
-        this.profile = profile;
-        lang = BetonQuest.getInstance().getPlayerData(profile).getLanguage();
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        player = profile.getPlayer().get();
+        this.profile = onlineProfile;
+        lang = BetonQuest.getInstance().getPlayerData(onlineProfile).getLanguage();
+        player = onlineProfile.getOnlinePlayer();
         /**
          * Instance of the BetonQuest plugin
          */
         final BetonQuest instance = BetonQuest.getInstance();
-        playerData = instance.getPlayerData(profile);
+        playerData = instance.getPlayerData(onlineProfile);
         // create display
         switch (type) {
             case DEFAULT:
@@ -104,10 +102,10 @@ public class Backpack implements Listener {
     /**
      * Creates new backpack GUI.
      *
-     * @param profile the {@link Profile} of the player
+     * @param onlineProfile the {@link OnlineProfile} of the player
      */
-    public Backpack(final Profile profile) throws QuestRuntimeException {
-        this(profile, DisplayType.DEFAULT);
+    public Backpack(final OnlineProfile onlineProfile) throws QuestRuntimeException {
+        this(onlineProfile, DisplayType.DEFAULT);
     }
 
     @EventHandler(ignoreCancelled = true)

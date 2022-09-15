@@ -33,7 +33,7 @@ public class CompassCommand implements CommandExecutor {
             if (sender instanceof Player) {
                 final Profile profile = PlayerConverter.getID((Player) sender);
                 try {
-                    new Backpack(profile, DisplayType.COMPASS);
+                    new Backpack(profile.getOnlineProfile(), DisplayType.COMPASS);
                 } catch (final QuestRuntimeException e) {
                     LOG.warn("Couldn't create new Backpack due to: " + e.getMessage(), e);
                 }

@@ -37,10 +37,7 @@ public class AureliumSkillsLevelCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        final Player player = profile.getPlayer().get();
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
 
         final int actualLevel = AureliumAPI.getSkillLevel(player, skill);
         final int targetLevel = targetLevelVar.getInt(profile);

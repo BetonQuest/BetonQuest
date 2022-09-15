@@ -43,10 +43,7 @@ public class EffectEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        profile.getPlayer().get().addPotionEffect(
+        profile.getOnlineProfile().getOnlinePlayer().addPotionEffect(
                 new PotionEffect(effect, duration.getInt(profile) * 20, amplifier.getInt(profile) - 1, ambient, !hidden, icon));
         return null;
     }

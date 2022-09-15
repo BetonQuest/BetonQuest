@@ -33,7 +33,7 @@ public class CancelQuestCommand implements CommandExecutor {
             if (sender instanceof Player) {
                 final Profile profile = PlayerConverter.getID((Player) sender);
                 try {
-                    new Backpack(profile, DisplayType.CANCEL);
+                    new Backpack(profile.getOnlineProfile(), DisplayType.CANCEL);
                 } catch (final QuestRuntimeException e) {
                     LOG.warn("Couldn't create new Backpack due to: " + e.getMessage(), e);
                 }

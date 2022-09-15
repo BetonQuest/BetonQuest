@@ -21,10 +21,7 @@ public class RegionCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        return WorldGuardIntegrator.isInsideRegion(profile.getPlayer().get().getLocation(), name);
+        return WorldGuardIntegrator.isInsideRegion(profile.getOnlineProfile().getOnlinePlayer().getLocation(), name);
     }
 
 }

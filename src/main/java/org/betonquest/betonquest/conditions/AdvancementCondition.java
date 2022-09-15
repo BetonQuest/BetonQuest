@@ -34,10 +34,7 @@ public class AdvancementCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        final AdvancementProgress progress = profile.getPlayer().get().getAdvancementProgress(advancement);
+        final AdvancementProgress progress = profile.getOnlineProfile().getOnlinePlayer().getAdvancementProgress(advancement);
         return progress.isDone();
     }
 

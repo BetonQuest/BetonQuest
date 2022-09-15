@@ -25,10 +25,7 @@ public class MooncycleCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        final Player player = profile.getPlayer().get();
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
         final int days = (int) player.getWorld().getFullTime() / 24_000;
         int phaseInt = days % 8;
         phaseInt += 1;

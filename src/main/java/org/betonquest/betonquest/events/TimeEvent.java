@@ -33,10 +33,7 @@ public class TimeEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        final World world = profile.getPlayer().get().getWorld();
+        final World world = profile.getOnlineProfile().getOnlinePlayer().getWorld();
         long time = (long) amount;
         if (add) {
             time += world.getTime();

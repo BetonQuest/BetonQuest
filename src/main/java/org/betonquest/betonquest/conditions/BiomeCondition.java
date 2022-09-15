@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.block.Biome;
-import org.bukkit.entity.Player;
 
 /**
  * Requires the player to be in a specified biome
@@ -23,10 +22,6 @@ public class BiomeCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        final Player player = profile.getPlayer().get();
-        return player.getLocation().getBlock().getBiome() == this.biome;
+        return profile.getOnlineProfile().getOnlinePlayer().getLocation().getBlock().getBiome() == this.biome;
     }
 }

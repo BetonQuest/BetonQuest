@@ -99,9 +99,9 @@ public class Journal {
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public static boolean hasJournal(final Profile profile) throws QuestRuntimeException {
         if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
+            return false;
         }
-        final Player player = profile.getPlayer().get();
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
         for (final ItemStack item : player.getInventory().getContents()) {
             if (isJournal(profile, item)) {
                 return true;
@@ -370,12 +370,9 @@ public class Journal {
      * Adds journal to player inventory.
      */
     public void addToInv() throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
         final int targetSlot = getJournalSlot();
         generateTexts(lang);
-        final Inventory inventory = profile.getPlayer().get().getInventory();
+        final Inventory inventory = profile.getOnlineProfile().getOnlinePlayer().getInventory();
         final ItemStack item = getAsItem();
         if (inventory.firstEmpty() >= 0) {
             if (targetSlot < 0) {
@@ -483,11 +480,8 @@ public class Journal {
      * @return the slot from which the journal was removed
      */
     public int removeFromInv() throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
         // loop all items and check if any of them is a journal
-        final Inventory inventory = profile.getPlayer().get().getInventory();
+        final Inventory inventory = profile.getOnlineProfile().getOnlinePlayer().getInventory();
         for (int i = 0; i < inventory.getSize(); i++) {
             if (isJournal(profile, inventory.getItem(i))) {
                 inventory.setItem(i, new ItemStack(Material.AIR));

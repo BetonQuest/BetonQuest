@@ -42,12 +42,9 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     protected String textFormat;
 
     public ChatConvIO(final Conversation conv, final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
         this.options = new HashMap<>();
         this.conv = conv;
-        this.player = profile.getPlayer().get();
+        this.player = profile.getOnlineProfile().getOnlinePlayer();
         this.name = player.getName();
         this.colors = ConversationColors.getColors();
         StringBuilder string = new StringBuilder();

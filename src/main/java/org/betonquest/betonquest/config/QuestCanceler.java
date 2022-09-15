@@ -189,9 +189,6 @@ public class QuestCanceler {
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     public void cancel(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
         LOG.debug("Canceling the quest " + name + " for player " + profile.getProfileName());
         final PlayerData playerData = BetonQuest.getInstance().getPlayerData(profile);
         // remove tags, points, objectives and journals
@@ -238,7 +235,7 @@ public class QuestCanceler {
         // teleport player to the location
         if (loc != null) {
             LOG.debug("  Teleporting to new location");
-            profile.getPlayer().get().teleport(loc);
+            profile.getOnlineProfile().getOnlinePlayer().teleport(loc);
         }
         // fire all events
         if (events != null) {

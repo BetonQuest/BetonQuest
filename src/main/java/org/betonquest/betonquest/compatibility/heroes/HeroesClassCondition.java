@@ -45,10 +45,7 @@ public class HeroesClassCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        final Hero hero = Heroes.getInstance().getCharacterManager().getHero(profile.getPlayer().get());
+        final Hero hero = Heroes.getInstance().getCharacterManager().getHero(profile.getOnlineProfile().getOnlinePlayer());
         if (hero == null) {
             return false;
         }

@@ -43,11 +43,7 @@ public class LocationVariable extends Variable {
     @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override
     public String getValue(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-
-        final Location playerLocation = profile.getPlayer().get().getLocation();
+        final Location playerLocation = profile.getOnlineProfile().getOnlinePlayer().getLocation();
 
         switch (mode) {
             case XYZ:

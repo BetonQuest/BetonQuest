@@ -64,11 +64,8 @@ public class InventoryConvIO implements Listener, ConversationIO {
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public InventoryConvIO(final Conversation conv, final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
         this.conv = conv;
-        this.player = profile.getPlayer().get();
+        this.player = profile.getOnlineProfile().getOnlinePlayer();
         final Map<String, ChatColor[]> colors = ConversationColors.getColors();
         StringBuilder string = new StringBuilder();
         for (final ChatColor color : colors.get("npc")) {

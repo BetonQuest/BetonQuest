@@ -45,11 +45,8 @@ public class PacketInterceptor implements Interceptor, Listener {
 
     @SuppressWarnings("PMD.CognitiveComplexity")
     public PacketInterceptor(final Conversation conv, final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
         this.conv = conv;
-        this.player = profile.getPlayer().get();
+        this.player = profile.getOfflinePlayer().getPlayer();
 
         // Intercept Packets
         packetAdapter = new PacketAdapter(BetonQuest.getInstance(), ListenerPriority.HIGHEST,

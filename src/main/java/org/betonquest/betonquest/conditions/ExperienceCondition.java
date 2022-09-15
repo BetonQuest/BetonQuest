@@ -25,10 +25,7 @@ public class ExperienceCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        final Player player = profile.getPlayer().get();
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
         final int amount = this.amount.getInt(profile);
         if (checkForLevel) {
             return player.getLevel() >= amount;

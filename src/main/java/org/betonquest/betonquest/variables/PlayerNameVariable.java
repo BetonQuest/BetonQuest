@@ -22,10 +22,7 @@ public class PlayerNameVariable extends Variable {
 
     @Override
     public String getValue(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        final Player player = profile.getPlayer().get();
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
         return display ? player.getDisplayName() : player.getName();
     }
 

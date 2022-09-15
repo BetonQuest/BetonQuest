@@ -285,11 +285,7 @@ public abstract class Objective {
         synchronized (this) {
             createObjectiveData(profile, instructionString)
                     .ifPresent(data -> {
-                        try {
-                            startObjectiveWithEvent(profile, data, previousState);
-                        } catch (final QuestRuntimeException e) {
-                            LOG.warn("Couldn't startObjectiveWithEvent due to: " + e.getMessage(), e);
-                        }
+                        startObjectiveWithEvent(profile, data, previousState);
                     });
         }
     }
@@ -320,7 +316,7 @@ public abstract class Objective {
                 .newInstance(instructionString, profile, fullId);
     }
 
-    private void startObjectiveWithEvent(final Profile profile, final ObjectiveData data, final ObjectiveState previousState) throws QuestRuntimeException {
+    private void startObjectiveWithEvent(final Profile profile, final ObjectiveData data, final ObjectiveState previousState) {
         runObjectiveChangeEvent(profile, previousState, ObjectiveState.ACTIVE);
         activateObjective(profile, data);
     }
@@ -370,25 +366,18 @@ public abstract class Objective {
      */
     public final void stopObjective(final Profile profile, final ObjectiveState newState) {
         synchronized (this) {
-            try {
-                stopObjectiveWithEvent(profile, newState);
-            } catch (final QuestRuntimeException e) {
-                LOG.warn("Couldn't stopObjective due to: " + e.getMessage(), e);
-            }
+            stopObjectiveWithEvent(profile, newState);
         }
     }
 
-    private void stopObjectiveWithEvent(final Profile profile, final ObjectiveState newState) throws QuestRuntimeException {
+    private void stopObjectiveWithEvent(final Profile profile, final ObjectiveState newState) {
         runObjectiveChangeEvent(profile, ObjectiveState.ACTIVE, newState);
         deactivateObjective(profile);
     }
 
-    private void runObjectiveChangeEvent(final Profile profile, final ObjectiveState previousState, final ObjectiveState newState) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
+    private void runObjectiveChangeEvent(final Profile profile, final ObjectiveState previousState, final ObjectiveState newState) {
         BetonQuest.getInstance()
-                .callSyncBukkitEvent(new PlayerObjectiveChangeEvent(profile.getPlayer().get(), this, newState, previousState));
+                .callSyncBukkitEvent(new PlayerObjectiveChangeEvent(profile.getOnlineProfile().getOnlinePlayer(), this, newState, previousState));
     }
 
     private void activateObjective(final Profile profile, final ObjectiveData data) {

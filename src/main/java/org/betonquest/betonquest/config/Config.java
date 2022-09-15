@@ -271,10 +271,7 @@ public final class Config {
             return;
         }
 
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        final Player player = profile.getPlayer().get();
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
         player.sendMessage(message);
         if (soundName != null) {
             playSound(profile, soundName);
@@ -298,10 +295,7 @@ public final class Config {
     }
 
     public static void sendNotify(final String packName, final Profile profile, final String messageName, final String[] variables, final String category, final Map<String, String> data) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        sendNotify(packName, profile.getPlayer().get(), messageName, variables, category, data);
+        sendNotify(packName, profile.getOnlineProfile().getOnlinePlayer(), messageName, variables, category, data);
     }
 
     /**
@@ -383,10 +377,7 @@ public final class Config {
      * @param soundName the name of the sound to play to the player
      */
     public static void playSound(final Profile profile, final String soundName) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        final Player player = profile.getPlayer().get();
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
 
         final String rawSound = plugin.getPluginConfig().getString("sounds." + soundName);
         if (!"false".equalsIgnoreCase(rawSound)) {

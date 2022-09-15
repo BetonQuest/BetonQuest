@@ -25,10 +25,7 @@ public class BQEventSkript extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        final Player player = profile.getPlayer().get();
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
         final CustomEventForSkript event = new CustomEventForSkript(player, identifier);
         Bukkit.getServer().getPluginManager().callEvent(event);
         return null;

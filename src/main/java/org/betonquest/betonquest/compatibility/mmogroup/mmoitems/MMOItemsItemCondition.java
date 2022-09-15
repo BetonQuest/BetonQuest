@@ -41,12 +41,9 @@ public class MMOItemsItemCondition extends Condition {
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
         int counter = 0;
 
-        final ItemStack[] inventoryItems = profile.getPlayer().get().getInventory().getContents();
+        final ItemStack[] inventoryItems = profile.getOnlineProfile().getOnlinePlayer().getInventory().getContents();
         for (final ItemStack item : inventoryItems) {
             if (MMOItemsUtils.equalsMMOItem(item, itemType, itemID)) {
                 counter = counter + item.getAmount();

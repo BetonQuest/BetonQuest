@@ -60,10 +60,7 @@ public class MythicSpawnMobEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        final Player player = profile.getPlayer().get();
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
         final int pAmount = amount.getInt(profile);
         final int level = this.level.getInt(profile);
         final Location location = loc.getLocation(profile);

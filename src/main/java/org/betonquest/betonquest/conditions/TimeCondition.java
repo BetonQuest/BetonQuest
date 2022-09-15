@@ -33,10 +33,7 @@ public class TimeCondition extends Condition {
     @Override
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        double time = profile.getPlayer().get().getWorld().getTime();
+        double time = profile.getOnlineProfile().getOnlinePlayer().getWorld().getTime();
         if (time >= 18_000) {
             // 18000 minecraft-time is midnight, so there is new
             // normal-time cycle after that; subtracting 18 hours

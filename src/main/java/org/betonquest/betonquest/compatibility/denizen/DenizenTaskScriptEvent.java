@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.bukkit.entity.Player;
 
 /**
  * Runs specified Denizen task script.
@@ -30,11 +29,7 @@ public class DenizenTaskScriptEvent extends QuestEvent {
         if (script == null) {
             throw new QuestRuntimeException("Could not find '" + name + "' Denizen script");
         }
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        final Player player = profile.getPlayer().get();
-        final BukkitScriptEntryData data = new BukkitScriptEntryData(PlayerTag.mirrorBukkitPlayer(player), null);
+        final BukkitScriptEntryData data = new BukkitScriptEntryData(PlayerTag.mirrorBukkitPlayer(profile.getOfflinePlayer()), null);
         script.run(data, null);
         return null;
     }

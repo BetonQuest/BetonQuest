@@ -25,10 +25,7 @@ public class ArmorCondition extends Condition {
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        for (final ItemStack armor : profile.getPlayer().get().getEquipment().getArmorContents()) {
+        for (final ItemStack armor : profile.getOnlineProfile().getOnlinePlayer().getEquipment().getArmorContents()) {
             if (item != null && item.compare(armor)) {
                 return true;
             }

@@ -32,7 +32,7 @@ public class BackpackCommand implements CommandExecutor {
             if (sender instanceof Player) {
                 LOG.debug("Executing /backpack command for " + sender.getName());
                 try {
-                    new Backpack(PlayerConverter.getID((Player) sender));
+                    new Backpack(PlayerConverter.getID((Player) sender).getOnlineProfile());
                 } catch (final QuestRuntimeException e) {
                     LOG.warn("Couldn't create new Backpack due to: " + e.getMessage(), e);
                 }

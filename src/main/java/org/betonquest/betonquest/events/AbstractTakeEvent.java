@@ -91,37 +91,37 @@ public abstract class AbstractTakeEvent extends QuestEvent {
 
     protected void checkInventory(final Player player) {
         final ItemStack[] inventory = player.getInventory().getStorageContents();
-        final ItemStack[] newInv = takeDesiredAmount(player, inventory);
+        final ItemStack[] newInv = takeDesiredAmount(PlayerConverter.getID((OfflinePlayer) player), inventory);
         player.getInventory().setStorageContents(newInv);
     }
 
     protected void checkArmor(final Player player) {
         final ItemStack[] armorSlots = player.getInventory().getArmorContents();
-        final ItemStack[] newArmor = takeDesiredAmount(player, armorSlots);
+        final ItemStack[] newArmor = takeDesiredAmount(PlayerConverter.getID((OfflinePlayer) player), armorSlots);
         player.getInventory().setArmorContents(newArmor);
     }
 
     protected void checkOffhand(final Player player) {
         final ItemStack offhand = player.getInventory().getItemInOffHand();
-        final ItemStack[] newOffhand = takeDesiredAmount(player, offhand);
+        final ItemStack[] newOffhand = takeDesiredAmount(PlayerConverter.getID((OfflinePlayer) player), offhand);
         player.getInventory().setItemInOffHand(newOffhand[0]);
     }
 
     protected void checkBackpack(final Profile profile) {
         final List<ItemStack> backpack = BetonQuest.getInstance().getPlayerData(profile).getBackpack();
-        final List<ItemStack> newBackpack = removeDesiredAmount(profile.getOfflinePlayer(), backpack);
+        final List<ItemStack> newBackpack = removeDesiredAmount(profile, backpack);
         BetonQuest.getInstance().getPlayerData(profile).setBackpack(newBackpack);
     }
 
-    protected List<ItemStack> removeDesiredAmount(final OfflinePlayer oPlayer, final List<ItemStack> items) {
+    protected List<ItemStack> removeDesiredAmount(final Profile profile, final List<ItemStack> items) {
         final ItemStack[] itemArray = items.toArray(new ItemStack[0]);
-        final ItemStack[] remainingItems = takeDesiredAmount(oPlayer, itemArray);
+        final ItemStack[] remainingItems = takeDesiredAmount(profile, itemArray);
         return Arrays.stream(remainingItems)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    protected abstract ItemStack[] takeDesiredAmount(OfflinePlayer oPlayer, ItemStack... items);
+    protected abstract ItemStack[] takeDesiredAmount(Profile profile, ItemStack... items);
 
     protected enum CheckType {
         INVENTORY,

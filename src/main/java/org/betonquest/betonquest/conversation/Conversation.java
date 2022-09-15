@@ -10,6 +10,7 @@ import org.betonquest.betonquest.api.ConversationOptionEvent;
 import org.betonquest.betonquest.api.PlayerConversationEndEvent;
 import org.betonquest.betonquest.api.PlayerConversationStartEvent;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.ConversationData.OptionType;
@@ -78,7 +79,7 @@ public class Conversation implements Listener {
      * @param conversationID ID of the conversation
      * @param location       location where the conversation has been started
      */
-    public Conversation(final Profile profile, final String conversationID, final Location location) throws QuestRuntimeException {
+    public Conversation(final OnlineProfile profile, final String conversationID, final Location location) throws QuestRuntimeException {
         this(profile, conversationID, location, null);
     }
 
@@ -92,15 +93,12 @@ public class Conversation implements Listener {
      * @param location       location where the conversation has been started
      * @param option         ID of the option from where to start
      */
-    public Conversation(final Profile profile, final String conversationID,
+    public Conversation(final OnlineProfile profile, final String conversationID,
                         final Location location, final String option) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
         this.conv = this;
         this.plugin = BetonQuest.getInstance();
         this.profile = profile;
-        this.player = profile.getPlayer().get();
+        this.player = profile.getOnlinePlayer();
         this.pack = Config.getPackages().get(conversationID.substring(0, conversationID.indexOf('.')));
         this.language = plugin.getPlayerData(profile).getLanguage();
         this.location = location;

@@ -33,14 +33,11 @@ public class NPCDistanceCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
         final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
         if (npc == null) {
             throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
         }
-        final Player player = profile.getPlayer().get();
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
         if (!player.getWorld().equals(npc.getStoredLocation().getWorld())) {
             return false;
         }

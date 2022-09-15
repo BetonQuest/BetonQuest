@@ -26,10 +26,7 @@ public class HandCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        final PlayerInventory inv = profile.getPlayer().get().getInventory();
+        final PlayerInventory inv = profile.getOnlineProfile().getOnlinePlayer().getInventory();
         final ItemStack item = offhand ? inv.getItemInOffHand() : inv.getItemInMainHand();
 
         return questItem.compare(item);

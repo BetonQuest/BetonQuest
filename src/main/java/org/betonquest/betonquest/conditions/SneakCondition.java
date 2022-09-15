@@ -17,10 +17,7 @@ public class SneakCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        return profile.getPlayer().get().isSneaking();
+        return profile.getOnlineProfile().getOnlinePlayer().isSneaking();
     }
 
 }

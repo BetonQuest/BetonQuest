@@ -9,8 +9,6 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
-import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
@@ -82,7 +80,7 @@ public class DelayObjective extends Objective {
                 final LinkedList<Profile> players = new LinkedList<>();
                 final long time = new Date().getTime();
                 for (final Entry<Profile, ObjectiveData> entry : dataMap.entrySet()) {
-                    final Profile profile = PlayerConverter.getID(Bukkit.getOfflinePlayer(entry.getKey().getOfflinePlayer().getUniqueId()));
+                    final Profile profile = entry.getKey();
                     final DelayData playerData = (DelayData) entry.getValue();
                     if (time >= playerData.getTime() && checkConditions(profile)) {
                         // don't complete the objective, it will throw CME/

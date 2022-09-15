@@ -20,7 +20,7 @@ public class ParticleEvent extends QuestEvent {
     private final String effectClass;
     private final ConfigurationSection parameters;
     private final CompoundLocation loc;
-    private final boolean pr1vate;
+    private final boolean privateParticle;
 
     public ParticleEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
@@ -34,20 +34,17 @@ public class ParticleEvent extends QuestEvent {
             throw new InstructionParseException("Effect '" + string + "' is incorrectly defined");
         }
         loc = instruction.getLocation(instruction.getOptional("loc"));
-        pr1vate = instruction.hasArgument("private");
+        privateParticle = instruction.hasArgument("private");
 
     }
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is offline");
-        }
-        final Player player = profile.getPlayer().get();
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
         final Location location = (loc == null) ? player.getLocation() : loc.getLocation(profile);
         // This is not used at the moment
         // Entity originEntity = (loc == null) ? p : null;
-        final Player targetPlayer = pr1vate ? player : null;
+        final Player targetPlayer = privateParticle ? player : null;
         EffectLibIntegrator.getEffectManager().start(effectClass,
                 parameters,
                 new DynamicLocation(location, null),
