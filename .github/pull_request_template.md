@@ -1,18 +1,17 @@
-# Description
-<!-- Your description here. -->
+## Description
+<!-- Please describe your changes here. -->
 
-## Related Issues
+### Related Issues
 <!-- Issue number if existing. -->
 Closes #XXXX
 
-## Checklist
-Run maven Verify in your IDE and ensure it SUCCEEDS!
+### Requirements
+Make sure your contribution fulfills the [requirements](https://docs.betonquest.org/2.0.0-DEV/Participate/Process/Code/Checking-Requirements/)!
 
 ### Reviewer's checklist
 <!-- DON'T DO ANYTHING HERE -->
 <!-- This is a checklist for the reviewers, and will be checked by them! -->
 Did the contributor...
-- [ ]  ... test their changes?
 - [ ]  ... update the changelog?
 - [ ]  ... update the documentation?
 - [ ]  ~~... adjust the ConfigUpdater?~~
