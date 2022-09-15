@@ -12,6 +12,7 @@ Make sure your contribution fulfills the [requirements](https://docs.betonquest.
 <!-- DON'T DO ANYTHING HERE -->
 <!-- This is a checklist for the reviewers, and will be checked by them! -->
 Did the contributor...
+- [ ]  ... test their changes?
 - [ ]  ... update the changelog?
 - [ ]  ... update the documentation?
 - [ ]  ~~... adjust the ConfigUpdater?~~
