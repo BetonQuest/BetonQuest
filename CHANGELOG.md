@@ -54,6 +54,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `mmobkill` objective now supports the `marked` argument
 - `marked` argument now supports %player% variable
 - variable support for menu titles
+- globaltag and globalpoint variables
 - Things that are also added in 1.12.X:
     - new line support for `journal_lore` in `messages.yml`
     - FastAsyncWorldEdit compatibility

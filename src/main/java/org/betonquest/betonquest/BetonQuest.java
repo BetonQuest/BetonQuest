@@ -221,6 +221,7 @@ import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.variables.ConditionVariable;
 import org.betonquest.betonquest.variables.GlobalPointVariable;
+import org.betonquest.betonquest.variables.GlobalTagVariable;
 import org.betonquest.betonquest.variables.ItemAmountVariable;
 import org.betonquest.betonquest.variables.LocationVariable;
 import org.betonquest.betonquest.variables.MathVariable;
@@ -228,6 +229,7 @@ import org.betonquest.betonquest.variables.NpcNameVariable;
 import org.betonquest.betonquest.variables.ObjectivePropertyVariable;
 import org.betonquest.betonquest.variables.PlayerNameVariable;
 import org.betonquest.betonquest.variables.PointVariable;
+import org.betonquest.betonquest.variables.TagVariable;
 import org.betonquest.betonquest.variables.VersionVariable;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -890,6 +892,8 @@ public class BetonQuest extends JavaPlugin {
 
         // register variable types
         registerVariable("condition", ConditionVariable.class);
+        registerVariable("tag", TagVariable.class);
+        registerVariable("globaltag", GlobalTagVariable.class);
         registerVariable("player", PlayerNameVariable.class);
         registerVariable("npc", NpcNameVariable.class);
         registerVariable("objective", ObjectivePropertyVariable.class);
