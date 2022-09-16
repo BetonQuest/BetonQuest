@@ -16,6 +16,7 @@ Did the contributor...
 - [ ]  ... update the changelog?
 - [ ]  ... update the documentation?
 - [ ]  ~~... adjust the ConfigUpdater?~~
+- [ ]  ... change a config? If so, did you add new patches for the [Patcher](https://docs.betonquest.org/2.0.0-DEV/API/ConfigPatcher)?
 - [ ]  ... solve all TODOs?
 - [ ]  ... remove any commented out code?
 - [ ]  ... add debug messages?
