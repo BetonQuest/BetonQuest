@@ -4,7 +4,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.api.bukkit.config.custom.ConfigurationSectionDecorator;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
-import org.betonquest.betonquest.api.config.patcher.PatchTransformationRegisterer;
+import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegisterer;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.Plugin;
 
@@ -34,12 +34,12 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
      * @param patchAccessor a {@link ConfigAccessor} that holds the patch file
      * @throws InvalidConfigurationException if patch modifications couldn't be saved
      */
-    private ConfigurationFileImpl(final ConfigAccessor accessor, final ConfigAccessor patchAccessor, final PatchTransformationRegisterer patchTransformationRegisterer, final URI relativeRoot) throws InvalidConfigurationException {
+    private ConfigurationFileImpl(final ConfigAccessor accessor, final ConfigAccessor patchAccessor, final PatchTransformerRegisterer patchTransformerRegisterer, final URI relativeRoot) throws InvalidConfigurationException {
         super(accessor.getConfig());
         this.accessor = accessor;
         if (patchAccessor != null) {
             final Patcher patcher = new Patcher(accessor.getConfig(), patchAccessor.getConfig());
-            patchTransformationRegisterer.registerTransformations(patcher);
+            patchTransformerRegisterer.registerTransformers(patcher);
             if (patchConfig(patcher, relativeRoot)) {
                 try {
                     accessor.save();
@@ -61,19 +61,19 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
      * E.g:
      * {@code  config.yml & config.patch.yml}
      * <br><br>
-     * Available patches can be explicitly overridden by passing a {@link PatchTransformationRegisterer}.
+     * Available patches can be explicitly overridden by passing a {@link PatchTransformerRegisterer}.
      * Otherwise, the default patches are used.
      * <br><br>
      *
-     * @param configurationFile             where to load and save the config
-     * @param plugin                        to load the jar resources from
-     * @param resourceFile                  path to the default config in the plugin's jar
-     * @param patchTransformationRegisterer a function that registers the transformers to be used for patching
+     * @param configurationFile          where to load and save the config
+     * @param plugin                     to load the jar resources from
+     * @param resourceFile               path to the default config in the plugin's jar
+     * @param patchTransformerRegisterer a function that registers the transformers to be used for patching
      * @return a new ConfigurationFile
      * @throws InvalidConfigurationException if the configuration is invalid or could not be saved
      * @throws FileNotFoundException         if the {@code configurationFile} or {@code resourceFile} could not be found
      */
-    public static ConfigurationFile create(final File configurationFile, final Plugin plugin, final String resourceFile, final PatchTransformationRegisterer patchTransformationRegisterer) throws InvalidConfigurationException, FileNotFoundException {
+    public static ConfigurationFile create(final File configurationFile, final Plugin plugin, final String resourceFile, final PatchTransformerRegisterer patchTransformerRegisterer) throws InvalidConfigurationException, FileNotFoundException {
         if (configurationFile == null || plugin == null || resourceFile == null) {
             throw new IllegalArgumentException("The configurationFile, plugin and resourceFile must be defined but were null.");
         }
@@ -89,8 +89,8 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
         }
         final ConfigAccessor patchAccessor = createPatchAccessor(plugin, resourceFile);
         return new ConfigurationFileImpl(accessor, patchAccessor,
-                patchTransformationRegisterer == null ? new PatchTransformationRegisterer() {
-                } : patchTransformationRegisterer, plugin.getDataFolder().getParentFile().toURI());
+                patchTransformerRegisterer == null ? new PatchTransformerRegisterer() {
+                } : patchTransformerRegisterer, plugin.getDataFolder().getParentFile().toURI());
     }
 
     private static ConfigAccessor createPatchAccessor(final Plugin plugin, final String resourceFile) throws InvalidConfigurationException {

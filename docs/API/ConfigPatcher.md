@@ -62,16 +62,16 @@ patcher will make sure it's always up-to-date.
 
 By default, the transformers down below are available. 
  
-If you want to use your own transformers, you can pass them to the create method in the form of a `PatchTransformationRegisterer`.
+If you want to use your own transformers, you can pass them to the create method in the form of a `PatchTransformerRegisterer`.
 This is just a functional interface, that registers additional transformers.
 Utilizing this possibility will however override the default transformers. You need to re-add them explicitly. 
 
-```JAVA title="Anonymous PatchTransformationRegisterer Example"
+```JAVA title="Anonymous PatchTransformerRegisterer Example"
 config = ConfigurationFile.create(configFile, MyPlugin.getInstance(), "config.yml",
-    new PatchTransformationRegisterer() {
+    new PatchTransformerRegisterer() {
         @Override
-        public void registerTransformations(final Patcher patcher) {
-            PatchTransformationRegisterer.super.registerTransformations(patcher); //(1)!
+        public void registerTransformers(final Patcher patcher) {
+            PatchTransformerRegisterer.super.registerTransformers(patcher); //(1)!
             // Register your own transformers here:
             patcher.registerTransformer("myTransformer", new MyTransformer()); 
         }

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.modules.config.transformers;
 
 import org.betonquest.betonquest.api.config.patcher.PatchException;
-import org.betonquest.betonquest.api.config.patcher.PatchTransformation;
+import org.betonquest.betonquest.api.config.patcher.PatchTransformer;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Map;
@@ -9,12 +9,12 @@ import java.util.Map;
 /**
  * Deletes the given key.
  */
-public class RemoveTransformation implements PatchTransformation {
+public class RemoveTransformer implements PatchTransformer {
 
     /**
      * Default constructor
      */
-    public RemoveTransformation() {
+    public RemoveTransformer() {
     }
 
     @Override
