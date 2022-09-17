@@ -786,7 +786,7 @@ Check whether the player is near a specific MythicMobs entity. The first argumen
 | Parameter  | Syntax                                           | Default Value          | Explanation                                                                                                                             |
 |------------|--------------------------------------------------|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
 | _location_ | [ULF](./Reference.md#unified-location-formating) | :octicons-x-circle-16: | The location to spawn the mob at.                                                                                                       |
-| _name_     | name:level                                       | :octicons-x-circle-16: | MythicMobs mob name. Optionally, a level can be specifed after a colon.                                                                 |
+| _name_     | name:level                                       | :octicons-x-circle-16: | MythicMobs mob name. A level must be specifed after a colon.                                                                            |
 | _amount_   | Positive Number                                  | :octicons-x-circle-16: | Amount of mobs to spawn.                                                                                                                |
 | _target_   | Keyword                                          | False                  | Will make the mob target the player.                                                                                                    |
 | _private_  | Keyword                                          | Disabled               | Will hide the mob from all other players until restart. This does not hide particles or block sound from the mob. Also see notes below. |
@@ -795,7 +795,7 @@ Check whether the player is near a specific MythicMobs entity. The first argumen
 
 ```YAML title="Example"
 events::
-  spawnBoss: mspawnmob 100;200;300;world MegaBoss target
+  spawnBoss: mspawnmob 100;200;300;world MegaBoss:1 target
   spawnKnights: mspawnmob 100;200;300;world SkeletalKnight:3 5
   spawnPrivateDevil: mspawnmob 100;200;300;world Mephisto:1 5 target private marked:DungeonBoss3
 ```
