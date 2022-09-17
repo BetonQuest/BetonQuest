@@ -115,7 +115,7 @@ public class EntityInteractObjective extends CountingObjective {
             }
             final List<MetadataValue> meta = entity.getMetadata("betonquest-marked");
             for (final MetadataValue m : meta) {
-                if (!m.asString().equals(marked.replace("%player%", player.getName()))) {
+                if (!m.asString().equals(marked.replace("%player%", PlayerConverter.getID(player).getProfileUUID().toString()))) {
                     return false;
                 }
             }

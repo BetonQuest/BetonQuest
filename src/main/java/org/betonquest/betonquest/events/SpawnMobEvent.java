@@ -110,7 +110,7 @@ public class SpawnMobEvent extends QuestEvent {
                 livingEntity.setCustomName(name);
             }
             if (marked != null) {
-                entity.setMetadata("betonquest-marked", new FixedMetadataValue(BetonQuest.getInstance(), marked.replace("%player%", profile.getOfflinePlayer().getName())));
+                entity.setMetadata("betonquest-marked", new FixedMetadataValue(BetonQuest.getInstance(), marked.replace("%player%", profile.getProfileUUID().toString())));
             }
         }
         return null;

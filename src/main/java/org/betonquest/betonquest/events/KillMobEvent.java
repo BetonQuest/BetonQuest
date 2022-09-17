@@ -68,7 +68,7 @@ public class KillMobEvent extends QuestEvent {
                     return entity
                             .getMetadata("betonquest-marked")
                             .stream()
-                            .anyMatch(metadataValue -> metadataValue.asString().equals(marked.replace("%player%", profile.getOfflinePlayer().getName())));
+                            .anyMatch(metadataValue -> metadataValue.asString().equals(marked.replace("%player%", profile.getProfileUUID().toString())));
                 })
                 //remove them
                 .forEach(Entity::remove);

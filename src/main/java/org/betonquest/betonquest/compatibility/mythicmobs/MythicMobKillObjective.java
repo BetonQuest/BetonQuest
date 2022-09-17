@@ -71,27 +71,27 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
             return;
         }
         if (event.getKiller() instanceof Player) {
-            checkKill(event, (Player) event.getKiller());
+            checkKill(event, PlayerConverter.getID((Player) event.getKiller()));
         } else if (neutralDeathRadiusAllPlayers > 0) {
             final Location center = BukkitAdapter.adapt(event.getMob().getLocation());
             for (final Player player : center.getWorld().getPlayers()) {
                 if (isValidPlayer(player) && player.getLocation().distanceSquared(center) <= neutralDeathRadiusAllPlayersSquared) {
-                    checkKill(event, player);
+                    checkKill(event, PlayerConverter.getID((Player) event.getKiller()));
                 }
             }
         }
     }
 
-    private void checkKill(final MythicMobDeathEvent event, final Player player) {
+    private void checkKill(final MythicMobDeathEvent event, final Profile profile) {
         if (marked != null) {
             final List<MetadataValue> meta = event.getEntity().getMetadata("betonquest-marked");
             for (final MetadataValue m : meta) {
-                if (!m.asString().equals(marked.replace("%player%", player.getName()))) {
+                if (!m.asString().equals(marked.replace("%player%", profile.getProfileUUID().toString()))) {
                     return;
                 }
             }
         }
-        handlePlayerKill(player, event.getMob());
+        handlePlayerKill(profile, event.getMob());
     }
 
     private boolean isValidPlayer(final Player player) {
@@ -100,8 +100,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
                 && player.isValid();
     }
 
-    private void handlePlayerKill(final Player player, final ActiveMob mob) {
-        final Profile profile = PlayerConverter.getID(player);
+    private void handlePlayerKill(final Profile profile, final ActiveMob mob) {
         if (containsPlayer(profile) && matchesMobLevel(profile, mob) && checkConditions(profile)) {
             getCountingData(profile).progress();
             completeIfDoneOrNotify(profile);

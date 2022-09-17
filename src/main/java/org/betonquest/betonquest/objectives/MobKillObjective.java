@@ -63,7 +63,7 @@ public class MobKillObjective extends CountingObjective implements Listener {
             }
             final List<MetadataValue> meta = event.getEntity().getMetadata("betonquest-marked");
             for (final MetadataValue m : meta) {
-                if (!m.asString().equals(marked.replace("%player%", event.getPlayer().getName()))) {
+                if (!m.asString().equals(marked.replace("%player%", PlayerConverter.getID(event.getPlayer()).getProfileUUID().toString()))) {
                     return;
                 }
             }

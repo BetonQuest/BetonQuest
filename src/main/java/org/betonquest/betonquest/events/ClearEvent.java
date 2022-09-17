@@ -70,7 +70,7 @@ public class ClearEvent extends QuestEvent {
                 }
                 final List<MetadataValue> meta = entity.getMetadata("betonquest-marked");
                 for (final MetadataValue m : meta) {
-                    if (!m.asString().equals(marked.replace("%player%", profile.getOfflinePlayer().getName()))) {
+                    if (!m.asString().equals(marked.replace("%player%", profile.getProfileUUID().toString()))) {
                         continue loop;
                     }
                 }

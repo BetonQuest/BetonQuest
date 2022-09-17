@@ -76,7 +76,7 @@ public class MythicSpawnMobEvent extends QuestEvent {
                     Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), () -> targetMob.setTarget(BukkitAdapter.adapt(player)), 20L);
                 }
                 if (marked != null) {
-                    entity.setMetadata("betonquest-marked", new FixedMetadataValue(BetonQuest.getInstance(), marked.replace("%player%", player.getName())));
+                    entity.setMetadata("betonquest-marked", new FixedMetadataValue(BetonQuest.getInstance(), marked.replace("%player%", profile.getProfileUUID().toString())));
                 }
             } catch (final InvalidMobTypeException e) {
                 throw new QuestRuntimeException("MythicMob type " + mob + " is invalid.", e);
