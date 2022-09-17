@@ -4,26 +4,6 @@ icon: octicons/gear-16
 !!! warning
     All existing API will break in BetonQuest 2.0 which is being worked on while you read this.
     If you plan on doing something with this API please keep in mind that you will need to change it again later.
-    
-## Adding BetonQuest as a dependency
-
-You can add BetonQuest as a dependency using your build system. Here is the config for Maven:
-
-```XML title="Add this to your repositories tag"
-<repository>
-    <id>betonquest-repo</id>
-    <url>https://betonquest.org/nexus/repository/betonquest/</url>
-</repository>
-```
-
-```XML title="Add this to your dependencies tag"
-<dependency>
-    <groupId>org.betonquest</groupId>
-    <artifactId>betonquest</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
-    <scope>provided</scope>
-</dependency>
-```
 
 ## Writing events
 
@@ -106,19 +86,4 @@ Registering the conversation inputs/outputs is done in the same way as objective
 
 ## Listening to BetonQuest (Bukkit) events
 
-BetonQuest calls Bukkit events occasionally: when a conversation is started, finished and when an option is selected. You can find these events in `org.betonquest.betonquest.api` package and use them in your plugins. If you need any additional events just open and issue on GitHub or send me a pull request.
-
-## Debugging
-
-You can debug your code using `LogUtils` class by simply call `LogUtils.getlogger().log(..)` to log something.
-
-We use the following levels for these aspects:
-- `SEVER` - Anything happen, that breaks the plugin, or a main function of the plugin
-- `WARNING` - The most things, where something not normal or unexpected happens, but the plugin still work correctly for the rest(all catch blocks, when not SEVER)
-- `INFO` - Anything you want to log, that also should appear in the normal console
-- `CONFIG` - Not in use at the moment
-- `FINE` - All messages, that you want to only appear in the debug log file, not in the console
-- `FINER` - Do not use this, this is reserved, for exception logging, like you call LogUtils.logThrowable or LogUtils.logThrowableIgnore
-- `FINEST` - Not in use at the moment
-
-If you have a `catch` block, please log this with a message, that calls `exception.getMessage()` and log the complete exception by using the `Logutils.logThrowable(e)`. The methods `logThrowableReport()` and `logThrowableIgnore()` may only be executed by BetonQuest.
+BetonQuest calls Bukkit events occasionally: when a conversation is started, finished and when an option is selected. You can find these events in `org.betonquest.betonquest.api` package and use them in your plugins. If you need any additional events just open and issue on GitHub or open a pull request.
