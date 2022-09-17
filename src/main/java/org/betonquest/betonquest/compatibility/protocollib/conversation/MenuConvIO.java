@@ -27,6 +27,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -41,6 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -53,11 +55,14 @@ public class MenuConvIO extends ChatConvIO {
 
     // Thread safety
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
-
+    /**
+     * All players that are currently on cooldown are in this list.
+     * The cooldown is used to prevent players from spamming through the conversation or skipping through it by accident.
+     */
+    private final List<UUID> selectionCooldowns = new ArrayList<>();
     // Actions
     protected Map<CONTROL, ACTION> controls = new HashMap<>();
     protected String configControlCancel = "sneak";
-
     protected int oldSelectedOption;
     protected int selectedOption;
     protected AtomicBoolean started = new AtomicBoolean(false);
@@ -68,7 +73,6 @@ public class MenuConvIO extends ChatConvIO {
     protected BaseComponent[] displayOutput;
     protected String formattedNpcName;
     protected String configControlSelect = "jump,left_click";
-
     // Configuration
     protected Integer configLineLength = 50;
     protected Integer configRefreshDelay = 180;
@@ -86,6 +90,10 @@ public class MenuConvIO extends ChatConvIO {
     protected String configNpcNameAlign = "center";
     protected String configNpcNameFormat = "&e{npc_name}&r".replace('&', '§');
     protected boolean configNpcNameNewlineSeparator = true;
+    /**
+     * The amount of ticks a player must wait before selecting another option after selecting an option.
+     */
+    private int configSelectionCooldown = 10;
     private ArmorStand stand;
 
     @SuppressWarnings("PMD.CognitiveComplexity")
@@ -119,6 +127,7 @@ public class MenuConvIO extends ChatConvIO {
             configNpcNameAlign = section.getString("npc_name_align", configNpcNameAlign);
             configNpcNameFormat = section.getString("npc_name_format", configNpcNameFormat).replace('&', '§');
             configNpcNameNewlineSeparator = section.getBoolean("npc_name_newline_separator", configNpcNameNewlineSeparator);
+            configSelectionCooldown = section.getInt("selectionCooldown");
         }
 
         // Sort out Controls
@@ -198,85 +207,6 @@ public class MenuConvIO extends ChatConvIO {
         }
     }
 
-    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
-    private PacketAdapter getPacketAdapter() {
-        return new PacketAdapter(BetonQuest.getInstance(), ListenerPriority.HIGHEST,
-                PacketType.Play.Client.STEER_VEHICLE,
-                PacketType.Play.Server.ANIMATION
-        ) {
-
-            @Override
-            public void onPacketSending(final PacketEvent event) {
-                if (!event.getPacketType().equals(PacketType.Play.Server.ANIMATION)) {
-                    return;
-                }
-                final WrapperPlayServerAnimation animation = new WrapperPlayServerAnimation(event.getPacket());
-                if (animation.getEntityID() == player.getEntityId()) {
-                    event.setCancelled(true);
-                }
-            }
-
-            @Override
-            public void onPacketReceiving(final PacketEvent event) {
-                if (!event.getPlayer().equals(player) || options.size() == 0) {
-                    return;
-                }
-                if (!event.getPacketType().equals(PacketType.Play.Client.STEER_VEHICLE)) {
-                    return;
-                }
-                final WrapperPlayClientSteerVehicle steerEvent = new WrapperPlayClientSteerVehicle(event.getPacket());
-                if (steerEvent.isJump() && controls.containsKey(CONTROL.JUMP) && !debounce) {
-                    // Player Jumped
-                    debounce = true;
-                    switch (controls.get(CONTROL.JUMP)) {
-                        case CANCEL:
-                            if (!conv.isMovementBlock()) {
-                                conv.endConversation();
-                            }
-                            break;
-                        case SELECT:
-                            conv.passPlayerAnswer(selectedOption + 1);
-                            break;
-                        case MOVE:
-                        default:
-                            break;
-                    }
-                } else if (steerEvent.getForward() < 0 && selectedOption < options.size() - 1 && controls.containsKey(CONTROL.MOVE) && !debounce) {
-                    // Player moved Backwards
-                    oldSelectedOption = selectedOption;
-                    selectedOption++;
-                    debounce = true;
-                    Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), () -> updateDisplay());
-                } else if (steerEvent.getForward() > 0 && selectedOption > 0 && controls.containsKey(CONTROL.MOVE) && !debounce) {
-                    // Player moved Forwards
-                    oldSelectedOption = selectedOption;
-                    selectedOption--;
-                    debounce = true;
-                    Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), () -> updateDisplay());
-                } else if (steerEvent.isUnmount() && controls.containsKey(CONTROL.SNEAK) && !debounce) {
-                    // Player Dismounted
-                    debounce = true;
-                    switch (controls.get(CONTROL.SNEAK)) {
-                        case CANCEL:
-                            if (!conv.isMovementBlock()) {
-                                conv.endConversation();
-                            }
-                            break;
-                        case SELECT:
-                            conv.passPlayerAnswer(selectedOption + 1);
-                            break;
-                        case MOVE:
-                        default:
-                            break;
-                    }
-                } else if (Math.abs(steerEvent.getForward()) < 0.01) {
-                    debounce = false;
-                }
-                event.setCancelled(true);
-            }
-        };
-    }
-
     /**
      * Displays all data to the player. Should be called after setting all
      * options.
@@ -314,6 +244,7 @@ public class MenuConvIO extends ChatConvIO {
     }
 
     // Override this event from our parent
+
     @SuppressWarnings("deprecation")
     @Override
     @EventHandler(ignoreCancelled = true)
@@ -333,104 +264,6 @@ public class MenuConvIO extends ChatConvIO {
         super.setNpcResponse(npcName, response);
         formattedNpcName = configNpcNameFormat
                 .replace("{npc_name}", npcName);
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void playerInteractEntityEvent(final PlayerInteractEntityEvent event) {
-        if (!isActiveUnsafe()) {
-            return;
-        }
-
-        lock.readLock().lock();
-        try {
-            if (!isActive()) {
-                return;
-            }
-
-            if (!event.getPlayer().equals(player)) {
-                return;
-            }
-
-            event.setCancelled(true);
-
-            if (debounce) {
-                return;
-            }
-
-            if (controls.containsKey(CONTROL.LEFT_CLICK)) {
-                switch (controls.get(CONTROL.LEFT_CLICK)) {
-                    case CANCEL:
-                        if (!conv.isMovementBlock()) {
-                            conv.endConversation();
-                        }
-                        debounce = true;
-                        break;
-                    case SELECT:
-                        conv.passPlayerAnswer(selectedOption + 1);
-                        debounce = true;
-                        break;
-                    case MOVE:
-                    default:
-                        break;
-                }
-            }
-        } finally {
-            lock.readLock().unlock();
-        }
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void playerInteractEvent(final PlayerInteractEvent event) {
-        if (!isActiveUnsafe()) {
-            return;
-        }
-
-        lock.readLock().lock();
-        try {
-            if (!isActive()) {
-                return;
-            }
-
-            if (!event.getPlayer().equals(player)) {
-                return;
-            }
-
-            event.setCancelled(true);
-
-            if (debounce) {
-                return;
-            }
-
-            switch (event.getAction()) {
-                case LEFT_CLICK_AIR:
-                case LEFT_CLICK_BLOCK:
-
-                    if (controls.containsKey(CONTROL.LEFT_CLICK)) {
-                        switch (controls.get(CONTROL.LEFT_CLICK)) {
-                            case CANCEL:
-                                if (!conv.isMovementBlock()) {
-                                    conv.endConversation();
-                                }
-                                debounce = true;
-                                break;
-                            case SELECT:
-                                conv.passPlayerAnswer(selectedOption + 1);
-                                debounce = true;
-                                break;
-                            case MOVE:
-                            default:
-                                break;
-                        }
-                    }
-                case PHYSICAL:
-                case RIGHT_CLICK_AIR:
-                case RIGHT_CLICK_BLOCK:
-                default:
-                    break;
-            }
-        } finally {
-            lock.readLock().unlock();
-        }
     }
 
     protected void showDisplay() {
@@ -654,12 +487,158 @@ public class MenuConvIO extends ChatConvIO {
         }
     }
 
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
+    private PacketAdapter getPacketAdapter() {
+        return new PacketAdapter(BetonQuest.getInstance(), ListenerPriority.HIGHEST,
+                PacketType.Play.Client.STEER_VEHICLE,
+                PacketType.Play.Server.ANIMATION
+        ) {
+
+            @Override
+            public void onPacketSending(final PacketEvent event) {
+                if (!event.getPacketType().equals(PacketType.Play.Server.ANIMATION)) {
+                    return;
+                }
+                final WrapperPlayServerAnimation animation = new WrapperPlayServerAnimation(event.getPacket());
+                if (animation.getEntityID() == player.getEntityId()) {
+                    event.setCancelled(true);
+                }
+            }
+
+            @Override
+            public void onPacketReceiving(final PacketEvent event) {
+                if (!event.getPlayer().equals(player) || options.size() == 0) {
+                    return;
+                }
+                if (!event.getPacketType().equals(PacketType.Play.Client.STEER_VEHICLE)) {
+                    return;
+                }
+                final WrapperPlayClientSteerVehicle steerEvent = new WrapperPlayClientSteerVehicle(event.getPacket());
+                if (steerEvent.isJump() && controls.containsKey(CONTROL.JUMP) && !debounce) {
+                    // Player Jumped
+                    debounce = true;
+                    switch (controls.get(CONTROL.JUMP)) {
+                        case CANCEL:
+                            if (!conv.isMovementBlock()) {
+                                conv.endConversation();
+                            }
+                            break;
+                        case SELECT:
+                            if (!isOnCooldown()) {
+                                conv.passPlayerAnswer(selectedOption + 1);
+                            }
+                            break;
+                        case MOVE:
+                        default:
+                            break;
+                    }
+                } else if (steerEvent.getForward() < 0 && selectedOption < options.size() - 1 && controls.containsKey(CONTROL.MOVE) && !debounce) {
+                    // Player moved Backwards
+                    oldSelectedOption = selectedOption;
+                    selectedOption++;
+                    debounce = true;
+                    Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), () -> updateDisplay());
+                } else if (steerEvent.getForward() > 0 && selectedOption > 0 && controls.containsKey(CONTROL.MOVE) && !debounce) {
+                    // Player moved Forwards
+                    oldSelectedOption = selectedOption;
+                    selectedOption--;
+                    debounce = true;
+                    Bukkit.getScheduler().runTaskAsynchronously(getPlugin(), () -> updateDisplay());
+                } else if (steerEvent.isUnmount() && controls.containsKey(CONTROL.SNEAK) && !debounce) {
+                    // Player Dismounted
+                    debounce = true;
+                    switch (controls.get(CONTROL.SNEAK)) {
+                        case CANCEL:
+                            if (!conv.isMovementBlock()) {
+                                conv.endConversation();
+                            }
+                            break;
+                        case SELECT:
+                            if (!isOnCooldown()) {
+                                conv.passPlayerAnswer(selectedOption + 1);
+                            }
+                            break;
+                        case MOVE:
+                        default:
+                            break;
+                    }
+                } else if (Math.abs(steerEvent.getForward()) < 0.01) {
+                    debounce = false;
+                }
+                event.setCancelled(true);
+            }
+        };
+    }
+
     /**
      * @return if this conversationIO should send messages to the player when the conversation starts and ends
      */
     @Override
     public boolean printMessages() {
         return false;
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void playerInteractEvent(final PlayerInteractEvent event) {
+        if (!isActiveUnsafe()) {
+            return;
+        }
+
+        lock.readLock().lock();
+        try {
+            if (!isActive()) {
+                return;
+            }
+
+            if (!event.getPlayer().equals(player)) {
+                return;
+            }
+
+            event.setCancelled(true);
+
+            if (debounce) {
+                return;
+            }
+
+            final Action action = event.getAction();
+            if (action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK) {
+                if (controls.containsKey(CONTROL.LEFT_CLICK)) {
+                    handleSteering();
+                }
+            }
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void playerInteractEntityEvent(final PlayerInteractEntityEvent event) {
+        if (!isActiveUnsafe()) {
+            return;
+        }
+
+        lock.readLock().lock();
+        try {
+            if (!isActive()) {
+                return;
+            }
+
+            if (!event.getPlayer().equals(player)) {
+                return;
+            }
+
+            event.setCancelled(true);
+
+            if (debounce) {
+                return;
+            }
+
+            if (controls.containsKey(CONTROL.LEFT_CLICK)) {
+                handleSteering();
+            }
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -685,25 +664,42 @@ public class MenuConvIO extends ChatConvIO {
             }
 
             if (event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK) && controls.containsKey(CONTROL.LEFT_CLICK)) {
-                switch (controls.get(CONTROL.LEFT_CLICK)) {
-                    case CANCEL:
-                        if (!conv.isMovementBlock()) {
-                            conv.endConversation();
-                        }
-                        debounce = true;
-                        break;
-                    case SELECT:
-                        conv.passPlayerAnswer(selectedOption + 1);
-                        debounce = true;
-                        break;
-                    case MOVE:
-                    default:
-                        break;
-                }
+                handleSteering();
             }
         } finally {
             lock.readLock().unlock();
         }
+    }
+
+    private void handleSteering() {
+        switch (controls.get(CONTROL.LEFT_CLICK)) {
+            case CANCEL -> {
+                if (!conv.isMovementBlock()) {
+                    conv.endConversation();
+                }
+                debounce = true;
+            }
+            case SELECT -> {
+                if (isOnCooldown()) {
+                    return;
+                }
+                conv.passPlayerAnswer(selectedOption + 1);
+                debounce = true;
+            }
+            default -> {
+            }
+        }
+    }
+
+    private boolean isOnCooldown() {
+        final UUID playerID = player.getUniqueId();
+        if (selectionCooldowns.contains(playerID)) {
+            return true;
+        } else {
+            selectionCooldowns.add(playerID);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(BetonQuest.getInstance(), () -> selectionCooldowns.remove(playerID), configSelectionCooldown);
+        }
+        return false;
     }
 
     @SuppressWarnings("PMD.NPathComplexity")

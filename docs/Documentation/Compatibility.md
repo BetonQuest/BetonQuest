@@ -863,49 +863,49 @@ Customize how it looks by adding the following lines:
 
 ```YAML
 menu_conv_io:
-  line_length: 50
-  refresh_delay: 180
+  line_length: 50 # (1)!
+  refresh_delay: 180 # (2)!
+  selectionCooldown: 10 # (3)!
 
-  npc_wrap: '&l &r'
-  npc_text: '&l &r&f{npc_text}'
-  npc_text_reset: '&f'
-  option_wrap: '&r&l &l &l &l &r'
-  option_text: '&l &l &l &l &r&8[ &b{option_text}&8 ]'
-  option_text_reset: '&b'
-  option_selected: '&l &r &r&7»&r &8[ &f&n{option_text}&8 ]'
-  option_selected_reset: '&f'
-  option_selected_wrap: '&r&l &l &l &l &r&f&n'
+  npc_wrap: '&l &r' # (4)!
+  npc_text: '&l &r&f{npc_text}' # (5)!
+  npc_text_reset: '&f' # (6)!
+  option_wrap: '&r&l &l &l &l &r' # (7)!
+  option_text: '&l &l &l &l &r&8[ &b{option_text}&8 ]' # (8)!
+  option_text_reset: '&b' # (9)! 
+  option_selected: '&l &r &r&7»&r &8[ &f&n{option_text}&8 ]' # (10)!
+  option_selected_reset: '&f' # (11)!
+  option_selected_wrap: '&r&l &l &l &l &r&f&n' # (12)!
 
-  control_select: jump,left_click
-  control_cancel: sneak
-  control_move: scroll,move
+  control_select: jump,left_click # (13)!
+  control_cancel: sneak # (14)! 
+  control_move: scroll,move # (15)! 
 
-  npc_name_type: chat
-  npc_name_align: center
-  npc_name_format: '&e{npc_name}&r'
-  npc_name_newline_separator: true
+  npc_name_type: chat # (16)!
+  npc_name_align: center # (17)!
+  npc_name_format: '&e{npc_name}&r' # (18)!
+  npc_name_newline_separator: true # (19)!
 ```
 
-Where:
-
-  * `line_length` - Maximum size of a line till its wrapped
-  * `refresh_delay` - Specify how many ticks to auto update display. Default 180
-  * `npc_wrap` - What text to prefix each new line in the NPC text that wraps
-  * `npc_text` - How to write the NPC text. Replaces {1} with the npcs text
-  * `npc_text_reset` - When a color reset is found, what to replace it with
-  * `option_wrap` - What text to prefix each new line in an option that wraps
-  * `option_text` - How to write an option. Replaces {1} with the option text
-  * `option_text_reset` - When a color reset is found, what to replace it with
-  * `option_selected` - How to write a selected option. Replaces {1} with the option text
-  * `option_selected_reset` - When a color reset is found, what to replace it with
-  * `option_selected_wrap` - What text to prefix each new line in a selected option that wraps
-  * `control_select` - Space separated actions to select. Can be any of 'jump', 'left_click', 'sneak'
-  * `control_cancel` - Space separated actions to select. Can be any of 'jump', 'left_click', 'sneak'
-  * `control_move` - Space separated actions to move selection. Can be any of 'move', 'scroll'
-  * `npc_name_type` - Type of NPC name display. Can be one of: 'none', 'chat'
-  * `npc_name_align` - For npc name type of 'chat', how to align name. One of: 'left', 'right', 'center'
-  * `npc_name_format` - How to format the npc name
-  * `npc_name_newline_separator` - Whether an empty line is inserted after the NPC's name if there is space leftover. 
+1. Maximum size of a line till its wrapped.
+2. Specify how many ticks to auto update display. Default 180.
+3. The cooldown is in ticks. 20 ticks = 1 second.
+4. What text to prefix each new line in the NPC text that wraps.
+5. How to write the NPC text. Replaces {1} with the npcs text.
+6. When a color reset is found, what to replace it with.
+7. What text to prefix each new line in an option that wraps.
+8. How to write an option. Replaces {1} with the option text.
+9. When a color reset is found, what to replace it with.
+10. How to write a selected option. Replaces {1} with the option text.
+11. When a color reset is found, what to replace it with.
+12. What text to prefix each new line in a selected option that wraps.
+13. Comma separated actions to select options. Can be any of `jump`, `left_click`, `sneak`.
+14. Comma separated actions to cancel the conversation. Can be any of `jump`, `left_click`, `sneak`.
+15. Comma separated actions to move the selection. Can be any of `move`, `scroll`.
+16. Type of NPC name display. Can be one of: `none`, `chat`.
+17. For npc name type of `chat`, how to align name. One of: `left`, `right`, `center`.
+18. How to format the npc name.
+19. Whether an empty line is inserted after the NPC's name if there is space leftover.
 
 Variables:
 
@@ -915,7 +915,7 @@ Variables:
 
 ### Chat Interceptor: `packet`
 
-Intercept pretty much anything sent to the player by intercepting packets sent to them. This can be enabled by default by setting the `default_interceptor` to `packet` in config.yml or per conversation by setting `interceptor` to `packet` in the top level of the conversation.
+Intercepts pretty much anything sent to the player by intercepting packets sent to them. This can be enabled by default by setting the `default_interceptor` to `packet` in config.yml or per conversation by setting `interceptor` to `packet` in the top level of the conversation.
 
 ### Freeze players: 'freeze'
 This event allows you to freeze player for the given amount of ticks:
