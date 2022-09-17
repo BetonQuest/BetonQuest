@@ -18,7 +18,7 @@ Did the contributor...
 - [ ]  ... adjust the [ConfigPatcher](https://docs.betonquest.org/2.0.0-DEV/API/ConfigPatcher)?
 - [ ]  ... solve all TODOs?
 - [ ]  ... remove any commented out code?
-- [ ]  ... add debug messages?
+- [ ]  ... add [debug messages](https://docs.betonquest.org/2.0.0-DEV/API/Logging/)?
 - [ ]  ... clean the commit history?
 
 Check if the build pipeline succeeded for this PR!
