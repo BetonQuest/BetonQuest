@@ -697,7 +697,7 @@ public class MenuConvIO extends ChatConvIO {
             return true;
         } else {
             selectionCooldowns.add(playerID);
-            Bukkit.getScheduler().scheduleSyncDelayedTask(BetonQuest.getInstance(), () -> selectionCooldowns.remove(playerID), configSelectionCooldown);
+            Bukkit.getScheduler().scheduleAsyncDelayedTask(BetonQuest.getInstance(), () -> selectionCooldowns.remove(playerID), configSelectionCooldown);
         }
         return false;
     }
