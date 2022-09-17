@@ -578,6 +578,7 @@ public class MenuConvIO extends ChatConvIO {
         return false;
     }
 
+    @SuppressWarnings("PMD.CollapsibleIfStatements")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void playerInteractEvent(final PlayerInteractEvent event) {
         if (!isActiveUnsafe()) {
