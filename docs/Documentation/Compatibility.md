@@ -859,7 +859,7 @@ ProtocolLib also enables a conversation IO that makes use of a chat menu system.
   Sorry, your browser doesn't support embedded videos.
 </video>
 
-Customize how it looks by adding the following lines:
+Customize how it looks by adding the following lines to your quest package:
 
 ```YAML
 menu_conv_io:
