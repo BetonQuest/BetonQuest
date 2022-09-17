@@ -216,14 +216,10 @@ nav:
           - 'Changelog': Documentation/CHANGELOG.md
   - 'API':
       - 'Overview': API/Overview.md
-      - 'Legacy':
-          - 'API': API/API.md
-      - 'Configurations':
-          - 'Configuration File': API/ConfigurationFile.md
-          - 'Config Patcher': API/ConfigPatcher.md
-      - 'Other':
-          - 'Logging': API/Logging.md
-          - 'Schedules': API/Schedules.md
+      - 'Legacy API': API/API.md
+      - 'Configuration File': API/ConfigurationFile.md
+      - 'Logging': API/Logging.md
+      - 'Schedules': API/Schedules.md
   - 'Participate':
       - 'Overview': Participate/Overview.md
       - 'Setup Project': Participate/Setup-Project.md
