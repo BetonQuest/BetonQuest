@@ -3,7 +3,7 @@ package org.betonquest.betonquest.modules.config;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.api.config.patcher.PatchException;
-import org.betonquest.betonquest.api.config.patcher.PatchTransformation;
+import org.betonquest.betonquest.api.config.patcher.PatchTransformer;
 import org.betonquest.betonquest.modules.versioning.UpdateStrategy;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.modules.versioning.VersionComparator;
@@ -52,7 +52,7 @@ public class Patcher {
     /**
      * A config that contains one or more patches that will be applied to the pluginConfig.
      * <br>
-     * A patch consists of one or multiple list entries of which each contains options for a {@link PatchTransformation}.
+     * A patch consists of one or multiple list entries of which each contains options for a {@link PatchTransformer}.
      * Additionally, each patch has a version that determines if the patch will be applied.
      */
     private final ConfigurationSection patchConfig;
@@ -72,9 +72,9 @@ public class Patcher {
     private final Version configVersion;
 
     /**
-     * A map with the ID's and instances of all registered {@link PatchTransformation}s.
+     * A map with the ID's and instances of all registered {@link PatchTransformer}s.
      */
-    private final Map<String, PatchTransformation> transformers = new HashMap<>();
+    private final Map<String, PatchTransformer> transformers = new HashMap<>();
 
     /**
      * Creates a new Patcher.
@@ -262,12 +262,12 @@ public class Patcher {
     }
 
     /**
-     * Registers a new {@link PatchTransformation} that can be applied by the patcher.
+     * Registers a new {@link PatchTransformer} that can be applied by the patcher.
      *
      * @param typeName    the name of the transformation type
      * @param transformer the transformer
      */
-    public void registerTransformer(final String typeName, final PatchTransformation transformer) {
+    public void registerTransformer(final String typeName, final PatchTransformer transformer) {
         transformers.put(typeName, transformer);
     }
 }

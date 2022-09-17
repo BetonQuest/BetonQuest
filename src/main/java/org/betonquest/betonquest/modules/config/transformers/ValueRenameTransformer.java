@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.modules.config.transformers;
 
 import org.betonquest.betonquest.api.config.patcher.PatchException;
-import org.betonquest.betonquest.api.config.patcher.PatchTransformation;
+import org.betonquest.betonquest.api.config.patcher.PatchTransformer;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Map;
@@ -11,12 +11,12 @@ import java.util.regex.Pattern;
 /**
  * Renames a value for a given key if the given regex matches.
  */
-public class ValueRenameTransformation implements PatchTransformation {
+public class ValueRenameTransformer implements PatchTransformer {
 
     /**
      * Default constructor
      */
-    public ValueRenameTransformation() {
+    public ValueRenameTransformer() {
     }
 
     @Override

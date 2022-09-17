@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.config;
 
-import org.betonquest.betonquest.api.config.patcher.PatchTransformationRegisterer;
+import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegisterer;
 import org.betonquest.betonquest.modules.config.ConfigurationFileImpl;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -26,20 +26,20 @@ public interface ConfigurationFile extends ConfigurationSection {
      * E.g:
      * {@code  config.yml & config.patch.yml}
      * <br><br>
-     * Available patches can be explicitly overridden by passing a {@link PatchTransformationRegisterer}.
+     * Available patches can be explicitly overridden by passing a {@link PatchTransformerRegisterer}.
      * Otherwise, the default patches are used.
      * <br><br>
      *
-     * @param configurationFile             where to load and save the config
-     * @param plugin                        to load the jar resources from
-     * @param resourceFile                  path to the default config in the plugin's jar
-     * @param patchTransformationRegisterer a function that registers the transformers to be used for patching
+     * @param configurationFile          where to load and save the config
+     * @param plugin                     to load the jar resources from
+     * @param resourceFile               path to the default config in the plugin's jar
+     * @param patchTransformerRegisterer a function that registers the transformers to be used for patching
      * @return a new ConfigurationFile
      * @throws InvalidConfigurationException if the configuration is invalid or could not be saved
      * @throws FileNotFoundException         if the {@code configurationFile} or {@code resourceFile} could not be found
      */
-    static ConfigurationFile create(final File configurationFile, final Plugin plugin, final String resourceFile, final PatchTransformationRegisterer patchTransformationRegisterer) throws InvalidConfigurationException, FileNotFoundException {
-        return ConfigurationFileImpl.create(configurationFile, plugin, resourceFile, patchTransformationRegisterer);
+    static ConfigurationFile create(final File configurationFile, final Plugin plugin, final String resourceFile, final PatchTransformerRegisterer patchTransformerRegisterer) throws InvalidConfigurationException, FileNotFoundException {
+        return ConfigurationFileImpl.create(configurationFile, plugin, resourceFile, patchTransformerRegisterer);
     }
 
     /**
@@ -54,7 +54,7 @@ public interface ConfigurationFile extends ConfigurationSection {
      * {@code  config.yml & config.patch.yml}
      * <br><br>
      * The default patches are used when the ConfigurationFile is loaded using this method.
-     * Use {@link #create(File, Plugin, String, PatchTransformationRegisterer)} to override the default patches.
+     * Use {@link #create(File, Plugin, String, PatchTransformerRegisterer)} to override the default patches.
      * <br><br>
      *
      * @param configurationFile where to load and save the config

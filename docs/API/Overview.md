@@ -15,4 +15,22 @@ icon: material/handshake
         --8<-- "API-State/State-Explanation.md"
 
  
+## Adding BetonQuest as a dependency
 
+You can add BetonQuest as a dependency using your build system. Here is the config for Maven:
+
+```XML title="Add this to your repositories tag"
+<repository>
+    <id>betonquest-repo</id>
+    <url>https://betonquest.org/nexus/repository/betonquest/</url>
+</repository>
+```
+
+```XML title="Add this to your dependencies tag"
+<dependency>
+    <groupId>org.betonquest</groupId>
+    <artifactId>betonquest</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
+    <scope>provided</scope>
+</dependency>
+```

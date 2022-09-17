@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.modules.config.transformers;
 
-import org.betonquest.betonquest.api.config.patcher.PatchTransformationRegisterer;
+import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegisterer;
 import org.betonquest.betonquest.modules.config.Patcher;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
@@ -25,9 +25,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class TransformerTest {
 
     /**
-     * Anonymous {@link PatchTransformationRegisterer} for testing.
+     * Anonymous {@link PatchTransformerRegisterer} for testing.
      */
-    public static final PatchTransformationRegisterer REGISTERER = new PatchTransformationRegisterer() {
+    public static final PatchTransformerRegisterer REGISTERER = new PatchTransformerRegisterer() {
     };
 
     /**
@@ -408,7 +408,7 @@ class TransformerTest {
         CONFIG.set("configVersion", "2.0.0-CONFIG-1");
 
         final Patcher patcher = new Patcher(questConfig, patchConfig);
-        REGISTERER.registerTransformations(patcher);
+        REGISTERER.registerTransformers(patcher);
         patcher.patch();
         return questConfig.saveToString();
     }

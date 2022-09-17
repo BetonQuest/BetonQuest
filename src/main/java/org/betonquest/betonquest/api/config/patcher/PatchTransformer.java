@@ -7,10 +7,10 @@ import java.util.Map;
 /**
  * Interface for transformers that transform a configuration.
  */
-public interface PatchTransformation {
+public interface PatchTransformer {
 
     /**
-     * Applies a transformation to the given config.
+     * Applies a transformer to the given config.
      *
      * @param options options for the transformer
      * @param config  to transform

@@ -2,14 +2,46 @@
 icon: material/note-edit
 ---
 
-## Usage
-The config patcher automatically updates BetonQuest's main plugin config or those of BetonQuest's addons.
+BetonQuest provides the `ConfigurationFile`, a simple API to load, reload, save and delete configuration files.
+It extends `ConfigurationSection` and therefore also provides the well-known Bukkit methods to access and modify the configuration.
+Additionally, it takes care of patching the config whenever syntax or content changes need to be made.
+
+## Loading a config
+
+By creating a ConfigurationFile you either load an existing config or create the default one from your plugin's resources.
+```java
+Plugin plugin = MyBQAddonPlugin.getInstance();
+File configFile = new File(plugin.getDataFolder(), "config.yml"); // (1)!
+ConfigurationFile config = new ConfigurationFile(configFile, plugin, "defaultConfig.yml");
+```
+
+1. This is the location the config will be saved to. In this case it's a file named "_config.yml_" in your plugin's folder.
+
+Additionally, the ConfigurationFile will attempt to patch itself with a patch file. See [updating ConfigurationFiles](#updating-configurationfiles) for more information.
+
+## Working with the ConfigurationFile
+
+The `ConfigurationFile` extends `ConfigurationSection` and therefore provides all known Bukkit methods to access and modify the configuration.
+You can reload, save and delete the ConfigurationFile by calling it's corresponding `reload()`, `save()` and `delete()`
+methods.
+
+!!! warning "Reloading Behaviour"
+    When reloading the `ConfigurationFile`, it loads a new `ConfigurationSection` from the related file and replaces the old root.
+    This means that all references to old child `ConfigurationSection` in your code will be outdated and need to be updated.
+    Therefore, the best way to work with the `ConfigurationFile` is to pass it to your classes. Don't pass its children.
+    While querying the `ConfigurationFile` you can use child `ConfigurationSection` as usual, just don't store them.
+ 
+
+## Updating ConfigurationFiles
+
+The config patcher automatically updates all configs loaded using the `ConfigurationFile` API.
 This is needed when changes are made to the existing config format.
-This patcher only works on configuration files! It's not used for files that contain quests.
+This patcher only works on configuration files! It's not used for files that contain quests as these should not be loaded 
+with the `ConfigurationFile` API. 
+The patching progress is configured in a dedicated patch file per config file.
 
-
-## The Patch File
-Whenever a resource file is loaded using BetonQuest's `ConfigurationFile` API, a "_resourceFilename.patch.yml"_ file 
+### The Patch File
+Whenever a resource file is loaded using BetonQuest's `ConfigurationFile` API, a "_resourceFileName.patch.yml_" file 
 is searched in the same directory the resource file is located. It contains the configuration for all patches
 that need to be applied. Each patch contains configurations for "transformers" that apply changes to the resource
 file before it's loaded. Let's take a look at an example:
@@ -33,7 +65,7 @@ file before it's loaded. Let's take a look at an example:
 
 All patches that are newer than the configs current version are applied, starting with the oldest one.    
 
-## Config Versions
+### Config Versions
 The versions in the patch file have four digits (`1.2.3.4`). The first three are the semantic version of the BetonQuest 
 version that this patch updates the config to. The last digit is used to version multiple patches during the
 development phase of a semantic versioning release. 
@@ -58,20 +90,20 @@ The patcher will also automatically set the version to the newest available patc
 string. Therefore, setting the `configVersion` to an empty string in your config's resource file is recommended. The
 patcher will make sure it's always up-to-date. 
 
-## Transformer Types
+### Transformer Types
 
 By default, the transformers down below are available. 
  
-If you want to use your own transformers, you can pass them to the create method in the form of a `PatchTransformationRegisterer`.
+If you want to use your own transformers, you can pass them to the create method in the form of a `PatchTransformerRegisterer`.
 This is just a functional interface, that registers additional transformers.
 Utilizing this possibility will however override the default transformers. You need to re-add them explicitly. 
 
-```JAVA title="Anonymous PatchTransformationRegisterer Example"
+```JAVA title="Anonymous PatchTransformerRegisterer Example"
 config = ConfigurationFile.create(configFile, MyPlugin.getInstance(), "config.yml",
-    new PatchTransformationRegisterer() {
+    new PatchTransformerRegisterer() {
         @Override
-        public void registerTransformations(final Patcher patcher) {
-            PatchTransformationRegisterer.super.registerTransformations(patcher); //(1)!
+        public void registerTransformers(final Patcher patcher) {
+            PatchTransformerRegisterer.super.registerTransformers(patcher); //(1)!
             // Register your own transformers here:
             patcher.registerTransformer("myTransformer", new MyTransformer()); 
         }
@@ -80,7 +112,7 @@ config = ConfigurationFile.create(configFile, MyPlugin.getInstance(), "config.ym
   
 1. Call this if you want to use the default transformers alongside your own.
 
-### SET
+#### SET
 
 Sets a key to the given value. Already set keys will be overridden if `override` is set to `true`.
 ``` YAML title="Syntax"
@@ -90,7 +122,7 @@ Sets a key to the given value. Already set keys will be overridden if `override`
   override: true
 ```
 
-### KEY_RENAME
+#### KEY_RENAME
 
 Renames a key while preserving the value.
 ``` YAML title="Syntax"
@@ -99,7 +131,7 @@ Renames a key while preserving the value.
   newKey: journalLockedOnSlot
 ```
 
-### LIST_ENTRY_ADD
+#### LIST_ENTRY_ADD
 
 Adds an entry to the given list. The list will be created if it did not exist so far.
 ``` YAML title="Syntax"
@@ -111,7 +143,7 @@ Adds an entry to the given list. The list will be created if it did not exist so
 
 1. Can be `FIRST` or `LAST`. Default value is `LAST`.
 
-### LIST_ENTRY_RENAME
+#### LIST_ENTRY_RENAME
 
 Renames all list entries that match the given regex.
 ``` YAML title="Syntax"
@@ -121,7 +153,7 @@ Renames all list entries that match the given regex.
   newEntry: newEntry
 ```
 
-### LIST_ENTRY_REMOVE
+#### LIST_ENTRY_REMOVE
 
 Removes all list entries that match the given regex.
 ``` YAML title="Syntax"
@@ -130,7 +162,7 @@ Removes all list entries that match the given regex.
   entry: removedEntry
 ```
 
-### VALUE_RENAME
+#### VALUE_RENAME
 
 Renames the key's value if it matches the given regex.
 ``` YAML title="Syntax" 
@@ -140,7 +172,7 @@ Renames the key's value if it matches the given regex.
   newValue: newTest
 ```
 
-### REMOVE
+#### REMOVE
 
 Removes both sections and keys (including all nested contents).
 ``` YAML title="Syntax"

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.modules.config;
 
-import org.betonquest.betonquest.api.config.patcher.PatchTransformationRegisterer;
+import org.betonquest.betonquest.api.config.patcher.PatchTransformerRegisterer;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.betonquest.betonquest.modules.versioning.Version;
@@ -23,9 +23,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class PatcherTest {
 
     /**
-     * Anonymous {@link PatchTransformationRegisterer} for testing.
+     * Anonymous {@link PatchTransformerRegisterer} for testing.
      */
-    private static final PatchTransformationRegisterer REGISTERER = new PatchTransformationRegisterer() {
+    private static final PatchTransformerRegisterer REGISTERER = new PatchTransformerRegisterer() {
     };
 
     /**
@@ -91,7 +91,7 @@ class PatcherTest {
         assertTrue(patcher.hasUpdate(), "Patcher did not recognise the possible update.");
         assertFalse(patcher.updateVersion(), "The Patcher updated the configVersion when it should not.");
 
-        REGISTERER.registerTransformations(patcher);
+        REGISTERER.registerTransformers(patcher);
         patcher.patch();
 
         expectedConfig.set("configVersion", "3.4.5-CONFIG-6");
@@ -193,7 +193,7 @@ class PatcherTest {
                 """);
 
         final Patcher patcher = new Patcher(emptyConfig, patchConfig);
-        REGISTERER.registerTransformations(patcher);
+        REGISTERER.registerTransformers(patcher);
         patcher.patch();
         final YamlConfiguration desiredResult = createConfigFromString("""
                 configVersion: 2.0.0-CONFIG-1 #Don't change this! The plugin's automatic config updater handles it.
@@ -220,7 +220,7 @@ class PatcherTest {
                 """);
 
         final Patcher patcher = new Patcher(emptyConfig, patchConfig);
-        REGISTERER.registerTransformations(patcher);
+        REGISTERER.registerTransformers(patcher);
         patcher.patch();
         assertEquals("100.200.300-CONFIG-400", patcher.getCurrentConfigVersion(), "The Patcher did not return the highest available patch version.");
         assertTrue(patcher.updateVersion(), "The Patcher did not update the configVersion variable.");
