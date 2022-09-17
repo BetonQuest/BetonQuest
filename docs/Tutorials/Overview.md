@@ -18,7 +18,7 @@ However, help is not far if you get stuck. We have a
     - [X] Conversations
     - [X] Events
     - [X] Objectives
-    - [ ] Conditions
+    - [X] Conditions
     - [ ] YAML for questers (old page still in place)
 
     The [old tutorial](./Getting-Started/Learn-BetonQuest.md) is still available in the mean time.
