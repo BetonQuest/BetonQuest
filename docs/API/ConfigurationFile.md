@@ -17,7 +17,7 @@ ConfigurationFile config = new ConfigurationFile(configFile, plugin, "defaultCon
 
 1. This is the location the config will be saved to. In this case it's a file named "_config.yml_" in your plugin's folder.
 
-Additionally, the ConfigurationFile will attempt to patch itself with a patch file. See [Updating ConfigurationFiles](#updating-configurationfiles) for more information.
+Additionally, the ConfigurationFile will attempt to patch itself with a patch file. See [updating ConfigurationFiles](#updating-configurationfiles) for more information.
 
 ## Working with the ConfigurationFile
 
@@ -25,15 +25,23 @@ The `ConfigurationFile` extends `ConfigurationSection` and therefore provides al
 You can reload, save and delete the ConfigurationFile by calling it's corresponding `reload()`, `save()` and `delete()`
 methods.
 
+!!! warning "Reloading Behaviour"
+    When reloading the `ConfigurationFile`, it loads a new `ConfigurationSection` from the related file and replaces the old root.
+    This means that all references to old child `ConfigurationSection` in your code will be outdated and need to be updated.
+    Therefore, the best way to work with the `ConfigurationFile` is to pass it to your classes. Don't pass its children.
+    While querying the `ConfigurationFile` you can use child `ConfigurationSection` as usual, just don't store them.
+ 
+
 ## Updating ConfigurationFiles
 
 The config patcher automatically updates all configs loaded using the `ConfigurationFile` API.
 This is needed when changes are made to the existing config format.
 This patcher only works on configuration files! It's not used for files that contain quests as these should not be loaded 
-with the `ConfigurationFile` API.
+with the `ConfigurationFile` API. 
+The patching progress is configured in a dedicated patch file per config file.
 
 ### The Patch File
-Whenever a resource file is loaded using BetonQuest's `ConfigurationFile` API, a "_resourceFileName.patch.yml"_ file 
+Whenever a resource file is loaded using BetonQuest's `ConfigurationFile` API, a "_resourceFileName.patch.yml_" file 
 is searched in the same directory the resource file is located. It contains the configuration for all patches
 that need to be applied. Each patch contains configurations for "transformers" that apply changes to the resource
 file before it's loaded. Let's take a look at an example:
