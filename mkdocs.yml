@@ -102,7 +102,6 @@ markdown_extensions:
   - pymdownx.tilde
   - pymdownx.snippets:
       base_path: docs/_snippets
-      check_paths: true
   - abbr
   - toc:
       permalink: 🔗
