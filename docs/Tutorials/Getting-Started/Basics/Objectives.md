@@ -60,6 +60,7 @@ Let's explain:
     - `fish`: The first value in the instruction is always the **objective type**.
     - `cod`: This is an **option** of the objective `fish`. It defines which item you have to fish.
     - `10`: This is another **option**. It defines the amount to fish.
+    - `notify`: Notification statement that allows you to get a feedback and notify players on completion or progress.
     - `hookLocation:100;50;100;world`: This **option** defines where the hook of the fishing rod must be located. Only fish that are 
        fished in this specific area are counted by the objective.
     - `range:20`: If you use the hook location you also have to define the range **option**. This is the range around the hook location coordinate
@@ -111,12 +112,13 @@ This command will start the objective for the player.
 If you want to check if you have done it correctly, go to the defined location and fish 10 cod. After you caught 10 cod
 you should get a notification.
 
-| Command Part    | Meaning                                                                                                                      |
-|-----------------|------------------------------------------------------------------------------------------------------------------------------|
-| `/bq objective` | Tells BetonQuest that some event should be executed.                                                                         |
-| `NAME`          | A player's name.                                                                                                             |
-| `tutorialQuest` | The name of a QuestPackage. This is required because you could have objectives with the same name in different packages.     |
-| `fishObj`       | The name of the objective to execute. Don't forget to separate it with a dot from the package `tutorialQuest{==.==}fishObj`. |
+| Command Part          | Meaning                                                                                                                      |
+|-----------------------|------------------------------------------------------------------------------------------------------------------------------|
+| `/bq objective`       | Tells BetonQuest that some event should be executed.                                                                         |
+| `NAME`                | A player's name.                                                                                                             |
+| `(add/complete/list)` | Use these arguments to rather add, complete or list the objectives.                                                          |
+| `tutorialQuest`       | The name of a QuestPackage. This is required because you could have objectives with the same name in different packages.     |
+| `fishObj`             | The name of the objective to execute. Don't forget to separate it with a dot from the package `tutorialQuest{==.==}fishObj`. |
 
 You can also run the `/bq objective NAME` to list all active objectives of a player.
  `/bq objective NAME` to list all active objectives of a player.
