@@ -303,8 +303,8 @@ public class Menu extends SimpleYMLSection implements Listener {
     /**
      * @return the title of the menu
      */
-    public String getTitle(final String playerID) {
-        return title.getString(playerID);
+    public String getTitle(final Profile profile) {
+        return title.getString(profile);
     }
 
     /**

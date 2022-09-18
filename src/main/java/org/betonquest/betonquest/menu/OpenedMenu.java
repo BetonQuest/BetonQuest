@@ -5,6 +5,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.menu.events.MenuClickEvent;
 import org.betonquest.betonquest.menu.events.MenuCloseEvent;
+import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -46,7 +47,7 @@ public class OpenedMenu implements Listener {
 
         this.data = menu;
         this.playerId = player.getUniqueId();
-        final Inventory inventory = Bukkit.createInventory(null, data.getSize(), data.getTitle(playerId.toString()));
+        final Inventory inventory = Bukkit.createInventory(null, data.getSize(), data.getTitle(PlayerConverter.getID(player)));
         this.update(player, inventory);
         player.openInventory(inventory);
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());

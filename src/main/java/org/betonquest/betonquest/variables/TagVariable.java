@@ -4,6 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
@@ -45,12 +46,12 @@ public class TagVariable extends Variable {
     /**
      * Returns the value of the variable.
      *
-     * @param playerID ID of the player
+     * @param profile profile of the player
      * @return the value of the variable
      */
     @Override
-    public String getValue(final String playerID) {
-        final List<String> tags = BetonQuest.getInstance().getPlayerData(playerID).getTags();
+    public String getValue(final Profile profile) {
+        final List<String> tags = BetonQuest.getInstance().getPlayerData(profile).getTags();
         return getValue(tags);
     }
 

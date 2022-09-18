@@ -74,7 +74,7 @@ public class MenuObjective extends Objective implements Listener {
                         + "menu with id " + menuID + " isn't loaded");
                 return "";
             }
-            return menuData.getTitle(playerID);
+            return menuData.getTitle(profile);
         }
         return "";
     }
