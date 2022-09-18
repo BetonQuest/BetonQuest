@@ -36,6 +36,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   when the inventory of the player is full
 - `menu` conversationIO option `npc_name_newline_separator`
 - added `q download` command
+- variable support for menu titles
+- configurable cooldown to menu conversation IO
 - `freeze` event - ProtocolLib compatibility feature: Blocks the player from moving for the specified amount of ticks
 - `command` objective
 - `equip` objective
@@ -52,10 +54,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `mmspawn` event now has argument `private` Visually hides the spawned mob from other players. Does not stop sound or particles
 - `mmspawn` event now supports the `marked` argument
 - `mmobkill` objective now supports the `marked` argument
-- `marked` argument now supports %player% variable
-- variable support for menu titles
-- globaltag and globalpoint variables
-- configurable cooldown to menu conversation IO 
+- `marked` argument now supports %player% variable 
+- `globaltag` and `globalpoint` variables
+- `burn` event - ignites player for given seconds, supports variables
 - Things that are also added in 1.12.X:
     - new line support for `journal_lore` in `messages.yml`
     - FastAsyncWorldEdit compatibility

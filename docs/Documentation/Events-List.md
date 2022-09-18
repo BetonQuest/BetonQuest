@@ -648,3 +648,14 @@ Gives the specified amount of experience points to the player. You can give whol
     ```YAML
     experience 4 level
     ```
+## Burn: `burn`
+
+| Parameter  | Syntax            | Default Value               | Explanation                                                        |
+|------------|-------------------|-----------------------------|--------------------------------------------------------------------|
+| _duration_ | `duration:number` | :octicons-x-circle-16:      | The duration the player will burn (in seconds). Can be a variable. |
+
+```YAML title="Example"
+events:
+  burn: "burn duration:4"
+  punishing_fire: "burn duration:%point.punishment.amount%"
+```
