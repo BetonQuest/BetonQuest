@@ -275,8 +275,12 @@ public class Instruction {
     }
 
     public <T extends Enum<T>> T getEnum(final String string, final Class<T> clazz) throws InstructionParseException {
+        return getEnum(string, clazz, null);
+    }
+
+    public <T extends Enum<T>> T getEnum(final String string, final Class<T> clazz, final T defaultValue) throws InstructionParseException {
         if (string == null) {
-            return null;
+            return defaultValue;
         }
         try {
             return Enum.valueOf(clazz, string.toUpperCase(Locale.ROOT));

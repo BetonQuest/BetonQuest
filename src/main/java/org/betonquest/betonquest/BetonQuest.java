@@ -219,6 +219,7 @@ import org.betonquest.betonquest.quest.event.journal.JournalEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.FromClassQuestEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactoryAdapter;
+import org.betonquest.betonquest.quest.event.velocity.VelocityEventFactory;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.variables.ConditionVariable;
@@ -835,7 +836,7 @@ public class BetonQuest extends JavaPlugin {
         registerEvents("chat", ChatEvent.class);
         registerEvents("freeze", FreezeEvent.class);
         registerEvent("burn", new BurnEventFactory(getServer(), getServer().getScheduler(), this));
-
+        registerEvent("velocity", new VelocityEventFactory(getServer(), getServer().getScheduler(), this));
 
         // register objectives
         registerObjectives("location", LocationObjective.class);
