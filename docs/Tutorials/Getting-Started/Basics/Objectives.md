@@ -18,10 +18,10 @@ fishing fish. The possibilities are nearly endless! You will learn about these i
 </div>
 --8<-- "Tutorials/download-setup-warning.md"
     ```
-    Need to be set!!!
+    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Objectives/1-DirectoryStructure /tutorialQuest
     ```
     You can now find all files needed for this tutorial in this location:
-    "NEED TO BE SET!!! _YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/tutorialQuest_"
+    "_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/tutorialQuest_"
 
 ## 1. Creating the folder structure for your first objective
 Add a new file to your "_tutorialQuest_" `QuestPackage` named "_objectives.yml_" and 
@@ -41,7 +41,7 @@ Here is an overview of what your directory structure should look like now:
 
 We now have our file structure ready and can start writing objectives and a new conversation!
 
-## 2. Defining your first objective
+## 2. Defining your first objective and finishing event
 
 Open the newly created file "_objectives.yml_" and add the following:
 
@@ -67,6 +67,14 @@ Let's explain:
     - `events:caughtAllFish`: This is not an option of the fish objective but a general objective argument. The defined event(s)
        get triggered once the objective is completed (after you caught 10 cod at the specified hook location).
 
+After that we add the `caughtAllFish` event to the "_events.yml_" like this:
+
+``` YAML title="events.yml" hl_lines="4" linenums="1"
+events:
+  # Other events not shown here
+  tpBlacksmith: "teleport 50;70;50;world"
+  caughtAllFish: "notify You caught enough fish!\nReturn to the blacksmith! io:Title sound:firework_rocket"
+```
 
 
 ## 3. Creating the item in the items section
@@ -98,7 +106,7 @@ Now, `cod` is a defined item that can be utilized throughout the entire quest.
 Objectives must be started before they start watching the player's actions.
 The easiest way to do this is by running a command:
 
-Enter `/bq objective YOUR_NAME tutorialQuest.fishObj` on the server.
+Enter `/bq objective YOUR_NAME add tutorialQuest.fishObj` on the server.
 This command will start the objective for the player.
 If you want to check if you have done it correctly, go to the defined location and fish 10 cod. After you caught 10 cod
 you should get a notification.
@@ -113,15 +121,20 @@ you should get a notification.
 You can also run the `/bq objective NAME` to list all active objectives of a player.
  `/bq objective NAME` to list all active objectives of a player.
 
+To manually complete the objective for a player you need to type
+`/bq objective YOUR_NAME complete tutorialQuest.fishObj`. After you send this command you should also get
+a notification about the completion of this objective.
+
 ## 5. Using events to start objectives
 
 Objectives cannot only be started and stopped using commands, but also with events.
 Let's add an event to start the fishing objective:
 
-``` YAML title="events.yml" hl_lines="4" linenums="1"
+``` YAML title="events.yml" hl_lines="5" linenums="1"
 events:
   # Other events not shown here
   tpBlacksmith: "teleport 50;70;50;world"
+  caughtAllFish: "notify You caught enough fish!\nReturn to the blacksmith! io:Title sound:firework_rocket"
   startFishingObj: "objective start fishingObj" # (1)!
 ```
 
@@ -181,7 +194,7 @@ the dialog to the npc in "_package.yml_". If not, [check the previous tutorials]
 
 --8<-- "Tutorials/download-solution.md"
     ```
-    link goes skrr
+    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Objectives/2-FullExample /tutorialQuest
     ```
 
 ## Summary
