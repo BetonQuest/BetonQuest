@@ -889,7 +889,7 @@ menu_conv_io:
 
 1. Maximum size of a line till its wrapped.
 2. Specify how many ticks to auto update display. Default 180.
-3. The cooldown is in ticks. 20 ticks = 1 second.
+3. The cooldown for selecting another option after selecting an option. Measured in ticks. 20 ticks = 1 second.
 4. What text to prefix each new line in the NPC text that wraps.
 5. How to write the NPC text. Replaces {1} with the npcs text.
 6. When a color reset is found, what to replace it with.
