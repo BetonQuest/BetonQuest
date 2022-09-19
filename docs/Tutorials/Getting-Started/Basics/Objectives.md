@@ -27,7 +27,7 @@ fishing fish. The possibilities are nearly endless! You will learn about these i
 Add a new file to your "_tutorialQuest_" `QuestPackage` named "_objectives.yml_" and 
 a new file to your "_tutorialQuest_" Conversations folder named "_blacksmith.yml_".
 You may ask why we add a new file to the conversations folder. This is because the city tour currently ends in nothingness. 
-We're going add a blacksmith NPC that the player can talk to.
+We're going to add a blacksmith NPC that the player can talk to.
 
 Here is an overview of what your directory structure should look like now:
 
