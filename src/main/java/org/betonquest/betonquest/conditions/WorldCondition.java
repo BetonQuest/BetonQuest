@@ -31,7 +31,7 @@ public class WorldCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+    protected Boolean execute(final Profile profile) {
         return profile.getOnlineProfile().getOnlinePlayer().getWorld().equals(world);
     }
 

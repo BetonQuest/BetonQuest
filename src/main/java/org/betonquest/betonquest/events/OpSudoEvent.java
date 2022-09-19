@@ -6,7 +6,6 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -31,7 +30,7 @@ public class OpSudoEvent extends QuestEvent {
 
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    protected Void execute(final Profile profile) throws QuestRuntimeException {
+    protected Void execute(final Profile profile) {
         final Player player = profile.getOnlineProfile().getOnlinePlayer();
         final boolean previousOp = player.isOp();
         try {

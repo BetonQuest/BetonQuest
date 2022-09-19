@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 /**
  * Changes player's language.
@@ -25,7 +24,7 @@ public class LanguageEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final Profile profile) throws QuestRuntimeException {
+    protected Void execute(final Profile profile) {
         BetonQuest.getInstance().getPlayerData(profile).setLanguage(lang);
         return null;
     }

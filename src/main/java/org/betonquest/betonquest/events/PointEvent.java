@@ -48,7 +48,7 @@ public class PointEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        if (profile.getPlayer() == null) {
+        if (profile.getPlayer().isEmpty()) {
             new BukkitRunnable() {
                 @Override
                 public void run() {

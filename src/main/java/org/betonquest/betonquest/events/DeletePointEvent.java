@@ -8,7 +8,6 @@ import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
@@ -30,7 +29,7 @@ public class DeletePointEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final Profile profile) throws QuestRuntimeException {
+    protected Void execute(final Profile profile) {
         if (profile == null) {
             for (final Player p : Bukkit.getOnlinePlayers()) {
                 final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(p));

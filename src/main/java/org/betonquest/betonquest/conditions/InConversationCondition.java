@@ -4,7 +4,6 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.conversation.Conversation;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.Utils;
 
 /**
@@ -29,7 +28,7 @@ public class InConversationCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+    protected Boolean execute(final Profile profile) {
         final Conversation conversation = Conversation.getConversation(profile);
         return conversation != null && (conversationID == null || conversation.getID().equals(conversationID));
     }

@@ -4,7 +4,6 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.entity.Player;
 
 /**
@@ -24,7 +23,7 @@ public class FacingCondition extends Condition {
 
     @Override
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+    protected Boolean execute(final Profile profile) {
         final Player player = profile.getOnlineProfile().getOnlinePlayer();
         float rotation = player.getLocation().getYaw();
         final float pitch = player.getLocation().getPitch();
