@@ -17,7 +17,7 @@ However, help is not far if you get stuck. We have a
     
     - [X] Conversations
     - [X] Events
-    - [ ] Objectives
+    - [X] Objectives
     - [ ] Conditions
     - [ ] YAML for questers (old page still in place)
 

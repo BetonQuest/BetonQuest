@@ -186,6 +186,7 @@ nav:
               - 'YAML': Tutorials/Getting-Started/Basics/YAML-for-questers.md
               - 'Conversations': Tutorials/Getting-Started/Basics/Conversations.md
               - '    Events': Tutorials/Getting-Started/Basics/Events.md
+              - 'Objectives': Tutorials/Getting-Started/Basics/Objectives.md
           - 'Old Tutorial': Tutorials/Getting-Started/Learn-BetonQuest.md
       - 'Frequently Asked Questions':
           - 'General FAQ': Tutorials/Frequently-Asked-Questions.md
