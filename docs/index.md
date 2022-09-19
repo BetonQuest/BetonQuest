@@ -75,7 +75,7 @@ thead span {
 
 ## What server owners say
 
-By rating, BetonQuest is in the **top 30 out of 50.000 Spigot plugins**.
+By rating, BetonQuest is in the **top 10 out of 57.000 Spigot plugins**.
 <br>
 Sometimes, user reviews describe a plugin better than the author can:
 
@@ -135,7 +135,7 @@ Sometimes, user reviews describe a plugin better than the author can:
 | OpenSource               | :white_check_mark: |        :white_check_mark:         |         :white_check_mark:         | :white_check_mark: |     :white_check_mark:     | :white_check_mark: |            :x:             |            :x:             |
 | API                      | :white_check_mark: |        :white_check_mark:         |         :white_check_mark:         | :white_check_mark: |     :white_check_mark:     |        :x:         | :material-check-bold: [^1] | :material-check-bold: [^1] |
 | Version Support          |    1.17 - 1.19     |            1.8 - 1.19             |             1.8 - 1.19             |    1.17 - 1.19     |         1.8 - 1.19         |   1.13 - 1.17.1    |         1.7 - 1.19         |         1.7 - 1.18         |
-| Integrated Plugins       |         31         |                13                 |                 14                 |         20         |             15             |         6          |             29             |             1              |
+| Integrated Plugins       |         32         |                13                 |                 14                 |         20         |             15             |         6          |             29             |             1              |
 | BetonQuest integration   |                    |    :material-check-bold: [^5]     |                :x:                 | :white_check_mark: |            :x:             |        :x:         |            :x:             |            :x:             |
 | Ingame Editor            |        :x:         |         Chat & GUI(Paid)          |                :x:                 | :white_check_mark: |            GUI             | :white_check_mark: |            GUI             |            GUI             |
 | External Editor          | :white_check_mark: |                :x:                |                :x:                 |        :x:         |            :x:             |        :x:         |            :x:             |            :x:             |
