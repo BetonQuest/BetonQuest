@@ -25,18 +25,23 @@ public class BlockObjective extends CountingObjective implements Listener {
 
     private final BlockSelector selector;
     private final boolean exactMatch;
+    private final boolean noSafety;
 
     public BlockObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         selector = instruction.getBlockSelector();
         exactMatch = instruction.hasArgument("exactMatch");
         targetAmount = instruction.getInt();
+        noSafety = instruction.hasArgument("noSafety");
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onBlockPlace(final BlockPlaceEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
         if (containsPlayer(playerID) && selector.match(event.getBlock(), exactMatch) && checkConditions(playerID)) {
+            if (getCountingData(playerID).getDirectionFactor() < 0 && noSafety) {
+                return;
+            }
             handleDataChange(playerID, getCountingData(playerID).add());
         }
     }
@@ -45,6 +50,9 @@ public class BlockObjective extends CountingObjective implements Listener {
     public void onBlockBreak(final BlockBreakEvent event) {
         final String playerID = PlayerConverter.getID(event.getPlayer());
         if (containsPlayer(playerID) && selector.match(event.getBlock(), exactMatch) && checkConditions(playerID)) {
+            if (getCountingData(playerID).getDirectionFactor() > 0 && noSafety) {
+                return;
+            }
             handleDataChange(playerID, getCountingData(playerID).subtract());
         }
     }

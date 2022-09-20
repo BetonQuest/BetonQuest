@@ -58,6 +58,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `globaltag` and `globalpoint` variables
 - `burn` event - ignites player for given seconds, supports variables
 - `velocity` event - throws the player by a vector (can be variable) with a direction and modification
+- `block` objective - added argument `noSafety` which disables removing progress when the player does the opposite of what the objective asks for
 - Things that are also added in 1.12.X:
     - new line support for `journal_lore` in `messages.yml`
     - FastAsyncWorldEdit compatibility
