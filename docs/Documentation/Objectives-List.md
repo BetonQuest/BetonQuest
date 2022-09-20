@@ -35,22 +35,36 @@ give accurate results. Experiment with this objective a bit to make sure you've 
     arrow 100.5;200.5;300.5;world 1.1 events:reward conditions:correct_player_position
     ```
 
-## Block: `block`
+## :material-pickaxe: Break or Place Blocks: `block`
 
-To complete this objective the player must break or place the specified amount of blocks. The first argument is a
-[Block Selector](./Reference.md#block-selectors). Next is amount. It can be more than 0 for placing and
-less than 0 for destroying. You can also use the `notify` keyword to display messages to the player each time he updates
-amount of blocks, optionally with the notification interval after colon.
+To complete this objective the player must break or place the specified amount of blocks.
 
-This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of blocks already done,
-`left` is the amount of blocks still needed to complete the objective and `total` is the amount of blocks initially
-needed.
-Note that it follows the same rules as the amount argument, meaning that blocks to break are a negative number!
+| Parameter       | Syntax                                           | Default Value          | Explanation                                                                                                                                                                                                                                                               |
+|-----------------|--------------------------------------------------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| _Block Type_    | [Block Selector](./Reference.md#block-selectors) | :octicons-x-circle-16: | The block which must be broken.                                                                                                                                                                                                                                           |
+| _Amount_        | Number                                           | :octicons-x-circle-16: | The amount of blocks to place / destroy. More than 0 for placing and less than 0 for breaking blocks.                                                                                                                                                                     |
+| _Safety Check_  | Keyword (`noSafety`)                             | Safety Check Enabled   | The Safety Check prevents faking the objective. The progress will be reduced when the player does to opposite of what they are supposed to do. Example: Player must break 10 blocks. They place 10 of their stored blocks. Now the total amount of blocks to break is 20. |
+| _Notifications_ | Keyword (`notify`)                               | Disabled               | Displays messages to the player each time they progress the objective. Optionally with the notification interval after colon.                                                                                                                                             |
 
-!!! example
-    ```YAML
-    block LOG -16 events:reward notify:5
-    ```
+
+```YAML
+objectives:
+  breakLogs: "block LOG -16 events:reward notify"
+  placeBricks: "block BRICKS 64 events:epicReward notify:5"
+  breakIron: "block IRON_ORE -16 noSafety notify events:dailyReward"
+```
+
+<h5> Variable Properties </h5> 
+
+Note that these follow the same rules as the amount argument, meaning that blocks to break are a negative number!
+You can use this variable to always get positive values: `%math.calc:|objective.breakLogs.left|%`
+
+| Name     | Example Output | Explanation                                                                                         |
+|----------|----------------|-----------------------------------------------------------------------------------------------------|
+| _amount_ | 6              | Shows the amount of blocks already broken / placed.                                                 |
+| _left_   | 4              | Shows the amount of blocks that still need to be broken / placed for the objective to be completed. |
+| _total_  | 10             | Shows the initial amount of blocks that needed to be broken / placed.                               |
+
 
 ## Breed animals: `breed`
 
