@@ -12,10 +12,10 @@ Run this command in IntelliJ's terminal window (at the bottom) to start a live p
 It will be available on [127.0.0.1:8000](http://127.0.0.1:8000/) by default.
 
 ``` bash linenums="1" 
-mkdocs serve --dirtyreload # (1)
+mkdocs serve --livereload # (1)
 ```
 
-1. `--dirtyreload` is an optional argument that determines that only changed files will be re-build.
+1. `--livereload` is an optional argument that determines that only changed files will be re-build.
    This drastically decreases build time. However, it may lead to inaccurate navigation within your site.
    Serve without this argument to validate your changes once finished.
 
