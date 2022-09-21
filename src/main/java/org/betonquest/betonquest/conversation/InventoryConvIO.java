@@ -6,7 +6,6 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.LocalChatPaginator;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
@@ -63,7 +62,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
     protected boolean showNPCText = true;
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public InventoryConvIO(final Conversation conv, final Profile profile) throws QuestRuntimeException {
+    public InventoryConvIO(final Conversation conv, final Profile profile) {
         this.conv = conv;
         this.player = profile.getOnlineProfile().getOnlinePlayer();
         final Map<String, ChatColor[]> colors = ConversationColors.getColors();
@@ -371,7 +370,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
      */
     public static class Combined extends InventoryConvIO {
 
-        public Combined(final Conversation conv, final Profile profile) throws QuestRuntimeException {
+        public Combined(final Conversation conv, final Profile profile) {
             super(conv, profile);
             super.printMessages = true;
         }

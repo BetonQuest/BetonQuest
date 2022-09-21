@@ -1,10 +1,8 @@
 package org.betonquest.betonquest;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.database.PlayerData;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ObjectiveID;
 
 import java.util.ArrayList;
@@ -15,7 +13,6 @@ import java.util.Set;
 /**
  * Handler for global objectives
  */
-@CustomLog(topic = "GlobalObjectives")
 @SuppressWarnings("PMD.CommentRequired")
 public class GlobalObjectives {
 
@@ -61,11 +58,7 @@ public class GlobalObjectives {
             //start the objective
             objective.newPlayer(profile);
             //add the tag
-            try {
-                data.addTag(GlobalObjectives.getTag(id));
-            } catch (final QuestRuntimeException e) {
-                LOG.warn("Couldn't addTag due to: " + e.getMessage(), e);
-            }
+            data.addTag(GlobalObjectives.getTag(id));
         }
     }
 

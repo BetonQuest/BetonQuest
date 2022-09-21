@@ -97,7 +97,7 @@ public class Journal {
      * @return true if the player has his journal, false otherwise
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public static boolean hasJournal(final Profile profile) throws QuestRuntimeException {
+    public static boolean hasJournal(final Profile profile) {
         if (profile.getPlayer().isEmpty()) {
             return false;
         }
@@ -124,12 +124,9 @@ public class Journal {
      *
      * @param pointer the pointer to be added
      */
-    public void addPointer(final Pointer pointer) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is not online");
-        }
+    public void addPointer(final Pointer pointer) {
         BetonQuest.getInstance()
-                .callSyncBukkitEvent(new PlayerJournalAddEvent(profile.getPlayer().get(), this, pointer));
+                .callSyncBukkitEvent(new PlayerJournalAddEvent(profile.getOnlineProfile().getOnlinePlayer(), this, pointer));
         pointers.add(pointer);
         // SQLite doesn't accept formatted date and MySQL doesn't accept numeric
         // timestamp
@@ -145,15 +142,12 @@ public class Journal {
      *
      * @param pointerName the name of the pointer to remove
      */
-    public void removePointer(final String pointerName) throws QuestRuntimeException {
-        if (profile.getPlayer().isEmpty()) {
-            throw new QuestRuntimeException("Player is not online");
-        }
+    public void removePointer(final String pointerName) {
         for (final Iterator<Pointer> iterator = pointers.iterator(); iterator.hasNext(); ) {
             final Pointer pointer = iterator.next();
             if (pointer.getPointer().equalsIgnoreCase(pointerName)) {
                 BetonQuest.getInstance()
-                        .callSyncBukkitEvent(new PlayerJournalDeleteEvent(profile.getPlayer().get(), this, pointer));
+                        .callSyncBukkitEvent(new PlayerJournalDeleteEvent(profile.getOnlineProfile().getOnlinePlayer(), this, pointer));
                 final String date = BetonQuest.getInstance().isMySQLUsed()
                         ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date(pointer.getTimestamp()))
                         : Long.toString(pointer.getTimestamp());
@@ -369,7 +363,7 @@ public class Journal {
     /**
      * Adds journal to player inventory.
      */
-    public void addToInv() throws QuestRuntimeException {
+    public void addToInv() {
         final int targetSlot = getJournalSlot();
         generateTexts(lang);
         final Inventory inventory = profile.getOnlineProfile().getOnlinePlayer().getInventory();
@@ -394,7 +388,7 @@ public class Journal {
     }
 
     @SuppressWarnings("PMD.PrematureDeclaration")
-    private int getJournalSlot() throws QuestRuntimeException {
+    private int getJournalSlot() {
         final int slot = Integer.parseInt(Config.getString("config.default_journal_slot"));
         final boolean forceJournalSlot = Boolean.parseBoolean(Config.getString("config.journal.lock_default_journal_slot"));
         final int oldSlot = removeFromInv();
@@ -465,12 +459,8 @@ public class Journal {
      * Updates journal by removing it and adding it again
      */
     public void update() {
-        try {
-            if (hasJournal(profile)) {
-                addToInv();
-            }
-        } catch (final QuestRuntimeException e) {
-            LOG.warn("Couldn't update journal due to: " + e.getMessage(), e);
+        if (hasJournal(profile)) {
+            addToInv();
         }
     }
 
@@ -479,7 +469,7 @@ public class Journal {
      *
      * @return the slot from which the journal was removed
      */
-    public int removeFromInv() throws QuestRuntimeException {
+    public int removeFromInv() {
         // loop all items and check if any of them is a journal
         final Inventory inventory = profile.getOnlineProfile().getOnlinePlayer().getInventory();
         for (int i = 0; i < inventory.getSize(); i++) {

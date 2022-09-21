@@ -20,7 +20,6 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.ChatConvIO;
 import org.betonquest.betonquest.conversation.Conversation;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.LocalChatPaginator;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
@@ -100,7 +99,7 @@ public class MenuConvIO extends ChatConvIO {
 
     @SuppressWarnings("PMD.CognitiveComplexity")
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public MenuConvIO(final Conversation conv, final Profile profile) throws QuestRuntimeException {
+    public MenuConvIO(final Conversation conv, final Profile profile) {
         super(conv, profile);
 
         for (final QuestPackage pack : Stream.concat(

@@ -4,7 +4,6 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.Backpack;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -31,11 +30,7 @@ public class BackpackCommand implements CommandExecutor {
             // command sender must be a player, console can't have a backpack
             if (sender instanceof Player) {
                 LOG.debug("Executing /backpack command for " + sender.getName());
-                try {
-                    new Backpack(PlayerConverter.getID((Player) sender).getOnlineProfile());
-                } catch (final QuestRuntimeException e) {
-                    LOG.warn("Couldn't create new Backpack due to: " + e.getMessage(), e);
-                }
+                new Backpack(PlayerConverter.getID((Player) sender).getOnlineProfile());
             }
             return true;
         }

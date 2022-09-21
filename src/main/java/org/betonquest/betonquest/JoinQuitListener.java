@@ -67,19 +67,14 @@ public class JoinQuitListener implements Listener {
                 }
             }
         }
-        try {
-            if (Journal.hasJournal(profile)) {
-                playerData.getJournal().update();
-            }
-        } catch (final QuestRuntimeException e) {
-            LOG.warn("Couldn't check if player has a journal due to: " + e.getMessage(), e);
+
+        if (Journal.hasJournal(profile)) {
+            playerData.getJournal().update();
         }
         if (playerData.getConversation() != null) {
-            try {
-                new ConversationResumer(profile, playerData.getConversation());
-            } catch (final QuestRuntimeException e) {
-                LOG.warn("Couldn't create ConversationResumer  due to: " + e.getMessage(), e);
-            }
+
+            new ConversationResumer(profile, playerData.getConversation());
+
         }
     }
 

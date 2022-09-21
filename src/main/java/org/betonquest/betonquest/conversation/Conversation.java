@@ -79,7 +79,7 @@ public class Conversation implements Listener {
      * @param conversationID ID of the conversation
      * @param location       location where the conversation has been started
      */
-    public Conversation(final OnlineProfile profile, final String conversationID, final Location location) throws QuestRuntimeException {
+    public Conversation(final OnlineProfile profile, final String conversationID, final Location location) {
         this(profile, conversationID, location, null);
     }
 
@@ -94,7 +94,7 @@ public class Conversation implements Listener {
      * @param option         ID of the option from where to start
      */
     public Conversation(final OnlineProfile profile, final String conversationID,
-                        final Location location, final String option) throws QuestRuntimeException {
+                        final Location location, final String option) {
         this.conv = this;
         this.plugin = BetonQuest.getInstance();
         this.profile = profile;
@@ -302,11 +302,7 @@ public class Conversation implements Listener {
             conv.inOut.print(Config.parseMessage(pack.getPackagePath(), profile, "conversation_end", data.getQuester(language)));
         }
         //play conversation end sound
-        try {
-            Config.playSound(profile, "end");
-        } catch (final QuestRuntimeException e) {
-            LOG.warn("Couldn't playSound due to: " + e.getMessage(), e);
-        }
+        Config.playSound(profile, "end");
 
         // End interceptor after a second
         if (interceptor != null) {
@@ -569,11 +565,7 @@ public class Conversation implements Listener {
                             prefixName, prefixVariables));
                 }
                 //play the conversation start sound
-                try {
-                    Config.playSound(profile, "start");
-                } catch (final QuestRuntimeException e) {
-                    LOG.warn("Couldn't playSound due to: " + e.getMessage(), e);
-                }
+                Config.playSound(profile, "start");
             } else {
                 // don't forget to select the option prior to printing its text
                 selectOption(options, true);

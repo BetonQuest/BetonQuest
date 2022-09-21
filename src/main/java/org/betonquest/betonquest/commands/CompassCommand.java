@@ -1,12 +1,10 @@
 package org.betonquest.betonquest.commands;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import org.betonquest.betonquest.Backpack;
 import org.betonquest.betonquest.Backpack.DisplayType;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,7 +14,6 @@ import org.bukkit.entity.Player;
 /**
  * The /compass command. It opens the list of quests.
  */
-@CustomLog(topic = "CompassCommand")
 public class CompassCommand implements CommandExecutor {
 
     /**
@@ -32,11 +29,7 @@ public class CompassCommand implements CommandExecutor {
         if ("compass".equalsIgnoreCase(cmd.getName())) {
             if (sender instanceof Player) {
                 final Profile profile = PlayerConverter.getID((Player) sender);
-                try {
-                    new Backpack(profile.getOnlineProfile(), DisplayType.COMPASS);
-                } catch (final QuestRuntimeException e) {
-                    LOG.warn("Couldn't create new Backpack due to: " + e.getMessage(), e);
-                }
+                new Backpack(profile.getOnlineProfile(), DisplayType.COMPASS);
             }
             return true;
         }

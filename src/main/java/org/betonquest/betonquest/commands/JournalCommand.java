@@ -1,9 +1,7 @@
 package org.betonquest.betonquest.commands;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,7 +11,6 @@ import org.bukkit.entity.Player;
 /**
  * Gives the player his journal
  */
-@CustomLog(topic = "JournalCommand")
 public class JournalCommand implements CommandExecutor {
 
     /**
@@ -30,11 +27,7 @@ public class JournalCommand implements CommandExecutor {
             // command sender must be a player, console can't have journal
             if (sender instanceof Player) {
                 // giving the player his journal
-                try {
-                    BetonQuest.getInstance().getPlayerData(PlayerConverter.getID((Player) sender)).getJournal().addToInv();
-                } catch (final QuestRuntimeException e) {
-                    LOG.warn("Couldn't create new Backpack due to: " + e.getMessage(), e);
-                }
+                BetonQuest.getInstance().getPlayerData(PlayerConverter.getID((Player) sender)).getJournal().addToInv();
             }
             return true;
         }

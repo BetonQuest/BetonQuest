@@ -36,7 +36,7 @@ public class GiveEvent extends QuestEvent {
 
     @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
     @Override
-    protected Void execute(final Profile profile) throws QuestRuntimeException {
+    protected Void execute(final Profile profile) {
         final Player player = profile.getOnlineProfile().getOnlinePlayer();
         for (final Item theItem : questItems) {
             final QuestItem questItem = theItem.getItem();

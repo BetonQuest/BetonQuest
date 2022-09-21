@@ -8,7 +8,6 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.InventoryConvIO;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.meta.SkullMeta;
 
@@ -20,7 +19,7 @@ import java.util.concurrent.ExecutionException;
 @CustomLog
 public class CitizensInventoryConvIO extends InventoryConvIO {
 
-    public CitizensInventoryConvIO(final Conversation conv, final Profile profile) throws QuestRuntimeException {
+    public CitizensInventoryConvIO(final Conversation conv, final Profile profile) {
         super(conv, profile);
     }
 
@@ -58,7 +57,7 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
 
     public static class CitizensCombined extends CitizensInventoryConvIO {
 
-        public CitizensCombined(final Conversation conv, final Profile profile) throws QuestRuntimeException {
+        public CitizensCombined(final Conversation conv, final Profile profile) {
             super(conv, profile);
             super.printMessages = true;
         }

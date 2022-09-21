@@ -6,7 +6,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -43,7 +42,7 @@ public class TellrawConvIO extends ChatConvIO {
     protected String number;
     private int count;
 
-    public TellrawConvIO(final Conversation conv, final Profile profile) throws QuestRuntimeException {
+    public TellrawConvIO(final Conversation conv, final Profile profile) {
         super(conv, profile);
         hashes = new HashMap<>();
         for (final ChatColor color : colors.get("option")) {

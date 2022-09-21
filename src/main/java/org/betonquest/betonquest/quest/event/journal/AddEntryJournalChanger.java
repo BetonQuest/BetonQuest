@@ -1,16 +1,13 @@
 package org.betonquest.betonquest.quest.event.journal;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.Pointer;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 import java.time.InstantSource;
 
 /**
  * A journal changer that will add a specified entry.
  */
-@CustomLog(topic = "AddEntryJournalChanger")
 public class AddEntryJournalChanger implements JournalChanger {
 
     /**
@@ -36,10 +33,6 @@ public class AddEntryJournalChanger implements JournalChanger {
 
     @Override
     public void changeJournal(final Journal journal) {
-        try {
-            journal.addPointer(new Pointer(entryName, instantSource.millis()));
-        } catch (final QuestRuntimeException e) {
-            LOG.warn("Couldn't addPointer due to: " + e.getMessage(), e);
-        }
+        journal.addPointer(new Pointer(entryName, instantSource.millis()));
     }
 }

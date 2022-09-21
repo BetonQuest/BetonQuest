@@ -218,7 +218,7 @@ public final class Config {
      * @param profile     the {@link Profile} of the player
      * @param messageName ID of the message
      */
-    public static void sendMessage(final String packName, final Profile profile, final String messageName) throws QuestRuntimeException {
+    public static void sendMessage(final String packName, final Profile profile, final String messageName) {
         sendMessage(packName, profile, messageName, (String[]) null, null, null);
     }
 
@@ -232,7 +232,7 @@ public final class Config {
      * @param messageName ID of the message
      * @param variables   array of variables which will be inserted into the string
      */
-    public static void sendMessage(final String packName, final Profile profile, final String messageName, final String... variables) throws QuestRuntimeException {
+    public static void sendMessage(final String packName, final Profile profile, final String messageName, final String... variables) {
         sendMessage(packName, profile, messageName, variables, null, null, (String) null);
     }
 
@@ -247,7 +247,7 @@ public final class Config {
      * @param variables   array of variables which will be inserted into the string
      * @param soundName   name of the sound to play to the player
      */
-    public static void sendMessage(final String packName, final Profile profile, final String messageName, final String[] variables, final String soundName) throws QuestRuntimeException {
+    public static void sendMessage(final String packName, final Profile profile, final String messageName, final String[] variables, final String soundName) {
         sendMessage(packName, profile, messageName, variables, soundName, null, (String) null);
     }
 
@@ -265,7 +265,7 @@ public final class Config {
      * @param prefixVariables array of variables which will be inserted into the prefix
      */
     public static void sendMessage(final String packName, final Profile profile, final String messageName, final String[] variables, final String soundName,
-                                   final String prefixName, final String... prefixVariables) throws QuestRuntimeException {
+                                   final String prefixName, final String... prefixVariables) {
         final String message = parseMessage(packName, profile, messageName, variables, prefixName, prefixVariables);
         if (message == null || message.length() == 0) {
             return;
@@ -325,28 +325,23 @@ public final class Config {
     }
 
     public static String parseMessage(final String packName, final Player player, final String messageName, final String... variables) {
-        return parseMessage(packName, player, messageName, variables, null, (String) null);
-    }
-
-    public static String parseMessage(final String packName, final Profile profile, final String messageName, final String[] variables, final String prefixName,
-                                      final String... prefixVariables) {
-        return parseMessage(packName, profile.getPlayer().get(), messageName, variables, prefixName, prefixVariables);
+        return parseMessage(packName, PlayerConverter.getID(player), messageName, variables, null, (String) null);
     }
 
     /**
      * Retrieve's a message in the language of the player, replacing variables
      *
      * @param packName        ID of the pack
-     * @param player          player
+     * @param profile         the {@link Profile} of the player
      * @param messageName     name of the message to retrieve
      * @param variables       Variables to replace in message
      * @param prefixName      ID of the prefix
      * @param prefixVariables array of variables which will be inserted into the prefix
      * @return The parsed message.
      */
-    public static String parseMessage(final String packName, final Player player, final String messageName, final String[] variables, final String prefixName,
+    public static String parseMessage(final String packName, final Profile profile, final String messageName, final String[] variables, final String prefixName,
                                       final String... prefixVariables) {
-        final PlayerData playerData = plugin.getPlayerData(PlayerConverter.getID(player));
+        final PlayerData playerData = plugin.getPlayerData(profile);
         if (playerData == null) {
             return null;
         }
@@ -363,7 +358,7 @@ public final class Config {
         }
         if (packName != null) {
             for (final String variable : BetonQuest.resolveVariables(message)) {
-                final String replacement = BetonQuest.getInstance().getVariableValue(packName, variable, PlayerConverter.getID(player));
+                final String replacement = BetonQuest.getInstance().getVariableValue(packName, variable, profile);
                 message = message.replace(variable, replacement);
             }
         }
@@ -376,7 +371,7 @@ public final class Config {
      * @param profile   the {@link Profile} of the player
      * @param soundName the name of the sound to play to the player
      */
-    public static void playSound(final Profile profile, final String soundName) throws QuestRuntimeException {
+    public static void playSound(final Profile profile, final String soundName) {
         final Player player = profile.getOnlineProfile().getOnlinePlayer();
 
         final String rawSound = plugin.getPluginConfig().getString("sounds." + soundName);

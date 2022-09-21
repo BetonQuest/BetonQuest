@@ -13,7 +13,6 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.inventory.ItemStack;
@@ -160,7 +159,7 @@ public class PlayerData {
      *
      * @param tag tag to add
      */
-    public void addTag(final String tag) throws QuestRuntimeException {
+    public void addTag(final String tag) {
         synchronized (tags) {
             if (!tags.contains(tag)) {
                 tags.add(tag);
@@ -177,7 +176,7 @@ public class PlayerData {
      *
      * @param tag tag to remove
      */
-    public void removeTag(final String tag) throws QuestRuntimeException {
+    public void removeTag(final String tag) {
         synchronized (tags) {
             if (tags.contains(tag)) {
                 tags.remove(tag);

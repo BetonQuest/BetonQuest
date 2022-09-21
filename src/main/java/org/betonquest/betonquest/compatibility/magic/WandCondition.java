@@ -9,7 +9,6 @@ import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -73,7 +72,7 @@ public class WandCondition extends Condition {
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @Override
-    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+    protected Boolean execute(final Profile profile) {
         final Player player = profile.getOnlineProfile().getOnlinePlayer();
         int heldAmount;
 
@@ -125,7 +124,7 @@ public class WandCondition extends Condition {
      * @return true if the wand meets the conditions, false otherwise
      */
     @SuppressWarnings("PMD.AvoidBranchingStatementAsLastInLoop")
-    private boolean checkWand(final Wand wand, final Profile profile) throws QuestRuntimeException {
+    private boolean checkWand(final Wand wand, final Profile profile) {
         if (name != null && !name.equalsIgnoreCase(wand.getTemplateKey())) {
             return false;
         }

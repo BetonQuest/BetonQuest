@@ -12,7 +12,6 @@ import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.Utils;
@@ -75,7 +74,7 @@ public class Backpack implements Listener {
      * @param onlineProfile the {@link OnlineProfile} of the player
      * @param type          type of the display
      */
-    public Backpack(final OnlineProfile onlineProfile, final DisplayType type) throws QuestRuntimeException {
+    public Backpack(final OnlineProfile onlineProfile, final DisplayType type) {
         // fill required fields
         this.profile = onlineProfile;
         lang = BetonQuest.getInstance().getPlayerData(onlineProfile).getLanguage();
@@ -104,7 +103,7 @@ public class Backpack implements Listener {
      *
      * @param onlineProfile the {@link OnlineProfile} of the player
      */
-    public Backpack(final OnlineProfile onlineProfile) throws QuestRuntimeException {
+    public Backpack(final OnlineProfile onlineProfile) {
         this(onlineProfile, DisplayType.DEFAULT);
     }
 
@@ -118,11 +117,7 @@ public class Backpack implements Listener {
                 return;
             }
             // pass the click to the Display
-            try {
-                display.click(event.getRawSlot(), event.getSlot(), event.getClick());
-            } catch (final QuestRuntimeException e) {
-                LOG.warn("onClick failed due to: " + e.getMessage(), e);
-            }
+            display.click(event.getRawSlot(), event.getSlot(), event.getClick());
         }
     }
 
@@ -144,7 +139,7 @@ public class Backpack implements Listener {
         private Display() {
         }
 
-        protected abstract void click(int slot, int playerSlot, ClickType click) throws QuestRuntimeException;
+        protected abstract void click(int slot, int playerSlot, ClickType click);
     }
 
     /**
@@ -165,7 +160,7 @@ public class Backpack implements Listener {
          */
         @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
         @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-        public Page(final int page) throws QuestRuntimeException {
+        public Page(final int page) {
             super();
             final boolean showJournalInBackpack = Boolean.parseBoolean(Config.getString("config.journal.show_in_backpack"));
             this.page = page;
@@ -264,7 +259,7 @@ public class Backpack implements Listener {
 
         @SuppressWarnings({"PMD.NcssCount", "PMD.CognitiveComplexity", "PMD.AvoidDeeplyNestedIfStmts"})
         @Override
-        protected void click(final int slot, final int playerSlot, final ClickType click) throws QuestRuntimeException {
+        protected void click(final int slot, final int playerSlot, final ClickType click) {
             if (page == 1 && slot == 0 && showJournal) {
                 playerData.getJournal().addToInv();
                 display = new Page(page);
@@ -398,7 +393,7 @@ public class Backpack implements Listener {
         }
 
         @Override
-        protected void click(final int slot, final int playerSlot, final ClickType click) throws QuestRuntimeException {
+        protected void click(final int slot, final int playerSlot, final ClickType click) {
             final QuestCanceler cancel = map.get(slot);
             if (cancel == null) {
                 return;

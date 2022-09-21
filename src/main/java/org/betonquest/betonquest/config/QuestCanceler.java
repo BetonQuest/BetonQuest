@@ -188,7 +188,7 @@ public class QuestCanceler {
      * @param profile the {@link Profile} of the player
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
-    public void cancel(final Profile profile) throws QuestRuntimeException {
+    public void cancel(final Profile profile) {
         LOG.debug("Canceling the quest " + name + " for player " + profile.getProfileName());
         final PlayerData playerData = BetonQuest.getInstance().getPlayerData(profile);
         // remove tags, points, objectives and journals

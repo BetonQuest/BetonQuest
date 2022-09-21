@@ -3,7 +3,6 @@ package org.betonquest.betonquest.compatibility.citizens;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.conversation.Conversation;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.Location;
 
 /**
@@ -14,7 +13,7 @@ public class CitizensConversation extends Conversation {
 
     private final NPC npc;
 
-    public CitizensConversation(final OnlineProfile onlineProfile, final String conversationID, final Location location, final NPC npc) throws QuestRuntimeException {
+    public CitizensConversation(final OnlineProfile onlineProfile, final String conversationID, final Location location, final NPC npc) {
         super(onlineProfile, conversationID, location);
         this.npc = npc;
     }

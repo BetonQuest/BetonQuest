@@ -60,8 +60,13 @@ public class CommandEvent extends QuestEvent {
                 } else {
                     if (profile.getPlayer().isEmpty()) {
                         // the player is offline, cannot resolve variables, at least replace %player%
+                        final String name = profile.getOfflinePlayer().getName();
+                        if (name == null) {
+                            // this should never happen, but just in case
+                            continue;
+                        }
                         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command.command
-                                .replaceAll("%player%", profile.getOfflinePlayer().getName()));
+                                .replaceAll("%player%", name));
                     } else {
                         // run the command for the single player
                         String com = command.command;

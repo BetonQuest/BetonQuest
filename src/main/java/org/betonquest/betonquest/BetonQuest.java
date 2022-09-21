@@ -936,11 +936,7 @@ public class BetonQuest extends JavaPlugin {
                 playerData.startObjectives();
                 playerData.getJournal().update();
                 if (playerData.getConversation() != null) {
-                    try {
-                        new ConversationResumer(profile, playerData.getConversation());
-                    } catch (final QuestRuntimeException e) {
-                        log.warn("Couldn't create ConversationResumer due to: " + e.getMessage(), e);
-                    }
+                    new ConversationResumer(profile, playerData.getConversation());
                 }
             }
 
@@ -1182,7 +1178,7 @@ public class BetonQuest extends JavaPlugin {
     /**
      * Reloads the plugin.
      */
-    public void reload() throws QuestRuntimeException {
+    public void reload() {
         // reload the configuration
         log.debug("Reloading configuration");
         try {
@@ -1555,9 +1551,6 @@ public class BetonQuest extends JavaPlugin {
             return var.getValue(profile);
         } catch (final InstructionParseException e) {
             log.warn(pack, "&cCould not create variable '" + name + "': " + e.getMessage(), e);
-            return "";
-        } catch (final QuestRuntimeException e) {
-            log.warn("Couldn't getVariableValue due to: " + e.getMessage(), e);
             return "";
         }
     }

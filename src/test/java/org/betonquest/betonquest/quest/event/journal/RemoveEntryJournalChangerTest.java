@@ -1,8 +1,6 @@
 package org.betonquest.betonquest.quest.event.journal;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.Journal;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +14,6 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(BetonQuestLoggerService.class)
 @ExtendWith(MockitoExtension.class)
-@CustomLog(topic = "RemoveEntryJournalChangerTest")
 class RemoveEntryJournalChangerTest {
     @Test
     void testChangeJournalRemovesPointer(@Mock final Journal journal) {
@@ -25,11 +22,7 @@ class RemoveEntryJournalChangerTest {
 
         changer.changeJournal(journal);
 
-        try {
-            verify(journal).removePointer(entryName);
-        } catch (final QuestRuntimeException e) {
-            LOG.warn("Couldn't removePointer due to: " + e.getMessage(), e);
-        }
+        verify(journal).removePointer(entryName);
         verifyNoMoreInteractions(journal);
     }
 }

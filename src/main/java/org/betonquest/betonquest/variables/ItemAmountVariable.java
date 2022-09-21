@@ -6,7 +6,6 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -45,7 +44,7 @@ public class ItemAmountVariable extends Variable {
 
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public String getValue(final Profile profile) throws QuestRuntimeException {
+    public String getValue(final Profile profile) {
         final Player player = profile.getOnlineProfile().getOnlinePlayer();
         int playersAmount = 0;
         for (final ItemStack item : player.getInventory().getContents()) {

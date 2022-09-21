@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -30,7 +29,7 @@ public class ConversationResumer implements Listener {
     private final Location loc;
     private final double distance;
 
-    public ConversationResumer(final Profile profile, final String convID) throws QuestRuntimeException {
+    public ConversationResumer(final Profile profile, final String convID) {
         this.original = convID;
         this.player = profile.getOnlineProfile().getOnlinePlayer();
         this.profile = profile;
@@ -51,7 +50,7 @@ public class ConversationResumer implements Listener {
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @EventHandler(ignoreCancelled = true)
-    public void onMove(final PlayerMoveEvent event) throws QuestRuntimeException {
+    public void onMove(final PlayerMoveEvent event) {
         if (!event.getPlayer().equals(player)) {
             return;
         }

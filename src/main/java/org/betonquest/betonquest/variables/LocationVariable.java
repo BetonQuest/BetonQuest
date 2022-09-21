@@ -6,7 +6,6 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.Location;
 
 import java.math.RoundingMode;
@@ -42,7 +41,7 @@ public class LocationVariable extends Variable {
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override
-    public String getValue(final Profile profile) throws QuestRuntimeException {
+    public String getValue(final Profile profile) {
         final Location playerLocation = profile.getOnlineProfile().getOnlinePlayer().getLocation();
 
         switch (mode) {

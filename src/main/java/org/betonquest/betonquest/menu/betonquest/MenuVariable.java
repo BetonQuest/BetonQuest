@@ -4,7 +4,6 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.menu.OpenedMenu;
 import org.bukkit.entity.Player;
 
@@ -19,7 +18,7 @@ public class MenuVariable extends Variable {
     }
 
     @Override
-    public String getValue(final Profile profile) throws QuestRuntimeException {
+    public String getValue(final Profile profile) {
         final Player player = profile.getOnlineProfile().getOnlinePlayer();
         final OpenedMenu menu = OpenedMenu.getMenu(player);
         if (menu == null) {
