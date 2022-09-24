@@ -250,6 +250,16 @@ Works the same way as a normal tag event, but instead of setting a tag for one p
     globaltag add global_areNPCsAgressive
     ```
 
+## Hunger: `hunger`
+
+This event changes the food level of the player. The second argument is the modification type. There are `give`/`add`, `take` and `set`. The second argument is the amount. With `set` can the food level be anything. If `give` or `take` is specified and the final amount won't be more than 20 or less than 0. If the hunger level is below 7, the player cannot sprint.
+
+!!! example
+    ```YAML
+    hunger set 20
+    hunger add 5
+    ```
+
 ## If else: `if`
 
 This event will check a condition, and based on the outcome it will run the first or second event. The instruction string is `if condition event1 else event2`, where `condition` is a condition ID and `event1` and `event2` are event IDs. `else` keyword is mandatory between events for no practical reason.
