@@ -796,7 +796,7 @@ Check whether the player is near a specific MythicMobs entity. The first argumen
 
 ```YAML title="Example"
 events:
-  spawnBoss: mspawnmob 100;200;300;world MegaBoss:1 target
+  spawnBoss: mspawnmob 100;200;300;world MegaBoss:1 1 target
   spawnKnights: mspawnmob 100;200;300;world SkeletalKnight:3 5
   spawnPrivateDevil: mspawnmob 100;200;300;world Mephisto:1 5 target private marked:DungeonBoss3
 ```
