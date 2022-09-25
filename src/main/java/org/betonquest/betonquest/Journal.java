@@ -380,7 +380,7 @@ public class Journal {
             }
         } else {
             try {
-                Config.sendNotify(null, profile, "inventory_full_backpack", null, "inventory_full_backpack,inventory_full,error");
+                Config.sendNotify(null, profile.getOnlineProfile(), "inventory_full_backpack", null, "inventory_full_backpack,inventory_full,error");
             } catch (final QuestRuntimeException e) {
                 LOG.warn("The notify system was unable to play a sound for the 'inventory_full_backpack' category. Error was: '" + e.getMessage() + "'", e);
             }
@@ -416,7 +416,7 @@ public class Journal {
         final List<String> finalList = new ArrayList<>();
         if ("false".equalsIgnoreCase(Config.getString("config.journal.one_entry_per_page"))) {
             final String color = Config.getString("config.journal_colors.line");
-            String separator = Config.parseMessage(null, profile, "journal_separator");
+            String separator = Config.parseMessage(null, profile.getOnlineProfile(), "journal_separator");
             if (separator == null) {
                 separator = "---------------";
             }

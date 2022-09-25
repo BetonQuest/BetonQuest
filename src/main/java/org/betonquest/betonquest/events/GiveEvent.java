@@ -44,7 +44,7 @@ public class GiveEvent extends QuestEvent {
             int amountInt = amount.getInt(profile);
             if (notify) {
                 try {
-                    Config.sendNotify(instruction.getPackage().getPackagePath(), profile, "items_given",
+                    Config.sendNotify(instruction.getPackage().getPackagePath(), profile.getOnlineProfile(), "items_given",
                             new String[]{
                                     questItem.getName() == null ? questItem.getMaterial().toString().toLowerCase(Locale.ROOT).replace("_", " ") : questItem.getName(),
                                     String.valueOf(amountInt)}, "items_given,info");
@@ -69,7 +69,7 @@ public class GiveEvent extends QuestEvent {
                     }
                     final String type = Utils.isQuestItem(itemStack) ? "backpack" : "drop";
                     try {
-                        Config.sendNotify(null, profile, "inventory_full_" + type, null, "inventory_full_" + type + ",inventory_full,error");
+                        Config.sendNotify(null, profile.getOnlineProfile(), "inventory_full_" + type, null, "inventory_full_" + type + ",inventory_full,error");
                     } catch (final QuestRuntimeException e) {
                         LOG.warn("The notify system was unable to play a sound for the 'inventory_full_" + type + "' category. Error was: '" + e.getMessage() + "'", e);
                     }

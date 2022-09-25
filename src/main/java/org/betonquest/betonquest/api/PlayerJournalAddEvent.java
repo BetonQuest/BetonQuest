@@ -2,14 +2,14 @@ package org.betonquest.betonquest.api;
 
 import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.Pointer;
-import org.bukkit.entity.Player;
+import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.ProfileEvent;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.player.PlayerEvent;
 
 /**
  * When player journal add new contents.
  */
-public class PlayerJournalAddEvent extends PlayerEvent {
+public class PlayerJournalAddEvent extends ProfileEvent {
 
     /**
      * HandlerList of this event.
@@ -33,7 +33,7 @@ public class PlayerJournalAddEvent extends PlayerEvent {
      * @param journal the journal of this player
      * @param pointer the pointer for which journal entry was been added for this player
      */
-    public PlayerJournalAddEvent(final Player who, final Journal journal, final Pointer pointer) {
+    public PlayerJournalAddEvent(final Profile who, final Journal journal, final Pointer pointer) {
         super(who);
         this.journal = journal;
         this.pointer = pointer;

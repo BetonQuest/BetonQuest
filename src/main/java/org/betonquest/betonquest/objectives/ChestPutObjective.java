@@ -81,7 +81,7 @@ public class ChestPutObjective extends Objective implements Listener {
     public void onChestOpen(final InventoryOpenEvent event) {
         if (!multipleAccess && !checkForNoOtherPlayer(event)) {
             try {
-                Config.sendNotify(null, (Player) event.getPlayer(), "chest_occupied", null);
+                Config.sendNotify(null, PlayerConverter.getID((Player) event.getPlayer()).getOnlineProfile(), "chest_occupied", null);
             } catch (final QuestRuntimeException e) {
                 LOG.warn("The notify system was unable to send the message for 'chest_occupied'. Error was: '"
                         + e.getMessage() + "'", e);

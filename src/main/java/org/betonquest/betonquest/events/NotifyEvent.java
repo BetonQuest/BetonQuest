@@ -9,7 +9,6 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.notify.Notify;
 import org.betonquest.betonquest.notify.NotifyIO;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -101,9 +100,7 @@ public class NotifyEvent extends QuestEvent {
             message = message.replace(variable,
                     BetonQuest.getInstance().getVariableValue(instruction.getPackage().getPackagePath(), variable, profile));
         }
-
-        final Player player = profile.getOnlineProfile().getOnlinePlayer();
-        notifyIO.sendNotify(message, player);
+        notifyIO.sendNotify(message, profile.getOnlineProfile());
         return null;
     }
 

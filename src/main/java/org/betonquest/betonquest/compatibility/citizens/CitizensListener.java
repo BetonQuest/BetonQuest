@@ -91,10 +91,8 @@ public class CitizensListener implements Listener {
         }
         if (assignment != null) {
             event.setCancelled(true);
-
             new CitizensConversation(onlineProfile, assignment, event.getNPC().getEntity().getLocation(),
                     event.getNPC());
-
         }
     }
 

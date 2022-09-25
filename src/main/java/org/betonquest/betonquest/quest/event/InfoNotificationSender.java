@@ -41,7 +41,7 @@ public class InfoNotificationSender implements NotificationSender {
     @Override
     public void sendNotification(final Profile profile) {
         try {
-            Config.sendNotify(questPackage.getPackagePath(), profile, messageName, null, messageName + ",info");
+            Config.sendNotify(questPackage.getPackagePath(), profile.getOnlineProfile(), messageName, null, messageName + ",info");
         } catch (final QuestRuntimeException e) {
             LOG.warn(questPackage, "The notify system was unable to play a sound for the '" + messageName + "' category in '" + fullId + "'. Error was: '" + e.getMessage() + "'", e);
         }

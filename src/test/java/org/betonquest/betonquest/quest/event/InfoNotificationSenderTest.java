@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.event;
 
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -30,9 +31,9 @@ class InfoNotificationSenderTest {
         final NotificationSender sender = new InfoNotificationSender("message-name", questPackage, "full.id");
 
         try (MockedStatic<Config> config = mockStatic(Config.class)) {
-            final Profile profile = mock(Profile.class);
-            sender.sendNotification(profile);
-            config.verify(() -> Config.sendNotify("package.path", profile, "message-name", null, "message-name,info"));
+            final OnlineProfile onlineProfile = mock(OnlineProfile.class);
+            sender.sendNotification(onlineProfile);
+            config.verify(() -> Config.sendNotify("package.path", onlineProfile, "message-name", null, "message-name,info"));
         }
     }
 
@@ -42,7 +43,7 @@ class InfoNotificationSenderTest {
         final NotificationSender sender = new InfoNotificationSender("message-name", questPackage, "full.id");
 
         try (MockedStatic<Config> config = mockStatic(Config.class)) {
-            config.when(() -> Config.sendNotify(any(), any(Profile.class), any(), any(), any()))
+            config.when(() -> Config.sendNotify(any(), any(OnlineProfile.class), any(), any(), any()))
                     .thenThrow(new QuestRuntimeException("Test cause."));
             assertDoesNotThrow(() -> sender.sendNotification(mock(Profile.class)), "Failing to send a notification should not throw an exception.");
         }

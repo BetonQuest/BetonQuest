@@ -61,7 +61,7 @@ public class MoneyEvent extends QuestEvent {
             VaultIntegrator.getEconomy().depositPlayer(player, difference);
             if (notify) {
                 try {
-                    Config.sendNotify(instruction.getPackage().getPackagePath(), profile, "money_given",
+                    Config.sendNotify(instruction.getPackage().getPackagePath(), profile.getOnlineProfile(), "money_given",
                             new String[]{decimalFormat.format(difference), currencyName}, "money_given,info");
                 } catch (final QuestRuntimeException e) {
                     LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'money_given' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
@@ -71,7 +71,7 @@ public class MoneyEvent extends QuestEvent {
             VaultIntegrator.getEconomy().withdrawPlayer(player, -difference);
             if (notify) {
                 try {
-                    Config.sendNotify(instruction.getPackage().getPackagePath(), profile, "money_taken",
+                    Config.sendNotify(instruction.getPackage().getPackagePath(), profile.getOnlineProfile(), "money_taken",
                             new String[]{decimalFormat.format(difference), currencyName}, "money_taken,info");
                 } catch (final QuestRuntimeException e) {
                     LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'money_taken' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);

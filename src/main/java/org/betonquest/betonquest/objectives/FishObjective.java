@@ -66,8 +66,6 @@ public class FishObjective extends CountingObjective implements Listener {
         if (!containsPlayer(profile) || event.getCaught() == null || event.getCaught().getType() != EntityType.DROPPED_ITEM) {
             return;
         }
-
-
         if (isInvalidLocation(event, profile)) {
             return;
         }

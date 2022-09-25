@@ -2,6 +2,7 @@ package org.betonquest.betonquest.notify;
 
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -35,16 +36,16 @@ public abstract class NotifyIO {
 
     public void sendNotify(@NotNull final String message) throws QuestRuntimeException {
         for (final Player player : Bukkit.getServer().getOnlinePlayers()) {
-            sendNotify(message, player);
+            sendNotify(message, PlayerConverter.getID(player).getOnlineProfile());
         }
     }
 
-    public void sendNotify(@NotNull final String message, @NotNull final Player player) throws QuestRuntimeException {
-        notifyPlayer(Utils.format(message), player);
-        sound.sendSound(player);
+    public void sendNotify(@NotNull final String message, @NotNull final OnlineProfile onlineProfile) throws QuestRuntimeException {
+        notifyPlayer(Utils.format(message), onlineProfile);
+        sound.sendSound(onlineProfile);
     }
 
-    protected abstract void notifyPlayer(String message, Player player);
+    protected abstract void notifyPlayer(String message, OnlineProfile onlineProfile);
 
     protected float getFloatData(final String dataKey, final float defaultData) throws InstructionParseException {
         final String dataString = data.get(dataKey);

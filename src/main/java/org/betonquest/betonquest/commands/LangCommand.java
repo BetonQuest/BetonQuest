@@ -63,7 +63,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
             playerData.setLanguage(lang);
             journal.update();
             try {
-                Config.sendNotify(null, profile, "language_changed", new String[]{lang}, "language_changed,info");
+                Config.sendNotify(null, profile.getOnlineProfile(), "language_changed", new String[]{lang}, "language_changed,info");
             } catch (final QuestRuntimeException e) {
                 LOG.warn("The notify system was unable to play a sound for the 'language_changed' category. Error was: '" + e.getMessage() + "'", e);
             }
