@@ -1,8 +1,5 @@
-package org.betonquest.betonquest.api.bukkit.config.custom.fallback.complex;
+package org.betonquest.betonquest.api.bukkit.config.custom.fallback;
 
-import org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfiguration;
-import org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfigurationSection;
-import org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfigurationTest;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.junit.jupiter.api.Test;

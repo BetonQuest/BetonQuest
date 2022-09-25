@@ -1,7 +1,5 @@
-package org.betonquest.betonquest.api.bukkit.config.custom.multi.complex;
+package org.betonquest.betonquest.api.bukkit.config.custom.multi;
 
-import org.betonquest.betonquest.api.bukkit.config.custom.multi.KeyConflictException;
-import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;

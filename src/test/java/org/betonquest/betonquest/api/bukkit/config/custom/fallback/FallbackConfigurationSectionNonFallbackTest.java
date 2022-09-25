@@ -1,7 +1,5 @@
-package org.betonquest.betonquest.api.bukkit.config.custom.fallback.complex;
+package org.betonquest.betonquest.api.bukkit.config.custom.fallback;
 
-import org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfiguration;
-import org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfigurationSection;
 import org.betonquest.betonquest.api.bukkit.config.util.ConfigurationSectionBaseTest;
 import org.bukkit.configuration.ConfigurationSection;
 
