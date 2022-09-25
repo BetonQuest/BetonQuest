@@ -7,7 +7,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
+import java.util.Locale;
 
 /**
  * Sets the hunger level of the player.
@@ -20,11 +20,18 @@ public class HungerEvent extends QuestEvent {
 
     public HungerEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
-        this.action = HungerAction.get(instruction.next());
+
         try {
+            this.action = HungerAction.valueOf(instruction.next().toUpperCase(Locale.ROOT).trim());
             this.amount = Short.parseShort(instruction.next());
         } catch (NumberFormatException e) {
             throw new InstructionParseException("Error while parsing hunger amount! Must be a number.", e);
+        } catch (IllegalArgumentException e) {
+            throw new InstructionParseException("Error while parsing action! Must be 'set', 'give', or 'take'.", e);
+        }
+
+        if (amount < 0 || amount > 20) {
+            throw new InstructionParseException("Hunger amount must be between 0 and 20! Event will be ignored.");
         }
     }
 
@@ -42,24 +49,9 @@ public class HungerEvent extends QuestEvent {
     }
 
     private enum HungerAction {
-        GIVE("give", "add"),
-        TAKE("take", "remove"),
-        SET("set");
-
-        private final String[] aliases;
-
-        HungerAction(final String... aliases) {
-            this.aliases = aliases.clone();
-        }
-
-        public static HungerAction get(final String alias) throws InstructionParseException {
-            for (final HungerAction action : values()) {
-                if (Arrays.stream(action.aliases).anyMatch(a -> a.equalsIgnoreCase(alias))) {
-                    return action;
-                }
-            }
-            throw new InstructionParseException("Cannot parse hunger action '" + alias + "'");
-        }
+        GIVE,
+        TAKE,
+        SET
     }
 
 
