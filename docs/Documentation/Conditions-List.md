@@ -210,6 +210,15 @@ This condition requires the player to be _below_ specific Y height. The required
     ```YAML
     height 16
     ```
+
+## Hunger: `hunger`
+
+Requires the player to have equal or more hunger points, the condition is the same as `health` just for hunger. If the hunger level is below 7, the player cannot sprint.
+
+!!! example
+    ```YAML
+    hunger 15
+    ```
     
 ## In Conversation: `inconversation`
 
