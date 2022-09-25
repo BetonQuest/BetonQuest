@@ -168,7 +168,8 @@ class MultiConfigurationModificationTest {
     }
 
     @Test
-    void testGetSourceConfigurationSection() {
+    void testGetSourceConfigurationSection() throws InvalidConfigurationException {
+        assertNull(config.getSourceConfigurationSection("events.custom.path.give.slot"));
         config.set("events.custom.path.give.slot", "hand");
         assertThrows(InvalidConfigurationException.class,
                 () -> config.getSourceConfigurationSection("events.custom.path.give"),
@@ -179,5 +180,23 @@ class MultiConfigurationModificationTest {
                     assertEquals(config1, config);
                 },
                 "Not all entries are from the same source config");
+    }
+
+    @Test
+    void testDeletePath() {
+        assertTrue(config.isSet("events"));
+        config.set("events", null);
+        assertFalse(config.isSet("events"));
+    }
+
+    @Test
+    void testCheckConflictAndSet() {
+        assertTrue(config.isSet("events"));
+        final MemoryConfiguration configuration = new MemoryConfiguration();
+        configuration.set("test", "test");
+        config.set("events", configuration);
+        final ConfigurationSection events = config.getConfigurationSection("events");
+        assertNotNull(events);
+        assertEquals("[test]", events.getKeys(true).toString());
     }
 }

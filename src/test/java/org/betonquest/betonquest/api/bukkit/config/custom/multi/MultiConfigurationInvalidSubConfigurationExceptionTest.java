@@ -24,6 +24,7 @@ class MultiConfigurationInvalidSubConfigurationExceptionTest {
         try {
             new MultiConfiguration(List.of(configuration));
         } catch (final InvalidSubConfigurationException e) {
+            assertEquals(configuration, e.getSubConfiguration());
             assertEquals("At least one source config does not have valid path separator!", e.getMessage());
             return;
         } catch (final KeyConflictException e) {
