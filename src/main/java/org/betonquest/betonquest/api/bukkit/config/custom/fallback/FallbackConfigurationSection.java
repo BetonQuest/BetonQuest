@@ -39,7 +39,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
     protected FallbackConfiguration root;
 
     /**
-     * Create a new fallback {@link ConfigurationSection} instance.
+     * Creates a new fallback {@link ConfigurationSection} instance.
      *
      * @param original The original {@link ConfigurationSection} that should be used.
      * @param fallback The fallback {@link ConfigurationSection} that should be used.
@@ -544,13 +544,21 @@ public class FallbackConfigurationSection implements ConfigurationSection {
         manager.getOriginal().setInlineComments(path, comments);
     }
 
+    /**
+     * Gets the original, fallback or default value of the given path using the given function.
+     *
+     * @param path     The path to get the value from
+     * @param function The function to use to get the value
+     * @param <T>      The type of the value
+     * @return The value
+     */
     private <T> T getOriginalOrFallback(final String path, final ConfigurationConsumer<T> function) {
-        return getOriginalOrFallbackHmm(path, function, (config) -> {
-            final ConfigurationSection original = config.getLeft();
+        return getOriginalOrFallbackWithDefault(path, function, (configs) -> {
+            final ConfigurationSection original = configs.getLeft();
             if (original != null && original.contains(path)) {
                 return function.consume(original, path);
             }
-            final ConfigurationSection fallback = config.getRight();
+            final ConfigurationSection fallback = configs.getRight();
             if (fallback != null && fallback.contains(path)) {
                 return function.consume(fallback, path);
             }
@@ -559,11 +567,33 @@ public class FallbackConfigurationSection implements ConfigurationSection {
         });
     }
 
+    /**
+     * This method tries to get a set value from the original or the fallback configuration.
+     * If no value is set, the passed default value is returned instead of the default value
+     * that may be present in the original or fallback.
+     *
+     * @param path     The path to the value
+     * @param function The function to use to get the value
+     * @param def      The default value to return if no value is set
+     * @param <T>      The type of the value
+     * @return The value or the given default value
+     */
     private <T> T getOriginalOrFallback(final String path, final ConfigurationConsumer<T> function, final T def) {
-        return getOriginalOrFallbackHmm(path, function, (configs) -> def);
+        return getOriginalOrFallbackWithDefault(path, function, (configs) -> def);
     }
 
-    private <T> T getOriginalOrFallbackHmm(final String path, final ConfigurationConsumer<T> function, final Function<Pair<ConfigurationSection, ConfigurationSection>, T> def) {
+    /**
+     * Tries to obtain the set value from the original configuration using {@link ConfigurationSection#isSet(String)}.
+     * If it is not present, it tries to obtain it from the
+     * fallback configuration. If it is not present there either, it calls the defFunction to obtain the default value.
+     *
+     * @param path        The path to the value
+     * @param function    The function to obtain the default value
+     * @param defFunction The function to obtain the default value
+     * @param <T>         The type of the value to obtain
+     * @return The value
+     */
+    private <T> T getOriginalOrFallbackWithDefault(final String path, final ConfigurationConsumer<T> function, final Function<Pair<ConfigurationSection, ConfigurationSection>, T> defFunction) {
         final ConfigurationSection original = manager.getOriginal();
         if (original != null && original.isSet(path)) {
             return function.consume(original, path);
@@ -572,7 +602,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
         if (fallback != null && fallback.isSet(path)) {
             return function.consume(fallback, path);
         }
-        return def.apply(Pair.of(original, fallback));
+        return defFunction.apply(Pair.of(original, fallback));
     }
 
     @Override
@@ -587,8 +617,9 @@ public class FallbackConfigurationSection implements ConfigurationSection {
      * @param <T> The type to return from the {@link ConfigurationSection}
      */
     private interface ConfigurationConsumer<T> {
+
         /**
-         * Consume the {@link ConfigurationSection} and return the value.
+         * Consumes the {@link ConfigurationSection} and returns the value.
          *
          * @param section The section to consume
          * @param path    The path to get the value from
@@ -601,7 +632,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
      * Holds an original and fallback {@link ConfigurationSection}.
      * <p>
      * When the original's or fallback's getter is called, the instance will be updated from the parent section before
-     * returning the value. If no parent is set anymore, the instances will not be updated anymore.
+     * returning the value. If the parent is unset, the instances will not be updated.
      */
     protected class ConfigManager {
         /**
