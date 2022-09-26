@@ -6,7 +6,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.QuestCanceler;
 import org.betonquest.betonquest.database.PlayerData;
@@ -20,7 +19,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -44,13 +42,9 @@ import java.util.Map;
 public class Backpack implements Listener {
 
     /**
-     * The {@link Profile} of the player
+     * The {@link OnlineProfile} of the player
      */
-    private final Profile profile;
-    /**
-     * The player object
-     */
-    private final Player player;
+    private final OnlineProfile profile;
     /**
      * Database handler for the player
      */
@@ -78,7 +72,6 @@ public class Backpack implements Listener {
         // fill required fields
         this.profile = onlineProfile;
         lang = BetonQuest.getInstance().getPlayerData(onlineProfile).getLanguage();
-        player = onlineProfile.getOnlinePlayer();
         /**
          * Instance of the BetonQuest plugin
          */
@@ -109,7 +102,7 @@ public class Backpack implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onClick(final InventoryClickEvent event) {
-        if (event.getWhoClicked().equals(player)) {
+        if (event.getWhoClicked().equals(profile.getOnlinePlayer())) {
             // if the player clicked, then cancel this event
             event.setCancelled(true);
             // if the click was outside of the inventory, do nothing
@@ -123,7 +116,7 @@ public class Backpack implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClosing(final InventoryCloseEvent event) {
-        if (event.getPlayer().equals(player)) {
+        if (event.getPlayer().equals(profile.getOnlinePlayer())) {
             HandlerList.unregisterAll(this);
         }
     }
@@ -253,7 +246,7 @@ public class Backpack implements Listener {
             content[46] = compassItem;
             // set the inventory and display it
             inv.setContents(content);
-            player.openInventory(inv);
+            profile.getOnlinePlayer().openInventory(inv);
             Bukkit.getPluginManager().registerEvents(Backpack.this, BetonQuest.getInstance());
         }
 
@@ -285,7 +278,7 @@ public class Backpack implements Listener {
                         // add desired amount of items to player's inventory
                         final ItemStack newItem = item.clone();
                         newItem.setAmount(getAmount);
-                        final ItemStack leftItems = player.getInventory().addItem(newItem).get(0);
+                        final ItemStack leftItems = profile.getOnlinePlayer().getInventory().addItem(newItem).get(0);
                         // remove from backpack only those items that were
                         // actually added to player's inventory
                         int leftAmount = 0;
@@ -302,7 +295,7 @@ public class Backpack implements Listener {
                 }
             } else if (slot > 53) {
                 // slot above 53 is player's inventory, so handle item storing
-                final ItemStack item = player.getInventory().getItem(playerSlot);
+                final ItemStack item = profile.getOnlinePlayer().getInventory().getItem(playerSlot);
                 if (item != null) {
                     final boolean lockJournalSlot = Boolean.parseBoolean(Config.getString("config.journal.lock_default_journal_slot"));
                     // if the item exists continue
@@ -324,10 +317,10 @@ public class Backpack implements Listener {
                         // inventory
                         playerData.addItem(item.clone(), amount);
                         if (item.getAmount() - amount == 0) {
-                            player.getInventory().setItem(playerSlot, null);
+                            profile.getOnlinePlayer().getInventory().setItem(playerSlot, null);
                         } else {
                             item.setAmount(item.getAmount() - amount);
-                            player.getInventory().setItem(playerSlot, item);
+                            profile.getOnlinePlayer().getInventory().setItem(playerSlot, item);
                         }
                     } else if (!lockJournalSlot && Journal.isJournal(profile, item)) {
                         // if it's a journal, remove it so it appears in
@@ -376,7 +369,7 @@ public class Backpack implements Listener {
             int numberOfRows = (size - size % 9) / 9 + 1;
             if (numberOfRows > 6) {
                 numberOfRows = 6;
-                LOG.warn("Player " + player.getName() + " has too many active quests, please"
+                LOG.warn("Player " + profile.getOnlinePlayer().getName() + " has too many active quests, please"
                         + " don't allow for so many of them. It slows down your server!");
             }
             inv = Bukkit.createInventory(null, numberOfRows * 9, Config.getMessage(lang, "cancel_page"));
@@ -388,7 +381,7 @@ public class Backpack implements Listener {
                 index++;
             }
             inv.setContents(content);
-            player.openInventory(inv);
+            profile.getOnlinePlayer().openInventory(inv);
             Bukkit.getPluginManager().registerEvents(Backpack.this, BetonQuest.getInstance());
         }
 
@@ -400,7 +393,7 @@ public class Backpack implements Listener {
             }
             // cancel the chosen quests
             cancel.cancel(profile);
-            player.closeInventory();
+            profile.getOnlinePlayer().closeInventory();
         }
     }
 
@@ -468,7 +461,7 @@ public class Backpack implements Listener {
                         } catch (final NumberFormatException e) {
                             LOG.warn("Could not parse location coordinates in a compass pointer in " + packName
                                     + " package: " + key, e);
-                            player.closeInventory();
+                            profile.getOnlinePlayer().closeInventory();
                             return;
                         }
                         final Location loc = new Location(world, locX, locY, locZ);
@@ -487,9 +480,9 @@ public class Backpack implements Listener {
             final int size = locations.size();
             final int numberOfRows = (size - size % 9) / 9 + 1;
             if (numberOfRows > 6) {
-                LOG.warn("Player " + player.getName() + " has too many compass pointers, please"
+                LOG.warn("Player " + profile.getOnlinePlayer().getName() + " has too many compass pointers, please"
                         + " don't allow for so many of them. It slows down your server!");
-                player.closeInventory();
+                profile.getOnlinePlayer().closeInventory();
                 return;
             }
             inv = Bukkit.createInventory(null, numberOfRows * 9, Config.getMessage(lang, "compass_page"));
@@ -502,7 +495,7 @@ public class Backpack implements Listener {
                     compass = new QuestItem(new ItemID(item.getKey(), item.getValue())).generate(1);
                 } catch (final InstructionParseException e) {
                     LOG.warn("Could not load compass button: " + e.getMessage(), e);
-                    player.closeInventory();
+                    profile.getOnlinePlayer().closeInventory();
                     return;
                 } catch (final ObjectNotFoundException e) {
                     LOG.warn("Could not find item: " + e.getMessage(), e);
@@ -516,7 +509,7 @@ public class Backpack implements Listener {
                 index++;
             }
             inv.setContents(content);
-            player.openInventory(inv);
+            profile.getOnlinePlayer().openInventory(inv);
             Bukkit.getPluginManager().registerEvents(Backpack.this, BetonQuest.getInstance());
         }
 
@@ -530,9 +523,9 @@ public class Backpack implements Listener {
             final QuestCompassTargetChangeEvent event = new QuestCompassTargetChangeEvent(profile, loc);
             Bukkit.getServer().getPluginManager().callEvent(event);
             if (!event.isCancelled()) {
-                player.setCompassTarget(loc);
+                profile.getOnlinePlayer().setCompassTarget(loc);
             }
-            player.closeInventory();
+            profile.getOnlinePlayer().closeInventory();
         }
     }
 }
