@@ -35,7 +35,7 @@ abstract public class ForceSyncHandler<T> {
     /**
      * This methods implementation will be executed by the {@link ForceSyncHandler#handle(Profile)} method.
      *
-     * @param profile the {@link Profile} of the player
+     * @param profile the {@link Profile} the event is executed for
      * @return Return the corresponding ForceSyncHandler type.
      * @throws QuestRuntimeException Is thrown if something unexpected happens.
      */
@@ -46,7 +46,7 @@ abstract public class ForceSyncHandler<T> {
      * {@link ForceSyncHandler#execute(Profile)} method will run on the servers main thread.
      * If set to false the {@link ForceSyncHandler#execute(Profile)} method will run on the current thread.
      *
-     * @param profile the {@link Profile} of the player
+     * @param profile the {@link Profile} the event is handled for
      * @return {@link ForceSyncHandler#execute(Profile)}'s return value.
      * @throws QuestRuntimeException Either the QRE from the implemented {@link ForceSyncHandler#execute(Profile)}
      *                               or from {@link ForceSyncHandler#handle(Profile)}'s

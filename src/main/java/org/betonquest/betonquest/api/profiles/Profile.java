@@ -7,17 +7,17 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * The profile extends the {@link Player} to be able to have multiple quest-progresses
+ * The profile allows a single {@link Player} to have multiple independent quest states.
  */
 public interface Profile {
 
     /**
-     * @return the {@link OfflinePlayer} from the profile
+     * @return the {@link OfflinePlayer} that this profile belongs to
      */
     OfflinePlayer getOfflinePlayer();
 
     /**
-     * @return the {@link Player} of the profile, wrapped into an {@link Optional}
+     * @return the {@link Player} that this profile belongs to, wrapped into an {@link Optional} since the player may be offline
      */
     Optional<Player> getPlayer();
 
@@ -32,7 +32,7 @@ public interface Profile {
     String getProfileName();
 
     /**
-     * Get the {@link OnlineProfile} of this Profile if the {@link Player} is online.
+     * Gets the {@link OnlineProfile} of this Profile if the {@link Player} is online.
      *
      * @return The {@link OnlineProfile} of this Profile
      * @throws IllegalStateException is thrown, if the {@link Player} is offline

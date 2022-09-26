@@ -51,7 +51,7 @@ public abstract class Objective {
      */
     protected Map<Profile, ObjectiveData> dataMap = new HashMap<>();
     /**
-     * Should be set with the data class used to hold players' information.
+     * Should be set to the data class used to hold the objective specific information.
      */
     protected Class<? extends ObjectiveData> template = ObjectiveData.class;
 
@@ -117,7 +117,7 @@ public abstract class Objective {
     public abstract void start();
 
     /**
-     * This method is called by the plugin when the objective starts for a specific player.
+     * This method is called by the plugin when the objective starts for a specific profile.
      */
     @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
     public void start(final Profile profile) {
@@ -131,7 +131,7 @@ public abstract class Objective {
     public abstract void stop();
 
     /**
-     * This method is called by the plugin when the objective stop for a specific player.
+     * This method is called by the plugin when the objective stop for a specific profile.
      */
     @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
     public void stop(final Profile profile) {
@@ -149,9 +149,9 @@ public abstract class Objective {
     /**
      * This method should return the default data instruction for the objective,
      * ready to be parsed by the ObjectiveData class.
-     * Reimplement this method if you need player context (e.g. for variable parsing) when creating the data instruction.
+     * Reimplement this method if you need profile context (e.g. for variable parsing) when creating the data instruction.
      *
-     * @param profile the {@link Profile} of the player
+     * @param profile the {@link Profile} to parse the instruction for
      * @return the default data instruction string
      */
     public String getDefaultDataInstruction(final Profile profile) {
@@ -163,25 +163,24 @@ public abstract class Objective {
      * as readable Strings. An example would be "5h 5min" for "time_left"
      * keyword in "delay" objective or "12" for keyword "mobs_killed" in
      * "mobkill" objective. The method is not abstract since not all objectives
-     * need to have properties, i.e. "die" objective. By default it returns an
+     * need to have properties, i.e. "die" objective. By default, it returns an
      * empty string.
      *
      * @param name    the name of the property you need to return; you can parse it
      *                to extract additional information
-     * @param profile the {@link Profile} of the player for whom the property is to be returned
+     * @param profile the {@link Profile} for which the property is to be returned
      * @return the property with given name
      */
     abstract public String getProperty(String name, Profile profile);
 
     /**
-     * This method fires events for the objective and removes it from player's
+     * This method fires events for the objective and removes it from the profile's
      * list of active objectives. Use it when you detect that the objective has
      * been completed. It deletes the objective using delete() method.
      *
-     * @param profile the {@link Profile} of the player for whom the objective is to be completed
+     * @param profile the {@link Profile} for which the objective is to be completed
      */
     public final void completeObjective(final Profile profile) {
-        // remove the objective from player's list
         completeObjectiveForPlayer(profile);
         BetonQuest.getInstance().getPlayerData(profile).removeRawObjective((ObjectiveID) instruction.getID());
         if (persistent) {
@@ -207,7 +206,7 @@ public abstract class Objective {
      * something that modifies data (e.g. killing zombies). If conditions are
      * met, you can safely modify the data.
      *
-     * @param profile the {@link Profile} of the player for whom the conditions are to be checked
+     * @param profile the {@link Profile} for which the conditions are to be checked
      * @return if all conditions of this objective has been met
      */
     public final boolean checkConditions(final Profile profile) {
@@ -220,7 +219,7 @@ public abstract class Objective {
      * Send notification for progress with the objective.
      *
      * @param messageName message name to use in messages.yml
-     * @param profile     the {@link Profile} of the player
+     * @param profile     the {@link Profile} for which the notification is to be sent
      * @param variables   variables for putting into the message
      */
     protected void sendNotify(final Profile profile, final String messageName, final Object... variables) {
@@ -239,10 +238,10 @@ public abstract class Objective {
     }
 
     /**
-     * Adds this new objective to the player. Also updates the database with the
+     * Adds this new objective to the profile. Also updates the database with the
      * objective.
      *
-     * @param profile the {@link Profile} of the player
+     * @param profile the {@link Profile} for which the objective is to be added
      */
     public final void newPlayer(final Profile profile) {
         final String defaultInstruction = getDefaultDataInstruction(profile);
@@ -251,9 +250,9 @@ public abstract class Objective {
     }
 
     /**
-     * Start a new objective for the player.
+     * Starts a new objective for the profile.
      *
-     * @param profile           the {@link Profile} of the player
+     * @param profile           the {@link Profile} for which the objective is to be started
      * @param instructionString the objective data instruction
      * @see #resumeObjectiveForPlayer(Profile, String)
      */
@@ -262,9 +261,9 @@ public abstract class Objective {
     }
 
     /**
-     * Resume a paused objective for the player.
+     * Resumes a paused objective for the profile.
      *
-     * @param profile           the {@link Profile} of the player that has the objective
+     * @param profile           the {@link Profile} for which the objective is to be resumed
      * @param instructionString the objective data instruction
      * @see #createObjectiveForPlayer(Profile, String)
      */
@@ -273,10 +272,10 @@ public abstract class Objective {
     }
 
     /**
-     * Start a objective for the player. This lower level method allows to set the previous state directly. If possible
+     * Start an objective for the profile. This lower level method allows to set the previous state directly. If possible
      * prefer {@link #createObjectiveForPlayer(Profile, String)} and {@link #resumeObjectiveForPlayer(Profile, String)}.
      *
-     * @param profile           the {@link Profile} of the player that has the objective
+     * @param profile           the {@link Profile} for which the objective is to be started
      * @param instructionString the objective data instruction
      * @param previousState     the objective's previous state
      */
@@ -284,9 +283,7 @@ public abstract class Objective {
 
         synchronized (this) {
             createObjectiveData(profile, instructionString)
-                    .ifPresent(data -> {
-                        startObjectiveWithEvent(profile, data, previousState);
-                    });
+                    .ifPresent(data -> startObjectiveWithEvent(profile, data, previousState));
         }
     }
 
@@ -322,10 +319,10 @@ public abstract class Objective {
     }
 
     /**
-     * Complete an active objective for the player. It will only remove it from the player and not run any completion
+     * Complete an active objective for the profile. It will only remove it from the profile and not run any completion
      * events, run {@link #completeObjective(Profile)} instead! It does also not remove it from the database.
      *
-     * @param profile the {@link Profile} of the player that has the objective
+     * @param profile the {@link Profile} for which the objective is to be completed
      * @see #cancelObjectiveForPlayer(Profile)
      * @see #pauseObjectiveForPlayer(Profile)
      */
@@ -334,10 +331,10 @@ public abstract class Objective {
     }
 
     /**
-     * Cancel an active objective for the player. It will only remove it from the player and not remove it from the
+     * Cancel an active objective for the profile. It will only remove it from the profile and not remove it from the
      * database.
      *
-     * @param profile the {@link Profile} of the player that has the objective
+     * @param profile the {@link Profile} for which the objective is to be cancelled
      * @see #completeObjectiveForPlayer(Profile)
      * @see #pauseObjectiveForPlayer(Profile)
      */
@@ -346,9 +343,9 @@ public abstract class Objective {
     }
 
     /**
-     * Pause an active objective for the player.
+     * Pause an active objective for the profile.
      *
-     * @param profile the {@link Profile} of the player that has the objective
+     * @param profile the {@link Profile} for which the objective is to be paused
      * @see #completeObjectiveForPlayer(Profile)
      * @see #cancelObjectiveForPlayer(Profile)
      */
@@ -357,11 +354,11 @@ public abstract class Objective {
     }
 
     /**
-     * Stops a objective for the player. This lower level method allows to set the previous state directly. If possible
+     * Stops an objective for the profile. This lower level method allows to set the previous state directly. If possible
      * prefer {@link #completeObjectiveForPlayer(Profile)}, {@link #cancelObjectiveForPlayer(Profile)} and
      * {@link #pauseObjectiveForPlayer(Profile)}.
      *
-     * @param profile  the {@link Profile} of the player that has the objective
+     * @param profile  the {@link Profile} for which the objective is to be stopped
      * @param newState the objective's new state
      */
     public final void stopObjective(final Profile profile, final ObjectiveState newState) {
@@ -377,7 +374,7 @@ public abstract class Objective {
 
     private void runObjectiveChangeEvent(final Profile profile, final ObjectiveState previousState, final ObjectiveState newState) {
         BetonQuest.getInstance()
-                .callSyncBukkitEvent(new PlayerObjectiveChangeEvent(profile.getOnlineProfile(), this, newState, previousState));
+                .callSyncBukkitEvent(new PlayerObjectiveChangeEvent(profile, this, newState, previousState));
     }
 
     private void activateObjective(final Profile profile, final ObjectiveData data) {
@@ -397,19 +394,19 @@ public abstract class Objective {
     }
 
     /**
-     * Checks if the player has this objective.
+     * Checks if the profile has this objective.
      *
-     * @param profile the {@link Profile} of the player
-     * @return true if the player has this objective
+     * @param profile the {@link Profile} to check
+     * @return true if the profile has this objective
      */
     public final boolean containsPlayer(final Profile profile) {
         return dataMap.containsKey(profile);
     }
 
     /**
-     * Returns the data of the specified player.
+     * Returns the data of the specified profile.
      *
-     * @param profile the {@link Profile} of the player
+     * @param profile the {@link Profile} to get the data for
      * @return the data string for this objective
      */
     public final String getData(final Profile profile) {
@@ -443,7 +440,7 @@ public abstract class Objective {
     /**
      * Should be called at the end of the use of this objective, for example
      * when reloading the plugin. It will unregister listeners and save all
-     * player's data to their "inactive" map.
+     * profile data to their "inactive" map.
      */
     public void close() {
         stop();
@@ -465,7 +462,7 @@ public abstract class Objective {
     }
 
     /**
-     * Show the states of the player objectives.
+     * Represents the states of an objective.
      */
     public enum ObjectiveState {
 
@@ -504,7 +501,7 @@ public abstract class Objective {
     }
 
     /**
-     * Stores player's data for the objective.
+     * Stores the profile's data for the objective.
      */
     protected static class ObjectiveData {
 
@@ -519,7 +516,7 @@ public abstract class Objective {
          *
          * @param instruction the instruction of the data object; parse it to get all
          *                    required information
-         * @param profile     the {@link Profile} of the player
+         * @param profile     the {@link Profile} to load the data for
          * @param objID       ID of the objective, used by BetonQuest to store this
          *                    ObjectiveData in the database
          */

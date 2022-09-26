@@ -4,16 +4,18 @@ import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Represents a profile related event
+ * Represents a profile related event.
  */
 public abstract class ProfileEvent extends Event {
+
     /**
-     * The profile this event is for
+     * The profile this event is for.
      */
     protected Profile profile;
 
     /**
-     * Creates a new profile event
+     * Creates a new profile event.
+     * This constructor assumes the event is synchronous
      *
      * @param who the profile
      */
@@ -23,7 +25,7 @@ public abstract class ProfileEvent extends Event {
     }
 
     /**
-     * Creates a new profile event with async setting
+     * Creates a new profile event with async setting.
      *
      * @param who     the profile
      * @param isAsync whether the event is async
@@ -40,5 +42,4 @@ public abstract class ProfileEvent extends Event {
     public final Profile getProfile() {
         return profile;
     }
-
 }

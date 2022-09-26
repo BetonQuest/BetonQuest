@@ -65,21 +65,21 @@ public abstract class CountingObjective extends Objective {
     }
 
     /**
-     * Get the {@link CountingData} objective data for given player.
+     * Get the {@link CountingData} objective data for given profile.
      *
-     * @param profile the {@link Profile} of the player
-     * @return counting objective data of the player
+     * @param profile the {@link Profile} to get the data for
+     * @return counting objective data of the profile
      */
     public final CountingData getCountingData(final Profile profile) {
         return (CountingData) dataMap.get(profile);
     }
 
     /**
-     * Complete the objective if fulfilled or else notify the player if required. It will use the
+     * Complete the objective if fulfilled or else notify the profile's player if required. It will use the
      * {@link #defaultNotifyMessageName} if set, otherwise no notification will be sent, even if {@link #notify} is
      * {@code true}.
      *
-     * @param profile the {@link Profile} of the player
+     * @param profile the {@link Profile} to act for
      * @return {@code true} if the objective is completed; {@code false} otherwise
      */
     protected final boolean completeIfDoneOrNotify(final Profile profile) {
@@ -87,11 +87,11 @@ public abstract class CountingObjective extends Objective {
     }
 
     /**
-     * Complete the objective if fulfilled or else notify the player if required. It will use the provided notification
+     * Complete the objective if fulfilled or else notify the profile's player if required. It will use the provided notification
      * message name. If it is {@code null}, no notification is sent, even if a {@link #defaultNotifyMessageName} was set
      * and a notification should have been sent.
      *
-     * @param profile           the {@link Profile} of the player
+     * @param profile           the {@link Profile} to act for
      * @param notifyMessageName message name for notification message
      * @return {@code true} if the objective is completed; {@code false} otherwise
      */
@@ -145,7 +145,7 @@ public abstract class CountingObjective extends Objective {
          *
          * @param instruction to {@link Integer} parsable string, containing the units to complete or output from
          *                    {@link #toString()}
-         * @param profile     the {@link Profile} of the player
+         * @param profile     the {@link Profile} to create the data for
          * @param objID       id of the objective, used by BetonQuest to store this {@link ObjectiveData} in the database
          */
         public CountingData(final String instruction, final Profile profile, final String objID) {
