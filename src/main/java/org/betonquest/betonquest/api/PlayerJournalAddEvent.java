@@ -29,9 +29,9 @@ public class PlayerJournalAddEvent extends ProfileEvent {
     /**
      * Constructor of PlayerJournalAddEvent.
      *
-     * @param who     the player who was added journal
+     * @param who     the {@link Profile} who was added journal
      * @param journal the journal of this player
-     * @param pointer the pointer for which journal entry was been added for this player
+     * @param pointer the pointer for which journal entry was added for this player
      */
     public PlayerJournalAddEvent(final Profile who, final Journal journal, final Pointer pointer) {
         super(who);

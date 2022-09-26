@@ -165,7 +165,7 @@ public class PlayerData {
                 tags.add(tag);
                 saver.add(new Record(UpdateType.ADD_TAGS, profile.getProfileUUID().toString(), tag));
                 BetonQuest.getInstance()
-                        .callSyncBukkitEvent(new PlayerTagAddEvent(profile.getOnlineProfile().getOnlinePlayer(), tag));
+                        .callSyncBukkitEvent(new PlayerTagAddEvent(profile, tag));
             }
         }
     }
@@ -182,7 +182,7 @@ public class PlayerData {
                 tags.remove(tag);
                 saver.add(new Record(UpdateType.REMOVE_TAGS, profile.getProfileUUID().toString(), tag));
                 BetonQuest.getInstance()
-                        .callSyncBukkitEvent(new PlayerTagRemoveEvent(profile.getOnlineProfile().getOnlinePlayer(), tag));
+                        .callSyncBukkitEvent(new PlayerTagRemoveEvent(profile, tag));
             }
         }
     }

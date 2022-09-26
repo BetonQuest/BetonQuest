@@ -53,6 +53,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -491,13 +492,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Purges profile's data
      */
     private void purgePlayer(final CommandSender sender, final String... args) {
-        // playerID is required
-        if (args.length < 2) {
-            LOG.debug("Player's name is missing");
-            sendMessage(sender, "specify_player");
+        final Profile profile = getTargetProfile(sender, args);
+        if (profile == null) {
             return;
         }
-        final Profile profile = PlayerConverter.getID(args[1]);
         PlayerData playerData = instance.getPlayerData(profile);
         // if the player is offline then get his PlayerData outside of the
         // list
@@ -512,17 +510,24 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         sendMessage(sender, "purged", args[1]);
     }
 
+    @Nullable
+    private Profile getTargetProfile(final CommandSender sender, final String... args) {
+        if (args.length < 2) {
+            LOG.debug("Player's name is missing");
+            sendMessage(sender, "specify_player");
+            return null;
+        }
+        return PlayerConverter.getID(Bukkit.getOfflinePlayer(args[1]));
+    }
+
     /**
      * Lists, adds or removes journal entries of certain profile
      */
     private void handleJournals(final CommandSender sender, final String... args) {
-        // playerID is required
-        if (args.length < 2) {
-            LOG.debug("Player's name is missing");
-            sendMessage(sender, "specify_player");
+        final Profile profile = getTargetProfile(sender, args);
+        if (profile == null) {
             return;
         }
-        final Profile profile = PlayerConverter.getID(args[1]);
         PlayerData playerData = instance.getPlayerData(profile);
         // if the player is offline then get his PlayerData outside of the
         // list
@@ -617,13 +622,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Lists, adds or removes points of certain profile
      */
     private void handlePoints(final CommandSender sender, final String... args) {
-        // playerID is required
-        if (args.length < 2) {
-            LOG.debug("Player's name is missing");
-            sendMessage(sender, "specify_player");
+        final Profile profile = getTargetProfile(sender, args);
+        if (profile == null) {
             return;
         }
-        final Profile profile = PlayerConverter.getID(args[1]);
         PlayerData playerData = instance.getPlayerData(profile);
         // if the player is offline then get his PlayerData outside of the
         // list
@@ -879,7 +881,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         // fire the event
-        final Profile profile = "-".equals(args[1]) ? null : PlayerConverter.getID(args[1]);
+        final Profile profile = "-".equals(args[1]) ? null : PlayerConverter.getID(Bukkit.getOfflinePlayer(args[1]));
         BetonQuest.event(profile, eventID);
         sendMessage(sender, "player_event", eventID.generateInstruction().getInstruction());
     }
@@ -926,7 +928,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         // display message about condition
-        final Profile profile = "-".equals(args[1]) ? null : PlayerConverter.getID(args[1]);
+        final Profile profile = "-".equals(args[1]) ? null : PlayerConverter.getID(Bukkit.getOfflinePlayer(args[1]));
         sendMessage(sender, "player_condition", (conditionID.inverted() ? "! " : "") + conditionID.generateInstruction().getInstruction(),
                 Boolean.toString(BetonQuest.condition(profile, conditionID)));
     }
@@ -952,13 +954,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Lists, adds or removes tags
      */
     private void handleTags(final CommandSender sender, final String... args) {
-        // playerID is required
-        if (args.length < 2) {
-            LOG.debug("Player's name is missing");
-            sendMessage(sender, "specify_player");
+        final Profile profile = getTargetProfile(sender, args);
+        if (profile == null) {
             return;
         }
-        final Profile profile = PlayerConverter.getID(args[1]);
         PlayerData playerData = instance.getPlayerData(profile);
         // if the player is offline then get his PlayerData outside of the
         // list
@@ -1111,13 +1110,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      */
     @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount"})
     private void handleObjectives(final CommandSender sender, final String... args) {
-        // playerID is required
-        if (args.length < 2) {
-            LOG.debug("Player's name is missing");
-            sendMessage(sender, "specify_player");
+        final Profile profile = getTargetProfile(sender, args);
+        if (profile == null) {
             return;
         }
-        final Profile profile = PlayerConverter.getID(args[1]);
         final boolean isOnline = profile.getPlayer() != null;
         PlayerData playerData = instance.getPlayerData(profile);
         // if the player is offline then get his PlayerData outside of the

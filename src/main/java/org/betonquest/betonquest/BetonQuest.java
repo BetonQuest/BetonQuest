@@ -1296,7 +1296,7 @@ public class BetonQuest extends JavaPlugin {
 
     /**
      * Stores the PlayerData in a map, so it can be retrieved using
-     * getPlayerData(String playerID)
+     * getPlayerData(Profile profile).
      *
      * @param profile    the {@link Profile} of the player
      * @param playerData PlayerData object to store

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event;
 
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 
 /**
  * Notification sender that suppresses notifications instead of sending them.
@@ -14,7 +14,7 @@ public class NoNotificationSender implements NotificationSender {
     }
 
     @Override
-    public void sendNotification(final Profile profile) {
+    public void sendNotification(final OnlineProfile onlineProfile) {
         // null object pattern
     }
 }

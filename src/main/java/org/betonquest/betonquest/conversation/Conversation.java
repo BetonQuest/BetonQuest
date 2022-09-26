@@ -321,7 +321,7 @@ public class Conversation implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationEndEvent(player, Conversation.this));
+                Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationEndEvent(onlineProfile, Conversation.this));
             }
         }.runTask(BetonQuest.getInstance());
     }
@@ -435,7 +435,7 @@ public class Conversation implements Listener {
 
             @Override
             public void run() {
-                Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationEndEvent(player, Conversation.this));
+                Bukkit.getServer().getPluginManager().callEvent(new PlayerConversationEndEvent(onlineProfile, Conversation.this));
             }
         }.runTask(BetonQuest.getInstance());
     }
@@ -497,7 +497,7 @@ public class Conversation implements Listener {
         @Override
         public void run() {
             // the conversation start event must be run on next tick
-            final PlayerConversationStartEvent event = new PlayerConversationStartEvent(player, conv);
+            final PlayerConversationStartEvent event = new PlayerConversationStartEvent(onlineProfile, conv);
             new BukkitRunnable() {
 
                 @Override

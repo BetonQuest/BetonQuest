@@ -13,6 +13,7 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.menu.config.RPGMenuConfig;
+import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -150,7 +151,7 @@ public class RPGMenuCommand extends SimpleCommand {
                     return false;
                 }
                 //open the menu and send feedback
-                this.menu.openMenu(player, menu);
+                this.menu.openMenu(PlayerConverter.getID(player), menu);
                 RPGMenuConfig.sendMessage(sender, "command_open_successful", menu.toString());
                 break;
             case "reload":

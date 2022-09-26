@@ -17,7 +17,7 @@ public class PlayerConversationEndEvent extends ProfileEvent {
     /**
      * Creates new conversation start event
      *
-     * @param who          the {@link Profile) who ended the conversation
+     * @param who          the {@link Profile} who ended the conversation
      * @param conversation conversation which has been ended
      */
     public PlayerConversationEndEvent(final Profile who, final Conversation conversation) {

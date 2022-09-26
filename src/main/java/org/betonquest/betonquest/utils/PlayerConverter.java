@@ -2,7 +2,6 @@ package org.betonquest.betonquest.utils;
 
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -11,7 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Converts playerIDs to Player objects and back to playerIDs.
+ * Converts the player to the Profile
  */
 @SuppressWarnings({"PMD.ClassNamingConventions", "PMD.CommentRequired"})
 public final class PlayerConverter {
@@ -22,8 +21,8 @@ public final class PlayerConverter {
     /**
      * Returns the {@link Profile} of the passed Player.
      *
-     * @param player - Player object from which playerID needs to be extracted
-     * @return playerID of the player
+     * @param player - Player object to get the Profile from
+     * @return profile of the player
      */
     public static Profile getID(final OfflinePlayer player) {
         return new Profile() {
@@ -107,16 +106,5 @@ public final class PlayerConverter {
                 return Objects.hashCode(player.getUniqueId());
             }
         };
-    }
-
-    /**
-     * Returns playerID of the player with passed name.
-     *
-     * @param name - name of the player from which playerID needs to be extracted
-     * @return playerID of the player
-     */
-    @SuppressWarnings("deprecation")
-    public static Profile getID(final String name) {
-        return getID(Bukkit.getOfflinePlayer(name));
     }
 }

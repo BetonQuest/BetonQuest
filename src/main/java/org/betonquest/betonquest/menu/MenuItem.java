@@ -228,12 +228,12 @@ public class MenuItem extends SimpleYMLSection {
     /**
      * Checks if this item should be displayed to the player
      *
-     * @param player that should get the item displayed
+     * @param profile the player of the {@link Profile} should get the item displayed
      * @return true if all display conditions are met, false otherwise
      */
-    public boolean display(final Player player) {
+    public boolean display(final Profile profile) {
         for (final ConditionID condition : this.conditions) {
-            if (BetonQuest.condition(PlayerConverter.getID(player), condition)) {
+            if (BetonQuest.condition(profile, condition)) {
                 LOG.debug(pack, "Item " + name + ": condition " + condition + " returned true");
             } else {
                 LOG.debug(pack, "Item " + name + " wont be displayed: condition" + condition + " returned false.");
@@ -246,14 +246,13 @@ public class MenuItem extends SimpleYMLSection {
     /**
      * Generates the menu item for a specific player
      *
-     * @param player the player this item will be displayed to
+     * @param profile the player from the {@link Profile} this item will be displayed to
      * @return the item as a bukkit item stack
      */
     @SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.AvoidCatchingNPE"})
     @SuppressFBWarnings("DCN_NULLPOINTER_EXCEPTION")
-    public ItemStack generateItem(final Player player) {
+    public ItemStack generateItem(final Profile profile) {
         try {
-            final Profile profile = PlayerConverter.getID(player);
             final String lang = BetonQuest.getInstance().getPlayerData(profile).getLanguage();
             final ItemStack item = this.item.generate(profile);
             final ItemMeta meta = item.getItemMeta();

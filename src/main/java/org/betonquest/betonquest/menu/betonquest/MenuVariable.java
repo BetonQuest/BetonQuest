@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.menu.OpenedMenu;
-import org.bukkit.entity.Player;
 
 /**
  * Returns the title of the players currently opened menu
@@ -19,8 +18,7 @@ public class MenuVariable extends Variable {
 
     @Override
     public String getValue(final Profile profile) {
-        final Player player = profile.getOnlineProfile().getOnlinePlayer();
-        final OpenedMenu menu = OpenedMenu.getMenu(player);
+        final OpenedMenu menu = OpenedMenu.getMenu(profile.getOnlineProfile());
         if (menu == null) {
             return "";
         }

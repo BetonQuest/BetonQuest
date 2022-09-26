@@ -26,6 +26,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
@@ -43,7 +44,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -60,7 +60,7 @@ public class MenuConvIO extends ChatConvIO {
      * All players that are currently on cooldown are in this list.
      * The cooldown is used to prevent players from spamming through the conversation or skipping through it by accident.
      */
-    private final List<UUID> selectionCooldowns = new ArrayList<>();
+    private final List<Player> selectionCooldowns = new ArrayList<>();
     // Actions
     protected Map<CONTROL, ACTION> controls = new HashMap<>();
     protected String configControlCancel = "sneak";
@@ -694,12 +694,11 @@ public class MenuConvIO extends ChatConvIO {
     }
 
     private boolean isOnCooldown() {
-        final UUID playerID = player.getUniqueId();
-        if (selectionCooldowns.contains(playerID)) {
+        if (selectionCooldowns.contains(player)) {
             return true;
         } else {
-            selectionCooldowns.add(playerID);
-            Bukkit.getScheduler().scheduleAsyncDelayedTask(BetonQuest.getInstance(), () -> selectionCooldowns.remove(playerID), configSelectionCooldown);
+            selectionCooldowns.add(player);
+            Bukkit.getScheduler().scheduleAsyncDelayedTask(BetonQuest.getInstance(), () -> selectionCooldowns.remove(player), configSelectionCooldown);
         }
         return false;
     }

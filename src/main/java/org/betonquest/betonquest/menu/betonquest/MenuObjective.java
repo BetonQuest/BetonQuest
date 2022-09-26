@@ -10,7 +10,6 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.menu.Menu;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.events.MenuOpenEvent;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -37,7 +36,7 @@ public class MenuObjective extends Objective implements Listener {
 
     @EventHandler
     public void onMenuOpen(final MenuOpenEvent event) {
-        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        final Profile profile = event.getProfile();
         if (!containsPlayer(profile)) {
             return;
         }

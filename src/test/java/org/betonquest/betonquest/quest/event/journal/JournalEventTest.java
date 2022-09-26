@@ -36,6 +36,6 @@ class JournalEventTest {
         final InOrder order = inOrder(journal, changer, sender);
         order.verify(changer).changeJournal(journal);
         order.verify(journal).update();
-        order.verify(sender).sendNotification(profile);
+        order.verify(sender).sendNotification(profile.getOnlineProfile());
     }
 }

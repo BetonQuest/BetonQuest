@@ -2,7 +2,6 @@ package org.betonquest.betonquest.quest.event;
 
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
@@ -45,7 +44,7 @@ class InfoNotificationSenderTest {
         try (MockedStatic<Config> config = mockStatic(Config.class)) {
             config.when(() -> Config.sendNotify(any(), any(OnlineProfile.class), any(), any(), any()))
                     .thenThrow(new QuestRuntimeException("Test cause."));
-            assertDoesNotThrow(() -> sender.sendNotification(mock(Profile.class)), "Failing to send a notification should not throw an exception.");
+            assertDoesNotThrow(() -> sender.sendNotification(mock(OnlineProfile.class)), "Failing to send a notification should not throw an exception.");
         }
         logValidator.assertLogEntry(Level.WARNING, "The notify system was unable to play a sound for the 'message-name' category in 'full.id'. Error was: 'Test cause.'");
         logValidator.assertLogEntry(Level.FINE, "Additional stacktrace:", QuestRuntimeException.class, "Test cause.");

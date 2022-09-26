@@ -18,6 +18,7 @@ public abstract class ProfileEvent extends Event {
      * @param who the profile
      */
     public ProfileEvent(@NotNull final Profile who) {
+        super();
         this.profile = who;
     }
 

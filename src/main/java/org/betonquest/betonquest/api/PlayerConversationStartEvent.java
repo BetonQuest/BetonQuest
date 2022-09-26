@@ -19,7 +19,7 @@ public class PlayerConversationStartEvent extends ProfileEvent implements Cancel
     /**
      * Creates new conversation end event.
      *
-     * @param who          the {@link Profile) who started the conversation
+     * @param who          the {@link Profile} who started the conversation
      * @param conversation conversation which is about to start
      */
     public PlayerConversationStartEvent(final Profile who, final Conversation conversation) {

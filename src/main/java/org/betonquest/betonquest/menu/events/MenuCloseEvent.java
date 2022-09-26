@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.menu.events;
 
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.menu.MenuID;
-import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 
 /**
@@ -12,7 +12,7 @@ public class MenuCloseEvent extends MenuEvent {
 
     private static final HandlerList HANDLER_LIST = new HandlerList();
 
-    public MenuCloseEvent(final Player who, final MenuID menu) {
+    public MenuCloseEvent(final Profile who, final MenuID menu) {
         super(who, menu);
     }
 

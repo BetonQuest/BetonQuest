@@ -9,7 +9,6 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.RPGMenu;
-import org.bukkit.entity.Player;
 
 /**
  * Event to open or close menus
@@ -34,11 +33,10 @@ public class MenuQuestEvent extends QuestEvent {
 
     @Override
     public Void execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getOnlineProfile().getOnlinePlayer();
         if (operation == Operation.OPEN) {
-            BetonQuest.getInstance().getRpgMenu().openMenu(player, menu);
+            BetonQuest.getInstance().getRpgMenu().openMenu(profile, menu);
         } else {
-            RPGMenu.closeMenu(player);
+            RPGMenu.closeMenu(profile);
         }
         return null;
     }

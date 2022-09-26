@@ -377,7 +377,7 @@ public abstract class Objective {
 
     private void runObjectiveChangeEvent(final Profile profile, final ObjectiveState previousState, final ObjectiveState newState) {
         BetonQuest.getInstance()
-                .callSyncBukkitEvent(new PlayerObjectiveChangeEvent(profile.getOnlineProfile().getOnlinePlayer(), this, newState, previousState));
+                .callSyncBukkitEvent(new PlayerObjectiveChangeEvent(profile.getOnlineProfile(), this, newState, previousState));
     }
 
     private void activateObjective(final Profile profile, final ObjectiveData data) {
