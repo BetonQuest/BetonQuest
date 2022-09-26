@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * This class hides an original and a fallback {@link ConfigurationSection} and exposes it,
  * as if it were a {@link Configuration} based on the  original {@link ConfigurationSection},
- * except for missing key, then the fallback is used.
+ * except for missing keys, then the fallback is used.
  */
 public class FallbackConfiguration extends FallbackConfigurationSection implements Configuration {
     /**
@@ -21,7 +21,7 @@ public class FallbackConfiguration extends FallbackConfigurationSection implemen
     private FallbackConfiguration defaults;
 
     /**
-     * Create a new decorator instance.
+     * Creates a new decorator instance.
      *
      * @param original The original {@link ConfigurationSection} that should be decorated.
      * @param fallback The fallback {@link ConfigurationSection} that should be used
@@ -69,11 +69,11 @@ public class FallbackConfiguration extends FallbackConfigurationSection implemen
 
     @Override
     public @NotNull ConfigurationOptions options() {
-        final ConfigurationSection fallback = manager.getFallback();
         final Configuration originalRoot = manager.getOriginal().getRoot();
+        final ConfigurationSection fallback = manager.getFallback();
         final Configuration fallbackRoot = fallback == null ? null : fallback.getRoot();
         if (originalRoot == null || fallback != null && fallbackRoot == null) {
-            throw new IllegalStateException("Cannot get a Options when the root of original or fallback is null");
+            throw new IllegalStateException("Cannot get options when the root of original or fallback is null");
         }
         final ConfigurationOptions fallbackOptions = fallbackRoot == null ? null : fallbackRoot.options();
         return new FallbackConfigurationOptions(this, originalRoot.options(), fallbackOptions);

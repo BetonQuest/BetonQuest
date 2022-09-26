@@ -21,12 +21,14 @@ public class FallbackConfigurationTest extends ConfigurationBaseTest {
      * The fallback {@link Configuration that should not be modified.
      */
     protected Configuration fallback;
+
     /**
-     * The values in the configuration before the test did run.
+     * The values in the fallback configuration before the test did run.
      */
     private Map<String, Object> values;
+
     /**
-     * The values of the default section in the configuration before the test did run.
+     * The values of the default section in the fallback configuration before the test did run.
      */
     private Map<String, Object> valuesDefault;
 
