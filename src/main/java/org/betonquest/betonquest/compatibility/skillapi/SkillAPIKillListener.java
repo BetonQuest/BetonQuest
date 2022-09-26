@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.skillapi;
 import com.sucy.skill.api.event.SkillDamageEvent;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.MobKillNotifier;
+import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,7 +29,7 @@ public class SkillAPIKillListener implements Listener {
             return;
         }
         final Player player = (Player) event.getDamager();
-        MobKillNotifier.addKill(player, event.getTarget());
+        MobKillNotifier.addKill(PlayerConverter.getID(player), event.getTarget());
     }
 
 }

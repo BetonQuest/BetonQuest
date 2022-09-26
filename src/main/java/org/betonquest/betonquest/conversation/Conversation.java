@@ -573,7 +573,7 @@ public class Conversation implements Listener {
 
             // print NPC's text
             printNPCText();
-            final ConversationOptionEvent optionEvent = new ConversationOptionEvent(player, conv, option, conv.option);
+            final ConversationOptionEvent optionEvent = new ConversationOptionEvent(PlayerConverter.getID(player), conv, option, conv.option);
 
             new BukkitRunnable() {
 
@@ -648,7 +648,7 @@ public class Conversation implements Listener {
             selectOption(data.getPointers(onlineProfile, option, OptionType.PLAYER), false);
             // print to player npc's answer
             printNPCText();
-            final ConversationOptionEvent event = new ConversationOptionEvent(player, conv, option, conv.option);
+            final ConversationOptionEvent event = new ConversationOptionEvent(PlayerConverter.getID(player), conv, option, conv.option);
 
             new BukkitRunnable() {
                 @Override

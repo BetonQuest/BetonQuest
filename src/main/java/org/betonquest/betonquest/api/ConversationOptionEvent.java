@@ -1,23 +1,21 @@
 package org.betonquest.betonquest.api;
 
+import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.ProfileEvent;
 import org.betonquest.betonquest.conversation.Conversation;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 @SuppressWarnings({"PMD.DataClass", "PMD.CommentRequired"})
-public class ConversationOptionEvent extends Event {
+public class ConversationOptionEvent extends ProfileEvent {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
-    private final Player player;
     private final Conversation conv;
     private final String selectedOption;
     private final String npcResponse;
 
-    public ConversationOptionEvent(final Player player, final Conversation conv, final String playerChosen, final String npcResponse) {
-        super();
-        this.player = player;
+    public ConversationOptionEvent(final Profile profile, final Conversation conv, final String playerChosen, final String npcResponse) {
+        super(profile);
         this.conv = conv;
         this.selectedOption = playerChosen;
         this.npcResponse = npcResponse;
@@ -25,13 +23,6 @@ public class ConversationOptionEvent extends Event {
 
     public static HandlerList getHandlerList() {
         return HANDLERS;
-    }
-
-    /**
-     * @return the player who is having a conversation
-     */
-    public Player getPlayer() {
-        return player;
     }
 
     /**

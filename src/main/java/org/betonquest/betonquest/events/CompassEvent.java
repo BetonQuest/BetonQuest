@@ -72,7 +72,7 @@ public class CompassEvent extends QuestEvent {
                 }
                 if (profile.getPlayer().isPresent()) {
                     final Player player = profile.getPlayer().get();
-                    final QuestCompassTargetChangeEvent event = new QuestCompassTargetChangeEvent(player, location);
+                    final QuestCompassTargetChangeEvent event = new QuestCompassTargetChangeEvent(profile, location);
                     Bukkit.getServer().getPluginManager().callEvent(event);
                     if (!event.isCancelled()) {
                         player.setCompassTarget(location);

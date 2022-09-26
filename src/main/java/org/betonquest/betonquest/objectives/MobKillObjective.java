@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.MobKillNotifier.MobKilledEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
@@ -50,7 +49,7 @@ public class MobKillObjective extends CountingObjective implements Listener {
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @EventHandler(ignoreCancelled = true)
     public void onMobKill(final MobKilledEvent event) {
-        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        final Profile profile = event.getProfile();
         if (!containsPlayer(profile)
                 || !entities.contains(event.getEntity().getType())
                 || name != null && (event.getEntity().getCustomName() == null
@@ -63,7 +62,7 @@ public class MobKillObjective extends CountingObjective implements Listener {
             }
             final List<MetadataValue> meta = event.getEntity().getMetadata("betonquest-marked");
             for (final MetadataValue m : meta) {
-                if (!m.asString().equals(marked.replace("%player%", PlayerConverter.getID(event.getPlayer()).getProfileUUID().toString()))) {
+                if (!m.asString().equals(marked.replace("%player%", event.getProfile().getProfileUUID().toString()))) {
                     return;
                 }
             }
