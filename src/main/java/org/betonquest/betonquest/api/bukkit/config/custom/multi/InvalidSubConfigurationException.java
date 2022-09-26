@@ -23,15 +23,6 @@ public class InvalidSubConfigurationException extends InvalidConfigurationExcept
     /**
      * Creates an exception for an invalid sub configuration.
      *
-     * @param subConfiguration the map of duplicated keys
-     */
-    public InvalidSubConfigurationException(final ConfigurationSection subConfiguration) {
-        this(null, subConfiguration);
-    }
-
-    /**
-     * Creates an exception for an invalid sub configuration.
-     *
      * @param msg              the exception message
      * @param subConfiguration the related sub configuration
      */

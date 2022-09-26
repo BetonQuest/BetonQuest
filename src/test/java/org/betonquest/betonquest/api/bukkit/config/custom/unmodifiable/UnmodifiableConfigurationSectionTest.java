@@ -29,7 +29,7 @@ public class UnmodifiableConfigurationSectionTest extends ConfigurationSectionBa
 
     @Override
     public ConfigurationSection getConfig() {
-        return new UnmodifiableConfiguration(super.getDefaultConfig());
+        return new UnmodifiableConfigurationSection(super.getDefaultConfig());
     }
 
     /**

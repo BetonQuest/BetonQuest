@@ -286,4 +286,6 @@ public interface ConfigurationSectionTestInterface {
     void testGetInlineComments();
 
     void testGetInlineCommentsOnInvalid();
+
+    void testToString();
 }

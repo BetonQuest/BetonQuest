@@ -1,8 +1,5 @@
-package org.betonquest.betonquest.api.bukkit.config.custom.multi.complex;
+package org.betonquest.betonquest.api.bukkit.config.custom.multi;
 
-import org.betonquest.betonquest.api.bukkit.config.custom.multi.InvalidSubConfigurationException;
-import org.betonquest.betonquest.api.bukkit.config.custom.multi.KeyConflictException;
-import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -27,6 +24,7 @@ class MultiConfigurationInvalidSubConfigurationExceptionTest {
         try {
             new MultiConfiguration(List.of(configuration));
         } catch (final InvalidSubConfigurationException e) {
+            assertEquals(configuration, e.getSubConfiguration());
             assertEquals("At least one source config does not have valid path separator!", e.getMessage());
             return;
         } catch (final KeyConflictException e) {
