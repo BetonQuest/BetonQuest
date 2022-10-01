@@ -425,12 +425,18 @@ There must be specific (Minecraft) time on the player's world for this condition
 
 ## Variable: `variable`
 
-This condition checks if a variable value matches given [pattern](https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html). The first argument is a variable (with `%` characters). Second one is the pattern (for example, if you want to check if it's "word", the patter would simply be `word`, but if you want to check if it's a number (positive or negative) you would use `-?\d+` pattern - `-?` means a dash or no dash, `\d` means any digit and `+` allows that digit to be repeated one or more times).
+This condition checks if a variable value matches given [pattern](https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html).
+The first argument is a variable (with `%` characters). Second one is the pattern (for example, if you want to check if it's "word",
+the patter would simply be `word`, but if you want to check if it's a number (positive or negative) you would use `-?\d+` pattern - `-?`
+means a dash or no dash, `\d` means any digit and `+` allows that digit to be repeated one or more times).
+The `forceSync` argument forces the variable to be resolved on the main thread. This may be required by some third party
+variables. 
 
-!!! example
-    ```YAML
-    variable %objective.var.price% -?\d+
-    ```
+```YAML
+variables:
+  anyNumber: "variable %objective.var.price% -?\d+"
+  denizenVariable: "variable ph.denizen_<server.match_player[SomeName].has_flag[flag_name]> forceSync"
+```
 
 ## Weather: `weather`
 
