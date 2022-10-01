@@ -1040,4 +1040,15 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
     public void testGetInlineCommentsOnInvalid() {
         assertEquals(new ArrayList<>(), config.getInlineComments("get_invalid"));
     }
+
+    @Test
+    @Override
+    public void testToString() {
+        final Pattern pattern = Pattern.compile("\\w+"
+                + Pattern.quote("[path='', root='") + "\\w+"
+                + Pattern.quote("']"));
+        final String sectionString = config.toString();
+        final Matcher matcher = pattern.matcher(sectionString);
+        assertTrue(matcher.matches(), "Didn't match regex: " + pattern + "\n" + "Actual string: " + sectionString);
+    }
 }

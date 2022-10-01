@@ -52,6 +52,7 @@ import org.betonquest.betonquest.conditions.GlobalTagCondition;
 import org.betonquest.betonquest.conditions.HandCondition;
 import org.betonquest.betonquest.conditions.HealthCondition;
 import org.betonquest.betonquest.conditions.HeightCondition;
+import org.betonquest.betonquest.conditions.HungerCondition;
 import org.betonquest.betonquest.conditions.InConversationCondition;
 import org.betonquest.betonquest.conditions.ItemCondition;
 import org.betonquest.betonquest.conditions.JournalCondition;
@@ -117,6 +118,7 @@ import org.betonquest.betonquest.events.GiveEvent;
 import org.betonquest.betonquest.events.GiveJournalEvent;
 import org.betonquest.betonquest.events.GlobalPointEvent;
 import org.betonquest.betonquest.events.GlobalTagEvent;
+import org.betonquest.betonquest.events.HungerEvent;
 import org.betonquest.betonquest.events.IfElseEvent;
 import org.betonquest.betonquest.events.KillEvent;
 import org.betonquest.betonquest.events.KillMobEvent;
@@ -785,6 +787,7 @@ public class BetonQuest extends JavaPlugin {
         registerConditions("fly", FlyingCondition.class);
         registerConditions("burning", BurningCondition.class);
         registerConditions("inconversation", InConversationCondition.class);
+        registerConditions("hunger", HungerCondition.class);
 
         // register events
         registerEvents("objective", ObjectiveEvent.class);
@@ -837,6 +840,7 @@ public class BetonQuest extends JavaPlugin {
         registerEvents("freeze", FreezeEvent.class);
         registerEvent("burn", new BurnEventFactory(getServer(), getServer().getScheduler(), this));
         registerEvent("velocity", new VelocityEventFactory(getServer(), getServer().getScheduler(), this));
+        registerEvents("hunger", HungerEvent.class);
 
         // register objectives
         registerObjectives("location", LocationObjective.class);

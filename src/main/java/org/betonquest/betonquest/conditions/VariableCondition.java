@@ -15,7 +15,7 @@ public class VariableCondition extends Condition {
     private final String regex;
 
     public VariableCondition(final Instruction instruction) throws InstructionParseException {
-        super(instruction, false);
+        super(instruction, instruction.hasArgument("forceSync"));
         variable = instruction.next();
         regex = instruction.next().replace('_', ' ');
     }

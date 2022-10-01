@@ -59,6 +59,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `burn` event - ignites player for given seconds, supports variables
 - `velocity` event - throws the player by a vector (can be variable) with a direction and modification
 - `block` objective - added argument `noSafety` which disables removing progress when the player does the opposite of what the objective asks for
+- `hunger` condition and event
+- `variable` condition - forceSync argument forces the condition to be checked on the main thread 
 - holograms
     - variable support
     - top lists ordered by point values of players
