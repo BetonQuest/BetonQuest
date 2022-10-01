@@ -13,6 +13,7 @@ public class GlobalPointVariable extends PointVariable {
 
     public GlobalPointVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
+        staticness = true;
     }
 
     @Override

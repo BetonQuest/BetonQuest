@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.compatibility.holographicdisplays;
 
+import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.citizens.CitizensHologram;
@@ -19,6 +21,9 @@ public class HolographicDisplaysIntegrator implements Integrator {
     @Override
     public void hook() {
         hologramLoop = new HologramLoop();
+
+        HolographicDisplaysAPI.get(BetonQuest.getInstance()).registerIndividualPlaceholder("bq", new HologramPlaceholder());
+        HolographicDisplaysAPI.get(BetonQuest.getInstance()).registerGlobalPlaceholder("bqg", new HologramGlobalPlaceholder());
 
         // if Citizens is hooked, start CitizensHologram
         if (Compatibility.getHooked().contains("Citizens")) {

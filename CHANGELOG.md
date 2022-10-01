@@ -59,6 +59,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `burn` event - ignites player for given seconds, supports variables
 - `velocity` event - throws the player by a vector (can be variable) with a direction and modification
 - `block` objective - added argument `noSafety` which disables removing progress when the player does the opposite of what the objective asks for
+- holograms
+    - variable support
+    - top lists ordered by point values of players
 - Things that are also added in 1.12.X:
     - new line support for `journal_lore` in `messages.yml`
     - FastAsyncWorldEdit compatibility
@@ -100,6 +103,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - math variable now allows rounding output with the ~ operator
     - French translation has been updated
     - `action` objective - cancels now the event, before other plugins check for it (better third-party support)
+- HolographicDisplays updated to 3.0.0
+- Added staticness indicator to variables that can be executed without a direct player connection
 ### Deprecated
 ### Removed
 - deprecated internals, code and old features

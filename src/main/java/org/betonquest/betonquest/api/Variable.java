@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.api;
 
+import lombok.Getter;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
@@ -12,6 +13,13 @@ abstract public class Variable {
      * Stores instruction string for the condition.
      */
     protected Instruction instruction;
+
+    /**
+     * A variable marked as static can be executed even if the playerID in the
+     * {@link #getValue(String)} method is null
+     */
+    @Getter
+    protected boolean staticness;
 
     /**
      * Creates new instance of the variable. The variable should parse the
