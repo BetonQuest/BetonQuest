@@ -20,7 +20,6 @@ public class VariableCondition extends Condition {
         regex = instruction.next().replace('_', ' ');
     }
 
-
     @Override
     protected Boolean execute(final String playerID) {
         if (variable.charAt(0) == '%' && variable.endsWith("%")) {
