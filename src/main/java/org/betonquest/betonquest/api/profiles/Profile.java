@@ -17,7 +17,8 @@ public interface Profile {
     OfflinePlayer getOfflinePlayer();
 
     /**
-     * @return the {@link Player} that this profile belongs to, wrapped into an {@link Optional} since the player may be offline
+     * @return the {@link Player} that this profile belongs to, wrapped into an {@link Optional} since the player
+     * may be offline
      */
     Optional<Player> getPlayer();
 

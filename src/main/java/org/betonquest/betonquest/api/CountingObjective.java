@@ -87,9 +87,9 @@ public abstract class CountingObjective extends Objective {
     }
 
     /**
-     * Complete the objective if fulfilled or else notify the profile's player if required. It will use the provided notification
-     * message name. If it is {@code null}, no notification is sent, even if a {@link #defaultNotifyMessageName} was set
-     * and a notification should have been sent.
+     * Complete the objective if fulfilled or else notify the profile's player if required. It will use the provided
+     * notification message name. If it is {@code null}, no notification is sent, even if a
+     * {@link #defaultNotifyMessageName} was set and a notification should have been sent.
      *
      * @param profile           the {@link Profile} to act for
      * @param notifyMessageName message name for notification message
