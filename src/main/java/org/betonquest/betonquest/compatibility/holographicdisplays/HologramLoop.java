@@ -56,7 +56,6 @@ public class HologramLoop {
                 if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
                     LOG.warn(pack, "Holograms won't be able to hide from players without ProtocolLib plugin! "
                             + "Install it to use conditioned holograms.");
-                    //runnable = null;
                     return;
                 }
                 final List<String> lines = section.getStringList(key + ".lines");
