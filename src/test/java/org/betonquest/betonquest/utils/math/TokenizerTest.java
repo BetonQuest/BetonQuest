@@ -41,7 +41,7 @@ class TokenizerTest {
     public static final String TEST_PACKAGE = "package";
 
     /**
-     * The player name to use for variable resolution.
+     * The profile to use for variable resolution.
      */
     public static final Profile TEST_PLAYER_PROFILE = mock(Profile.class);
 

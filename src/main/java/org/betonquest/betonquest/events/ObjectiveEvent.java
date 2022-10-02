@@ -12,7 +12,6 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.utils.PlayerConverter;
-import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
@@ -49,10 +48,7 @@ public class ObjectiveEvent extends QuestEvent {
         }
         if (profile == null) {
             if ("delete".equals(action) || "remove".equals(action)) {
-                Bukkit.getOnlinePlayers().forEach(player -> {
-                    final Profile playerProfile = PlayerConverter.getID(player);
-                    cancelObjectiveForOnlinePlayer(playerProfile, betonquest);
-                });
+                PlayerConverter.getOnlineProfiles().forEach(onlineProfile -> cancelObjectiveForOnlinePlayer(onlineProfile, betonquest));
                 betonquest.getSaver().add(new Saver.Record(UpdateType.REMOVE_ALL_OBJECTIVES, objective.toString()));
             } else {
                 LOG.warn(instruction.getPackage(), "You tried to call an objective add / finish event in a static context! Only objective delete works here.");

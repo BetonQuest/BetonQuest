@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 import java.util.List;
@@ -49,11 +48,11 @@ public class CommandEvent extends QuestEvent {
             } else {
                 if (profile == null) {
                     // this is a static command, run for each player
-                    for (final Player player : Bukkit.getOnlinePlayers()) {
+                    for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
                         String com = command.command;
                         for (final String var : command.variables) {
                             com = com.replace(var, BetonQuest.getInstance().getVariableValue(
-                                    instruction.getPackage().getPackagePath(), var, PlayerConverter.getID(player)));
+                                    instruction.getPackage().getPackagePath(), var, onlineProfile));
                         }
                         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), com);
                     }
