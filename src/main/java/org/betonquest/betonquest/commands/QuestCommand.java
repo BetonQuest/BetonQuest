@@ -1250,8 +1250,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "tag":
             case "t":
                 updateType = UpdateType.RENAME_ALL_TAGS;
-                for (final Player player : Bukkit.getOnlinePlayers()) {
-                    final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
+                for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                    final PlayerData playerData = BetonQuest.getInstance().getPlayerData(onlineProfile);
                     playerData.removeTag(name);
                     playerData.addTag(rename);
                 }
@@ -1260,8 +1260,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "point":
             case "p":
                 updateType = UpdateType.RENAME_ALL_POINTS;
-                for (final Player player : Bukkit.getOnlinePlayers()) {
-                    final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
+                for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                    final PlayerData playerData = BetonQuest.getInstance().getPlayerData(onlineProfile);
                     int points = 0;
                     for (final Point point : playerData.getPoints()) {
                         if (point.getCategory().equals(name)) {
@@ -1325,14 +1325,13 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 BetonQuest.getInstance().renameObjective(nameID, renameID);
                 BetonQuest.getInstance().getObjective(renameID).setLabel(renameID);
                 // renaming an active objective probably isn't needed
-                for (final Player player : Bukkit.getOnlinePlayers()) {
-                    final Profile profile = PlayerConverter.getID(player);
+                for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
                     boolean found = false;
                     String data = null;
-                    for (final Objective obj : BetonQuest.getInstance().getPlayerObjectives(profile)) {
+                    for (final Objective obj : BetonQuest.getInstance().getPlayerObjectives(onlineProfile)) {
                         if (obj.getLabel().equals(name)) {
                             found = true;
-                            data = obj.getData(PlayerConverter.getID(player));
+                            data = obj.getData(onlineProfile);
                             break;
                         }
                     }
@@ -1344,9 +1343,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         data = "";
                     }
                     final Objective objective = BetonQuest.getInstance().getObjective(nameID);
-                    objective.pauseObjectiveForPlayer(profile);
-                    BetonQuest.getInstance().getPlayerData(profile).removeRawObjective(nameID);
-                    BetonQuest.resumeObjective(PlayerConverter.getID(player), renameID, data);
+                    objective.pauseObjectiveForPlayer(onlineProfile);
+                    BetonQuest.getInstance().getPlayerData(onlineProfile).removeRawObjective(nameID);
+                    BetonQuest.resumeObjective(onlineProfile, renameID, data);
                 }
                 nameID.getPackage().getConfig().set(nameID.getBaseID(), null);
                 try {
@@ -1363,8 +1362,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "entry":
             case "e":
                 updateType = UpdateType.RENAME_ALL_ENTRIES;
-                for (final Player player : Bukkit.getOnlinePlayers()) {
-                    final Journal journal = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player)).getJournal();
+                for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                    final Journal journal = BetonQuest.getInstance().getPlayerData(onlineProfile).getJournal();
                     Pointer journalPointer = null;
                     for (final Pointer pointer : journal.getPointers()) {
                         if (pointer.getPointer().equals(name)) {
@@ -1422,8 +1421,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "tag":
             case "t":
                 updateType = UpdateType.REMOVE_ALL_TAGS;
-                for (final Player player : Bukkit.getOnlinePlayers()) {
-                    final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
+                for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                    final PlayerData playerData = BetonQuest.getInstance().getPlayerData(onlineProfile);
                     playerData.removeTag(name);
                 }
                 break;
@@ -1431,8 +1430,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "point":
             case "p":
                 updateType = UpdateType.REMOVE_ALL_POINTS;
-                for (final Player player : Bukkit.getOnlinePlayers()) {
-                    final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
+                for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                    final PlayerData playerData = BetonQuest.getInstance().getPlayerData(onlineProfile);
                     playerData.removePointsCategory(name);
                 }
                 break;
@@ -1448,11 +1447,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     LOG.warn("Could not find objective: " + e.getMessage(), e);
                     return;
                 }
-                for (final Player player : Bukkit.getOnlinePlayers()) {
-                    final Profile profile = PlayerConverter.getID(player);
+                for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
                     final Objective objective = BetonQuest.getInstance().getObjective(objectiveID);
-                    objective.cancelObjectiveForPlayer(profile);
-                    BetonQuest.getInstance().getPlayerData(profile).removeRawObjective(objectiveID);
+                    objective.cancelObjectiveForPlayer(onlineProfile);
+                    BetonQuest.getInstance().getPlayerData(onlineProfile).removeRawObjective(objectiveID);
                 }
                 break;
             case "journals":
@@ -1462,8 +1460,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "entry":
             case "e":
                 updateType = UpdateType.REMOVE_ALL_ENTRIES;
-                for (final Player player : Bukkit.getOnlinePlayers()) {
-                    final Journal journal = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player)).getJournal();
+                for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                    final Journal journal = BetonQuest.getInstance().getPlayerData(onlineProfile).getJournal();
                     journal.removePointer(name);
                     journal.update();
                 }

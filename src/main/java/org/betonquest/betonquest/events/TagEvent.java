@@ -10,8 +10,6 @@ import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 /**
@@ -40,8 +38,8 @@ public class TagEvent extends QuestEvent {
         if (profile == null) {
             if (!add) {
                 for (final String tag : tags) {
-                    for (final Player p : Bukkit.getOnlinePlayers()) {
-                        final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(p));
+                    for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                        final PlayerData playerData = BetonQuest.getInstance().getPlayerData(onlineProfile);
                         playerData.removeTag(tag);
                     }
                     BetonQuest.getInstance().getSaver().add(new Saver.Record(UpdateType.REMOVE_ALL_TAGS, tag));

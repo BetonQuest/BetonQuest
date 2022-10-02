@@ -14,6 +14,7 @@ import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
@@ -242,7 +243,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -928,15 +928,14 @@ public class BetonQuest extends JavaPlugin {
             loadData();
             // Load global tags and points
             globalData = new GlobalData();
-            // load data for all online players
-            for (final Player player : Bukkit.getOnlinePlayers()) {
-                final Profile profile = PlayerConverter.getID(player);
-                final PlayerData playerData = new PlayerData(profile);
-                playerDataMap.put(profile, playerData);
+            // load data for all online profiles
+            for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                final PlayerData playerData = new PlayerData(onlineProfile);
+                playerDataMap.put(onlineProfile, playerData);
                 playerData.startObjectives();
                 playerData.getJournal().update();
                 if (playerData.getConversation() != null) {
-                    new ConversationResumer(profile, playerData.getConversation());
+                    new ConversationResumer(onlineProfile, playerData.getConversation());
                 }
             }
 
@@ -1200,12 +1199,11 @@ public class BetonQuest extends JavaPlugin {
         Compatibility.reload();
         // load all events, conditions, objectives, conversations etc.
         loadData();
-        // start objectives and update journals for every online player
-        for (final Player player : Bukkit.getOnlinePlayers()) {
-            final Profile profile = PlayerConverter.getID(player);
-            log.debug("Updating journal for player " + profile.getProfileName());
-            final PlayerData playerData = instance.getPlayerData(profile);
-            GlobalObjectives.startAll(profile);
+        // start objectives and update journals for every online profiles
+        for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+            log.debug("Updating journal for player " + onlineProfile.getProfileName());
+            final PlayerData playerData = instance.getPlayerData(onlineProfile);
+            GlobalObjectives.startAll(onlineProfile);
             final Journal journal = playerData.getJournal();
             journal.update();
         }
@@ -1224,12 +1222,12 @@ public class BetonQuest extends JavaPlugin {
         //stop all schedules
         eventScheduling.stopAll();
         // suspend all conversations
-        for (final Player player : Bukkit.getOnlinePlayers()) {
-            final Conversation conv = Conversation.getConversation(PlayerConverter.getID(player));
+        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+            final Conversation conv = Conversation.getConversation(onlineProfile);
             if (conv != null) {
                 conv.suspend();
             }
-            player.closeInventory();
+            onlineProfile.getOnlinePlayer().closeInventory();
         }
         // cancel database saver
         if (saver != null) {
