@@ -6,7 +6,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 
 /**
- * Called whenever a menu is opened
+ * Called whenever a menu is opened.
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class MenuOpenEvent extends MenuEvent implements Cancellable {

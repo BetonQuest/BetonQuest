@@ -7,7 +7,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.inventory.ClickType;
 
 /**
- * Called whenever a item in a menu is clicked by a player
+ * Called whenever an item in a menu is clicked by a profile's player.
  */
 @SuppressWarnings({"PMD.DataClass", "PMD.CommentRequired"})
 public class MenuClickEvent extends MenuEvent implements Cancellable {

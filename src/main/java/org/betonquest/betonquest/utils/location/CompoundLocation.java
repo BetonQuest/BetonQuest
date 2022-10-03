@@ -40,9 +40,9 @@ public class CompoundLocation {
     }
 
     /**
-     * @param profile the {@link Profile} of the player - needed for location resolution
+     * @param profile the {@link Profile} that should be used to resolve the {@link Variable}s
      * @return the location represented by this object
-     * @throws QuestRuntimeException Is thrown when the player cannot be accessed or the the resolved location is in
+     * @throws QuestRuntimeException Is thrown when the player cannot be accessed or the resolved location is in
      *                               the wrong format.
      */
     public Location getLocation(final Profile profile) throws QuestRuntimeException {

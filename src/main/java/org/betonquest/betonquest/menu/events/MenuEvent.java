@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.profiles.ProfileEvent;
 import org.betonquest.betonquest.menu.MenuID;
 
 /**
- * Every event where a menu was involved
+ * Every event where a menu is involved.
  */
 @SuppressWarnings("PMD.CommentRequired")
 public abstract class MenuEvent extends ProfileEvent {

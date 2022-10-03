@@ -18,8 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Tags players that are in combat to prevent them from starting the
- * conversation
+ * Tags profiles that are in combat to prevent them from starting the conversation.
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class CombatTagger implements Listener {
@@ -37,10 +36,10 @@ public class CombatTagger implements Listener {
     }
 
     /**
-     * Checks if the player is combat-tagged
+     * Checks if the profile is combat-tagged.
      *
-     * @param profile the {@link Profile} of the player
-     * @return true if the player is tagged, false otherwise
+     * @param profile the {@link Profile} to check
+     * @return true if the profile is tagged, false otherwise
      */
     public static boolean isTagged(final Profile profile) {
         boolean result = false;

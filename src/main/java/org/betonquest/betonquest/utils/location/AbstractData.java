@@ -104,9 +104,9 @@ abstract class AbstractData<T extends Cloneable> {
     protected abstract T clone(T object);
 
     /**
-     * Gets the object
+     * Gets the object.
      *
-     * @param profile the {@link Profile} of the player - needed for {@link Variable}s resolution
+     * @param profile the {@link Profile} to get the value for
      * @return The object represented by this object
      * @throws QuestRuntimeException Is thrown when the objectString is not in the right format or if
      *                               the values couldn't be parsed.

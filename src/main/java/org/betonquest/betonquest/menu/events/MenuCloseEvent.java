@@ -5,7 +5,7 @@ import org.betonquest.betonquest.menu.MenuID;
 import org.bukkit.event.HandlerList;
 
 /**
- * Called whenever a menu is closed
+ * Called whenever a menu is closed.
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class MenuCloseEvent extends MenuEvent {
