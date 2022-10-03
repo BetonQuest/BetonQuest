@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.event.burn;
 
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 
 /**
@@ -25,8 +25,8 @@ public class BurnEvent implements Event {
     }
 
     @Override
-    public void execute(final String playerId) throws QuestRuntimeException {
-        final Player player = PlayerConverter.getPlayer(playerId);
-        player.setFireTicks(duration.getInt(playerId) * 20);
+    public void execute(final Profile profile) throws QuestRuntimeException {
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
+        player.setFireTicks(duration.getInt(profile) * 20);
     }
 }

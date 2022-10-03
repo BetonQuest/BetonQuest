@@ -4,6 +4,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.BlockSelector;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -37,29 +38,29 @@ public class BlockObjective extends CountingObjective implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onBlockPlace(final BlockPlaceEvent event) {
-        final String playerID = PlayerConverter.getID(event.getPlayer());
-        if (containsPlayer(playerID) && selector.match(event.getBlock(), exactMatch) && checkConditions(playerID)) {
-            if (getCountingData(playerID).getDirectionFactor() < 0 && noSafety) {
+        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        if (containsPlayer(profile) && selector.match(event.getBlock(), exactMatch) && checkConditions(profile)) {
+            if (getCountingData(profile).getDirectionFactor() < 0 && noSafety) {
                 return;
             }
-            handleDataChange(playerID, getCountingData(playerID).add());
+            handleDataChange(profile, getCountingData(profile).add());
         }
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onBlockBreak(final BlockBreakEvent event) {
-        final String playerID = PlayerConverter.getID(event.getPlayer());
-        if (containsPlayer(playerID) && selector.match(event.getBlock(), exactMatch) && checkConditions(playerID)) {
-            if (getCountingData(playerID).getDirectionFactor() > 0 && noSafety) {
+        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        if (containsPlayer(profile) && selector.match(event.getBlock(), exactMatch) && checkConditions(profile)) {
+            if (getCountingData(profile).getDirectionFactor() > 0 && noSafety) {
                 return;
             }
-            handleDataChange(playerID, getCountingData(playerID).subtract());
+            handleDataChange(profile, getCountingData(profile).subtract());
         }
     }
 
-    private void handleDataChange(final String playerID, final CountingData data) {
+    private void handleDataChange(final Profile profile, final CountingData data) {
         final String message = data.getDirectionFactor() > 0 ? "blocks_to_place" : "blocks_to_break";
-        completeIfDoneOrNotify(playerID, message);
+        completeIfDoneOrNotify(profile, message);
     }
 
     @Override

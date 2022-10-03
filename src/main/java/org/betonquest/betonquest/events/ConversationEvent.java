@@ -2,9 +2,10 @@ package org.betonquest.betonquest.events;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.PlayerConverter;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.Utils;
 
 /**
@@ -21,8 +22,8 @@ public class ConversationEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final String playerID) {
-        new Conversation(playerID, conv, PlayerConverter.getPlayer(playerID).getLocation());
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
+        new Conversation(profile.getOnlineProfile(), conv, profile.getOnlineProfile().getOnlinePlayer().getLocation());
         return null;
     }
 }

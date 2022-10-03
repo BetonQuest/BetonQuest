@@ -11,10 +11,10 @@ import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.EventID;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -43,7 +43,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
     private final EventID[] failEvents;
     private final boolean blockConversations;
     private ListIterator<CompoundLocation> locationsIterator;
-    private String currentPlayer;
+    private Profile currentProfile;
 
     public NPCMoveEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
@@ -70,12 +70,12 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
      * standing or moving because other reasons
      */
     public static boolean isNPCMoving(final NPC npc) {
-        return MOVING_NPCS.containsKey(npc.getId()) && MOVING_NPCS.get(npc.getId()).currentPlayer != null;
+        return MOVING_NPCS.containsKey(npc.getId()) && MOVING_NPCS.get(npc.getId()).currentProfile != null;
     }
 
     public static void stopNPCMoving(final NPC npc) {
         if (MOVING_NPCS.containsKey(npc.getId())) {
-            MOVING_NPCS.get(npc.getId()).currentPlayer = null;
+            MOVING_NPCS.get(npc.getId()).currentProfile = null;
         }
     }
 
@@ -93,15 +93,15 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
     }
 
     @Override
-    protected Void execute(final String playerID) throws QuestRuntimeException {
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
         // this event should not run if the player is offline
-        if (PlayerConverter.getPlayer(playerID) == null) {
-            currentPlayer = null;
+        if (profile.getPlayer() == null) {
+            currentProfile = null;
             return null;
         }
-        if (currentPlayer != null) {
+        if (currentProfile != null) {
             for (final EventID event : failEvents) {
-                BetonQuest.event(playerID, event);
+                BetonQuest.event(profile, event);
             }
             return null;
         }
@@ -110,7 +110,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
             throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
         }
         locationsIterator = locations.listIterator(0);
-        final Location firstLocation = locationsIterator.next().getLocation(playerID);
+        final Location firstLocation = locationsIterator.next().getLocation(profile);
         stopNPCMoving(npc);
         if (npc.isSpawned()) {
             if (CitizensWalkingListener.getInstance().isMovementPaused(npc)) {
@@ -121,7 +121,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
         } else {
             npc.spawn(firstLocation, SpawnReason.PLUGIN);
         }
-        currentPlayer = playerID;
+        currentProfile = profile;
         MOVING_NPCS.put(npc.getId(), this);
         return null;
     }
@@ -147,7 +147,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
         if (npc.getId() != npcId) {
             return;
         }
-        if (currentPlayer == null || locationsIterator == null || CitizensWalkingListener.getInstance().isMovementPaused(npc)) {
+        if (currentProfile == null || locationsIterator == null || CitizensWalkingListener.getInstance().isMovementPaused(npc)) {
             return;
         }
         if (event instanceof NavigationStuckEvent || event instanceof NavigationCancelEvent) {
@@ -157,7 +157,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
         if (locationsIterator.hasNext()) {
             final Location next;
             try {
-                next = locationsIterator.next().getLocation(currentPlayer);
+                next = locationsIterator.next().getLocation(currentProfile);
             } catch (final QuestRuntimeException e) {
                 LOG.warn(instruction.getPackage(), "Error while NPC " + npc.getId() + " navigation: " + e.getMessage(), e);
                 return;
@@ -170,7 +170,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
             return;
         }
         try {
-            npc.getNavigator().setTarget(locationsIterator.previous().getLocation(currentPlayer));
+            npc.getNavigator().setTarget(locationsIterator.previous().getLocation(currentProfile));
         } catch (final QuestRuntimeException e) {
             LOG.warn(instruction.getPackage(), "Error while finishing NPC " + npc.getId() + " navigation: " + e.getMessage(), e);
         }
@@ -180,10 +180,10 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
             public void run() {
                 npc.getNavigator().setPaused(false);
                 for (final EventID event : doneEvents) {
-                    BetonQuest.event(currentPlayer, event);
+                    BetonQuest.event(currentProfile, event);
                 }
                 locationsIterator = null;
-                currentPlayer = null;
+                currentProfile = null;
             }
         }.runTaskLater(BetonQuest.getInstance(), waitTicks);
     }

@@ -4,15 +4,14 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
 
 import java.util.Collection;
@@ -79,9 +78,8 @@ public class EntityCondition extends Condition {
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        final Location location = loc.getLocation(playerID);
-        final Player player = PlayerConverter.getPlayer(playerID);
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        final Location location = loc.getLocation(profile);
         final int[] neededAmounts = new int[types.length];
         for (int i = 0; i < neededAmounts.length; i++) {
             neededAmounts[i] = 0;
@@ -98,12 +96,12 @@ public class EntityCondition extends Condition {
                 }
                 final List<MetadataValue> meta = entity.getMetadata("betonquest-marked");
                 for (final MetadataValue m : meta) {
-                    if (!m.asString().equals(marked.replace("%player%", player.getName()))) {
+                    if (!m.asString().equals(marked.replace("%player%", profile.getProfileUUID().toString()))) {
                         continue loop;
                     }
                 }
             }
-            final double pRange = range.getDouble(playerID);
+            final double pRange = range.getDouble(profile);
             if (entity.getLocation().distanceSquared(location) < pRange * pRange) {
                 final EntityType theType = entity.getType();
                 for (int i = 0; i < types.length; i++) {
@@ -115,7 +113,7 @@ public class EntityCondition extends Condition {
             }
         }
         for (int i = 0; i < amounts.length; i++) {
-            if (neededAmounts[i] < amounts[i].getInt(playerID)) {
+            if (neededAmounts[i] < amounts[i].getInt(profile)) {
                 return false;
             }
         }

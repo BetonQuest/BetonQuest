@@ -4,9 +4,9 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -17,7 +17,7 @@ import java.util.Locale;
  * Allows you to count items in player's inventory and display number remaining
  * to some amount.
  */
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CommentRequired"})
 public class ItemAmountVariable extends Variable {
 
     private final QuestItem questItem;
@@ -31,7 +31,7 @@ public class ItemAmountVariable extends Variable {
             type = Type.LEFT;
             try {
                 amount = Integer.parseInt(instruction.current().substring(5));
-            } catch (NumberFormatException e) {
+            } catch (final NumberFormatException e) {
                 throw new InstructionParseException("Could not parse item amount", e);
             }
         } else if ("amount".equalsIgnoreCase(instruction.current())) {
@@ -44,8 +44,8 @@ public class ItemAmountVariable extends Variable {
 
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public String getValue(final String playerID) {
-        final Player player = PlayerConverter.getPlayer(playerID);
+    public String getValue(final Profile profile) {
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
         int playersAmount = 0;
         for (final ItemStack item : player.getInventory().getContents()) {
             if (item == null) {
@@ -56,7 +56,7 @@ public class ItemAmountVariable extends Variable {
             }
             playersAmount += item.getAmount();
         }
-        final List<ItemStack> backpackItems = BetonQuest.getInstance().getPlayerData(playerID).getBackpack();
+        final List<ItemStack> backpackItems = BetonQuest.getInstance().getPlayerData(profile).getBackpack();
         for (final ItemStack item : backpackItems) {
             if (item == null) {
                 continue;

@@ -2,8 +2,8 @@ package org.betonquest.betonquest.conditions;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 
 /**
  * Checks if the time is right
@@ -24,15 +24,15 @@ public class TimeCondition extends Condition {
         try {
             timeMin = Double.parseDouble(theTime[0]);
             timeMax = Double.parseDouble(theTime[1]);
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             throw new InstructionParseException("Could not parse time", e);
         }
     }
 
     @Override
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    protected Boolean execute(final String playerID) {
-        double time = PlayerConverter.getPlayer(playerID).getWorld().getTime();
+    protected Boolean execute(final Profile profile) {
+        double time = profile.getOnlineProfile().getOnlinePlayer().getWorld().getTime();
         if (time >= 18_000) {
             // 18000 minecraft-time is midnight, so there is new
             // normal-time cycle after that; subtracting 18 hours

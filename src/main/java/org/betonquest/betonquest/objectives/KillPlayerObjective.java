@@ -5,6 +5,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -37,8 +38,8 @@ public class KillPlayerObjective extends CountingObjective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onKill(final PlayerDeathEvent event) {
         if (event.getEntity().getKiller() != null) {
-            final String victim = PlayerConverter.getID(event.getEntity());
-            final String killer = PlayerConverter.getID(event.getEntity().getKiller());
+            final Profile victim = PlayerConverter.getID(event.getEntity());
+            final Profile killer = PlayerConverter.getID(event.getEntity().getKiller());
 
             if (containsPlayer(killer)
                     && (name == null || event.getEntity().getName().equalsIgnoreCase(name))

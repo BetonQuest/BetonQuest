@@ -3,8 +3,8 @@ package org.betonquest.betonquest.events;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 
 import java.util.Locale;
@@ -24,9 +24,9 @@ public class HungerEvent extends QuestEvent {
         try {
             this.action = HungerAction.valueOf(instruction.next().toUpperCase(Locale.ROOT).trim());
             this.amount = Short.parseShort(instruction.next());
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             throw new InstructionParseException("Error while parsing hunger amount! Must be a number.", e);
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             throw new InstructionParseException("Error while parsing action! Must be 'set', 'give', or 'take'.", e);
         }
 
@@ -37,8 +37,8 @@ public class HungerEvent extends QuestEvent {
 
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    protected Void execute(final String playerID) {
-        final Player player = PlayerConverter.getPlayer(playerID);
+    protected Void execute(final Profile profile) {
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
 
         switch (this.action) {
             case GIVE -> player.setFoodLevel(Math.min(player.getFoodLevel() + this.amount, 20));

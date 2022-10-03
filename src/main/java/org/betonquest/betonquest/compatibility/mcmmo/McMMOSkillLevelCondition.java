@@ -6,9 +6,9 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 
 import java.util.Locale;
 
@@ -31,8 +31,9 @@ public class McMMOSkillLevelCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        return ExperienceAPI.getLevel(PlayerConverter.getPlayer(playerID), PrimarySkillType.valueOf(skillType.toUpperCase(Locale.ROOT))) >= level.getInt(playerID);
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        return ExperienceAPI.getLevel(profile.getOnlineProfile().getOnlinePlayer(),
+                PrimarySkillType.valueOf(skillType.toUpperCase(Locale.ROOT))) >= level.getInt(profile);
     }
 
 }

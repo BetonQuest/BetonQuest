@@ -1,18 +1,18 @@
 package org.betonquest.betonquest.menu.events;
 
+import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.ProfileEvent;
 import org.betonquest.betonquest.menu.MenuID;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerEvent;
 
 /**
- * Every event where a menu was involved
+ * Every event where a menu is involved.
  */
 @SuppressWarnings("PMD.CommentRequired")
-public abstract class MenuEvent extends PlayerEvent {
+public abstract class MenuEvent extends ProfileEvent {
 
     private final MenuID menu;
 
-    protected MenuEvent(final Player who, final MenuID menu) {
+    protected MenuEvent(final Profile who, final MenuID menu) {
         super(who);
         this.menu = menu;
     }

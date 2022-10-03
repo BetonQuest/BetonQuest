@@ -2,6 +2,8 @@ package org.betonquest.betonquest.mechanics;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -9,7 +11,6 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
@@ -19,12 +20,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The PlayerHider can hide other players, if both the source and the target meet all their conditions.
+ * The {@link PlayerHider} can hide others, if both the source and the target {@link Profile} meet all conditions.
  */
 public class PlayerHider {
     /**
-     * The map's key is an array containing the source player's conditions
-     * and the map's value is an array containing the target player's conditions.
+     * The map's key is an array containing the source {@link Profile}'s conditions
+     * and the map's value is an array containing the target {@link Profile}'s conditions.
      */
     private final Map<ConditionID[], ConditionID[]> hiders;
     /**
@@ -33,7 +34,7 @@ public class PlayerHider {
     private final BukkitTask bukkitTask;
 
     /**
-     * Initialize and start a new PlayerHider
+     * Initialize and start a new {@link PlayerHider}
      *
      * @throws InstructionParseException Thrown if there is a configuration error.
      */
@@ -42,12 +43,13 @@ public class PlayerHider {
 
         for (final QuestPackage pack : Config.getPackages().values()) {
             final ConfigurationSection hiderSection = pack.getConfig().getConfigurationSection("player_hider");
-            if (hiderSection != null) {
-                for (final String key : hiderSection.getKeys(false)) {
-                    final String rawConditionsSource = hiderSection.getString(key + ".source_player");
-                    final String rawConditionsTarget = hiderSection.getString(key + ".target_player");
-                    hiders.put(getConditions(pack, key, rawConditionsSource), getConditions(pack, key, rawConditionsTarget));
-                }
+            if (hiderSection == null) {
+                continue;
+            }
+            for (final String key : hiderSection.getKeys(false)) {
+                final String rawConditionsSource = hiderSection.getString(key + ".source_player");
+                final String rawConditionsTarget = hiderSection.getString(key + ".target_player");
+                hiders.put(getConditions(pack, key, rawConditionsSource), getConditions(pack, key, rawConditionsTarget));
             }
         }
 
@@ -56,7 +58,7 @@ public class PlayerHider {
     }
 
     /**
-     * Stops the running PlayerHider.
+     * Stops the running {@link PlayerHider}.
      */
     public void stop() {
         bukkitTask.cancel();
@@ -80,57 +82,56 @@ public class PlayerHider {
     }
 
     /**
-     * Trigger an update for the player visibility
+     * Trigger an update for the visibility
      */
     public void updateVisibility() {
-        final Collection<? extends Player> onlinePlayer = Bukkit.getOnlinePlayers();
-        final Map<Player, List<Player>> playersToHide = getPlayersToHide(onlinePlayer);
-        for (final Player source : onlinePlayer) {
-            final List<Player> playerToHideList = playersToHide.get(source);
-            updateVisibilityForPlayers(onlinePlayer, source, playerToHideList);
+        final Collection<? extends OnlineProfile> onlineProfiles = PlayerConverter.getOnlineProfiles();
+        final Map<OnlineProfile, List<OnlineProfile>> profilesToHide = getProfilesToHide(onlineProfiles);
+        for (final OnlineProfile source : onlineProfiles) {
+            updateVisibilityForProfiles(onlineProfiles, source, profilesToHide.get(source));
         }
     }
 
-    private void updateVisibilityForPlayers(final Collection<? extends Player> onlinePlayer, final Player source, final List<Player> playerToHideList) {
-        if (playerToHideList == null) {
-            for (final Player target : onlinePlayer) {
-                source.showPlayer(BetonQuest.getInstance(), target);
+    private void updateVisibilityForProfiles(final Collection<? extends OnlineProfile> onlineProfiles, final OnlineProfile source, final List<OnlineProfile> profilesToHide) {
+        if (profilesToHide == null) {
+            for (final OnlineProfile target : onlineProfiles) {
+                source.getOnlinePlayer().showPlayer(BetonQuest.getInstance(), target.getOnlinePlayer());
             }
         } else {
-            for (final Player target : onlinePlayer) {
-                if (playerToHideList.contains(target)) {
-                    source.hidePlayer(BetonQuest.getInstance(), target);
+            for (final OnlineProfile target : onlineProfiles) {
+                if (profilesToHide.contains(target)) {
+                    source.getOnlinePlayer().hidePlayer(BetonQuest.getInstance(), target.getOnlinePlayer());
                 } else {
-                    source.showPlayer(BetonQuest.getInstance(), target);
+                    source.getOnlinePlayer().showPlayer(BetonQuest.getInstance(), target.getOnlinePlayer());
                 }
             }
         }
     }
 
-    private Map<Player, List<Player>> getPlayersToHide(final Collection<? extends Player> onlinePlayer) {
-        final Map<Player, List<Player>> playersToHide = new HashMap<>();
+    private Map<OnlineProfile, List<OnlineProfile>> getProfilesToHide(final Collection<? extends OnlineProfile> onlineProfiles) {
+        final Map<OnlineProfile, List<OnlineProfile>> profilesToHide = new HashMap<>();
         for (final Map.Entry<ConditionID[], ConditionID[]> hider : hiders.entrySet()) {
-            final List<Player> targetPlayers = new ArrayList<>();
-            for (final Player target : onlinePlayer) {
-                if (BetonQuest.conditions(PlayerConverter.getID(target), hider.getValue())) {
-                    targetPlayers.add(target);
+            final List<OnlineProfile> targetProfiles = new ArrayList<>();
+            for (final OnlineProfile target : onlineProfiles) {
+                if (BetonQuest.conditions(target, hider.getValue())) {
+                    targetProfiles.add(target);
                 }
             }
-            for (final Player source : onlinePlayer) {
-                if (!BetonQuest.conditions(PlayerConverter.getID(source), hider.getKey())) {
+            for (final OnlineProfile source : onlineProfiles) {
+                if (!BetonQuest.conditions(source, hider.getKey())) {
                     continue;
                 }
-                final List<Player> hiddenPlayers = getOrCreatePlayerList(source, playersToHide);
-                hiddenPlayers.addAll(targetPlayers);
-                hiddenPlayers.remove(source);
-                playersToHide.put(source, hiddenPlayers);
+                final List<OnlineProfile> hiddenProfiles = getOrCreateProfileList(source, profilesToHide);
+                hiddenProfiles.addAll(targetProfiles);
+                hiddenProfiles.remove(source);
+                profilesToHide.put(source, hiddenProfiles);
             }
         }
-        return playersToHide;
+        return profilesToHide;
     }
 
-    private List<Player> getOrCreatePlayerList(final Player player, final Map<Player, List<Player>> playersToHide) {
-        final List<Player> playList = playersToHide.get(player);
-        return playList == null ? new ArrayList<>() : playList;
+    private List<OnlineProfile> getOrCreateProfileList(final OnlineProfile profile, final Map<OnlineProfile, List<OnlineProfile>> profilesToHide) {
+        final List<OnlineProfile> profiles = profilesToHide.get(profile);
+        return profiles == null ? new ArrayList<>() : profiles;
     }
 }

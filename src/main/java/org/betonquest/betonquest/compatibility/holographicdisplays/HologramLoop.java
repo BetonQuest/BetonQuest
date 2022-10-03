@@ -5,6 +5,7 @@ import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -118,8 +119,8 @@ public class HologramLoop {
                         @Override
                         public void run() {
                             for (final Player player : Bukkit.getOnlinePlayers()) {
-                                final String playerID = PlayerConverter.getID(player);
-                                if (!BetonQuest.conditions(playerID, conditionsList)) {
+                                final Profile profile = PlayerConverter.getID(player);
+                                if (!BetonQuest.conditions(profile, conditionsList)) {
                                     hologram.getVisibilityManager().hideTo(player);
                                     continue;
                                 }
@@ -137,9 +138,9 @@ public class HologramLoop {
             @Override
             public void run() {
                 for (final Player player : Bukkit.getOnlinePlayers()) {
-                    final String playerID = PlayerConverter.getID(player);
+                    final Profile profile = PlayerConverter.getID(player);
                     for (final Entry<Hologram, ConditionID[]> entry : holograms.entrySet()) {
-                        if (!BetonQuest.conditions(playerID, entry.getValue())) {
+                        if (!BetonQuest.conditions(profile, entry.getValue())) {
                             entry.getKey().getVisibilityManager().hideTo(player);
                             continue;
                         }

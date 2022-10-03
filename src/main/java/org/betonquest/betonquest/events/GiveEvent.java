@@ -6,11 +6,11 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.item.QuestItem;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -36,15 +36,15 @@ public class GiveEvent extends QuestEvent {
 
     @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
     @Override
-    protected Void execute(final String playerID) throws QuestRuntimeException {
-        final Player player = PlayerConverter.getPlayer(playerID);
+    protected Void execute(final Profile profile) {
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
         for (final Item theItem : questItems) {
             final QuestItem questItem = theItem.getItem();
             final VariableNumber amount = theItem.getAmount();
-            int amountInt = amount.getInt(playerID);
+            int amountInt = amount.getInt(profile);
             if (notify) {
                 try {
-                    Config.sendNotify(instruction.getPackage().getPackagePath(), playerID, "items_given",
+                    Config.sendNotify(instruction.getPackage().getPackagePath(), profile.getOnlineProfile(), "items_given",
                             new String[]{
                                     questItem.getName() == null ? questItem.getMaterial().toString().toLowerCase(Locale.ROOT).replace("_", " ") : questItem.getName(),
                                     String.valueOf(amountInt)}, "items_given,info");
@@ -59,17 +59,17 @@ public class GiveEvent extends QuestEvent {
                 } else {
                     stackSize = amountInt;
                 }
-                final ItemStack item = questItem.generate(stackSize, playerID);
+                final ItemStack item = questItem.generate(stackSize, profile);
                 final HashMap<Integer, ItemStack> left = player.getInventory().addItem(item);
                 for (final ItemStack itemStack : left.values()) {
                     if (Utils.isQuestItem(itemStack)) {
-                        BetonQuest.getInstance().getPlayerData(playerID).addItem(itemStack, stackSize);
+                        BetonQuest.getInstance().getPlayerData(profile).addItem(itemStack, stackSize);
                     } else {
                         player.getWorld().dropItem(player.getLocation(), itemStack);
                     }
                     final String type = Utils.isQuestItem(itemStack) ? "backpack" : "drop";
                     try {
-                        Config.sendNotify(null, playerID, "inventory_full_" + type, null, "inventory_full_" + type + ",inventory_full,error");
+                        Config.sendNotify(null, profile.getOnlineProfile(), "inventory_full_" + type, null, "inventory_full_" + type + ",inventory_full,error");
                     } catch (final QuestRuntimeException e) {
                         LOG.warn("The notify system was unable to play a sound for the 'inventory_full_" + type + "' category. Error was: '" + e.getMessage() + "'", e);
                     }

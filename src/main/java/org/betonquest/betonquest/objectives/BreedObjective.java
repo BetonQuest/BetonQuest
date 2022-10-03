@@ -5,6 +5,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -31,10 +32,10 @@ public class BreedObjective extends CountingObjective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onBreeding(final EntityBreedEvent event) {
         if (event.getEntityType() == type && event.getBreeder() instanceof Player) {
-            final String playerID = PlayerConverter.getID((Player) event.getBreeder());
-            if (containsPlayer(playerID) && checkConditions(playerID)) {
-                getCountingData(playerID).progress();
-                completeIfDoneOrNotify(playerID);
+            final Profile profile = PlayerConverter.getID((Player) event.getBreeder());
+            if (containsPlayer(profile) && checkConditions(profile)) {
+                getCountingData(profile).progress();
+                completeIfDoneOrNotify(profile);
             }
         }
     }

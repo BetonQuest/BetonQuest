@@ -3,6 +3,7 @@ package org.betonquest.betonquest.objectives;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -47,12 +48,12 @@ public class ExperienceObjective extends Objective implements Listener {
     }
 
     private void onExperienceChange(final OfflinePlayer player, final int newAmount, final int oldAmount) {
-        final String playerID = PlayerConverter.getID(player);
-        if (containsPlayer(playerID)) {
-            if (newAmount >= amount && checkConditions(playerID)) {
-                completeObjective(playerID);
+        final Profile profile = PlayerConverter.getID(player);
+        if (containsPlayer(profile)) {
+            if (newAmount >= amount && checkConditions(profile)) {
+                completeObjective(profile);
             } else if (notify && (amount - newAmount) / notifyInterval != (amount - oldAmount) / notifyInterval) {
-                sendNotify(playerID, notifyMessageName, amount - newAmount);
+                sendNotify(profile, notifyMessageName, amount - newAmount);
             }
         }
     }
@@ -73,15 +74,15 @@ public class ExperienceObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(final String name, final String playerID) {
+    public String getProperty(final String name, final Profile profile) {
         switch (name.toLowerCase(Locale.ROOT)) {
             case "amount":
-                return PlayerConverter.getOptionalPlayer(playerID)
+                return profile.getPlayer()
                         .map(toData)
                         .map(String::valueOf)
                         .orElse("");
             case "left":
-                return PlayerConverter.getOptionalPlayer(playerID)
+                return profile.getPlayer()
                         .map(toData)
                         .map(exp -> amount - exp)
                         .map(String::valueOf)

@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.placeholderapi;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -85,7 +86,7 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
             pack = identifier.substring(0, index);
             placeholderIdentifier = identifier.substring(index + 1);
         }
-        final String playerID = player == null ? null : PlayerConverter.getID(player);
-        return BetonQuest.getInstance().getVariableValue(pack, '%' + placeholderIdentifier + '%', playerID);
+        final Profile profile = player == null ? null : PlayerConverter.getID(player);
+        return BetonQuest.getInstance().getVariableValue(pack, '%' + placeholderIdentifier + '%', profile);
     }
 }

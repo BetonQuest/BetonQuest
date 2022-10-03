@@ -4,8 +4,8 @@ import com.sucy.skill.SkillAPI;
 import com.sucy.skill.api.player.PlayerData;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 
 /**
  * Checks if the player has specific class
@@ -26,8 +26,8 @@ public class SkillAPIClassCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) {
-        final PlayerData data = SkillAPI.getPlayerData(PlayerConverter.getPlayer(playerID));
+    protected Boolean execute(final Profile profile) {
+        final PlayerData data = SkillAPI.getPlayerData(profile.getOfflinePlayer());
         if (exact) {
             return data.isExactClass(SkillAPI.getClass(className));
         } else {

@@ -4,10 +4,12 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -76,10 +78,10 @@ public abstract class AbstractTakeEvent extends QuestEvent {
         }
     }
 
-    protected void notifyPlayer(final String playerID, final String itemName, final int amount) {
+    protected void notifyPlayer(final Profile profile, final String itemName, final int amount) {
         if (notify) {
             try {
-                Config.sendNotify(instruction.getPackage().getPackagePath(), playerID, "items_taken",
+                Config.sendNotify(instruction.getPackage().getPackagePath(), profile.getOnlineProfile(), "items_taken",
                         new String[]{itemName, String.valueOf(amount)}, "items_taken,info");
             } catch (final QuestRuntimeException exception) {
                 LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'items_taken' category in '" + getFullId() + "'. Error was: '" + exception.getMessage() + "'", exception);
@@ -89,37 +91,37 @@ public abstract class AbstractTakeEvent extends QuestEvent {
 
     protected void checkInventory(final Player player) {
         final ItemStack[] inventory = player.getInventory().getStorageContents();
-        final ItemStack[] newInv = takeDesiredAmount(player, inventory);
+        final ItemStack[] newInv = takeDesiredAmount(PlayerConverter.getID((OfflinePlayer) player), inventory);
         player.getInventory().setStorageContents(newInv);
     }
 
     protected void checkArmor(final Player player) {
         final ItemStack[] armorSlots = player.getInventory().getArmorContents();
-        final ItemStack[] newArmor = takeDesiredAmount(player, armorSlots);
+        final ItemStack[] newArmor = takeDesiredAmount(PlayerConverter.getID((OfflinePlayer) player), armorSlots);
         player.getInventory().setArmorContents(newArmor);
     }
 
     protected void checkOffhand(final Player player) {
         final ItemStack offhand = player.getInventory().getItemInOffHand();
-        final ItemStack[] newOffhand = takeDesiredAmount(player, offhand);
+        final ItemStack[] newOffhand = takeDesiredAmount(PlayerConverter.getID((OfflinePlayer) player), offhand);
         player.getInventory().setItemInOffHand(newOffhand[0]);
     }
 
-    protected void checkBackpack(final String playerID) {
-        final List<ItemStack> backpack = BetonQuest.getInstance().getPlayerData(playerID).getBackpack();
-        final List<ItemStack> newBackpack = removeDesiredAmount(PlayerConverter.getPlayer(playerID), backpack);
-        BetonQuest.getInstance().getPlayerData(playerID).setBackpack(newBackpack);
+    protected void checkBackpack(final Profile profile) {
+        final List<ItemStack> backpack = BetonQuest.getInstance().getPlayerData(profile).getBackpack();
+        final List<ItemStack> newBackpack = removeDesiredAmount(profile, backpack);
+        BetonQuest.getInstance().getPlayerData(profile).setBackpack(newBackpack);
     }
 
-    protected List<ItemStack> removeDesiredAmount(final Player player, final List<ItemStack> items) {
+    protected List<ItemStack> removeDesiredAmount(final Profile profile, final List<ItemStack> items) {
         final ItemStack[] itemArray = items.toArray(new ItemStack[0]);
-        final ItemStack[] remainingItems = takeDesiredAmount(player, itemArray);
+        final ItemStack[] remainingItems = takeDesiredAmount(profile, itemArray);
         return Arrays.stream(remainingItems)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    protected abstract ItemStack[] takeDesiredAmount(Player player, ItemStack... items);
+    protected abstract ItemStack[] takeDesiredAmount(Profile profile, ItemStack... items);
 
     protected enum CheckType {
         INVENTORY,

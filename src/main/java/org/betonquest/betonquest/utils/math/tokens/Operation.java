@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.utils.math.tokens;
 
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.math.Operator;
 
@@ -41,8 +42,8 @@ public class Operation implements Token {
     }
 
     @Override
-    public double resolve(final String playerID) throws QuestRuntimeException {
-        return operator.calculate(val1.resolve(playerID), val2.resolve(playerID));
+    public double resolve(final Profile profile) throws QuestRuntimeException {
+        return operator.calculate(val1.resolve(profile), val2.resolve(profile));
     }
 
     @Override

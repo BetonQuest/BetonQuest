@@ -2,6 +2,7 @@ package org.betonquest.betonquest.events;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
@@ -18,7 +19,7 @@ public class GlobalTagEvent extends TagEvent {
     }
 
     @Override
-    protected Void execute(final String playerID) {
+    protected Void execute(final Profile profile) {
         final GlobalData globalData = BetonQuest.getInstance().getGlobalData();
         if (add) {
             for (final String tag : tags) {

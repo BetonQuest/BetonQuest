@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.utils.math.tokens;
 
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 /**
@@ -27,8 +28,8 @@ public class Variable implements Token {
     }
 
     @Override
-    public double resolve(final String playerID) throws QuestRuntimeException {
-        return variableNumber.getDouble(playerID);
+    public double resolve(final Profile profile) throws QuestRuntimeException {
+        return variableNumber.getDouble(profile);
     }
 
     @Override

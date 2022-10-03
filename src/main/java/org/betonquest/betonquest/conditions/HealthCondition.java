@@ -3,9 +3,9 @@ package org.betonquest.betonquest.conditions;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 
 /**
  * Requires the player to have specified amount of health (or more)
@@ -21,8 +21,8 @@ public class HealthCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        return PlayerConverter.getPlayer(playerID).getHealth() >= health.getDouble(playerID);
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        return profile.getOnlineProfile().getOnlinePlayer().getHealth() >= health.getDouble(profile);
     }
 
 }

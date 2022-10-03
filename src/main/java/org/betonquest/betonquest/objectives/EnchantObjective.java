@@ -3,6 +3,7 @@ package org.betonquest.betonquest.objectives;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -37,8 +38,8 @@ public class EnchantObjective extends Objective implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onEnchant(final EnchantItemEvent event) {
-        final String playerID = PlayerConverter.getID(event.getEnchanter());
-        if (!containsPlayer(playerID)) {
+        final Profile profile = PlayerConverter.getID(event.getEnchanter());
+        if (!containsPlayer(profile)) {
             return;
         }
         if (!item.compare(event.getItem())) {
@@ -50,8 +51,8 @@ public class EnchantObjective extends Objective implements Listener {
                 return;
             }
         }
-        if (checkConditions(playerID)) {
-            completeObjective(playerID);
+        if (checkConditions(profile)) {
+            completeObjective(profile);
         }
     }
 
@@ -71,7 +72,7 @@ public class EnchantObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(final String name, final String playerID) {
+    public String getProperty(final String name, final Profile profile) {
         return "";
     }
 

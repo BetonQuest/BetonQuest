@@ -3,6 +3,7 @@ package org.betonquest.betonquest.events;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
@@ -29,11 +30,11 @@ public class IfElseEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final String playerID) {
-        if (BetonQuest.condition(playerID, condition)) {
-            BetonQuest.event(playerID, event);
+    protected Void execute(final Profile profile) {
+        if (BetonQuest.condition(profile, condition)) {
+            BetonQuest.event(profile, event);
         } else {
-            BetonQuest.event(playerID, elseEvent);
+            BetonQuest.event(profile, elseEvent);
         }
         return null;
     }

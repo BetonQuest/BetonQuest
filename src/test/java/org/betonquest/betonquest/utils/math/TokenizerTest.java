@@ -3,6 +3,7 @@ package org.betonquest.betonquest.utils.math;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -40,9 +41,9 @@ class TokenizerTest {
     public static final String TEST_PACKAGE = "package";
 
     /**
-     * The player name to use for variable resolution.
+     * The profile to use for variable resolution.
      */
-    public static final String TEST_PLAYER_ID = "player";
+    public static final Profile TEST_PLAYER_PROFILE = mock(Profile.class);
 
     private static void withVariables(final Executable executable, final ProtoVariable... variables) throws Throwable {
         try (MockedStatic<Config> config = mockStatic(Config.class);
@@ -54,7 +55,7 @@ class TokenizerTest {
 
             for (final ProtoVariable variableTemplate : variables) {
                 final Variable var = mock(Variable.class);
-                when(var.getValue(TEST_PLAYER_ID)).thenReturn(variableTemplate.getValue());
+                when(var.getValue(TEST_PLAYER_PROFILE)).thenReturn(variableTemplate.getValue());
                 betonQuest.when(() -> BetonQuest.createVariable(questPackage, "%" + variableTemplate.getKey() + "%")).thenReturn(var);
             }
 
@@ -88,7 +89,7 @@ class TokenizerTest {
         final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
 
         final Token result = tokenizer.tokenize("1");
-        assertEquals(1, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a single letter integer should work");
+        assertEquals(1, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a single letter integer should work");
     }
 
     @Test
@@ -97,7 +98,7 @@ class TokenizerTest {
         final double number = 2_134_671;
 
         final Token result = tokenizer.tokenize(String.valueOf(number));
-        assertEquals(number, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a multi letter integer should work");
+        assertEquals(number, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a multi letter integer should work");
     }
 
     @Test
@@ -106,7 +107,7 @@ class TokenizerTest {
         final double number = -56_234;
 
         final Token result = tokenizer.tokenize(String.valueOf(number));
-        assertEquals(number, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a negative integer should work");
+        assertEquals(number, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a negative integer should work");
     }
 
     @Test
@@ -115,7 +116,7 @@ class TokenizerTest {
         final double number = 45_213.234_5;
 
         final Token result = tokenizer.tokenize(String.valueOf(number));
-        assertEquals(number, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a decimal should work");
+        assertEquals(number, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a decimal should work");
     }
 
     @Test
@@ -124,7 +125,7 @@ class TokenizerTest {
         final double number = -7_342.634;
 
         final Token result = tokenizer.tokenize(String.valueOf(number));
-        assertEquals(number, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a negative decimal should work");
+        assertEquals(number, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a negative decimal should work");
     }
 
     @Test
@@ -143,7 +144,7 @@ class TokenizerTest {
         final double expectedResult = 3;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing addition of two integers should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing addition of two integers should work");
     }
 
     @Test
@@ -153,7 +154,7 @@ class TokenizerTest {
         final double expectedResult = -1;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing subtraction of two integers should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing subtraction of two integers should work");
     }
 
     @Test
@@ -163,7 +164,7 @@ class TokenizerTest {
         final double expectedResult = 6;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing multiplication of two integers should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing multiplication of two integers should work");
     }
 
     @Test
@@ -173,7 +174,7 @@ class TokenizerTest {
         final double expectedResult = 2;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing division of two integers should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing division of two integers should work");
     }
 
     @Test
@@ -183,7 +184,7 @@ class TokenizerTest {
         final double expectedResult = 5.2;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing addition of two decimals should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing addition of two decimals should work");
     }
 
     @Test
@@ -193,7 +194,7 @@ class TokenizerTest {
         final double expectedResult = -0.7;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing subtraction of two decimals should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing subtraction of two decimals should work");
     }
 
     @Test
@@ -203,7 +204,7 @@ class TokenizerTest {
         final double expectedResult = 12.72;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing multiplication of two decimals should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing multiplication of two decimals should work");
     }
 
     @Test
@@ -213,7 +214,7 @@ class TokenizerTest {
         final double expectedResult = 2.4375;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing division of two decimals should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing division of two decimals should work");
     }
 
     @Test
@@ -223,7 +224,7 @@ class TokenizerTest {
         final double expectedResult = -5.1;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing addition of a negative number onto a number should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing addition of a negative number onto a number should work");
     }
 
     @Test
@@ -233,7 +234,7 @@ class TokenizerTest {
         final double expectedResult = 12;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing subtraction of a negative number from a number should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing subtraction of a negative number from a number should work");
     }
 
     @Test
@@ -243,7 +244,7 @@ class TokenizerTest {
         final double expectedResult = -2.6;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing multiplication with a negative number should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing multiplication with a negative number should work");
     }
 
     @Test
@@ -253,7 +254,7 @@ class TokenizerTest {
         final double expectedResult = 21;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with first addition, then multiplication should first multiply, then add");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with first addition, then multiplication should first multiply, then add");
     }
 
     @Test
@@ -263,7 +264,7 @@ class TokenizerTest {
         final double expectedResult = 38;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with first multiplication, then addition should first multiply, then add");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with first multiplication, then addition should first multiply, then add");
     }
 
     @Test
@@ -273,7 +274,7 @@ class TokenizerTest {
         final double expectedResult = 3.2;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with first subtraction, then division should first divide, then subtract");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with first subtraction, then division should first divide, then subtract");
     }
 
     @Test
@@ -283,7 +284,7 @@ class TokenizerTest {
         final double expectedResult = 2.8;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with first division, then subtraction should first divide, then subtract");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with first division, then subtraction should first divide, then subtract");
     }
 
     @Test
@@ -293,7 +294,7 @@ class TokenizerTest {
         final double expectedResult = 9;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with addition, modulo and subtraction, then modulo should be done before adding and subtracting");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with addition, modulo and subtraction, then modulo should be done before adding and subtracting");
     }
 
     @Test
@@ -303,7 +304,7 @@ class TokenizerTest {
         final double expectedResult = 162;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with first the power operator, then multiplication the power should be calculated before doing the multiplication");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with first the power operator, then multiplication the power should be calculated before doing the multiplication");
     }
 
     @Test
@@ -313,7 +314,7 @@ class TokenizerTest {
         final double expectedResult = 9.6;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with first multiplication, then the power operator the power should be calculated before doing the multiplication");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with first multiplication, then the power operator the power should be calculated before doing the multiplication");
     }
 
     @Test
@@ -323,7 +324,7 @@ class TokenizerTest {
         final double expectedResult = 2;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "the round operator should round the first value to the given number of decimal digits when tokenized");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "the round operator should round the first value to the given number of decimal digits when tokenized");
     }
 
     @Test
@@ -333,7 +334,7 @@ class TokenizerTest {
         final double expectedResult = 3.1;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenized round operator should also properly round edge cases like 0.5");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenized round operator should also properly round edge cases like 0.5");
     }
 
     @Test
@@ -343,7 +344,7 @@ class TokenizerTest {
         final double expectedResult = -2.1;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "round operator should have lowest priority when tokenized");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "round operator should have lowest priority when tokenized");
     }
 
     @Test
@@ -353,7 +354,7 @@ class TokenizerTest {
         final double expectedResult = 16.12;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "rounding inside parenthesis should work to when tokenized");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "rounding inside parenthesis should work to when tokenized");
     }
 
     @Test
@@ -363,7 +364,7 @@ class TokenizerTest {
         final double expectedResult = 16.14;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "rounding the content of a parenthesis should also tokenize");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "rounding the content of a parenthesis should also tokenize");
     }
 
     @Test
@@ -373,7 +374,7 @@ class TokenizerTest {
         final double expectedResult = 15.63;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "round operator should have lower priority then power operator");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "round operator should have lower priority then power operator");
     }
 
     @Test
@@ -383,7 +384,7 @@ class TokenizerTest {
         final double expectedResult = 1200;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "round operator should work with negative number of decimal digits");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "round operator should work with negative number of decimal digits");
     }
 
     @Test
@@ -393,7 +394,7 @@ class TokenizerTest {
         final double expectedResult = 13.24;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "round operator should work if a mathematical expression is given as number of decimal digits");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "round operator should work if a mathematical expression is given as number of decimal digits");
     }
 
     @Test
@@ -430,7 +431,7 @@ class TokenizerTest {
         final double expectedResult = 4123;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with a number inside a parenthesis should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with a number inside a parenthesis should work");
     }
 
     @Test
@@ -440,7 +441,7 @@ class TokenizerTest {
         final double expectedResult = 4123;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with a number inside multiple parenthesis should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with a number inside multiple parenthesis should work");
     }
 
     @Test
@@ -450,7 +451,7 @@ class TokenizerTest {
         final double expectedResult = 966;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with a calculation inside a parenthesis should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with a calculation inside a parenthesis should work");
     }
 
     @Test
@@ -460,7 +461,7 @@ class TokenizerTest {
         final double expectedResult = 250.7;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a string multiplying the result of a calculation inside a parenthesis should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a string multiplying the result of a calculation inside a parenthesis should work");
     }
 
     @Test
@@ -470,7 +471,7 @@ class TokenizerTest {
         final double expectedResult = -18.5;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a calculation with multiple layers of calculations inside parenthesis should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a calculation with multiple layers of calculations inside parenthesis should work");
     }
 
     @Test
@@ -480,7 +481,7 @@ class TokenizerTest {
         final double expectedResult = 7.75;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a series of calculations in parenthesis should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a series of calculations in parenthesis should work");
     }
 
     @Test
@@ -490,7 +491,7 @@ class TokenizerTest {
         final double expectedResult = 0.75;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a mix of parenthesis inside and sequential should work; issue #1421");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a mix of parenthesis inside and sequential should work; issue #1421");
     }
 
     @Test
@@ -500,7 +501,7 @@ class TokenizerTest {
         final double expectedResult = 17.5;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the negation of the result of a calculation inside parenthesis should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the negation of the result of a calculation inside parenthesis should work");
     }
 
     @Test
@@ -582,7 +583,7 @@ class TokenizerTest {
         final double expectedResult = 546;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with a number inside a bracket should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with a number inside a bracket should work");
     }
 
     @Test
@@ -592,7 +593,7 @@ class TokenizerTest {
         final double expectedResult = 546;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with a number inside multiple brackets should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with a number inside multiple brackets should work");
     }
 
     @Test
@@ -602,7 +603,7 @@ class TokenizerTest {
         final double expectedResult = 932;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with a calculation inside a bracket should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with a calculation inside a bracket should work");
     }
 
     @Test
@@ -612,7 +613,7 @@ class TokenizerTest {
         final double expectedResult = 8345;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with a number inside a parenthesis and then a bracket should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with a number inside a parenthesis and then a bracket should work");
     }
 
     @Test
@@ -622,7 +623,7 @@ class TokenizerTest {
         final double expectedResult = 8345;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with a number inside a bracket and then a parenthesis should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with a number inside a bracket and then a parenthesis should work");
     }
 
     @Test
@@ -641,7 +642,7 @@ class TokenizerTest {
         final double expectedResult = 5;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the calculation of the absolute of a positive number should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the calculation of the absolute of a positive number should work");
     }
 
     @Test
@@ -651,7 +652,7 @@ class TokenizerTest {
         final double expectedResult = 7;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the calculation of the absolute of a negative number should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the calculation of the absolute of a negative number should work");
     }
 
     @Test
@@ -661,7 +662,7 @@ class TokenizerTest {
         final double expectedResult = 32.65;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the calculation of the absolute of a negative decimal should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the calculation of the absolute of a negative decimal should work");
     }
 
     @Test
@@ -671,7 +672,7 @@ class TokenizerTest {
         final double expectedResult = -23.5;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the negation of the result of the absolute should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the negation of the result of the absolute should work");
     }
 
     @Test
@@ -681,7 +682,7 @@ class TokenizerTest {
         final double expectedResult = -4;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the difference of two absolutes should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the difference of two absolutes should work");
     }
 
     @Test
@@ -691,7 +692,7 @@ class TokenizerTest {
         final double expectedResult = 2;
 
         final Token result = tokenizer.tokenize(calculation);
-        assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the absolute another absolute wrapped in parenthesis should work");
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the absolute another absolute wrapped in parenthesis should work");
     }
 
     @Test
@@ -757,7 +758,7 @@ class TokenizerTest {
 
         withVariables(() -> {
             final Token result = tokenizer.tokenize(variable);
-            assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable should work");
+            assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable should work");
         }, new ProtoVariable(variable, String.valueOf(value)));
     }
 
@@ -770,7 +771,7 @@ class TokenizerTest {
 
         withVariables(() -> {
             final Token result = tokenizer.tokenize(variable);
-            assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing a number should work");
+            assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing a number should work");
         }, new ProtoVariable(variable, String.valueOf(value)));
     }
 
@@ -783,7 +784,7 @@ class TokenizerTest {
 
         withVariables(() -> {
             final Token result = tokenizer.tokenize(variable);
-            assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing an underscore should work");
+            assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing an underscore should work");
         }, new ProtoVariable(variable, String.valueOf(value)));
     }
 
@@ -796,7 +797,7 @@ class TokenizerTest {
 
         withVariables(() -> {
             final Token result = tokenizer.tokenize(variable);
-            assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing an exclamation mark should work");
+            assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing an exclamation mark should work");
         }, new ProtoVariable(variable, String.valueOf(value)));
     }
 
@@ -809,7 +810,7 @@ class TokenizerTest {
 
         withVariables(() -> {
             final Token result = tokenizer.tokenize(variable);
-            assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing an equals sign should work");
+            assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing an equals sign should work");
         }, new ProtoVariable(variable, String.valueOf(value)));
     }
 
@@ -822,7 +823,7 @@ class TokenizerTest {
 
         withVariables(() -> {
             final Token result = tokenizer.tokenize(variable);
-            assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing a number sign should work");
+            assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing a number sign should work");
         }, new ProtoVariable(variable, String.valueOf(value)));
     }
 
@@ -835,7 +836,7 @@ class TokenizerTest {
 
         withVariables(() -> {
             final Token result = tokenizer.tokenize(variable);
-            assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing an ampersand should work");
+            assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing an ampersand should work");
         }, new ProtoVariable(variable, String.valueOf(value)));
     }
 
@@ -848,7 +849,7 @@ class TokenizerTest {
 
         withVariables(() -> {
             final Token result = tokenizer.tokenize(variable);
-            assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing an apostrophe should work");
+            assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing an apostrophe should work");
         }, new ProtoVariable(variable, String.valueOf(value)));
     }
 
@@ -861,7 +862,7 @@ class TokenizerTest {
 
         withVariables(() -> {
             final Token result = tokenizer.tokenize(variable);
-            assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing a question mark should work");
+            assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing a question mark should work");
         }, new ProtoVariable(variable, String.valueOf(value)));
     }
 
@@ -874,7 +875,7 @@ class TokenizerTest {
 
         withVariables(() -> {
             final Token result = tokenizer.tokenize(variable);
-            assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing a dot should work");
+            assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing a dot should work");
         }, new ProtoVariable(variable, String.valueOf(value)));
     }
 
@@ -887,7 +888,7 @@ class TokenizerTest {
 
         withVariables(() -> {
             final Token result = tokenizer.tokenize(variable);
-            assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing a colon should work");
+            assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable containing a colon should work");
         }, new ProtoVariable(variable, String.valueOf(value)));
     }
 
@@ -900,7 +901,7 @@ class TokenizerTest {
 
         withVariables(() -> {
             final Token result = tokenizer.tokenize(variable);
-            assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable ending with a digit should work");
+            assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a variable ending with a digit should work");
         }, new ProtoVariable(variable, String.valueOf(value)));
     }
 
@@ -914,7 +915,7 @@ class TokenizerTest {
 
         withVariables(() -> {
             final Token result = tokenizer.tokenize(calculation);
-            assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the negation of a variable should work");
+            assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the negation of a variable should work");
         }, new ProtoVariable(variable, String.valueOf(-value)));
     }
 
@@ -929,7 +930,7 @@ class TokenizerTest {
 
         withVariables(() -> {
             final Token result = tokenizer.tokenize(calculation);
-            assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the addition of a number to a variable should work");
+            assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the addition of a number to a variable should work");
         }, new ProtoVariable(variable, String.valueOf(value)));
     }
 
@@ -944,7 +945,7 @@ class TokenizerTest {
 
         withVariables(() -> {
             final Token result = tokenizer.tokenize(calculation);
-            assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the addition of a variable to a number should work");
+            assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the addition of a variable to a number should work");
         }, new ProtoVariable(variable, String.valueOf(value)));
     }
 
@@ -961,7 +962,7 @@ class TokenizerTest {
 
         withVariables(() -> {
             final Token result = tokenizer.tokenize(calculation);
-            assertEquals(expectedResult, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the addition of two variables should work");
+            assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the addition of two variables should work");
         }, new ProtoVariable(firstVariable, String.valueOf(firstValue)), new ProtoVariable(secondVariable, String.valueOf(secondValue)));
     }
 
@@ -975,7 +976,7 @@ class TokenizerTest {
 
         withVariables(() -> {
             final Token result = tokenizer.tokenize(calculation);
-            assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the a variable inside parenthesis should work");
+            assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the a variable inside parenthesis should work");
         }, new ProtoVariable(variable, String.valueOf(value)));
     }
 
@@ -1043,7 +1044,7 @@ class TokenizerTest {
 
         withVariables(() -> {
             final Token result = tokenizer.tokenize(calculation);
-            assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the a curly braces variable should work");
+            assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the a curly braces variable should work");
         }, new ProtoVariable(variable, String.valueOf(value)));
     }
 
@@ -1058,7 +1059,7 @@ class TokenizerTest {
 
         withVariables(() -> {
             final Token result = tokenizer.tokenize(calculation);
-            assertEquals(expected, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the a curly braces variable should work");
+            assertEquals(expected, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the a curly braces variable should work");
         }, new ProtoVariable(variable, String.valueOf(value)));
     }
 
@@ -1072,7 +1073,7 @@ class TokenizerTest {
 
         withVariables(() -> {
             final Token result = tokenizer.tokenize(calculation);
-            assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the a curly braces variable with escaped backslash should work");
+            assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the a curly braces variable with escaped backslash should work");
         }, new ProtoVariable(variable, String.valueOf(value)));
     }
 
@@ -1086,7 +1087,7 @@ class TokenizerTest {
 
         withVariables(() -> {
             final Token result = tokenizer.tokenize(calculation);
-            assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the a curly braces variable with escaped closing curly brace should work");
+            assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the a curly braces variable with escaped closing curly brace should work");
         }, new ProtoVariable(variable, String.valueOf(value)));
     }
 
@@ -1100,7 +1101,7 @@ class TokenizerTest {
 
         withVariables(() -> {
             final Token result = tokenizer.tokenize(calculation);
-            assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the a curly braces variable with escaped closing curly brace should work");
+            assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the a curly braces variable with escaped closing curly brace should work");
         }, new ProtoVariable(variable, String.valueOf(value)));
     }
 
@@ -1114,7 +1115,7 @@ class TokenizerTest {
 
         withVariables(() -> {
             final Token result = tokenizer.tokenize(calculation);
-            assertEquals(value, result.resolve(TEST_PLAYER_ID), REQUIRED_DOUBLE_PRECISION, "tokenizing the a curly braces variable with two backslashes in a row should work");
+            assertEquals(value, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing the a curly braces variable with two backslashes in a row should work");
         }, new ProtoVariable(variable, String.valueOf(value)));
     }
 

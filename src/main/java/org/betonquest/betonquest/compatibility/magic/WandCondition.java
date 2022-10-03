@@ -7,9 +7,8 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -73,8 +72,8 @@ public class WandCondition extends Condition {
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        final Player player = PlayerConverter.getPlayer(playerID);
+    protected Boolean execute(final Profile profile) {
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
         int heldAmount;
 
         switch (type) {
@@ -95,7 +94,7 @@ public class WandCondition extends Condition {
                     return false;
                 }
                 final Wand wand1 = api.getWand(wandItem);
-                return checkWand(wand1, playerID);
+                return checkWand(wand1, profile);
             case IN_INVENTORY:
                 heldAmount = 0;
                 for (final ItemStack item : player.getInventory().getContents()) {
@@ -104,9 +103,9 @@ public class WandCondition extends Condition {
                     }
                     if (api.isWand(item)) {
                         final Wand wand2 = api.getWand(item);
-                        if (checkWand(wand2, playerID)) {
+                        if (checkWand(wand2, profile)) {
                             heldAmount += item.getAmount();
-                            if (amount == null || heldAmount >= amount.getInt(playerID)) {
+                            if (amount == null || heldAmount >= amount.getInt(profile)) {
                                 return true;
                             }
                         }
@@ -125,14 +124,14 @@ public class WandCondition extends Condition {
      * @return true if the wand meets the conditions, false otherwise
      */
     @SuppressWarnings("PMD.AvoidBranchingStatementAsLastInLoop")
-    private boolean checkWand(final Wand wand, final String playerID) {
+    private boolean checkWand(final Wand wand, final Profile profile) {
         if (name != null && !name.equalsIgnoreCase(wand.getTemplateKey())) {
             return false;
         }
         if (!spells.isEmpty()) {
             spell:
             for (final Map.Entry<String, VariableNumber> entry : spells.entrySet()) {
-                final int level = entry.getValue().getInt(playerID);
+                final int level = entry.getValue().getInt(profile);
                 for (final String wandSpell : wand.getSpells()) {
                     if (wandSpell.toLowerCase(Locale.ROOT).startsWith(entry.getKey().toLowerCase(Locale.ROOT)) && wand.getSpellLevel(entry.getKey()) >= level) {
                         continue spell;

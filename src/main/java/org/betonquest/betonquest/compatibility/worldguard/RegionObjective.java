@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.worldguard;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -48,11 +49,11 @@ public class RegionObjective extends Objective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(final PlayerJoinEvent event) {
         final Player player = event.getPlayer();
-        final String playerID = PlayerConverter.getID(player);
-        if (containsPlayer(playerID)) {
+        final Profile profile = PlayerConverter.getID(player);
+        if (containsPlayer(profile)) {
             final boolean inside = WorldGuardIntegrator.isInsideRegion(player.getLocation(), name);
-            if (!entry && !exit && inside && checkConditions(playerID)) {
-                completeObjective(playerID);
+            if (!entry && !exit && inside && checkConditions(profile)) {
+                completeObjective(profile);
             } else {
                 playersInsideRegion.put(event.getPlayer().getUniqueId(), inside);
             }
@@ -98,16 +99,16 @@ public class RegionObjective extends Objective implements Listener {
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
     private void checkLocation(final Player player, final Location location) {
-        final String playerID = PlayerConverter.getID(player);
-        if (!containsPlayer(playerID)) {
+        final Profile profile = PlayerConverter.getID(player);
+        if (!containsPlayer(profile)) {
             return;
         }
 
         final boolean inside = WorldGuardIntegrator.isInsideRegion(location, name);
 
         if (!entry && !exit) {
-            if (inside && checkConditions(playerID)) {
-                completeObjective(playerID);
+            if (inside && checkConditions(profile)) {
+                completeObjective(profile);
             }
             return;
         }
@@ -117,8 +118,8 @@ public class RegionObjective extends Objective implements Listener {
         final boolean fromInside = playersInsideRegion.get(player.getUniqueId());
         playersInsideRegion.put(player.getUniqueId(), inside);
 
-        if ((entry && inside && !fromInside || exit && fromInside && !inside) && checkConditions(playerID)) {
-            completeObjective(playerID);
+        if ((entry && inside && !fromInside || exit && fromInside && !inside) && checkConditions(profile)) {
+            completeObjective(profile);
             playersInsideRegion.remove(player.getUniqueId());
         }
     }
@@ -139,7 +140,7 @@ public class RegionObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(final String name, final String playerID) {
+    public String getProperty(final String name, final Profile profile) {
         return "";
     }
 

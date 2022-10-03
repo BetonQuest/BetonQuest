@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api;
 
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
@@ -54,7 +55,7 @@ abstract public class Condition extends ForceSyncHandler<Boolean> {
 
     /**
      * @return if the condition is static or not. If a condition is static it
-     * can be used with null player. Static events can be run with
+     * can be used with null profiles. Static events can be run with
      * static events.
      */
     public final boolean isStatic() {
@@ -63,7 +64,8 @@ abstract public class Condition extends ForceSyncHandler<Boolean> {
 
     /**
      * @return if the condition is persistent or not. If a condition is
-     * persistent it can be checked for offline player. Persistent
+     * persistent it can be checked for {@link Profile}s. If it's neither persistent nor static an
+     * {@link org.betonquest.betonquest.api.profiles.OnlineProfile} must be used. Persistent
      * conditions can be checked in folder events after the player logs
      * out.
      */
@@ -77,11 +79,11 @@ abstract public class Condition extends ForceSyncHandler<Boolean> {
      * it's done by the rest of BetonQuest's logic. When this method is called
      * all the required data must be present and parsed correctly.
      *
-     * @param playerID ID of the player for whom the condition will be checked
+     * @param profile the {@link Profile} for which the condition will be checked
      * @return the result of the check
      * @throws QuestRuntimeException when an error happens at runtime (for example a numeric
      *                               variable resolves to a string)
      */
     @Override
-    protected abstract Boolean execute(String playerID) throws QuestRuntimeException;
+    protected abstract Boolean execute(Profile profile) throws QuestRuntimeException;
 }

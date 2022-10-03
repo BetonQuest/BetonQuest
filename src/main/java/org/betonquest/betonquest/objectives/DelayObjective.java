@@ -5,6 +5,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -76,19 +77,19 @@ public class DelayObjective extends Objective {
         runnable = new BukkitRunnable() {
             @Override
             public void run() {
-                final LinkedList<String> players = new LinkedList<>();
+                final LinkedList<Profile> players = new LinkedList<>();
                 final long time = new Date().getTime();
-                for (final Entry<String, ObjectiveData> entry : dataMap.entrySet()) {
-                    final String playerID = entry.getKey();
+                for (final Entry<Profile, ObjectiveData> entry : dataMap.entrySet()) {
+                    final Profile profile = entry.getKey();
                     final DelayData playerData = (DelayData) entry.getValue();
-                    if (time >= playerData.getTime() && checkConditions(playerID)) {
+                    if (time >= playerData.getTime() && checkConditions(profile)) {
                         // don't complete the objective, it will throw CME/
                         // store the player instead, complete later
-                        players.add(playerID);
+                        players.add(profile);
                     }
                 }
-                for (final String playerID : players) {
-                    completeObjective(playerID);
+                for (final Profile profile : players) {
+                    completeObjective(profile);
                 }
             }
         }.runTaskTimer(BetonQuest.getInstance(), 0, interval);
@@ -108,10 +109,10 @@ public class DelayObjective extends Objective {
     }
 
     @Override
-    public String getDefaultDataInstruction(final String playerID) {
+    public String getDefaultDataInstruction(final Profile profile) {
         double millis = 0;
         try {
-            final double time = delay.getDouble(playerID);
+            final double time = delay.getDouble(profile);
             millis = timeToMilliSeconds(time);
         } catch (final InstructionParseException | QuestRuntimeException e) {
             LOG.warn("Error in delay objective '" + instruction.getID() + "': " + e.getMessage());
@@ -121,19 +122,19 @@ public class DelayObjective extends Objective {
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @Override
-    public String getProperty(final String name, final String playerID) {
+    public String getProperty(final String name, final Profile profile) {
         return switch (name.toUpperCase(Locale.ROOT)) {
-            case "LEFT" -> parseVariableLeft(playerID);
-            case "DATE" -> parseVariableDate(playerID);
-            case "RAWSECONDS" -> parseVariableRawSeconds(playerID);
+            case "LEFT" -> parseVariableLeft(profile);
+            case "DATE" -> parseVariableDate(profile);
+            case "RAWSECONDS" -> parseVariableRawSeconds(profile);
             default -> "";
         };
     }
 
     @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition"})
     @NotNull
-    private String parseVariableLeft(final String playerID) {
-        final String lang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
+    private String parseVariableLeft(final Profile profile) {
+        final String lang = BetonQuest.getInstance().getPlayerData(profile).getLanguage();
         final String daysWord = Config.getMessage(lang, "days");
         final String daysWordSingular = Config.getMessage(lang, "days_singular");
         final String hoursWord = Config.getMessage(lang, "hours");
@@ -143,7 +144,7 @@ public class DelayObjective extends Objective {
         final String secondsWord = Config.getMessage(lang, "seconds");
         final String secondsWordSingular = Config.getMessage(lang, "seconds_singular");
 
-        final long endTimestamp = (long) ((DelayData) dataMap.get(playerID)).getTime();
+        final long endTimestamp = (long) ((DelayData) dataMap.get(profile)).getTime();
         final LocalDateTime end = LocalDateTime.ofInstant(Instant.ofEpochMilli(endTimestamp), ZoneId.systemDefault());
         final Duration duration = Duration.between(LocalDateTime.now(), end);
 
@@ -159,13 +160,13 @@ public class DelayObjective extends Objective {
         return timeAmount >= 1 ? timeAmount + " " + (timeAmount == 1 ? timeUnitSingularWord : timeUnitWord + " ") : "";
     }
 
-    private String parseVariableDate(final String playerID) {
+    private String parseVariableDate(final Profile profile) {
         return new SimpleDateFormat(Config.getString("config.date_format"), Locale.ROOT)
-                .format(new Date((long) ((DelayData) dataMap.get(playerID)).getTime()));
+                .format(new Date((long) ((DelayData) dataMap.get(profile)).getTime()));
     }
 
-    private String parseVariableRawSeconds(final String playerID) {
-        final double timeLeft = ((DelayData) dataMap.get(playerID)).getTime() - new Date().getTime();
+    private String parseVariableRawSeconds(final Profile profile) {
+        final double timeLeft = ((DelayData) dataMap.get(profile)).getTime() - new Date().getTime();
         return String.valueOf(timeLeft / 1000);
     }
 
@@ -173,8 +174,8 @@ public class DelayObjective extends Objective {
 
         private final double timestamp;
 
-        public DelayData(final String instruction, final String playerID, final String objID) {
-            super(instruction, playerID, objID);
+        public DelayData(final String instruction, final Profile profile, final String objID) {
+            super(instruction, profile, objID);
             timestamp = Double.parseDouble(instruction);
         }
 

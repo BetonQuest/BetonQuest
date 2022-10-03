@@ -3,10 +3,9 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmocore;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-
-import java.util.UUID;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class MMOCoreAttributeCondition extends Condition {
@@ -26,9 +25,9 @@ public class MMOCoreAttributeCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        final int targetLevel = targetLevelVar.getInt(playerID);
-        final int actualLevel = MMOCoreUtils.getMMOCoreAttribute(UUID.fromString(playerID), attribute);
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        final int targetLevel = targetLevelVar.getInt(profile);
+        final int actualLevel = MMOCoreUtils.getMMOCoreAttribute(profile.getOfflinePlayer().getUniqueId(), attribute);
 
         return mustBeEqual ? actualLevel == targetLevel : actualLevel >= targetLevel;
     }

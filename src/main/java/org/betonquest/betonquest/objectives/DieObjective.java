@@ -5,6 +5,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -45,9 +46,9 @@ public class DieObjective extends Objective implements Listener {
             return;
         }
         if (event.getEntity() instanceof Player) {
-            final String playerID = PlayerConverter.getID((Player) event.getEntity());
-            if (containsPlayer(playerID) && checkConditions(playerID)) {
-                completeObjective(playerID);
+            final Profile profile = PlayerConverter.getID((Player) event.getEntity());
+            if (containsPlayer(profile) && checkConditions(profile)) {
+                completeObjective(profile);
             }
         }
     }
@@ -55,13 +56,12 @@ public class DieObjective extends Objective implements Listener {
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onLastDamage(final EntityDamageEvent event) {
-        if (!cancel || !(event.getEntity() instanceof Player)) {
+        if (!cancel || !(event.getEntity() instanceof final Player player)) {
             return;
         }
-        final Player player = (Player) event.getEntity();
-        final String playerID = PlayerConverter.getID(player);
-        if (containsPlayer(playerID) && player.getHealth() - event.getFinalDamage() <= 0
-                && checkConditions(playerID)) {
+        final Profile profile = PlayerConverter.getID(player);
+        if (containsPlayer(profile) && player.getHealth() - event.getFinalDamage() <= 0
+                && checkConditions(profile)) {
             event.setCancelled(true);
             player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
             player.setFoodLevel(20);
@@ -73,7 +73,7 @@ public class DieObjective extends Objective implements Listener {
             Location targetLocation = null;
             try {
                 if (location != null) {
-                    targetLocation = location.getLocation(playerID);
+                    targetLocation = location.getLocation(profile);
                 }
             } catch (final QuestRuntimeException e) {
                 LOG.warn(instruction.getPackage(), "Couldn't execute onLastDamage in DieObjective", e);
@@ -89,7 +89,7 @@ public class DieObjective extends Objective implements Listener {
 
                 }
             }.runTaskLater(BetonQuest.getInstance(), 1);
-            completeObjective(playerID);
+            completeObjective(profile);
         }
     }
 
@@ -109,7 +109,7 @@ public class DieObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(final String name, final String playerID) {
+    public String getProperty(final String name, final Profile profile) {
         return "";
     }
 

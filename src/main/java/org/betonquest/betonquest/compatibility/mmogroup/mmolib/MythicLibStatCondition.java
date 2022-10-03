@@ -3,10 +3,9 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmolib;
 import io.lumine.mythic.lib.api.player.MMOPlayerData;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
-import org.bukkit.entity.Player;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class MythicLibStatCondition extends Condition {
@@ -24,9 +23,8 @@ public class MythicLibStatCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        final Player player = PlayerConverter.getPlayer(playerID);
-        final MMOPlayerData data = MMOPlayerData.get(player);
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        final MMOPlayerData data = MMOPlayerData.get(profile.getOfflinePlayer().getUniqueId());
         if (data == null) {
             return false;
         }

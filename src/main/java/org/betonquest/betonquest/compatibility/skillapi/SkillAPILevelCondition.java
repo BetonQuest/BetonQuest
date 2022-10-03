@@ -6,9 +6,9 @@ import com.sucy.skill.api.player.PlayerData;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 
 import java.util.Optional;
 
@@ -31,8 +31,8 @@ public class SkillAPILevelCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        final PlayerData data = SkillAPI.getPlayerData(PlayerConverter.getPlayer(playerID));
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        final PlayerData data = SkillAPI.getPlayerData(profile.getOfflinePlayer());
         final Optional<PlayerClass> playerClass = data
                 .getClasses()
                 .stream()
@@ -41,7 +41,7 @@ public class SkillAPILevelCondition extends Condition {
         if (!playerClass.isPresent()) {
             return false;
         }
-        return level.getInt(playerID) <= playerClass.get().getLevel();
+        return level.getInt(profile) <= playerClass.get().getLevel();
     }
 
 }

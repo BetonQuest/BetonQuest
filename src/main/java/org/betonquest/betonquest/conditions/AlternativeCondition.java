@@ -4,6 +4,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.bukkit.Bukkit;
@@ -29,10 +30,10 @@ public class AlternativeCondition extends Condition {
 
     @SuppressWarnings("PMD.CognitiveComplexity")
     @Override
-    protected Boolean execute(final String playerID) {
+    protected Boolean execute(final Profile profile) {
         if (Bukkit.isPrimaryThread()) {
             for (final ConditionID id : conditionIDs) {
-                if (BetonQuest.condition(playerID, id)) {
+                if (BetonQuest.condition(profile, id)) {
                     return true;
                 }
             }
@@ -40,7 +41,7 @@ public class AlternativeCondition extends Condition {
             final List<CompletableFuture<Boolean>> conditions = new ArrayList<>();
             for (final ConditionID id : conditionIDs) {
                 final CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(
-                        () -> BetonQuest.condition(playerID, id));
+                        () -> BetonQuest.condition(profile, id));
                 conditions.add(future);
             }
             for (final CompletableFuture<Boolean> condition : conditions) {

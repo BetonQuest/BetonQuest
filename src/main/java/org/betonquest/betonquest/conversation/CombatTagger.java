@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.conversation;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -17,14 +18,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Tags players that are in combat to prevent them from starting the
- * conversation
+ * Tags profiles that are in combat to prevent them from starting the conversation.
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class CombatTagger implements Listener {
 
-    private static final Map<String, Boolean> TAGGED = new HashMap<>();
-    private static final Map<String, BukkitRunnable> UNTAGGERS = new HashMap<>();
+    private static final Map<Profile, Boolean> TAGGED = new HashMap<>();
+    private static final Map<Profile, BukkitRunnable> UNTAGGERS = new HashMap<>();
     private final int delay;
 
     /**
@@ -36,14 +36,14 @@ public class CombatTagger implements Listener {
     }
 
     /**
-     * Checks if the player is combat-tagged
+     * Checks if the profile is combat-tagged.
      *
-     * @param playerID ID of the player
-     * @return true if the player is tagged, false otherwise
+     * @param profile the {@link Profile} to check
+     * @return true if the profile is tagged, false otherwise
      */
-    public static boolean isTagged(final String playerID) {
+    public static boolean isTagged(final Profile profile) {
         boolean result = false;
-        final Boolean state = TAGGED.get(playerID);
+        final Boolean state = TAGGED.get(profile);
         if (state != null) {
             result = state;
         }
@@ -52,34 +52,34 @@ public class CombatTagger implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onDamage(final EntityDamageByEntityEvent event) {
-        final ArrayList<String> ids = new ArrayList<>();
+        final ArrayList<Profile> profiles = new ArrayList<>();
         if (event.getEntity() instanceof Player) {
-            ids.add(PlayerConverter.getID((Player) event.getEntity()));
+            profiles.add(PlayerConverter.getID((Player) event.getEntity()));
         }
         if (event.getDamager() instanceof Player) {
-            ids.add(PlayerConverter.getID((Player) event.getDamager()));
+            profiles.add(PlayerConverter.getID((Player) event.getDamager()));
         }
-        for (final String playerID : ids) {
-            TAGGED.put(playerID, true);
-            final BukkitRunnable run = UNTAGGERS.get(playerID);
+        for (final Profile profile : profiles) {
+            TAGGED.put(profile, true);
+            final BukkitRunnable run = UNTAGGERS.get(profile);
             if (run != null) {
                 run.cancel();
             }
-            UNTAGGERS.put(playerID, new BukkitRunnable() {
+            UNTAGGERS.put(profile, new BukkitRunnable() {
                 @Override
                 public void run() {
-                    TAGGED.put(playerID, false);
+                    TAGGED.put(profile, false);
                 }
             });
-            UNTAGGERS.get(playerID).runTaskLater(BetonQuest.getInstance(), delay * 20L);
+            UNTAGGERS.get(profile).runTaskLater(BetonQuest.getInstance(), delay * 20L);
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onDeath(final PlayerDeathEvent event) {
-        final String playerID = PlayerConverter.getID(event.getEntity());
-        TAGGED.remove(playerID);
-        final BukkitRunnable runnable = UNTAGGERS.remove(playerID);
+        final Profile profile = PlayerConverter.getID(event.getEntity());
+        TAGGED.remove(profile);
+        final BukkitRunnable runnable = UNTAGGERS.remove(profile);
         if (runnable != null) {
             runnable.cancel();
         }

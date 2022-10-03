@@ -6,6 +6,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -80,11 +81,11 @@ public class NPCRangeObjective extends Objective {
     }
 
     private boolean isInside(final Player player, final Location location) throws QuestRuntimeException {
-        final String playerID = PlayerConverter.getID(player);
-        if (!containsPlayer(playerID) || !location.getWorld().equals(player.getWorld())) {
+        final Profile profile = PlayerConverter.getID(player);
+        if (!containsPlayer(profile) || !location.getWorld().equals(player.getWorld())) {
             return false;
         }
-        final double radius = this.radius.getDouble(playerID);
+        final double radius = this.radius.getDouble(profile);
         final double distanceSqrd = location.distanceSquared(player.getLocation());
         final double radiusSqrd = radius * radius;
 
@@ -92,7 +93,7 @@ public class NPCRangeObjective extends Objective {
     }
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
-    private void checkPlayer(final UUID uuid, final String playerID, final boolean inside) {
+    private void checkPlayer(final UUID uuid, final Profile profile, final boolean inside) {
         if (trigger == Trigger.INSIDE && !inside || trigger == Trigger.OUTSIDE && inside) {
             return;
         } else if (trigger == Trigger.ENTER || trigger == Trigger.LEAVE) {
@@ -108,11 +109,11 @@ public class NPCRangeObjective extends Objective {
             }
         }
 
-        if (checkConditions(playerID)) {
+        if (checkConditions(profile)) {
             if (playersInRange != null) {
                 playersInRange.remove(uuid);
             }
-            completeObjective(playerID);
+            completeObjective(profile);
         }
     }
 
@@ -122,7 +123,7 @@ public class NPCRangeObjective extends Objective {
     }
 
     @Override
-    public String getProperty(final String name, final String playerID) {
+    public String getProperty(final String name, final Profile profile) {
         return "";
     }
 

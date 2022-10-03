@@ -4,9 +4,9 @@ import net.Indyuce.mmocore.api.player.PlayerData;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class MMOCoreClassPointsEvent extends QuestEvent {
@@ -19,9 +19,9 @@ public class MMOCoreClassPointsEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final String playerID) throws QuestRuntimeException {
-        final PlayerData data = PlayerData.get(PlayerConverter.getPlayer(playerID));
-        final int amount = amountVar.getInt(playerID);
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
+        final PlayerData data = PlayerData.get(profile.getOfflinePlayer().getUniqueId());
+        final int amount = amountVar.getInt(profile);
         data.giveClassPoints(amount);
         return null;
     }

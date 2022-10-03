@@ -5,6 +5,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
@@ -52,12 +53,6 @@ public class Menu extends SimpleYMLSection implements Listener {
      * The title of the menu
      */
     private final VariableString title;
-    /*
-     * Hashmap with a items id as key and the menu item object containing all data of the item
-     *
-     * Currently this information isn't needed after initialising the Menu
-     */
-    //private final HashMap<String, MenuItem> itemsMap;
 
     /**
      * List of all slots objects as defined in the slots section
@@ -199,15 +194,14 @@ public class Menu extends SimpleYMLSection implements Listener {
     }
 
     /**
-     * Checks whether a player may open this menu
+     * Checks whether a player of the {@link Profile} may open this menu
      *
-     * @param player the player to check
+     * @param profile the {@link Profile} to check
      * @return true if all opening conditions are true, false otherwise
      */
-    public boolean mayOpen(final Player player) {
-        final String playerId = PlayerConverter.getID(player);
+    public boolean mayOpen(final Profile profile) {
         for (final ConditionID conditionID : openConditions) {
-            if (!BetonQuest.condition(playerId, conditionID)) {
+            if (!BetonQuest.condition(profile, conditionID)) {
                 LOG.debug(getPackage(), "Denied opening of " + name + ": Condition " + conditionID + "returned false.");
                 return false;
             }
@@ -234,25 +228,25 @@ public class Menu extends SimpleYMLSection implements Listener {
             return;
         }
         event.setCancelled(true);
-        if (!mayOpen(event.getPlayer())) {
+        if (!mayOpen(PlayerConverter.getID(event.getPlayer()))) {
             RPGMenuConfig.sendMessage(event.getPlayer(), "menu_do_not_open");
             return;
         }
         //open the menu
         LOG.debug(getPackage(), event.getPlayer().getName() + " used bound item of menu " + this.menuID);
-        menu.openMenu(event.getPlayer(), this.menuID);
+        menu.openMenu(PlayerConverter.getID(event.getPlayer()), this.menuID);
     }
 
     /**
-     * Runs all open events for the specified player
+     * Runs all open events for the specified player of the {@link Profile}
      *
-     * @param player the player to run the events for
+     * @param profile the {@link Profile} to run the events for
      */
     @SuppressWarnings("PMD.AvoidDuplicateLiterals")
-    public void runOpenEvents(final Player player) {
+    public void runOpenEvents(final Profile profile) {
         LOG.debug(getPackage(), "Menu " + menuID + ": Running open events");
         for (final EventID event : this.openEvents) {
-            BetonQuest.event(PlayerConverter.getID(player), event);
+            BetonQuest.event(profile, event);
             LOG.debug(getPackage(), "Menu " + menuID + ": Run event " + event);
         }
     }
@@ -302,18 +296,18 @@ public class Menu extends SimpleYMLSection implements Listener {
     /**
      * @return the title of the menu
      */
-    public String getTitle(final String playerID) {
-        return title.getString(playerID);
+    public String getTitle(final Profile profile) {
+        return title.getString(profile);
     }
 
     /**
-     * @param player the player to get the items for
+     * @param profile the player of the {@link Profile} to get the items for
      * @return get the items for all slots
      */
-    public MenuItem[] getItems(final Player player) {
+    public MenuItem[] getItems(final Profile profile) {
         final MenuItem[] items = new MenuItem[this.getSize()];
         for (int i = 0; i < items.length; i++) {
-            items[i] = this.getItem(player, i);
+            items[i] = this.getItem(profile, i);
         }
         return items;
     }
@@ -321,14 +315,14 @@ public class Menu extends SimpleYMLSection implements Listener {
     /**
      * Get a menu item for a specific slot
      *
-     * @param player the player to get the item for
-     * @param slot   for which the item should be get
+     * @param profile the player {@link Profile} to get the item for
+     * @param slot    for which the item should be get
      * @return menu item for that slot or null if none is specified
      */
-    public MenuItem getItem(final Player player, final int slot) {
+    public MenuItem getItem(final Profile profile, final int slot) {
         for (final Slots slots : this.slots) {
             if (slots.containsSlot(slot)) {
-                return slots.getItem(player, slot);
+                return slots.getItem(profile, slot);
             }
         }
         return null;
@@ -372,9 +366,10 @@ public class Menu extends SimpleYMLSection implements Listener {
                 return false;
             }
             final Player player = (Player) sender;
-            if (mayOpen(player)) {
+            final Profile profile = PlayerConverter.getID(player);
+            if (mayOpen(profile)) {
                 LOG.debug(getPackage(), player.getName() + " run bound command of " + menuID);
-                menu.openMenu(player, menuID);
+                menu.openMenu(profile, menuID);
                 return true;
             } else {
                 player.sendMessage(this.noPermissionMessage(sender));

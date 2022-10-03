@@ -4,9 +4,9 @@ import io.lumine.mythic.bukkit.BukkitAPIHelper;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("PMD.CommentRequired")
@@ -32,9 +32,9 @@ public class MythicMobDistanceCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        final Player player = PlayerConverter.getPlayer(playerID);
-        final double dist = distance.getDouble(playerID);
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
+        final double dist = distance.getDouble(profile);
 
         return player.getWorld().getNearbyEntities(player.getLocation(), dist, dist, dist)
                 .stream().anyMatch(entity -> entity != null

@@ -32,9 +32,7 @@ public final class TagCalculatorUtils {
      */
     public static ContextCalculator<Player> getTagContextCalculator() {
         return (player, contextConsumer) -> {
-            final String uuid = PlayerConverter.getID(player);
-
-            final PlayerData data = BetonQuest.getInstance().getPlayerData(uuid);
+            final PlayerData data = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
             if (data != null) {
                 data.getTags().forEach(tag -> contextConsumer.accept(KEY_LOCAL + tag, "true"));
             }
