@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.profiles.ProfileEvent;
 import org.bukkit.event.HandlerList;
 
 /**
- * This event is fired when a player's tag was removed.
+ * Fired when a tag is removed from a profile.
  */
 @SuppressWarnings({"PMD.DataClass"})
 public class PlayerTagRemoveEvent extends ProfileEvent {

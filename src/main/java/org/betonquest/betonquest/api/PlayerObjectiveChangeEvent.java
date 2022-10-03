@@ -6,7 +6,7 @@ import org.betonquest.betonquest.id.ObjectiveID;
 import org.bukkit.event.HandlerList;
 
 /**
- * When player objective change.
+ * Fires when a profile's objectives change.
  */
 @SuppressWarnings({"PMD.DataClass"})
 public class PlayerObjectiveChangeEvent extends ProfileEvent {

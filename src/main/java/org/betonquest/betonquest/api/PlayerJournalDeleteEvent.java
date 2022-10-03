@@ -7,7 +7,7 @@ import org.betonquest.betonquest.api.profiles.ProfileEvent;
 import org.bukkit.event.HandlerList;
 
 /**
- * When player journal delete contents.
+ * Fires when content is removed from a profile's journal.
  */
 public class PlayerJournalDeleteEvent extends ProfileEvent {
 
@@ -30,8 +30,8 @@ public class PlayerJournalDeleteEvent extends ProfileEvent {
      * Constructor of PlayerJournalDeleteEvent.
      *
      * @param who     the {@link Profile} who was deleted journal
-     * @param journal the journal of this player
-     * @param pointer the pointer for which journal entry was deleted for this player
+     * @param journal the journal of this profile
+     * @param pointer the pointer for which journal entry was deleted for this profile
      */
     public PlayerJournalDeleteEvent(final Profile who, final Journal journal, final Pointer pointer) {
         super(who);
@@ -49,7 +49,7 @@ public class PlayerJournalDeleteEvent extends ProfileEvent {
     }
 
     /**
-     * Get this Journal. This is the whole of journal of this player, not a journal entry.
+     * Get this Journal. This is the whole journal of this profile, not a journal entry.
      *
      * @return the journal
      */

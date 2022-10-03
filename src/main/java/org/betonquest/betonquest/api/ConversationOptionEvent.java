@@ -14,10 +14,10 @@ public class ConversationOptionEvent extends ProfileEvent {
     private final String selectedOption;
     private final String npcResponse;
 
-    public ConversationOptionEvent(final Profile profile, final Conversation conv, final String playerChosen, final String npcResponse) {
+    public ConversationOptionEvent(final Profile profile, final Conversation conv, final String selectedOption, final String npcResponse) {
         super(profile);
         this.conv = conv;
-        this.selectedOption = playerChosen;
+        this.selectedOption = selectedOption;
         this.npcResponse = npcResponse;
     }
 

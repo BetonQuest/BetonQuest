@@ -6,7 +6,7 @@ import org.betonquest.betonquest.conversation.Conversation;
 import org.bukkit.event.HandlerList;
 
 /**
- * Fires when a player starts a conversation with an NPC
+ * Fires when a profile starts a conversation with an NPC
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class PlayerConversationEndEvent extends ProfileEvent {

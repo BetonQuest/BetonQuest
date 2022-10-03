@@ -29,9 +29,9 @@ abstract public class Variable {
     }
 
     /**
-     * This method should return a resolved value of variable for given player.
+     * This method should return a resolved value of variable for given profile.
      *
-     * @param profile the {@link Profile} of the player
+     * @param profile the {@link Profile} to get the value for
      * @return the value of this variable
      */
     public abstract String getValue(Profile profile);

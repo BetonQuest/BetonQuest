@@ -11,7 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
- * The backpack command. It opens player's backpack.
+ * The backpack command. It opens profile's backpack.
  */
 @CustomLog
 public class BackpackCommand implements CommandExecutor {

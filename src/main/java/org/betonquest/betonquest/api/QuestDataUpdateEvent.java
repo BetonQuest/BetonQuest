@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.profiles.ProfileEvent;
 import org.bukkit.event.HandlerList;
 
 /**
- * Should be fired when the quest data updates
+ * Fired when the quest data updates.
  */
 @SuppressWarnings({"PMD.DataClass", "PMD.CommentRequired"})
 public class QuestDataUpdateEvent extends ProfileEvent {
