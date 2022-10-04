@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.api.PlayerJournalAddEvent;
 import org.betonquest.betonquest.api.PlayerJournalDeleteEvent;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.Saver.Record;
@@ -93,14 +94,11 @@ public class Journal {
      * Checks if the player has his journal in the inventory. Returns false if
      * the player is not online.
      *
-     * @param profile the {@link Profile} of the player
+     * @param profile the {@link OnlineProfile} of the player
      * @return true if the player has his journal, false otherwise
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public static boolean hasJournal(final Profile profile) {
-        if (profile.getPlayer().isEmpty()) {
-            return false;
-        }
+    public static boolean hasJournal(final OnlineProfile profile) {
         final Player player = profile.getOnlineProfile().getOnlinePlayer();
         for (final ItemStack item : player.getInventory().getContents()) {
             if (isJournal(profile, item)) {
@@ -459,7 +457,7 @@ public class Journal {
      * Updates journal by removing it and adding it again
      */
     public void update() {
-        if (hasJournal(profile)) {
+        if (hasJournal(profile.getOnlineProfile())) {
             addToInv();
         }
     }

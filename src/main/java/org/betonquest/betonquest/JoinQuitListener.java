@@ -68,7 +68,7 @@ public class JoinQuitListener implements Listener {
             }
         }
 
-        if (Journal.hasJournal(profile)) {
+        if (Journal.hasJournal(profile.getOnlineProfile())) {
             playerData.getJournal().update();
         }
         if (playerData.getConversation() != null) {

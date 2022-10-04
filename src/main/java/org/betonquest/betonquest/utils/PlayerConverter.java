@@ -51,10 +51,10 @@ public final class PlayerConverter {
             @SuppressWarnings("PMD.AvoidUncheckedExceptionsInSignatures")
             @Override
             public OnlineProfile getOnlineProfile() throws IllegalStateException {
-                if (!(player instanceof Player)) {
+                if (player.getPlayer() == null) {
                     throw new IllegalStateException("Player is Offline!");
                 }
-                return getID((Player) player);
+                return getID(player.getPlayer());
             }
 
             @Override
