@@ -48,13 +48,19 @@ public final class PlayerConverter {
                 return player.getName();
             }
 
+            @Override
+            public Boolean isPlayerOnline() {
+                return player.isOnline();
+            }
+
             @SuppressWarnings("PMD.AvoidUncheckedExceptionsInSignatures")
             @Override
             public OnlineProfile getOnlineProfile() throws IllegalStateException {
-                if (player.getPlayer() == null) {
+                final Player onlinePlayer = player.getPlayer();
+                if (onlinePlayer == null) {
                     throw new IllegalStateException("Player is Offline!");
                 }
-                return getID(player.getPlayer());
+                return getID(onlinePlayer);
             }
 
             @Override
@@ -105,6 +111,11 @@ public final class PlayerConverter {
             @Override
             public OnlineProfile getOnlineProfile() {
                 return this;
+            }
+
+            @Override
+            public Boolean isPlayerOnline() {
+                return player.isOnline();
             }
 
             @Override
