@@ -2,6 +2,7 @@ package org.betonquest.betonquest;
 
 import lombok.CustomLog;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.ConversationResumer;
@@ -44,7 +45,7 @@ public class JoinQuitListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(final PlayerJoinEvent event) {
-        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
         // start objectives when the data is loaded
         PlayerData playerData = BetonQuest.getInstance().getPlayerData(profile);
         // if the data still isn't loaded, force loading (this happens sometimes
