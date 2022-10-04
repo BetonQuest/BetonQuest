@@ -33,6 +33,11 @@ public interface Profile {
     String getProfileName();
 
     /**
+     * @return true if the {@link Player} is online
+     */
+    Boolean isPlayerOnline();
+
+    /**
      * Gets the {@link OnlineProfile} of this Profile if the {@link Player} is online.
      *
      * @return The {@link OnlineProfile} of this Profile

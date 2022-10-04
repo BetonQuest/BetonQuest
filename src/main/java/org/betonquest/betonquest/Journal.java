@@ -457,7 +457,7 @@ public class Journal {
      * Updates journal by removing it and adding it again
      */
     public void update() {
-        if (hasJournal(profile.getOnlineProfile())) {
+        if (profile.isPlayerOnline() && hasJournal(profile.getOnlineProfile())) {
             addToInv();
         }
     }
