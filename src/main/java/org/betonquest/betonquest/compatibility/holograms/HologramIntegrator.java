@@ -42,7 +42,7 @@ public class HologramIntegrator implements Integrator {
         } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
             LOG.warn("Hologram called " + name + " could not be created! This is most likely an implementation error! ", e);
         } catch (final InvocationTargetException e) {
-            LOG.warn("Hologram called " + name + " could not be created due to a constructor exception!", e);
+            LOG.warn("Hologram called " + name + " could not be created due to an exception thrown by it's constructor!", e);
         }
         return hologram;
     }
