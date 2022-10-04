@@ -62,7 +62,6 @@ public class DecentHologramsHologram implements BetonHologram {
     @Override
     public void show(final Player player) {
         hologram.show(player, 0);
-
     }
 
     @Override
