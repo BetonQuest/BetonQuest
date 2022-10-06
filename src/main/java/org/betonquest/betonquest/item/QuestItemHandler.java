@@ -9,6 +9,7 @@ import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
@@ -270,7 +271,7 @@ public class QuestItemHandler implements Listener {
             return;
         }
         final ItemStack item = event.getItem();
-        if (item != null && !EnchantmentTarget.TOOL.includes(item.getType()) && Utils.isQuestItem(item)) {
+        if (item != null && !EnchantmentTarget.TOOL.includes(item.getType()) && Utils.isQuestItem(item) && item.getType() != Material.WRITTEN_BOOK) {
             event.setCancelled(true);
         }
     }
