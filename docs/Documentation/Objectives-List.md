@@ -41,8 +41,8 @@ To complete this objective the player must break or place the specified amount o
 
 | Parameter       | Syntax                                           | Default Value          | Explanation                                                                                                                                                                                                                                                               |
 |-----------------|--------------------------------------------------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| _Block Type_    | [Block Selector](./Reference.md#block-selectors) | :octicons-x-circle-16: | The block which must be broken.                                                                                                                                                                                                                                           |
-| _Amount_        | Number                                           | :octicons-x-circle-16: | The amount of blocks to place / destroy. More than 0 for placing and less than 0 for breaking blocks.                                                                                                                                                                     |
+| _Block Type_    | [Block Selector](./Reference.md#block-selectors) | :octicons-x-circle-16: | The block which must be broken / placed.                                                                                                                                                                                                                                  |
+| _Amount_        | Number                                           | :octicons-x-circle-16: | The amount of blocks to break / place. Less than 0 for breaking and more than 0 for placing blocks.                                                                                                                                                                       |
 | _Safety Check_  | Keyword (`noSafety`)                             | Safety Check Enabled   | The Safety Check prevents faking the objective. The progress will be reduced when the player does to opposite of what they are supposed to do. Example: Player must break 10 blocks. They place 10 of their stored blocks. Now the total amount of blocks to break is 20. |
 | _Notifications_ | Keyword (`notify`)                               | Disabled               | Displays messages to the player each time they progress the objective. Optionally with the notification interval after colon.                                                                                                                                             |
 
@@ -57,13 +57,20 @@ objectives:
 <h5> Variable Properties </h5> 
 
 Note that these follow the same rules as the amount argument, meaning that blocks to break are a negative number!
-You can use this variable to always get positive values: `%math.calc:|objective.breakLogs.left|%`
 
 | Name     | Example Output | Explanation                                                                                         |
 |----------|----------------|-----------------------------------------------------------------------------------------------------|
-| _amount_ | 6              | Shows the amount of blocks already broken / placed.                                                 |
-| _left_   | 4              | Shows the amount of blocks that still need to be broken / placed for the objective to be completed. |
-| _total_  | 10             | Shows the initial amount of blocks that needed to be broken / placed.                               |
+| _amount_ | -6 / 6         | Shows the amount of blocks already broken / placed.                                                 |
+| _left_   | -4 / 4         | Shows the amount of blocks that still need to be broken / placed for the objective to be completed. |
+| _total_  | -10 / 10       | Shows the initial amount of blocks that needed to be broken / placed.                               |
+
+You can use these variables to always get positive values:
+
+| Name              | Example Output | Explanation                                                                                                  |
+|-------------------|----------------|--------------------------------------------------------------------------------------------------------------|
+| _absoluteAmount_  | 6              | Shows the absolute amount of blocks already broken / placed.                                                 |
+| _absoluteLeft_    | 4              | Shows the absolute amount of blocks that still need to be broken / placed for the objective to be completed. |
+| _absoluteTotal_   | 10             | Shows the initial absolute amount of blocks that needed to be broken / placed.                               |
 
 
 ## Breed animals: `breed`
