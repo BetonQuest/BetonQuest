@@ -16,6 +16,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
+import java.util.Locale;
+
 /**
  * Player has to break/place specified amount of blocks. Doing opposite thing
  * (breaking when should be placing) will reverse the progress.
@@ -34,6 +36,25 @@ public class BlockObjective extends CountingObjective implements Listener {
         exactMatch = instruction.hasArgument("exactMatch");
         targetAmount = instruction.getInt();
         noSafety = instruction.hasArgument("noSafety");
+    }
+
+    @Override
+    public String getProperty(final String name, final Profile profile) {
+        switch (name.toLowerCase(Locale.ROOT)) {
+            case "amount":
+            case "left":
+            case "total":
+                return super.getProperty(name, profile);
+            case "absoluteamount":
+            case "absoluteleft":
+            case "absolutetotal":
+                return Integer.toString(
+                        Math.abs(
+                                Integer.valueOf(
+                                        super.getProperty(name.replace("absolute", ""), profile))));
+            default:
+                return "";
+        }
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
