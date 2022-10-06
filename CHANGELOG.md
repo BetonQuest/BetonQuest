@@ -39,6 +39,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - variable support for menu titles
 - configurable cooldown to menu conversation IO
 - `freeze` event - ProtocolLib compatibility feature: Blocks the player from moving for the specified amount of ticks
+- `block` objective - properties: `absoluteAmount`, `absoluteLeft` and `absoluteTotal`
 - `command` objective
 - `equip` objective
 - `delay` objective - now support variables
