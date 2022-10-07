@@ -43,7 +43,8 @@ This section tells you about each setting which has to be set (or can optionally
 
 * `command`: *(string)* ***-optional***  
   You can use this to create a new command which opens the menu if it is executed by a player.
-  The command should only contain letters, numbers and `-`. Spaces are not allowed.  
+  The command should only contain letters, numbers and `-`. Spaces are not allowed.
+  **The server must be restarted to unregister command tab completions.**
   **Example:** `command: '/quests'`
 
 * `open_conditions`: *(string)* ***-optional***  
