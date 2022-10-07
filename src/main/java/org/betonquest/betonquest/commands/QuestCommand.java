@@ -1604,24 +1604,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final String hooked = hookedJoiner.toString();
 
         final Component compHeader = Component.text(BetonQuest.getInstance().getPluginTag() + versionInfo);
-        final Component compVersionBetonQuestKey = Component.text(colorKey + versionBetonQuest)
-                .hoverEvent(Component.text(clickToCopy))
-                .clickEvent(ClickEvent.suggestCommand(ChatColor.stripColor(versionBetonQuest + versionBetonQuestValue)));
-        final Component compVersionBetonQuestValue = Component.text(versionBetonQuestValue)
-                .hoverEvent(Component.text(clickToCopy))
-                .clickEvent(ClickEvent.suggestCommand(ChatColor.stripColor(versionBetonQuestValue)));
-        final Component compVersionServerKey = Component.text(colorKey + versionServer)
-                .hoverEvent(Component.text(clickToCopy))
-                .clickEvent(ClickEvent.suggestCommand(ChatColor.stripColor(versionServer + versionServerValue)));
-        final Component compVersionServerValue = Component.text(versionServerValue)
-                .hoverEvent(Component.text(clickToCopy))
-                .clickEvent(ClickEvent.suggestCommand(ChatColor.stripColor(versionServerValue)));
-        final Component compHookedKey = Component.text(colorKey + hookedInto)
-                .hoverEvent(Component.text(clickToCopy))
-                .clickEvent(ClickEvent.suggestCommand(ChatColor.stripColor(hookedInto + hooked)));
-        final Component compHookedValue = Component.text(hooked)
-                .hoverEvent(Component.text(clickToCopy))
-                .clickEvent(ClickEvent.suggestCommand(ChatColor.stripColor(hooked)));
+        final Component compVersionBetonQuestKey = Component.text(colorKey + versionBetonQuest);
+        final Component compVersionBetonQuestValue = Component.text(versionBetonQuestValue);
+        final Component compVersionServerKey = Component.text(colorKey + versionServer);
+        final Component compVersionServerValue = Component.text(versionServerValue);
+        final Component compHookedKey = Component.text(colorKey + hookedInto);
+        final Component compHookedValue = Component.text(hooked);
         final Component compCopyAll = Component.text(clickToCopyAll)
                 .hoverEvent(Component.text(clickToCopy))
                 .clickEvent(ClickEvent.copyToClipboard(ChatColor.stripColor(versionBetonQuest
