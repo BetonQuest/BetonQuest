@@ -75,9 +75,7 @@ public class TagPlayerEventFactory implements EventFactory, StaticEventFactory {
         final String[] tags = getTags(instruction);
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "add" -> new DoNothingStaticEvent();
-            case "delete" -> createStaticDeleteTagEvent(tags);
-            case "del" ->
-                    createDeprecatedStaticDeleteTagEvent(instruction.getID().getFullID(), instruction.getPackage(), tags);
+            case "delete", "del" -> createStaticDeleteTagEvent(tags);
             default -> throw new InstructionParseException("Unknown tag action: " + action);
         };
     }
@@ -119,11 +117,5 @@ public class TagPlayerEventFactory implements EventFactory, StaticEventFactory {
             staticEvents.add(new DatabaseSaverStaticEvent(saver, () -> new Saver.Record(UpdateType.REMOVE_ALL_TAGS, tag)));
         }
         return new SequentialStaticEvent(staticEvents.toArray(new StaticEvent[0]));
-    }
-
-    @NotNull
-    private StaticEvent createDeprecatedStaticDeleteTagEvent(final String fullId, final QuestPackage questPackage, final String... tags) {
-        LOG.warn(questPackage, fullId + ": Replace Tag event argument 'del' by argument 'delete'. Support for 'del' will be removed in future versions.");
-        return createStaticDeleteTagEvent(tags);
     }
 }
