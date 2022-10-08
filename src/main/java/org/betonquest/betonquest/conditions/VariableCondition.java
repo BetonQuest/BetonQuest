@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.conditions;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -12,22 +12,19 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 @SuppressWarnings("PMD.CommentRequired")
 public class VariableCondition extends Condition {
 
-    private final String variable;
-    private final String regex;
+    private final VariableString variable;
+    private final VariableString regex;
 
     public VariableCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, instruction.hasArgument("forceSync"));
-        variable = instruction.next();
-        regex = instruction.next().replace('_', ' ');
+        variable = new VariableString(instruction.getPackage(), instruction.next());
+        regex = new VariableString(instruction.getPackage(), instruction.next().replace('_', ' '));
     }
 
     @Override
     protected Boolean execute(final Profile profile) {
-        if (variable.charAt(0) == '%' && variable.endsWith("%")) {
-            return BetonQuest.getInstance().getVariableValue(instruction.getPackage().getPackagePath(), variable, profile).matches(regex);
-        } else {
-            return variable.matches(regex);
-        }
+        final String resolvedVariable = variable.getString(profile);
+        final String resolvedRegex = regex.getString(profile);
+        return resolvedVariable.matches(resolvedRegex);
     }
-
 }

@@ -51,6 +51,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `burning` condition
 - `inconversation` condition
 - `heroesattribute` condition - Heroes compatibility feature: Checks a player's level for a particular attribute against a value
+- `variable` condition - regex can now also be a variable
 - `mmspawn` event now has argument `target` Makes the spawned mob target the player
 - `mmspawn` event now has argument `private` Visually hides the spawned mob from other players. Does not stop sound or particles
 - `mmspawn` event now supports the `marked` argument
