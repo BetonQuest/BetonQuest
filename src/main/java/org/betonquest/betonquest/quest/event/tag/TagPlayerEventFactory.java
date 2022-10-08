@@ -3,7 +3,6 @@ package org.betonquest.betonquest.quest.event.tag;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
@@ -62,9 +61,7 @@ public class TagPlayerEventFactory implements EventFactory, StaticEventFactory {
         final String[] tags = getTags(instruction);
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "add" -> createAddTagEvent(tags);
-            case "delete" -> createDeleteTagEvent(tags);
-            case "del" ->
-                    createDeprecatedDeleteTagEvent(instruction.getID().getFullID(), instruction.getPackage(), tags);
+            case "delete", "del" -> createDeleteTagEvent(tags);
             default -> throw new InstructionParseException("Unknown tag action: " + action);
         };
     }
@@ -100,12 +97,6 @@ public class TagPlayerEventFactory implements EventFactory, StaticEventFactory {
     private TagEvent createDeleteTagEvent(final String... tags) {
         final TagChanger tagChanger = new DeleteTagChanger(tags);
         return new TagEvent(betonQuest::getOfflinePlayerData, tagChanger);
-    }
-
-    @NotNull
-    private TagEvent createDeprecatedDeleteTagEvent(final String fullId, final QuestPackage questPackage, final String... tags) {
-        LOG.warn(questPackage, fullId + ": Replace Tag event argument 'del' by argument 'delete'. Support for 'del' will be removed in future versions.");
-        return createDeleteTagEvent(tags);
     }
 
     @NotNull
