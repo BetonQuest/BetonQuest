@@ -2,6 +2,7 @@ package org.betonquest.betonquest.events;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.QuestEvent;
@@ -57,7 +58,8 @@ public class CompassEvent extends QuestEvent {
             case DEL:
                 // Add Tag to player
                 try {
-                    new TagEvent(new Instruction(instruction.getPackage(), null, "tag " + action.toString().toLowerCase(Locale.ROOT) + " compass-" + compass)).handle(profile);
+                    final Instruction tagInstruction = new Instruction(instruction.getPackage(), null, "tag " + action.toString().toLowerCase(Locale.ROOT) + " compass-" + compass);
+                    BetonQuest.getInstance().getEventFactory("tag").parseEventInstruction(tagInstruction).handle(profile);
                 } catch (final InstructionParseException e) {
                     LOG.warn(instruction.getPackage(), "Failed to tag player with compass point: " + compass, e);
                 }

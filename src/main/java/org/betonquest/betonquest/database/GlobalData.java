@@ -15,7 +15,7 @@ import java.util.List;
  */
 @SuppressWarnings("PMD.CommentRequired")
 @CustomLog
-public class GlobalData {
+public class GlobalData implements TagData {
 
     @SuppressWarnings("PMD.DoNotUseThreads")
     private final Saver saver = BetonQuest.getInstance().getSaver();
@@ -58,6 +58,7 @@ public class GlobalData {
      *
      * @return the List of Tags
      */
+    @Override
     public List<String> getTags() {
         return globalTags;
     }
@@ -68,6 +69,7 @@ public class GlobalData {
      * @param tag tag to check
      * @return true if the tag is set
      */
+    @Override
     public boolean hasTag(final String tag) {
         return globalTags.contains(tag);
     }
@@ -77,6 +79,7 @@ public class GlobalData {
      *
      * @param tag tag to add
      */
+    @Override
     public void addTag(final String tag) {
         if (!globalTags.contains(tag)) {
             globalTags.add(tag);
@@ -90,6 +93,7 @@ public class GlobalData {
      *
      * @param tag tag to remove
      */
+    @Override
     public void removeTag(final String tag) {
         globalTags.remove(tag);
         saver.add(new Record(UpdateType.REMOVE_GLOBAL_TAGS, tag));

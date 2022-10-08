@@ -32,7 +32,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.CommentRequired"})
 @CustomLog
-public class PlayerData {
+public class PlayerData implements TagData {
 
     @SuppressWarnings("PMD.DoNotUseThreads")
     private final Saver saver = BetonQuest.getInstance().getSaver();
@@ -140,6 +140,7 @@ public class PlayerData {
      *
      * @return the List of Tags
      */
+    @Override
     public List<String> getTags() {
         return Collections.unmodifiableList(tags);
     }
@@ -150,6 +151,7 @@ public class PlayerData {
      * @param tag tag to check
      * @return true if the player has this tag
      */
+    @Override
     public boolean hasTag(final String tag) {
         return tags.contains(tag);
     }
@@ -159,6 +161,7 @@ public class PlayerData {
      *
      * @param tag tag to add
      */
+    @Override
     public void addTag(final String tag) {
         synchronized (tags) {
             if (!tags.contains(tag)) {
@@ -176,6 +179,7 @@ public class PlayerData {
      *
      * @param tag tag to remove
      */
+    @Override
     public void removeTag(final String tag) {
         synchronized (tags) {
             if (tags.contains(tag)) {
