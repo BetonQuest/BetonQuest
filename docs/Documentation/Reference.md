@@ -642,3 +642,30 @@ player_hider:
     source_player: in_Lobby
     #The target_player argument is left out to match all players.
 ```
+
+## Regex (Regular Expressions)
+A regular expression is a sequence of characters that specifies a search pattern for text. It's used in BetonQuest to
+check if game objects match a user-defined input. For example, [Block Selectors](#block-selectors) use a regex to match
+multiple materials or block states. You can also use regular expressions in the 
+[variable condition](Conditions-List.md#variable-variable) or the 
+[password objective](Objectives-List.md#password-password) to match player names, item names, etc. These expressions are
+a very powerful tool, but can be confusing at first.
+
+### Common Use Cases
+
+| Use Case                                                      | Regex                  |
+|---------------------------------------------------------------|------------------------|
+| A specific text e.g. `STONE`                                  | `STONE`                |
+| A text starting with `STONE`                                  | `STONE.*`              |
+| A text ending with `_LOG`                                     | `.*_LOG`               |
+| A specific number e.g. `42`                                   | `^42$`                 |
+| A specific range of numbers, e.g. any number between 0 and 99 | `[0-9]{1,2}`           |
+| Positive numbers only                                         | `^\d+$`                |
+| Negative numbers only                                         | `^-\d+$`               |
+| Any number                                                    | `[-+]?[0-9]+\.?[0-9]+` |
+
+### More complex use cases
+
+If you want to use complex patterns you must learn more about regular expressions. There are countless resources online,
+for example you could read this 
+[cheatsheet](https://medium.com/factory-mind/regex-tutorial-a-simple-cheatsheet-by-examples-649dc1c3f285).
