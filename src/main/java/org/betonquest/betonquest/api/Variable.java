@@ -16,8 +16,8 @@ abstract public class Variable {
     protected Instruction instruction;
 
     /**
-     * A variable marked as static can be executed even if the playerID in the
-     * {@link #getValue(String)} method is null
+     * A variable marked as static can be executed even if the profile in the
+     * {@link #getValue(Profile)} method is null
      * -- GETTER --
      * Get the staticness of a variable
      *
