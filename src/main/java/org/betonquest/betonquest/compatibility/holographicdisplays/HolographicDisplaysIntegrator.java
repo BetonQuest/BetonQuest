@@ -6,13 +6,24 @@ import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.citizens.CitizensHologram;
 
-
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Integrator for HolographicDisplays API
+ */
 public class HolographicDisplaysIntegrator implements Integrator {
 
+    /**
+     * Instance of the HolographicDisplaysIntegrator
+     */
     private static HolographicDisplaysIntegrator instance;
+
+    /**
+     * Instance of the {@link HologramLoop}
+     */
     private HologramLoop hologramLoop;
 
+    /**
+     * Creates a new instance of the HolographicDisplaysIntegrator
+     */
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public HolographicDisplaysIntegrator() {
         instance = this;

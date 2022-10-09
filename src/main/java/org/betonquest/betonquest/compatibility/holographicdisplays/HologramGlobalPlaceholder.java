@@ -8,7 +8,6 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Defines HolographicDisplays global placeholder <code>{bqg:package:variable}</code>.
  */
-@SuppressWarnings("PMD.CommentRequired")
 @CustomLog
 public class HologramGlobalPlaceholder implements GlobalPlaceholder {
 

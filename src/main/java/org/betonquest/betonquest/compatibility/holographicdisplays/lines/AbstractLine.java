@@ -9,7 +9,6 @@ import org.betonquest.betonquest.compatibility.holographicdisplays.HologramLoop;
  * HologramLoop parses and validates the hologram instructions into instances of AbstractLine
  * so the content can be updated without dealing with parsing errors again.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public abstract class AbstractLine {
 
     /**

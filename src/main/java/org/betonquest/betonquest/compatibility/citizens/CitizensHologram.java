@@ -39,8 +39,14 @@ import java.util.Map;
 @SuppressWarnings({"PMD.CommentRequired", "PMD.GodClass", "PMD.AssignmentToNonFinalStatic"})
 @CustomLog
 public class CitizensHologram extends BukkitRunnable {
-
+    /**
+     * Singleton instance of CitizensHologram
+     */
     private static CitizensHologram instance;
+    /**
+     * Instance of HolographicDisplaysAPI
+     */
+    private final HolographicDisplaysAPI holographicDisplaysAPI;
 
     private final Map<Integer, List<NPCHologram>> npcs = new HashMap<>();
     private boolean follow;
@@ -49,10 +55,12 @@ public class CitizensHologram extends BukkitRunnable {
 
     public CitizensHologram() {
         super();
+        holographicDisplaysAPI = HolographicDisplaysAPI.get(BetonQuest.getInstance());
         if (instance != null) {
             return;
         }
         instance = this;
+
 
         initHolograms();
     }
@@ -214,7 +222,7 @@ public class CitizensHologram extends BukkitRunnable {
             if (BetonQuest.conditions(PlayerConverter.getID(player), npcHologram.conditions)) {
                 hologramEnabled = true;
                 if (npcHologram.hologram == null) {
-                    final Hologram hologram = HolographicDisplaysAPI.get(BetonQuest.getInstance()).createHologram(npc.getStoredLocation().add(npcHologram.vector));
+                    final Hologram hologram = holographicDisplaysAPI.createHologram(npc.getStoredLocation().add(npcHologram.vector));
                     hologram.setPlaceholderSetting(PlaceholderSetting.ENABLE_ALL);
                     hologram.getVisibilitySettings().setGlobalVisibility(VisibilitySettings.Visibility.HIDDEN);
                     updateHologramForPlayersLines(npcHologram, hologram);

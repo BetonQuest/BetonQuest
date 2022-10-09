@@ -10,7 +10,6 @@ import java.util.Arrays;
 /**
  * Creates a new instance for TopLine.
  */
-@SuppressWarnings("PMD.CommentRequired")
 @Getter
 public class TopLine extends AbstractLine {
     /**
@@ -77,7 +76,7 @@ public class TopLine extends AbstractLine {
                 continue;
             }
             final TopXLine line = topXObject.getEntries().get(i);
-            lines[i] = "§" + colors[0] + (i + 1) + ". §" + colors[1] + line.getPlayerName() + "§" + colors[2] + " - §" + colors[3] + line.getCount();
+            lines[i] = "§" + colors[0] + (i + 1) + ". §" + colors[1] + line.playerName() + "§" + colors[2] + " - §" + colors[3] + line.count();
         }
         return lines;
     }

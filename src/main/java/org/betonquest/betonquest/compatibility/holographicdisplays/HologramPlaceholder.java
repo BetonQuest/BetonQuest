@@ -10,7 +10,6 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Defines HolographicDisplays placeholder <code>{bq:package:variable}</code>.
  */
-@SuppressWarnings("PMD.CommentRequired")
 @CustomLog
 public class HologramPlaceholder implements IndividualPlaceholder {
 

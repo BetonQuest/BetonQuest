@@ -15,7 +15,6 @@ import java.util.UUID;
 /**
  * Holds data of a ranking.
  */
-@SuppressWarnings("PMD.CommentRequired")
 @CustomLog
 @Getter
 public class TopXObject {
@@ -60,9 +59,9 @@ public class TopXObject {
         entries.clear();
         final Connector con = new Connector();
 
-        QueryType query = QueryType.LOAD_TOP_10_POINTS_DESC;
+        QueryType query = QueryType.LOAD_TOP_X_POINTS_DESC;
         if (orderType == OrderType.ASCENDING) {
-            query = QueryType.LOAD_TOP_10_POINTS_ASC;
+            query = QueryType.LOAD_TOP_X_POINTS_ASC;
         }
 
         try (ResultSet resultSet = con.querySQL(query, category, String.valueOf(limit))) {

@@ -7,7 +7,6 @@ import org.bukkit.inventory.ItemStack;
 /**
  * Displays an item instead of text.
  */
-@SuppressWarnings("PMD.CommentRequired")
 @Getter
 public class ItemLine extends AbstractLine {
     /**

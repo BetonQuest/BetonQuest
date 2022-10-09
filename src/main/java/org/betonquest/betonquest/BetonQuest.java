@@ -1536,7 +1536,6 @@ public class BetonQuest extends JavaPlugin {
      * @return the value of this variable for given player
      */
     public String getVariableValue(final String packName, final String name, final String playerID) {
-
         if (!Config.getPackages().containsKey(packName)) {
             log.warn("Variable '" + name + "' contains the non-existent package '" + packName + "' !");
             return "";
@@ -1548,7 +1547,7 @@ public class BetonQuest extends JavaPlugin {
                 log.warn(pack, "Could not resolve variable '" + name + "'.");
                 return "";
             }
-            if ((playerID == null || playerID.trim().isEmpty()) && !var.isStaticness()) {
+            if ((playerID == null || playerID.isBlank()) && !var.isStaticness()) {
                 log.warn(pack, "Variable '" + name + "' cannot be executed without a player reference!");
                 return "";
             }

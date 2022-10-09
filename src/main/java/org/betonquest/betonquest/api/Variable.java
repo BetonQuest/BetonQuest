@@ -17,6 +17,10 @@ abstract public class Variable {
     /**
      * A variable marked as static can be executed even if the playerID in the
      * {@link #getValue(String)} method is null
+     * -- GETTER --
+     * Get the staticness of a variable
+     *
+     * @return The staticness
      */
     @Getter
     protected boolean staticness;

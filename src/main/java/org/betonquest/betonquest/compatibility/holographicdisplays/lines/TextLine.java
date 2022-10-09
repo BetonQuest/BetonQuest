@@ -6,7 +6,6 @@ import me.filoghost.holographicdisplays.api.hologram.Hologram;
 /**
  * Displays a simple text line with optional color codes
  */
-@SuppressWarnings("PMD.CommentRequired")
 @Getter
 public class TextLine extends AbstractLine {
     /**
