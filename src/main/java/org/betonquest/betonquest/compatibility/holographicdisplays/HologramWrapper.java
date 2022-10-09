@@ -35,7 +35,6 @@ import java.util.List;
  * @param identifier    Name of hologram from <code>custom.yml</code>
  * @param questPackage  {@link QuestPackage} in which the hologram is specified in.
  */
-@CustomLog
 public record HologramWrapper(int interval, Hologram hologram, boolean staticContent, ConditionID[] conditionList,
                               List<AbstractLine> cleanedLines, String identifier, QuestPackage questPackage) {
     /**
