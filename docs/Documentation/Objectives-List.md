@@ -311,12 +311,7 @@ Solution: The Cake is a lie!
 The objective's instruction string is defined as follows:
 
 1. The first argument is the password, use underscore characters (`_`) instead of spaces.
-   The password is a [regular expression](https://medium.com/factory-mind/regex-tutorial-a-simple-cheatsheet-by-examples-649dc1c3f285).
-   They are a little complicated but worth the effort if you want more control over what exactly matches. 
-   Websites like [regex101.com](https://regex101.com/) help with that complexity though.
-   The official [documentation](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/regex/Pattern.html#sum) for regular expressions
-   in Java might also help you.
-   If you don't want to get into them just write down the password but keep in mind that the players answer needs to be an exact match! 
+   The password is a [regular expression](Reference.md#regex-regular-expressions). 
 
 2. The prefix can be changed: The default (when no prefix is set) is the translated prefix from the *messages.yml* config in the user's language.             
    Note that every custom prefix is suffixed with `:⠀`, so `prefix:Library_password` will require the user to enter `Library password: myfancypassword`.     
@@ -332,10 +327,11 @@ The objective's instruction string is defined as follows:
 4. If you want to trigger one or more events when the player failed to guess the password you can use the argument `fail` with a list of events (comma separated).
    With disabled prefix every command or chat message will trigger these events!
 
-!!! example
-    ```YAML
-    password beton ignoreCase prefix:secret fail:failEvent1,failEvent2 events:message,reward
-    ```
+
+```YAML
+objectives:
+  theBetonPassword: "password beton ignoreCase prefix:secret fail:failEvent1,failEvent2 events:message,reward"
+```
 
 ## Pickup item: `pickup`
 

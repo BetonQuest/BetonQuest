@@ -135,7 +135,7 @@ Now that you know how to use events and conditions I'll show you what tags are. 
 
 ```YAML linenums="1"
   add_beton_tag: "tag add beton"
-  del_beton_tag: "tag del beton"
+  del_beton_tag: "tag delete beton"
 ```
 
 It's a good practice to give your events names that describe what they are doing. Imagine you have 100 events, `foo24`,
