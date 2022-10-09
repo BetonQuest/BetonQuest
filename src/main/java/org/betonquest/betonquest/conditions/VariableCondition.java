@@ -15,7 +15,13 @@ import java.util.regex.PatternSyntaxException;
 @CustomLog
 public class VariableCondition extends Condition {
 
+    /**
+     * The variable to compare with the regex.
+     */
     private final VariableString variable;
+    /**
+     * The regex the variable must match.
+     */
     private final VariableString regex;
 
     /**
@@ -38,7 +44,8 @@ public class VariableCondition extends Condition {
             return resolvedVariable.matches(resolvedRegex);
         } catch (final PatternSyntaxException e) {
             final String variableAddress = this.instruction.getID().toString();
-            LOG.warn("Invalid regular expression '%s' used in variable condition '%s'.".formatted(e.getPattern(), variableAddress), e);
+            LOG.warn("Invalid regular expression '%s' used in variable condition '%s'. Error: %s"
+                    .formatted(e.getPattern(), variableAddress, e.getMessage()), e);
             return false;
         }
     }
