@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -43,17 +44,17 @@ public class CommandObjective extends Objective implements Listener {
     @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
     @EventHandler(priority = EventPriority.LOWEST)
     public void onCommand(final PlayerCommandPreprocessEvent event) {
-        final String playerID = PlayerConverter.getID(event.getPlayer());
-        if (containsPlayer(playerID) && checkConditions(playerID)) {
-            final String replaceCommand = getCommandWithVariablesReplaced(playerID);
+        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        if (containsPlayer(profile) && checkConditions(profile)) {
+            final String replaceCommand = getCommandWithVariablesReplaced(profile);
             if (foundMatch(event.getMessage(), replaceCommand)) {
                 if (cancel) {
                     event.setCancelled(true);
                 }
-                completeObjective(playerID);
+                completeObjective(profile);
             } else {
                 for (final EventID failEvent : failEvents) {
-                    BetonQuest.event(playerID, failEvent);
+                    BetonQuest.event(profile, failEvent);
                 }
             }
         }
@@ -75,7 +76,7 @@ public class CommandObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(final String name, final String playerID) {
+    public String getProperty(final String name, final Profile profile) {
         return "";
     }
 
@@ -101,12 +102,12 @@ public class CommandObjective extends Objective implements Listener {
         return variables;
     }
 
-    private String getCommandWithVariablesReplaced(final String playerID) {
+    private String getCommandWithVariablesReplaced(final Profile profile) {
         String replaceCommand = command;
         for (final String variable : commandVariables) {
             replaceCommand = replaceCommand.replace(
                     variable,
-                    BetonQuest.getInstance().getVariableValue(instruction.getPackage().getPackagePath(), variable, playerID)
+                    BetonQuest.getInstance().getVariableValue(instruction.getPackage().getPackagePath(), variable, profile)
             );
         }
         return replaceCommand;

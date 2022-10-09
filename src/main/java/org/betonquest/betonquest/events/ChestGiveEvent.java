@@ -3,6 +3,7 @@ package org.betonquest.betonquest.events;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.item.QuestItem;
@@ -32,18 +33,18 @@ public class ChestGiveEvent extends QuestEvent {
 
     @Override
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-    protected Void execute(final String playerID) throws QuestRuntimeException {
-        final Block block = loc.getLocation(playerID).getBlock();
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
+        final Block block = loc.getLocation(profile).getBlock();
         final InventoryHolder chest;
         try {
             chest = (InventoryHolder) block.getState();
-        } catch (ClassCastException e) {
+        } catch (final ClassCastException e) {
             throw new QuestRuntimeException("Trying to put items in chest, but there's no chest! Location: X"
                     + block.getX() + " Y" + block.getY() + " Z" + block.getZ(), e);
         }
         for (final Item theItem : questItems) {
             final QuestItem questItem = theItem.getItem();
-            int amount = theItem.getAmount().getInt(playerID);
+            int amount = theItem.getAmount().getInt(profile);
             while (amount > 0) {
                 final int stackSize;
                 if (amount > 64) {

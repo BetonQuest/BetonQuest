@@ -6,9 +6,9 @@ import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 
 /**
@@ -32,16 +32,16 @@ public class NPCDistanceCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
         final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
         if (npc == null) {
             throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
         }
-        final Player player = PlayerConverter.getPlayer(playerID);
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
         if (!player.getWorld().equals(npc.getStoredLocation().getWorld())) {
             return false;
         }
-        final double distance = this.distance.getDouble(playerID);
+        final double distance = this.distance.getDouble(profile);
         return npc.getStoredLocation().distanceSquared(player.getLocation()) <= distance * distance;
     }
 }

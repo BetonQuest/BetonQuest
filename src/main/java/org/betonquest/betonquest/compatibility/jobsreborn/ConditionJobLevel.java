@@ -5,9 +5,8 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.PlayerConverter;
-import org.bukkit.entity.Player;
 
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class ConditionJobLevel extends Condition {
                 try {
                     this.nMinLevel = Integer.parseInt(instruction.getPart(2));
                     this.nMaxLevel = Integer.parseInt(instruction.getPart(3));
-                } catch (InstructionParseException e) {
+                } catch (final InstructionParseException e) {
                     throw new InstructionParseException("NUJobs_Joblevel: Unable to parse the min or max level", e);
                 }
                 return;
@@ -39,10 +38,8 @@ public class ConditionJobLevel extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) {
-        final Player oPlayer = PlayerConverter.getPlayer(playerID);
-
-        final List<JobProgression> oJobs = Jobs.getPlayerManager().getJobsPlayer(oPlayer).getJobProgression();
+    protected Boolean execute(final Profile profile) {
+        final List<JobProgression> oJobs = Jobs.getPlayerManager().getJobsPlayer(profile.getOfflinePlayer().getUniqueId()).getJobProgression();
         for (final JobProgression oJob : oJobs) {
             if (oJob.getJob().getName().equalsIgnoreCase(sJobName) && oJob.getLevel() >= nMinLevel && oJob.getLevel() <= nMaxLevel) {
                 return true;

@@ -6,6 +6,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.CountingObjective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -114,21 +115,21 @@ public class EntityInteractObjective extends CountingObjective {
             }
             final List<MetadataValue> meta = entity.getMetadata("betonquest-marked");
             for (final MetadataValue m : meta) {
-                if (!m.asString().equals(marked.replace("%player%", player.getName()))) {
+                if (!m.asString().equals(marked.replace("%player%", PlayerConverter.getID(player).getProfileUUID().toString()))) {
                     return false;
                 }
             }
         }
-        // check if the player has this objective
-        final String playerID = PlayerConverter.getID(player);
-        if (!containsPlayer(playerID) || !checkConditions(playerID)) {
+        // check if the profile has this objective
+        final Profile profile = PlayerConverter.getID(player);
+        if (!containsPlayer(profile) || !checkConditions(profile)) {
             return false;
         }
         // Check location matches
         if (loc != null) {
             try {
-                final Location location = loc.getLocation(playerID);
-                final double pRange = range.getDouble(playerID);
+                final Location location = loc.getLocation(profile);
+                final double pRange = range.getDouble(profile);
                 if (!entity.getWorld().equals(location.getWorld())
                         || entity.getLocation().distance(location) > pRange) {
                     return false;
@@ -138,9 +139,9 @@ public class EntityInteractObjective extends CountingObjective {
             }
         }
 
-        final boolean success = ((EntityInteractData) dataMap.get(playerID)).tryProgressWithEntity(entity);
+        final boolean success = ((EntityInteractData) dataMap.get(profile)).tryProgressWithEntity(entity);
         if (success) {
-            completeIfDoneOrNotify(playerID);
+            completeIfDoneOrNotify(profile);
         }
         return success;
     }
@@ -164,8 +165,8 @@ public class EntityInteractObjective extends CountingObjective {
         private final Set<UUID> entities;
 
         @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-        public EntityInteractData(final String instruction, final String playerID, final String objID) {
-            super(instruction, playerID, objID);
+        public EntityInteractData(final String instruction, final Profile profile, final String objID) {
+            super(instruction, profile, objID);
             entities = new HashSet<>();
             final String[] entityInstruction = instruction.split(";", 3);
             if (entityInstruction.length >= 2 && !entityInstruction[1].isEmpty()) {

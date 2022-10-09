@@ -4,6 +4,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.item.QuestItem;
@@ -31,18 +32,18 @@ public class ChestTakeEvent extends QuestEvent {
 
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    protected Void execute(final String playerID) throws QuestRuntimeException {
-        final Block block = loc.getLocation(playerID).getBlock();
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
+        final Block block = loc.getLocation(profile).getBlock();
         final InventoryHolder chest;
         try {
             chest = (InventoryHolder) block.getState();
-        } catch (ClassCastException e) {
+        } catch (final ClassCastException e) {
             throw new QuestRuntimeException("Trying to take items from chest, but there's no chest! Location: X"
                     + block.getX() + " Y" + block.getY() + " Z" + block.getZ(), e);
         }
         for (final Item item : questItems) {
             final QuestItem questItem = item.getItem();
-            final int amount = item.getAmount().getInt(playerID);
+            final int amount = item.getAmount().getInt(profile);
             // Remove Quest items from player's inventory
             chest.getInventory().setContents(removeItems(chest.getInventory().getContents(), questItem, amount));
         }

@@ -4,6 +4,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
@@ -31,18 +32,18 @@ public class ChestItemCondition extends Condition {
 
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        final Block block = loc.getLocation(playerID).getBlock();
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        final Block block = loc.getLocation(profile).getBlock();
         final InventoryHolder chest;
         try {
             chest = (InventoryHolder) block.getState();
-        } catch (ClassCastException e) {
+        } catch (final ClassCastException e) {
             throw new QuestRuntimeException("Trying to check items in a chest, but there's no chest! Location: X" + block.getX() + " Y"
                     + block.getY() + " Z" + block.getZ(), e);
         }
         int counter = 0;
         for (final Item questItem : questItems) {
-            int amount = questItem.getAmount().getInt(playerID);
+            int amount = questItem.getAmount().getInt(profile);
             final ItemStack[] inventoryItems = chest.getInventory().getContents();
             for (final ItemStack item : inventoryItems) {
                 if (item == null) {

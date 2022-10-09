@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.utils.math.tokens;
 
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 /**
@@ -40,8 +41,8 @@ public class Parenthesis implements Token {
     }
 
     @Override
-    public double resolve(final String playerID) throws QuestRuntimeException {
-        return inside.resolve(playerID);
+    public double resolve(final Profile profile) throws QuestRuntimeException {
+        return inside.resolve(profile);
     }
 
     @Override

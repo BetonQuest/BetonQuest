@@ -2,6 +2,7 @@ package org.betonquest.betonquest.item;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.item.typehandler.BookHandler;
@@ -446,12 +447,22 @@ public class QuestItem {
      * Generates this quest item as ItemStack with given amount.
      *
      * @param stackSize size of generated stack
-     * @param playerID  optional playerID parameter
+     * @return the ItemStack equal to this quest item
+     */
+    public ItemStack generate(final int stackSize) {
+        return generate(stackSize, null);
+    }
+
+    /**
+     * Generates this quest item as ItemStack with given amount.
+     *
+     * @param stackSize size of generated stack
+     * @param profile   profile parameter
      * @return the ItemStack equal to this quest item
      */
     @SuppressWarnings("PMD.NPathComplexity")
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public ItemStack generate(final int stackSize, final String... playerID) {
+    public ItemStack generate(final int stackSize, final Profile profile) {
         // Try resolve material directly
         final Material material = selector.getRandomMaterial();
 
@@ -494,8 +505,7 @@ public class QuestItem {
         }
         if (meta instanceof SkullMeta) {
             final SkullMeta skullMeta = (SkullMeta) meta;
-            final String uuid = playerID.length > 0 ? playerID[0] : null;
-            skullMeta.setOwner(head.get(uuid));
+            skullMeta.setOwner(head.get(profile));
         }
         if (meta instanceof LeatherArmorMeta) {
             final LeatherArmorMeta armorMeta = (LeatherArmorMeta) meta;

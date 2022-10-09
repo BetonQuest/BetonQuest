@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.utils.math.tokens;
 
+import org.betonquest.betonquest.api.profiles.Profile;
+
 /**
  * Token that is just any number.
  *
@@ -24,7 +26,7 @@ public class Number implements Token {
     }
 
     @Override
-    public double resolve(final String playerID) {
+    public double resolve(final Profile profile) {
         return value;
     }
 

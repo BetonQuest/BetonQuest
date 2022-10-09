@@ -4,11 +4,11 @@ import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.events.AbstractTakeEvent;
 import org.betonquest.betonquest.events.TakeEvent;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -45,24 +45,24 @@ public class MMOItemsTakeEvent extends AbstractTakeEvent {
     }
 
     @Override
-    protected Void execute(final String playerID) throws QuestRuntimeException {
-        final Player player = PlayerConverter.getPlayer(playerID);
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
         final UUID uuid = player.getUniqueId();
 
-        final int deleteAmount = deleteAmountVar.getInt(playerID);
+        final int deleteAmount = deleteAmountVar.getInt(profile);
         neededDeletions.put(uuid, deleteAmount);
 
         checkSelectedTypes(player);
 
         final ItemStack item = MMOItemsUtils.getMMOItemStack(itemType, itemID);
         final String itemName = item.getItemMeta().getDisplayName();
-        notifyPlayer(playerID, itemName, deleteAmount - neededDeletions.get(uuid));
+        notifyPlayer(profile, itemName, deleteAmount - neededDeletions.get(uuid));
         return null;
     }
 
     @Override
-    protected ItemStack[] takeDesiredAmount(final Player player, final ItemStack... items) {
-        int desiredDeletions = neededDeletions.get(player.getUniqueId());
+    protected ItemStack[] takeDesiredAmount(final Profile profile, final ItemStack... items) {
+        int desiredDeletions = neededDeletions.get(profile.getOfflinePlayer().getUniqueId());
 
         for (int i = 0; i < items.length && desiredDeletions > 0; i++) {
             final ItemStack item = items[i];
@@ -77,7 +77,7 @@ public class MMOItemsTakeEvent extends AbstractTakeEvent {
             }
         }
 
-        neededDeletions.put(player.getUniqueId(), desiredDeletions);
+        neededDeletions.put(profile.getOfflinePlayer().getUniqueId(), desiredDeletions);
         return items;
     }
 }

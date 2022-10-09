@@ -6,6 +6,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -15,7 +16,6 @@ import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.item.QuestItem;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -172,25 +172,25 @@ public class QuestCanceler {
      * Checks conditions of this canceler to decide if it should be shown to the
      * player or not.
      *
-     * @param playerID ID of the player
+     * @param profile the {@link Profile} of the player
      * @return true if all conditions are met, false otherwise
      */
-    public boolean show(final String playerID) {
+    public boolean show(final Profile profile) {
         if (conditions == null) {
             return true;
         }
-        return BetonQuest.conditions(playerID, conditions);
+        return BetonQuest.conditions(profile, conditions);
     }
 
     /**
      * Cancels the quest for specified player.
      *
-     * @param playerID ID of the player
+     * @param profile the {@link Profile} of the player
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
-    public void cancel(final String playerID) {
-        LOG.debug("Canceling the quest " + name + " for player " + PlayerConverter.getName(playerID));
-        final PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
+    public void cancel(final Profile profile) {
+        LOG.debug("Canceling the quest " + name + " for player " + profile.getProfileName());
+        final PlayerData playerData = BetonQuest.getInstance().getPlayerData(profile);
         // remove tags, points, objectives and journals
         if (tags != null) {
             for (final String tag : tags) {
@@ -216,7 +216,7 @@ public class QuestCanceler {
             for (final ObjectiveID objectiveID : objectives) {
                 LOG.debug(objectiveID.getPackage(), "  Removing objective " + objectiveID);
                 final Objective objective = BetonQuest.getInstance().getObjective(objectiveID);
-                objective.cancelObjectiveForPlayer(playerID);
+                objective.cancelObjectiveForPlayer(profile);
                 playerData.removeRawObjective(objectiveID);
             }
         }
@@ -235,19 +235,19 @@ public class QuestCanceler {
         // teleport player to the location
         if (loc != null) {
             LOG.debug("  Teleporting to new location");
-            PlayerConverter.getPlayer(playerID).teleport(loc);
+            profile.getOnlineProfile().getOnlinePlayer().teleport(loc);
         }
         // fire all events
         if (events != null) {
             for (final EventID event : events) {
-                BetonQuest.event(playerID, event);
+                BetonQuest.event(profile, event);
             }
         }
         // done
         LOG.debug("Quest removed!");
-        final String questName = getName(playerID);
+        final String questName = getName(profile);
         try {
-            Config.sendNotify(pack.getPackagePath(), playerID, "quest_canceled", new String[]{questName}, "quest_cancelled,quest_canceled,info");
+            Config.sendNotify(pack.getPackagePath(), profile.getOnlineProfile(), "quest_canceled", new String[]{questName}, "quest_cancelled,quest_canceled,info");
         } catch (final QuestRuntimeException exception) {
             LOG.warn("The notify system was unable to play a sound for the 'quest_canceled' category in quest '" + name + "'. Error was: '" + exception.getMessage() + "'");
         }
@@ -258,11 +258,11 @@ public class QuestCanceler {
      * default language, English or if none of above are specified, simply
      * "Quest". In that case, it will also log an error to the console.
      *
-     * @param playerID ID of the player
+     * @param profile the {@link Profile} of the player
      * @return the name of the quest canceler
      */
-    public String getName(final String playerID) {
-        String questName = name.get(BetonQuest.getInstance().getPlayerData(playerID).getLanguage());
+    public String getName(final Profile profile) {
+        String questName = name.get(BetonQuest.getInstance().getPlayerData(profile).getLanguage());
         if (questName == null) {
             questName = name.get(Config.getLanguage());
         }
@@ -277,7 +277,7 @@ public class QuestCanceler {
     }
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public ItemStack getItem(final String playerID) {
+    public ItemStack getItem(final Profile profile) {
         ItemStack stack = new ItemStack(Material.BONE);
         if (item != null) {
             try {
@@ -288,7 +288,7 @@ public class QuestCanceler {
             }
         }
         final ItemMeta meta = stack.getItemMeta();
-        meta.setDisplayName(getName(playerID));
+        meta.setDisplayName(getName(profile));
         stack.setItemMeta(meta);
         return stack;
     }

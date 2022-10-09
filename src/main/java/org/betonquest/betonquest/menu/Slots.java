@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.menu;
 
-import org.bukkit.entity.Player;
+import org.betonquest.betonquest.api.profiles.Profile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,13 +129,13 @@ public class Slots {
     }
 
     /**
-     * @param player the player for which these slots should get displayed for
+     * @param profile the player from the {@link Profile} for which these slots should get displayed for
      * @return all items which should be shown to the specified player of the slots covered by this object
      */
-    public List<MenuItem> getItems(final Player player) {
+    public List<MenuItem> getItems(final Profile profile) {
         final List<MenuItem> items = new ArrayList<>();
         for (final MenuItem item : this.items) {
-            if (item.display(player)) {
+            if (item.display(profile)) {
                 items.add(item);
             }
         }
@@ -165,18 +165,18 @@ public class Slots {
     }
 
     /**
-     * @param player the player for which these slots should get displayed for
-     * @param slot   the slot which should contain this item
+     * @param profile the player {@link Profile} for which these slots should get displayed for
+     * @param slot    the slot which should contain this item
      * @return the menu item which should be displayed in the given slot to the player
      */
     @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
-    public MenuItem getItem(final Player player, final int slot) {
+    public MenuItem getItem(final Profile profile, final int slot) {
         final int index = this.getIndex(slot);
         if (index == -1) {
             throw new RuntimeException("Invalid slot for Slots '" + this + "': " + slot);
         }
         try {
-            return this.getItems(player).get(index);
+            return this.getItems(profile).get(index);
         } catch (final IndexOutOfBoundsException e) {
             return null;
         }

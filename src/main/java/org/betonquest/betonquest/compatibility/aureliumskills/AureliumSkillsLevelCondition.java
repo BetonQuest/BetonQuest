@@ -6,9 +6,9 @@ import com.archyx.aureliumskills.skills.Skill;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 
 /**
@@ -36,11 +36,11 @@ public class AureliumSkillsLevelCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        final Player player = PlayerConverter.getPlayer(playerID);
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
 
         final int actualLevel = AureliumAPI.getSkillLevel(player, skill);
-        final int targetLevel = targetLevelVar.getInt(playerID);
+        final int targetLevel = targetLevelVar.getInt(profile);
 
         return mustBeEqual ? actualLevel == targetLevel : actualLevel >= targetLevel;
     }

@@ -7,9 +7,9 @@ import com.archyx.aureliumskills.skills.Skill;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings({"PMD.CommentRequired", "PMD.PreserveStackTrace"})
@@ -35,15 +35,15 @@ public class AureliumSkillsExperienceEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final String playerID) throws QuestRuntimeException {
-        final Player player = PlayerConverter.getPlayer(playerID);
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
         final PlayerData playerData = aureliumSkills.getPlayerManager().getPlayerData(player);
 
         if (playerData == null) {
             return null;
         }
 
-        final int amount = amountVar.getInt(playerID);
+        final int amount = amountVar.getInt(profile);
 
         if (isLevel) {
             final int currentLevel = playerData.getSkillLevel(skill);

@@ -42,6 +42,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - variable support
     - top lists ordered by point values of players
 - `freeze` event - ProtocolLib compatibility feature: Blocks the player from moving for the specified amount of ticks
+- `block` objective - properties: `absoluteAmount`, `absoluteLeft` and `absoluteTotal`
 - `command` objective
 - `equip` objective
 - `delay` objective - now support variables
@@ -101,6 +102,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `paste` event - can now be static
 - `chestput` objective - can now block other players from accessing a chest while someone is putting items inside
 - The location and region objectives now register movement of players inside a vehicle
+- written book is now readable as a quest item
 - HolographicDisplays updated to 3.0.0
 - Added staticness indicator to variables that can be executed without a direct player connection
 - Things that are also changed in 1.12.X:

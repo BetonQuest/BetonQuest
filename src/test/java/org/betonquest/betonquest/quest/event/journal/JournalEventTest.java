@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.event.journal;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Journal;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.quest.event.NotificationSender;
@@ -24,17 +25,17 @@ class JournalEventTest {
     void testJournalEventChangesUpdatesAndNotifiesInOrder(
             @Mock final BetonQuest betonQuest, @Mock final PlayerData data, @Mock final Journal journal,
             @Mock final JournalChanger changer, @Mock final NotificationSender sender) {
-        final String playerId = "fake-id";
-        when(betonQuest.getOfflinePlayerData(playerId)).thenReturn(data);
+        final Profile profile = mock(Profile.class);
+        when(betonQuest.getOfflinePlayerData(profile)).thenReturn(data);
         when(data.getJournal()).thenReturn(journal);
 
         final JournalEvent event = new JournalEvent(betonQuest, changer, sender);
 
-        event.execute(playerId);
+        event.execute(profile);
 
         final InOrder order = inOrder(journal, changer, sender);
         order.verify(changer).changeJournal(journal);
         order.verify(journal).update();
-        order.verify(sender).sendNotification(playerId);
+        order.verify(sender).sendNotification(profile.getOnlineProfile());
     }
 }

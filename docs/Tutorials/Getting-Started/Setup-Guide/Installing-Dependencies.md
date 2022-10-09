@@ -2,7 +2,7 @@
 icon: octicons/download-24
 ---
 # Installation
-1. In order to use [BetonQuest](https://www.spigotmc.org/resources/2117/) you (obviously)
+1. In order to use [BetonQuest](https://betonquest.org/) you (obviously)
    need to add the "_BetonQuest.jar_" that you downloaded from Spigot to the "_plugins_" folder in the server.
 
     !!! warning "Dev Build Documentation Disclaimer"

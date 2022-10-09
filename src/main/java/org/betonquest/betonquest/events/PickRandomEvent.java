@@ -4,6 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -68,15 +69,15 @@ public class PickRandomEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final String playerID) throws QuestRuntimeException {
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
         final List<RandomEvent> events = new ArrayList<>(this.events);
         double total = 0;
         // Calculate total amount of all "percentages" (so that it must not be 100)
         for (final RandomEvent event : events) {
-            total += event.getChance().getDouble(playerID);
+            total += event.getChance().getDouble(profile);
         }
         //pick as many events as given with pick optional (or 1 if amount wasn't specified)
-        int pick = this.amount == null ? 1 : this.amount.getInt(playerID);
+        int pick = this.amount == null ? 1 : this.amount.getInt(profile);
         while (pick > 0 && !events.isEmpty()) {
             pick--;
             //choose a random number between 0 and the total amount of percentages
@@ -85,11 +86,11 @@ public class PickRandomEvent extends QuestEvent {
             //go through all random events and pick the first one where the current sum is higher than the found random number
             for (int i = 0; i < events.size(); i++) {
                 final RandomEvent event = events.get(i);
-                final double chance = event.getChance().getDouble(playerID);
+                final double chance = event.getChance().getDouble(profile);
                 current += chance;
                 if (current >= found) {
                     //run the event
-                    BetonQuest.event(playerID, event.getIdentifier());
+                    BetonQuest.event(profile, event.getIdentifier());
                     //remove the event from the list so that it's not picked again
                     events.remove(i);
                     total -= chance;

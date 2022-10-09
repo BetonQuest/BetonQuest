@@ -1,8 +1,10 @@
 package org.betonquest.betonquest.compatibility.placeholderapi;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.CustomLog;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -10,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("PMD.CommentRequired")
 @SuppressFBWarnings("HE_INHERITS_EQUALS_USE_HASHCODE")
+@CustomLog(topic = "PlaceholderAPI Integration")
 public class BetonQuestPlaceholder extends PlaceholderExpansion {
 
     public BetonQuestPlaceholder() {
@@ -79,13 +82,13 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
         final String placeholderIdentifier;
         final int index = identifier.indexOf(':');
         if (index == -1) {
-            pack = null;
-            placeholderIdentifier = identifier;
+            LOG.warn("Variable without explicit package requested through PAPI: '%s'".formatted(identifier));
+            return "";
         } else {
             pack = identifier.substring(0, index);
             placeholderIdentifier = identifier.substring(index + 1);
         }
-        final String playerID = player == null ? null : PlayerConverter.getID(player);
-        return BetonQuest.getInstance().getVariableValue(pack, '%' + placeholderIdentifier + '%', playerID);
+        final Profile profile = player == null ? null : PlayerConverter.getID(player);
+        return BetonQuest.getInstance().getVariableValue(pack, '%' + placeholderIdentifier + '%', profile);
     }
 }

@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.utils.math.tokens;
 
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 /**
@@ -26,8 +27,8 @@ public class AbsoluteValue implements Token {
     }
 
     @Override
-    public double resolve(final String playerID) throws QuestRuntimeException {
-        return Math.abs(inside.resolve(playerID));
+    public double resolve(final Profile profile) throws QuestRuntimeException {
+        return Math.abs(inside.resolve(profile));
     }
 
     @Override

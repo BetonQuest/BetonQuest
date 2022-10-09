@@ -5,12 +5,14 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.Database;
 import org.betonquest.betonquest.database.QueryType;
 import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.modules.config.Zipper;
 import org.bukkit.ChatColor;
@@ -357,16 +359,16 @@ public final class Utils {
     }
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public static List<String> getParty(final String playerID, final double range, final String pack, final ConditionID... conditions) {
-        final List<String> list = new ArrayList<>();
-        final Player player = PlayerConverter.getPlayer(playerID);
+    public static List<Profile> getParty(final Profile profile, final double range, final String pack, final ConditionID... conditions) throws QuestRuntimeException {
+        final List<Profile> list = new ArrayList<>();
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
         final Location loc = player.getLocation();
         final double squared = range * range;
         for (final Player otherPlayer : loc.getWorld().getPlayers()) {
             if (otherPlayer.getLocation().distanceSquared(loc) <= squared) {
-                final String otherPlayerID = PlayerConverter.getID(otherPlayer);
-                if (BetonQuest.conditions(otherPlayerID, conditions)) {
-                    list.add(otherPlayerID);
+                final Profile otherProfile = PlayerConverter.getID(otherPlayer);
+                if (BetonQuest.conditions(otherProfile, conditions)) {
+                    list.add(otherProfile);
                 }
             }
         }

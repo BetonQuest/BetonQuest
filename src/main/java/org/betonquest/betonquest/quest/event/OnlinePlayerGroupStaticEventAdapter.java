@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.event;
 
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -27,7 +28,7 @@ public class OnlinePlayerGroupStaticEventAdapter implements StaticEvent {
      * Create a "static" event that will execute a normal event for every player provided by the supplying function.
      *
      * @param playerSupplier supplier for the player group
-     * @param event event to execute
+     * @param event          event to execute
      */
     public OnlinePlayerGroupStaticEventAdapter(final Supplier<? extends Iterable<? extends Player>> playerSupplier, final Event event) {
         playerCollectionSupplier = playerSupplier;
@@ -37,8 +38,8 @@ public class OnlinePlayerGroupStaticEventAdapter implements StaticEvent {
     @Override
     public void execute() throws QuestRuntimeException {
         for (final Player player : playerCollectionSupplier.get()) {
-            final String playerId = PlayerConverter.getID(player);
-            event.execute(playerId);
+            final Profile profile = PlayerConverter.getID(player);
+            event.execute(profile);
         }
     }
 }

@@ -4,11 +4,11 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.objectives.VariableObjective;
-import org.betonquest.betonquest.utils.PlayerConverter;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ public class VariableEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final String playerID) throws QuestRuntimeException {
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
         final Objective obj = BetonQuest.getInstance().getObjective(objectiveID);
         if (!(obj instanceof VariableObjective)) {
             throw new QuestRuntimeException(objectiveID.getFullID() + " is not a variable objective");
@@ -40,15 +40,15 @@ public class VariableEvent extends QuestEvent {
         String keyReplaced = key;
         for (final String v : keyVariables) {
             keyReplaced = keyReplaced.replace(v, BetonQuest.getInstance().getVariableValue(
-                    instruction.getPackage().getPackagePath(), v, playerID));
+                    instruction.getPackage().getPackagePath(), v, profile));
         }
         String valueReplaced = value;
         for (final String v : valueVariables) {
             valueReplaced = valueReplaced.replace(v, BetonQuest.getInstance().getVariableValue(
-                    instruction.getPackage().getPackagePath(), v, playerID));
+                    instruction.getPackage().getPackagePath(), v, profile));
         }
-        if (!objective.store(playerID, keyReplaced.replace('_', ' '), valueReplaced.replace('_', ' '))) {
-            throw new QuestRuntimeException("Player " + PlayerConverter.getName(playerID) + " does not have '" +
+        if (!objective.store(profile, keyReplaced.replace('_', ' '), valueReplaced.replace('_', ' '))) {
+            throw new QuestRuntimeException("Player " + profile.getProfileName() + " does not have '" +
                     objectiveID.getFullID() + "' objective, cannot store a variable.");
         }
         return null;

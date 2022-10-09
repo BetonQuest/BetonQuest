@@ -2,9 +2,9 @@ package org.betonquest.betonquest.quest.event;
 
 import lombok.CustomLog;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 
 /**
  * Decorator for events that do not support execution with offline players.
@@ -34,11 +34,11 @@ public class OnlinePlayerRequiredEvent implements Event {
     }
 
     @Override
-    public void execute(final String playerId) throws QuestRuntimeException {
-        if (PlayerConverter.getPlayer(playerId) == null) {
-            LOG.debug(questPackage, "Player " + playerId + " is offline, cannot fire event because it's not persistent.");
+    public void execute(final Profile profile) throws QuestRuntimeException {
+        if (profile.getPlayer().isEmpty()) {
+            LOG.debug(questPackage, "Player " + profile.getOfflinePlayer().getName() + " is offline, cannot fire event because it's not persistent.");
         } else {
-            event.execute(playerId);
+            event.execute(profile);
         }
     }
 }

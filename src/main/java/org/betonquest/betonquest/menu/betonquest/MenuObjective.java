@@ -4,12 +4,12 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.menu.Menu;
 import org.betonquest.betonquest.menu.MenuID;
 import org.betonquest.betonquest.menu.events.MenuOpenEvent;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -36,17 +36,17 @@ public class MenuObjective extends Objective implements Listener {
 
     @EventHandler
     public void onMenuOpen(final MenuOpenEvent event) {
-        final String playerID = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(playerID)) {
+        final Profile profile = event.getProfile();
+        if (!containsPlayer(profile)) {
             return;
         }
         if (!event.getMenu().equals(menuID)) {
             return;
         }
-        if (!checkConditions(playerID)) {
+        if (!checkConditions(profile)) {
             return;
         }
-        this.completeObjective(playerID);
+        this.completeObjective(profile);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class MenuObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(final String name, final String playerID) {
+    public String getProperty(final String name, final Profile profile) {
         if ("menu".equalsIgnoreCase(name)) {
             final Menu menuData = BetonQuest.getInstance().getRpgMenu().getMenu(menuID);
             if (menuData == null) {
@@ -73,7 +73,7 @@ public class MenuObjective extends Objective implements Listener {
                         + "menu with id " + menuID + " isn't loaded");
                 return "";
             }
-            return menuData.getTitle(playerID);
+            return menuData.getTitle(profile);
         }
         return "";
     }

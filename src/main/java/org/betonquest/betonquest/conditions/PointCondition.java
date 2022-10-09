@@ -5,6 +5,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Point;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.Utils;
@@ -30,12 +31,12 @@ public class PointCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        return check(playerID, BetonQuest.getInstance().getPlayerData(playerID).getPoints());
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        return check(profile, BetonQuest.getInstance().getPlayerData(profile).getPoints());
     }
 
-    protected boolean check(final String playerID, final List<Point> points) throws QuestRuntimeException {
-        final int pCount = count.getInt(playerID);
+    protected boolean check(final Profile profile, final List<Point> points) throws QuestRuntimeException {
+        final int pCount = count.getInt(profile);
         for (final Point point : points) {
             if (point.getCategory().equalsIgnoreCase(category)) {
                 if (equal) {

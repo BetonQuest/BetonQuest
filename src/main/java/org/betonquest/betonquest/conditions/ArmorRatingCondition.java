@@ -3,9 +3,9 @@ package org.betonquest.betonquest.conditions;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -25,8 +25,8 @@ public class ArmorRatingCondition extends Condition {
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        final PlayerInventory inv = PlayerConverter.getPlayer(playerID).getInventory();
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        final PlayerInventory inv = profile.getOnlineProfile().getOnlinePlayer().getInventory();
         int rating = 0;
         final ItemStack boots = inv.getBoots();
         final ItemStack helmet = inv.getHelmet();
@@ -93,7 +93,7 @@ public class ArmorRatingCondition extends Condition {
                 rating += 8;
             }
         }
-        return rating >= required.getInt(playerID);
+        return rating >= required.getInt(profile);
     }
 
 }

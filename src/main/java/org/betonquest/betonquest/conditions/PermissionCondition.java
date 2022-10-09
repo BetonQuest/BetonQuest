@@ -2,8 +2,8 @@ package org.betonquest.betonquest.conditions;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 
 /**
  * Requires the player to have specified permission node
@@ -19,8 +19,8 @@ public class PermissionCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) {
-        return PlayerConverter.getPlayer(playerID).hasPermission(permission);
+    protected Boolean execute(final Profile profile) {
+        return profile.getOnlineProfile().getOnlinePlayer().hasPermission(permission);
     }
 
 }

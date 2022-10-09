@@ -3,6 +3,7 @@ package org.betonquest.betonquest.conditions;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
 /**
@@ -21,9 +22,9 @@ public class VariableCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) {
+    protected Boolean execute(final Profile profile) {
         if (variable.charAt(0) == '%' && variable.endsWith("%")) {
-            return BetonQuest.getInstance().getVariableValue(instruction.getPackage().getPackagePath(), variable, playerID).matches(regex);
+            return BetonQuest.getInstance().getVariableValue(instruction.getPackage().getPackagePath(), variable, profile).matches(regex);
         } else {
             return variable.matches(regex);
         }

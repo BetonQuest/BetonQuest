@@ -4,8 +4,8 @@ package org.betonquest.betonquest.variables;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Location;
 
 import java.math.RoundingMode;
@@ -41,8 +41,8 @@ public class LocationVariable extends Variable {
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override
-    public String getValue(final String playerID) {
-        final Location playerLocation = PlayerConverter.getPlayer(playerID).getLocation();
+    public String getValue(final Profile profile) {
+        final Location playerLocation = profile.getOnlineProfile().getOnlinePlayer().getLocation();
 
         switch (mode) {
             case XYZ:

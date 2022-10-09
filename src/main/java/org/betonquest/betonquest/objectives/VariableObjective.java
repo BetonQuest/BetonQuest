@@ -4,6 +4,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -53,8 +54,8 @@ public class VariableObjective extends Objective implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onChat(final AsyncPlayerChatEvent event) {
-        final String playerID = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(playerID)) {
+        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        if (!containsPlayer(profile)) {
             return;
         }
         final Matcher chatVariableMatcher = CHAT_VARIABLE_PATTERN.matcher(event.getMessage());
@@ -62,7 +63,7 @@ public class VariableObjective extends Objective implements Listener {
             event.setCancelled(true);
             final String key = chatVariableMatcher.group("key").toLowerCase(Locale.ROOT);
             final String value = chatVariableMatcher.group("value");
-            ((VariableData) dataMap.get(playerID)).add(key, value);
+            ((VariableData) dataMap.get(profile)).add(key, value);
             event.getPlayer().sendMessage("§2§l\u2713"); // send checkmark
         }
     }
@@ -70,14 +71,14 @@ public class VariableObjective extends Objective implements Listener {
     /**
      * Stores specified string in this objective.
      *
-     * @param playerID ID of the player
-     * @param key      key of the variable
-     * @param value    string to store
+     * @param profile the {@link Profile} of the player
+     * @param key     key of the variable
+     * @param value   string to store
      * @return true if it was stored, false if the player doesn't have this
      * objective
      */
-    public boolean store(final String playerID, final String key, final String value) {
-        final VariableData data = (VariableData) dataMap.get(playerID);
+    public boolean store(final Profile profile, final String key, final String value) {
+        final VariableData data = (VariableData) dataMap.get(profile);
         if (data == null) {
             return false;
         }
@@ -91,9 +92,9 @@ public class VariableObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(final String name, final String playerID) {
+    public String getProperty(final String name, final Profile profile) {
         final String key = name.toLowerCase(Locale.ROOT);
-        final String value = ((VariableData) dataMap.get(playerID)).get(key);
+        final String value = ((VariableData) dataMap.get(profile)).get(key);
         return value == null ? "" : value;
     }
 
@@ -101,8 +102,8 @@ public class VariableObjective extends Objective implements Listener {
 
         private final Map<String, String> variables = new HashMap<>();
 
-        public VariableData(final String instruction, final String playerID, final String objID) {
-            super(instruction, playerID, objID);
+        public VariableData(final String instruction, final Profile profile, final String objID) {
+            super(instruction, profile, objID);
             final String[] rawVariables = instruction.split("\n");
             for (final String rawVariable : rawVariables) {
                 if (rawVariable.contains(":")) {

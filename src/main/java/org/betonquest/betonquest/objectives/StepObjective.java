@@ -4,6 +4,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.BlockSelector;
@@ -58,8 +59,8 @@ public class StepObjective extends Objective implements Listener {
             return;
         }
         try {
-            final String playerID = PlayerConverter.getID(event.getPlayer());
-            final Block block = loc.getLocation(playerID).getBlock();
+            final Profile profile = PlayerConverter.getID(event.getPlayer());
+            final Block block = loc.getLocation(profile).getBlock();
             if (!clickedBlock.equals(block)) {
                 return;
             }
@@ -67,12 +68,12 @@ public class StepObjective extends Objective implements Listener {
             if (PRESSURE_PLATE_SELECTOR == null || !PRESSURE_PLATE_SELECTOR.match(block.getBlockData().getMaterial())) {
                 return;
             }
-            if (!containsPlayer(playerID)) {
+            if (!containsPlayer(profile)) {
                 return;
             }
             // player stepped on the pressure plate
-            if (checkConditions(playerID)) {
-                completeObjective(playerID);
+            if (checkConditions(profile)) {
+                completeObjective(profile);
             }
         } catch (final QuestRuntimeException e) {
             LOG.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
@@ -95,11 +96,11 @@ public class StepObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(final String name, final String playerID) {
+    public String getProperty(final String name, final Profile profile) {
         if ("location".equalsIgnoreCase(name)) {
             final Block block;
             try {
-                block = loc.getLocation(playerID).getBlock();
+                block = loc.getLocation(profile).getBlock();
             } catch (final QuestRuntimeException e) {
                 LOG.warn(instruction.getPackage(), "Error while getting location property in '" + instruction.getID() + "' objective: "
                         + e.getMessage(), e);

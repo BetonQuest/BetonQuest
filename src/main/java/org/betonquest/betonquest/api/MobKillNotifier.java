@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.api;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.ProfileEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -40,10 +40,10 @@ public class MobKillNotifier {
      * Call this method when you detect that a player killed a mob in a
      * non-standard way (i.e. a spell, projectile weapon etc.)
      *
-     * @param killer the player that killed the mob
+     * @param killer the {@link Profile} that killed the mob
      * @param killed the mob that was killed
      */
-    public static void addKill(final Player killer, final Entity killed) {
+    public static void addKill(final Profile killer, final Entity killed) {
         if (instance == null) {
             new MobKillNotifier();
         }
@@ -58,26 +58,17 @@ public class MobKillNotifier {
     /**
      * Is fired when BetonQuests receives info about a new, unique mob kill.
      */
-    public static class MobKilledEvent extends Event {
+    public static class MobKilledEvent extends ProfileEvent {
 
-        private final Player killer;
         private final Entity killed;
 
-        public MobKilledEvent(final Player killer, final Entity killed) {
-            super();
-            this.killer = killer;
+        public MobKilledEvent(final Profile killer, final Entity killed) {
+            super(killer);
             this.killed = killed;
         }
 
         public static HandlerList getHandlerList() {
             return HANDLERS;
-        }
-
-        /**
-         * @return the player that killed this entity
-         */
-        public Player getPlayer() {
-            return killer;
         }
 
         /**

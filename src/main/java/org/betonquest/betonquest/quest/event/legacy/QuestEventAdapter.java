@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.event.legacy;
 import lombok.CustomLog;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -29,7 +30,7 @@ public class QuestEventAdapter extends QuestEvent {
      * execution ({@code staticness = false}) then no {@link StaticEvent} instance must be provided.
      *
      * @param instruction instruction used to create the events
-     * @param event event to use
+     * @param event       event to use
      * @param staticEvent static event to use or null if no static execution is supported
      * @throws InstructionParseException if the instruction contains errors
      */
@@ -41,11 +42,11 @@ public class QuestEventAdapter extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final String playerId) throws QuestRuntimeException {
-        if (playerId == null) {
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
+        if (profile == null) {
             staticEvent.execute();
         } else {
-            event.execute(playerId);
+            event.execute(profile);
         }
         return null;
     }
