@@ -42,6 +42,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - added `q download` command
 - variable support for menu titles
 - configurable cooldown to menu conversation IO
+- holograms
+    - variable support
+    - top lists ordered by point values of players
 - `freeze` event - ProtocolLib compatibility feature: Blocks the player from moving for the specified amount of ticks
 - `block` objective - properties: `absoluteAmount`, `absoluteLeft` and `absoluteTotal`
 - `command` objective
@@ -66,7 +69,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `velocity` event - throws the player by a vector (can be variable) with a direction and modification
 - `block` objective - added argument `noSafety` which disables removing progress when the player does the opposite of what the objective asks for
 - `hunger` condition and event
-- `variable` condition - forceSync argument forces the condition to be checked on the main thread 
+- `variable` condition - forceSync argument forces the condition to be checked on the main thread
 - Things that are also added in 1.12.X:
     - new line support for `journal_lore` in `messages.yml`
     - FastAsyncWorldEdit compatibility
@@ -105,6 +108,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `chestput` objective - can now block other players from accessing a chest while someone is putting items inside
 - The location and region objectives now register movement of players inside a vehicle
 - written book is now readable as a quest item
+- HolographicDisplays updated to 3.0.0
+- Added staticness indicator to variables that can be executed without a direct player connection
 - Things that are also changed in 1.12.X:
     - math variable now allows rounding output with the ~ operator
     - French translation has been updated

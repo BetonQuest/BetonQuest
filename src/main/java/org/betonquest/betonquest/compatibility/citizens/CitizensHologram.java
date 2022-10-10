@@ -37,7 +37,9 @@ import java.util.Map;
 @SuppressWarnings({"PMD.CommentRequired", "PMD.GodClass", "PMD.AssignmentToNonFinalStatic"})
 @CustomLog
 public class CitizensHologram extends BukkitRunnable {
-
+    /**
+     * Singleton instance of CitizensHologram
+     */
     private static CitizensHologram instance;
 
     private final Map<Integer, List<NPCHologram>> npcs = new HashMap<>();
@@ -213,6 +215,7 @@ public class CitizensHologram extends BukkitRunnable {
                 hologramEnabled = true;
                 if (npcHologram.hologram == null) {
                     final BetonHologram hologram = HologramIntegrator.createHologram(String.valueOf(npc.getId()), npc.getStoredLocation().add(npcHologram.vector));
+                    hologram.setPlaceholderSetting(PlaceholderSetting.ENABLE_ALL);
                     hologram.hideAll();
                     updateHologramForPlayersLines(npcHologram, hologram);
                     npcHologram.hologram = hologram;

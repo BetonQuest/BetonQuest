@@ -19,6 +19,7 @@ public class GlobalTagVariable extends TagVariable {
      */
     public GlobalTagVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
+        staticness = true;
     }
 
     @Override
