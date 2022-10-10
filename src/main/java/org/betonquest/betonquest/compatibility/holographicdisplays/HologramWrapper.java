@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.holographicdisplays;
 
-import lombok.CustomLog;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.hologram.VisibilitySettings;
 import org.betonquest.betonquest.BetonQuest;
