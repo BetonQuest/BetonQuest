@@ -65,12 +65,13 @@ public class DecentHologramsHologram implements BetonHologram {
         Since DecentHolograms supports multiple pages whilst HolographicDisplays does not, we always assume
         that when modifying/inserting lines that we are dealing with page 0
          */
-        hologram.show(player, 0);
+        hologram.removeHidePlayer(player);
     }
 
     @Override
     public void hide(final Player player) {
-        hologram.hide(player);
+        hologram.setHidePlayer(player);
+
     }
 
     @Override
