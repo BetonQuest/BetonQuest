@@ -32,7 +32,7 @@ import static org.betonquest.betonquest.api.bukkit.config.custom.handle.Configur
  * This {@link MultiConfiguration} merges multiple {@link ConfigurationSection} to one big Configuration.
  */
 @SuppressWarnings("PMD.TooManyMethods")
-public class MultiConfiguration extends HandleModificationConfiguration {
+public class MultiConfiguration extends HandleModificationConfiguration implements MultiConfigurationSectionConfiguration {
     /**
      * All keys and a list of files that contains them.
      */
@@ -193,11 +193,7 @@ public class MultiConfiguration extends HandleModificationConfiguration {
         keyList.computeIfAbsent(sectionKey, key -> new CopyOnWriteArrayList<>()).add(sourceConfig);
     }
 
-    /**
-     * Returns if a save is needed on a {@link ConfigurationSection} or an unassociated entry.
-     *
-     * @return true, if a save is needed
-     */
+    @Override
     public boolean needSave() {
         if (!unsavedConfigs.isEmpty()) {
             return true;
@@ -210,41 +206,17 @@ public class MultiConfiguration extends HandleModificationConfiguration {
         return false;
     }
 
-    /**
-     * Gets all {@link ConfigurationSection}s that are unsaved.
-     * Make sure to call {@link MultiConfiguration#markAsSaved(ConfigurationSection)}s
-     * if you managed to successfully save a config.
-     *
-     * @return a list of all unsaved {@link ConfigurationSection}s
-     */
+    @Override
     public Set<ConfigurationSection> getUnsavedConfigs() {
         return new HashSet<>(unsavedConfigs);
     }
 
-    /**
-     * Marks the given {@link ConfigurationSection} as saved.
-     *
-     * @param section the {@link ConfigurationSection} to save
-     * @return true, if it was marked as saved
-     */
+    @Override
     public boolean markAsSaved(final ConfigurationSection section) {
         return unsavedConfigs.remove(section);
     }
 
-    /**
-     * Gets the configuration of a specified path. The path can also be a configuration section.
-     * <p>
-     * If the path is not set in this {@link MultiConfiguration} this will return null.
-     * This is also the case for default values.
-     * <p>
-     * If the path is a configuration section it will be checked,
-     * that every entry in the configuration section is from the same source configuration section.
-     * Otherwise, an {@link InvalidConfigurationException} is thrown.
-     *
-     * @param path The path of the entry to get the {@link ConfigurationSection} to
-     * @return The clearly {@link ConfigurationSection} of the given path
-     * @throws InvalidConfigurationException is thrown, if the given path is defined in multiple configuration
-     */
+    @Override
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public ConfigurationSection getSourceConfigurationSection(final String path) throws InvalidConfigurationException {
         if (!original.isSet(path)) {
@@ -268,11 +240,7 @@ public class MultiConfiguration extends HandleModificationConfiguration {
         return configurationSections.iterator().next();
     }
 
-    /**
-     * Gets all keys, that are not associated with a {@link ConfigurationSection}.
-     *
-     * @return a list of unassociated keys.
-     */
+    @Override
     public List<String> getUnassociatedKeys() {
         final List<String> unassociatedKeys = new ArrayList<>();
         for (final String key : original.getKeys(true)) {
@@ -283,25 +251,14 @@ public class MultiConfiguration extends HandleModificationConfiguration {
         return unassociatedKeys;
     }
 
-    /**
-     * All entries that are not associated with a {@link ConfigurationSection}
-     * will be associated with the given config.
-     *
-     * @param targetConfig the config to associate entries to
-     */
+    @Override
     public void associateWith(final ConfigurationSection targetConfig) {
         for (final String key : getUnassociatedKeys()) {
             associateWith(key, targetConfig);
         }
     }
 
-    /**
-     * All entries under the given path that are not associated with a {@link ConfigurationSection}
-     * will be associated with the given config.
-     *
-     * @param path         the path that should be associated with the given config
-     * @param targetConfig the config to associate entries to
-     */
+    @Override
     public void associateWith(final String path, final ConfigurationSection targetConfig) {
         if (!original.isSet(path)) {
             return;

@@ -43,7 +43,7 @@ public abstract class AbstractScheduleTest {
      * Before each test run prepare config and all mocks.
      */
     @BeforeEach
-    protected void beforeEach() {
+    protected void setupConfigs() {
         lenient().when(scheduleID.getPackage()).thenReturn(questPackage);
         prepareConfig();
     }

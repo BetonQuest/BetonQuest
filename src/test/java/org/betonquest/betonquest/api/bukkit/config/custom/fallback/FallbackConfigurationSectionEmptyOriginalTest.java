@@ -22,6 +22,27 @@ public class FallbackConfigurationSectionEmptyOriginalTest extends FallbackConfi
 
     @Test
     @Override
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    public void testSetSectionOverwritingExisting() {
+        assertTrue(config.isSet("childSection"));
+        final MemoryConfiguration configuration = new MemoryConfiguration();
+        configuration.set("test", "test");
+        config.set("childSection", configuration);
+        final ConfigurationSection childSection = config.getConfigurationSection("childSection");
+        assertNotNull(childSection);
+        assertEquals("[test, nestedChildSection, nestedChildSection.key]", childSection.getKeys(true).toString());
+    }
+
+    @Test
+    @Override
+    public void testSetExistingSectionToNull() {
+        assertTrue(config.isSet("childSection"));
+        config.set("childSection", null);
+        assertTrue(config.isSet("childSection"));
+    }
+
+    @Test
+    @Override
     public void testSetComments() {
         final List<String> comments = new ArrayList<>();
         comments.add("Test Comment");

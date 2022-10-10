@@ -7,6 +7,7 @@ import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -22,52 +23,59 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * This is a test for modifications of the {@link MultiConfiguration}.
  */
-@SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.JUnitTestContainsTooManyAsserts"})
-class MultiConfigurationModificationTest {
+@SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.JUnitTestContainsTooManyAsserts", "PMD.JUnit5TestShouldBePackagePrivate"})
+public class MultiConfigurationModificationTest<T extends Configuration & MultiConfigurationSectionConfiguration> {
 
     /**
      * {@link MultiConfiguration} part 1.
      */
-    private final Configuration config1;
+    protected Configuration config1;
     /**
      * {@link MultiConfiguration} part 2.
      */
-    private final Configuration config2;
+    protected Configuration config2;
     /**
      * {@link MultiConfiguration} part 3.
      */
-    private final Configuration config3;
+    protected Configuration config3;
     /**
      * The {@link MultiConfiguration} instance for testing.
      */
-    private final MultiConfiguration config;
+    private T config;
     /**
      * A {@link FileConfiguration} containing the result of the merged {@link MultiConfigurationModificationTest#config}.
      */
-    private final FileConfiguration configAll;
+    private FileConfiguration configAll;
 
     /**
-     * Create the configs.
+     * Creates the {@link MultiConfigurationModificationTest#configAll},
+     * {@link MultiConfigurationModificationTest#config1}, {@link MultiConfigurationModificationTest#config2},
+     * {@link MultiConfigurationModificationTest#config3} and {@link MultiConfigurationModificationTest#config}
+     * by calling the {@link MultiConfigurationModificationTest#getConfig()} method.
      */
-    public MultiConfigurationModificationTest() {
-        super();
+    @BeforeEach
+    public void setupConfigs() {
         configAll = YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/multi/modification/configAll.yml"));
-        final Map<ConfigurationSection, String> configs = new HashMap<>();
         config1 = YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/multi/modification/config1.yml"));
         config2 = YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/multi/modification/config2.yml"));
         config3 = YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/multi/modification/config3.yml"));
+        config = getConfig();
+    }
+
+    @SuppressWarnings("unchecked")
+    protected T getConfig() {
+        final Map<ConfigurationSection, String> configs = new HashMap<>();
         configs.put(config1, "config1.yml");
         configs.put(config2, "config2.yml");
         configs.put(config3, "config3.yml");
-        MultiConfiguration multiConfiguration = null;
         try {
-            multiConfiguration = new MultiConfiguration(new ArrayList<>(configs.keySet()));
+            return (T) new MultiConfiguration(new ArrayList<>(configs.keySet()));
         } catch (final KeyConflictException e) {
             fail(e.resolvedMessage(configs), e);
         } catch (final InvalidConfigurationException e) {
             fail(e);
         }
-        config = multiConfiguration;
+        return null;
     }
 
     @Test
@@ -180,23 +188,5 @@ class MultiConfigurationModificationTest {
                     assertEquals(config1, config);
                 },
                 "Not all entries are from the same source config");
-    }
-
-    @Test
-    void testDeletePath() {
-        assertTrue(config.isSet("events"));
-        config.set("events", null);
-        assertFalse(config.isSet("events"));
-    }
-
-    @Test
-    void testCheckConflictAndSet() {
-        assertTrue(config.isSet("events"));
-        final MemoryConfiguration configuration = new MemoryConfiguration();
-        configuration.set("test", "test");
-        config.set("events", configuration);
-        final ConfigurationSection events = config.getConfigurationSection("events");
-        assertNotNull(events);
-        assertEquals("[test]", events.getKeys(true).toString());
     }
 }

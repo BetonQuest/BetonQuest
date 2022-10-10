@@ -1,5 +1,7 @@
-package org.betonquest.betonquest.api.bukkit.config.custom.fallback;
+package org.betonquest.betonquest.api.bukkit.config.custom.multi.fallback;
 
+import org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfiguration;
+import org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfigurationNestedTest;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -13,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Tests the {@link FallbackConfiguration} class.
  */
 @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
-public class FallbackConfigurationNestedTest extends FallbackConfigurationTest {
+class FallbackConfigurationNestedWithMultiFallbackTest extends FallbackConfigurationNestedTest {
     @Override
     public Configuration getConfig() {
         final Configuration original = YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/fallback/original.yml"));

@@ -48,7 +48,7 @@ public class FallbackConfigurationSectionTest extends ConfigurationSectionBaseTe
      * Get a copy of the values in the config, before the test did run.
      */
     @BeforeEach
-    public void beforeEach() {
+    public void savePreviousValues() {
         values = fallback.getValues(true);
         final ConfigurationSection defaultSection = fallback.getDefaultSection();
         valuesDefault = defaultSection == null ? null : defaultSection.getValues(true);
@@ -59,7 +59,7 @@ public class FallbackConfigurationSectionTest extends ConfigurationSectionBaseTe
      * They should not have been changed.
      */
     @AfterEach
-    public void afterEach() {
+    public void assertNotModified() {
         assertEquals(values, fallback.getValues(true));
         final ConfigurationSection defaultSection = fallback.getDefaultSection();
         assertEquals(valuesDefault, defaultSection == null ? null : defaultSection.getValues(true));
