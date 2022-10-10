@@ -30,7 +30,10 @@ public enum QueryType {
 
     LOAD_ALL_GLOBAL_TAGS(prefix -> "SELECT * FROM " + prefix + "global_tags"),
     LOAD_ALL_GLOBAL_POINTS(prefix -> "SELECT * FROM " + prefix + "global_points"),
-    ;
+
+    LOAD_TOP_X_POINTS_ASC(prefix -> "SELECT * FROM " + prefix + "points WHERE category = ? ORDER BY count ASC LIMIT ?;"),
+
+    LOAD_TOP_X_POINTS_DESC(prefix -> "SELECT * FROM " + prefix + "points WHERE category = ? ORDER BY count DESC LIMIT ?;");
 
     /**
      * Function to create the SQL code from a prefix.

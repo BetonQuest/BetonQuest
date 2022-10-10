@@ -1548,6 +1548,10 @@ public class BetonQuest extends JavaPlugin {
                 log.warn(pack, "Could not resolve variable '" + name + "'.");
                 return "";
             }
+            if (profile == null && !var.isStaticness()) {
+                log.warn(pack, "Variable '" + name + "' cannot be executed without a player reference!");
+                return "";
+            }
             return var.getValue(profile);
         } catch (final InstructionParseException e) {
             log.warn(pack, "&cCould not create variable '" + name + "': " + e.getMessage(), e);
