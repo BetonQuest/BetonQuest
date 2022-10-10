@@ -4,7 +4,14 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.citizens.CitizensHologram;
+import org.betonquest.betonquest.exceptions.HookException;
+import org.betonquest.betonquest.exceptions.UnsupportedVersionException;
+import org.betonquest.betonquest.modules.versioning.UpdateStrategy;
+import org.betonquest.betonquest.modules.versioning.Version;
+import org.betonquest.betonquest.modules.versioning.VersionComparator;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -48,16 +55,30 @@ public class HologramIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final String pluginName) {
+    public void hook(final String pluginName) throws HookException {
         //This method may be called multiple times if multiple Hologram plugins are installed
         if (hologramType == null) {
             //If not initialised
+            if ("DecentHolograms".equalsIgnoreCase(pluginName)) {
+                validateVersion(pluginName, "2.7.3");
+            }
             hologramType = implementations.get(pluginName);
             hologramLoop = new HologramLoop();
 
             // if Citizens is hooked, start CitizensHologram
             if (Compatibility.getHooked().contains("Citizens")) {
                 new CitizensHologram();
+            }
+        }
+    }
+
+    private void validateVersion(final String pluginName, final String requiredVersion) throws UnsupportedVersionException {
+        final Plugin plugin = Bukkit.getPluginManager().getPlugin(pluginName);
+        if (plugin != null) {
+            final Version version = new Version(plugin.getDescription().getVersion());
+            final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR);
+            if (comparator.isOtherNewerThanCurrent(version, new Version(requiredVersion))) {
+                throw new UnsupportedVersionException(plugin, requiredVersion);
             }
         }
     }
