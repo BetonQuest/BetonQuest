@@ -40,114 +40,117 @@ public class HologramLoop {
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     public HologramLoop() {
-        // get all holograms and their condition
-        for (final QuestPackage pack : Config.getPackages().values()) {
-            final String packName = pack.getPackagePath();
-            final ConfigurationSection section = pack.getConfig().getConfigurationSection("holograms");
-            if (section == null) {
-                continue;
-            }
-            for (final String key : section.getKeys(false)) {
-                if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
-                    LOG.warn(pack, "Holograms won't be able to hide from players without ProtocolLib plugin! "
-                            + "Install it to use conditioned holograms.");
-                    runnable = null;
-                    return;
-                }
-                final List<String> lines = section.getStringList(key + ".lines");
-                final String rawConditions = section.getString(key + ".conditions");
-                final String rawLocation = section.getString(key + ".location");
-                final int checkInterval = section.getInt(key + ".check_interval", 0);
-                if (rawLocation == null) {
-                    LOG.warn(pack, "Location is not specified in " + key + " hologram");
+        //first check if plugin is enabled
+        if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
+            // get all holograms and their condition
+            for (final QuestPackage pack : Config.getPackages().values()) {
+                final String packName = pack.getPackagePath();
+                final ConfigurationSection section = pack.getConfig().getConfigurationSection("holograms");
+                if (section == null) {
                     continue;
                 }
-                ConditionID[] conditions = {};
-                if (rawConditions != null) {
-                    final String[] parts = rawConditions.split(",");
-                    conditions = new ConditionID[parts.length];
-                    for (int i = 0; i < conditions.length; i++) {
-                        try {
-                            conditions[i] = new ConditionID(pack, parts[i]);
-                        } catch (final ObjectNotFoundException e) {
-                            LOG.warn(pack, "Error while loading " + parts[i] + " condition for hologram " + packName + "."
-                                    + key + ": " + e.getMessage(), e);
-                        }
+
+                for (final String key : section.getKeys(false)) {
+                    final List<String> lines = section.getStringList(key + ".lines");
+                    final String rawConditions = section.getString(key + ".conditions");
+                    final String rawLocation = section.getString(key + ".location");
+                    final int checkInterval = section.getInt(key + ".check_interval", 0);
+                    if (rawLocation == null) {
+                        LOG.warn(pack, "Location is not specified in " + key + " hologram");
+                        continue;
                     }
-                }
-                final Location location;
-                try {
-                    location = new CompoundLocation(packName, pack.subst(rawLocation)).getLocation(null);
-                } catch (QuestRuntimeException | InstructionParseException e) {
-                    LOG.warn(pack, "Could not parse location in " + key + " hologram: " + e.getMessage(), e);
-                    continue;
-                }
-                final BetonHologram hologram = HologramIntegrator.createHologram(key, location);
-                hologram.hideAll();
-                for (final String line : lines) {
-                    // If line begins with 'item:', then we will assume its a
-                    // floating item
-                    if (line.startsWith("item:")) {
-                        try {
-                            final String[] args = line.substring(5).split(":");
-                            final ItemID itemID = new ItemID(pack, args[0]);
-                            int stackSize;
+                    ConditionID[] conditions = {};
+                    if (rawConditions != null) {
+                        final String[] parts = rawConditions.split(",");
+                        conditions = new ConditionID[parts.length];
+                        for (int i = 0; i < conditions.length; i++) {
                             try {
-                                stackSize = Integer.parseInt(args[1]);
-                            } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-                                stackSize = 1;
+                                conditions[i] = new ConditionID(pack, parts[i]);
+                            } catch (final ObjectNotFoundException e) {
+                                LOG.warn(pack, "Error while loading " + parts[i] + " condition for hologram " + packName + "."
+                                        + key + ": " + e.getMessage(), e);
                             }
-                            final ItemStack stack = new QuestItem(itemID).generate(stackSize);
-                            hologram.appendLine(stack);
-                        } catch (final InstructionParseException e) {
-                            LOG.warn(pack, "Could not parse item in " + key + " hologram: " + e.getMessage(), e);
-                        } catch (final ObjectNotFoundException e) {
-                            LOG.warn(pack, "Could not find item in " + key + " hologram: " + e.getMessage(), e);
                         }
-                    } else {
-                        hologram.appendLine(line.replace('&', '§'));
                     }
-                }
-                if (checkInterval == 0) {
-                    holograms.put(hologram, conditions);
-                } else {
-                    final ConditionID[] conditionsList = conditions;
-                    final BukkitRunnable runnable = new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            for (final Player player : Bukkit.getOnlinePlayers()) {
-                                final Profile profile = PlayerConverter.getID(player);
-                                if (!BetonQuest.conditions(profile, conditionsList)) {
-                                    hologram.hide(player);
-                                    continue;
+                    final Location location;
+                    try {
+                        location = new CompoundLocation(packName, pack.subst(rawLocation)).getLocation(null);
+                    } catch (QuestRuntimeException | InstructionParseException e) {
+                        LOG.warn(pack, "Could not parse location in " + key + " hologram: " + e.getMessage(), e);
+                        continue;
+                    }
+                    final BetonHologram hologram = HologramIntegrator.createHologram(key, location);
+                    hologram.hideAll();
+                    for (final String line : lines) {
+                        // If line begins with 'item:', then we will assume its a
+                        // floating item
+                        if (line.startsWith("item:")) {
+                            try {
+                                final String[] args = line.substring(5).split(":");
+                                final ItemID itemID = new ItemID(pack, args[0]);
+                                int stackSize;
+                                try {
+                                    stackSize = Integer.parseInt(args[1]);
+                                } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+                                    stackSize = 1;
                                 }
-                                hologram.show(player);
+                                final ItemStack stack = new QuestItem(itemID).generate(stackSize);
+                                hologram.appendLine(stack);
+                            } catch (final InstructionParseException e) {
+                                LOG.warn(pack, "Could not parse item in " + key + " hologram: " + e.getMessage(), e);
+                            } catch (final ObjectNotFoundException e) {
+                                LOG.warn(pack, "Could not find item in " + key + " hologram: " + e.getMessage(), e);
                             }
+                        } else {
+                            hologram.appendLine(line.replace('&', '§'));
                         }
-                    };
-                    runnable.runTaskTimerAsynchronously(BetonQuest.getInstance(), 20, checkInterval);
-                    runnables.put(hologram, runnable);
-                }
-            }
-        }
-        // loop the holograms to show/hide them
-        runnable = new BukkitRunnable() {
-            @Override
-            public void run() {
-                for (final Player player : Bukkit.getOnlinePlayers()) {
-                    final Profile profile = PlayerConverter.getID(player);
-                    for (final Entry<BetonHologram, ConditionID[]> entry : holograms.entrySet()) {
-                        if (!BetonQuest.conditions(profile, entry.getValue())) {
-                            entry.getKey().hide(player);
-                            continue;
-                        }
-                        entry.getKey().show(player);
+                    }
+                    if (checkInterval == 0) {
+                        holograms.put(hologram, conditions);
+                    } else {
+                        //only start runnables if conditions are enabled
+                        final ConditionID[] conditionsList = conditions;
+                        final BukkitRunnable runnable = new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                for (final Player player : Bukkit.getOnlinePlayers()) {
+                                    final Profile profile = PlayerConverter.getID(player);
+                                    if (!BetonQuest.conditions(profile, conditionsList)) {
+                                        hologram.hide(player);
+                                        continue;
+                                    }
+                                    hologram.show(player);
+                                }
+                            }
+                        };
+                        runnable.runTaskTimerAsynchronously(BetonQuest.getInstance(), 20, checkInterval);
+                        runnables.put(hologram, runnable);
                     }
                 }
             }
-        };
-        runnable.runTaskTimerAsynchronously(BetonQuest.getInstance(), 20, BetonQuest.getInstance().getPluginConfig()
-                .getInt("hologram_update_interval", 20 * 10));
+            // loop the holograms to show/hide them
+            runnable = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    for (final Player player : Bukkit.getOnlinePlayers()) {
+                        final Profile profile = PlayerConverter.getID(player);
+                        for (final Entry<BetonHologram, ConditionID[]> entry : holograms.entrySet()) {
+                            if (!BetonQuest.conditions(profile, entry.getValue())) {
+                                entry.getKey().hide(player);
+                                continue;
+                            }
+                            entry.getKey().show(player);
+                        }
+                    }
+                }
+            };
+            runnable.runTaskTimerAsynchronously(BetonQuest.getInstance(), 20, BetonQuest.getInstance().getPluginConfig()
+                    .getInt("hologram_update_interval", 20 * 10));
+        } else {
+            LOG.warn("Holograms won't be able to hide from players without ProtocolLib plugin! "
+                    + "Install it to use conditioned holograms.");
+            runnable = null;
+        }
     }
 
     /**
