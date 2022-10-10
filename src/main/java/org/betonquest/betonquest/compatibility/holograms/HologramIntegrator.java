@@ -62,6 +62,10 @@ public class HologramIntegrator implements Integrator {
             if ("DecentHolograms".equalsIgnoreCase(pluginName)) {
                 validateVersion(pluginName, "2.7.3");
             }
+            if ("HolographicDisplays".equalsIgnoreCase(pluginName)) {
+                validateVersion(pluginName, "3.0.0-SNAPSHOT-b000", "SNAPSHOT-b");
+            }
+
             hologramType = implementations.get(pluginName);
             hologramLoop = new HologramLoop();
 
@@ -72,11 +76,11 @@ public class HologramIntegrator implements Integrator {
         }
     }
 
-    private void validateVersion(final String pluginName, final String requiredVersion) throws UnsupportedVersionException {
+    private void validateVersion(final String pluginName, final String requiredVersion, final String... qualifiers) throws UnsupportedVersionException {
         final Plugin plugin = Bukkit.getPluginManager().getPlugin(pluginName);
         if (plugin != null) {
             final Version version = new Version(plugin.getDescription().getVersion());
-            final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR);
+            final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR, qualifiers);
             if (comparator.isOtherNewerThanCurrent(version, new Version(requiredVersion))) {
                 throw new UnsupportedVersionException(plugin, requiredVersion);
             }

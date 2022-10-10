@@ -1,7 +1,7 @@
-package org.betonquest.betonquest.compatibility.holographicdisplays.lines;
+package org.betonquest.betonquest.compatibility.holograms.lines;
 
 import lombok.Getter;
-import me.filoghost.holographicdisplays.api.hologram.Hologram;
+import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 
 /**
  * Displays a simple text line with optional color codes
@@ -24,7 +24,7 @@ public class TextLine extends AbstractLine {
     }
 
     @Override
-    public void addLine(final Hologram hologram) {
-        hologram.getLines().appendText(this.text);
+    public void addLine(final BetonHologram hologram) {
+        hologram.appendLine(this.text);
     }
 }

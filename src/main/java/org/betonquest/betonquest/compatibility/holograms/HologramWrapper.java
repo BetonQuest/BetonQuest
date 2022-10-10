@@ -1,11 +1,10 @@
-package org.betonquest.betonquest.compatibility.holographicdisplays;
+package org.betonquest.betonquest.compatibility.holograms;
 
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
-import me.filoghost.holographicdisplays.api.hologram.VisibilitySettings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.compatibility.holographicdisplays.lines.AbstractLine;
+import org.betonquest.betonquest.compatibility.holograms.lines.AbstractLine;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -34,23 +33,23 @@ import java.util.List;
  * @param identifier    Name of hologram from <code>custom.yml</code>
  * @param questPackage  {@link QuestPackage} in which the hologram is specified in.
  */
-public record HologramWrapper(int interval, Hologram hologram, boolean staticContent, ConditionID[] conditionList,
+public record HologramWrapper(int interval, BetonHologram hologram, boolean staticContent, ConditionID[] conditionList,
                               List<AbstractLine> cleanedLines, String identifier, QuestPackage questPackage) {
     /**
      * Checks whether all conditions are met by a players and displays or hides the hologram.
      */
     public void updateVisibility() {
         if (conditionList.length == 0) {
-            hologram.getVisibilitySettings().setGlobalVisibility(VisibilitySettings.Visibility.VISIBLE);
+            hologram.showAll();
             return;
         }
 
         for (final Player player : Bukkit.getOnlinePlayers()) {
             final Profile profile = PlayerConverter.getID(player);
             if (BetonQuest.conditions(profile, conditionList)) {
-                hologram.getVisibilitySettings().setIndividualVisibility(player, VisibilitySettings.Visibility.VISIBLE);
+                hologram.show(player);
             } else {
-                hologram.getVisibilitySettings().setIndividualVisibility(player, VisibilitySettings.Visibility.HIDDEN);
+                hologram.hide(player);
             }
         }
     }
@@ -60,11 +59,11 @@ public record HologramWrapper(int interval, Hologram hologram, boolean staticCon
      * but is ignored by them afterwards.
      */
     public void updateContent() {
-        if (staticContent && hologram.getLines().size() > 0) { //Allow first initializing of static holograms
+        if (staticContent && hologram.size() > 0) { //Allow first initializing of static holograms
             return;
         }
 
-        hologram.getLines().clear();
+        hologram.clear();
         for (final AbstractLine line : cleanedLines) {
             line.addLine(hologram);
         }

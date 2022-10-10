@@ -1,8 +1,11 @@
 package org.betonquest.betonquest.compatibility.holograms.holographicdisplays;
 
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import com.gmail.filoghost.holographicdisplays.api.VisibilityManager;
+
+import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
+import me.filoghost.holographicdisplays.api.hologram.Hologram;
+import me.filoghost.holographicdisplays.api.hologram.HologramLines;
+import me.filoghost.holographicdisplays.api.hologram.PlaceholderSetting;
+import me.filoghost.holographicdisplays.api.hologram.VisibilitySettings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.bukkit.Location;
@@ -11,81 +14,102 @@ import org.bukkit.inventory.ItemStack;
 
 @SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods"})
 public class HolographicDisplaysHologram implements BetonHologram {
+    private static boolean REGISTERED_PLACEHOLDERS = false;
+
     private final Hologram hologram;
 
     @SuppressWarnings({"PMD.UnusedFormalParameter"}) //This parameter is necessary due to reflection.
     public HolographicDisplaysHologram(final String name, final Location location) {
-        hologram = HologramsAPI.createHologram(BetonQuest.getInstance(), location);
+        if (!REGISTERED_PLACEHOLDERS) {
+            HolographicDisplaysAPI.get(BetonQuest.getInstance()).registerIndividualPlaceholder("bq", new HologramPlaceholder());
+            HolographicDisplaysAPI.get(BetonQuest.getInstance()).registerGlobalPlaceholder("bqg", new HologramGlobalPlaceholder());
+            HolographicDisplaysHologram.REGISTERED_PLACEHOLDERS = true;
+        }
+        hologram = HolographicDisplaysAPI.get(BetonQuest.getInstance()).createHologram(location);
+        hologram.setPlaceholderSetting(PlaceholderSetting.ENABLE_ALL);
     }
 
     @Override
     public void appendLine(final ItemStack item) {
-        hologram.appendItemLine(item);
+        hologram.getLines().appendItem(item);
     }
 
     @Override
     public void appendLine(final String text) {
-        hologram.appendTextLine(text);
+        hologram.getLines().appendText(text);
     }
 
     @Override
     public void setLine(final int index, final ItemStack item) {
-        hologram.removeLine(index);
-        hologram.insertItemLine(index, item);
+        final HologramLines lines = hologram.getLines();
+        lines.remove(index);
+        lines.insertItem(index, item);
     }
 
     @Override
     public void setLine(final int index, final String text) {
-        hologram.removeLine(index);
-        hologram.insertTextLine(index, text);
+        final HologramLines lines = hologram.getLines();
+        lines.remove(index);
+        lines.insertText(index, text);
     }
 
     @Override
     public void insertLine(final int index, final ItemStack item) {
-        hologram.insertItemLine(index, item);
+        hologram.getLines().insertItem(index, item);
     }
 
     @Override
     public void insertLine(final int index, final String text) {
-        hologram.insertTextLine(index, text);
+        hologram.getLines().insertText(index, text);
     }
 
     @Override
     public void removeLine(final int index) {
-        hologram.removeLine(index);
+        hologram.getLines().remove(index);
     }
 
     @Override
     public void show(final Player player) {
-        hologram.getVisibilityManager().showTo(player);
+        hologram.getVisibilitySettings().setIndividualVisibility(player, VisibilitySettings.Visibility.VISIBLE);
     }
 
     @Override
     public void hide(final Player player) {
-        hologram.getVisibilityManager().hideTo(player);
+        hologram.getVisibilitySettings().setIndividualVisibility(player, VisibilitySettings.Visibility.HIDDEN);
     }
 
     @Override
     public void move(final Location location) {
-        hologram.teleport(location);
+        hologram.setPosition(location);
     }
 
     @Override
     public void showAll() {
-        final VisibilityManager manager = hologram.getVisibilityManager();
-        manager.setVisibleByDefault(true);
-        manager.resetVisibilityAll();
+        final VisibilitySettings settings = hologram.getVisibilitySettings();
+        settings.setGlobalVisibility(VisibilitySettings.Visibility.VISIBLE);
+        settings.clearIndividualVisibilities();
     }
 
     @Override
     public void hideAll() {
-        final VisibilityManager manager = hologram.getVisibilityManager();
-        manager.setVisibleByDefault(false);
-        manager.resetVisibilityAll();
+        final VisibilitySettings settings = hologram.getVisibilitySettings();
+        settings.setGlobalVisibility(VisibilitySettings.Visibility.HIDDEN);
+        settings.clearIndividualVisibilities();
+
     }
 
     @Override
     public void delete() {
         hologram.delete();
+    }
+
+    @Override
+    public int size() {
+        return hologram.getLines().size();
+    }
+
+    @Override
+    public void clear() {
+        hologram.getLines().clear();
     }
 }

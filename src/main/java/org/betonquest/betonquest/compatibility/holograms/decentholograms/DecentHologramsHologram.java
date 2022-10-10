@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.holograms.decentholograms;
 
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
+import eu.decentsoftware.holograms.api.holograms.HologramPage;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -14,7 +15,6 @@ public class DecentHologramsHologram implements BetonHologram {
     private final Hologram hologram;
 
     public DecentHologramsHologram(final String name, final Location location) {
-        //This API may need to be updated in the near future..
         String hologramName = name;
         if (DHAPI.getHologram(hologramName) != null) {
             //In the rare case that a hologram is created with a name that already exists...
@@ -61,17 +61,12 @@ public class DecentHologramsHologram implements BetonHologram {
 
     @Override
     public void show(final Player player) {
-        /*
-        Since DecentHolograms supports multiple pages whilst HolographicDisplays does not, we always assume
-        that when modifying/inserting lines that we are dealing with page 0
-         */
         hologram.removeHidePlayer(player);
     }
 
     @Override
     public void hide(final Player player) {
         hologram.setHidePlayer(player);
-
     }
 
     @Override
@@ -92,5 +87,18 @@ public class DecentHologramsHologram implements BetonHologram {
     @Override
     public void delete() {
         DHAPI.removeHologram(hologram.getName());
+    }
+
+    @Override
+    public int size() {
+        return hologram.size();
+    }
+
+    @Override
+    public void clear() {
+        final HologramPage page = hologram.getPage(0);
+        for (int i = page.size() - 1; i >= 0; i--) {
+            page.removeLine(i);
+        }
     }
 }

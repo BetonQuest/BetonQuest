@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.holographicdisplays;
+package org.betonquest.betonquest.compatibility.holograms.holographicdisplays;
 
 import lombok.CustomLog;
 import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholder;
@@ -22,16 +22,17 @@ public class HologramGlobalPlaceholder implements GlobalPlaceholder {
         return 10 * 20;
     }
 
-    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     @Override
-    public @Nullable String getReplacement(@Nullable final String arguments) {
+    @SuppressWarnings("PMD.AvoidCatchingGenericException")
+    public @Nullable
+    String getReplacement(@Nullable final String arguments) {
         try {
             if (arguments == null) {
                 return "";
             }
             final String[] args = arguments.split(":", 2);
             return BetonQuest.getInstance().getVariableValue(args[0], "%" + args[1] + "%", null);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LOG.warn("Could not parse hologram variable " + arguments + "! " +
                     "Expected format {bqg:<package>:<variable>}." +
                     "Use {bq:<package>:<variable>} for variables related directly to a player.");

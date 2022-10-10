@@ -79,4 +79,16 @@ public interface BetonHologram {
      * Destroys and deletes this hologram
      */
     void delete();
+
+    /**
+     * Counts the amount of lines in this hologram when called
+     *
+     * @return the amount of lines
+     */
+    int size();
+
+    /**
+     * Clear all lines from this hologram
+     */
+    void clear();
 }

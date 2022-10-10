@@ -1,7 +1,7 @@
-package org.betonquest.betonquest.compatibility.holographicdisplays.lines;
+package org.betonquest.betonquest.compatibility.holograms.lines;
 
-import me.filoghost.holographicdisplays.api.hologram.Hologram;
-import org.betonquest.betonquest.compatibility.holographicdisplays.HologramLoop;
+import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
+import org.betonquest.betonquest.compatibility.holograms.HologramLoop;
 
 /**
  * Superclass for all hologram content types.
@@ -23,5 +23,5 @@ public abstract class AbstractLine {
      *
      * @param hologram target hologram
      */
-    public abstract void addLine(Hologram hologram);
+    public abstract void addLine(BetonHologram hologram);
 }

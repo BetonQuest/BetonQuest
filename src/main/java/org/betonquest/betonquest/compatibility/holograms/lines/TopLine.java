@@ -1,9 +1,7 @@
-package org.betonquest.betonquest.compatibility.holographicdisplays.lines;
+package org.betonquest.betonquest.compatibility.holograms.lines;
 
 import lombok.Getter;
-import me.filoghost.holographicdisplays.api.hologram.Hologram;
-import org.betonquest.betonquest.compatibility.holographicdisplays.TopXLine;
-import org.betonquest.betonquest.compatibility.holographicdisplays.TopXObject;
+import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 
 import java.util.Arrays;
 
@@ -69,7 +67,7 @@ public class TopLine extends AbstractLine {
     public String[] getLines() {
         topXObject.queryDB();
 
-        String[] lines = new String[limit];
+        final String[] lines = new String[limit];
         for (int i = 0; i < limit; i++) {
             if (i >= topXObject.getLineCount()) {
                 lines[i] = "";
@@ -92,9 +90,9 @@ public class TopLine extends AbstractLine {
     }
 
     @Override
-    public void addLine(final Hologram hologram) {
+    public void addLine(final BetonHologram hologram) {
         for (final String textLine : getLines()) {
-            hologram.getLines().appendText(textLine);
+            hologram.appendLine(textLine);
         }
     }
 }
