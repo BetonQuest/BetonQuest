@@ -177,11 +177,10 @@ nav:
   - 'Home': index.md
   - 'Tutorials':
       - 'Overview': Tutorials/Overview.md
-      - 'Getting-Started':
+      - 'Getting Started':
           - 'Setup Guide':
               - 'Setting up a test server': Tutorials/Getting-Started/Setup-Guide/Setting-up-a-test-server.md
               - 'Installing BetonQuest': Tutorials/Getting-Started/Setup-Guide/Installing-Dependencies.md
-              - 'Setting up the editor': Tutorials/Getting-Started/Setup-Guide/Setting-up-the-editor.md
           - 'Basics':
               - 'YAML': Tutorials/Getting-Started/Basics/YAML-for-questers.md
               - 'Conversations': Tutorials/Getting-Started/Basics/Conversations.md

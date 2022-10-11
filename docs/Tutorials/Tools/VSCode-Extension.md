@@ -89,6 +89,3 @@ These optional options can also contain a colon (`:`). You have to specify somet
  Sorry, your browser doesn't support embedded videos.
  </video>
 </div>
-
----
-[:material-arrow-right: Next Step: Basic Tutorial](../Basics/Conversations.md){ .md-button .md-button--primary }
