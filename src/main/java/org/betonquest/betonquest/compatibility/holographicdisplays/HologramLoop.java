@@ -48,11 +48,12 @@ public class HologramLoop {
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "PMD.UseStringBufferForStringAppends"})
     public HologramLoop() {
-        HolographicDisplaysAPI.get(BetonQuest.getInstance()).registerIndividualPlaceholder("bq", new HologramPlaceholder());
-        HolographicDisplaysAPI.get(BetonQuest.getInstance()).registerGlobalPlaceholder("bqg", new HologramGlobalPlaceholder());
-
         final int defaultInterval = BetonQuest.getInstance().getPluginConfig().getInt("hologram_update_interval", 10 * 20);
         final HolographicDisplaysAPI holographicDisplaysAPI = HolographicDisplaysAPI.get(BetonQuest.getInstance());
+
+        holographicDisplaysAPI.registerIndividualPlaceholder("bq", new HologramPlaceholder());
+        holographicDisplaysAPI.registerGlobalPlaceholder("bqg", new HologramGlobalPlaceholder());
+
         // get all holograms and their condition
         for (final QuestPackage pack : Config.getPackages().values()) {
             final String packName = pack.getPackagePath();
