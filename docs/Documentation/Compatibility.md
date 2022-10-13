@@ -632,6 +632,8 @@ mmocorebreakblock 1 block:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVy #... this is a heads 
 
 #### MMOCore Profession levelup: `mmoprofessionlevelup`
 This objective requires the player to level the given profession to the specified level.
+Use `main` to check for class level ups.
+
 ```YAML linenums="1"
 mmoprofessionlevelup MINING 10
 ```
