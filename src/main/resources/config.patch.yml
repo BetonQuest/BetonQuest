@@ -2,4 +2,4 @@
 2.0.0.1:
   - type: SET
     key: journal.custom_model_data
-    value: 1337
+    value: -1
