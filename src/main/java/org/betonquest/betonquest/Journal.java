@@ -410,7 +410,7 @@ public class Journal {
         final BookMeta meta = (BookMeta) item.getItemMeta();
         meta.setTitle(Utils.format(Config.getMessage(lang, "journal_title")));
         meta.setAuthor(profile.getOfflinePlayer().getName());
-        meta.setCustomModelData(config.getInt("journal.custom_model_data", 0));
+        meta.setCustomModelData(config.getInt("journal.custom_model_data"));
         meta.setLore(getJournalLore(lang));
         // add main page and generate pages from texts
         final List<String> finalList = new ArrayList<>();
