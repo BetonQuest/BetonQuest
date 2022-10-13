@@ -42,6 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Loads compatibility with other plugins.
@@ -79,7 +80,10 @@ public class Compatibility implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                LOG.info("Enabled compatibility for " + buildHookedPluginsMessage() + "!");
+                final String hooks = buildHookedPluginsMessage();
+                if (!hooks.isEmpty()) {
+                    LOG.info("Enabled compatibility for " + hooks + "!");
+                }
             }
         }.runTask(BetonQuest.getInstance());
     }
@@ -95,7 +99,10 @@ public class Compatibility implements Listener {
      * Reloads all loaded integrators.
      */
     public static void reload() {
-        instance.integrators.values().stream().map(Pair::getRight).forEach(Integrator::reload);
+        instance.integrators.values().stream()
+                .map(Pair::getRight)
+                .filter(Objects::nonNull)
+                .forEach(Integrator::reload);
     }
 
     /**
@@ -103,15 +110,17 @@ public class Compatibility implements Listener {
      */
     public static void disable() {
         if (instance != null) {
-            instance.integrators.values().stream().map(Pair::getRight).forEach(Integrator::close);
+            instance.integrators.values().stream()
+                    .map(Pair::getRight)
+                    .filter(Objects::nonNull)
+                    .forEach(Integrator::close);
         }
     }
 
     private String buildHookedPluginsMessage() {
-        final StringBuilder string = new StringBuilder();
-        integrators.entrySet().stream().filter(entry -> entry.getValue().getRight() != null)
-                .forEach(entry -> string.append(entry.getKey()).append(", "));
-        return string.substring(0, string.length() - 2);
+        final List<String> hookNames = integrators.entrySet().stream().filter(entry -> entry.getValue().getRight() != null)
+                .map(Map.Entry::getKey).toList();
+        return String.join(",", hookNames);
     }
 
     /**
@@ -134,8 +143,7 @@ public class Compatibility implements Listener {
             return;
         }
 
-        final boolean isEnabled = BetonQuest.getInstance().getPluginConfig()
-                .getBoolean("hook." + name.toLowerCase(Locale.ROOT), false);
+        final boolean isEnabled = "true".equalsIgnoreCase(BetonQuest.getInstance().getPluginConfig().getString("hook." + name.toLowerCase(Locale.ROOT)));
         if (!isEnabled) {
             return;
         }
