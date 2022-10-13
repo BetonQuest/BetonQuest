@@ -23,7 +23,8 @@ public class MMOCoreProfessionObjective extends Objective implements Listener {
         super(instruction);
 
         template = ObjectiveData.class;
-        professionName = instruction.next();
+        final String profession = instruction.next();
+        professionName = "MAIN".equalsIgnoreCase(profession) ? null : profession;
         targetLevel = instruction.getInt();
 
     }
@@ -35,11 +36,10 @@ public class MMOCoreProfessionObjective extends Objective implements Listener {
             return;
         }
         final Profession profession = event.getProfession();
-        if (profession == null) {
+        if (profession != null && !profession.getName().equalsIgnoreCase(professionName)) {
             return;
         }
-
-        if (!profession.getName().equalsIgnoreCase(professionName) || event.getNewLevel() < targetLevel) {
+        if (event.getNewLevel() < targetLevel) {
             return;
         }
         completeObjective(profile);
