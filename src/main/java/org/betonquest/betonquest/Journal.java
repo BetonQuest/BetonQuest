@@ -6,6 +6,7 @@ import lombok.CustomLog;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.api.PlayerJournalAddEvent;
 import org.betonquest.betonquest.api.PlayerJournalDeleteEvent;
+import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -31,7 +32,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -46,6 +46,7 @@ public class Journal {
     private final Profile profile;
     private final List<Pointer> pointers;
     private final List<String> texts = new ArrayList<>();
+    private final ConfigurationFile config;
     private String lang;
     private String mainPage;
 
@@ -56,11 +57,12 @@ public class Journal {
      * @param list    list of pointers to journal entries
      * @param lang    default language to use when generating the journal
      */
-    public Journal(final Profile profile, final String lang, final List<Pointer> list) {
+    public Journal(final Profile profile, final String lang, final List<Pointer> list, final ConfigurationFile config) {
         // generate texts from list of pointers
         this.profile = profile;
         this.lang = lang;
-        pointers = list;
+        this.pointers = list;
+        this.config = config;
     }
 
     /**
@@ -141,8 +143,7 @@ public class Journal {
      * @param pointerName the name of the pointer to remove
      */
     public void removePointer(final String pointerName) {
-        for (final Iterator<Pointer> iterator = pointers.iterator(); iterator.hasNext(); ) {
-            final Pointer pointer = iterator.next();
+        for (final Pointer pointer : pointers) {
             if (pointer.getPointer().equalsIgnoreCase(pointerName)) {
                 BetonQuest.getInstance()
                         .callSyncBukkitEvent(new PlayerJournalDeleteEvent(profile.getOnlineProfile(), this, pointer));
@@ -164,7 +165,7 @@ public class Journal {
      */
     public List<String> getText() {
         final List<String> list;
-        if ("true".equalsIgnoreCase(Config.getString("config.journal.reversed_order"))) {
+        if ("true".equalsIgnoreCase(config.getString("journal.reversed_order"))) {
             list = Lists.reverse(texts);
         } else {
             list = new ArrayList<>(texts);
@@ -191,14 +192,14 @@ public class Journal {
         for (final Pointer pointer : pointers) {
             // if date should not be hidden, generate the date prefix
             String datePrefix = "";
-            if ("false".equalsIgnoreCase(Config.getString("config.journal.hide_date"))) {
-                final String date = new SimpleDateFormat(Config.getString("config.date_format"), Locale.ROOT)
+            if ("false".equalsIgnoreCase(config.getString("journal.hide_date"))) {
+                final String date = new SimpleDateFormat(config.getString("date_format"), Locale.ROOT)
                         .format(pointer.getTimestamp());
                 final String[] dateParts = date.split(" ");
-                final String day = "§" + Config.getString("config.journal_colors.date.day") + dateParts[0];
+                final String day = "§" + config.getString("journal_colors.date.day") + dateParts[0];
                 String hour = "";
                 if (dateParts.length > 1) {
-                    hour = "§" + Config.getString("config.journal_colors.date.hour") + dateParts[1];
+                    hour = "§" + config.getString("journal_colors.date.hour") + dateParts[1];
                 }
                 datePrefix = day + " " + hour + "\n";
             }
@@ -246,7 +247,7 @@ public class Journal {
             }
 
             // add the entry to the list
-            texts.add(datePrefix + "§" + Config.getString("config.journal_colors.text") + text);
+            texts.add(datePrefix + "§" + config.getString("journal_colors.text") + text);
         }
     }
 
@@ -387,8 +388,8 @@ public class Journal {
 
     @SuppressWarnings("PMD.PrematureDeclaration")
     private int getJournalSlot() {
-        final int slot = Integer.parseInt(Config.getString("config.default_journal_slot"));
-        final boolean forceJournalSlot = Boolean.parseBoolean(Config.getString("config.journal.lock_default_journal_slot"));
+        final int slot = config.getInt("default_journal_slot");
+        final boolean forceJournalSlot = config.getBoolean("journal.lock_default_journal_slot");
         final int oldSlot = removeFromInv();
         if (forceJournalSlot) {
             return slot;
@@ -413,16 +414,16 @@ public class Journal {
         meta.setLore(getJournalLore(lang));
         // add main page and generate pages from texts
         final List<String> finalList = new ArrayList<>();
-        if ("false".equalsIgnoreCase(Config.getString("config.journal.one_entry_per_page"))) {
-            final String color = Config.getString("config.journal_colors.line");
+        if (!config.getBoolean("journal.one_entry_per_page")) {
+            final String color = config.getString("journal_colors.line");
             String separator = Config.parseMessage(null, profile.getOnlineProfile(), "journal_separator");
             if (separator == null) {
                 separator = "---------------";
             }
             String line = "\n§" + color + separator + "\n";
 
-            if (Config.getString("config.journal.show_separator") != null &&
-                    Config.getString("config.journal.show_separator").equalsIgnoreCase("false")) {
+            if (config.getString("journal.show_separator") != null &&
+                    config.getBoolean("journal.show_separator")) {
                 line = "\n";
             }
 
@@ -431,7 +432,7 @@ public class Journal {
                 stringBuilder.append(entry).append(line);
             }
             if (mainPage != null && mainPage.length() > 0) {
-                if ("true".equalsIgnoreCase(Config.getString("config.journal.full_main_page"))) {
+                if (config.getBoolean("journal.full_main_page")) {
                     finalList.addAll(Utils.pagesFromString(mainPage));
                 } else {
                     stringBuilder.insert(0, mainPage + line);
@@ -448,7 +449,7 @@ public class Journal {
         if (finalList.isEmpty()) {
             meta.addPage("");
         } else {
-            meta.setPages(Utils.multiLineColorCodes(finalList, "§" + Config.getString("config.journal_colors.line")));
+            meta.setPages(Utils.multiLineColorCodes(finalList, "§" + config.getString("journal_colors.line")));
         }
         item.setItemMeta(meta);
         return item;
