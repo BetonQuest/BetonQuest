@@ -451,7 +451,7 @@ class TransformerTest {
                       newType: double
                 """;
 
-        CONFIG.set("section.double", 2.1234567891234567D);
+        CONFIG.set("section.double", 2.123_456_789_123_456_7D);
         final String serializedConfig = getSerializedPatchedConfig(patch);
 
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
