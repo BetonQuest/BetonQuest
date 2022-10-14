@@ -37,7 +37,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -92,7 +91,8 @@ public class Compatibility implements Listener {
      * @return the list of hooked plugins
      */
     public static List<String> getHooked() {
-        return new ArrayList<>(instance.integrators.keySet());
+        return instance.integrators.entrySet().stream().filter(entry -> entry.getValue().getRight() != null)
+                .map(Map.Entry::getKey).toList();
     }
 
     /**
@@ -118,9 +118,7 @@ public class Compatibility implements Listener {
     }
 
     private String buildHookedPluginsMessage() {
-        final List<String> hookNames = integrators.entrySet().stream().filter(entry -> entry.getValue().getRight() != null)
-                .map(Map.Entry::getKey).toList();
-        return String.join(",", hookNames);
+        return String.join(", ", getHooked());
     }
 
     /**
@@ -143,7 +141,7 @@ public class Compatibility implements Listener {
             return;
         }
 
-        final boolean isEnabled = "true".equalsIgnoreCase(BetonQuest.getInstance().getPluginConfig().getString("hook." + name.toLowerCase(Locale.ROOT)));
+        final boolean isEnabled = BetonQuest.getInstance().getPluginConfig().getBoolean("hook." + name.toLowerCase(Locale.ROOT));
         if (!isEnabled) {
             return;
         }
