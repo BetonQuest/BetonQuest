@@ -54,8 +54,9 @@ public class Journal {
      * Creates new Journal instance from List of Pointers.
      *
      * @param profile the {@link Profile} of the player whose journal is created
-     * @param list    list of pointers to journal entries
      * @param lang    default language to use when generating the journal
+     * @param list    list of pointers to journal entries
+     * @param config  a {@link ConfigurationFile} that contains the plugin's configuration
      */
     public Journal(final Profile profile, final String lang, final List<Pointer> list, final ConfigurationFile config) {
         // generate texts from list of pointers
@@ -405,25 +406,31 @@ public class Journal {
     @SuppressWarnings({"PMD.CognitiveComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public ItemStack getAsItem() {
-        // create the book with default title/author
         final ItemStack item = new ItemStack(Material.WRITTEN_BOOK);
         final BookMeta meta = (BookMeta) item.getItemMeta();
         meta.setTitle(Utils.format(Config.getMessage(lang, "journal_title")));
         meta.setAuthor(profile.getOfflinePlayer().getName());
         meta.setCustomModelData(config.getInt("journal.custom_model_data"));
         meta.setLore(getJournalLore(lang));
+
         // add main page and generate pages from texts
         final List<String> finalList = new ArrayList<>();
-        if (!config.getBoolean("journal.one_entry_per_page")) {
+        if (config.getBoolean("journal.one_entry_per_page")) {
+            if (mainPage != null && mainPage.length() > 0) {
+                finalList.addAll(Utils.pagesFromString(mainPage));
+            }
+            finalList.addAll(getText());
+        } else {
             final String color = config.getString("journal_colors.line");
             String separator = Config.parseMessage(null, profile.getOnlineProfile(), "journal_separator");
             if (separator == null) {
                 separator = "---------------";
             }
-            String line = "\n§" + color + separator + "\n";
 
-            if (config.getString("journal.show_separator") != null &&
-                    config.getBoolean("journal.show_separator")) {
+            final String line;
+            if (config.getBoolean("journal.show_separator")) {
+                line = "\n§" + color + separator + "\n";
+            } else {
                 line = "\n";
             }
 
@@ -440,11 +447,6 @@ public class Journal {
             }
             final String wholeString = stringBuilder.toString().trim();
             finalList.addAll(Utils.pagesFromString(wholeString));
-        } else {
-            if (mainPage != null && mainPage.length() > 0) {
-                finalList.addAll(Utils.pagesFromString(mainPage));
-            }
-            finalList.addAll(getText());
         }
         if (finalList.isEmpty()) {
             meta.addPage("");
