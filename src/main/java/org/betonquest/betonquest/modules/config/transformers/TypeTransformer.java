@@ -12,14 +12,21 @@ import java.util.Map;
  */
 public class TypeTransformer implements PatchTransformer {
 
+    /**
+     * Default constructor.
+     */
+    public TypeTransformer() {
+    }
+
     @Override
     public void transform(final Map<String, String> options, final ConfigurationSection config) throws PatchException {
         final String key = options.get("key");
-        final String type = options.get("newType");
         final Object value = config.get(key);
         if (value == null) {
             throw new PatchException("Value is not set, skipping transformation.");
         }
+        final String type = options.get("newType");
+
         final String valueString = value.toString();
         switch (type.toLowerCase(Locale.ROOT)) {
             case "boolean" -> config.set(key, Boolean.valueOf(valueString));
