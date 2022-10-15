@@ -1,13 +1,13 @@
 ---
 icon: octicons/question-16
 tags:
-- Conditions-Tutorial
+  - Conditions-Tutorial
 ---
-Now that you know the basics of conversations, events and objectives we can move on to the conditions part.
-Conditions allow you to nearly do everything you want. From a simple inventory check if the player has the right
-item amount to have multiply answers in a conversation based on the time of the day.
-As the name "condition" suggests, it is possible to attach conditions to any conversation, event or objective.
-A condition can be either true or false!
+Now that you know how to give the player tasks using objectives, it is time to learn about conditions. 
+These are another essential building blog of quests as they allow you to create different outcomes based on the player's
+actions. This works by attaching conditions to any conversation, event or objective.
+For example, you could have a conversation option that is only available if the player has a certain item in their inventory.
+
 In this tutorial you will learn how to create and use conditions!
 
 <div class="grid" markdown>
