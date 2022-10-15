@@ -105,7 +105,7 @@ public class Backpack implements Listener {
         if (event.getWhoClicked().equals(profile.getOnlinePlayer())) {
             // if the player clicked, then cancel this event
             event.setCancelled(true);
-            // if the click was outside of the inventory, do nothing
+            // if the click was outside the inventory, do nothing
             if (event.getRawSlot() < 0) {
                 return;
             }
