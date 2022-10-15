@@ -162,7 +162,7 @@ events:
   addFoodReceivedTag: "tag add foodReceived"
 ```
 
-!!! warning ""
+!!! warning "Tip"
     If you don't understand why we created this event here, you should go a step back to the events tutorial and read carefully again!
 
 We are now ready to for the next step: Adding the condition and event to the conversation.
