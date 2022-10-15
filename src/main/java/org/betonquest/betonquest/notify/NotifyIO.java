@@ -7,7 +7,6 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -35,8 +34,8 @@ public abstract class NotifyIO {
     }
 
     public void sendNotify(@NotNull final String message) throws QuestRuntimeException {
-        for (final Player player : Bukkit.getServer().getOnlinePlayers()) {
-            sendNotify(message, PlayerConverter.getID(player).getOnlineProfile());
+        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+            sendNotify(message, onlineProfile);
         }
     }
 

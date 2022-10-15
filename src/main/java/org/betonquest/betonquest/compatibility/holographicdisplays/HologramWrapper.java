@@ -4,12 +4,10 @@ import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.hologram.VisibilitySettings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.QuestPackage;
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.compatibility.holographicdisplays.lines.AbstractLine;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.utils.PlayerConverter;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 import java.util.List;
 
@@ -45,12 +43,11 @@ public record HologramWrapper(int interval, Hologram hologram, boolean staticCon
             return;
         }
 
-        for (final Player player : Bukkit.getOnlinePlayers()) {
-            final Profile profile = PlayerConverter.getID(player);
-            if (BetonQuest.conditions(profile, conditionList)) {
-                hologram.getVisibilitySettings().setIndividualVisibility(player, VisibilitySettings.Visibility.VISIBLE);
+        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+            if (BetonQuest.conditions(onlineProfile, conditionList)) {
+                hologram.getVisibilitySettings().setIndividualVisibility(onlineProfile.getOnlinePlayer(), VisibilitySettings.Visibility.VISIBLE);
             } else {
-                hologram.getVisibilitySettings().setIndividualVisibility(player, VisibilitySettings.Visibility.HIDDEN);
+                hologram.getVisibilitySettings().setIndividualVisibility(onlineProfile.getOnlinePlayer(), VisibilitySettings.Visibility.HIDDEN);
             }
         }
     }

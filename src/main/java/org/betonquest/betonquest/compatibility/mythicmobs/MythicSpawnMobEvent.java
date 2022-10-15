@@ -70,7 +70,7 @@ public class MythicSpawnMobEvent extends QuestEvent {
                 final ActiveMob targetMob = MythicBukkit.inst().getMobManager().getMythicMobInstance(entity);
 
                 if (privateMob) {
-                    Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), () -> MythicHider.getInstance().applyVisibilityPrivate(player, entity), 20L);
+                    Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), () -> MythicHider.getInstance().applyVisibilityPrivate(profile.getOnlineProfile(), entity), 20L);
                 }
                 if (targetPlayer) {
                     Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), () -> targetMob.setTarget(BukkitAdapter.adapt(player)), 20L);

@@ -793,11 +793,11 @@ public class BetonQuest extends JavaPlugin {
         // register events
         registerEvents("objective", ObjectiveEvent.class);
         registerEvents("command", CommandEvent.class);
-        final TagPlayerEventFactory tagPlayerEventFactory = new TagPlayerEventFactory(this, getSaver(), getServer());
+        final TagPlayerEventFactory tagPlayerEventFactory = new TagPlayerEventFactory(this, getSaver());
         registerEvent("tag", tagPlayerEventFactory, tagPlayerEventFactory);
         final TagGlobalEventFactory tagGlobalEventFactory = new TagGlobalEventFactory(this);
         registerEvent("globaltag", tagGlobalEventFactory, tagGlobalEventFactory);
-        final JournalEventFactory journalEventFactory = new JournalEventFactory(this, InstantSource.system(), getSaver(), getServer());
+        final JournalEventFactory journalEventFactory = new JournalEventFactory(this, InstantSource.system(), getSaver());
         registerEvent("journal", journalEventFactory, journalEventFactory);
         registerEvents("teleport", TeleportEvent.class);
         registerEvents("explosion", ExplosionEvent.class);
