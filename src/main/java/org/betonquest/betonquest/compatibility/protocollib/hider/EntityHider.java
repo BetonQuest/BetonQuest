@@ -235,7 +235,7 @@ public class EntityHider implements Listener {
                     final int index = event.getPacketType().equals(PacketType.Play.Server.PLAYER_COMBAT_KILL) ? 1 : 0;
 
                     final Integer entityID = event.getPacket().getIntegers().readSafely(index);
-                    if (entityID != null && !isVisible(PlayerConverter.getID(event.getPlayer()).getOnlineProfile(), entityID)) {
+                    if (entityID != null && !isVisible(PlayerConverter.getID(event.getPlayer()), entityID)) {
                         event.setCancelled(true);
                     }
                 }
