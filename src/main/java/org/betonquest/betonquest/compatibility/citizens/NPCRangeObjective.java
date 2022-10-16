@@ -6,13 +6,13 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,30 +63,29 @@ public class NPCRangeObjective extends Objective {
     }
 
     private void loop() throws QuestRuntimeException {
-        final ArrayList<UUID> playersInside = new ArrayList<>();
+        final ArrayList<UUID> profilesInside = new ArrayList<>();
         for (final int npcId : npcIds) {
             final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
             if (npc == null) {
                 throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
             }
-            for (final Player player : Bukkit.getOnlinePlayers()) {
-                if (!playersInside.contains(player.getUniqueId()) && isInside(player, npc.getStoredLocation())) {
-                    playersInside.add(player.getUniqueId());
+            for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                if (!profilesInside.contains(onlineProfile.getProfileUUID()) && isInside(onlineProfile, npc.getStoredLocation())) {
+                    profilesInside.add(onlineProfile.getProfileUUID());
                 }
             }
         }
-        for (final Player player : Bukkit.getOnlinePlayers()) {
-            checkPlayer(player.getUniqueId(), PlayerConverter.getID(player), playersInside.contains(player.getUniqueId()));
+        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+            checkPlayer(onlineProfile.getProfileUUID(), onlineProfile, profilesInside.contains(onlineProfile.getProfileUUID()));
         }
     }
 
-    private boolean isInside(final Player player, final Location location) throws QuestRuntimeException {
-        final Profile profile = PlayerConverter.getID(player);
-        if (!containsPlayer(profile) || !location.getWorld().equals(player.getWorld())) {
+    private boolean isInside(final OnlineProfile onlineProfile, final Location location) throws QuestRuntimeException {
+        if (!containsPlayer(onlineProfile) || !location.getWorld().equals(onlineProfile.getOnlinePlayer().getWorld())) {
             return false;
         }
-        final double radius = this.radius.getDouble(profile);
-        final double distanceSqrd = location.distanceSquared(player.getLocation());
+        final double radius = this.radius.getDouble(onlineProfile);
+        final double distanceSqrd = location.distanceSquared(onlineProfile.getOnlinePlayer().getLocation());
         final double radiusSqrd = radius * radius;
 
         return distanceSqrd <= radiusSqrd;

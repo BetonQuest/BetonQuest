@@ -14,10 +14,10 @@ import org.betonquest.betonquest.quest.event.DoNothingStaticEvent;
 import org.betonquest.betonquest.quest.event.InfoNotificationSender;
 import org.betonquest.betonquest.quest.event.NoNotificationSender;
 import org.betonquest.betonquest.quest.event.NotificationSender;
-import org.betonquest.betonquest.quest.event.OnlinePlayerGroupStaticEventAdapter;
+import org.betonquest.betonquest.quest.event.OnlineProfileGroupStaticEventAdapter;
 import org.betonquest.betonquest.quest.event.SequentialStaticEvent;
+import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
-import org.bukkit.Server;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.InstantSource;
@@ -43,23 +43,16 @@ public class JournalEventFactory implements EventFactory, StaticEventFactory {
     private final Saver saver;
 
     /**
-     * The server to use for fetching server-data.
-     */
-    private final Server server;
-
-    /**
      * Create the journal event factory.
      *
-     * @param betonQuest BetonQuest instance to pass on
+     * @param betonQuest    BetonQuest instance to pass on
      * @param instantSource instant source to pass on
-     * @param saver database saver to use
-     * @param server server to refer to
+     * @param saver         database saver to use
      */
-    public JournalEventFactory(final BetonQuest betonQuest, final InstantSource instantSource, final Saver saver, final Server server) {
+    public JournalEventFactory(final BetonQuest betonQuest, final InstantSource instantSource, final Saver saver) {
         this.betonQuest = betonQuest;
         this.instantSource = instantSource;
         this.saver = saver;
-        this.server = server;
     }
 
     @Override
@@ -111,7 +104,7 @@ public class JournalEventFactory implements EventFactory, StaticEventFactory {
         final JournalEvent journalDeleteEvent = createJournalDeleteEvent(instruction.copy());
         final String entryName = Utils.addPackage(instruction.getPackage(), instruction.next());
         return new SequentialStaticEvent(
-                new OnlinePlayerGroupStaticEventAdapter(server::getOnlinePlayers, journalDeleteEvent),
+                new OnlineProfileGroupStaticEventAdapter(PlayerConverter::getOnlineProfiles, journalDeleteEvent),
                 new DatabaseSaverStaticEvent(saver, () -> new Saver.Record(UpdateType.REMOVE_ALL_ENTRIES, entryName))
         );
     }

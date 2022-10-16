@@ -9,6 +9,7 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -18,7 +19,6 @@ import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -218,8 +218,8 @@ public class CitizensHologram extends BukkitRunnable {
 
     private boolean updateHologramsForPlayers(final NPCHologram npcHologram, final NPC npc) {
         boolean hologramEnabled = false;
-        for (final Player player : Bukkit.getOnlinePlayers()) {
-            if (BetonQuest.conditions(PlayerConverter.getID(player), npcHologram.conditions)) {
+        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+            if (BetonQuest.conditions(onlineProfile, npcHologram.conditions)) {
                 hologramEnabled = true;
                 if (npcHologram.hologram == null) {
                     final Hologram hologram = holographicDisplaysAPI.createHologram(npc.getStoredLocation().add(npcHologram.vector));
@@ -228,12 +228,12 @@ public class CitizensHologram extends BukkitRunnable {
                     updateHologramForPlayersLines(npcHologram, hologram);
                     npcHologram.hologram = hologram;
                 }
-                if (!npcHologram.hologram.getVisibilitySettings().isVisibleTo(player)) {
-                    npcHologram.hologram.getVisibilitySettings().setIndividualVisibility(player, VisibilitySettings.Visibility.VISIBLE);
+                if (!npcHologram.hologram.getVisibilitySettings().isVisibleTo(onlineProfile.getOnlinePlayer())) {
+                    npcHologram.hologram.getVisibilitySettings().setIndividualVisibility(onlineProfile.getOnlinePlayer(), VisibilitySettings.Visibility.VISIBLE);
                 }
             } else {
-                if (npcHologram.hologram != null && npcHologram.hologram.getVisibilitySettings().isVisibleTo(player)) {
-                    npcHologram.hologram.getVisibilitySettings().setIndividualVisibility(player, VisibilitySettings.Visibility.HIDDEN);
+                if (npcHologram.hologram != null && npcHologram.hologram.getVisibilitySettings().isVisibleTo(onlineProfile.getOnlinePlayer())) {
+                    npcHologram.hologram.getVisibilitySettings().setIndividualVisibility(onlineProfile.getOnlinePlayer(), VisibilitySettings.Visibility.HIDDEN);
                 }
             }
         }

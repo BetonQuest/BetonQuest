@@ -6,16 +6,15 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.compatibility.effectlib.EffectLibIntegrator;
 import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.utils.PlayerConverter;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -35,7 +34,7 @@ import java.util.UUID;
 public class CitizensParticle extends BukkitRunnable {
 
     private static CitizensParticle instance;
-    private final Map<UUID, Map<Integer, Effect>> players = new HashMap<>();
+    private final Map<UUID, Map<Integer, Effect>> profiles = new HashMap<>();
     private final List<Effect> effects = new ArrayList<>();
     private final boolean enabled;
     private int interval = 100;
@@ -162,10 +161,10 @@ public class CitizensParticle extends BukkitRunnable {
     private void checkConditions() {
 
         // clear previous assignments
-        players.clear();
+        profiles.clear();
 
         // every player needs to generate their assignment
-        for (final Player player : Bukkit.getOnlinePlayers()) {
+        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
 
             // wrap an assignment map
             final Map<Integer, Effect> assignments = new HashMap<>();
@@ -174,7 +173,7 @@ public class CitizensParticle extends BukkitRunnable {
             for (final Effect effect : effects) {
 
                 // skip the effect if conditions are not met
-                if (!BetonQuest.conditions(PlayerConverter.getID(player), effect.conditions)) {
+                if (!BetonQuest.conditions(onlineProfile, effect.conditions)) {
                     continue;
                 }
 
@@ -188,7 +187,7 @@ public class CitizensParticle extends BukkitRunnable {
             }
 
             // put assignments into the main map
-            players.put(player.getUniqueId(), assignments);
+            profiles.put(onlineProfile.getProfileUUID(), assignments);
         }
     }
 
@@ -196,10 +195,10 @@ public class CitizensParticle extends BukkitRunnable {
     private void activateEffects() {
 
         // display effects for all players
-        for (final Player player : Bukkit.getOnlinePlayers()) {
+        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
 
             // get NPC-effect assignments for this player
-            final Map<Integer, Effect> assignments = players.get(player.getUniqueId());
+            final Map<Integer, Effect> assignments = profiles.get(onlineProfile.getProfileUUID());
 
             // skip if there are no assignments for this player
             if (assignments == null) {
@@ -220,8 +219,8 @@ public class CitizensParticle extends BukkitRunnable {
                 final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
 
                 // skip if there are no such NPC or it's not spawned or not visible
-                if (npc == null || !npc.getStoredLocation().getWorld().equals(player.getWorld()) ||
-                        NPCHider.getInstance() != null && NPCHider.getInstance().isInvisible(player, npc)) {
+                if (npc == null || !npc.getStoredLocation().getWorld().equals(onlineProfile.getOnlinePlayer().getWorld()) ||
+                        NPCHider.getInstance() != null && NPCHider.getInstance().isInvisible(onlineProfile, npc)) {
                     continue;
                 }
 
@@ -236,7 +235,7 @@ public class CitizensParticle extends BukkitRunnable {
                         new DynamicLocation(loc, null),
                         new DynamicLocation(null, null),
                         (ConfigurationSection) null,
-                        player);
+                        onlineProfile.getOnlinePlayer());
             }
         }
     }

@@ -3,6 +3,7 @@ package org.betonquest.betonquest.api;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
@@ -11,8 +12,6 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.utils.PlayerConverter;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 /**
  * <p>
@@ -102,8 +101,7 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
                 handle(null);
             } else {
                 LOG.debug(instruction.getPackage(), "Static event will be fired once for every player:");
-                for (final Player player : Bukkit.getOnlinePlayers()) {
-                    final Profile onlineProfile = PlayerConverter.getID(player);
+                for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
                     if (!BetonQuest.conditions(onlineProfile, conditions)) {
                         LOG.debug(instruction.getPackage(), "Event conditions were not met for player " + onlineProfile.getProfileName());
                         continue;
