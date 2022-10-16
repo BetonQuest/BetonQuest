@@ -48,7 +48,6 @@ public interface MultiConfigurationSectionConfiguration {
      * @return The clearly {@link ConfigurationSection} of the given path
      * @throws InvalidConfigurationException is thrown, if the given path is defined in multiple configuration
      */
-    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     ConfigurationSection getSourceConfigurationSection(String path) throws InvalidConfigurationException;
 
     /**
