@@ -28,7 +28,7 @@ public class MultiFallbackConfiguration extends FallbackConfiguration implements
      *
      * @param original The original {@link ConfigurationSection} that should be decorated.
      * @param fallback The fallback {@link ConfigurationSection} that should be used
-     *                 when there is no value in the  original {@link ConfigurationSection}.
+     *                 when there is no value in the original {@link ConfigurationSection}.
      * @param <T>      a Class extending {@link Configuration} and {@link MultiConfigurationSectionConfiguration}
      */
     public <T extends Configuration & MultiConfigurationSectionConfiguration>
