@@ -6,6 +6,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 
 import java.io.File;
 import java.util.Map;
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Tests the {@link FallbackConfigurationSection} class.
  */
+@Tag("ConfigurationSection")
 @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
 public class FallbackConfigurationSectionTest extends ConfigurationSectionBaseTest {
     /**

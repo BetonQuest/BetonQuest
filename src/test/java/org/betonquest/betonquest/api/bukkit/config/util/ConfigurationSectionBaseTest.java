@@ -10,6 +10,7 @@ import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * This class can be used to test custom implementations of {@link ConfigurationSection}.
  * You only need to override methods with behaviours that differ from the default one.
  */
+@Tag("ConfigurationSection")
 @SuppressWarnings({"PMD.GodClass", "PMD.JUnitAssertionsShouldIncludeMessage", "PMD.JUnit5TestShouldBePackagePrivate"})
 public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<ConfigurationSection> implements ConfigurationSectionTestInterface {
 

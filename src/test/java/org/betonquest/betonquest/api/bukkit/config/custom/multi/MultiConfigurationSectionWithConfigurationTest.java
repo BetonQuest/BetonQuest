@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.bukkit.config.util.ConfigurationSectionBase
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * This is a test for {@link MultiConfiguration} as a {@link ConfigurationSection}.
  */
+@Tag("ConfigurationSection")
 @SuppressWarnings({"PMD.JUnit5TestShouldBePackagePrivate", "PMD.JUnitAssertionsShouldIncludeMessage"})
 public class MultiConfigurationSectionWithConfigurationTest extends ConfigurationSectionBaseTest {
 

@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.bukkit.config.util.ConfigurationSectionBase
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * This is a test for the {@link HandleModificationConfigurationSection}.
  */
+@Tag("ConfigurationSection")
 @SuppressWarnings({"PMD.JUnitTestsShouldIncludeAssert", "PMD.JUnitAssertionsShouldIncludeMessage", "PMD.JUnit5TestShouldBePackagePrivate"})
 public class HandleModificationConfigurationSectionTest extends ConfigurationSectionBaseTest {
 

@@ -4,10 +4,12 @@ import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfigurati
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfigurationModificationTest;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfigurationSectionConfiguration;
 import org.bukkit.configuration.Configuration;
+import org.junit.jupiter.api.Tag;
 
 /**
  * This is a test for modifications of the {@link MultiConfiguration}.
  */
+@Tag("ConfigurationSection")
 @SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.JUnitTestContainsTooManyAsserts"})
 class MultiConfigurationModificationWithMultiFallbackTest<T extends Configuration & MultiConfigurationSectionConfiguration> extends MultiConfigurationModificationTest {
 
