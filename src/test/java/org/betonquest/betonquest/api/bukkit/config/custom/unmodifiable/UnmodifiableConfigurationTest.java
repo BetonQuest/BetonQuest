@@ -36,7 +36,7 @@ public class UnmodifiableConfigurationTest extends ConfigurationBaseTest {
      * Get a copy of the values in the config, before the test did run.
      */
     @BeforeEach
-    public void beforeEach() {
+    public void savePreviousValues() {
         values = config.getValues(true);
         valuesDefault = Objects.requireNonNull(config.getDefaultSection()).getValues(true);
     }
@@ -46,7 +46,7 @@ public class UnmodifiableConfigurationTest extends ConfigurationBaseTest {
      * They should not have been changed.
      */
     @AfterEach
-    public void afterEach() {
+    public void assertNotModified() {
         assertEquals(values.toString(), config.getValues(true).toString());
         assertEquals(valuesDefault.toString(), Objects.requireNonNull(config.getDefaultSection()).getValues(true).toString());
     }

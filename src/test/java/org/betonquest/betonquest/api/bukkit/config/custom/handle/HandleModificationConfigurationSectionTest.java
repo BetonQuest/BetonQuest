@@ -31,7 +31,7 @@ public class HandleModificationConfigurationSectionTest extends ConfigurationSec
      * Therefore, it must be empty after each test.
      */
     @AfterEach
-    public void afterEach() {
+    public void assertSetterIsEmpty() {
         assertTrue(setter.getSection().getKeys(true).isEmpty());
         final Configuration defaultSection = setter.getSection().getDefaults();
         if (defaultSection != null) {
@@ -53,6 +53,13 @@ public class HandleModificationConfigurationSectionTest extends ConfigurationSec
     public void testSetOnExistingConfigPath() {
         super.testSetOnExistingConfigPath();
         config.set("existingSet", null);
+    }
+
+    @Test
+    @Override
+    public void testSetSectionOverwritingExisting() {
+        super.testSetSectionOverwritingExisting();
+        config.set("childSection", null);
     }
 
     @Test

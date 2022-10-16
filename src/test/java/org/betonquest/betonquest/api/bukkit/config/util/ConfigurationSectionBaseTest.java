@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
@@ -260,6 +261,27 @@ public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<Configu
     public void testSetOnExistingConfigPath() {
         config.set("existingSet", "overriddenValue");
         assertEquals("overriddenValue", config.get("existingSet"));
+    }
+
+    @Test
+    @Override
+    @SuppressWarnings("PMD.JUnitTestContainsTooManyAsserts")
+    public void testSetSectionOverwritingExisting() {
+        assertTrue(config.isSet("childSection"));
+        final MemoryConfiguration configuration = new MemoryConfiguration();
+        configuration.set("test", "test");
+        config.set("childSection", configuration);
+        final ConfigurationSection childSection = config.getConfigurationSection("childSection");
+        assertNotNull(childSection);
+        assertEquals("[test]", childSection.getKeys(true).toString());
+    }
+
+    @Test
+    @Override
+    public void testSetExistingSectionToNull() {
+        assertTrue(config.isSet("childSection"));
+        config.set("childSection", null);
+        assertFalse(config.isSet("childSection"));
     }
 
     @Test

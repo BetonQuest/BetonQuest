@@ -57,6 +57,10 @@ public interface ConfigurationSectionTestInterface {
 
     void testSet();
 
+    void testSetSectionOverwritingExisting();
+
+    void testSetExistingSectionToNull();
+
     void testSetOnExistingConfigPath();
 
     void testCreateSection();

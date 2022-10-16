@@ -9,7 +9,8 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * This class tests edge cases of the {@link FallbackConfigurationSection}.
  */
-class FallbackConfigurationSectionEdgeCaseTest {
+@SuppressWarnings("PMD.JUnit5TestShouldBePackagePrivate")
+public class FallbackConfigurationSectionEdgeCaseTest {
     @Test
     void testInvalidConstructor() {
         final Configuration original = new MemoryConfiguration();

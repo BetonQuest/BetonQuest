@@ -36,7 +36,7 @@ public class UnmodifiableConfigurationSectionTest extends ConfigurationSectionBa
      * Get a copy of the values in the config, before the test runs.
      */
     @BeforeEach
-    public void beforeEach() {
+    public void savePreviousValues() {
         values = config.getValues(true);
         valuesDefault = Objects.requireNonNull(config.getDefaultSection()).getValues(true);
     }
@@ -46,7 +46,7 @@ public class UnmodifiableConfigurationSectionTest extends ConfigurationSectionBa
      * They should not have been changed.
      */
     @AfterEach
-    public void afterEach() {
+    public void assertNotModified() {
         assertEquals(values.toString(), config.getValues(true).toString());
         assertEquals(valuesDefault.toString(), Objects.requireNonNull(config.getDefaultSection()).getValues(true).toString());
     }
@@ -78,6 +78,18 @@ public class UnmodifiableConfigurationSectionTest extends ConfigurationSectionBa
     @Override
     public void testSetOnExistingConfigPath() {
         assertThrowsUnmodifiableException(super::testSetOnExistingConfigPath);
+    }
+
+    @Test
+    @Override
+    public void testSetSectionOverwritingExisting() {
+        assertThrowsUnmodifiableException(super::testSetSectionOverwritingExisting);
+    }
+
+    @Test
+    @Override
+    public void testSetExistingSectionToNull() {
+        assertThrowsUnmodifiableException(super::testSetExistingSectionToNull);
     }
 
     @Test

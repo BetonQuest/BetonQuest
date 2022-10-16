@@ -30,7 +30,7 @@ public class HandleModificationConfigurationTest extends ConfigurationBaseTest {
      * Therefore, it must be empty after each test.
      */
     @AfterEach
-    public void afterEach() {
+    public void assertSetterIsEmpty() {
         assertTrue(setter.getSection().getKeys(true).isEmpty());
         final Configuration defaultSection = setter.getSection().getDefaults();
         if (defaultSection != null) {

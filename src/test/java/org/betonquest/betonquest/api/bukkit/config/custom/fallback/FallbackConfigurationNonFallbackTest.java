@@ -7,7 +7,7 @@ import org.bukkit.configuration.Configuration;
  * Tests the {@link FallbackConfiguration} class.
  */
 @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
-class FallbackConfigurationNonFallbackTest extends ConfigurationBaseTest {
+public class FallbackConfigurationNonFallbackTest extends ConfigurationBaseTest {
     @Override
     public Configuration getConfig() {
         return new FallbackConfiguration(getDefaultConfig(), null);
