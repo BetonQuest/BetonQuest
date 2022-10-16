@@ -2,6 +2,7 @@ package org.betonquest.betonquest.api.bukkit.config.util;
 
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.MemoryConfiguration;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -19,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * This class can be used to test custom implementations of {@link Configuration}.
  * You only need to override methods with behaviours that differ from the default one.
  */
+@Tag("ConfigurationSection")
 @SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.JUnit5TestShouldBePackagePrivate"})
 public class ConfigurationBaseTest extends AbstractConfigBaseTest<Configuration> implements ConfigurationTestInterface {
 

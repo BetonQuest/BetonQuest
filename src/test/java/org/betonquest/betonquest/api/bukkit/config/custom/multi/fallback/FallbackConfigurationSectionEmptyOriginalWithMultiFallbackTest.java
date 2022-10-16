@@ -5,10 +5,12 @@ import org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfi
 import org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfigurationSectionEmptyOriginalTest;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
+import org.junit.jupiter.api.Tag;
 
 /**
  * Tests the {@link FallbackConfigurationSection} class.
  */
+@Tag("ConfigurationSection")
 @SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.JUnit5TestShouldBePackagePrivate"})
 public class FallbackConfigurationSectionEmptyOriginalWithMultiFallbackTest extends FallbackConfigurationSectionEmptyOriginalTest {
     @Override

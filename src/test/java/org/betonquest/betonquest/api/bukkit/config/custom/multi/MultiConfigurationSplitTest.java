@@ -5,6 +5,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.junit.jupiter.api.Tag;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * This is a test for the {@link MultiConfiguration}.
  */
+@Tag("ConfigurationSection")
 @SuppressWarnings({"PMD.JUnit5TestShouldBePackagePrivate", "PMD.JUnitAssertionsShouldIncludeMessage"})
 public class MultiConfigurationSplitTest extends MultiConfigurationTest {
 

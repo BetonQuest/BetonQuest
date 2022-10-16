@@ -3,6 +3,7 @@ package org.betonquest.betonquest.api.bukkit.config.custom.multi;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -14,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * This is a test for the {@link MultiConfiguration} and it's thrown {@link InvalidSubConfigurationException}s.
  */
+@Tag("ConfigurationSection")
 @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
 class MultiConfigurationInvalidSubConfigurationExceptionTest {
 

@@ -8,6 +8,7 @@ import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -23,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * This is a test for modifications of the {@link MultiConfiguration}.
  */
+@Tag("ConfigurationSection")
 @SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.JUnitTestContainsTooManyAsserts", "PMD.JUnit5TestShouldBePackagePrivate"})
 public class MultiConfigurationModificationTest<T extends Configuration & MultiConfigurationSectionConfiguration> {
 
