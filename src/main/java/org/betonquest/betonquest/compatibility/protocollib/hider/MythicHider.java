@@ -153,7 +153,7 @@ public final class MythicHider extends BukkitRunnable implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(final PlayerJoinEvent event) {
-        applyVisibility(event.getPlayer());
+        applyVisibility(PlayerConverter.getID(event.getPlayer()));
     }
 
     @EventHandler(ignoreCancelled = true)
