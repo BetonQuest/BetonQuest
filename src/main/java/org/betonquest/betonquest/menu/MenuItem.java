@@ -4,7 +4,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.VariableNumber;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -95,7 +95,7 @@ public class MenuItem extends SimpleYMLSection {
             //load item
             final ItemID itemID = new ItemID(pack, getString("item").trim());
             final VariableNumber amount;
-            amount = new VariableNumber(pack.getPackagePath(), new DefaultSetting<>("1") {
+            amount = new VariableNumber(pack.getQuestPath(), new DefaultSetting<>("1") {
                 @Override
                 @SuppressWarnings("PMD.ShortMethodName")
                 protected String of() throws Missing {

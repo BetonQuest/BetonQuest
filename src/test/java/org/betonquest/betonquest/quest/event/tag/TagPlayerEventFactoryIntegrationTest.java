@@ -2,9 +2,10 @@ package org.betonquest.betonquest.quest.event.tag;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.modules.config.quest.QuestPackageImpl;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.junit.jupiter.api.Test;
@@ -47,7 +48,7 @@ class TagPlayerEventFactoryIntegrationTest {
         if (!packageConfigFile.createNewFile()) {
             throw new IOException("Failed to create test package main configuration file.");
         }
-        return new QuestPackage("test", packageConfigFile, Collections.emptyList());
+        return new QuestPackageImpl("test", packageConfigFile, Collections.emptyList());
     }
 
     @Test

@@ -36,7 +36,7 @@ public class ConversationCondition extends Condition {
         final ConversationData conversation = BetonQuest.getInstance().getConversation(Utils.addPackage(instruction.getPackage(), conversationID));
 
         if (conversation == null) {
-            throw new QuestRuntimeException("Conversation does not exist: " + instruction.getPackage().getPackagePath() + conversationID);
+            throw new QuestRuntimeException("Conversation does not exist: " + instruction.getPackage().getQuestPath() + conversationID);
         }
 
         return conversation.isReady(profile);

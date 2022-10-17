@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.api.PlayerJournalAddEvent;
 import org.betonquest.betonquest.api.PlayerJournalDeleteEvent;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.Saver.Record;
@@ -224,7 +224,7 @@ public class Journal {
                     text = pack.getFormattedString("journal." + pointerName);
                 }
             } else {
-                LOG.warn(pack, "No defined journal entry " + pointerName + " in package " + pack.getPackagePath());
+                LOG.warn(pack, "No defined journal entry " + pointerName + " in package " + pack.getQuestPath());
                 text = "error";
             }
 
@@ -261,7 +261,7 @@ public class Journal {
         final HashMap<Integer, ArrayList<String>> lines = new HashMap<>(); // holds text lines with their priority
         final HashSet<Integer> numbers = new HashSet<>(); // stores numbers that are used, so there's no need to search them
         for (final QuestPackage pack : Config.getPackages().values()) {
-            final String packName = pack.getPackagePath();
+            final String packName = pack.getQuestPath();
             final ConfigurationSection section = pack.getConfig().getConfigurationSection("journal_main_page");
             if (section == null) {
                 continue;

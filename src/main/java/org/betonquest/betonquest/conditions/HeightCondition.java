@@ -19,7 +19,7 @@ public class HeightCondition extends Condition {
     public HeightCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         final String string = instruction.next();
-        final String packName = instruction.getPackage().getPackagePath();
+        final String packName = instruction.getPackage().getQuestPath();
         if (string.matches("\\-?\\d+\\.?\\d*")) {
             try {
                 height = new VariableNumber(packName, string);

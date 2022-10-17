@@ -3,7 +3,7 @@ package org.betonquest.betonquest.variables;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -65,7 +65,7 @@ public class TagVariable extends Variable {
     protected String getValue(final List<String> tags) {
         final String lang = Config.getLanguage();
 
-        if (tags.contains(questPackage.getPackagePath() + "." + tagName)) {
+        if (tags.contains(questPackage.getQuestPath() + "." + tagName)) {
             return papiMode ? Config.getMessage(lang, "condition_variable_met") : "true";
         }
         return papiMode ? Config.getMessage(lang, "condition_variable_not_met") : "false";

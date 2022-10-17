@@ -2,7 +2,7 @@ package org.betonquest.betonquest.utils.location;
 
 
 import org.betonquest.betonquest.api.Variable;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

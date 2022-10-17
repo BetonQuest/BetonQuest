@@ -5,7 +5,7 @@ import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.hologram.PlaceholderSetting;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.compatibility.holographicdisplays.lines.AbstractLine;
 import org.betonquest.betonquest.compatibility.holographicdisplays.lines.ItemLine;
 import org.betonquest.betonquest.compatibility.holographicdisplays.lines.TextLine;
@@ -52,7 +52,7 @@ public class HologramLoop {
         final HolographicDisplaysAPI holographicDisplaysAPI = HolographicDisplaysAPI.get(BetonQuest.getInstance());
         // get all holograms and their condition
         for (final QuestPackage pack : Config.getPackages().values()) {
-            final String packName = pack.getPackagePath();
+            final String packName = pack.getQuestPath();
             final ConfigurationSection section = pack.getConfig().getConfigurationSection("holograms");
             if (section == null) {
                 continue;

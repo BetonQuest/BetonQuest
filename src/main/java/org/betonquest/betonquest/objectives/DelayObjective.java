@@ -49,7 +49,7 @@ public class DelayObjective extends Objective {
     private void parseDelay() throws InstructionParseException {
         final String doubleOrVar = instruction.next();
         if (doubleOrVar.startsWith("%")) {
-            delay = new VariableNumber(instruction.getPackage().getPackagePath(), doubleOrVar);
+            delay = new VariableNumber(instruction.getPackage().getQuestPath(), doubleOrVar);
         } else {
             final double time = Double.parseDouble(doubleOrVar);
             if (time < 0) {

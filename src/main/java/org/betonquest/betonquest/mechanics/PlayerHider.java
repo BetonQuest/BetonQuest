@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.mechanics;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
@@ -75,7 +75,7 @@ public class PlayerHider {
                 conditionList[i] = new ConditionID(pack, rawConditionsList[i]);
             } catch (final ObjectNotFoundException e) {
                 throw new InstructionParseException("Error while loading " + rawConditionsList[i]
-                        + " condition for player_hider " + pack.getPackagePath() + "." + key + ": " + e.getMessage(), e);
+                        + " condition for player_hider " + pack.getQuestPath() + "." + key + ": " + e.getMessage(), e);
             }
         }
         return conditionList;

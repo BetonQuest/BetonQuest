@@ -4,7 +4,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.Connector;
@@ -381,7 +381,7 @@ public final class Utils {
         if (string.contains(".")) {
             return string;
         } else {
-            return pack.getPackagePath() + "." + string;
+            return pack.getQuestPath() + "." + string;
         }
     }
 

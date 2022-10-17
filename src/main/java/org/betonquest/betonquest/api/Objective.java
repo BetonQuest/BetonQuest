@@ -228,7 +228,7 @@ public abstract class Objective {
             final String[] stringVariables = Arrays.stream(variables)
                     .map(String::valueOf)
                     .toArray(String[]::new);
-            Config.sendNotify(instruction.getPackage().getPackagePath(), onlineProfile, messageName, stringVariables, messageName + ",info");
+            Config.sendNotify(instruction.getPackage().getQuestPath(), onlineProfile, messageName, stringVariables, messageName + ",info");
         } catch (final QuestRuntimeException exception) {
             try {
                 LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the '" + messageName + "' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");

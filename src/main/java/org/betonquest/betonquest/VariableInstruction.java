@@ -1,6 +1,6 @@
 package org.betonquest.betonquest;
 
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.id.ID;
 
 @SuppressWarnings("PMD.CommentRequired")

@@ -78,7 +78,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
 
         final String unsafeMinMobLevel = instruction.getOptional("minLevel");
         final String unsafeMaxMobLevel = instruction.getOptional("maxLevel");
-        final String packName = instruction.getPackage().getPackagePath();
+        final String packName = instruction.getPackage().getQuestPath();
 
         minMobLevel = unsafeMinMobLevel == null ? new VariableNumber(Double.NEGATIVE_INFINITY) : new VariableNumber(packName, unsafeMinMobLevel);
         maxMobLevel = unsafeMaxMobLevel == null ? new VariableNumber(Double.POSITIVE_INFINITY) : new VariableNumber(packName, unsafeMaxMobLevel);

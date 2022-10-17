@@ -1,6 +1,6 @@
 package org.betonquest.betonquest;
 
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
@@ -63,7 +63,7 @@ public class VariableString {
     public String getString(final Profile profile) {
         String resolvedString = string;
         for (final String variable : variables) {
-            final String resolvedVariable = BetonQuest.getInstance().getVariableValue(questPackage.getPackagePath(), variable, profile);
+            final String resolvedVariable = BetonQuest.getInstance().getVariableValue(questPackage.getQuestPath(), variable, profile);
             resolvedString = resolvedString.replace(variable, resolvedVariable);
         }
         return resolvedString;

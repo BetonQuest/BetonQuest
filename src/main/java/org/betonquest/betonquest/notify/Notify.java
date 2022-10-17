@@ -2,7 +2,7 @@ package org.betonquest.betonquest.notify;
 
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.configuration.ConfigurationSection;
@@ -111,7 +111,8 @@ public final class Notify {
             if (clazz != null) {
                 try {
                     return clazz.getConstructor(QuestPackage.class, Map.class).newInstance(pack, categoryData);
-                } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException exception) {
+                } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException |
+                               InvocationTargetException exception) {
                     throw new InstructionParseException("Couldn't load Notify IO '" + name + "': " + exception.getMessage(), exception);
                 }
             }

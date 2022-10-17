@@ -40,12 +40,12 @@ public class VariableEvent extends QuestEvent {
         String keyReplaced = key;
         for (final String v : keyVariables) {
             keyReplaced = keyReplaced.replace(v, BetonQuest.getInstance().getVariableValue(
-                    instruction.getPackage().getPackagePath(), v, profile));
+                    instruction.getPackage().getQuestPath(), v, profile));
         }
         String valueReplaced = value;
         for (final String v : valueVariables) {
             valueReplaced = valueReplaced.replace(v, BetonQuest.getInstance().getVariableValue(
-                    instruction.getPackage().getPackagePath(), v, profile));
+                    instruction.getPackage().getQuestPath(), v, profile));
         }
         if (!objective.store(profile, keyReplaced.replace('_', ' '), valueReplaced.replace('_', ' '))) {
             throw new QuestRuntimeException("Player " + profile.getProfileName() + " does not have '" +

@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.bukkit.config.custom.multi.InvalidSubConfig
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.KeyConflictException;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiSectionConfiguration;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -72,7 +72,7 @@ class EventSchedulingTest {
                 .toList();
         final MultiConfiguration multiConfig = new MultiSectionConfiguration(configs);
         final QuestPackage pack = mock(QuestPackage.class);
-        when(pack.getPackagePath()).thenReturn("test-modules-schedule");
+        when(pack.getQuestPath()).thenReturn("test-modules-schedule");
         when(pack.getConfig()).thenReturn(multiConfig);
         return pack;
     }

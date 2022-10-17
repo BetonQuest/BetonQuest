@@ -18,7 +18,7 @@ public class CancelEvent extends QuestEvent {
 
     public CancelEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
-        canceler = BetonQuest.getCanceler().get(instruction.getPackage().getPackagePath() + "." + instruction.next());
+        canceler = BetonQuest.getCanceler().get(instruction.getPackage().getQuestPath() + "." + instruction.next());
     }
 
     @Override

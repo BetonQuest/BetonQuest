@@ -66,7 +66,7 @@ public class MMOItemsGiveEvent extends QuestEvent {
 
         if (notify) {
             try {
-                Config.sendNotify(instruction.getPackage().getPackagePath(), profile.getOnlineProfile().get(), "items_given",
+                Config.sendNotify(instruction.getPackage().getQuestPath(), profile.getOnlineProfile().get(), "items_given",
                         new String[]{mmoItem.getItemMeta().getDisplayName(), String.valueOf(amount)},
                         "items_given,info");
             } catch (final QuestRuntimeException e) {
