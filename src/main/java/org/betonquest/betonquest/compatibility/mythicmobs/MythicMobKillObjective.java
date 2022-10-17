@@ -76,7 +76,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
             final Location center = BukkitAdapter.adapt(event.getMob().getLocation());
             for (final Player player : center.getWorld().getPlayers()) {
                 if (isValidPlayer(player) && player.getLocation().distanceSquared(center) <= neutralDeathRadiusAllPlayersSquared) {
-                    checkKill(event, PlayerConverter.getID((Player) event.getKiller()));
+                    checkKill(event, PlayerConverter.getID(player));
                 }
             }
         }
