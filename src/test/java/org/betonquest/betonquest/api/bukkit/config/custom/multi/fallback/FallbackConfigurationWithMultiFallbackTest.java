@@ -11,7 +11,7 @@ import java.io.File;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Tests the {@link FallbackConfiguration} class.
+ * This is a test for the {@link MultiFallbackConfiguration}.
  */
 @Tag("ConfigurationSection")
 @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")

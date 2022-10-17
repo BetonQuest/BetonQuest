@@ -14,11 +14,11 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This is a test for the {@link MultiConfiguration}.
+ * This is a test for the {@link MultiSectionConfiguration}.
  */
 @Tag("ConfigurationSection")
 @SuppressWarnings({"PMD.JUnit5TestShouldBePackagePrivate", "PMD.JUnitAssertionsShouldIncludeMessage"})
-public class MultiConfigurationTest extends ConfigurationBaseTest {
+public class MultiSectionConfigurationTest extends ConfigurationBaseTest {
 
     @Override
     public Configuration getConfig() {
@@ -26,7 +26,7 @@ public class MultiConfigurationTest extends ConfigurationBaseTest {
         final Map<ConfigurationSection, String> configs = new HashMap<>();
         configs.put(defaultConfig, "config.yml");
         try {
-            final MultiConfiguration multiConfiguration = new MultiConfiguration(new ArrayList<>(configs.keySet()));
+            final MultiConfiguration multiConfiguration = new MultiSectionConfiguration(new ArrayList<>(configs.keySet()));
             final Configuration defaults = defaultConfig.getDefaults();
             assertNotNull(defaults);
             multiConfiguration.setDefaults(defaults);

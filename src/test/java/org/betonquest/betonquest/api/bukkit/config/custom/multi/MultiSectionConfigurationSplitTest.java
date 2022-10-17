@@ -15,11 +15,11 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This is a test for the {@link MultiConfiguration}.
+ * This is a test for the {@link MultiSectionConfiguration}.
  */
 @Tag("ConfigurationSection")
 @SuppressWarnings({"PMD.JUnit5TestShouldBePackagePrivate", "PMD.JUnitAssertionsShouldIncludeMessage"})
-public class MultiConfigurationSplitTest extends MultiConfigurationTest {
+public class MultiSectionConfigurationSplitTest extends MultiSectionConfigurationTest {
 
     /**
      * Get the default configuration values as {@link Configuration}.
@@ -39,7 +39,7 @@ public class MultiConfigurationSplitTest extends MultiConfigurationTest {
         configs.put(YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/multi/config2.yml")), "config1.yml");
         configs.put(YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/multi/config3.yml")), "config1.yml");
         try {
-            final MultiConfiguration multiConfiguration = new MultiConfiguration(new ArrayList<>(configs.keySet()));
+            final MultiConfiguration multiConfiguration = new MultiSectionConfiguration(new ArrayList<>(configs.keySet()));
             multiConfiguration.setDefaults(getDefault());
             return multiConfiguration;
         } catch (final KeyConflictException e) {

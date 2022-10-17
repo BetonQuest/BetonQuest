@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.api.bukkit.config.custom.multi.fallback;
 
 import org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfiguration;
-import org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfigurationSection;
 import org.betonquest.betonquest.api.bukkit.config.custom.fallback.FallbackConfigurationSectionNestedTest;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
@@ -14,7 +13,7 @@ import java.io.File;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Tests the {@link FallbackConfigurationSection} class.
+ * This is a test for the {@link MultiFallbackConfiguration}.
  */
 @Tag("ConfigurationSection")
 @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
