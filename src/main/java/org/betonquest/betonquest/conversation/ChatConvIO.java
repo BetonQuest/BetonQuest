@@ -2,7 +2,7 @@ package org.betonquest.betonquest.conversation;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
@@ -40,10 +40,10 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     protected String answerFormat;
     protected String textFormat;
 
-    public ChatConvIO(final Conversation conv, final Profile profile) {
+    public ChatConvIO(final Conversation conv, final OnlineProfile profile) {
         this.options = new HashMap<>();
         this.conv = conv;
-        this.player = profile.getOnlineProfile().getOnlinePlayer();
+        this.player = profile.getOnlinePlayer();
         this.name = player.getName();
         this.colors = ConversationColors.getColors();
         StringBuilder string = new StringBuilder();

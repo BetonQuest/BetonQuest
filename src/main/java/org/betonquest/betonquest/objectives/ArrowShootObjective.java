@@ -6,6 +6,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -47,11 +48,10 @@ public class ArrowShootObjective extends Objective implements Listener {
         if (arrow.getType() != EntityType.ARROW) {
             return;
         }
-        if (!(arrow.getShooter() instanceof Player)) {
+        if (!(arrow.getShooter() instanceof final Player player)) {
             return;
         }
-        final Player player = (Player) arrow.getShooter();
-        final Profile profile = PlayerConverter.getID(player);
+        final OnlineProfile profile = PlayerConverter.getID(player);
         if (!containsPlayer(profile)) {
             return;
         }

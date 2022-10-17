@@ -4,6 +4,7 @@ import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -34,7 +35,7 @@ public class NPCInteractObjective extends Objective implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onNPCClick(final NPCRightClickEvent event) {
-        final Profile profile = PlayerConverter.getID(event.getClicker());
+        final OnlineProfile profile = PlayerConverter.getID(event.getClicker());
         if (event.getNPC().getId() != npcId || !containsPlayer(profile)) {
             return;
         }

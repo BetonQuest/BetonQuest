@@ -5,6 +5,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -46,7 +47,7 @@ public class DieObjective extends Objective implements Listener {
             return;
         }
         if (event.getEntity() instanceof Player) {
-            final Profile profile = PlayerConverter.getID((Player) event.getEntity());
+            final OnlineProfile profile = PlayerConverter.getID((Player) event.getEntity());
             if (containsPlayer(profile) && checkConditions(profile)) {
                 completeObjective(profile);
             }
@@ -59,7 +60,7 @@ public class DieObjective extends Objective implements Listener {
         if (!cancel || !(event.getEntity() instanceof final Player player)) {
             return;
         }
-        final Profile profile = PlayerConverter.getID(player);
+        final OnlineProfile profile = PlayerConverter.getID(player);
         if (containsPlayer(profile) && player.getHealth() - event.getFinalDamage() <= 0
                 && checkConditions(profile)) {
             event.setCancelled(true);

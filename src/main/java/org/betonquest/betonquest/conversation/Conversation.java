@@ -372,7 +372,7 @@ public class Conversation implements Listener {
         if (blacklist.contains(cmdName)) {
             event.setCancelled(true);
             try {
-                Config.sendNotify(getPackage().getPackagePath(), PlayerConverter.getID(event.getPlayer()).getOnlineProfile(), "command_blocked", "command_blocked,error");
+                Config.sendNotify(getPackage().getPackagePath(), PlayerConverter.getID(event.getPlayer()), "command_blocked", "command_blocked,error");
             } catch (final QuestRuntimeException e) {
                 LOG.warn(pack, "The notify system was unable to play a sound for the 'command_blocked' category. Error was: '" + e.getMessage() + "'", e);
             }

@@ -3,6 +3,7 @@ package org.betonquest.betonquest.objectives;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -57,7 +58,7 @@ public class PasswordObjective extends Objective implements Listener {
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     private boolean chatInput(final boolean fromCommand, final Player player, final String message) {
-        final Profile profile = PlayerConverter.getID(player);
+        final OnlineProfile profile = PlayerConverter.getID(player);
         if (!containsPlayer(profile)) {
             return false;
         }

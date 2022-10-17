@@ -3,6 +3,7 @@ package org.betonquest.betonquest.objectives;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -26,7 +27,7 @@ public class LogoutObjective extends Objective implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onQuit(final PlayerQuitEvent event) {
-        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
         if (containsPlayer(profile) && checkConditions(profile)) {
             completeObjective(profile);
         }

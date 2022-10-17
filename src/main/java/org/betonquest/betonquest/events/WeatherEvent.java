@@ -3,6 +3,7 @@ package org.betonquest.betonquest.events;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -48,7 +49,7 @@ public class WeatherEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final World world = getWorld(profile);
+        final World world = getWorld(profile.getOnlineProfile());
         world.setStorm(storm);
         world.setThundering(thunder);
         if (duration != null) {
@@ -57,9 +58,9 @@ public class WeatherEvent extends QuestEvent {
         return null;
     }
 
-    private @NotNull World getWorld(final Profile profile) throws QuestRuntimeException {
+    private @NotNull World getWorld(final OnlineProfile profile) throws QuestRuntimeException {
         if (world == null) {
-            return profile.getOnlineProfile().getOnlinePlayer().getWorld();
+            return profile.getOnlinePlayer().getWorld();
         }
         final World resolvedWorld = Bukkit.getWorld(world);
         if (resolvedWorld == null) {

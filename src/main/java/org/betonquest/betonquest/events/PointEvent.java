@@ -6,6 +6,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Point;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.PlayerData;
@@ -54,7 +55,7 @@ public class PointEvent extends QuestEvent {
                 public void run() {
                     final PlayerData playerData = new PlayerData(profile);
                     try {
-                        addPoints(profile, playerData);
+                        addPoints(profile.getOnlineProfile(), playerData);
                     } catch (final QuestRuntimeException e) {
                         LOG.warn(instruction.getPackage(), "Error while asynchronously adding " + count + " points of '" + category
                                 + "' category to player " + profile.getPlayer() + ": " + e.getMessage(), e);
@@ -63,13 +64,13 @@ public class PointEvent extends QuestEvent {
             }.runTaskAsynchronously(BetonQuest.getInstance());
         } else {
             final PlayerData playerData = BetonQuest.getInstance().getPlayerData(profile);
-            addPoints(profile, playerData);
+            addPoints(profile.getOnlineProfile(), playerData);
         }
         return null;
     }
 
     @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
-    private void addPoints(final Profile profile, final PlayerData playerData) throws QuestRuntimeException {
+    private void addPoints(final OnlineProfile profile, final PlayerData playerData) throws QuestRuntimeException {
         final int intCount = count.getInt(profile);
         if (multi) {
             for (final Point p : playerData.getPoints()) {
@@ -77,7 +78,7 @@ public class PointEvent extends QuestEvent {
                     playerData.modifyPoints(category, (int) Math.floor(p.getCount() * count.getDouble(profile) - p.getCount()));
                     if (notify) {
                         try {
-                            Config.sendNotify(instruction.getPackage().getPackagePath(), profile.getOnlineProfile(), "point_multiplied", new String[]{String.valueOf(intCount), categoryName}, "point_multiplied,info");
+                            Config.sendNotify(instruction.getPackage().getPackagePath(), profile, "point_multiplied", new String[]{String.valueOf(intCount), categoryName}, "point_multiplied,info");
                         } catch (final QuestRuntimeException e) {
                             LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'point_multiplied' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
                         }
@@ -88,14 +89,14 @@ public class PointEvent extends QuestEvent {
             playerData.modifyPoints(category, (int) Math.floor(count.getDouble(profile)));
             if (notify && intCount > 0) {
                 try {
-                    Config.sendNotify(instruction.getPackage().getPackagePath(), profile.getOnlineProfile(), "point_given", new String[]{String.valueOf(intCount), categoryName}, "point_given,info");
+                    Config.sendNotify(instruction.getPackage().getPackagePath(), profile, "point_given", new String[]{String.valueOf(intCount), categoryName}, "point_given,info");
                 } catch (final QuestRuntimeException e) {
                     LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'point_given' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
                 }
 
             } else if (notify) {
                 try {
-                    Config.sendNotify(instruction.getPackage().getPackagePath(), profile.getOnlineProfile(), "point_taken", new String[]{String.valueOf(Math.abs(intCount)), categoryName}, "point_taken,info");
+                    Config.sendNotify(instruction.getPackage().getPackagePath(), profile, "point_taken", new String[]{String.valueOf(Math.abs(intCount)), categoryName}, "point_taken,info");
                 } catch (final QuestRuntimeException e) {
                     LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'point_taken' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
                 }

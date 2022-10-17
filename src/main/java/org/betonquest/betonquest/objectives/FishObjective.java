@@ -6,6 +6,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.CountingObjective;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -62,7 +63,7 @@ public class FishObjective extends CountingObjective implements Listener {
         if (event.getState() != State.CAUGHT_FISH) {
             return;
         }
-        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
         if (!containsPlayer(profile) || event.getCaught() == null || event.getCaught().getType() != EntityType.DROPPED_ITEM) {
             return;
         }

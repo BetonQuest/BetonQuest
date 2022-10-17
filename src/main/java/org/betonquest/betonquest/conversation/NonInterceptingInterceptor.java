@@ -2,7 +2,7 @@ package org.betonquest.betonquest.conversation;
 
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("PMD.CommentRequired")
@@ -11,9 +11,9 @@ public class NonInterceptingInterceptor implements Interceptor {
     protected final Conversation conv;
     protected final Player player;
 
-    public NonInterceptingInterceptor(final Conversation conv, final Profile profile) {
+    public NonInterceptingInterceptor(final Conversation conv, final OnlineProfile profile) {
         this.conv = conv;
-        this.player = profile.getOnlineProfile().getOnlinePlayer();
+        this.player = profile.getOnlinePlayer();
     }
 
     @Override

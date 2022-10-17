@@ -62,7 +62,7 @@ public class JoinQuitListener implements Listener {
             BetonQuest.getInstance().getUpdater().sendUpdateNotification(event.getPlayer());
             if (new File(BetonQuest.getInstance().getDataFolder(), "CHANGELOG.md").exists()) {
                 try {
-                    Config.sendNotify(null, PlayerConverter.getID(event.getPlayer()).getOnlineProfile(), "changelog", null, "changelog,info");
+                    Config.sendNotify(null, PlayerConverter.getID(event.getPlayer()), "changelog", null, "changelog,info");
                 } catch (final QuestRuntimeException e) {
                     LOG.warn("The notify system was unable to play a sound for the 'changelog' category. Error was: '" + e.getMessage() + "'", e);
                 }
@@ -79,7 +79,7 @@ public class JoinQuitListener implements Listener {
 
     @EventHandler
     public void onPlayerQuit(final PlayerQuitEvent event) {
-        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
         for (final Objective objective : BetonQuest.getInstance().getPlayerObjectives(profile)) {
             objective.pauseObjectiveForPlayer(profile);
         }

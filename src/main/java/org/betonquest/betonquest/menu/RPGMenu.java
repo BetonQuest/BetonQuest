@@ -5,7 +5,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.QuestPackage;
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.menu.betonquest.MenuCondition;
@@ -43,23 +43,23 @@ public class RPGMenu {
     }
 
     /**
-     * If the player of the {@link Profile} has an open menu it closes it
+     * If the player of the {@link OnlineProfile} has an open menu it closes it
      *
-     * @param profile the {@link Profile} of the player
+     * @param profile the {@link OnlineProfile} of the player
      */
-    public static void closeMenu(final Profile profile) {
-        OpenedMenu.closeMenu(profile.getOnlineProfile());
+    public static void closeMenu(final OnlineProfile profile) {
+        OpenedMenu.closeMenu(profile);
     }
 
     /**
      * Returns if the player has opened the specified menu
      *
-     * @param profile the player form the {@link Profile} for which should be checked
-     * @param menuID  the id of the menu the player should has opened, null will return true if the player has any menu opened
+     * @param onlineProfile the player form the {@link OnlineProfile} for which should be checked
+     * @param menuID        the id of the menu the player should has opened, null will return true if the player has any menu opened
      * @return true if the player has opened the specified menu, false otherwise
      */
-    public static boolean hasOpenedMenu(final Profile profile, final MenuID menuID) {
-        final OpenedMenu menu = OpenedMenu.getMenu(profile.getOnlineProfile());
+    public static boolean hasOpenedMenu(final OnlineProfile onlineProfile, final MenuID menuID) {
+        final OpenedMenu menu = OpenedMenu.getMenu(onlineProfile);
         if (menu == null) {
             return false;
         }
@@ -72,11 +72,11 @@ public class RPGMenu {
     /**
      * Returns if the player has opened any menu
      *
-     * @param profile guess what: the profile of the player!
+     * @param onlineProfile guess what: the onlineprofile of the player!
      * @return true if player has opened a menu, false if not
      */
-    public static boolean hasOpenedMenu(final Profile profile) {
-        return RPGMenu.hasOpenedMenu(profile, null);
+    public static boolean hasOpenedMenu(final OnlineProfile onlineProfile) {
+        return RPGMenu.hasOpenedMenu(onlineProfile, null);
     }
 
     /**
@@ -89,23 +89,23 @@ public class RPGMenu {
     /**
      * Open a menu for a player
      *
-     * @param profile the player of the {@link Profile} for which the menu should be opened
-     * @param menuID  id of the menu
+     * @param onlineProfile the player of the {@link OnlineProfile} for which the menu should be opened
+     * @param menuID        id of the menu
      */
-    public void openMenu(final Profile profile, final MenuID menuID) {
+    public void openMenu(final OnlineProfile onlineProfile, final MenuID menuID) {
         final Menu menu = menus.get(menuID);
         if (menu == null) {
             LOG.error(menuID.getPackage(), "Could not open menu §7" + menuID + "§4: §cUnknown menu");
             return;
         }
-        final MenuOpenEvent openEvent = new MenuOpenEvent(profile, menuID);
+        final MenuOpenEvent openEvent = new MenuOpenEvent(onlineProfile, menuID);
         Bukkit.getPluginManager().callEvent(openEvent);
         if (openEvent.isCancelled()) {
-            LOG.debug(menu.getPackage(), "A Bukkit listener canceled opening of menu " + menuID + " for " + profile.getOfflinePlayer().getName());
+            LOG.debug(menu.getPackage(), "A Bukkit listener canceled opening of menu " + menuID + " for " + onlineProfile.getOfflinePlayer().getName());
             return;
         }
-        new OpenedMenu(profile.getOnlineProfile(), menu);
-        LOG.debug(menu.getPackage(), "opening menu " + menuID + " for " + profile.getOfflinePlayer().getName());
+        new OpenedMenu(onlineProfile, menu);
+        LOG.debug(menu.getPackage(), "opening menu " + menuID + " for " + onlineProfile.getOfflinePlayer().getName());
     }
 
     @SuppressWarnings("PMD.AvoidDuplicateLiterals")

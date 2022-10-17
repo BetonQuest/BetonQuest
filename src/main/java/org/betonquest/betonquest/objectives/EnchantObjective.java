@@ -3,6 +3,7 @@ package org.betonquest.betonquest.objectives;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem;
@@ -38,7 +39,7 @@ public class EnchantObjective extends Objective implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onEnchant(final EnchantItemEvent event) {
-        final Profile profile = PlayerConverter.getID(event.getEnchanter());
+        final OnlineProfile profile = PlayerConverter.getID(event.getEnchanter());
         if (!containsPlayer(profile)) {
             return;
         }

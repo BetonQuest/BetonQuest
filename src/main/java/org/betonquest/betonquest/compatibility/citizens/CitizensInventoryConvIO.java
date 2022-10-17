@@ -5,7 +5,7 @@ import com.mojang.authlib.properties.Property;
 import lombok.CustomLog;
 import net.citizensnpcs.trait.SkinTrait;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.InventoryConvIO;
 import org.bukkit.Bukkit;
@@ -19,7 +19,7 @@ import java.util.concurrent.ExecutionException;
 @CustomLog
 public class CitizensInventoryConvIO extends InventoryConvIO {
 
-    public CitizensInventoryConvIO(final Conversation conv, final Profile profile) {
+    public CitizensInventoryConvIO(final Conversation conv, final OnlineProfile profile) {
         super(conv, profile);
     }
 
@@ -57,7 +57,7 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
 
     public static class CitizensCombined extends CitizensInventoryConvIO {
 
-        public CitizensCombined(final Conversation conv, final Profile profile) {
+        public CitizensCombined(final Conversation conv, final OnlineProfile profile) {
             super(conv, profile);
             super.printMessages = true;
         }

@@ -3,7 +3,7 @@ package org.betonquest.betonquest.item;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Journal;
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
@@ -63,7 +63,7 @@ public class QuestItemHandler implements Listener {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
             return;
         }
-        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
         final ItemStack item = event.getItemDrop().getItemStack();
         if (Journal.isJournal(profile, item)) {
             if (isJournalSlotLocked()) {
@@ -87,7 +87,7 @@ public class QuestItemHandler implements Listener {
         if (event.getWhoClicked().getGameMode() == GameMode.CREATIVE) {
             return;
         }
-        final Profile profile = PlayerConverter.getID((Player) event.getWhoClicked());
+        final OnlineProfile profile = PlayerConverter.getID((Player) event.getWhoClicked());
         ItemStack item = null;
         switch (event.getAction()) {
             case PICKUP_ALL:
@@ -153,7 +153,7 @@ public class QuestItemHandler implements Listener {
         if (event.getWhoClicked().getGameMode() == GameMode.CREATIVE) {
             return;
         }
-        final Profile profile = PlayerConverter.getID((Player) event.getWhoClicked());
+        final OnlineProfile profile = PlayerConverter.getID((Player) event.getWhoClicked());
         if (Journal.isJournal(profile, event.getOldCursor()) || Utils.isQuestItem(event.getOldCursor())) {
             event.setCancelled(true);
         }
@@ -165,7 +165,7 @@ public class QuestItemHandler implements Listener {
             return;
         }
         final ItemStack item = event.getPlayerItem();
-        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
         if (item != null && (Journal.isJournal(profile, item) || Utils.isQuestItem(item))) {
             event.setCancelled(true);
         }
@@ -176,7 +176,7 @@ public class QuestItemHandler implements Listener {
         if (event.getEntity().getGameMode() == GameMode.CREATIVE) {
             return;
         }
-        final Profile profile = PlayerConverter.getID(event.getEntity());
+        final OnlineProfile profile = PlayerConverter.getID(event.getEntity());
         // check if there is data for this player; NPCs don't have data
         if (BetonQuest.getInstance().getPlayerData(profile) == null) {
             return;
@@ -230,7 +230,7 @@ public class QuestItemHandler implements Listener {
             final ItemStack item = (event.getHand() == EquipmentSlot.HAND) ? event.getPlayer().getInventory().getItemInMainHand()
                     : event.getPlayer().getInventory().getItemInOffHand();
 
-            final Profile profile = PlayerConverter.getID(event.getPlayer());
+            final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
             if (Journal.isJournal(profile, item) || Utils.isQuestItem(item)) {
                 event.setCancelled(true);
             }
@@ -302,7 +302,7 @@ public class QuestItemHandler implements Listener {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) {
             return;
         }
-        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
         if (isJournalSlotLocked() && (Journal.isJournal(profile, event.getMainHandItem()) || Journal.isJournal(profile, event.getOffHandItem()))) {
             event.setCancelled(true);
         }

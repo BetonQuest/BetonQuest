@@ -4,6 +4,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.BlockSelector;
@@ -38,7 +39,7 @@ public class BlockObjective extends CountingObjective implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onBlockPlace(final BlockPlaceEvent event) {
-        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
         if (containsPlayer(profile) && selector.match(event.getBlock(), exactMatch) && checkConditions(profile)) {
             if (getCountingData(profile).getDirectionFactor() < 0 && noSafety) {
                 return;
@@ -49,7 +50,7 @@ public class BlockObjective extends CountingObjective implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onBlockBreak(final BlockBreakEvent event) {
-        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
         if (containsPlayer(profile) && selector.match(event.getBlock(), exactMatch) && checkConditions(profile)) {
             if (getCountingData(profile).getDirectionFactor() > 0 && noSafety) {
                 return;
@@ -60,7 +61,7 @@ public class BlockObjective extends CountingObjective implements Listener {
 
     private void handleDataChange(final Profile profile, final CountingData data) {
         final String message = data.getDirectionFactor() > 0 ? "blocks_to_place" : "blocks_to_break";
-        completeIfDoneOrNotify(profile, message);
+        completeIfDoneOrNotify(profile.getOnlineProfile(), message);
     }
 
     @Override

@@ -3,6 +3,7 @@ package org.betonquest.betonquest.objectives;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -43,7 +44,7 @@ public class RideObjective extends Objective implements Listener {
         if (!(event.getEntered() instanceof Player)) {
             return;
         }
-        final Profile profile = PlayerConverter.getID((Player) event.getEntered());
+        final OnlineProfile profile = PlayerConverter.getID((Player) event.getEntered());
         if (containsPlayer(profile) && (any || event.getVehicle().getType() == vehicle) && checkConditions(profile)) {
             completeObjective(profile);
         }

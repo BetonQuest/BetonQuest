@@ -43,7 +43,7 @@ import java.util.Objects;
 @CustomLog
 public class Journal {
 
-    private final Profile profile;
+    private final OnlineProfile onlineProfile;
     private final List<Pointer> pointers;
     private final List<String> texts = new ArrayList<>();
     private final ConfigurationFile config;
@@ -53,14 +53,14 @@ public class Journal {
     /**
      * Creates new Journal instance from List of Pointers.
      *
-     * @param profile the {@link Profile} of the player whose journal is created
-     * @param lang    default language to use when generating the journal
-     * @param list    list of pointers to journal entries
-     * @param config  a {@link ConfigurationFile} that contains the plugin's configuration
+     * @param onlineProfile the {@link OnlineProfile} of the player whose journal is created
+     * @param lang          default language to use when generating the journal
+     * @param list          list of pointers to journal entries
+     * @param config        a {@link ConfigurationFile} that contains the plugin's configuration
      */
-    public Journal(final Profile profile, final String lang, final List<Pointer> list, final ConfigurationFile config) {
+    public Journal(final OnlineProfile onlineProfile, final String lang, final List<Pointer> list, final ConfigurationFile config) {
         // generate texts from list of pointers
-        this.profile = profile;
+        this.onlineProfile = onlineProfile;
         this.lang = lang;
         this.pointers = list;
         this.config = config;
@@ -102,7 +102,7 @@ public class Journal {
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public static boolean hasJournal(final OnlineProfile profile) {
-        final Player player = profile.getOnlineProfile().getOnlinePlayer();
+        final Player player = profile.getOnlinePlayer();
         for (final ItemStack item : player.getInventory().getContents()) {
             if (isJournal(profile, item)) {
                 return true;
@@ -127,7 +127,7 @@ public class Journal {
      */
     public void addPointer(final Pointer pointer) {
         BetonQuest.getInstance()
-                .callSyncBukkitEvent(new PlayerJournalAddEvent(profile.getOnlineProfile(), this, pointer));
+                .callSyncBukkitEvent(new PlayerJournalAddEvent(onlineProfile, this, pointer));
         pointers.add(pointer);
         // SQLite doesn't accept formatted date and MySQL doesn't accept numeric
         // timestamp
@@ -135,7 +135,7 @@ public class Journal {
                 ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date(pointer.getTimestamp()))
                 : Long.toString(pointer.getTimestamp());
         BetonQuest.getInstance().getSaver()
-                .add(new Record(UpdateType.ADD_JOURNAL, profile.getProfileUUID().toString(), pointer.getPointer(), date));
+                .add(new Record(UpdateType.ADD_JOURNAL, onlineProfile.getProfileUUID().toString(), pointer.getPointer(), date));
     }
 
     /**
@@ -147,12 +147,12 @@ public class Journal {
         for (final Pointer pointer : pointers) {
             if (pointer.getPointer().equalsIgnoreCase(pointerName)) {
                 BetonQuest.getInstance()
-                        .callSyncBukkitEvent(new PlayerJournalDeleteEvent(profile.getOnlineProfile(), this, pointer));
+                        .callSyncBukkitEvent(new PlayerJournalDeleteEvent(onlineProfile, this, pointer));
                 final String date = BetonQuest.getInstance().isMySQLUsed()
                         ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date(pointer.getTimestamp()))
                         : Long.toString(pointer.getTimestamp());
                 BetonQuest.getInstance().getSaver()
-                        .add(new Record(UpdateType.REMOVE_JOURNAL, profile.getProfileUUID().toString(), pointer.getPointer(), date));
+                        .add(new Record(UpdateType.REMOVE_JOURNAL, onlineProfile.getProfileUUID().toString(), pointer.getPointer(), date));
                 pointers.remove(pointer);
                 break;
             }
@@ -241,10 +241,10 @@ public class Journal {
                     BetonQuest.createVariable(pack, variable);
                 } catch (final InstructionParseException e) {
                     LOG.warn(pack, "Error while creating variable '" + variable + "' on journal page '" + pointerName + "' in "
-                            + profile.getProfileName() + "'s journal: " + e.getMessage(), e);
+                            + onlineProfile.getProfileName() + "'s journal: " + e.getMessage(), e);
                 }
                 text = text.replace(variable,
-                        BetonQuest.getInstance().getVariableValue(packName, variable, profile));
+                        BetonQuest.getInstance().getVariableValue(packName, variable, onlineProfile));
             }
 
             // add the entry to the list
@@ -281,11 +281,11 @@ public class Journal {
                                 pageConditions.add(new ConditionID(pack, conditionString));
                             }
 
-                            if (!BetonQuest.conditions(profile, pageConditions)) {
+                            if (!BetonQuest.conditions(onlineProfile, pageConditions)) {
                                 continue;
                             }
                         } catch (final ObjectNotFoundException e) {
-                            LOG.warn(pack, "Error while generating main page in " + profile.getPlayer() + "'s journal: " + e.getMessage(), e);
+                            LOG.warn(pack, "Error while generating main page in " + onlineProfile.getPlayer() + "'s journal: " + e.getMessage(), e);
                             continue;
                         }
                     }
@@ -311,10 +311,10 @@ public class Journal {
                             BetonQuest.createVariable(pack, variable);
                         } catch (final InstructionParseException e) {
                             LOG.warn(pack, "Error while creating variable '" + variable + "' on main page in "
-                                    + profile.getProfileName() + "'s journal: " + e.getMessage(), e);
+                                    + onlineProfile.getProfileName() + "'s journal: " + e.getMessage(), e);
                         }
                         text = text.replace(variable,
-                                BetonQuest.getInstance().getVariableValue(packName, variable, profile));
+                                BetonQuest.getInstance().getVariableValue(packName, variable, onlineProfile));
                     }
                     text = pack.subst(text);
                     // add the text to HashMap
@@ -366,7 +366,7 @@ public class Journal {
     public void addToInv() {
         final int targetSlot = getJournalSlot();
         generateTexts(lang);
-        final Inventory inventory = profile.getOnlineProfile().getOnlinePlayer().getInventory();
+        final Inventory inventory = onlineProfile.getOnlinePlayer().getInventory();
         final ItemStack item = getAsItem();
         if (inventory.firstEmpty() >= 0) {
             if (targetSlot < 0) {
@@ -380,7 +380,7 @@ public class Journal {
             }
         } else {
             try {
-                Config.sendNotify(null, profile.getOnlineProfile(), "inventory_full_backpack", null, "inventory_full_backpack,inventory_full,error");
+                Config.sendNotify(null, onlineProfile, "inventory_full_backpack", null, "inventory_full_backpack,inventory_full,error");
             } catch (final QuestRuntimeException e) {
                 LOG.warn("The notify system was unable to play a sound for the 'inventory_full_backpack' category. Error was: '" + e.getMessage() + "'", e);
             }
@@ -409,7 +409,7 @@ public class Journal {
         final ItemStack item = new ItemStack(Material.WRITTEN_BOOK);
         final BookMeta meta = (BookMeta) item.getItemMeta();
         meta.setTitle(Utils.format(Config.getMessage(lang, "journal_title")));
-        meta.setAuthor(profile.getOfflinePlayer().getName());
+        meta.setAuthor(onlineProfile.getOfflinePlayer().getName());
         meta.setCustomModelData(config.getInt("journal.custom_model_data"));
         meta.setLore(getJournalLore(lang));
 
@@ -422,7 +422,7 @@ public class Journal {
             finalList.addAll(getText());
         } else {
             final String color = config.getString("journal_colors.line");
-            String separator = Config.parseMessage(null, profile.getOnlineProfile(), "journal_separator");
+            String separator = Config.parseMessage(null, onlineProfile, "journal_separator");
             if (separator == null) {
                 separator = "---------------";
             }
@@ -461,7 +461,7 @@ public class Journal {
      * Updates journal by removing it and adding it again
      */
     public void update() {
-        if (profile.isPlayerOnline() && hasJournal(profile.getOnlineProfile())) {
+        if (onlineProfile.isPlayerOnline() && hasJournal(onlineProfile)) {
             addToInv();
         }
     }
@@ -473,9 +473,9 @@ public class Journal {
      */
     public int removeFromInv() {
         // loop all items and check if any of them is a journal
-        final Inventory inventory = profile.getOnlineProfile().getOnlinePlayer().getInventory();
+        final Inventory inventory = onlineProfile.getOnlinePlayer().getInventory();
         for (int i = 0; i < inventory.getSize(); i++) {
-            if (isJournal(profile, inventory.getItem(i))) {
+            if (isJournal(onlineProfile, inventory.getItem(i))) {
                 inventory.setItem(i, new ItemStack(Material.AIR));
                 return i;
             }

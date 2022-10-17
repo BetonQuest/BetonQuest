@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.conversation;
 
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.bukkit.ChatColor;
 
 /**
@@ -11,7 +11,7 @@ public class SimpleConvIO extends ChatConvIO {
 
     private final String optionFormat;
 
-    public SimpleConvIO(final Conversation conv, final Profile profile) {
+    public SimpleConvIO(final Conversation conv, final OnlineProfile profile) {
         super(conv, profile);
         final StringBuilder string = new StringBuilder();
         for (final ChatColor color : colors.get("number")) {

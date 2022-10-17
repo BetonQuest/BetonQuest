@@ -46,7 +46,7 @@ public class TakeEvent extends AbstractTakeEvent {
             final String itemName = questItem.getName() == null
                     ? new ItemStack(questItem.getMaterial()).getItemMeta().getDisplayName()
                     : questItem.getName();
-            notifyPlayer(profile, itemName, deleteAmount - neededDeletions.get(uuid).getRight());
+            notifyPlayer(profile.getOnlineProfile(), itemName, deleteAmount - neededDeletions.get(uuid).getRight());
         }
         return null;
     }

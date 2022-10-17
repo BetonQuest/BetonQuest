@@ -265,7 +265,7 @@ public class PlayerData implements TagData {
      */
     public Journal getJournal() {
         if (journal == null) {
-            journal = new Journal(profile, profileLanguage, entries, BetonQuest.getInstance().getPluginConfig());
+            journal = new Journal(profile.getOnlineProfile().get(), profileLanguage, entries, BetonQuest.getInstance().getPluginConfig());
         }
         return journal;
     }

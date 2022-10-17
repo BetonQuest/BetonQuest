@@ -4,6 +4,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -59,7 +60,7 @@ public class StepObjective extends Objective implements Listener {
             return;
         }
         try {
-            final Profile profile = PlayerConverter.getID(event.getPlayer());
+            final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
             final Block block = loc.getLocation(profile).getBlock();
             if (!clickedBlock.equals(block)) {
                 return;

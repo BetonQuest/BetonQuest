@@ -906,7 +906,7 @@ public class BetonQuest extends JavaPlugin {
         Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
             loadData();
             globalData = new GlobalData();
-            for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+            for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
                 final PlayerData playerData = new PlayerData(onlineProfile);
                 playerDataMap.put(onlineProfile, playerData);
                 playerData.startObjectives();

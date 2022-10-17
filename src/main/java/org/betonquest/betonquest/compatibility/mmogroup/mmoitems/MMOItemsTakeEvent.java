@@ -56,7 +56,7 @@ public class MMOItemsTakeEvent extends AbstractTakeEvent {
 
         final ItemStack item = MMOItemsUtils.getMMOItemStack(itemType, itemID);
         final String itemName = item.getItemMeta().getDisplayName();
-        notifyPlayer(profile, itemName, deleteAmount - neededDeletions.get(uuid));
+        notifyPlayer(profile.getOnlineProfile(), itemName, deleteAmount - neededDeletions.get(uuid));
         return null;
     }
 

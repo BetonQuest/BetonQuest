@@ -13,6 +13,7 @@ import net.Indyuce.mmoitems.manager.TypeManager;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -52,7 +53,7 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
      */
     @EventHandler
     public void onItemCraft(final CraftItemEvent event) {
-        final Profile profile = PlayerConverter.getID((Player) event.getWhoClicked());
+        final OnlineProfile profile = PlayerConverter.getID((Player) event.getWhoClicked());
         final ItemStack craftedItem = event.getRecipe().getResult();
         if (event.getSlotType() == InventoryType.SlotType.RESULT
                 && containsPlayer(profile)
@@ -69,7 +70,7 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
      */
     @EventHandler(ignoreCancelled = true)
     public void onRecipeUse(final CraftMMOItemEvent event) {
-        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
         final ItemStack craftedItem = event.getResult();
 
         if (containsPlayer(profile)
@@ -86,7 +87,7 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
      */
     @EventHandler(ignoreCancelled = true)
     public void onRecipeUse(final PlayerUseCraftingStationEvent event) {
-        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
         final StationAction action = event.getInteraction();
         final Recipe usedRecipe = event.getRecipe();
 

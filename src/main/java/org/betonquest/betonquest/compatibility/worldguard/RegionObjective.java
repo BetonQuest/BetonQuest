@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.worldguard;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -49,7 +50,7 @@ public class RegionObjective extends Objective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(final PlayerJoinEvent event) {
         final Player player = event.getPlayer();
-        final Profile profile = PlayerConverter.getID(player);
+        final OnlineProfile profile = PlayerConverter.getID(player);
         if (containsPlayer(profile)) {
             final boolean inside = WorldGuardIntegrator.isInsideRegion(player.getLocation(), name);
             if (!entry && !exit && inside && checkConditions(profile)) {
@@ -99,7 +100,7 @@ public class RegionObjective extends Objective implements Listener {
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
     private void checkLocation(final Player player, final Location location) {
-        final Profile profile = PlayerConverter.getID(player);
+        final OnlineProfile profile = PlayerConverter.getID(player);
         if (!containsPlayer(profile)) {
             return;
         }

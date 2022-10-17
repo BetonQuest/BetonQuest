@@ -6,6 +6,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.CountingObjective;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -121,7 +122,7 @@ public class EntityInteractObjective extends CountingObjective {
             }
         }
         // check if the profile has this objective
-        final Profile profile = PlayerConverter.getID(player);
+        final OnlineProfile profile = PlayerConverter.getID(player);
         if (!containsPlayer(profile) || !checkConditions(profile)) {
             return false;
         }

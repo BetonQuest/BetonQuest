@@ -5,6 +5,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -361,12 +362,11 @@ public class Menu extends SimpleYMLSection implements Listener {
 
         @Override
         public boolean simpleCommand(final CommandSender sender, final String alias, final String[] args) {
-            if (!(sender instanceof Player)) {
+            if (!(sender instanceof final Player player)) {
                 sender.sendMessage("§cCommand can only be run by players!");
                 return false;
             }
-            final Player player = (Player) sender;
-            final Profile profile = PlayerConverter.getID(player);
+            final OnlineProfile profile = PlayerConverter.getID(player);
             if (mayOpen(profile)) {
                 LOG.debug(getPackage(), player.getName() + " run bound command of " + menuID);
                 menu.openMenu(profile, menuID);
