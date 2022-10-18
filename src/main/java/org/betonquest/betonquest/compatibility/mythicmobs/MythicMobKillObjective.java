@@ -9,7 +9,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.CountingObjective;
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -82,7 +82,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
         }
     }
 
-    private void checkKill(final MythicMobDeathEvent event, final Profile profile) {
+    private void checkKill(final MythicMobDeathEvent event, final OnlineProfile profile) {
         if (marked != null) {
             final List<MetadataValue> meta = event.getEntity().getMetadata("betonquest-marked");
             for (final MetadataValue m : meta) {
@@ -100,7 +100,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
                 && player.isValid();
     }
 
-    private void handlePlayerKill(final Profile profile, final ActiveMob mob) {
+    private void handlePlayerKill(final OnlineProfile profile, final ActiveMob mob) {
         if (containsPlayer(profile) && matchesMobLevel(profile, mob) && checkConditions(profile)) {
             getCountingData(profile).progress();
             completeIfDoneOrNotify(profile);
@@ -108,7 +108,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
 
     }
 
-    private boolean matchesMobLevel(final Profile profile, final ActiveMob mob) {
+    private boolean matchesMobLevel(final OnlineProfile profile, final ActiveMob mob) {
         try {
             final double actualMobLevel = mob.getLevel();
             return minMobLevel.getDouble(profile) <= actualMobLevel && maxMobLevel.getDouble(profile) >= actualMobLevel;

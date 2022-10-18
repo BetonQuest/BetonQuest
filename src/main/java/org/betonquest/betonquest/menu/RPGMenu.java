@@ -55,7 +55,8 @@ public class RPGMenu {
      * Returns if the player has opened the specified menu
      *
      * @param onlineProfile the player form the {@link OnlineProfile} for which should be checked
-     * @param menuID        the id of the menu the player should has opened, null will return true if the player has any menu opened
+     * @param menuID        the id of the menu the player should have opened,
+     *                      null will return true if the player has any menu opened
      * @return true if the player has opened the specified menu, false otherwise
      */
     public static boolean hasOpenedMenu(final OnlineProfile onlineProfile, final MenuID menuID) {

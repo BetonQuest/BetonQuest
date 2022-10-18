@@ -14,7 +14,6 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -105,7 +104,7 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
         }
     }
 
-    private void progressCraftObjective(final Profile profile, final int craftedAmount) {
+    private void progressCraftObjective(final OnlineProfile profile, final int craftedAmount) {
         getCountingData(profile).progress(craftedAmount);
         completeIfDoneOrNotify(profile);
     }
