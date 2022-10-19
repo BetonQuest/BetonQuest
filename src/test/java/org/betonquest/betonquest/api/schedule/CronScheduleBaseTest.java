@@ -58,7 +58,7 @@ public class CronScheduleBaseTest extends ScheduleBaseTest {
     }
 
     @Test
-    void testDifrentCronDefinition() {
+    void testDifferentCronDefinition() {
         when(section.getString("time")).thenReturn("0 22 * * * *");
         final InstructionParseException exception = assertThrows(InstructionParseException.class, this::createSchedule, "Schedule should throw instruction parse exception for invalid cron syntax");
         assertEquals("Time is no valid cron syntax: '0 22 * * * *'", exception.getMessage(), "InstructionParseException should have correct reason message");

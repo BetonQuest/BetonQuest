@@ -237,6 +237,7 @@ class TransformerTest {
         final String serializedConfig = getSerializedPatchedConfig(patch);
 
         final List<?> list = CONFIG.getList("section.myList");
+        assertNotNull(list, "List was null.");
         list.remove("removedEntry");
         CONFIG.set("section.myList", list);
 
