@@ -1,17 +1,16 @@
 package org.betonquest.betonquest.api.bukkit.config.custom.multi.fallback;
 
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
-import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfigurationSectionSplitWithConfigurationTest;
+import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiSectionConfigurationSplitTest;
 import org.bukkit.configuration.Configuration;
-import org.bukkit.configuration.ConfigurationSection;
 import org.junit.jupiter.api.Tag;
 
 /**
- * This is a test for {@link MultiConfiguration} as a {@link ConfigurationSection}.
+ * This is a test for the {@link MultiFallbackConfiguration}.
  */
 @Tag("ConfigurationSection")
 @SuppressWarnings({"PMD.JUnit5TestShouldBePackagePrivate", "PMD.JUnitAssertionsShouldIncludeMessage"})
-public class MultiConfigurationSectionSplitWithConfigurationWithMultiFallbackTest extends MultiConfigurationSectionSplitWithConfigurationTest {
+public class MultiSectionConfigurationSplitWithMultiFallbackTest extends MultiSectionConfigurationSplitTest {
 
     @Override
     public Configuration getConfig() {

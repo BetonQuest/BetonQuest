@@ -22,11 +22,11 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This is a test for modifications of the {@link MultiConfiguration}.
+ * This is a test for modifications of the {@link MultiSectionConfiguration}.
  */
 @Tag("ConfigurationSection")
 @SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.JUnitTestContainsTooManyAsserts", "PMD.JUnit5TestShouldBePackagePrivate"})
-public class MultiConfigurationModificationTest<T extends Configuration & MultiConfigurationSectionConfiguration> {
+public class MultiSectionConfigurationModificationTest {
 
     /**
      * {@link MultiConfiguration} part 1.
@@ -43,17 +43,18 @@ public class MultiConfigurationModificationTest<T extends Configuration & MultiC
     /**
      * The {@link MultiConfiguration} instance for testing.
      */
-    private T config;
+    private MultiConfiguration config;
     /**
-     * A {@link FileConfiguration} containing the result of the merged {@link MultiConfigurationModificationTest#config}.
+     * A {@link FileConfiguration} containing the result of the merged
+     * {@link MultiSectionConfigurationModificationTest#config}.
      */
     private FileConfiguration configAll;
 
     /**
-     * Creates the {@link MultiConfigurationModificationTest#configAll},
-     * {@link MultiConfigurationModificationTest#config1}, {@link MultiConfigurationModificationTest#config2},
-     * {@link MultiConfigurationModificationTest#config3} and {@link MultiConfigurationModificationTest#config}
-     * by calling the {@link MultiConfigurationModificationTest#getConfig()} method.
+     * Creates the {@link MultiSectionConfigurationModificationTest#configAll},
+     * {@link MultiSectionConfigurationModificationTest#config1}, {@link MultiSectionConfigurationModificationTest#config2},
+     * {@link MultiSectionConfigurationModificationTest#config3} and {@link MultiSectionConfigurationModificationTest#config}
+     * by calling the {@link MultiSectionConfigurationModificationTest#getConfig()} method.
      */
     @BeforeEach
     public void setupConfigs() {
@@ -64,14 +65,13 @@ public class MultiConfigurationModificationTest<T extends Configuration & MultiC
         config = getConfig();
     }
 
-    @SuppressWarnings("unchecked")
-    protected T getConfig() {
+    protected MultiConfiguration getConfig() {
         final Map<ConfigurationSection, String> configs = new HashMap<>();
         configs.put(config1, "config1.yml");
         configs.put(config2, "config2.yml");
         configs.put(config3, "config3.yml");
         try {
-            return (T) new MultiConfiguration(new ArrayList<>(configs.keySet()));
+            return new MultiSectionConfiguration(new ArrayList<>(configs.keySet()));
         } catch (final KeyConflictException e) {
             fail(e.resolvedMessage(configs), e);
         } catch (final InvalidConfigurationException e) {

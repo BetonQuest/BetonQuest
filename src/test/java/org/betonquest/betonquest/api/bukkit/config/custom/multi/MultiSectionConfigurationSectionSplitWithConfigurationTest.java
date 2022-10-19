@@ -14,11 +14,11 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This is a test for {@link MultiConfiguration} as a {@link ConfigurationSection}.
+ * This is a test for {@link MultiSectionConfiguration} as a {@link ConfigurationSection}.
  */
 @Tag("ConfigurationSection")
 @SuppressWarnings({"PMD.JUnit5TestShouldBePackagePrivate", "PMD.JUnitAssertionsShouldIncludeMessage"})
-public class MultiConfigurationSectionSplitWithConfigurationTest extends MultiConfigurationSectionWithConfigurationTest {
+public class MultiSectionConfigurationSectionSplitWithConfigurationTest extends MultiSectionConfigurationSectionWithConfigurationTest {
 
     @Override
     public Configuration getConfig() {
@@ -27,8 +27,8 @@ public class MultiConfigurationSectionSplitWithConfigurationTest extends MultiCo
         configs.put(YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/multi/config2.yml")), "config1.yml");
         configs.put(YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/multi/config3.yml")), "config1.yml");
         try {
-            final MultiConfiguration multiConfiguration = new MultiConfiguration(new ArrayList<>(configs.keySet()));
-            multiConfiguration.setDefaults(MultiConfigurationSplitTest.getDefault());
+            final MultiConfiguration multiConfiguration = new MultiSectionConfiguration(new ArrayList<>(configs.keySet()));
+            multiConfiguration.setDefaults(MultiSectionConfigurationSplitTest.getDefault());
             return multiConfiguration;
         } catch (final KeyConflictException e) {
             fail(e.resolvedMessage(configs), e);
