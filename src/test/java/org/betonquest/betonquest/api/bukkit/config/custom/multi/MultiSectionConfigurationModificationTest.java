@@ -65,6 +65,11 @@ public class MultiSectionConfigurationModificationTest {
         config = getConfig();
     }
 
+    /**
+     * This method creates the {@link MultiConfiguration} instance for testing.
+     *
+     * @return the {@link MultiConfiguration} instance for testing.
+     */
     protected MultiConfiguration getConfig() {
         final Map<ConfigurationSection, String> configs = new HashMap<>();
         configs.put(config1, "config1.yml");

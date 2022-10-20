@@ -671,8 +671,9 @@ public class FallbackConfigurationSection implements ConfigurationSection {
         /**
          * Creates a new {@link ConfigManager} with the given original and fallback {@link ConfigurationSection}.
          *
-         * @param original The original {@link ConfigurationSection}
-         * @param fallback The fallback {@link ConfigurationSection}
+         * @param sectionName The name of the current {@link ConfigurationSection}
+         * @param original    The original {@link ConfigurationSection}
+         * @param fallback    The fallback {@link ConfigurationSection}
          * @throws IllegalStateException If the original and fallback {@link ConfigurationSection} is null
          */
         @SuppressWarnings({"PMD.CompareObjectsWithEquals", "PMD.AvoidUncheckedExceptionsInSignatures"})

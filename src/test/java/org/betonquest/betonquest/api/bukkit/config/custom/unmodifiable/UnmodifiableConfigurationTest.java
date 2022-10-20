@@ -54,12 +54,8 @@ public class UnmodifiableConfigurationTest extends ConfigurationBaseTest {
     }
 
     private void assertThrowsUnmodifiableException(final Executable executable) {
-        assertThrowsUnmodifiableException(executable, UnmodifiableConfiguration.UNMODIFIABLE_MESSAGE);
-    }
-
-    private void assertThrowsUnmodifiableException(final Executable executable, final String message) {
         final Exception exception = assertThrows(UnsupportedOperationException.class, executable);
-        assertEquals(message, exception.getMessage());
+        assertEquals(UnmodifiableConfiguration.UNMODIFIABLE_MESSAGE, exception.getMessage());
     }
 
     @Test
