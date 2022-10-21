@@ -162,7 +162,7 @@ public class HologramLoop {
                         if (VARIABLE_VALIDATOR.matcher(line).matches()) {
                             staticText = false;
                         }
-                        cleanedLines.add(new TextLine(line.replace('&', '§'), pack, staticText));
+                        cleanedLines.add(new TextLine(line.replace('&', '§'), staticText));
                     }
                 }
 

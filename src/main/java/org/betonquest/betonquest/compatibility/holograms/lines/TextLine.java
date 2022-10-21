@@ -2,7 +2,6 @@ package org.betonquest.betonquest.compatibility.holograms.lines;
 
 import lombok.CustomLog;
 import lombok.Getter;
-import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 
 /**
@@ -16,17 +15,14 @@ public class TextLine extends AbstractLine {
      */
     private final String text;
 
-    private final QuestPackage questPackage;
-
     /**
      * Creates a new instance of TextLine.
      *
      * @param text Text to be displayed
      */
-    public TextLine(final QuestPackage questPackage, final String text, final boolean staticText) {
+    public TextLine(final String text, final boolean staticText) {
         super(staticText, 1);
         this.text = text;
-        this.questPackage = questPackage;
     }
 
     @Override
