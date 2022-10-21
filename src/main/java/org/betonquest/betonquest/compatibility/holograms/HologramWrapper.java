@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
-import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -12,8 +11,9 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
+@SuppressWarnings("PMD.CommentSize")
 /**
- * Wrapper class for {@link Hologram} that stores data parsed from hologram configuration inside <code>custom.yml</code>.
+ * Wrapper class for {@link BetonHologram} that stores data parsed from hologram configuration inside <code>custom.yml</code>.
  *
  * @param hologram      Actual hologram
  * @param interval      Interval in ticks that lie between updates to the visibility and content
@@ -55,17 +55,33 @@ public record HologramWrapper(int interval, BetonHologram hologram, boolean stat
     }
 
     /**
-     * Updates the content if necessary. On first load after the server start this fills holograms with static content,
-     * but is ignored by them afterwards.
+     * Fills the hologram with content. Called after a hologram is first created or if plugin is reloaded.
+     */
+    public void initialiseContent() {
+        hologram.clear();
+        int length = 0;
+        for (final AbstractLine line : cleanedLines) {
+            length += line.getLinesAdded();
+        }
+        hologram.createLines(0, length);
+        updateContent();
+    }
+
+    /**
+     * Updates the content if necessary.
      */
     public void updateContent() {
-        if (staticContent && hologram.size() > 0) { //Allow first initializing of static holograms
+        if (staticContent) {
             return;
         }
 
-        hologram.clear();
+        int i = 0;
         for (final AbstractLine line : cleanedLines) {
-            line.addLine(hologram);
+            if (!line.isStaticText()) {
+                line.setLine(hologram, i);
+            }
+            i += line.getLinesAdded();
         }
+        hologram.refresh();
     }
 }

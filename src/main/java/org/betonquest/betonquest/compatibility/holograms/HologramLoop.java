@@ -16,7 +16,6 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -42,6 +41,11 @@ public class HologramLoop {
     private static final Pattern TOP_LINE_VALIDATOR = Pattern.compile("^top:([\\w.]+);(\\w+);(\\d+);?[&§]?([\\da-f])?;?[&§]?([\\da-f])?;?[&§]?([\\da-f])?;?[&§]?([\\da-f])?$", Pattern.CASE_INSENSITIVE);
 
     /**
+     * Pattern to match a variable in string
+     */
+    private static final Pattern VARIABLE_VALIDATOR = Pattern.compile("(?<prefix>.+)?%(?<var>.+)%(?<suffix>.+)?");
+
+    /**
      * Starts a loop, which checks hologram conditions and shows them to players.
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "PMD.UseStringBufferForStringAppends"})
@@ -50,11 +54,6 @@ public class HologramLoop {
         // get all holograms and their condition
 
         for (final QuestPackage pack : Config.getPackages().values()) {
-            if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
-                LOG.warn(pack, "Holograms won't be able to hide from players without ProtocolLib plugin! "
-                        + "Install it to use conditioned holograms.");
-                return;
-            }
             final String packName = pack.getPackagePath();
             final ConfigurationSection section = pack.getConfig().getConfigurationSection("holograms");
             if (section == null) {
@@ -115,7 +114,6 @@ public class HologramLoop {
                             LOG.warn(pack, "Could not find item in " + key + " hologram: " + e.getMessage(), e);
                         }
                     } else if (line.startsWith("top:")) {
-                        staticText = false;
                         final Matcher validator = TOP_LINE_VALIDATOR.matcher(line);
                         if (!validator.matches()) {
                             LOG.warn("Malformed top hologram line! Expected format: 'top:<point>;<order>;<limit>[;<color>][;<color>][;<color>][;<color>]'.");
@@ -158,15 +156,18 @@ public class HologramLoop {
                                 colorCodes.append(code);
                             }
                         }
-
+                        staticText = false;
                         cleanedLines.add(new TopLine(pointName, orderType, limit, colorCodes.toString().toCharArray()));
                     } else {
-                        cleanedLines.add(new TextLine(line.replace('&', '§')));
+                        if (VARIABLE_VALIDATOR.matcher(line).matches()) {
+                            staticText = false;
+                        }
+                        cleanedLines.add(new TextLine(line.replace('&', '§'), pack, staticText));
                     }
                 }
 
                 final BetonHologram hologram = HologramIntegrator.createHologram(key, location);
-
+                hologram.hideAll();
                 HologramRunner.addHologram(new HologramWrapper(
                         checkInterval,
                         hologram,
@@ -186,11 +187,10 @@ public class HologramLoop {
         for (final HologramRunner runner : HologramRunner.getRunners()) {
             runner.runnable.cancel();
             for (final HologramWrapper hologramWrapper : runner.getHolograms()) {
-                hologramWrapper.hologram().hideAll();
                 hologramWrapper.hologram().delete();
             }
         }
-        HologramRunner.getRunners().clear();
+        HologramRunner.clearRunners();
     }
 
     /**
@@ -220,8 +220,8 @@ public class HologramLoop {
                 @Override
                 public void run() {
                     holograms.forEach(h -> {
-                        h.updateVisibility();
                         h.updateContent();
+                        h.updateVisibility();
                     });
                 }
             };
@@ -240,8 +240,8 @@ public class HologramLoop {
             }
             RUNNERS.get(hologram.interval()).holograms.add(hologram);
 
+            hologram.initialiseContent();
             hologram.updateVisibility();
-            hologram.updateContent();
         }
 
         /**
@@ -251,6 +251,10 @@ public class HologramLoop {
          */
         public static Collection<HologramRunner> getRunners() {
             return RUNNERS.values();
+        }
+
+        public static void clearRunners() {
+            RUNNERS.clear();
         }
 
         /**

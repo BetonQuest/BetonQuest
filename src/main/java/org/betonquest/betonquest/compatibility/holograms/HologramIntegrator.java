@@ -5,34 +5,31 @@ import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.citizens.CitizensHologram;
 import org.betonquest.betonquest.exceptions.HookException;
-import org.betonquest.betonquest.exceptions.UnsupportedVersionException;
-import org.betonquest.betonquest.modules.versioning.UpdateStrategy;
-import org.betonquest.betonquest.modules.versioning.Version;
-import org.betonquest.betonquest.modules.versioning.VersionComparator;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 
 @SuppressWarnings("PMD.CommentRequired")
 @CustomLog
 public class HologramIntegrator implements Integrator {
-
     private static HologramIntegrator instance;
-    private final Map<String, Class<? extends BetonHologram>> implementations;
+    private final Map<String, HologramSubIntegrator> integrators;
     private HologramLoop hologramLoop;
     private Class<? extends BetonHologram> hologramType;
 
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
-    public HologramIntegrator(final Map<String, Class<? extends BetonHologram>> implementations) {
+    public HologramIntegrator(final HologramSubIntegrator... integrators) {
         this.instance = this;
-        this.implementations = implementations;
+        this.integrators = new HashMap<>();
+        for (final HologramSubIntegrator integrator : integrators) {
+            this.integrators.put(integrator.getPluginName(), integrator);
+        }
     }
-
 
     /**
      * Creates a wrapped hologram using a hooked hologram plugin
@@ -54,35 +51,25 @@ public class HologramIntegrator implements Integrator {
         return hologram;
     }
 
+    public Set<String> getSubIntegratorNames() {
+        return this.integrators.keySet();
+    }
+
     @Override
     public void hook(final String pluginName) throws HookException {
         //This method may be called multiple times if multiple Hologram plugins are installed
         if (hologramType == null) {
             //If not initialised
-            if ("DecentHolograms".equalsIgnoreCase(pluginName)) {
-                validateVersion(pluginName, "2.7.3");
-            }
-            if ("HolographicDisplays".equalsIgnoreCase(pluginName)) {
-                validateVersion(pluginName, "3.0.0-SNAPSHOT-b000", "SNAPSHOT-b");
-            }
+            final HologramSubIntegrator subintegrator = integrators.get(pluginName);
+            if (subintegrator != null) {
+                subintegrator.init();
+                hologramType = subintegrator.getHologramType();
+                hologramLoop = new HologramLoop();
 
-            hologramType = implementations.get(pluginName);
-            hologramLoop = new HologramLoop();
-
-            // if Citizens is hooked, start CitizensHologram
-            if (Compatibility.getHooked().contains("Citizens")) {
-                new CitizensHologram();
-            }
-        }
-    }
-
-    private void validateVersion(final String pluginName, final String requiredVersion, final String... qualifiers) throws UnsupportedVersionException {
-        final Plugin plugin = Bukkit.getPluginManager().getPlugin(pluginName);
-        if (plugin != null) {
-            final Version version = new Version(plugin.getDescription().getVersion());
-            final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR, qualifiers);
-            if (comparator.isOtherNewerThanCurrent(version, new Version(requiredVersion))) {
-                throw new UnsupportedVersionException(plugin, requiredVersion);
+                // if Citizens is hooked, start CitizensHologram
+                if (Compatibility.getHooked().contains("Citizens")) {
+                    new CitizensHologram();
+                }
             }
         }
     }

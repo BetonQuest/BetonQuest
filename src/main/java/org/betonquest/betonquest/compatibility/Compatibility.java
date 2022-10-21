@@ -8,10 +8,9 @@ import org.betonquest.betonquest.compatibility.citizens.CitizensIntegrator;
 import org.betonquest.betonquest.compatibility.denizen.DenizenIntegrator;
 import org.betonquest.betonquest.compatibility.effectlib.EffectLibIntegrator;
 import org.betonquest.betonquest.compatibility.heroes.HeroesIntegrator;
-import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.betonquest.betonquest.compatibility.holograms.HologramIntegrator;
-import org.betonquest.betonquest.compatibility.holograms.decentholograms.DecentHologramsHologram;
-import org.betonquest.betonquest.compatibility.holograms.holographicdisplays.HolographicDisplaysHologram;
+import org.betonquest.betonquest.compatibility.holograms.decentholograms.DecentHologramsIntegrator;
+import org.betonquest.betonquest.compatibility.holograms.holographicdisplays.HolographicDisplaysIntegrator;
 import org.betonquest.betonquest.compatibility.jobsreborn.JobsRebornIntegrator;
 import org.betonquest.betonquest.compatibility.luckperms.LuckPermsIntegrator;
 import org.betonquest.betonquest.compatibility.magic.MagicIntegrator;
@@ -83,13 +82,12 @@ public class Compatibility implements Listener {
         integrators.put("LuckPerms", new LuckPermsIntegrator());
         integrators.put("AureliumSkills", new AureliumSkillsIntegrator());
 
-        //Multiple plugins may provide Hologram hooks, BetonQuest only needs to use one.
-        final Map<String, Class<? extends BetonHologram>> hologramPlugins = new HashMap<>();
-        hologramPlugins.put("HolographicDisplays", HolographicDisplaysHologram.class);
-        hologramPlugins.put("DecentHolograms", DecentHologramsHologram.class);
-
-        final Integrator hologramsIntegrator = new HologramIntegrator(hologramPlugins);
-        hologramPlugins.keySet().forEach(plugin -> integrators.put(plugin, hologramsIntegrator));
+        /*
+        Multiple plugins may provide Hologram hooks, BetonQuest only needs to use one. The same HologramIntegrator
+        object is assigned to multiple keys. Specify all HologramSubIntegrators in the HologramIntegrator's constructor.
+         */
+        final HologramIntegrator hologramsIntegrator = new HologramIntegrator(new DecentHologramsIntegrator(), new HolographicDisplaysIntegrator());
+        hologramsIntegrator.getSubIntegratorNames().forEach(plugin -> integrators.put(plugin, hologramsIntegrator));
 
         // hook into already enabled plugins in case Bukkit messes up the loading order
         for (final Plugin hook : Bukkit.getPluginManager().getPlugins()) {

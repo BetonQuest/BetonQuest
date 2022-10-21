@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.holograms.holographicdisplays;
 
 
+import lombok.CustomLog;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.hologram.HologramLines;
@@ -13,19 +14,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 @SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods"})
+@CustomLog
 public class HolographicDisplaysHologram implements BetonHologram {
-    private static boolean REGISTERED_PLACEHOLDERS = false;
-
     private final Hologram hologram;
 
-    @SuppressWarnings({"PMD.UnusedFormalParameter"}) //This parameter is necessary due to reflection.
+    @SuppressWarnings({"PMD.UnusedFormalParameter"})
+    //This parameter is necessary due to reflection.
     public HolographicDisplaysHologram(final String name, final Location location) {
-        if (!REGISTERED_PLACEHOLDERS) {
-            HolographicDisplaysAPI.get(BetonQuest.getInstance()).registerIndividualPlaceholder("bq", new HologramPlaceholder());
-            HolographicDisplaysAPI.get(BetonQuest.getInstance()).registerGlobalPlaceholder("bqg", new HologramGlobalPlaceholder());
-            HolographicDisplaysHologram.REGISTERED_PLACEHOLDERS = true;
-        }
-        hologram = HolographicDisplaysAPI.get(BetonQuest.getInstance()).createHologram(location);
+        final HolographicDisplaysAPI api = HolographicDisplaysAPI.get(BetonQuest.getInstance());
+        hologram = api.createHologram(location);
         hologram.setPlaceholderSetting(PlaceholderSetting.ENABLE_ALL);
     }
 
@@ -51,6 +48,16 @@ public class HolographicDisplaysHologram implements BetonHologram {
         final HologramLines lines = hologram.getLines();
         lines.remove(index);
         lines.insertText(index, text);
+    }
+
+    @Override
+    public void createLines(final int startingIndex, final int linesAdded) {
+        final HologramLines lines = hologram.getLines();
+        for (int i = startingIndex; i < linesAdded; i++) {
+            if (i >= lines.size()) {
+                lines.appendText("");
+            }
+        }
     }
 
     @Override
@@ -95,7 +102,6 @@ public class HolographicDisplaysHologram implements BetonHologram {
         final VisibilitySettings settings = hologram.getVisibilitySettings();
         settings.setGlobalVisibility(VisibilitySettings.Visibility.HIDDEN);
         settings.clearIndividualVisibilities();
-
     }
 
     @Override
@@ -111,5 +117,10 @@ public class HolographicDisplaysHologram implements BetonHologram {
     @Override
     public void clear() {
         hologram.getLines().clear();
+    }
+
+    @Override
+    public void refresh() {
+        //Holograms do not need to be updated with HolographicDisplays
     }
 }

@@ -20,12 +20,12 @@ public class ItemLine extends AbstractLine {
      * @param item Item to be displayed
      */
     public ItemLine(final ItemStack item) {
-        super();
+        super(true, 1);
         this.item = item;
     }
 
     @Override
-    public void addLine(final BetonHologram hologram) {
-        hologram.appendLine(this.item);
+    public void setLine(final BetonHologram hologram, final int index) {
+        hologram.setLine(index, this.item);
     }
 }

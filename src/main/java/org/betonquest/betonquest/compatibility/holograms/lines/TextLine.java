@@ -1,30 +1,36 @@
 package org.betonquest.betonquest.compatibility.holograms.lines;
 
+import lombok.CustomLog;
 import lombok.Getter;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 
 /**
  * Displays a simple text line with optional color codes
  */
 @Getter
+@CustomLog
 public class TextLine extends AbstractLine {
     /**
      * Text to be displayed.
      */
     private final String text;
 
+    private final QuestPackage questPackage;
+
     /**
      * Creates a new instance of TextLine.
      *
      * @param text Text to be displayed
      */
-    public TextLine(final String text) {
-        super();
+    public TextLine(final QuestPackage questPackage, final String text, final boolean staticText) {
+        super(staticText, 1);
         this.text = text;
+        this.questPackage = questPackage;
     }
 
     @Override
-    public void addLine(final BetonHologram hologram) {
-        hologram.appendLine(this.text);
+    public void setLine(final BetonHologram hologram, final int index) {
+        hologram.setLine(index, text);
     }
 }

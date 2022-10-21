@@ -22,14 +22,23 @@ public interface BetonHologram {
     void appendLine(String text);
 
     /**
-     * Replace a line at the index with a new item line
+     * Replace a line at the index with a new item line. Will throw an exception if index is out of bounds
      */
     void setLine(int index, ItemStack item);
 
     /**
-     * Replace a line at the index with a new text line
+     * Replace a line at the index with a new text line. Will throw an exception if index is out of bounds
      */
     void setLine(int index, String text);
+
+    /**
+     * Creates multiple lines from the starting index and adding a specified amount of lines. If a line at an index
+     * already exists, then a line will not be created.
+     *
+     * @param startingIndex  the starting index
+     * @param linesToBeAdded the amount of lines to add
+     */
+    void createLines(final int startingIndex, final int linesToBeAdded);
 
     /**
      * Insert an item line at an index. Lines at this index and below
@@ -44,7 +53,7 @@ public interface BetonHologram {
     void insertLine(int index, String text);
 
     /**
-     * Remove the line at an index from this hologram
+     * Remove the line at an index from this hologram. May throw an exception if index is out of bounds.
      *
      * @param index
      */
@@ -91,4 +100,9 @@ public interface BetonHologram {
      * Clear all lines from this hologram
      */
     void clear();
+
+    /**
+     * Updates/refreshes the hologram for all players
+     */
+    void refresh();
 }

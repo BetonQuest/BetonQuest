@@ -21,11 +21,6 @@ public class TopLine extends AbstractLine {
     private final TopXObject.OrderType orderType;
 
     /**
-     * Number of lines displayed on hologram in maximum.
-     */
-    private final int limit;
-
-    /**
      * Color codes for individual elements of the displayed line in the exact order: <br>
      * <code>{#.} {name} {-} {score}</code>
      */
@@ -46,10 +41,9 @@ public class TopLine extends AbstractLine {
      */
     @SuppressWarnings("PMD.UseVarargs")
     public TopLine(final String category, final TopXObject.OrderType orderType, final int limit, final char[] colors) {
-        super();
+        super(false, limit);
         this.category = category;
         this.orderType = orderType;
-        this.limit = limit;
         this.colors = colors.clone();
 
         topXObject = new TopXObject(
@@ -67,8 +61,8 @@ public class TopLine extends AbstractLine {
     public String[] getLines() {
         topXObject.queryDB();
 
-        final String[] lines = new String[limit];
-        for (int i = 0; i < limit; i++) {
+        final String[] lines = new String[linesAdded];
+        for (int i = 0; i < linesAdded; i++) {
             if (i >= topXObject.getLineCount()) {
                 lines[i] = "";
                 continue;
@@ -84,15 +78,16 @@ public class TopLine extends AbstractLine {
         return "TopLine{" +
                 "category='" + category + '\'' +
                 ", orderType=" + orderType +
-                ", limit=" + limit +
+                ", linesAdded=" + linesAdded +
                 ", colors=" + Arrays.toString(colors) +
                 '}';
     }
 
     @Override
-    public void addLine(final BetonHologram hologram) {
-        for (final String textLine : getLines()) {
-            hologram.appendLine(textLine);
+    public void setLine(final BetonHologram hologram, final int index) {
+        final String[] lines = getLines();
+        for (int i = 0; i < lines.length; i++) {
+            hologram.setLine(index + i, lines[i]);
         }
     }
 }

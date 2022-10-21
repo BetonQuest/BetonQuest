@@ -230,7 +230,8 @@ public class CitizensHologram extends BukkitRunnable {
     }
 
     private void updateHologramForPlayersLines(final NPCHologram npcHologram, final BetonHologram hologram) {
-        for (final String line : npcHologram.lines) {
+        for (int i = 0; i < npcHologram.lines.size(); i++) {
+            final String line = npcHologram.lines.get(i);
             if (line.startsWith("item:")) {
                 try {
                     final String[] args = line.substring(5).split(":");
@@ -242,14 +243,14 @@ public class CitizensHologram extends BukkitRunnable {
                         stackSize = 1;
                     }
                     final ItemStack stack = new QuestItem(itemID).generate(stackSize);
-                    hologram.appendLine(stack);
+                    hologram.setLine(i, stack);
                 } catch (final InstructionParseException e) {
                     LOG.warn(npcHologram.pack, "Could not parse item in " + npcHologram.pack.getPackagePath() + " hologram: " + e.getMessage(), e);
                 } catch (final ObjectNotFoundException e) {
                     LOG.warn(npcHologram.pack, "Could not find item in " + npcHologram.pack.getPackagePath() + " hologram: " + e.getMessage(), e);
                 }
             } else {
-                hologram.appendLine(line.replace('&', '§'));
+                hologram.setLine(i, line.replace('&', '§'));
             }
         }
     }
