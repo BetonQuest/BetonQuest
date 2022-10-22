@@ -1,12 +1,14 @@
 There are two ways to get started with BetonQuest:
 
-1. Full beginner guide: A step-by-step tutorial to learn everything you need to know in an order which makes sense to a new BetonQuest user.
-2. Quick-Start-Tutorial: Provides a brief overview about the building blocks. Recommended for experienced plugin scripters and programmers.
+!!! warning "About learning BetonQuest 1.12.X"
+    It is not recommended to learn BetonQuest 1.12.X as it is a legacy version and will only receive bug fixes.
+    Instead, start with 2.0.0-DEV! It's a complete overhaul of the plugin and has a lot of new features. 
+    While it is still in development, more than 100 servers run it already as it's very stable.     
 
-
-[Full beginner guide :material-school:](https://mcmodels.net/how-to-tutorials/betonquest-tutorials/betonquest-full-beginners-guide/?wpam_id=3){: .md-button .md-button--primary }
-[Quick start tutorial :octicons-stopwatch-16:](#checking-out-the-default-example-quest){: .md-button .md-button--primary }
-
+    There are also much better tutorials for 2.0.0! 
+    
+    [:octicons-arrow-right-16: 2.0.0-DEV Tutorials](https://docs.betonquest.org/2.0.0-DEV/Tutorials/Overview/){: .md-button .md-button--primary }
+    
 ## Checking out the "default" example quest. 
 
 Let's start by checking out the build in example quest. You can find it in the BetonQuest directory that has been
