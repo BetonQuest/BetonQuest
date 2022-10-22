@@ -77,6 +77,11 @@ public class QuestManager {
             });
             searchForPackages(packagesDir, packagesDir, FILE_NAME_INDICATOR, FILE_TYPE_INDICATOR, (questPath, questFile, files) -> {
                 final QuestPackage quest = new QuestPackageImpl(questPath, questFile, files);
+                try {
+                    quest.applyQuestTemplates(templates);
+                } catch (final InvalidConfigurationException e) {
+                    LOG.error("Error while loading '" + packagesDir.getPath() + "'! Reason: " + e.getMessage(), e);
+                }
                 if (!quest.isDefinedInQuestConfigOrThrow("enabled") || quest.getConfig().getBoolean("enabled", true)) {
                     packages.put(quest.getQuestPath(), quest);
                 }
@@ -84,13 +89,6 @@ public class QuestManager {
         } catch (final IOException e) {
             LOG.error("Error while loading '" + packagesDir.getPath() + "'!", e);
         }
-        packages.values().forEach(quest -> {
-            try {
-                quest.applyQuestTemplates(templates);
-            } catch (final InvalidConfigurationException e) {
-                LOG.error("Error while loading '" + packagesDir.getPath() + "'! Reason: " + e.getMessage(), e);
-            }
-        });
     }
 
     /**
