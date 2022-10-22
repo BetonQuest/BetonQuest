@@ -19,9 +19,9 @@ import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,7 +52,6 @@ public class HologramLoop {
         // get all holograms and their condition
 
         for (final QuestPackage pack : Config.getPackages().values()) {
-            final String packName = pack.getPackagePath();
             final ConfigurationSection section = pack.getConfig().getConfigurationSection("holograms");
             if (section == null) {
                 continue;
@@ -61,100 +61,19 @@ public class HologramLoop {
                 final String rawConditions = section.getString(key + ".conditions");
                 final String rawLocation = section.getString(key + ".location");
                 final int checkInterval = section.getInt(key + ".check_interval", defaultInterval);
-                if (rawLocation == null) {
-                    LOG.warn(pack, "Location is not specified in " + key + " hologram");
+
+                final Location location = parseLocation(pack, key, rawLocation);
+                if (location == null) {
                     continue;
                 }
+                final ConditionID[] conditions = parseConditions(pack, key, rawConditions);
 
-                ConditionID[] conditions = {};
-                if (rawConditions != null) {
-                    final String[] parts = rawConditions.split(",");
-                    conditions = new ConditionID[parts.length];
-                    for (int i = 0; i < conditions.length; i++) {
-                        try {
-                            conditions[i] = new ConditionID(pack, parts[i]);
-                        } catch (final ObjectNotFoundException e) {
-                            LOG.warn(pack, "Error while loading " + parts[i] + " condition for hologram " + packName + "."
-                                    + key + ": " + e.getMessage(), e);
-                        }
-                    }
-                }
-
-                final Location location;
-                try {
-                    location = new CompoundLocation(packName, pack.subst(rawLocation)).getLocation(null);
-                } catch (QuestRuntimeException | InstructionParseException e) {
-                    LOG.warn(pack, "Could not parse location in " + key + " hologram: " + e.getMessage(), e);
-                    continue;
-                }
-
-                boolean staticText = true;
                 final ArrayList<AbstractLine> cleanedLines = new ArrayList<>();
                 for (final String line : lines) {
-                    // If line begins with 'item:', then we will assume it is a
-                    // floating item
                     if (line.startsWith("item:")) {
-                        try {
-                            final String[] args = line.substring(5).split(":");
-                            final ItemID itemID = new ItemID(pack, args[0]);
-                            int stackSize;
-                            try {
-                                stackSize = Integer.parseInt(args[1]);
-                            } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-                                stackSize = 1;
-                            }
-                            final ItemStack stack = new QuestItem(itemID).generate(stackSize);
-                            cleanedLines.add(new ItemLine(stack));
-                        } catch (final InstructionParseException e) {
-                            LOG.warn(pack, "Could not parse item in " + key + " hologram: " + e.getMessage(), e);
-                        } catch (final ObjectNotFoundException e) {
-                            LOG.warn(pack, "Could not find item in " + key + " hologram: " + e.getMessage(), e);
-                        }
+                        parseItemLine(pack, key, line).ifPresent(cleanedLines::add);
                     } else if (line.startsWith("top:")) {
-                        final Matcher validator = TOP_LINE_VALIDATOR.matcher(line);
-                        if (!validator.matches()) {
-                            LOG.warn("Malformed top hologram line! Expected format: 'top:<point>;<order>;<limit>[;<color>][;<color>][;<color>][;<color>]'.");
-                            continue;
-                        }
-
-                        String pointName = validator.group(1);
-                        if (!pointName.contains(".")) {
-                            pointName = packName + '.' + pointName;
-                        }
-
-                        final TopXObject.OrderType orderType;
-                        if ("desc".equalsIgnoreCase(validator.group(2))) {
-                            orderType = TopXObject.OrderType.DESCENDING;
-                        } else if ("asc".equalsIgnoreCase(validator.group(2))) {
-                            orderType = TopXObject.OrderType.ASCENDING;
-                        } else { // other variants not checked in regex to give specific warning instead of generic malformed line warning
-                            LOG.warn(pack, "Top list order type '" + validator.group(2) + "' unknown! Using descending order.");
-                            orderType = TopXObject.OrderType.DESCENDING;
-                        }
-
-                        int limit;
-                        try { // negative limits are checked by regex
-                            limit = Integer.parseInt(validator.group(3));
-                        } catch (final NumberFormatException e) {
-                            LOG.warn(pack, "Top list limit must be numeric! Using limit 10.");
-                            limit = 10;
-                        }
-
-                        final StringBuilder colorCodes = new StringBuilder();
-                        for (int i = 4; i <= 7; i++) {
-                            String code = "";
-                            if (validator.group(i) != null) {
-                                code = validator.group(i).toLowerCase(Locale.ROOT);
-                            }
-
-                            if ("".equals(code)) {
-                                colorCodes.append('f');
-                            } else {
-                                colorCodes.append(code);
-                            }
-                        }
-                        staticText = false;
-                        cleanedLines.add(new TopLine(pointName, orderType, limit, colorCodes.toString().toCharArray()));
+                        parseTopLine(pack, line).ifPresent(cleanedLines::add);
                     } else {
                         cleanedLines.add(parseTextLine(pack, line.replace('&', '§')));
                     }
@@ -164,13 +83,123 @@ public class HologramLoop {
                 HologramRunner.addHologram(new HologramWrapper(
                         checkInterval,
                         hologram,
-                        staticText,
+                        isStaticHologram(cleanedLines),
                         conditions,
                         cleanedLines,
                         key,
                         pack));
             }
         }
+    }
+
+    @NotNull
+    private ConditionID[] parseConditions(final QuestPackage pack, final String key, final String rawConditions) {
+        ConditionID[] conditions = {};
+        if (rawConditions != null) {
+            final String[] parts = rawConditions.split(",");
+            conditions = new ConditionID[parts.length];
+            for (int i = 0; i < conditions.length; i++) {
+                try {
+                    conditions[i] = new ConditionID(pack, parts[i]);
+                } catch (final ObjectNotFoundException e) {
+                    LOG.warn(pack, "Error while loading " + parts[i] + " condition for hologram " + pack.getPackagePath() + "."
+                            + key + ": " + e.getMessage(), e);
+                }
+            }
+        }
+        return conditions;
+    }
+
+    @Nullable
+    private Location parseLocation(final QuestPackage pack, final String key, final String rawLocation) {
+        Location location = null;
+        if (rawLocation == null) {
+            LOG.warn(pack, "Location is not specified in " + key + " hologram");
+        } else {
+            try {
+                location = new CompoundLocation(pack.getPackagePath(), pack.subst(rawLocation)).getLocation(null);
+            } catch (QuestRuntimeException | InstructionParseException e) {
+                LOG.warn(pack, "Could not parse location in " + key + " hologram: " + e.getMessage(), e);
+            }
+        }
+        return location;
+    }
+
+    private boolean isStaticHologram(final List<AbstractLine> lines) {
+        for (final AbstractLine line : lines) {
+            if (!line.isStaticText()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @NotNull
+    private Optional<ItemLine> parseItemLine(final QuestPackage pack, final String key, final String line) {
+        ItemLine itemLine = null;
+        try {
+            final String[] args = line.substring(5).split(":");
+            final ItemID itemID = new ItemID(pack, args[0]);
+            int stackSize;
+            try {
+                stackSize = Integer.parseInt(args[1]);
+            } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+                stackSize = 1;
+            }
+            itemLine = new ItemLine(new QuestItem(itemID).generate(stackSize));
+        } catch (final InstructionParseException e) {
+            LOG.warn(pack, "Could not parse item in " + key + " hologram: " + e.getMessage(), e);
+        } catch (final ObjectNotFoundException e) {
+            LOG.warn(pack, "Could not find item in " + key + " hologram: " + e.getMessage(), e);
+        }
+        return Optional.ofNullable(itemLine);
+    }
+
+    @NotNull
+    private Optional<TopLine> parseTopLine(final QuestPackage pack, final String line) {
+        final Matcher validator = TOP_LINE_VALIDATOR.matcher(line);
+        if (!validator.matches()) {
+            LOG.warn("Malformed top hologram line! Expected format: 'top:<point>;<order>;<limit>[;<color>][;<color>][;<color>][;<color>]'.");
+            return Optional.empty();
+        }
+
+        String pointName = validator.group(1);
+        if (!pointName.contains(".")) {
+            pointName = pack.getPackagePath() + '.' + pointName;
+        }
+
+        final TopXObject.OrderType orderType;
+        if ("desc".equalsIgnoreCase(validator.group(2))) {
+            orderType = TopXObject.OrderType.DESCENDING;
+        } else if ("asc".equalsIgnoreCase(validator.group(2))) {
+            orderType = TopXObject.OrderType.ASCENDING;
+        } else { // other variants not checked in regex to give specific warning instead of generic malformed line warning
+            LOG.warn(pack, "Top list order type '" + validator.group(2) + "' unknown! Using descending order.");
+            orderType = TopXObject.OrderType.DESCENDING;
+        }
+
+        int limit;
+        try { // negative limits are checked by regex
+            limit = Integer.parseInt(validator.group(3));
+        } catch (final NumberFormatException e) {
+            LOG.warn(pack, "Top list limit must be numeric! Using limit 10.");
+            limit = 10;
+        }
+
+        final StringBuilder colorCodes = new StringBuilder();
+        for (int i = 4; i <= 7; i++) {
+            String code = "";
+            if (validator.group(i) != null) {
+                code = validator.group(i).toLowerCase(Locale.ROOT);
+            }
+
+            if ("".equals(code)) {
+                colorCodes.append('f');
+            } else {
+                colorCodes.append(code);
+            }
+        }
+        return Optional.of(new TopLine(pointName, orderType, limit, colorCodes.toString().toCharArray()));
     }
 
     @NotNull
