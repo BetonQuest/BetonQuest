@@ -22,7 +22,7 @@ public class HologramIntegrator implements Integrator {
     /**
      * Pattern to match a instruction variable in string
      */
-    public static final Pattern INSTRUCTION_VARIABLE_VALIDATOR = Pattern.compile("%[^ %\\s]+%");
+    public static final Pattern VARIABLE_VALIDATOR = Pattern.compile("(%|\\$)[^ %\\s]+(%|\\$)");
     /**
      * Pattern to match a global variable in string
      */
@@ -61,8 +61,16 @@ public class HologramIntegrator implements Integrator {
         return hologram;
     }
 
-    public static String parseInstructionVariable(final QuestPackage pack, final String text) {
-        return instance.subIntegrator.parseInstructionVariable(pack, text);
+    /**
+     * Parses a string containing an instruction variable and converts it to the appropriate format for the given
+     * plugin implementation
+     *
+     * @param pack The quest pack where the variable resides
+     * @param text The raw text
+     * @return The parsed and formatted full string
+     */
+    public static String parseVariable(final QuestPackage pack, final String text) {
+        return instance.subIntegrator.parseVariable(pack, text);
     }
 
     public Set<String> getSubIntegratorNames() {
@@ -72,18 +80,17 @@ public class HologramIntegrator implements Integrator {
     @Override
     public void hook(final String pluginName) throws HookException {
         //This method may be called multiple times if multiple Hologram plugins are installed
-        if (subIntegrator == null) {
-            //If not initialised
-            if (integrators.containsKey(pluginName)) {
-                this.subIntegrator = integrators.get(pluginName);
-                this.subIntegrator.init();
-                hologramLoop = new HologramLoop();
+        if (subIntegrator != null) {
+            return;
+        }
+        //If not initialised
+        this.subIntegrator = integrators.get(pluginName); //assert that the passed in pluginName is in the integrator
+        this.subIntegrator.init();
+        hologramLoop = new HologramLoop();
 
-                // if Citizens is hooked, start CitizensHologram
-                if (Compatibility.getHooked().contains("Citizens")) {
-                    new CitizensHologram();
-                }
-            }
+        // if Citizens is hooked, start CitizensHologram
+        if (Compatibility.getHooked().contains("Citizens")) {
+            new CitizensHologram();
         }
     }
 

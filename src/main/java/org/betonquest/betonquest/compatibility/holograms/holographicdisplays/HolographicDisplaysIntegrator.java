@@ -30,10 +30,14 @@ public class HolographicDisplaysIntegrator extends HologramSubIntegrator {
     }
 
     @Override
-    public String parseInstructionVariable(final QuestPackage pack, final String text) {
+    public String parseVariable(final QuestPackage pack, final String text) {
         /* We must convert a normal BetonQuest variable such as "%objective.kills.left% to {bq:pack:objective.kills.left}
-        which is parsed by HolographicDisplays as a custom API placeholder. */
-        final Matcher matcher = HologramIntegrator.INSTRUCTION_VARIABLE_VALIDATOR.matcher(text);
-        return matcher.replaceAll(match -> "{bq:" + pack.getPackagePath() + ":" + match.group().replaceAll("%", "") + "}");
+           which is parsed by HolographicDisplays as a custom API placeholder. */
+        final Matcher matcher = HologramIntegrator.VARIABLE_VALIDATOR.matcher(text);
+        return matcher.replaceAll(match -> {
+            final String group = match.group();
+            final String placeholder = group.startsWith("$") && group.endsWith("$") ? "{bqg:" : "{bq:";
+            return placeholder + pack.getPackagePath() + ":" + group.replaceAll("(%|\\$)", "") + "}";
+        });
     }
 }

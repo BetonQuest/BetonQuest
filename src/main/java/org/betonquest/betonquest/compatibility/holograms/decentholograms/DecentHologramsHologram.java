@@ -95,6 +95,7 @@ public class DecentHologramsHologram implements BetonHologram {
     public void showAll() {
         final List<Player> players = hologram.getHidePlayers().stream().map(Bukkit::getPlayer).collect(Collectors.toList());
         players.forEach(hologram::removeHidePlayer);
+        hologram.setDefaultVisibleState(true);
         hologram.showAll();
     }
 
@@ -102,6 +103,7 @@ public class DecentHologramsHologram implements BetonHologram {
     public void hideAll() {
         final List<Player> players = hologram.getViewerPlayers();
         players.forEach(hologram::setHidePlayer);
+        hologram.setDefaultVisibleState(false);
         hologram.hideAll();
     }
 

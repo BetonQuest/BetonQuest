@@ -6,7 +6,6 @@ import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.compatibility.holograms.lines.AbstractLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.ItemLine;
-import org.betonquest.betonquest.compatibility.holograms.lines.StaticVariableTextLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TextLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TopLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TopXObject;
@@ -22,6 +21,7 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -161,7 +161,6 @@ public class HologramLoop {
                 }
 
                 final BetonHologram hologram = HologramIntegrator.createHologram(key, location);
-                hologram.hideAll();
                 HologramRunner.addHologram(new HologramWrapper(
                         checkInterval,
                         hologram,
@@ -174,30 +173,19 @@ public class HologramLoop {
         }
     }
 
-    private AbstractLine parseTextLine(final QuestPackage pack, final String line) {
-        AbstractLine textLine = null;
-        final Matcher staticMatcher = HologramIntegrator.STATIC_VARIABLE_VALIDATOR.matcher(line);
-        if (staticMatcher.find()) {
-            try {
-                textLine = new StaticVariableTextLine(pack, line);
-                //Global variables are updated by BetonQuest, rather than going through external API.
-            } catch (final InstructionParseException e) {
-                LOG.warn("Malformed text hologram line static variable! Expected format: '$<variable>.<property>$'");
-            }
+    @NotNull
+    private TextLine parseTextLine(final QuestPackage pack, final String line) {
+        boolean valid = true;
+        try {
+            new VariableString(pack, line); //Resolve variables if any
+        } catch (final InstructionParseException e) {
+            LOG.warn("LOG.warn(\"Malformed text hologram line variable! " + e.getMessage());
+            valid = false;
         }
-        final Matcher instructionMatcher = HologramIntegrator.INSTRUCTION_VARIABLE_VALIDATOR.matcher(line);
-        if (instructionMatcher.find()) {
-            try {
-                new VariableString(pack, line); //Validate the variable
-                textLine = new TextLine(HologramIntegrator.parseInstructionVariable(pack, line));
-            } catch (final InstructionParseException e) {
-                LOG.warn("Malformed text hologram line instruction variable! Expected format: '%<variable>.<property>%'");
-            }
-        }
-        if (textLine == null) {
-            textLine = new TextLine(line.replace('&', '§'));
-        }
-        return textLine;
+        final Matcher matcher = HologramIntegrator.VARIABLE_VALIDATOR.matcher(line);
+        return new TextLine(valid && matcher.find()
+                ? HologramIntegrator.parseVariable(pack, line)
+                : line);
     }
 
     /**
@@ -240,8 +228,8 @@ public class HologramLoop {
                 @Override
                 public void run() {
                     holograms.forEach(h -> {
-                        h.updateContent();
                         h.updateVisibility();
+                        h.updateContent();
                     });
                 }
             };
@@ -260,8 +248,8 @@ public class HologramLoop {
             }
             RUNNERS.get(hologram.interval()).holograms.add(hologram);
 
-            hologram.initialiseContent();
             hologram.updateVisibility();
+            hologram.initialiseContent();
         }
 
         /**
@@ -273,6 +261,9 @@ public class HologramLoop {
             return RUNNERS.values();
         }
 
+        /**
+         * Removes all active HologramRunner instances.
+         */
         public static void clearRunners() {
             RUNNERS.clear();
         }

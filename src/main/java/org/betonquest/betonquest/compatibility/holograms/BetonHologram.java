@@ -38,7 +38,7 @@ public interface BetonHologram {
      * @param startingIndex  the starting index
      * @param linesToBeAdded the amount of lines to add
      */
-    void createLines(final int startingIndex, final int linesToBeAdded);
+    void createLines(int startingIndex, int linesToBeAdded);
 
     /**
      * Insert an item line at an index. Lines at this index and below

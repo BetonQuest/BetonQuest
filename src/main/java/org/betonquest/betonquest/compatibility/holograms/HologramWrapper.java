@@ -64,7 +64,11 @@ public record HologramWrapper(int interval, BetonHologram hologram, boolean stat
             length += line.getLinesAdded();
         }
         hologram.createLines(0, length);
-        updateContent();
+        int i = 0;
+        for (final AbstractLine line : cleanedLines) {
+            line.setLine(hologram, i);
+            i += line.getLinesAdded();
+        }
     }
 
     /**

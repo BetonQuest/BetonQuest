@@ -2,7 +2,7 @@
 icon: material/handshake
 ---
 # Compatibility
-**In total 32 plugins have dedicated support for BetonQuest.**
+**In total 33 plugins have dedicated support for BetonQuest.**
 
 BetonQuest hooks into other plugins by itself to provide more events, conditions and objectives or other features. 
 26 plugins are supported right now:    
