@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.exceptions.HookException;
 import org.betonquest.betonquest.exceptions.UnsupportedVersionException;
 import org.betonquest.betonquest.modules.versioning.UpdateStrategy;
@@ -38,6 +39,8 @@ public abstract class HologramSubIntegrator {
             }
         }
     }
+
+    public abstract String parseInstructionVariable(QuestPackage pack, String text);
 
     public String getPluginName() {
         return pluginName;

@@ -2,9 +2,11 @@ package org.betonquest.betonquest.compatibility.holograms;
 
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.compatibility.holograms.lines.AbstractLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.ItemLine;
+import org.betonquest.betonquest.compatibility.holograms.lines.StaticVariableTextLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TextLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TopLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.TopXObject;
@@ -39,11 +41,6 @@ public class HologramLoop {
      * Pattern to match the correct syntax for the top line content
      */
     private static final Pattern TOP_LINE_VALIDATOR = Pattern.compile("^top:([\\w.]+);(\\w+);(\\d+);?[&§]?([\\da-f])?;?[&§]?([\\da-f])?;?[&§]?([\\da-f])?;?[&§]?([\\da-f])?$", Pattern.CASE_INSENSITIVE);
-
-    /**
-     * Pattern to match a variable in string
-     */
-    private static final Pattern VARIABLE_VALIDATOR = Pattern.compile("(?<prefix>.+)?%(?<var>.+)%(?<suffix>.+)?");
 
     /**
      * Starts a loop, which checks hologram conditions and shows them to players.
@@ -159,10 +156,7 @@ public class HologramLoop {
                         staticText = false;
                         cleanedLines.add(new TopLine(pointName, orderType, limit, colorCodes.toString().toCharArray()));
                     } else {
-                        if (VARIABLE_VALIDATOR.matcher(line).matches()) {
-                            staticText = false;
-                        }
-                        cleanedLines.add(new TextLine(line.replace('&', '§'), staticText));
+                        cleanedLines.add(parseTextLine(pack, line.replace('&', '§')));
                     }
                 }
 
@@ -178,6 +172,32 @@ public class HologramLoop {
                         pack));
             }
         }
+    }
+
+    private AbstractLine parseTextLine(final QuestPackage pack, final String line) {
+        AbstractLine textLine = null;
+        final Matcher staticMatcher = HologramIntegrator.STATIC_VARIABLE_VALIDATOR.matcher(line);
+        if (staticMatcher.find()) {
+            try {
+                textLine = new StaticVariableTextLine(pack, line);
+                //Global variables are updated by BetonQuest, rather than going through external API.
+            } catch (final InstructionParseException e) {
+                LOG.warn("Malformed text hologram line static variable! Expected format: '$<variable>.<property>$'");
+            }
+        }
+        final Matcher instructionMatcher = HologramIntegrator.INSTRUCTION_VARIABLE_VALIDATOR.matcher(line);
+        if (instructionMatcher.find()) {
+            try {
+                new VariableString(pack, line); //Validate the variable
+                textLine = new TextLine(HologramIntegrator.parseInstructionVariable(pack, line));
+            } catch (final InstructionParseException e) {
+                LOG.warn("Malformed text hologram line instruction variable! Expected format: '%<variable>.<property>%'");
+            }
+        }
+        if (textLine == null) {
+            textLine = new TextLine(line.replace('&', '§'));
+        }
+        return textLine;
     }
 
     /**

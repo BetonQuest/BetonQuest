@@ -20,8 +20,8 @@ public class TextLine extends AbstractLine {
      *
      * @param text Text to be displayed
      */
-    public TextLine(final String text, final boolean staticText) {
-        super(staticText, 1);
+    public TextLine(final String text) {
+        super(true, 1);
         this.text = text;
     }
 

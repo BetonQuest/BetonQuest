@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
 import lombok.CustomLog;
+import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.citizens.CitizensHologram;
@@ -12,15 +13,24 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 
 @SuppressWarnings("PMD.CommentRequired")
 @CustomLog
 public class HologramIntegrator implements Integrator {
+    /**
+     * Pattern to match a instruction variable in string
+     */
+    public static final Pattern INSTRUCTION_VARIABLE_VALIDATOR = Pattern.compile("%[^ %\\s]+%");
+    /**
+     * Pattern to match a global variable in string
+     */
+    public static final Pattern STATIC_VARIABLE_VALIDATOR = Pattern.compile("\\$[^ %\\s]+\\$");
     private static HologramIntegrator instance;
     private final Map<String, HologramSubIntegrator> integrators;
     private HologramLoop hologramLoop;
-    private Class<? extends BetonHologram> hologramType;
+    private HologramSubIntegrator subIntegrator;
 
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public HologramIntegrator(final HologramSubIntegrator... integrators) {
@@ -41,7 +51,7 @@ public class HologramIntegrator implements Integrator {
     public static BetonHologram createHologram(final String name, final Location location) {
         BetonHologram hologram = null;
         try {
-            final Constructor<? extends BetonHologram> constructor = instance.hologramType.getConstructor(String.class, Location.class);
+            final Constructor<? extends BetonHologram> constructor = instance.subIntegrator.getHologramType().getConstructor(String.class, Location.class);
             hologram = constructor.newInstance(name + location.toString(), location);
         } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
             LOG.warn("Hologram called " + name + " could not be created! This is most likely an implementation error! ", e);
@@ -51,6 +61,10 @@ public class HologramIntegrator implements Integrator {
         return hologram;
     }
 
+    public static String parseInstructionVariable(final QuestPackage pack, final String text) {
+        return instance.subIntegrator.parseInstructionVariable(pack, text);
+    }
+
     public Set<String> getSubIntegratorNames() {
         return this.integrators.keySet();
     }
@@ -58,12 +72,11 @@ public class HologramIntegrator implements Integrator {
     @Override
     public void hook(final String pluginName) throws HookException {
         //This method may be called multiple times if multiple Hologram plugins are installed
-        if (hologramType == null) {
+        if (subIntegrator == null) {
             //If not initialised
-            final HologramSubIntegrator subintegrator = integrators.get(pluginName);
-            if (subintegrator != null) {
-                subintegrator.init();
-                hologramType = subintegrator.getHologramType();
+            if (integrators.containsKey(pluginName)) {
+                this.subIntegrator = integrators.get(pluginName);
+                this.subIntegrator.init();
                 hologramLoop = new HologramLoop();
 
                 // if Citizens is hooked, start CitizensHologram
