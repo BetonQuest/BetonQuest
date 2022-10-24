@@ -175,7 +175,7 @@ condition to not repeat the specified part of the conversation.
 conversations:
   Jack:
     quester: "Jack"
-    first: "firstGreeting,{==alreadyReceivedFood,==}" # (1)!
+    first: "{==alreadyReceivedFood,==}firstGreeting" # (1)!
 
     NPC_options:
       firstGreeting:
@@ -215,11 +215,128 @@ conversations:
 As you can see we also added new options to it. Now the NPC will say that you already received the food
 and won't give you more!
 
+We have the same problem with the citytour for the player. He can do it again and again. Try to do it on your own and add
+a condition to that specific conversation as well as to the first argument. If your solution is not working, download the
+quest from the link below!
+
+We also have another problem with the blacksmith conversation. We can start te objective over and over again, because
+there is a condition left. We will create the condition in this next step to avoid the player to accept it again and again.
+
+``` YAML title="blacksmith.yml" hl_lines="8-10"
+conversations:
+  Blacksmith:
+    quester: "Blacksmith"
+    first: "{==alreadyStarted,==}firstGreeting"
+    NPC_options:
+      firstGreeting:
+        # Other player_options not shown
+      alreadyStarted:
+        text: "Come back to me if you caught all the fish!"
+        conditions: "startedFishingTag"
+    player_options:
+      # Other player_options not shown
+      accept:
+        text: "Sure! I could use a new armour."
+        event: "startFishingObj{==,startedFishingTagAdd==}"
+        pointer: "goodLuck"
+      # Other player_options not shown
+```
+
+And we also have to add it in the conditions.yml again.
+In this step we can also add a condition to check if the player really have the needed amount of cod in his inventory.
+We can do this with a `item` condition that checks the players inventory.
+
+``` YAML title="conditions.yml" hl_lines="5-6"
+conditions:
+  isNight: "time 6-18"
+  hasRecivedFood: "tag foodReceived"
+  tourAlreadyDoneTag: "tag tourAlreadyDoneTag"
+  startedFishingTag: "tag startedFishingTag"
+  hasFishInInv: "item COD:10"
+```
+
+Now we created the `hasFishInInv` condition that checks if the players has 10 cod in his inventory. We now need to implement it
+to our conversation in the blacksmith file like so:
+
+``` YAML title="blacksmith.yml" hl_lines="8-24 27-35"
+conversations:
+  Blacksmith:
+    quester: "Blacksmith"
+    first: "{==caughtAllFish,==}alreadyStarted,firstGreeting"
+    NPC_options:
+      firstGreeting:
+        # Other player_options not shown
+      caughtAllFish:
+        text: Oh let me see! Amazing.. Can I have them?
+        pointer: agree
+        conditions: hasFishInInv # (1)!
+      giveFishToBlacksmith:
+        text: Thank you very much and here is the promised armour!
+        pointer: seeYouSoon
+        conditions: hasFishInInv
+      cheater:
+        text: Heeeyy! Dont try to cheat boy!
+        conditions: '!hasFishInInv'
+      goodbye:
+        text: It was nice to meet you! I hope we will see us soon again. Goodbye
+    player_options:
+      # Other player_options not shown
+      deny:
+        text: I dont have time right now.
+        pointer: maybeLater
+      agree:
+        text: Of course! Take em.
+        pointer: giveFishToBlacksmith,cheater
+      seeYouSoon:
+        text: That was a pleasure! See you soon...
+        pointer: goodbye
+```
+
+Try to write your own events in the `giveFishToBlacksmith` conversation for exmample `rewardPlayer` or something.
+Otherwise just download from the link below!
+
 --8<-- "Tutorials/download-solution.md"
        ```
-       /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Events/3-ConditionsInConversations /tutorialQuest overwrite
+       /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conditions/3-ConditionsInConversations /tutorialQuest overwrite
        ```
-       
+## 6. Optional bonus section - Conditions in Events
+
+In this section you will learn how to use conditions in events, because sometimes you want to be able to block a specific event from triggering
+because some conditions for the players are not given.
+
+!!! warning ""
+    This is not part of the main quest and will not be implemented to it!
+
+We will temporarily create a condition called `receiveNotify` in the conditions.yml like so:
+This one will be a simple tag condition.
+
+``` YAML title="conditions.yml" hl_lines="1-2"
+conditions:
+  receiveNotify: "tag receiveNotify"
+```
+
+We will now create an event to test our recently created condition.
+For testing purpose we will use a notify event:
+
+``` YAML title="events.yml" hl_lines="1-2"
+events:
+  notifyPlayer: "notify You completed the quest! Congratulations! io:Title sound:firework_rocket conditions:receiveNotify"
+```
+
+You can see that the notify event has that tag we've created before, so the player is only be able to receive that notify if he has the tag.
+Save and reload this and go ingame to test if it works!
+
+You can simply test it with the give BetonQuest command:
+`/bq event PLAYERNAME tutorialQuest.notifyPlayer`
+Nothing should happen because the player dont have the `receiveNotify` tag.
+
+Type `/bq tag PLAYERNAME add tutorialQuest.receiveNotify` and try the command from above again.
+The player should now get the notify on his screen!
+
+You can also manually delete a tag with `/bq tag PLAYERNAME del tutorialQuest.receiveNotify`. This is very helpful because
+if you have a lots of quests and tags you dont want to purge a player because he will be mad if he have to do the other quests again.
+
+
 ## Summary
 
 You've learned some important facts about conditions and how to use them. You can now give a player a tag
