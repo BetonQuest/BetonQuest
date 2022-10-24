@@ -1,6 +1,7 @@
 ---
 icon: material/television-guide
 ---
+
 # Menus
 BetonQuest allows the creation of fully custom GUIs using the events and items system.  
 Nearly everything can be done with these, from simple selection, over warp systems, guis listing open quests to
@@ -11,7 +12,9 @@ information dialogs that display player stats.
 Many new features will be added to the menu system in 2.0. You can see the ongoing discussion on what
 features to add on our [GitHub discussion](https://github.com/BetonQuest/BetonQuest/discussions) page.
 
-# Creating a menu
+[:material-play-outline: Try the working example for a quick overview.](../Tutorials/Visualising-Quest-Progress/MenuExample.md){ .md-button }
+
+## Creating a menu
 To create a new menu just create a `menus` section in any file.
 The name which can be used to identify each menu will be the name of another section as shown below.
 
@@ -22,7 +25,7 @@ menus:
     #...
 ```
 
-# The menu settings
+## The menu settings
 This section tells you about each setting which has to be set (or can optionally be set) to configure your menu.
 
 * `title`: *(string)*  
