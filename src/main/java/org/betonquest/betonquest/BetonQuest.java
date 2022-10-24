@@ -374,10 +374,13 @@ public class BetonQuest extends JavaPlugin {
                     }
                 } catch (InterruptedException | ExecutionException e) {
                     if (PaperLib.isPaper() && Bukkit.getServer().isStopping()) {
+                        log.debug("Exception during shutdown while checking conditions (expected):", e);
                         return false;
                     }
-                    log.warn("The following exception is only ok when the server is currently stopping." +
-                            "Switch to papermc.io to fix this.");
+                    if (PaperLib.isSpigot()) {
+                        log.warn("The following exception is only ok when the server is currently stopping." +
+                                "Switch to papermc.io to fix this.");
+                    }
                     log.reportException(e);
                     return false;
                 }
