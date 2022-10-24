@@ -373,6 +373,11 @@ public class BetonQuest extends JavaPlugin {
                         return false;
                     }
                 } catch (InterruptedException | ExecutionException e) {
+                    if (PaperLib.isPaper() && Bukkit.getServer().isStopping()) {
+                        return false;
+                    }
+                    log.warn("The following exception is only ok when the server is currently stopping." +
+                            "Switch to papermc.io to fix this.");
                     log.reportException(e);
                     return false;
                 }
@@ -981,8 +986,8 @@ public class BetonQuest extends JavaPlugin {
         rpgMenu = new RPGMenu();
         rpgMenu.onEnable();
 
-        // done
-        log.info("BetonQuest succesfully enabled!");
+        PaperLib.suggestPaper(this);
+        log.info("BetonQuest successfully enabled!");
     }
 
     /**
