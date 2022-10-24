@@ -61,7 +61,7 @@ public class BlockObjective extends CountingObjective implements Listener {
 
     private void handleDataChange(final Profile profile, final CountingData data) {
         final String message = data.getDirectionFactor() > 0 ? "blocks_to_place" : "blocks_to_break";
-        completeIfDoneOrNotify(profile.getOnlineProfile(), message);
+        completeIfDoneOrNotify(profile, message);
     }
 
     @Override

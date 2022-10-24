@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.api;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
@@ -80,10 +79,10 @@ public abstract class CountingObjective extends Objective {
      * {@link #defaultNotifyMessageName} if set, otherwise no notification will be sent, even if {@link #notify} is
      * {@code true}.
      *
-     * @param profile the {@link OnlineProfile} to act for
+     * @param profile the {@link Profile} to act for
      * @return {@code true} if the objective is completed; {@code false} otherwise
      */
-    protected final boolean completeIfDoneOrNotify(final OnlineProfile profile) {
+    protected final boolean completeIfDoneOrNotify(final Profile profile) {
         return completeIfDoneOrNotify(profile, defaultNotifyMessageName);
     }
 
@@ -92,18 +91,18 @@ public abstract class CountingObjective extends Objective {
      * notification message name. If it is {@code null}, no notification is sent, even if a
      * {@link #defaultNotifyMessageName} was set and a notification should have been sent.
      *
-     * @param profile           the {@link OnlineProfile} to act for
+     * @param profile           the {@link Profile} to act for
      * @param notifyMessageName message name for notification message
      * @return {@code true} if the objective is completed; {@code false} otherwise
      */
-    protected final boolean completeIfDoneOrNotify(final OnlineProfile profile, final String notifyMessageName) {
+    protected final boolean completeIfDoneOrNotify(final Profile profile, final String notifyMessageName) {
         final CountingData data = getCountingData(profile);
         if (data.isComplete()) {
             completeObjective(profile);
             return true;
         }
         if (notify && notifyMessageName != null && shouldNotify(data)) {
-            sendNotify(profile, notifyMessageName, Math.abs(data.getAmountLeft()));
+            sendNotify(profile.getOnlineProfile(), notifyMessageName, Math.abs(data.getAmountLeft()));
         }
         return false;
     }
