@@ -162,7 +162,7 @@ events:
   addFoodReceivedTag: "tag add foodReceived"
 ```
 
-!!! warning ""
+!!! warning "Tip"
     If you don't understand why we created this event here, you should go a step back to the events tutorial and read carefully again!
 
 We are now ready to for the next step: Adding the condition and event to the conversation.
@@ -267,29 +267,29 @@ conversations:
       firstGreeting:
         # Other player_options not shown
       caughtAllFish:
-        text: Oh let me see! Amazing.. Can I have them?
-        pointer: agree
-        conditions: hasFishInInv # (1)!
+        text: "Oh let me see! Amazing.. Can I have them?"
+        pointer: "agree"
+        conditions: "hasFishInInv" # (1)!
       giveFishToBlacksmith:
-        text: Thank you very much and here is the promised armour!
-        pointer: seeYouSoon
-        conditions: hasFishInInv
+        text: "Thank you very much and here is the promised armour!"
+        pointer: "seeYouSoon"
+        conditions: "hasFishInInv"
       cheater:
-        text: Heeeyy! Dont try to cheat boy!
-        conditions: '!hasFishInInv'
+        text: "Heeeyy! Dont try to cheat boy!"
+        conditions: "!hasFishInInv"
       goodbye:
-        text: It was nice to meet you! I hope we will see us soon again. Goodbye
+        text: "It was nice to meet you! I hope we will see us soon again. Goodbye"
     player_options:
       # Other player_options not shown
       deny:
-        text: I dont have time right now.
-        pointer: maybeLater
+        text: "I dont have time right now."
+        pointer: "maybeLater"
       agree:
-        text: Of course! Take em.
-        pointer: giveFishToBlacksmith,cheater
+        text: "Of course! Take em."
+        pointer: "giveFishToBlacksmith,cheater"
       seeYouSoon:
-        text: That was a pleasure! See you soon...
-        pointer: goodbye
+        text: "That was a pleasure! See you soon..."
+        pointer: "goodbye"
 ```
 
 Try to write your own events in the `giveFishToBlacksmith` conversation for exmample `rewardPlayer` or something.
@@ -336,6 +336,11 @@ The player should now get the notify on his screen!
 You can also manually delete a tag with `/bq tag PLAYERNAME del tutorialQuest.receiveNotify`. This is very helpful because
 if you have a lots of quests and tags you dont want to purge a player because he will be mad if he have to do the other quests again.
 
+
+--8<-- "Tutorials/download-solution.md"
+    ```
+    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conditions/4-FullExample /tutorialQuest overwrite
+    ```
 
 ## Summary
 
