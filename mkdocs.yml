@@ -189,6 +189,7 @@ nav:
               - 'Conversations': Tutorials/Getting-Started/Basics/Conversations.md
               - '    Events': Tutorials/Getting-Started/Basics/Events.md
               - 'Objectives': Tutorials/Getting-Started/Basics/Objectives.md
+          - 'Visual Progress': Tutorials/Visualising-Quest-Progress/MenuExample.md
           - 'Old Tutorial': Tutorials/Getting-Started/Learn-BetonQuest.md
       - 'Frequently Asked Questions':
           - 'General FAQ': Tutorials/Frequently-Asked-Questions.md
