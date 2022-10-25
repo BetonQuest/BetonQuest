@@ -131,7 +131,7 @@ public class HologramLoop {
                             pointName = packName + '.' + pointName;
                         }
 
-                        TopXObject.OrderType orderType;
+                        final TopXObject.OrderType orderType;
                         if ("desc".equalsIgnoreCase(validator.group(2))) {
                             orderType = TopXObject.OrderType.DESCENDING;
                         } else if ("asc".equalsIgnoreCase(validator.group(2))) {
@@ -144,7 +144,7 @@ public class HologramLoop {
                         int limit;
                         try { // negative limits are checked by regex
                             limit = Integer.parseInt(validator.group(3));
-                        } catch (NumberFormatException e) {
+                        } catch (final NumberFormatException e) {
                             LOG.warn(pack, "Top list limit must be numeric! Using limit 10.");
                             limit = 10;
                         }
@@ -221,7 +221,7 @@ public class HologramLoop {
             runnable = new BukkitRunnable() {
                 @Override
                 public void run() {
-                    holograms.forEach(h -> {
+                    holograms.stream().parallel().forEach(h -> {
                         h.updateVisibility();
                         h.updateContent();
                     });
