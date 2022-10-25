@@ -1227,6 +1227,7 @@ public class BetonQuest extends JavaPlugin {
         }
     }
 
+    @SuppressWarnings("PMD.DoNotUseThreads")
     @Override
     public void onDisable() {
         //stop all schedules
@@ -1264,11 +1265,13 @@ public class BetonQuest extends JavaPlugin {
         }
         FreezeEvent.cleanup();
 
-        final java.util.logging.Logger serverLogger = getServer().getLogger().getParent();
-        serverLogger.removeHandler(debugHistoryHandler);
-        serverLogger.removeHandler(chatHandler);
-        debugHistoryHandler.close();
-        chatHandler.close();
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            final java.util.logging.Logger serverLogger = getServer().getLogger().getParent();
+            serverLogger.removeHandler(debugHistoryHandler);
+            serverLogger.removeHandler(chatHandler);
+            debugHistoryHandler.close();
+            chatHandler.close();
+        }));
     }
 
     /**
