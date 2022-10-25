@@ -373,6 +373,12 @@ public class BetonQuest extends JavaPlugin {
                         return false;
                     }
                 } catch (InterruptedException | ExecutionException e) {
+                    // Currently conditions that are forced to be sync cause every CompletableFuture.get() call
+                    // to delay the check by one tick.
+                    // If this happens during a shutdown, the check will be delayed past the last tick.
+                    // This will throw a CancellationException and IllegalPluginAccessExceptions.
+                    // For Paper we can detect this and only log it to the debug log.
+                    // When the conditions get reworked, this complete check can be removed including the Spigot message.
                     if (PaperLib.isPaper() && Bukkit.getServer().isStopping()) {
                         log.debug("Exception during shutdown while checking conditions (expected):", e);
                         return false;
