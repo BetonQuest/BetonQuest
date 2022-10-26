@@ -302,7 +302,7 @@ public class Journal {
                     } else {
                         text = section.getString(key + ".text");
                     }
-                    if (text == null || text.length() <= 0) {
+                    if (text == null || text.length() == 0) {
                         continue;
                     }
                     // resolve variables
