@@ -103,15 +103,30 @@ argument. By default, only one player can look into the chest at the same time. 
     chestput 0;50;100;world apple:42 events:message multipleaccess:true
     ```
 
-## Eat/drink: `consume`
+## :material-food-fork-drink: Eat/drink: `consume`
 
-This objective is completed by eating specified food or drinking specified potion. The only required argument is the ID
-of an item from the _items_ section.
+This objective is completed by eating the specified food or drinking the specified potion. 
 
-!!! example
-    ```YAML
-    consume tawny_owl events:faster_endurance_regen
-    ```
+| Parameter       | Syntax                       | Default Value          | Explanation                                                                                                                   |
+|-----------------|------------------------------|------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| _Item_          | [Item](./Reference.md#items) | :octicons-x-circle-16: | The item or potion that must be consumed.                                                                                     |
+| _Amount_        | amount:number                | 1                      | The amount of items to consume.                                                                                               |
+
+
+```YAML
+objectives:
+  eatApple: "consume apple events:faster_endurance_regen"
+  eatSteak: "consume steak amount:4 events:health_boost"
+```
+
+<h5> Variable Properties </h5> 
+
+| Name     | Example Output | Explanation                                                                                 |
+|----------|----------------|---------------------------------------------------------------------------------------------|
+| _amount_ | 6              | Shows the amount of items already consumed.                                                 |
+| _left_   | 4              | Shows the amount of items that still need to be consumed for the objective to be completed. |
+| _total_  | 10             | Shows the initial amount of items that needed to be consumed.                               |
+
 
 ## Crafting: `craft`
 
