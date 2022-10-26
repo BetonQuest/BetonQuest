@@ -38,11 +38,7 @@ public class ConsumeObjective extends CountingObjective implements Listener {
     public ConsumeObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         item = instruction.getQuestItem();
-        if (instruction.hasOptional(AMOUNT_ARGUMENT)) {
-            targetAmount = Integer.parseInt(instruction.getOptional(AMOUNT_ARGUMENT));
-        } else {
-            targetAmount = 1;
-        }
+        targetAmount = Integer.parseInt(instruction.getOptional(AMOUNT_ARGUMENT, "1"));
     }
 
 
