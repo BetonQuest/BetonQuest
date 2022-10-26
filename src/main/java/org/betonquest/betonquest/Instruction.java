@@ -129,6 +129,16 @@ public class Instruction {
         return false;
     }
 
+    /**
+     * Checks whether the instruction has an optional argument with the given prefix.
+     *
+     * @param prefix the prefix of the optional argument
+     * @return true if the instruction has an optional argument with the given prefix
+     */
+    public boolean hasOptional(final String prefix) {
+        return getOptional(prefix) != null;
+    }
+
     /////////////////////
     ///    OBJECTS    ///
     /////////////////////
