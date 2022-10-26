@@ -52,6 +52,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `bossbar` notify style now supports variables for the `progress` argument
 - `delay` objective property: `rawSeconds`
 - `fish` objective now has `hookLocation` and `range` settings.
+- `consume` objective now has `amount` argument.
 - `mmoprofessionlevelup` objective can now check the main character level as well
 - `burning` condition
 - `inconversation` condition
