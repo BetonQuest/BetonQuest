@@ -57,16 +57,7 @@ public class CommandEvent extends QuestEvent {
                         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), com);
                     }
                 } else {
-                    if (profile.getPlayer().isEmpty()) {
-                        // the player is offline, cannot resolve variables, at least replace %player%
-                        final String name = profile.getOfflinePlayer().getName();
-                        if (name == null) {
-                            // this should never happen, but just in case
-                            continue;
-                        }
-                        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command.command
-                                .replaceAll("%player%", name));
-                    } else {
+                    if (profile.isPlayerOnline()) {
                         // run the command for the single player
                         String com = command.command;
                         for (final String var : command.variables) {
@@ -75,6 +66,15 @@ public class CommandEvent extends QuestEvent {
                         }
                         final String finalCom = com;
                         Bukkit.getScheduler().callSyncMethod(BetonQuest.getInstance(), () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), finalCom));
+                    } else {
+                        // the player is offline, cannot resolve variables, at least replace %player%
+                        final String name = profile.getOfflinePlayer().getName();
+                        if (name == null) {
+                            // this should never happen, but just in case
+                            continue;
+                        }
+                        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command.command
+                                .replaceAll("%player%", name));
                     }
                 }
             }

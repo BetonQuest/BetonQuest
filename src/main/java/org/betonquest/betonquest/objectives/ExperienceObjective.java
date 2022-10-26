@@ -74,23 +74,19 @@ public class ExperienceObjective extends Objective implements Listener {
 
     @Override
     public String getProperty(final String name, final Profile profile) {
-        switch (name.toLowerCase(Locale.ROOT)) {
-            case "amount":
-                return profile.getPlayer()
-                        .map(toData)
-                        .map(String::valueOf)
-                        .orElse("");
-            case "left":
-                return profile.getPlayer()
-                        .map(toData)
-                        .map(exp -> amount - exp)
-                        .map(String::valueOf)
-                        .orElse("");
-            case "total":
-                return Integer.toString(amount);
-            default:
-                return "";
-        }
+        return switch (name.toLowerCase(Locale.ROOT)) {
+            case "amount" -> profile.getPlayer()
+                    .map(toData)
+                    .map(String::valueOf)
+                    .orElse("");
+            case "left" -> profile.getPlayer()
+                    .map(toData)
+                    .map(exp -> amount - exp)
+                    .map(String::valueOf)
+                    .orElse("");
+            case "total" -> Integer.toString(amount);
+            default -> "";
+        };
     }
 
     private class LevelChangeListener implements Listener {

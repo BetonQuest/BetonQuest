@@ -110,10 +110,10 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
                     handle(onlineProfile);
                 }
             }
-        } else if (profile.getPlayer().isEmpty()) {
+        } else if (!profile.isPlayerOnline()) {
             // handle persistent event
             if (!persistent) {
-                LOG.debug(instruction.getPackage(), "Player " + profile.getPlayer() + " is offline, cannot fire event because it's not persistent.");
+                LOG.debug(instruction.getPackage(), "Player " + profile.getOfflinePlayer().getName() + " is offline, cannot fire event because it's not persistent.");
                 return;
             }
             handle(profile);

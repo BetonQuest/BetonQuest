@@ -95,7 +95,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
         // this event should not run if the player is offline
-        if (profile.getPlayer() == null) {
+        if (!profile.isPlayerOnline()) {
             currentProfile = null;
             return null;
         }

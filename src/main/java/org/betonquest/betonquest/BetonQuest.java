@@ -416,7 +416,7 @@ public class BetonQuest extends JavaPlugin {
             log.debug(conditionID.getPackage(), "Cannot check non-static condition without a player, returning false");
             return false;
         }
-        if (profile != null && profile.getPlayer() == null && !condition.isPersistent()) {
+        if (profile != null && profile.isPlayerOnline() && !condition.isPersistent()) {
             log.debug(conditionID.getPackage(), "Player was offline, condition is not persistent, returning false");
             return false;
         }
@@ -1284,8 +1284,8 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * Retrieves PlayerData object for specified player. If the playerData does
-     * not exist but the player is online, it will create new playerData on the
+     * Retrieves PlayerData object for specified profile. If the playerData does
+     * not exist but the profile is online, it will create new playerData on the
      * main thread and put it into the map.
      *
      * @param profile the {@link Profile} of the player
@@ -1293,7 +1293,7 @@ public class BetonQuest extends JavaPlugin {
      */
     public PlayerData getPlayerData(final Profile profile) {
         PlayerData playerData = playerDataMap.get(profile);
-        if (playerData == null && profile.getPlayer().isPresent()) {
+        if (playerData == null && profile.isPlayerOnline()) {
             playerData = new PlayerData(profile);
             putPlayerData(profile, playerData);
         }

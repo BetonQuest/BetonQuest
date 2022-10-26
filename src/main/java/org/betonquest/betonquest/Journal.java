@@ -285,7 +285,7 @@ public class Journal {
                                 continue;
                             }
                         } catch (final ObjectNotFoundException e) {
-                            LOG.warn(pack, "Error while generating main page in " + onlineProfile.getPlayer() + "'s journal: " + e.getMessage(), e);
+                            LOG.warn(pack, "Error while generating main page in " + onlineProfile.getProfileName() + "'s journal: " + e.getMessage(), e);
                             continue;
                         }
                     }

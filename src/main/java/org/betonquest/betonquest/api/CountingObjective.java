@@ -101,7 +101,7 @@ public abstract class CountingObjective extends Objective {
             completeObjective(profile);
             return true;
         }
-        if (notify && notifyMessageName != null && shouldNotify(data)) {
+        if (notify && notifyMessageName != null && shouldNotify(data) && profile.isPlayerOnline()) {
             sendNotify(profile.getOnlineProfile(), notifyMessageName, Math.abs(data.getAmountLeft()));
         }
         return false;

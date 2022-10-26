@@ -15,7 +15,6 @@ import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 
 import java.util.Locale;
 
@@ -72,12 +71,11 @@ public class CompassEvent extends QuestEvent {
                     LOG.warn(instruction.getPackage(), "Failed to set compass: " + compass, e);
                     return null;
                 }
-                if (profile.getPlayer().isPresent()) {
-                    final Player player = profile.getPlayer().get();
+                if (profile.isPlayerOnline()) {
                     final QuestCompassTargetChangeEvent event = new QuestCompassTargetChangeEvent(profile, location);
                     Bukkit.getServer().getPluginManager().callEvent(event);
                     if (!event.isCancelled()) {
-                        player.setCompassTarget(location);
+                        profile.getOnlineProfile().getOnlinePlayer().setCompassTarget(location);
                     }
                 }
         }
