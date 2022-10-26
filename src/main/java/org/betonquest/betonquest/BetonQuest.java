@@ -679,13 +679,16 @@ public class BetonQuest extends JavaPlugin {
 
         debugHistoryHandler = HandlerFactory.createHistoryHandler(this, this.getServer().getScheduler(), config, new File(getDataFolder(), "/logs"), InstantSource.system());
 
-
         final AccumulatingReceiverSelector receiverSelector = new AccumulatingReceiverSelector();
         chatHandler = HandlerFactory.createChatHandler(this, receiverSelector, adventure);
 
         final java.util.logging.Logger serverLogger = getServer().getLogger().getParent();
         serverLogger.addHandler(debugHistoryHandler);
         serverLogger.addHandler(chatHandler);
+
+        final String version = getDescription().getVersion();
+        log.debug("BetonQuest " + version + " is starting...");
+
         JREVersionUtils.logJREVersion();
 
         // load configuration
