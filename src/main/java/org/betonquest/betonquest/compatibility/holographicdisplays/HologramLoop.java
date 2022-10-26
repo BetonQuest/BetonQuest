@@ -221,7 +221,7 @@ public class HologramLoop {
             runnable = new BukkitRunnable() {
                 @Override
                 public void run() {
-                    holograms.stream().parallel().forEach(h -> {
+                    holograms.forEach(h -> {
                         h.updateVisibility();
                         h.updateContent();
                     });
