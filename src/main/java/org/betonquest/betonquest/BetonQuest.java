@@ -242,6 +242,7 @@ import org.betonquest.betonquest.variables.VersionVariable;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Server;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.event.Event;
@@ -262,6 +263,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Handler;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -303,18 +305,8 @@ public class BetonQuest extends JavaPlugin {
      */
     private final Map<String, QuestEventFactory> eventTypes = new HashMap<>();
     private final ConcurrentHashMap<Profile, PlayerData> playerDataMap = new ConcurrentHashMap<>();
+    private final String pluginTag;
     private ConfigurationFile config;
-
-    /**
-     * Handler that keeps the recent debug log history to write it to a file if needed.
-     */
-    private HistoryHandler debugHistoryHandler;
-
-    /**
-     * Handler that sends LogRecords to players.
-     */
-    private ChatHandler chatHandler;
-    private String pluginTag;
     /**
      * The adventure instance.
      * -- GETTER --
@@ -343,6 +335,15 @@ public class BetonQuest extends JavaPlugin {
      * Cache for event schedulers, holding the last execution of an event
      */
     private LastExecutionCache lastExecutionCache;
+
+    /**
+     * The BetonQuest plugin constructor.
+     */
+    public BetonQuest() {
+        instance = this;
+        log = BetonQuestLogger.create(this);
+        pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
+    }
 
     public static boolean conditions(final Profile profile, final Collection<ConditionID> conditionIDs) {
         final ConditionID[] ids = new ConditionID[conditionIDs.size()];
@@ -405,12 +406,10 @@ public class BetonQuest extends JavaPlugin {
      */
     @SuppressWarnings("PMD.NPathComplexity")
     public static boolean condition(final Profile profile, final ConditionID conditionID) {
-        // null check
         if (conditionID == null) {
             log.debug("Null condition ID!");
             return false;
         }
-        // get the condition
         Condition condition = null;
         for (final Entry<ConditionID, Condition> e : CONDITIONS.entrySet()) {
             if (e.getKey().equals(conditionID)) {
@@ -422,17 +421,14 @@ public class BetonQuest extends JavaPlugin {
             log.warn(conditionID.getPackage(), "The condition " + conditionID + " is not defined!");
             return false;
         }
-        // check for null player
         if (profile == null && !condition.isStatic()) {
             log.debug(conditionID.getPackage(), "Cannot check non-static condition without a player, returning false");
             return false;
         }
-        // check for online player
         if (profile != null && profile.getPlayer() == null && !condition.isPersistent()) {
             log.debug(conditionID.getPackage(), "Player was offline, condition is not persistent, returning false");
             return false;
         }
-        // and check if it's met or not
         final boolean outcome;
         try {
             outcome = condition.handle(profile);
@@ -454,12 +450,10 @@ public class BetonQuest extends JavaPlugin {
      * @param profile the {@link Profile} of the player who the event is firing for
      */
     public static void event(final Profile profile, final EventID eventID) {
-        // null check
         if (eventID == null) {
             log.debug("Null event ID!");
             return;
         }
-        // get the event
         QuestEvent event = null;
         for (final Entry<EventID, QuestEvent> e : EVENTS.entrySet()) {
             if (e.getKey().equals(eventID)) {
@@ -471,7 +465,6 @@ public class BetonQuest extends JavaPlugin {
             log.warn(eventID.getPackage(), "Event " + eventID + " is not defined");
             return;
         }
-        // fire the event
         if (profile == null) {
             log.debug(eventID.getPackage(), "Firing static event " + eventID);
         } else {
@@ -493,7 +486,6 @@ public class BetonQuest extends JavaPlugin {
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
     public static void newObjective(final Profile profile, final ObjectiveID objectiveID) {
-        // null check
         if (profile == null || objectiveID == null) {
             log.debug(objectiveID.getPackage(), "Null arguments for the objective!");
             return;
@@ -522,7 +514,6 @@ public class BetonQuest extends JavaPlugin {
      * @param instruction data instruction string
      */
     public static void resumeObjective(final Profile profile, final ObjectiveID objectiveID, final String instruction) {
-        // null check
         if (profile == null || objectiveID == null || instruction == null) {
             log.debug("Null arguments for the objective!");
             return;
@@ -662,41 +653,39 @@ public class BetonQuest extends JavaPlugin {
         }
     }
 
+    private void registerLogHandler(final Server server, final Handler handler) {
+        final java.util.logging.Logger serverLogger = server.getLogger().getParent();
+        serverLogger.addHandler(handler);
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            serverLogger.removeHandler(handler);
+            handler.close();
+        }));
+    }
+
     @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.DoNotUseThreads", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @Override
     public void onEnable() {
-        instance = this;
-        log = BetonQuestLogger.create(this);
-
         new JREVersionPrinter();
 
         try {
             config = ConfigurationFile.create(new File(getDataFolder(), "config.yml"), this, "config.yml");
         } catch (InvalidConfigurationException | FileNotFoundException e) {
             log.error("Could not load the config.yml file!", e);
-            return;
         }
 
-        pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
+        final HistoryHandler debugHistoryHandler = HandlerFactory.createHistoryHandler(this, this.getServer().getScheduler(), config, new File(getDataFolder(), "/logs"), InstantSource.system());
+        registerLogHandler(getServer(), debugHistoryHandler);
         adventure = BukkitAudiences.create(this);
-
-        debugHistoryHandler = HandlerFactory.createHistoryHandler(this, this.getServer().getScheduler(), config, new File(getDataFolder(), "/logs"), InstantSource.system());
-
         final AccumulatingReceiverSelector receiverSelector = new AccumulatingReceiverSelector();
-        chatHandler = HandlerFactory.createChatHandler(this, receiverSelector, adventure);
-
-        final java.util.logging.Logger serverLogger = getServer().getLogger().getParent();
-        serverLogger.addHandler(debugHistoryHandler);
-        serverLogger.addHandler(chatHandler);
+        final ChatHandler chatHandler = HandlerFactory.createChatHandler(this, receiverSelector, adventure);
+        registerLogHandler(getServer(), chatHandler);
 
         final String version = getDescription().getVersion();
         log.debug("BetonQuest " + version + " is starting...");
 
-        // load configuration
         Config.setup(this);
         Notify.load();
 
-        // try to connect to database
         final boolean mySQLEnabled = config.getBoolean("mysql.enabled", true);
         if (mySQLEnabled) {
             log.debug("Connecting to MySQL database");
@@ -719,43 +708,30 @@ public class BetonQuest extends JavaPlugin {
             }
         }
 
-        // create tables in the database
         database.createTables(isMySQLUsed);
 
-        // create and start the saver object, which handles correct asynchronous
-        // saving to the database
         saver = new AsyncSaver();
         saver.start();
 
-        // load database backup
         Utils.loadDatabaseFromBackup();
 
-        // instantiating of these important things
         new JoinQuitListener();
 
-        // instantiate journal handler
         new QuestItemHandler();
 
-        // initialize event scheduling
         eventScheduling = new EventScheduling(SCHEDULE_TYPES);
         lastExecutionCache = new LastExecutionCache(getDataFolder());
 
-        // initialize global objectives
         new GlobalObjectives();
 
-        // initialize combat tagging
         new CombatTagger();
 
-        // load colors for conversations
         ConversationColors.loadColors();
 
-        // start mob kill listener
         new MobKillListener();
 
-        // start custom drop listener
         new CustomDropListener();
 
-        // register commands
         new QuestCommand(adventure, new PlayerLogWatcher(receiverSelector), debugHistoryHandler);
         new JournalCommand();
         new BackpackCommand();
@@ -763,7 +739,6 @@ public class BetonQuest extends JavaPlugin {
         new CompassCommand();
         new LangCommand();
 
-        // register conditions
         registerConditions("health", HealthCondition.class);
         registerConditions("permission", PermissionCondition.class);
         registerConditions("experience", ExperienceCondition.class);
@@ -811,7 +786,6 @@ public class BetonQuest extends JavaPlugin {
         registerConditions("inconversation", InConversationCondition.class);
         registerConditions("hunger", HungerCondition.class);
 
-        // register events
         registerEvents("objective", ObjectiveEvent.class);
         registerEvents("command", CommandEvent.class);
         final TagPlayerEventFactory tagPlayerEventFactory = new TagPlayerEventFactory(this, getSaver());
@@ -866,7 +840,6 @@ public class BetonQuest extends JavaPlugin {
         registerEvent("velocity", new VelocityEventFactory(getServer(), getServer().getScheduler(), this));
         registerEvents("hunger", HungerEvent.class);
 
-        // register objectives
         registerObjectives("location", LocationObjective.class);
         registerObjectives("block", BlockObjective.class);
         registerObjectives("mobkill", MobKillObjective.class);
@@ -901,18 +874,15 @@ public class BetonQuest extends JavaPlugin {
             registerObjectives("equip", EquipItemObjective.class);
         }
 
-        // register conversation IO types
         registerConversationIO("simple", SimpleConvIO.class);
         registerConversationIO("tellraw", TellrawConvIO.class);
         registerConversationIO("chest", InventoryConvIO.class);
         registerConversationIO("combined", InventoryConvIO.Combined.class);
         registerConversationIO("slowtellraw", SlowTellrawConvIO.class);
 
-        // register interceptor types
         registerInterceptor("simple", SimpleInterceptor.class);
         registerInterceptor("none", NonInterceptingInterceptor.class);
 
-        // register notify IO types
         registerNotifyIO("suppress", SuppressNotifyIO.class);
         registerNotifyIO("chat", ChatNotifyIO.class);
         registerNotifyIO("advancement", AdvancementNotifyIO.class);
@@ -923,7 +893,6 @@ public class BetonQuest extends JavaPlugin {
         registerNotifyIO("subtitle", SubTitleNotifyIO.class);
         registerNotifyIO("sound", SoundIO.class);
 
-        // register variable types
         registerVariable("condition", ConditionVariable.class);
         registerVariable("tag", TagVariable.class);
         registerVariable("globaltag", GlobalTagVariable.class);
@@ -937,21 +906,16 @@ public class BetonQuest extends JavaPlugin {
         registerVariable("location", LocationVariable.class);
         registerVariable("math", MathVariable.class);
 
-        //register schedule types
         registerScheduleType("realtime-daily", RealtimeDailySchedule.class, new RealtimeDailyScheduler(this, lastExecutionCache));
         registerScheduleType("realtime-cron", RealtimeCronSchedule.class, new RealtimeCronScheduler(this, lastExecutionCache));
 
-        // initialize compatibility with other plugins
         new Compatibility();
 
         // schedule quest data loading on the first tick, so all other
         // plugins can register their types
         Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
-            // Load all events and conditions
             loadData();
-            // Load global tags and points
             globalData = new GlobalData();
-            // load data for all online profiles
             for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
                 final PlayerData playerData = new PlayerData(onlineProfile);
                 playerDataMap.put(onlineProfile, playerData);
@@ -978,7 +942,6 @@ public class BetonQuest extends JavaPlugin {
             log.warn("Could not disable /betonquestanswer logging", e);
         }
 
-        // metrics
         final Map<String, InstructionMetricsSupplier<? extends ID>> metricsSuppliers = new HashMap<>();
         metricsSuppliers.put("conditions", new CompositeInstructionMetricsSupplier<>(CONDITIONS::keySet, CONDITION_TYPES::keySet));
         metricsSuppliers.put("events", new CompositeInstructionMetricsSupplier<>(EVENTS::keySet, eventTypes::keySet));
@@ -986,7 +949,6 @@ public class BetonQuest extends JavaPlugin {
         metricsSuppliers.put("variables", new CompositeInstructionMetricsSupplier<>(VARIABLES::keySet, VARIABLE_TYPES::keySet));
         new BStatsMetrics(this, new Metrics(this, BSTATS_METRICS_ID), metricsSuppliers);
 
-        // updater
         final Version pluginVersion = new Version(this.getDescription().getVersion());
         final File updateFolder = getServer().getUpdateFolderFile();
         final File tempFile = new File(updateFolder, this.getFile().getName() + ".temp");
@@ -998,7 +960,6 @@ public class BetonQuest extends JavaPlugin {
         updater = new Updater(config, pluginVersion, updateSourceHandler, updateDownloader, this,
                 getServer().getScheduler(), InstantSource.system());
 
-        //RPGMenu integration
         rpgMenu = new RPGMenu();
         rpgMenu.onEnable();
 
@@ -1011,7 +972,6 @@ public class BetonQuest extends JavaPlugin {
      */
     @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     public void loadData() {
-        //stop all schedules
         eventScheduling.stopAll();
 
         // save data of all objectives to the players
@@ -1180,7 +1140,7 @@ public class BetonQuest extends JavaPlugin {
             ConversationData.postEnableCheck();
             log.debug(pack, "Everything in package " + packName + " loaded");
         }
-        // done
+
         log.info("There are " + CONDITIONS.size() + " conditions, " + EVENTS.size() + " events, "
                 + OBJECTIVES.size() + " objectives and " + CONVERSATIONS.size() + " conversations loaded from "
                 + Config.getPackages().size() + " packages.");
@@ -1193,7 +1153,6 @@ public class BetonQuest extends JavaPlugin {
 
         rpgMenu.reloadData();
 
-        // fire LoadDataEvent
         Bukkit.getPluginManager().callEvent(new LoadDataEvent());
     }
 
@@ -1279,14 +1238,6 @@ public class BetonQuest extends JavaPlugin {
             rpgMenu.onDisable();
         }
         FreezeEvent.cleanup();
-
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            final java.util.logging.Logger serverLogger = getServer().getLogger().getParent();
-            serverLogger.removeHandler(debugHistoryHandler);
-            serverLogger.removeHandler(chatHandler);
-            debugHistoryHandler.close();
-            chatHandler.close();
-        }));
     }
 
     /**
