@@ -7,12 +7,12 @@ BetonQuest allows the creation of fully custom GUIs using the events and items s
 Nearly everything can be done with these, from simple selection, over warp systems, guis listing open quests to
 information dialogs that display player stats.
 
-<span class="centered">![RPGMenu example](../_media/content/Documentation/Menu/RPGMenuExample.png)</span>
+<span class="centered">![Menu example](../_media/content/Documentation/Menu/RPGMenuExample.png)</span>
 
 Many new features will be added to the menu system in 2.0. You can see the ongoing discussion on what
 features to add on our [GitHub discussion](https://github.com/BetonQuest/BetonQuest/discussions) page.
 
-[:material-play-outline: Try the working example for a quick overview.](../Tutorials/Visualising-Quest-Progress/MenuExample.md){ .md-button }
+[:material-play-outline: Try the working example for a quick overview.](./Menu-Example.md){ .md-button }
 
 ## Creating a menu
 To create a new menu just create a `menus` section in any file.
@@ -28,15 +28,15 @@ menus:
 ## The menu settings
 This section tells you about each setting which has to be set (or can optionally be set) to configure your menu.
 
-* `title`: *(string)*  
+* `title`:   
   Fist of all you have to set the title of your menu.
   It will be displayed in the top left corner of your menu.
   You can use [color codes](https://minecraft.gamepedia.com/Formatting_codes) with `&` instead of `§` to color the
   title. Variables are supported.
   **Example:** `title: '&6&lQuests'`
 
-* `height`: *(number from `1` to `6`)*  
-  This sets how many lines of slots your menu will have.  
+* `height`:   
+  This sets how many lines of slots your menu will have. Minimum 1, Maximum 6. 
   **Example:** `height: 3`
 
 * `bind`: *([Quest Item](Reference.md#items))* ***-optional***   
@@ -45,21 +45,21 @@ This section tells you about each setting which has to be set (or can optionally
   This setting is optional so you can leave it out to bind no item.  
   **Example:** `bind: menu_quests_open`
 
-* `command`: *(string)* ***-optional***  
+* `command`: ***-optional***  
   You can use this to create a new command which opens the menu if it is executed by a player.
   The command should only contain letters, numbers and `-`. Spaces are not allowed.
   **The server must be restarted to unregister command tab completions.**
   **Example:** `command: '/quests'`
 
-* `open_conditions`: *(string)* ***-optional***  
+* `open_conditions`: ***-optional***  
   You can add a list of conditions, each one separated by a `,` which all have to be true to open the menu with a bound item or a bound command. Use `packageName.id` to use conditions from other packages and `!` before the id to invert the condition.   
   **Example:** `open_conditions: 'menu_quests_open_tag,!sneaking'`
 
-* `open_events`: *(string)* ***-optional***  
+* `open_events`: ***-optional***  
   You can add a list of events, each one separated by a `,` which all are run when the menu opens. Use `packageName.id` to use events from other packages.   
   **Example:** `open_events: 'menu_quests_open_addpoints,menu_quests_open_effect_resistance_short'`
 
-* `close_events`: *(string)* ***-optional***  
+* `close_events`: ***-optional***  
   You can add a list of events, each one separated by a `,` which all are run when the menu is closed. Use `packageName.id` to use events from other packages.   
   **Example:** `close_events: 'menu_quests_reopen'`
 

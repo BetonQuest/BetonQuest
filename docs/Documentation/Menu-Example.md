@@ -1,10 +1,19 @@
-# Example menu
+---
+icon: material/menu-open
+---
+# Basic Menu Example
+
+This is an example of a basic menu that displays the progress of two quests.
 
 ![Example](../../_media/content/Tutorials/MenuExample/ResultOverview.png)
 
+## Usage
 You can copy and paste this example into any file in a package. 
 Then reload and execute the command `/q give YOUR_PACKAGE.openMenuItem` to get the item that opens the menu.
+
+Read the related docs in the menu section to learn more about these configuration options.
   
+## Menu Definition
 ``` YAML
 menus:
   questMenu:
@@ -77,7 +86,6 @@ menus:
       filler: 
         text: "a "
         item: filler
-
 
 conditions:
   skeletonQuestDone: "tag skeletonQuestDone"

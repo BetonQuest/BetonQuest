@@ -189,7 +189,6 @@ nav:
               - 'Conversations': Tutorials/Getting-Started/Basics/Conversations.md
               - '    Events': Tutorials/Getting-Started/Basics/Events.md
               - 'Objectives': Tutorials/Getting-Started/Basics/Objectives.md
-          - 'Visual Progress': Tutorials/Visualising-Quest-Progress/MenuExample.md
           - 'Old Tutorial': Tutorials/Getting-Started/Learn-BetonQuest.md
       - 'Frequently Asked Questions':
           - 'General FAQ': Tutorials/Frequently-Asked-Questions.md
@@ -209,6 +208,7 @@ nav:
           - "IO's & Categories": Documentation/Notification-IO's-&-Categories.md
       - 'Menus':
           - 'Menus': Documentation/Menu-Menu.md
+          - 'Menu Example': Documentation/Menu-Example.md
           - 'Elements': Documentation/Menu-Elements.md
           - 'Commands': Documentation/Menu-Commands.md
           - 'Config': Documentation/Menu-Config.md
