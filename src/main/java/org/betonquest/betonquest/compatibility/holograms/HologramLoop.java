@@ -80,6 +80,7 @@ public class HologramLoop {
                 }
 
                 final BetonHologram hologram = HologramIntegrator.createHologram(key, location);
+                hologram.hideAll();
                 HologramRunner.addHologram(new HologramWrapper(
                         checkInterval,
                         hologram,

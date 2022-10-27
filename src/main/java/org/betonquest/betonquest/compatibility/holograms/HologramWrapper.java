@@ -64,10 +64,10 @@ public record HologramWrapper(int interval, BetonHologram hologram, boolean stat
             length += line.getLinesAdded();
         }
         hologram.createLines(0, length);
-        int i = 0;
+        int index = 0;
         for (final AbstractLine line : cleanedLines) {
-            line.setLine(hologram, i);
-            i += line.getLinesAdded();
+            line.setLine(hologram, index);
+            index += line.getLinesAdded();
         }
     }
 
@@ -79,12 +79,12 @@ public record HologramWrapper(int interval, BetonHologram hologram, boolean stat
             return;
         }
 
-        int i = 0;
+        int index = 0;
         for (final AbstractLine line : cleanedLines) {
             if (!line.isStaticText()) {
-                line.setLine(hologram, i);
+                line.setLine(hologram, index);
             }
-            i += line.getLinesAdded();
+            index += line.getLinesAdded();
         }
         hologram.refresh();
     }

@@ -9,6 +9,7 @@ import org.betonquest.betonquest.modules.versioning.VersionComparator;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
+@SuppressWarnings("PMD.CommentRequired")
 public abstract class HologramSubIntegrator {
     private final String pluginName;
     private final Class<? extends BetonHologram> hologramType;
@@ -27,7 +28,7 @@ public abstract class HologramSubIntegrator {
         this.pluginName = pluginName;
         this.hologramType = hologramType;
         this.requiredVersion = requiredVersion;
-        this.qualifiers = qualifiers;
+        this.qualifiers = qualifiers.clone();
     }
 
     /**

@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 
 import java.util.regex.Matcher;
 
+@SuppressWarnings("PMD.CommentRequired")
 @CustomLog
 public class HolographicDisplaysIntegrator extends HologramSubIntegrator {
     public HolographicDisplaysIntegrator() {

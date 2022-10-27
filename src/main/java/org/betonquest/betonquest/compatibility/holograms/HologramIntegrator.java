@@ -20,13 +20,10 @@ import java.util.regex.Pattern;
 @CustomLog
 public class HologramIntegrator implements Integrator {
     /**
-     * Pattern to match a instruction variable in string
+     * Pattern to match an instruction variable in string
      */
     public static final Pattern VARIABLE_VALIDATOR = Pattern.compile("(%|\\$)[^ %\\s]+(%|\\$)");
-    /**
-     * Pattern to match a global variable in string
-     */
-    public static final Pattern STATIC_VARIABLE_VALIDATOR = Pattern.compile("\\$[^ %\\s]+\\$");
+
     private static HologramIntegrator instance;
     private final Map<String, HologramSubIntegrator> integrators;
     private HologramLoop hologramLoop;
