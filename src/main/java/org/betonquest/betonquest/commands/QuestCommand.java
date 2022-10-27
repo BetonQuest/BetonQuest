@@ -291,7 +291,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     break;
                 case "backup":
                     // do a full plugin backup
-                    if (sender instanceof Player || Bukkit.getOnlinePlayers().size() > 0) {
+                    if (sender instanceof Player || !Bukkit.getOnlinePlayers().isEmpty()) {
                         sendMessage(sender, "offline");
                         break;
                     }

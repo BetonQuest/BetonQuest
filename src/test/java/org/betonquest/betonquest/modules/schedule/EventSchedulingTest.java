@@ -3,6 +3,7 @@ package org.betonquest.betonquest.modules.schedule;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.InvalidSubConfigurationException;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.KeyConflictException;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
+import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiSectionConfiguration;
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
@@ -69,7 +70,7 @@ class EventSchedulingTest {
                 .map(YamlConfiguration::loadConfiguration)
                 .map(config -> (ConfigurationSection) config)
                 .toList();
-        final MultiConfiguration multiConfig = new MultiConfiguration(configs);
+        final MultiConfiguration multiConfig = new MultiSectionConfiguration(configs);
         final QuestPackage pack = mock(QuestPackage.class);
         when(pack.getPackagePath()).thenReturn("test-modules-schedule");
         when(pack.getConfig()).thenReturn(multiConfig);

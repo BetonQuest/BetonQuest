@@ -531,11 +531,11 @@ for an in-depth explanation on what contexts are and how to add them to permissi
 
 #### Wand: `wand`
 
-This condition can check wands. The first argument is either `hand`, `inventory` or `lost`. If you choose `lost`, the condition will check if the player has lost a wand. If you choose `hand`, the condition will check if you're holding a wand in your hand. `inventory` will check your whole inventory instead of just the hand. In case of `hand` and `inventory` arguments you can also add optional `name:` argument followed by the name of the wand (as defined in _wands.yml_ in Magic plugin) to check if it's the specific type of the wand. In the case of `inventory` you can specify an amount with `amount` and this will only return true if a player has that amount. You can also use optional `spells:` argument, followed by a list of spells separated with a comma. Each spell in this list can have defined minimal level required, after a colon.
+This condition can check wands. The first argument is either `hand`, `inventory` or `lost`. If you choose `lost`, the condition will check if the player has lost a wand. If you choose `hand`, the condition will check if you're holding a wand in your hand. `inventory` will check your whole inventory instead of just the hand. In case of `hand` and `inventory` arguments you can also add optional `name:` argument followed by the name of the wand (as defined in _wands.yml_ in Magic plugin) to check if it's the specific type of the wand. In the case of `inventory` you can specify an amount with `amount` and this will only return true if a player has that amount. You can also use optional `spells:` argument, followed by a list of spells separated with a comma. Each spell in this list must have a minimal level defined after a colon.
 
 !!! example
     ```YAML
-    wand hand name:master spells:flare,missile:2
+    wand hand name:master spells:flare:3,missile:2
     ```
 
 ## [McMMO](https://www.spigotmc.org/resources/64348/)
@@ -639,6 +639,8 @@ mmocorebreakblock 1 block:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVy #... this is a heads 
 
 #### MMOCore Profession levelup: `mmoprofessionlevelup`
 This objective requires the player to level the given profession to the specified level.
+Use `main` to check for class level ups.
+
 ```YAML linenums="1"
 mmoprofessionlevelup MINING 10
 ```

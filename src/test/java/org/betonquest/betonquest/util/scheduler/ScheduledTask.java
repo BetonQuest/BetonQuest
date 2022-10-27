@@ -11,7 +11,8 @@ import java.util.concurrent.CancellationException;
 /**
  * A scheduled task for the {@link BukkitSchedulerMock}.
  * <p>
- * This class has been taken and modified from https://github.com/MockBukkit/MockBukkit.
+ * This class has been taken and modified from
+ * <a href="https://github.com/MockBukkit/MockBukkit">https://github.com/MockBukkit/MockBukkit</a>.
  */
 public class ScheduledTask implements BukkitTask {
     /**

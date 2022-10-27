@@ -55,8 +55,8 @@ class TokenizerTest {
 
             for (final ProtoVariable variableTemplate : variables) {
                 final Variable var = mock(Variable.class);
-                when(var.getValue(TEST_PLAYER_PROFILE)).thenReturn(variableTemplate.getValue());
-                betonQuest.when(() -> BetonQuest.createVariable(questPackage, "%" + variableTemplate.getKey() + "%")).thenReturn(var);
+                when(var.getValue(TEST_PLAYER_PROFILE)).thenReturn(variableTemplate.value());
+                betonQuest.when(() -> BetonQuest.createVariable(questPackage, "%" + variableTemplate.key() + "%")).thenReturn(var);
             }
 
             executable.execute();
@@ -1147,18 +1147,11 @@ class TokenizerTest {
 
     /**
      * Array-safe container for variable-name to variable-value pairs.
+     *
+     * @param key   The variable key.
+     * @param value The variable value.
      */
-    private static class ProtoVariable {
-
-        /**
-         * The variable key.
-         */
-        private final String key;
-
-        /**
-         * The variable value.
-         */
-        private final String value;
+    private record ProtoVariable(String key, String value) {
 
         /**
          * Create a variable prototype used by {@link #withVariables(Executable, ProtoVariable...)}
@@ -1166,17 +1159,7 @@ class TokenizerTest {
          * @param key   variable name
          * @param value variable content
          */
-        public ProtoVariable(final String key, final String value) {
-            this.key = key;
-            this.value = value;
-        }
-
-        public String getKey() {
-            return key;
-        }
-
-        public String getValue() {
-            return value;
+        private ProtoVariable {
         }
     }
 }

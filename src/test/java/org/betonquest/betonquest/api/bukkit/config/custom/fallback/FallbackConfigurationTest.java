@@ -6,6 +6,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 
 import java.io.File;
 import java.util.Map;
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Tests the {@link FallbackConfiguration} class.
  */
+@Tag("ConfigurationSection")
 @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
 public class FallbackConfigurationTest extends ConfigurationBaseTest {
     /**
@@ -48,7 +50,7 @@ public class FallbackConfigurationTest extends ConfigurationBaseTest {
      * Get a copy of the values in the config, before the test did run.
      */
     @BeforeEach
-    public void beforeEach() {
+    public void savePreviousValues() {
         values = fallback.getValues(true);
         final ConfigurationSection defaultSection = fallback.getDefaultSection();
         valuesDefault = defaultSection == null ? null : defaultSection.getValues(true);
@@ -59,7 +61,7 @@ public class FallbackConfigurationTest extends ConfigurationBaseTest {
      * They should not have been changed.
      */
     @AfterEach
-    public void afterEach() {
+    public void assertNotModified() {
         assertEquals(values, fallback.getValues(true));
         final ConfigurationSection defaultSection = fallback.getDefaultSection();
         assertEquals(valuesDefault, defaultSection == null ? null : defaultSection.getValues(true));

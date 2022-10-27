@@ -172,6 +172,19 @@ Renames the key's value if it matches the given regex.
   newValue: newTest
 ```
 
+#### TYPE_TRANSFORM
+
+Transforms the data type of an existing key into the given Java data type. This will result in a different formatting
+in the YAML file. E.g. strings will be surrounded by quotes, numbers and booleans won't.
+``` YAML title="Syntax"
+- type: TYPE_TRANSFORM
+  key: section.myKey
+  newType: string #(1)!
+```
+
+1. Either `string`, `integer`, `double`, `float` or `boolean`. 
+
+
 #### REMOVE
 
 Removes both sections and keys (including all nested contents).

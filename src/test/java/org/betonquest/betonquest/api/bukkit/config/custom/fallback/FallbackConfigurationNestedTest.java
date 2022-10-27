@@ -4,6 +4,7 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.junit.jupiter.api.Tag;
 
 import java.io.File;
 
@@ -12,8 +13,9 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Tests the {@link FallbackConfiguration} class.
  */
+@Tag("ConfigurationSection")
 @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
-class FallbackConfigurationNestedTest extends FallbackConfigurationTest {
+public class FallbackConfigurationNestedTest extends FallbackConfigurationTest {
     @Override
     public Configuration getConfig() {
         final Configuration original = YamlConfiguration.loadConfiguration(new File("src/test/resources/api/bukkit/fallback/original.yml"));

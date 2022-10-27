@@ -3,6 +3,7 @@ package org.betonquest.betonquest.api.config;
 import lombok.CustomLog;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.KeyConflictException;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
+import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiSectionConfiguration;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.GlobalVariableID;
 import org.betonquest.betonquest.utils.Utils;
@@ -70,7 +71,7 @@ public class QuestPackage {
             configurations.put(configAccessor.getConfig(), filePath);
         }
         try {
-            config = new MultiConfiguration(new ArrayList<>(configurations.keySet()));
+            config = new MultiSectionConfiguration(new ArrayList<>(configurations.keySet()));
         } catch (final KeyConflictException e) {
             throw new InvalidConfigurationException(e.resolvedMessage(configurations), e);
         }

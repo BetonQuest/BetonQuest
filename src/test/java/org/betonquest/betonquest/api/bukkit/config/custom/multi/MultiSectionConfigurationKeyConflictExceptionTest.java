@@ -3,6 +3,7 @@ package org.betonquest.betonquest.api.bukkit.config.custom.multi;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -13,10 +14,11 @@ import static com.ibm.icu.impl.Assert.fail;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This is a test for the {@link MultiConfiguration} and it's thrown {@link KeyConflictException}s.
+ * This is a test for the {@link MultiSectionConfiguration} and it's thrown {@link KeyConflictException}s.
  */
+@Tag("ConfigurationSection")
 @SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage"})
-class MultiConfigurationKeyConflictExceptionTest {
+class MultiSectionConfigurationKeyConflictExceptionTest {
     /**
      * Config with key3 as value
      */
@@ -131,6 +133,6 @@ class MultiConfigurationKeyConflictExceptionTest {
                 fail(e);
             }
         }
-        new MultiConfiguration(new ArrayList<>(configsMap.keySet()));
+        new MultiSectionConfiguration(new ArrayList<>(configsMap.keySet()));
     }
 }

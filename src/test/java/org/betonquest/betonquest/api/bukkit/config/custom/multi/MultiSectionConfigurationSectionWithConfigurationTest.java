@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.bukkit.config.util.ConfigurationSectionBase
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -16,10 +17,11 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This is a test for {@link MultiConfiguration} as a {@link ConfigurationSection}.
+ * This is a test for {@link MultiSectionConfiguration} as a {@link ConfigurationSection}.
  */
+@Tag("ConfigurationSection")
 @SuppressWarnings({"PMD.JUnit5TestShouldBePackagePrivate", "PMD.JUnitAssertionsShouldIncludeMessage"})
-public class MultiConfigurationSectionWithConfigurationTest extends ConfigurationSectionBaseTest {
+public class MultiSectionConfigurationSectionWithConfigurationTest extends ConfigurationSectionBaseTest {
 
     @Override
     public Configuration getConfig() {
@@ -27,7 +29,7 @@ public class MultiConfigurationSectionWithConfigurationTest extends Configuratio
         final Map<ConfigurationSection, String> configs = new HashMap<>();
         configs.put(defaultConfig, "config.yml");
         try {
-            final MultiConfiguration multiConfiguration = new MultiConfiguration(new ArrayList<>(configs.keySet()));
+            final MultiConfiguration multiConfiguration = new MultiSectionConfiguration(new ArrayList<>(configs.keySet()));
             final Configuration defaults = defaultConfig.getDefaults();
             assertNotNull(defaults);
             multiConfiguration.setDefaults(defaults);

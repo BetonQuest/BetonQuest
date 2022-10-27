@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.bukkit.config.util.ConfigurationSectionBase
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * This is a test for the {@link HandleModificationConfigurationSection}.
  */
+@Tag("ConfigurationSection")
 @SuppressWarnings({"PMD.JUnitTestsShouldIncludeAssert", "PMD.JUnitAssertionsShouldIncludeMessage", "PMD.JUnit5TestShouldBePackagePrivate"})
 public class HandleModificationConfigurationSectionTest extends ConfigurationSectionBaseTest {
 
@@ -31,7 +33,7 @@ public class HandleModificationConfigurationSectionTest extends ConfigurationSec
      * Therefore, it must be empty after each test.
      */
     @AfterEach
-    public void afterEach() {
+    public void assertSetterIsEmpty() {
         assertTrue(setter.getSection().getKeys(true).isEmpty());
         final Configuration defaultSection = setter.getSection().getDefaults();
         if (defaultSection != null) {
@@ -53,6 +55,13 @@ public class HandleModificationConfigurationSectionTest extends ConfigurationSec
     public void testSetOnExistingConfigPath() {
         super.testSetOnExistingConfigPath();
         config.set("existingSet", null);
+    }
+
+    @Test
+    @Override
+    public void testSetSectionOverwritingExisting() {
+        super.testSetSectionOverwritingExisting();
+        config.set("childSection", null);
     }
 
     @Test

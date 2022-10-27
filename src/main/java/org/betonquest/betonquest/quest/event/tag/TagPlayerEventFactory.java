@@ -12,10 +12,10 @@ import org.betonquest.betonquest.database.UpdateType;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.quest.event.DatabaseSaverStaticEvent;
 import org.betonquest.betonquest.quest.event.DoNothingStaticEvent;
-import org.betonquest.betonquest.quest.event.OnlinePlayerGroupStaticEventAdapter;
+import org.betonquest.betonquest.quest.event.OnlineProfileGroupStaticEventAdapter;
 import org.betonquest.betonquest.quest.event.SequentialStaticEvent;
+import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
-import org.bukkit.Server;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -38,21 +38,14 @@ public class TagPlayerEventFactory implements EventFactory, StaticEventFactory {
     private final Saver saver;
 
     /**
-     * The server to use for fetching server-data.
-     */
-    private final Server server;
-
-    /**
      * Create the tag player event factory.
      *
      * @param betonQuest BetonQuest instance to pass on
      * @param saver      database saver to use
-     * @param server     server to refer to
      */
-    public TagPlayerEventFactory(final BetonQuest betonQuest, final Saver saver, final Server server) {
+    public TagPlayerEventFactory(final BetonQuest betonQuest, final Saver saver) {
         this.betonQuest = betonQuest;
         this.saver = saver;
-        this.server = server;
     }
 
     @Override
@@ -103,7 +96,7 @@ public class TagPlayerEventFactory implements EventFactory, StaticEventFactory {
     private StaticEvent createStaticDeleteTagEvent(final String... tags) {
         final TagEvent deleteTagEvent = createDeleteTagEvent(tags);
         final List<StaticEvent> staticEvents = new ArrayList<>(tags.length + 1);
-        staticEvents.add(new OnlinePlayerGroupStaticEventAdapter(server::getOnlinePlayers, deleteTagEvent));
+        staticEvents.add(new OnlineProfileGroupStaticEventAdapter(PlayerConverter::getOnlineProfiles, deleteTagEvent));
         for (final String tag : tags) {
             staticEvents.add(new DatabaseSaverStaticEvent(saver, () -> new Saver.Record(UpdateType.REMOVE_ALL_TAGS, tag)));
         }

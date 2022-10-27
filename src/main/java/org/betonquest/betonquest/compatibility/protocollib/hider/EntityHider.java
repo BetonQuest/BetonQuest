@@ -11,6 +11,8 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.papermc.lib.PaperLib;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -109,7 +111,7 @@ public class EntityHider implements Listener {
      * @return TRUE if the entity was visible before this method call, FALSE otherwise.
      */
     @SuppressWarnings("PMD.LinguisticNaming")
-    protected boolean setVisibility(final Player observer, final int entityID, final boolean visible) {
+    protected boolean setVisibility(final OnlineProfile observer, final int entityID, final boolean visible) {
         switch (policy) {
             case BLACKLIST:
                 // Non-membership means they are visible
@@ -131,11 +133,11 @@ public class EntityHider implements Listener {
      */
     // Helper method
     @SuppressWarnings("PMD.LinguisticNaming")
-    protected boolean setMembership(final Player observer, final int entityID, final boolean member) {
+    protected boolean setMembership(final OnlineProfile observer, final int entityID, final boolean member) {
         if (member) {
-            return observerEntityMap.put(observer.getEntityId(), entityID, true) != null;
+            return observerEntityMap.put(observer.getOnlinePlayer().getEntityId(), entityID, true) != null;
         } else {
-            return observerEntityMap.remove(observer.getEntityId(), entityID) != null;
+            return observerEntityMap.remove(observer.getOnlinePlayer().getEntityId(), entityID) != null;
         }
     }
 
@@ -146,8 +148,8 @@ public class EntityHider implements Listener {
      * @param entityID - ID of the entity.
      * @return TRUE if they are present, FALSE otherwise.
      */
-    protected boolean getMembership(final Player observer, final int entityID) {
-        return observerEntityMap.contains(observer.getEntityId(), entityID);
+    protected boolean getMembership(final OnlineProfile observer, final int entityID) {
+        return observerEntityMap.contains(observer.getOnlinePlayer().getEntityId(), entityID);
     }
 
     /**
@@ -157,7 +159,7 @@ public class EntityHider implements Listener {
      * @param entityID -  ID of the entity that we are testing for visibility.
      * @return TRUE if the entity is visible, FALSE otherwise.
      */
-    protected boolean isVisible(final Player observer, final int entityID) {
+    protected boolean isVisible(final OnlineProfile observer, final int entityID) {
         // If we are using a whitelist, presence means visibility - if not, the opposite is the case
         final boolean presence = getMembership(observer, entityID);
 
@@ -233,7 +235,7 @@ public class EntityHider implements Listener {
                     final int index = event.getPacketType().equals(PacketType.Play.Server.PLAYER_COMBAT_KILL) ? 1 : 0;
 
                     final Integer entityID = event.getPacket().getIntegers().readSafely(index);
-                    if (entityID != null && !isVisible(event.getPlayer(), entityID)) {
+                    if (entityID != null && !isVisible(PlayerConverter.getID(event.getPlayer()), entityID)) {
                         event.setCancelled(true);
                     }
                 }
@@ -250,7 +252,7 @@ public class EntityHider implements Listener {
      * @param entity   - the entity to toggle.
      * @return TRUE if the entity was visible before, FALSE otherwise.
      */
-    public final boolean toggleEntity(final Player observer, final Entity entity) {
+    public final boolean toggleEntity(final OnlineProfile observer, final Entity entity) {
         if (isVisible(observer, entity.getEntityId())) {
             return hideEntity(observer, entity);
         } else {
@@ -265,13 +267,13 @@ public class EntityHider implements Listener {
      * @param entity   - the entity to show.
      * @return TRUE if the entity was hidden before, FALSE otherwise.
      */
-    public final boolean showEntity(final Player observer, final Entity entity) {
+    public final boolean showEntity(final OnlineProfile observer, final Entity entity) {
         validate(observer, entity);
         final boolean hiddenBefore = !setVisibility(observer, entity.getEntityId(), true);
 
         // Resend packets
         if (manager != null && hiddenBefore) {
-            manager.updateEntity(entity, Collections.singletonList(observer));
+            manager.updateEntity(entity, Collections.singletonList(observer.getOnlinePlayer()));
         }
         return hiddenBefore;
     }
@@ -284,7 +286,7 @@ public class EntityHider implements Listener {
      * @return TRUE if the entity was previously visible, FALSE otherwise.
      */
     @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
-    public final boolean hideEntity(final Player observer, final Entity entity) {
+    public final boolean hideEntity(final OnlineProfile observer, final Entity entity) {
         validate(observer, entity);
         final boolean visibleBefore = setVisibility(observer, entity.getEntityId(), false);
 
@@ -298,7 +300,7 @@ public class EntityHider implements Listener {
 
             // Make the entity disappear
             try {
-                manager.sendServerPacket(observer, destroyEntity);
+                manager.sendServerPacket(observer.getOnlinePlayer(), destroyEntity);
             } catch (final InvocationTargetException e) {
                 throw new RuntimeException("Cannot send server packet.", e);
             }
@@ -317,14 +319,14 @@ public class EntityHider implements Listener {
      * @param entity   - the entity that may be hidden.
      * @return TRUE if the player may see the entity, FALSE if the entity has been hidden.
      */
-    public final boolean canSee(final Player observer, final Entity entity) {
+    public final boolean canSee(final OnlineProfile observer, final Entity entity) {
         validate(observer, entity);
 
         return isVisible(observer, entity.getEntityId());
     }
 
     // For valdiating the input parameters
-    private void validate(final Player observer, final Entity entity) {
+    private void validate(final OnlineProfile observer, final Entity entity) {
         Preconditions.checkNotNull(observer, "observer cannot be NULL.");
         Preconditions.checkNotNull(entity, "entity cannot be NULL.");
     }
