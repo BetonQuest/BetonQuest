@@ -665,7 +665,9 @@ public class BetonQuest extends JavaPlugin {
     @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.DoNotUseThreads", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @Override
     public void onEnable() {
-        new JREVersionPrinter();
+        final JREVersionPrinter jreVersionPrinter = new JREVersionPrinter();
+        final String jreInfo = jreVersionPrinter.getMessage();
+        log.info(jreInfo);
 
         try {
             config = ConfigurationFile.create(new File(getDataFolder(), "config.yml"), this, "config.yml");
@@ -682,6 +684,7 @@ public class BetonQuest extends JavaPlugin {
 
         final String version = getDescription().getVersion();
         log.debug("BetonQuest " + version + " is starting...");
+        log.debug(jreInfo);
 
         Config.setup(this);
         Notify.load();
