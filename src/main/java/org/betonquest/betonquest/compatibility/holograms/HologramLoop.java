@@ -2,7 +2,6 @@ package org.betonquest.betonquest.compatibility.holograms;
 
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.compatibility.holograms.lines.AbstractLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.ItemLine;
@@ -19,6 +18,7 @@ import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -160,7 +160,7 @@ public class HologramLoop {
     private Optional<TopLine> parseTopLine(final QuestPackage pack, final String line) {
         final Matcher validator = TOP_LINE_VALIDATOR.matcher(line);
         if (!validator.matches()) {
-            LOG.warn("Malformed top hologram line! Expected format: 'top:<point>;<order>;<limit>[;<color>][;<color>][;<color>][;<color>]'.");
+            LOG.warn("Malformed top line in hologram! Expected format: 'top:<point>;<order>;<limit>[;<color>][;<color>][;<color>][;<color>]'.");
             return Optional.empty();
         }
 
@@ -205,17 +205,21 @@ public class HologramLoop {
 
     @NotNull
     private TextLine parseTextLine(final QuestPackage pack, final String line) {
-        boolean valid = true;
-        try {
-            new VariableString(pack, line); //Resolve variables if any
-        } catch (final InstructionParseException e) {
-            LOG.warn("LOG.warn(\"Malformed text hologram line variable! " + e.getMessage());
-            valid = false;
-        }
         final Matcher matcher = HologramIntegrator.VARIABLE_VALIDATOR.matcher(line);
-        return new TextLine(valid && matcher.find()
+        return new TextLine(matcher.find()
                 ? HologramIntegrator.parseVariable(pack, line)
                 : line);
+    }
+
+    /**
+     * Refreshes all HologramRunners for a single player
+     *
+     * @param player The player
+     */
+    public void refresh(final Player player) {
+        for (final HologramRunner runner : HologramRunner.getRunners()) {
+            runner.getHolograms().forEach(wrapper -> wrapper.updateVisibilityForPlayer(player));
+        }
     }
 
     /**

@@ -536,7 +536,7 @@ public class BetonQuest extends JavaPlugin {
      * created, it will return it instead of creating a new one.
      *
      * @param pack        package in which the variable is defined
-     * @param instruction instruction of the variable, including both % characters.
+     * @param instruction instruction of the variable, including both %|$ characters.
      * @return the Variable instance
      * @throws InstructionParseException when the variable parsing fails
      */
@@ -554,7 +554,7 @@ public class BetonQuest extends JavaPlugin {
                 return e.getValue();
             }
         }
-        final String[] parts = instruction.replace("%", "").split("\\.");
+        final String[] parts = instruction.replace("%", "").replace("$", "").split("\\.");
         if (parts.length <= 0) {
             throw new InstructionParseException("Not enough arguments in variable " + variableID);
         }

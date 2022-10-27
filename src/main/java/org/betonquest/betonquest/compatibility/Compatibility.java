@@ -86,7 +86,9 @@ public class Compatibility implements Listener {
         Multiple plugins may provide Hologram hooks, BetonQuest only needs to use one. The same HologramIntegrator
         object is assigned to multiple keys. Specify all HologramSubIntegrators in the HologramIntegrator's constructor.
          */
-        final HologramIntegrator hologramsIntegrator = new HologramIntegrator(new DecentHologramsIntegrator(), new HolographicDisplaysIntegrator());
+        final HologramIntegrator hologramsIntegrator = new HologramIntegrator(
+                new DecentHologramsIntegrator(),
+                new HolographicDisplaysIntegrator());
         hologramsIntegrator.getSubIntegratorNames().forEach(plugin -> integrators.put(plugin, hologramsIntegrator));
 
         // hook into already enabled plugins in case Bukkit messes up the loading order

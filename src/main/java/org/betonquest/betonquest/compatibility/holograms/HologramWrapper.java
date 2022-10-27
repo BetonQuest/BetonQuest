@@ -44,13 +44,20 @@ public record HologramWrapper(int interval, BetonHologram hologram, boolean stat
             return;
         }
 
-        for (final Player player : Bukkit.getOnlinePlayers()) {
-            final Profile profile = PlayerConverter.getID(player);
-            if (BetonQuest.conditions(profile, conditionList)) {
-                hologram.show(player);
-            } else {
-                hologram.hide(player);
-            }
+        Bukkit.getOnlinePlayers().forEach(this::updateVisibilityForPlayer);
+    }
+
+    /**
+     * Update the visibility for a particular player
+     *
+     * @param player The player
+     */
+    public void updateVisibilityForPlayer(final Player player) {
+        final Profile profile = PlayerConverter.getID(player);
+        if (BetonQuest.conditions(profile, conditionList)) {
+            hologram.show(player);
+        } else {
+            hologram.hide(player);
         }
     }
 

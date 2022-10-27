@@ -1,12 +1,17 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
 import lombok.CustomLog;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.citizens.CitizensHologram;
 import org.betonquest.betonquest.exceptions.HookException;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -89,6 +94,8 @@ public class HologramIntegrator implements Integrator {
         if (Compatibility.getHooked().contains("Citizens")) {
             new CitizensHologram();
         }
+
+        new HologramListener();
     }
 
     @Override
@@ -103,6 +110,20 @@ public class HologramIntegrator implements Integrator {
     public void close() {
         if (instance.hologramLoop != null) {
             hologramLoop.cancel();
+        }
+    }
+
+    @SuppressWarnings("PMD.CommentRequired")
+    public class HologramListener implements Listener {
+        public HologramListener() {
+            Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        }
+
+        @EventHandler
+        public void onPlayerJoin(final PlayerJoinEvent event) {
+            if (hologramLoop != null) {
+                hologramLoop.refresh(event.getPlayer());
+            }
         }
     }
 
