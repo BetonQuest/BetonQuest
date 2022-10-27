@@ -516,7 +516,7 @@ The syntax is as follows:
 | betonquest:globaltag:myQuest.someTag       | true  |
 
 Check the [Luck Perms documentation](https://luckperms.net/wiki/Context)
-for an in-depth explanation on what contexts are and how to add them to permission.
+for an in-depth explanation on what contexts are and how to add them to permissions.
 
 ## [Magic](http://dev.bukkit.org/bukkit-plugins/magic/)
 
