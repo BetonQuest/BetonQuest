@@ -3,3 +3,7 @@
   - type: SET
     key: journal.custom_model_data
     value: -1
+  - type: SET
+    key: hook.decentholograms
+    value: true
+    override: false
