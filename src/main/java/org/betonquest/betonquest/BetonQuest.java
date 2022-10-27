@@ -339,7 +339,9 @@ public class BetonQuest extends JavaPlugin {
     /**
      * The BetonQuest plugin constructor.
      */
+    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public BetonQuest() {
+        super();
         instance = this;
         log = BetonQuestLogger.create(this);
         pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
@@ -653,15 +655,6 @@ public class BetonQuest extends JavaPlugin {
         }
     }
 
-    private void registerLogHandler(final Server server, final Handler handler) {
-        final java.util.logging.Logger serverLogger = server.getLogger().getParent();
-        serverLogger.addHandler(handler);
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            serverLogger.removeHandler(handler);
-            handler.close();
-        }));
-    }
-
     @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.DoNotUseThreads", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @Override
     public void onEnable() {
@@ -673,6 +666,7 @@ public class BetonQuest extends JavaPlugin {
             config = ConfigurationFile.create(new File(getDataFolder(), "config.yml"), this, "config.yml");
         } catch (InvalidConfigurationException | FileNotFoundException e) {
             log.error("Could not load the config.yml file!", e);
+            return;
         }
 
         final HistoryHandler debugHistoryHandler = HandlerFactory.createHistoryHandler(this, this.getServer().getScheduler(), config, new File(getDataFolder(), "/logs"), InstantSource.system());
@@ -968,6 +962,16 @@ public class BetonQuest extends JavaPlugin {
 
         PaperLib.suggestPaper(this);
         log.info("BetonQuest successfully enabled!");
+    }
+
+    @SuppressWarnings("PMD.DoNotUseThreads")
+    private void registerLogHandler(final Server server, final Handler handler) {
+        final java.util.logging.Logger serverLogger = server.getLogger().getParent();
+        serverLogger.addHandler(handler);
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            serverLogger.removeHandler(handler);
+            handler.close();
+        }));
     }
 
     /**

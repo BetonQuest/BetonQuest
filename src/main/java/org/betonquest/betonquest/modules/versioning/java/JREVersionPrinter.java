@@ -11,10 +11,26 @@ import java.util.stream.Collectors;
 @CustomLog
 public final class JREVersionPrinter {
 
-    private final String preReleaseInfo;
-    private final String optional;
+    /**
+     * The version of the JRE.
+     */
+    private final String version;
+
+    /**
+     * The build number of the JRE.
+     */
     private final String build;
-    private final String versionStr;
+    /**
+     * Optional information about the version of the JRE, may not be provided.
+     */
+    private final String optional;
+    /**
+     * Information about the preRelease version of the JRE, may not be provided.
+     */
+    private final String preReleaseInfo;
+    /**
+     * The vendor of the JRE.
+     */
     private final String vendor;
 
     /**
@@ -23,7 +39,7 @@ public final class JREVersionPrinter {
     public JREVersionPrinter() {
         final Runtime.Version jreVersion = Runtime.version();
 
-        versionStr = jreVersion.version().stream().map(String::valueOf).collect(Collectors.joining("."));
+        version = jreVersion.version().stream().map(String::valueOf).collect(Collectors.joining("."));
         build = jreVersion.build().map(String::valueOf).orElse("N/A");
         optional = jreVersion.optional().orElse("N/A");
         preReleaseInfo = jreVersion.pre().orElse("N/A");
@@ -38,7 +54,7 @@ public final class JREVersionPrinter {
      * @return the information string
      */
     public String getMessage() {
-        return "Running on JRE " + versionStr + " (build " + build + ", optional " + optional + ", pre-release info " + preReleaseInfo + ") by " + vendor;
+        return "Running on JRE " + version + " (build " + build + ", optional " + optional + ", pre-release info " + preReleaseInfo + ") by " + vendor;
     }
 }
 
