@@ -1237,7 +1237,9 @@ public class BetonQuest extends JavaPlugin {
     @Override
     public void onDisable() {
         //stop all schedules
-        eventScheduling.stopAll();
+        if (eventScheduling != null) {
+            eventScheduling.stopAll();
+        }
         // suspend all conversations
         for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
             final Conversation conv = Conversation.getConversation(onlineProfile);
