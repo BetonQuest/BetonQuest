@@ -67,7 +67,6 @@ public class ConversationData {
             throw new InstructionParseException("The 'quester' name is missing in the conversation file!");
         }
         if (conv.isConfigurationSection("quester")) {
-            //noinspection ConstantConditions
             for (final String lang : conv.getConfigurationSection("quester").getKeys(false)) {
                 quester.put(lang, ChatColor.translateAlternateColorCodes('&', pack.getString("conversations." + name + ".quester." + lang)));
             }
@@ -75,7 +74,6 @@ public class ConversationData {
             quester.put(Config.getLanguage(), ChatColor.translateAlternateColorCodes('&', pack.getString("conversations." + name + ".quester")));
         }
         if (conv.isConfigurationSection("prefix")) {
-            //noinspection ConstantConditions
             for (final String lang : conv.getConfigurationSection("prefix").getKeys(false)) {
                 final String pref = pack.getString("conversations." + name + ".prefix." + lang);
                 if (pref != null && !pref.equals("")) {
@@ -478,7 +476,6 @@ public class ConversationData {
             // Prefix
             if (conv.contains("prefix")) {
                 if (conv.isConfigurationSection("prefix")) {
-                    //noinspection ConstantConditions
                     for (final String lang : conv.getConfigurationSection("prefix").getKeys(false)) {
                         final String pref = pack.subst(conv.getConfigurationSection("prefix").getString(lang));
                         if (pref != null && !pref.equals("")) {
@@ -500,7 +497,6 @@ public class ConversationData {
             // Text
             if (conv.contains("text")) {
                 if (conv.isConfigurationSection("text")) {
-                    //noinspection ConstantConditions
                     for (final String lang : conv.getConfigurationSection("text").getKeys(false)) {
                         text.put(lang, pack.getFormattedString("conversations." + convName + "." + type.getIdentifier() + "." + name + ".text."
                                 + lang));
