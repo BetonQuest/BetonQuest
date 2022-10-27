@@ -79,7 +79,7 @@ public class HologramLoop {
                     }
                 }
 
-                final BetonHologram hologram = HologramIntegrator.createHologram(key, location);
+                final BetonHologram hologram = HologramProvider.getInstance().createHologram(key, location);
                 hologram.hideAll();
                 HologramRunner.addHologram(new HologramWrapper(
                         checkInterval,
@@ -205,9 +205,9 @@ public class HologramLoop {
 
     @NotNull
     private TextLine parseTextLine(final QuestPackage pack, final String line) {
-        final Matcher matcher = HologramIntegrator.VARIABLE_VALIDATOR.matcher(line);
+        final Matcher matcher = HologramProvider.VARIABLE_VALIDATOR.matcher(line);
         return new TextLine(matcher.find()
-                ? HologramIntegrator.parseVariable(pack, line)
+                ? HologramProvider.getInstance().parseVariable(pack, line)
                 : line);
     }
 

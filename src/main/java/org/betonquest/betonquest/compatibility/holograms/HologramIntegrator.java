@@ -1,66 +1,74 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
-import lombok.CustomLog;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.QuestPackage;
-import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
-import org.betonquest.betonquest.compatibility.citizens.CitizensHologram;
 import org.betonquest.betonquest.exceptions.HookException;
+import org.betonquest.betonquest.exceptions.UnsupportedVersionException;
+import org.betonquest.betonquest.modules.versioning.UpdateStrategy;
+import org.betonquest.betonquest.modules.versioning.Version;
+import org.betonquest.betonquest.modules.versioning.VersionComparator;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Pattern;
-
+import org.bukkit.plugin.Plugin;
 
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
-public class HologramIntegrator implements Integrator {
+public abstract class HologramIntegrator implements Integrator {
+    private final String pluginName;
+    private final Class<? extends BetonHologram> hologramType;
+    private final String requiredVersion;
+    private final String[] qualifiers;
+    private HologramProvider instance;
+
     /**
-     * Pattern to match an instruction variable in string
+     * Create a sub-integrator representing a specific implementation of BetonHolograms
+     *
+     * @param pluginName      The plugin to be hooked
+     * @param hologramType    The plugin-specific wrapper implementation of a BetonHologram
+     * @param requiredVersion The minimum required version
+     * @param qualifiers      Version qualifiers
      */
-    public static final Pattern VARIABLE_VALIDATOR = Pattern.compile("(%|\\$)[^ %\\s]+(%|\\$)");
+    public HologramIntegrator(final String pluginName, final Class<? extends BetonHologram> hologramType, final String requiredVersion, final String... qualifiers) {
+        this.pluginName = pluginName;
+        this.hologramType = hologramType;
+        this.requiredVersion = requiredVersion;
+        this.qualifiers = qualifiers.clone();
+    }
 
-    private static HologramIntegrator instance;
-    private final Map<String, HologramSubIntegrator> integrators;
-    private HologramLoop hologramLoop;
-    private HologramSubIntegrator subIntegrator;
-
-    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
-    public HologramIntegrator(final HologramSubIntegrator... integrators) {
-        this.instance = this;
-        this.integrators = new HashMap<>();
-        for (final HologramSubIntegrator integrator : integrators) {
-            this.integrators.put(integrator.getPluginName(), integrator);
+    @Override
+    public void hook(final String pluginName) throws HookException {
+        validateVersion();
+        if (!HologramProvider.initialise(this)) {
+            //Throw an exception here so that the implementation does not set up itself up
+            throw new HookException(null, "Hologram's have already been hooked by another plugin! Please disable or only" +
+                    "use one hologram plugin.");
         }
+        this.instance = HologramProvider.getInstance();
+        this.instance.hook(pluginName);
+    }
+
+    @Override
+    public void reload() {
+        this.instance.reload();
+    }
+
+    @Override
+    public void close() {
+        this.instance.close();
     }
 
     /**
-     * Creates a wrapped hologram using a hooked hologram plugin
+     * Validate the version based on object parameters
      *
-     * @param name     Name of the hologram (Not always applicable)
-     * @param location Location of where the hologram should be spawned
-     * @return The hologram
+     * @throws UnsupportedVersionException If hooked plugin version is invalid
      */
-    public static BetonHologram createHologram(final String name, final Location location) {
-        BetonHologram hologram = null;
-        try {
-            final Constructor<? extends BetonHologram> constructor = instance.subIntegrator.getHologramType().getConstructor(String.class, Location.class);
-            hologram = constructor.newInstance(name + location.toString(), location);
-        } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-            LOG.warn("Hologram called " + name + " could not be created! This is most likely an implementation error! ", e);
-        } catch (final InvocationTargetException e) {
-            LOG.warn("Hologram called " + name + " could not be created due to an exception thrown by it's constructor!", e);
+    private void validateVersion() throws UnsupportedVersionException {
+        final Plugin plugin = Bukkit.getPluginManager().getPlugin(pluginName);
+        if (plugin != null) {
+            final Version version = new Version(plugin.getDescription().getVersion());
+            final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR, qualifiers);
+            if (comparator.isOtherNewerThanCurrent(version, new Version(requiredVersion))) {
+                throw new UnsupportedVersionException(plugin, requiredVersion);
+            }
         }
-        return hologram;
     }
 
     /**
@@ -71,60 +79,21 @@ public class HologramIntegrator implements Integrator {
      * @param text The raw text
      * @return The parsed and formatted full string
      */
-    public static String parseVariable(final QuestPackage pack, final String text) {
-        return instance.subIntegrator.parseVariable(pack, text);
+    public abstract String parseVariable(QuestPackage pack, String text);
+
+    /**
+     * @return The plugin's name
+     */
+    public String getPluginName() {
+        return pluginName;
     }
 
-    public Set<String> getSubIntegratorNames() {
-        return this.integrators.keySet();
+    /**
+     * Get this plugin's specific hologram wrapper implementation
+     *
+     * @return The class ? extending BetonHologram
+     */
+    public Class<? extends BetonHologram> getHologramType() {
+        return hologramType;
     }
-
-    @Override
-    public void hook(final String pluginName) throws HookException {
-        //This method may be called multiple times if multiple Hologram plugins are installed
-        if (subIntegrator != null) {
-            return;
-        }
-        //If not initialised
-        this.subIntegrator = integrators.get(pluginName); //assert that the passed in pluginName is in the integrator
-        this.subIntegrator.init();
-        hologramLoop = new HologramLoop();
-
-        // if Citizens is hooked, start CitizensHologram
-        if (Compatibility.getHooked().contains("Citizens")) {
-            new CitizensHologram();
-        }
-
-        new HologramListener();
-    }
-
-    @Override
-    public void reload() {
-        if (instance.hologramLoop != null) {
-            instance.hologramLoop.cancel();
-            instance.hologramLoop = new HologramLoop();
-        }
-    }
-
-    @Override
-    public void close() {
-        if (instance.hologramLoop != null) {
-            hologramLoop.cancel();
-        }
-    }
-
-    @SuppressWarnings("PMD.CommentRequired")
-    public class HologramListener implements Listener {
-        public HologramListener() {
-            Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-        }
-
-        @EventHandler
-        public void onPlayerJoin(final PlayerJoinEvent event) {
-            if (hologramLoop != null) {
-                hologramLoop.refresh(event.getPlayer());
-            }
-        }
-    }
-
 }

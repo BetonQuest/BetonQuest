@@ -10,7 +10,6 @@ import org.betonquest.betonquest.compatibility.citizens.CitizensIntegrator;
 import org.betonquest.betonquest.compatibility.denizen.DenizenIntegrator;
 import org.betonquest.betonquest.compatibility.effectlib.EffectLibIntegrator;
 import org.betonquest.betonquest.compatibility.heroes.HeroesIntegrator;
-import org.betonquest.betonquest.compatibility.holograms.HologramIntegrator;
 import org.betonquest.betonquest.compatibility.holograms.decentholograms.DecentHologramsIntegrator;
 import org.betonquest.betonquest.compatibility.holograms.holographicdisplays.HolographicDisplaysIntegrator;
 import org.betonquest.betonquest.compatibility.jobsreborn.JobsRebornIntegrator;
@@ -153,7 +152,7 @@ public class Compatibility implements Listener {
         try {
             integrator = integratorClass.getConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-                 NoSuchMethodException e) {
+                NoSuchMethodException e) {
             LOG.warn(null, "Error while integrating " + name + ": " + e.getMessage());
             return;
         }
@@ -212,17 +211,8 @@ public class Compatibility implements Listener {
         register("Jobs", JobsRebornIntegrator.class);
         register("LuckPerms", LuckPermsIntegrator.class);
         register("AureliumSkills", AureliumSkillsIntegrator.class);
-
-        /*
-        Multiple plugins may provide Hologram hooks, BetonQuest only needs to use one. The same HologramIntegrator
-        object is assigned to multiple keys. Specify all HologramSubIntegrators in the HologramIntegrator's constructor.
-         */
-        //todo fix
-        final HologramIntegrator hologramsIntegrator = new HologramIntegrator(
-                new DecentHologramsIntegrator(),
-                new HolographicDisplaysIntegrator());
-        hologramsIntegrator.getSubIntegratorNames().forEach(plugin -> integrators.put(plugin, hologramsIntegrator));
-
+        register("DecentHolograms", DecentHologramsIntegrator.class);
+        register("HolographicDisplays", HolographicDisplaysIntegrator.class);
     }
 
     private void register(final String name, final Class<? extends Integrator> integrator) {

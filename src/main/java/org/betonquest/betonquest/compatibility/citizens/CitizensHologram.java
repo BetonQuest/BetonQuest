@@ -5,9 +5,9 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.QuestPackage;
-import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
-import org.betonquest.betonquest.compatibility.holograms.HologramIntegrator;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
+import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -214,15 +214,15 @@ public class CitizensHologram extends BukkitRunnable {
             if (BetonQuest.conditions(onlineProfile, npcHologram.conditions)) {
                 hologramEnabled = true;
                 if (npcHologram.hologram == null) {
-                    final BetonHologram hologram = HologramIntegrator.createHologram(String.valueOf(npc.getId()), npc.getStoredLocation().add(npcHologram.vector));
+                    final BetonHologram hologram = HologramProvider.getInstance().createHologram(String.valueOf(npc.getId()), npc.getStoredLocation().add(npcHologram.vector));
                     hologram.hideAll();
                     updateHologramForPlayersLines(npcHologram, hologram);
                     npcHologram.hologram = hologram;
                 }
-                npcHologram.hologram.show(player);
+                npcHologram.hologram.show(onlineProfile.getOnlinePlayer());
             } else {
                 if (npcHologram.hologram != null) {
-                    npcHologram.hologram.hide(player);
+                    npcHologram.hologram.hide(onlineProfile.getOnlinePlayer());
                 }
             }
         }
