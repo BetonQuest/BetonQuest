@@ -140,7 +140,7 @@ jobs:
             ]
       - name: Build with Maven. Phase 'verify'
         run: |
-          mvn -P Tests-All -B verify
+          mvn -P Test-All -B verify
           git diff > target/artifacts/changes.patch
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
