@@ -13,7 +13,7 @@ public class BreweryIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final String pluginName) {
+    public void hook() {
         plugin.registerEvents("givebrew", GiveBrewEvent.class);
         plugin.registerEvents("takebrew", TakeBrewEvent.class);
 

@@ -14,7 +14,7 @@ public class SkillAPIIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final String pluginName) {
+    public void hook() {
         plugin.registerConditions("skillapiclass", SkillAPIClassCondition.class);
         plugin.registerConditions("skillapilevel", SkillAPILevelCondition.class);
         new SkillAPIKillListener();

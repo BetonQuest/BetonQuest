@@ -16,7 +16,7 @@ public class McMMOIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final String pluginName) {
+    public void hook() {
         plugin.registerConditions("mcmmolevel", McMMOSkillLevelCondition.class);
         plugin.registerEvents("mcmmoexp", McMMOAddExpEvent.class);
         try {

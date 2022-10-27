@@ -16,7 +16,7 @@ public class JobsRebornIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final String pluginName) {
+    public void hook() {
         //Register conditions with beton
         plugin.registerConditions("nujobs_canlevel", ConditionCanLevel.class);
         plugin.registerConditions("nujobs_hasjob", ConditionHasJob.class);

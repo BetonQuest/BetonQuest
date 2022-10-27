@@ -21,7 +21,7 @@ public class CitizensIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final String pluginName) {
+    public void hook() {
         citizensListener = new CitizensListener();
         new CitizensWalkingListener();
         if (Compatibility.getHooked().contains("EffectLib")) {

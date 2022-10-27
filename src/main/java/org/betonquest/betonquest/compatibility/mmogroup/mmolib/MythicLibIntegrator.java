@@ -13,7 +13,7 @@ public class MythicLibIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final String pluginName) {
+    public void hook() {
         plugin.registerConditions("mmostat", MythicLibStatCondition.class);
     }
 

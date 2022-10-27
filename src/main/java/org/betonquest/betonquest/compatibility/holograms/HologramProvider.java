@@ -89,7 +89,7 @@ public class HologramProvider implements Integrator {
     }
 
     @Override
-    public void hook(final String pluginName) throws HookException {
+    public void hook() throws HookException {
         this.hologramLoop = new HologramLoop();
 
         new HologramListener();

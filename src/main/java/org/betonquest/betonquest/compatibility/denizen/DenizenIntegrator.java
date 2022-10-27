@@ -14,7 +14,7 @@ public class DenizenIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final String pluginName) {
+    public void hook() {
         plugin.registerEvents("script", DenizenTaskScriptEvent.class);
     }
 

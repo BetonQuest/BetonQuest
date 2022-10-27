@@ -161,7 +161,7 @@ public class Compatibility implements Listener {
 
         try {
             integrators.get(name).setValue(integrator);
-            integrator.hook(name);
+            integrator.hook();
         } catch (final HookException exception) {
             final String message = String.format("Could not hook into %s %s! %s",
                     hookedPlugin.getName(),

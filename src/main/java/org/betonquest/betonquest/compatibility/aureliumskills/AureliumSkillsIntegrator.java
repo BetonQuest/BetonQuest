@@ -11,7 +11,7 @@ import org.betonquest.betonquest.exceptions.HookException;
 public class AureliumSkillsIntegrator implements Integrator {
 
     @Override
-    public void hook(final String pluginName) throws HookException {
+    public void hook() throws HookException {
         BetonQuest.getInstance().registerConditions("aureliumskillslevel", AureliumSkillsLevelCondition.class);
         BetonQuest.getInstance().registerConditions("aureliumstatslevel", AureliumSkillsStatsCondition.class);
 

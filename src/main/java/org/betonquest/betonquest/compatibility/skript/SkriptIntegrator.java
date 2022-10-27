@@ -15,7 +15,7 @@ public class SkriptIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final String pluginName) {
+    public void hook() {
         Skript.registerCondition(SkriptConditionBQ.class, "%player% (meet|meets) [betonquest] condition %string%");
         Skript.registerEffect(SkriptEffectBQ.class, "fire [betonquest] event %string% for %player%");
         Skript.registerEvent("betonquest", SkriptEventBQ.class, BQEventSkript.CustomEventForSkript.class,

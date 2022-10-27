@@ -34,7 +34,7 @@ public abstract class HologramIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final String pluginName) throws HookException {
+    public void hook() throws HookException {
         validateVersion();
         if (!HologramProvider.initialise(this)) {
             //Throw an exception here so that the implementation does not set up itself up
@@ -42,7 +42,7 @@ public abstract class HologramIntegrator implements Integrator {
                     "use one hologram plugin.");
         }
         this.instance = HologramProvider.getInstance();
-        this.instance.hook(pluginName);
+        this.instance.hook();
     }
 
     @Override

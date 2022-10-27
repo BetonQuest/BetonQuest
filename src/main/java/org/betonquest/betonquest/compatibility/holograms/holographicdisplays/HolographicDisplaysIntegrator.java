@@ -19,8 +19,8 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
     }
 
     @Override
-    public void hook(final String pluginName) throws HookException {
-        super.hook(pluginName);
+    public void hook() throws HookException {
+        super.hook();
         if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
             LOG.warn("Holograms from HolographicDisplays won't be able to hide from players without ProtocolLib plugin! "
                     + "Install it to use conditioned holograms.");

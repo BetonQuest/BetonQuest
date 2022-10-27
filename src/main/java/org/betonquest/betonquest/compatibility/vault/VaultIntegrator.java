@@ -39,7 +39,7 @@ public class VaultIntegrator implements Integrator {
     }
 
     @Override
-    public void hook(final String pluginName) {
+    public void hook() {
         final RegisteredServiceProvider<Permission> permissionProvider = Bukkit.getServer().getServicesManager()
                 .getRegistration(Permission.class);
         if (permissionProvider != null) {
