@@ -342,11 +342,15 @@ This event simply gives the player specified amount of Heroes experience. The fi
     heroesexp primary 1000
     ```
 
-## [HolographicDisplays](http://dev.bukkit.org/bukkit-plugins/holographic-displays/)
+## Holograms
+### Via [DecentHolograms](https://www.spigotmc.org/resources/96927/) OR [HolographicDisplays](http://dev.bukkit.org/bukkit-plugins/holographic-displays/)
 
 
 ### Hidden Holograms
-Installing this plugin will enable you to create hidden holograms, which will be shown to players only if they meet specified conditions. Note that you need to have [ProtocolLib](https://www.spigotmc.org/resources/1997/) installed in order to hide holograms from certain players.
+Installing either of these plugins will enable you to create hidden holograms, which will be shown to players only if they meet specified conditions.  
+
+**DecentHolograms** requires that [PlaceholderAPI](https://www.spigotmc.org/resources/6245/) is installed in order to use BetonQuest variables in holograms.  
+**HolographicDisplays** requires that [ProtocolLib](https://www.spigotmc.org/resources/1997/) is installed in order to hide holograms from certain players.
 
 In order to create a hologram, you have to add a `holograms` section. Add a node named as your hologram to this section and define `lines`, `conditions` and `location` subnodes. The first one should be a list of texts - these will be the lines of a hologram. Color codes are supported. Second is a list of conditions separated by commas. Third is a location in a standard format, like in `teleport` event. An example of such hologram definition:
 
@@ -357,8 +361,8 @@ holograms:
     - 'item:custom_item'
     - '&2Top questers this month'
     - 'top:completed_quests;desc;10;&a;§6;2;&6'
-    - '&2Your amount: &6{bq:azerothquests:point.completed_quests.amount}'
-    - '&Total amount: &6{bqg:azerothquests:globalpoint.total_completed_quests.amount}'
+    - '&2Your amount: &6%point.completed_quests.amount%'
+    - '&Total amount: &6$azerothquests.globalpoint.total_completed_quests.amount$'
     conditions: has_some_quest, !finished_some_quest    
     location: 100;200;300;world
     # How often to check conditions (optional)
@@ -369,12 +373,14 @@ A line can also represent a floating item. To do so enter the line as 'item:`cus
 
 Holograms created by BetonQuest can rank users by the score of a point. Such scoreboards (not to be confused with the Minecraft vanilla scoreboard) are configured as one line and replaced by multiple lines according to the limit definition. Each scoreboard line comes in the format `#. name - score` The short syntax is 'top:`point`;`order`;`limit`'. The specified `point` must be located inside the package the hologram is declared in. To use a point from another package, put `package.point` instead. The `order` is either 'desc' for descending or 'asc' for ascending. If something other is specified, descending will be used by default. The limit should be a positive number. In the short declaration, the whole line will be white. To color each of the four elements of a line (place, name, dash and score), the definition syntax can be extended to 'top:`point`;`order`;`limit`;`c1`;`c2`;`c3`;`c4`'. The color codes can be prefixed with either `§` or `&`, but do not have to be. If for example `c2` is left blank (two following semicolons), it is treated as an 'f' (color code for white).
 
-Each BetonQuest variable can be displayed on a hologram in a text line. However, the syntax differs slightly since this uses a HolographicDisplays utility. The syntax is '{bq:`package`:`variable`}'. The package name cannot be left empty. The `variable` uses the same definition syntax as in conversations. Variables are displayed for each player individually.
+Each BetonQuest variable can be displayed on a hologram in a text line. These variables use the same definition syntax as in conversations. Individual player variables use the following syntax; '`%package.variable%`' whilst global variables use '`$package.variable$`'. You *must* surround the variable string with **'%'** if it's a player variable or **'$'** if it's a global variable. The `package` part is optional if the hologram is defined in the same package as the variable. If you wish to refer to a variable that is *not* in the same package as the hologram, then you must use a `package` prefix. See [References](Reference.md#top-level-packages) for how to reference across packages, keep in mind that *relative-paths* going upwards do not work here.
 
 !!! warning "Potential lags"
-    The HolographicDisplays documentations warns against using too many individual hologram variables since they are rendered for each player individually. To save resources, there is a variable without individual rendering. To use it replace 'bq' with 'bqg'. However, this means that only player-unrelated variables such as `globalpoint` and `globaltag` can be used. Using them with player specific variables will not necessarily throw errors but can produce weird results.
+    The HolographicDisplays documentations warns against using too many individual hologram variables since they are rendered for each player individually. If you are using HolographicDisplays, to save resources, it is recommended to use only global variables with the **'$'** symbol. This does mean, however that only player-unrelated variables such as `globalpoint` and `globaltag` can be used. Using them with player specific variables will not necessarily throw errors but can produce weird results.
 
-The holograms are updated every 10 seconds. If you want to make it faster, add `hologram_update_interval` option in _config.yml_ file and set it to a number of ticks you want to pass between updates (one second is 20 ticks). Don't set it to 0 or negative numbers, it will result in an error.
+The hologram's conditions are checked every 10 seconds, meaning a hologram will respond to a condition being met or un-met every 10 seconds. If you want to make it faster, add `hologram_update_interval` option in _config.yml_ file and set it to a number of ticks you want to pass between updates (one second is 20 ticks). Don't set it to 0 or negative numbers, it will result in an error.
+
+Keep in mind that each hologram plugin also updates it's holograms on a timer individually, meaning that hologram variables will refresh at a much quicker rate than the above.
 
 ### NPC Holograms
 
