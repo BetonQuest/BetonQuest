@@ -592,7 +592,7 @@ public class BetonQuest extends JavaPlugin {
      */
     public static List<String> resolveVariables(final String text) {
         final List<String> variables = new ArrayList<>();
-        final Matcher matcher = Pattern.compile("%[^ %\\s]+%").matcher(text);
+        final Matcher matcher = Pattern.compile("(%|\\$)[^ %\\s]+(%|\\$)").matcher(text);
         while (matcher.find()) {
             final String variable = matcher.group();
             if (!variables.contains(variable)) {
