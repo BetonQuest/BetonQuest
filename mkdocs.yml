@@ -208,6 +208,7 @@ nav:
           - "IO's & Categories": Documentation/Notification-IO's-&-Categories.md
       - 'Menus':
           - 'Menus': Documentation/Menu-Menu.md
+          - 'Menu Example': Documentation/Menu-Example.md
           - 'Elements': Documentation/Menu-Elements.md
           - 'Commands': Documentation/Menu-Commands.md
           - 'Config': Documentation/Menu-Config.md
