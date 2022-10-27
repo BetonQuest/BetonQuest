@@ -173,6 +173,7 @@ import org.betonquest.betonquest.modules.updater.source.ReleaseUpdateSource;
 import org.betonquest.betonquest.modules.updater.source.implementations.BetonQuestDevelopmentSource;
 import org.betonquest.betonquest.modules.updater.source.implementations.GitHubReleaseSource;
 import org.betonquest.betonquest.modules.versioning.Version;
+import org.betonquest.betonquest.modules.versioning.java.JREVersionPrinter;
 import org.betonquest.betonquest.notify.ActionBarNotifyIO;
 import org.betonquest.betonquest.notify.AdvancementNotifyIO;
 import org.betonquest.betonquest.notify.BossBarNotifyIO;
@@ -224,7 +225,6 @@ import org.betonquest.betonquest.quest.event.legacy.QuestEventFactoryAdapter;
 import org.betonquest.betonquest.quest.event.tag.TagGlobalEventFactory;
 import org.betonquest.betonquest.quest.event.tag.TagPlayerEventFactory;
 import org.betonquest.betonquest.quest.event.velocity.VelocityEventFactory;
-import org.betonquest.betonquest.utils.JREVersionUtils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.variables.ConditionVariable;
@@ -667,6 +667,9 @@ public class BetonQuest extends JavaPlugin {
     public void onEnable() {
         instance = this;
         log = BetonQuestLogger.create(this);
+
+        new JREVersionPrinter();
+
         try {
             config = ConfigurationFile.create(new File(getDataFolder(), "config.yml"), this, "config.yml");
         } catch (InvalidConfigurationException | FileNotFoundException e) {
@@ -688,8 +691,6 @@ public class BetonQuest extends JavaPlugin {
 
         final String version = getDescription().getVersion();
         log.debug("BetonQuest " + version + " is starting...");
-
-        JREVersionUtils.logJREVersion();
 
         // load configuration
         Config.setup(this);

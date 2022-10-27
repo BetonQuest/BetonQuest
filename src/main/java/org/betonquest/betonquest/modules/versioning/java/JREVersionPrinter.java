@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.utils;
+package org.betonquest.betonquest.modules.versioning.java;
 
 import lombok.CustomLog;
 
@@ -9,18 +9,12 @@ import java.util.stream.Collectors;
  * Utility class for getting information about the Java Runtime Environment version.
  */
 @CustomLog
-public final class JREVersionUtils {
+public final class JREVersionPrinter {
 
     /**
-     * This is a utility class. You should not instantiate it.
+     * Prints the Java Runtime Environment version to the console.
      */
-    private JREVersionUtils() {
-    }
-
-    /**
-     * Logs the JRE version to the debug log.
-     */
-    public static void logJREVersion() {
+    public JREVersionPrinter() {
         final Runtime.Version jreVersion = Runtime.version();
 
         final String versionStr = jreVersion.version().stream().map(String::valueOf).collect(Collectors.joining("."));
@@ -31,11 +25,8 @@ public final class JREVersionUtils {
         final Properties properties = System.getProperties();
         final String vendor = properties.getProperty("java.vendor");
 
-        LOG.debug("Logging information about the Java Runtime Environment:");
-        LOG.debug("Main Version: " + versionStr);
-        LOG.debug("Build number: " + build);
-        LOG.debug("Optional: " + optional);
-        LOG.debug("Pre Release Info: " + preReleaseInfo);
-        LOG.debug("Vendor: " + vendor);
+        LOG.info("Running on JRE " + versionStr + " (build " + build + ", optional " + optional + ", pre-release info " + preReleaseInfo + ") by " + vendor);
     }
 }
+
+
