@@ -34,7 +34,7 @@ public final class JREVersionPrinter {
     private final String vendor;
 
     /**
-     * Prints the Java Runtime Environment version to the console.
+     * Prepares the JREVersionPrinter for generating output.
      */
     public JREVersionPrinter() {
         final Runtime.Version jreVersion = Runtime.version();
