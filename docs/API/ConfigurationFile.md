@@ -86,7 +86,7 @@ The format is slightly different from the patch file - `1.2.3-CONFIG-4` in the c
         - `2.0.2` is released. `2.0.1-CONFIG-1` is still the config version of the `2.0.2` release as no changes have been 
            introduced to the config.
     
-    This is how the patch file would change with these updates:
+    This is how the patch file would be changed for each dev build:
     
     === "2.0.0-DEV-1"
         ```YAML title="config.patch.yml"
