@@ -88,7 +88,7 @@ The version format is slightly different from the patch file - `1.2.3-CONFIG-4` 
     
     This is how the patch file would be changed for each dev build:
     
-    === "2.0.0-DEV-1"
+    === "2.0.0-DEV-45"
         ```YAML title="config.patch.yml"
         2.0.0.1: #(1)!
           - type: SET
@@ -97,7 +97,7 @@ The version format is slightly different from the patch file - `1.2.3-CONFIG-4` 
         ```
         
         1. Config Version 1 of 2.0.0.
-    === "2.0.0-DEV-2"
+    === "2.0.0-DEV-132"
         ```YAML title="config.patch.yml"
         2.0.0.2: #(2)!
           - type: SET
