@@ -70,8 +70,8 @@ The versions in the patch file have four digits (`1.2.3.4`). The first three are
 version that this patch updates the config to. The last digit is used to version multiple patches during the
 development phase of a semantic versioning release. 
 
-The config's version is shown inside each config as the value of the `configVersion` key. It is automatically set by the patcher.
-The format is slightly different from the patch file - `1.2.3-CONFIG-4` in the config is `1.2.3.4` in the patch file 
+The config's version is saved in each config as the value of the `configVersion` key. It is automatically set by the patcher.
+The version format is slightly different from the patch file - `1.2.3-CONFIG-4` in the config is `1.2.3.4` in the patch file .
 
 !!! info "Example development cycle:"
     * `2.0.0` is in development...
