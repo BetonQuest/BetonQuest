@@ -305,7 +305,7 @@ public class BetonQuest extends JavaPlugin {
      */
     private final Map<String, QuestEventFactory> eventTypes = new HashMap<>();
     private final ConcurrentHashMap<Profile, PlayerData> playerDataMap = new ConcurrentHashMap<>();
-    private final String pluginTag;
+    private String pluginTag;
     private ConfigurationFile config;
     /**
      * The adventure instance.
@@ -335,17 +335,6 @@ public class BetonQuest extends JavaPlugin {
      * Cache for event schedulers, holding the last execution of an event
      */
     private LastExecutionCache lastExecutionCache;
-
-    /**
-     * The BetonQuest plugin constructor.
-     */
-    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
-    public BetonQuest() {
-        super();
-        instance = this;
-        log = BetonQuestLogger.create(this);
-        pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
-    }
 
     public static boolean conditions(final Profile profile, final Collection<ConditionID> conditionIDs) {
         final ConditionID[] ids = new ConditionID[conditionIDs.size()];
@@ -658,6 +647,10 @@ public class BetonQuest extends JavaPlugin {
     @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.DoNotUseThreads", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @Override
     public void onEnable() {
+        instance = this;
+        log = BetonQuestLogger.create(this);
+        pluginTag = ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + getDescription().getName() + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
+
         final JREVersionPrinter jreVersionPrinter = new JREVersionPrinter();
         final String jreInfo = jreVersionPrinter.getMessage();
         log.info(jreInfo);
