@@ -75,8 +75,8 @@ The version format is slightly different from the patch file - `1.2.3-CONFIG-4` 
 
 !!! info "Example development cycle:"
     * `2.0.0` is in development...
-        - A change to the config is introduced in a dev build :arrow_right: `configVersion: "2.0.0-CONFIG-1"`
-        - A change to the config is introduced in another dev build :arrow_right: `configVersion: "2.0.0-CONFIG-2"`
+        - A change to the config is introduced in 2.0.0-DEV-45 :arrow_right: `configVersion: "2.0.0-CONFIG-1"`
+        - Another change to the config is introduced in 2.0.0-DEV-132 :arrow_right: `configVersion: "2.0.0-CONFIG-2"`
         - `2.0.0` is released. Therefore `2.0.0-CONFIG-2` becomes the final config version of `2.0.0`.
     * `2.0.1` is in development...
         - A change to the config is introduced :arrow_right: `configVersion: "2.0.1-CONFIG-1"`
@@ -136,10 +136,7 @@ The version format is slightly different from the patch file - `1.2.3-CONFIG-4` 
         3. Config Version 1 of 2.0.1.
     === "2.0.2-DEV-1"
         ```YAML title="config.patch.yml"
-        2.0.2.1: #(4)!
-          - type: SET
-            key: hook.excellentholograms
-            value: true
+        # As no changes were made to the config in 2.0.2 no new config version was introduced.
         2.0.1.1: #(3)!
           - type: SET
             key: hook.cmi
@@ -159,7 +156,6 @@ The version format is slightly different from the patch file - `1.2.3-CONFIG-4` 
         2. Config Version 2 of 2.0.0. Multiple config versions per release are needed to auto-update the configs
            of dev builds users.
         3. Config Version 1 of 2.0.1.
-        4. Config Version 1 of 2.0.2.
   
 The patcher will also automatically set the version to the newest available patch version if the `configVersion` is an empty 
 string. Therefore, setting the `configVersion` to an empty string in your config's resource file is recommended. The
