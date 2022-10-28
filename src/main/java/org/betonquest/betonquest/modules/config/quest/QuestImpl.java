@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * This is a basic implementation of {@link Quest}, that manage files of a quest.
  */
-@CustomLog(topic = "Quest")
+@CustomLog
 public abstract class QuestImpl implements Quest {
     /**
      * The merged {@link MultiConfiguration} that represents this {@link Quest}

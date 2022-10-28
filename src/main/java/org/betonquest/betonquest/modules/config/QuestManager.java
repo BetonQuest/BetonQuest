@@ -21,7 +21,7 @@ import java.util.Map;
 /**
  * Class tp loads all {@link QuestTemplate}s and {@link QuestPackage}s from the root directory and apply all templates.
  */
-@CustomLog(topic = "QuestManager")
+@CustomLog
 @SuppressWarnings("PMD.DataClass")
 public class QuestManager {
     /**
@@ -80,7 +80,8 @@ public class QuestManager {
                 try {
                     quest.applyQuestTemplates(templates);
                 } catch (final InvalidConfigurationException e) {
-                    LOG.error("Error while loading '" + packagesDir.getPath() + "'! Reason: " + e.getMessage(), e);
+                    LOG.warn("Error while loading '" + packagesDir.getPath() + "'! Reason: " + e.getMessage(), e);
+                    return;
                 }
                 if (!quest.isDefinedInQuestConfigOrThrow("enabled") || quest.getConfig().getBoolean("enabled", true)) {
                     packages.put(quest.getQuestPath(), quest);
