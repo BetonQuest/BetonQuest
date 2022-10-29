@@ -93,7 +93,7 @@ If it is day it should show true and if it is night, false.
 
 --8<-- "Tutorials/download-solution.md"
     ```
-    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conditions/2-FirstCondition /tutorialQuest
+    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conditions/2-FirstCondition /tutorialQuest overwrite
     ```
 
 ## 4. Integrating conditions into objectives
@@ -129,6 +129,8 @@ This is a powerful feature for creating complex conversations with multiple answ
 For example, the current dialog with the NPC Jack can be repeated infinitely.
 The player will always obtain more food. This is not what we want.    
 
+### 5.1. Making Jack only give food once
+
 To solve this problem we need to create an alternative path for the conversation. It must only be shown if the player
 has obtained the food. 
 To do so, we will create an event to give the player a "tag" and add a condition to the conversation.
@@ -138,7 +140,7 @@ We will start with a tag condition:
 ``` YAML title="conditions.yml" hl_lines="3"
 conditions:
   isNight: "time 6-18"
-  hasRecivedFood: "tag foodReceived" # (1)!
+  hasRecivedFood: "tag foodReceived"
 ```
 
 !!! question "What is a tag?"
@@ -163,7 +165,8 @@ events:
 ```
 
 !!! warning "Tip"
-    If you don't understand why we created this event here, you should go a step back to the events tutorial and read carefully again!
+    If you don't understand why we created the event in the `events` section, you should go back to the events tutorial
+    and read carefully!
 
 We are now ready to for the next step: Adding the condition and event to the conversation.
 
@@ -205,7 +208,8 @@ conversations:
 1. This option defines all possible starting points for the conversation. If the player does not meet the condition
    `hasRecivedFood` they will start at the `firstGreeting` option. If they have the tag, they will start at the
    `alreadyReceivedFood` option.
-2. This condition ensures that the player will only see the `firstGreeting` option if he doesn't have the tag `foodReceived`.
+2. This condition ensures that the conversation will only start at the `firstGreeting` option if the player doesn't
+   have the tag `foodReceived`.
    Remember: `!` inverts the condition so that it is "true" if the player doesn't have the tag.
 3. These events will be executed if the player chooses the `foodAnswer` option. It will give the player the food and the
    tag `foodReceived`.
@@ -215,13 +219,17 @@ conversations:
 As you can see we also added new options to it. Now the NPC will say that you already received the food
 and won't give you more!
 
-We have the same problem with the citytour for the player. He can do it again and again. Try to do it on your own and add
+### 5.2. Limit the town tour as well
+The same problem with the town tour. He can do it again and again. Try to do it on your own and add
 a condition to that specific conversation as well as to the first argument. If your solution is not working, download the
 quest from the link below!
 
-We also have another problem with the blacksmith conversation. We can start te objective over and over again, because
-there is a condition left. We will create the condition in this next step to avoid the player to accept it again and again.
+### 5.3. Making the Blacksmith only trade the armor once
 
+The blacksmith conversation suffers from a similar problem. There is no way to get the reward, the conversation will 
+start over and over again. Let's fix that!
+
+Let's add some dialog for when the player has accepted the quest but not completed it yet:
 ``` YAML title="blacksmith.yml" hl_lines="8-10"
 conversations:
   Blacksmith:
@@ -242,9 +250,9 @@ conversations:
       # Other player_options not shown
 ```
 
-And we also have to add it in the conditions.yml again.
-In this step we can also add a condition to check if the player really have the needed amount of cod in his inventory.
-We can do this with a `item` condition that checks the players inventory.
+As usual, we need to add the condition to the _"conditions.yml"_.
+We will also add a condition to check if the player has the required amount of cod in their inventory.
+We can do so with an `item` condition.
 
 ``` YAML title="conditions.yml" hl_lines="5-6"
 conditions:
@@ -255,8 +263,7 @@ conditions:
   hasFishInInv: "item COD:10"
 ```
 
-Now we created the `hasFishInInv` condition that checks if the players has 10 cod in his inventory. We now need to implement it
-to our conversation in the blacksmith file like so:
+Now lets use the `hasFishInInv` condition to add dialog for finishing the quest:
 
 ``` YAML title="blacksmith.yml" hl_lines="8-24 27-35"
 conversations:
@@ -269,7 +276,7 @@ conversations:
       caughtAllFish:
         text: "Oh let me see! Amazing.. Can I have them?"
         pointer: "agree"
-        conditions: "hasFishInInv" # (1)!
+        conditions: "hasFishInInv"
       giveFishToBlacksmith:
         text: "Thank you very much and here is the promised armour!"
         pointer: "seeYouSoon"
@@ -292,25 +299,38 @@ conversations:
         pointer: "goodbye"
 ```
 
-Try to write your own events in the `giveFishToBlacksmith` conversation for exmample `rewardPlayer` or something.
-Otherwise just download from the link below!
+Now add an event to reward the player on your own. Tip: You must use the
+[`give`](../../../Documentation/Events-List.md#give-items-give) event to hand out items that are defined
+in the `items` section of your "_package.yml_" file.
+
+??? example "SPOILER: Solution"
+    ```YAML title="package.yml" hl_lines="3-6"
+    items:
+      # Other items not shown
+      helmet: "IRON_HELMET"
+      chestplate: "IRON_CHESTPLATE"
+      leggins: "IRON_LEGGINS"
+      boots: "IRON_BOOTS"
+    ```
+    
+    ```YAML title="events.yml" hl_lines="3"
+    events:
+      # Other events not shown
+      rewardPlayer: "give helmet,chestplate,leggins,boots"
+    ``` 
 
 --8<-- "Tutorials/download-solution.md"
        ```
        /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conditions/3-ConditionsInConversations /tutorialQuest overwrite
        ```
-## 6. Optional bonus section - Conditions in Events
+## 6. Conditions in Events
 
-In this section you will learn how to use conditions in events, because sometimes you want to be able to block a specific event from triggering
-because some conditions for the players are not given.
+In this section you will learn how to use conditions in events. This is handy when you want to block an event
+from triggering because some conditions for the players are not met.
 
-!!! warning ""
-    This is not part of the main quest and will not be implemented to it!
+We will temporarily create a tag condition called `receiveNotify` in the "_conditions.yml_" like so:
 
-We will temporarily create a condition called `receiveNotify` in the conditions.yml like so:
-This one will be a simple tag condition.
-
-``` YAML title="conditions.yml" hl_lines="1-2"
+``` YAML title="conditions.yml" hl_lines="2"
 conditions:
   receiveNotify: "tag receiveNotify"
 ```
@@ -318,36 +338,51 @@ conditions:
 We will now create an event to test our recently created condition.
 For testing purpose we will use a notify event:
 
-``` YAML title="events.yml" hl_lines="1-2"
+``` YAML title="events.yml" hl_lines="2"
 events:
-  notifyPlayer: "notify You completed the quest! Congratulations! io:Title sound:firework_rocket conditions:receiveNotify"
+  notifyPlayer: "notify You completed the quest! io:Title sound:firework_rocket conditions:receiveNotify"
 ```
 
-You can see that the notify event has that tag we've created before, so the player is only be able to receive that notify if he has the tag.
-Save and reload this and go ingame to test if it works!
+Let's break it down:
 
-You can simply test it with the give BetonQuest command:
-`/bq event PLAYERNAME tutorialQuest.notifyPlayer`
-Nothing should happen because the player dont have the `receiveNotify` tag.
+  * `notifyPlayer`: The name of the event.
+  * `notify`: The events type - notify events are used to send notifications to the player.
+  * `You completed the quest!`: The message of the notification.
+  * `io:Title`: The message will be displayed as a title.
+  * `sound:firework_rocket`: The message will be accompanied by a firework sound.
+  * `conditions:receiveNotify`: The event will only trigger if the condition `receiveNotify` is met. This argument
+     works for all events.
 
-Type `/bq tag PLAYERNAME add tutorialQuest.receiveNotify` and try the command from above again.
-The player should now get the notify on his screen!
+You can see that the notify event uses a condition. This means the player is only be able to receive the notification
+if they have the tag. 
+Save, reload and execute the command in the game to test how it works!
 
-You can also manually delete a tag with `/bq tag PLAYERNAME del tutorialQuest.receiveNotify`. This is very helpful because
-if you have a lots of quests and tags you dont want to purge a player because he will be mad if he have to do the other quests again.
+You can simply test it with this BetonQuest command:
+```
+/bq event PLAYERNAME tutorialQuest.notifyPlayer
+```
+Nothing should happen because the player doesn't have the `receiveNotify` tag.
 
+Now run and try the command from above again.
+```
+/bq tag PLAYERNAME add tutorialQuest.receiveNotify
+``` 
+You should now see the notification on your screen!
 
---8<-- "Tutorials/download-solution.md"
-    ```
-    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conditions/4-FullExample /tutorialQuest overwrite
-    ```
+You can also manually delete a tag using 
+```
+/bq tag PLAYERNAME del tutorialQuest.receiveNotify`.
+```
+This is very helpful when you are testing your quest and want to reset the player's progress.
+
+If you like, you could add the event to your blacksmith conversation. Make sure to remove the condition from the event's
+instruction. There is no use for it in this quest, but the notify event is a good example to show how to use conditions
+in events. 
 
 ## Summary
 
-You've learned some important facts about conditions and how to use them. You can now give a player a tag
-to prevent him to get more food. More conditions can be found in the [conditions list](../../../Documentation/Conditions-List.md).
-Next you will learn more about conditions and adding them to the whole tutorial quest.
+You've learned what conditions are and how to use them in objectives, conversations and events.
+More conditions can be found in the [conditions list](../../../Documentation/Conditions-List.md).
 ---
-[Extra Conditions Tutorial](./Extra_conditions.md){ .md-button .md-button--primary}
 
-This is the end of the current basic tutorial, you can find more information in the [old tutorial](../Learn-BetonQuest.md).
+
