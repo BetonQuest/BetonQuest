@@ -295,7 +295,7 @@ Location objective contains one property, `location`. It's a string formatted li
 ## Login: `login`
 
 To complete this objective the player simply needs to login to the server.
-If you use `global` this objective will be also completed directly when the player joins the first time.
+If you use `global` this objective will be also completed directly when a new player joins for the first time.
 If you use `persistent` it will be permanent.
 Don't forget that if you use global and persistent you can still remove the objective explicitly.
 
