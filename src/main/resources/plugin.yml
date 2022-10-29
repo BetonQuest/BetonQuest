@@ -5,7 +5,7 @@ description: ${project.description}
 website: ${project.organization.url}
 author: ${project.organization.name}
 authors: [ Wolf2323, SaltyAimbOtter, seyfahni, joblo2213, bundabrg, Co0sh ]
-api-version: 1.17
+api-version: 1.18
 softdepend:
   - Skript
   - MMOLib
