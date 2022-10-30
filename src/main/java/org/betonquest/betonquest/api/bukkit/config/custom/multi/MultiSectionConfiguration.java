@@ -5,21 +5,11 @@ import org.betonquest.betonquest.api.bukkit.config.custom.handle.ConfigurationMo
 import org.betonquest.betonquest.api.bukkit.config.custom.handle.HandleConfigurationOptions;
 import org.betonquest.betonquest.api.bukkit.config.custom.handle.HandleModificationConfiguration;
 import org.betonquest.betonquest.api.bukkit.config.custom.handle.HandleModificationConfigurationSection;
-import org.bukkit.configuration.Configuration;
-import org.bukkit.configuration.ConfigurationOptions;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.MemoryConfiguration;
+import org.bukkit.configuration.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -179,13 +169,8 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
         keyIndex.forEach((key, value) -> {
             final ConfigurationSection config = value.get(0);
             original.set(key, config.get(key));
-            //TODO version switch:
-            // remove the try catch, if minecraft version support below 1.18 is dropped
-            try {
-                original.setComments(key, config.getComments(key));
-                original.setInlineComments(key, config.getInlineComments(key));
-            } catch (final NoSuchMethodError ignored) {
-            }
+            original.setComments(key, config.getComments(key));
+            original.setInlineComments(key, config.getInlineComments(key));
         });
     }
 
