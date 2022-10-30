@@ -263,9 +263,11 @@ conditions:
   hasFishInInv: "item COD:10"
 ```
 
-Now lets use the `hasFishInInv` condition to add dialog for finishing the quest:
+Now lets use the `hasFishInInv` condition to add dialog for finishing the quest and also add an event that
+takes the fish from the player. You can prevent players from cheating if you write the take event and the condition in
+only one conversation.
 
-``` YAML title="blacksmith.yml" hl_lines="8-24 27-35"
+``` YAML title="blacksmith.yml" hl_lines="8-21 24-32"
 conversations:
   Blacksmith:
     quester: "Blacksmith"
@@ -280,6 +282,7 @@ conversations:
       giveFishToBlacksmith:
         text: "Thank you very much and here is the promised armour!"
         pointer: "seeYouSoon"
+        events: "takeFishFromPlayer"
         conditions: "hasFishInInv"
       cheater:
         text: "Heeeyy! Dont try to cheat boy!"
@@ -307,16 +310,16 @@ in the `items` section of your "_package.yml_" file.
     ```YAML title="package.yml" hl_lines="3-6"
     items:
       # Other items not shown
-      helmet: "IRON_HELMET"
-      chestplate: "IRON_CHESTPLATE"
-      leggins: "IRON_LEGGINS"
-      boots: "IRON_BOOTS"
+      leatherHelmet: "LEATHER_HELMET"
+      leatherChestplate: "LEATHER_CHESTPLATE"
+      leatherLeggings: "LEATHER_LEGGINGS"
+      leatherBoots: "LEATHER_BOOTS"
     ```
     
     ```YAML title="events.yml" hl_lines="3"
     events:
       # Other events not shown
-      rewardPlayer: "give helmet,chestplate,leggins,boots"
+      rewardPlayer: "give leatherBoots,leatherChestplate,leatherLeggings,leatherHelmet"
     ``` 
 
 --8<-- "Tutorials/download-solution.md"
