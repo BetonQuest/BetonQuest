@@ -28,7 +28,7 @@ public class ObjectiveEvent extends QuestEvent {
     /**
      * The BetonQuest instance.
      */
-    public static final BetonQuest BETONQUEST = BetonQuest.getInstance();
+    public static BetonQuest BETONQUEST;
     /**
      * All objectives affected by this event.
      */
@@ -48,6 +48,8 @@ public class ObjectiveEvent extends QuestEvent {
     public ObjectiveEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         staticness = true;
+        BETONQUEST = BetonQuest.getInstance();
+
         action = instruction.next().toLowerCase(Locale.ROOT);
         if (!Arrays.asList(new String[]{"start", "add", "delete", "remove", "complete", "finish"}).contains(action)) {
             throw new InstructionParseException("Unknown action: " + action);
