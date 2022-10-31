@@ -5,6 +5,7 @@
 
   <properties>
     <version>2.0.0</version>
+    <minecraft.api.version>1.18</minecraft.api.version>
     <maven-version>${version}-DEV-UNOFFICIAL</maven-version>
     <current-date>${maven.build.timestamp}</current-date>
     <maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
