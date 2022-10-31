@@ -234,7 +234,7 @@ setupPublish() {
   echo 'Setup'
 
   echo '    Updating pom.xml file...'
-  mvn versions:set-property -DgenerateBackupPoms=false -Dproperty=version -DnewVersion="$NEW_VERSION" 2>&1 > /dev/null | sed 's/^/        /'
+  mvn versions:set-property -DgenerateBackupPoms=false -Dproperty=betonquest.version.base -DnewVersion="$NEW_VERSION" 2>&1 > /dev/null | sed 's/^/        /'
 
   echo '    Updating CHANGELOG.md file...'
   NEW_CHANGELOG="## \[Unreleased\] - \${maven.build.timestamp}\n### Added\n### Changed\n### Deprecated\n### Removed\n### Fixed\n### Security\n"
