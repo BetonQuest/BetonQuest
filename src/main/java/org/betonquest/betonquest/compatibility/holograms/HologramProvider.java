@@ -112,7 +112,7 @@ public class HologramProvider implements Integrator {
     @Override
     public void close() {
         if (instance.hologramLoop != null) {
-            hologramLoop.cancel();
+            instance.hologramLoop.cancel();
         }
     }
 
@@ -124,8 +124,8 @@ public class HologramProvider implements Integrator {
 
         @EventHandler
         public void onPlayerJoin(final PlayerJoinEvent event) {
-            if (hologramLoop != null) {
-                hologramLoop.refresh(event.getPlayer());
+            if (instance.hologramLoop != null) {
+                instance.hologramLoop.refresh(event.getPlayer());
             }
         }
     }

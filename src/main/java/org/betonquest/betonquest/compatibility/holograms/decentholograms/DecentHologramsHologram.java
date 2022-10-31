@@ -3,7 +3,6 @@ package org.betonquest.betonquest.compatibility.holograms.decentholograms;
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
 import eu.decentsoftware.holograms.api.holograms.HologramPage;
-import lombok.CustomLog;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -11,22 +10,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
-@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods"})
-@CustomLog
 public class DecentHologramsHologram implements BetonHologram {
     private final Hologram hologram;
 
-    public DecentHologramsHologram(final String name, final Location location) {
-        String hologramName = name;
-        if (DHAPI.getHologram(hologramName) != null) {
-            //In the rare case that a hologram is created with a name that already exists...
-            hologramName += UUID.randomUUID();
-        }
-        hologram = DHAPI.createHologram(hologramName, location);
-        hologram.enable();
+    public DecentHologramsHologram(final Hologram hologram) {
+        this.hologram = hologram;
     }
 
     @Override
@@ -57,16 +47,6 @@ public class DecentHologramsHologram implements BetonHologram {
                 DHAPI.addHologramLine(hologram, "");
             }
         }
-    }
-
-    @Override
-    public void insertLine(final int index, final ItemStack item) {
-        DHAPI.insertHologramLine(hologram, index, item);
-    }
-
-    @Override
-    public void insertLine(final int index, final String text) {
-        DHAPI.insertHologramLine(hologram, index, text);
     }
 
     @Override
@@ -128,6 +108,7 @@ public class DecentHologramsHologram implements BetonHologram {
 
     @Override
     public void refresh() {
+        //TODO Check if this is still needed
         hologram.updateAll();
     }
 }

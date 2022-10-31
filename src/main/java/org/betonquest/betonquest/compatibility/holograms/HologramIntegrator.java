@@ -8,6 +8,7 @@ import org.betonquest.betonquest.modules.versioning.UpdateStrategy;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.modules.versioning.VersionComparator;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
 @SuppressWarnings("PMD.CommentRequired")
@@ -32,6 +33,8 @@ public abstract class HologramIntegrator implements Integrator {
         this.requiredVersion = requiredVersion;
         this.qualifiers = qualifiers.clone();
     }
+
+    public abstract BetonHologram createHologram(final String name, final Location location);
 
     @Override
     public void hook() throws HookException {

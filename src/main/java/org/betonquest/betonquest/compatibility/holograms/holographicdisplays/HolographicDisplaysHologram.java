@@ -1,29 +1,19 @@
 package org.betonquest.betonquest.compatibility.holograms.holographicdisplays;
 
-
-import lombok.CustomLog;
-import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.hologram.HologramLines;
-import me.filoghost.holographicdisplays.api.hologram.PlaceholderSetting;
 import me.filoghost.holographicdisplays.api.hologram.VisibilitySettings;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
-@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods"})
-@CustomLog
 public class HolographicDisplaysHologram implements BetonHologram {
     private final Hologram hologram;
 
-    @SuppressWarnings({"PMD.UnusedFormalParameter"})
-    //This parameter is necessary due to reflection.
-    public HolographicDisplaysHologram(final String name, final Location location) {
-        final HolographicDisplaysAPI api = HolographicDisplaysAPI.get(BetonQuest.getInstance());
-        hologram = api.createHologram(location);
-        hologram.setPlaceholderSetting(PlaceholderSetting.ENABLE_ALL);
+    public HolographicDisplaysHologram(@NotNull final Hologram hologram) {
+        this.hologram = hologram;
     }
 
     @Override
@@ -58,16 +48,6 @@ public class HolographicDisplaysHologram implements BetonHologram {
                 lines.appendText("");
             }
         }
-    }
-
-    @Override
-    public void insertLine(final int index, final ItemStack item) {
-        hologram.getLines().insertItem(index, item);
-    }
-
-    @Override
-    public void insertLine(final int index, final String text) {
-        hologram.getLines().insertText(index, text);
     }
 
     @Override

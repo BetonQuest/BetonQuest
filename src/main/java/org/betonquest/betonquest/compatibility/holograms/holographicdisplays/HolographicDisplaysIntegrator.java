@@ -2,12 +2,16 @@ package org.betonquest.betonquest.compatibility.holograms.holographicdisplays;
 
 import lombok.CustomLog;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
+import me.filoghost.holographicdisplays.api.hologram.Hologram;
+import me.filoghost.holographicdisplays.api.hologram.PlaceholderSetting;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.betonquest.betonquest.compatibility.holograms.HologramIntegrator;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
 import org.betonquest.betonquest.exceptions.HookException;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 
 import java.util.regex.Matcher;
 
@@ -16,6 +20,13 @@ import java.util.regex.Matcher;
 public class HolographicDisplaysIntegrator extends HologramIntegrator {
     public HolographicDisplaysIntegrator() {
         super("HolographicDisplays", HolographicDisplaysHologram.class, "3.0.0-SNAPSHOT-b000", "SNAPSHOT-b");
+    }
+
+    @Override
+    public BetonHologram createHologram(final String name, final Location location) {
+        final Hologram hologram = HolographicDisplaysAPI.get(BetonQuest.getInstance()).createHologram(location);
+        hologram.setPlaceholderSetting(PlaceholderSetting.ENABLE_ALL);
+        return new HolographicDisplaysHologram(hologram);
     }
 
     @Override

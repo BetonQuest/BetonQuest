@@ -1,12 +1,17 @@
 package org.betonquest.betonquest.compatibility.holograms.decentholograms;
 
+import eu.decentsoftware.holograms.api.DHAPI;
+import eu.decentsoftware.holograms.api.holograms.Hologram;
 import lombok.CustomLog;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.betonquest.betonquest.compatibility.holograms.HologramIntegrator;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
 import org.betonquest.betonquest.exceptions.HookException;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 
+import java.util.UUID;
 import java.util.regex.Matcher;
 
 @SuppressWarnings("PMD.CommentRequired")
@@ -15,6 +20,17 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
 
     public DecentHologramsIntegrator() {
         super("DecentHolograms", DecentHologramsHologram.class, "2.7.3");
+    }
+
+    @Override
+    public BetonHologram createHologram(final String name, final Location location) {
+        String hologramName = name;
+        if (DHAPI.getHologram(hologramName) != null) {
+            hologramName = name + UUID.randomUUID();
+        }
+        final Hologram hologram = DHAPI.createHologram(hologramName, location);
+        hologram.enable();
+        return new DecentHologramsHologram(hologram);
     }
 
     @Override
@@ -28,7 +44,7 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
 
     @Override
     public String parseVariable(final QuestPackage pack, final String text) {
-        /* We must convert a normal BetonQuest variable such as "%pack:objective.kills.left% to
+        /* We must convert a normal BetonQuest variable such as "%pack.objective.kills.left% to
            %betonquest_pack:objective.kills.left% which is parsed by HolographicDisplays as a custom API placeholder. */
         final Matcher matcher = HologramProvider.VARIABLE_VALIDATOR.matcher(text);
         return matcher.replaceAll(match -> {
