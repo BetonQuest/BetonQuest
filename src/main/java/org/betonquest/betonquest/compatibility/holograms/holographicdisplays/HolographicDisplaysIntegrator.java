@@ -5,11 +5,14 @@ import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.hologram.PlaceholderSetting;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.betonquest.betonquest.compatibility.holograms.HologramIntegrator;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
 import org.betonquest.betonquest.exceptions.HookException;
+import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -47,16 +50,18 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
            {bq:pack:objective.kills.left} which is parsed by HolographicDisplays as a custom API placeholder. */
         final Matcher matcher = HologramProvider.VARIABLE_VALIDATOR.matcher(text);
         return matcher.replaceAll(match -> {
-            String variable = match.group();
-            final String placeholder = variable.startsWith("$") && variable.endsWith("$") ? "{bqg:" : "{bq:";
-            final String[] split = variable.split(":");
-            final String packName = split.length > 1
-                    ? split[0].substring(1)
-                    : pack.getPackagePath();
-            variable = split.length > 1
-                    ? variable.substring(packName.length() + 2)
-                    : variable;
-            return placeholder + packName + ":" + variable.replaceAll("(%|\\$)", "") + "}";
+            final String group = match.group();
+            try {
+                final Variable variable = BetonQuest.createVariable(pack, text);
+                if (variable != null) {
+                    final Instruction instruction = variable.getInstruction();
+                    final String prefix = variable.isStaticness() ? "{bqg" : "{bq";
+                    return prefix + instruction.getPackage() + ":" + instruction.getInstruction() + "}";
+                }
+            } catch (final InstructionParseException exception) {
+                LOG.warn("Could not create variable '" + group + "' variable: " + exception.getMessage(), exception);
+            }
+            return group;
         });
     }
 }
