@@ -6,6 +6,7 @@
 2.0.0.2:
   - type: SET
     key: hook.decentholograms
+    configVersion: "2.0.0-CONFIG-1"
     value: true
     override: false
   - type: SET
