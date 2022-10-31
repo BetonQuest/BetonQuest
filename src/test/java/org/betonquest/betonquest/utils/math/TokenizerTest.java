@@ -50,7 +50,6 @@ class TokenizerTest {
              MockedStatic<BetonQuest> betonQuest = mockStatic(BetonQuest.class)) {
             final QuestPackage questPackage = mock(QuestPackage.class);
             final Map<String, QuestPackage> packageMap = Collections.singletonMap(TEST_PACKAGE, questPackage);
-            //noinspection ResultOfMethodCallIgnored
             config.when(Config::getPackages).thenReturn(packageMap);
 
             for (final ProtoVariable variableTemplate : variables) {
@@ -66,7 +65,6 @@ class TokenizerTest {
     @Test
     void testTokenizeNull() {
         final Tokenizer tokenizer = new Tokenizer(TEST_PACKAGE);
-        //noinspection ConstantConditions
         assertThrows(NullPointerException.class, () -> tokenizer.tokenize(null), "tokenizing null should fail (NPE)");
     }
 
