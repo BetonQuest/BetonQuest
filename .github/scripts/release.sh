@@ -237,8 +237,8 @@ setupPublish() {
   mvn versions:set-property -DgenerateBackupPoms=false -Dproperty=version -DnewVersion="$NEW_VERSION" 2>&1 > /dev/null | sed 's/^/        /'
 
   echo '    Updating CHANGELOG.md file...'
-  NEW_CHANGELOG="## \[Unreleased\] - \${current-date}\n### Added\n### Changed\n### Deprecated\n### Removed\n### Fixed\n### Security\n"
-  sed -i "s~## \[Unreleased\] - \${current-date}~$NEW_CHANGELOG\n## \[$CURRENT_VERSION\] - $SETUP_TIME~g" CHANGELOG.md 2>&1 > /dev/null | sed 's/^/        /'
+  NEW_CHANGELOG="## \[Unreleased\] - \${maven.build.timestamp}\n### Added\n### Changed\n### Deprecated\n### Removed\n### Fixed\n### Security\n"
+  sed -i "s~## \[Unreleased\] - \${maven.build.timestamp}~$NEW_CHANGELOG\n## \[$CURRENT_VERSION\] - $SETUP_TIME~g" CHANGELOG.md 2>&1 > /dev/null | sed 's/^/        /'
 
   echo '    Committing changed files...'
   git commit --all --message="Version bump to $NEW_VERSION" 2>&1 > /dev/null | sed 's/^/        /'

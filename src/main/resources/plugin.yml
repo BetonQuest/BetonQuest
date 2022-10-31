@@ -1,6 +1,6 @@
 name: ${project.name}
 main: ${project.groupId}.${project.artifactId}.${project.name}
-version: ${maven-version}
+version: ${betonquest.version.qualifiers}
 description: ${project.description}
 website: ${project.organization.url}
 author: ${project.organization.name}

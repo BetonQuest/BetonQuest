@@ -123,7 +123,7 @@ jobs:
           sed -i "s~## \[Unreleased\]~## \[${VERSION}\]~g" ./CHANGELOG.md
       - name: Set plugin version
         run: |
-          sed -i "s~\${maven-version}~${VERSION}~g" ./src/main/resources/plugin.yml
+          sed -i "s~\${betonquest.version.qualifiers}~${VERSION}~g" ./src/main/resources/plugin.yml
       - name: Activate lf line ending check in editorconfig
         run: |
           sed -i "s~#end_of_line = ~end_of_line = ~g" ./.editorconfig
@@ -206,7 +206,7 @@ jobs:
         run: |
           sed -i "s~## \[Unreleased\]~## \[${VERSION}\]~g" ./CHANGELOG.md
           DATE=$(date +%Y-%m-%d)
-          sed -i "s~\${current-date}~$DATE~g" ./CHANGELOG.md
+          sed -i "s~\${maven.build.timestamp}~$DATE~g" ./CHANGELOG.md
           echo "$(cat ./CHANGELOG.md)" >> './docs/Documentation/CHANGELOG.md'
       - name: Set mkdocs.yml version
         run: |
@@ -405,7 +405,7 @@ jobs:
         run: |
           sed -i "s~## \[Unreleased\]~## \[${VERSION}\]~g" ./CHANGELOG.md
           DATE=$(date +%Y-%m-%d)
-          sed -i "s~\${current-date}~$DATE~g" ./CHANGELOG.md
+          sed -i "s~\${maven.build.timestamp}~$DATE~g" ./CHANGELOG.md
       - name: Create release
         uses: docker://antonyurchenko/git-release:latest
         env:
