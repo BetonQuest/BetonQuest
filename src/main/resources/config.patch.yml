@@ -3,7 +3,12 @@
   - type: SET
     key: journal.custom_model_data
     value: -1
+2.0.0.2:
   - type: SET
     key: hook.decentholograms
     value: true
+    override: false
+  - type: SET
+    key: default_hologram
+    value: DecentHolograms,HolographicDisplays
     override: false

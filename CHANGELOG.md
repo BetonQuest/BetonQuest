@@ -18,7 +18,6 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - added AureliumStatsLevelCondition
     - added AureliumSkillsLevelExperienceEvent
 - add DecentHolograms Compatibility
-    - All existing users must add decentholograms: 'true' to their config.yml's hook section.
     - requires DecentHolograms version 2.7.3 or newer for conditioned holograms.
     - holograms from DecentHolograms are a direct alternative to HolographicDisplays
 - add LuckPerms context integration for tags
@@ -32,6 +31,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - allow access to objective variable properties from other packages
 - allow point variables from other packages
 - API method in objective API that starts and stops it per player
+- config option `default_hologram` to set hologram priority if multiple hologram plugins are loaded at once
 - config option `journal.show_in_backpack` to remove the journal from the backpack
 - config option `journal.lock_default_journal_slot` to lock the journal to the `default_journal_slot`
 - config option `journal.give_on_respawn` to add the journal to the inventory after the player respawns
