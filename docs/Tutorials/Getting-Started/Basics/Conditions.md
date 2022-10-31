@@ -284,9 +284,6 @@ conversations:
         pointer: "seeYouSoon"
         events: "takeFishFromPlayer"
         conditions: "hasFishInInv"
-      cheater:
-        text: "Heeeyy! Dont try to cheat boy!"
-        conditions: "!hasFishInInv"
       goodbye:
         text: "It was nice to meet you! I hope we will see us soon again. Goodbye"
     player_options:
@@ -296,7 +293,7 @@ conversations:
         pointer: "maybeLater"
       agree:
         text: "Of course! Take em."
-        pointer: "giveFishToBlacksmith,cheater"
+        pointer: "giveFishToBlacksmith"
       seeYouSoon:
         text: "That was a pleasure! See you soon..."
         pointer: "goodbye"
