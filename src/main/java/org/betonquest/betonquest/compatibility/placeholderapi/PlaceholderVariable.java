@@ -18,7 +18,7 @@ public class PlaceholderVariable extends Variable {
 
     @Override
     public String getValue(final Profile profile) {
-        return PlaceholderAPI.setPlaceholders(profile.getOfflinePlayer(), '%' + placeholder + '%');
+        return PlaceholderAPI.setPlaceholders(profile.getOnlineProfile().getOnlinePlayer(), '%' + placeholder + '%');
     }
 
 }
