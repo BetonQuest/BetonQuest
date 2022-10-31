@@ -49,16 +49,20 @@ tbody td:nth-child(1), th:nth-child(1) {
   left: 0;
   background-color: var(--md-default-bg-color) !important;
 }
+tbody > tr:nth-child(1) > td:not(:first-child) {
+  font-weight: bold;
+}
+
 /* compare table - second colum - highlight BQ */
 tbody td:nth-child(2) {
   background-color: rgba(0, 0, 0, 0.2);
 }
-/* compare table - 12 row - set background and force it for colum 1 */
-tbody tr:nth-child(12), tr:nth-child(12) td:nth-child(1) {
+/* compare table - 13 row - set background and force it for colum 1 */
+tbody tr:nth-child(13), tr:nth-child(13) td:nth-child(1) {
   background-color: var(--md-primary-fg-color) !important;
 }
-/* compare table - 12 row - format heading */
-tbody tr:nth-child(12) p {
+/* compare table - 13 row - format heading */
+tbody tr:nth-child(13) p {
   font-size: medium;
   font-weight: 700;
   text-decoration: underline;
@@ -130,8 +134,11 @@ Sometimes, user reviews describe a plugin better than the author can:
 
 ## BetonQuest Alternatives
 
+<script defer type="text/javascript" src="./_webCode/js/tableRating.js"></script>
+
 | <p>Feature</p>           |  [BetonQuest][L1]  | [Quests][L2]<span> PikaMug</span> | [Quests][L3]<span> LMBishop</span> |  [NotQuests][L4]   |     [BeautyQuests][L5]     |  [MangoQuest][L6]  |     [QuestCreator][L7]     |       [ProQuest][L8]       |
 |--------------------------|:------------------:|:---------------------------------:|:----------------------------------:|:------------------:|:--------------------------:|:------------------:|:--------------------------:|:--------------------------:|
+| Average Spigot Rating    |     Loading...     |            Loading...             |             Loading...             |     Loading...     |         Loading...         |     Loading...     |         Loading...         |         Loading...         |
 | Free                     | :white_check_mark: |        :white_check_mark:         |         :white_check_mark:         | :white_check_mark: |     :white_check_mark:     | :white_check_mark: |         :x:  (20$)         |       :x:  (19.99$)        |
 | OpenSource               | :white_check_mark: |        :white_check_mark:         |         :white_check_mark:         | :white_check_mark: |     :white_check_mark:     | :white_check_mark: |            :x:             |            :x:             |
 | API                      | :white_check_mark: |        :white_check_mark:         |         :white_check_mark:         | :white_check_mark: |     :white_check_mark:     |        :x:         | :material-check-bold: [^1] | :material-check-bold: [^1] |
