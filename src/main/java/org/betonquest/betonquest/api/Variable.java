@@ -12,12 +12,19 @@ abstract public class Variable {
 
     /**
      * Stores instruction string for the condition.
+     * <p>
+     * -- GETTER --
+     * Get the instruction object for this variable
+     *
+     * @return The instruction
      */
+    @Getter
     protected Instruction instruction;
 
     /**
      * A variable marked as static can be executed even if the profile in the
      * {@link #getValue(Profile)} method is null
+     * <p>
      * -- GETTER --
      * Get the staticness of a variable
      *

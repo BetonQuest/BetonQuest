@@ -551,14 +551,11 @@ public class BetonQuest extends JavaPlugin {
                 return e.getValue();
             }
         }
-        final String[] parts = instruction.replace("%", "").split("\\.");
-        if (parts.length <= 0) {
-            throw new InstructionParseException("Not enough arguments in variable " + variableID);
-        }
-        final Class<? extends Variable> variableClass = VARIABLE_TYPES.get(parts[0]);
+        final Instruction instructionVar = variableID.generateInstruction();
+        final Class<? extends Variable> variableClass = VARIABLE_TYPES.get(instructionVar.getPart(0));
         // if it's null then there is no such type registered, log an error
         if (variableClass == null) {
-            throw new InstructionParseException("Variable type " + parts[0] + " is not registered");
+            throw new InstructionParseException("Variable type " + instructionVar.getPart(0) + " is not registered");
         }
         try {
             final Variable variable = variableClass.getConstructor(Instruction.class)
