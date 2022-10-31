@@ -123,7 +123,7 @@ jobs:
           sed -i "s~## \[Unreleased\]~## \[${VERSION}\]~g" ./CHANGELOG.md
       - name: Set plugin version
         run: |
-          sed -i "s~\${betonquest.version.with.qualifier}~${VERSION}~g" ./src/main/resources/plugin.yml
+          sed -i "s~\${betonquest.version}~${VERSION}~g" ./src/main/resources/plugin.yml
       - name: Activate lf line ending check in editorconfig
         run: |
           sed -i "s~#end_of_line = ~end_of_line = ~g" ./.editorconfig
