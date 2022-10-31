@@ -310,16 +310,16 @@ in the `items` section of your "_package.yml_" file.
     ```YAML title="package.yml" hl_lines="3-6"
     items:
       # Other items not shown
-      leatherHelmet: "LEATHER_HELMET"
-      leatherChestplate: "LEATHER_CHESTPLATE"
-      leatherLeggings: "LEATHER_LEGGINGS"
-      leatherBoots: "LEATHER_BOOTS"
+      ironHelmet: "IRON_HELMET"
+      ironChestplate: "IRON_CHESTPLATE"
+      ironLeggings: "IRON_LEGGINGS"
+      ironBoots: "IRON_BOOTS"
     ```
     
     ```YAML title="events.yml" hl_lines="3"
     events:
       # Other events not shown
-      rewardPlayer: "give leatherBoots,leatherChestplate,leatherLeggings,leatherHelmet"
+      rewardPlayer: "give ironBoots,ironChestplate,ironLeggings,ironHelmet"
     ``` 
 
 --8<-- "Tutorials/download-solution.md"
