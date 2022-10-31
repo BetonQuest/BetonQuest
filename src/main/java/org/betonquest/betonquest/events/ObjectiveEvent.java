@@ -28,7 +28,7 @@ public class ObjectiveEvent extends QuestEvent {
     /**
      * The BetonQuest instance.
      */
-    public static BetonQuest BETONQUEST;
+    private final BetonQuest BETONQUEST;
     /**
      * All objectives affected by this event.
      */
