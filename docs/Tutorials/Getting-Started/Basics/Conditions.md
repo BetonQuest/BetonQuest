@@ -140,7 +140,7 @@ We will start with a tag condition:
 ``` YAML title="conditions.yml" hl_lines="3"
 conditions:
   isNight: "time 6-18"
-  hasRecivedFood: "tag foodReceived"
+  hasReceivedFood: "tag foodReceived"
 ```
 
 !!! question "What is a tag?"
@@ -219,15 +219,29 @@ conversations:
 As you can see we also added new options to it. Now the NPC will say that you already received the food
 and won't give you more!
 
-### 5.2. Limit the town tour as well
-The same problem with the town tour. He can do it again and again. Try to do it on your own and add
-a condition to that specific conversation as well as to the first argument. If your solution is not working, download the
-quest from the link below!
+--8<-- "Tutorials/download-solution.md"
+       ```
+       /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conditions/3-ConditionsInConversations /tutorialQuest overwrite
+       ```
+
+### 5.2. Limiting the town tour as well
+The same problem exists with the town tour. The player can do it over and over again. Try to fix it on your own 
+using the method you just learned.
+
+??? tip "Solution"
+    Get the correct configs by running the following command.<br>
+    :warning: _This will overwrite any changes (including NPC ID's and locations) you have made to the example.<br>_
+    Linking NPCs to conversations is explained in the [basics tutorial](/Tutorials/Getting-Started/Basics/Conversations/#1-linking-a-conversation-to-a-npc).
+    ```
+    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conditions/4-JackCompleted /tutorialQuest overwrite
+    ```
 
 ### 5.3. Making the Blacksmith only trade the armor once
 
 The blacksmith conversation suffers from a similar problem. There is no way to get the reward, the conversation will 
 start over and over again. Let's fix that!
+
+#### 5.3.1 Preparing the conversation
 
 Let's add some dialog for when the player has accepted the quest but not completed it yet:
 ``` YAML title="blacksmith.yml" hl_lines="8-10"
@@ -262,16 +276,27 @@ conditions:
   startedFishingTag: "tag startedFishingTag"
   hasFishInInv: "item COD:10"
 ```
+Additionally, we must add the new events as well. 
+Those remove 10 cod from the players inventory and add a tag for completing the quest.
 
-Now lets use the `hasFishInInv` condition to add dialog for finishing the quest and also add an event that
-takes the fish from the player. You can prevent players from cheating if you write the take event and the condition in
-only one conversation.
+```YAML title="events.yml" hl_lines="3-5"
+events:
+  # Other events not shown
+  addStartedFishingTag: "tag add startedFishing"
+  addQuestDoneTag: "tag add questDone"
+  takeFishFromPlayer: "take cod:10"  
+```
+
+Now lets use all these new elements to finish up the conversation.
+
+Note that we check the `hasFishInInv` twice in the dialog. This prevents players from cheating by dropping the items once
+the starting option is determined. If they do so the conversation will simply end without giving out any items.
 
 ``` YAML title="blacksmith.yml" hl_lines="8-21 24-32"
 conversations:
   Blacksmith:
     quester: "Blacksmith"
-    first: "{==caughtAllFish,==}alreadyStarted,firstGreeting"
+    first: "{==questDone,caughtAllFish,==}alreadyStarted,firstGreeting"
     NPC_options:
       firstGreeting:
         # Other player_options not shown
@@ -282,10 +307,13 @@ conversations:
       giveFishToBlacksmith:
         text: "Thank you very much and here is the promised armour!"
         pointer: "seeYouSoon"
-        events: "takeFishFromPlayer"
-        conditions: "hasFishInInv"
+        events: "takeFishFromPlayer,addQuestDoneTag"
+        conditions: "hasFishInInv" #(1)!
       goodbye:
         text: "It was nice to meet you! I hope we will see us soon again. Goodbye"
+      questDone: 
+        text: "Nice to see you again %player%!" #(2)!
+        conditions: "hasDoneQuest"
     player_options:
       # Other player_options not shown
       deny:
@@ -298,6 +326,11 @@ conversations:
         text: "That was a pleasure! See you soon..."
         pointer: "goodbye"
 ```
+
+1. This is the cheat protection we talked about earlier. If the player drops the items, the conversation will end.
+2. Some dialog for when the player has already completed the quest.
+
+#### 5.3.2 Handing out the armor
 
 Now add an event to reward the player on your own. Tip: You must use the
 [`give`](../../../Documentation/Events-List.md#give-items-give) event to hand out items that are defined
@@ -318,11 +351,21 @@ in the `items` section of your "_package.yml_" file.
       # Other events not shown
       rewardPlayer: "give ironBoots,ironChestplate,ironLeggings,ironHelmet"
     ``` 
+    
+    ```YAML title="blacksmith.yml"
+    giveFishToBlacksmith:
+      text: "Thank you very much and here is the promised armour!"
+      pointer: "seeYouSoon"
+      events: "takeFishFromPlayer,addQuestDoneTag{==,rewardPlayer==}"
+      conditions: "hasFishInInv"
+    ``` 
+        
 
 --8<-- "Tutorials/download-solution.md"
        ```
-       /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conditions/3-ConditionsInConversations /tutorialQuest overwrite
+       /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conditions/5-FullExample /tutorialQuest overwrite
        ```
+
 ## 6. Conditions in Events
 
 In this section you will learn how to use conditions in events. This is handy when you want to block an event
