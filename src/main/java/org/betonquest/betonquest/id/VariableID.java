@@ -18,7 +18,7 @@ public class VariableID extends ID {
 
     @Override
     public Instruction generateInstruction() {
-        return new VariableInstruction(pack, this, identifier);
+        return new VariableInstruction(super.pack, this, super.identifier);
     }
 
     @Override

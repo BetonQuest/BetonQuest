@@ -560,7 +560,7 @@ public class BetonQuest extends JavaPlugin {
 
         try {
             final Variable variable = variableClass.getConstructor(Instruction.class)
-                    .newInstance(new VariableInstruction(pack, null, instruction));
+                    .newInstance(new VariableInstruction(variableID.getPackage(), null, "%" + instructionVar.getInstruction() + "%"));
             VARIABLES.put(variableID, variable);
             log.debug(pack, "Variable " + variableID + " loaded");
             return variable;
