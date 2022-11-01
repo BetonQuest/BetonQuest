@@ -802,7 +802,7 @@ Check whether the player is near a specific MythicMobs entity. The first argumen
 | _amount_   | Positive Number                                  | :octicons-x-circle-16: | Amount of mobs to spawn.                                                                                                                |
 | _target_   | Keyword                                          | False                  | Will make the mob target the player.                                                                                                    |
 | _private_  | Keyword                                          | Disabled               | Will hide the mob from all other players until restart. This does not hide particles or block sound from the mob. Also see notes below. |
-| _marked_   | notify:interval                                  | None                   | Marks the mob. You can check for marked mobs in mmobkill objective.                                                                     |
+| _marked_   | marked:text                                      | None                   | Marks the mob. You can check for marked mobs in mmobkill objective.                                                                     |
 
 
 ```YAML title="Example"
@@ -825,7 +825,7 @@ If you have this plugin, BetonQuest will add a `betonquest` placeholder to it an
 ### Placeholder: `betonquest`
 
 You can use all BetonQuest variables in any other plugin that supports PlaceholderAPI.
-You can even use BetonQuests conditions using the [condition variable](Variables-List.md#expose-conditions-to-3rd-party-plugins-condition)!    
+You can even use BetonQuests conditions using the [condition variable](Variables-List.md#condition-variable)!    
 This works using the `%betonquest_package:variable%` placeholder. The `package:` part is the name of a package.
 The `variable` part is just a [BetonQuest variable](Variables-List.md) without percentage characters, like `point.beton.amount`.
 
@@ -1072,51 +1072,80 @@ You can also fire BetonQuest events with scripts. The syntax for Skript effect i
       give_emeralds: give emerald:5
     ```
 
-## [Vault](http://dev.bukkit.org/bukkit-plugins/vault/)
-
-By installing Vault you enable Permission event and Money condition/event.
+## :material-treasure-chest: [Vault](http://dev.bukkit.org/bukkit-plugins/vault/)
 
 ### Conditions
 
 #### Vault Money Condition: `money`
 
-Checks if the player has specified amount of money. You can specify only one argument, amount integer. It cannot be negative!
+Checks if the player has the specified amount of money.
 
-!!! example
+```YAML
+conditions:
+  hasMoney: "money 1"
+  canAffordPlot: "money 10000"
+  isRich: "money 1000000"
+```
+
+!!! tip
+    Invert this condition if you want to check if the player has less money than specified. Example:
     ```YAML
-    money 500
+    conditions:
+      isRich: "money 100000"
+    events:
+      giveSubsidy: "money +500 conditions:!isRich" #(1)!
     ```
+    
+    1. If the player has less than 100000 money, the `giveSubsidy` event will be fired.    
 
 ### Events
 
 #### Vault Money Event: `money`
 
-Deposits, withdraws or multiplies money on player's account. There is only one argument, amount of money to modify. It can be positive, negative or start with an asterisk for multiplication.
+Deposits, withdraws or multiplies money on the player's account.
 
-!!! example
-    ```YAML
-    money -100
-    ```
+| Parameter | Syntax            | Default Value          | Explanation                                                    |
+|-----------|-------------------|------------------------|----------------------------------------------------------------|
+| _amount_  | Number            | :octicons-x-circle-16: | The amount of money to add or remove. Use `*` to multiply.     |
+| _notify_  | Keyword: `notify` | Disabled               | Display a message to the player when their balance is changed. |
 
-#### Permission: `permission`
+```YAML
+events:
+  sellItem: "money +100"
+  buyPlot: "money -10000"
+  winLottery: "money *7 notify"
+```
 
-Adds or removes a permission or a group. First argument is `add` or `remove`. It's self-explanatory. Second is `perm` or `group`. It also shouldn't be hard to figure out. Next thing is actual string you want to add/remove. At the end you can also specify world in which you want these permissions. If the world name is omitted then permission/group will be global.
+#### Change Permission (Groups): `permission`
 
-!!! example
-    ```YAML
-    permission remove group bandit world_nether
-    ```
+Adds or removes a permission or a group.
+
+| Parameter | Syntax                      | Default Value          | Explanation                                                                                                          |
+|-----------|-----------------------------|------------------------|----------------------------------------------------------------------------------------------------------------------|
+| _action_  | `add` or `remove`           | :octicons-x-circle-16: | Whether to add or remove the thing specified using the following arguments.                                          |
+| _type_    | `perm` or `group`           | :octicons-x-circle-16: | Whether to use a permission or permission group.                                                                     |                                   | Disabled               | Will hide the mob from all other players until restart. This does not hide particles or block sound from the mob. Also see notes below. |
+| _name_    | The name of the permission. | :octicons-x-circle-16: | The name of the permission or group to add.                                                                          |
+| _world_   | The name of the world.      | Global                 | You can limit permissions to certain worlds only. If no world is set the permission will be set everywhere (global). |
+
+```YAML
+events:
+  allowFly: "permission add perm essentials.fly"
+  joinBandit: "permission add group bandit"
+  leaveBandit: "permission remove group bandit"
+```
 
 ### Variables
 
 #### Vault Money Variable: `money`
 
-There is only one argument in this variable, `amount` for showing money amount or `left:` followed by a number for showing the difference between it and amount of money.
+Use `%money.amount%` for showing the player's balance.
+Use `%money.left:500%` for showing the difference between the player's balance and the specified amount of money.
 
-!!! example
-    ```YAML
-    %money.left:500%
-    ```
+```YAML
+events:
+  notifyBalance: "notify You have %money.amount%$!"
+  notifyNotEnough: "notify You still need %money.left:10000%$ to buy this plot."
+```
 
 ## [WorldEdit](http://dev.bukkit.org/bukkit-plugins/worldedit/) or [FastAsyncWorldEdit](https://www.spigotmc.org/resources/13932/)
 
