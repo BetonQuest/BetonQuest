@@ -4,6 +4,7 @@ import io.lumine.mythic.lib.api.event.skill.PlayerCastSkillEvent;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -25,15 +26,15 @@ public class MMOCoreCastSkillObjective extends Objective implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onSkillCast(final PlayerCastSkillEvent event) {
-        final String playerID = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(playerID) || !checkConditions(playerID)) {
+        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        if (!containsPlayer(profile) || !checkConditions(profile)) {
             return;
         }
         final String skillName = event.getCast().getHandler().getId();
         if (!skillId.equalsIgnoreCase(skillName) || !event.getResult().isSuccessful(event.getMetadata())) {
             return;
         }
-        completeObjective(playerID);
+        completeObjective(profile);
     }
 
     @Override
@@ -52,7 +53,7 @@ public class MMOCoreCastSkillObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(final String name, final String playerID) {
+    public String getProperty(final String name, final Profile profile) {
         return "";
     }
 

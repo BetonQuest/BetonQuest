@@ -4,6 +4,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
@@ -58,7 +59,8 @@ public class CheckCondition extends Condition {
         try {
             return conditionClass.getConstructor(Instruction.class).newInstance(
                     new Instruction(this.instruction.getPackage(), null, instruction));
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
+                 InvocationTargetException e) {
             if (e.getCause() instanceof InstructionParseException) {
                 throw new InstructionParseException("Error in internal condition: " + e.getCause().getMessage(), e);
             } else {
@@ -70,9 +72,9 @@ public class CheckCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
         for (final Condition condition : internalConditions) {
-            if (!condition.handle(playerID)) {
+            if (!condition.handle(profile)) {
                 return false;
             }
         }

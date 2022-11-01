@@ -3,10 +3,9 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmocore;
 import net.Indyuce.mmocore.api.player.PlayerData;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
-import org.bukkit.entity.Player;
 
 import java.util.List;
 
@@ -30,9 +29,8 @@ public class MMOCoreClassCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        final Player player = PlayerConverter.getPlayer(playerID);
-        final PlayerData data = PlayerData.get(player);
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        final PlayerData data = PlayerData.get(profile.getOfflinePlayer().getUniqueId());
 
         final String actualClassName = data.getProfess().getId();
         final int actualClassLevel = data.getLevel();

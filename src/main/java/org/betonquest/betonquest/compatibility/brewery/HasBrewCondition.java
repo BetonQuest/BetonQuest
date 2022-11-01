@@ -5,9 +5,9 @@ import com.dre.brewery.recipe.BRecipe;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -44,8 +44,8 @@ public class HasBrewCondition extends Condition {
 
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        final Player player = PlayerConverter.getPlayer(playerID);
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
 
         int remaining = count;
 

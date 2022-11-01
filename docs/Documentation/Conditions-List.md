@@ -425,18 +425,26 @@ There must be specific (Minecraft) time on the player's world for this condition
 
 ## Variable: `variable`
 
-This condition checks if a variable value matches given [pattern](https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html).
-The first argument is a variable (with `%` characters). Second one is the pattern (for example, if you want to check if it's "word",
-the patter would simply be `word`, but if you want to check if it's a number (positive or negative) you would use `-?\d+` pattern - `-?`
-means a dash or no dash, `\d` means any digit and `+` allows that digit to be repeated one or more times).
-The `forceSync` argument forces the variable to be resolved on the main thread. This may be required by some third party
-variables. 
+This condition checks if a variable value matches given [regular expression](Reference.md#regex-regular-expressions).
+
+| Parameter   | Syntax          | Default Value          | Explanation                                                                                                                          |
+|-------------|-----------------|------------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| _Variable_  | Any variable    | :octicons-x-circle-16: | The variable (surrounded by `%` characters).                                                                                         |
+| _Regex_     | A regex pattern | :octicons-x-circle-16: | The [regex](Reference.md#regex-regular-expressions) that the variables value must match. The regex can also be stored in a variable. |
+| _forceSync_ | Keyword         | False                  | Forces the variables to be resolved on the main thread. This may be required by some third party variables.                          |
+
 
 ```YAML
 variables:
-  anyNumber: "variable %objective.var.price% -?\d+"
-  denizenVariable: "variable ph.denizen_<server.match_player[SomeName].has_flag[flag_name]> forceSync"
+  anyNumber: "variable %objective.var.price% -?\d+" #(1)!
+  isPlayer: "variable %ph.parties_members_1% %player%" #(2)!
+  denizenVariable: "variable ph.denizen_<server.match_player[SomeName].has_flag[flag_name]> true forceSync" #(3)!
 ```
+
+1. Returns true if the variable `%objective.var.price%` contains any number.
+2. Returns true if the `parties_members_1` variable contains the player's name.
+3. Returns true if the `denizen_<server.match_player[SomeName].has_flag[flag_name]>` Denizen variable contains `true`
+   . This variable is resolved on the main thread.
 
 ## Weather: `weather`
 

@@ -2,6 +2,7 @@ package org.betonquest.betonquest.utils.location;
 
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.Location;
@@ -39,14 +40,14 @@ public class CompoundLocation {
     }
 
     /**
-     * @param playerID ID of the player - needed for location resolution
+     * @param profile the {@link Profile} that should be used to resolve the {@link Variable}s
      * @return the location represented by this object
-     * @throws QuestRuntimeException Is thrown when the player cannot be accessed or the the resolved location is in
+     * @throws QuestRuntimeException Is thrown when the player cannot be accessed or the resolved location is in
      *                               the wrong format.
      */
-    public Location getLocation(final String playerID) throws QuestRuntimeException {
-        final Location loc = locationData.get(playerID);
-        final Vector vec = vectorData == null ? new Vector() : vectorData.get(playerID);
+    public Location getLocation(final Profile profile) throws QuestRuntimeException {
+        final Location loc = locationData.get(profile);
+        final Vector vec = vectorData == null ? new Vector() : vectorData.get(profile);
         return loc.clone().add(vec);
     }
 

@@ -2,6 +2,7 @@ package org.betonquest.betonquest.variables;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
 /**
@@ -13,10 +14,11 @@ public class GlobalPointVariable extends PointVariable {
 
     public GlobalPointVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
+        staticness = true;
     }
 
     @Override
-    public String getValue(final String playerID) {
+    public String getValue(final Profile profile) {
         return getValue(BetonQuest.getInstance().getGlobalData().getPoints());
     }
 

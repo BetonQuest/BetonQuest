@@ -3,6 +3,7 @@ package org.betonquest.betonquest.notify;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.Bukkit;
@@ -10,7 +11,6 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -65,19 +65,19 @@ public class BossBarNotifyIO extends NotifyIO {
     }
 
     @Override
-    protected void notifyPlayer(final String message, final Player player) {
+    protected void notifyPlayer(final String message, final OnlineProfile onlineProfile) {
         final BossBar bossBar = Bukkit.createBossBar(message, barColor, style);
         for (final BarFlag flag : barFlags) {
             bossBar.addFlag(flag);
         }
         double resolvedProgress = 0;
         try {
-            resolvedProgress = normalizeBossBarProgress(getFloatData(player, "progress", 1));
+            resolvedProgress = normalizeBossBarProgress(getFloatData(onlineProfile.getOnlinePlayer(), "progress", 1));
         } catch (final InstructionParseException | QuestRuntimeException e) {
             LOG.warn(pack, "Invalid variable in bossbar notification from package " + pack.getPackagePath() + ": " + e.getMessage(), e);
         }
         bossBar.setProgress(resolvedProgress);
-        bossBar.addPlayer(player);
+        bossBar.addPlayer(onlineProfile.getOnlinePlayer());
         bossBar.setVisible(true);
         scheduleRemoval(bossBar);
 

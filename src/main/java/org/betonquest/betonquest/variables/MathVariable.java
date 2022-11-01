@@ -3,6 +3,7 @@ package org.betonquest.betonquest.variables;
 import lombok.CustomLog;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.math.Tokenizer;
@@ -30,9 +31,9 @@ public class MathVariable extends Variable {
     }
 
     @Override
-    public String getValue(final String playerID) {
+    public String getValue(final Profile profile) {
         try {
-            final double value = this.calculation.resolve(playerID);
+            final double value = this.calculation.resolve(profile);
             if (value % 1 == 0) {
                 return String.format(Locale.US, "%.0f", value);
             }

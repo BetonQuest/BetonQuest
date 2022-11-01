@@ -6,6 +6,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -28,7 +29,7 @@ public class ObjectivePaymentEvent extends Objective implements Listener {
         }
         try {
             nAmount = Double.parseDouble(instructions.getPart(1));
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             throw new InstructionParseException("Could not parse amount", e);
         }
         if (nAmount <= 0) {
@@ -39,16 +40,16 @@ public class ObjectivePaymentEvent extends Objective implements Listener {
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @EventHandler(ignoreCancelled = true)
     public void onJobsPaymentEvent(final JobsPaymentEvent event) {
-        final String playerID = PlayerConverter.getID(event.getPlayer());
-        if (containsPlayer(playerID) && checkConditions(playerID)) {
-            final PaymentData playerData = (PaymentData) dataMap.get(playerID);
+        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        if (containsPlayer(profile) && checkConditions(profile)) {
+            final PaymentData playerData = (PaymentData) dataMap.get(profile);
             final double previousAmount = playerData.getAmount();
             playerData.subtract(event.get(CurrencyType.MONEY));
 
             if (playerData.isZero()) {
-                completeObjective(playerID);
+                completeObjective(profile);
             } else if (notify && ((int) playerData.getAmount()) / notifyInterval != ((int) previousAmount) / notifyInterval) {
-                sendNotify(playerID, "payment_to_receive", playerData.getAmount());
+                sendNotify(profile, "payment_to_receive", playerData.getAmount());
             }
         }
     }
@@ -69,12 +70,12 @@ public class ObjectivePaymentEvent extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(final String name, final String playerID) {
+    public String getProperty(final String name, final Profile profile) {
         switch (name.toLowerCase(Locale.ROOT)) {
             case "amount":
-                return Double.toString(nAmount - ((PaymentData) dataMap.get(playerID)).getAmount());
+                return Double.toString(nAmount - ((PaymentData) dataMap.get(profile)).getAmount());
             case "left":
-                return Double.toString(((PaymentData) dataMap.get(playerID)).getAmount());
+                return Double.toString(((PaymentData) dataMap.get(profile)).getAmount());
             case "total":
                 return Double.toString(nAmount);
             default:
@@ -86,8 +87,8 @@ public class ObjectivePaymentEvent extends Objective implements Listener {
 
         private double amount;
 
-        public PaymentData(final String instruction, final String playerID, final String objID) {
-            super(instruction, playerID, objID);
+        public PaymentData(final String instruction, final Profile profile, final String objID) {
+            super(instruction, profile, objID);
             amount = Double.parseDouble(instruction);
         }
 

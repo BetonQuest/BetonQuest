@@ -4,6 +4,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.GlobalObjectives;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
@@ -13,7 +14,6 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ObjectiveID;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Server;
 
 import java.lang.reflect.InvocationTargetException;
@@ -47,11 +47,11 @@ public abstract class Objective {
     protected QREHandler qreHandler = new QREHandler();
 
     /**
-     * Contains all data objects of the players with this objective active.
+     * Contains all data objects of the profiles with this objective active.
      */
-    protected Map<String, ObjectiveData> dataMap = new HashMap<>();
+    protected Map<Profile, ObjectiveData> dataMap = new HashMap<>();
     /**
-     * Should be set with the data class used to hold players' information.
+     * Should be set to the data class used to hold the objective specific information.
      */
     protected Class<? extends ObjectiveData> template = ObjectiveData.class;
 
@@ -117,10 +117,10 @@ public abstract class Objective {
     public abstract void start();
 
     /**
-     * This method is called by the plugin when the objective starts for a specific player.
+     * This method is called by the plugin when the objective starts for a specific profile.
      */
     @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
-    public void start(final String playerId) {
+    public void start(final Profile profile) {
         //Empty
     }
 
@@ -131,10 +131,10 @@ public abstract class Objective {
     public abstract void stop();
 
     /**
-     * This method is called by the plugin when the objective stop for a specific player.
+     * This method is called by the plugin when the objective stop for a specific profile.
      */
     @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
-    public void stop(final String playerId) {
+    public void stop(final Profile profile) {
         //Empty
     }
 
@@ -149,12 +149,12 @@ public abstract class Objective {
     /**
      * This method should return the default data instruction for the objective,
      * ready to be parsed by the ObjectiveData class.
-     * Reimplement this method if you need player context (e.g. for variable parsing) when creating the data instruction.
+     * Reimplement this method if you need profile context (e.g. for variable parsing) when creating the data instruction.
      *
-     * @param playerID player to parse the instruction for
+     * @param profile the {@link Profile} to parse the instruction for
      * @return the default data instruction string
      */
-    public String getDefaultDataInstruction(final String playerID) {
+    public String getDefaultDataInstruction(final Profile profile) {
         return getDefaultDataInstruction();
     }
 
@@ -163,42 +163,41 @@ public abstract class Objective {
      * as readable Strings. An example would be "5h 5min" for "time_left"
      * keyword in "delay" objective or "12" for keyword "mobs_killed" in
      * "mobkill" objective. The method is not abstract since not all objectives
-     * need to have properties, i.e. "die" objective. By default it returns an
+     * need to have properties, i.e. "die" objective. By default, it returns an
      * empty string.
      *
-     * @param name     the name of the property you need to return; you can parse it
-     *                 to extract additional information
-     * @param playerID ID of the player for whom the property is to be returned
+     * @param name    the name of the property you need to return; you can parse it
+     *                to extract additional information
+     * @param profile the {@link Profile} for which the property is to be returned
      * @return the property with given name
      */
-    abstract public String getProperty(String name, String playerID);
+    abstract public String getProperty(String name, Profile profile);
 
     /**
-     * This method fires events for the objective and removes it from player's
+     * This method fires events for the objective and removes it from the profile's
      * list of active objectives. Use it when you detect that the objective has
      * been completed. It deletes the objective using delete() method.
      *
-     * @param playerID the ID of the player for whom the objective is to be completed
+     * @param profile the {@link Profile} for which the objective is to be completed
      */
-    public final void completeObjective(final String playerID) {
-        // remove the objective from player's list
-        completeObjectiveForPlayer(playerID);
-        BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective((ObjectiveID) instruction.getID());
+    public final void completeObjective(final Profile profile) {
+        completeObjectiveForPlayer(profile);
+        BetonQuest.getInstance().getPlayerData(profile).removeRawObjective((ObjectiveID) instruction.getID());
         if (persistent) {
-            BetonQuest.getInstance().getPlayerData(playerID).addNewRawObjective((ObjectiveID) instruction.getID());
-            createObjectiveForPlayer(playerID, getDefaultDataInstruction(playerID));
+            BetonQuest.getInstance().getPlayerData(profile).addNewRawObjective((ObjectiveID) instruction.getID());
+            createObjectiveForPlayer(profile, getDefaultDataInstruction(profile));
         }
         LOG.debug(instruction.getPackage(),
                 "Objective \"" + instruction.getID().getFullID() + "\" has been completed for player "
-                        + PlayerConverter.getName(playerID)
+                        + profile.getProfileName()
                         + ", firing events.");
         // fire all events
         for (final EventID event : events) {
-            BetonQuest.event(playerID, event);
+            BetonQuest.event(profile, event);
         }
         LOG.debug(instruction.getPackage(),
                 "Firing events in objective \"" + instruction.getID().getFullID() + "\" for player "
-                        + PlayerConverter.getName(playerID)
+                        + profile.getProfileName()
                         + " finished");
     }
 
@@ -207,28 +206,28 @@ public abstract class Objective {
      * something that modifies data (e.g. killing zombies). If conditions are
      * met, you can safely modify the data.
      *
-     * @param playerID ID of the player for whom the conditions are to be checked
+     * @param profile the {@link Profile} for which the conditions are to be checked
      * @return if all conditions of this objective has been met
      */
-    public final boolean checkConditions(final String playerID) {
+    public final boolean checkConditions(final Profile profile) {
         LOG.debug(instruction.getPackage(), "Condition check in \"" + instruction.getID().getFullID()
-                + "\" objective for player " + PlayerConverter.getName(playerID));
-        return BetonQuest.conditions(playerID, conditions);
+                + "\" objective for player " + profile.getProfileName());
+        return BetonQuest.conditions(profile, conditions);
     }
 
     /**
      * Send notification for progress with the objective.
      *
-     * @param messageName meessage name to use in messages.yml
-     * @param playerID    player to send notification to
+     * @param messageName message name to use in messages.yml
+     * @param profile     the {@link Profile} for which the notification is to be sent
      * @param variables   variables for putting into the message
      */
-    protected void sendNotify(final String playerID, final String messageName, final Object... variables) {
+    protected void sendNotify(final Profile profile, final String messageName, final Object... variables) {
         try {
             final String[] stringVariables = Arrays.stream(variables)
                     .map(String::valueOf)
                     .toArray(String[]::new);
-            Config.sendNotify(instruction.getPackage().getPackagePath(), playerID, messageName, stringVariables, messageName + ",info");
+            Config.sendNotify(instruction.getPackage().getPackagePath(), profile.getOnlineProfile(), messageName, stringVariables, messageName + ",info");
         } catch (final QuestRuntimeException exception) {
             try {
                 LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the '" + messageName + "' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");
@@ -239,178 +238,179 @@ public abstract class Objective {
     }
 
     /**
-     * Adds this new objective to the player. Also updates the database with the
+     * Adds this new objective to the profile. Also updates the database with the
      * objective.
      *
-     * @param playerID ID of the player
+     * @param profile the {@link Profile} for which the objective is to be added
      */
-    public final void newPlayer(final String playerID) {
-        final String defaultInstruction = getDefaultDataInstruction(playerID);
-        createObjectiveForPlayer(playerID, defaultInstruction);
-        BetonQuest.getInstance().getPlayerData(playerID).addObjToDB(instruction.getID().getFullID(), defaultInstruction);
+    public final void newPlayer(final Profile profile) {
+        final String defaultInstruction = getDefaultDataInstruction(profile);
+        createObjectiveForPlayer(profile, defaultInstruction);
+        BetonQuest.getInstance().getPlayerData(profile).addObjToDB(instruction.getID().getFullID(), defaultInstruction);
     }
 
     /**
-     * Start a new objective for the player.
+     * Starts a new objective for the profile.
      *
-     * @param playerId          UUID as string of the player that has the objective
+     * @param profile           the {@link Profile} for which the objective is to be started
      * @param instructionString the objective data instruction
-     * @see #resumeObjectiveForPlayer(String, String)
+     * @see #resumeObjectiveForPlayer(Profile, String)
      */
-    public final void createObjectiveForPlayer(final String playerId, final String instructionString) {
-        startObjective(playerId, instructionString, ObjectiveState.NEW);
+    public final void createObjectiveForPlayer(final Profile profile, final String instructionString) {
+        startObjective(profile, instructionString, ObjectiveState.NEW);
     }
 
     /**
-     * Resume a paused objective for the player.
+     * Resumes a paused objective for the profile.
      *
-     * @param playerId          UUID as string of the player that has the objective
+     * @param profile           the {@link Profile} for which the objective is to be resumed
      * @param instructionString the objective data instruction
-     * @see #createObjectiveForPlayer(String, String)
+     * @see #createObjectiveForPlayer(Profile, String)
      */
-    public final void resumeObjectiveForPlayer(final String playerId, final String instructionString) {
-        startObjective(playerId, instructionString, ObjectiveState.PAUSED);
+    public final void resumeObjectiveForPlayer(final Profile profile, final String instructionString) {
+        startObjective(profile, instructionString, ObjectiveState.PAUSED);
     }
 
     /**
-     * Start a objective for the player. This lower level method allows to set the previous state directly. If possible
-     * prefer {@link #createObjectiveForPlayer(String, String)} and {@link #resumeObjectiveForPlayer(String, String)}.
+     * Start an objective for the profile. This lower level method allows to set the previous state directly. If possible
+     * prefer {@link #createObjectiveForPlayer(Profile, String)} and {@link #resumeObjectiveForPlayer(Profile, String)}.
      *
-     * @param playerID          UUID as string of the player that has the objective
+     * @param profile           the {@link Profile} for which the objective is to be started
      * @param instructionString the objective data instruction
      * @param previousState     the objective's previous state
      */
-    public final void startObjective(final String playerID, final String instructionString, final ObjectiveState previousState) {
+    public final void startObjective(final Profile profile, final String instructionString, final ObjectiveState previousState) {
+
         synchronized (this) {
-            createObjectiveData(playerID, instructionString)
-                    .ifPresent(data -> startObjectiveWithEvent(playerID, data, previousState));
+            createObjectiveData(profile, instructionString)
+                    .ifPresent(data -> startObjectiveWithEvent(profile, data, previousState));
         }
     }
 
-    private Optional<ObjectiveData> createObjectiveData(final String playerID, final String instructionString) {
+    private Optional<ObjectiveData> createObjectiveData(final Profile profile, final String instructionString) {
         try {
-            return Optional.of(constructObjectiveDataUnsafe(playerID, instructionString));
+            return Optional.of(constructObjectiveDataUnsafe(profile, instructionString));
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
                  InvocationTargetException exception) {
-            handleObjectiveDataConstructionError(playerID, exception);
+            handleObjectiveDataConstructionError(profile, exception);
             return Optional.empty();
         }
     }
 
-    private void handleObjectiveDataConstructionError(final String playerID, final ReflectiveOperationException exception) {
+    private void handleObjectiveDataConstructionError(final Profile profile, final ReflectiveOperationException exception) {
         if (exception.getCause() instanceof InstructionParseException) {
             LOG.warn(instruction.getPackage(), "Error while loading " + this.instruction.getID().getFullID() + " objective data for player "
-                    + PlayerConverter.getName(playerID) + ": " + exception.getCause().getMessage(), exception);
+                    + profile.getProfileName() + ": " + exception.getCause().getMessage(), exception);
         } else {
             LOG.reportException(instruction.getPackage(), exception);
         }
     }
 
-    private ObjectiveData constructObjectiveDataUnsafe(final String playerID, final String instructionString)
+    private ObjectiveData constructObjectiveDataUnsafe(final Profile profile, final String instructionString)
             throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         final String fullId = this.instruction.getID().getFullID();
-        return template.getConstructor(String.class, String.class, String.class)
-                .newInstance(instructionString, playerID, fullId);
+        return template.getConstructor(String.class, Profile.class, String.class)
+                .newInstance(instructionString, profile, fullId);
     }
 
-    private void startObjectiveWithEvent(final String playerId, final ObjectiveData data, final ObjectiveState previousState) {
-        runObjectiveChangeEvent(playerId, previousState, ObjectiveState.ACTIVE);
-        activateObjective(playerId, data);
+    private void startObjectiveWithEvent(final Profile profile, final ObjectiveData data, final ObjectiveState previousState) {
+        runObjectiveChangeEvent(profile, previousState, ObjectiveState.ACTIVE);
+        activateObjective(profile, data);
     }
 
     /**
-     * Complete an active objective for the player. It will only remove it from the player and not run any completion
-     * events, run {@link #completeObjective(String)} instead! It does also not remove it from the database.
+     * Complete an active objective for the profile. It will only remove it from the profile and not run any completion
+     * events, run {@link #completeObjective(Profile)} instead! It does also not remove it from the database.
      *
-     * @param playerId UUID as string of the player that has the objective
-     * @see #cancelObjectiveForPlayer(String)
-     * @see #pauseObjectiveForPlayer(String)
+     * @param profile the {@link Profile} for which the objective is to be completed
+     * @see #cancelObjectiveForPlayer(Profile)
+     * @see #pauseObjectiveForPlayer(Profile)
      */
-    public final void completeObjectiveForPlayer(final String playerId) {
-        stopObjective(playerId, ObjectiveState.COMPLETED);
+    public final void completeObjectiveForPlayer(final Profile profile) {
+        stopObjective(profile, ObjectiveState.COMPLETED);
     }
 
     /**
-     * Cancel an active objective for the player. It will only remove it from the player and not remove it from the
+     * Cancel an active objective for the profile. It will only remove it from the profile and not remove it from the
      * database.
      *
-     * @param playerId UUID as string of the player that has the objective
-     * @see #completeObjectiveForPlayer(String)
-     * @see #pauseObjectiveForPlayer(String)
+     * @param profile the {@link Profile} for which the objective is to be cancelled
+     * @see #completeObjectiveForPlayer(Profile)
+     * @see #pauseObjectiveForPlayer(Profile)
      */
-    public final void cancelObjectiveForPlayer(final String playerId) {
-        stopObjective(playerId, ObjectiveState.CANCELED);
+    public final void cancelObjectiveForPlayer(final Profile profile) {
+        stopObjective(profile, ObjectiveState.CANCELED);
     }
 
     /**
-     * Pause an active objective for the player.
+     * Pause an active objective for the profile.
      *
-     * @param playerId UUID as string of the player that has the objective
-     * @see #completeObjectiveForPlayer(String)
-     * @see #cancelObjectiveForPlayer(String)
+     * @param profile the {@link Profile} for which the objective is to be paused
+     * @see #completeObjectiveForPlayer(Profile)
+     * @see #cancelObjectiveForPlayer(Profile)
      */
-    public final void pauseObjectiveForPlayer(final String playerId) {
-        stopObjective(playerId, ObjectiveState.PAUSED);
+    public final void pauseObjectiveForPlayer(final Profile profile) {
+        stopObjective(profile, ObjectiveState.PAUSED);
     }
 
     /**
-     * Stops a objective for the player. This lower level method allows to set the previous state directly. If possible
-     * prefer {@link #completeObjectiveForPlayer(String)}, {@link #cancelObjectiveForPlayer(String)} and
-     * {@link #pauseObjectiveForPlayer(String)}.
+     * Stops an objective for the profile. This lower level method allows to set the previous state directly. If possible
+     * prefer {@link #completeObjectiveForPlayer(Profile)}, {@link #cancelObjectiveForPlayer(Profile)} and
+     * {@link #pauseObjectiveForPlayer(Profile)}.
      *
-     * @param playerID UUID as string of the player that has the objective
+     * @param profile  the {@link Profile} for which the objective is to be stopped
      * @param newState the objective's new state
      */
-    public final void stopObjective(final String playerID, final ObjectiveState newState) {
+    public final void stopObjective(final Profile profile, final ObjectiveState newState) {
         synchronized (this) {
-            stopObjectiveWithEvent(playerID, newState);
+            stopObjectiveWithEvent(profile, newState);
         }
     }
 
-    private void stopObjectiveWithEvent(final String playerId, final ObjectiveState newState) {
-        runObjectiveChangeEvent(playerId, ObjectiveState.ACTIVE, newState);
-        deactivateObjective(playerId);
+    private void stopObjectiveWithEvent(final Profile profile, final ObjectiveState newState) {
+        runObjectiveChangeEvent(profile, ObjectiveState.ACTIVE, newState);
+        deactivateObjective(profile);
     }
 
-    private void runObjectiveChangeEvent(final String playerId, final ObjectiveState previousState, final ObjectiveState newState) {
+    private void runObjectiveChangeEvent(final Profile profile, final ObjectiveState previousState, final ObjectiveState newState) {
         BetonQuest.getInstance()
-                .callSyncBukkitEvent(new PlayerObjectiveChangeEvent(PlayerConverter.getPlayer(playerId), this, newState, previousState));
+                .callSyncBukkitEvent(new PlayerObjectiveChangeEvent(profile, this, newState, previousState));
     }
 
-    private void activateObjective(final String playerId, final ObjectiveData data) {
+    private void activateObjective(final Profile profile, final ObjectiveData data) {
         if (dataMap.isEmpty()) {
             start();
         }
-        dataMap.put(playerId, data);
-        start(playerId);
+        dataMap.put(profile, data);
+        start(profile);
     }
 
-    private void deactivateObjective(final String playerId) {
-        stop(playerId);
-        dataMap.remove(playerId);
+    private void deactivateObjective(final Profile profile) {
+        stop(profile);
+        dataMap.remove(profile);
         if (dataMap.isEmpty()) {
             stop();
         }
     }
 
     /**
-     * Checks if the player has this objective.
+     * Checks if the profile has this objective.
      *
-     * @param playerID ID of the player
-     * @return true if the player has this objective
+     * @param profile the {@link Profile} to check
+     * @return true if the profile has this objective
      */
-    public final boolean containsPlayer(final String playerID) {
-        return dataMap.containsKey(playerID);
+    public final boolean containsPlayer(final Profile profile) {
+        return dataMap.containsKey(profile);
     }
 
     /**
-     * Returns the data of the specified player.
+     * Returns the data of the specified profile.
      *
-     * @param playerID ID of the player
+     * @param profile the {@link Profile} to get the data for
      * @return the data string for this objective
      */
-    public final String getData(final String playerID) {
-        final ObjectiveData data = dataMap.get(playerID);
+    public final String getData(final Profile profile) {
+        final ObjectiveData data = dataMap.get(profile);
         if (data == null) {
             return null;
         }
@@ -440,13 +440,14 @@ public abstract class Objective {
     /**
      * Should be called at the end of the use of this objective, for example
      * when reloading the plugin. It will unregister listeners and save all
-     * player's data to their "inactive" map.
+     * profile data to their "inactive" map.
      */
     public void close() {
         stop();
-        for (final Map.Entry<String, ObjectiveData> entry : dataMap.entrySet()) {
-            stop(entry.getKey());
-            BetonQuest.getInstance().getPlayerData(entry.getKey()).addRawObjective(instruction.getID().getFullID(),
+        for (final Map.Entry<Profile, ObjectiveData> entry : dataMap.entrySet()) {
+            final Profile profile = entry.getKey();
+            stop(profile);
+            BetonQuest.getInstance().getPlayerData(profile).addRawObjective(instruction.getID().getFullID(),
                     entry.getValue().toString());
         }
     }
@@ -461,7 +462,7 @@ public abstract class Objective {
     }
 
     /**
-     * Show the states of the player objectives.
+     * Represents the states of an objective.
      */
     public enum ObjectiveState {
 
@@ -500,12 +501,12 @@ public abstract class Objective {
     }
 
     /**
-     * Stores player's data for the objective.
+     * Stores the profile's data for the objective.
      */
     protected static class ObjectiveData {
 
         protected String instruction;
-        protected String playerID;
+        protected Profile profile;
         protected String objID;
 
         /**
@@ -515,13 +516,13 @@ public abstract class Objective {
          *
          * @param instruction the instruction of the data object; parse it to get all
          *                    required information
-         * @param playerID    ID of the player
+         * @param profile     the {@link Profile} to load the data for
          * @param objID       ID of the objective, used by BetonQuest to store this
          *                    ObjectiveData in the database
          */
-        public ObjectiveData(final String instruction, final String playerID, final String objID) {
+        public ObjectiveData(final String instruction, final Profile profile, final String objID) {
             this.instruction = instruction;
-            this.playerID = playerID;
+            this.profile = profile;
             this.objID = objID;
         }
 
@@ -554,14 +555,14 @@ public abstract class Objective {
         @SuppressWarnings("PMD.DoNotUseThreads")
         protected void update() {
             final Saver saver = BetonQuest.getInstance().getSaver();
-            saver.add(new Saver.Record(UpdateType.REMOVE_OBJECTIVES, playerID, objID));
-            saver.add(new Saver.Record(UpdateType.ADD_OBJECTIVES, playerID, objID, toString()));
-            final QuestDataUpdateEvent event = new QuestDataUpdateEvent(playerID, objID, toString());
+            saver.add(new Saver.Record(UpdateType.REMOVE_OBJECTIVES, profile.getProfileUUID().toString(), objID));
+            saver.add(new Saver.Record(UpdateType.ADD_OBJECTIVES, profile.getProfileUUID().toString(), objID, toString()));
+            final QuestDataUpdateEvent event = new QuestDataUpdateEvent(profile, objID, toString());
             final Server server = BetonQuest.getInstance().getServer();
             server.getScheduler().runTask(BetonQuest.getInstance(), () -> server.getPluginManager().callEvent(event));
             // update the journal so all possible variables display correct
             // information
-            BetonQuest.getInstance().getPlayerData(playerID).getJournal().update();
+            BetonQuest.getInstance().getPlayerData(profile).getJournal().update();
         }
 
     }

@@ -3,6 +3,7 @@ package org.betonquest.betonquest.conditions;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.Utils;
 
@@ -20,8 +21,8 @@ public class TagCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) {
-        return BetonQuest.getInstance().getPlayerData(playerID).hasTag(tag);
+    protected Boolean execute(final Profile profile) {
+        return BetonQuest.getInstance().getPlayerData(profile).hasTag(tag);
     }
 
 }

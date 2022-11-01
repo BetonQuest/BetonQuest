@@ -3,9 +3,9 @@ package org.betonquest.betonquest.compatibility.vault;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 
 /**
  * Checks if the player has specified amount of Vault money
@@ -21,12 +21,12 @@ public class MoneyCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        double pAmount = amount.getDouble(playerID);
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        double pAmount = amount.getDouble(profile);
         if (pAmount < 0) {
             pAmount = -pAmount;
         }
-        return VaultIntegrator.getEconomy().has(PlayerConverter.getPlayer(playerID), pAmount);
+        return VaultIntegrator.getEconomy().has(profile.getOfflinePlayer(), pAmount);
     }
 
 }

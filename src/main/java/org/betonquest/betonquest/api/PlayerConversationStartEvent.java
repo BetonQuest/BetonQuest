@@ -1,16 +1,16 @@
 package org.betonquest.betonquest.api;
 
+import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.ProfileEvent;
 import org.betonquest.betonquest.conversation.Conversation;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.player.PlayerEvent;
 
 /**
- * Fires when player ends a conversation with an NPC
+ * Fires when profile ends a conversation with an NPC
  */
 @SuppressWarnings("PMD.CommentRequired")
-public class PlayerConversationStartEvent extends PlayerEvent implements Cancellable {
+public class PlayerConversationStartEvent extends ProfileEvent implements Cancellable {
 
     private static final HandlerList HANDLERS = new HandlerList();
     private final Conversation conversation;
@@ -19,10 +19,10 @@ public class PlayerConversationStartEvent extends PlayerEvent implements Cancell
     /**
      * Creates new conversation end event.
      *
-     * @param who          the player who started the conversation
+     * @param who          the {@link Profile} who started the conversation
      * @param conversation conversation which is about to start
      */
-    public PlayerConversationStartEvent(final Player who, final Conversation conversation) {
+    public PlayerConversationStartEvent(final Profile who, final Conversation conversation) {
         super(who);
         this.conversation = conversation;
     }

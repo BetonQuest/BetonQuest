@@ -7,7 +7,6 @@ import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactoryAdapter;
-import org.bukkit.Server;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,11 +40,6 @@ class JournalEventFactoryIntegrationTest {
     @Mock
     private BetonQuest betonQuest;
     /**
-     * Mocked Minecraft Bukkit server.
-     */
-    @Mock
-    private Server server;
-    /**
      * Mocked database Saver.
      */
     @Mock
@@ -70,7 +64,7 @@ class JournalEventFactoryIntegrationTest {
     }
 
     private QuestEventFactoryAdapter createJournalEventFactory() {
-        final JournalEventFactory journalEventFactory = new JournalEventFactory(betonQuest, InstantSource.fixed(now), saver, server);
+        final JournalEventFactory journalEventFactory = new JournalEventFactory(betonQuest, InstantSource.fixed(now), saver);
         return new QuestEventFactoryAdapter(journalEventFactory, journalEventFactory);
 
     }

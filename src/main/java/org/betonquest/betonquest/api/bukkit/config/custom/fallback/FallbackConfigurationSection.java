@@ -50,13 +50,13 @@ public class FallbackConfigurationSection implements ConfigurationSection {
         }
         this.parent = null;
         this.root = (FallbackConfiguration) this;
-        this.manager = new ConfigManager(original, fallback);
+        this.manager = new ConfigManager(null, original, fallback);
     }
 
-    private FallbackConfigurationSection(@NotNull final FallbackConfigurationSection parent, @Nullable final ConfigurationSection original, @Nullable final ConfigurationSection fallback) {
+    private FallbackConfigurationSection(@NotNull final FallbackConfigurationSection parent, @NotNull final String sectionName, @Nullable final ConfigurationSection original, @Nullable final ConfigurationSection fallback) {
         this.parent = parent;
         this.root = parent.root;
-        this.manager = new ConfigManager(original, fallback);
+        this.manager = new ConfigManager(sectionName, original, fallback);
     }
 
 
@@ -73,7 +73,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
             if (originalConfigurationSection == null && fallbackConfigurationSection == null) {
                 return null;
             }
-            return new FallbackConfigurationSection(this, originalConfigurationSection, fallbackConfigurationSection);
+            return new FallbackConfigurationSection(this, path, originalConfigurationSection, fallbackConfigurationSection);
         }
 
         final String prefix = path.substring(0, separatorIndex);
@@ -113,8 +113,28 @@ public class FallbackConfigurationSection implements ConfigurationSection {
         if (original != null) {
             values.putAll(original.getValues(deep));
         }
-        values.replaceAll((key, value) -> value instanceof ConfigurationSection ? getFallbackConfigurationSection(key) : value);
+        replaceChildConfigurationSections(values);
         return values;
+    }
+
+    private void replaceChildConfigurationSections(final Map<String, Object> values) {
+        final boolean copyDefaults = root.options().copyDefaults();
+        root.options().copyDefaults(false);
+        values.replaceAll(this::wrapChildConfigurationSection);
+        root.options().copyDefaults(copyDefaults);
+    }
+
+    @Nullable
+    private Object wrapChildConfigurationSection(final String key, final Object value) {
+        if (value instanceof ConfigurationSection) {
+            if (isSet(key)) {
+                return getFallbackConfigurationSection(key);
+            } else {
+                final ConfigurationSection defaultSection = getDefaultSection();
+                return defaultSection == null ? null : defaultSection.getConfigurationSection(key);
+            }
+        }
+        return value;
     }
 
     @Override
@@ -651,20 +671,17 @@ public class FallbackConfigurationSection implements ConfigurationSection {
         /**
          * Creates a new {@link ConfigManager} with the given original and fallback {@link ConfigurationSection}.
          *
-         * @param original The original {@link ConfigurationSection}
-         * @param fallback The fallback {@link ConfigurationSection}
+         * @param sectionName The name of the current {@link ConfigurationSection}
+         * @param original    The original {@link ConfigurationSection}
+         * @param fallback    The fallback {@link ConfigurationSection}
          * @throws IllegalStateException If the original and fallback {@link ConfigurationSection} is null
          */
         @SuppressWarnings({"PMD.CompareObjectsWithEquals", "PMD.AvoidUncheckedExceptionsInSignatures"})
-        public ConfigManager(@Nullable final ConfigurationSection original, @Nullable final ConfigurationSection fallback) throws IllegalStateException {
-            checkValidState(original, fallback);
-            if (FallbackConfigurationSection.this == root) {
-                this.sectionName = null;
-            } else {
-                this.sectionName = original == null ? fallback.getName() : original.getName();
-            }
+        public ConfigManager(@Nullable final String sectionName, @Nullable final ConfigurationSection original, @Nullable final ConfigurationSection fallback) throws IllegalStateException {
+            this.sectionName = sectionName;
             this.original = original;
             this.fallback = fallback;
+            checkValidState(original, fallback);
         }
 
         @SuppressWarnings("PMD.AvoidUncheckedExceptionsInSignatures")
@@ -672,9 +689,17 @@ public class FallbackConfigurationSection implements ConfigurationSection {
             if (original == null && fallback == null) {
                 throw new IllegalStateException("Cannot construct a FallbackConfigurationSection when original and fallback are null");
             }
-            if (original != null && fallback != null && !original.getName().equals(fallback.getName())) {
+            if (sectionName != null && !(hasValidName(original) && hasValidName(fallback))) {
                 throw new IllegalStateException("Cannot construct a FallbackConfigurationSection when sectionName is not equal to the name of the original or fallback");
             }
+        }
+
+        private boolean hasValidName(final ConfigurationSection section) {
+            if (section == null) {
+                return true;
+            }
+            final String name = section.getName();
+            return name.isEmpty() || name.equals(sectionName);
         }
 
         /**

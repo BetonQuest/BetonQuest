@@ -3,9 +3,9 @@ package org.betonquest.betonquest.events;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -42,9 +42,9 @@ public class EffectEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final String playerID) throws QuestRuntimeException {
-        PlayerConverter.getPlayer(playerID).addPotionEffect(
-                new PotionEffect(effect, duration.getInt(playerID) * 20, amplifier.getInt(playerID) - 1, ambient, !hidden, icon));
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
+        profile.getOnlineProfile().getOnlinePlayer().addPotionEffect(
+                new PotionEffect(effect, duration.getInt(profile) * 20, amplifier.getInt(profile) - 1, ambient, !hidden, icon));
         return null;
     }
 

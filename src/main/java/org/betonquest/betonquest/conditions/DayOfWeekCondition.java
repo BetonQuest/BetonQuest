@@ -3,8 +3,8 @@ package org.betonquest.betonquest.conditions;
 import lombok.CustomLog;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 import java.time.DateTimeException;
 import java.time.DayOfWeek;
@@ -43,7 +43,7 @@ public class DayOfWeekCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+    protected Boolean execute(final Profile profile) {
         final Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         day = day == 1 ? 7 : day - 1;

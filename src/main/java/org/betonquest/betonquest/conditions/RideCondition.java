@@ -2,8 +2,8 @@ package org.betonquest.betonquest.conditions;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
@@ -31,8 +31,8 @@ public class RideCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) {
-        final Entity entity = PlayerConverter.getPlayer(playerID).getVehicle();
+    protected Boolean execute(final Profile profile) {
+        final Entity entity = profile.getOnlineProfile().getOnlinePlayer().getVehicle();
         return entity != null && (any || entity.getType() == vehicle);
     }
 

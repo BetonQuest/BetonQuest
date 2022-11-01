@@ -4,6 +4,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Journal;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -56,13 +57,13 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
         }
         if (sender instanceof Player) {
             final String lang = args[0];
-            final String playerID = PlayerConverter.getID((Player) sender);
-            final PlayerData playerData = BetonQuest.getInstance().getPlayerData(playerID);
+            final Profile profile = PlayerConverter.getID((Player) sender);
+            final PlayerData playerData = BetonQuest.getInstance().getPlayerData(profile);
             final Journal journal = playerData.getJournal();
             playerData.setLanguage(lang);
             journal.update();
             try {
-                Config.sendNotify(null, playerID, "language_changed", new String[]{lang}, "language_changed,info");
+                Config.sendNotify(null, profile.getOnlineProfile(), "language_changed", new String[]{lang}, "language_changed,info");
             } catch (final QuestRuntimeException e) {
                 LOG.warn("The notify system was unable to play a sound for the 'language_changed' category. Error was: '" + e.getMessage() + "'", e);
             }

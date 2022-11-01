@@ -9,6 +9,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.CountingObjective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -70,27 +71,27 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
             return;
         }
         if (event.getKiller() instanceof Player) {
-            checkKill(event, (Player) event.getKiller());
+            checkKill(event, PlayerConverter.getID((Player) event.getKiller()));
         } else if (neutralDeathRadiusAllPlayers > 0) {
             final Location center = BukkitAdapter.adapt(event.getMob().getLocation());
             for (final Player player : center.getWorld().getPlayers()) {
                 if (isValidPlayer(player) && player.getLocation().distanceSquared(center) <= neutralDeathRadiusAllPlayersSquared) {
-                    checkKill(event, player);
+                    checkKill(event, PlayerConverter.getID(player));
                 }
             }
         }
     }
 
-    private void checkKill(final MythicMobDeathEvent event, final Player player) {
+    private void checkKill(final MythicMobDeathEvent event, final Profile profile) {
         if (marked != null) {
             final List<MetadataValue> meta = event.getEntity().getMetadata("betonquest-marked");
             for (final MetadataValue m : meta) {
-                if (!m.asString().equals(marked.replace("%player%", player.getName()))) {
+                if (!m.asString().equals(marked.replace("%player%", profile.getProfileUUID().toString()))) {
                     return;
                 }
             }
         }
-        handlePlayerKill(player, event.getMob());
+        handlePlayerKill(profile, event.getMob());
     }
 
     private boolean isValidPlayer(final Player player) {
@@ -99,19 +100,18 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
                 && player.isValid();
     }
 
-    private void handlePlayerKill(final Player player, final ActiveMob mob) {
-        final String playerID = PlayerConverter.getID(player);
-        if (containsPlayer(playerID) && matchesMobLevel(playerID, mob) && checkConditions(playerID)) {
-            getCountingData(playerID).progress();
-            completeIfDoneOrNotify(playerID);
+    private void handlePlayerKill(final Profile profile, final ActiveMob mob) {
+        if (containsPlayer(profile) && matchesMobLevel(profile, mob) && checkConditions(profile)) {
+            getCountingData(profile).progress();
+            completeIfDoneOrNotify(profile);
         }
 
     }
 
-    private boolean matchesMobLevel(final String playerID, final ActiveMob mob) {
+    private boolean matchesMobLevel(final Profile profile, final ActiveMob mob) {
         try {
             final double actualMobLevel = mob.getLevel();
-            return minMobLevel.getDouble(playerID) <= actualMobLevel && maxMobLevel.getDouble(playerID) >= actualMobLevel;
+            return minMobLevel.getDouble(profile) <= actualMobLevel && maxMobLevel.getDouble(profile) >= actualMobLevel;
         } catch (final QuestRuntimeException exception) {
             try {
                 LOG.error(instruction.getPackage(), "Unable to resolve minMobLevel / maxMobLevel variable in " + instruction.getObjective().getFullID());

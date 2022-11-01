@@ -2,6 +2,7 @@ package org.betonquest.betonquest;
 
 import lombok.CustomLog;
 import org.betonquest.betonquest.api.Variable;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -62,31 +63,31 @@ public class VariableNumber {
      * Returns an integer represented by this variable. If it's a double, this
      * method will return the floor of it.
      *
-     * @param playerID ID of the player for whom the variable should be resolved
+     * @param profile the {@link Profile} of the player for variable resolving
      * @return the integer represented by this variable number
      */
-    public int getInt(final String playerID) {
-        return (int) Math.floor(resolveVariable(playerID));
+    public int getInt(final Profile profile) {
+        return (int) Math.floor(resolveVariable(profile));
     }
 
     /**
      * Returns a double represented by this variable.
      *
-     * @param playerID ID of the player for whom the variable should be resolved
+     * @param profile the {@link Profile} of the player for variable resolving
      * @return the double represented by this variable number
      * @throws QuestRuntimeException when the variable does not resolve to a number
      */
-    public double getDouble(final String playerID) throws QuestRuntimeException {
-        return resolveVariable(playerID);
+    public double getDouble(final Profile profile) throws QuestRuntimeException {
+        return resolveVariable(profile);
     }
 
-    private double resolveVariable(final String playerID) {
+    private double resolveVariable(final Profile profile) {
         if (variable == null) {
             return number;
-        } else if (playerID == null) {
+        } else if (profile == null) {
             return 0;
         } else {
-            final String resolved = variable.getValue(playerID);
+            final String resolved = variable.getValue(profile);
             double parsed = 0;
             try {
                 parsed = Double.parseDouble(resolved);

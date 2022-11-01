@@ -3,8 +3,8 @@ package org.betonquest.betonquest.compatibility.placeholderapi;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class PlaceholderVariable extends Variable {
@@ -17,8 +17,8 @@ public class PlaceholderVariable extends Variable {
     }
 
     @Override
-    public String getValue(final String playerID) {
-        return PlaceholderAPI.setPlaceholders(PlayerConverter.getPlayer(playerID), '%' + placeholder + '%');
+    public String getValue(final Profile profile) {
+        return PlaceholderAPI.setPlaceholders(profile.getOnlineProfile().getOnlinePlayer(), '%' + placeholder + '%');
     }
 
 }

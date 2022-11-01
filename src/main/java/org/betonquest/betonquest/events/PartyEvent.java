@@ -4,6 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
@@ -30,10 +31,10 @@ public class PartyEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final String playerID) throws QuestRuntimeException {
-        final List<String> members = Utils.getParty(playerID, range.getDouble(playerID), instruction.getPackage()
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
+        final List<Profile> members = Utils.getParty(profile, range.getDouble(profile), instruction.getPackage()
                 .getPackagePath(), conditions);
-        for (final String memberID : members) {
+        for (final Profile memberID : members) {
             for (final EventID event : events) {
                 BetonQuest.event(memberID, event);
             }

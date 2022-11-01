@@ -5,6 +5,7 @@ import org.apache.commons.lang3.EnumUtils;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -40,12 +41,12 @@ public class EquipItemObjective extends Objective implements Listener {
 
     @EventHandler
     public void onEquipmentChange(final PlayerArmorChangeEvent event) {
-        final String playerID = PlayerConverter.getID(event.getPlayer());
-        if (containsPlayer(playerID)
+        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        if (containsPlayer(profile)
                 && event.getSlotType() == slotType
                 && questItems.compare(event.getNewItem())
-                && checkConditions(playerID)) {
-            completeObjective(playerID);
+                && checkConditions(profile)) {
+            completeObjective(profile);
         }
     }
 
@@ -60,7 +61,7 @@ public class EquipItemObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(final String name, final String playerID) {
+    public String getProperty(final String name, final Profile profile) {
         return "";
     }
 }

@@ -3,6 +3,7 @@ package org.betonquest.betonquest.conditions;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
@@ -37,9 +38,9 @@ public class RandomCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        final int temp = random.nextInt(rangeOfRandom.getInt(playerID)) + 1;
-        return temp <= valueMax.getInt(playerID);
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        final int temp = random.nextInt(rangeOfRandom.getInt(profile)) + 1;
+        return temp <= valueMax.getInt(profile);
     }
 
 }

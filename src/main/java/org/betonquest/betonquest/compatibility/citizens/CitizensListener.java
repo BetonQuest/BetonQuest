@@ -6,6 +6,7 @@ import net.citizensnpcs.api.event.NPCClickEvent;
 import net.citizensnpcs.api.event.NPCLeftClickEvent;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.CombatTagger;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -74,10 +75,10 @@ public class CitizensListener implements Listener {
         if (NPCMoveEvent.blocksTalking(event.getNPC())) {
             return;
         }
-        final String playerID = PlayerConverter.getID(event.getClicker());
-        if (CombatTagger.isTagged(playerID)) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getClicker()).getOnlineProfile();
+        if (CombatTagger.isTagged(onlineProfile)) {
             try {
-                Config.sendNotify(null, playerID, "busy", "busy,error");
+                Config.sendNotify(null, onlineProfile, "busy", "busy,error");
             } catch (final QuestRuntimeException e) {
                 LOG.warn("The notify system was unable to play a sound for the 'busy' category. Error was: '" + e.getMessage() + "'", e);
             }
@@ -90,7 +91,7 @@ public class CitizensListener implements Listener {
         }
         if (assignment != null) {
             event.setCancelled(true);
-            new CitizensConversation(playerID, assignment, event.getNPC().getEntity().getLocation(),
+            new CitizensConversation(onlineProfile, assignment, event.getNPC().getEntity().getLocation(),
                     event.getNPC());
         }
     }

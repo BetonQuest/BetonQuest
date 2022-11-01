@@ -1,15 +1,15 @@
 package org.betonquest.betonquest.api;
 
 import lombok.Getter;
-import org.bukkit.entity.Player;
+import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.ProfileEvent;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.player.PlayerEvent;
 
 /**
- * This event is fired when a player's tag was added.
+ * Fired when a tag is added to a profile.
  */
 @SuppressWarnings({"PMD.DataClass"})
-public class PlayerTagAddEvent extends PlayerEvent {
+public class PlayerTagAddEvent extends ProfileEvent {
 
     /**
      * HandlerList of this event.
@@ -25,10 +25,10 @@ public class PlayerTagAddEvent extends PlayerEvent {
     /**
      * Creates a new PlayerTagAddEvent.
      *
-     * @param who the player whose tag has added
+     * @param who the {@link Profile} whose tag has added
      * @param tag added tag
      */
-    public PlayerTagAddEvent(final Player who, final String tag) {
+    public PlayerTagAddEvent(final Profile who, final String tag) {
         super(who);
         this.tag = tag;
     }

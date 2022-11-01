@@ -6,10 +6,9 @@ import com.denizenscript.denizencore.scripts.ScriptRegistry;
 import com.denizenscript.denizencore.scripts.containers.core.TaskScriptContainer;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
-import org.bukkit.entity.Player;
 
 /**
  * Runs specified Denizen task script.
@@ -25,13 +24,12 @@ public class DenizenTaskScriptEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final String playerID) throws QuestRuntimeException {
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
         final TaskScriptContainer script = ScriptRegistry.getScriptContainerAs(name, TaskScriptContainer.class);
         if (script == null) {
             throw new QuestRuntimeException("Could not find '" + name + "' Denizen script");
         }
-        final Player player = PlayerConverter.getPlayer(playerID);
-        final BukkitScriptEntryData data = new BukkitScriptEntryData(PlayerTag.mirrorBukkitPlayer(player), null);
+        final BukkitScriptEntryData data = new BukkitScriptEntryData(PlayerTag.mirrorBukkitPlayer(profile.getOfflinePlayer()), null);
         script.run(data, null);
         return null;
     }

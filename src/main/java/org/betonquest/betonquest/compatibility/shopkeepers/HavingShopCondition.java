@@ -6,6 +6,7 @@ import com.nisovin.shopkeepers.api.shopkeeper.player.PlayerShopkeeper;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
@@ -24,14 +25,14 @@ public class HavingShopCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        int count = amount.getInt(playerID);
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        int count = amount.getInt(profile);
         for (final Shopkeeper s : ShopkeepersAPI.getShopkeeperRegistry().getAllShopkeepers()) {
             if (!(s instanceof PlayerShopkeeper)) {
                 continue;
             }
             final PlayerShopkeeper shopkeeper = (PlayerShopkeeper) s;
-            if (shopkeeper.getOwnerUUID() == null || !shopkeeper.getOwnerUUID().toString().equals(playerID)) {
+            if (shopkeeper.getOwnerUUID() == null || !shopkeeper.getOwnerUUID().equals(profile.getProfileUUID())) {
                 continue;
             }
             count--;

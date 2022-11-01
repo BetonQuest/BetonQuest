@@ -6,9 +6,9 @@ import com.herocraftonline.heroes.characters.Hero;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 
 /**
  * Checks an attribute of a player and if greater than or equal to a level
@@ -34,8 +34,8 @@ public class HeroesAttributeCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        final Hero hero = Heroes.getInstance().getCharacterManager().getHero(PlayerConverter.getPlayer(playerID));
-        return hero.getAttributeValue(attribute) >= level.getInt(playerID);
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        final Hero hero = Heroes.getInstance().getCharacterManager().getHero(profile.getOnlineProfile().getOnlinePlayer());
+        return hero.getAttributeValue(attribute) >= level.getInt(profile);
     }
 }

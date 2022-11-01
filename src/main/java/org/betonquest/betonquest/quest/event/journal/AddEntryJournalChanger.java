@@ -24,7 +24,7 @@ public class AddEntryJournalChanger implements JournalChanger {
      * Create the entry-adding journal changer.
      *
      * @param instantSource source to get the journal entry date from
-     * @param entryName entry to add
+     * @param entryName     entry to add
      */
     public AddEntryJournalChanger(final InstantSource instantSource, final String entryName) {
         this.instantSource = instantSource;

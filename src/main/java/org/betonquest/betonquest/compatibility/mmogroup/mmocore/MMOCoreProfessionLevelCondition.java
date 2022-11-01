@@ -4,9 +4,9 @@ import net.Indyuce.mmocore.api.player.PlayerData;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class MMOCoreProfessionLevelCondition extends Condition {
@@ -23,10 +23,10 @@ public class MMOCoreProfessionLevelCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        final PlayerData data = PlayerData.get(PlayerConverter.getPlayer(playerID));
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        final PlayerData data = PlayerData.get(profile.getOfflinePlayer().getUniqueId());
         final int actualLevel = data.getCollectionSkills().getLevel(professionName);
-        final int targetLevel = targetLevelVar.getInt(playerID);
+        final int targetLevel = targetLevelVar.getInt(profile);
 
         return mustBeEqual ? actualLevel == targetLevel : actualLevel >= targetLevel;
     }

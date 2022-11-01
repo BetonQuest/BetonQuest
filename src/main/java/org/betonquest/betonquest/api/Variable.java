@@ -1,6 +1,8 @@
 package org.betonquest.betonquest.api;
 
+import lombok.Getter;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
 /**
@@ -12,6 +14,17 @@ abstract public class Variable {
      * Stores instruction string for the condition.
      */
     protected Instruction instruction;
+
+    /**
+     * A variable marked as static can be executed even if the profile in the
+     * {@link #getValue(Profile)} method is null
+     * -- GETTER --
+     * Get the staticness of a variable
+     *
+     * @return The staticness
+     */
+    @Getter
+    protected boolean staticness;
 
     /**
      * Creates new instance of the variable. The variable should parse the
@@ -28,12 +41,12 @@ abstract public class Variable {
     }
 
     /**
-     * This method should return a resolved value of variable for given player.
+     * This method should return a resolved value of variable for given profile.
      *
-     * @param playerID ID of the player
+     * @param profile the {@link Profile} to get the value for
      * @return the value of this variable
      */
-    public abstract String getValue(String playerID);
+    public abstract String getValue(Profile profile);
 
     @Override
     public String toString() {

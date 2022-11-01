@@ -41,8 +41,8 @@ To complete this objective the player must break or place the specified amount o
 
 | Parameter       | Syntax                                           | Default Value          | Explanation                                                                                                                                                                                                                                                               |
 |-----------------|--------------------------------------------------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| _Block Type_    | [Block Selector](./Reference.md#block-selectors) | :octicons-x-circle-16: | The block which must be broken.                                                                                                                                                                                                                                           |
-| _Amount_        | Number                                           | :octicons-x-circle-16: | The amount of blocks to place / destroy. More than 0 for placing and less than 0 for breaking blocks.                                                                                                                                                                     |
+| _Block Type_    | [Block Selector](./Reference.md#block-selectors) | :octicons-x-circle-16: | The block which must be broken / placed.                                                                                                                                                                                                                                  |
+| _Amount_        | Number                                           | :octicons-x-circle-16: | The amount of blocks to break / place. Less than 0 for breaking and more than 0 for placing blocks.                                                                                                                                                                       |
 | _Safety Check_  | Keyword (`noSafety`)                             | Safety Check Enabled   | The Safety Check prevents faking the objective. The progress will be reduced when the player does to opposite of what they are supposed to do. Example: Player must break 10 blocks. They place 10 of their stored blocks. Now the total amount of blocks to break is 20. |
 | _Notifications_ | Keyword (`notify`)                               | Disabled               | Displays messages to the player each time they progress the objective. Optionally with the notification interval after colon.                                                                                                                                             |
 
@@ -57,13 +57,20 @@ objectives:
 <h5> Variable Properties </h5> 
 
 Note that these follow the same rules as the amount argument, meaning that blocks to break are a negative number!
-You can use this variable to always get positive values: `%math.calc:|objective.breakLogs.left|%`
 
 | Name     | Example Output | Explanation                                                                                         |
 |----------|----------------|-----------------------------------------------------------------------------------------------------|
-| _amount_ | 6              | Shows the amount of blocks already broken / placed.                                                 |
-| _left_   | 4              | Shows the amount of blocks that still need to be broken / placed for the objective to be completed. |
-| _total_  | 10             | Shows the initial amount of blocks that needed to be broken / placed.                               |
+| _amount_ | -6 / 6         | Shows the amount of blocks already broken / placed.                                                 |
+| _left_   | -4 / 4         | Shows the amount of blocks that still need to be broken / placed for the objective to be completed. |
+| _total_  | -10 / 10       | Shows the initial amount of blocks that needed to be broken / placed.                               |
+
+You can use these variables to always get positive values:
+
+| Name              | Example Output | Explanation                                                                                                  |
+|-------------------|----------------|--------------------------------------------------------------------------------------------------------------|
+| _absoluteAmount_  | 6              | Shows the absolute amount of blocks already broken / placed.                                                 |
+| _absoluteLeft_    | 4              | Shows the absolute amount of blocks that still need to be broken / placed for the objective to be completed. |
+| _absoluteTotal_   | 10             | Shows the initial absolute amount of blocks that needed to be broken / placed.                               |
 
 
 ## Breed animals: `breed`
@@ -96,15 +103,30 @@ argument. By default, only one player can look into the chest at the same time. 
     chestput 0;50;100;world apple:42 events:message multipleaccess:true
     ```
 
-## Eat/drink: `consume`
+## :material-food-fork-drink: Eat/drink: `consume`
 
-This objective is completed by eating specified food or drinking specified potion. The only required argument is the ID
-of an item from the _items_ section.
+This objective is completed by eating the specified food or drinking the specified potion. 
 
-!!! example
-    ```YAML
-    consume tawny_owl events:faster_endurance_regen
-    ```
+| Parameter       | Syntax                       | Default Value          | Explanation                                                                                                                   |
+|-----------------|------------------------------|------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| _Item_          | [Item](./Reference.md#items) | :octicons-x-circle-16: | The item or potion that must be consumed.                                                                                     |
+| _Amount_        | amount:number                | 1                      | The amount of items to consume.                                                                                               |
+
+
+```YAML
+objectives:
+  eatApple: "consume apple events:faster_endurance_regen"
+  eatSteak: "consume steak amount:4 events:health_boost"
+```
+
+<h5> Variable Properties </h5> 
+
+| Name     | Example Output | Explanation                                                                                 |
+|----------|----------------|---------------------------------------------------------------------------------------------|
+| _amount_ | 6              | Shows the amount of items already consumed.                                                 |
+| _left_   | 4              | Shows the amount of items that still need to be consumed for the objective to be completed. |
+| _total_  | 10             | Shows the initial amount of items that needed to be consumed.                               |
+
 
 ## Crafting: `craft`
 
@@ -273,7 +295,7 @@ Location objective contains one property, `location`. It's a string formatted li
 ## Login: `login`
 
 To complete this objective the player simply needs to login to the server.
-If you use `global` this objective will be also completed directly when the player joins the first time.
+If you use `global` this objective will be also completed directly when a new player joins for the first time.
 If you use `persistent` it will be permanent.
 Don't forget that if you use global and persistent you can still remove the objective explicitly.
 
@@ -304,12 +326,7 @@ Solution: The Cake is a lie!
 The objective's instruction string is defined as follows:
 
 1. The first argument is the password, use underscore characters (`_`) instead of spaces.
-   The password is a [regular expression](https://medium.com/factory-mind/regex-tutorial-a-simple-cheatsheet-by-examples-649dc1c3f285).
-   They are a little complicated but worth the effort if you want more control over what exactly matches. 
-   Websites like [regex101.com](https://regex101.com/) help with that complexity though.
-   The official [documentation](https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/util/regex/Pattern.html#sum) for regular expressions
-   in Java might also help you.
-   If you don't want to get into them just write down the password but keep in mind that the players answer needs to be an exact match! 
+   The password is a [regular expression](Reference.md#regex-regular-expressions). 
 
 2. The prefix can be changed: The default (when no prefix is set) is the translated prefix from the *messages.yml* config in the user's language.             
    Note that every custom prefix is suffixed with `:⠀`, so `prefix:Library_password` will require the user to enter `Library password: myfancypassword`.     
@@ -325,10 +342,11 @@ The objective's instruction string is defined as follows:
 4. If you want to trigger one or more events when the player failed to guess the password you can use the argument `fail` with a list of events (comma separated).
    With disabled prefix every command or chat message will trigger these events!
 
-!!! example
-    ```YAML
-    password beton ignoreCase prefix:secret fail:failEvent1,failEvent2 events:message,reward
-    ```
+
+```YAML
+objectives:
+  theBetonPassword: "password beton ignoreCase prefix:secret fail:failEvent1,failEvent2 events:message,reward"
+```
 
 ## Pickup item: `pickup`
 

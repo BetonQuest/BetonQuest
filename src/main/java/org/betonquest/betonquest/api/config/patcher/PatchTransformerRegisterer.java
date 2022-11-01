@@ -7,6 +7,7 @@ import org.betonquest.betonquest.modules.config.transformers.ListEntryRemoveTran
 import org.betonquest.betonquest.modules.config.transformers.ListEntryRenameTransformer;
 import org.betonquest.betonquest.modules.config.transformers.RemoveTransformer;
 import org.betonquest.betonquest.modules.config.transformers.SetTransformer;
+import org.betonquest.betonquest.modules.config.transformers.TypeTransformer;
 import org.betonquest.betonquest.modules.config.transformers.ValueRenameTransformer;
 
 /**
@@ -27,6 +28,7 @@ public interface PatchTransformerRegisterer {
         patcher.registerTransformer("LIST_ENTRY_ADD", new ListEntryAddTransformer());
         patcher.registerTransformer("LIST_ENTRY_REMOVE", new ListEntryRemoveTransformer());
         patcher.registerTransformer("LIST_ENTRY_RENAME", new ListEntryRenameTransformer());
+        patcher.registerTransformer("TYPE_TRANSFORM", new TypeTransformer());
     }
 }
 

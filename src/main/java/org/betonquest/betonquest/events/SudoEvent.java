@@ -3,8 +3,8 @@ package org.betonquest.betonquest.events;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 
 /**
@@ -26,8 +26,8 @@ public class SudoEvent extends QuestEvent {
 
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    protected Void execute(final String playerID) {
-        final Player player = PlayerConverter.getPlayer(playerID);
+    protected Void execute(final Profile profile) {
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
         for (final String command : commands) {
             player.performCommand(command.replace("%player%", player.getName()));
         }

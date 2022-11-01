@@ -558,8 +558,9 @@ Looking for [console commands](#command-command)?
 
 **persistent**, **static**
 
-This event adds (or removes) a tag to the player. The first argument after event's name must be `add` or `del`.
-Next goes the tag name. It can't contain spaces (though `_` is fine). Additional tags can be added, separated by commas (without spaces).
+This event adds a tag to or deletes a tag from the player. The first argument after event's name must be
+`add` or `delete`. Next goes the tag name. It can't contain spaces (though `_` is fine).
+Multiple tags can be added and deleted separated by commas (without spaces).
 
 !!! example
     ```YAML

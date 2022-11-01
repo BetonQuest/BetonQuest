@@ -140,7 +140,7 @@ jobs:
             ]
       - name: Build with Maven. Phase 'verify'
         run: |
-          mvn -B verify
+          mvn -P Test-All -B verify
           git diff > target/artifacts/changes.patch
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
@@ -286,7 +286,7 @@ jobs:
             ]
       - name: Publish to Maven Repository
         run: |
-          mvn -Pskip-verification -B deploy
+          mvn -P Skip-Verification,Test-None -B deploy
         env:
           REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
           REPOSITORY_USER: ${{ secrets.REPOSITORY_USER }}

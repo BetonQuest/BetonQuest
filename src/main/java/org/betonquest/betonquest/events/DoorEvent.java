@@ -2,6 +2,7 @@ package org.betonquest.betonquest.events;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
@@ -27,14 +28,14 @@ public class DoorEvent extends QuestEvent {
         final String action = instruction.next();
         try {
             type = ToggleType.valueOf(action.toUpperCase(Locale.ROOT));
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             throw new InstructionParseException("Unknown action type '" + action + "', allowed are: on, off, toggle", e);
         }
     }
 
     @Override
-    protected Void execute(final String playerID) throws QuestRuntimeException {
-        final Block block = loc.getLocation(playerID).getBlock();
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
+        final Block block = loc.getLocation(profile).getBlock();
 
         final Openable door = (Openable) block.getBlockData();
 

@@ -158,17 +158,19 @@ extra:
       </ul>
       <b>With your consent, you're helping us to make this documentation better for everyone.</b>
   social:
-    - icon: fontawesome/brands/discord
+    - icon: brands/discord
       link: https://discord.gg/rK6mfHq
-    - icon: brands/opencollective-icon
+    - icon: brands/opencollective
       link: https://opencollective.com/betonquest
+    - icon: brands/modrinth
+      link: https://modrinth.com/plugin/betonquest
+    - icon: brands/spigot
+      link: https://spigotmc.org/resources/2117/
     - icon: fontawesome/brands/github
       link: https://github.com/BetonQuest/BetonQuest
-    - icon: fontawesome/solid/faucet
-      link: https://spigotmc.org/resources/2117/
-    - icon: fontawesome/solid/box-archive
+    - icon: material/file-download
       link: https://dev.betonquest.org
-    - icon: fontawesome/solid/envelope
+    - icon: brands/mail
       link: mailto://contact@betonquest.org
 
 #Notice that here are a few strange looking hairspaces in here.
@@ -207,6 +209,7 @@ nav:
           - "IO's & Categories": Documentation/Notification-IO's-&-Categories.md
       - 'Menus':
           - 'Menus': Documentation/Menu-Menu.md
+          - 'Menu Example': Documentation/Menu-Example.md
           - 'Elements': Documentation/Menu-Elements.md
           - 'Commands': Documentation/Menu-Commands.md
           - 'Config': Documentation/Menu-Config.md

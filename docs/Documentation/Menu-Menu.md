@@ -1,16 +1,20 @@
 ---
 icon: material/television-guide
 ---
-<span class="centered">![RPGMenu example](../_media/content/Documentation/Menu/RPGMenuExample.png)</span>
 
+# Menus
 BetonQuest allows the creation of fully custom GUIs using the events and items system.  
 Nearly everything can be done with these, from simple selection, over warp systems, guis listing open quests to
 information dialogs that display player stats.
 
+<span class="centered">![Menu example](../_media/content/Documentation/Menu/RPGMenuExample.png)</span>
+
 Many new features will be added to the menu system in 2.0. You can see the ongoing discussion on what
 features to add on our [GitHub discussion](https://github.com/BetonQuest/BetonQuest/discussions) page.
 
-# Creating a menu
+[:material-play-outline: Try the working example for a quick overview.](./Menu-Example.md){ .md-button }
+
+## Creating a menu
 To create a new menu just create a `menus` section in any file.
 The name which can be used to identify each menu will be the name of another section as shown below.
 
@@ -21,18 +25,18 @@ menus:
     #...
 ```
 
-# The menu settings
+## The menu settings
 This section tells you about each setting which has to be set (or can optionally be set) to configure your menu.
 
-* `title`: *(string)*  
+* `title`:   
   Fist of all you have to set the title of your menu.
   It will be displayed in the top left corner of your menu.
   You can use [color codes](https://minecraft.gamepedia.com/Formatting_codes) with `&` instead of `§` to color the
   title. Variables are supported.
   **Example:** `title: '&6&lQuests'`
 
-* `height`: *(number from `1` to `6`)*  
-  This sets how many lines of slots your menu will have.  
+* `height`:   
+  This sets how many lines of slots your menu will have. Minimum 1, Maximum 6. 
   **Example:** `height: 3`
 
 * `bind`: *([Quest Item](Reference.md#items))* ***-optional***   
@@ -41,20 +45,21 @@ This section tells you about each setting which has to be set (or can optionally
   This setting is optional so you can leave it out to bind no item.  
   **Example:** `bind: menu_quests_open`
 
-* `command`: *(string)* ***-optional***  
+* `command`: ***-optional***  
   You can use this to create a new command which opens the menu if it is executed by a player.
-  The command should only contain letters, numbers and `-`. Spaces are not allowed.  
+  The command should only contain letters, numbers and `-`. Spaces are not allowed.
+  **The server must be restarted to unregister command tab completions.**
   **Example:** `command: '/quests'`
 
-* `open_conditions`: *(string)* ***-optional***  
+* `open_conditions`: ***-optional***  
   You can add a list of conditions, each one separated by a `,` which all have to be true to open the menu with a bound item or a bound command. Use `packageName.id` to use conditions from other packages and `!` before the id to invert the condition.   
   **Example:** `open_conditions: 'menu_quests_open_tag,!sneaking'`
 
-* `open_events`: *(string)* ***-optional***  
+* `open_events`: ***-optional***  
   You can add a list of events, each one separated by a `,` which all are run when the menu opens. Use `packageName.id` to use events from other packages.   
   **Example:** `open_events: 'menu_quests_open_addpoints,menu_quests_open_effect_resistance_short'`
 
-* `close_events`: *(string)* ***-optional***  
+* `close_events`: ***-optional***  
   You can add a list of events, each one separated by a `,` which all are run when the menu is closed. Use `packageName.id` to use events from other packages.   
   **Example:** `close_events: 'menu_quests_reopen'`
 
@@ -180,168 +185,3 @@ slots:
   8: reputation
   11-13: 'quest1_active,quest2_active,quest3_active'
 ```
-
-# Example menu
-
-**How the menu looks ingame:**  
-![ExampleMenu](../_media/content/Documentation/Menu/ExampleMenu.gif)
-
-``` YAML
-height: 3
-title: '&6&lQuests'
-bind: menu_quests_open
-command: '/quests'
-open_conditions: 'menu_quests_open_permission'
-items:
-  quest1_active:
-    item: menu_quests_1
-    amount: 1
-    conditions: '!menu_quests_1_tag_completed'
-    text:
-      en:
-        - '&7[Quest] &f&lBone ripper'
-        - '&f&oRipp some skeletons off'
-        - '&f&otheir bones to complete'
-        - '&f&othis quest.'
-        - '&f&o'
-        - '&eLeft click to locate npc'
-        - '&eRight click to cancel quest'
-      de:
-        - '&7[Quest] &f&lKnochenbrecher'
-        - '&f&oBrech den Skeletten alle'
-        - '&f&oKnochen um diese Quest'
-        - '&f&oabzuschließen'
-        - '&f&o'
-        - '&eLinksclick um den NPC zu finden'
-        - '&eRechstclick um die Quest abzubrechen'
-    click:
-      right: menu_quests_1_cancel,menu_quests_1_cancel_msg
-      left: menu_quests_1_compass,menu_quests_1_location_msg
-    close: true
-  quest1_completed:
-    item: menu_quests_1_completed
-    amount: 1
-    conditions: menu_quests_1_tag_completed
-    text:
-      en:
-        - '&2[Quest] &f&lBone ripper'
-        - '&f&oRipp some skeletons off'
-        - '&f&otheir bones to complete'
-        - '&f&othis quest.'
-        - '&f&o'
-        - '&2Quest completed!'
-      de:
-        - '&2[Quest] &f&lKnochenbrecher'
-        - '&f&oBrech den Skeletten alle'
-        - '&f&oKnochen um diese Quest'
-        - '&f&oabzuschließen'
-        - '&f&o'
-        - '&2Quest abgeschlossen!'
-    close: false
-  quest2_active:
-    item: menu_quests_2
-    amount: 1
-    conditions: '!menu_quests_2_tag_completed'
-    text:
-      en:
-        - '&7[Quest] &7&lSorcerer''s apprentice'
-        - '&d&oCollect some ingredients'
-        - '&d&ofor the sorcerer to'
-        - '&d&ocomplete this quest.'
-        - '&d&o'
-        - '&eLeft click to locate npc'
-        - '&eRight click to cancel quest'
-      de:
-        - '&7[Quest] &7&lZauberlehrling'
-        - '&d&oSammel für den Zauberer'
-        - '&d&oeinige Trankzutaten um '
-        - '&d&odiese Quest abzuschließen.'
-        - '&d&o'
-        - '&eLinksclick um den NPC zu finden'
-        - '&eRechstclick um die Quest abzubrechen'
-    click:
-      right: menu_quests_2_cancel,menu_quests_2_cancel_msg
-      left: menu_quests_2_compass,menu_quests_2_location_msg
-    close: true
-  quest2_completed:
-    item: menu_quests_2_completed
-    amount: 1
-    conditions: menu_quests_2_tag_completed
-    text:
-      en:
-        - '&2[Quest] &7&lSorcerer''s apprentice'
-        - '&d&oCollect some ingredients'
-        - '&d&ofor the sorcerer to'
-        - '&d&ocomplete this quest.'
-        - '&d&o'
-        - '&2Quest completed!'
-      de:
-        - '&2[Quest] &7&lZauberlehrling'
-        - '&d&oSammel für den Zauberer'
-        - '&d&oeinige Trankzutaten um '
-        - '&d&odiese Quest abzuschließen.'
-        - '&d&o'
-        - '&2Quest abgeschlossen!'
-    close: false
-  quest3_active:
-    item: menu_quests_3
-    amount: 1
-    conditions: '!menu_quests_3_tag_completed'
-    text:
-      en:
-        - '&7[Quest] &6&lThe lost amulet'
-        - '&4&oFind the lost amulet of'
-        - '&4&oSonequa to complete '
-        - '&4&othis quest.'
-        - '&4&o'
-        - '&eLeft click to locate npc'
-        - '&eRight click to cancel quest'
-      de:
-        - '&7[Quest] &6&lDas verlorene Amulet'
-        - '&4&oFinde das verlorene Amulet'
-        - '&4&ovon Sonequa um diese'
-        - '&4&oQuest abzuschließen.'
-        - '&4&o'
-        - '&eLinksclick um den NPC zu finden'
-        - '&eRechstclick um die Quest abzubrechen'
-    click:
-      right: menu_quests_3_cancel,menu_quests_3_cancel_msg
-      left: menu_quests_3_compass,menu_quests_3_location_msg
-    close: true
-  quest3_completed:
-    item: menu_quests_3_completed
-    amount: 1
-    conditions: menu_quests_3_tag_completed
-    text:
-      en:
-        - '&2[Quest] &6&lThe lost amulet'
-        - '&4&oFind the lost amulet of'
-        - '&4&oSonequa to complete '
-        - '&4&othis quest.'
-        - '&4&o'
-        - '&2Quest completed!'
-      de:
-        - '&2[Quest] &6&lDas verlorene Amulet'
-        - '&4&oFinde das verlorene Amulet'
-        - '&4&ovon Sonequa um diese'
-        - '&4&oQuest abzuschließen.'
-        - '&4&o'
-        - '&2Quest abgeschlossen!'
-    close: false
-  reputation:
-    item: menu_quests_reputation
-    amount: 1
-    text:
-      en:
-        - '&2Quest reputation: &6&l%point.quest_reputation.amount%'
-      de:
-        - '&2Quest Ansehen: &6&l%point.quest_reputation.amount%'
-    click: menu_quests_reputation_msg
-    close: true
-slots:
-  8: reputation
-  11: 'quest1_active,quest1_completed'
-  13: 'quest2_active,quest2_completed'
-  15: 'quest3_active,quest3_completed'
-```
-

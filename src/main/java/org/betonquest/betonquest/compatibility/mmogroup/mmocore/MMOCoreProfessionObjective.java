@@ -5,6 +5,7 @@ import net.Indyuce.mmocore.experience.Profession;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -22,26 +23,26 @@ public class MMOCoreProfessionObjective extends Objective implements Listener {
         super(instruction);
 
         template = ObjectiveData.class;
-        professionName = instruction.next();
+        final String profession = instruction.next();
+        professionName = "MAIN".equalsIgnoreCase(profession) ? null : profession;
         targetLevel = instruction.getInt();
 
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onLevelUp(final PlayerLevelUpEvent event) {
-        final String playerID = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(playerID) || !checkConditions(playerID)) {
+        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        if (!containsPlayer(profile) || !checkConditions(profile)) {
             return;
         }
         final Profession profession = event.getProfession();
-        if (profession == null) {
+        if (profession != null && !profession.getName().equalsIgnoreCase(professionName)) {
             return;
         }
-
-        if (!profession.getName().equalsIgnoreCase(professionName) || event.getNewLevel() < targetLevel) {
+        if (event.getNewLevel() < targetLevel) {
             return;
         }
-        completeObjective(playerID);
+        completeObjective(profile);
     }
 
     @Override
@@ -60,7 +61,7 @@ public class MMOCoreProfessionObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(final String name, final String playerID) {
+    public String getProperty(final String name, final Profile profile) {
         return "";
     }
 

@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.notify;
 
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.bukkit.entity.Player;
 
 import java.util.Map;
 
@@ -23,7 +23,7 @@ public class SubTitleNotifyIO extends NotifyIO {
     }
 
     @Override
-    protected void notifyPlayer(final String message, final Player player) {
-        player.sendTitle(" ", message, fadeIn, stay, fadeOut);
+    protected void notifyPlayer(final String message, final OnlineProfile onlineProfile) {
+        onlineProfile.getOnlinePlayer().sendTitle(" ", message, fadeIn, stay, fadeOut);
     }
 }

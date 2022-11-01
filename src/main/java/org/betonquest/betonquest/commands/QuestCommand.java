@@ -16,6 +16,7 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.GlobalData;
@@ -52,6 +53,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -289,7 +291,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     break;
                 case "backup":
                     // do a full plugin backup
-                    if (sender instanceof Player || Bukkit.getOnlinePlayers().size() > 0) {
+                    if (sender instanceof Player || !Bukkit.getOnlinePlayers().isEmpty()) {
                         sendMessage(sender, "offline");
                         break;
                     }
@@ -487,22 +489,19 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     }
 
     /**
-     * Purges player's data
+     * Purges profile's data
      */
     private void purgePlayer(final CommandSender sender, final String... args) {
-        // playerID is required
-        if (args.length < 2) {
-            LOG.debug("Player's name is missing");
-            sendMessage(sender, "specify_player");
+        final Profile profile = getTargetProfile(sender, args);
+        if (profile == null) {
             return;
         }
-        final String playerID = PlayerConverter.getID(args[1]);
-        PlayerData playerData = instance.getPlayerData(playerID);
+        PlayerData playerData = instance.getPlayerData(profile);
         // if the player is offline then get his PlayerData outside of the
         // list
         if (playerData == null) {
             LOG.debug("Player is offline, loading his data");
-            playerData = new PlayerData(playerID);
+            playerData = new PlayerData(profile);
         }
         // purge the player
         LOG.debug("Purging player " + args[1]);
@@ -511,23 +510,30 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         sendMessage(sender, "purged", args[1]);
     }
 
-    /**
-     * Lists, adds or removes journal entries of certain players
-     */
-    private void handleJournals(final CommandSender sender, final String... args) {
-        // playerID is required
+    @Nullable
+    private Profile getTargetProfile(final CommandSender sender, final String... args) {
         if (args.length < 2) {
             LOG.debug("Player's name is missing");
             sendMessage(sender, "specify_player");
+            return null;
+        }
+        return PlayerConverter.getID(Bukkit.getOfflinePlayer(args[1]));
+    }
+
+    /**
+     * Lists, adds or removes journal entries of certain profile
+     */
+    private void handleJournals(final CommandSender sender, final String... args) {
+        final Profile profile = getTargetProfile(sender, args);
+        if (profile == null) {
             return;
         }
-        final String playerID = PlayerConverter.getID(args[1]);
-        PlayerData playerData = instance.getPlayerData(playerID);
+        PlayerData playerData = instance.getPlayerData(profile);
         // if the player is offline then get his PlayerData outside of the
         // list
         if (playerData == null) {
             LOG.debug("Player is offline, loading his data");
-            playerData = new PlayerData(playerID);
+            playerData = new PlayerData(profile);
         }
         final Journal journal = playerData.getJournal();
         // if there are no arguments then list player's pointers
@@ -613,22 +619,19 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     }
 
     /**
-     * Lists, adds or removes points of certain player
+     * Lists, adds or removes points of certain profile
      */
     private void handlePoints(final CommandSender sender, final String... args) {
-        // playerID is required
-        if (args.length < 2) {
-            LOG.debug("Player's name is missing");
-            sendMessage(sender, "specify_player");
+        final Profile profile = getTargetProfile(sender, args);
+        if (profile == null) {
             return;
         }
-        final String playerID = PlayerConverter.getID(args[1]);
-        PlayerData playerData = instance.getPlayerData(playerID);
+        PlayerData playerData = instance.getPlayerData(profile);
         // if the player is offline then get his PlayerData outside of the
         // list
         if (playerData == null) {
             LOG.debug("Player is offline, loading his data");
-            playerData = new PlayerData(playerID);
+            playerData = new PlayerData(profile);
         }
         // if there are no arguments then list player's points
         if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
@@ -878,8 +881,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         // fire the event
-        final String playerID = "-".equals(args[1]) ? null : PlayerConverter.getID(args[1]);
-        BetonQuest.event(playerID, eventID);
+        final Profile profile = "-".equals(args[1]) ? null : PlayerConverter.getID(Bukkit.getOfflinePlayer(args[1]));
+        BetonQuest.event(profile, eventID);
         sendMessage(sender, "player_event", eventID.generateInstruction().getInstruction());
     }
 
@@ -925,9 +928,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return;
         }
         // display message about condition
-        final String playerID = "-".equals(args[1]) ? null : PlayerConverter.getID(args[1]);
+        final Profile profile = "-".equals(args[1]) ? null : PlayerConverter.getID(Bukkit.getOfflinePlayer(args[1]));
         sendMessage(sender, "player_condition", (conditionID.inverted() ? "! " : "") + conditionID.generateInstruction().getInstruction(),
-                Boolean.toString(BetonQuest.condition(playerID, conditionID)));
+                Boolean.toString(BetonQuest.condition(profile, conditionID)));
     }
 
     /**
@@ -951,19 +954,16 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      * Lists, adds or removes tags
      */
     private void handleTags(final CommandSender sender, final String... args) {
-        // playerID is required
-        if (args.length < 2) {
-            LOG.debug("Player's name is missing");
-            sendMessage(sender, "specify_player");
+        final Profile profile = getTargetProfile(sender, args);
+        if (profile == null) {
             return;
         }
-        final String playerID = PlayerConverter.getID(args[1]);
-        PlayerData playerData = instance.getPlayerData(playerID);
+        PlayerData playerData = instance.getPlayerData(profile);
         // if the player is offline then get his PlayerData outside of the
         // list
         if (playerData == null) {
             LOG.debug("Player is offline, loading his data");
-            playerData = new PlayerData(playerID);
+            playerData = new PlayerData(profile);
         }
         // if there are no arguments then list player's tags
         if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
@@ -989,7 +989,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "a":
                 // add the tag
                 LOG.debug(
-                        "Adding tag " + tag + " for player " + PlayerConverter.getName(playerID));
+                        "Adding tag " + tag + " for player " + profile.getProfileName());
                 playerData.addTag(tag);
                 sendMessage(sender, "tag_added");
                 break;
@@ -1000,7 +1000,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "d":
                 // remove the tag
                 LOG.debug(
-                        "Removing tag " + tag + " for player " + PlayerConverter.getName(playerID));
+                        "Removing tag " + tag + " for player " + profile.getProfileName());
                 playerData.removeTag(tag);
                 sendMessage(sender, "tag_removed");
                 break;
@@ -1110,20 +1110,17 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
      */
     @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount"})
     private void handleObjectives(final CommandSender sender, final String... args) {
-        // playerID is required
-        if (args.length < 2) {
-            LOG.debug("Player's name is missing");
-            sendMessage(sender, "specify_player");
+        final Profile profile = getTargetProfile(sender, args);
+        if (profile == null) {
             return;
         }
-        final String playerID = PlayerConverter.getID(args[1]);
-        final boolean isOnline = PlayerConverter.getPlayer(playerID) != null;
-        PlayerData playerData = instance.getPlayerData(playerID);
+        final boolean isOnline = profile.getPlayer() != null;
+        PlayerData playerData = instance.getPlayerData(profile);
         // if the player is offline then get his PlayerData outside of the
         // list
         if (playerData == null) {
             LOG.debug("Player is offline, loading his data");
-            playerData = new PlayerData(playerID);
+            playerData = new PlayerData(profile);
         }
         // if there are no arguments then list player's objectives
         if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
@@ -1133,7 +1130,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 // active
                 // objectives
                 tags = new ArrayList<>();
-                for (final Objective objective : BetonQuest.getInstance().getPlayerObjectives(playerID)) {
+                for (final Objective objective : BetonQuest.getInstance().getPlayerObjectives(profile)) {
                     tags.add(objective.getLabel());
                 }
             } else {
@@ -1176,10 +1173,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "add":
             case "a":
                 LOG.debug(
-                        "Adding new objective " + objectiveID + " for player " + PlayerConverter.getName(playerID));
+                        "Adding new objective " + objectiveID + " for player " + profile.getProfileName());
                 // add the objective
                 if (isOnline) {
-                    BetonQuest.newObjective(playerID, objectiveID);
+                    BetonQuest.newObjective(profile, objectiveID);
                 } else {
                     playerData.addNewRawObjective(objectiveID);
                 }
@@ -1191,17 +1188,17 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "r":
             case "d":
                 LOG.debug(
-                        "Deleting objective " + objectiveID + " for player " + PlayerConverter.getName(playerID));
-                objective.cancelObjectiveForPlayer(playerID);
+                        "Deleting objective " + objectiveID + " for player " + profile.getProfileName());
+                objective.cancelObjectiveForPlayer(profile);
                 playerData.removeRawObjective(objectiveID);
                 sendMessage(sender, "objective_removed");
                 break;
             case "complete":
             case "c":
                 LOG.debug(
-                        "Completing objective " + objectiveID + " for player " + PlayerConverter.getName(playerID));
+                        "Completing objective " + objectiveID + " for player " + profile.getProfileName());
                 if (isOnline) {
-                    objective.completeObjective(playerID);
+                    objective.completeObjective(profile);
                 } else {
                     playerData.removeRawObjective(objectiveID);
                 }
@@ -1253,8 +1250,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "tag":
             case "t":
                 updateType = UpdateType.RENAME_ALL_TAGS;
-                for (final Player player : Bukkit.getOnlinePlayers()) {
-                    final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
+                for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                    final PlayerData playerData = BetonQuest.getInstance().getPlayerData(onlineProfile);
                     playerData.removeTag(name);
                     playerData.addTag(rename);
                 }
@@ -1263,8 +1260,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "point":
             case "p":
                 updateType = UpdateType.RENAME_ALL_POINTS;
-                for (final Player player : Bukkit.getOnlinePlayers()) {
-                    final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
+                for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                    final PlayerData playerData = BetonQuest.getInstance().getPlayerData(onlineProfile);
                     int points = 0;
                     for (final Point point : playerData.getPoints()) {
                         if (point.getCategory().equals(name)) {
@@ -1328,14 +1325,13 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 BetonQuest.getInstance().renameObjective(nameID, renameID);
                 BetonQuest.getInstance().getObjective(renameID).setLabel(renameID);
                 // renaming an active objective probably isn't needed
-                for (final Player player : Bukkit.getOnlinePlayers()) {
-                    final String playerID = PlayerConverter.getID(player);
+                for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
                     boolean found = false;
                     String data = null;
-                    for (final Objective obj : BetonQuest.getInstance().getPlayerObjectives(playerID)) {
+                    for (final Objective obj : BetonQuest.getInstance().getPlayerObjectives(onlineProfile)) {
                         if (obj.getLabel().equals(name)) {
                             found = true;
-                            data = obj.getData(PlayerConverter.getID(player));
+                            data = obj.getData(onlineProfile);
                             break;
                         }
                     }
@@ -1347,9 +1343,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                         data = "";
                     }
                     final Objective objective = BetonQuest.getInstance().getObjective(nameID);
-                    objective.pauseObjectiveForPlayer(playerID);
-                    BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective(nameID);
-                    BetonQuest.resumeObjective(PlayerConverter.getID(player), renameID, data);
+                    objective.pauseObjectiveForPlayer(onlineProfile);
+                    BetonQuest.getInstance().getPlayerData(onlineProfile).removeRawObjective(nameID);
+                    BetonQuest.resumeObjective(onlineProfile, renameID, data);
                 }
                 nameID.getPackage().getConfig().set(nameID.getBaseID(), null);
                 try {
@@ -1366,8 +1362,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "entry":
             case "e":
                 updateType = UpdateType.RENAME_ALL_ENTRIES;
-                for (final Player player : Bukkit.getOnlinePlayers()) {
-                    final Journal journal = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player)).getJournal();
+                for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                    final Journal journal = BetonQuest.getInstance().getPlayerData(onlineProfile).getJournal();
                     Pointer journalPointer = null;
                     for (final Pointer pointer : journal.getPointers()) {
                         if (pointer.getPointer().equals(name)) {
@@ -1425,8 +1421,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "tag":
             case "t":
                 updateType = UpdateType.REMOVE_ALL_TAGS;
-                for (final Player player : Bukkit.getOnlinePlayers()) {
-                    final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
+                for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                    final PlayerData playerData = BetonQuest.getInstance().getPlayerData(onlineProfile);
                     playerData.removeTag(name);
                 }
                 break;
@@ -1434,8 +1430,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "point":
             case "p":
                 updateType = UpdateType.REMOVE_ALL_POINTS;
-                for (final Player player : Bukkit.getOnlinePlayers()) {
-                    final PlayerData playerData = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player));
+                for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                    final PlayerData playerData = BetonQuest.getInstance().getPlayerData(onlineProfile);
                     playerData.removePointsCategory(name);
                 }
                 break;
@@ -1451,11 +1447,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                     LOG.warn("Could not find objective: " + e.getMessage(), e);
                     return;
                 }
-                for (final Player player : Bukkit.getOnlinePlayers()) {
-                    final String playerID = PlayerConverter.getID(player);
+                for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
                     final Objective objective = BetonQuest.getInstance().getObjective(objectiveID);
-                    objective.cancelObjectiveForPlayer(playerID);
-                    BetonQuest.getInstance().getPlayerData(playerID).removeRawObjective(objectiveID);
+                    objective.cancelObjectiveForPlayer(onlineProfile);
+                    BetonQuest.getInstance().getPlayerData(onlineProfile).removeRawObjective(objectiveID);
                 }
                 break;
             case "journals":
@@ -1465,8 +1460,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "entry":
             case "e":
                 updateType = UpdateType.REMOVE_ALL_ENTRIES;
-                for (final Player player : Bukkit.getOnlinePlayers()) {
-                    final Journal journal = BetonQuest.getInstance().getPlayerData(PlayerConverter.getID(player)).getJournal();
+                for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                    final Journal journal = BetonQuest.getInstance().getPlayerData(onlineProfile).getJournal();
                     journal.removePointer(name);
                     journal.update();
                 }
@@ -1609,24 +1604,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final String hooked = hookedJoiner.toString();
 
         final Component compHeader = Component.text(BetonQuest.getInstance().getPluginTag() + versionInfo);
-        final Component compVersionBetonQuestKey = Component.text(colorKey + versionBetonQuest)
-                .hoverEvent(Component.text(clickToCopy))
-                .clickEvent(ClickEvent.suggestCommand(ChatColor.stripColor(versionBetonQuest + versionBetonQuestValue)));
-        final Component compVersionBetonQuestValue = Component.text(versionBetonQuestValue)
-                .hoverEvent(Component.text(clickToCopy))
-                .clickEvent(ClickEvent.suggestCommand(ChatColor.stripColor(versionBetonQuestValue)));
-        final Component compVersionServerKey = Component.text(colorKey + versionServer)
-                .hoverEvent(Component.text(clickToCopy))
-                .clickEvent(ClickEvent.suggestCommand(ChatColor.stripColor(versionServer + versionServerValue)));
-        final Component compVersionServerValue = Component.text(versionServerValue)
-                .hoverEvent(Component.text(clickToCopy))
-                .clickEvent(ClickEvent.suggestCommand(ChatColor.stripColor(versionServerValue)));
-        final Component compHookedKey = Component.text(colorKey + hookedInto)
-                .hoverEvent(Component.text(clickToCopy))
-                .clickEvent(ClickEvent.suggestCommand(ChatColor.stripColor(hookedInto + hooked)));
-        final Component compHookedValue = Component.text(hooked)
-                .hoverEvent(Component.text(clickToCopy))
-                .clickEvent(ClickEvent.suggestCommand(ChatColor.stripColor(hooked)));
+        final Component compVersionBetonQuestKey = Component.text(colorKey + versionBetonQuest);
+        final Component compVersionBetonQuestValue = Component.text(versionBetonQuestValue);
+        final Component compVersionServerKey = Component.text(colorKey + versionServer);
+        final Component compVersionServerValue = Component.text(versionServerValue);
+        final Component compHookedKey = Component.text(colorKey + hookedInto);
+        final Component compHookedValue = Component.text(hooked);
         final Component compCopyAll = Component.text(clickToCopyAll)
                 .hoverEvent(Component.text(clickToCopy))
                 .clickEvent(ClickEvent.copyToClipboard(ChatColor.stripColor(versionBetonQuest
@@ -1829,7 +1812,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     private void sendMessage(final CommandSender sender, final String messageName, final String... variables) {
         if (sender instanceof Player) {
-            Config.sendMessage(null, PlayerConverter.getID((Player) sender), messageName, variables);
+            Config.sendMessage(null, PlayerConverter.getID((Player) sender).getOnlineProfile(), messageName, variables);
         } else {
             final String message = Config.getMessage(Config.getLanguage(), messageName, variables);
             sender.sendMessage(message);

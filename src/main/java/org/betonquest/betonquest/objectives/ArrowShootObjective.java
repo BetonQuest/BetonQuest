@@ -6,6 +6,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -50,12 +51,12 @@ public class ArrowShootObjective extends Objective implements Listener {
             return;
         }
         final Player player = (Player) arrow.getShooter();
-        final String playerID = PlayerConverter.getID(player);
-        if (!containsPlayer(playerID)) {
+        final Profile profile = PlayerConverter.getID(player);
+        if (!containsPlayer(profile)) {
             return;
         }
         try {
-            final Location location = loc.getLocation(playerID);
+            final Location location = loc.getLocation(profile);
             // check if the arrow is in the right place in the next tick
             // wait one tick, let the arrow land completely
             new BukkitRunnable() {
@@ -64,11 +65,11 @@ public class ArrowShootObjective extends Objective implements Listener {
                 public void run() {
                     final Location arrowLocation = arrow.getLocation();
                     try {
-                        final double pRange = range.getDouble(playerID);
+                        final double pRange = range.getDouble(profile);
                         if (arrowLocation.getWorld().equals(location.getWorld())
                                 && arrowLocation.distanceSquared(location) < pRange * pRange
-                                && checkConditions(playerID)) {
-                            completeObjective(playerID);
+                                && checkConditions(profile)) {
+                            completeObjective(profile);
                         }
                     } catch (final QuestRuntimeException e) {
                         LOG.warn(instruction.getPackage(), "Could not resolve range variable: " + e.getMessage(), e);
@@ -96,7 +97,7 @@ public class ArrowShootObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(final String name, final String playerID) {
+    public String getProperty(final String name, final Profile profile) {
         return "";
     }
 

@@ -7,13 +7,13 @@ import net.citizensnpcs.api.event.NPCSpawnEvent;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
@@ -123,10 +123,10 @@ public final class NPCHider extends BukkitRunnable implements Listener {
     /**
      * Updates the visibility of the specified NPC for this player.
      *
-     * @param player the player
-     * @param npcID  ID of the NPC
+     * @param onlineProfile the online profile of the player
+     * @param npcID         ID of the NPC
      */
-    public void applyVisibility(final Player player, final Integer npcID) {
+    public void applyVisibility(final OnlineProfile onlineProfile, final Integer npcID) {
         final NPC npc = CitizensAPI.getNPCRegistry().getById(npcID);
         if (npc == null) {
             LOG.warn("NPCHider could not update visibility for npc " + npcID + ": No npc with this id found!");
@@ -134,10 +134,10 @@ public final class NPCHider extends BukkitRunnable implements Listener {
         }
         if (npc.isSpawned()) {
             final Set<ConditionID> conditions = npcs.get(npcID);
-            if (conditions == null || conditions.isEmpty() || !BetonQuest.conditions(PlayerConverter.getID(player), conditions)) {
-                hider.showEntity(player, npc.getEntity());
+            if (conditions == null || conditions.isEmpty() || !BetonQuest.conditions(onlineProfile, conditions)) {
+                hider.showEntity(onlineProfile, npc.getEntity());
             } else {
-                hider.hideEntity(player, npc.getEntity());
+                hider.hideEntity(onlineProfile, npc.getEntity());
             }
         }
     }
@@ -145,11 +145,11 @@ public final class NPCHider extends BukkitRunnable implements Listener {
     /**
      * Updates the visibility of all NPCs for this player.
      *
-     * @param player the player
+     * @param onlineProfile the online profile of the player
      */
-    public void applyVisibility(final Player player) {
+    public void applyVisibility(final OnlineProfile onlineProfile) {
         for (final Integer npcID : npcs.keySet()) {
-            applyVisibility(player, npcID);
+            applyVisibility(onlineProfile, npcID);
         }
     }
 
@@ -163,18 +163,18 @@ public final class NPCHider extends BukkitRunnable implements Listener {
         if (!npcID.getOwningRegistry().equals(CitizensAPI.getNPCRegistry())) {
             return;
         }
-        for (final Player p : Bukkit.getOnlinePlayers()) {
-            applyVisibility(p, npcID.getId());
+        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+            applyVisibility(onlineProfile, npcID.getId());
         }
     }
 
     /**
-     * Updates the visibility of all NPCs for all players.
+     * Updates the visibility of all NPCs for all onlineProfiles.
      */
     public void applyVisibility() {
-        for (final Player p : Bukkit.getOnlinePlayers()) {
+        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
             for (final Integer npcID : npcs.keySet()) {
-                applyVisibility(p, npcID);
+                applyVisibility(onlineProfile, npcID);
             }
         }
     }
@@ -182,15 +182,15 @@ public final class NPCHider extends BukkitRunnable implements Listener {
     /**
      * Checks whenever the NPC is visible to the player.
      *
-     * @param player the player
-     * @param npc    ID of the NPC
+     * @param onlineProfile the profile of the player
+     * @param npc           ID of the NPC
      * @return true if the NPC is visible to that player, false otherwise
      */
-    public boolean isInvisible(final Player player, final NPC npc) {
+    public boolean isInvisible(final OnlineProfile onlineProfile, final NPC npc) {
         if (npc.getEntity() == null) {
             return false;
         }
-        return !hider.isVisible(player, npc.getEntity().getEntityId());
+        return !hider.isVisible(onlineProfile, npc.getEntity().getEntityId());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -200,6 +200,6 @@ public final class NPCHider extends BukkitRunnable implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(final PlayerJoinEvent event) {
-        applyVisibility(event.getPlayer());
+        applyVisibility(PlayerConverter.getID(event.getPlayer()));
     }
 }

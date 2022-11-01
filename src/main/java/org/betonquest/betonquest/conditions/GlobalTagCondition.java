@@ -2,6 +2,7 @@ package org.betonquest.betonquest.conditions;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
 /**
@@ -17,7 +18,7 @@ public class GlobalTagCondition extends TagCondition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) {
+    protected Boolean execute(final Profile profile) {
         return BetonQuest.getInstance().getGlobalData().hasTag(tag);
     }
 

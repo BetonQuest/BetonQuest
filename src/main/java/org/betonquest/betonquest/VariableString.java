@@ -1,6 +1,7 @@
 package org.betonquest.betonquest;
 
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
 import java.util.ArrayList;
@@ -56,13 +57,13 @@ public class VariableString {
     /**
      * Resolves all variables in the string and returns the result.
      *
-     * @param playerID the ID of the player to resolve the variables for
+     * @param profile the profile of the player to resolve the variables for
      * @return the string with all variables resolved
      */
-    public String getString(final String playerID) {
+    public String getString(final Profile profile) {
         String resolvedString = string;
         for (final String variable : variables) {
-            final String resolvedVariable = BetonQuest.getInstance().getVariableValue(questPackage.getPackagePath(), variable, playerID);
+            final String resolvedVariable = BetonQuest.getInstance().getVariableValue(questPackage.getPackagePath(), variable, profile);
             resolvedString = resolvedString.replace(variable, resolvedVariable);
         }
         return resolvedString;

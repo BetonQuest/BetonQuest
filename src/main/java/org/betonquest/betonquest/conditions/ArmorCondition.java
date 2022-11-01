@@ -3,9 +3,9 @@ package org.betonquest.betonquest.conditions;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -23,8 +23,8 @@ public class ArmorCondition extends Condition {
 
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    protected Boolean execute(final String playerID) {
-        for (final ItemStack armor : PlayerConverter.getPlayer(playerID).getEquipment().getArmorContents()) {
+    protected Boolean execute(final Profile profile) {
+        for (final ItemStack armor : profile.getOnlineProfile().getOnlinePlayer().getEquipment().getArmorContents()) {
             if (item != null && item.compare(armor)) {
                 return true;
             }

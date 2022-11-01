@@ -5,10 +5,9 @@ import net.Indyuce.mmocore.experience.EXPSource;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-
-import java.util.UUID;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class MMOCoreClassExperienceEvent extends QuestEvent {
@@ -24,9 +23,9 @@ public class MMOCoreClassExperienceEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final String playerID) throws QuestRuntimeException {
-        final int amount = amountVar.getInt(playerID);
-        final PlayerData mmoData = PlayerData.get(UUID.fromString(playerID));
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
+        final int amount = amountVar.getInt(profile);
+        final PlayerData mmoData = PlayerData.get(profile.getOfflinePlayer().getUniqueId());
 
         if (isLevel) {
             mmoData.giveLevels(amount, EXPSource.QUEST);

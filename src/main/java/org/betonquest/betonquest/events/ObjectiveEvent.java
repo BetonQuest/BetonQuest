@@ -4,6 +4,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
@@ -11,7 +12,6 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.utils.PlayerConverter;
-import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
@@ -41,26 +41,23 @@ public class ObjectiveEvent extends QuestEvent {
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
     @Override
-    protected Void execute(final String playerID) throws QuestRuntimeException {
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
         final BetonQuest betonquest = BetonQuest.getInstance();
         if (betonquest.getObjective(objective) == null) {
             throw new QuestRuntimeException("Objective '" + objective + "' is not defined, cannot run objective event");
         }
-        if (playerID == null) {
+        if (profile == null) {
             if ("delete".equals(action) || "remove".equals(action)) {
-                Bukkit.getOnlinePlayers().forEach(player -> {
-                    final String uuid = PlayerConverter.getID(player);
-                    cancelObjectiveForOnlinePlayer(uuid, betonquest);
-                });
+                PlayerConverter.getOnlineProfiles().forEach(onlineProfile -> cancelObjectiveForOnlinePlayer(onlineProfile, betonquest));
                 betonquest.getSaver().add(new Saver.Record(UpdateType.REMOVE_ALL_OBJECTIVES, objective.toString()));
             } else {
                 LOG.warn(instruction.getPackage(), "You tried to call an objective add / finish event in a static context! Only objective delete works here.");
             }
-        } else if (PlayerConverter.getPlayer(playerID) == null) {
+        } else if (profile.getPlayer() == null) {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    final PlayerData playerData = new PlayerData(playerID);
+                    final PlayerData playerData = new PlayerData(profile);
                     switch (action.toLowerCase(Locale.ROOT)) {
                         case "start", "add" -> playerData.addNewRawObjective(objective);
                         case "delete", "remove" -> playerData.removeRawObjective(objective);
@@ -73,9 +70,9 @@ public class ObjectiveEvent extends QuestEvent {
             }.runTaskAsynchronously(betonquest);
         } else {
             switch (action.toLowerCase(Locale.ROOT)) {
-                case "start", "add" -> BetonQuest.newObjective(playerID, objective);
-                case "delete", "remove" -> cancelObjectiveForOnlinePlayer(playerID, betonquest);
-                case "complete", "finish" -> betonquest.getObjective(objective).completeObjective(playerID);
+                case "start", "add" -> BetonQuest.newObjective(profile, objective);
+                case "delete", "remove" -> cancelObjectiveForOnlinePlayer(profile, betonquest);
+                case "complete", "finish" -> betonquest.getObjective(objective).completeObjective(profile);
                 default -> {
                 }
             }
@@ -83,8 +80,8 @@ public class ObjectiveEvent extends QuestEvent {
         return null;
     }
 
-    private void cancelObjectiveForOnlinePlayer(final String playerID, final BetonQuest betonquest) {
-        betonquest.getObjective(objective).cancelObjectiveForPlayer(playerID);
-        betonquest.getPlayerData(playerID).removeRawObjective(objective);
+    private void cancelObjectiveForOnlinePlayer(final Profile profile, final BetonQuest betonquest) {
+        betonquest.getObjective(objective).cancelObjectiveForPlayer(profile);
+        betonquest.getPlayerData(profile).removeRawObjective(objective);
     }
 }

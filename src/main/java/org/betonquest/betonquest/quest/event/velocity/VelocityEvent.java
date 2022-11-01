@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.event.velocity;
 
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.location.VectorData;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -37,9 +37,9 @@ public class VelocityEvent implements Event {
 
 
     @Override
-    public void execute(final String playerId) throws QuestRuntimeException {
-        final Player player = PlayerConverter.getPlayer(playerId);
-        final Vector pVector = vector.get(playerId);
+    public void execute(final Profile profile) throws QuestRuntimeException {
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
+        final Vector pVector = vector.get(profile);
         final Vector directionVector = direction.calculate(player, pVector);
         final Vector modificationVector = modification.calculate(player, directionVector);
 

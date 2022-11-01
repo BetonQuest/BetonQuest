@@ -11,7 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
- * The backpack command. It opens player's backpack.
+ * The backpack command. It opens profile's backpack.
  */
 @CustomLog
 public class BackpackCommand implements CommandExecutor {
@@ -30,7 +30,7 @@ public class BackpackCommand implements CommandExecutor {
             // command sender must be a player, console can't have a backpack
             if (sender instanceof Player) {
                 LOG.debug("Executing /backpack command for " + sender.getName());
-                new Backpack(PlayerConverter.getID((Player) sender));
+                new Backpack(PlayerConverter.getID((Player) sender).getOnlineProfile());
             }
             return true;
         }

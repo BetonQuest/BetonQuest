@@ -2,8 +2,8 @@ package org.betonquest.betonquest.compatibility.vault;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 
 import java.util.Locale;
 
@@ -33,12 +33,12 @@ public class MoneyVariable extends Variable {
     }
 
     @Override
-    public String getValue(final String playerID) {
+    public String getValue(final Profile profile) {
         switch (type) {
             case AMOUNT:
-                return String.valueOf(VaultIntegrator.getEconomy().getBalance(PlayerConverter.getPlayer(playerID)));
+                return String.valueOf(VaultIntegrator.getEconomy().getBalance(profile.getOfflinePlayer()));
             case LEFT:
-                return String.valueOf(amount - VaultIntegrator.getEconomy().getBalance(PlayerConverter.getPlayer(playerID)));
+                return String.valueOf(amount - VaultIntegrator.getEconomy().getBalance(profile.getOfflinePlayer()));
             default:
                 return "";
         }

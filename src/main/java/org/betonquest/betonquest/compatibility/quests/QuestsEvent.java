@@ -4,8 +4,8 @@ import lombok.CustomLog;
 import me.blackvein.quests.Quest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 
 /**
  * Starts a quests in Quests plugin.
@@ -24,7 +24,7 @@ public class QuestsEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final String playerID) {
+    protected Void execute(final Profile profile) {
         Quest quest = null;
         for (final Quest q : QuestsIntegrator.getQuestsInstance().getQuests()) {
             if (q.getName().replace(' ', '_').equalsIgnoreCase(questName)) {
@@ -36,7 +36,7 @@ public class QuestsEvent extends QuestEvent {
             LOG.warn(instruction.getPackage(), "Quest '" + questName + "' is not defined");
             return null;
         }
-        QuestsIntegrator.getQuestsInstance().getQuester(PlayerConverter.getPlayer(playerID).getUniqueId()).takeQuest(quest, override);
+        QuestsIntegrator.getQuestsInstance().getQuester(profile.getProfileUUID()).takeQuest(quest, override);
         return null;
     }
 

@@ -2,8 +2,8 @@ package org.betonquest.betonquest.conditions;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -63,7 +63,7 @@ public class RealTimeCondition extends Condition {
     // TODO: Use Java 8 java.time API
     @Override
     @SuppressWarnings("PMD.AvoidCalendarDateCreation")
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+    protected Boolean execute(final Profile profile) {
         final Calendar cal = Calendar.getInstance();
         final Date now = cal.getTime();
         final Date startTime = atTime(cal, hoursMin, minutesMin);

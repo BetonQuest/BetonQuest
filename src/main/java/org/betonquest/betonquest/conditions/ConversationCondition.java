@@ -3,6 +3,7 @@ package org.betonquest.betonquest.conditions;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.conversation.ConversationData;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -30,7 +31,7 @@ public class ConversationCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
 
         final ConversationData conversation = BetonQuest.getInstance().getConversation(Utils.addPackage(instruction.getPackage(), conversationID));
 
@@ -38,7 +39,7 @@ public class ConversationCondition extends Condition {
             throw new QuestRuntimeException("Conversation does not exist: " + instruction.getPackage().getPackagePath() + conversationID);
         }
 
-        return conversation.isReady(playerID);
+        return conversation.isReady(profile);
     }
 
 }

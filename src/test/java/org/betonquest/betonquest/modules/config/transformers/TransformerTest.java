@@ -237,6 +237,7 @@ class TransformerTest {
         final String serializedConfig = getSerializedPatchedConfig(patch);
 
         final List<?> list = CONFIG.getList("section.myList");
+        assertNotNull(list, "List was null.");
         list.remove("removedEntry");
         CONFIG.set("section.myList", list);
 
@@ -396,6 +397,83 @@ class TransformerTest {
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
+
+    @Test
+    void testTransformStringToBoolean() throws InvalidConfigurationException {
+        final String patch = """
+                  2.0.0.1:
+                    - type: TYPE_TRANSFORM
+                      key: section.boolean
+                      newType: boolean
+                """;
+
+        CONFIG.set("section.boolean", true);
+        final String serializedConfig = getSerializedPatchedConfig(patch);
+
+        assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
+    }
+
+    @Test
+    void testTransformStringToInt() throws InvalidConfigurationException {
+        final String patch = """
+                  2.0.0.1:
+                    - type: TYPE_TRANSFORM
+                      key: section.int
+                      newType: int
+                """;
+
+        CONFIG.set("section.int", 3);
+        final String serializedConfig = getSerializedPatchedConfig(patch);
+
+        assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
+    }
+
+    @Test
+    void testTransformStringToFloat() throws InvalidConfigurationException {
+        final String patch = """
+                  2.0.0.1:
+                    - type: TYPE_TRANSFORM
+                      key: section.float
+                      newType: float
+                """;
+
+        CONFIG.set("section.float", 2.5F);
+        final String serializedConfig = getSerializedPatchedConfig(patch);
+
+        assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
+    }
+
+    @Test
+    void testTransformStringToDouble() throws InvalidConfigurationException {
+        final String patch = """
+                  2.0.0.1:
+                    - type: TYPE_TRANSFORM
+                      key: section.double
+                      newType: double
+                """;
+
+        CONFIG.set("section.double", 2.123_456_789_123_456_7D);
+        final String serializedConfig = getSerializedPatchedConfig(patch);
+
+        assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
+    }
+
+    @Test
+    void testTransformBooleanToString() throws InvalidConfigurationException {
+        final String patch = """
+                  2.0.0.1:
+                    - type: TYPE_TRANSFORM
+                      key: section.boolean
+                      newType: string
+                """;
+
+        CONFIG.set("section.double", "true");
+        final String serializedConfig = getSerializedPatchedConfig(patch);
+
+        assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
+    }
+
+
     private String getSerializedPatchedConfig(final String patch) throws InvalidConfigurationException {
         final YamlConfiguration patchConfig = new YamlConfiguration();
         patchConfig.loadFromString(patch);
@@ -414,9 +492,9 @@ class TransformerTest {
     }
 
     private void validateLogging(final LogValidator validator, final String transformerType, final String exceptionMessage) {
-        validator.assertLogEntry(Level.INFO, "(ConfigPatcher) Applying patches to update to '2.0.0-CONFIG-1'...");
-        validator.assertLogEntry(Level.INFO, "(ConfigPatcher) Applying patch of type '" + transformerType + "'...");
-        validator.assertLogEntry(Level.WARNING, "(ConfigPatcher) There has been an issue while applying the patches for '2.0.0.1': " + exceptionMessage);
+        validator.assertLogEntry(Level.INFO, "(ConfigurationFile Patcher) Applying patches to update to '2.0.0-CONFIG-1'...");
+        validator.assertLogEntry(Level.INFO, "(ConfigurationFile Patcher) Applying patch of type '" + transformerType + "'...");
+        validator.assertLogEntry(Level.WARNING, "(ConfigurationFile Patcher) There has been an issue while applying the patches for '2.0.0.1': " + exceptionMessage);
         validator.assertEmpty();
     }
 }

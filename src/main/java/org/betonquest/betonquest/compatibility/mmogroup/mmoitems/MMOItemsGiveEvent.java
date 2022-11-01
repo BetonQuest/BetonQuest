@@ -8,10 +8,10 @@ import net.Indyuce.mmoitems.api.player.PlayerData;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -56,17 +56,17 @@ public class MMOItemsGiveEvent extends QuestEvent {
     @SuppressWarnings("PMD.PreserveStackTrace")
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @Override
-    protected Void execute(final String playerID) throws QuestRuntimeException {
-        final Player player = PlayerConverter.getPlayer(playerID);
-        int amount = amountVar.getInt(playerID);
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
+        int amount = amountVar.getInt(profile);
 
         if (scale) {
-            mmoItem = mmoPlugin.getItem(itemType, itemID, PlayerData.get(player.getUniqueId()));
+            mmoItem = mmoPlugin.getItem(itemType, itemID, PlayerData.get(profile.getOfflinePlayer().getUniqueId()));
         }
 
         if (notify) {
             try {
-                Config.sendNotify(instruction.getPackage().getPackagePath(), playerID, "items_given",
+                Config.sendNotify(instruction.getPackage().getPackagePath(), profile.getOnlineProfile(), "items_given",
                         new String[]{mmoItem.getItemMeta().getDisplayName(), String.valueOf(amount)},
                         "items_given,info");
             } catch (final QuestRuntimeException e) {

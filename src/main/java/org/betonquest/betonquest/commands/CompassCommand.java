@@ -4,6 +4,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Backpack;
 import org.betonquest.betonquest.Backpack.DisplayType;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,9 +28,8 @@ public class CompassCommand implements CommandExecutor {
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
         if ("compass".equalsIgnoreCase(cmd.getName())) {
             if (sender instanceof Player) {
-                final Player player = (Player) sender;
-                final String playerID = PlayerConverter.getID(player);
-                new Backpack(playerID, DisplayType.COMPASS);
+                final Profile profile = PlayerConverter.getID((Player) sender);
+                new Backpack(profile.getOnlineProfile(), DisplayType.COMPASS);
             }
             return true;
         }

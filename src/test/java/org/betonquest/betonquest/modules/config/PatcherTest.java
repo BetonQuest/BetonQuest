@@ -121,7 +121,7 @@ class PatcherTest {
                 """);
 
         new Patcher(config, invalidConfig);
-        validator.assertLogEntry(Level.SEVERE, "(ConfigPatcher) Invalid patch file! A version number is too short or too long.");
+        validator.assertLogEntry(Level.SEVERE, "(ConfigurationFile Patcher) Invalid patch file! A version number is too short or too long.");
         validator.assertEmpty();
     }
 
@@ -133,7 +133,7 @@ class PatcherTest {
                 """);
 
         new Patcher(config, invalidConfig);
-        validator.assertLogEntry(Level.SEVERE, "(ConfigPatcher) Invalid patch file! The patch is malformed.");
+        validator.assertLogEntry(Level.SEVERE, "(ConfigurationFile Patcher) Invalid patch file! The patch is malformed.");
         validator.assertEmpty();
     }
 
@@ -148,7 +148,7 @@ class PatcherTest {
         invalidConfig.loadFromString(patch);
 
         new Patcher(config, invalidConfig);
-        validator.assertLogEntry(Level.SEVERE, "(ConfigPatcher) Invalid patch file! A version number is too short or too long.");
+        validator.assertLogEntry(Level.SEVERE, "(ConfigurationFile Patcher) Invalid patch file! A version number is too short or too long.");
         validator.assertEmpty();
     }
 
@@ -165,9 +165,9 @@ class PatcherTest {
         final Patcher patcher = new Patcher(config, invalidConfig);
         final boolean patchNoError = patcher.patch();
         assertFalse(patchNoError, "Patcher says there were no problems although there were.");
-        validator.assertLogEntry(Level.INFO, "(ConfigPatcher) Applying patches to update to '3.4.5-CONFIG-6'...");
-        validator.assertLogEntry(Level.INFO, "(ConfigPatcher) Applying patch of type 'INVALID'...");
-        validator.assertLogEntry(Level.WARNING, "(ConfigPatcher) There has been an issue while applying the patches for '3.4.5.6': Unknown transformation type 'INVALID' used!");
+        validator.assertLogEntry(Level.INFO, "(ConfigurationFile Patcher) Applying patches to update to '3.4.5-CONFIG-6'...");
+        validator.assertLogEntry(Level.INFO, "(ConfigurationFile Patcher) Applying patch of type 'INVALID'...");
+        validator.assertLogEntry(Level.WARNING, "(ConfigurationFile Patcher) There has been an issue while applying the patches for '3.4.5.6': Unknown transformation type 'INVALID' used!");
         validator.assertEmpty();
     }
 

@@ -348,22 +348,31 @@ This event simply gives the player specified amount of Heroes experience. The fi
 ### Hidden Holograms
 Installing this plugin will enable you to create hidden holograms, which will be shown to players only if they meet specified conditions. Note that you need to have [ProtocolLib](https://www.spigotmc.org/resources/1997/) installed in order to hide holograms from certain players.
 
-In order to create a hologram, you have to add a `holograms` section. Add a node named as your hologram to this section and define `lines`, `conditions` and `location` subnodes. The fist one should be a list of texts - these will be the lines of a hologram. Color codes are supported. Second is a list of conditions separated by commas. Third is a location in a standard format, like in `teleport` event. An example of such hologram definition:
+In order to create a hologram, you have to add a `holograms` section. Add a node named as your hologram to this section and define `lines`, `conditions` and `location` subnodes. The first one should be a list of texts - these will be the lines of a hologram. Color codes are supported. Second is a list of conditions separated by commas. Third is a location in a standard format, like in `teleport` event. An example of such hologram definition:
 
 ```YAML
 holograms:
   beton:
     lines:
-    - '&bThis is Beton.'
     - 'item:custom_item'
-    - '&eBeton is strong.'
+    - '&2Top questers this month'
+    - 'top:completed_quests;desc;10;&a;§6;2;&6'
+    - '&2Your amount: &6{bq:azerothquests:point.completed_quests.amount}'
+    - '&Total amount: &6{bqg:azerothquests:globalpoint.total_completed_quests.amount}'
+    conditions: has_some_quest, !finished_some_quest    
     location: 100;200;300;world
-    conditions: has_some_quest, !finished_some_quest
     # How often to check conditions (optional)
     check_interval: 20
 ```
 
 A line can also represent a floating item. To do so enter the line as 'item:`custom_item`'. It will be replaced with the `custom_item` defined in the `items` section. If the Item is defined for example as map, a floating map will be seen between two lines of text.
+
+Holograms created by BetonQuest can rank users by the score of a point. Such scoreboards (not to be confused with the Minecraft vanilla scoreboard) are configured as one line and replaced by multiple lines according to the limit definition. Each scoreboard line comes in the format `#. name - score` The short syntax is 'top:`point`;`order`;`limit`'. The specified `point` must be located inside the package the hologram is declared in. To use a point from another package, put `package.point` instead. The `order` is either 'desc' for descending or 'asc' for ascending. If something other is specified, descending will be used by default. The limit should be a positive number. In the short declaration, the whole line will be white. To color each of the four elements of a line (place, name, dash and score), the definition syntax can be extended to 'top:`point`;`order`;`limit`;`c1`;`c2`;`c3`;`c4`'. The color codes can be prefixed with either `§` or `&`, but do not have to be. If for example `c2` is left blank (two following semicolons), it is treated as an 'f' (color code for white).
+
+Each BetonQuest variable can be displayed on a hologram in a text line. However, the syntax differs slightly since this uses a HolographicDisplays utility. The syntax is '{bq:`package`:`variable`}'. The package name cannot be left empty. The `variable` uses the same definition syntax as in conversations. Variables are displayed for each player individually.
+
+!!! warning "Potential lags"
+    The HolographicDisplays documentations warns against using too many individual hologram variables since they are rendered for each player individually. To save resources, there is a variable without individual rendering. To use it replace 'bq' with 'bqg'. However, this means that only player-unrelated variables such as `globalpoint` and `globaltag` can be used. Using them with player specific variables will not necessarily throw errors but can produce weird results.
 
 The holograms are updated every 10 seconds. If you want to make it faster, add `hologram_update_interval` option in _config.yml_ file and set it to a number of ticks you want to pass between updates (one second is 20 ticks). Don't set it to 0 or negative numbers, it will result in an error.
 
@@ -507,7 +516,7 @@ The syntax is as follows:
 | betonquest:globaltag:myQuest.someTag       | true  |
 
 Check the [Luck Perms documentation](https://luckperms.net/wiki/Context)
-for an in-depth explanation on what contexts are and how to add them to permission.
+for an in-depth explanation on what contexts are and how to add them to permissions.
 
 ## [Magic](http://dev.bukkit.org/bukkit-plugins/magic/)
 
@@ -515,11 +524,11 @@ for an in-depth explanation on what contexts are and how to add them to permissi
 
 #### Wand: `wand`
 
-This condition can check wands. The first argument is either `hand`, `inventory` or `lost`. If you choose `lost`, the condition will check if the player has lost a wand. If you choose `hand`, the condition will check if you're holding a wand in your hand. `inventory` will check your whole inventory instead of just the hand. In case of `hand` and `inventory` arguments you can also add optional `name:` argument followed by the name of the wand (as defined in _wands.yml_ in Magic plugin) to check if it's the specific type of the wand. In the case of `inventory` you can specify an amount with `amount` and this will only return true if a player has that amount. You can also use optional `spells:` argument, followed by a list of spells separated with a comma. Each spell in this list can have defined minimal level required, after a colon.
+This condition can check wands. The first argument is either `hand`, `inventory` or `lost`. If you choose `lost`, the condition will check if the player has lost a wand. If you choose `hand`, the condition will check if you're holding a wand in your hand. `inventory` will check your whole inventory instead of just the hand. In case of `hand` and `inventory` arguments you can also add optional `name:` argument followed by the name of the wand (as defined in _wands.yml_ in Magic plugin) to check if it's the specific type of the wand. In the case of `inventory` you can specify an amount with `amount` and this will only return true if a player has that amount. You can also use optional `spells:` argument, followed by a list of spells separated with a comma. Each spell in this list must have a minimal level defined after a colon.
 
 !!! example
     ```YAML
-    wand hand name:master spells:flare,missile:2
+    wand hand name:master spells:flare:3,missile:2
     ```
 
 ## [McMMO](https://www.spigotmc.org/resources/64348/)
@@ -623,6 +632,8 @@ mmocorebreakblock 1 block:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVy #... this is a heads 
 
 #### MMOCore Profession levelup: `mmoprofessionlevelup`
 This objective requires the player to level the given profession to the specified level.
+Use `main` to check for class level ups.
+
 ```YAML linenums="1"
 mmoprofessionlevelup MINING 10
 ```

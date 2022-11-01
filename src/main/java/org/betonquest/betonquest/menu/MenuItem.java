@@ -5,6 +5,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -227,12 +228,12 @@ public class MenuItem extends SimpleYMLSection {
     /**
      * Checks if this item should be displayed to the player
      *
-     * @param player that should get the item displayed
+     * @param profile the player of the {@link Profile} should get the item displayed
      * @return true if all display conditions are met, false otherwise
      */
-    public boolean display(final Player player) {
+    public boolean display(final Profile profile) {
         for (final ConditionID condition : this.conditions) {
-            if (BetonQuest.condition(PlayerConverter.getID(player), condition)) {
+            if (BetonQuest.condition(profile, condition)) {
                 LOG.debug(pack, "Item " + name + ": condition " + condition + " returned true");
             } else {
                 LOG.debug(pack, "Item " + name + " wont be displayed: condition" + condition + " returned false.");
@@ -245,16 +246,15 @@ public class MenuItem extends SimpleYMLSection {
     /**
      * Generates the menu item for a specific player
      *
-     * @param player the player this item will be displayed to
+     * @param profile the player from the {@link Profile} this item will be displayed to
      * @return the item as a bukkit item stack
      */
     @SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.AvoidCatchingNPE"})
     @SuppressFBWarnings("DCN_NULLPOINTER_EXCEPTION")
-    public ItemStack generateItem(final Player player) {
+    public ItemStack generateItem(final Profile profile) {
         try {
-            final String playerId = PlayerConverter.getID(player);
-            final String lang = BetonQuest.getInstance().getPlayerData(playerId).getLanguage();
-            final ItemStack item = this.item.generate(playerId);
+            final String lang = BetonQuest.getInstance().getPlayerData(profile).getLanguage();
+            final ItemStack item = this.item.generate(profile);
             final ItemMeta meta = item.getItemMeta();
             if (!descriptions.isEmpty()) {
                 ItemDescription description = this.descriptions.get(lang);
@@ -262,8 +262,8 @@ public class MenuItem extends SimpleYMLSection {
                     description = this.descriptions.get(Config.getLanguage());
                 }
                 try {
-                    meta.setDisplayName(description.getDisplayName(playerId));
-                    meta.setLore(description.getLore(playerId));
+                    meta.setDisplayName(description.getDisplayName(profile));
+                    meta.setLore(description.getLore(profile));
                     item.setItemMeta(meta);
                 } catch (final NullPointerException npe) {
                     LOG.error(pack, "Couldn't add custom text to §7" + name + "§4: No text for language §7" + Config.getLanguage() + "§4 " +
@@ -316,8 +316,8 @@ public class MenuItem extends SimpleYMLSection {
             return amount;
         }
 
-        public ItemStack generate(final String playerID) throws QuestRuntimeException {
-            return questItem.generate(amount.getInt(playerID), playerID);
+        public ItemStack generate(final Profile profile) throws QuestRuntimeException {
+            return questItem.generate(amount.getInt(profile), profile);
         }
     }
 

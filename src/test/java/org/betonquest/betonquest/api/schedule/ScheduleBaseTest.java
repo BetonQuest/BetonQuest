@@ -68,9 +68,9 @@ public class ScheduleBaseTest extends AbstractScheduleTest {
 
     @Test
     void testInvalidCatchup() {
-        when(section.getString("catchup")).thenReturn("fvztwes");
+        when(section.getString("catchup")).thenReturn("NotExistingCatchupStrategy");
         final InstructionParseException exception = assertThrows(InstructionParseException.class, this::createSchedule, "Schedule should throw instruction parse exception for invalid catchup");
-        assertEquals("There is no such catchup strategy: fvztwes", exception.getMessage(), "InstructionParseException should have correct reason message");
+        assertEquals("There is no such catchup strategy: NotExistingCatchupStrategy", exception.getMessage(), "InstructionParseException should have correct reason message");
     }
 
     @Test

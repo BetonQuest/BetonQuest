@@ -171,6 +171,7 @@ A list of all possible sounds for the latest Minecraft version can be found [her
   * `show_in_backpack` whether to display the journal in the backpack when there is no journal in the player's inventory.
   * `lock_default_journal_slot` locks the journal to the `default_journal_slot`.
   * `give_on_respawn` adds the journal to the player inventory.
+  * `custom_model_data` sets the custom model data of the journal item.
   
 ### Journal Colors
 `journal_colors` controls the colors used in the journal. It takes color codes without the `&` character.

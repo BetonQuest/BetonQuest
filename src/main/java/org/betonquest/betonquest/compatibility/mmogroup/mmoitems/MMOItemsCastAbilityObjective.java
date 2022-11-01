@@ -4,6 +4,7 @@ import net.Indyuce.mmoitems.api.event.AbilityUseEvent;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -28,12 +29,12 @@ public class MMOItemsCastAbilityObjective extends Objective implements Listener 
         if (!event.getAbility().getAbility().getName().equalsIgnoreCase(abilityID)) {
             return;
         }
-        final String playerID = PlayerConverter.getID(event.getPlayer());
+        final Profile profile = PlayerConverter.getID(event.getPlayer());
 
-        if (!containsPlayer(playerID) || !checkConditions(playerID)) {
+        if (!containsPlayer(profile) || !checkConditions(profile)) {
             return;
         }
-        completeObjective(playerID);
+        completeObjective(profile);
     }
 
     @Override
@@ -53,7 +54,7 @@ public class MMOItemsCastAbilityObjective extends Objective implements Listener 
     }
 
     @Override
-    public String getProperty(final String name, final String playerID) {
+    public String getProperty(final String name, final Profile profile) {
         return "";
     }
 }

@@ -16,6 +16,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
@@ -62,7 +63,7 @@ public class PasteSchematicEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final String playerID) throws QuestRuntimeException {
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
         try {
             final ClipboardFormat format = ClipboardFormats.findByFile(file);
             if (format == null) {
@@ -74,7 +75,7 @@ public class PasteSchematicEvent extends QuestEvent {
                 clipboard = reader.read();
             }
 
-            final Location location = loc.getLocation(playerID);
+            final Location location = loc.getLocation(profile);
             try (EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(BukkitAdapter.adapt(location.getWorld()), -1)) {
                 final Operation operation = new ClipboardHolder(clipboard)
                         .createPaste(editSession)

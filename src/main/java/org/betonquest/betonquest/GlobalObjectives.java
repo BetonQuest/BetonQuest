@@ -1,6 +1,7 @@
 package org.betonquest.betonquest;
 
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.id.ObjectiveID;
 
@@ -39,10 +40,10 @@ public class GlobalObjectives {
     /**
      * Starts all unstarted global objectives for the player
      *
-     * @param playerID the id of the player
+     * @param profile the {@link Profile} of the player
      */
-    public static void startAll(final String playerID) {
-        final PlayerData data = BetonQuest.getInstance().getPlayerData(playerID);
+    public static void startAll(final Profile profile) {
+        final PlayerData data = BetonQuest.getInstance().getPlayerData(profile);
         for (final ObjectiveID id : instance.globalObjectiveIds) {
             final Objective objective = BetonQuest.getInstance().getObjective(id);
 
@@ -55,7 +56,7 @@ public class GlobalObjectives {
                 continue;
             }
             //start the objective
-            objective.newPlayer(playerID);
+            objective.newPlayer(profile);
             //add the tag
             data.addTag(GlobalObjectives.getTag(id));
         }

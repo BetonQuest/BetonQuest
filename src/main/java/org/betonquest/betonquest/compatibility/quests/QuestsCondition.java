@@ -3,8 +3,8 @@ package org.betonquest.betonquest.compatibility.quests;
 import me.blackvein.quests.Quest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 
 import java.util.concurrent.ConcurrentSkipListSet;
 
@@ -22,8 +22,8 @@ public class QuestsCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) {
-        final ConcurrentSkipListSet<Quest> completedQuests = QuestsIntegrator.getQuestsInstance().getQuester(PlayerConverter.getPlayer(playerID).getUniqueId()).getCompletedQuests();
+    protected Boolean execute(final Profile profile) {
+        final ConcurrentSkipListSet<Quest> completedQuests = QuestsIntegrator.getQuestsInstance().getQuester(profile.getProfileUUID()).getCompletedQuests();
         for (final Quest q : completedQuests) {
             if (q.getName().replace(' ', '_').equalsIgnoreCase(questName)) {
                 return true;

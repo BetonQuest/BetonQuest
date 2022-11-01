@@ -3,6 +3,7 @@ package org.betonquest.betonquest.variables;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.conversation.Conversation;
 
 /**
@@ -16,12 +17,12 @@ public class NpcNameVariable extends Variable {
     }
 
     @Override
-    public String getValue(final String playerID) {
-        final Conversation conv = Conversation.getConversation(playerID);
+    public String getValue(final Profile profile) {
+        final Conversation conv = Conversation.getConversation(profile);
         if (conv == null) {
             return "";
         }
-        return conv.getData().getQuester(BetonQuest.getInstance().getPlayerData(playerID).getLanguage());
+        return conv.getData().getQuester(BetonQuest.getInstance().getPlayerData(profile).getLanguage());
     }
 
 }

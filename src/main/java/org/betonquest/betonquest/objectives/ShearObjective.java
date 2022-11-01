@@ -5,6 +5,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -44,8 +45,8 @@ public class ShearObjective extends CountingObjective implements Listener {
         if (event.getEntity().getType() != EntityType.SHEEP) {
             return;
         }
-        final String playerID = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(playerID)) {
+        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        if (!containsPlayer(profile)) {
             return;
         }
         if (name != null && (event.getEntity().getCustomName() == null || !event.getEntity().getCustomName().equals(name))) {
@@ -54,9 +55,9 @@ public class ShearObjective extends CountingObjective implements Listener {
         if (color != null && !((Sheep) event.getEntity()).getColor().toString().equalsIgnoreCase(color)) {
             return;
         }
-        if (checkConditions(playerID)) {
-            getCountingData(playerID).progress();
-            completeIfDoneOrNotify(playerID);
+        if (checkConditions(profile)) {
+            getCountingData(profile).progress();
+            completeIfDoneOrNotify(profile);
         }
     }
 

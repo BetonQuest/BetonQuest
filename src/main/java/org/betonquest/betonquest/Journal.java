@@ -6,7 +6,10 @@ import lombok.CustomLog;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.api.PlayerJournalAddEvent;
 import org.betonquest.betonquest.api.PlayerJournalDeleteEvent;
+import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
@@ -14,7 +17,6 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -30,7 +32,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -38,45 +39,48 @@ import java.util.Objects;
 /**
  * Represents player's journal.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition"})
+@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition", "PMD.CyclomaticComplexity"})
 @CustomLog
 public class Journal {
 
-    private final String playerID;
+    private final Profile profile;
     private final List<Pointer> pointers;
     private final List<String> texts = new ArrayList<>();
+    private final ConfigurationFile config;
     private String lang;
     private String mainPage;
 
     /**
      * Creates new Journal instance from List of Pointers.
      *
-     * @param playerID ID of the player whose journal is created
-     * @param list     list of pointers to journal entries
-     * @param lang     default language to use when generating the journal
+     * @param profile the {@link Profile} of the player whose journal is created
+     * @param lang    default language to use when generating the journal
+     * @param list    list of pointers to journal entries
+     * @param config  a {@link ConfigurationFile} that contains the plugin's configuration
      */
-    public Journal(final String playerID, final String lang, final List<Pointer> list) {
+    public Journal(final Profile profile, final String lang, final List<Pointer> list, final ConfigurationFile config) {
         // generate texts from list of pointers
-        this.playerID = playerID;
+        this.profile = profile;
         this.lang = lang;
-        pointers = list;
+        this.pointers = list;
+        this.config = config;
     }
 
     /**
      * Checks if the item is journal
      *
-     * @param playerID ID of the player
-     * @param item     ItemStack to check against being the journal
+     * @param profile the {@link Profile} of the player
+     * @param item    ItemStack to check against being the journal
      * @return true if the ItemStack is the journal, false otherwise
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public static boolean isJournal(final String playerID, final ItemStack item) {
+    public static boolean isJournal(final Profile profile, final ItemStack item) {
         // if there is no item then it's not a journal
         if (item == null) {
             return false;
         }
         // get language
-        final String playerLang = BetonQuest.getInstance().getPlayerData(playerID).getLanguage();
+        final String playerLang = BetonQuest.getInstance().getPlayerData(profile).getLanguage();
         // check all properties of the item and return the result
         return item.getType().equals(Material.WRITTEN_BOOK) && ((BookMeta) item.getItemMeta()).hasTitle()
                 && ((BookMeta) item.getItemMeta()).getTitle().equals(Config.getMessage(playerLang, "journal_title"))
@@ -93,17 +97,14 @@ public class Journal {
      * Checks if the player has his journal in the inventory. Returns false if
      * the player is not online.
      *
-     * @param playerID ID of the player
+     * @param profile the {@link OnlineProfile} of the player
      * @return true if the player has his journal, false otherwise
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public static boolean hasJournal(final String playerID) {
-        final Player player = PlayerConverter.getPlayer(playerID);
-        if (player == null) {
-            return false;
-        }
+    public static boolean hasJournal(final OnlineProfile profile) {
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
         for (final ItemStack item : player.getInventory().getContents()) {
-            if (isJournal(playerID, item)) {
+            if (isJournal(profile, item)) {
                 return true;
             }
         }
@@ -126,7 +127,7 @@ public class Journal {
      */
     public void addPointer(final Pointer pointer) {
         BetonQuest.getInstance()
-                .callSyncBukkitEvent(new PlayerJournalAddEvent(PlayerConverter.getPlayer(playerID), this, pointer));
+                .callSyncBukkitEvent(new PlayerJournalAddEvent(profile.getOnlineProfile(), this, pointer));
         pointers.add(pointer);
         // SQLite doesn't accept formatted date and MySQL doesn't accept numeric
         // timestamp
@@ -134,7 +135,7 @@ public class Journal {
                 ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date(pointer.getTimestamp()))
                 : Long.toString(pointer.getTimestamp());
         BetonQuest.getInstance().getSaver()
-                .add(new Record(UpdateType.ADD_JOURNAL, playerID, pointer.getPointer(), date));
+                .add(new Record(UpdateType.ADD_JOURNAL, profile.getProfileUUID().toString(), pointer.getPointer(), date));
     }
 
     /**
@@ -143,16 +144,15 @@ public class Journal {
      * @param pointerName the name of the pointer to remove
      */
     public void removePointer(final String pointerName) {
-        for (final Iterator<Pointer> iterator = pointers.iterator(); iterator.hasNext(); ) {
-            final Pointer pointer = iterator.next();
+        for (final Pointer pointer : pointers) {
             if (pointer.getPointer().equalsIgnoreCase(pointerName)) {
                 BetonQuest.getInstance()
-                        .callSyncBukkitEvent(new PlayerJournalDeleteEvent(PlayerConverter.getPlayer(playerID), this, pointer));
+                        .callSyncBukkitEvent(new PlayerJournalDeleteEvent(profile.getOnlineProfile(), this, pointer));
                 final String date = BetonQuest.getInstance().isMySQLUsed()
                         ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT).format(new Date(pointer.getTimestamp()))
                         : Long.toString(pointer.getTimestamp());
                 BetonQuest.getInstance().getSaver()
-                        .add(new Record(UpdateType.REMOVE_JOURNAL, playerID, pointer.getPointer(), date));
+                        .add(new Record(UpdateType.REMOVE_JOURNAL, profile.getProfileUUID().toString(), pointer.getPointer(), date));
                 pointers.remove(pointer);
                 break;
             }
@@ -166,7 +166,7 @@ public class Journal {
      */
     public List<String> getText() {
         final List<String> list;
-        if ("true".equalsIgnoreCase(Config.getString("config.journal.reversed_order"))) {
+        if ("true".equalsIgnoreCase(config.getString("journal.reversed_order"))) {
             list = Lists.reverse(texts);
         } else {
             list = new ArrayList<>(texts);
@@ -183,7 +183,7 @@ public class Journal {
      *
      * @param lang the language to use while generating text
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.CognitiveComplexity"})
     public void generateTexts(final String lang) {
         // remove previous texts
         texts.clear();
@@ -193,14 +193,14 @@ public class Journal {
         for (final Pointer pointer : pointers) {
             // if date should not be hidden, generate the date prefix
             String datePrefix = "";
-            if ("false".equalsIgnoreCase(Config.getString("config.journal.hide_date"))) {
-                final String date = new SimpleDateFormat(Config.getString("config.date_format"), Locale.ROOT)
+            if ("false".equalsIgnoreCase(config.getString("journal.hide_date"))) {
+                final String date = new SimpleDateFormat(config.getString("date_format"), Locale.ROOT)
                         .format(pointer.getTimestamp());
                 final String[] dateParts = date.split(" ");
-                final String day = "§" + Config.getString("config.journal_colors.date.day") + dateParts[0];
+                final String day = "§" + config.getString("journal_colors.date.day") + dateParts[0];
                 String hour = "";
                 if (dateParts.length > 1) {
-                    hour = "§" + Config.getString("config.journal_colors.date.hour") + dateParts[1];
+                    hour = "§" + config.getString("journal_colors.date.hour") + dateParts[1];
                 }
                 datePrefix = day + " " + hour + "\n";
             }
@@ -241,14 +241,14 @@ public class Journal {
                     BetonQuest.createVariable(pack, variable);
                 } catch (final InstructionParseException e) {
                     LOG.warn(pack, "Error while creating variable '" + variable + "' on journal page '" + pointerName + "' in "
-                            + PlayerConverter.getName(playerID) + "'s journal: " + e.getMessage(), e);
+                            + profile.getProfileName() + "'s journal: " + e.getMessage(), e);
                 }
                 text = text.replace(variable,
-                        BetonQuest.getInstance().getVariableValue(packName, variable, playerID));
+                        BetonQuest.getInstance().getVariableValue(packName, variable, profile));
             }
 
             // add the entry to the list
-            texts.add(datePrefix + "§" + Config.getString("config.journal_colors.text") + text);
+            texts.add(datePrefix + "§" + config.getString("journal_colors.text") + text);
         }
     }
 
@@ -257,7 +257,7 @@ public class Journal {
      *
      * @return the main page string or null, if there is no main page
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     private String generateMainPage() {
         final HashMap<Integer, ArrayList<String>> lines = new HashMap<>(); // holds text lines with their priority
         final HashSet<Integer> numbers = new HashSet<>(); // stores numbers that are used, so there's no need to search them
@@ -281,11 +281,11 @@ public class Journal {
                                 pageConditions.add(new ConditionID(pack, conditionString));
                             }
 
-                            if (!BetonQuest.conditions(playerID, pageConditions)) {
+                            if (!BetonQuest.conditions(profile, pageConditions)) {
                                 continue;
                             }
                         } catch (final ObjectNotFoundException e) {
-                            LOG.warn(pack, "Error while generating main page in " + PlayerConverter.getPlayer(playerID) + "'s journal: " + e.getMessage(), e);
+                            LOG.warn(pack, "Error while generating main page in " + profile.getPlayer() + "'s journal: " + e.getMessage(), e);
                             continue;
                         }
                     }
@@ -302,7 +302,7 @@ public class Journal {
                     } else {
                         text = section.getString(key + ".text");
                     }
-                    if (text == null || text.length() <= 0) {
+                    if (text == null || text.length() == 0) {
                         continue;
                     }
                     // resolve variables
@@ -311,10 +311,10 @@ public class Journal {
                             BetonQuest.createVariable(pack, variable);
                         } catch (final InstructionParseException e) {
                             LOG.warn(pack, "Error while creating variable '" + variable + "' on main page in "
-                                    + PlayerConverter.getName(playerID) + "'s journal: " + e.getMessage(), e);
+                                    + profile.getProfileName() + "'s journal: " + e.getMessage(), e);
                         }
                         text = text.replace(variable,
-                                BetonQuest.getInstance().getVariableValue(packName, variable, playerID));
+                                BetonQuest.getInstance().getVariableValue(packName, variable, profile));
                     }
                     text = pack.subst(text);
                     // add the text to HashMap
@@ -366,7 +366,7 @@ public class Journal {
     public void addToInv() {
         final int targetSlot = getJournalSlot();
         generateTexts(lang);
-        final Inventory inventory = PlayerConverter.getPlayer(playerID).getInventory();
+        final Inventory inventory = profile.getOnlineProfile().getOnlinePlayer().getInventory();
         final ItemStack item = getAsItem();
         if (inventory.firstEmpty() >= 0) {
             if (targetSlot < 0) {
@@ -380,7 +380,7 @@ public class Journal {
             }
         } else {
             try {
-                Config.sendNotify(null, playerID, "inventory_full_backpack", null, "inventory_full_backpack,inventory_full,error");
+                Config.sendNotify(null, profile.getOnlineProfile(), "inventory_full_backpack", null, "inventory_full_backpack,inventory_full,error");
             } catch (final QuestRuntimeException e) {
                 LOG.warn("The notify system was unable to play a sound for the 'inventory_full_backpack' category. Error was: '" + e.getMessage() + "'", e);
             }
@@ -389,8 +389,8 @@ public class Journal {
 
     @SuppressWarnings("PMD.PrematureDeclaration")
     private int getJournalSlot() {
-        final int slot = Integer.parseInt(Config.getString("config.default_journal_slot"));
-        final boolean forceJournalSlot = Boolean.parseBoolean(Config.getString("config.journal.lock_default_journal_slot"));
+        final int slot = config.getInt("default_journal_slot");
+        final boolean forceJournalSlot = config.getBoolean("journal.lock_default_journal_slot");
         final int oldSlot = removeFromInv();
         if (forceJournalSlot) {
             return slot;
@@ -403,27 +403,34 @@ public class Journal {
      *
      * @return the journal ItemStack
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.CognitiveComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public ItemStack getAsItem() {
-        // create the book with default title/author
         final ItemStack item = new ItemStack(Material.WRITTEN_BOOK);
         final BookMeta meta = (BookMeta) item.getItemMeta();
         meta.setTitle(Utils.format(Config.getMessage(lang, "journal_title")));
-        meta.setAuthor(PlayerConverter.getPlayer(playerID).getName());
+        meta.setAuthor(profile.getOfflinePlayer().getName());
+        meta.setCustomModelData(config.getInt("journal.custom_model_data"));
         meta.setLore(getJournalLore(lang));
+
         // add main page and generate pages from texts
         final List<String> finalList = new ArrayList<>();
-        if ("false".equalsIgnoreCase(Config.getString("config.journal.one_entry_per_page"))) {
-            final String color = Config.getString("config.journal_colors.line");
-            String separator = Config.parseMessage(null, playerID, "journal_separator");
+        if (config.getBoolean("journal.one_entry_per_page")) {
+            if (mainPage != null && mainPage.length() > 0) {
+                finalList.addAll(Utils.pagesFromString(mainPage));
+            }
+            finalList.addAll(getText());
+        } else {
+            final String color = config.getString("journal_colors.line");
+            String separator = Config.parseMessage(null, profile.getOnlineProfile(), "journal_separator");
             if (separator == null) {
                 separator = "---------------";
             }
-            String line = "\n§" + color + separator + "\n";
 
-            if (Config.getString("config.journal.show_separator") != null &&
-                    Config.getString("config.journal.show_separator").equalsIgnoreCase("false")) {
+            final String line;
+            if (config.getBoolean("journal.show_separator")) {
+                line = "\n§" + color + separator + "\n";
+            } else {
                 line = "\n";
             }
 
@@ -432,7 +439,7 @@ public class Journal {
                 stringBuilder.append(entry).append(line);
             }
             if (mainPage != null && mainPage.length() > 0) {
-                if ("true".equalsIgnoreCase(Config.getString("config.journal.full_main_page"))) {
+                if (config.getBoolean("journal.full_main_page")) {
                     finalList.addAll(Utils.pagesFromString(mainPage));
                 } else {
                     stringBuilder.insert(0, mainPage + line);
@@ -440,16 +447,11 @@ public class Journal {
             }
             final String wholeString = stringBuilder.toString().trim();
             finalList.addAll(Utils.pagesFromString(wholeString));
-        } else {
-            if (mainPage != null && mainPage.length() > 0) {
-                finalList.addAll(Utils.pagesFromString(mainPage));
-            }
-            finalList.addAll(getText());
         }
         if (finalList.isEmpty()) {
             meta.addPage("");
         } else {
-            meta.setPages(Utils.multiLineColorCodes(finalList, "§" + Config.getString("config.journal_colors.line")));
+            meta.setPages(Utils.multiLineColorCodes(finalList, "§" + config.getString("journal_colors.line")));
         }
         item.setItemMeta(meta);
         return item;
@@ -459,7 +461,7 @@ public class Journal {
      * Updates journal by removing it and adding it again
      */
     public void update() {
-        if (hasJournal(playerID)) {
+        if (profile.isPlayerOnline() && hasJournal(profile.getOnlineProfile())) {
             addToInv();
         }
     }
@@ -471,9 +473,9 @@ public class Journal {
      */
     public int removeFromInv() {
         // loop all items and check if any of them is a journal
-        final Inventory inventory = PlayerConverter.getPlayer(playerID).getInventory();
+        final Inventory inventory = profile.getOnlineProfile().getOnlinePlayer().getInventory();
         for (int i = 0; i < inventory.getSize(); i++) {
-            if (isJournal(playerID, inventory.getItem(i))) {
+            if (isJournal(profile, inventory.getItem(i))) {
                 inventory.setItem(i, new ItemStack(Material.AIR));
                 return i;
             }

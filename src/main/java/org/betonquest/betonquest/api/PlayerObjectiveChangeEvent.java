@@ -1,15 +1,15 @@
 package org.betonquest.betonquest.api;
 
+import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.ProfileEvent;
 import org.betonquest.betonquest.id.ObjectiveID;
-import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.player.PlayerEvent;
 
 /**
- * When player objective change.
+ * Fires when a profile's objectives change.
  */
 @SuppressWarnings({"PMD.DataClass"})
-public class PlayerObjectiveChangeEvent extends PlayerEvent {
+public class PlayerObjectiveChangeEvent extends ProfileEvent {
 
     /**
      * HandlerList of this event.
@@ -34,12 +34,12 @@ public class PlayerObjectiveChangeEvent extends PlayerEvent {
     /**
      * Constructor of PlayerObjectiveChangeEvent.
      *
-     * @param who           player who change this objective
+     * @param who           {@link Profile} who change this objective
      * @param objective     objective which will be changed
      * @param state         future state of this objective
      * @param previousState previous state of this objective
      */
-    public PlayerObjectiveChangeEvent(final Player who, final Objective objective,
+    public PlayerObjectiveChangeEvent(final Profile who, final Objective objective,
                                       final Objective.ObjectiveState state, final Objective.ObjectiveState previousState) {
         super(who);
         this.objective = objective;

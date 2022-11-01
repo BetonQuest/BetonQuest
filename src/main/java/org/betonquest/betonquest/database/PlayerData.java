@@ -8,13 +8,13 @@ import org.betonquest.betonquest.Pointer;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.PlayerTagAddEvent;
 import org.betonquest.betonquest.api.PlayerTagRemoveEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.item.QuestItem;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.inventory.ItemStack;
 
 import java.sql.ResultSet;
@@ -28,17 +28,17 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * Represents an object storing all player-related data, which can load and save it.
+ * Represents an object storing all profile-related data, which can load and save it.
  */
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.CommentRequired"})
 @CustomLog
-public class PlayerData {
+public class PlayerData implements TagData {
 
     @SuppressWarnings("PMD.DoNotUseThreads")
     private final Saver saver = BetonQuest.getInstance().getSaver();
 
-    private final String playerID;
-
+    private final Profile profile;
+    private final String profileUUID;
     private final List<String> tags = new CopyOnWriteArrayList<>();
     private final List<Pointer> entries = new CopyOnWriteArrayList<>();
     private final List<Point> points = new CopyOnWriteArrayList<>();
@@ -46,89 +46,82 @@ public class PlayerData {
     private Journal journal;
     private List<ItemStack> backpack = new CopyOnWriteArrayList<>();
     private String conv;
-
-    private String lang; // the player's language
+    private String profileLanguage;
 
     /**
-     * Creates new PlayerData for the player represented by playerID.
+     * Loads the PlayerData of the given {@link Profile}.
      *
-     * @param playerID - ID of the player
+     * @param profile - the profile to load the data for
      */
-    public PlayerData(final String playerID) {
-        this.playerID = playerID;
-        // load data from the database
+    public PlayerData(final Profile profile) {
+        this.profile = profile;
+        this.profileUUID = profile.getProfileUUID().toString();
         loadAllPlayerData();
     }
 
     /**
-     * Loads all data for the player and puts it in appropriate lists.
+     * Loads all data for the profile and puts it in appropriate lists.
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     public final void loadAllPlayerData() {
         try {
+
             final Connector con = new Connector();
 
-            try (ResultSet res1 = con.querySQL(QueryType.SELECT_OBJECTIVES, playerID);
-                 ResultSet res2 = con.querySQL(QueryType.SELECT_TAGS, playerID);
-                 ResultSet res3 = con.querySQL(QueryType.SELECT_JOURNAL, playerID);
-                 ResultSet res4 = con.querySQL(QueryType.SELECT_POINTS, playerID);
-                 ResultSet res5 = con.querySQL(QueryType.SELECT_BACKPACK, playerID);
-                 ResultSet res6 = con.querySQL(QueryType.SELECT_PLAYER, playerID)) {
+            try (ResultSet objectiveResults = con.querySQL(QueryType.SELECT_OBJECTIVES, profileUUID);
+                 ResultSet tagResults = con.querySQL(QueryType.SELECT_TAGS, profileUUID);
+                 ResultSet journalResults = con.querySQL(QueryType.SELECT_JOURNAL, profileUUID);
+                 ResultSet pointResults = con.querySQL(QueryType.SELECT_POINTS, profileUUID);
+                 ResultSet backpackResults = con.querySQL(QueryType.SELECT_BACKPACK, profileUUID);
+                 ResultSet playerResult = con.querySQL(QueryType.SELECT_PLAYER, profileUUID)) {
 
-                // put them into the list
-                while (res1.next()) {
-                    objectives.put(res1.getString("objective"), res1.getString("instructions"));
+                while (objectiveResults.next()) {
+                    objectives.put(objectiveResults.getString("objective"), objectiveResults.getString("instructions"));
                 }
 
-                // put them into the list
-                while (res2.next()) {
-                    tags.add(res2.getString("tag"));
+                while (tagResults.next()) {
+                    tags.add(tagResults.getString("tag"));
                 }
 
-                // put them into the list
-                while (res3.next()) {
-                    entries.add(new Pointer(res3.getString("pointer"), res3.getTimestamp("date").getTime()));
+                while (journalResults.next()) {
+                    entries.add(new Pointer(journalResults.getString("pointer"), journalResults.getTimestamp("date").getTime()));
                 }
 
-                // put them into the list
-                while (res4.next()) {
-                    points.add(new Point(res4.getString("category"), res4.getInt("count")));
+                while (pointResults.next()) {
+                    points.add(new Point(pointResults.getString("category"), pointResults.getInt("count")));
                 }
 
-                // put items into the list
-                while (res5.next()) {
-                    final String instruction = res5.getString("instruction");
-                    final int amount = res5.getInt("amount");
+                while (backpackResults.next()) {
+                    final String instruction = backpackResults.getString("instruction");
+                    final int amount = backpackResults.getInt("amount");
                     final ItemStack item;
                     try {
                         item = new QuestItem(instruction).generate(amount);
                     } catch (final InstructionParseException e) {
-                        LOG.warn("Could not load backpack item for player " + PlayerConverter.getName(playerID)
+                        LOG.warn("Could not load backpack item for player " + profile.getProfileName()
                                 + ", with instruction '" + instruction + "', because: " + e.getMessage(), e);
                         continue;
                     }
                     backpack.add(item);
                 }
 
-                // put it there
-                if (res6.next()) {
-                    lang = res6.getString("language");
-                    if ("default".equals(lang)) {
-                        lang = Config.getLanguage();
+                if (playerResult.next()) {
+                    profileLanguage = playerResult.getString("language");
+                    if ("default".equals(profileLanguage)) {
+                        profileLanguage = Config.getLanguage();
                     }
-                    conv = res6.getString("conversation");
+                    conv = playerResult.getString("conversation");
                     if (conv == null || conv.equalsIgnoreCase("null")) {
                         conv = null;
                     }
                 } else {
-                    lang = Config.getLanguage();
-                    saver.add(new Record(UpdateType.ADD_PLAYER, playerID, "default"));
+                    profileLanguage = Config.getLanguage();
+                    saver.add(new Record(UpdateType.ADD_PLAYER, profileUUID, "default"));
                 }
 
-                // log data to debugger
                 LOG.debug("There are " + objectives.size() + " objectives, " + tags.size() + " tags, " + points.size()
                         + " points, " + entries.size() + " journal entries and " + backpack.size()
-                        + " items loaded for player " + PlayerConverter.getName(playerID));
+                        + " items loaded for player " + profile.getProfileName());
             }
         } catch (final SQLException e) {
             LOG.error("There was an exception with SQL", e);
@@ -136,59 +129,63 @@ public class PlayerData {
     }
 
     /**
-     * Returns the List of Tags for this player.
+     * Returns the List of Tags for this profile.
      *
      * @return the List of Tags
      */
+    @Override
     public List<String> getTags() {
         return Collections.unmodifiableList(tags);
     }
 
     /**
-     * Checks if the player has specified tag.
+     * Checks if the profile has specified tag.
      *
      * @param tag tag to check
      * @return true if the player has this tag
      */
+    @Override
     public boolean hasTag(final String tag) {
         return tags.contains(tag);
     }
 
     /**
-     * Adds the specified tag to player's list. It won't double it however.
+     * Adds the specified tag to profile's list. It won't double it, however.
      *
      * @param tag tag to add
      */
+    @Override
     public void addTag(final String tag) {
         synchronized (tags) {
             if (!tags.contains(tag)) {
                 tags.add(tag);
-                saver.add(new Record(UpdateType.ADD_TAGS, playerID, tag));
+                saver.add(new Record(UpdateType.ADD_TAGS, profileUUID, tag));
                 BetonQuest.getInstance()
-                        .callSyncBukkitEvent(new PlayerTagAddEvent(PlayerConverter.getPlayer(playerID), tag));
+                        .callSyncBukkitEvent(new PlayerTagAddEvent(profile, tag));
             }
         }
     }
 
     /**
-     * Removes the specified tag from player's list. If there is no tag, nothing
+     * Removes the specified tag from profile's list. If there is no tag, nothing
      * happens.
      *
      * @param tag tag to remove
      */
+    @Override
     public void removeTag(final String tag) {
         synchronized (tags) {
             if (tags.contains(tag)) {
                 tags.remove(tag);
-                saver.add(new Record(UpdateType.REMOVE_TAGS, playerID, tag));
+                saver.add(new Record(UpdateType.REMOVE_TAGS, profileUUID, tag));
                 BetonQuest.getInstance()
-                        .callSyncBukkitEvent(new PlayerTagRemoveEvent(PlayerConverter.getPlayer(playerID), tag));
+                        .callSyncBukkitEvent(new PlayerTagRemoveEvent(profile, tag));
             }
         }
     }
 
     /**
-     * Returns the List of Points for this player.
+     * Returns the List of Points for this profile.
      *
      * @return the List of Points
      */
@@ -197,7 +194,7 @@ public class PlayerData {
     }
 
     /**
-     * Returns the amount of point the player has in specified category. If the
+     * Returns the amount of point the profile has in specified category. If the
      * category does not exist, it will return 0.
      *
      * @param category name of the category
@@ -224,20 +221,20 @@ public class PlayerData {
      */
     public void modifyPoints(final String category, final int count) {
         synchronized (points) {
-            saver.add(new Record(UpdateType.REMOVE_POINTS, playerID, category));
+            saver.add(new Record(UpdateType.REMOVE_POINTS, profileUUID, category));
             // check if the category already exists
             for (final Point point : points) {
                 if (point.getCategory().equalsIgnoreCase(category)) {
                     // if it does, add points to it
                     saver.add(new Record(UpdateType.ADD_POINTS,
-                            playerID, category, String.valueOf(point.getCount() + count)));
+                            profileUUID, category, String.valueOf(point.getCount() + count)));
                     point.addPoints(count);
                     return;
                 }
             }
             // if not then create new point category with given amount of points
             points.add(new Point(category, count));
-            saver.add(new Record(UpdateType.ADD_POINTS, playerID, category, String.valueOf(count)));
+            saver.add(new Record(UpdateType.ADD_POINTS, profileUUID, category, String.valueOf(count)));
         }
     }
 
@@ -257,7 +254,7 @@ public class PlayerData {
             if (pointToRemove != null) {
                 points.remove(pointToRemove);
             }
-            saver.add(new Record(UpdateType.REMOVE_POINTS, playerID, category));
+            saver.add(new Record(UpdateType.REMOVE_POINTS, profileUUID, category));
         }
     }
 
@@ -268,13 +265,13 @@ public class PlayerData {
      */
     public Journal getJournal() {
         if (journal == null) {
-            journal = new Journal(playerID, lang, entries);
+            journal = new Journal(profile, profileLanguage, entries, BetonQuest.getInstance().getPluginConfig());
         }
         return journal;
     }
 
     /**
-     * Starts all Objectives for this player. It takes all "raw" objectives and
+     * Starts all Objectives for this profile. It takes all "raw" objectives and
      * initializes them. Raw objectives are deleted from their HashMap after
      * this action (so they won't be started twice)
      */
@@ -283,7 +280,7 @@ public class PlayerData {
             final String objective = entry.getKey();
             try {
                 final ObjectiveID objectiveID = new ObjectiveID(null, objective);
-                BetonQuest.resumeObjective(playerID, objectiveID, entry.getValue());
+                BetonQuest.resumeObjective(profile, objectiveID, entry.getValue());
             } catch (final ObjectNotFoundException e) {
                 LOG.warn("Loaded '" + objective
                         + "' objective from the database, but it is not defined in configuration. Skipping.", e);
@@ -311,9 +308,9 @@ public class PlayerData {
         if (obj == null) {
             return;
         }
-        final String data = obj.getDefaultDataInstruction(playerID);
+        final String data = obj.getDefaultDataInstruction(profile);
         if (addRawObjective(objectiveID.toString(), data)) {
-            saver.add(new Record(UpdateType.ADD_OBJECTIVES, playerID, objectiveID.toString(), data));
+            saver.add(new Record(UpdateType.ADD_OBJECTIVES, profileUUID, objectiveID.toString(), data));
         }
     }
 
@@ -352,7 +349,7 @@ public class PlayerData {
      * @param data        the data string of this objective (the one associated with ObjectiveData)
      */
     public void addObjToDB(final String objectiveID, final String data) {
-        saver.add(new Record(UpdateType.ADD_OBJECTIVES, playerID, objectiveID, data));
+        saver.add(new Record(UpdateType.ADD_OBJECTIVES, profileUUID, objectiveID, data));
     }
 
     /**
@@ -361,7 +358,7 @@ public class PlayerData {
      * @param objectiveID the ID of the objective to remove
      */
     public void removeObjFromDB(final String objectiveID) {
-        saver.add(new Record(UpdateType.REMOVE_OBJECTIVES, playerID, objectiveID));
+        saver.add(new Record(UpdateType.REMOVE_OBJECTIVES, profileUUID, objectiveID));
     }
 
     /**
@@ -382,16 +379,16 @@ public class PlayerData {
         this.backpack = (List<ItemStack>) copyItemList(list, new CopyOnWriteArrayList<>());
 
         // update the database (quite expensive way, should be changed)
-        saver.add(new Record(UpdateType.DELETE_BACKPACK, playerID));
+        saver.add(new Record(UpdateType.DELETE_BACKPACK, profileUUID));
         for (final ItemStack itemStack : list) {
             final String instruction = QuestItem.itemToString(itemStack);
             final String amount = String.valueOf(itemStack.getAmount());
-            saver.add(new Record(UpdateType.ADD_BACKPACK, playerID, instruction, amount));
+            saver.add(new Record(UpdateType.ADD_BACKPACK, profileUUID, instruction, amount));
         }
     }
 
     /**
-     * @return a list of the players journal entries
+     * @return a list of the profiles journal entries
      */
     public List<Pointer> getEntries() {
         return Collections.unmodifiableList(entries);
@@ -443,19 +440,19 @@ public class PlayerData {
             backpack.add(newItem);
         }
         // update the database (quite expensive way, should be changed)
-        saver.add(new Record(UpdateType.DELETE_BACKPACK, playerID));
+        saver.add(new Record(UpdateType.DELETE_BACKPACK, profileUUID));
         for (final ItemStack itemStack : backpack) {
             final String instruction = QuestItem.itemToString(itemStack);
             final String newAmount = String.valueOf(itemStack.getAmount());
-            saver.add(new Record(UpdateType.ADD_BACKPACK, playerID, instruction, newAmount));
+            saver.add(new Record(UpdateType.ADD_BACKPACK, profileUUID, instruction, newAmount));
         }
     }
 
     /**
-     * @return the language this player uses
+     * @return the language this profile uses
      */
     public String getLanguage() {
-        return lang;
+        return profileLanguage;
     }
 
     /**
@@ -465,16 +462,16 @@ public class PlayerData {
      */
     public void setLanguage(final String lang) {
         if ("default".equalsIgnoreCase(lang)) {
-            this.lang = Config.getLanguage();
+            this.profileLanguage = Config.getLanguage();
         } else {
-            this.lang = lang;
+            this.profileLanguage = lang;
         }
-        saver.add(new Record(UpdateType.DELETE_PLAYER, playerID));
-        saver.add(new Record(UpdateType.ADD_PLAYER, playerID, lang));
+        saver.add(new Record(UpdateType.DELETE_PLAYER, profileUUID));
+        saver.add(new Record(UpdateType.ADD_PLAYER, profileUUID, lang));
     }
 
     /**
-     * @return the name of a conversation if the player has active one or
+     * @return the name of a conversation if the profile has active one or
      * null if he does not.
      */
     public String getConversation() {
@@ -482,11 +479,11 @@ public class PlayerData {
     }
 
     /**
-     * Purges all player's data from the database and from this object.
+     * Purges all profile's data from the database and from this object.
      */
     public void purgePlayer() {
-        for (final Objective obj : BetonQuest.getInstance().getPlayerObjectives(playerID)) {
-            obj.cancelObjectiveForPlayer(playerID);
+        for (final Objective obj : BetonQuest.getInstance().getPlayerObjectives(profile)) {
+            obj.cancelObjectiveForPlayer(profile);
         }
         // clear all lists
         objectives.clear();
@@ -496,14 +493,14 @@ public class PlayerData {
         getJournal().clear(); // journal can be null, so use a method to get it
         backpack.clear();
         // clear the database
-        saver.add(new Record(UpdateType.DELETE_OBJECTIVES, playerID));
-        saver.add(new Record(UpdateType.DELETE_JOURNAL, playerID));
-        saver.add(new Record(UpdateType.DELETE_POINTS, playerID));
-        saver.add(new Record(UpdateType.DELETE_TAGS, playerID));
-        saver.add(new Record(UpdateType.DELETE_BACKPACK, playerID));
-        saver.add(new Record(UpdateType.UPDATE_CONVERSATION, "null", playerID));
+        saver.add(new Record(UpdateType.DELETE_OBJECTIVES, profileUUID));
+        saver.add(new Record(UpdateType.DELETE_JOURNAL, profileUUID));
+        saver.add(new Record(UpdateType.DELETE_POINTS, profileUUID));
+        saver.add(new Record(UpdateType.DELETE_TAGS, profileUUID));
+        saver.add(new Record(UpdateType.DELETE_BACKPACK, profileUUID));
+        saver.add(new Record(UpdateType.UPDATE_CONVERSATION, "null", profileUUID));
         // update the journal so it's empty
-        if (PlayerConverter.getPlayer(playerID) != null) {
+        if (profile.getPlayer().isPresent()) {
             getJournal().update();
         }
     }

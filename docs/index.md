@@ -5,6 +5,7 @@ title: Home
 hide:
   - navigation
   - toc
+  - footer
 ---
 <style>
 .bq-inline-example-container {

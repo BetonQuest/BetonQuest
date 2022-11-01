@@ -22,7 +22,7 @@ jobs:
 
       - name: Build with Maven
         run: |
-          mvn -B package
+          mvn -P Test-All -B package
 
   docs:
     name: Build Docs

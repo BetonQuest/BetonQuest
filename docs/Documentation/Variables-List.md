@@ -6,6 +6,8 @@ icon: material/variable-box
 This page lists all the variables that are available in BetonQuest.
 Some of them are only useful when exported for use in other plugins through the [support for PlaceHolderAPI](Compatibility.md#placeholderapi).
 
+Variables marked as **static** can be resolved without a player specified.
+
 ## BetonQuest Elements
 
 ### Objective Property Variable
@@ -41,6 +43,8 @@ number. The first argument is the name of a category and the second argument is 
 
 ### Global Point Variable
 
+**static**
+
 This variable displays the amount of global points in some category or the amount of points needed to reach a number.
 The first argument is the name of a category and the second argument is either `amount` or `left:x`, where `x` is a number.
 
@@ -62,6 +66,8 @@ in the messages.yml config.
 ```
 
 ### Global Tag Variable
+
+**static**
 
 This variable displays whether a global tag is set or not.
 The variable will return true or false by default. If you add papiMode to the instruction it will return yes or no.

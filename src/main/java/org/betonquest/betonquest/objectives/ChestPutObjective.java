@@ -6,6 +6,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.conditions.ChestItemCondition;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.events.ChestTakeEvent;
@@ -80,7 +81,7 @@ public class ChestPutObjective extends Objective implements Listener {
     public void onChestOpen(final InventoryOpenEvent event) {
         if (!multipleAccess && !checkForNoOtherPlayer(event)) {
             try {
-                Config.sendNotify(null, (Player) event.getPlayer(), "chest_occupied", null);
+                Config.sendNotify(null, PlayerConverter.getID((Player) event.getPlayer()).getOnlineProfile(), "chest_occupied", null);
             } catch (final QuestRuntimeException e) {
                 LOG.warn("The notify system was unable to send the message for 'chest_occupied'. Error was: '"
                         + e.getMessage() + "'", e);
@@ -105,12 +106,12 @@ public class ChestPutObjective extends Objective implements Listener {
         if (!(event.getPlayer() instanceof Player)) {
             return;
         }
-        final String playerID = PlayerConverter.getID((Player) event.getPlayer());
-        if (!containsPlayer(playerID)) {
+        final Profile profile = PlayerConverter.getID((Player) event.getPlayer());
+        if (!containsPlayer(profile)) {
             return;
         }
         try {
-            final Location targetChestLocation = loc.getLocation(playerID);
+            final Location targetChestLocation = loc.getLocation(profile);
             final Block block = targetChestLocation.getBlock();
             if (!(block.getState() instanceof InventoryHolder)) {
                 final World world = targetChestLocation.getWorld();
@@ -127,10 +128,10 @@ public class ChestPutObjective extends Objective implements Listener {
             if (!chest.equals(event.getInventory().getHolder())) {
                 return;
             }
-            if (chestItemCondition.handle(playerID) && checkConditions(playerID)) {
-                completeObjective(playerID);
+            if (chestItemCondition.handle(profile) && checkConditions(profile)) {
+                completeObjective(profile);
                 if (chestTakeEvent != null) {
-                    chestTakeEvent.handle(playerID);
+                    chestTakeEvent.handle(profile);
                 }
             }
         } catch (final QuestRuntimeException e) {
@@ -154,7 +155,7 @@ public class ChestPutObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(final String name, final String playerID) {
+    public String getProperty(final String name, final Profile profile) {
         return "";
     }
 

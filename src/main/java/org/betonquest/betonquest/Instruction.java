@@ -109,6 +109,18 @@ public class Instruction {
         return parts[index];
     }
 
+    /**
+     * Gets an optional value or the default value if value is not present.
+     *
+     * @param prefix        the prefix of the optional value
+     * @param defaultString the default value
+     * @return the value or the default value
+     */
+    public String getOptional(final String prefix, final String defaultString) {
+        final String optionalValue = getOptional(prefix);
+        return optionalValue == null ? defaultString : optionalValue;
+    }
+
     public String getOptional(final String prefix) {
         for (final String part : parts) {
             if (part.toLowerCase(Locale.ROOT).startsWith(prefix.toLowerCase(Locale.ROOT) + ":")) {

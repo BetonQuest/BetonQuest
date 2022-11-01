@@ -2,11 +2,9 @@ package org.betonquest.betonquest.conditions;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.block.Biome;
-import org.bukkit.entity.Player;
 
 /**
  * Requires the player to be in a specified biome
@@ -22,8 +20,7 @@ public class BiomeCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        final Player player = PlayerConverter.getPlayer(playerID);
-        return player.getLocation().getBlock().getBiome() == this.biome;
+    protected Boolean execute(final Profile profile) {
+        return profile.getOnlineProfile().getOnlinePlayer().getLocation().getBlock().getBiome() == this.biome;
     }
 }

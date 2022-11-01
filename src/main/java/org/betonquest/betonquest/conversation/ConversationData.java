@@ -5,6 +5,7 @@ import lombok.CustomLog;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -66,7 +67,6 @@ public class ConversationData {
             throw new InstructionParseException("The 'quester' name is missing in the conversation file!");
         }
         if (conv.isConfigurationSection("quester")) {
-            //noinspection ConstantConditions
             for (final String lang : conv.getConfigurationSection("quester").getKeys(false)) {
                 quester.put(lang, ChatColor.translateAlternateColorCodes('&', pack.getString("conversations." + name + ".quester." + lang)));
             }
@@ -74,7 +74,6 @@ public class ConversationData {
             quester.put(Config.getLanguage(), ChatColor.translateAlternateColorCodes('&', pack.getString("conversations." + name + ".quester")));
         }
         if (conv.isConfigurationSection("prefix")) {
-            //noinspection ConstantConditions
             for (final String lang : conv.getConfigurationSection("prefix").getKeys(false)) {
                 final String pref = pack.getString("conversations." + name + ".prefix." + lang);
                 if (pref != null && !pref.equals("")) {
@@ -337,7 +336,7 @@ public class ConversationData {
         return getText(null, lang, option, type);
     }
 
-    public String getText(final String playerID, final String lang, final String option, final OptionType type) {
+    public String getText(final Profile profile, final String lang, final String option, final OptionType type) {
         final Option opt;
         if (type == OptionType.NPC) {
             opt = npcOptions.get(option);
@@ -347,7 +346,7 @@ public class ConversationData {
         if (opt == null) {
             return null;
         }
-        return opt.getText(playerID, lang);
+        return opt.getText(profile, lang);
     }
 
     /**
@@ -367,7 +366,7 @@ public class ConversationData {
         return options.get(option).getConditions();
     }
 
-    public EventID[] getEventIDs(final String playerID, final String option, final OptionType type) {
+    public EventID[] getEventIDs(final Profile profile, final String option, final OptionType type) {
         final Map<String, Option> options;
         if (type == OptionType.NPC) {
             options = npcOptions;
@@ -375,20 +374,20 @@ public class ConversationData {
             options = playerOptions;
         }
         if (options.containsKey(option)) {
-            return options.get(option).getEvents(playerID);
+            return options.get(option).getEvents(profile);
         } else {
             return new EventID[0];
         }
     }
 
-    public String[] getPointers(final String playerID, final String option, final OptionType type) {
+    public String[] getPointers(final Profile profile, final String option, final OptionType type) {
         final Map<String, Option> options;
         if (type == OptionType.NPC) {
             options = npcOptions;
         } else {
             options = playerOptions;
         }
-        return options.get(option).getPointers(playerID);
+        return options.get(option).getPointers(profile);
     }
 
     public Option getOption(final String option, final OptionType type) {
@@ -398,11 +397,11 @@ public class ConversationData {
     /**
      * Check if conversation has at least one valid option for player
      *
-     * @param playerID The target player
+     * @param profile the {@link Profile} of the player
      * @return True, if the player can star the conversation.
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public boolean isReady(final String playerID) {
+    public boolean isReady(final Profile profile) {
         for (final String option : getStartingOptions()) {
             final String convName;
             final String optionName;
@@ -416,7 +415,7 @@ public class ConversationData {
             }
             final QuestPackage pack = Config.getPackages().get(getPackName());
             final ConversationData currentData = BetonQuest.getInstance().getConversation(pack.getPackagePath() + "." + convName);
-            if (BetonQuest.conditions(playerID, currentData.getConditionIDs(optionName, ConversationData.OptionType.NPC))) {
+            if (BetonQuest.conditions(profile, currentData.getConditionIDs(optionName, ConversationData.OptionType.NPC))) {
                 return true;
             }
         }
@@ -477,7 +476,6 @@ public class ConversationData {
             // Prefix
             if (conv.contains("prefix")) {
                 if (conv.isConfigurationSection("prefix")) {
-                    //noinspection ConstantConditions
                     for (final String lang : conv.getConfigurationSection("prefix").getKeys(false)) {
                         final String pref = pack.subst(conv.getConfigurationSection("prefix").getString(lang));
                         if (pref != null && !pref.equals("")) {
@@ -499,7 +497,6 @@ public class ConversationData {
             // Text
             if (conv.contains("text")) {
                 if (conv.isConfigurationSection("text")) {
-                    //noinspection ConstantConditions
                     for (final String lang : conv.getConfigurationSection("text").getKeys(false)) {
                         text.put(lang, pack.getFormattedString("conversations." + convName + "." + type.getIdentifier() + "." + name + ".text."
                                 + lang));
@@ -583,11 +580,11 @@ public class ConversationData {
             return thePrefix;
         }
 
-        public String getText(final String playerID, final String lang) {
-            return getText(playerID, lang, new ArrayList<>());
+        public String getText(final Profile profile, final String lang) {
+            return getText(profile, lang, new ArrayList<>());
         }
 
-        public String getText(final String playerID, final String lang, final List<String> optionPath) {
+        public String getText(final Profile profile, final String lang, final List<String> optionPath) {
             // Prevent infinite loops
             if (optionPath.contains(getName())) {
                 return "";
@@ -596,10 +593,10 @@ public class ConversationData {
 
             final StringBuilder ret = new StringBuilder(text.getOrDefault(lang, text.getOrDefault(Config.getLanguage(), "")));
 
-            if (playerID != null) {
+            if (profile != null) {
                 for (final String extend : extendLinks) {
-                    if (BetonQuest.conditions(playerID, getOption(extend, type).getConditions())) {
-                        ret.append(getOption(extend, type).getText(playerID, lang, optionPath));
+                    if (BetonQuest.conditions(profile, getOption(extend, type).getConditions())) {
+                        ret.append(getOption(extend, type).getText(profile, lang, optionPath));
                         break;
                     }
                 }
@@ -624,11 +621,11 @@ public class ConversationData {
             return ret.toArray(new ConditionID[0]);
         }
 
-        public EventID[] getEvents(final String playerID) {
-            return getEvents(playerID, new ArrayList<>());
+        public EventID[] getEvents(final Profile profile) {
+            return getEvents(profile, new ArrayList<>());
         }
 
-        public EventID[] getEvents(final String playerID, final List<String> optionPath) {
+        public EventID[] getEvents(final Profile profile, final List<String> optionPath) {
             // Prevent infinite loops
             if (optionPath.contains(getName())) {
                 return new EventID[0];
@@ -638,8 +635,8 @@ public class ConversationData {
             final List<EventID> ret = new ArrayList<>(events);
 
             for (final String extend : extendLinks) {
-                if (BetonQuest.conditions(playerID, getOption(extend, type).getConditions())) {
-                    ret.addAll(Arrays.asList(getOption(extend, type).getEvents(playerID, optionPath)));
+                if (BetonQuest.conditions(profile, getOption(extend, type).getConditions())) {
+                    ret.addAll(Arrays.asList(getOption(extend, type).getEvents(profile, optionPath)));
                     break;
                 }
             }
@@ -651,11 +648,11 @@ public class ConversationData {
             return getPointers(null);
         }
 
-        public String[] getPointers(final String playerID) {
-            return getPointers(playerID, new ArrayList<>());
+        public String[] getPointers(final Profile profile) {
+            return getPointers(profile, new ArrayList<>());
         }
 
-        public String[] getPointers(final String playerID, final List<String> optionPath) {
+        public String[] getPointers(final Profile profile, final List<String> optionPath) {
             // Prevent infinite loops
             if (optionPath.contains(getName())) {
                 return new String[0];
@@ -664,10 +661,10 @@ public class ConversationData {
 
             final List<String> ret = new ArrayList<>(pointers);
 
-            if (playerID != null) {
+            if (profile != null) {
                 for (final String extend : extendLinks) {
-                    if (BetonQuest.conditions(playerID, getOption(extend, type).getConditions())) {
-                        ret.addAll(Arrays.asList(getOption(extend, type).getPointers(playerID, optionPath)));
+                    if (BetonQuest.conditions(profile, getOption(extend, type).getConditions())) {
+                        ret.addAll(Arrays.asList(getOption(extend, type).getPointers(profile, optionPath)));
                         break;
                     }
                 }

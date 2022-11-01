@@ -4,6 +4,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -29,17 +30,17 @@ public class RespawnObjective extends Objective implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onRespawn(final PlayerRespawnEvent event) {
-        final String playerID = PlayerConverter.getID(event.getPlayer());
-        if (containsPlayer(playerID) && checkConditions(playerID)) {
+        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        if (containsPlayer(profile) && checkConditions(profile)) {
 
             if (location != null) {
                 try {
-                    event.setRespawnLocation(location.getLocation(playerID));
+                    event.setRespawnLocation(location.getLocation(profile));
                 } catch (final QuestRuntimeException e) {
                     LOG.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: \" + e.getMessage()", e);
                 }
             }
-            completeObjective(playerID);
+            completeObjective(profile);
         }
     }
 
@@ -59,7 +60,7 @@ public class RespawnObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(final String name, final String playerID) {
+    public String getProperty(final String name, final Profile profile) {
         return "";
     }
 }

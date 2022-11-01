@@ -4,6 +4,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -35,7 +36,7 @@ import java.util.stream.Collectors;
 public class BrewObjective extends CountingObjective implements Listener {
 
     private final QuestItem potion;
-    private final Map<Location, String> locations = new HashMap<>();
+    private final Map<Location, Profile> locations = new HashMap<>();
 
     public BrewObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "potions_to_brew");
@@ -45,8 +46,8 @@ public class BrewObjective extends CountingObjective implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onIngredientPut(final InventoryClickEvent event) {
-        final String playerID = PlayerConverter.getID((Player) event.getWhoClicked());
-        if (!containsPlayer(playerID)) {
+        final Profile profile = PlayerConverter.getID((Player) event.getWhoClicked());
+        if (!containsPlayer(profile)) {
             return;
         }
         final Inventory topInventory = event.getView().getTopInventory();
@@ -60,7 +61,7 @@ public class BrewObjective extends CountingObjective implements Listener {
             if (itemsAdded(contentBefore, contentAfter)) {
                 final BrewingStand brewingStand = (BrewingStand) topInventory.getHolder();
                 if (brewingStand != null) {
-                    locations.put(brewingStand.getLocation(), playerID);
+                    locations.put(brewingStand.getLocation(), profile);
                 }
             }
         });
@@ -82,8 +83,8 @@ public class BrewObjective extends CountingObjective implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBrew(final BrewEvent event) {
-        final String playerID = locations.remove(event.getBlock().getLocation());
-        if (playerID == null) {
+        final Profile profile = locations.remove(event.getBlock().getLocation());
+        if (profile == null) {
             return;
         }
         final boolean[] alreadyDone = getMatchingPotions(event.getContents());
@@ -98,12 +99,12 @@ public class BrewObjective extends CountingObjective implements Listener {
                 }
             }
 
-            if (progress > 0 && checkConditions(playerID)) {
-                getCountingData(playerID).progress(progress);
-                final boolean completed = completeIfDoneOrNotify(playerID);
+            if (progress > 0 && checkConditions(profile)) {
+                getCountingData(profile).progress(progress);
+                final boolean completed = completeIfDoneOrNotify(profile);
                 if (completed) {
                     final Set<Location> removals = locations.entrySet().stream()
-                            .filter(location -> playerID.equals(location.getValue()))
+                            .filter(location -> profile.equals(location.getValue()))
                             .map(Map.Entry::getKey)
                             .collect(Collectors.toSet());
                     removals.forEach(locations::remove);

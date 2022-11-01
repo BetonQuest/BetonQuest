@@ -1,32 +1,52 @@
 package org.betonquest.betonquest.conditions;
 
-import org.betonquest.betonquest.BetonQuest;
+import lombok.CustomLog;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+
+import java.util.regex.PatternSyntaxException;
 
 /**
  * Checks if the variable value matches given pattern.
  */
-@SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class VariableCondition extends Condition {
 
-    private final String variable;
-    private final String regex;
+    /**
+     * The variable to compare with the regex.
+     */
+    private final VariableString variable;
+    /**
+     * The regex the variable must match.
+     */
+    private final VariableString regex;
 
+    /**
+     * Creates a new VariableCondition based on the given instruction.
+     *
+     * @param instruction the instruction to parse
+     * @throws InstructionParseException if the instruction is invalid
+     */
     public VariableCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, instruction.hasArgument("forceSync"));
-        variable = instruction.next();
-        regex = instruction.next().replace('_', ' ');
+        variable = new VariableString(instruction.getPackage(), instruction.next());
+        regex = new VariableString(instruction.getPackage(), instruction.next().replace('_', ' '));
     }
 
     @Override
-    protected Boolean execute(final String playerID) {
-        if (variable.charAt(0) == '%' && variable.endsWith("%")) {
-            return BetonQuest.getInstance().getVariableValue(instruction.getPackage().getPackagePath(), variable, playerID).matches(regex);
-        } else {
-            return variable.matches(regex);
+    protected Boolean execute(final Profile profile) {
+        final String resolvedVariable = variable.getString(profile);
+        final String resolvedRegex = regex.getString(profile);
+        try {
+            return resolvedVariable.matches(resolvedRegex);
+        } catch (final PatternSyntaxException e) {
+            final String variableAddress = this.instruction.getID().toString();
+            LOG.warn("Invalid regular expression '%s' used in variable condition '%s'. Error: %s"
+                    .formatted(e.getPattern(), variableAddress, e.getMessage()), e);
+            return false;
         }
     }
-
 }

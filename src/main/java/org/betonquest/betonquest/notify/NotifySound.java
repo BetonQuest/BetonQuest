@@ -1,8 +1,9 @@
 package org.betonquest.betonquest.notify;
 
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.betonquest.betonquest.utils.location.VectorData;
 import org.bukkit.Location;
@@ -60,9 +61,9 @@ class NotifySound {
     }
 
     private SoundPlayer getSoundPlayer(final Sound sound, final String soundString, final CompoundLocation compoundLocation, final VectorData playerOffset, final Float playerOffsetDistance, final SoundCategory soundCategory, final float volume, final float pitch) {
-        return (player) -> {
-            final Location finalLocation = getLocation(player, compoundLocation, playerOffset, playerOffsetDistance);
-
+        return (onlineProfile) -> {
+            final Location finalLocation = getLocation(onlineProfile, compoundLocation, playerOffset, playerOffsetDistance);
+            final Player player = onlineProfile.getOnlinePlayer();
             if (sound == null) {
                 player.playSound(finalLocation, soundString, soundCategory, volume, pitch);
             } else {
@@ -71,15 +72,14 @@ class NotifySound {
         };
     }
 
-    private Location getLocation(final Player player, final CompoundLocation compoundLocation, final VectorData playerOffset, final Float playerOffsetDistance) throws QuestRuntimeException {
-        final String playerID = PlayerConverter.getID(player);
-        final Location location = compoundLocation == null ? player.getLocation() : compoundLocation.getLocation(playerID);
+    private Location getLocation(final OnlineProfile onlineProfile, final CompoundLocation compoundLocation, final VectorData playerOffset, final Float playerOffsetDistance) throws QuestRuntimeException {
+        final Location location = compoundLocation == null ? onlineProfile.getOnlinePlayer().getLocation() : compoundLocation.getLocation(onlineProfile);
 
-        if (playerOffsetDistance != null && player.getLocation().distance(location) > playerOffsetDistance) {
-            return getLocationRelativeDistance(location, player, playerOffsetDistance);
+        if (playerOffsetDistance != null && onlineProfile.getOnlinePlayer().getLocation().distance(location) > playerOffsetDistance) {
+            return getLocationRelativeDistance(location, onlineProfile.getOnlinePlayer(), playerOffsetDistance);
         }
         if (playerOffset != null) {
-            return getLocationRelativeVector(location, player, playerID, playerOffset);
+            return getLocationRelativeVector(location, onlineProfile.getOnlinePlayer(), onlineProfile, playerOffset);
         }
 
         return location;
@@ -91,8 +91,8 @@ class NotifySound {
         return player.getLocation().add(directionVector);
     }
 
-    private Location getLocationRelativeVector(final Location location, final Player player, final String playerID, final VectorData playerOffset) throws QuestRuntimeException {
-        final Vector relative = playerOffset.get(playerID);
+    private Location getLocationRelativeVector(final Location location, final Player player, final Profile profile, final VectorData playerOffset) throws QuestRuntimeException {
+        final Vector relative = playerOffset.get(profile);
         final Location playerLoc = player.getLocation();
 
         relative.rotateAroundY(-Math.toRadians(playerLoc.getYaw()));
@@ -157,12 +157,12 @@ class NotifySound {
         }
     }
 
-    protected void sendSound(final Player player) throws QuestRuntimeException {
-        soundPlayer.play(player);
+    protected void sendSound(final OnlineProfile onlineProfile) throws QuestRuntimeException {
+        soundPlayer.play(onlineProfile);
     }
 
     @FunctionalInterface
     private interface SoundPlayer {
-        void play(Player player) throws QuestRuntimeException;
+        void play(OnlineProfile onlineProfile) throws QuestRuntimeException;
     }
 }

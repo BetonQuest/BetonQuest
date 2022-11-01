@@ -4,6 +4,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.Job;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
 @SuppressWarnings("PMD.CommentRequired")
@@ -26,7 +27,7 @@ public class ConditionJobFull extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) {
+    protected Boolean execute(final Profile profile) {
         for (final Job job : Jobs.getJobs()) {
             if (job.getName().equalsIgnoreCase(sJobName)) {
                 if (job.getMaxSlots() == null) {

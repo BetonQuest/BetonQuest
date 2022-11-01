@@ -3,6 +3,8 @@ package org.betonquest.betonquest.api;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -10,8 +12,6 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.utils.PlayerConverter;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 /**
  * <p>
@@ -79,52 +79,51 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
      * data parsed by the constructor. When this method is called all the
      * required data is present and parsed correctly.
      *
-     * @param playerID ID of the player for whom the event will fire
+     * @param profile the {@link Profile} of the player for whom the event will fire
      * @throws QuestRuntimeException when there is an error while running the event (for example a
      *                               numeric variable resolved to a string)
      */
     @Override
-    protected abstract Void execute(String playerID) throws QuestRuntimeException;
+    protected abstract Void execute(Profile profile) throws QuestRuntimeException;
 
     /**
      * Fires an event for the player. It checks event conditions, so there's no need to
-     * do that in {@link #execute(String)} method.
+     * do that in {@link #execute(Profile)} method.
      *
-     * @param playerID ID of the player for whom the event will fire
+     * @param profile the {@link Profile} of the player for whom the event will fire
      * @throws QuestRuntimeException passes the exception from the event up the stack
      */
     @SuppressWarnings("PMD.CognitiveComplexity")
-    public final void fire(final String playerID) throws QuestRuntimeException {
-        if (playerID == null) {
+    public final void fire(final Profile profile) throws QuestRuntimeException {
+        if (profile == null) {
             // handle static event
             if (staticness) {
                 handle(null);
             } else {
                 LOG.debug(instruction.getPackage(), "Static event will be fired once for every player:");
-                for (final Player player : Bukkit.getOnlinePlayers()) {
-                    final String onlinePlayerID = PlayerConverter.getID(player);
-                    if (!BetonQuest.conditions(onlinePlayerID, conditions)) {
-                        LOG.debug(instruction.getPackage(), "Event conditions were not met for player " + player.getName());
+                for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                    if (!BetonQuest.conditions(onlineProfile, conditions)) {
+                        LOG.debug(instruction.getPackage(), "Event conditions were not met for player " + onlineProfile.getProfileName());
                         continue;
                     }
-                    LOG.debug(instruction.getPackage(), "  Firing this static event for player " + player.getName());
-                    handle(onlinePlayerID);
+                    LOG.debug(instruction.getPackage(), "  Firing this static event for player " + onlineProfile.getProfileName());
+                    handle(onlineProfile);
                 }
             }
-        } else if (PlayerConverter.getPlayer(playerID) == null) {
+        } else if (profile.getPlayer().isEmpty()) {
             // handle persistent event
             if (!persistent) {
-                LOG.debug(instruction.getPackage(), "Player " + playerID + " is offline, cannot fire event because it's not persistent.");
+                LOG.debug(instruction.getPackage(), "Player " + profile.getPlayer() + " is offline, cannot fire event because it's not persistent.");
                 return;
             }
-            handle(playerID);
+            handle(profile);
         } else {
             // handle standard event
-            if (!BetonQuest.conditions(playerID, conditions)) {
+            if (!BetonQuest.conditions(profile, conditions)) {
                 LOG.debug(instruction.getPackage(), "Event conditions were not met.");
                 return;
             }
-            handle(playerID);
+            handle(profile);
         }
     }
 

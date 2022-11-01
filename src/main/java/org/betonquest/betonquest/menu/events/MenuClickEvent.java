@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.menu.events;
 
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.menu.MenuID;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.inventory.ClickType;
 
 /**
- * Called whenever a item in a menu is clicked by a player
+ * Called whenever an item in a menu is clicked by a profile's player.
  */
 @SuppressWarnings({"PMD.DataClass", "PMD.CommentRequired"})
 public class MenuClickEvent extends MenuEvent implements Cancellable {
@@ -19,7 +19,7 @@ public class MenuClickEvent extends MenuEvent implements Cancellable {
     private final ClickType clickType;
     private boolean cancelled;
 
-    public MenuClickEvent(final Player who, final MenuID menu, final int slot, final String itemId, final ClickType clickType) {
+    public MenuClickEvent(final Profile who, final MenuID menu, final int slot, final String itemId, final ClickType clickType) {
         super(who, menu);
         this.clickType = clickType;
         this.itemId = itemId;

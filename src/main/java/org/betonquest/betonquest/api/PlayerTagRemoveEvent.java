@@ -1,15 +1,15 @@
 package org.betonquest.betonquest.api;
 
 import lombok.Getter;
-import org.bukkit.entity.Player;
+import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.ProfileEvent;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.player.PlayerEvent;
 
 /**
- * This event is fired when a player's tag was removed.
+ * Fired when a tag is removed from a profile.
  */
 @SuppressWarnings({"PMD.DataClass"})
-public class PlayerTagRemoveEvent extends PlayerEvent {
+public class PlayerTagRemoveEvent extends ProfileEvent {
 
     /**
      * HandlerList of this event.
@@ -25,10 +25,10 @@ public class PlayerTagRemoveEvent extends PlayerEvent {
     /**
      * Creates a new PlayerTagRemoveEvent.
      *
-     * @param who the player whose tag was removed
+     * @param who the {@link Profile} whose tag was removed
      * @param tag removed tag
      */
-    public PlayerTagRemoveEvent(final Player who, final String tag) {
+    public PlayerTagRemoveEvent(final Profile who, final String tag) {
         super(who);
         this.tag = tag;
     }

@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.utils.math.tokens;
 
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 /**
@@ -14,11 +15,11 @@ public interface Token {
     /**
      * Resolves the tokens expression and returns the result.
      *
-     * @param playerID player for which this token should be resolved,
-     *                 required for parsing variables
+     * @param profile the {@link Profile} of the player for which this token should be resolved,
+     *                required for parsing variables
      * @return the result
      * @throws QuestRuntimeException if the Token contained variables that could not be resolved
      *                               due to an Quest Runtime exception
      */
-    double resolve(String playerID) throws QuestRuntimeException;
+    double resolve(Profile profile) throws QuestRuntimeException;
 }

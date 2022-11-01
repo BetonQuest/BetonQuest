@@ -4,6 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Pointer;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.Utils;
 
@@ -21,8 +22,8 @@ public class JournalCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) {
-        for (final Pointer pointer : BetonQuest.getInstance().getPlayerData(playerID).getJournal().getPointers()) {
+    protected Boolean execute(final Profile profile) {
+        for (final Pointer pointer : BetonQuest.getInstance().getPlayerData(profile).getJournal().getPointers()) {
             if (pointer.getPointer().equalsIgnoreCase(targetPointer)) {
                 return true;
             }

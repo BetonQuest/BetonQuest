@@ -2,6 +2,7 @@ package org.betonquest.betonquest.conditions;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
@@ -17,8 +18,8 @@ public class GlobalPointCondition extends PointCondition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        return check(playerID, BetonQuest.getInstance().getGlobalData().getPoints());
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        return check(profile, BetonQuest.getInstance().getGlobalData().getPoints());
     }
 
 }

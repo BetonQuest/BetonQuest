@@ -3,9 +3,9 @@ package org.betonquest.betonquest.compatibility.vault;
 import net.milkbowl.vault.permission.Permission;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.PlayerConverter;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 
 /**
  * Manages player's permissions
@@ -32,9 +32,9 @@ public class PermissionEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final String playerID) {
+    protected Void execute(final Profile profile) {
         final Permission vault = VaultIntegrator.getPermission();
-        final Player player = PlayerConverter.getPlayer(playerID);
+        final OfflinePlayer player = profile.getOfflinePlayer();
         if (add) {
             if (perm) {
                 vault.playerAdd(world, player, permission);

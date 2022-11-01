@@ -3,6 +3,7 @@ package org.betonquest.betonquest.events;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
@@ -25,8 +26,8 @@ public class LightningEvent extends QuestEvent {
 
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    protected Void execute(final String playerID) throws QuestRuntimeException {
-        final Location location = loc.getLocation(playerID);
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
+        final Location location = loc.getLocation(profile);
         location.getWorld().strikeLightning(location);
         return null;
     }

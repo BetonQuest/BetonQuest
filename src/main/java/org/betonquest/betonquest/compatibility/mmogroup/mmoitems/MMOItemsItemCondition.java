@@ -7,9 +7,9 @@ import net.Indyuce.mmoitems.manager.TypeManager;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -40,17 +40,17 @@ public class MMOItemsItemCondition extends Condition {
 
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
         int counter = 0;
 
-        final ItemStack[] inventoryItems = PlayerConverter.getPlayer(playerID).getInventory().getContents();
+        final ItemStack[] inventoryItems = profile.getOnlineProfile().getOnlinePlayer().getInventory().getContents();
         for (final ItemStack item : inventoryItems) {
             if (MMOItemsUtils.equalsMMOItem(item, itemType, itemID)) {
                 counter = counter + item.getAmount();
             }
         }
 
-        final List<ItemStack> backpackItems = BetonQuest.getInstance().getPlayerData(playerID).getBackpack();
+        final List<ItemStack> backpackItems = BetonQuest.getInstance().getPlayerData(profile).getBackpack();
         for (final ItemStack item : backpackItems) {
             if (MMOItemsUtils.equalsMMOItem(item, itemType, itemID)) {
                 counter = counter + item.getAmount();

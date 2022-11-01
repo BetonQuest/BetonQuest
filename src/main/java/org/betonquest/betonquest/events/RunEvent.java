@@ -4,6 +4,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactory;
@@ -62,9 +63,9 @@ public class RunEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final String playerID) throws QuestRuntimeException {
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
         for (final QuestEvent event : internalEvents) {
-            event.fire(playerID);
+            event.fire(profile);
         }
         return null;
     }

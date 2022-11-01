@@ -4,6 +4,7 @@ import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -33,15 +34,15 @@ public class NPCInteractObjective extends Objective implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onNPCClick(final NPCRightClickEvent event) {
-        final String playerID = PlayerConverter.getID(event.getClicker());
-        if (event.getNPC().getId() != npcId || !containsPlayer(playerID)) {
+        final Profile profile = PlayerConverter.getID(event.getClicker());
+        if (event.getNPC().getId() != npcId || !containsPlayer(profile)) {
             return;
         }
-        if (checkConditions(playerID)) {
+        if (checkConditions(profile)) {
             if (cancel) {
                 event.setCancelled(true);
             }
-            completeObjective(playerID);
+            completeObjective(profile);
         }
     }
 
@@ -61,7 +62,7 @@ public class NPCInteractObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(final String name, final String playerID) {
+    public String getProperty(final String name, final Profile profile) {
         return "";
     }
 

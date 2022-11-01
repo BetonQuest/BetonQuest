@@ -5,6 +5,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.BlockSelector;
@@ -22,6 +23,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+
+import static org.bukkit.event.block.Action.LEFT_CLICK_AIR;
+import static org.bukkit.event.block.Action.LEFT_CLICK_BLOCK;
+import static org.bukkit.event.block.Action.RIGHT_CLICK_AIR;
+import static org.bukkit.event.block.Action.RIGHT_CLICK_BLOCK;
 
 /**
  * Player has to click on a block (or air). Left click, right click and any one of
@@ -62,8 +68,8 @@ public class ActionObjective extends Objective implements Listener {
             return;
         }
 
-        final String playerID = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(playerID) || !action.match(event.getAction())) {
+        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        if (!containsPlayer(profile) || !action.match(event.getAction())) {
             return;
         }
 
@@ -71,8 +77,8 @@ public class ActionObjective extends Objective implements Listener {
         if (loc != null) {
             final Location current = clickedBlock == null ? event.getPlayer().getLocation() : clickedBlock.getLocation();
             try {
-                final Location location = loc.getLocation(playerID);
-                final double pRange = range.getDouble(playerID);
+                final Location location = loc.getLocation(profile);
+                final double pRange = range.getDouble(profile);
                 if (!location.getWorld().equals(current.getWorld()) || current.distance(location) > pRange) {
                     return;
                 }
@@ -82,11 +88,11 @@ public class ActionObjective extends Objective implements Listener {
             }
         }
 
-        if ((selector == null || clickedBlock != null && (checkBlock(clickedBlock, event.getBlockFace()))) && checkConditions(playerID)) {
+        if ((selector == null || clickedBlock != null && (checkBlock(clickedBlock, event.getBlockFace()))) && checkConditions(profile)) {
             if (cancel) {
                 event.setCancelled(true);
             }
-            completeObjective(playerID);
+            completeObjective(profile);
         }
     }
 
@@ -111,14 +117,14 @@ public class ActionObjective extends Objective implements Listener {
     }
 
     @Override
-    public String getProperty(final String name, final String playerID) {
+    public String getProperty(final String name, final Profile profile) {
         if ("location".equalsIgnoreCase(name)) {
             if (loc == null) {
                 return "";
             }
             final Location location;
             try {
-                location = loc.getLocation(playerID);
+                location = loc.getLocation(profile);
             } catch (final QuestRuntimeException e) {
                 LOG.warn(instruction.getPackage(), "Error while getting location property in '" + instruction.getID() + "' objective: "
                         + e.getMessage(), e);
@@ -136,7 +142,8 @@ public class ActionObjective extends Objective implements Listener {
             if (action == Action.PHYSICAL) {
                 return false;
             }
-            return this == ANY || this == RIGHT && action.isRightClick() || this == LEFT && action.isLeftClick();
+            return this == ANY || this == RIGHT && (action == RIGHT_CLICK_AIR || action == RIGHT_CLICK_BLOCK)
+                    || this == LEFT && (action == LEFT_CLICK_AIR || action == LEFT_CLICK_BLOCK);
         }
     }
 

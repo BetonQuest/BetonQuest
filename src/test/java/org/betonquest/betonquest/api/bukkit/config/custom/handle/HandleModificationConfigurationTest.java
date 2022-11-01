@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.bukkit.config.custom.handle.util.HandleModi
 import org.betonquest.betonquest.api.bukkit.config.util.ConfigurationBaseTest;
 import org.bukkit.configuration.Configuration;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * This is a test for {@link HandleModificationConfiguration}.
  */
+@Tag("ConfigurationSection")
 @SuppressWarnings({"PMD.JUnitTestsShouldIncludeAssert", "PMD.JUnitAssertionsShouldIncludeMessage", "PMD.JUnit5TestShouldBePackagePrivate"})
 public class HandleModificationConfigurationTest extends ConfigurationBaseTest {
 
@@ -30,7 +32,7 @@ public class HandleModificationConfigurationTest extends ConfigurationBaseTest {
      * Therefore, it must be empty after each test.
      */
     @AfterEach
-    public void afterEach() {
+    public void assertSetterIsEmpty() {
         assertTrue(setter.getSection().getKeys(true).isEmpty());
         final Configuration defaultSection = setter.getSection().getDefaults();
         if (defaultSection != null) {

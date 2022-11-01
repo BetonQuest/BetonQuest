@@ -3,9 +3,9 @@ package org.betonquest.betonquest.events;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
@@ -47,19 +47,19 @@ public class WeatherEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final String playerID) throws QuestRuntimeException {
-        final World world = getWorld(playerID);
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
+        final World world = getWorld(profile);
         world.setStorm(storm);
         world.setThundering(thunder);
         if (duration != null) {
-            world.setWeatherDuration(duration.getInt(playerID) * 20);
+            world.setWeatherDuration(duration.getInt(profile) * 20);
         }
         return null;
     }
 
-    private @NotNull World getWorld(final String playerID) throws QuestRuntimeException {
+    private @NotNull World getWorld(final Profile profile) throws QuestRuntimeException {
         if (world == null) {
-            return PlayerConverter.getPlayer(playerID).getWorld();
+            return profile.getOnlineProfile().getOnlinePlayer().getWorld();
         }
         final World resolvedWorld = Bukkit.getWorld(world);
         if (resolvedWorld == null) {

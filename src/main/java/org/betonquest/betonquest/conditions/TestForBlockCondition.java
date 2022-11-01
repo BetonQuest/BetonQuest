@@ -2,6 +2,7 @@ package org.betonquest.betonquest.conditions;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.BlockSelector;
@@ -28,8 +29,8 @@ public class TestForBlockCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        final Block block = loc.getLocation(playerID).getBlock();
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        final Block block = loc.getLocation(profile).getBlock();
         return selector.match(block, exactMatch);
     }
 

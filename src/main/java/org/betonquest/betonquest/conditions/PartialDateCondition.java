@@ -2,8 +2,8 @@ package org.betonquest.betonquest.conditions;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -47,7 +47,7 @@ public class PartialDateCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+    protected Boolean execute(final Profile profile) {
         final Calendar current = Calendar.getInstance();
         if (dayOfMonth != null) {
             final int day = current.get(Calendar.DAY_OF_MONTH);
@@ -136,7 +136,7 @@ public class PartialDateCondition extends Condition {
                     } else {
                         intervals.add(new TimeInterval(Integer.parseInt(arg), type));
                     }
-                } catch (InstructionParseException e) {
+                } catch (final InstructionParseException e) {
                     //if some value exceeded minimum or maximum throw IPE
                     throw new InstructionParseException("could not parse " + type + " from '" + string + "'"
                             + " (" + e.getMessage() + ")", e);

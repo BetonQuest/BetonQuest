@@ -4,9 +4,9 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -28,13 +28,13 @@ public class LocationCondition extends Condition {
 
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        final Location location = loc.getLocation(playerID);
-        final Player player = PlayerConverter.getPlayer(playerID);
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
+        final Location location = loc.getLocation(profile);
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
         if (!location.getWorld().equals(player.getWorld())) {
             return false;
         }
-        final double pRange = range.getDouble(playerID);
+        final double pRange = range.getDouble(profile);
         return player.getLocation().distanceSquared(location) <= pRange * pRange;
     }
 

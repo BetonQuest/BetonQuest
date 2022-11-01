@@ -6,10 +6,10 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.notify.Notify;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
@@ -210,91 +210,79 @@ public final class Config {
     }
 
     /**
-     * Sends a message to player in his chosen language or default or English
+     * Sends a message to player from the {@link OnlineProfile} in his chosen language or default or English
      * (if previous not found).
      *
-     * @param packName    ID of the pack
-     * @param playerID    ID of the player
-     * @param messageName ID of the message
+     * @param packName      ID of the pack
+     * @param onlineProfile the {@link OnlineProfile} of the player
+     * @param messageName   ID of the message
      */
-    public static void sendMessage(final String packName, final String playerID, final String messageName) {
-        sendMessage(packName, playerID, messageName, (String[]) null, null, null);
+    public static void sendMessage(final String packName, final OnlineProfile onlineProfile, final String messageName) {
+        sendMessage(packName, onlineProfile, messageName, (String[]) null, null, null);
     }
 
     /**
-     * Sends a message to player in his chosen language or default or English
+     * Sends a message to player from the {@link OnlineProfile} in his chosen language or default or English
      * (if previous not found). It will replace all {x} sequences with the
      * variables.
      *
-     * @param packName    ID of the pack
-     * @param playerID    ID of the player
-     * @param messageName ID of the message
-     * @param variables   array of variables which will be inserted into the string
+     * @param packName      ID of the pack
+     * @param onlineProfile the {@link OnlineProfile} of the player
+     * @param messageName   ID of the message
+     * @param variables     array of variables which will be inserted into the string
      */
-    public static void sendMessage(final String packName, final String playerID, final String messageName, final String... variables) {
-        sendMessage(packName, playerID, messageName, variables, null, null, (String) null);
+    public static void sendMessage(final String packName, final OnlineProfile onlineProfile, final String messageName, final String... variables) {
+        sendMessage(packName, onlineProfile, messageName, variables, null, null, (String) null);
     }
 
     /**
-     * Sends a message to player in his chosen language or default or English
+     * Sends a message to player from the {@link OnlineProfile} in his chosen language or default or English
      * (if previous not found). It will replace all {x} sequences with the
      * variables and play the sound.
      *
-     * @param packName    ID of the pack
-     * @param playerID    ID of the player
-     * @param messageName ID of the message
-     * @param variables   array of variables which will be inserted into the string
-     * @param soundName   name of the sound to play to the player
+     * @param packName      ID of the pack
+     * @param onlineProfile the {@link OnlineProfile} of the player
+     * @param messageName   ID of the message
+     * @param variables     array of variables which will be inserted into the string
+     * @param soundName     name of the sound to play to the player
      */
-    public static void sendMessage(final String packName, final String playerID, final String messageName, final String[] variables, final String soundName) {
-        sendMessage(packName, playerID, messageName, variables, soundName, null, (String) null);
+    public static void sendMessage(final String packName, final OnlineProfile onlineProfile, final String messageName, final String[] variables, final String soundName) {
+        sendMessage(packName, onlineProfile, messageName, variables, soundName, null, (String) null);
     }
 
     /**
-     * Sends a message to player in his chosen language or default or English
+     * Sends a message to player from the {@link OnlineProfile} in his chosen language or default or English
      * (if previous not found). It will replace all {x} sequences with the
      * variables and play the sound. It will also add a prefix to the message.
      *
      * @param packName        ID of the pack
-     * @param playerID        ID of the player
+     * @param onlineProfile   the {@link OnlineProfile} of the player
      * @param messageName     ID of the message
      * @param variables       array of variables which will be inserted into the message
      * @param soundName       name of the sound to play to the player
      * @param prefixName      ID of the prefix
      * @param prefixVariables array of variables which will be inserted into the prefix
      */
-    public static void sendMessage(final String packName, final String playerID, final String messageName, final String[] variables, final String soundName,
+    public static void sendMessage(final String packName, final OnlineProfile onlineProfile, final String messageName, final String[] variables, final String soundName,
                                    final String prefixName, final String... prefixVariables) {
-        final String message = parseMessage(packName, playerID, messageName, variables, prefixName, prefixVariables);
+        final String message = parseMessage(packName, onlineProfile, messageName, variables, prefixName, prefixVariables);
         if (message == null || message.length() == 0) {
             return;
         }
 
-        final Player player = PlayerConverter.getPlayer(playerID);
+        final Player player = onlineProfile.getOnlineProfile().getOnlinePlayer();
         player.sendMessage(message);
         if (soundName != null) {
-            playSound(playerID, soundName);
+            playSound(onlineProfile, soundName);
         }
     }
 
-    public static void sendNotify(final String packName, final String playerID, final String messageName, final String category) throws QuestRuntimeException {
-        sendNotify(packName, playerID, messageName, null, category);
+    public static void sendNotify(final String packName, final OnlineProfile onlineProfile, final String messageName, final String category) throws QuestRuntimeException {
+        sendNotify(packName, onlineProfile, messageName, null, category);
     }
 
-    public static void sendNotify(final String packName, final Player player, final String messageName, final String category) throws QuestRuntimeException {
-        sendNotify(packName, player, messageName, null, category);
-    }
-
-    public static void sendNotify(final String packName, final String playerID, final String messageName, final String[] variables, final String category) throws QuestRuntimeException {
-        sendNotify(packName, playerID, messageName, variables, category, null);
-    }
-
-    public static void sendNotify(final String packName, final Player player, final String messageName, final String[] variables, final String category) throws QuestRuntimeException {
-        sendNotify(packName, player, messageName, variables, category, null);
-    }
-
-    public static void sendNotify(final String packName, final String playerID, final String messageName, final String[] variables, final String category, final Map<String, String> data) throws QuestRuntimeException {
-        sendNotify(packName, PlayerConverter.getPlayer(playerID), messageName, variables, category, data);
+    public static void sendNotify(final String packName, final OnlineProfile onlineProfile, final String messageName, final String[] variables, final String category) throws QuestRuntimeException {
+        sendNotify(packName, onlineProfile, messageName, variables, category, null);
     }
 
     /**
@@ -302,50 +290,41 @@ public final class Config {
      * (if previous not found). It will replace all {x} sequences with the
      * variables and play the sound. It will also add a prefix to the message.
      *
-     * @param packName    ID of the pack
-     * @param player      player
-     * @param messageName ID of the message
-     * @param variables   array of variables which will be inserted into the message
-     * @param category    notification category
-     * @param data        custom notifyIO data
+     * @param packName      ID of the pack
+     * @param onlineProfile the {@link OnlineProfile} of the player
+     * @param messageName   ID of the message
+     * @param variables     array of variables which will be inserted into the message
+     * @param category      notification category
+     * @param data          custom notifyIO data
      * @throws QuestRuntimeException thrown if it is not possible to send the notification
      */
-    public static void sendNotify(final String packName, final Player player, final String messageName, final String[] variables, final String category, final Map<String, String> data) throws QuestRuntimeException {
-        final String message = parseMessage(packName, player, messageName, variables);
+    public static void sendNotify(final String packName, final OnlineProfile onlineProfile, final String messageName, final String[] variables, final String category, final Map<String, String> data) throws QuestRuntimeException {
+        final String message = parseMessage(packName, onlineProfile, messageName, variables);
         if (message == null || message.length() == 0) {
             return;
         }
 
-        Notify.get(Config.getPackages().get(packName), category, data).sendNotify(message, player);
+        Notify.get(Config.getPackages().get(packName), category, data).sendNotify(message, onlineProfile);
     }
 
-    public static String parseMessage(final String packName, final String playerID, final String messageName, final String... variables) {
-        return parseMessage(packName, playerID, messageName, variables, null, (String) null);
-    }
-
-    public static String parseMessage(final String packName, final Player player, final String messageName, final String... variables) {
-        return parseMessage(packName, player, messageName, variables, null, (String) null);
-    }
-
-    public static String parseMessage(final String packName, final String playerID, final String messageName, final String[] variables, final String prefixName,
-                                      final String... prefixVariables) {
-        return parseMessage(packName, PlayerConverter.getPlayer(playerID), messageName, variables, prefixName, prefixVariables);
+    public static String parseMessage(final String packName, final OnlineProfile onlineProfile, final String messageName, final String... variables) {
+        return parseMessage(packName, onlineProfile, messageName, variables, null, (String) null);
     }
 
     /**
-     * Retrieve's a message in the language of the player, replacing variables
+     * Retrieve's a message in the language of the player from the {@link OnlineProfile}, replacing variables
      *
      * @param packName        ID of the pack
-     * @param player          player
+     * @param onlineProfile   the {@link OnlineProfile} of the player
      * @param messageName     name of the message to retrieve
      * @param variables       Variables to replace in message
      * @param prefixName      ID of the prefix
      * @param prefixVariables array of variables which will be inserted into the prefix
      * @return The parsed message.
      */
-    public static String parseMessage(final String packName, final Player player, final String messageName, final String[] variables, final String prefixName,
+    public static String parseMessage(final String packName, final OnlineProfile onlineProfile, final String messageName, final String[] variables, final String prefixName,
                                       final String... prefixVariables) {
-        final PlayerData playerData = plugin.getPlayerData(PlayerConverter.getID(player));
+        final PlayerData playerData = plugin.getPlayerData(onlineProfile);
         if (playerData == null) {
             return null;
         }
@@ -362,7 +341,7 @@ public final class Config {
         }
         if (packName != null) {
             for (final String variable : BetonQuest.resolveVariables(message)) {
-                final String replacement = BetonQuest.getInstance().getVariableValue(packName, variable, PlayerConverter.getID(player));
+                final String replacement = BetonQuest.getInstance().getVariableValue(packName, variable, onlineProfile);
                 message = message.replace(variable, replacement);
             }
         }
@@ -372,14 +351,11 @@ public final class Config {
     /**
      * Plays a sound specified in the plugin's config to the player
      *
-     * @param playerID  the uuid of the player
-     * @param soundName the name of the sound to play to the player
+     * @param onlineProfile the {@link OnlineProfile} of the player
+     * @param soundName     the name of the sound to play to the player
      */
-    public static void playSound(final String playerID, final String soundName) {
-        final Player player = PlayerConverter.getPlayer(playerID);
-        if (player == null) {
-            return;
-        }
+    public static void playSound(final OnlineProfile onlineProfile, final String soundName) {
+        final Player player = onlineProfile.getOnlineProfile().getOnlinePlayer();
         final String rawSound = plugin.getPluginConfig().getString("sounds." + soundName);
         if (!"false".equalsIgnoreCase(rawSound)) {
             try {

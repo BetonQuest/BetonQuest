@@ -55,7 +55,7 @@ And under `Packages to Use Import with '*'` configure the following:
 | :material-checkbox-marked: |       org.mockito.Mockito        | :material-checkbox-blank-outline: |
 
 Now we enable some automatic checks, when you commit things, that ensures everything is fine.
-In the `Commit` tab click on the three settings dots, near the `Amend` checkbox and then check the following entries under `Before Commit`:
+In the `Commit` tab click on the :gear: icon near the `Amend` checkbox. Check the following entries under `Before Commit`:
 
 - Reformat Code
 - Rearrange Code
@@ -74,7 +74,7 @@ You can do this from the command line or use IntelliJ's `Maven` tab (double-clic
 You can then find a `BetonQuest.jar` in the newly created folder `/target/artifacts`.
 
 ### Build speed up
-As BetonQuest has a lot of dependencies, the build can take a long lime, especially for the first build.
+As BetonQuest has a lot of dependencies, the build can take a long time, especially for the first build.
 You can speed this up with the following configuration, that downloads all dependencies from our own Repository Manager
 instead of searching through all repositories that are defined in the project.
 
@@ -109,10 +109,11 @@ Now after starting IntelliJ the `BetonQuest Resolve Dependencies` task should ru
 
 
 
-##Building the Documentation
+## Building the Documentation
 Make sure [Python3](https://www.python.org/downloads/) is installed on your local system
 and added to the PATH environment variable. The Python installer allows you to do so with a checkbox called something like
 "Add Python to environment variables".
+
 You also need to install [GTK](https://www.gtk.org/), the easiest way is to use this 
 [GTK installer](https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer/) if you are on Windows. 
 

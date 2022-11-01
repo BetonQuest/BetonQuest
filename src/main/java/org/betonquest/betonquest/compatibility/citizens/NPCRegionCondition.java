@@ -4,6 +4,7 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.compatibility.worldguard.WorldGuardIntegrator;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -31,7 +32,7 @@ public class NPCRegionCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
+    protected Boolean execute(final Profile profile) throws QuestRuntimeException {
         final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
         if (npc != null) {
             return WorldGuardIntegrator.isInsideRegion(npc.getStoredLocation(), region);

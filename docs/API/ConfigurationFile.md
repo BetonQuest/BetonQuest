@@ -70,13 +70,13 @@ The versions in the patch file have four digits (`1.2.3.4`). The first three are
 version that this patch updates the config to. The last digit is used to version multiple patches during the
 development phase of a semantic versioning release. 
 
-The config's version is shown inside each config as the value of the `configVersion` key. It is automatically set by the patcher.
-It uses a slightly different format: `1.2.3.4` in the patch file is `1.2.3-CONFIG-4` in the config.
+The config's version is saved in each config as the value of the `configVersion` key. It is automatically set by the patcher.
+The version format is slightly different from the patch file - `1.2.3-CONFIG-4` in the config is `1.2.3.4` in the patch file .
 
 !!! info "Example development cycle:"
     * `2.0.0` is in development...
-        - A change to the config is introduced in a dev build :arrow_right: `configVersion: "2.0.0-CONFIG-1"`
-        - A change to the config is introduced in another dev build :arrow_right: `configVersion: "2.0.0-CONFIG-2"`
+        - A change to the config is introduced in 2.0.0-DEV-45 :arrow_right: `configVersion: "2.0.0-CONFIG-1"`
+        - Another change to the config is introduced in 2.0.0-DEV-132 :arrow_right: `configVersion: "2.0.0-CONFIG-2"`
         - `2.0.0` is released. Therefore `2.0.0-CONFIG-2` becomes the final config version of `2.0.0`.
     * `2.0.1` is in development...
         - A change to the config is introduced :arrow_right: `configVersion: "2.0.1-CONFIG-1"`
@@ -85,32 +85,85 @@ It uses a slightly different format: `1.2.3.4` in the patch file is `1.2.3-CONFI
         - No changes to the config are introduced.
         - `2.0.2` is released. `2.0.1-CONFIG-1` is still the config version of the `2.0.2` release as no changes have been 
            introduced to the config.
-
+    
+    This is how the patch file would be changed for each dev build:
+    
+    === "2.0.0-DEV-45"
+        ```YAML title="config.patch.yml"
+        2.0.0.1: #(1)!
+          - type: SET
+            key: journal.custom_model_data
+            value: -1
+        ```
+        
+        1. Config Version 1 of 2.0.0.
+    === "2.0.0-DEV-132"
+        ```YAML title="config.patch.yml"
+        2.0.0.2: #(2)!
+          - type: SET
+            key: hook.decentholograms
+            value: true
+            override: false
+        2.0.0.1: #(1)!
+          - type: SET
+            key: journal.custom_model_data
+            value: -1
+        ```
+        
+        1. Config Version 1 of 2.0.0.
+        2. Config Version 2 of 2.0.0. Multiple config versions per release are needed to auto-update the configs
+           of dev builds users.
+    === "2.0.1-DEV-1"
+        ```YAML title="config.patch.yml"
+        2.0.1.1: #(3)!
+          - type: SET
+            key: hook.cmi
+            value: true
+        2.0.0.2: #(2)!
+          - type: SET
+            key: hook.decentholograms
+            value: true
+            override: false
+        2.0.0.1: #(1)!
+          - type: SET
+            key: journal.custom_model_data
+            value: -1
+        ```
+        
+        1. Config Version 1 of 2.0.0.
+        2. Config Version 2 of 2.0.0. Multiple config versions per release are needed to auto-update the configs
+           of dev builds users.
+        3. Config Version 1 of 2.0.1.
+    === "2.0.2-DEV-1"
+        ```YAML title="config.patch.yml"
+        # As no changes were made to the config in 2.0.2 no new config version was introduced.
+        2.0.1.1: #(3)!
+          - type: SET
+            key: hook.cmi
+            value: true
+        2.0.0.2: #(2)!
+          - type: SET
+            key: hook.decentholograms
+            value: true
+            override: false
+        2.0.0.1: #(1)!
+          - type: SET
+            key: journal.custom_model_data
+            value: -1
+        ```
+        
+        1. Config Version 1 of 2.0.0.
+        2. Config Version 2 of 2.0.0. Multiple config versions per release are needed to auto-update the configs
+           of dev builds users.
+        3. Config Version 1 of 2.0.1.
+  
 The patcher will also automatically set the version to the newest available patch version if the `configVersion` is an empty 
 string. Therefore, setting the `configVersion` to an empty string in your config's resource file is recommended. The
 patcher will make sure it's always up-to-date. 
 
 ### Transformer Types
 
-By default, the transformers down below are available. 
- 
-If you want to use your own transformers, you can pass them to the create method in the form of a `PatchTransformerRegisterer`.
-This is just a functional interface, that registers additional transformers.
-Utilizing this possibility will however override the default transformers. You need to re-add them explicitly. 
-
-```JAVA title="Anonymous PatchTransformerRegisterer Example"
-config = ConfigurationFile.create(configFile, MyPlugin.getInstance(), "config.yml",
-    new PatchTransformerRegisterer() {
-        @Override
-        public void registerTransformers(final Patcher patcher) {
-            PatchTransformerRegisterer.super.registerTransformers(patcher); //(1)!
-            // Register your own transformers here:
-            patcher.registerTransformer("myTransformer", new MyTransformer()); 
-        }
-    });
-```
-  
-1. Call this if you want to use the default transformers alongside your own.
+By default, these transformers are available: 
 
 #### SET
 
@@ -172,6 +225,19 @@ Renames the key's value if it matches the given regex.
   newValue: newTest
 ```
 
+#### TYPE_TRANSFORM
+
+Transforms the data type of an existing key into the given Java data type. This will result in a different formatting
+in the YAML file. E.g. strings will be surrounded by quotes, numbers and booleans won't.
+``` YAML title="Syntax"
+- type: TYPE_TRANSFORM
+  key: section.myKey
+  newType: string #(1)!
+```
+
+1. Either `string`, `integer`, `double`, `float` or `boolean`. 
+
+
 #### REMOVE
 
 Removes both sections and keys (including all nested contents).
@@ -179,3 +245,22 @@ Removes both sections and keys (including all nested contents).
 - type: REMOVE
   key: section.myList
 ```
+
+### Adding additional Transformers
+If you want to use your own transformers, you can pass them to the create method in the form of a `PatchTransformerRegisterer`.
+This is just a functional interface, that registers additional transformers.
+Utilizing this possibility will however override the default transformers. You need to re-add them explicitly. 
+
+```JAVA title="Anonymous PatchTransformerRegisterer Example"
+config = ConfigurationFile.create(configFile, MyPlugin.getInstance(), "config.yml",
+    new PatchTransformerRegisterer() {
+        @Override
+        public void registerTransformers(final Patcher patcher) {
+            PatchTransformerRegisterer.super.registerTransformers(patcher); //(1)!
+            // Register your own transformers here:
+            patcher.registerTransformer("myTransformer", new MyTransformer()); 
+        }
+    });
+```
+
+1. Call this if you want to use the default transformers alongside your own.

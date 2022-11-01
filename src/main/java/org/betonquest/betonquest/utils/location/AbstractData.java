@@ -3,6 +3,7 @@ package org.betonquest.betonquest.utils.location;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -103,26 +104,26 @@ abstract class AbstractData<T extends Cloneable> {
     protected abstract T clone(T object);
 
     /**
-     * Gets the object
+     * Gets the object.
      *
-     * @param playerID ID of the player - needed for {@link Variable}s resolution
+     * @param profile the {@link Profile} to get the value for
      * @return The object represented by this object
      * @throws QuestRuntimeException Is thrown when the objectString is not in the right format or if
      *                               the values couldn't be parsed.
      */
-    public T get(final String playerID) throws QuestRuntimeException {
-        return object == null ? parseVariableObject(playerID) : clone(object);
+    public T get(final Profile profile) throws QuestRuntimeException {
+        return object == null ? parseVariableObject(profile) : clone(object);
     }
 
-    private T parseVariableObject(final String playerID) throws QuestRuntimeException {
-        if (playerID == null) {
+    private T parseVariableObject(final Profile profile) throws QuestRuntimeException {
+        if (profile == null) {
             throw new QuestRuntimeException("Variable cannot be accessed without the player."
                     + " Consider changing it to absolute coordinates");
         }
         final String[] variables = new String[this.objectVariables.size()];
         for (int i = 0; i < this.objectVariables.size(); i++) {
             final Variable var = this.objectVariables.get(i);
-            variables[i] = var.getValue(playerID);
+            variables[i] = var.getValue(profile);
         }
         final String result = String.format(objectFormatted, (Object[]) variables);
         try {

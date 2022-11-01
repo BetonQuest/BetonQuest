@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.event;
 
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.Server;
@@ -54,12 +55,12 @@ public class PrimaryServerThreadEvent implements Event {
     }
 
     @Override
-    public void execute(final String playerId) throws QuestRuntimeException {
+    public void execute(final Profile profile) throws QuestRuntimeException {
         if (server.isPrimaryThread()) {
-            syncedEvent.execute(playerId);
+            syncedEvent.execute(profile);
         } else {
             executeOnPrimaryThread(() -> {
-                syncedEvent.execute(playerId);
+                syncedEvent.execute(profile);
                 return null;
             });
         }

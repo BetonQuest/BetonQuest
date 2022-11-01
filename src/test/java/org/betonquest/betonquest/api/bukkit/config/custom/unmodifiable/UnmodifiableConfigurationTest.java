@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.bukkit.config.util.ConfigurationBaseTest;
 import org.bukkit.configuration.Configuration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * This is a test for the {@link UnmodifiableConfiguration}.
  */
+@Tag("ConfigurationSection")
 @SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.JUnit5TestShouldBePackagePrivate"})
 public class UnmodifiableConfigurationTest extends ConfigurationBaseTest {
 
@@ -36,7 +38,7 @@ public class UnmodifiableConfigurationTest extends ConfigurationBaseTest {
      * Get a copy of the values in the config, before the test did run.
      */
     @BeforeEach
-    public void beforeEach() {
+    public void savePreviousValues() {
         values = config.getValues(true);
         valuesDefault = Objects.requireNonNull(config.getDefaultSection()).getValues(true);
     }
@@ -46,18 +48,14 @@ public class UnmodifiableConfigurationTest extends ConfigurationBaseTest {
      * They should not have been changed.
      */
     @AfterEach
-    public void afterEach() {
+    public void assertNotModified() {
         assertEquals(values.toString(), config.getValues(true).toString());
         assertEquals(valuesDefault.toString(), Objects.requireNonNull(config.getDefaultSection()).getValues(true).toString());
     }
 
     private void assertThrowsUnmodifiableException(final Executable executable) {
-        assertThrowsUnmodifiableException(executable, UnmodifiableConfiguration.UNMODIFIABLE_MESSAGE);
-    }
-
-    private void assertThrowsUnmodifiableException(final Executable executable, final String message) {
         final Exception exception = assertThrows(UnsupportedOperationException.class, executable);
-        assertEquals(message, exception.getMessage());
+        assertEquals(UnmodifiableConfiguration.UNMODIFIABLE_MESSAGE, exception.getMessage());
     }
 
     @Test

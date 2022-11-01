@@ -565,11 +565,11 @@ The format of a block selector is: `namespace:material[state=value,...]`
 Where:
 
   - `namespace` - (optional) The material namespace. If left out then it will be assumed to be 'minecraft'.
-   Can be a [regex](https://medium.com/factory-mind/regex-tutorial-a-simple-cheatsheet-by-examples-649dc1c3f285).
+   Can be a [regex](#regex-regular-expressions).
   
   - `material` - The material the block is made of. All materials can be found in
   [Spigots Javadocs](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html). 
-  It can be a [regex](https://medium.com/factory-mind/regex-tutorial-a-simple-cheatsheet-by-examples-649dc1c3f285).
+  It can be a [regex](#regex-regular-expressions).
   If the regex ends with square brackets you have to add another pair of empty square brackets even if you don't want to 
   use the state argument (`[regex][]`).  
   Instead of using a regex to match multiple materials you can also define a [tag](https://minecraft.gamepedia.com/Tag).
@@ -579,7 +579,7 @@ Where:
   - `state` - (optional) The block states can be provided in a comma separated `key=value` list surrounded by square brackets.
    You can look up states in the Minecraft [wiki](https://minecraft.gamepedia.com/Block_states).
    Any states left out will be ignored when matching.
-   *Values* can be a [regex](https://medium.com/factory-mind/regex-tutorial-a-simple-cheatsheet-by-examples-649dc1c3f285).
+   *Values* can be a [regex](#regex-regular-expressions).
 
 Examples:
 
@@ -601,12 +601,12 @@ Examples:
   
   - `:blocks:crops[age=0]` - Matches all crops with an age of 0 meaning, not grown / just planted
 
-###Setting behaviour
+### Setting behaviour
 
 A block selector with a regex or tag as it's material name results in a random block out of all blocks that match that regex or tag.
 You cannot use a regex in block states when the block selector is used for placing blocks.
 
-###Matching behaviour
+### Matching behaviour
 
 The block state will ignore all additional block states on the block it's compared with by default.
 Example: `fence[facing=north] matches fence[facing=north] and fence[facing=north,waterlogged=true]`
@@ -642,3 +642,30 @@ player_hider:
     source_player: in_Lobby
     #The target_player argument is left out to match all players.
 ```
+
+## Regex (Regular Expressions)
+A regular expression is a sequence of characters that specifies a search pattern for text. It's used in BetonQuest to
+check if game objects match a user-defined input. For example, [Block Selectors](#block-selectors) use a regex to match
+multiple materials or block states. You can also use regular expressions in the 
+[variable condition](Conditions-List.md#variable-variable) or the 
+[password objective](Objectives-List.md#password-password) to match player names, item names, etc. These expressions are
+a very powerful tool, but can be confusing at first.
+
+### Common Use Cases
+
+| Use Case                                                      | Regex                  |
+|---------------------------------------------------------------|------------------------|
+| A specific text e.g. `STONE`                                  | `STONE`                |
+| A text starting with `STONE`                                  | `STONE.*`              |
+| A text ending with `_LOG`                                     | `.*_LOG`               |
+| A specific number e.g. `42`                                   | `^42$`                 |
+| A specific range of numbers, e.g. any number between 0 and 99 | `[0-9]{1,2}`           |
+| Positive numbers only                                         | `^\d+$`                |
+| Negative numbers only                                         | `^-\d+$`               |
+| Any number                                                    | `[-+]?[0-9]+\.?[0-9]+` |
+
+### More complex use cases
+
+If you want to use complex patterns you must learn more about regular expressions. There are countless resources online,
+for example you could read this 
+[cheatsheet](https://medium.com/factory-mind/regex-tutorial-a-simple-cheatsheet-by-examples-649dc1c3f285).

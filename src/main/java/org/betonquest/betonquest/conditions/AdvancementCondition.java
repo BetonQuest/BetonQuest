@@ -2,8 +2,8 @@ package org.betonquest.betonquest.conditions;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.advancement.Advancement;
@@ -32,8 +32,8 @@ public class AdvancementCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) {
-        final AdvancementProgress progress = PlayerConverter.getPlayer(playerID).getAdvancementProgress(advancement);
+    protected Boolean execute(final Profile profile) {
+        final AdvancementProgress progress = profile.getOnlineProfile().getOnlinePlayer().getAdvancementProgress(advancement);
         return progress.isDone();
     }
 

@@ -6,6 +6,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.CountingObjective;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.BlockSelector;
@@ -61,34 +62,33 @@ public class FishObjective extends CountingObjective implements Listener {
         if (event.getState() != State.CAUGHT_FISH) {
             return;
         }
-        final String playerID = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(playerID) || event.getCaught() == null || event.getCaught().getType() != EntityType.DROPPED_ITEM) {
+        final Profile profile = PlayerConverter.getID(event.getPlayer());
+        if (!containsPlayer(profile) || event.getCaught() == null || event.getCaught().getType() != EntityType.DROPPED_ITEM) {
             return;
         }
-
-        if (isInvalidLocation(event, playerID)) {
+        if (isInvalidLocation(event, profile)) {
             return;
         }
         final ItemStack item = ((Item) event.getCaught()).getItemStack();
-        if (blockSelector.match(item.getType()) && checkConditions(playerID)) {
-            getCountingData(playerID).progress(item.getAmount());
-            completeIfDoneOrNotify(playerID);
+        if (blockSelector.match(item.getType()) && checkConditions(profile)) {
+            getCountingData(profile).progress(item.getAmount());
+            completeIfDoneOrNotify(profile);
         }
     }
 
-    private boolean isInvalidLocation(final PlayerFishEvent event, final String playerID) {
+    private boolean isInvalidLocation(final PlayerFishEvent event, final Profile profile) {
         if (hookTargetLocation == null || rangeVar == null) {
             return false;
         }
 
         final Location targetLocation;
         try {
-            targetLocation = hookTargetLocation.getLocation(playerID);
+            targetLocation = hookTargetLocation.getLocation(profile);
         } catch (final QuestRuntimeException e) {
             LOG.warn(e.getMessage(), e);
             return true;
         }
-        final int range = rangeVar.getInt(playerID);
+        final int range = rangeVar.getInt(profile);
         final Location hookLocation = event.getHook().getLocation();
         return !hookLocation.getWorld().equals(targetLocation.getWorld()) || targetLocation.distanceSquared(hookLocation) > range * range;
     }

@@ -4,9 +4,9 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
@@ -42,17 +42,17 @@ public class ScoreboardEvent extends QuestEvent {
 
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    protected Void execute(final String playerID) throws QuestRuntimeException {
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
         final Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
         final Objective obj = board.getObjective(objective);
         if (obj == null) {
             throw new QuestRuntimeException("Scoreboard objective " + objective + " does not exist!");
         }
-        final Score score = obj.getScore(PlayerConverter.getName(playerID));
+        final Score score = obj.getScore(profile.getOfflinePlayer());
         if (multi) {
-            score.setScore((int) Math.floor(score.getScore() * count.getDouble(playerID)));
+            score.setScore((int) Math.floor(score.getScore() * count.getDouble(profile)));
         } else {
-            score.setScore((int) Math.floor(score.getScore() + count.getDouble(playerID)));
+            score.setScore((int) Math.floor(score.getScore() + count.getDouble(profile)));
         }
         return null;
     }

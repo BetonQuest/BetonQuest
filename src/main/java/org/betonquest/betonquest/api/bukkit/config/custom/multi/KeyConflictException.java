@@ -61,7 +61,7 @@ public class KeyConflictException extends InvalidConfigurationException {
      * Create a readable and more useful error message.
      *
      * @param namedConfigurations a map of the {@link ConfigurationSection}s, that you used when constructing a
-     *                            {@link MultiConfiguration#MultiConfiguration(List)}.
+     *                            {@link MultiSectionConfiguration#MultiSectionConfiguration(List)}.
      *                            Each ConfigurationSection maps to a readable message.
      * @return a formatted and helpful error message
      */

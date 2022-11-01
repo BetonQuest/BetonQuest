@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.menu.events;
 
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.menu.MenuID;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 
 /**
- * Called whenever a menu is opened
+ * Called whenever a menu is opened.
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class MenuOpenEvent extends MenuEvent implements Cancellable {
@@ -15,7 +15,7 @@ public class MenuOpenEvent extends MenuEvent implements Cancellable {
 
     private boolean cancelled;
 
-    public MenuOpenEvent(final Player who, final MenuID menu) {
+    public MenuOpenEvent(final Profile who, final MenuID menu) {
         super(who, menu);
     }
 

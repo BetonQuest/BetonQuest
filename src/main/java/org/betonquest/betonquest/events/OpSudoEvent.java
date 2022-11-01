@@ -4,8 +4,8 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -30,8 +30,8 @@ public class OpSudoEvent extends QuestEvent {
 
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    protected Void execute(final String playerID) {
-        final Player player = PlayerConverter.getPlayer(playerID);
+    protected Void execute(final Profile profile) {
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
         final boolean previousOp = player.isOp();
         try {
             player.setOp(true);
@@ -39,7 +39,7 @@ public class OpSudoEvent extends QuestEvent {
                 String com = command.command;
                 for (final String var : command.variables) {
                     com = com.replace(var, BetonQuest.getInstance().getVariableValue(
-                            instruction.getPackage().getPackagePath(), var, playerID));
+                            instruction.getPackage().getPackagePath(), var, profile));
                 }
                 player.performCommand(com);
             }

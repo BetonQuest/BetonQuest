@@ -20,7 +20,7 @@ public abstract class UpdateSource {
     public static final int RESPONSE_CODE_403 = 403;
 
     /**
-     * Default contstuctor
+     * Default constructor
      */
     public UpdateSource() {
         // Empty

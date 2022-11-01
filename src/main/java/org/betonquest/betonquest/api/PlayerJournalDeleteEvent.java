@@ -2,14 +2,14 @@ package org.betonquest.betonquest.api;
 
 import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.Pointer;
-import org.bukkit.entity.Player;
+import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.ProfileEvent;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.player.PlayerEvent;
 
 /**
- * When player journal delete contents.
+ * Fires when content is removed from a profile's journal.
  */
-public class PlayerJournalDeleteEvent extends PlayerEvent {
+public class PlayerJournalDeleteEvent extends ProfileEvent {
 
     /**
      * HandlerList of this event.
@@ -29,11 +29,11 @@ public class PlayerJournalDeleteEvent extends PlayerEvent {
     /**
      * Constructor of PlayerJournalDeleteEvent.
      *
-     * @param who     the player who was deleted journal
-     * @param journal the journal of this player
-     * @param pointer the pointer for which journal entry was deleted for this player
+     * @param who     the {@link Profile} who was deleted journal
+     * @param journal the journal of this profile
+     * @param pointer the pointer for which journal entry was deleted for this profile
      */
-    public PlayerJournalDeleteEvent(final Player who, final Journal journal, final Pointer pointer) {
+    public PlayerJournalDeleteEvent(final Profile who, final Journal journal, final Pointer pointer) {
         super(who);
         this.journal = journal;
         this.pointer = pointer;
@@ -49,7 +49,7 @@ public class PlayerJournalDeleteEvent extends PlayerEvent {
     }
 
     /**
-     * Get this Journal. This is the whole of journal of this player, not a journal entry.
+     * Get this Journal. This is the whole journal of this profile, not a journal entry.
      *
      * @return the journal
      */

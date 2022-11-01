@@ -5,6 +5,7 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.Location;
 
@@ -40,7 +41,7 @@ public class CitizensVariable extends Variable {
 
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public String getValue(final String playerID) {
+    public String getValue(final Profile profile) {
         final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
         if (npc == null) {
             return "";

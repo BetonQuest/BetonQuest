@@ -2,8 +2,7 @@ package org.betonquest.betonquest.conditions;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
+import org.betonquest.betonquest.api.profiles.Profile;
 
 /**
  * Requires the player to burn
@@ -20,7 +19,7 @@ public class BurningCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) throws QuestRuntimeException {
-        return PlayerConverter.getPlayer(playerID).getFireTicks() > 0;
+    protected Boolean execute(final Profile profile) {
+        return profile.getOnlineProfile().getOnlinePlayer().getFireTicks() > 0;
     }
 }

@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.quest.event;
 
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
@@ -29,8 +30,9 @@ class InfoNotificationSenderTest {
         final NotificationSender sender = new InfoNotificationSender("message-name", questPackage, "full.id");
 
         try (MockedStatic<Config> config = mockStatic(Config.class)) {
-            sender.sendNotification("player-id");
-            config.verify(() -> Config.sendNotify("package.path", "player-id", "message-name", null, "message-name,info"));
+            final OnlineProfile onlineProfile = mock(OnlineProfile.class);
+            sender.sendNotification(onlineProfile);
+            config.verify(() -> Config.sendNotify("package.path", onlineProfile, "message-name", null, "message-name,info"));
         }
     }
 
@@ -40,9 +42,9 @@ class InfoNotificationSenderTest {
         final NotificationSender sender = new InfoNotificationSender("message-name", questPackage, "full.id");
 
         try (MockedStatic<Config> config = mockStatic(Config.class)) {
-            config.when(() -> Config.sendNotify(any(), any(String.class), any(), any(), any()))
+            config.when(() -> Config.sendNotify(any(), any(OnlineProfile.class), any(), any(), any()))
                     .thenThrow(new QuestRuntimeException("Test cause."));
-            assertDoesNotThrow(() -> sender.sendNotification("player-id"), "Failing to send a notification should not throw an exception.");
+            assertDoesNotThrow(() -> sender.sendNotification(mock(OnlineProfile.class)), "Failing to send a notification should not throw an exception.");
         }
         logValidator.assertLogEntry(Level.WARNING, "The notify system was unable to play a sound for the 'message-name' category in 'full.id'. Error was: 'Test cause.'");
         logValidator.assertLogEntry(Level.FINE, "Additional stacktrace:", QuestRuntimeException.class, "Test cause.");

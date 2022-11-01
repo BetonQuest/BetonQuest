@@ -2,8 +2,8 @@ package org.betonquest.betonquest.events;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.World;
 
 /**
@@ -31,8 +31,8 @@ public class TimeEvent extends QuestEvent {
     }
 
     @Override
-    protected Void execute(final String playerID) {
-        final World world = PlayerConverter.getPlayer(playerID).getWorld();
+    protected Void execute(final Profile profile) {
+        final World world = profile.getOnlineProfile().getOnlinePlayer().getWorld();
         long time = (long) amount;
         if (add) {
             time += world.getTime();

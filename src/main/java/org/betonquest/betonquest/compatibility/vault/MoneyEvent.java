@@ -4,11 +4,11 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.PlayerConverter;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 
 import java.text.DecimalFormat;
 
@@ -42,15 +42,15 @@ public class MoneyEvent extends QuestEvent {
 
     @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.CyclomaticComplexity"})
     @Override
-    protected Void execute(final String playerID) throws QuestRuntimeException {
-        final Player player = PlayerConverter.getPlayer(playerID);
+    protected Void execute(final Profile profile) throws QuestRuntimeException {
+        final OfflinePlayer player = profile.getOfflinePlayer();
         // get the difference between target money and current money
         final double current = VaultIntegrator.getEconomy().getBalance(player);
         final double target;
         if (multi) {
-            target = current * amount.getDouble(playerID);
+            target = current * amount.getDouble(profile);
         } else {
-            target = current + amount.getDouble(playerID);
+            target = current + amount.getDouble(profile);
         }
 
         final double difference = target - current;
@@ -61,7 +61,7 @@ public class MoneyEvent extends QuestEvent {
             VaultIntegrator.getEconomy().depositPlayer(player, difference);
             if (notify) {
                 try {
-                    Config.sendNotify(instruction.getPackage().getPackagePath(), playerID, "money_given",
+                    Config.sendNotify(instruction.getPackage().getPackagePath(), profile.getOnlineProfile(), "money_given",
                             new String[]{decimalFormat.format(difference), currencyName}, "money_given,info");
                 } catch (final QuestRuntimeException e) {
                     LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'money_given' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
@@ -71,7 +71,7 @@ public class MoneyEvent extends QuestEvent {
             VaultIntegrator.getEconomy().withdrawPlayer(player, -difference);
             if (notify) {
                 try {
-                    Config.sendNotify(instruction.getPackage().getPackagePath(), playerID, "money_taken",
+                    Config.sendNotify(instruction.getPackage().getPackagePath(), profile.getOnlineProfile(), "money_taken",
                             new String[]{decimalFormat.format(difference), currencyName}, "money_taken,info");
                 } catch (final QuestRuntimeException e) {
                     LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'money_taken' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);

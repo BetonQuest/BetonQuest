@@ -2,7 +2,7 @@ package org.betonquest.betonquest.variables;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
-import org.betonquest.betonquest.utils.PlayerConverter;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.bukkit.entity.Player;
 
 /**
@@ -20,8 +20,8 @@ public class PlayerNameVariable extends Variable {
     }
 
     @Override
-    public String getValue(final String playerID) {
-        final Player player = PlayerConverter.getPlayer(playerID);
+    public String getValue(final Profile profile) {
+        final Player player = profile.getOnlineProfile().getOnlinePlayer();
         return display ? player.getDisplayName() : player.getName();
     }
 

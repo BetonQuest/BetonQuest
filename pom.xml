@@ -11,6 +11,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.target>17</maven.compiler.target>
     <maven.compiler.source>17</maven.compiler.source>
+    <Test-All/>
+    <Test-ConfigurationSection/>
   </properties>
 
   <name>BetonQuest</name>
@@ -170,11 +172,9 @@
       <version>3.0.0</version>
     </dependency>
     <dependency>
-      <groupId>com.gmail.filoghost.holographicdisplays</groupId>
+      <groupId>me.filoghost.holographicdisplays</groupId>
       <artifactId>holographicdisplays-api</artifactId>
-      <version>2.4.9</version>
-      <scope>provided</scope>
-      <optional>true</optional>
+      <version>3.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.gmail.nossr50.mcMMO</groupId>
@@ -920,6 +920,7 @@
           <configuration>
             <reuseForks>false</reuseForks>
             <forkCount>0.5C</forkCount>
+            <groups>none()${Test-All}${Test-ConfigurationSection}</groups>
           </configuration>
         </plugin>
         <plugin>
@@ -1025,7 +1026,7 @@
 
   <profiles>
     <profile>
-      <id>skip-verification</id>
+      <id>Skip-Verification</id>
       <build>
         <plugins>
           <plugin>
@@ -1056,6 +1057,13 @@
               <skip>true</skip>
             </configuration>
           </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>Test-None</id>
+      <build>
+        <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
@@ -1065,6 +1073,18 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+    <profile>
+      <id>Test-All</id>
+      <properties>
+        <Test-All>| any()</Test-All>
+      </properties>
+    </profile>
+    <profile>
+      <id>Test-ConfigurationSection</id>
+      <properties>
+        <Test-ConfigurationSection>| ConfigurationSection</Test-ConfigurationSection>
+      </properties>
     </profile>
   </profiles>
 </project>

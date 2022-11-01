@@ -1,1 +1,5 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/ConfigPatcher.md
+2.0.0.1:
+  - type: SET
+    key: journal.custom_model_data
+    value: -1

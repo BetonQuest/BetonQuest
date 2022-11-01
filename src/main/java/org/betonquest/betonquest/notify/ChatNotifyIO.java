@@ -1,10 +1,9 @@
 package org.betonquest.betonquest.notify;
 
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.PlayerConverter;
-import org.bukkit.entity.Player;
 
 import java.util.Map;
 
@@ -16,10 +15,10 @@ public class ChatNotifyIO extends NotifyIO {
     }
 
     @Override
-    protected void notifyPlayer(final String message, final Player player) {
-        final Conversation conversation = Conversation.getConversation(PlayerConverter.getID(player));
+    protected void notifyPlayer(final String message, final OnlineProfile onlineProfile) {
+        final Conversation conversation = Conversation.getConversation(onlineProfile);
         if (conversation == null || conversation.getInterceptor() == null) {
-            player.sendMessage(message);
+            onlineProfile.getOnlinePlayer().sendMessage(message);
         } else {
             conversation.getInterceptor().sendMessage(message);
         }

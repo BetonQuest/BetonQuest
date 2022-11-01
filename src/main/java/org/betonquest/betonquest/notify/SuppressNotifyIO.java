@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.notify;
 
 import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +16,7 @@ public class SuppressNotifyIO extends NotifyIO {
     }
 
     @Override
-    protected void notifyPlayer(final String message, final Player player) {
+    protected void notifyPlayer(final String message, final OnlineProfile onlineProfile) {
         // Empty
     }
 }

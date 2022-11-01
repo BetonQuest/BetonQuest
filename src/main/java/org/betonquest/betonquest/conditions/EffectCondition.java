@@ -2,8 +2,8 @@ package org.betonquest.betonquest.conditions;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.potion.PotionEffectType;
 
 /**
@@ -24,8 +24,8 @@ public class EffectCondition extends Condition {
     }
 
     @Override
-    protected Boolean execute(final String playerID) {
-        return PlayerConverter.getPlayer(playerID).hasPotionEffect(type);
+    protected Boolean execute(final Profile profile) {
+        return profile.getOnlineProfile().getOnlinePlayer().hasPotionEffect(type);
     }
 
 }
