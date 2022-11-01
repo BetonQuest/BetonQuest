@@ -219,6 +219,10 @@ conversations:
 As you can see we also added new options to it. Now the NPC will say that you already received the food
 and won't give you more!
 
+!!! tip "Note about testing"
+    If you want to test this conversation again, you need to remove the tag from the player.
+    You can do this by using the `/bq tag remove <player> <tag>` command.
+
 --8<-- "Tutorials/download-solution.md"
        ```
        /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conditions/3-ConditionsInConversations /tutorialQuest overwrite
