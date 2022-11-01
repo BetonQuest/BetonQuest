@@ -3,7 +3,6 @@ package org.betonquest.betonquest.modules.config.quest;
 import lombok.CustomLog;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.api.config.quest.Quest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.GlobalVariableID;
@@ -22,20 +21,25 @@ import java.util.regex.Pattern;
  * This {@link QuestPackageImpl} represents all functionality based on a {@link Quest}.
  */
 @CustomLog
-public class QuestPackageImpl extends QuestTemplateImpl implements QuestPackage {
+public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
     /**
      * Creates a new {@link QuestPackage}.  For more information see {@link Quest}.
      *
      * @param questPath the path that address this {@link QuestPackage}
-     * @param questFile the file that represent the root of this {@link QuestPackage}
+     * @param root      the root file of this {@link QuestPackage}
      * @param files     all files contained by this {@link QuestPackage} except the {@code questFile}
      * @throws InvalidConfigurationException thrown if a {@link QuestPackage} could not be created
      *                                       or an exception occurred while creating the {@link MultiConfiguration}
      * @throws FileNotFoundException         thrown if a file could not be found during the creation
      *                                       of a {@link ConfigAccessor}
      */
-    public QuestPackageImpl(final String questPath, final File questFile, final List<File> files) throws InvalidConfigurationException, FileNotFoundException {
-        super(questPath, questFile, files);
+    public QuestPackageImpl(final String questPath, final File root, final List<File> files) throws InvalidConfigurationException, FileNotFoundException {
+        super(questPath, root, files);
+    }
+
+    @Override
+    public boolean hasTemplate(final String templatePath) {
+        return getTemplates().contains(templatePath);
     }
 
     @Override

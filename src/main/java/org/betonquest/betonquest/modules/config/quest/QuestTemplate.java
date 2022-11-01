@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.modules.config.quest;
 
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
+import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiSectionConfiguration;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.fallback.MultiFallbackConfiguration;
-import org.betonquest.betonquest.api.config.quest.Quest;
-import org.betonquest.betonquest.api.config.quest.QuestTemplate;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,7 +19,7 @@ import java.util.Set;
 /**
  * This is an implementation of {@link QuestTemplate}, that gets and applies templates.
  */
-public class QuestTemplateImpl extends QuestImpl implements QuestTemplate {
+public class QuestTemplate extends Quest {
     /**
      * A list of all templates that are applied to this {@link QuestTemplate}
      */
@@ -33,7 +33,7 @@ public class QuestTemplateImpl extends QuestImpl implements QuestTemplate {
      * Creates a new {@link QuestTemplate}. For more information see {@link Quest}.
      *
      * @param questPath the path that address this {@link QuestTemplate}
-     * @param questFile the file that represents the root of this {@link QuestTemplate}
+     * @param root      the root file of this {@link QuestTemplate}
      * @param files     all files contained by this {@link QuestTemplate} except the {@code questFile}
      * @throws InvalidConfigurationException thrown if a {@link org.betonquest.betonquest.api.config.ConfigAccessor}
      *                                       could not be created or an exception occurred while creating the
@@ -41,13 +41,16 @@ public class QuestTemplateImpl extends QuestImpl implements QuestTemplate {
      * @throws FileNotFoundException         thrown if a file could not be found during the creation
      *                                       of a {@link org.betonquest.betonquest.api.config.ConfigAccessor}
      */
-    public QuestTemplateImpl(final String questPath, final File questFile, final List<File> files) throws InvalidConfigurationException, FileNotFoundException {
-        super(questPath, questFile, files);
-        isDefinedInQuestConfigOrThrow("templates");
+    public QuestTemplate(final String questPath, final File root, final List<File> files) throws InvalidConfigurationException, FileNotFoundException {
+        super(questPath, root, files);
         templates = new HashSet<>();
     }
 
-    @Override
+    /**
+     * Gets the merged {@link MultiSectionConfiguration} that represents this {@link QuestPackage}.
+     *
+     * @return a config extending {@link MultiConfiguration}
+     */
     public MultiConfiguration getConfig() {
         if (templateConfig == null) {
             throw new IllegalStateException("The template config is not initialized yet");
@@ -55,17 +58,24 @@ public class QuestTemplateImpl extends QuestImpl implements QuestTemplate {
         return templateConfig;
     }
 
-    @Override
+    /**
+     * Gets a list of all templates that are applied to this {@link QuestTemplate} and all inherited templates.
+     *
+     * @return a list of all templates that are applied to this {@link QuestTemplate} and all inherited templates.
+     */
     public List<String> getTemplates() {
         return new ArrayList<>(templates);
     }
 
-    @Override
-    public boolean hasTemplate(final String templatePath) {
-        return templates.contains(templatePath);
-    }
-
-    @Override
+    /**
+     * Applies given {@link QuestTemplate}s to this {@link QuestTemplate}.
+     * The given QuestTemplates should contain all templates that are available.
+     * The method will pick the templates from the given list.
+     * If a template is not available, a {@link InvalidConfigurationException} will be thrown.
+     *
+     * @param questTemplates The list of all available {@link QuestTemplate}s
+     * @throws InvalidConfigurationException thrown if a template is not available
+     */
     public void applyQuestTemplates(final Map<String, QuestTemplate> questTemplates) throws InvalidConfigurationException {
         if (templateConfig != null) {
             return;

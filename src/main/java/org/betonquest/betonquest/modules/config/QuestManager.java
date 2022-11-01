@@ -3,11 +3,10 @@ package org.betonquest.betonquest.modules.config;
 import lombok.CustomLog;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
-import org.betonquest.betonquest.api.config.quest.Quest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
-import org.betonquest.betonquest.api.config.quest.QuestTemplate;
+import org.betonquest.betonquest.modules.config.quest.Quest;
 import org.betonquest.betonquest.modules.config.quest.QuestPackageImpl;
-import org.betonquest.betonquest.modules.config.quest.QuestTemplateImpl;
+import org.betonquest.betonquest.modules.config.quest.QuestTemplate;
 import org.bukkit.configuration.InvalidConfigurationException;
 
 import java.io.File;
@@ -44,11 +43,6 @@ public class QuestManager {
      * The name of the file that indicates a quest folder
      */
     public static final String FILE_NAME_INDICATOR = "package";
-
-    /**
-     * All loaded {@link QuestTemplate}s
-     */
-    private final Map<String, QuestTemplate> templates;
     /**
      * All loaded {@link QuestPackage}s
      */
@@ -60,7 +54,6 @@ public class QuestManager {
      * @param root The root directory where to create the root folders for templates and packages
      */
     public QuestManager(final File root) {
-        this.templates = new HashMap<>();
         this.packages = new HashMap<>();
 
         final File templatesDir = new File(root, QUEST_TEMPLATES_FOLDER);
@@ -70,20 +63,21 @@ public class QuestManager {
             return;
         }
 
+        final Map<String, QuestTemplate> templates = new HashMap<>();
         try {
             searchForPackages(templatesDir, templatesDir, FILE_NAME_INDICATOR, FILE_TYPE_INDICATOR, (questPath, questFile, files) -> {
-                final QuestTemplate quest = new QuestTemplateImpl(questPath, questFile, files);
+                final QuestTemplate quest = new QuestTemplate(questPath, questFile, files);
                 templates.put(quest.getQuestPath(), quest);
             });
             searchForPackages(packagesDir, packagesDir, FILE_NAME_INDICATOR, FILE_TYPE_INDICATOR, (questPath, questFile, files) -> {
-                final QuestPackage quest = new QuestPackageImpl(questPath, questFile, files);
+                final QuestPackageImpl quest = new QuestPackageImpl(questPath, questFile, files);
                 try {
                     quest.applyQuestTemplates(templates);
                 } catch (final InvalidConfigurationException e) {
                     LOG.warn("Error while loading '" + packagesDir.getPath() + "'! Reason: " + e.getMessage(), e);
                     return;
                 }
-                if (!quest.isDefinedInQuestConfigOrThrow("enabled") || quest.getConfig().getBoolean("enabled", true)) {
+                if (quest.getConfig().getBoolean("enabled", true)) {
                     packages.put(quest.getQuestPath(), quest);
                 }
             });
@@ -112,7 +106,8 @@ public class QuestManager {
         final List<File> files = new ArrayList<>();
         final File questFile = searchQuestFile(root, fileNameIndicator, fileTypeIndicator, creator, fileArray, files);
         if (questFile != null) {
-            createPackage(root, questFile, files, creator);
+            files.add(questFile);
+            createPackage(root, questFile.getParentFile(), files, creator);
             files.clear();
         }
         return files;
@@ -152,11 +147,11 @@ public class QuestManager {
         return files;
     }
 
-    private void createPackage(final File root, final File main, final List<File> files, final QuestCreator creator) {
-        final String questPath = root.toURI().relativize(main.getParentFile().toURI())
+    private void createPackage(final File root, final File relativeRoot, final List<File> files, final QuestCreator creator) {
+        final String questPath = root.toURI().relativize(relativeRoot.toURI())
                 .toString().replace('/', ' ').trim().replaceAll(" ", PACKAGE_SEPARATOR);
         try {
-            creator.create(questPath, main, files);
+            creator.create(questPath, relativeRoot, files);
         } catch (final InvalidConfigurationException | FileNotFoundException e) {
             LOG.warn(root.getParentFile().getName() + " '" + questPath + "' could not be loaded, reason: " + e.getMessage(), e);
         }
@@ -169,14 +164,14 @@ public class QuestManager {
         /**
          * Method top create and register a {@link Quest}
          *
-         * @param questPath     The path to this {@link Quest}
-         * @param packageConfig The root file of this {@link Quest}
-         * @param files         All files of this {@link Quest} except the packageConfig
+         * @param questPath    The path to this {@link Quest}
+         * @param relativeRoot the root file of this {@link Quest}
+         * @param files        All files of this {@link Quest} except the packageConfig
          * @throws InvalidConfigurationException thrown if a {@link Quest} could not be created
          *                                       or an exception occurred while creating the {@link MultiConfiguration}
          * @throws FileNotFoundException         thrown if a file could not be found during the creation
          *                                       of a {@link ConfigAccessor}
          */
-        void create(String questPath, File packageConfig, List<File> files) throws InvalidConfigurationException, FileNotFoundException;
+        void create(String questPath, File relativeRoot, List<File> files) throws InvalidConfigurationException, FileNotFoundException;
     }
 }
