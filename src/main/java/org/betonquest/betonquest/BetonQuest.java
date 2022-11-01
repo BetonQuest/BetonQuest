@@ -557,6 +557,7 @@ public class BetonQuest extends JavaPlugin {
         if (variableClass == null) {
             throw new InstructionParseException("Variable type " + instructionVar.getPart(0) + " is not registered");
         }
+
         try {
             final Variable variable = variableClass.getConstructor(Instruction.class)
                     .newInstance(new VariableInstruction(pack, null, instruction));

@@ -19,16 +19,14 @@ public abstract class ID {
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     protected ID(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
-
         // id must be specified
         if (identifier == null || identifier.length() == 0) {
             throw new ObjectNotFoundException("ID is null");
         }
-
         // resolve package name
         if (identifier.contains(".")) {
             // id has specified a package, get it!
-            final int dotIndex = identifier.indexOf('.');
+            int dotIndex = identifier.indexOf('.');
             final String packName = identifier.substring(0, dotIndex);
             if (pack != null && packName.startsWith(UP_STR + "-")) {
                 // resolve relative name if we have a supplied package
@@ -73,6 +71,11 @@ public abstract class ID {
             } else {
                 // use package name as absolute path if no relative path is available
                 this.pack = Config.getPackages().get(packName);
+                if (this.pack == null) {
+                    //if packName was not a pack, use provided pack and treat the entire raw identifier as the full id.
+                    this.pack = pack;
+                    dotIndex = -1;
+                }
             }
             if (identifier.length() == dotIndex + 1) {
                 throw new ObjectNotFoundException("ID of the pack '" + this.pack + "' is null");
