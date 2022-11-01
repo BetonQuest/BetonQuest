@@ -28,7 +28,7 @@ public class ObjectiveEvent extends QuestEvent {
     /**
      * The BetonQuest instance.
      */
-    private final BetonQuest BETONQUEST;
+    private final BetonQuest betonQuest;
     /**
      * All objectives affected by this event.
      */
@@ -48,7 +48,7 @@ public class ObjectiveEvent extends QuestEvent {
     public ObjectiveEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         staticness = true;
-        BETONQUEST = BetonQuest.getInstance();
+        betonQuest = BetonQuest.getInstance();
 
         action = instruction.next().toLowerCase(Locale.ROOT);
         if (!Arrays.asList(new String[]{"start", "add", "delete", "remove", "complete", "finish"}).contains(action)) {
@@ -62,18 +62,18 @@ public class ObjectiveEvent extends QuestEvent {
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
         for (final ObjectiveID objective : objectives) {
-            if (BETONQUEST.getObjective(objective) == null) {
+            if (betonQuest.getObjective(objective) == null) {
                 throw new QuestRuntimeException("Objective '" + objective + "' is not defined, cannot run objective event");
             }
             if (profile == null) {
                 if ("delete".equals(action) || "remove".equals(action)) {
                     PlayerConverter.getOnlineProfiles().forEach(onlineProfile -> cancelObjectiveForOnlinePlayer(onlineProfile, objective));
-                    BETONQUEST.getSaver().add(new Saver.Record(UpdateType.REMOVE_ALL_OBJECTIVES, objective.toString()));
+                    betonQuest.getSaver().add(new Saver.Record(UpdateType.REMOVE_ALL_OBJECTIVES, objective.toString()));
                 } else {
                     LOG.warn(instruction.getPackage(), "You tried to call an objective add / finish event in a static context! Only objective delete works here.");
                 }
             } else if (profile.getPlayer() == null) {
-                Bukkit.getScheduler().runTaskAsynchronously(BETONQUEST, () -> {
+                Bukkit.getScheduler().runTaskAsynchronously(betonQuest, () -> {
                     final PlayerData playerData = new PlayerData(profile);
                     switch (action.toLowerCase(Locale.ROOT)) {
                         case "start", "add" -> playerData.addNewRawObjective(objective);
@@ -88,7 +88,7 @@ public class ObjectiveEvent extends QuestEvent {
                 switch (action.toLowerCase(Locale.ROOT)) {
                     case "start", "add" -> BetonQuest.newObjective(profile, objective);
                     case "delete", "remove" -> cancelObjectiveForOnlinePlayer(profile, objective);
-                    case "complete", "finish" -> BETONQUEST.getObjective(objective).completeObjective(profile);
+                    case "complete", "finish" -> betonQuest.getObjective(objective).completeObjective(profile);
                     default -> {
                     }
                 }
@@ -98,7 +98,7 @@ public class ObjectiveEvent extends QuestEvent {
     }
 
     private void cancelObjectiveForOnlinePlayer(final Profile profile, final ObjectiveID objective) {
-        BETONQUEST.getObjective(objective).cancelObjectiveForPlayer(profile);
-        BETONQUEST.getPlayerData(profile).removeRawObjective(objective);
+        betonQuest.getObjective(objective).cancelObjectiveForPlayer(profile);
+        betonQuest.getPlayerData(profile).removeRawObjective(objective);
     }
 }
