@@ -145,8 +145,11 @@ public class HologramProvider implements Integrator {
     public void reload() {
         if (instance.hologramLoop != null) {
             instance.hologramLoop.cancel();
+
             Collections.sort(attemptedIntegrations);
+
             instance.integrator = attemptedIntegrations.get(0);
+            LOG.info("Switched hologram provider to " + instance.integrator.getPluginName());
             instance.hologramLoop = new HologramLoop();
             if (Compatibility.getHooked().contains("Citizens")) {
                 CitizensHologram.reload();
