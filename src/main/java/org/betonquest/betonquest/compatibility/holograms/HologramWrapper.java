@@ -93,6 +93,5 @@ public record HologramWrapper(int interval, BetonHologram hologram, boolean stat
             }
             index += line.getLinesAdded();
         }
-        hologram.refresh();
     }
 }

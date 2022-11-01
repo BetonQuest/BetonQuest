@@ -12,9 +12,21 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * DecentHolograms specific implementation of BetonHologram
+ */
+@SuppressWarnings("PMD.TooManyMethods")
 public class DecentHologramsHologram implements BetonHologram {
+    /**
+     * The hologram object from DecentHolograms
+     */
     private final Hologram hologram;
 
+    /**
+     * Create a BetonHologram to wrap the given DecentHolograms hologram
+     *
+     * @param hologram The hologram object to wrap
+     */
     public DecentHologramsHologram(final Hologram hologram) {
         this.hologram = hologram;
     }
@@ -107,11 +119,5 @@ public class DecentHologramsHologram implements BetonHologram {
         for (int i = page.size() - 1; i >= 0; i--) {
             page.removeLine(i);
         }
-    }
-
-    @Override
-    public void refresh() {
-        //TODO Check if this is still needed
-        hologram.updateAll();
     }
 }

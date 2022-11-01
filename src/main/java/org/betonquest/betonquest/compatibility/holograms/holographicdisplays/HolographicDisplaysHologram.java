@@ -9,9 +9,21 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * HolographicDisplays specific implementation of BetonHologram
+ */
+@SuppressWarnings("PMD.TooManyMethods")
 public class HolographicDisplaysHologram implements BetonHologram {
+    /**
+     * The hologram object from HolographicDisplays
+     */
     private final Hologram hologram;
 
+    /**
+     * Create a BetonHologram to wrap the given HolographicDisplays hologram
+     *
+     * @param hologram The hologram object to wrap
+     */
     public HolographicDisplaysHologram(@NotNull final Hologram hologram) {
         this.hologram = hologram;
     }
@@ -97,10 +109,5 @@ public class HolographicDisplaysHologram implements BetonHologram {
     @Override
     public void clear() {
         hologram.getLines().clear();
-    }
-
-    @Override
-    public void refresh() {
-        //Holograms do not need to be updated with HolographicDisplays
     }
 }

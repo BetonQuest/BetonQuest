@@ -36,7 +36,6 @@ public class HologramPlaceholder implements IndividualPlaceholder {
             }
             final Profile profile = PlayerConverter.getID(player);
             final String[] args = arguments.split(":", 2);
-            LOG.warn("DEBUG Hologram arguments " + arguments);
             return BetonQuest.getInstance().getVariableValue(args[0], "%" + args[1] + "%", profile);
         } catch (final Exception e) {
             LOG.warn("Could not parse hologram variable " + arguments + "! Expected format {bq:<package>:<variable>}");

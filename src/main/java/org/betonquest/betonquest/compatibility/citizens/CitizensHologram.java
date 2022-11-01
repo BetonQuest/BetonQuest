@@ -34,7 +34,7 @@ import java.util.Map;
  * shared between players and
  * we only have a fast update when needed to ensure they are relative to the NPC position
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.GodClass", "PMD.AssignmentToNonFinalStatic"})
+@SuppressWarnings({"PMD.CommentRequired", "PMD.GodClass", "PMD.AssignmentToNonFinalStatic", "PMD.TooManyMethods"})
 @CustomLog
 public class CitizensHologram extends BukkitRunnable {
     /**

@@ -68,7 +68,14 @@ public abstract class HologramIntegrator implements Integrator, Comparable<Holog
         return 0;
     }
 
-    public abstract BetonHologram createHologram(final String name, final Location location);
+    /**
+     * Create a BetonHologram object which wraps this specific integrator's plugin's hologram
+     *
+     * @param name     The name of the hologram (for internal use only)
+     * @param location The location of where to create the hologram
+     * @return A new BetonHologram object
+     */
+    public abstract BetonHologram createHologram(String name, Location location);
 
     @Override
     public void hook() throws HookException {
@@ -119,7 +126,7 @@ public abstract class HologramIntegrator implements Integrator, Comparable<Holog
     public abstract String parseVariable(QuestPackage pack, String text);
 
     @Override
-    public int compareTo(@NotNull final HologramIntegrator o) {
-        return Integer.compare(o.getPriority(), this.getPriority());
+    public int compareTo(@NotNull final HologramIntegrator integrator) {
+        return Integer.compare(integrator.getPriority(), this.getPriority());
     }
 }

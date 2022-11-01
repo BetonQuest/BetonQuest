@@ -18,6 +18,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
+/**
+ * Singleton class which provides Hologram
+ */
 @CustomLog
 public class HologramProvider implements Integrator {
     /**
@@ -28,7 +31,7 @@ public class HologramProvider implements Integrator {
     /**
      * HologramIntegrators when 'hooked' add themselves to this list
      */
-    protected static final List<HologramIntegrator> attemptedIntegrations = new ArrayList<>();
+    private static final List<HologramIntegrator> ATTEMPTED_INTEGRATIONS = new ArrayList<>();
 
     /**
      * Singleton instance of this HologramProvider, only ever null if not initialised.
@@ -47,12 +50,16 @@ public class HologramProvider implements Integrator {
 
 
     /**
-     * Creates a new HologramProvider object. This should only be created once per server boot
+     * Creates a new HologramProvider object and assigns it to singleton instance if not already
      *
-     * @param integrator The integrator to hook into
+     * @param integrator The initial integrator to hook into
      */
+    @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public HologramProvider(final HologramIntegrator integrator) {
         this.integrator = integrator;
+        if (instance == null) {
+            instance = this;
+        }
     }
 
     /**
@@ -61,23 +68,25 @@ public class HologramProvider implements Integrator {
      * @param integrator The integrator itself
      */
     public static void addIntegrator(final HologramIntegrator integrator) {
-        attemptedIntegrations.add(integrator);
+        ATTEMPTED_INTEGRATIONS.add(integrator);
     }
 
     /**
-     * Called only once after all plugins have been hooked as to allow HologramIntegrators to add themselves to this provider's
-     * {@link #attemptedIntegrations} list.
+     * Called only once after all plugins have been hooked as to allow HologramIntegrators to add themselves to this
+     * provider's {@link #ATTEMPTED_INTEGRATIONS} list.
      */
     public static void init() {
-        if (instance == null && !attemptedIntegrations.isEmpty()) {
-            Collections.sort(attemptedIntegrations);
-            instance = new HologramProvider(attemptedIntegrations.get(0));
-            try {
-                instance.hook();
-                LOG.info("Using " + attemptedIntegrations.get(0).getPluginName() + " as dedicated hologram provider!");
-            } catch (final HookException ignored) {
-                instance.close(); //Close the hologramLoop if it was partly initialised
-                instance = null;
+        synchronized (HologramProvider.class) {
+            if (instance == null && !ATTEMPTED_INTEGRATIONS.isEmpty()) {
+                Collections.sort(ATTEMPTED_INTEGRATIONS);
+                new HologramProvider(ATTEMPTED_INTEGRATIONS.get(0));
+                try {
+                    instance.hook();
+                    LOG.info("Using " + ATTEMPTED_INTEGRATIONS.get(0).getPluginName() + " as dedicated hologram provider!");
+                } catch (final HookException ignored) {
+                    instance.close(); //Close the hologramLoop if it was partly initialised
+                    instance = null;
+                }
             }
         }
     }
@@ -143,29 +152,33 @@ public class HologramProvider implements Integrator {
 
     @Override
     public void reload() {
-        if (instance.hologramLoop != null) {
-            instance.hologramLoop.cancel();
+        synchronized (HologramProvider.class) {
+            if (instance.hologramLoop != null) {
+                instance.hologramLoop.cancel();
 
-            Collections.sort(attemptedIntegrations);
+                Collections.sort(ATTEMPTED_INTEGRATIONS);
 
-            instance.integrator = attemptedIntegrations.get(0);
-            LOG.info("Switched hologram provider to " + instance.integrator.getPluginName());
-            instance.hologramLoop = new HologramLoop();
-            if (Compatibility.getHooked().contains("Citizens")) {
-                CitizensHologram.reload();
+                instance.integrator = ATTEMPTED_INTEGRATIONS.get(0);
+                instance.hologramLoop = new HologramLoop();
+                if (Compatibility.getHooked().contains("Citizens")) {
+                    CitizensHologram.reload();
+                }
             }
         }
     }
 
     @Override
     public void close() {
-        if (instance.hologramLoop != null) {
-            instance.hologramLoop.cancel();
-            instance.hologramLoop = null;
-            if (Compatibility.getHooked().contains("Citizens")) {
-                CitizensHologram.close();
+        synchronized (HologramProvider.class) {
+            if (instance.hologramLoop != null) {
+                instance.hologramLoop.cancel();
+                instance.hologramLoop = null;
+                if (Compatibility.getHooked().contains("Citizens")) {
+                    CitizensHologram.close();
+                }
             }
         }
+
     }
 
     @SuppressWarnings("PMD.CommentRequired")

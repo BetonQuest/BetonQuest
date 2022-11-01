@@ -57,7 +57,6 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
                 final Variable variable = BetonQuest.createVariable(pack, group);
                 if (variable != null) {
                     final Instruction instruction = variable.getInstruction();
-                    LOG.warn("DEBUG Parsed Var " + "%betonquest_" + instruction.getPackage().getPackagePath() + ":" + instruction.getInstruction() + "%");
                     return "%betonquest_" + instruction.getPackage().getPackagePath() + ":" + instruction.getInstruction() + "%";
                 }
             } catch (final InstructionParseException exception) {

@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
  * Interface class to wrap a hologram from another supported plugin
  * Instances of this class should only be created by {@link HologramIntegrator#createHologram(String, Location)}
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public interface BetonHologram {
 
     /**
@@ -103,9 +104,4 @@ public interface BetonHologram {
      * Clear all lines from this hologram
      */
     void clear();
-
-    /**
-     * Updates/refreshes the hologram for all players
-     */
-    void refresh();
 }
