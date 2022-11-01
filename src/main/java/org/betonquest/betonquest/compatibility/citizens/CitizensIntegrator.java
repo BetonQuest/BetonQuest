@@ -59,10 +59,6 @@ public class CitizensIntegrator implements Integrator {
         if (Compatibility.getHooked().containsAll(Arrays.asList("Citizens", "EffectLib"))) {
             CitizensParticle.reload();
         }
-
-        if (Compatibility.getHooked().containsAll(Arrays.asList("Citizens", "HolographicDisplays"))) {
-            CitizensHologram.reload();
-        }
         if (Compatibility.getHooked().contains("Citizens")) {
             citizensListener.reload();
         }
