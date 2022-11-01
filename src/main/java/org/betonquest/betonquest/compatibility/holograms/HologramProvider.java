@@ -18,39 +18,54 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
-
-@SuppressWarnings("PMD.CommentRequired")
 @CustomLog
 public class HologramProvider implements Integrator {
     /**
      * Pattern to match an instruction variable in string
      */
     public static final Pattern VARIABLE_VALIDATOR = Pattern.compile("%[^ %\\s]+%");
-    protected static List<HologramIntegrator> attemptedIntegrations = new ArrayList<>();
-    private static HologramProvider instance;
-    private final HologramIntegrator integrator;
-    private HologramLoop hologramLoop;
 
     /**
-     * Create a new HologramProvider hooked to a given integrator
+     * HologramIntegrators when 'hooked' add themselves to this list
+     */
+    protected static final List<HologramIntegrator> attemptedIntegrations = new ArrayList<>();
+
+    /**
+     * Singleton instance of this HologramProvider, only ever null if not initialised.
+     */
+    private static HologramProvider instance;
+
+    /**
+     * The currently hooked integrator, this may change during runtime during a reload
+     */
+    private HologramIntegrator integrator;
+
+    /**
+     * The current hologramLoop
+     */
+    private HologramLoop hologramLoop;
+
+
+    /**
+     * Creates a new HologramProvider object. This should only be created once per server boot
      *
-     * @param integrator The integrator to use
+     * @param integrator The integrator to hook into
      */
     public HologramProvider(final HologramIntegrator integrator) {
         this.integrator = integrator;
     }
 
     /**
-     * Add a possible HologramIntegrator to this provider
+     * Adds a possible integrator for this provider
      *
-     * @param integrator The integrator to hook
+     * @param integrator The integrator itself
      */
     public static void addIntegrator(final HologramIntegrator integrator) {
         attemptedIntegrations.add(integrator);
     }
 
     /**
-     * Called after all plugins have been hooked as to allow HologramIntegrators to add themselves to this provider's
+     * Called only once after all plugins have been hooked as to allow HologramIntegrators to add themselves to this provider's
      * {@link #attemptedIntegrations} list.
      */
     public static void init() {
@@ -59,7 +74,7 @@ public class HologramProvider implements Integrator {
             instance = new HologramProvider(attemptedIntegrations.get(0));
             try {
                 instance.hook();
-                LOG.info("Using " + attemptedIntegrations.get(0).getPluginName() + " as dedicated Hologram provider!");
+                LOG.info("Using " + attemptedIntegrations.get(0).getPluginName() + " as dedicated hologram provider!");
             } catch (final HookException ignored) {
                 instance.close(); //Close the hologramLoop if it was partly initialised
                 instance = null;
@@ -71,13 +86,25 @@ public class HologramProvider implements Integrator {
      * Get an instance of this HologramProvider.
      *
      * @return An instance of Hologram Provider
-     * @throws IllegalArgumentException If HologramProvider has been improperly used
+     * @throws IllegalStateException Thrown if this method has been used at the incorrect time
      */
     public static HologramProvider getInstance() {
         if (instance == null) {
-            throw new IllegalArgumentException("Cannot getInstance() when HologramProvider has not been initialised yet!");
+            throw new IllegalStateException("Cannot getInstance() when HologramProvider has not been initialised yet!");
         }
         return instance;
+    }
+
+    /**
+     * @param pluginName The name of the plugin to check
+     * @return True if plugin is currently hooked to this provider
+     * @throws IllegalStateException Thrown if this method has been used at the incorrect time
+     */
+    public boolean isHooked(final String pluginName) {
+        if (this.integrator == null) {
+            throw new IllegalStateException("Cannot isHooked() when HologramProvider has not been fully initialised yet!");
+        }
+        return this.integrator.getPluginName().equalsIgnoreCase(pluginName);
     }
 
     /**
@@ -106,8 +133,8 @@ public class HologramProvider implements Integrator {
     @Override
     public void hook() throws HookException {
         this.hologramLoop = new HologramLoop();
-
         new HologramListener();
+
         // if Citizens is hooked, start CitizensHologram
         if (Compatibility.getHooked().contains("Citizens")) {
             new CitizensHologram();
@@ -118,7 +145,12 @@ public class HologramProvider implements Integrator {
     public void reload() {
         if (instance.hologramLoop != null) {
             instance.hologramLoop.cancel();
+            Collections.sort(attemptedIntegrations);
+            instance.integrator = attemptedIntegrations.get(0);
             instance.hologramLoop = new HologramLoop();
+            if (Compatibility.getHooked().contains("Citizens")) {
+                CitizensHologram.reload();
+            }
         }
     }
 
@@ -127,11 +159,14 @@ public class HologramProvider implements Integrator {
         if (instance.hologramLoop != null) {
             instance.hologramLoop.cancel();
             instance.hologramLoop = null;
+            if (Compatibility.getHooked().contains("Citizens")) {
+                CitizensHologram.close();
+            }
         }
     }
 
     @SuppressWarnings("PMD.CommentRequired")
-    public class HologramListener implements Listener {
+    public static class HologramListener implements Listener {
         public HologramListener() {
             Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
         }

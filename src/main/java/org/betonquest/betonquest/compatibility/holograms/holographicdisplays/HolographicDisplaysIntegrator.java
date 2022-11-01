@@ -46,8 +46,8 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
 
     @Override
     public String parseVariable(final QuestPackage pack, final String text) {
-        /* We must convert a normal BetonQuest variable such as "%pack:objective.kills.left% to
-           {bq:pack:objective.kills.left} which is parsed by HolographicDisplays as a custom API placeholder. */
+        /* We must convert a normal BetonQuest variable such as "%pack:objective.kills.left%" to
+           "{bq:pack:objective.kills.left}" which is parsed by HolographicDisplays as a custom API placeholder. */
         final Matcher matcher = HologramProvider.VARIABLE_VALIDATOR.matcher(text);
         return matcher.replaceAll(match -> {
             final String group = match.group();
@@ -55,8 +55,8 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
                 final Variable variable = BetonQuest.createVariable(pack, group);
                 if (variable != null) {
                     final Instruction instruction = variable.getInstruction();
-                    final String prefix = variable.isStaticness() ? "{bqg" : "{bq";
-                    return prefix + instruction.getPackage() + ":" + instruction.getInstruction() + "}";
+                    final String prefix = variable.isStaticness() ? "{bqg:" : "{bq:";
+                    return prefix + instruction.getPackage().getPackagePath() + ":" + instruction.getInstruction() + "}";
                 }
             } catch (final InstructionParseException exception) {
                 LOG.warn("Could not create variable '" + group + "' variable: " + exception.getMessage(), exception);

@@ -88,7 +88,7 @@ public record HologramWrapper(int interval, BetonHologram hologram, boolean stat
 
         int index = 0;
         for (final AbstractLine line : cleanedLines) {
-            if (!line.isStaticText()) {
+            if (line.isNotStaticText()) {
                 line.setLine(hologram, index);
             }
             index += line.getLinesAdded();

@@ -42,6 +42,9 @@ public class DecentHologramsHologram implements BetonHologram {
     @Override
     public void createLines(final int startingIndex, final int linesAdded) {
         final HologramPage page = DHAPI.getHologramPage(hologram, 0);
+        if (page == null) {
+            throw new IllegalStateException("Hologram page at index 0 should not null!");
+        }
         for (int i = startingIndex; i < linesAdded; i++) {
             if (i >= page.size()) {
                 DHAPI.addHologramLine(hologram, "");

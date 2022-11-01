@@ -48,8 +48,8 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
 
     @Override
     public String parseVariable(final QuestPackage pack, final String text) {
-        /* We must convert a normal BetonQuest variable such as "%pack.objective.kills.left% to
-           %betonquest_pack:objective.kills.left% which is parsed by DecentHolograms as a PlaceholderAPI placeholder. */
+        /* We must convert a normal BetonQuest variable such as "%pack.objective.kills.left%" to
+           "%betonquest_pack:objective.kills.left%" which is parsed by DecentHolograms as a PlaceholderAPI placeholder. */
         final Matcher matcher = HologramProvider.VARIABLE_VALIDATOR.matcher(text);
         return matcher.replaceAll(match -> {
             final String group = match.group();

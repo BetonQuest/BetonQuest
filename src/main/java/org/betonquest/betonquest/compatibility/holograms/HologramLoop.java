@@ -128,7 +128,7 @@ public class HologramLoop {
 
     private boolean isStaticHologram(final List<AbstractLine> lines) {
         for (final AbstractLine line : lines) {
-            if (!line.isStaticText()) {
+            if (line.isNotStaticText()) {
                 return false;
             }
         }

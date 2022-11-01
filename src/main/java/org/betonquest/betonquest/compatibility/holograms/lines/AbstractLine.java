@@ -46,7 +46,7 @@ public abstract class AbstractLine {
     /**
      * @return True if this line's content does not need to be updated, false if it does.
      */
-    public boolean isStaticText() {
-        return staticText;
+    public boolean isNotStaticText() {
+        return !staticText;
     }
 }
