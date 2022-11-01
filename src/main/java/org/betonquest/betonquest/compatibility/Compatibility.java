@@ -10,6 +10,7 @@ import org.betonquest.betonquest.compatibility.citizens.CitizensIntegrator;
 import org.betonquest.betonquest.compatibility.denizen.DenizenIntegrator;
 import org.betonquest.betonquest.compatibility.effectlib.EffectLibIntegrator;
 import org.betonquest.betonquest.compatibility.heroes.HeroesIntegrator;
+import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
 import org.betonquest.betonquest.compatibility.holograms.decentholograms.DecentHologramsIntegrator;
 import org.betonquest.betonquest.compatibility.holograms.holographicdisplays.HolographicDisplaysIntegrator;
 import org.betonquest.betonquest.compatibility.jobsreborn.JobsRebornIntegrator;
@@ -38,7 +39,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -60,7 +61,7 @@ public class Compatibility implements Listener {
      * The key is the name of the plugin, the value a pair of the integrator class and an instance of it.
      * The instance must only exist if the plugin was hooked.
      */
-    private final Map<String, Pair<Class<? extends Integrator>, Integrator>> integrators = new HashMap<>();
+    private final Map<String, Pair<Class<? extends Integrator>, Integrator>> integrators = new LinkedHashMap<>();
 
     /**
      * Loads all compatibility with other plugins that is available in the current runtime.
@@ -75,6 +76,9 @@ public class Compatibility implements Listener {
         for (final Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
             integratePlugin(plugin);
         }
+
+        //Must be called after all plugins have been integrated
+        HologramProvider.init();
 
         //Delay after server start to finish all hooking first
         new BukkitRunnable() {
@@ -160,8 +164,8 @@ public class Compatibility implements Listener {
         LOG.info("Hooking into " + name);
 
         try {
-            integrators.get(name).setValue(integrator);
             integrator.hook();
+            integrators.get(name).setValue(integrator);
         } catch (final HookException exception) {
             final String message = String.format("Could not hook into %s %s! %s",
                     hookedPlugin.getName(),
@@ -183,7 +187,6 @@ public class Compatibility implements Listener {
                     + "You can turn it off by setting 'hook." + name.toLowerCase(Locale.ROOT)
                     + "' to false in config.yml file.");
         }
-
     }
 
     private void registerCompatiblePlugins() {

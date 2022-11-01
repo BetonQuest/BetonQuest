@@ -23,7 +23,7 @@ import java.util.regex.Matcher;
 public class DecentHologramsIntegrator extends HologramIntegrator {
 
     public DecentHologramsIntegrator() {
-        super("DecentHolograms", DecentHologramsHologram.class, "2.7.3");
+        super("DecentHolograms", "2.7.3");
     }
 
     @Override

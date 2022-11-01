@@ -13,8 +13,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Pattern;
 
 
@@ -24,34 +25,57 @@ public class HologramProvider implements Integrator {
     /**
      * Pattern to match an instruction variable in string
      */
-    public static final Pattern VARIABLE_VALIDATOR = Pattern.compile("(%|\\$)[^ %\\s]+(%|\\$)");
-
+    public static final Pattern VARIABLE_VALIDATOR = Pattern.compile("%[^ %\\s]+%");
+    protected static List<HologramIntegrator> attemptedIntegrations = new ArrayList<>();
     private static HologramProvider instance;
     private final HologramIntegrator integrator;
     private HologramLoop hologramLoop;
 
+    /**
+     * Create a new HologramProvider hooked to a given integrator
+     *
+     * @param integrator The integrator to use
+     */
     public HologramProvider(final HologramIntegrator integrator) {
         this.integrator = integrator;
     }
 
     /**
-     * Initialise the static instance if it hasn't already been initialised
+     * Add a possible HologramIntegrator to this provider
      *
      * @param integrator The integrator to hook
-     * @return True if this was the first initialisation of the HologramProvider, false if it wasn't
      */
-    @SuppressWarnings("PMD.NonThreadSafeSingleton")
-    public static boolean initialise(final HologramIntegrator integrator) {
-        if (instance == null) {
-            instance = new HologramProvider(integrator);
-            return true;
-        }
-        return false;
+    public static void addIntegrator(final HologramIntegrator integrator) {
+        attemptedIntegrations.add(integrator);
     }
 
+    /**
+     * Called after all plugins have been hooked as to allow HologramIntegrators to add themselves to this provider's
+     * {@link #attemptedIntegrations} list.
+     */
+    public static void init() {
+        if (instance == null && !attemptedIntegrations.isEmpty()) {
+            Collections.sort(attemptedIntegrations);
+            instance = new HologramProvider(attemptedIntegrations.get(0));
+            try {
+                instance.hook();
+                LOG.info("Using " + attemptedIntegrations.get(0).getPluginName() + " as dedicated Hologram provider!");
+            } catch (final HookException ignored) {
+                instance.close(); //Close the hologramLoop if it was partly initialised
+                instance = null;
+            }
+        }
+    }
+
+    /**
+     * Get an instance of this HologramProvider.
+     *
+     * @return An instance of Hologram Provider
+     * @throws IllegalArgumentException If HologramProvider has been improperly used
+     */
     public static HologramProvider getInstance() {
         if (instance == null) {
-            throw new IllegalArgumentException("Cannot getInstance() from HologramProvider that has not been initialised!");
+            throw new IllegalArgumentException("Cannot getInstance() when HologramProvider has not been initialised yet!");
         }
         return instance;
     }
@@ -64,16 +88,7 @@ public class HologramProvider implements Integrator {
      * @return The hologram
      */
     public BetonHologram createHologram(final String name, final Location location) {
-        BetonHologram hologram = null;
-        try {
-            final Constructor<? extends BetonHologram> constructor = integrator.getHologramType().getConstructor(String.class, Location.class);
-            hologram = constructor.newInstance(name + location.toString(), location);
-        } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-            LOG.warn("Hologram called " + name + " could not be created! This is most likely an implementation error! ", e);
-        } catch (final InvocationTargetException e) {
-            LOG.warn("Hologram called " + name + " could not be created due to an exception thrown by it's constructor!", e);
-        }
-        return hologram;
+        return integrator.createHologram(name, location);
     }
 
     /**
@@ -97,8 +112,6 @@ public class HologramProvider implements Integrator {
         if (Compatibility.getHooked().contains("Citizens")) {
             new CitizensHologram();
         }
-
-
     }
 
     @Override
@@ -113,6 +126,7 @@ public class HologramProvider implements Integrator {
     public void close() {
         if (instance.hologramLoop != null) {
             instance.hologramLoop.cancel();
+            instance.hologramLoop = null;
         }
     }
 
@@ -124,7 +138,7 @@ public class HologramProvider implements Integrator {
 
         @EventHandler
         public void onPlayerJoin(final PlayerJoinEvent event) {
-            if (instance.hologramLoop != null) {
+            if (instance != null && instance.hologramLoop != null) {
                 instance.hologramLoop.refresh(event.getPlayer());
             }
         }

@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
+import lombok.Getter;
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.exceptions.HookException;
@@ -10,28 +12,78 @@ import org.betonquest.betonquest.modules.versioning.VersionComparator;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
-@SuppressWarnings("PMD.CommentRequired")
-public abstract class HologramIntegrator implements Integrator {
+/**
+ * Support for Hologram plugins should come from implementation this abstract class. There may be multiple
+ * HologramIntegrator objects loaded at once, hence reload(), and close() should not do anything.
+ */
+public abstract class HologramIntegrator implements Integrator, Comparable<HologramIntegrator> {
+    /**
+     * The name of the plugin
+     */
+    @Getter
     private final String pluginName;
-    private final Class<? extends BetonHologram> hologramType;
+
+    /**
+     * The minimum required version
+     */
     private final String requiredVersion;
+
+    /**
+     * The qualifiers to parse the minimum required version
+     */
     private final String[] qualifiers;
+
+    /**
+     * The priority of this integrator determined by `default_hologram` config option. The higher the number, the more
+     * preferred
+     * <p>
+     * -- GETTER --
+     *
+     * @return The priority of this integrator
+     */
+    @Getter
+    private final int priority;
+
+    /**
+     * Instance of HologramProvider for internal use
+     */
     private HologramProvider instance;
 
     /**
      * Create a sub-integrator representing a specific implementation of BetonHolograms
      *
      * @param pluginName      The plugin to be hooked
-     * @param hologramType    The plugin-specific wrapper implementation of a BetonHologram
      * @param requiredVersion The minimum required version
      * @param qualifiers      Version qualifiers
      */
-    public HologramIntegrator(final String pluginName, final Class<? extends BetonHologram> hologramType, final String requiredVersion, final String... qualifiers) {
+    public HologramIntegrator(final String pluginName, final String requiredVersion, final String... qualifiers) {
         this.pluginName = pluginName;
-        this.hologramType = hologramType;
         this.requiredVersion = requiredVersion;
         this.qualifiers = qualifiers.clone();
+        this.priority = getPriority(pluginName);
+    }
+
+    /**
+     * Searches the BetonQuest config to get the priority of this HologramIntegrator as specified in the
+     * `default_hologram` config option
+     *
+     * @param pluginName The name of the plugin
+     * @return The priority of this integrator ranging from 1 to the amount of HologramIntegrators, or 0 if config option
+     * did not exist or if the plugin was not found in the `default_hologram` config option
+     */
+    private int getPriority(final String pluginName) {
+        final String defaultHolograms = BetonQuest.getInstance().getPluginConfig().getString("default_hologram");
+        if (defaultHolograms != null) {
+            final String[] split = defaultHolograms.split(",");
+            for (int i = 0; i < split.length; i++) {
+                if (split[i].equalsIgnoreCase(pluginName)) {
+                    return split.length - i;
+                }
+            }
+        }
+        return 0;
     }
 
     public abstract BetonHologram createHologram(final String name, final Location location);
@@ -39,23 +91,15 @@ public abstract class HologramIntegrator implements Integrator {
     @Override
     public void hook() throws HookException {
         validateVersion();
-        if (!HologramProvider.initialise(this)) {
-            //Throw an exception here so that the implementation does not set up itself up
-            throw new HookException(null, "Hologram's have already been hooked by another plugin! Please disable or only" +
-                    "use one hologram plugin.");
-        }
-        this.instance = HologramProvider.getInstance();
-        this.instance.hook();
+        HologramProvider.addIntegrator(this);
     }
 
     @Override
     public void reload() {
-        this.instance.reload();
     }
 
     @Override
     public void close() {
-        this.instance.close();
     }
 
     /**
@@ -84,19 +128,8 @@ public abstract class HologramIntegrator implements Integrator {
      */
     public abstract String parseVariable(QuestPackage pack, String text);
 
-    /**
-     * @return The plugin's name
-     */
-    public String getPluginName() {
-        return pluginName;
-    }
-
-    /**
-     * Get this plugin's specific hologram wrapper implementation
-     *
-     * @return The class ? extending BetonHologram
-     */
-    public Class<? extends BetonHologram> getHologramType() {
-        return hologramType;
+    @Override
+    public int compareTo(@NotNull final HologramIntegrator o) {
+        return Integer.compare(this.getPriority(), o.getPriority());
     }
 }

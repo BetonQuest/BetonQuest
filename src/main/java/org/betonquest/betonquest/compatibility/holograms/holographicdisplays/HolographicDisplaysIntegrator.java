@@ -22,7 +22,7 @@ import java.util.regex.Matcher;
 @CustomLog
 public class HolographicDisplaysIntegrator extends HologramIntegrator {
     public HolographicDisplaysIntegrator() {
-        super("HolographicDisplays", HolographicDisplaysHologram.class, "3.0.0-SNAPSHOT-b000", "SNAPSHOT-b");
+        super("HolographicDisplays", "3.0.0-SNAPSHOT-b000", "SNAPSHOT-b");
     }
 
     @Override
@@ -52,7 +52,7 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
         return matcher.replaceAll(match -> {
             final String group = match.group();
             try {
-                final Variable variable = BetonQuest.createVariable(pack, text);
+                final Variable variable = BetonQuest.createVariable(pack, group);
                 if (variable != null) {
                     final Instruction instruction = variable.getInstruction();
                     final String prefix = variable.isStaticness() ? "{bqg" : "{bq";
