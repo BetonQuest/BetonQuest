@@ -1102,7 +1102,7 @@ conditions:
 
 #### Vault Money Event: `money`
 
-Deposits, withdraws or multiplies money on the player's account.
+Deposits, withdraws or multiplies money in the player's account.
 
 | Parameter | Syntax            | Default Value          | Explanation                                                    |
 |-----------|-------------------|------------------------|----------------------------------------------------------------|
