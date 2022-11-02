@@ -12,6 +12,7 @@ import org.betonquest.betonquest.id.EventID;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Pick random event is a collection of other events, which can be randomly chosen to run or not based on probability.
@@ -70,30 +71,22 @@ public class PickRandomEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final List<RandomEvent> events = new ArrayList<>(this.events);
-        double total = 0;
-        // Calculate total amount of all "percentages" (so that it must not be 100)
-        for (final RandomEvent event : events) {
-            total += event.getChance().getDouble(profile);
+        final List<ResolvedRandomEvent> events = new ArrayList<>();
+        for (final RandomEvent randomEvent : this.events) {
+            events.add(new ResolvedRandomEvent(randomEvent, profile));
         }
-        //pick as many events as given with pick optional (or 1 if amount wasn't specified)
+        double total = events.stream().mapToDouble(ResolvedRandomEvent::getChance).sum();
+
         int pick = this.amount == null ? 1 : this.amount.getInt(profile);
         while (pick > 0 && !events.isEmpty()) {
             pick--;
-            //choose a random number between 0 and the total amount of percentages
-            final double found = Math.random() * total;
-            double current = 0;
-            //go through all random events and pick the first one where the current sum is higher than the found random number
-            for (int i = 0; i < events.size(); i++) {
-                final RandomEvent event = events.get(i);
-                final double chance = event.getChance().getDouble(profile);
-                current += chance;
-                if (current >= found) {
-                    //run the event
+            double random = ThreadLocalRandom.current().nextDouble() * total;
+            for (final ResolvedRandomEvent event : events) {
+                random -= event.getChance();
+                if (random < 0) {
                     BetonQuest.event(profile, event.getIdentifier());
-                    //remove the event from the list so that it's not picked again
-                    events.remove(i);
-                    total -= chance;
+                    events.remove(event);
+                    total -= event.getChance();
                     break;
                 }
             }
@@ -116,6 +109,25 @@ public class PickRandomEvent extends QuestEvent {
         }
 
         public VariableNumber getChance() {
+            return chance;
+        }
+    }
+
+    private static class ResolvedRandomEvent {
+
+        private final EventID identifier;
+        private final double chance;
+
+        public ResolvedRandomEvent(final RandomEvent identifier, final Profile profile) throws QuestRuntimeException {
+            this.identifier = identifier.getIdentifier();
+            this.chance = identifier.getChance().getDouble(profile);
+        }
+
+        public EventID getIdentifier() {
+            return identifier;
+        }
+
+        public double getChance() {
             return chance;
         }
     }
