@@ -75,18 +75,18 @@ public class PickRandomEvent extends QuestEvent {
         for (final RandomEvent randomEvent : this.events) {
             events.add(new ResolvedRandomEvent(randomEvent, profile));
         }
-        double total = events.stream().mapToDouble(ResolvedRandomEvent::getChance).sum();
+        double total = events.stream().mapToDouble(ResolvedRandomEvent::chance).sum();
 
         int pick = this.amount == null ? 1 : this.amount.getInt(profile);
         while (pick > 0 && !events.isEmpty()) {
             pick--;
             double random = ThreadLocalRandom.current().nextDouble() * total;
             for (final ResolvedRandomEvent event : events) {
-                random -= event.getChance();
+                random -= event.chance;
                 if (random < 0) {
-                    BetonQuest.event(profile, event.getIdentifier());
+                    BetonQuest.event(profile, event.identifier);
                     events.remove(event);
-                    total -= event.getChance();
+                    total -= event.chance;
                     break;
                 }
             }
@@ -94,41 +94,12 @@ public class PickRandomEvent extends QuestEvent {
         return null;
     }
 
-    private static class RandomEvent {
-
-        private final EventID identifier;
-        private final VariableNumber chance;
-
-        public RandomEvent(final EventID identifier, final VariableNumber chance) {
-            this.identifier = identifier;
-            this.chance = chance;
-        }
-
-        public EventID getIdentifier() {
-            return identifier;
-        }
-
-        public VariableNumber getChance() {
-            return chance;
-        }
+    private record RandomEvent(EventID identifier, VariableNumber chance) {
     }
 
-    private static class ResolvedRandomEvent {
-
-        private final EventID identifier;
-        private final double chance;
-
+    private record ResolvedRandomEvent(EventID identifier, double chance) {
         public ResolvedRandomEvent(final RandomEvent identifier, final Profile profile) throws QuestRuntimeException {
-            this.identifier = identifier.getIdentifier();
-            this.chance = identifier.getChance().getDouble(profile);
-        }
-
-        public EventID getIdentifier() {
-            return identifier;
-        }
-
-        public double getChance() {
-            return chance;
+            this(identifier.identifier, identifier.chance.getDouble(profile));
         }
     }
 }
