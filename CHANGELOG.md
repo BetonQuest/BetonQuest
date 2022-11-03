@@ -65,6 +65,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `mmspawn` event now has argument `target` Makes the spawned mob target the player
 - `mmspawn` event now has argument `private` Visually hides the spawned mob from other players. Does not stop sound or particles
 - `mmspawn` event now supports the `marked` argument
+- `objective` event now supports a comma separated list of objectives
 - `mmobkill` objective now supports the `marked` argument
 - `marked` argument now supports %player% variable 
 - `globaltag` and `globalpoint` variables

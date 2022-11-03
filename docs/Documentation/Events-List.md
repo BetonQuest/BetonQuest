@@ -417,15 +417,22 @@ This events works just like the [notify](#notification-notify) event but shows t
 
 **persistent**, **static**
 
-Manages the objectives. Syntax is `objective <action> name`, where `<action>` can be _start_/_add_ (one of the two),
-_delete_/_remove_ or _complete_/_finish_. Name is the name of the objective, as defined in the _objectives_ section.
+Adds, removes or completes the specified objective(s). 
+
+| Parameter      | Syntax                             | Default Value          | Explanation                             |
+|----------------|------------------------------------|------------------------|-----------------------------------------|
+| _action_       | Keyword: `add`,`remove`,`complete` | :octicons-x-circle-16: | The action to do with the objective(s). |
+| _objective(s)_ | `objectiveName` or `obj1,obj2`     | :octicons-x-circle-16: | The objective(s) to run the action on.  |
+
 
 Using this in static contexts only works when removing objectives!
 
-!!! example
-    ```YAML
-    objective start wood
-    ```
+
+```YAML
+events:
+  startQuest: "objective add killTheDragon,goToDungeon"
+  progressQuest: "objective complete killTheDragon"
+```
 
 ## OPsudo: `opsudo`
 
