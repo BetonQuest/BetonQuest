@@ -27,7 +27,7 @@ public class MMOCoreAttributeCondition extends Condition {
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
         final int targetLevel = targetLevelVar.getInt(profile);
-        final int actualLevel = MMOCoreUtils.getMMOCoreAttribute(profile.getOfflinePlayer().getUniqueId(), attribute);
+        final int actualLevel = MMOCoreUtils.getMMOCoreAttribute(profile.getPlayer().getUniqueId(), attribute);
 
         return mustBeEqual ? actualLevel == targetLevel : actualLevel >= targetLevel;
     }

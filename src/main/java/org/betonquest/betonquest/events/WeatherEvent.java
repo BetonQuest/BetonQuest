@@ -49,7 +49,7 @@ public class WeatherEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final World world = getWorld(profile.getOnlineProfile());
+        final World world = getWorld(profile.getOnlineProfile().get());
         world.setStorm(storm);
         world.setThundering(thunder);
         if (duration != null) {
@@ -58,9 +58,9 @@ public class WeatherEvent extends QuestEvent {
         return null;
     }
 
-    private @NotNull World getWorld(final OnlineProfile profile) throws QuestRuntimeException {
+    private @NotNull World getWorld(final OnlineProfile onlineProfile) throws QuestRuntimeException {
         if (world == null) {
-            return profile.getOnlinePlayer().getWorld();
+            return onlineProfile.getPlayer().getWorld();
         }
         final World resolvedWorld = Bukkit.getWorld(world);
         if (resolvedWorld == null) {

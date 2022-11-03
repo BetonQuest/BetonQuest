@@ -49,7 +49,7 @@ public class MobKillObjective extends CountingObjective implements Listener {
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @EventHandler(ignoreCancelled = true)
     public void onMobKill(final MobKilledEvent event) {
-        final OnlineProfile profile = event.getProfile().getOnlineProfile();
+        final OnlineProfile profile = event.getProfile().getOnlineProfile().get();
         if (!containsPlayer(profile)
                 || !entities.contains(event.getEntity().getType())
                 || name != null && (event.getEntity().getCustomName() == null

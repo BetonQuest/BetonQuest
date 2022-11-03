@@ -26,7 +26,7 @@ public class ArmorRatingCondition extends Condition {
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        final PlayerInventory inv = profile.getOnlineProfile().getOnlinePlayer().getInventory();
+        final PlayerInventory inv = profile.getOnlineProfile().get().getPlayer().getInventory();
         int rating = 0;
         final ItemStack boots = inv.getBoots();
         final ItemStack helmet = inv.getHelmet();

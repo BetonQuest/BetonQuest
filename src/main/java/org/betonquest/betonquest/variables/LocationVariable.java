@@ -42,7 +42,7 @@ public class LocationVariable extends Variable {
     @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override
     public String getValue(final Profile profile) {
-        final Location playerLocation = profile.getOnlineProfile().getOnlinePlayer().getLocation();
+        final Location playerLocation = profile.getOnlineProfile().get().getPlayer().getLocation();
 
         switch (mode) {
             case XYZ:

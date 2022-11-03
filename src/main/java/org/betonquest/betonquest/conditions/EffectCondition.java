@@ -25,7 +25,7 @@ public class EffectCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) {
-        return profile.getOnlineProfile().getOnlinePlayer().hasPotionEffect(type);
+        return profile.getOnlineProfile().get().getPlayer().hasPotionEffect(type);
     }
 
 }

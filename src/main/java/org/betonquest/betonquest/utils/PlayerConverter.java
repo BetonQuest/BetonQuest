@@ -29,13 +29,8 @@ public final class PlayerConverter {
     public static Profile getID(final OfflinePlayer player) {
         return new Profile() {
             @Override
-            public OfflinePlayer getOfflinePlayer() {
+            public OfflinePlayer getPlayer() {
                 return player;
-            }
-
-            @Override
-            public Optional<Player> getPlayer() {
-                return Optional.ofNullable(player.getPlayer());
             }
 
             @Override
@@ -48,19 +43,14 @@ public final class PlayerConverter {
                 return player.getName();
             }
 
-            @Override
-            public Boolean isPlayerOnline() {
-                return player.isOnline();
-            }
-
             @SuppressWarnings("PMD.AvoidUncheckedExceptionsInSignatures")
             @Override
-            public OnlineProfile getOnlineProfile() throws IllegalStateException {
+            public Optional<OnlineProfile> getOnlineProfile() {
                 final Player onlinePlayer = player.getPlayer();
                 if (onlinePlayer == null) {
-                    throw new IllegalStateException("Player is Offline!");
+                    return Optional.empty();
                 }
-                return getID(onlinePlayer);
+                return Optional.of(getID(onlinePlayer));
             }
 
             @Override
@@ -70,7 +60,7 @@ public final class PlayerConverter {
 
             @Override
             public int hashCode() {
-                return Objects.hashCode(player.getUniqueId());
+                return Objects.hashCode(getProfileUUID());
             }
         };
     }
@@ -84,18 +74,8 @@ public final class PlayerConverter {
     public static OnlineProfile getID(final Player player) {
         return new OnlineProfile() {
             @Override
-            public Player getOnlinePlayer() {
+            public Player getPlayer() {
                 return player;
-            }
-
-            @Override
-            public OfflinePlayer getOfflinePlayer() {
-                return player;
-            }
-
-            @Override
-            public Optional<Player> getPlayer() {
-                return Optional.of(player);
             }
 
             @Override
@@ -109,13 +89,8 @@ public final class PlayerConverter {
             }
 
             @Override
-            public OnlineProfile getOnlineProfile() {
-                return this;
-            }
-
-            @Override
-            public Boolean isPlayerOnline() {
-                return player.isOnline();
+            public Optional<OnlineProfile> getOnlineProfile() {
+                return Optional.of(this);
             }
 
             @Override
@@ -125,7 +100,7 @@ public final class PlayerConverter {
 
             @Override
             public int hashCode() {
-                return Objects.hashCode(player.getUniqueId());
+                return Objects.hashCode(getProfileUUID());
             }
         };
     }

@@ -63,7 +63,7 @@ class NotifySound {
     private SoundPlayer getSoundPlayer(final Sound sound, final String soundString, final CompoundLocation compoundLocation, final VectorData playerOffset, final Float playerOffsetDistance, final SoundCategory soundCategory, final float volume, final float pitch) {
         return (onlineProfile) -> {
             final Location finalLocation = getLocation(onlineProfile, compoundLocation, playerOffset, playerOffsetDistance);
-            final Player player = onlineProfile.getOnlinePlayer();
+            final Player player = onlineProfile.getPlayer();
             if (sound == null) {
                 player.playSound(finalLocation, soundString, soundCategory, volume, pitch);
             } else {
@@ -73,13 +73,13 @@ class NotifySound {
     }
 
     private Location getLocation(final OnlineProfile onlineProfile, final CompoundLocation compoundLocation, final VectorData playerOffset, final Float playerOffsetDistance) throws QuestRuntimeException {
-        final Location location = compoundLocation == null ? onlineProfile.getOnlinePlayer().getLocation() : compoundLocation.getLocation(onlineProfile);
+        final Location location = compoundLocation == null ? onlineProfile.getPlayer().getLocation() : compoundLocation.getLocation(onlineProfile);
 
-        if (playerOffsetDistance != null && onlineProfile.getOnlinePlayer().getLocation().distance(location) > playerOffsetDistance) {
-            return getLocationRelativeDistance(location, onlineProfile.getOnlinePlayer(), playerOffsetDistance);
+        if (playerOffsetDistance != null && onlineProfile.getPlayer().getLocation().distance(location) > playerOffsetDistance) {
+            return getLocationRelativeDistance(location, onlineProfile.getPlayer(), playerOffsetDistance);
         }
         if (playerOffset != null) {
-            return getLocationRelativeVector(location, onlineProfile.getOnlinePlayer(), onlineProfile, playerOffset);
+            return getLocationRelativeVector(location, onlineProfile.getPlayer(), onlineProfile, playerOffset);
         }
 
         return location;

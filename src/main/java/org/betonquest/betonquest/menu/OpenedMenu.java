@@ -38,21 +38,21 @@ public class OpenedMenu implements Listener {
     private MenuItem[] items;
     private boolean closed;
 
-    public OpenedMenu(final OnlineProfile profile, final Menu menu) {
+    public OpenedMenu(final OnlineProfile onlineProfile, final Menu menu) {
         // If player already has an open menu we close it first
-        final OpenedMenu current = getMenu(profile);
+        final OpenedMenu current = getMenu(onlineProfile);
         if (current != null) {
             current.close();
         }
 
         this.data = menu;
-        this.profile = profile;
-        final Inventory inventory = Bukkit.createInventory(null, data.getSize(), data.getTitle(profile));
-        this.update(profile, inventory);
-        profile.getOnlinePlayer().openInventory(inventory);
+        this.profile = onlineProfile;
+        final Inventory inventory = Bukkit.createInventory(null, data.getSize(), data.getTitle(onlineProfile));
+        this.update(onlineProfile, inventory);
+        onlineProfile.getPlayer().openInventory(inventory);
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
-        OPENED_MENUS.put(profile.getProfileUUID(), this);
-        this.data.runOpenEvents(profile);
+        OPENED_MENUS.put(onlineProfile.getProfileUUID(), this);
+        this.data.runOpenEvents(onlineProfile);
     }
 
     /**
@@ -119,14 +119,14 @@ public class OpenedMenu implements Listener {
      * @return the inventory which shows the menu
      */
     public Inventory getInventory() {
-        return this.getProfile().getOnlinePlayer().getOpenInventory().getTopInventory();
+        return this.getProfile().getPlayer().getOpenInventory().getTopInventory();
     }
 
     /**
      * Closes the menu
      */
     public void close() {
-        getProfile().getOnlinePlayer().closeInventory();
+        getProfile().getPlayer().closeInventory();
         closed = true;
     }
 
@@ -161,7 +161,7 @@ public class OpenedMenu implements Listener {
             return;
         }
         final Player player = (Player) event.getWhoClicked();
-        if (!player.equals(profile.getOnlinePlayer())) {
+        if (!player.equals(profile.getPlayer())) {
             return;
         }
         event.setCancelled(true);
@@ -225,7 +225,7 @@ public class OpenedMenu implements Listener {
             return;
         }
         final Player player = (Player) event.getPlayer();
-        if (!player.equals(profile.getOnlinePlayer())) {
+        if (!player.equals(profile.getPlayer())) {
             return;
         }
         //call event

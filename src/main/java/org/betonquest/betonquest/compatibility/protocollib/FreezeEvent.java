@@ -36,7 +36,7 @@ public class FreezeEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getOnlineProfile().getOnlinePlayer();
+        final Player player = profile.getOnlineProfile().get().getPlayer();
         final UUID uuid = player.getUniqueId();
         final int ticks = ticksVar.getInt(profile);
 

@@ -34,7 +34,7 @@ public class PermissionEvent extends QuestEvent {
     @Override
     protected Void execute(final Profile profile) {
         final Permission vault = VaultIntegrator.getPermission();
-        final OfflinePlayer player = profile.getOfflinePlayer();
+        final OfflinePlayer player = profile.getPlayer();
         if (add) {
             if (perm) {
                 vault.playerAdd(world, player, permission);

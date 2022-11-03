@@ -38,7 +38,7 @@ public class VelocityEvent implements Event {
 
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getOnlineProfile().getOnlinePlayer();
+        final Player player = profile.getOnlineProfile().get().getPlayer();
         final Vector pVector = vector.get(profile);
         final Vector directionVector = direction.calculate(player, pVector);
         final Vector modificationVector = modification.calculate(player, directionVector);

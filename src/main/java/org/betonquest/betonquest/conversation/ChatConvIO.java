@@ -43,7 +43,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
     public ChatConvIO(final Conversation conv, final OnlineProfile profile) {
         this.options = new HashMap<>();
         this.conv = conv;
-        this.player = profile.getOnlinePlayer();
+        this.player = profile.getPlayer();
         this.name = player.getName();
         this.colors = ConversationColors.getColors();
         StringBuilder string = new StringBuilder();

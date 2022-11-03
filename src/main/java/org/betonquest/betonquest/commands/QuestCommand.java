@@ -1114,7 +1114,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         if (profile == null) {
             return;
         }
-        final boolean isOnline = profile.isPlayerOnline();
+        final boolean isOnline = profile.getOnlineProfile().isPresent();
         PlayerData playerData = instance.getPlayerData(profile);
         // if the player is offline then get his PlayerData outside the list
         if (playerData == null) {

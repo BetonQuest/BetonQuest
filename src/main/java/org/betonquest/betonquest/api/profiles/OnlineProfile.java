@@ -9,5 +9,6 @@ public interface OnlineProfile extends Profile {
     /**
      * @return the {@link Player} of the profile
      */
-    Player getOnlinePlayer();
+    @Override
+    Player getPlayer();
 }

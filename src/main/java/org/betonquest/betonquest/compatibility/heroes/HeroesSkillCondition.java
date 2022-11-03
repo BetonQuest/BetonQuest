@@ -22,7 +22,7 @@ public class HeroesSkillCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) {
-        final Hero hero = Heroes.getInstance().getCharacterManager().getHero(profile.getOnlineProfile().getOnlinePlayer());
+        final Hero hero = Heroes.getInstance().getCharacterManager().getHero(profile.getOnlineProfile().get().getPlayer());
         if (hero == null) {
             return false;
         }

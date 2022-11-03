@@ -57,7 +57,7 @@ public class CommandEvent extends QuestEvent {
                         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), com);
                     }
                 } else {
-                    if (profile.isPlayerOnline()) {
+                    if (profile.getOnlineProfile().isPresent()) {
                         // run the command for the single player
                         String com = command.command;
                         for (final String var : command.variables) {
@@ -68,7 +68,7 @@ public class CommandEvent extends QuestEvent {
                         Bukkit.getScheduler().callSyncMethod(BetonQuest.getInstance(), () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), finalCom));
                     } else {
                         // the player is offline, cannot resolve variables, at least replace %player%
-                        final String name = profile.getOfflinePlayer().getName();
+                        final String name = profile.getPlayer().getName();
                         if (name == null) {
                             // this should never happen, but just in case
                             continue;

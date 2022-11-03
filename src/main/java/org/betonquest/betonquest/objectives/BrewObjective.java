@@ -5,7 +5,6 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -34,10 +33,11 @@ import java.util.stream.Collectors;
  */
 @SuppressWarnings("PMD.CommentRequired")
 @CustomLog
-public class BrewObjective extends CountingObjective implements Listener {
+public class
+BrewObjective extends CountingObjective implements Listener {
 
     private final QuestItem potion;
-    private final Map<Location, Profile> locations = new HashMap<>();
+    private final Map<Location, OnlineProfile> locations = new HashMap<>();
 
     public BrewObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "potions_to_brew");
@@ -84,8 +84,8 @@ public class BrewObjective extends CountingObjective implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBrew(final BrewEvent event) {
-        final OnlineProfile profile = locations.remove(event.getBlock().getLocation()).getOnlineProfile();
-        if (profile == null) {
+        final OnlineProfile onlineProfile = locations.remove(event.getBlock().getLocation());
+        if (!onlineProfile.getPlayer().isOnline()) {
             return;
         }
         final boolean[] alreadyDone = getMatchingPotions(event.getContents());
@@ -100,12 +100,12 @@ public class BrewObjective extends CountingObjective implements Listener {
                 }
             }
 
-            if (progress > 0 && checkConditions(profile)) {
-                getCountingData(profile).progress(progress);
-                final boolean completed = completeIfDoneOrNotify(profile);
+            if (progress > 0 && checkConditions(onlineProfile)) {
+                getCountingData(onlineProfile).progress(progress);
+                final boolean completed = completeIfDoneOrNotify(onlineProfile);
                 if (completed) {
                     final Set<Location> removals = locations.entrySet().stream()
-                            .filter(location -> profile.equals(location.getValue()))
+                            .filter(location -> onlineProfile.equals(location.getValue()))
                             .map(Map.Entry::getKey)
                             .collect(Collectors.toSet());
                     removals.forEach(locations::remove);

@@ -11,9 +11,9 @@ public class NonInterceptingInterceptor implements Interceptor {
     protected final Conversation conv;
     protected final Player player;
 
-    public NonInterceptingInterceptor(final Conversation conv, final OnlineProfile profile) {
+    public NonInterceptingInterceptor(final Conversation conv, final OnlineProfile onlineProfile) {
         this.conv = conv;
-        this.player = profile.getOnlinePlayer();
+        this.player = onlineProfile.getPlayer();
     }
 
     @Override

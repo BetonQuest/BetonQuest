@@ -13,7 +13,7 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.ArrayUtils;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.Interceptor;
 import org.bukkit.entity.Player;
@@ -43,9 +43,9 @@ public class PacketInterceptor implements Interceptor, Listener {
     private int baseComponentIndex = -1;
 
     @SuppressWarnings("PMD.CognitiveComplexity")
-    public PacketInterceptor(final Conversation conv, final Profile profile) {
+    public PacketInterceptor(final Conversation conv, final OnlineProfile onlineProfile) {
         this.conv = conv;
-        this.player = profile.getOfflinePlayer().getPlayer();
+        this.player = onlineProfile.getPlayer();
 
         // Intercept Packets
         packetAdapter = new PacketAdapter(BetonQuest.getInstance(), ListenerPriority.HIGHEST,

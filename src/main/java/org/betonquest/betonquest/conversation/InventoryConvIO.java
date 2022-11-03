@@ -62,9 +62,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
     protected boolean showNPCText = true;
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public InventoryConvIO(final Conversation conv, final OnlineProfile profile) {
+    public InventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
         this.conv = conv;
-        this.player = profile.getOnlinePlayer();
+        this.player = onlineProfile.getPlayer();
         final Map<String, ChatColor[]> colors = ConversationColors.getColors();
         StringBuilder string = new StringBuilder();
         for (final ChatColor color : colors.get("npc")) {

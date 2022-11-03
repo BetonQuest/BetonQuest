@@ -32,7 +32,7 @@ public class McMMOSkillLevelCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        return ExperienceAPI.getLevel(profile.getOnlineProfile().getOnlinePlayer(),
+        return ExperienceAPI.getLevel(profile.getOnlineProfile().get().getPlayer(),
                 PrimarySkillType.valueOf(skillType.toUpperCase(Locale.ROOT))) >= level.getInt(profile);
     }
 

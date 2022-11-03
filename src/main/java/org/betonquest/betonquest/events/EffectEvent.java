@@ -43,7 +43,7 @@ public class EffectEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        profile.getOnlineProfile().getOnlinePlayer().addPotionEffect(
+        profile.getOnlineProfile().get().getPlayer().addPotionEffect(
                 new PotionEffect(effect, duration.getInt(profile) * 20, amplifier.getInt(profile) - 1, ambient, !hidden, icon));
         return null;
     }

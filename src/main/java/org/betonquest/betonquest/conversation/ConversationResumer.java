@@ -29,10 +29,10 @@ public class ConversationResumer implements Listener {
     private final Location loc;
     private final double distance;
 
-    public ConversationResumer(final OnlineProfile profile, final String convID) {
+    public ConversationResumer(final OnlineProfile onlineProfile, final String convID) {
         this.original = convID;
-        this.player = profile.getOnlinePlayer();
-        this.profile = profile;
+        this.player = onlineProfile.getPlayer();
+        this.profile = onlineProfile;
         final String[] parts = convID.split(" ");
         this.conversationID = parts[0];
         this.option = parts[1];

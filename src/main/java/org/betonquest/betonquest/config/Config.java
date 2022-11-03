@@ -270,7 +270,7 @@ public final class Config {
             return;
         }
 
-        final Player player = onlineProfile.getOnlinePlayer();
+        final Player player = onlineProfile.getPlayer();
         player.sendMessage(message);
         if (soundName != null) {
             playSound(onlineProfile, soundName);
@@ -355,7 +355,7 @@ public final class Config {
      * @param soundName     the name of the sound to play to the player
      */
     public static void playSound(final OnlineProfile onlineProfile, final String soundName) {
-        final Player player = onlineProfile.getOnlinePlayer();
+        final Player player = onlineProfile.getPlayer();
         final String rawSound = plugin.getPluginConfig().getString("sounds." + soundName);
         if (!"false".equalsIgnoreCase(rawSound)) {
             try {

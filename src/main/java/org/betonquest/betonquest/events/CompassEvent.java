@@ -71,11 +71,11 @@ public class CompassEvent extends QuestEvent {
                     LOG.warn(instruction.getPackage(), "Failed to set compass: " + compass, e);
                     return null;
                 }
-                if (profile.isPlayerOnline()) {
+                if (profile.getOnlineProfile().isPresent()) {
                     final QuestCompassTargetChangeEvent event = new QuestCompassTargetChangeEvent(profile, location);
                     Bukkit.getServer().getPluginManager().callEvent(event);
                     if (!event.isCancelled()) {
-                        profile.getOnlineProfile().getOnlinePlayer().setCompassTarget(location);
+                        profile.getOnlineProfile().get().getPlayer().setCompassTarget(location);
                     }
                 }
         }

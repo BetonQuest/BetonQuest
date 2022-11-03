@@ -416,7 +416,7 @@ public class BetonQuest extends JavaPlugin {
             log.debug(conditionID.getPackage(), "Cannot check non-static condition without a player, returning false");
             return false;
         }
-        if (profile != null && profile.isPlayerOnline() && !condition.isPersistent()) {
+        if (profile != null && profile.getOnlineProfile().isPresent() && !condition.isPersistent()) {
             log.debug(conditionID.getPackage(), "Player was offline, condition is not persistent, returning false");
             return false;
         }
@@ -1212,7 +1212,7 @@ public class BetonQuest extends JavaPlugin {
             if (conv != null) {
                 conv.suspend();
             }
-            onlineProfile.getOnlinePlayer().closeInventory();
+            onlineProfile.getPlayer().closeInventory();
         }
         // cancel database saver
         if (saver != null) {
@@ -1293,7 +1293,7 @@ public class BetonQuest extends JavaPlugin {
      */
     public PlayerData getPlayerData(final Profile profile) {
         PlayerData playerData = playerDataMap.get(profile);
-        if (playerData == null && profile.isPlayerOnline()) {
+        if (playerData == null && profile.getOnlineProfile().isPresent()) {
             playerData = new PlayerData(profile);
             putPlayerData(profile, playerData);
         }

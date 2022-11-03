@@ -35,7 +35,7 @@ public class ItemCondition extends Condition {
             int counter = 0; // Reset counter for each item
             final int amount = questItem.getAmount().getInt(profile);
 
-            final ItemStack[] inventoryItems = profile.getOnlineProfile().getOnlinePlayer().getInventory().getContents();
+            final ItemStack[] inventoryItems = profile.getOnlineProfile().get().getPlayer().getInventory().getContents();
             for (final ItemStack item : inventoryItems) {
                 if (item == null || !questItem.isItemEqual(item)) {
                     continue;

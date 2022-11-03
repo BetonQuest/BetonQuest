@@ -23,7 +23,7 @@ public class ConversationEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        new Conversation(profile.getOnlineProfile(), conv, profile.getOnlineProfile().getOnlinePlayer().getLocation());
+        new Conversation(profile.getOnlineProfile().get(), conv, profile.getOnlineProfile().get().getPlayer().getLocation());
         return null;
     }
 }

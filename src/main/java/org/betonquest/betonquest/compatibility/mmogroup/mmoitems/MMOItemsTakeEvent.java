@@ -46,7 +46,7 @@ public class MMOItemsTakeEvent extends AbstractTakeEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getOnlineProfile().getOnlinePlayer();
+        final Player player = profile.getOnlineProfile().get().getPlayer();
         final UUID uuid = player.getUniqueId();
 
         final int deleteAmount = deleteAmountVar.getInt(profile);
@@ -56,13 +56,13 @@ public class MMOItemsTakeEvent extends AbstractTakeEvent {
 
         final ItemStack item = MMOItemsUtils.getMMOItemStack(itemType, itemID);
         final String itemName = item.getItemMeta().getDisplayName();
-        notifyPlayer(profile.getOnlineProfile(), itemName, deleteAmount - neededDeletions.get(uuid));
+        notifyPlayer(profile.getOnlineProfile().get(), itemName, deleteAmount - neededDeletions.get(uuid));
         return null;
     }
 
     @Override
     protected ItemStack[] takeDesiredAmount(final Profile profile, final ItemStack... items) {
-        int desiredDeletions = neededDeletions.get(profile.getOfflinePlayer().getUniqueId());
+        int desiredDeletions = neededDeletions.get(profile.getPlayer().getUniqueId());
 
         for (int i = 0; i < items.length && desiredDeletions > 0; i++) {
             final ItemStack item = items[i];
@@ -77,7 +77,7 @@ public class MMOItemsTakeEvent extends AbstractTakeEvent {
             }
         }
 
-        neededDeletions.put(profile.getOfflinePlayer().getUniqueId(), desiredDeletions);
+        neededDeletions.put(profile.getPlayer().getUniqueId(), desiredDeletions);
         return items;
     }
 }

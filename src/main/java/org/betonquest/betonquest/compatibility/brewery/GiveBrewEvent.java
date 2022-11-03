@@ -48,7 +48,7 @@ public class GiveBrewEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getOnlineProfile().getOnlinePlayer();
+        final Player player = profile.getOnlineProfile().get().getPlayer();
 
         final ItemStack[] brews = new ItemStack[amount];
         for (int i = 0; i < amount; i++) {

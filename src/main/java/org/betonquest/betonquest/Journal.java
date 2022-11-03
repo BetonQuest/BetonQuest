@@ -102,7 +102,7 @@ public class Journal {
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public static boolean hasJournal(final OnlineProfile profile) {
-        final Player player = profile.getOnlinePlayer();
+        final Player player = profile.getPlayer();
         for (final ItemStack item : player.getInventory().getContents()) {
             if (isJournal(profile, item)) {
                 return true;
@@ -366,7 +366,7 @@ public class Journal {
     public void addToInv() {
         final int targetSlot = getJournalSlot();
         generateTexts(lang);
-        final Inventory inventory = onlineProfile.getOnlinePlayer().getInventory();
+        final Inventory inventory = onlineProfile.getPlayer().getInventory();
         final ItemStack item = getAsItem();
         if (inventory.firstEmpty() >= 0) {
             if (targetSlot < 0) {
@@ -409,7 +409,7 @@ public class Journal {
         final ItemStack item = new ItemStack(Material.WRITTEN_BOOK);
         final BookMeta meta = (BookMeta) item.getItemMeta();
         meta.setTitle(Utils.format(Config.getMessage(lang, "journal_title")));
-        meta.setAuthor(onlineProfile.getOfflinePlayer().getName());
+        meta.setAuthor(onlineProfile.getPlayer().getName());
         meta.setCustomModelData(config.getInt("journal.custom_model_data"));
         meta.setLore(getJournalLore(lang));
 
@@ -461,7 +461,7 @@ public class Journal {
      * Updates journal by removing it and adding it again
      */
     public void update() {
-        if (onlineProfile.isPlayerOnline() && hasJournal(onlineProfile)) {
+        if (hasJournal(onlineProfile)) {
             addToInv();
         }
     }
@@ -473,7 +473,7 @@ public class Journal {
      */
     public int removeFromInv() {
         // loop all items and check if any of them is a journal
-        final Inventory inventory = onlineProfile.getOnlinePlayer().getInventory();
+        final Inventory inventory = onlineProfile.getPlayer().getInventory();
         for (int i = 0; i < inventory.getSize(); i++) {
             if (isJournal(onlineProfile, inventory.getItem(i))) {
                 inventory.setItem(i, new ItemStack(Material.AIR));

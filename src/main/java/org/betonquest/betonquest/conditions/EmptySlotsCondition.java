@@ -27,7 +27,7 @@ public class EmptySlotsCondition extends Condition {
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        final ItemStack[] items = profile.getOnlineProfile().getOnlinePlayer().getInventory().getStorageContents();
+        final ItemStack[] items = profile.getOnlineProfile().get().getPlayer().getInventory().getStorageContents();
 
         int empty = 0;
         for (final ItemStack item : items) {

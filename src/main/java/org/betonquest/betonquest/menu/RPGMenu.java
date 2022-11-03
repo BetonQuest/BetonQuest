@@ -102,11 +102,11 @@ public class RPGMenu {
         final MenuOpenEvent openEvent = new MenuOpenEvent(onlineProfile, menuID);
         Bukkit.getPluginManager().callEvent(openEvent);
         if (openEvent.isCancelled()) {
-            LOG.debug(menu.getPackage(), "A Bukkit listener canceled opening of menu " + menuID + " for " + onlineProfile.getOfflinePlayer().getName());
+            LOG.debug(menu.getPackage(), "A Bukkit listener canceled opening of menu " + menuID + " for " + onlineProfile.getPlayer().getName());
             return;
         }
         new OpenedMenu(onlineProfile, menu);
-        LOG.debug(menu.getPackage(), "opening menu " + menuID + " for " + onlineProfile.getOfflinePlayer().getName());
+        LOG.debug(menu.getPackage(), "opening menu " + menuID + " for " + onlineProfile.getPlayer().getName());
     }
 
     @SuppressWarnings("PMD.AvoidDuplicateLiterals")

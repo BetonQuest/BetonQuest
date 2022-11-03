@@ -358,8 +358,8 @@ public final class Utils {
     }
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public static List<OnlineProfile> getParty(final OnlineProfile profile, final double range, final String pack, final ConditionID... conditions) throws QuestRuntimeException {
-        final Location loc = profile.getOnlinePlayer().getLocation();
+    public static List<OnlineProfile> getParty(final OnlineProfile onlineProfile, final double range, final String pack, final ConditionID... conditions) throws QuestRuntimeException {
+        final Location loc = onlineProfile.getPlayer().getLocation();
         final double squared = range * range;
 
         return loc.getWorld().getPlayers().stream()

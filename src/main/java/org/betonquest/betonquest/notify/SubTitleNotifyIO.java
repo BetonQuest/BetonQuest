@@ -24,6 +24,6 @@ public class SubTitleNotifyIO extends NotifyIO {
 
     @Override
     protected void notifyPlayer(final String message, final OnlineProfile onlineProfile) {
-        onlineProfile.getOnlinePlayer().sendTitle(" ", message, fadeIn, stay, fadeOut);
+        onlineProfile.getPlayer().sendTitle(" ", message, fadeIn, stay, fadeOut);
     }
 }

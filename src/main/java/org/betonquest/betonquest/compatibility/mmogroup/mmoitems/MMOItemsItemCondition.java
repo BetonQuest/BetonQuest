@@ -43,7 +43,7 @@ public class MMOItemsItemCondition extends Condition {
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
         int counter = 0;
 
-        final ItemStack[] inventoryItems = profile.getOnlineProfile().getOnlinePlayer().getInventory().getContents();
+        final ItemStack[] inventoryItems = profile.getOnlineProfile().get().getPlayer().getInventory().getContents();
         for (final ItemStack item : inventoryItems) {
             if (MMOItemsUtils.equalsMMOItem(item, itemType, itemID)) {
                 counter = counter + item.getAmount();

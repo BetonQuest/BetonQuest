@@ -28,6 +28,6 @@ public class MenuCondition extends Condition {
 
     @Override
     public Boolean execute(final Profile profile) {
-        return RPGMenu.hasOpenedMenu(profile.getOnlineProfile(), menu);
+        return RPGMenu.hasOpenedMenu(profile.getOnlineProfile().get(), menu);
     }
 }

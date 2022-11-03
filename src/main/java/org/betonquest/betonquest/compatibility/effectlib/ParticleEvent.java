@@ -40,7 +40,7 @@ public class ParticleEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getOnlineProfile().getOnlinePlayer();
+        final Player player = profile.getOnlineProfile().get().getPlayer();
         final Location location = (loc == null) ? player.getLocation() : loc.getLocation(profile);
         // This is not used at the moment
         // Entity originEntity = (loc == null) ? p : null;

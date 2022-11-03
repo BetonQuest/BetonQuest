@@ -135,9 +135,9 @@ public class EntityHider implements Listener {
     @SuppressWarnings("PMD.LinguisticNaming")
     protected boolean setMembership(final OnlineProfile observer, final int entityID, final boolean member) {
         if (member) {
-            return observerEntityMap.put(observer.getOnlinePlayer().getEntityId(), entityID, true) != null;
+            return observerEntityMap.put(observer.getPlayer().getEntityId(), entityID, true) != null;
         } else {
-            return observerEntityMap.remove(observer.getOnlinePlayer().getEntityId(), entityID) != null;
+            return observerEntityMap.remove(observer.getPlayer().getEntityId(), entityID) != null;
         }
     }
 
@@ -149,7 +149,7 @@ public class EntityHider implements Listener {
      * @return TRUE if they are present, FALSE otherwise.
      */
     protected boolean getMembership(final OnlineProfile observer, final int entityID) {
-        return observerEntityMap.contains(observer.getOnlinePlayer().getEntityId(), entityID);
+        return observerEntityMap.contains(observer.getPlayer().getEntityId(), entityID);
     }
 
     /**
@@ -273,7 +273,7 @@ public class EntityHider implements Listener {
 
         // Resend packets
         if (manager != null && hiddenBefore) {
-            manager.updateEntity(entity, Collections.singletonList(observer.getOnlinePlayer()));
+            manager.updateEntity(entity, Collections.singletonList(observer.getPlayer()));
         }
         return hiddenBefore;
     }
@@ -300,7 +300,7 @@ public class EntityHider implements Listener {
 
             // Make the entity disappear
             try {
-                manager.sendServerPacket(observer.getOnlinePlayer(), destroyEntity);
+                manager.sendServerPacket(observer.getPlayer(), destroyEntity);
             } catch (final InvocationTargetException e) {
                 throw new RuntimeException("Cannot send server packet.", e);
             }

@@ -24,7 +24,7 @@ public class HeadOwnerHandler {
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public String get(final Profile profile) {
         if (profile != null && "%player%".equals(owner)) {
-            return profile.getOfflinePlayer().getName();
+            return profile.getPlayer().getName();
         }
         return owner;
     }

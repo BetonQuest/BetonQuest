@@ -14,13 +14,7 @@ public interface Profile {
     /**
      * @return the {@link OfflinePlayer} that this profile belongs to
      */
-    OfflinePlayer getOfflinePlayer();
-
-    /**
-     * @return the {@link Player} that this profile belongs to, wrapped into an {@link Optional} since the player
-     * may be offline
-     */
-    Optional<Player> getPlayer();
+    OfflinePlayer getPlayer();
 
     /**
      * @return the {@link UUID} of the profile
@@ -33,16 +27,9 @@ public interface Profile {
     String getProfileName();
 
     /**
-     * @return true if the {@link Player} is online
-     */
-    Boolean isPlayerOnline();
-
-    /**
      * Gets the {@link OnlineProfile} of this Profile if the {@link Player} is online.
      *
      * @return The {@link OnlineProfile} of this Profile
-     * @throws IllegalStateException is thrown, if the {@link Player} is offline
      */
-    @SuppressWarnings("PMD.AvoidUncheckedExceptionsInSignatures")
-    OnlineProfile getOnlineProfile() throws IllegalStateException;
+    Optional<OnlineProfile> getOnlineProfile();
 }

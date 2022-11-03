@@ -30,7 +30,7 @@ public class MMOCoreClassCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        final PlayerData data = PlayerData.get(profile.getOfflinePlayer().getUniqueId());
+        final PlayerData data = PlayerData.get(profile.getPlayer().getUniqueId());
 
         final String actualClassName = data.getProfess().getId();
         final int actualClassLevel = data.getLevel();

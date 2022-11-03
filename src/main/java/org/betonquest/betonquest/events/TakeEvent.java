@@ -34,7 +34,7 @@ public class TakeEvent extends AbstractTakeEvent {
     @SuppressWarnings("PMD.PreserveStackTrace")
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getOnlineProfile().getOnlinePlayer();
+        final Player player = profile.getOnlineProfile().get().getPlayer();
         final UUID uuid = player.getUniqueId();
 
         for (final Item item : questItems) {
@@ -46,7 +46,7 @@ public class TakeEvent extends AbstractTakeEvent {
             final String itemName = questItem.getName() == null
                     ? new ItemStack(questItem.getMaterial()).getItemMeta().getDisplayName()
                     : questItem.getName();
-            notifyPlayer(profile.getOnlineProfile(), itemName, deleteAmount - neededDeletions.get(uuid).getRight());
+            notifyPlayer(profile.getOnlineProfile().get(), itemName, deleteAmount - neededDeletions.get(uuid).getRight());
         }
         return null;
     }
@@ -54,8 +54,8 @@ public class TakeEvent extends AbstractTakeEvent {
 
     @Override
     protected ItemStack[] takeDesiredAmount(final Profile profile, final ItemStack... items) {
-        final QuestItem questItem = neededDeletions.get(profile.getOfflinePlayer().getUniqueId()).getLeft();
-        int desiredDeletions = neededDeletions.get(profile.getOfflinePlayer().getUniqueId()).getRight();
+        final QuestItem questItem = neededDeletions.get(profile.getPlayer().getUniqueId()).getLeft();
+        int desiredDeletions = neededDeletions.get(profile.getPlayer().getUniqueId()).getRight();
 
         for (int i = 0; i < items.length && desiredDeletions > 0; i++) {
             final ItemStack item = items[i];
@@ -70,7 +70,7 @@ public class TakeEvent extends AbstractTakeEvent {
             }
         }
 
-        neededDeletions.put(profile.getOfflinePlayer().getUniqueId(), Pair.of(questItem, desiredDeletions));
+        neededDeletions.put(profile.getPlayer().getUniqueId(), Pair.of(questItem, desiredDeletions));
         return items;
     }
 }

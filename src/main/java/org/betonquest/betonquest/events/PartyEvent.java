@@ -33,7 +33,7 @@ public class PartyEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final List<OnlineProfile> members = Utils.getParty(profile.getOnlineProfile(), range.getDouble(profile), instruction.getPackage()
+        final List<OnlineProfile> members = Utils.getParty(profile.getOnlineProfile().get(), range.getDouble(profile), instruction.getPackage()
                 .getPackagePath(), conditions);
         for (final OnlineProfile memberID : members) {
             for (final EventID event : events) {

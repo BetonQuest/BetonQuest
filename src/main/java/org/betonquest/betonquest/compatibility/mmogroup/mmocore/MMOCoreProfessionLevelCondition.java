@@ -24,7 +24,7 @@ public class MMOCoreProfessionLevelCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        final PlayerData data = PlayerData.get(profile.getOfflinePlayer().getUniqueId());
+        final PlayerData data = PlayerData.get(profile.getPlayer().getUniqueId());
         final int actualLevel = data.getCollectionSkills().getLevel(professionName);
         final int targetLevel = targetLevelVar.getInt(profile);
 

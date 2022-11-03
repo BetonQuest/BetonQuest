@@ -19,6 +19,6 @@ public class ActionBarNotifyIO extends NotifyIO {
     @Override
     protected void notifyPlayer(final String message, final OnlineProfile onlineProfile) {
         final BaseComponent[] textMessage = TextComponent.fromLegacyText(message);
-        onlineProfile.getOnlinePlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, textMessage);
+        onlineProfile.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, textMessage);
     }
 }

@@ -25,7 +25,7 @@ public class ExperienceCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getOnlineProfile().getOnlinePlayer();
+        final Player player = profile.getOnlineProfile().get().getPlayer();
         final int amount = this.amount.getInt(profile);
         if (checkForLevel) {
             return player.getLevel() >= amount;

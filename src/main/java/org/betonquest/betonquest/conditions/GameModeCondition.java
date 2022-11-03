@@ -25,7 +25,7 @@ public class GameModeCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) {
-        return profile.getOnlineProfile().getOnlinePlayer().getGameMode() == gameMode;
+        return profile.getOnlineProfile().get().getPlayer().getGameMode() == gameMode;
     }
 
 }
