@@ -12,7 +12,7 @@ import org.betonquest.betonquest.id.EventID;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.random.RandomGenerator;
 
 /**
  * Pick random event is a collection of other events, which can be randomly chosen to run or not based on probability.
@@ -22,14 +22,17 @@ import java.util.concurrent.ThreadLocalRandom;
 public class PickRandomEvent extends QuestEvent {
     private final static char PERCENTAGE = '%';
 
+    private final RandomGenerator randomGenerator;
     private final List<RandomEvent> events;
     private final VariableNumber amount;
+
 
     @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
     public PickRandomEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);
         super.persistent = true;
         super.staticness = true;
+        this.randomGenerator = RandomGenerator.getDefault();
         this.events = instruction.getList(string -> {
             if (!string.matches("(\\d+\\.?\\d?|%.*%)%\\w+")) {
                 throw new InstructionParseException("Percentage must be specified correctly: " + string);
@@ -80,7 +83,7 @@ public class PickRandomEvent extends QuestEvent {
         int pick = this.amount == null ? 1 : this.amount.getInt(profile);
         while (pick > 0 && !events.isEmpty()) {
             pick--;
-            double random = ThreadLocalRandom.current().nextDouble() * total;
+            double random = randomGenerator.nextDouble() * total;
             for (final ResolvedRandomEvent event : events) {
                 random -= event.chance;
                 if (random < 0) {
