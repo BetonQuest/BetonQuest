@@ -82,6 +82,7 @@ If it is day it should show true and if it is night, false.
 
 !!! note "Tip"
        Change the world time using the `/time set day` and `/time set night` commands.
+       This will allow you to test your conditions in-game.
 
 | Command Part     | Meaning                                                                                                                  |
 |------------------|--------------------------------------------------------------------------------------------------------------------------|
