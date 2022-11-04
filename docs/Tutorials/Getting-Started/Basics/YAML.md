@@ -31,7 +31,7 @@ outerName:
   anotherInnerName: "BetonQuest is great!"
 ```
 
-It's best not to use tabs in your YAML files at all. Use spaces instead.
+Tabs are not supported. Use spaces instead.
  
 ---
 [:material-arrow-right: Next Step: Conversations](../Basics/Conversations.md){ .md-button .md-button--primary }
