@@ -21,7 +21,7 @@ async function updateRating() {
 }
 
 async function getRating(ressourceID) {
-  return await fetch("https://api.spiget.org/v2/resources/" + ressourceID).then(response => response.json())
+  return fetch("https://api.spiget.org/v2/resources/" + ressourceID).then(response => response.json())
     .then(data => {
       return data["rating"]["average"]
     })
