@@ -71,17 +71,17 @@ public class PickRandomEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final List<ResolvedRandomEvent> events = new LinkedList<>();
-        for (final RandomEvent randomEvent : this.events) {
-            events.add(randomEvent.resolveFor(profile));
+        final List<ResolvedRandomEvent> resolvedEvents = new LinkedList<>();
+        for (final RandomEvent randomEvent : events) {
+            resolvedEvents.add(randomEvent.resolveFor(profile));
         }
-        double total = events.stream().mapToDouble(ResolvedRandomEvent::chance).sum();
+        double total = resolvedEvents.stream().mapToDouble(ResolvedRandomEvent::chance).sum();
 
         int pick = this.amount == null ? 1 : this.amount.getInt(profile);
-        while (pick > 0 && !events.isEmpty()) {
+        while (pick > 0 && !resolvedEvents.isEmpty()) {
             pick--;
             double random = Math.random() * total;
-            final Iterator<ResolvedRandomEvent> iterator = events.iterator();
+            final Iterator<ResolvedRandomEvent> iterator = resolvedEvents.iterator();
             while (iterator.hasNext()) {
                 final ResolvedRandomEvent event = iterator.next();
                 random -= event.chance;
