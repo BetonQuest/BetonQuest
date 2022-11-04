@@ -10,7 +10,7 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.EventID;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.random.RandomGenerator;
 
@@ -25,7 +25,6 @@ public class PickRandomEvent extends QuestEvent {
     private final RandomGenerator randomGenerator;
     private final List<RandomEvent> events;
     private final VariableNumber amount;
-
 
     @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
     public PickRandomEvent(final Instruction instruction) throws InstructionParseException {
@@ -74,9 +73,9 @@ public class PickRandomEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final List<ResolvedRandomEvent> events = new ArrayList<>();
+        final List<ResolvedRandomEvent> events = new LinkedList<>();
         for (final RandomEvent randomEvent : this.events) {
-            events.add(new ResolvedRandomEvent(randomEvent, profile));
+            events.add(randomEvent.resolveFor(profile));
         }
         double total = events.stream().mapToDouble(ResolvedRandomEvent::chance).sum();
 
@@ -87,7 +86,7 @@ public class PickRandomEvent extends QuestEvent {
             for (final ResolvedRandomEvent event : events) {
                 random -= event.chance;
                 if (random < 0) {
-                    BetonQuest.event(profile, event.identifier);
+                    BetonQuest.event(profile, event.eventID);
                     events.remove(event);
                     total -= event.chance;
                     break;
@@ -97,12 +96,12 @@ public class PickRandomEvent extends QuestEvent {
         return null;
     }
 
-    private record RandomEvent(EventID identifier, VariableNumber chance) {
+    private record RandomEvent(EventID eventID, VariableNumber chance) {
+        public ResolvedRandomEvent resolveFor(final Profile profile) throws QuestRuntimeException {
+            return new ResolvedRandomEvent(eventID, chance.getDouble(profile));
+        }
     }
 
-    private record ResolvedRandomEvent(EventID identifier, double chance) {
-        public ResolvedRandomEvent(final RandomEvent identifier, final Profile profile) throws QuestRuntimeException {
-            this(identifier.identifier, identifier.chance.getDouble(profile));
-        }
+    private record ResolvedRandomEvent(EventID eventID, double chance) {
     }
 }
