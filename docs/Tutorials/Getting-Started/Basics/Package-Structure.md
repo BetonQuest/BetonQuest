@@ -12,8 +12,8 @@ You can write a small quest in just one file all together or split a big quest i
 up to you! This split is called _sections_.
 
 !!! warning "Attention"
-    If you are using an old version of BetonQuest and just want to convert your old packages to the new format, use
-    the [Migration Guide](/Documentation/Migration.md).
+    If you are using an older version of BetonQuest and just want to convert your 1.12.9 packages to the new format(2.0.0), 
+    use the [Migration Guide](/Documentation/Migration.md).
 
 <div class="grid" markdown>
 !!! danger "Requirements"
@@ -27,14 +27,14 @@ up to you! This split is called _sections_.
 ## 1.General explanation of QuestPackages
 
 This part of the tutorial will teach you how the new QuestPackages work and what the difference are compared to
-the old system.
+the 1.12.9 version.
 With this QuestPackages system it's now possible to have as many files as you want. You can even name them
 what ever you want, so there are no more limitations to naming and amount of files. What a great thing!
 
 Still not know what I mean? Let me show you the difference:
 
 <div class="grid" markdown>
-!!! success "new multifile structure"
+!!! success "BetonQuest 2.0.0 conzept"
     * :material-folder-open: QuestPackages
         - :material-folder-open: myExampleQuest
           - :material-file: package.yml
@@ -44,29 +44,30 @@ Still not know what I mean? Let me show you the difference:
           - :material-file: dungeonObjectives.yml
           - :material-file: normalObjectives.yml
           - :material-file: myVariablesFile.yml
-          - :material-folder-open: conversations
-              - :material-file: indiana.yml
-              - :material-file: jones.yml
+            - :material-folder-open: conversations
+                - :material-file: indiana.yml
+                - :material-file: jones.yml
 
-!!! warning "old concept"
+!!! warning "BetonQuest 1.12.9 concept"
     * :material-folder-open: tutorialQuest
         - :material-file: main.yml
         - :material-file: events.yml
         - :material-file: objectives.yml
         - :material-file: conditions.yml
+        - :material-file: custom.yml
         - :material-folder-open: conversations
             - :material-file: indiana.yml
             - :material-file: jones.yml
 </div>
 
-Did you see the difference? In the old one, there was no space for unique naming of the files not even have more than one file
-for each feature.
+Did you see the difference? In the 1.12.9 one, there was no space for unique naming of the files not even having more than one file
+for each feature and in the 2.0.0 version nearly everything is possible.
 
 One more thing to know when using the new system: there is no _main.yml_ needed anymore. Instead of main
 we will use the _package.yml_. The _package.yml_ is necessary otherwise it won't get detected as a quest and will not
 be affected in a BetonQuest reload.
 
-## 2. Creating your first QuestPackage with multiple files
+## 2. Creating a QuestPackage with multiple files
 
 We will now explain you, how to actually get used to this system. After this you will know how to create
 your own _QuestPackages_ and how to let them grow!
@@ -94,11 +95,11 @@ The example will be a small and simple woodcutting quest with a reward on comple
 
         ``` markdown
         {==npcs:==}
-          '1': "Jones"
+          '0': "Jones"
           
         {==items:==}
-          oakLogs: "minecraft:oak_log"
-          jewelry: "minecraft:diamonds"
+          oakLog: "minecraft:oak_log"
+          jewelry: "minecraft:diamond"
         ```
     === "jones.yml"
 
@@ -106,9 +107,9 @@ The example will be a small and simple woodcutting quest with a reward on comple
         {==conversations:==}
           Jones:
             quester: "Jones"
-            first: "questAlreadyDone,questDone,questNotDone,firstGreeting"
+            first: "questAlreadyDone,noWoodInInv,wrongWood,questNotDone,questDone,firstGreeting"
             NPC_options:
-              firstGreeting: 
+              firstGreeting:
                 text: "Yoo! You look like you can handle those heavy axes to cut down some trees..?"
                 pointer: "probably"
               woodAmountAnswer:
@@ -116,24 +117,30 @@ The example will be a small and simple woodcutting quest with a reward on comple
                 pointer: "letsDoIt"
               seeYou:
                 text: "See you soon!"
+              noWoodInInv:
+                text: "Looks like you don't have the required wood with you. Bring me 20 oak logs!"
+                conditions: "startedTag,woodcuttingDoneTag,!logsInInventory"
+              wrongWood:
+                text: "Oh you still need some time for the mission?.. You have to actually chop them down and not take it from your chest!"
+                conditions: "startedTag,!woodcuttingDoneTag,logsInInventory"
               questNotDone:
                 text: "Oh you still need some time for the mission?.."
-                conditions: "!woodcuttingDoneTag,!logsInInventory"
+                conditions: "startedTag,!woodcuttingDoneTag,!logsInInventory"
               questDone:
                 text: "That's the wood I was looking for! Thank you so much! Here is my special axe for my special friend."
                 events: "questDone"
                 conditions: "woodcuttingDoneTag,logsInInventory"
               questAlreadyDone:
-                text: "Hey! I dont need you anymore. Thanks again for the help."
+                text: "Hey! I don't need you anymore. Thanks again for the help."
                 conditions: "questDoneTag"
             player_options:
-              probably: 
+              probably:
                 text: "Yes I can do that for you! How much wood do you need?"
                 pointer: "woodAmountAnswer"
               letsDoIt:
                 text: "Alright let's get the job done!"
                 pointer: "seeYou"
-                events: "questAccepted"
+                events: "questStarted"
         ```
 
     === "myEventsList1.yml"
@@ -141,7 +148,7 @@ The example will be a small and simple woodcutting quest with a reward on comple
         ``` markdown
         {==events:==}
           questStarted: "folder startedTagAdd,addWoodcuttingObj"
-          startedTag: "tag add startedTag"
+          startedTagAdd: "tag add startedTag"
           addWoodcuttingObj: "objective add woodCuttingObj"
         ```
         
@@ -161,7 +168,7 @@ The example will be a small and simple woodcutting quest with a reward on comple
     
         ``` markdown
         {==objectives:==}
-          woodCuttingObj: "block oakLog -10 notify events:addWoodcuttingDoneTag"
+          woodCuttingObj: "block OAK_LOG -10 notify events:addWoodcuttingDoneTag"
         ```
         
     === "importantConditions.yml"
@@ -169,19 +176,30 @@ The example will be a small and simple woodcutting quest with a reward on comple
         ``` markdown
         {==conditions:==}
           woodcuttingDoneTag: "tag woodcuttingDoneTag"
-          logsInInventory: "item oakLogs:10"
+          logsInInventory: "item oakLog:10"
           questDoneTag: "tag questDoneTag"
+          startedTag: "tag startedTag"
         ```
         
 As you can see: Every feature goes into a section like `events:`, `objectives:`, `conversations:` marked in {==blue==}
-int the example quest.
+in the example quest.
 You can write these sections in any file you want, and it will still work! That's the way you can organize 
 yourself and your quests.
 
 It's not necessary to download this quest files, but it is quite useful because it's way easier to understand
 if you are doing things on your own and looking it up in the editor.
 
-Now that you understand how the new _multifile_ system works we will give you another example with the exact same quest:
+--8<-- "Tutorials/download-complete-files.md"
+    ```
+    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/packageStructure/1-MultiFileStructure /packageStructure/MultiFile
+    ```
+    You can now find all files needed for this tutorial in this location:
+    "_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/packageStructure_"
+
+## 3. Creating a QuestPackage with a single file
+
+Now that you understand how the new _multifile_ system works we will give you another example with the exact same quest
+but just one file:
 
 !!! Example
 
@@ -189,18 +207,18 @@ Now that you understand how the new _multifile_ system works we will give you an
 
         ``` markdown
         {==npcs:==}
-          '1': "Jones"
+          '0': "Jones"
           
         {==items:==}
-          oakLogs: "minecraft:oak_log"
-          jewelry: "minecraft:diamonds"
+          oakLog: "minecraft:oak_log"
+          jewelry: "minecraft:diamond"
 
         {==conversations:==}
           Jones:
             quester: "Jones"
-            first: "questAlreadyDone,questDone,questNotDone,firstGreeting"
+            first: "questAlreadyDone,noWoodInInv,wrongWood,questNotDone,questDone,firstGreeting"
             NPC_options:
-              firstGreeting: 
+              firstGreeting:
                 text: "Yoo! You look like you can handle those heavy axes to cut down some trees..?"
                 pointer: "probably"
               woodAmountAnswer:
@@ -208,28 +226,34 @@ Now that you understand how the new _multifile_ system works we will give you an
                 pointer: "letsDoIt"
               seeYou:
                 text: "See you soon!"
+              noWoodInInv:
+                text: "Looks like you don't have the required wood with you. Bring me 20 oak logs!"
+                conditions: "startedTag,woodcuttingDoneTag,!logsInInventory"
+              wrongWood:
+                text: "Oh you still need some time for the mission?.. You have to actually chop them down and not take it from your chest!"
+                conditions: "startedTag,!woodcuttingDoneTag,logsInInventory"
               questNotDone:
                 text: "Oh you still need some time for the mission?.."
-                conditions: "!woodcuttingDoneTag,!logsInInventory"
+                conditions: "startedTag,!woodcuttingDoneTag,!logsInInventory"
               questDone:
                 text: "That's the wood I was looking for! Thank you so much! Here is my special axe for my special friend."
                 events: "questDone"
                 conditions: "woodcuttingDoneTag,logsInInventory"
               questAlreadyDone:
-                text: "Hey! I dont need you anymore. Thanks again for the help."
+                text: "Hey! I don't need you anymore. Thanks again for the help."
                 conditions: "questDoneTag"
             player_options:
-              probably: 
+              probably:
                 text: "Yes I can do that for you! How much wood do you need?"
                 pointer: "woodAmountAnswer"
               letsDoIt:
                 text: "Alright let's get the job done!"
                 pointer: "seeYou"
-                events: "questAccepted"
+                events: "questStarted"
 
         {==events:==}
           questStarted: "folder startedTagAdd,addWoodcuttingObj"
-          startedTag: "tag add startedTag"
+          startedTagAdd: "tag add startedTag"
           addWoodcuttingObj: "objective add woodCuttingObj"
 
           questDone: "folder takeWoodFromPlayer,rewardPlayer,addQuestDoneTag"
@@ -240,30 +264,91 @@ Now that you understand how the new _multifile_ system works we will give you an
           addWoodcuttingDoneTag: "tag add woodcuttingDoneTag"
 
         {==objectives:==}
-          woodCuttingObj: "block oakLog -10 notify events:addWoodcuttingDoneTag"
+          woodCuttingObj: "block OAK_LOG -10 notify events:addWoodcuttingDoneTag"
 
         {==conditions:==}
           woodcuttingDoneTag: "tag woodcuttingDoneTag"
-          logsInInventory: "item oakLogs:10"
+          logsInInventory: "item oakLog:10"
           questDoneTag: "tag questDoneTag"
+          startedTag: "tag startedTag"
         ```
 
---8<-- "Tutorials/download-setup-warning.md"
+You can download the example below as well, so you can see the difference in your editor. Now worries, the files
+not get overwritten.
+
+--8<-- "Tutorials/download-complete-files.md"
     ```
-    !!!!!!!!!!!!!!!!!/bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conditions/1-DirectoryStructure /tutorialQuest
+    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/packageStructure/2-SingleFileStructure /packageStructure/SingleFile
     ```
     You can now find all files needed for this tutorial in this location:
-    "_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/tutorialQuest_"
-    
-small example quest inside. maybe a material grid here?
+    "_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/packageStructure_"
 
-But why is it working? Keywords Objectives: etc
+## 4. Creating packages in packages
 
-Its also possible to write it in one file:
+As the title already explains: Yes it is possible to have a package in a package.
+And it's really that easy like it sounds. Just look at the following structure:
 
---8<-- "Tutorials/download-setup-warning.md"
+<div class="grid" markdown>
+!!! success "Example"
+    * :material-folder-open: QuestPackages
+        - :material-folder-open: woodCuttingQuest
+            - :material-file: package.yml
+            - {==:material-folder-open: miningQuest==}
+                - {==:material-file: package.yml==}
+
+!!! success "Example"
+    * :material-folder-open: QuestPackages
+        - :material-folder-open: woodCuttingQuest
+            - :material-file: package.yml
+              - {==:material-folder-open: miningQuest==}
+                - {==:material-file: package.yml==}
+                  - {==:material-folder-open: fishingQuest==}
+                    - {==:material-file: package.yml==}
+</div>
+
+Not hard to understand but to make things clearer:
+Every folder that has a _package.yml_ inside, is a completely standalone quest.
+If you create another folder in an existing quest folder with a new created _package.yml_
+it will run as a new quest and is no longer part of the other package.
+
+--8<-- "Tutorials/download-complete-files.md"
     ```
-    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conditions/1-DirectoryStructure /tutorialQuest
+    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/packageStructure/3-PackageInPackage /packageStructure/PackageInPackage
     ```
     You can now find all files needed for this tutorial in this location:
-    "_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/tutorialQuest_"
+    "_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/packageStructure_"
+
+## 5. Creating subdirectories in a package
+
+Now you know, that it is possible to do nearly everything to structure your quests,
+I'll show you one more possibility: _subdirectories_.
+Let me first show you the example for it:
+
+!!! success "Example"
+    * :material-folder-open: QuestPackages
+        - :material-folder-open: woodCuttingQuest
+            - :material-file: package.yml
+            - {==:material-folder-open: questPart1==}
+                - :material-file: myEventsPart1.yml
+                    - {==:material-folder-open: questPart2==}
+                        - :material-file: myEventsPart2.yml
+
+If you ever wanted to split quests into parts with folders, it's possible.
+You only need to create the folder with the name of your choice and create a new file
+inside. If you use the specific _section keywords_ inside the specific files, there
+are no more rules.
+
+--8<-- "Tutorials/download-complete-files.md"
+    ```
+    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/packageStructure/4-SubDirectory /packageStructure/SubDirectory
+    ```
+    You can now find all files needed for this tutorial in this location:
+    "_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/packageStructure_"
+
+
+## Summary
+
+In this QuestPackages tutorial you've learned how you can better organise your quests
+and QuestPackages. Further you've learned the different possibilities on how to create
+the perfect structure for your next quest!
+---
