@@ -182,9 +182,9 @@ nav:
       - 'Getting Started':
           - 'Setup Guide':
               - 'Setting up a test server': Tutorials/Getting-Started/Setup-Guide/Setting-up-a-test-server.md
-              - 'Installing BetonQuest': Tutorials/Getting-Started/Setup-Guide/Installing-Dependencies.md
+              - 'Installing BetonQuest': Tutorials/Getting-Started/Setup-Guide/Installing-BetonQuest.md
           - 'Basics':
-              - 'YAML': Tutorials/Getting-Started/Basics/YAML-for-questers.md
+              - 'YAML': Tutorials/Getting-Started/Basics/YAML.md
               - 'Conversations': Tutorials/Getting-Started/Basics/Conversations.md
               - '    Events': Tutorials/Getting-Started/Basics/Events.md
               - 'Objectives': Tutorials/Getting-Started/Basics/Objectives.md
