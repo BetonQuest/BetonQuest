@@ -114,7 +114,8 @@ We can see multiple things here:
   (`conditions:con1,con2,con3`). 
 
 * The exclamation mark (`!`) in front of a condition inverts it. That means that a condition that is "true" will be
-  received as "false" and the other way around.
+  received as "false" and the other way around. This must be set per condition if multiple conditions are in use 
+  (`conditions:!con1,!con2,!con3`).
   - Remember that our condition is configured to check if it is daytime (`6-18`).
     We need to invert the `isDay` condition because we want to make progress when it is night.
     Now the condition will return "true" if it's nighttime (`23-2`).
