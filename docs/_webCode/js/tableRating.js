@@ -1,29 +1,34 @@
 updateRating()
 
 async function updateRating() {
-  let betonQuest = await getRating(2117)
-  let quests = await getRating(3711)
-  let LMBquests = await getRating(23696)
-  let notQuests = await getRating(95872)
-  let beautyQuests = await getRating(39255)
-  // Not distributed via Spigot
-  let mangoQuest = "N/A"
-  let questCreator = await getRating(38734)
-  let proQuests = await getRating(18249)
+  let betonQuest = getRating(2117)
+  let quests = getRating(3711)
+  let LMBquests = getRating(23696)
+  let notQuests = getRating(95872)
+  let beautyQuests = getRating(39255)
+  let mangoQuest = new Promise((resolve) => {
+    /* MangoQuest is not on Spigot */
+    resolve("-")
+  })
+  let questCreator = getRating(38734)
+  let proQuests = getRating(18249)
 
-  let ratings = [betonQuest, quests, LMBquests, notQuests, beautyQuests, mangoQuest, questCreator, proQuests]
+  const ratings = Promise.all([betonQuest, quests, LMBquests, notQuests, beautyQuests, mangoQuest, questCreator, proQuests])
 
   // Get the first row of the table, excluding the first cell (the description)
   let firstTableRow = document.querySelectorAll("table > tbody > tr:nth-child(1) > td:not(:first-child)");
-  for (let i = 0; i < ratings.length; i++) {
-    firstTableRow.item(i).textContent = ratings[i] + " ⭐"
-  }
+  let mangoQuestCell = document.querySelector("table > tbody > tr:nth-child(1) > td:nth-child(7)");
+  mangoQuestCell.setAttribute("title", "MangoQuest is not available on Spigot.")
+
+  ratings.then((values) => {
+    for (let i = 0; i < values.length; i++) {
+      firstTableRow.item(i).textContent = values[i] + " ⭐"
+    }
+  })
 }
 
-async function getRating(ressourceID) {
+function getRating(ressourceID) {
   return fetch("https://api.spiget.org/v2/resources/" + ressourceID).then(response => response.json())
-    .then(data => {
-      return data["rating"]["average"]
-    })
+    .then(data => data["rating"]["average"])
 }
 
