@@ -125,7 +125,7 @@ version() {
 }
 
 versionCurrent() {
-  CURRENT_VERSION="$(mvn help:evaluate -Dexpression=version -q -DforceStdout)"
+  CURRENT_VERSION="$(mvn help:evaluate -Dexpression=betonquest.version.base -q -DforceStdout)"
   echo "    Current: $CURRENT_VERSION"
 }
 
