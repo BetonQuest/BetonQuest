@@ -2,6 +2,7 @@ package org.betonquest.betonquest.notify;
 
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -27,7 +28,7 @@ public class BossBarNotifyIO extends NotifyIO {
     private final BarColor barColor;
     private final BarStyle style;
     private final double progress;
-    private final int stay;
+    private final VariableNumber stayVariable;
     private final int countdown;
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
@@ -60,7 +61,8 @@ public class BossBarNotifyIO extends NotifyIO {
         }
 
         progress = normalizeBossBarProgress(getFloatData("progress", 1));
-        stay = Math.max(0, getIntegerData("stay", 70));
+
+        stayVariable = data.get("stay") == null ? new VariableNumber(70) : new VariableNumber(pack.getPackagePath(), data.get("stay"));
         countdown = getIntegerData("countdown", 0);
     }
 
@@ -79,8 +81,10 @@ public class BossBarNotifyIO extends NotifyIO {
         bossBar.setProgress(resolvedProgress);
         bossBar.addPlayer(onlineProfile.getOnlinePlayer());
         bossBar.setVisible(true);
-        scheduleRemoval(bossBar);
 
+        final int stay = Math.max(0, stayVariable.getInt(onlineProfile));
+
+        scheduleRemoval(bossBar, stay);
         if (countdown > 0) {
             final int interval = stay / countdown;
             final double amount = progress / ((double) countdown);
@@ -92,7 +96,7 @@ public class BossBarNotifyIO extends NotifyIO {
         return Math.max(0.0, Math.min(1.0, value));
     }
 
-    private void scheduleRemoval(final BossBar bar) {
+    private void scheduleRemoval(final BossBar bar, final Integer stay) {
         new BukkitRunnable() {
             @Override
             public void run() {
