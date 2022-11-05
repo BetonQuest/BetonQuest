@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - ${current-date}
+## [Unreleased] - ${maven.build.timestamp}
 ### Added
 - Logging
     - Ingame logging
@@ -49,7 +49,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `delay` objective - now support variables
 - `opsudo` event - now supports variables
 - `variable` condition - now supports variables
-- `bossbar` notify style now supports variables for the `progress` argument
+- `bossbar` notify style now supports variables for the `progress` and `stay` arguments
 - `delay` objective property: `rawSeconds`
 - `fish` objective now has `hookLocation` and `range` settings.
 - `consume` objective now has `amount` argument.
@@ -61,6 +61,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `mmspawn` event now has argument `target` Makes the spawned mob target the player
 - `mmspawn` event now has argument `private` Visually hides the spawned mob from other players. Does not stop sound or particles
 - `mmspawn` event now supports the `marked` argument
+- `objective` event now supports a comma separated list of objectives
 - `mmobkill` objective now supports the `marked` argument
 - `marked` argument now supports %player% variable 
 - `globaltag` and `globalpoint` variables
@@ -138,6 +139,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   other slots present
 - `menu`(open) event - showed the previous menu again
 - non .yml files causing errors when loading quest packages
+- `pickrandom` event did not calculated chance correctly
 - Things that are also fixed in 1.12.X:
     - parsing of math variable
     - Citizens compatibility for not spawned NPCs
