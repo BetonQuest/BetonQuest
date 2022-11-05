@@ -162,6 +162,10 @@ and [teleport](../../../Documentation/Events-List.md#teleport-teleport) events t
 Running the `townTour` event will teleport you to a new location every five seconds
 until we get to our final destination, the blacksmith. The folder event is done after the `tpBlacksmith` event was run.
 
+!!! danger
+    Make sure you are in creative mode when testing this event. Otherwise, you might die from fall- or suffocation damage.
+    Running `/gamemode creative` will change your game mode to creative.
+
 Now we will add the folder event to Jack's conversation.
 ``` YAML title="jack.yml" hl_lines="11-18 23-29" linenums="1" 
 conversations:
