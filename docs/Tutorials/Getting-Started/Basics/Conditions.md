@@ -237,7 +237,7 @@ using the method you just learned.
 ??? tip "Solution"
     Get the correct configs by running the following command.<br>
     :warning: _This will overwrite any changes (including NPC ID's and locations) you have made to the example.<br>_
-    Linking NPCs to conversations is explained in the [basics tutorial](/Tutorials/Getting-Started/Basics/Conversations/#1-linking-a-conversation-to-a-npc).
+    Linking NPCs to conversations is explained in the [basics tutorial](./Conversations.md#1-linking-a-conversation-to-a-npc).
     ```
     /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conditions/4-JackCompleted /tutorialQuest overwrite
     ```
@@ -260,7 +260,7 @@ conversations:
         # Other player_options not shown
       alreadyStarted:
         text: "Come back to me if you caught all the fish!"
-        conditions: "startedFishingTag"
+        conditions: "hasStartedFishing"
     player_options:
       # Other player_options not shown
       accept:
@@ -278,9 +278,10 @@ We can do so with an `item` condition.
 conditions:
   isNight: "time 6-18"
   hasRecivedFood: "tag foodReceived"
-  tourAlreadyDoneTag: "tag tourAlreadyDoneTag"
-  startedFishingTag: "tag startedFishingTag"
+  hasDoneTour: "tag tourDone"
+  hasStartedFishing: "tag startedFishing"
   hasFishInInv: "item COD:10"
+  hasDoneQuest: "tag questDone"
 ```
 Additionally, we must add the new events as well. 
 Those remove 10 cod from the players inventory and add a tag for completing the quest.
