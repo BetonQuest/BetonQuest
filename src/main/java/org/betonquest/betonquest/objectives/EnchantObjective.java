@@ -39,8 +39,8 @@ public class EnchantObjective extends Objective implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onEnchant(final EnchantItemEvent event) {
-        final OnlineProfile profile = PlayerConverter.getID(event.getEnchanter());
-        if (!containsPlayer(profile)) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getEnchanter());
+        if (!containsPlayer(onlineProfile)) {
             return;
         }
         if (!item.compare(event.getItem())) {
@@ -52,8 +52,8 @@ public class EnchantObjective extends Objective implements Listener {
                 return;
             }
         }
-        if (checkConditions(profile)) {
-            completeObjective(profile);
+        if (checkConditions(onlineProfile)) {
+            completeObjective(onlineProfile);
         }
     }
 

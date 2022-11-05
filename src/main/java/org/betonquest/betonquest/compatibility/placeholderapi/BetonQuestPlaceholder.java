@@ -88,7 +88,7 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
             pack = identifier.substring(0, index);
             placeholderIdentifier = identifier.substring(index + 1);
         }
-        final OnlineProfile profile = player == null ? null : PlayerConverter.getID(player);
-        return BetonQuest.getInstance().getVariableValue(pack, '%' + placeholderIdentifier + '%', profile);
+        final OnlineProfile onlineProfile = player == null ? null : PlayerConverter.getID(player);
+        return BetonQuest.getInstance().getVariableValue(pack, '%' + placeholderIdentifier + '%', onlineProfile);
     }
 }

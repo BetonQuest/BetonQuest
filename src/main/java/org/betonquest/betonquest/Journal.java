@@ -97,14 +97,14 @@ public class Journal {
      * Checks if the player has his journal in the inventory. Returns false if
      * the player is not online.
      *
-     * @param profile the {@link OnlineProfile} of the player
+     * @param onlineProfile the {@link OnlineProfile} of the player
      * @return true if the player has his journal, false otherwise
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public static boolean hasJournal(final OnlineProfile profile) {
-        final Player player = profile.getPlayer();
+    public static boolean hasJournal(final OnlineProfile onlineProfile) {
+        final Player player = onlineProfile.getPlayer();
         for (final ItemStack item : player.getInventory().getContents()) {
-            if (isJournal(profile, item)) {
+            if (isJournal(onlineProfile, item)) {
                 return true;
             }
         }

@@ -50,11 +50,11 @@ public class RegionObjective extends Objective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(final PlayerJoinEvent event) {
         final Player player = event.getPlayer();
-        final OnlineProfile profile = PlayerConverter.getID(player);
-        if (containsPlayer(profile)) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID(player);
+        if (containsPlayer(onlineProfile)) {
             final boolean inside = WorldGuardIntegrator.isInsideRegion(player.getLocation(), name);
-            if (!entry && !exit && inside && checkConditions(profile)) {
-                completeObjective(profile);
+            if (!entry && !exit && inside && checkConditions(onlineProfile)) {
+                completeObjective(onlineProfile);
             } else {
                 playersInsideRegion.put(event.getPlayer().getUniqueId(), inside);
             }
@@ -100,16 +100,16 @@ public class RegionObjective extends Objective implements Listener {
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
     private void checkLocation(final Player player, final Location location) {
-        final OnlineProfile profile = PlayerConverter.getID(player);
-        if (!containsPlayer(profile)) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID(player);
+        if (!containsPlayer(onlineProfile)) {
             return;
         }
 
         final boolean inside = WorldGuardIntegrator.isInsideRegion(location, name);
 
         if (!entry && !exit) {
-            if (inside && checkConditions(profile)) {
-                completeObjective(profile);
+            if (inside && checkConditions(onlineProfile)) {
+                completeObjective(onlineProfile);
             }
             return;
         }
@@ -119,8 +119,8 @@ public class RegionObjective extends Objective implements Listener {
         final boolean fromInside = playersInsideRegion.get(player.getUniqueId());
         playersInsideRegion.put(player.getUniqueId(), inside);
 
-        if ((entry && inside && !fromInside || exit && fromInside && !inside) && checkConditions(profile)) {
-            completeObjective(profile);
+        if ((entry && inside && !fromInside || exit && fromInside && !inside) && checkConditions(onlineProfile)) {
+            completeObjective(onlineProfile);
             playersInsideRegion.remove(player.getUniqueId());
         }
     }

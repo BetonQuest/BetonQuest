@@ -5,7 +5,6 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -43,8 +42,7 @@ public class LocationObjective extends Objective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onMove(final PlayerMoveEvent event) {
         qreHandler.handle(() -> {
-            final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
-            checkLocation(event.getTo(), profile);
+            checkLocation(event.getTo(), PlayerConverter.getID(event.getPlayer()));
         });
     }
 
@@ -54,8 +52,7 @@ public class LocationObjective extends Objective implements Listener {
             final List<Entity> passengers = event.getVehicle().getPassengers();
             for (final Entity passenger : passengers) {
                 if (passenger instanceof Player player) {
-                    final OnlineProfile profile = PlayerConverter.getID(player);
-                    checkLocation(event.getTo(), profile);
+                    checkLocation(event.getTo(), PlayerConverter.getID(player));
                 }
             }
         });

@@ -19,8 +19,8 @@ import java.util.concurrent.ExecutionException;
 @CustomLog
 public class CitizensInventoryConvIO extends InventoryConvIO {
 
-    public CitizensInventoryConvIO(final Conversation conv, final OnlineProfile profile) {
-        super(conv, profile);
+    public CitizensInventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
+        super(conv, onlineProfile);
     }
 
     @Override
@@ -57,8 +57,8 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
 
     public static class CitizensCombined extends CitizensInventoryConvIO {
 
-        public CitizensCombined(final Conversation conv, final OnlineProfile profile) {
-            super(conv, profile);
+        public CitizensCombined(final Conversation conv, final OnlineProfile onlineProfile) {
+            super(conv, onlineProfile);
             super.printMessages = true;
         }
     }

@@ -52,13 +52,13 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
      */
     @EventHandler
     public void onItemCraft(final CraftItemEvent event) {
-        final OnlineProfile profile = PlayerConverter.getID((Player) event.getWhoClicked());
+        final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getWhoClicked());
         final ItemStack craftedItem = event.getRecipe().getResult();
         if (event.getSlotType() == InventoryType.SlotType.RESULT
-                && containsPlayer(profile)
+                && containsPlayer(onlineProfile)
                 && isValidItem(craftedItem)
-                && checkConditions(profile)) {
-            progressCraftObjective(profile, craftedItem.getAmount());
+                && checkConditions(onlineProfile)) {
+            progressCraftObjective(onlineProfile, craftedItem.getAmount());
         }
     }
 
@@ -69,13 +69,13 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
      */
     @EventHandler(ignoreCancelled = true)
     public void onRecipeUse(final CraftMMOItemEvent event) {
-        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
         final ItemStack craftedItem = event.getResult();
 
-        if (containsPlayer(profile)
+        if (containsPlayer(onlineProfile)
                 && isValidItem(craftedItem)
-                && checkConditions(profile)) {
-            progressCraftObjective(profile, craftedItem.getAmount());
+                && checkConditions(onlineProfile)) {
+            progressCraftObjective(onlineProfile, craftedItem.getAmount());
         }
     }
 
@@ -86,27 +86,27 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
      */
     @EventHandler(ignoreCancelled = true)
     public void onRecipeUse(final PlayerUseCraftingStationEvent event) {
-        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
         final StationAction action = event.getInteraction();
         final Recipe usedRecipe = event.getRecipe();
 
-        if (containsPlayer(profile)
+        if (containsPlayer(onlineProfile)
                 && action != StationAction.INTERACT_WITH_RECIPE
                 && action != StationAction.CANCEL_QUEUE
                 && usedRecipe instanceof CraftingRecipe
-                && checkConditions(profile)) {
+                && checkConditions(onlineProfile)) {
             final CraftingRecipe craftingRecipe = (CraftingRecipe) usedRecipe;
 
             final ItemStack craftedItem = craftingRecipe.getOutput().getItemStack(new FriendlyFeedbackProvider(FFPMMOItems.get()));
             if (isValidItem(craftedItem)) {
-                progressCraftObjective(profile, craftedItem.getAmount());
+                progressCraftObjective(onlineProfile, craftedItem.getAmount());
             }
         }
     }
 
-    private void progressCraftObjective(final OnlineProfile profile, final int craftedAmount) {
-        getCountingData(profile).progress(craftedAmount);
-        completeIfDoneOrNotify(profile);
+    private void progressCraftObjective(final OnlineProfile onlineProfile, final int craftedAmount) {
+        getCountingData(onlineProfile).progress(craftedAmount);
+        completeIfDoneOrNotify(onlineProfile);
     }
 
     /**

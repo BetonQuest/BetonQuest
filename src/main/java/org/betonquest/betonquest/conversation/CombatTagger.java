@@ -78,9 +78,9 @@ public class CombatTagger implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onDeath(final PlayerDeathEvent event) {
-        final OnlineProfile profile = PlayerConverter.getID(event.getEntity());
-        TAGGED.remove(profile);
-        final BukkitRunnable runnable = UNTAGGERS.remove(profile);
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getEntity());
+        TAGGED.remove(onlineProfile);
+        final BukkitRunnable runnable = UNTAGGERS.remove(onlineProfile);
         if (runnable != null) {
             runnable.cancel();
         }

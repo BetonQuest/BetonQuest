@@ -30,12 +30,12 @@ public class MMOItemsCastAbilityObjective extends Objective implements Listener 
         if (!event.getAbility().getAbility().getName().equalsIgnoreCase(abilityID)) {
             return;
         }
-        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
 
-        if (!containsPlayer(profile) || !checkConditions(profile)) {
+        if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
             return;
         }
-        completeObjective(profile);
+        completeObjective(onlineProfile);
     }
 
     @Override

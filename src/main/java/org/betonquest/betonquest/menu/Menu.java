@@ -366,10 +366,10 @@ public class Menu extends SimpleYMLSection implements Listener {
                 sender.sendMessage("§cCommand can only be run by players!");
                 return false;
             }
-            final OnlineProfile profile = PlayerConverter.getID(player);
-            if (mayOpen(profile)) {
+            final OnlineProfile onlineProfile = PlayerConverter.getID(player);
+            if (mayOpen(onlineProfile)) {
                 LOG.debug(getPackage(), player.getName() + " run bound command of " + menuID);
-                menu.openMenu(profile, menuID);
+                menu.openMenu(onlineProfile, menuID);
                 return true;
             } else {
                 player.sendMessage(this.noPermissionMessage(sender));

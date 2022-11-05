@@ -82,16 +82,16 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
         }
     }
 
-    private void checkKill(final MythicMobDeathEvent event, final OnlineProfile profile) {
+    private void checkKill(final MythicMobDeathEvent event, final OnlineProfile onlineProfile) {
         if (marked != null) {
             final List<MetadataValue> meta = event.getEntity().getMetadata("betonquest-marked");
             for (final MetadataValue m : meta) {
-                if (!m.asString().equals(marked.replace("%player%", profile.getProfileUUID().toString()))) {
+                if (!m.asString().equals(marked.replace("%player%", onlineProfile.getProfileUUID().toString()))) {
                     return;
                 }
             }
         }
-        handlePlayerKill(profile, event.getMob());
+        handlePlayerKill(onlineProfile, event.getMob());
     }
 
     private boolean isValidPlayer(final Player player) {
@@ -100,18 +100,18 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
                 && player.isValid();
     }
 
-    private void handlePlayerKill(final OnlineProfile profile, final ActiveMob mob) {
-        if (containsPlayer(profile) && matchesMobLevel(profile, mob) && checkConditions(profile)) {
-            getCountingData(profile).progress();
-            completeIfDoneOrNotify(profile);
+    private void handlePlayerKill(final OnlineProfile onlineProfile, final ActiveMob mob) {
+        if (containsPlayer(onlineProfile) && matchesMobLevel(onlineProfile, mob) && checkConditions(onlineProfile)) {
+            getCountingData(onlineProfile).progress();
+            completeIfDoneOrNotify(onlineProfile);
         }
 
     }
 
-    private boolean matchesMobLevel(final OnlineProfile profile, final ActiveMob mob) {
+    private boolean matchesMobLevel(final OnlineProfile onlineProfile, final ActiveMob mob) {
         try {
             final double actualMobLevel = mob.getLevel();
-            return minMobLevel.getDouble(profile) <= actualMobLevel && maxMobLevel.getDouble(profile) >= actualMobLevel;
+            return minMobLevel.getDouble(onlineProfile) <= actualMobLevel && maxMobLevel.getDouble(onlineProfile) >= actualMobLevel;
         } catch (final QuestRuntimeException exception) {
             try {
                 LOG.error(instruction.getPackage(), "Unable to resolve minMobLevel / maxMobLevel variable in " + instruction.getObjective().getFullID());

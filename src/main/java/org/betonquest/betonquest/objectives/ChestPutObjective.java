@@ -107,12 +107,12 @@ public class ChestPutObjective extends Objective implements Listener {
         if (!(event.getPlayer() instanceof Player)) {
             return;
         }
-        final OnlineProfile profile = PlayerConverter.getID((Player) event.getPlayer());
-        if (!containsPlayer(profile)) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getPlayer());
+        if (!containsPlayer(onlineProfile)) {
             return;
         }
         try {
-            final Location targetChestLocation = loc.getLocation(profile);
+            final Location targetChestLocation = loc.getLocation(onlineProfile);
             final Block block = targetChestLocation.getBlock();
             if (!(block.getState() instanceof InventoryHolder)) {
                 final World world = targetChestLocation.getWorld();
@@ -129,10 +129,10 @@ public class ChestPutObjective extends Objective implements Listener {
             if (!chest.equals(event.getInventory().getHolder())) {
                 return;
             }
-            if (chestItemCondition.handle(profile) && checkConditions(profile)) {
-                completeObjective(profile);
+            if (chestItemCondition.handle(onlineProfile) && checkConditions(onlineProfile)) {
+                completeObjective(onlineProfile);
                 if (chestTakeEvent != null) {
-                    chestTakeEvent.handle(profile);
+                    chestTakeEvent.handle(onlineProfile);
                 }
             }
         } catch (final QuestRuntimeException e) {

@@ -30,9 +30,9 @@ public class EventReward extends CustomReward {
     public void giveReward(final Player player, final Map<String, Object> dataMap) {
         final String string = dataMap.get("Event").toString();
         try {
-            final OnlineProfile profile = PlayerConverter.getID(player);
+            final OnlineProfile onlineProfile = PlayerConverter.getID(player);
             final EventID event = new EventID(null, string);
-            BetonQuest.event(profile, event);
+            BetonQuest.event(onlineProfile, event);
         } catch (final ObjectNotFoundException e) {
             LOG.warn("Error while running quest reward - BetonQuest event '" + string + "' not found: " + e.getMessage(), e);
         }

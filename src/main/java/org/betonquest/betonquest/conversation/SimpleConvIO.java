@@ -11,8 +11,8 @@ public class SimpleConvIO extends ChatConvIO {
 
     private final String optionFormat;
 
-    public SimpleConvIO(final Conversation conv, final OnlineProfile profile) {
-        super(conv, profile);
+    public SimpleConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
+        super(conv, onlineProfile);
         final StringBuilder string = new StringBuilder();
         for (final ChatColor color : colors.get("number")) {
             string.append(color);

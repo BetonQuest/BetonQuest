@@ -69,8 +69,8 @@ public class ActionObjective extends Objective implements Listener {
             return;
         }
 
-        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(profile) || !action.match(event.getAction())) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        if (!containsPlayer(onlineProfile) || !action.match(event.getAction())) {
             return;
         }
 
@@ -78,8 +78,8 @@ public class ActionObjective extends Objective implements Listener {
         if (loc != null) {
             final Location current = clickedBlock == null ? event.getPlayer().getLocation() : clickedBlock.getLocation();
             try {
-                final Location location = loc.getLocation(profile);
-                final double pRange = range.getDouble(profile);
+                final Location location = loc.getLocation(onlineProfile);
+                final double pRange = range.getDouble(onlineProfile);
                 if (!location.getWorld().equals(current.getWorld()) || current.distance(location) > pRange) {
                     return;
                 }
@@ -89,11 +89,11 @@ public class ActionObjective extends Objective implements Listener {
             }
         }
 
-        if ((selector == null || clickedBlock != null && (checkBlock(clickedBlock, event.getBlockFace()))) && checkConditions(profile)) {
+        if ((selector == null || clickedBlock != null && (checkBlock(clickedBlock, event.getBlockFace()))) && checkConditions(onlineProfile)) {
             if (cancel) {
                 event.setCancelled(true);
             }
-            completeObjective(profile);
+            completeObjective(onlineProfile);
         }
     }
 

@@ -99,8 +99,8 @@ public class MenuConvIO extends ChatConvIO {
 
     @SuppressWarnings("PMD.CognitiveComplexity")
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public MenuConvIO(final Conversation conv, final OnlineProfile profile) {
-        super(conv, profile);
+    public MenuConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
+        super(conv, onlineProfile);
 
         for (final QuestPackage pack : Stream.concat(
                 Config.getPackages().values().stream().filter(p -> p != conv.getPackage()),

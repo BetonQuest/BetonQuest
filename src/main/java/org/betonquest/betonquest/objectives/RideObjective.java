@@ -44,9 +44,9 @@ public class RideObjective extends Objective implements Listener {
         if (!(event.getEntered() instanceof Player)) {
             return;
         }
-        final OnlineProfile profile = PlayerConverter.getID((Player) event.getEntered());
-        if (containsPlayer(profile) && (any || event.getVehicle().getType() == vehicle) && checkConditions(profile)) {
-            completeObjective(profile);
+        final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getEntered());
+        if (containsPlayer(onlineProfile) && (any || event.getVehicle().getType() == vehicle) && checkConditions(onlineProfile)) {
+            completeObjective(onlineProfile);
         }
     }
 

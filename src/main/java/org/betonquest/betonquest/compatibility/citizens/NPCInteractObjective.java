@@ -35,15 +35,15 @@ public class NPCInteractObjective extends Objective implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onNPCClick(final NPCRightClickEvent event) {
-        final OnlineProfile profile = PlayerConverter.getID(event.getClicker());
-        if (event.getNPC().getId() != npcId || !containsPlayer(profile)) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getClicker());
+        if (event.getNPC().getId() != npcId || !containsPlayer(onlineProfile)) {
             return;
         }
-        if (checkConditions(profile)) {
+        if (checkConditions(onlineProfile)) {
             if (cancel) {
                 event.setCancelled(true);
             }
-            completeObjective(profile);
+            completeObjective(onlineProfile);
         }
     }
 

@@ -27,15 +27,15 @@ public class MMOCoreCastSkillObjective extends Objective implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onSkillCast(final PlayerCastSkillEvent event) {
-        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(profile) || !checkConditions(profile)) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
             return;
         }
         final String skillName = event.getCast().getHandler().getId();
         if (!skillId.equalsIgnoreCase(skillName) || !event.getResult().isSuccessful(event.getMetadata())) {
             return;
         }
-        completeObjective(profile);
+        completeObjective(onlineProfile);
     }
 
     @Override

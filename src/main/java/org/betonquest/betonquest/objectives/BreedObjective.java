@@ -32,10 +32,10 @@ public class BreedObjective extends CountingObjective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onBreeding(final EntityBreedEvent event) {
         if (event.getEntityType() == type && event.getBreeder() instanceof Player) {
-            final OnlineProfile profile = PlayerConverter.getID((Player) event.getBreeder());
-            if (containsPlayer(profile) && checkConditions(profile)) {
-                getCountingData(profile).progress();
-                completeIfDoneOrNotify(profile);
+            final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getBreeder());
+            if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
+                getCountingData(onlineProfile).progress();
+                completeIfDoneOrNotify(onlineProfile);
             }
         }
     }

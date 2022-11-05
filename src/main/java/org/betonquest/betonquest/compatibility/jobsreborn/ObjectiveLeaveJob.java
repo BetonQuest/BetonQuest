@@ -40,9 +40,9 @@ public class ObjectiveLeaveJob extends Objective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onJobsLeaveEvent(final JobsLeaveEvent event) {
         if (event.getJob().getName().equalsIgnoreCase(this.sJobName)) {
-            final OnlineProfile profile = PlayerConverter.getID(event.getPlayer().getPlayer());
-            if (containsPlayer(profile) && checkConditions(profile)) {
-                completeObjective(profile);
+            final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer().getPlayer());
+            if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
+                completeObjective(onlineProfile);
             }
         }
     }

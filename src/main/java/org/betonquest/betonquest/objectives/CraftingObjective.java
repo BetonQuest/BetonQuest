@@ -64,10 +64,10 @@ public class CraftingObjective extends CountingObjective implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCrafting(final CraftItemEvent event) {
         if (event.getWhoClicked() instanceof Player) {
-            final OnlineProfile profile = PlayerConverter.getID((Player) event.getWhoClicked());
-            if (containsPlayer(profile) && item.compare(event.getRecipe().getResult()) && checkConditions(profile)) {
-                getCountingData(profile).progress(calculateCraftAmount(event));
-                completeIfDoneOrNotify(profile);
+            final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getWhoClicked());
+            if (containsPlayer(onlineProfile) && item.compare(event.getRecipe().getResult()) && checkConditions(onlineProfile)) {
+                getCountingData(onlineProfile).progress(calculateCraftAmount(event));
+                completeIfDoneOrNotify(onlineProfile);
             }
         }
     }

@@ -49,10 +49,10 @@ public class ConsumeObjective extends CountingObjective implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onConsume(final PlayerItemConsumeEvent event) {
-        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
-        if (containsPlayer(profile) && item.compare(event.getItem()) && checkConditions(profile)) {
-            getCountingData(profile).progress();
-            completeIfDoneOrNotify(profile);
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        if (containsPlayer(onlineProfile) && item.compare(event.getItem()) && checkConditions(onlineProfile)) {
+            getCountingData(onlineProfile).progress();
+            completeIfDoneOrNotify(onlineProfile);
         }
     }
 

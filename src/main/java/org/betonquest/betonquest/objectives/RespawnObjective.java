@@ -31,17 +31,17 @@ public class RespawnObjective extends Objective implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onRespawn(final PlayerRespawnEvent event) {
-        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
-        if (containsPlayer(profile) && checkConditions(profile)) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
 
             if (location != null) {
                 try {
-                    event.setRespawnLocation(location.getLocation(profile));
+                    event.setRespawnLocation(location.getLocation(onlineProfile));
                 } catch (final QuestRuntimeException e) {
                     LOG.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: \" + e.getMessage()", e);
                 }
             }
-            completeObjective(profile);
+            completeObjective(onlineProfile);
         }
     }
 

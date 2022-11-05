@@ -55,8 +55,8 @@ public class VariableObjective extends Objective implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onChat(final AsyncPlayerChatEvent event) {
-        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(profile)) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        if (!containsPlayer(onlineProfile)) {
             return;
         }
         final Matcher chatVariableMatcher = CHAT_VARIABLE_PATTERN.matcher(event.getMessage());
@@ -64,7 +64,7 @@ public class VariableObjective extends Objective implements Listener {
             event.setCancelled(true);
             final String key = chatVariableMatcher.group("key").toLowerCase(Locale.ROOT);
             final String value = chatVariableMatcher.group("value");
-            ((VariableData) dataMap.get(profile)).add(key, value);
+            ((VariableData) dataMap.get(onlineProfile)).add(key, value);
             event.getPlayer().sendMessage("§2§l\u2713"); // send checkmark
         }
     }

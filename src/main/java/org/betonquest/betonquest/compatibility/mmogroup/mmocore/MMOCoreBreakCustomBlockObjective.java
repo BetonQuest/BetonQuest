@@ -31,12 +31,12 @@ public class MMOCoreBreakCustomBlockObjective extends CountingObjective implemen
 
     @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(final CustomBlockMineEvent event) {
-        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
-        if (containsPlayer(profile) && checkConditions(profile)) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
             final String blockId = getBlockId(event.getBlockInfo().getBlock());
             if (blockId.equals(desiredBlockId)) {
-                getCountingData(profile).progress();
-                completeIfDoneOrNotify(profile);
+                getCountingData(onlineProfile).progress();
+                completeIfDoneOrNotify(onlineProfile);
             }
         }
     }

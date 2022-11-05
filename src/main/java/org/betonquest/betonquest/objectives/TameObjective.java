@@ -40,12 +40,12 @@ public class TameObjective extends CountingObjective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onTaming(final EntityTameEvent event) {
         if (event.getOwner() instanceof Player) {
-            final OnlineProfile profile = PlayerConverter.getID((Player) event.getOwner());
-            if (containsPlayer(profile)
+            final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getOwner());
+            if (containsPlayer(onlineProfile)
                     && type.equals(event.getEntity().getType())
-                    && checkConditions(profile)) {
-                getCountingData(profile).progress();
-                completeIfDoneOrNotify(profile);
+                    && checkConditions(onlineProfile)) {
+                getCountingData(onlineProfile).progress();
+                completeIfDoneOrNotify(onlineProfile);
             }
         }
     }

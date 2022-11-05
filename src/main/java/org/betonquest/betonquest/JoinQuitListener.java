@@ -79,10 +79,10 @@ public class JoinQuitListener implements Listener {
 
     @EventHandler
     public void onPlayerQuit(final PlayerQuitEvent event) {
-        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
-        for (final Objective objective : BetonQuest.getInstance().getPlayerObjectives(profile)) {
-            objective.pauseObjectiveForPlayer(profile);
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        for (final Objective objective : BetonQuest.getInstance().getPlayerObjectives(onlineProfile)) {
+            objective.pauseObjectiveForPlayer(onlineProfile);
         }
-        BetonQuest.getInstance().removePlayerData(profile);
+        BetonQuest.getInstance().removePlayerData(onlineProfile);
     }
 }

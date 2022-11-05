@@ -47,8 +47,8 @@ BrewObjective extends CountingObjective implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onIngredientPut(final InventoryClickEvent event) {
-        final OnlineProfile profile = PlayerConverter.getID((Player) event.getWhoClicked());
-        if (!containsPlayer(profile)) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getWhoClicked());
+        if (!containsPlayer(onlineProfile)) {
             return;
         }
         final Inventory topInventory = event.getView().getTopInventory();
@@ -62,7 +62,7 @@ BrewObjective extends CountingObjective implements Listener {
             if (itemsAdded(contentBefore, contentAfter)) {
                 final BrewingStand brewingStand = (BrewingStand) topInventory.getHolder();
                 if (brewingStand != null) {
-                    locations.put(brewingStand.getLocation(), profile);
+                    locations.put(brewingStand.getLocation(), onlineProfile);
                 }
             }
         });

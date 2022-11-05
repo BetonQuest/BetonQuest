@@ -23,7 +23,7 @@ public class ConversationResumer implements Listener {
 
     private final String original;
     private final Player player;
-    private final OnlineProfile profile;
+    private final OnlineProfile onlineProfile;
     private final String conversationID;
     private final String option;
     private final Location loc;
@@ -32,7 +32,7 @@ public class ConversationResumer implements Listener {
     public ConversationResumer(final OnlineProfile onlineProfile, final String convID) {
         this.original = convID;
         this.player = onlineProfile.getPlayer();
-        this.profile = onlineProfile;
+        this.onlineProfile = onlineProfile;
         final String[] parts = convID.split(" ");
         this.conversationID = parts[0];
         this.option = parts[1];
@@ -57,8 +57,8 @@ public class ConversationResumer implements Listener {
         if (event.getTo().getWorld().equals(loc.getWorld()) && event.getTo().distanceSquared(loc) < distance * distance) {
             HandlerList.unregisterAll(this);
             BetonQuest.getInstance().getSaver()
-                    .add(new Record(UpdateType.UPDATE_CONVERSATION, "null", profile.getProfileUUID().toString()));
-            new Conversation(profile, conversationID, loc, option);
+                    .add(new Record(UpdateType.UPDATE_CONVERSATION, "null", onlineProfile.getProfileUUID().toString()));
+            new Conversation(onlineProfile, conversationID, loc, option);
         }
     }
 
@@ -69,6 +69,6 @@ public class ConversationResumer implements Listener {
         }
         HandlerList.unregisterAll(this);
         BetonQuest.getInstance().getSaver()
-                .add(new Record(UpdateType.UPDATE_CONVERSATION, original, profile.getProfileUUID().toString()));
+                .add(new Record(UpdateType.UPDATE_CONVERSATION, original, onlineProfile.getProfileUUID().toString()));
     }
 }

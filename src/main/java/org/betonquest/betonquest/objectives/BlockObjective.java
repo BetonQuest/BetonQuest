@@ -38,29 +38,29 @@ public class BlockObjective extends CountingObjective implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onBlockPlace(final BlockPlaceEvent event) {
-        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
-        if (containsPlayer(profile) && selector.match(event.getBlock(), exactMatch) && checkConditions(profile)) {
-            if (getCountingData(profile).getDirectionFactor() < 0 && noSafety) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        if (containsPlayer(onlineProfile) && selector.match(event.getBlock(), exactMatch) && checkConditions(onlineProfile)) {
+            if (getCountingData(onlineProfile).getDirectionFactor() < 0 && noSafety) {
                 return;
             }
-            handleDataChange(profile, getCountingData(profile).add());
+            handleDataChange(onlineProfile, getCountingData(onlineProfile).add());
         }
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onBlockBreak(final BlockBreakEvent event) {
-        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
-        if (containsPlayer(profile) && selector.match(event.getBlock(), exactMatch) && checkConditions(profile)) {
-            if (getCountingData(profile).getDirectionFactor() > 0 && noSafety) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        if (containsPlayer(onlineProfile) && selector.match(event.getBlock(), exactMatch) && checkConditions(onlineProfile)) {
+            if (getCountingData(onlineProfile).getDirectionFactor() > 0 && noSafety) {
                 return;
             }
-            handleDataChange(profile, getCountingData(profile).subtract());
+            handleDataChange(onlineProfile, getCountingData(onlineProfile).subtract());
         }
     }
 
-    private void handleDataChange(final OnlineProfile profile, final CountingData data) {
+    private void handleDataChange(final OnlineProfile onlineProfile, final CountingData data) {
         final String message = data.getDirectionFactor() > 0 ? "blocks_to_place" : "blocks_to_break";
-        completeIfDoneOrNotify(profile, message);
+        completeIfDoneOrNotify(onlineProfile, message);
     }
 
     @Override

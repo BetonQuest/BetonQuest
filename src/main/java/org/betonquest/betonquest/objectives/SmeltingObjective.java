@@ -38,12 +38,12 @@ public class SmeltingObjective extends CountingObjective implements Listener {
     public void onSmelting(final InventoryClickEvent event) {
         final InventoryType inventoryType = event.getInventory().getType();
         if (isSmeltingResultExtraction(event, inventoryType)) {
-            final OnlineProfile profile = PlayerConverter.getID((Player) event.getWhoClicked());
+            final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getWhoClicked());
             assert event.getCurrentItem() != null;
-            if (containsPlayer(profile) && blockSelector.match(event.getCurrentItem().getType()) && checkConditions(profile)) {
+            if (containsPlayer(onlineProfile) && blockSelector.match(event.getCurrentItem().getType()) && checkConditions(onlineProfile)) {
                 final int taken = calculateTakeAmount(event);
-                getCountingData(profile).progress(taken);
-                completeIfDoneOrNotify(profile);
+                getCountingData(onlineProfile).progress(taken);
+                completeIfDoneOrNotify(onlineProfile);
             }
         }
     }

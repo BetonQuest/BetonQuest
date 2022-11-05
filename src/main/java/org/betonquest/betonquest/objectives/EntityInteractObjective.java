@@ -122,15 +122,15 @@ public class EntityInteractObjective extends CountingObjective {
             }
         }
         // check if the profile has this objective
-        final OnlineProfile profile = PlayerConverter.getID(player);
-        if (!containsPlayer(profile) || !checkConditions(profile)) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID(player);
+        if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
             return false;
         }
         // Check location matches
         if (loc != null) {
             try {
-                final Location location = loc.getLocation(profile);
-                final double pRange = range.getDouble(profile);
+                final Location location = loc.getLocation(onlineProfile);
+                final double pRange = range.getDouble(onlineProfile);
                 if (!entity.getWorld().equals(location.getWorld())
                         || entity.getLocation().distance(location) > pRange) {
                     return false;
@@ -140,9 +140,9 @@ public class EntityInteractObjective extends CountingObjective {
             }
         }
 
-        final boolean success = ((EntityInteractData) dataMap.get(profile)).tryProgressWithEntity(entity);
+        final boolean success = ((EntityInteractData) dataMap.get(onlineProfile)).tryProgressWithEntity(entity);
         if (success) {
-            completeIfDoneOrNotify(profile);
+            completeIfDoneOrNotify(onlineProfile);
         }
         return success;
     }

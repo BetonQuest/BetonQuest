@@ -21,8 +21,8 @@ public class SlowTellrawConvIO extends TellrawConvIO {
     private final String npcTextColor;
     private List<String> endLines;
 
-    public SlowTellrawConvIO(final Conversation conv, final OnlineProfile profile) {
-        super(conv, profile);
+    public SlowTellrawConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
+        super(conv, onlineProfile);
         final StringBuilder string = new StringBuilder();
         for (final ChatColor color : colors.get("text")) {
             string.append(color);

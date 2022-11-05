@@ -28,9 +28,9 @@ public class LoginObjective extends Objective implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onJoin(final PlayerJoinEvent event) {
-        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
-        if (containsPlayer(profile) && checkConditions(profile)) {
-            completeObjective(profile);
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
+            completeObjective(onlineProfile);
         }
     }
 

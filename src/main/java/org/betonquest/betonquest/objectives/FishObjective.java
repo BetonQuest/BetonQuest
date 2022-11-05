@@ -63,17 +63,17 @@ public class FishObjective extends CountingObjective implements Listener {
         if (event.getState() != State.CAUGHT_FISH) {
             return;
         }
-        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(profile) || event.getCaught() == null || event.getCaught().getType() != EntityType.DROPPED_ITEM) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        if (!containsPlayer(onlineProfile) || event.getCaught() == null || event.getCaught().getType() != EntityType.DROPPED_ITEM) {
             return;
         }
-        if (isInvalidLocation(event, profile)) {
+        if (isInvalidLocation(event, onlineProfile)) {
             return;
         }
         final ItemStack item = ((Item) event.getCaught()).getItemStack();
-        if (blockSelector.match(item.getType()) && checkConditions(profile)) {
-            getCountingData(profile).progress(item.getAmount());
-            completeIfDoneOrNotify(profile);
+        if (blockSelector.match(item.getType()) && checkConditions(onlineProfile)) {
+            getCountingData(onlineProfile).progress(item.getAmount());
+            completeIfDoneOrNotify(onlineProfile);
         }
     }
 

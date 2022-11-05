@@ -29,9 +29,9 @@ public class ConditionRequirement extends CustomRequirement {
     public boolean testRequirement(final Player player, final Map<String, Object> dataMap) {
         final String string = dataMap.get("Condition").toString();
         try {
-            final OnlineProfile profile = PlayerConverter.getID(player);
+            final OnlineProfile onlineProfile = PlayerConverter.getID(player);
             final ConditionID condition = new ConditionID(null, string);
-            return BetonQuest.condition(profile, condition);
+            return BetonQuest.condition(onlineProfile, condition);
         } catch (final ObjectNotFoundException e) {
             LOG.warn("Error while checking quest requirement - BetonQuest condition '" + string + "' not found: " + e.getMessage(), e);
             return false;

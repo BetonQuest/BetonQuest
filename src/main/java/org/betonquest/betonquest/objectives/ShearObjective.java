@@ -45,8 +45,8 @@ public class ShearObjective extends CountingObjective implements Listener {
         if (event.getEntity().getType() != EntityType.SHEEP) {
             return;
         }
-        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(profile)) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        if (!containsPlayer(onlineProfile)) {
             return;
         }
         if (name != null && (event.getEntity().getCustomName() == null || !event.getEntity().getCustomName().equals(name))) {
@@ -55,9 +55,9 @@ public class ShearObjective extends CountingObjective implements Listener {
         if (color != null && !((Sheep) event.getEntity()).getColor().toString().equalsIgnoreCase(color)) {
             return;
         }
-        if (checkConditions(profile)) {
-            getCountingData(profile).progress();
-            completeIfDoneOrNotify(profile);
+        if (checkConditions(onlineProfile)) {
+            getCountingData(onlineProfile).progress();
+            completeIfDoneOrNotify(onlineProfile);
         }
     }
 

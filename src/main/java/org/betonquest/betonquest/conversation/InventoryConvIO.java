@@ -370,8 +370,8 @@ public class InventoryConvIO implements Listener, ConversationIO {
      */
     public static class Combined extends InventoryConvIO {
 
-        public Combined(final Conversation conv, final OnlineProfile profile) {
-            super(conv, profile);
+        public Combined(final Conversation conv, final OnlineProfile onlineProfile) {
+            super(conv, onlineProfile);
             super.printMessages = true;
         }
     }

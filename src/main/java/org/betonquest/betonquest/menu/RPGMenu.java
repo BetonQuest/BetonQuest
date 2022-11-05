@@ -45,10 +45,10 @@ public class RPGMenu {
     /**
      * If the player of the {@link OnlineProfile} has an open menu it closes it
      *
-     * @param profile the {@link OnlineProfile} of the player
+     * @param onlineProfile the {@link OnlineProfile} of the player
      */
-    public static void closeMenu(final OnlineProfile profile) {
-        OpenedMenu.closeMenu(profile);
+    public static void closeMenu(final OnlineProfile onlineProfile) {
+        OpenedMenu.closeMenu(onlineProfile);
     }
 
     /**

@@ -35,11 +35,11 @@ public class MMOItemsUpgradeObjective extends Objective implements Listener {
         if (!upgradedItem.getId().equals(itemID) || !upgradedItem.getType().getId().equals(itemType)) {
             return;
         }
-        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(profile) || !checkConditions(profile)) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
             return;
         }
-        completeObjective(profile);
+        completeObjective(onlineProfile);
     }
 
     @Override

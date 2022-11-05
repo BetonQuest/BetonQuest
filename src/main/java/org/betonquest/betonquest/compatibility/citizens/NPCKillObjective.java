@@ -42,10 +42,10 @@ public class NPCKillObjective extends CountingObjective implements Listener {
         if (npc.getId() != npcId) {
             return;
         }
-        final OnlineProfile profile = event.getProfile().getOnlineProfile().get();
-        if (containsPlayer(profile) && checkConditions(profile)) {
-            getCountingData(profile).progress();
-            completeIfDoneOrNotify(profile);
+        final OnlineProfile onlineProfile = event.getProfile().getOnlineProfile().get();
+        if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
+            getCountingData(onlineProfile).progress();
+            completeIfDoneOrNotify(onlineProfile);
         }
     }
 

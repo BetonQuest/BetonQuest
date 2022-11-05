@@ -51,12 +51,12 @@ public class ArrowShootObjective extends Objective implements Listener {
         if (!(arrow.getShooter() instanceof final Player player)) {
             return;
         }
-        final OnlineProfile profile = PlayerConverter.getID(player);
-        if (!containsPlayer(profile)) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID(player);
+        if (!containsPlayer(onlineProfile)) {
             return;
         }
         try {
-            final Location location = loc.getLocation(profile);
+            final Location location = loc.getLocation(onlineProfile);
             // check if the arrow is in the right place in the next tick
             // wait one tick, let the arrow land completely
             new BukkitRunnable() {
@@ -65,11 +65,11 @@ public class ArrowShootObjective extends Objective implements Listener {
                 public void run() {
                     final Location arrowLocation = arrow.getLocation();
                     try {
-                        final double pRange = range.getDouble(profile);
+                        final double pRange = range.getDouble(onlineProfile);
                         if (arrowLocation.getWorld().equals(location.getWorld())
                                 && arrowLocation.distanceSquared(location) < pRange * pRange
-                                && checkConditions(profile)) {
-                            completeObjective(profile);
+                                && checkConditions(onlineProfile)) {
+                            completeObjective(onlineProfile);
                         }
                     } catch (final QuestRuntimeException e) {
                         LOG.warn(instruction.getPackage(), "Could not resolve range variable: " + e.getMessage(), e);

@@ -22,10 +22,10 @@ public class JumpObjective extends CountingObjective implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJump(final PlayerJumpEvent event) {
-        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
-        if (containsPlayer(profile) && checkConditions(profile)) {
-            getCountingData(profile).progress();
-            completeIfDoneOrNotify(profile);
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
+            getCountingData(onlineProfile).progress();
+            completeIfDoneOrNotify(onlineProfile);
         }
     }
 

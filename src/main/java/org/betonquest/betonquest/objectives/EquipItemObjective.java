@@ -42,12 +42,12 @@ public class EquipItemObjective extends Objective implements Listener {
 
     @EventHandler
     public void onEquipmentChange(final PlayerArmorChangeEvent event) {
-        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
-        if (containsPlayer(profile)
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        if (containsPlayer(onlineProfile)
                 && event.getSlotType() == slotType
                 && questItems.compare(event.getNewItem())
-                && checkConditions(profile)) {
-            completeObjective(profile);
+                && checkConditions(onlineProfile)) {
+            completeObjective(onlineProfile);
         }
     }
 

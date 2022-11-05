@@ -42,8 +42,8 @@ public class TellrawConvIO extends ChatConvIO {
     protected String number;
     private int count;
 
-    public TellrawConvIO(final Conversation conv, final OnlineProfile profile) {
-        super(conv, profile);
+    public TellrawConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
+        super(conv, onlineProfile);
         hashes = new HashMap<>();
         for (final ChatColor color : colors.get("option")) {
             if (color == ChatColor.STRIKETHROUGH) {

@@ -34,18 +34,18 @@ public class PermissionEvent extends QuestEvent {
     @Override
     protected Void execute(final Profile profile) {
         final Permission vault = VaultIntegrator.getPermission();
-        final OfflinePlayer player = profile.getPlayer();
+        final OfflinePlayer offlinePlayer = profile.getPlayer();
         if (add) {
             if (perm) {
-                vault.playerAdd(world, player, permission);
+                vault.playerAdd(world, offlinePlayer, permission);
             } else {
-                vault.playerAddGroup(world, player, permission);
+                vault.playerAddGroup(world, offlinePlayer, permission);
             }
         } else {
             if (perm) {
-                vault.playerRemove(world, player, permission);
+                vault.playerRemove(world, offlinePlayer, permission);
             } else {
-                vault.playerRemoveGroup(world, player, permission);
+                vault.playerRemoveGroup(world, offlinePlayer, permission);
             }
         }
         return null;

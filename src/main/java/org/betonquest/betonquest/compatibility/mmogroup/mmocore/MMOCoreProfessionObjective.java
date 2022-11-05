@@ -32,8 +32,8 @@ public class MMOCoreProfessionObjective extends Objective implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onLevelUp(final PlayerLevelUpEvent event) {
-        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(profile) || !checkConditions(profile)) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
             return;
         }
         final Profession profession = event.getProfession();
@@ -43,7 +43,7 @@ public class MMOCoreProfessionObjective extends Objective implements Listener {
         if (event.getNewLevel() < targetLevel) {
             return;
         }
-        completeObjective(profile);
+        completeObjective(onlineProfile);
     }
 
     @Override
