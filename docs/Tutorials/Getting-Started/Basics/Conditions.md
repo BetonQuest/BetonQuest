@@ -106,7 +106,7 @@ Let's add the condition `isDay` to the objective:
 
 ``` YAML title="objectives.yml"
 objectives:
-  fishingObj: "fish COD 10 hookLocation:100;50;100;world range:20 events:caughtAllFish {==conditions:!isDay==}"
+  fishingObj: "fish COD 3 hookLocation:100;50;100;world range:20 events:caughtAllFish {==conditions:!isDay==}"
 ```
 We can see multiple things here:
 
@@ -280,18 +280,18 @@ conditions:
   hasRecivedFood: "tag foodReceived"
   hasDoneTour: "tag tourDone"
   hasStartedFishing: "tag startedFishing"
-  hasFishInInv: "item COD:10"
+  hasFishInInv: "item COD:3"
   hasDoneQuest: "tag questDone"
 ```
 Additionally, we must add the new events as well. 
-Those remove 10 cod from the players inventory and add a tag for completing the quest.
+Those remove 3 cod from the players inventory and add a tag for completing the quest.
 
 ```YAML title="events.yml" hl_lines="3-5"
 events:
   # Other events not shown
   addStartedFishingTag: "tag add startedFishing"
   addQuestDoneTag: "tag add questDone"
-  takeFishFromPlayer: "take cod:10"  
+  takeFishFromPlayer: "take cod:3"  
 ```
 
 Now lets use all these new elements to finish up the conversation.
