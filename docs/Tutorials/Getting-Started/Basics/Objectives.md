@@ -47,7 +47,7 @@ Open the newly created file "_objectives.yml_" and add the following:
 
 ``` YAML title="objectives.yml" linenums="1"
 objectives: # (1)!
-  fishingObj: "fish cod 3 notify hookLocation:100;50;100;world range:20 events:caughtAllFish"
+  fishingObj: "fish cod 3 notify hookLocation:100;63;100;world range:20 events:caughtAllFish"
 ```
 
 1. All objectives must be defined in an `objectives` section.
@@ -61,8 +61,8 @@ Let's explain:
     - `cod`: This is an **option** of the objective `fish`. It defines which item you have to fish.
     - `3`: This is another **option**. It defines the amount to fish.
     - `notify`: This is a general argument for most objectives. It enables a notification when the player progresses the objective.
-    - `hookLocation:100;50;100;world`: This **option** defines where the hook of the fishing rod must be located. Only fish that are 
-       fished in this specific area are counted by the objective.
+    - `hookLocation:100;63;100;world`: This **option** defines where the hook of the fishing rod must be located. Only fish that are 
+       fished in this specific area are counted by the objective. You must adjust this to your world!
     - `range:20`: If you use the hook location you also have to define the range **option**. This is the range around the hook location coordinate
        where fished things are still counted.
     - `events:caughtAllFish`: This is not an option of the fish objective but a general objective argument. The defined event(s)

@@ -106,7 +106,7 @@ Let's add the condition `isDay` to the objective:
 
 ``` YAML title="objectives.yml"
 objectives:
-  fishingObj: "fish COD 3 hookLocation:100;50;100;world range:20 events:caughtAllFish {==conditions:!isDay==}"
+  fishingObj: "fish COD 3 hookLocation:100;63;100;world range:20 events:caughtAllFish {==conditions:!isDay==}"
 ```
 We can see multiple things here:
 
