@@ -1,4 +1,33 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/ConfigPatcher.md
+
+2.0.0.2:
+  - type: TYPE_TRANSFORM
+    key: journal.lock_default_journal_slot
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: journal.give_on_respawn
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: journal.show_in_backpack
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: journal.chars_per_line
+    newType: integer
+  - type: TYPE_TRANSFORM
+    key: journal.lines_per_page
+    newType: integer
+  - type: TYPE_TRANSFORM
+    key: journal.one_entry_per_page
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: journal.reversed_order
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: journal.hide_date
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: journal.full_main_page
+    newType: boolean
 2.0.0.1:
   - type: SET
     key: journal.custom_model_data
