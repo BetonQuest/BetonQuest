@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.PlayerJournalDeleteEvent;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.config.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
@@ -69,18 +68,18 @@ public class Journal {
     /**
      * Checks if the item is journal
      *
-     * @param profile the {@link Profile} of the player
-     * @param item    ItemStack to check against being the journal
+     * @param onlineProfile the {@link OnlineProfile} of the player
+     * @param item          ItemStack to check against being the journal
      * @return true if the ItemStack is the journal, false otherwise
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public static boolean isJournal(final Profile profile, final ItemStack item) {
+    public static boolean isJournal(final OnlineProfile onlineProfile, final ItemStack item) {
         // if there is no item then it's not a journal
         if (item == null) {
             return false;
         }
         // get language
-        final String playerLang = BetonQuest.getInstance().getPlayerData(profile).getLanguage();
+        final String playerLang = BetonQuest.getInstance().getPlayerData(onlineProfile).getLanguage();
         // check all properties of the item and return the result
         return item.getType().equals(Material.WRITTEN_BOOK) && ((BookMeta) item.getItemMeta()).hasTitle()
                 && ((BookMeta) item.getItemMeta()).getTitle().equals(Config.getMessage(playerLang, "journal_title"))
