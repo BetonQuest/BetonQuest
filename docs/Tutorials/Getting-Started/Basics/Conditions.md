@@ -396,7 +396,7 @@ events:
 Let's break it down:
 
   * `notifyPlayer`: The name of the event.
-  * `notify`: The events type - notify events are used to send notifications to the player.
+  * `notify`: The event type - notify events are used to send notifications to the player.
   * `You completed the quest!`: The message of the notification.
   * `io:Title`: The message will be displayed as a title.
   * `sound:firework_rocket`: The message will be accompanied by a firework sound.
