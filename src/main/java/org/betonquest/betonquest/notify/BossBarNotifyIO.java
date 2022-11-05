@@ -61,8 +61,8 @@ public class BossBarNotifyIO extends NotifyIO {
         }
 
         progress = normalizeBossBarProgress(getFloatData("progress", 1));
-
-        stayVariable = data.get("stay") == null ? new VariableNumber(70) : new VariableNumber(pack.getPackagePath(), data.get("stay"));
+        final String stayString = data.get("stay");
+        stayVariable = stayString == null ? new VariableNumber(70) : new VariableNumber(pack.getPackagePath(), stayString);
         countdown = getIntegerData("countdown", 0);
     }
 
