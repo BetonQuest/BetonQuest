@@ -179,13 +179,8 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
         keyIndex.forEach((key, value) -> {
             final ConfigurationSection config = value.get(0);
             original.set(key, config.get(key));
-            //TODO version switch:
-            // remove the try catch, if minecraft version support below 1.18 is dropped
-            try {
-                original.setComments(key, config.getComments(key));
-                original.setInlineComments(key, config.getInlineComments(key));
-            } catch (final NoSuchMethodError ignored) {
-            }
+            original.setComments(key, config.getComments(key));
+            original.setInlineComments(key, config.getInlineComments(key));
         });
     }
 
