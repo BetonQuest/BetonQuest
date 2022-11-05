@@ -10,7 +10,8 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.EventID;
 
-import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -70,30 +71,24 @@ public class PickRandomEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final List<RandomEvent> events = new ArrayList<>(this.events);
-        double total = 0;
-        // Calculate total amount of all "percentages" (so that it must not be 100)
-        for (final RandomEvent event : events) {
-            total += event.getChance().getDouble(profile);
+        final List<ResolvedRandomEvent> resolvedEvents = new LinkedList<>();
+        for (final RandomEvent randomEvent : events) {
+            resolvedEvents.add(randomEvent.resolveFor(profile));
         }
-        //pick as many events as given with pick optional (or 1 if amount wasn't specified)
+        double total = resolvedEvents.stream().mapToDouble(ResolvedRandomEvent::chance).sum();
+
         int pick = this.amount == null ? 1 : this.amount.getInt(profile);
-        while (pick > 0 && !events.isEmpty()) {
+        while (pick > 0 && !resolvedEvents.isEmpty()) {
             pick--;
-            //choose a random number between 0 and the total amount of percentages
-            final double found = Math.random() * total;
-            double current = 0;
-            //go through all random events and pick the first one where the current sum is higher than the found random number
-            for (int i = 0; i < events.size(); i++) {
-                final RandomEvent event = events.get(i);
-                final double chance = event.getChance().getDouble(profile);
-                current += chance;
-                if (current >= found) {
-                    //run the event
-                    BetonQuest.event(profile, event.getIdentifier());
-                    //remove the event from the list so that it's not picked again
-                    events.remove(i);
-                    total -= chance;
+            double random = Math.random() * total;
+            final Iterator<ResolvedRandomEvent> iterator = resolvedEvents.iterator();
+            while (iterator.hasNext()) {
+                final ResolvedRandomEvent event = iterator.next();
+                random -= event.chance;
+                if (random < 0) {
+                    BetonQuest.event(profile, event.eventID);
+                    iterator.remove();
+                    total -= event.chance;
                     break;
                 }
             }
@@ -101,22 +96,12 @@ public class PickRandomEvent extends QuestEvent {
         return null;
     }
 
-    private static class RandomEvent {
-
-        private final EventID identifier;
-        private final VariableNumber chance;
-
-        public RandomEvent(final EventID identifier, final VariableNumber chance) {
-            this.identifier = identifier;
-            this.chance = chance;
+    private record RandomEvent(EventID eventID, VariableNumber chance) {
+        public ResolvedRandomEvent resolveFor(final Profile profile) throws QuestRuntimeException {
+            return new ResolvedRandomEvent(eventID, chance.getDouble(profile));
         }
+    }
 
-        public EventID getIdentifier() {
-            return identifier;
-        }
-
-        public VariableNumber getChance() {
-            return chance;
-        }
+    private record ResolvedRandomEvent(EventID eventID, double chance) {
     }
 }
