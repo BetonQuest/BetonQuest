@@ -4,10 +4,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <properties>
-    <version>2.0.0</version>
+    <betonquest.version.base>2.0.0</betonquest.version.base>
+    <betonquest.version>${betonquest.version.base}-DEV-UNOFFICIAL</betonquest.version>
     <minecraft.api.version>1.18</minecraft.api.version>
-    <maven-version>${version}-DEV-UNOFFICIAL</maven-version>
-    <current-date>${maven.build.timestamp}</current-date>
     <maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.target>17</maven.compiler.target>
@@ -19,7 +18,7 @@
   <name>BetonQuest</name>
   <groupId>org.betonquest</groupId>
   <artifactId>betonquest</artifactId>
-  <version>${version}-SNAPSHOT</version>
+  <version>${betonquest.version.base}-SNAPSHOT</version>
   <description>All Your Adventure Supplies</description>
 
   <licenses>
