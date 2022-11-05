@@ -413,7 +413,7 @@ You can simply test it with this BetonQuest command:
 ```
 Nothing should happen because the player doesn't have the `receiveNotify` tag.
 
-Now run and try the command from above again.
+Now run the following command and then try the command from above again.
 ```
 /bq tag PLAYERNAME add tutorialQuest.receiveNotify
 ``` 
