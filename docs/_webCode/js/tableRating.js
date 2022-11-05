@@ -17,8 +17,6 @@ async function updateRating() {
 
   // Get the first row of the table, excluding the first cell (the description)
   let firstTableRow = document.querySelectorAll("table > tbody > tr:nth-child(1) > td:not(:first-child)");
-  let mangoQuestCell = document.querySelector("table > tbody > tr:nth-child(1) > td:nth-child(7)");
-  mangoQuestCell.setAttribute("title", "MangoQuest is not available on Spigot.")
 
   ratings.then((values) => {
     for (let i = 0; i < values.length; i++) {
