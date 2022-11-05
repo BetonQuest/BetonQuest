@@ -4,8 +4,15 @@ tags:
   - YAML-Tutorials
 ---
 # YAML Syntax
-This plugin uses the YAML format for all files. You may already know it from other plugins as most use this format.
+This plugin uses the YAML (`.yml`) format for all files. You may already know it from other plugins as most use this format.
 Before we can start you need to understand the fundamentals of YAML.
+
+In theory, you can edit quests with any editor. However, using the feature-packed 
+Visual Studio Code is highly recommended! It will highlight any syntax errors you may make with YAML.
+
+[:material-download: Install Visual Studio Code](https://code.visualstudio.com){ .md-button .md-button--primary .noExternalLinkIcon}
+
+## YAML Basics
 
 YAML is `key: "value"` based. This means you use a :octicons-key-16: to get a certain value.
 Let me show you an example:
@@ -24,4 +31,7 @@ outerName:
   anotherInnerName: "BetonQuest is great!"
 ```
 
-It's best not to use tabs in your YAML files at all. Use spaces instead. 
+Tabs are not supported. Use spaces instead.
+ 
+---
+[:material-arrow-right: Next Step: Conversations](../Basics/Conversations.md){ .md-button .md-button--primary }

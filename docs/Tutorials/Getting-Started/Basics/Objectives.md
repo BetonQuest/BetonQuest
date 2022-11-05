@@ -206,7 +206,6 @@ You've learned what objectives are and how to create them. You can now give a pl
 objective to have a more advanced quest! More objectives can be found in the [objectives list](../../../Documentation/Objectives-List.md).
 In the next tutorial you will learn how **conditions** work and how to use them to make the Blacksmith react to the completed objective.
 ---
-[:construction: :construction_worker: ~~Conditions Tutorial~~ ](#summary){ .md-button .md-button--primary}
+[ Conditions Tutorial ](Conditions.md){ .md-button .md-button--primary}
 
-This is the end of the current basic tutorial, you can find more information in the [old tutorial](../Learn-BetonQuest.md).
 

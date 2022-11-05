@@ -19,4 +19,5 @@ icon: octicons/download-24
 **Once you have installed these restart your server!**
 
 ---
-[:material-arrow-right: Next Step: Setting up the editor](Setting-up-the-editor.md){ .md-button .md-button--primary }
+[:material-arrow-right: Next Step: Understanding YAML Syntax](../Basics/YAML.md){ .md-button .md-button--primary }
+

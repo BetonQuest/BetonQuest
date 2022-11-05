@@ -17,11 +17,11 @@ that enables some neat productivity advantages over any other editor.
   [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=BetonQuest.betonquest-code-snippets).
   Just click the big green "Install" button and allow the site to open Visual Studio Code.
 
-![Marketplace Screenshot](../../../_media/content/Tutorials/addon-marketplace.png){ width=60% }
+![Marketplace Screenshot](../../_media/content/Tutorials/VSCode-Extension/addon-marketplace.png){ width=60% }
 
 * Just click "Install" again after Visual Studio Code has opened. 
 
-![VSCode Install Screenshot](../../../_media/content/Tutorials/addon-in-editor.png){ width=60% }
+![VSCode Install Screenshot](../../_media/content/Tutorials/VSCode-Extension/addon-in-editor.png){ width=60% }
  
 If this does not work for some reason go to the extensions view in VSCode (Windows and Linux: ++ctrl+shift+x++ | Mac: ++cmd+shift+x++) and search for `BetonQuest`.
 
@@ -46,7 +46,7 @@ of the editor window:
     
     `YAML` language module.
 
-![Shows the location of the settings](../../../_media/content/Tutorials/vscode.png){width=60%}
+![Shows the location of the settings](../../_media/content/Tutorials/VSCode-Extension/vscode.png){width=60%}
 
 These ensure that the extension is activated.
 Additionally, your configuration works with all unique language characters (a german example: ä, ü, ö)
@@ -89,6 +89,3 @@ These optional options can also contain a colon (`:`). You have to specify somet
  Sorry, your browser doesn't support embedded videos.
  </video>
 </div>
-
----
-[:material-arrow-right: Next Step: Basic Tutorial](../Basics/Conversations.md){ .md-button .md-button--primary }

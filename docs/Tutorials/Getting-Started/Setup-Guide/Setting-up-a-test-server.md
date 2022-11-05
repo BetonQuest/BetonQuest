@@ -58,4 +58,4 @@ You can stop your server by selecting the console and pressing ++ctrl+c++ (for M
 To join your server you can now connect to the address `localhost` in your Minecraft.
 
 ---
-[:material-arrow-right: Next Step: Install Dependencies](Installing-Dependencies.md){ .md-button .md-button--primary }
+[:material-arrow-right: Next Step: Install Dependencies](Installing-BetonQuest.md){ .md-button .md-button--primary }
