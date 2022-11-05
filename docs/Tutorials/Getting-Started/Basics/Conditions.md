@@ -170,32 +170,31 @@ events:
     If you don't understand why we created the event in the `events` section, you should go back to the events tutorial
     and read carefully!
 
-We are now ready to for the next step: Adding the condition and event to the conversation.
+We are now ready for the next step: Adding the condition and event to the conversation.
 
 
 Open up your `jack.yml` file in the conversations folder and add the event to give the tag to a player and the
 condition to not repeat the specified part of the conversation.
 
-``` YAML title="jack.yml" hl_lines="10 16-20 25-27"
+``` YAML title="jack.yml" hl_lines="16-19 25-27"
 conversations:
   Jack:
     quester: "Jack"
-    first: "{==alreadyReceivedFood,==}firstGreeting" # (1)!
+    first: "{==alreadyReceivedFood,==}firstGreeting" #(1)!
 
     NPC_options:
-      firstGreeting:
+      firstGreeting: #(2)!
         text: "Hello and welcome to my town traveler! Nice to see you. Where are you from?"
         pointer: "whereYouFrom"
-        conditions: "!hasReceivedFood" # (2)!
       # Other NPC_options not shown
       foodAnswer:
         text: "You're welcome! Take it... &7*gives food*"
-        events: "giveFoodToPlayer,{==addFoodReceivedTag==}" # (3)!
+        events: "giveFoodToPlayer,{==addFoodReceivedTag==}" #(3)!
         pointer: "thankYou"
         conditions: "!foodReceivedTag"
       alreadyReceivedFood:
         text: "Hey %player%! I think I already gave you your welcome food..."
-        conditions: "hasReceivedFood"  # (4)!
+        conditions: "hasReceivedFood"  #(4)!
         pointer: "saySorry"
       # Other NPC_options not shown
 
@@ -207,12 +206,13 @@ conversations:
       # Other player_options not shown
 ```
 
-1. This option defines all possible starting points for the conversation. If the player does not meet the condition
-   `hasRecivedFood` they will start at the `firstGreeting` option. If they have the tag, they will start at the
-   `alreadyReceivedFood` option.
-2. This condition ensures that the conversation will only start at the `firstGreeting` option if the player doesn't
-   have the tag `foodReceived`.
-   Remember: `!` inverts the condition so that it is "true" if the player doesn't have the tag.
+1. This option checks all possible starting points for the conversation from left to right.
+   The first option that the player matches the conditions for will be used. The conditions can be found down in the
+   `NPC_options`. If the player matches none of the conditions, the conversation will not start.
+   <br><br>
+   In this case, if the player meets the condition `hasRecivedFood`, they will start at the `alreadyReceivedFood` option.
+2. This option will be shown if no other option matches the conditions.
+   This is because this option has no conditions and is the last option in the `first` list.
 3. These events will be executed if the player chooses the `foodAnswer` option. It will give the player the food and the
    tag `foodReceived`.
 4. This condition ensures that the player will only see the `alreadyFoodReceived` option if he has the tag `foodReceivedTag`.
