@@ -176,7 +176,7 @@ We are now ready for the next step: Adding the condition and event to the conver
 Open up your `jack.yml` file in the conversations folder and add the event to give the tag to a player and the
 condition to not repeat the specified part of the conversation.
 
-``` YAML title="jack.yml" hl_lines="16-19 25-27"
+``` YAML title="jack.yml" hl_lines="16-19 24-26"
 conversations:
   Jack:
     quester: "Jack"
@@ -265,7 +265,7 @@ conversations:
       # Other player_options not shown
       accept:
         text: "Sure! I could use a new armour."
-        event: "startFishingObj{==,startedFishingTagAdd==}"
+        event: "startFishingObj{==,addStartedFishingTag==}"
         pointer: "goodLuck"
       # Other player_options not shown
 ```
