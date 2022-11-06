@@ -18,7 +18,7 @@ public class ChatNotifyIO extends NotifyIO {
     protected void notifyPlayer(final String message, final OnlineProfile onlineProfile) {
         final Conversation conversation = Conversation.getConversation(onlineProfile);
         if (conversation == null || conversation.getInterceptor() == null) {
-            onlineProfile.getOnlinePlayer().sendMessage(message);
+            onlineProfile.getPlayer().sendMessage(message);
         } else {
             conversation.getInterceptor().sendMessage(message);
         }

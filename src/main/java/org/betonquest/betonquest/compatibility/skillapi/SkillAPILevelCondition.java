@@ -32,7 +32,7 @@ public class SkillAPILevelCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        final PlayerData data = SkillAPI.getPlayerData(profile.getOfflinePlayer());
+        final PlayerData data = SkillAPI.getPlayerData(profile.getPlayer());
         final Optional<PlayerClass> playerClass = data
                 .getClasses()
                 .stream()

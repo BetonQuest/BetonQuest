@@ -32,7 +32,7 @@ public class TimeCondition extends Condition {
     @Override
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     protected Boolean execute(final Profile profile) {
-        double time = profile.getOnlineProfile().getOnlinePlayer().getWorld().getTime();
+        double time = profile.getOnlineProfile().get().getPlayer().getWorld().getTime();
         if (time >= 18_000) {
             // 18000 minecraft-time is midnight, so there is new
             // normal-time cycle after that; subtracting 18 hours

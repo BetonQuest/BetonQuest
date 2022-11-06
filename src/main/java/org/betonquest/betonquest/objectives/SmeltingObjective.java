@@ -4,7 +4,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.BlockSelector;
 import org.betonquest.betonquest.utils.InventoryUtils;
@@ -38,12 +38,12 @@ public class SmeltingObjective extends CountingObjective implements Listener {
     public void onSmelting(final InventoryClickEvent event) {
         final InventoryType inventoryType = event.getInventory().getType();
         if (isSmeltingResultExtraction(event, inventoryType)) {
-            final Profile profile = PlayerConverter.getID((Player) event.getWhoClicked());
+            final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getWhoClicked());
             assert event.getCurrentItem() != null;
-            if (containsPlayer(profile) && blockSelector.match(event.getCurrentItem().getType()) && checkConditions(profile)) {
+            if (containsPlayer(onlineProfile) && blockSelector.match(event.getCurrentItem().getType()) && checkConditions(onlineProfile)) {
                 final int taken = calculateTakeAmount(event);
-                getCountingData(profile).progress(taken);
-                completeIfDoneOrNotify(profile);
+                getCountingData(onlineProfile).progress(taken);
+                completeIfDoneOrNotify(onlineProfile);
             }
         }
     }

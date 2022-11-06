@@ -45,9 +45,9 @@ public record HologramWrapper(int interval, Hologram hologram, boolean staticCon
 
         for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
             if (BetonQuest.conditions(onlineProfile, conditionList)) {
-                hologram.getVisibilitySettings().setIndividualVisibility(onlineProfile.getOnlinePlayer(), VisibilitySettings.Visibility.VISIBLE);
+                hologram.getVisibilitySettings().setIndividualVisibility(onlineProfile.getPlayer(), VisibilitySettings.Visibility.VISIBLE);
             } else {
-                hologram.getVisibilitySettings().setIndividualVisibility(onlineProfile.getOnlinePlayer(), VisibilitySettings.Visibility.HIDDEN);
+                hologram.getVisibilitySettings().setIndividualVisibility(onlineProfile.getPlayer(), VisibilitySettings.Visibility.HIDDEN);
             }
         }
     }

@@ -34,9 +34,9 @@ public class MenuQuestEvent extends QuestEvent {
     @Override
     public Void execute(final Profile profile) throws QuestRuntimeException {
         if (operation == Operation.OPEN) {
-            BetonQuest.getInstance().getRpgMenu().openMenu(profile, menu);
+            BetonQuest.getInstance().getRpgMenu().openMenu(profile.getOnlineProfile().get(), menu);
         } else {
-            RPGMenu.closeMenu(profile);
+            RPGMenu.closeMenu(profile.getOnlineProfile().get());
         }
         return null;
     }

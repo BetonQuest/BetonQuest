@@ -5,6 +5,7 @@ import net.Indyuce.mmoitems.api.item.mmoitem.MMOItem;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -39,11 +40,11 @@ public class MMOItemsApplyGemObjective extends Objective implements Listener {
         if (!gemStone.getId().equals(gemID)) {
             return;
         }
-        final Profile profile = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(profile) || !checkConditions(profile)) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        if (!containsPlayer(onlineProfile) || !checkConditions(onlineProfile)) {
             return;
         }
-        completeObjective(profile);
+        completeObjective(onlineProfile);
     }
 
     @Override

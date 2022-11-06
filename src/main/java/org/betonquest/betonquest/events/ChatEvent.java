@@ -24,7 +24,7 @@ public class ChatEvent extends QuestEvent {
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected Void execute(final Profile profile) {
-        final Player player = profile.getOnlineProfile().getOnlinePlayer();
+        final Player player = profile.getOnlineProfile().get().getPlayer();
         for (final String message : messages) {
             player.chat(message.replace("%player%", player.getName()));
         }

@@ -228,12 +228,12 @@ public class CitizensHologram extends BukkitRunnable {
                     updateHologramForPlayersLines(npcHologram, hologram);
                     npcHologram.hologram = hologram;
                 }
-                if (!npcHologram.hologram.getVisibilitySettings().isVisibleTo(onlineProfile.getOnlinePlayer())) {
-                    npcHologram.hologram.getVisibilitySettings().setIndividualVisibility(onlineProfile.getOnlinePlayer(), VisibilitySettings.Visibility.VISIBLE);
+                if (!npcHologram.hologram.getVisibilitySettings().isVisibleTo(onlineProfile.getPlayer())) {
+                    npcHologram.hologram.getVisibilitySettings().setIndividualVisibility(onlineProfile.getPlayer(), VisibilitySettings.Visibility.VISIBLE);
                 }
             } else {
-                if (npcHologram.hologram != null && npcHologram.hologram.getVisibilitySettings().isVisibleTo(onlineProfile.getOnlinePlayer())) {
-                    npcHologram.hologram.getVisibilitySettings().setIndividualVisibility(onlineProfile.getOnlinePlayer(), VisibilitySettings.Visibility.HIDDEN);
+                if (npcHologram.hologram != null && npcHologram.hologram.getVisibilitySettings().isVisibleTo(onlineProfile.getPlayer())) {
+                    npcHologram.hologram.getVisibilitySettings().setIndividualVisibility(onlineProfile.getPlayer(), VisibilitySettings.Visibility.HIDDEN);
                 }
             }
         }

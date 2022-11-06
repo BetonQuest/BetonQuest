@@ -28,7 +28,7 @@ public class WeatherCondition extends Condition {
     @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override
     protected Boolean execute(final Profile profile) {
-        final World world = profile.getOnlineProfile().getOnlinePlayer().getWorld();
+        final World world = profile.getOnlineProfile().get().getPlayer().getWorld();
         switch (weather) {
             case "sun":
             case "clear":

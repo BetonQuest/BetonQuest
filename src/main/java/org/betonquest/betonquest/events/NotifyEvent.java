@@ -100,7 +100,7 @@ public class NotifyEvent extends QuestEvent {
         final VariableString message = translations.containsKey(playerLanguageKey)
                 ? translations.get(playerLanguageKey)
                 : translations.get(defaultLanguageKey);
-        notifyIO.sendNotify(message.getString(profile), profile.getOnlineProfile());
+        notifyIO.sendNotify(message.getString(profile), profile.getOnlineProfile().get());
         return null;
     }
 }

@@ -25,7 +25,7 @@ public class HandCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) {
-        final PlayerInventory inv = profile.getOnlineProfile().getOnlinePlayer().getInventory();
+        final PlayerInventory inv = profile.getOnlineProfile().get().getPlayer().getInventory();
         final ItemStack item = offhand ? inv.getItemInOffHand() : inv.getItemInMainHand();
 
         return questItem.compare(item);

@@ -4,6 +4,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem;
@@ -33,7 +34,8 @@ import java.util.stream.Collectors;
  */
 @SuppressWarnings("PMD.CommentRequired")
 @CustomLog
-public class BrewObjective extends CountingObjective implements Listener {
+public class
+BrewObjective extends CountingObjective implements Listener {
 
     private final QuestItem potion;
     private final Map<Location, Profile> locations = new HashMap<>();
@@ -46,8 +48,8 @@ public class BrewObjective extends CountingObjective implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onIngredientPut(final InventoryClickEvent event) {
-        final Profile profile = PlayerConverter.getID((Player) event.getWhoClicked());
-        if (!containsPlayer(profile)) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getWhoClicked());
+        if (!containsPlayer(onlineProfile)) {
             return;
         }
         final Inventory topInventory = event.getView().getTopInventory();
@@ -61,7 +63,7 @@ public class BrewObjective extends CountingObjective implements Listener {
             if (itemsAdded(contentBefore, contentAfter)) {
                 final BrewingStand brewingStand = (BrewingStand) topInventory.getHolder();
                 if (brewingStand != null) {
-                    locations.put(brewingStand.getLocation(), profile);
+                    locations.put(brewingStand.getLocation(), onlineProfile);
                 }
             }
         });
@@ -84,7 +86,7 @@ public class BrewObjective extends CountingObjective implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBrew(final BrewEvent event) {
         final Profile profile = locations.remove(event.getBlock().getLocation());
-        if (profile == null) {
+        if (profile.getOnlineProfile().isEmpty()) {
             return;
         }
         final boolean[] alreadyDone = getMatchingPotions(event.getContents());

@@ -5,6 +5,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -68,8 +69,8 @@ public class ActionObjective extends Objective implements Listener {
             return;
         }
 
-        final Profile profile = PlayerConverter.getID(event.getPlayer());
-        if (!containsPlayer(profile) || !action.match(event.getAction())) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        if (!containsPlayer(onlineProfile) || !action.match(event.getAction())) {
             return;
         }
 
@@ -77,8 +78,8 @@ public class ActionObjective extends Objective implements Listener {
         if (loc != null) {
             final Location current = clickedBlock == null ? event.getPlayer().getLocation() : clickedBlock.getLocation();
             try {
-                final Location location = loc.getLocation(profile);
-                final double pRange = range.getDouble(profile);
+                final Location location = loc.getLocation(onlineProfile);
+                final double pRange = range.getDouble(onlineProfile);
                 if (!location.getWorld().equals(current.getWorld()) || current.distance(location) > pRange) {
                     return;
                 }
@@ -88,11 +89,11 @@ public class ActionObjective extends Objective implements Listener {
             }
         }
 
-        if ((selector == null || clickedBlock != null && (checkBlock(clickedBlock, event.getBlockFace()))) && checkConditions(profile)) {
+        if ((selector == null || clickedBlock != null && (checkBlock(clickedBlock, event.getBlockFace()))) && checkConditions(onlineProfile)) {
             if (cancel) {
                 event.setCancelled(true);
             }
-            completeObjective(profile);
+            completeObjective(onlineProfile);
         }
     }
 

@@ -34,7 +34,7 @@ public class DeletePointEvent extends QuestEvent {
                 playerData.removePointsCategory(category);
             }
             BetonQuest.getInstance().getSaver().add(new Saver.Record(UpdateType.REMOVE_ALL_POINTS, category));
-        } else if (profile.getPlayer() == null) {
+        } else if (profile.getOnlineProfile().isEmpty()) {
             final PlayerData playerData = new PlayerData(profile);
             playerData.removePointsCategory(category);
         } else {

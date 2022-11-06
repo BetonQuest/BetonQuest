@@ -75,7 +75,7 @@ public class CitizensListener implements Listener {
         if (NPCMoveEvent.blocksTalking(event.getNPC())) {
             return;
         }
-        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getClicker()).getOnlineProfile();
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getClicker());
         if (CombatTagger.isTagged(onlineProfile)) {
             try {
                 Config.sendNotify(null, onlineProfile, "busy", "busy,error");

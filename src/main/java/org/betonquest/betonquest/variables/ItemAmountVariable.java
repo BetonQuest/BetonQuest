@@ -45,7 +45,7 @@ public class ItemAmountVariable extends Variable {
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public String getValue(final Profile profile) {
-        final Player player = profile.getOnlineProfile().getOnlinePlayer();
+        final Player player = profile.getOnlineProfile().get().getPlayer();
         int playersAmount = 0;
         for (final ItemStack item : player.getInventory().getContents()) {
             if (item == null) {

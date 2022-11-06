@@ -37,7 +37,7 @@ public class EventAddLevel extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) {
-        final List<JobProgression> oJobs = Jobs.getPlayerManager().getJobsPlayer(profile.getOfflinePlayer().getUniqueId()).getJobProgression();
+        final List<JobProgression> oJobs = Jobs.getPlayerManager().getJobsPlayer(profile.getPlayerUUID()).getJobProgression();
         for (final JobProgression oJob : oJobs) {
             if (oJob.getJob().getName().equalsIgnoreCase(sJobName)) {
                 oJob.setLevel(this.nAddLevel + oJob.getLevel());

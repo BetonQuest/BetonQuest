@@ -3,11 +3,11 @@ package org.betonquest.betonquest.objectives;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -47,13 +47,12 @@ public class ExperienceObjective extends Objective implements Listener {
         }
     }
 
-    private void onExperienceChange(final OfflinePlayer player, final int newAmount, final int oldAmount) {
-        final Profile profile = PlayerConverter.getID(player);
-        if (containsPlayer(profile)) {
-            if (newAmount >= amount && checkConditions(profile)) {
-                completeObjective(profile);
+    private void onExperienceChange(final OnlineProfile onlineProfile, final int newAmount, final int oldAmount) {
+        if (containsPlayer(onlineProfile)) {
+            if (newAmount >= amount && checkConditions(onlineProfile)) {
+                completeObjective(onlineProfile);
             } else if (notify && (amount - newAmount) / notifyInterval != (amount - oldAmount) / notifyInterval) {
-                sendNotify(profile, notifyMessageName, amount - newAmount);
+                sendNotify(onlineProfile, notifyMessageName, amount - newAmount);
             }
         }
     }
@@ -75,23 +74,21 @@ public class ExperienceObjective extends Objective implements Listener {
 
     @Override
     public String getProperty(final String name, final Profile profile) {
-        switch (name.toLowerCase(Locale.ROOT)) {
-            case "amount":
-                return profile.getPlayer()
-                        .map(toData)
-                        .map(String::valueOf)
-                        .orElse("");
-            case "left":
-                return profile.getPlayer()
-                        .map(toData)
-                        .map(exp -> amount - exp)
-                        .map(String::valueOf)
-                        .orElse("");
-            case "total":
-                return Integer.toString(amount);
-            default:
-                return "";
-        }
+        return switch (name.toLowerCase(Locale.ROOT)) {
+            case "amount" -> profile.getOnlineProfile()
+                    .map(OnlineProfile::getPlayer)
+                    .map(toData)
+                    .map(String::valueOf)
+                    .orElse("");
+            case "left" -> profile.getOnlineProfile()
+                    .map(OnlineProfile::getPlayer)
+                    .map(toData)
+                    .map(exp -> amount - exp)
+                    .map(String::valueOf)
+                    .orElse("");
+            case "total" -> Integer.toString(amount);
+            default -> "";
+        };
     }
 
     private class LevelChangeListener implements Listener {
@@ -100,7 +97,7 @@ public class ExperienceObjective extends Objective implements Listener {
 
         @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
         public void onLevelChangeEvent(final PlayerLevelChangeEvent event) {
-            onExperienceChange(event.getPlayer(), event.getNewLevel(), event.getOldLevel());
+            onExperienceChange(PlayerConverter.getID(event.getPlayer()), event.getNewLevel(), event.getOldLevel());
         }
     }
 
@@ -111,7 +108,7 @@ public class ExperienceObjective extends Objective implements Listener {
         @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
         public void onExpChangeEvent(final PlayerExpChangeEvent event) {
             final int oldExperience = event.getPlayer().getTotalExperience();
-            onExperienceChange(event.getPlayer(), oldExperience + event.getAmount(), oldExperience);
+            onExperienceChange(PlayerConverter.getID(event.getPlayer()), oldExperience + event.getAmount(), oldExperience);
         }
     }
 }

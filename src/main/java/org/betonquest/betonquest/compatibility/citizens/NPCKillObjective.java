@@ -6,7 +6,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.MobKillNotifier.MobKilledEvent;
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -42,10 +42,10 @@ public class NPCKillObjective extends CountingObjective implements Listener {
         if (npc.getId() != npcId) {
             return;
         }
-        final Profile profile = event.getProfile();
-        if (containsPlayer(profile) && checkConditions(profile)) {
-            getCountingData(profile).progress();
-            completeIfDoneOrNotify(profile);
+        final OnlineProfile onlineProfile = event.getProfile().getOnlineProfile().get();
+        if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
+            getCountingData(onlineProfile).progress();
+            completeIfDoneOrNotify(onlineProfile);
         }
     }
 

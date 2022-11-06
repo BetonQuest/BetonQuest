@@ -81,11 +81,11 @@ public class NPCRangeObjective extends Objective {
     }
 
     private boolean isInside(final OnlineProfile onlineProfile, final Location location) throws QuestRuntimeException {
-        if (!containsPlayer(onlineProfile) || !location.getWorld().equals(onlineProfile.getOnlinePlayer().getWorld())) {
+        if (!containsPlayer(onlineProfile) || !location.getWorld().equals(onlineProfile.getPlayer().getWorld())) {
             return false;
         }
         final double radius = this.radius.getDouble(onlineProfile);
-        final double distanceSqrd = location.distanceSquared(onlineProfile.getOnlinePlayer().getLocation());
+        final double distanceSqrd = location.distanceSquared(onlineProfile.getPlayer().getLocation());
         final double radiusSqrd = radius * radius;
 
         return distanceSqrd <= radiusSqrd;

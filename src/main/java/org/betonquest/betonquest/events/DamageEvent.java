@@ -22,7 +22,7 @@ public class DamageEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        profile.getOnlineProfile().getOnlinePlayer().damage(Math.abs(damage.getDouble(profile)));
+        profile.getOnlineProfile().get().getPlayer().damage(Math.abs(damage.getDouble(profile)));
         return null;
     }
 

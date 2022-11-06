@@ -4,6 +4,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.GlobalObjectives;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.Saver;
@@ -218,16 +219,16 @@ public abstract class Objective {
     /**
      * Send notification for progress with the objective.
      *
-     * @param messageName message name to use in messages.yml
-     * @param profile     the {@link Profile} for which the notification is to be sent
-     * @param variables   variables for putting into the message
+     * @param messageName   message name to use in messages.yml
+     * @param onlineProfile the {@link OnlineProfile} for which the notification is to be sent
+     * @param variables     variables for putting into the message
      */
-    protected void sendNotify(final Profile profile, final String messageName, final Object... variables) {
+    protected void sendNotify(final OnlineProfile onlineProfile, final String messageName, final Object... variables) {
         try {
             final String[] stringVariables = Arrays.stream(variables)
                     .map(String::valueOf)
                     .toArray(String[]::new);
-            Config.sendNotify(instruction.getPackage().getPackagePath(), profile.getOnlineProfile(), messageName, stringVariables, messageName + ",info");
+            Config.sendNotify(instruction.getPackage().getPackagePath(), onlineProfile, messageName, stringVariables, messageName + ",info");
         } catch (final QuestRuntimeException exception) {
             try {
                 LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the '" + messageName + "' category in '" + instruction.getObjective().getFullID() + "'. Error was: '" + exception.getMessage() + "'");

@@ -416,7 +416,7 @@ public class BetonQuest extends JavaPlugin {
             log.debug(conditionID.getPackage(), "Cannot check non-static condition without a player, returning false");
             return false;
         }
-        if (profile != null && profile.getPlayer() == null && !condition.isPersistent()) {
+        if (profile != null && profile.getOnlineProfile().isEmpty() && !condition.isPersistent()) {
             log.debug(conditionID.getPackage(), "Player was offline, condition is not persistent, returning false");
             return false;
         }
@@ -906,7 +906,7 @@ public class BetonQuest extends JavaPlugin {
         Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
             loadData();
             globalData = new GlobalData();
-            for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+            for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
                 final PlayerData playerData = new PlayerData(onlineProfile);
                 playerDataMap.put(onlineProfile, playerData);
                 playerData.startObjectives();
@@ -1212,7 +1212,7 @@ public class BetonQuest extends JavaPlugin {
             if (conv != null) {
                 conv.suspend();
             }
-            onlineProfile.getOnlinePlayer().closeInventory();
+            onlineProfile.getPlayer().closeInventory();
         }
         // cancel database saver
         if (saver != null) {
@@ -1284,8 +1284,8 @@ public class BetonQuest extends JavaPlugin {
     }
 
     /**
-     * Retrieves PlayerData object for specified player. If the playerData does
-     * not exist but the player is online, it will create new playerData on the
+     * Retrieves PlayerData object for specified profile. If the playerData does
+     * not exist but the profile is online, it will create new playerData on the
      * main thread and put it into the map.
      *
      * @param profile the {@link Profile} of the player
@@ -1293,7 +1293,7 @@ public class BetonQuest extends JavaPlugin {
      */
     public PlayerData getPlayerData(final Profile profile) {
         PlayerData playerData = playerDataMap.get(profile);
-        if (playerData == null && profile.getPlayer().isPresent()) {
+        if (playerData == null && profile.getOnlineProfile().isPresent()) {
             playerData = new PlayerData(profile);
             putPlayerData(profile, playerData);
         }

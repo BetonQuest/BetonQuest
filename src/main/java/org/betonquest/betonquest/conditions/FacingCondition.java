@@ -24,7 +24,7 @@ public class FacingCondition extends Condition {
     @Override
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     protected Boolean execute(final Profile profile) {
-        final Player player = profile.getOnlineProfile().getOnlinePlayer();
+        final Player player = profile.getOnlineProfile().get().getPlayer();
         float rotation = player.getLocation().getYaw();
         final float pitch = player.getLocation().getPitch();
         final Direction facing;

@@ -20,6 +20,6 @@ public class BurningCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) {
-        return profile.getOnlineProfile().getOnlinePlayer().getFireTicks() > 0;
+        return profile.getOnlineProfile().get().getPlayer().getFireTicks() > 0;
     }
 }

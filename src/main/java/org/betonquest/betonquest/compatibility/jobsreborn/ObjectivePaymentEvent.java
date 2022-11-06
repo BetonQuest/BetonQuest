@@ -48,8 +48,8 @@ public class ObjectivePaymentEvent extends Objective implements Listener {
 
             if (playerData.isZero()) {
                 completeObjective(profile);
-            } else if (notify && ((int) playerData.getAmount()) / notifyInterval != ((int) previousAmount) / notifyInterval) {
-                sendNotify(profile, "payment_to_receive", playerData.getAmount());
+            } else if (notify && ((int) playerData.getAmount()) / notifyInterval != ((int) previousAmount) / notifyInterval && profile.getOnlineProfile().isPresent()) {
+                sendNotify(profile.getOnlineProfile().get(), "payment_to_receive", playerData.getAmount());
             }
         }
     }

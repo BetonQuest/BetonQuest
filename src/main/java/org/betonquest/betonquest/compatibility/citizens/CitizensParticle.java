@@ -219,7 +219,7 @@ public class CitizensParticle extends BukkitRunnable {
                 final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
 
                 // skip if there are no such NPC or it's not spawned or not visible
-                if (npc == null || !npc.getStoredLocation().getWorld().equals(onlineProfile.getOnlinePlayer().getWorld()) ||
+                if (npc == null || !npc.getStoredLocation().getWorld().equals(onlineProfile.getPlayer().getWorld()) ||
                         NPCHider.getInstance() != null && NPCHider.getInstance().isInvisible(onlineProfile, npc)) {
                     continue;
                 }
@@ -235,7 +235,7 @@ public class CitizensParticle extends BukkitRunnable {
                         new DynamicLocation(loc, null),
                         new DynamicLocation(null, null),
                         (ConfigurationSection) null,
-                        onlineProfile.getOnlinePlayer());
+                        onlineProfile.getPlayer());
             }
         }
     }

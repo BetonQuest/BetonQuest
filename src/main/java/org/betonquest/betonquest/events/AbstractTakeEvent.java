@@ -4,6 +4,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -78,10 +79,10 @@ public abstract class AbstractTakeEvent extends QuestEvent {
         }
     }
 
-    protected void notifyPlayer(final Profile profile, final String itemName, final int amount) {
+    protected void notifyPlayer(final OnlineProfile onlineProfile, final String itemName, final int amount) {
         if (notify) {
             try {
-                Config.sendNotify(instruction.getPackage().getPackagePath(), profile.getOnlineProfile(), "items_taken",
+                Config.sendNotify(instruction.getPackage().getPackagePath(), onlineProfile, "items_taken",
                         new String[]{itemName, String.valueOf(amount)}, "items_taken,info");
             } catch (final QuestRuntimeException exception) {
                 LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'items_taken' category in '" + getFullId() + "'. Error was: '" + exception.getMessage() + "'", exception);

@@ -3,6 +3,7 @@ package org.betonquest.betonquest.objectives;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -57,19 +58,19 @@ public class PasswordObjective extends Objective implements Listener {
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     private boolean chatInput(final boolean fromCommand, final Player player, final String message) {
-        final Profile profile = PlayerConverter.getID(player);
-        if (!containsPlayer(profile)) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID(player);
+        if (!containsPlayer(onlineProfile)) {
             return false;
         }
         final String prefix = passwordPrefix == null ?
-                Config.getMessage(BetonQuest.getInstance().getPlayerData(profile).getLanguage(), "password") : passwordPrefix;
+                Config.getMessage(BetonQuest.getInstance().getPlayerData(onlineProfile).getLanguage(), "password") : passwordPrefix;
         if (!prefix.isEmpty() && !message.toLowerCase(Locale.ROOT).startsWith(prefix.toLowerCase(Locale.ROOT))) {
             return false;
         }
         final String password = message.substring(prefix.length());
-        if (checkConditions(profile)) {
+        if (checkConditions(onlineProfile)) {
             if (regex.matcher(password).matches()) {
-                Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> completeObjective(profile));
+                Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> completeObjective(onlineProfile));
 
                 if (fromCommand) {
                     return !prefix.isEmpty();
@@ -78,7 +79,7 @@ public class PasswordObjective extends Objective implements Listener {
                 }
             } else {
                 for (final EventID event : failEvents) {
-                    BetonQuest.event(profile, event);
+                    BetonQuest.event(onlineProfile, event);
                 }
             }
         }

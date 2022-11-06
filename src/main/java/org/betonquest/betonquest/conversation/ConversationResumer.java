@@ -2,7 +2,7 @@ package org.betonquest.betonquest.conversation;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
@@ -23,16 +23,16 @@ public class ConversationResumer implements Listener {
 
     private final String original;
     private final Player player;
-    private final Profile profile;
+    private final OnlineProfile onlineProfile;
     private final String conversationID;
     private final String option;
     private final Location loc;
     private final double distance;
 
-    public ConversationResumer(final Profile profile, final String convID) {
+    public ConversationResumer(final OnlineProfile onlineProfile, final String convID) {
         this.original = convID;
-        this.player = profile.getOnlineProfile().getOnlinePlayer();
-        this.profile = profile;
+        this.player = onlineProfile.getPlayer();
+        this.onlineProfile = onlineProfile;
         final String[] parts = convID.split(" ");
         this.conversationID = parts[0];
         this.option = parts[1];
@@ -57,8 +57,8 @@ public class ConversationResumer implements Listener {
         if (event.getTo().getWorld().equals(loc.getWorld()) && event.getTo().distanceSquared(loc) < distance * distance) {
             HandlerList.unregisterAll(this);
             BetonQuest.getInstance().getSaver()
-                    .add(new Record(UpdateType.UPDATE_CONVERSATION, "null", profile.getProfileUUID().toString()));
-            new Conversation(profile.getOnlineProfile(), conversationID, loc, option);
+                    .add(new Record(UpdateType.UPDATE_CONVERSATION, "null", onlineProfile.getProfileUUID().toString()));
+            new Conversation(onlineProfile, conversationID, loc, option);
         }
     }
 
@@ -69,6 +69,6 @@ public class ConversationResumer implements Listener {
         }
         HandlerList.unregisterAll(this);
         BetonQuest.getInstance().getSaver()
-                .add(new Record(UpdateType.UPDATE_CONVERSATION, original, profile.getProfileUUID().toString()));
+                .add(new Record(UpdateType.UPDATE_CONVERSATION, original, onlineProfile.getProfileUUID().toString()));
     }
 }

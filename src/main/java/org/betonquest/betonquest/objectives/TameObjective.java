@@ -3,7 +3,7 @@ package org.betonquest.betonquest.objectives;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -40,12 +40,12 @@ public class TameObjective extends CountingObjective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onTaming(final EntityTameEvent event) {
         if (event.getOwner() instanceof Player) {
-            final Profile profile = PlayerConverter.getID((Player) event.getOwner());
-            if (containsPlayer(profile)
+            final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getOwner());
+            if (containsPlayer(onlineProfile)
                     && type.equals(event.getEntity().getType())
-                    && checkConditions(profile)) {
-                getCountingData(profile).progress();
-                completeIfDoneOrNotify(profile);
+                    && checkConditions(onlineProfile)) {
+                getCountingData(onlineProfile).progress();
+                completeIfDoneOrNotify(onlineProfile);
             }
         }
     }

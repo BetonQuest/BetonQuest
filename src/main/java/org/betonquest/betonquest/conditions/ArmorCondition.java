@@ -24,7 +24,7 @@ public class ArmorCondition extends Condition {
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected Boolean execute(final Profile profile) {
-        for (final ItemStack armor : profile.getOnlineProfile().getOnlinePlayer().getEquipment().getArmorContents()) {
+        for (final ItemStack armor : profile.getOnlineProfile().get().getPlayer().getEquipment().getArmorContents()) {
             if (item != null && item.compare(armor)) {
                 return true;
             }

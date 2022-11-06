@@ -42,7 +42,7 @@ public class DelEffectEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) {
-        final Player player = profile.getOnlineProfile().getOnlinePlayer();
+        final Player player = profile.getOnlineProfile().get().getPlayer();
         if (any) {
             player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
         } else {

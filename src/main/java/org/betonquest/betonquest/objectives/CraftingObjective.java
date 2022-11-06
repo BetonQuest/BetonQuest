@@ -4,7 +4,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.InventoryUtils;
@@ -64,10 +64,10 @@ public class CraftingObjective extends CountingObjective implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCrafting(final CraftItemEvent event) {
         if (event.getWhoClicked() instanceof Player) {
-            final Profile profile = PlayerConverter.getID((Player) event.getWhoClicked());
-            if (containsPlayer(profile) && item.compare(event.getRecipe().getResult()) && checkConditions(profile)) {
-                getCountingData(profile).progress(calculateCraftAmount(event));
-                completeIfDoneOrNotify(profile);
+            final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getWhoClicked());
+            if (containsPlayer(onlineProfile) && item.compare(event.getRecipe().getResult()) && checkConditions(onlineProfile)) {
+                getCountingData(onlineProfile).progress(calculateCraftAmount(event));
+                completeIfDoneOrNotify(onlineProfile);
             }
         }
     }

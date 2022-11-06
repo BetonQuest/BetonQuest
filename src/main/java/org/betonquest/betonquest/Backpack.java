@@ -44,7 +44,7 @@ public class Backpack implements Listener {
     /**
      * The {@link OnlineProfile} of the player
      */
-    private final OnlineProfile profile;
+    private final OnlineProfile onlineProfile;
     /**
      * Database handler for the player
      */
@@ -70,7 +70,7 @@ public class Backpack implements Listener {
      */
     public Backpack(final OnlineProfile onlineProfile, final DisplayType type) {
         // fill required fields
-        this.profile = onlineProfile;
+        this.onlineProfile = onlineProfile;
         lang = BetonQuest.getInstance().getPlayerData(onlineProfile).getLanguage();
         /**
          * Instance of the BetonQuest plugin
@@ -102,7 +102,7 @@ public class Backpack implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onClick(final InventoryClickEvent event) {
-        if (event.getWhoClicked().equals(profile.getOnlinePlayer())) {
+        if (event.getWhoClicked().equals(onlineProfile.getPlayer())) {
             // if the player clicked, then cancel this event
             event.setCancelled(true);
             // if the click was outside of the inventory, do nothing
@@ -116,7 +116,7 @@ public class Backpack implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClosing(final InventoryCloseEvent event) {
-        if (event.getPlayer().equals(profile.getOnlinePlayer())) {
+        if (event.getPlayer().equals(onlineProfile.getPlayer())) {
             HandlerList.unregisterAll(this);
         }
     }
@@ -157,7 +157,7 @@ public class Backpack implements Listener {
             super();
             final boolean showJournalInBackpack = Boolean.parseBoolean(Config.getString("config.journal.show_in_backpack"));
             this.page = page;
-            this.showJournal = showJournalInBackpack && !Journal.hasJournal(profile);
+            this.showJournal = showJournalInBackpack && !Journal.hasJournal(onlineProfile);
             this.backpackItems = playerData.getBackpack();
             if (showJournal) {
                 backpackItems.add(0, playerData.getJournal().getAsItem());
@@ -246,7 +246,7 @@ public class Backpack implements Listener {
             content[46] = compassItem;
             // set the inventory and display it
             inv.setContents(content);
-            profile.getOnlinePlayer().openInventory(inv);
+            onlineProfile.getPlayer().openInventory(inv);
             Bukkit.getPluginManager().registerEvents(Backpack.this, BetonQuest.getInstance());
         }
 
@@ -278,7 +278,7 @@ public class Backpack implements Listener {
                         // add desired amount of items to player's inventory
                         final ItemStack newItem = item.clone();
                         newItem.setAmount(getAmount);
-                        final ItemStack leftItems = profile.getOnlinePlayer().getInventory().addItem(newItem).get(0);
+                        final ItemStack leftItems = onlineProfile.getPlayer().getInventory().addItem(newItem).get(0);
                         // remove from backpack only those items that were
                         // actually added to player's inventory
                         int leftAmount = 0;
@@ -295,7 +295,7 @@ public class Backpack implements Listener {
                 }
             } else if (slot > 53) {
                 // slot above 53 is player's inventory, so handle item storing
-                final ItemStack item = profile.getOnlinePlayer().getInventory().getItem(playerSlot);
+                final ItemStack item = onlineProfile.getPlayer().getInventory().getItem(playerSlot);
                 if (item != null) {
                     final boolean lockJournalSlot = Boolean.parseBoolean(Config.getString("config.journal.lock_default_journal_slot"));
                     // if the item exists continue
@@ -317,12 +317,12 @@ public class Backpack implements Listener {
                         // inventory
                         playerData.addItem(item.clone(), amount);
                         if (item.getAmount() - amount == 0) {
-                            profile.getOnlinePlayer().getInventory().setItem(playerSlot, null);
+                            onlineProfile.getPlayer().getInventory().setItem(playerSlot, null);
                         } else {
                             item.setAmount(item.getAmount() - amount);
-                            profile.getOnlinePlayer().getInventory().setItem(playerSlot, item);
+                            onlineProfile.getPlayer().getInventory().setItem(playerSlot, item);
                         }
-                    } else if (!lockJournalSlot && Journal.isJournal(profile, item)) {
+                    } else if (!lockJournalSlot && Journal.isJournal(onlineProfile, item)) {
                         // if it's a journal, remove it so it appears in
                         // backpack again
                         playerData.getJournal().removeFromInv();
@@ -360,7 +360,7 @@ public class Backpack implements Listener {
             final ArrayList<QuestCanceler> cancelers = new ArrayList<>();
             // get all quest cancelers that can be shown to the player
             for (final QuestCanceler canceler : BetonQuest.getCanceler().values()) {
-                if (canceler.show(profile)) {
+                if (canceler.show(onlineProfile)) {
                     cancelers.add(canceler);
                 }
             }
@@ -369,19 +369,19 @@ public class Backpack implements Listener {
             int numberOfRows = (size - size % 9) / 9 + 1;
             if (numberOfRows > 6) {
                 numberOfRows = 6;
-                LOG.warn("Player " + profile.getOnlinePlayer().getName() + " has too many active quests, please"
+                LOG.warn("Player " + onlineProfile.getPlayer().getName() + " has too many active quests, please"
                         + " don't allow for so many of them. It slows down your server!");
             }
             inv = Bukkit.createInventory(null, numberOfRows * 9, Config.getMessage(lang, "cancel_page"));
             final ItemStack[] content = new ItemStack[numberOfRows * 9];
             int index = 0;
             for (final QuestCanceler canceler : cancelers) {
-                content[index] = canceler.getItem(profile);
+                content[index] = canceler.getItem(onlineProfile);
                 map.put(index, canceler);
                 index++;
             }
             inv.setContents(content);
-            profile.getOnlinePlayer().openInventory(inv);
+            onlineProfile.getPlayer().openInventory(inv);
             Bukkit.getPluginManager().registerEvents(Backpack.this, BetonQuest.getInstance());
         }
 
@@ -392,8 +392,8 @@ public class Backpack implements Listener {
                 return;
             }
             // cancel the chosen quests
-            cancel.cancel(profile);
-            profile.getOnlinePlayer().closeInventory();
+            cancel.cancel(onlineProfile);
+            onlineProfile.getPlayer().closeInventory();
         }
     }
 
@@ -461,7 +461,7 @@ public class Backpack implements Listener {
                         } catch (final NumberFormatException e) {
                             LOG.warn("Could not parse location coordinates in a compass pointer in " + packName
                                     + " package: " + key, e);
-                            profile.getOnlinePlayer().closeInventory();
+                            onlineProfile.getPlayer().closeInventory();
                             return;
                         }
                         final Location loc = new Location(world, locX, locY, locZ);
@@ -480,9 +480,9 @@ public class Backpack implements Listener {
             final int size = locations.size();
             final int numberOfRows = (size - size % 9) / 9 + 1;
             if (numberOfRows > 6) {
-                LOG.warn("Player " + profile.getOnlinePlayer().getName() + " has too many compass pointers, please"
+                LOG.warn("Player " + onlineProfile.getPlayer().getName() + " has too many compass pointers, please"
                         + " don't allow for so many of them. It slows down your server!");
-                profile.getOnlinePlayer().closeInventory();
+                onlineProfile.getPlayer().closeInventory();
                 return;
             }
             inv = Bukkit.createInventory(null, numberOfRows * 9, Config.getMessage(lang, "compass_page"));
@@ -495,7 +495,7 @@ public class Backpack implements Listener {
                     compass = new QuestItem(new ItemID(item.getKey(), item.getValue())).generate(1);
                 } catch (final InstructionParseException e) {
                     LOG.warn("Could not load compass button: " + e.getMessage(), e);
-                    profile.getOnlinePlayer().closeInventory();
+                    onlineProfile.getPlayer().closeInventory();
                     return;
                 } catch (final ObjectNotFoundException e) {
                     LOG.warn("Could not find item: " + e.getMessage(), e);
@@ -509,7 +509,7 @@ public class Backpack implements Listener {
                 index++;
             }
             inv.setContents(content);
-            profile.getOnlinePlayer().openInventory(inv);
+            onlineProfile.getPlayer().openInventory(inv);
             Bukkit.getPluginManager().registerEvents(Backpack.this, BetonQuest.getInstance());
         }
 
@@ -520,12 +520,12 @@ public class Backpack implements Listener {
                 return;
             }
             // set the location of the compass
-            final QuestCompassTargetChangeEvent event = new QuestCompassTargetChangeEvent(profile, loc);
+            final QuestCompassTargetChangeEvent event = new QuestCompassTargetChangeEvent(onlineProfile, loc);
             Bukkit.getServer().getPluginManager().callEvent(event);
             if (!event.isCancelled()) {
-                profile.getOnlinePlayer().setCompassTarget(loc);
+                onlineProfile.getPlayer().setCompassTarget(loc);
             }
-            profile.getOnlinePlayer().closeInventory();
+            onlineProfile.getPlayer().closeInventory();
         }
     }
 }
