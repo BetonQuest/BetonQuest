@@ -13,7 +13,7 @@ class NoNotificationSenderTest {
     @Test
     void testSendNotificationDoesNothing() {
         final NoNotificationSender sender = new NoNotificationSender();
-        final OnlineProfile profile = mock(OnlineProfile.class);
-        assertDoesNotThrow(() -> sender.sendNotification(profile), "Sending no notification should fail in no case.");
+        final OnlineProfile onlineProfile = mock(OnlineProfile.class);
+        assertDoesNotThrow(() -> sender.sendNotification(onlineProfile), "Sending no notification should fail in no case.");
     }
 }

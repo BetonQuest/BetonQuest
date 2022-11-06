@@ -130,8 +130,8 @@ public class PlayerHider {
         return profilesToHide;
     }
 
-    private List<OnlineProfile> getOrCreateProfileList(final OnlineProfile profile, final Map<OnlineProfile, List<OnlineProfile>> profilesToHide) {
-        final List<OnlineProfile> profiles = profilesToHide.get(profile);
+    private List<OnlineProfile> getOrCreateProfileList(final OnlineProfile onlineProfile, final Map<OnlineProfile, List<OnlineProfile>> profilesToHide) {
+        final List<OnlineProfile> profiles = profilesToHide.get(onlineProfile);
         return profiles == null ? new ArrayList<>() : profiles;
     }
 }
