@@ -106,7 +106,7 @@ Let's add the condition `isDay` to the objective:
 
 ``` YAML title="objectives.yml"
 objectives:
-  fishingObj: "fish COD 10 hookLocation:100;50;100;world range:20 events:caughtAllFish {==conditions:!isDay==}"
+  fishingObj: "fish COD 3 hookLocation:100;63;100;world range:20 events:caughtAllFish {==conditions:!isDay==}"
 ```
 We can see multiple things here:
 
@@ -176,7 +176,7 @@ We are now ready for the next step: Adding the condition and event to the conver
 Open up your `jack.yml` file in the conversations folder and add the event to give the tag to a player and the
 condition to not repeat the specified part of the conversation.
 
-``` YAML title="jack.yml" hl_lines="16-19 25-27"
+``` YAML title="jack.yml" hl_lines="16-19 24-26"
 conversations:
   Jack:
     quester: "Jack"
@@ -265,7 +265,7 @@ conversations:
       # Other player_options not shown
       accept:
         text: "Sure! I could use a new armour."
-        event: "startFishingObj{==,startedFishingTagAdd==}"
+        event: "startFishingObj{==,addStartedFishingTag==}"
         pointer: "goodLuck"
       # Other player_options not shown
 ```
@@ -280,18 +280,18 @@ conditions:
   hasRecivedFood: "tag foodReceived"
   hasDoneTour: "tag tourDone"
   hasStartedFishing: "tag startedFishing"
-  hasFishInInv: "item COD:10"
+  hasFishInInv: "item COD:3"
   hasDoneQuest: "tag questDone"
 ```
 Additionally, we must add the new events as well. 
-Those remove 10 cod from the players inventory and add a tag for completing the quest.
+Those remove 3 cod from the players inventory and add a tag for completing the quest.
 
 ```YAML title="events.yml" hl_lines="3-5"
 events:
   # Other events not shown
   addStartedFishingTag: "tag add startedFishing"
   addQuestDoneTag: "tag add questDone"
-  takeFishFromPlayer: "take cod:10"  
+  takeFishFromPlayer: "take cod:3"  
 ```
 
 Now lets use all these new elements to finish up the conversation.
