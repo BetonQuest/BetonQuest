@@ -49,21 +49,20 @@ public class RegionObjective extends Objective implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(final PlayerJoinEvent event) {
-        final Player player = event.getPlayer();
-        final OnlineProfile onlineProfile = PlayerConverter.getID(player);
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
         if (containsPlayer(onlineProfile)) {
-            final boolean inside = WorldGuardIntegrator.isInsideRegion(player.getLocation(), name);
+            final boolean inside = WorldGuardIntegrator.isInsideRegion(onlineProfile.getPlayer().getLocation(), name);
             if (!entry && !exit && inside && checkConditions(onlineProfile)) {
                 completeObjective(onlineProfile);
             } else {
-                playersInsideRegion.put(event.getPlayer().getUniqueId(), inside);
+                playersInsideRegion.put(onlineProfile.getProfileUUID(), inside);
             }
         }
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerQuit(final PlayerQuitEvent event) {
-        playersInsideRegion.remove(event.getPlayer().getUniqueId());
+        playersInsideRegion.remove(PlayerConverter.getID(event.getPlayer()).getProfileUUID());
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -113,15 +112,15 @@ public class RegionObjective extends Objective implements Listener {
             }
             return;
         }
-        if (!playersInsideRegion.containsKey(player.getUniqueId())) {
-            playersInsideRegion.put(player.getUniqueId(), WorldGuardIntegrator.isInsideRegion(player.getLocation(), name));
+        if (!playersInsideRegion.containsKey(onlineProfile.getProfileUUID())) {
+            playersInsideRegion.put(onlineProfile.getProfileUUID(), WorldGuardIntegrator.isInsideRegion(player.getLocation(), name));
         }
-        final boolean fromInside = playersInsideRegion.get(player.getUniqueId());
-        playersInsideRegion.put(player.getUniqueId(), inside);
+        final boolean fromInside = playersInsideRegion.get(onlineProfile.getProfileUUID());
+        playersInsideRegion.put(onlineProfile.getProfileUUID(), inside);
 
         if ((entry && inside && !fromInside || exit && fromInside && !inside) && checkConditions(onlineProfile)) {
             completeObjective(onlineProfile);
-            playersInsideRegion.remove(player.getUniqueId());
+            playersInsideRegion.remove(onlineProfile.getProfileUUID());
         }
     }
 

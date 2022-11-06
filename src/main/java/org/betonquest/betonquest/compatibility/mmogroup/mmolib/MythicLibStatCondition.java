@@ -24,7 +24,7 @@ public class MythicLibStatCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        final MMOPlayerData data = MMOPlayerData.get(profile.getPlayer().getUniqueId());
+        final MMOPlayerData data = MMOPlayerData.get(profile.getPlayerUUID());
         if (data == null) {
             return false;
         }

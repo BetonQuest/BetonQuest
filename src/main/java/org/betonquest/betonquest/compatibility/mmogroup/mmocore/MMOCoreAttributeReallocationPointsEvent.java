@@ -20,7 +20,7 @@ public class MMOCoreAttributeReallocationPointsEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final PlayerData data = PlayerData.get(profile.getPlayer().getUniqueId());
+        final PlayerData data = PlayerData.get(profile.getPlayerUUID());
         final int amount = amountVar.getInt(profile);
         data.giveAttributeReallocationPoints(amount);
         return null;

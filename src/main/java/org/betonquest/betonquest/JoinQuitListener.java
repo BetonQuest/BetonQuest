@@ -45,18 +45,18 @@ public class JoinQuitListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(final PlayerJoinEvent event) {
-        final OnlineProfile profile = PlayerConverter.getID(event.getPlayer());
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
         // start objectives when the data is loaded
-        PlayerData playerData = BetonQuest.getInstance().getPlayerData(profile);
+        PlayerData playerData = BetonQuest.getInstance().getPlayerData(onlineProfile);
         // if the data still isn't loaded, force loading (this happens sometimes
         // probably because AsyncPlayerPreLoginEvent does not fire)
         if (playerData == null) {
-            playerData = new PlayerData(profile);
-            BetonQuest.getInstance().putPlayerData(profile, playerData);
+            playerData = new PlayerData(onlineProfile);
+            BetonQuest.getInstance().putPlayerData(onlineProfile, playerData);
             LOG.warn("Failed to load data for player " + event.getPlayer().getName() + ", forcing.");
         }
         playerData.startObjectives();
-        GlobalObjectives.startAll(profile);
+        GlobalObjectives.startAll(onlineProfile);
         // display changelog message to the admins
         if (event.getPlayer().hasPermission("betonquest.admin")) {
             BetonQuest.getInstance().getUpdater().sendUpdateNotification(event.getPlayer());
@@ -69,11 +69,11 @@ public class JoinQuitListener implements Listener {
             }
         }
 
-        if (Journal.hasJournal(profile)) {
+        if (Journal.hasJournal(onlineProfile)) {
             playerData.getJournal().update();
         }
         if (playerData.getConversation() != null) {
-            new ConversationResumer(profile, playerData.getConversation());
+            new ConversationResumer(onlineProfile, playerData.getConversation());
         }
     }
 

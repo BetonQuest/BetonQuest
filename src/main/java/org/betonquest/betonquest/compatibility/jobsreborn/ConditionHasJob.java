@@ -31,7 +31,7 @@ public class ConditionHasJob extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) {
-        final List<JobProgression> oJobs = Jobs.getPlayerManager().getJobsPlayer(profile.getPlayer().getUniqueId()).getJobProgression();
+        final List<JobProgression> oJobs = Jobs.getPlayerManager().getJobsPlayer(profile.getPlayerUUID()).getJobProgression();
         for (final JobProgression oJob : oJobs) {
             if (oJob.getJob().getName().equalsIgnoreCase(sJobName)) {
                 //User has the job, return true

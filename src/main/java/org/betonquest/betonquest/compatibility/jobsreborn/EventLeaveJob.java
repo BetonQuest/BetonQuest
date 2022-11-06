@@ -31,7 +31,7 @@ public class EventLeaveJob extends QuestEvent {
     protected Void execute(final Profile profile) {
         for (final Job job : Jobs.getJobs()) {
             if (job.getName().equalsIgnoreCase(sJobName)) {
-                Jobs.getPlayerManager().getJobsPlayer(profile.getPlayer().getUniqueId()).leaveJob(job);
+                Jobs.getPlayerManager().getJobsPlayer(profile.getPlayerUUID()).leaveJob(job);
                 return null;
             }
         }

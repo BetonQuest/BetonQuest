@@ -25,7 +25,7 @@ public class MMOCoreClassExperienceEvent extends QuestEvent {
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
         final int amount = amountVar.getInt(profile);
-        final PlayerData mmoData = PlayerData.get(profile.getPlayer().getUniqueId());
+        final PlayerData mmoData = PlayerData.get(profile.getPlayerUUID());
 
         if (isLevel) {
             mmoData.giveLevels(amount, EXPSource.QUEST);

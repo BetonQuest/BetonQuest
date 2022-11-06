@@ -31,7 +31,7 @@ public class EventJoinJob extends QuestEvent {
     protected Void execute(final Profile profile) {
         for (final Job job : Jobs.getJobs()) {
             if (job.getName().equalsIgnoreCase(sJobName)) {
-                Jobs.getPlayerManager().getJobsPlayer(profile.getPlayer().getUniqueId()).joinJob(job);
+                Jobs.getPlayerManager().getJobsPlayer(profile.getPlayerUUID()).joinJob(job);
                 return null;
             }
         }

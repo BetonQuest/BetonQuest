@@ -61,7 +61,7 @@ public class MMOItemsGiveEvent extends QuestEvent {
         int amount = amountVar.getInt(profile);
 
         if (scale) {
-            mmoItem = mmoPlugin.getItem(itemType, itemID, PlayerData.get(profile.getPlayer().getUniqueId()));
+            mmoItem = mmoPlugin.getItem(itemType, itemID, PlayerData.get(profile.getPlayerUUID()));
         }
 
         if (notify) {

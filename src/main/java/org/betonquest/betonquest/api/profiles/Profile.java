@@ -22,6 +22,13 @@ public interface Profile {
     UUID getProfileUUID();
 
     /**
+     * @return the {@link UUID} of the player
+     */
+    default UUID getPlayerUUID() {
+        return getPlayer().getUniqueId();
+    }
+
+    /**
      * @return the name of the profile
      */
     String getProfileName();
