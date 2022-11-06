@@ -149,10 +149,10 @@ events:
   tpBlacksmith: "teleport 50;70;50;world" # (4)!
 ```
 
-1. Adjust this to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating)
-2. Adjust this to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating)
-3. Adjust this to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating)
-4. Adjust this to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating)
+1. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating)
+2. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating)
+3. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating)
+4. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating)
 
 As you can see, there are a few new events of the types `folder` and `teleport`.
 The folder event wraps multiple events inside itself. Once triggered, it simply executes its events. 
