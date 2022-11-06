@@ -5,7 +5,6 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.bukkit.OfflinePlayer;
 
 /**
  * Manages player's permissions
@@ -34,18 +33,17 @@ public class PermissionEvent extends QuestEvent {
     @Override
     protected Void execute(final Profile profile) {
         final Permission vault = VaultIntegrator.getPermission();
-        final OfflinePlayer offlinePlayer = profile.getPlayer();
         if (add) {
             if (perm) {
-                vault.playerAdd(world, offlinePlayer, permission);
+                vault.playerAdd(world, profile.getPlayer(), permission);
             } else {
-                vault.playerAddGroup(world, offlinePlayer, permission);
+                vault.playerAddGroup(world, profile.getPlayer(), permission);
             }
         } else {
             if (perm) {
-                vault.playerRemove(world, offlinePlayer, permission);
+                vault.playerRemove(world, profile.getPlayer(), permission);
             } else {
-                vault.playerRemoveGroup(world, offlinePlayer, permission);
+                vault.playerRemoveGroup(world, profile.getPlayer(), permission);
             }
         }
         return null;

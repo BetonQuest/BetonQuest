@@ -1,11 +1,13 @@
 package org.betonquest.betonquest.quest.event.velocity;
 
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.location.VectorData;
-import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+
+import java.util.Optional;
 
 /**
  * The velocity event. Throws the player around.
@@ -38,11 +40,13 @@ public class VelocityEvent implements Event {
 
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getOnlineProfile().get().getPlayer();
-        final Vector pVector = vector.get(profile);
-        final Vector directionVector = direction.calculate(player, pVector);
-        final Vector modificationVector = modification.calculate(player, directionVector);
-
-        player.setVelocity(modificationVector);
+        final Optional<OnlineProfile> optionalOnlineProfile = profile.getOnlineProfile();
+        if (optionalOnlineProfile.isPresent()) {
+            final OnlineProfile onlineProfile = optionalOnlineProfile.get();
+            final Vector pVector = vector.get(profile);
+            final Vector directionVector = direction.calculate(onlineProfile.getPlayer(), pVector);
+            final Vector modificationVector = modification.calculate(onlineProfile.getPlayer(), directionVector);
+            onlineProfile.getPlayer().setVelocity(modificationVector);
+        }
     }
 }

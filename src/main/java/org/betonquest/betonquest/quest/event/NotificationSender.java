@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event;
 
-import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.profiles.Profile;
 
 /**
  * Allows sending notifications to a player.
@@ -10,7 +10,7 @@ public interface NotificationSender {
     /**
      * Send the notification.
      *
-     * @param onlineProfile the {@link OnlineProfile} of the player to receive the notification
+     * @param profile the {@link Profile} of the player to receive the notification
      */
-    void sendNotification(OnlineProfile onlineProfile);
+    void sendNotification(Profile profile);
 }

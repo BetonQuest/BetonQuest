@@ -46,6 +46,6 @@ public class JournalEvent implements Event {
         final Journal journal = playerData.getJournal();
         journalChanger.changeJournal(journal);
         journal.update();
-        notificationSender.sendNotification(profile.getOnlineProfile().get());
+        notificationSender.sendNotification(profile);
     }
 }

@@ -5,6 +5,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -37,7 +38,7 @@ public class
 BrewObjective extends CountingObjective implements Listener {
 
     private final QuestItem potion;
-    private final Map<Location, OnlineProfile> locations = new HashMap<>();
+    private final Map<Location, Profile> locations = new HashMap<>();
 
     public BrewObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "potions_to_brew");
@@ -84,8 +85,8 @@ BrewObjective extends CountingObjective implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBrew(final BrewEvent event) {
-        final OnlineProfile onlineProfile = locations.remove(event.getBlock().getLocation());
-        if (!onlineProfile.getPlayer().isOnline()) {
+        final Profile profile = locations.remove(event.getBlock().getLocation());
+        if (profile.getOnlineProfile().isEmpty()) {
             return;
         }
         final boolean[] alreadyDone = getMatchingPotions(event.getContents());
@@ -100,12 +101,12 @@ BrewObjective extends CountingObjective implements Listener {
                 }
             }
 
-            if (progress > 0 && checkConditions(onlineProfile)) {
-                getCountingData(onlineProfile).progress(progress);
-                final boolean completed = completeIfDoneOrNotify(onlineProfile);
+            if (progress > 0 && checkConditions(profile)) {
+                getCountingData(profile).progress(progress);
+                final boolean completed = completeIfDoneOrNotify(profile);
                 if (completed) {
                     final Set<Location> removals = locations.entrySet().stream()
-                            .filter(location -> onlineProfile.equals(location.getValue()))
+                            .filter(location -> profile.equals(location.getValue()))
                             .map(Map.Entry::getKey)
                             .collect(Collectors.toSet());
                     removals.forEach(locations::remove);

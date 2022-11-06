@@ -90,7 +90,10 @@ public final class PlayerConverter {
 
             @Override
             public Optional<OnlineProfile> getOnlineProfile() {
-                return Optional.of(this);
+                if (player.isOnline()) {
+                    return Optional.of(this);
+                }
+                return Optional.empty();
             }
 
             @Override

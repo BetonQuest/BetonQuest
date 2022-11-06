@@ -25,6 +25,7 @@ public class BurnEvent implements Event {
 
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
-        profile.getOnlineProfile().get().getPlayer().setFireTicks(duration.getInt(profile) * 20);
+        profile.getOnlineProfile()
+                .ifPresent(onlineProfile -> onlineProfile.getPlayer().setFireTicks(duration.getInt(profile) * 20));
     }
 }
