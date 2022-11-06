@@ -416,7 +416,7 @@ public class BetonQuest extends JavaPlugin {
             log.debug(conditionID.getPackage(), "Cannot check non-static condition without a player, returning false");
             return false;
         }
-        if (profile != null && profile.getOnlineProfile().isPresent() && !condition.isPersistent()) {
+        if (profile != null && profile.getOnlineProfile().isEmpty() && !condition.isPersistent()) {
             log.debug(conditionID.getPackage(), "Player was offline, condition is not persistent, returning false");
             return false;
         }
