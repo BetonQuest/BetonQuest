@@ -280,7 +280,7 @@ conditions:
   hasRecivedFood: "tag foodReceived"
   hasDoneTour: "tag tourDone"
   hasStartedFishing: "tag startedFishing"
-  hasFishInInv: "item COD:3"
+  hasFishInInv: "item cod:3"
   hasDoneQuest: "tag questDone"
 ```
 Additionally, we must add the new events as well. 
