@@ -224,10 +224,11 @@ public class CitizensHologram extends BukkitRunnable {
                 hologramEnabled = true;
                 if (npcHologram.hologram == null) {
                     final BetonHologram hologram = HologramProvider.getInstance().createHologram(String.valueOf(npc.getId()), npc.getStoredLocation().add(npcHologram.vector));
+                    hologram.createLines(0, npcHologram.lines.size());
                     hologram.hideAll();
-                    updateHologramForPlayersLines(npcHologram, hologram);
                     npcHologram.hologram = hologram;
                 }
+                updateHologramForPlayersLines(npcHologram);
                 npcHologram.hologram.show(onlineProfile.getOnlinePlayer());
             } else {
                 if (npcHologram.hologram != null) {
@@ -238,7 +239,8 @@ public class CitizensHologram extends BukkitRunnable {
         return hologramEnabled;
     }
 
-    private void updateHologramForPlayersLines(final NPCHologram npcHologram, final BetonHologram hologram) {
+    private void updateHologramForPlayersLines(final NPCHologram npcHologram) {
+        final BetonHologram hologram = npcHologram.hologram;
         for (int i = 0; i < npcHologram.lines.size(); i++) {
             final String line = npcHologram.lines.get(i);
             if (line.startsWith("item:")) {
