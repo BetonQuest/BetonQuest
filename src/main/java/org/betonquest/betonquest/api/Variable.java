@@ -12,7 +12,6 @@ abstract public class Variable {
 
     /**
      * Stores instruction string for the condition.
-     * <p>
      * -- GETTER --
      * Get the instruction object for this variable
      *
