@@ -10,5 +10,5 @@
     override: false
   - type: SET
     key: default_hologram
-    value: DecentHolograms,HolographicDisplays
+    value: HolographicDisplays,DecentHolograms
     override: false
