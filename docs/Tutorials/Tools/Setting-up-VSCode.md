@@ -68,9 +68,10 @@ If you want to work fast and effectively, it is necessary to create a workspace!
 The advantage of a workspace is that you can edit your files directly from the folder, so
 there is no need to extra save them or open them again every time you closed them.
 
-!!! tip ""
-    You can repeat this topic as often as you want to add more workspaces.
+??? tip ""
+    If you want to have more than one workspace, simply right-click in the folder box as showed in the screenshot.
     This is useful when having a production server and a test server for example.
+    ![more workspace](../../_media/content/Tutorials/VSCode-Setup/auto_save.png)
     
 
 And this is how to do it:
