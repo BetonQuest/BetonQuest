@@ -23,7 +23,6 @@ abstract public class Variable {
     /**
      * A variable marked as static can be executed even if the profile in the
      * {@link #getValue(Profile)} method is null
-     * <p>
      * -- GETTER --
      * Get the staticness of a variable
      *
