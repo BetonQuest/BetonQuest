@@ -8,8 +8,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Condition;
-import org.betonquest.betonquest.api.EventExecutedEvent;
-import org.betonquest.betonquest.api.EventExecutedOnProfileEvent;
 import org.betonquest.betonquest.api.LoadDataEvent;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestEvent;
@@ -439,29 +437,13 @@ public class BetonQuest extends JavaPlugin {
 
 
     /**
-     * Fires the event described by {@link EventID} for the given {@link Profile}.
+     * Fires an event for the {@link Profile} if it meets the event's conditions.
      * If the profile is null, the event will be fired as a static event.
      *
      * @param profile the {@link Profile} for which the event must be executed or null
      * @param eventID ID of the event to fire
      */
-    public static void event(final Profile profile, final EventID eventID) {
-        event(profile, eventID, true);
-    }
-
-    /**
-     * Fires an event for the {@link Profile} if it meets the event's conditions.
-     * <br>
-     * If the profile is null, the event will be fired as a static event.
-     * If callBukkitEvent is set to true, the {@link EventExecutedEvent} / {@link EventExecutedOnProfileEvent} will be
-     * fired depending on if the profile is null.
-     *
-     * @param profile         the {@link Profile} for which the event must be executed or null
-     * @param eventID         ID of the event to fire
-     * @param callBukkitEvent if the execution of the event should trigger a {@link EventExecutedEvent} or
-     *                        {@link EventExecutedOnProfileEvent}
-     */
-    public static void event(@Nullable final Profile profile, final EventID eventID, final boolean callBukkitEvent) {
+    public static void event(@Nullable final Profile profile, final EventID eventID) {
         if (eventID == null) {
             log.debug("Null event ID!");
             return;
@@ -484,7 +466,7 @@ public class BetonQuest extends JavaPlugin {
                     "Firing event " + eventID + " for " + profile.getProfileName());
         }
         try {
-            event.fire(profile, callBukkitEvent);
+            event.fire(profile);
         } catch (final QuestRuntimeException e) {
             log.warn(eventID.getPackage(), "Error while firing '" + eventID + "' event: " + e.getMessage(), e);
         }

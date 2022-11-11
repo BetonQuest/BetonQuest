@@ -481,7 +481,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 return;
             }
             final GiveEvent give = new GiveEvent(new Instruction(itemID.getPackage(), null, "give " + itemID.getBaseID()));
-            give.fire(PlayerConverter.getID((Player) sender), true);
+            give.fire(PlayerConverter.getID((Player) sender));
         } catch (InstructionParseException | QuestRuntimeException e) {
             sendMessage(sender, "error", e.getMessage());
             LOG.warn("Error while creating an item: " + e.getMessage(), e);

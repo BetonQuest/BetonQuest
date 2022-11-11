@@ -97,45 +97,34 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
         return instruction.getID().getFullID();
     }
 
+
     /**
      * Fires an event for the profile if it meets the event's conditions.
+     * If the profile is null, the event will be fired as a static event.
      *
      * @param profile the {@link Profile} of the player for whom the event will fire
      * @throws QuestRuntimeException passes the exception from the event up the stack
      */
     public final void fire(final Profile profile) throws QuestRuntimeException {
-        fire(profile, true);
-    }
-
-    /**
-     * Fires an event for the profile if it meets the event's conditions.
-     * If callBukkitEvent is set to true an {@link EventExecutedEvent} or {@link EventExecutedOnProfileEvent} will be called
-     * depending on if a profile is provided or not.
-     *
-     * @param profile         the {@link Profile} of the player for whom the event will fire
-     * @param callBukkitEvent whether to call a Bukkit event
-     * @throws QuestRuntimeException passes the exception from the event up the stack
-     */
-    public final void fire(final Profile profile, final boolean callBukkitEvent) throws QuestRuntimeException {
         final EventID eventID = (EventID) instruction.getID();
         if (profile == null) {
-            handleNullProfile(eventID, callBukkitEvent);
+            handleNullProfile(eventID);
         } else if (profile.getOnlineProfile().isEmpty()) {
-            handleOfflineProfile(profile, eventID, callBukkitEvent);
+            handleOfflineProfile(profile, eventID);
         } else {
-            handleOnlineProfile(profile, eventID, callBukkitEvent);
+            handleOnlineProfile(profile, eventID);
         }
     }
 
-    private void handleNullProfile(final EventID eventID, final boolean callBukkitEvent) throws QuestRuntimeException {
+    private void handleNullProfile(final EventID eventID) throws QuestRuntimeException {
         if (staticness) {
-            fireEvent(null, eventID, callBukkitEvent);
+            fireEvent(null, eventID);
         } else {
             LOG.debug(instruction.getPackage(), "Static event will be fired once for every player:");
             for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
                 if (BetonQuest.conditions(onlineProfile, conditions)) {
                     LOG.debug(instruction.getPackage(), "  Firing this static event for player " + onlineProfile.getProfileName());
-                    fireEvent(onlineProfile, eventID, callBukkitEvent);
+                    fireEvent(onlineProfile, eventID);
                 } else {
                     LOG.debug(instruction.getPackage(), "Event conditions were not met for player " + onlineProfile.getProfileName());
                 }
@@ -143,26 +132,24 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
         }
     }
 
-    private void handleOfflineProfile(final Profile profile, final EventID eventID, final boolean callBukkitEvent) throws QuestRuntimeException {
+    private void handleOfflineProfile(final Profile profile, final EventID eventID) throws QuestRuntimeException {
         if (persistent) {
-            fireEvent(profile, eventID, callBukkitEvent);
+            fireEvent(profile, eventID);
         } else {
             LOG.debug(instruction.getPackage(), "Player " + profile.getPlayer() + " is offline, cannot fire event because it's not persistent.");
         }
     }
 
-    private void handleOnlineProfile(final Profile profile, final EventID eventID, final boolean callBukkitEvent) throws QuestRuntimeException {
+    private void handleOnlineProfile(final Profile profile, final EventID eventID) throws QuestRuntimeException {
         if (BetonQuest.conditions(profile, conditions)) {
-            fireEvent(profile, eventID, callBukkitEvent);
+            fireEvent(profile, eventID);
         } else {
             LOG.debug(instruction.getPackage(), "Event conditions were not met.");
         }
     }
 
-    private void fireEvent(final Profile profile, final EventID eventID, final boolean callBukkitEvent) throws QuestRuntimeException {
-        if (callBukkitEvent) {
-            callBukkitEvent(profile, eventID);
-        }
+    private void fireEvent(final Profile profile, final EventID eventID) throws QuestRuntimeException {
+        callBukkitEvent(profile, eventID);
         handle(profile);
     }
 

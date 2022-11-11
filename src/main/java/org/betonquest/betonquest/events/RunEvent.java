@@ -65,7 +65,7 @@ public class RunEvent extends QuestEvent {
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
         for (final QuestEvent event : internalEvents) {
-            event.fire(profile, true);
+            event.fire(profile);
         }
         return null;
     }
