@@ -197,10 +197,10 @@ Download this example quest and play around with it. This will help you understa
 
 --8<-- "Tutorials/download-complete-files.md"
     ```
-    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/packageStructure/1-MultiFileStructure /packageStructure/MultiFile
+    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Syntax/packageStructure/1-MultiFileStructure /packageStructure/MultiFile
     ```
     You can now find all files needed for this tutorial in this location:
-    "_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/packageStructure_"
+    "_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/packageStructure/MultiFile_"
 
 ## 3. Creating a Quest Package with a single file
 
@@ -281,7 +281,7 @@ Instead, a new folder will be created in the previous package.
 
 --8<-- "Tutorials/download-complete-files.md"
     ```
-    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/packageStructure/2-SingleFileStructure /packageStructure/SingleFile
+    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Syntax/packageStructure/2-SingleFileStructure /packageStructure/SingleFile
     ```
     You can now find all files needed for this tutorial in this location:
     "_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/packageStructure/SingleFile_"
@@ -315,10 +315,10 @@ By creating a folder with a _package.yml_ file inside another package, you creat
 
 --8<-- "Tutorials/download-complete-files.md"
     ```
-    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/packageStructure/3-PackageInPackage /packageStructure/PackageInPackage
+    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Syntax/packageStructure/3-PackageInPackage /packageStructure/PackageInPackage
     ```
     You can now find all files needed for this tutorial in this location:
-    "_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/packageStructure_"
+    "_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/packageStructure/PackageInPackage_"
 
 ## 5. Creating subdirectories in a package
 
@@ -342,10 +342,10 @@ Just create a folder with a name of your choice and start adding files to it!
 
 --8<-- "Tutorials/download-complete-files.md"
     ```
-    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/packageStructure/4-SubDirectory /packageStructure/SubDirectory
+    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Syntax/packageStructure/4-SubDirectory /packageStructure/SubDirectory
     ```
     You can now find all files needed for this tutorial in this location:
-    "_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/packageStructure_"
+    "_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/packageStructure/SubDirectory_"
 
 
 ## Summary
