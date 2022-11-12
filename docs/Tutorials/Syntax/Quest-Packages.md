@@ -10,7 +10,9 @@ This tutorial will teach you about the package managing system, which helps you 
 You can write a small quest in just one file or split a big quest into lots of small files. It's completely
 up to you! 
 
+
 !!! warning "Attention"
+    <!-- TODO: Remove this after the release of BetonQuest 2.0 -->
     If you are using an older version of BetonQuest and just want to convert your 1.12 packages to the new 2.0 format,
     use the [Migration Guide](../../Documentation/Migration.md).
 
