@@ -27,47 +27,43 @@ up to you!
 
 ## 1. General explanation of Quest Packages
 
-This part of the tutorial will teach you how the new quest packages work and how it's different from the 1.12 version. 
+This part of the tutorial will give you a general understanding of quest packages. 
 
-A quest package is a folder that contains all the files that belong to a quest. Since BetonQuest doesn't have its own 
+A quest package is a folder that contains all the files that belong to a "quest". Since BetonQuest doesn't have its own 
 definition of a quest, a quest package could technically contain multiple quests as well. That is up to you.
  
-Let's take a look at the following example of a typical quest in 2.0 and 1.12:
+Let's take a look at the following example of a typical quest in comparison with the basics tutorial:
 
 <div class="grid" markdown>
-!!! success "BetonQuest 2.0.0 Concept"
-    * :material-folder-open: BetonQuest (Plugin Folder)
-        * :material-folder-open: QuestPackages
-             - :material-folder-open: myExampleQuest
-                 - :material-file-star: package.yml
-                 - :material-file: myEventsList1.yml
-                 - :material-file: myEventsList2.yml
-                 - :material-file: importantConditions.yml
-                 - :material-file: normalObjectives.yml
-                 - :material-file: dungeonObjectives.yml
-                 - :material-file: myVariablesFile.yml
-                 - :material-folder-open: conversations
-                      - :material-file: indiana.yml
-                      - :material-file: jones.yml
-             - :material-folder-file: anotherQuest
-             - :material-folder-file: spookyQuest
+!!! example annotate "Typical Quest Structure"
+    - :material-folder-open: myExampleQuest
+        - :material-file-star: package.yml
+        - :material-file: myEventsList1.yml (1)
+        - :material-file: myEventsList2.yml
+        - :material-file: importantConditions.yml
+        - :material-file: normalObjectives.yml
+        - :material-file: dungeonObjectives.yml
+        - :material-file: myVariablesFile.yml
+        - :material-folder-open: conversations
+             - :material-file: indiana.yml
+             - :material-file: jones.yml
 
-!!! warning "BetonQuest 1.12 Concept"
-    * :material-folder-open: BetonQuest (Plugin Folder)
-        * :material-folder-open: tutorialQuest
-            - :material-file-star: main.yml
-            - :material-file: events.yml
-            - :material-file: conditions.yml
-            - :material-file: objectives.yml
-            - :material-file: custom.yml
-            - :material-folder-open: conversations
-                - :material-file: indiana.yml
-                - :material-file: jones.yml
-        * :material-folder-file: anotherQuest
-        * :material-folder-file: spookyQuest
+1. Multiple files with the same content type are possible.
+
+!!! example annotate "Basics Tutorial Structure"
+    * :material-folder-open: tutorialQuest
+        - :material-file-star: package.yml
+        - :material-file: events.yml (1)
+        - :material-file: conditions.yml
+        - :material-file: objectives.yml
+        - :material-folder-open: conversations
+            - :material-file: blacksmith.yml
+            - :material-file: jack.yml
+
+1. There is only one file per content type to make the basics tutorial easier. 
 </div>
 
-In the 1.12, the quests were created right in the BetonQuest plugin folder,
+
 which made other files and folders (_config.yml, messages.yml, logs_ etc.) hard to find.
 Additionally, each quest had to follow a strict layout - one file for one feature type.
 It was not possible to apply your own naming conventions.
@@ -192,7 +188,7 @@ The example will be a small and simple woodcutting quest with a reward upon comp
         
 As you can see: Every feature goes into a section like `events:`, `objectives:`, `conversations:` which are marked in
 {==blue==} in this example quest.
-Instead of file names like in 1.12, BetonQuest now uses these section names to understand the contents of a file.
+BetonQuest uses these section names to understand the contents of a file.
 You can write these sections in any file you want, and it will still work! That's the way you can organize your quests.
 
 !!! note "A note about Sections"
@@ -202,7 +198,7 @@ You can write these sections in any file you want, and it will still work! That'
 
 ## 3. Creating a Quest Package with a single file
 
-Now that you understood how the new _multifile_ system works we will try another example.
+Now that you understood how the _multifile_ system works we will try another example.
 It's the exact same quest but in just one file:
 
 !!! Example
