@@ -11,9 +11,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
-import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.utils.PlayerConverter;
-import org.bukkit.Bukkit;
 
 /**
  * <p>
@@ -25,7 +23,6 @@ import org.bukkit.Bukkit;
  * {@link BetonQuest#registerEvent(String, EventFactory, StaticEventFactory) registerEvent()} method.
  * </p>
  */
-@SuppressWarnings("PMD.CommentRequired")
 @CustomLog
 public abstract class QuestEvent extends ForceSyncHandler<Void> {
 
@@ -106,63 +103,46 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
      * @throws QuestRuntimeException passes the exception from the event up the stack
      */
     public final void fire(final Profile profile) throws QuestRuntimeException {
-        final EventID eventID = (EventID) instruction.getID();
         if (profile == null) {
-            handleNullProfile(eventID);
+            handleNullProfile();
         } else if (profile.getOnlineProfile().isEmpty()) {
-            handleOfflineProfile(profile, eventID);
+            handleOfflineProfile(profile);
         } else {
-            handleOnlineProfile(profile, eventID);
+            handleOnlineProfile(profile);
         }
     }
 
-    private void handleNullProfile(final EventID eventID) throws QuestRuntimeException {
+    private void handleNullProfile() throws QuestRuntimeException {
         if (staticness) {
-            fireEvent(null, eventID);
-        } else {
-            LOG.debug(instruction.getPackage(), "Static event will be fired once for every player:");
-            for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
-                if (BetonQuest.conditions(onlineProfile, conditions)) {
-                    LOG.debug(instruction.getPackage(), "  Firing this static event for player " + onlineProfile.getProfileName());
-                    fireEvent(onlineProfile, eventID);
-                } else {
-                    LOG.debug(instruction.getPackage(), "Event conditions were not met for player " + onlineProfile.getProfileName());
-                }
+            LOG.debug(instruction.getPackage(), "Static event will be fired without a profile.");
+            handle(null);
+            return;
+        }
+        LOG.debug(instruction.getPackage(), "Static event will be fired once for every online profile:");
+        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+            if (!BetonQuest.conditions(onlineProfile, conditions)) {
+                LOG.debug(instruction.getPackage(), "Event conditions were not met for profile " + onlineProfile.getProfileName());
+                return;
             }
+            LOG.debug(instruction.getPackage(), "Firing this static event for profile " + onlineProfile.getProfileName());
+            handle(onlineProfile);
         }
     }
 
-    private void handleOfflineProfile(final Profile profile, final EventID eventID) throws QuestRuntimeException {
+    private void handleOfflineProfile(final Profile profile) throws QuestRuntimeException {
         if (persistent) {
-            fireEvent(profile, eventID);
+            LOG.debug(instruction.getPackage(), "Persistent event will be fired for offline profile.");
+            handle(profile);
         } else {
             LOG.debug(instruction.getPackage(), "Player " + profile.getPlayer() + " is offline, cannot fire event because it's not persistent.");
         }
     }
 
-    private void handleOnlineProfile(final Profile profile, final EventID eventID) throws QuestRuntimeException {
-        if (BetonQuest.conditions(profile, conditions)) {
-            fireEvent(profile, eventID);
-        } else {
-            LOG.debug(instruction.getPackage(), "Event conditions were not met.");
+    private void handleOnlineProfile(final Profile profile) throws QuestRuntimeException {
+        if (!BetonQuest.conditions(profile, conditions)) {
+            LOG.debug(instruction.getPackage(), "Event conditions were not met for profile " + profile.getProfileName());
+            return;
         }
-    }
-
-    private void fireEvent(final Profile profile, final EventID eventID) throws QuestRuntimeException {
-        callBukkitEvent(profile, eventID);
         handle(profile);
     }
-
-    private void callBukkitEvent(final Profile profile, final EventID eventID) {
-        final BetonQuest instance = BetonQuest.getInstance();
-
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(instance, () -> {
-            if (profile == null) {
-                Bukkit.getPluginManager().callEvent(new EventExecutedEvent(eventID));
-            } else {
-                Bukkit.getPluginManager().callEvent(new EventExecutedOnProfileEvent(profile, eventID));
-            }
-        });
-    }
-
 }
