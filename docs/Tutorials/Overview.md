@@ -4,7 +4,7 @@ icon: material/hand-wave
 # :material-hand-wave: Welcome to the Tutorials
 This documentation provides you with a large number of high quality tutorials that will make you a great quest writer.
 
-Help is never far if you get stuck. We have a
+Help is never far away if you get stuck. We have a
 [Discord :fontawesome-brands-discord:](https://discordapp.com/invite/rK6mfHq) for questions.
 
 <div class="grid cards" markdown>
