@@ -180,6 +180,7 @@ nav:
   - 'Tutorials':
       - 'Overview': Tutorials/Overview.md
       - 'Getting Started':
+          - 'About': Tutorials/Getting-Started/About.md
           - 'Setup Guide':
               - 'Setting up a test server': Tutorials/Getting-Started/Setup-Guide/Setting-up-a-test-server.md
               - 'Installing BetonQuest': Tutorials/Getting-Started/Setup-Guide/Installing-BetonQuest.md
@@ -189,8 +190,10 @@ nav:
               - '    Events': Tutorials/Getting-Started/Basics/Events.md
               - 'Objectives': Tutorials/Getting-Started/Basics/Objectives.md
               - 'Conditions': Tutorials/Getting-Started/Basics/Conditions.md
-          - 'Tools':
-              - 'VSCode Extension': Tutorials/Tools/VSCode-Extension.md
+      - 'Tools':
+          - 'VSCode Extension': Tutorials/Tools/VSCode-Extension.md
+      - 'Syntax':
+          - 'Quest Packages': Tutorials/Syntax/Quest-Packages.md
       - 'Frequently Asked Questions':
           - 'General FAQ': Tutorials/Frequently-Asked-Questions.md
   - 'Documentation':
