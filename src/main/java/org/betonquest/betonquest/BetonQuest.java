@@ -248,6 +248,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -434,13 +435,15 @@ public class BetonQuest extends JavaPlugin {
         return isMet;
     }
 
+
     /**
-     * Fires the event described by eventID
+     * Fires an event for the {@link Profile} if it meets the event's conditions.
+     * If the profile is null, the event will be fired as a static event.
      *
+     * @param profile the {@link Profile} for which the event must be executed or null
      * @param eventID ID of the event to fire
-     * @param profile the {@link Profile} of the player who the event is firing for
      */
-    public static void event(final Profile profile, final EventID eventID) {
+    public static void event(@Nullable final Profile profile, final EventID eventID) {
         if (eventID == null) {
             log.debug("Null event ID!");
             return;
@@ -636,6 +639,11 @@ public class BetonQuest extends JavaPlugin {
         return pluginTag;
     }
 
+    /**
+     * Ensures that the given event is called on the main server thread.
+     *
+     * @param event the event to call
+     */
     public void callSyncBukkitEvent(final Event event) {
         if (getServer().isPrimaryThread()) {
             getServer().getPluginManager().callEvent(event);
