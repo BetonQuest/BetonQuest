@@ -1,10 +1,12 @@
 ---
 icon: material/folder-open
 ---
-All quests you create are organized into packages. A single package can contain one or multiple quests - it's up to your
-liking. **It is very important to have a good understand of packages. Read this page carefully.**
+## Packages
 
-## Structure
+All quests you create are organized into packages. A single package can contain one or multiple quests - it's up to your
+liking. **It is very important to have a good understand of packages. Read this section carefully.**
+
+### Structure
 
 A package is a folder with a _package.yml_ file. It must be placed inside the `BetonQuest/QuestPackages` directory.   
 Additionally, you can create extra files or sub-folders inside a package to organize your quest the way you want.
@@ -31,7 +33,7 @@ Let's take a look at a few examples:
         separate packages.<br> 
         <img src="../../_media/content/Documentation/Reference/PackagesNested.png" width=450>
 
-## Defining features
+### Defining features
 
 You can freely define features (events, conversations, items etc.) in all files 
 of a quest package. However, they need to be defined in a section that defines their type.
@@ -64,7 +66,7 @@ The names of these features must be unique in that package, no matter which file
         #...
     ```
     
-## Working across Packages
+### Working across Packages
 
 Accessing features from other packages can be very helpful to link quests together.
 All events, conditions, objectives, items and conversations can be accessed. Just journal entries only work in their own
@@ -72,7 +74,7 @@ package.
 
 You never need to access a specific file since feature names are unique within a package.
 
-### Top-Level Packages
+#### Top-Level Packages
 
 You can access **top-level packages** (placed directly in `QuestPackages`) by prefixing the feature's name with a
 dot and the package name. 
@@ -92,7 +94,7 @@ dot and the package name.
     folder).
     Check the next paragraph to see how it's done for other packages.
 
-### Packages in Sub-folders
+#### Packages in Sub-folders
 
 You can access packages in sub-folders by prefixing the feature's name with
 the package name and the path from the `QuestPackages` folder to the package.
@@ -127,7 +129,7 @@ the package name and the path from the `QuestPackages` folder to the package.
         zombieObjective: "mobkill ZOMBIE 5 events:{==repetable-dailyQuests-dailyQuestOne.startDailyQuest==}"
         ````
     
-### Relative paths
+#### Relative paths
 
 You can specify relative paths to a package instead of full paths. The underscore (`_`) means "one folder up" from 
 the current packages _package.yml_. In turn, a leading dash (`-`) combined with a folder name navigates 
@@ -168,11 +170,42 @@ to match the current location, relative paths will still work.
         zombieObjective: "mobkill ZOMBIE 50 events:{==-weeklyQuestTwo-subQuest.startQuest==}"
         ````
     
-## Disabling Packages
+### Disabling Packages
 
 Each package can be disabled/enabled in the _package.yml_ file, by setting `enabled` to `true` or `false`.
 
 ```YAML
-# Optionally add this to the package.yml
+## Optionally add this to the package.yml
 enabled: false
 ```
+
+## Templates
+
+This is an advanced topic that you should not start with before you get used to the [packages](#packages) concept.
+You should understand how to create packages and how to use them before you start using templates.
+Templates are a way to create packages that can be used as a base for other packages to reduce the amount of
+repetitive work. Therefore, they are a great way to centralize logic or create utilities.
+
+### Using Templates
+Templates work exactly like packages, except that they are placed in the `BetonQuest/QuestTemplates` folder instead of
+the `BetonQuest/QuestPackages` folder and that they are not loaded as a ready to use package.
+Instead, they are used as a base for other packages by referring to them in the `templates` section.
+
+````YAML
+templates:
+  - MyTemplate
+  - SecondTemplate
+````
+
+If you use the above in a package, the `MyTemplate` and `SecondTemplate` templates would be used as a base for
+the package. This means that all the events, objectives, conditions, etc. from the templates would be added to the
+package. If the package already contains an event/objective/condition with the same name as one from the template,
+the package's events, objectives, conditions, etc. will be used instead of the one from the template.
+
+If the same events, objectives, conditions, etc. is defined in multiple templates, the one from the lists first template
+will be used.
+
+You can also use templates in templates. Also in this case, the events, objectives, conditions, etc. that are defined
+in the current template will be used instead of the ones from the template that is being used as a base.
+
+
