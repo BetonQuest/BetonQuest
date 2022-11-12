@@ -339,8 +339,7 @@ As long as you don't create a _package.yml_ file in a subdirectory, it will belo
 in the directory tree.
 
 !!! warning "Directory names with spaces"
-    The only limitation for directory names are spaces. These cannot be used. Consider using e.g. `Daily-Quests` instead of
-    `Daily Quests`.
+    The only limitation for directory names are spaces. These cannot be used. 
 
 --8<-- "Tutorials/download-complete-files.md"
     ```
@@ -352,11 +351,5 @@ in the directory tree.
 
 ## Summary
 
-In this tutorial about quest packages tutorial you've learned how to efficiently organise your quests.
- Let's sum it up: 
-
-* Quest packages are defined by a _package.yml_ file.
-* You can create a quest package by creating a folder and adding a _package.yml_ file to it.
-* Files inside quest packages (apart from the _package.yml_) do not follow any naming conventions.
-* You can create a subpackage by creating a folder inside a quest package and adding a _package.yml_ file to it.
+You have learned how to structure your quest packages. Now you are able to pick the best structure for your quests. 
 ---
