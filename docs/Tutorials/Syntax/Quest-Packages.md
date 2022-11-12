@@ -81,22 +81,29 @@ folder.
 
 ## 2. Creating a Quest Package with multiple files
 
-We will now explore, how to work with this system. After this you will know how to create
+We will now explore how to work with this system. After this you will know how to create
 your own quest packages!
 
-We will begin as usual by creating the file structure. Later on we will add content to it.
-Create your own structure in the _QuestPackages_ folder. I'm using something similar to the example from above:
+Download this example quest and read the following explanation. Play around with it! This will help you understand it.
 
-* :material-folder-open: QuestPackages
-    - :material-folder-open: myExampleQuest
-        - :material-file: package.yml
-        - :material-file: myEventsList1.yml
-        - :material-file: myEventsList2.yml
-        - :material-file: importantConditions.yml
-        - :material-file: myAwesomeObjectives.yml
-        - :material-file: myVariablesFile.yml
-        - :material-folder-open: conversations
-            - :material-file: jones.yml
+--8<-- "Tutorials/download-complete-files.md"
+    ```
+    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Syntax/packageStructure/1-MultiFileStructure /packageStructure/MultiFile
+    ```
+    You can now find all files needed for this tutorial in this location:
+    "_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/packageStructure/MultiFile_"
+
+!!! example "File Structure"
+    * :material-folder-open: QuestPackages
+        - :material-folder-open: myExampleQuest
+            - :material-file: package.yml
+            - :material-file: myEventsList1.yml
+            - :material-file: myEventsList2.yml
+            - :material-file: importantConditions.yml
+            - :material-file: myAwesomeObjectives.yml
+            - :material-file: myVariablesFile.yml
+            - :material-folder-open: conversations
+                - :material-file: jones.yml
 
 Let's fill those files with a little quest to make it a bit clearer for you!
 The example will be a small and simple woodcutting quest with a reward upon completion: 
@@ -192,15 +199,6 @@ You can write these sections in any file you want, and it will still work! That'
     While you can have multiple sections in one file, you can't have multiple sections with the same name.
     For example, you can't have two `events:` sections in one file. If you do, the second one will overwrite the first one.
     You can however have `events:` sections in two different files. In this case, the events from both files will be loaded.
-
-Download this example quest and play around with it. This will help you understand it.
-
---8<-- "Tutorials/download-complete-files.md"
-    ```
-    /bq download BetonQuest/Quest-Tutorials main QuestPackages /Syntax/packageStructure/1-MultiFileStructure /packageStructure/MultiFile
-    ```
-    You can now find all files needed for this tutorial in this location:
-    "_YOUR-SERVER-LOCATION/plugins/BetonQuest/QuestPackages/packageStructure/MultiFile_"
 
 ## 3. Creating a Quest Package with a single file
 
