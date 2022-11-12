@@ -89,14 +89,14 @@ Create your own structure in the _QuestPackages_ folder. I'm using something sim
 
 * :material-folder-open: QuestPackages
     - :material-folder-open: myExampleQuest
-      - :material-file: package.yml
-      - :material-file: myEventsList1.yml
-      - :material-file: myEventsList2.yml
-      - :material-file: importantConditions.yml
-      - :material-file: myAwesomeObjectives.yml
-      - :material-file: myVariablesFile.yml
-      - :material-folder-open: conversations
-          - :material-file: jones.yml
+        - :material-file: package.yml
+        - :material-file: myEventsList1.yml
+        - :material-file: myEventsList2.yml
+        - :material-file: importantConditions.yml
+        - :material-file: myAwesomeObjectives.yml
+        - :material-file: myVariablesFile.yml
+        - :material-folder-open: conversations
+            - :material-file: jones.yml
 
 Let's fill those files with a little quest to make it a bit clearer for you!
 The example will be a small and simple woodcutting quest with a reward upon completion: 
