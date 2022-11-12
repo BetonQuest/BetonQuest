@@ -2,7 +2,7 @@
 icon: material/folder-open
 ---
 All quests you create are organized into packages. A single package can contain one or multiple quests - it's up to your
-liking. **It is very important to have a good understand of packages. Read this section carefully.**
+liking. **It is very important to have a good understand of packages. Read this page carefully.**
 
 ## Structure
 
@@ -10,8 +10,6 @@ A package is a folder with a _package.yml_ file. It must be placed inside the `B
 Additionally, you can create extra files or sub-folders inside a package to organize your quest the way you want.
 Sub-folders of packages that contain a _package.yml_ are separate packages, they do not belong to the surrounding
 package in any way. 
-
-It is allowed to create folders that are not packages anywhere in your `QuestPackages` directory. 
  
 Let's take a look at a few examples:
 
@@ -29,7 +27,7 @@ Let's take a look at a few examples:
         
     === "Nested Packages"
         The package `weeklyQuests` is defined by the _package.yml_. It contains two sub-folders, they are **not** part
-        of the package. This is the case because they have their own _package.yml_ files. Because of that they are 
+        of the package `weeklyQuests`. This is the case because they have their own _package.yml_ files. Because of that they are 
         separate packages.<br> 
         <img src="../../_media/content/Documentation/Reference/PackagesNested.png" width=450>
 
