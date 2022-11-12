@@ -908,12 +908,12 @@ public class BetonQuest extends JavaPlugin {
         registerScheduleType("realtime-cron", RealtimeCronSchedule.class, new RealtimeCronScheduler(this, lastExecutionCache));
 
         new Compatibility();
+        globalData = new GlobalData();
 
         // schedule quest data loading on the first tick, so all other
         // plugins can register their types
         Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
             loadData();
-            globalData = new GlobalData();
             for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
                 final PlayerData playerData = new PlayerData(onlineProfile);
                 playerDataMap.put(onlineProfile, playerData);

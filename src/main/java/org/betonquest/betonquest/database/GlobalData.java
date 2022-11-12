@@ -23,6 +23,9 @@ public class GlobalData implements TagData {
     private final List<String> globalTags = new ArrayList<>();
     private final List<Point> globalPoints = new ArrayList<>();
 
+    /**
+     * Loads all global data from the database.
+     */
     public GlobalData() {
         loadAllGlobalData();
     }
@@ -32,20 +35,16 @@ public class GlobalData implements TagData {
      */
     public final void loadAllGlobalData() {
         try {
-            // get connection to the database
             final Connector con = new Connector();
-            try (ResultSet res2 = con.querySQL(QueryType.LOAD_ALL_GLOBAL_TAGS);
-                 ResultSet res4 = con.querySQL(QueryType.LOAD_ALL_GLOBAL_POINTS)) {
-                // put them into the list
-                while (res2.next()) {
-                    globalTags.add(res2.getString("tag"));
+            try (ResultSet globalTags = con.querySQL(QueryType.LOAD_ALL_GLOBAL_TAGS);
+                 ResultSet globalPoints = con.querySQL(QueryType.LOAD_ALL_GLOBAL_POINTS)) {
+                while (globalTags.next()) {
+                    this.globalTags.add(globalTags.getString("tag"));
                 }
-                // put them into the list
-                while (res4.next()) {
-                    globalPoints.add(new Point(res4.getString("category"), res4.getInt("count")));
+                while (globalPoints.next()) {
+                    this.globalPoints.add(new Point(globalPoints.getString("category"), globalPoints.getInt("count")));
                 }
-                // log data to debugger
-                LOG.debug("There are " + globalTags.size() + " global_tags and " + globalPoints.size()
+                LOG.debug("There are " + this.globalTags.size() + " global_tags and " + this.globalPoints.size()
                         + " global_points loaded");
             }
         } catch (final SQLException e) {
@@ -75,7 +74,7 @@ public class GlobalData implements TagData {
     }
 
     /**
-     * Adds the specified tag to global list. It won't double it however.
+     * Adds the specified tag to global list. It won't double it, however.
      *
      * @param tag tag to add
      */
