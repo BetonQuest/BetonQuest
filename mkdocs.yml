@@ -200,6 +200,7 @@ nav:
       - 'General':
           - 'Conversations': Documentation/Conversations.md
           - 'Reference': Documentation/Reference.md
+          - 'Packages & Templates': Documentation/Packages-&-Templates.md
       - 'Types':
           - 'Objectives List': Documentation/Objectives-List.md
           - 'Events List': Documentation/Events-List.md
