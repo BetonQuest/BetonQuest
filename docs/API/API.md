@@ -70,8 +70,6 @@ All variables need to extend `Variable` class. In the constructor you must parse
 
 The plugin has a static method for firing events - `event(String playerID, EventID eventID)`.
 
-There is also an extended variant - `event(String playerID, EventID eventID, boolean callBukkitEvent)` which allows you
-to suppress the  EventExecutedEvent / EventExecutedOnProfileEvent that will be called by default.
 You can't fire an event directly using an instruction string.
 
 ```JAVA title="Example"
