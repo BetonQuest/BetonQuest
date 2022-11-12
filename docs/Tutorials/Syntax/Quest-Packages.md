@@ -25,62 +25,63 @@ up to you!
     * [Defining Features Reference](../../Documentation/Reference.md#defining-features)
 </div>
 
-## 1. General explanation of Quest Packages
-
-This part of the tutorial will give you a general understanding of quest packages. 
+## 1. What is a Quest Package?
 
 A quest package is a folder that contains all the files that belong to a "quest". Since BetonQuest doesn't have its own 
-definition of a quest, a quest package could technically contain multiple quests as well. That is up to you.
+definition of a quest, a quest package could technically also contain multiple quests. That is up to you.
+
+It is created by placing a _package.yml_ file inside a folder.
+If a folder lacks the _package.yml_, it will be considered as a part of another package that is located in a folder
+above it.
+
+The files inside a quest package can be organized in any way you like. There are no limitations on file names or file count.
+The only thing that matters is that the _package.yml_ file is present. 
  
-Let's take a look at the following example of a typical quest in comparison with the basics tutorial:
+Let's compare the structure of the basic tutorial to one of a realistic quest package: 
 
 <div class="grid" markdown>
-!!! example annotate "Typical Quest Structure"
-    - :material-folder-open: myExampleQuest
-        - :material-file-star: package.yml
-        - :material-file: myEventsList1.yml (1)
-        - :material-file: myEventsList2.yml
-        - :material-file: importantConditions.yml
-        - :material-file: normalObjectives.yml
-        - :material-file: dungeonObjectives.yml
-        - :material-file: myVariablesFile.yml
-        - :material-folder-open: conversations
-             - :material-file: indiana.yml
-             - :material-file: jones.yml
-
-1. Multiple files with the same content type are possible.
-
 !!! example annotate "Basics Tutorial Structure"
     * :material-folder-open: tutorialQuest
-        - :material-file-star: package.yml
-        - :material-file: events.yml (1)
+        - :material-file-star: package.yml (1)
+        - :material-file: events.yml  (2)
         - :material-file: conditions.yml
         - :material-file: objectives.yml
         - :material-folder-open: conversations
             - :material-file: blacksmith.yml
             - :material-file: jack.yml
 
-1. There is only one file per content type to make the basics tutorial easier. 
+1. The package.yml file is required to make the folder a quest package.
+2. We created only one file per content type to make the basics tutorial easier. In a real quest package you would
+   probably have multiple files per content type.
+
+!!! example annotate "Typical Quest Structure"
+    - :material-folder-open: myExampleQuest
+        - :material-file-star: package.yml (1)
+        - :material-file: myEventsList1.yml (2)
+        - :material-file: myEventsList2.yml (3)
+        - :material-file: importantConditions.yml
+        - :material-file: normalObjectives.yml (4)
+        - :material-file: dungeonObjectives.yml
+        - :material-file: myVariablesFile.yml
+        - :material-folder-open: conversations (5)
+             - :material-file: indiana.yml
+             - :material-file: jones.yml
+             
+1. The package.yml file is required to make a folder a quest package. In this case the package is called `myExampleQuest`
+   because the folder it is located in is called `myExampleQuest`.
+2. Multiple files with the same content type are possible and typically for bigger quests.
+3. Multiple files with the same content type are possible and typically for bigger quests.
+4. The files can have ANY name you want as the content type is defined in the file itself. How that works is explained
+   later in this tutorial.
+5. Since this folder does not contain a _package.yml_, it will be considered as a part of the quest package.
+ 
 </div>
-
-
-which made other files and folders (_config.yml, messages.yml, logs_ etc.) hard to find.
-Additionally, each quest had to follow a strict layout - one file for one feature type.
-It was not possible to apply your own naming conventions.
-
-This is the opposite in 2.0: You can freely name your files and folders, and you can have as many files as you want.
-
-Additionally, a package is no longer defined by a _main.yml_ file inside a folder.
-Instead, we use a _package.yml_ file inside a folder.
-If a folder lacks the _package.yml_, it will be considered as a part of another package that is located in a parent
-folder. 
 
 ## 2. Creating a Quest Package with multiple files
 
-We will now explore how to work with this system. After this you will know how to create
-your own quest packages!
-
-Download this example quest and read the following explanation. Play around with it! This will help you understand it.
+Download this example quest and take a look at the following structure overview and explanation.
+It's a simple woodcutting quest with a reward upon completion.
+Then play around with this system to get a feel for it.
 
 --8<-- "Tutorials/download-complete-files.md"
     ```
@@ -100,11 +101,8 @@ Download this example quest and read the following explanation. Play around with
             - :material-file: myVariablesFile.yml
             - :material-folder-open: conversations
                 - :material-file: jones.yml
-
-Let's fill those files with a little quest to make it a bit clearer for you!
-The example will be a small and simple woodcutting quest with a reward upon completion: 
-
-!!! Example
+ 
+!!! example "File Contents"
 
     === "package.yml"
         ```YAML
@@ -195,6 +193,8 @@ You can write these sections in any file you want, and it will still work! That'
     While you can have multiple sections in one file, you can't have multiple sections with the same name.
     For example, you can't have two `events:` sections in one file. If you do, the second one will overwrite the first one.
     You can however have `events:` sections in two different files. In this case, the events from both files will be loaded.
+    
+    You also cannot have two features (e.g. events) with the same name in one package, even if those are in different files.
 
 ## 3. Creating a Quest Package with a single file
 
@@ -333,6 +333,12 @@ Let me first show you the example for it:
 
 You can create as many subdirectories in your quest packages as you like.
 Just create a folder with a name of your choice and start adding files to it!
+As long as you don't create a _package.yml_ file in a subdirectory, it will belong to the package defined further up 
+in the directory tree.
+
+!!! warning "Directory names with spaces"
+    The only limitation for directory names are spaces. These cannot be used. Consider using e.g. `Daily-Quests` instead of
+    `Daily Quests`.
 
 --8<-- "Tutorials/download-complete-files.md"
     ```

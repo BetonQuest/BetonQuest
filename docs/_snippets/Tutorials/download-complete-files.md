@@ -1,2 +1,2 @@
 ??? hint "Download the files for this tutorial"
-    If you are too lazy to manually create the files, just download them with the link below:
+    Instead of manually creating / filling the files, just download them using the command below:
