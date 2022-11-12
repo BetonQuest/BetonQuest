@@ -318,7 +318,7 @@ By creating a folder with a _package.yml_ file inside another package, you creat
 
 ## 5. Creating subdirectories in a package
 
-Now you know, that it is possible to do nearly everything to structure your quests,
+Now you know, that it is possible to do nearly everything to structure your quests.
 But there is one more possibility: _subdirectories_.
 Let me first show you the example for it:
 
