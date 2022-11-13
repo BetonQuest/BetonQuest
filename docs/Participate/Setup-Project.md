@@ -69,7 +69,8 @@ a "Maven" tab on the right side of the editor if that's the case. Otherwise, do 
 First, open the "Project" tab on the left site. Then right-click the `pom.xml` file in the projects root folder. 
 Select "Add as Maven Project". 
 
-To build the BetonQuest jar, you simply need to run `mvn verify`.
+At this point it is always recommended to run `mvn verify` to check if everything builds fine, before you did any changes.
+To build the BetonQuest jar, you also run `mvn verify`.
 You can do this from the command line or use IntelliJ's `Maven` tab (double-click on `BetonQuest/Lifecycle/verify`).
 You can then find a `BetonQuest.jar` in the newly created folder `/target/artifacts`.
 
