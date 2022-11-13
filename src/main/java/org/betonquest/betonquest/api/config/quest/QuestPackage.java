@@ -59,7 +59,7 @@ public interface QuestPackage {
      * If the {@link ConfigAccessor} for the {@code relativePath} does not exist, a new one is created.
      *
      * @param relativePath the relative path from the root of the {@link QuestPackage}
-     * @return the already existing or new created {@link ConfigAccessor}
+     * @return the already existing or newly created {@link ConfigAccessor}
      * @throws InvalidConfigurationException thrown if there was an exception creating the new {@link ConfigAccessor}
      * @throws FileNotFoundException         thrown if the file for the new {@link ConfigAccessor} could not be found
      */

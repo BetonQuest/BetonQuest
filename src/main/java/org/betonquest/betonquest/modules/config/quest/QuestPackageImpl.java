@@ -25,7 +25,7 @@ public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
     /**
      * Creates a new {@link QuestPackage}.  For more information see {@link Quest}.
      *
-     * @param questPath the path that address this {@link QuestPackage}
+     * @param questPath the path that addresses this {@link QuestPackage}
      * @param root      the root file of this {@link QuestPackage}
      * @param files     all files contained by this {@link QuestPackage} except the {@code questFile}
      * @throws InvalidConfigurationException thrown if a {@link QuestPackage} could not be created

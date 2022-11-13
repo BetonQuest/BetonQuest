@@ -17,22 +17,22 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * This is an implementation of {@link QuestTemplate}, that gets and applies templates.
+ * This is an implementation of {@link Quest}, that gets and applies templates.
  */
 public class QuestTemplate extends Quest {
     /**
-     * A list of all templates that are applied to this {@link QuestTemplate}
+     * A list of all templates that are applied to this {@link QuestTemplate}.
      */
     private final Set<String> templates;
     /**
-     * The final {@link MultiConfiguration} that represents this {@link QuestTemplate}
+     * The final {@link MultiConfiguration} that represents this {@link QuestTemplate}.
      */
     private MultiConfiguration templateConfig;
 
     /**
      * Creates a new {@link QuestTemplate}. For more information see {@link Quest}.
      *
-     * @param questPath the path that address this {@link QuestTemplate}
+     * @param questPath the path that addresses this {@link QuestTemplate}
      * @param root      the root file of this {@link QuestTemplate}
      * @param files     all files contained by this {@link QuestTemplate} except the {@code questFile}
      * @throws InvalidConfigurationException thrown if a {@link org.betonquest.betonquest.api.config.ConfigAccessor}
@@ -68,10 +68,10 @@ public class QuestTemplate extends Quest {
     }
 
     /**
-     * Applies given {@link QuestTemplate}s to this {@link QuestTemplate}.
+     * Applies the given {@link QuestTemplate}s to this {@link QuestTemplate}.
      * The given QuestTemplates should contain all templates that are available.
      * The method will pick the templates from the given list.
-     * If a template is not available, a {@link InvalidConfigurationException} will be thrown.
+     * If a template is not available, an {@link InvalidConfigurationException} will be thrown.
      *
      * @param questTemplates The list of all available {@link QuestTemplate}s
      * @throws InvalidConfigurationException thrown if a template is not available
