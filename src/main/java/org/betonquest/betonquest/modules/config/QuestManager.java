@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Class tp loads all {@link QuestTemplate}s and {@link QuestPackage}s from the root directory and apply all templates.
+ * Class to load all {@link QuestTemplate}s and {@link QuestPackage}s from the root directory and apply all templates.
  */
 @CustomLog
 @SuppressWarnings("PMD.DataClass")
