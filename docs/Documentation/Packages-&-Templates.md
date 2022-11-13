@@ -4,7 +4,7 @@ icon: material/folder-open
 ## Packages
 
 All quests you create are organized into packages. A single package can contain one or multiple quests - it's up to your
-liking. **It is very important to have a good understand of packages. Read this section carefully.**
+liking. **It is very important to have a good understand of packages. Read this page carefully.**
 
 ### Structure
 
@@ -181,14 +181,13 @@ enabled: false
 
 ## Templates
 
-This is an advanced topic that you should not start with before you get used to the [packages](#packages) concept.
-You should understand how to create packages and how to use them before you start using templates.
+You should understand how to create [packages](#packages) and how to use them before you start using templates.
 Templates are a way to create packages that can be used as a base for other packages to reduce the amount of
 repetitive work. Therefore, they are a great way to centralize logic or create utilities.
 
 ### Using Templates
-Templates work exactly like packages, except that they are placed in the `BetonQuest/QuestTemplates` folder instead of
-the `BetonQuest/QuestPackages` folder and that they are not loaded as a ready to use package.
+Templates work exactly like packages, except that they are placed in the "_BetonQuest/QuestTemplates_" folder instead of
+the "_BetonQuest/QuestPackages_" folder and that they are not loaded as a ready to use package.
 Instead, they are used as a base for other packages by referring to them in the `templates` section.
 
 ````YAML
