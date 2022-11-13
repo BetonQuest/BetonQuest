@@ -128,7 +128,7 @@ jobs:
         run: |
           sed -i "s~#end_of_line = ~end_of_line = ~g" ./.editorconfig
       - name: Set mirror for all repositories in settings.xml
-        uses: whelk-io/maven-settings-xml-action@v20
+        uses: whelk-io/maven-settings-xml-action@v21
         with:
           mirrors: |
             [
@@ -259,7 +259,7 @@ jobs:
           git apply target/artifacts/changes.patch
           rm target/artifacts/changes.patch
       - name: Set mirror for all repositories in settings.xml
-        uses: whelk-io/maven-settings-xml-action@v20
+        uses: whelk-io/maven-settings-xml-action@v21
         with:
           servers: |
             [
