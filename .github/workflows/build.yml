@@ -33,7 +33,7 @@ jobs:
         run: |
           PREVIOUS_VERSION_TAG=$(git tag -l ${MAVEN_VERSION}-build-number-* | head -n 1)
           echo "PREVIOUS_VERSION_TAG=$PREVIOUS_VERSION_TAG" >> $GITHUB_ENV
-          echo ::set-output name=previous_version_tag::$PREVIOUS_VERSION_TAG
+          echo "previous_version_tag=$PREVIOUS_VERSION_TAG" >> $GITHUB_OUTPUT
           echo "Collected the previous build-number tag. The tag is '$PREVIOUS_VERSION_TAG'"
       - name: Check for difference in docs only
         id: save_changes
@@ -43,7 +43,7 @@ jobs:
           DIFF_INSIDE=$(git diff --quiet ${PREVIOUS_VERSION_TAG} -- docs/ && echo Nothing || echo Changes)
           if [[ $DIFF_OUTSIDE == Nothing && $DIFF_INSIDE == Changes ]]; then CHANGES_IN_DOCS_ONLY=true; else CHANGES_IN_DOCS_ONLY=false; fi
           echo "CHANGES_IN_DOCS_ONLY=$CHANGES_IN_DOCS_ONLY" >> $GITHUB_ENV
-          echo ::set-output name=changes_in_docs_only::$CHANGES_IN_DOCS_ONLY
+          echo "changes_in_docs_only=$CHANGES_IN_DOCS_ONLY" >> $GITHUB_OUTPUT
           echo "Check for difference in docs only. The value is '$CHANGES_IN_DOCS_ONLY'"
       - name: Generate build number for Development Build
         if: "github.repository == 'BetonQuest/BetonQuest' && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v') ) && env.CHANGES_IN_DOCS_ONLY == 'false'"
@@ -76,12 +76,12 @@ jobs:
         id: save_version
         run: |
           echo "The version is '$MAVEN_VERSION'"
-          echo ::set-output name=version::$MAVEN_VERSION
+          echo "version=$MAVEN_VERSION" >> $GITHUB_OUTPUT
       - name: Save version type to output variable
         id: save_type
         run: |
           echo "The version type is '$VERSION_TYPE'"
-          echo ::set-output name=version_type::$VERSION_TYPE
+          echo "version=$VERSION_TYPE" >> $GITHUB_OUTPUT
 
   build-artifacts:
     name: Build Artifacts
