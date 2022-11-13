@@ -28,28 +28,28 @@ public class QuestManager {
      */
     public static final String PACKAGE_SEPARATOR = "-";
     /**
-     * Name of the folder there to place {@link QuestTemplate}s in.
+     * Name of the folder to place {@link QuestTemplate}s in.
      */
     public static final String QUEST_TEMPLATES_FOLDER = "QuestTemplates";
     /**
-     * Name of the folder there to place {@link QuestPackage}s in.
+     * Name of the folder to place {@link QuestPackage}s in.
      */
     public static final String QUEST_PACKAGES_FOLDER = "QuestPackages";
     /**
-     * The type name of the file that indicates a file for a quest in a quest folder
+     * The type name of the file that indicates a file for a quest in a quest folder.
      */
     public static final String FILE_TYPE_INDICATOR = ".yml";
     /**
-     * The name of the file that indicates a quest folder
+     * The name of the file that indicates a quest folder.
      */
     public static final String FILE_NAME_INDICATOR = "package";
     /**
-     * All loaded {@link QuestPackage}s
+     * All loaded {@link QuestPackage}s.
      */
     private final Map<String, QuestPackage> packages;
 
     /**
-     * Loads all {@link QuestTemplate}s and {@link QuestPackage}s from the root directory and apply all templates.
+     * Loads all {@link QuestTemplate}s and {@link QuestPackage}s from the root directory and applies all templates.
      *
      * @param root The root directory where to create the root folders for templates and packages
      */
@@ -87,7 +87,7 @@ public class QuestManager {
     }
 
     /**
-     * @return the map of packages and their names
+     * @return a map of packages and their names
      */
     public Map<String, QuestPackage> getPackages() {
         return packages;
@@ -142,7 +142,7 @@ public class QuestManager {
         }
         final File[] files = file.listFiles();
         if (files == null) {
-            throw new IOException("Invalid list of file for directory '\" + file.getPath() + \"'!");
+            throw new IOException("Invalid list of files for directory '" + file.getPath() + "'!");
         }
         return files;
     }
@@ -162,7 +162,7 @@ public class QuestManager {
      */
     private interface QuestCreator {
         /**
-         * Method top create and register a {@link Quest}
+         * Creates and registers a {@link Quest}.
          *
          * @param questPath    The path to this {@link Quest}
          * @param relativeRoot the root file of this {@link Quest}
