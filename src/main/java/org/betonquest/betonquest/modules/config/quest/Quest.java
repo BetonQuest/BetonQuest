@@ -18,25 +18,25 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * This is a basic implementation that manage the files of a quest.
+ * This is a basic implementation for managing a quest's files.
  */
 @SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
 @CustomLog
 public abstract class Quest {
     /**
-     * The merged {@link MultiConfiguration} that represents this {@link Quest}
+     * The merged {@link MultiConfiguration} that represents this {@link Quest}.
      */
     protected final MultiConfiguration config;
     /**
-     * The address of this {@link Quest}
+     * The address of this {@link Quest}.
      */
     private final String questPath;
     /**
-     * The root folder of this {@link Quest}
+     * The root folder of this {@link Quest}.
      */
     private final File root;
     /**
-     * The list of all {@link ConfigAccessor}s of this {@link Quest}
+     * The list of all {@link ConfigAccessor}s of this {@link Quest}.
      */
     private final List<ConfigAccessor> configs;
 
@@ -45,9 +45,9 @@ public abstract class Quest {
      * <p>
      * All {@code files} are merged into one {@link MultiConfiguration} config.
      *
-     * @param questPath the path that address this {@link Quest}
+     * @param questPath the path that addresses this {@link Quest}
      * @param root      the root file of this {@link Quest}
-     * @param files     all files contained by this {@link Quest}
+     * @param files     all files contained in this {@link Quest}
      * @throws InvalidConfigurationException thrown if a {@link ConfigAccessor} could not be created
      *                                       or an exception occurred while creating the {@link MultiConfiguration}
      * @throws FileNotFoundException         thrown if a file could not be found during the creation
@@ -121,7 +121,7 @@ public abstract class Quest {
      * If the {@link ConfigAccessor} for the {@code relativePath} does not exist, a new one is created.
      *
      * @param relativePath the relative path from the root of the package
-     * @return the already existing or new created {@link ConfigAccessor}
+     * @return the already existing or newly created {@link ConfigAccessor}
      * @throws InvalidConfigurationException thrown if there was an exception creating the new {@link ConfigAccessor}
      * @throws FileNotFoundException         thrown if the file for the new {@link ConfigAccessor} could not be found
      */
