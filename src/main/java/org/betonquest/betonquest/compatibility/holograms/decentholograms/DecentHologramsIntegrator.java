@@ -41,7 +41,7 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
     public void hook() throws HookException {
         super.hook();
         if (!Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            LOG.warn("Holograms from DecentHolograms will not be able to use BetonQuest variables in text-lines" +
+            LOG.warn("Holograms from DecentHolograms will not be able to use BetonQuest variables in text lines " +
                     "without PlaceholderAPI plugin! Install it to use holograms with variables!");
         }
     }

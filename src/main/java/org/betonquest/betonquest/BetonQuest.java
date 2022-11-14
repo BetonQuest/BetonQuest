@@ -576,6 +576,10 @@ public class BetonQuest extends JavaPlugin {
         return null;
     }
 
+    public static boolean isVariableType(final String type) {
+        return VARIABLE_TYPES.get(type) != null;
+    }
+
     /**
      * Resolves variables in the supplied text and returns them as a list of
      * instruction strings, including % characters. Variables are unique, so if
