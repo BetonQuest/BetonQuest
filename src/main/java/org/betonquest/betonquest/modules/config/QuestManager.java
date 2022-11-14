@@ -77,7 +77,7 @@ public class QuestManager {
                     LOG.warn("Error while loading '" + packagesDir.getPath() + "'! Reason: " + e.getMessage(), e);
                     return;
                 }
-                if (quest.getConfig().getBoolean("enabled", true)) {
+                if (quest.getConfig().getBoolean("package.enabled", true)) {
                     packages.put(quest.getQuestPath(), quest);
                 }
             });

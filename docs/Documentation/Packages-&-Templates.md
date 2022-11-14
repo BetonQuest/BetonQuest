@@ -76,7 +76,7 @@ You never need to access a specific file since feature names are unique within a
 
 #### Top-Level Packages
 
-You can access **top-level packages** (placed directly in `QuestPackages`) by prefixing the feature's name with a
+You can access **top-level packages** (placed directly in "_QuestPackages_") by prefixing the feature's name with a
 dot and the package name. 
 
 ??? example
@@ -97,7 +97,7 @@ dot and the package name.
 #### Packages in Sub-folders
 
 You can access packages in sub-folders by prefixing the feature's name with
-the package name and the path from the `QuestPackages` folder to the package.
+the package name and the path from the "_QuestPackages_" folder to the package.
 
 ??? example
 
@@ -132,7 +132,7 @@ the package name and the path from the `QuestPackages` folder to the package.
 #### Relative paths
 
 You can specify relative paths to a package instead of full paths. The underscore (`_`) means "one folder up" from 
-the current packages _package.yml_. In turn, a leading dash (`-`) combined with a folder name navigates 
+the current packages "_package.yml_". In turn, a leading dash (`-`) combined with a folder name navigates 
 "one folder down" into the given folder.
 Each package in the path must be seperated by a dash.
 
@@ -172,11 +172,12 @@ to match the current location, relative paths will still work.
     
 ### Disabling Packages
 
-Each package can be disabled/enabled in the _package.yml_ file, by setting `enabled` to `true` or `false`.
+Each package can optionally be disabled/enabled in the "_package.yml_" file, by setting `enabled` inside the `package` section to `true` or `false`.
 
 ```YAML
-## Optionally add this to the package.yml
-enabled: false
+package:
+  ## Optionally add this to the package.yml
+  enabled: false
 ```
 
 ## Templates
@@ -188,12 +189,13 @@ repetitive work. Therefore, they are a great way to centralize logic or create u
 ### Using Templates
 Templates work exactly like packages, except that they are placed in the "_BetonQuest/QuestTemplates_" folder instead of
 the "_BetonQuest/QuestPackages_" folder and that they are not loaded as a ready to use package.
-Instead, they are used as a base for other packages by referring to them in the `templates` section.
+Instead, they are used as a base for other packages by referring to them in the `templates` section inside the `package` section.
 
 ````YAML
-templates:
-  - MyTemplate
-  - SecondTemplate
+package:
+  templates:
+    - MyTemplate
+    - SecondTemplate
 ````
 
 If you use the above in a package, the `MyTemplate` and `SecondTemplate` templates would be used as a base for

@@ -81,7 +81,7 @@ public class QuestTemplate extends Quest {
             return;
         }
 
-        final List<String> templatePaths = config.getStringList("templates");
+        final List<String> templatePaths = config.getStringList("package.templates");
         if (templatePaths.isEmpty()) {
             templateConfig = config;
             return;
