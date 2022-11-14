@@ -4,13 +4,13 @@ icon: material/folder-open
 ## Packages
 
 All quests you create are organized into packages. A single package can contain one or multiple quests - it's up to your
-liking. **It is very important to have a good understand of packages. Read this page carefully.**
+liking. **It is very important to have a good understand of packages. Read the packages chapter carefully.**
 
 ### Structure
 
-A package is a folder with a _package.yml_ file. It must be placed inside the `BetonQuest/QuestPackages` directory.   
+A package is a folder with a "_package.yml_" file. It must be placed inside the "_BetonQuest/QuestPackages_" directory.   
 Additionally, you can create extra files or sub-folders inside a package to organize your quest the way you want.
-Sub-folders of packages that contain a _package.yml_ are separate packages, they do not belong to the surrounding
+Sub-folders of packages that contain a "_package.yml_" are separate packages, they do not belong to the surrounding
 package in any way. 
  
 Let's take a look at a few examples:
@@ -181,7 +181,7 @@ enabled: false
 
 ## Templates
 
-You should understand how to create [packages](#packages) and how to use them before you start using templates.
+You should have experience creating and using [packages](#packages) before you start using templates.
 Templates are a way to create packages that can be used as a base for other packages to reduce the amount of
 repetitive work. Therefore, they are a great way to centralize logic or create utilities.
 
