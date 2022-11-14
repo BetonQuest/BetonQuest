@@ -166,7 +166,7 @@ public class QuestManager {
          *
          * @param questPath    The path to this {@link Quest}
          * @param relativeRoot the root file of this {@link Quest}
-         * @param files        All files of this {@link Quest} except the packageConfig
+         * @param files        All files of this {@link Quest}
          * @throws InvalidConfigurationException thrown if a {@link Quest} could not be created
          *                                       or an exception occurred while creating the {@link MultiConfiguration}
          * @throws FileNotFoundException         thrown if a file could not be found during the creation
