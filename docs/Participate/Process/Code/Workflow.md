@@ -42,7 +42,7 @@ There are more profiles, but you don't need to know them for now.
     You can use them to select a specific scope of tests that you want to run, after changed code of that scope.
     
     There is also a profile `Skip-Verification`, that will skip all verifications.
-    This is onöy used in the build pipeleine prevent suplicate executions of verifications.
+    It is only used in the build pipeline to skip verifications that were already done in earlier pipeline steps.
     
 
 ## Commit
