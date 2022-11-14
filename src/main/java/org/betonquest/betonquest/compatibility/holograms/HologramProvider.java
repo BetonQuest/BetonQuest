@@ -7,6 +7,7 @@ import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.citizens.CitizensHologram;
 import org.betonquest.betonquest.exceptions.HookException;
+import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -190,7 +191,7 @@ public class HologramProvider implements Integrator {
         @EventHandler
         public void onPlayerJoin(final PlayerJoinEvent event) {
             if (instance != null && instance.hologramLoop != null) {
-                instance.hologramLoop.refresh(event.getPlayer());
+                instance.hologramLoop.refresh(PlayerConverter.getID(event.getPlayer()));
             }
         }
     }

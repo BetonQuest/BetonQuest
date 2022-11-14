@@ -70,6 +70,18 @@ public class CitizensHologram extends BukkitRunnable {
         }
     }
 
+    /**
+     * Reloads the particle effect
+     */
+    public static void close() {
+        synchronized (CitizensHologram.class) {
+            if (instance != null) {
+                instance.cancel();
+                instance = null;
+            }
+        }
+    }
+
     @Override
     public void run() {
         updateHolograms();
@@ -220,10 +232,10 @@ public class CitizensHologram extends BukkitRunnable {
                     npcHologram.hologram = hologram;
                 }
                 updateHologramForPlayersLines(npcHologram);
-                npcHologram.hologram.show(onlineProfile.getOnlinePlayer());
+                npcHologram.hologram.show(onlineProfile.getPlayer());
             } else {
                 if (npcHologram.hologram != null) {
-                    npcHologram.hologram.hide(onlineProfile.getOnlinePlayer());
+                    npcHologram.hologram.hide(onlineProfile.getPlayer());
                 }
             }
         }

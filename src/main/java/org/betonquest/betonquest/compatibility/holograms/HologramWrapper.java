@@ -52,9 +52,9 @@ public record HologramWrapper(int interval, BetonHologram hologram, boolean stat
      */
     public void updateVisibilityForPlayer(final OnlineProfile profile) {
         if (BetonQuest.conditions(profile, conditionList)) {
-            hologram.show(profile.getOnlinePlayer());
+            hologram.show(profile.getPlayer());
         } else {
-            hologram.hide(profile.getOnlinePlayer());
+            hologram.hide(profile.getPlayer());
         }
     }
 
