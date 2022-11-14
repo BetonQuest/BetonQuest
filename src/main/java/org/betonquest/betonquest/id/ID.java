@@ -24,7 +24,7 @@ public abstract class ID {
     protected Instruction instruction;
     protected String rawInstruction;
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.ExcessiveMethodLength", "PMD.NcssCount"})
     protected ID(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
         // id must be specified
         if (identifier == null || identifier.length() == 0) {
@@ -77,88 +77,37 @@ public abstract class ID {
                 }
             } else {
                 // if no relative path is available, check if packName is a package or if it is an ID
-                final String[] parts = identifier.split("\\.");
-
-
-                ////////////////////////////////////////////
-
-                if (parts.length == 1) {
-                    // could be an event, condition or objective belonging to param 'pack'
+                // split at ':' first as to only consider the identifier before the ':' in the case of the math variable
+                final String[] parts = identifier.split(":")[0].split("\\.");
+                final QuestPackage potentialPack = Config.getPackages().get(packName);
+                if (potentialPack == null) {
                     this.pack = pack;
                     dotIndex = -1;
-                } else if (parts.length == 2) {
-                    // could be (package with event, condition or objective) OR a (non-package related variable)
-                    final QuestPackage potentialPack = Config.getPackages().get(packName);
+                } else {
                     if (BetonQuest.isVariableType(packName)) {
-                        //If only a length of 2 could player.event1 or player.display
-                        //If packName is a variable type but if ALSO a package type
-                        if (potentialPack == null) {
-                            //this is true for player.display if player is not a package
-                            this.pack = pack;
-                            dotIndex = -1;
-                        } else {
-                            // if packName shares name with variable type
-                            // this is true for player.event1 or player.display if player is a package
-                            if (isIdFromPack(potentialPack, parts[1])) {
-                                // this is true for player.event1
+                        // if first term shares the same name as a variable type
+                        if (parts.length == 2 && isIdFromPack(potentialPack, parts[1])) {
+                            this.pack = potentialPack;
+                        } else if (parts.length > 2) {
+                            if (BetonQuest.isVariableType(parts[1]) && isIdFromPack(potentialPack, parts[2])) {
+                                // if second term is a variable type and third term is an ID
+                                // we can assume that the ID is in the form pack.variable.id.args
                                 this.pack = potentialPack;
-                            } else {
-                                // this is true for player.display (since display isn't a variable)
+                            } else if (isIdFromPack(potentialPack, parts[1])) {
+                                // if second term is not a variable type, check if it's an ID. If it is an ID
+                                // we can assume that the ID is in the form variable.id.args
                                 this.pack = pack;
                                 dotIndex = -1;
+                            } else {
+                                this.pack = potentialPack;
                             }
+                        } else {
+                            this.pack = pack;
+                            dotIndex = -1;
                         }
                     } else {
                         this.pack = potentialPack;
                     }
-                } else if (parts.length > 2) {
-                    // could be a package-related variable with or without a package.
-                    // could be point.testpoint.amount OR package.point.testpoint.amount OR point.point.testpoint.amount
-                    // or even point.point.point.amount which means a point variable named 'point' in the package called 'point'
-                    // or even point.point.amount
-                    final QuestPackage potentialPack = Config.getPackages().get(packName);
-                    if (potentialPack == null) {
-                        this.pack = pack;
-                        dotIndex = -1;
-                    } else {
-                        // first term is a package
-                        if (BetonQuest.isVariableType(packName)) {
-                            // if packName same as variable type
-                            if (BetonQuest.isVariableType(parts[1]) && isIdFromPack(potentialPack, parts[2])) {
-                                //for point.point.point.amount or point.point.test.amount
-                                this.pack = potentialPack;
-                            } else if (isIdFromPack(potentialPack, parts[1])) {
-                                //for point.point.amount or point.test.amount
-                                this.pack = pack;
-                                dotIndex = -1;
-                            } else {
-                                //that point.globalpoint.test.amount
-                                this.pack = potentialPack;
-                            }
-                        } else {
-                            this.pack = potentialPack;
-                        }
-
-                        if (BetonQuest.isVariableType(parts[1])) {
-                            // second term is a variable type, check if next term is a valid id. If so we can expect the
-                            // form of package.variable.id.args
-                            if (isIdFromPack(potentialPack, parts[2])) {
-                                this.pack = potentialPack;
-                            }
-
-                        } else if (BetonQuest.isVariableType(parts[0]) && isIdFromPack(potentialPack, parts[1])) {
-                            // first term is also a variable, check if next term is a valid id. If so we can expect the
-                            // form of variable.id.args
-                            this.pack = pack;
-                            dotIndex = -1;
-                        }
-                    }
-                }
-
-                if (this.pack == null) {
-                    //if packName was not a pack, use provided pack and treat the entire raw identifier as the full id.
-                    this.pack = pack;
-                    dotIndex = -1;
                 }
             }
             if (identifier.length() == dotIndex + 1) {
@@ -183,14 +132,14 @@ public abstract class ID {
      * Checks if an ID belongs to a provided QuestPackage. This checks all events, conditions, objectives and variables
      * for any ID matching the provided string
      *
-     * @param pack The quest package to search
-     * @param id   The id
+     * @param pack       The quest package to search
+     * @param identifier The id
      * @return true if the id exists in the quest package
      */
-    private boolean isIdFromPack(final QuestPackage pack, final String id) {
+    private boolean isIdFromPack(final QuestPackage pack, final String identifier) {
         final MultiConfiguration config = pack.getConfig();
         for (final String path : PATHS) {
-            if (config.getString(path + "." + id, null) != null) {
+            if (config.getString(path + "." + identifier, null) != null) {
                 return true;
             }
         }
