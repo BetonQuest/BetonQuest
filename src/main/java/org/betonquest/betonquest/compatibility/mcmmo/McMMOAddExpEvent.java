@@ -31,7 +31,7 @@ public class McMMOAddExpEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        ExperienceAPI.addRawXP(profile.getOnlineProfile().getOnlinePlayer(), skillType, exp.getInt(profile), "UNKNOWN");
+        ExperienceAPI.addRawXP(profile.getOnlineProfile().get().getPlayer(), skillType, exp.getInt(profile), "UNKNOWN");
         return null;
     }
 

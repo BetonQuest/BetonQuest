@@ -3,9 +3,11 @@ package org.betonquest.betonquest.conditions;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.bukkit.entity.Player;
 
 /**
  * Requires the player to have specified amount of health (or more)
@@ -22,7 +24,12 @@ public class HealthCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        return profile.getOnlineProfile().getOnlinePlayer().getHealth() >= health.getDouble(profile);
+        final double expectedHealth = health.getDouble(profile);
+        return profile.getOnlineProfile()
+                .map(OnlineProfile::getPlayer)
+                .map(Player::getHealth)
+                .map(playerHealth -> playerHealth >= expectedHealth)
+                .orElse(false);
     }
 
 }

@@ -68,7 +68,23 @@ All variables need to extend `Variable` class. In the constructor you must parse
 
 ## Firing events
 
-The plugin has a static method for firing events - `event(String playerID, EventID eventID)`. First parameter is ID of the player. Second one represents ID of the event. To get it, simply create an instance of the `EventID` class. You can't fire an event directly using an instruction string.
+The plugin has a static method for firing events - `event(String playerID, EventID eventID)`.
+
+You can't fire an event directly using an instruction string.
+
+```JAVA title="Example"
+final QuestPackage questPackage = Config.getPackages().get("myPackage") //(1)!
+final Profile playerProfile = PlayerConverter.getID(player); //(2)!
+
+BetonQuest.event(playerProfile, new EventID(questPackage, eventID)); 
+```
+
+1. You can get the package from the `Config` class. It's a map of all packages, so you can get the one you need by its
+   name.
+2. You can get the player's profile from the `PlayerConverter` class. You can use the player object to obtain a players 
+   profile.
+
+
 
 ## Checking conditions
 
@@ -86,4 +102,8 @@ Registering the conversation inputs/outputs is done in the same way as objective
 
 ## Listening to BetonQuest (Bukkit) events
 
-BetonQuest calls Bukkit events occasionally: when a conversation is started, finished and when an option is selected. You can find these events in `org.betonquest.betonquest.api` package and use them in your plugins. If you need any additional events just open and issue on GitHub or open a pull request.
+BetonQuest exposes some of its actions as Bukkit events.  
+You can find these events in `org.betonquest.betonquest.api` package.
+[Use them as you would use any other Bukkit event](https://bukkit.fandom.com/wiki/Event_API_Reference#The_Basics).
+
+If you need any additional events just open an issue or pull request on GitHub.

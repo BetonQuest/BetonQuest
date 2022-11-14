@@ -38,7 +38,7 @@ public class HungerEvent extends QuestEvent {
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     protected Void execute(final Profile profile) {
-        final Player player = profile.getOnlineProfile().getOnlinePlayer();
+        final Player player = profile.getOnlineProfile().get().getPlayer();
 
         switch (this.action) {
             case GIVE -> player.setFoodLevel(Math.min(player.getFoodLevel() + this.amount, 20));

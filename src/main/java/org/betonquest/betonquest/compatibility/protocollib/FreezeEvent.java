@@ -7,12 +7,12 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,29 +36,28 @@ public class FreezeEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getOnlineProfile().getOnlinePlayer();
-        final UUID uuid = player.getUniqueId();
+        final OnlineProfile onlineProfile = profile.getOnlineProfile().get();
         final int ticks = ticksVar.getInt(profile);
 
-        if (STANDS.get(player.getUniqueId()) != null) {
-            STANDS.get(player.getUniqueId()).remove();
+        if (STANDS.get(profile.getProfileUUID()) != null) {
+            STANDS.get(profile.getProfileUUID()).remove();
         }
 
-        final ArmorStand armorStand = player.getWorld().spawn(player.getLocation().clone().add(0, -1.1, 0), ArmorStand.class);
+        final ArmorStand armorStand = onlineProfile.getPlayer().getWorld().spawn(onlineProfile.getPlayer().getLocation().clone().add(0, -1.1, 0), ArmorStand.class);
         armorStand.setGravity(false);
         armorStand.setVisible(false);
         armorStand.setInvulnerable(true);
-        STANDS.put(uuid, armorStand);
+        STANDS.put(profile.getProfileUUID(), armorStand);
 
         final WrapperPlayServerMount mount = new WrapperPlayServerMount();
         mount.setEntityID(armorStand.getEntityId());
-        mount.setPassengerIds(new int[]{player.getEntityId()});
-        mount.sendPacket(player);
+        mount.setPassengerIds(new int[]{onlineProfile.getPlayer().getEntityId()});
+        mount.sendPacket(onlineProfile.getPlayer());
 
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(" "));
+        onlineProfile.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(" "));
 
         Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), () -> {
-            STANDS.remove(uuid);
+            STANDS.remove(profile.getProfileUUID());
             armorStand.remove();
 
         }, ticks);

@@ -36,9 +36,9 @@ public class MoneyVariable extends Variable {
     public String getValue(final Profile profile) {
         switch (type) {
             case AMOUNT:
-                return String.valueOf(VaultIntegrator.getEconomy().getBalance(profile.getOfflinePlayer()));
+                return String.valueOf(VaultIntegrator.getEconomy().getBalance(profile.getPlayer()));
             case LEFT:
-                return String.valueOf(amount - VaultIntegrator.getEconomy().getBalance(profile.getOfflinePlayer()));
+                return String.valueOf(amount - VaultIntegrator.getEconomy().getBalance(profile.getPlayer()));
             default:
                 return "";
         }

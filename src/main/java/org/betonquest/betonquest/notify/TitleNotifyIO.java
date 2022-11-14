@@ -26,6 +26,6 @@ public class TitleNotifyIO extends NotifyIO {
         final String[] messageParts = message.split("\n");
         final String title = messageParts[0].isEmpty() ? " " : messageParts[0];
         final String subtitle = messageParts.length > 1 ? messageParts[1] : "";
-        onlineProfile.getOnlinePlayer().sendTitle(title, subtitle, fadeIn, stay, fadeOut);
+        onlineProfile.getPlayer().sendTitle(title, subtitle, fadeIn, stay, fadeOut);
     }
 }

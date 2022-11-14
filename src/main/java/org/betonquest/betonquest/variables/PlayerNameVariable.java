@@ -21,7 +21,7 @@ public class PlayerNameVariable extends Variable {
 
     @Override
     public String getValue(final Profile profile) {
-        final Player player = profile.getOnlineProfile().getOnlinePlayer();
+        final Player player = profile.getOnlineProfile().get().getPlayer();
         return display ? player.getDisplayName() : player.getName();
     }
 

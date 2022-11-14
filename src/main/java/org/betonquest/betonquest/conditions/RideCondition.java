@@ -32,7 +32,7 @@ public class RideCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) {
-        final Entity entity = profile.getOnlineProfile().getOnlinePlayer().getVehicle();
+        final Entity entity = profile.getOnlineProfile().get().getPlayer().getVehicle();
         return entity != null && (any || entity.getType() == vehicle);
     }
 

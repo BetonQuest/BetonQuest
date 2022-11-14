@@ -18,7 +18,7 @@ public class KillEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) {
-        final Player player = profile.getOnlineProfile().getOnlinePlayer();
+        final Player player = profile.getOnlineProfile().get().getPlayer();
         player.damage(player.getHealth() + 1);
         return null;
     }

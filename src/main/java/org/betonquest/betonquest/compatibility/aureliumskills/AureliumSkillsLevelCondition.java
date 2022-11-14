@@ -37,7 +37,7 @@ public class AureliumSkillsLevelCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getOnlineProfile().getOnlinePlayer();
+        final Player player = profile.getOnlineProfile().get().getPlayer();
 
         final int actualLevel = AureliumAPI.getSkillLevel(player, skill);
         final int targetLevel = targetLevelVar.getInt(profile);

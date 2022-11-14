@@ -42,8 +42,7 @@ public class LocationObjective extends Objective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onMove(final PlayerMoveEvent event) {
         qreHandler.handle(() -> {
-            final Profile profile = PlayerConverter.getID(event.getPlayer());
-            checkLocation(event.getTo(), profile);
+            checkLocation(event.getTo(), PlayerConverter.getID(event.getPlayer()));
         });
     }
 
@@ -53,8 +52,7 @@ public class LocationObjective extends Objective implements Listener {
             final List<Entity> passengers = event.getVehicle().getPassengers();
             for (final Entity passenger : passengers) {
                 if (passenger instanceof Player player) {
-                    final Profile profile = PlayerConverter.getID(player);
-                    checkLocation(event.getTo(), profile);
+                    checkLocation(event.getTo(), PlayerConverter.getID(player));
                 }
             }
         });

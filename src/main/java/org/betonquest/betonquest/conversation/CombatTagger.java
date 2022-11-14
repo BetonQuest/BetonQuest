@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.conversation;
 
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -77,9 +78,9 @@ public class CombatTagger implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onDeath(final PlayerDeathEvent event) {
-        final Profile profile = PlayerConverter.getID(event.getEntity());
-        TAGGED.remove(profile);
-        final BukkitRunnable runnable = UNTAGGERS.remove(profile);
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getEntity());
+        TAGGED.remove(onlineProfile);
+        final BukkitRunnable runnable = UNTAGGERS.remove(onlineProfile);
         if (runnable != null) {
             runnable.cancel();
         }

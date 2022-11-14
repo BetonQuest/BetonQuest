@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - ${current-date}
+## [Unreleased] - ${maven.build.timestamp}
 ### Added
 - Logging
     - Ingame logging
@@ -53,7 +53,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `delay` objective - now support variables
 - `opsudo` event - now supports variables
 - `variable` condition - now supports variables
-- `bossbar` notify style now supports variables for the `progress` argument
+- `bossbar` notify style now supports variables for the `progress` and `stay` arguments
 - `delay` objective property: `rawSeconds`
 - `fish` objective now has `hookLocation` and `range` settings.
 - `consume` objective now has `amount` argument.

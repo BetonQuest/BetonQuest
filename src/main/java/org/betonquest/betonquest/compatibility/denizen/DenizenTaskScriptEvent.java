@@ -29,7 +29,7 @@ public class DenizenTaskScriptEvent extends QuestEvent {
         if (script == null) {
             throw new QuestRuntimeException("Could not find '" + name + "' Denizen script");
         }
-        final BukkitScriptEntryData data = new BukkitScriptEntryData(PlayerTag.mirrorBukkitPlayer(profile.getOfflinePlayer()), null);
+        final BukkitScriptEntryData data = new BukkitScriptEntryData(PlayerTag.mirrorBukkitPlayer(profile.getPlayer()), null);
         script.run(data, null);
         return null;
     }

@@ -30,7 +30,7 @@ public class TeleportEvent extends QuestEvent {
         }
 
         final Location playerLocation = loc.getLocation(profile);
-        profile.getOnlineProfile().getOnlinePlayer().teleport(playerLocation);
+        profile.getOnlineProfile().get().getPlayer().teleport(playerLocation);
         return null;
     }
 }

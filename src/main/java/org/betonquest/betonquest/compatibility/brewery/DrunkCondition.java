@@ -24,7 +24,7 @@ public class DrunkCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        final BPlayer bPlayer = BPlayer.get(profile.getOnlineProfile().getOnlinePlayer());
+        final BPlayer bPlayer = BPlayer.get(profile.getOnlineProfile().get().getPlayer());
         return bPlayer != null && bPlayer.getDrunkeness() >= drunkness;
     }
 }

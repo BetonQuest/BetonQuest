@@ -27,7 +27,7 @@ public class SkillAPIClassCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) {
-        final PlayerData data = SkillAPI.getPlayerData(profile.getOfflinePlayer());
+        final PlayerData data = SkillAPI.getPlayerData(profile.getPlayer());
         if (exact) {
             return data.isExactClass(SkillAPI.getClass(className));
         } else {

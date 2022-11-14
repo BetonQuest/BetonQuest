@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.worldguard;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -48,21 +49,20 @@ public class RegionObjective extends Objective implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(final PlayerJoinEvent event) {
-        final Player player = event.getPlayer();
-        final Profile profile = PlayerConverter.getID(player);
-        if (containsPlayer(profile)) {
-            final boolean inside = WorldGuardIntegrator.isInsideRegion(player.getLocation(), name);
-            if (!entry && !exit && inside && checkConditions(profile)) {
-                completeObjective(profile);
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        if (containsPlayer(onlineProfile)) {
+            final boolean inside = WorldGuardIntegrator.isInsideRegion(onlineProfile.getPlayer().getLocation(), name);
+            if (!entry && !exit && inside && checkConditions(onlineProfile)) {
+                completeObjective(onlineProfile);
             } else {
-                playersInsideRegion.put(event.getPlayer().getUniqueId(), inside);
+                playersInsideRegion.put(onlineProfile.getProfileUUID(), inside);
             }
         }
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerQuit(final PlayerQuitEvent event) {
-        playersInsideRegion.remove(event.getPlayer().getUniqueId());
+        playersInsideRegion.remove(PlayerConverter.getID(event.getPlayer()).getProfileUUID());
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -99,28 +99,28 @@ public class RegionObjective extends Objective implements Listener {
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
     private void checkLocation(final Player player, final Location location) {
-        final Profile profile = PlayerConverter.getID(player);
-        if (!containsPlayer(profile)) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID(player);
+        if (!containsPlayer(onlineProfile)) {
             return;
         }
 
         final boolean inside = WorldGuardIntegrator.isInsideRegion(location, name);
 
         if (!entry && !exit) {
-            if (inside && checkConditions(profile)) {
-                completeObjective(profile);
+            if (inside && checkConditions(onlineProfile)) {
+                completeObjective(onlineProfile);
             }
             return;
         }
-        if (!playersInsideRegion.containsKey(player.getUniqueId())) {
-            playersInsideRegion.put(player.getUniqueId(), WorldGuardIntegrator.isInsideRegion(player.getLocation(), name));
+        if (!playersInsideRegion.containsKey(onlineProfile.getProfileUUID())) {
+            playersInsideRegion.put(onlineProfile.getProfileUUID(), WorldGuardIntegrator.isInsideRegion(player.getLocation(), name));
         }
-        final boolean fromInside = playersInsideRegion.get(player.getUniqueId());
-        playersInsideRegion.put(player.getUniqueId(), inside);
+        final boolean fromInside = playersInsideRegion.get(onlineProfile.getProfileUUID());
+        playersInsideRegion.put(onlineProfile.getProfileUUID(), inside);
 
-        if ((entry && inside && !fromInside || exit && fromInside && !inside) && checkConditions(profile)) {
-            completeObjective(profile);
-            playersInsideRegion.remove(player.getUniqueId());
+        if ((entry && inside && !fromInside || exit && fromInside && !inside) && checkConditions(onlineProfile)) {
+            completeObjective(onlineProfile);
+            playersInsideRegion.remove(onlineProfile.getProfileUUID());
         }
     }
 

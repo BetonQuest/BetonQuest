@@ -20,7 +20,7 @@ public class RegionCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) {
-        return WorldGuardIntegrator.isInsideRegion(profile.getOnlineProfile().getOnlinePlayer().getLocation(), name);
+        return WorldGuardIntegrator.isInsideRegion(profile.getOnlineProfile().get().getPlayer().getLocation(), name);
     }
 
 }

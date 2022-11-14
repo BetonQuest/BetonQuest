@@ -22,7 +22,7 @@ public class HungerCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-        return profile.getOnlineProfile().getOnlinePlayer().getFoodLevel() >= hunger.getDouble(profile);
+        return profile.getOnlineProfile().get().getPlayer().getFoodLevel() >= hunger.getDouble(profile);
     }
 
 }

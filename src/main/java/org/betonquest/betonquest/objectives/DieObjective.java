@@ -5,6 +5,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -46,9 +47,9 @@ public class DieObjective extends Objective implements Listener {
             return;
         }
         if (event.getEntity() instanceof Player) {
-            final Profile profile = PlayerConverter.getID((Player) event.getEntity());
-            if (containsPlayer(profile) && checkConditions(profile)) {
-                completeObjective(profile);
+            final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getEntity());
+            if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
+                completeObjective(onlineProfile);
             }
         }
     }
@@ -59,9 +60,9 @@ public class DieObjective extends Objective implements Listener {
         if (!cancel || !(event.getEntity() instanceof final Player player)) {
             return;
         }
-        final Profile profile = PlayerConverter.getID(player);
-        if (containsPlayer(profile) && player.getHealth() - event.getFinalDamage() <= 0
-                && checkConditions(profile)) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID(player);
+        if (containsPlayer(onlineProfile) && player.getHealth() - event.getFinalDamage() <= 0
+                && checkConditions(onlineProfile)) {
             event.setCancelled(true);
             player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
             player.setFoodLevel(20);
@@ -73,7 +74,7 @@ public class DieObjective extends Objective implements Listener {
             Location targetLocation = null;
             try {
                 if (location != null) {
-                    targetLocation = location.getLocation(profile);
+                    targetLocation = location.getLocation(onlineProfile);
                 }
             } catch (final QuestRuntimeException e) {
                 LOG.warn(instruction.getPackage(), "Couldn't execute onLastDamage in DieObjective", e);
@@ -89,7 +90,7 @@ public class DieObjective extends Objective implements Listener {
 
                 }
             }.runTaskLater(BetonQuest.getInstance(), 1);
-            completeObjective(profile);
+            completeObjective(onlineProfile);
         }
     }
 

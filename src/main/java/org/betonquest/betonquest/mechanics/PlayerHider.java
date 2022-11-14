@@ -95,14 +95,14 @@ public class PlayerHider {
     private void updateVisibilityForProfiles(final Collection<? extends OnlineProfile> onlineProfiles, final OnlineProfile source, final List<OnlineProfile> profilesToHide) {
         if (profilesToHide == null) {
             for (final OnlineProfile target : onlineProfiles) {
-                source.getOnlinePlayer().showPlayer(BetonQuest.getInstance(), target.getOnlinePlayer());
+                source.getPlayer().showPlayer(BetonQuest.getInstance(), target.getPlayer());
             }
         } else {
             for (final OnlineProfile target : onlineProfiles) {
                 if (profilesToHide.contains(target)) {
-                    source.getOnlinePlayer().hidePlayer(BetonQuest.getInstance(), target.getOnlinePlayer());
+                    source.getPlayer().hidePlayer(BetonQuest.getInstance(), target.getPlayer());
                 } else {
-                    source.getOnlinePlayer().showPlayer(BetonQuest.getInstance(), target.getOnlinePlayer());
+                    source.getPlayer().showPlayer(BetonQuest.getInstance(), target.getPlayer());
                 }
             }
         }
@@ -130,8 +130,8 @@ public class PlayerHider {
         return profilesToHide;
     }
 
-    private List<OnlineProfile> getOrCreateProfileList(final OnlineProfile profile, final Map<OnlineProfile, List<OnlineProfile>> profilesToHide) {
-        final List<OnlineProfile> profiles = profilesToHide.get(profile);
+    private List<OnlineProfile> getOrCreateProfileList(final OnlineProfile onlineProfile, final Map<OnlineProfile, List<OnlineProfile>> profilesToHide) {
+        final List<OnlineProfile> profiles = profilesToHide.get(onlineProfile);
         return profiles == null ? new ArrayList<>() : profiles;
     }
 }

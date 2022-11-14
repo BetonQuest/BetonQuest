@@ -18,7 +18,7 @@ public class MenuVariable extends Variable {
 
     @Override
     public String getValue(final Profile profile) {
-        final OpenedMenu menu = OpenedMenu.getMenu(profile.getOnlineProfile());
+        final OpenedMenu menu = OpenedMenu.getMenu(profile.getOnlineProfile().get());
         if (menu == null) {
             return "";
         }

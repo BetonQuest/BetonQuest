@@ -32,7 +32,7 @@ public class TimeEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) {
-        final World world = profile.getOnlineProfile().getOnlinePlayer().getWorld();
+        final World world = profile.getOnlineProfile().get().getPlayer().getWorld();
         long time = (long) amount;
         if (add) {
             time += world.getTime();

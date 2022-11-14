@@ -60,7 +60,7 @@ public class MythicSpawnMobEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getOnlineProfile().getOnlinePlayer();
+        final Player player = profile.getOnlineProfile().get().getPlayer();
         final int pAmount = amount.getInt(profile);
         final int level = this.level.getInt(profile);
         final Location location = loc.getLocation(profile);
@@ -70,7 +70,7 @@ public class MythicSpawnMobEvent extends QuestEvent {
                 final ActiveMob targetMob = MythicBukkit.inst().getMobManager().getMythicMobInstance(entity);
 
                 if (privateMob) {
-                    Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), () -> MythicHider.getInstance().applyVisibilityPrivate(profile.getOnlineProfile(), entity), 20L);
+                    Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), () -> MythicHider.getInstance().applyVisibilityPrivate(profile.getOnlineProfile().get(), entity), 20L);
                 }
                 if (targetPlayer) {
                     Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), () -> targetMob.setTarget(BukkitAdapter.adapt(player)), 20L);

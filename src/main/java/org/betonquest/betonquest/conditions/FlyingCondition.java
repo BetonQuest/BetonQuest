@@ -16,7 +16,7 @@ public class FlyingCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) {
-        return profile.getOnlineProfile().getOnlinePlayer().isGliding();
+        return profile.getOnlineProfile().get().getPlayer().isGliding();
     }
 
 }

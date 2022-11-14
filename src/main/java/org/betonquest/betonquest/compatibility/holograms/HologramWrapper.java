@@ -2,12 +2,10 @@ package org.betonquest.betonquest.compatibility.holograms;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.QuestPackage;
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.compatibility.holograms.lines.AbstractLine;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.utils.PlayerConverter;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 import java.util.List;
 
@@ -44,20 +42,19 @@ public record HologramWrapper(int interval, BetonHologram hologram, boolean stat
             return;
         }
 
-        Bukkit.getOnlinePlayers().forEach(this::updateVisibilityForPlayer);
+        PlayerConverter.getOnlineProfiles().forEach(this::updateVisibilityForPlayer);
     }
 
     /**
      * Update the visibility for a particular player
      *
-     * @param player The player
+     * @param profile The online player's profile
      */
-    public void updateVisibilityForPlayer(final Player player) {
-        final Profile profile = PlayerConverter.getID(player);
+    public void updateVisibilityForPlayer(final OnlineProfile profile) {
         if (BetonQuest.conditions(profile, conditionList)) {
-            hologram.show(player);
+            hologram.show(profile.getOnlinePlayer());
         } else {
-            hologram.hide(player);
+            hologram.hide(profile.getOnlinePlayer());
         }
     }
 

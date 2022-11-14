@@ -16,7 +16,7 @@ public class SneakCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) {
-        return profile.getOnlineProfile().getOnlinePlayer().isSneaking();
+        return profile.getOnlineProfile().get().getPlayer().isSneaking();
     }
 
 }

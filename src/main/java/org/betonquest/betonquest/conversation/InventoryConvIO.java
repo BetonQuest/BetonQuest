@@ -4,7 +4,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.papermc.lib.PaperLib;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.utils.LocalChatPaginator;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -62,9 +62,9 @@ public class InventoryConvIO implements Listener, ConversationIO {
     protected boolean showNPCText = true;
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public InventoryConvIO(final Conversation conv, final Profile profile) {
+    public InventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
         this.conv = conv;
-        this.player = profile.getOnlineProfile().getOnlinePlayer();
+        this.player = onlineProfile.getPlayer();
         final Map<String, ChatColor[]> colors = ConversationColors.getColors();
         StringBuilder string = new StringBuilder();
         for (final ChatColor color : colors.get("npc")) {
@@ -370,8 +370,8 @@ public class InventoryConvIO implements Listener, ConversationIO {
      */
     public static class Combined extends InventoryConvIO {
 
-        public Combined(final Conversation conv, final Profile profile) {
-            super(conv, profile);
+        public Combined(final Conversation conv, final OnlineProfile onlineProfile) {
+            super(conv, onlineProfile);
             super.printMessages = true;
         }
     }

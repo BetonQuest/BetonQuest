@@ -72,7 +72,7 @@ public class ObjectiveEvent extends QuestEvent {
                 } else {
                     LOG.warn(instruction.getPackage(), "You tried to call an objective add / finish event in a static context! Only objective delete works here.");
                 }
-            } else if (profile.getPlayer() == null) {
+            } else if (profile.getOnlineProfile().isEmpty()) {
                 Bukkit.getScheduler().runTaskAsynchronously(betonQuest, () -> {
                     final PlayerData playerData = new PlayerData(profile);
                     switch (action.toLowerCase(Locale.ROOT)) {

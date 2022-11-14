@@ -37,14 +37,14 @@ public class GiveEvent extends QuestEvent {
     @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
     @Override
     protected Void execute(final Profile profile) {
-        final Player player = profile.getOnlineProfile().getOnlinePlayer();
+        final Player player = profile.getOnlineProfile().get().getPlayer();
         for (final Item theItem : questItems) {
             final QuestItem questItem = theItem.getItem();
             final VariableNumber amount = theItem.getAmount();
             int amountInt = amount.getInt(profile);
             if (notify) {
                 try {
-                    Config.sendNotify(instruction.getPackage().getPackagePath(), profile.getOnlineProfile(), "items_given",
+                    Config.sendNotify(instruction.getPackage().getPackagePath(), profile.getOnlineProfile().get(), "items_given",
                             new String[]{
                                     questItem.getName() == null ? questItem.getMaterial().toString().toLowerCase(Locale.ROOT).replace("_", " ") : questItem.getName(),
                                     String.valueOf(amountInt)}, "items_given,info");
@@ -69,7 +69,7 @@ public class GiveEvent extends QuestEvent {
                     }
                     final String type = Utils.isQuestItem(itemStack) ? "backpack" : "drop";
                     try {
-                        Config.sendNotify(null, profile.getOnlineProfile(), "inventory_full_" + type, null, "inventory_full_" + type + ",inventory_full,error");
+                        Config.sendNotify(null, profile.getOnlineProfile().get(), "inventory_full_" + type, null, "inventory_full_" + type + ",inventory_full,error");
                     } catch (final QuestRuntimeException e) {
                         LOG.warn("The notify system was unable to play a sound for the 'inventory_full_" + type + "' category. Error was: '" + e.getMessage() + "'", e);
                     }

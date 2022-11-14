@@ -179,17 +179,21 @@ nav:
   - 'Home': index.md
   - 'Tutorials':
       - 'Overview': Tutorials/Overview.md
-      - 'Getting-Started':
+      - 'Getting Started':
+          - 'About': Tutorials/Getting-Started/About.md
           - 'Setup Guide':
               - 'Setting up a test server': Tutorials/Getting-Started/Setup-Guide/Setting-up-a-test-server.md
-              - 'Installing BetonQuest': Tutorials/Getting-Started/Setup-Guide/Installing-Dependencies.md
-              - 'Setting up the editor': Tutorials/Getting-Started/Setup-Guide/Setting-up-the-editor.md
+              - 'Installing BetonQuest': Tutorials/Getting-Started/Setup-Guide/Installing-BetonQuest.md
           - 'Basics':
-              - 'YAML': Tutorials/Getting-Started/Basics/YAML-for-questers.md
+              - 'YAML': Tutorials/Getting-Started/Basics/YAML.md
               - 'Conversations': Tutorials/Getting-Started/Basics/Conversations.md
               - '    Events': Tutorials/Getting-Started/Basics/Events.md
               - 'Objectives': Tutorials/Getting-Started/Basics/Objectives.md
-          - 'Old Tutorial': Tutorials/Getting-Started/Learn-BetonQuest.md
+              - 'Conditions': Tutorials/Getting-Started/Basics/Conditions.md
+      - 'Tools':
+          - 'VSCode Extension': Tutorials/Tools/VSCode-Extension.md
+      - 'Syntax':
+          - 'Quest Packages': Tutorials/Syntax/Quest-Packages.md
       - 'Frequently Asked Questions':
           - 'General FAQ': Tutorials/Frequently-Asked-Questions.md
   - 'Documentation':

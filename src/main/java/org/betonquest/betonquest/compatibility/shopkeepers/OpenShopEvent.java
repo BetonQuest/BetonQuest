@@ -32,7 +32,7 @@ public class OpenShopEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) {
-        shopkeeper.openTradingWindow(profile.getOnlineProfile().getOnlinePlayer());
+        shopkeeper.openTradingWindow(profile.getOnlineProfile().get().getPlayer());
         return null;
     }
 

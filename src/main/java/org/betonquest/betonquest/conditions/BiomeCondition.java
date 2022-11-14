@@ -21,6 +21,6 @@ public class BiomeCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) {
-        return profile.getOnlineProfile().getOnlinePlayer().getLocation().getBlock().getBiome() == this.biome;
+        return profile.getOnlineProfile().get().getPlayer().getLocation().getBlock().getBiome() == this.biome;
     }
 }

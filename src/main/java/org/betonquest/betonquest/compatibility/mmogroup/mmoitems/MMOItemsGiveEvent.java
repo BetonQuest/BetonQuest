@@ -57,16 +57,16 @@ public class MMOItemsGiveEvent extends QuestEvent {
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final Player player = profile.getOnlineProfile().getOnlinePlayer();
+        final Player player = profile.getOnlineProfile().get().getPlayer();
         int amount = amountVar.getInt(profile);
 
         if (scale) {
-            mmoItem = mmoPlugin.getItem(itemType, itemID, PlayerData.get(profile.getOfflinePlayer().getUniqueId()));
+            mmoItem = mmoPlugin.getItem(itemType, itemID, PlayerData.get(profile.getPlayerUUID()));
         }
 
         if (notify) {
             try {
-                Config.sendNotify(instruction.getPackage().getPackagePath(), profile.getOnlineProfile(), "items_given",
+                Config.sendNotify(instruction.getPackage().getPackagePath(), profile.getOnlineProfile().get(), "items_given",
                         new String[]{mmoItem.getItemMeta().getDisplayName(), String.valueOf(amount)},
                         "items_given,info");
             } catch (final QuestRuntimeException e) {

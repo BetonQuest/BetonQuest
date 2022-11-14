@@ -5,7 +5,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.CountingObjective;
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -31,12 +31,12 @@ public class PickupObjective extends CountingObjective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPickup(final EntityPickupItemEvent event) {
         if (isValidItem(event.getItem().getItemStack()) && event.getEntity() instanceof Player) {
-            final Profile profile = PlayerConverter.getID((Player) event.getEntity());
+            final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getEntity());
 
-            if (containsPlayer(profile) && checkConditions(profile)) {
+            if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
                 final ItemStack pickupItem = event.getItem().getItemStack();
-                getCountingData(profile).progress(pickupItem.getAmount());
-                completeIfDoneOrNotify(profile);
+                getCountingData(onlineProfile).progress(pickupItem.getAmount());
+                completeIfDoneOrNotify(onlineProfile);
             }
         }
     }

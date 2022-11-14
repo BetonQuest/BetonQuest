@@ -23,7 +23,7 @@ public class CancelEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        canceler.cancel(profile);
+        canceler.cancel(profile.getOnlineProfile().get());
         return null;
     }
 

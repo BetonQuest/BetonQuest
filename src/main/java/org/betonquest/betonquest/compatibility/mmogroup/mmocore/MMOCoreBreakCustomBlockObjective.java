@@ -9,7 +9,7 @@ import net.Indyuce.mmoitems.comp.mmocore.load.MMOItemsBlockType;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -31,12 +31,12 @@ public class MMOCoreBreakCustomBlockObjective extends CountingObjective implemen
 
     @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(final CustomBlockMineEvent event) {
-        final Profile profile = PlayerConverter.getID(event.getPlayer());
-        if (containsPlayer(profile) && checkConditions(profile)) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+        if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
             final String blockId = getBlockId(event.getBlockInfo().getBlock());
             if (blockId.equals(desiredBlockId)) {
-                getCountingData(profile).progress();
-                completeIfDoneOrNotify(profile);
+                getCountingData(onlineProfile).progress();
+                completeIfDoneOrNotify(onlineProfile);
             }
         }
     }

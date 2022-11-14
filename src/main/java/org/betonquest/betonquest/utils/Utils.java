@@ -5,7 +5,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.QuestPackage;
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.Database;
@@ -22,7 +22,6 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
@@ -359,20 +358,15 @@ public final class Utils {
     }
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public static List<Profile> getParty(final Profile profile, final double range, final String pack, final ConditionID... conditions) throws QuestRuntimeException {
-        final List<Profile> list = new ArrayList<>();
-        final Player player = profile.getOnlineProfile().getOnlinePlayer();
-        final Location loc = player.getLocation();
+    public static List<OnlineProfile> getParty(final OnlineProfile onlineProfile, final double range, final String pack, final ConditionID... conditions) throws QuestRuntimeException {
+        final Location loc = onlineProfile.getPlayer().getLocation();
         final double squared = range * range;
-        for (final Player otherPlayer : loc.getWorld().getPlayers()) {
-            if (otherPlayer.getLocation().distanceSquared(loc) <= squared) {
-                final Profile otherProfile = PlayerConverter.getID(otherPlayer);
-                if (BetonQuest.conditions(otherProfile, conditions)) {
-                    list.add(otherProfile);
-                }
-            }
-        }
-        return list;
+
+        return loc.getWorld().getPlayers().stream()
+                .filter(player -> player.getLocation().distanceSquared(loc) <= squared)
+                .map(PlayerConverter::getID)
+                .filter(otherProfile -> BetonQuest.conditions(otherProfile, conditions))
+                .toList();
     }
 
     /**

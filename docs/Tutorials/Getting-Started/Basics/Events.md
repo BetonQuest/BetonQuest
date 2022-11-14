@@ -149,10 +149,10 @@ events:
   tpBlacksmith: "teleport 50;70;50;world" # (4)!
 ```
 
-1. Adjust this to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating)
-2. Adjust this to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating)
-3. Adjust this to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating)
-4. Adjust this to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating)
+1. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating)
+2. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating)
+3. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating)
+4. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating)
 
 As you can see, there are a few new events of the types `folder` and `teleport`.
 The folder event wraps multiple events inside itself. Once triggered, it simply executes its events. 
@@ -161,6 +161,10 @@ and [teleport](../../../Documentation/Events-List.md#teleport-teleport) events t
 
 Running the `townTour` event will teleport you to a new location every five seconds
 until we get to our final destination, the blacksmith. The folder event is done after the `tpBlacksmith` event was run.
+
+!!! danger
+    Make sure you are in creative mode when testing this event. Otherwise, you might die from fall- or suffocation damage.
+    Running `/gamemode creative` will change your game mode to creative.
 
 Now we will add the folder event to Jack's conversation.
 ``` YAML title="jack.yml" hl_lines="11-18 23-29" linenums="1" 

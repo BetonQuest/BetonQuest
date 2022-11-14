@@ -4,6 +4,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -59,8 +60,8 @@ public class StepObjective extends Objective implements Listener {
             return;
         }
         try {
-            final Profile profile = PlayerConverter.getID(event.getPlayer());
-            final Block block = loc.getLocation(profile).getBlock();
+            final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
+            final Block block = loc.getLocation(onlineProfile).getBlock();
             if (!clickedBlock.equals(block)) {
                 return;
             }
@@ -68,12 +69,12 @@ public class StepObjective extends Objective implements Listener {
             if (PRESSURE_PLATE_SELECTOR == null || !PRESSURE_PLATE_SELECTOR.match(block.getBlockData().getMaterial())) {
                 return;
             }
-            if (!containsPlayer(profile)) {
+            if (!containsPlayer(onlineProfile)) {
                 return;
             }
             // player stepped on the pressure plate
-            if (checkConditions(profile)) {
-                completeObjective(profile);
+            if (checkConditions(onlineProfile)) {
+                completeObjective(onlineProfile);
             }
         } catch (final QuestRuntimeException e) {
             LOG.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);

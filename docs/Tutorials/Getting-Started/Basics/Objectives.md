@@ -47,7 +47,7 @@ Open the newly created file "_objectives.yml_" and add the following:
 
 ``` YAML title="objectives.yml" linenums="1"
 objectives: # (1)!
-  fishingObj: "fish cod 10 notify hookLocation:100;50;100;world range:20 events:caughtAllFish"
+  fishingObj: "fish cod 3 notify hookLocation:100;63;100;world range:20 events:caughtAllFish"
 ```
 
 1. All objectives must be defined in an `objectives` section.
@@ -59,14 +59,14 @@ Let's explain:
   * The Objective Instruction.
     - `fish`: The first value in the instruction is always the **objective type**.
     - `cod`: This is an **option** of the objective `fish`. It defines which item you have to fish.
-    - `10`: This is another **option**. It defines the amount to fish.
+    - `3`: This is another **option**. It defines the amount to fish.
     - `notify`: This is a general argument for most objectives. It enables a notification when the player progresses the objective.
-    - `hookLocation:100;50;100;world`: This **option** defines where the hook of the fishing rod must be located. Only fish that are 
-       fished in this specific area are counted by the objective.
+    - `hookLocation:100;63;100;world`: This **option** defines where the hook of the fishing rod must be located. Only fish that are 
+       fished in this specific area are counted by the objective. You must adjust this to your world!
     - `range:20`: If you use the hook location you also have to define the range **option**. This is the range around the hook location coordinate
        where fished things are still counted.
     - `events:caughtAllFish`: This is not an option of the fish objective but a general objective argument. The defined event(s)
-       get triggered once the objective is completed (after you caught 10 cod at the specified hook location).
+       get triggered once the objective is completed (after you caught 3 cod at the specified hook location).
 
 After that we add the `caughtAllFish` event to the "_events.yml_" like this:
 
@@ -110,8 +110,14 @@ The easiest way to do this is by running a command:
 
 Enter `/bq objective YOUR_NAME add tutorialQuest.fishObj` on the server.
 This command will start the objective for the player.
-If you want to check if you have done it correctly, go to the defined location and fish 10 cod. After you caught 10 cod
+If you want to check if you have done it correctly, go to the defined location and fish 3 cod. After you caught 3 cod
 you should get a notification.
+
+!!! tip "Faster Fishing"
+    Use this command to get a superfast fishing rod:
+    ```
+    /give @p fishing_rod{display:{Name:'{"text":"Instant Fishing Rod","color":"yellow","italic":true}',Lore:['{"text":"Instantly summons a hungry fish..."}']},HideFlags:1,Enchantments:[{id:"minecraft:lure",lvl:100s}]} 1
+    ```    
 
 | Command Part                  | Meaning                                                                                                                                                                       |
 |-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -162,7 +168,7 @@ conversations:
         text: So every new citizens in our town will get a new armour from me but you have to do something for me in order to get this really nice upgrade!
         pointer: whatToDo
       collectFish:
-        text: You will have to fish 10 fresh cod for me and bring them to me. After that I will give you the nice new armour! Is that a deal?
+        text: You will have to fish 3 fresh cod for me and bring them to me. After that I will give you the nice new armour! Is that a deal?
         pointer: accept,deny # (1)!
       maybeLater:
         text: No problem! You can comeback later aswell. Bye!
@@ -185,7 +191,7 @@ conversations:
 ```
 
 1. The player have the choice to say yes or no.
-2. This is the event to start your actual objective task to fish 10 fresh cod.
+2. This is the event to start your actual objective task to fish 3 fresh cod.
 
 Now link the conversation to a new NPC that is placed wherever the city tour ends. You should already know how to link
 the dialog to the npc in "_package.yml_". If not, [check the previous tutorials](Conversations.md#1-linking-a-conversation-to-a-npc)!
@@ -206,7 +212,6 @@ You've learned what objectives are and how to create them. You can now give a pl
 objective to have a more advanced quest! More objectives can be found in the [objectives list](../../../Documentation/Objectives-List.md).
 In the next tutorial you will learn how **conditions** work and how to use them to make the Blacksmith react to the completed objective.
 ---
-[:construction: :construction_worker: ~~Conditions Tutorial~~ ](#summary){ .md-button .md-button--primary}
+[ Conditions Tutorial ](Conditions.md){ .md-button .md-button--primary}
 
-This is the end of the current basic tutorial, you can find more information in the [old tutorial](../Learn-BetonQuest.md).
 

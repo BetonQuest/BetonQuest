@@ -70,15 +70,6 @@ public class CitizensHologram extends BukkitRunnable {
         }
     }
 
-    public static void close() {
-        synchronized (CitizensHologram.class) {
-            if (instance != null) {
-                instance.cancel();
-                instance = null;
-            }
-        }
-    }
-
     @Override
     public void run() {
         updateHolograms();

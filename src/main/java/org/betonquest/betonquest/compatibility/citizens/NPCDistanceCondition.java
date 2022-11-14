@@ -37,7 +37,7 @@ public class NPCDistanceCondition extends Condition {
         if (npc == null) {
             throw new QuestRuntimeException("NPC with ID " + npcId + " does not exist");
         }
-        final Player player = profile.getOnlineProfile().getOnlinePlayer();
+        final Player player = profile.getOnlineProfile().get().getPlayer();
         if (!player.getWorld().equals(npc.getStoredLocation().getWorld())) {
             return false;
         }

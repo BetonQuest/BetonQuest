@@ -6,6 +6,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.conditions.ChestItemCondition;
 import org.betonquest.betonquest.config.Config;
@@ -81,7 +82,7 @@ public class ChestPutObjective extends Objective implements Listener {
     public void onChestOpen(final InventoryOpenEvent event) {
         if (!multipleAccess && !checkForNoOtherPlayer(event)) {
             try {
-                Config.sendNotify(null, PlayerConverter.getID((Player) event.getPlayer()).getOnlineProfile(), "chest_occupied", null);
+                Config.sendNotify(null, PlayerConverter.getID((Player) event.getPlayer()), "chest_occupied", null);
             } catch (final QuestRuntimeException e) {
                 LOG.warn("The notify system was unable to send the message for 'chest_occupied'. Error was: '"
                         + e.getMessage() + "'", e);
@@ -106,12 +107,12 @@ public class ChestPutObjective extends Objective implements Listener {
         if (!(event.getPlayer() instanceof Player)) {
             return;
         }
-        final Profile profile = PlayerConverter.getID((Player) event.getPlayer());
-        if (!containsPlayer(profile)) {
+        final OnlineProfile onlineProfile = PlayerConverter.getID((Player) event.getPlayer());
+        if (!containsPlayer(onlineProfile)) {
             return;
         }
         try {
-            final Location targetChestLocation = loc.getLocation(profile);
+            final Location targetChestLocation = loc.getLocation(onlineProfile);
             final Block block = targetChestLocation.getBlock();
             if (!(block.getState() instanceof InventoryHolder)) {
                 final World world = targetChestLocation.getWorld();
@@ -128,10 +129,10 @@ public class ChestPutObjective extends Objective implements Listener {
             if (!chest.equals(event.getInventory().getHolder())) {
                 return;
             }
-            if (chestItemCondition.handle(profile) && checkConditions(profile)) {
-                completeObjective(profile);
+            if (chestItemCondition.handle(onlineProfile) && checkConditions(onlineProfile)) {
+                completeObjective(onlineProfile);
                 if (chestTakeEvent != null) {
-                    chestTakeEvent.handle(profile);
+                    chestTakeEvent.handle(onlineProfile);
                 }
             }
         } catch (final QuestRuntimeException e) {

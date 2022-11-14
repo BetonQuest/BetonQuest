@@ -20,7 +20,7 @@ public class MMOCoreSkillPointsEvent extends QuestEvent {
 
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final PlayerData data = PlayerData.get(profile.getOfflinePlayer().getUniqueId());
+        final PlayerData data = PlayerData.get(profile.getPlayerUUID());
         final int amount = amountVar.getInt(profile);
         data.giveSkillPoints(amount);
         return null;

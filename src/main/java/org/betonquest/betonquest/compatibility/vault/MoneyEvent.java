@@ -40,10 +40,10 @@ public class MoneyEvent extends QuestEvent {
         notify = instruction.hasArgument("notify");
     }
 
-    @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.CyclomaticComplexity"})
+    @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     @Override
     protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final OfflinePlayer player = profile.getOfflinePlayer();
+        final OfflinePlayer player = profile.getPlayer();
         // get the difference between target money and current money
         final double current = VaultIntegrator.getEconomy().getBalance(player);
         final double target;
@@ -59,9 +59,9 @@ public class MoneyEvent extends QuestEvent {
 
         if (difference > 0) {
             VaultIntegrator.getEconomy().depositPlayer(player, difference);
-            if (notify) {
+            if (notify && profile.getOnlineProfile().isPresent()) {
                 try {
-                    Config.sendNotify(instruction.getPackage().getPackagePath(), profile.getOnlineProfile(), "money_given",
+                    Config.sendNotify(instruction.getPackage().getPackagePath(), profile.getOnlineProfile().get(), "money_given",
                             new String[]{decimalFormat.format(difference), currencyName}, "money_given,info");
                 } catch (final QuestRuntimeException e) {
                     LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'money_given' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
@@ -69,9 +69,9 @@ public class MoneyEvent extends QuestEvent {
             }
         } else if (difference < 0) {
             VaultIntegrator.getEconomy().withdrawPlayer(player, -difference);
-            if (notify) {
+            if (notify && profile.getOnlineProfile().isPresent()) {
                 try {
-                    Config.sendNotify(instruction.getPackage().getPackagePath(), profile.getOnlineProfile(), "money_taken",
+                    Config.sendNotify(instruction.getPackage().getPackagePath(), profile.getOnlineProfile().get(), "money_taken",
                             new String[]{decimalFormat.format(difference), currencyName}, "money_taken,info");
                 } catch (final QuestRuntimeException e) {
                     LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'money_taken' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);

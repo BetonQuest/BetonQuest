@@ -5,7 +5,7 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.utils.LocalChatPaginator;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.ChatColor;
@@ -21,8 +21,8 @@ public class SlowTellrawConvIO extends TellrawConvIO {
     private final String npcTextColor;
     private List<String> endLines;
 
-    public SlowTellrawConvIO(final Conversation conv, final Profile profile) {
-        super(conv, profile);
+    public SlowTellrawConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
+        super(conv, onlineProfile);
         final StringBuilder string = new StringBuilder();
         for (final ChatColor color : colors.get("text")) {
             string.append(color);

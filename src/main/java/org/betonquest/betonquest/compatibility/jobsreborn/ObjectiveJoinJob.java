@@ -7,6 +7,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -39,9 +40,9 @@ public class ObjectiveJoinJob extends Objective implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onJobsJoinEvent(final JobsJoinEvent event) {
         if (event.getJob().getName().equalsIgnoreCase(this.sJobName)) {
-            final Profile profile = PlayerConverter.getID(event.getPlayer().getPlayer());
-            if (containsPlayer(profile) && checkConditions(profile)) {
-                completeObjective(profile);
+            final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer().getPlayer());
+            if (containsPlayer(onlineProfile) && checkConditions(onlineProfile)) {
+                completeObjective(onlineProfile);
             }
         }
     }

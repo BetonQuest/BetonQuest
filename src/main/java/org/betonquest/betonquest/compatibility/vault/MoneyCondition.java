@@ -26,7 +26,7 @@ public class MoneyCondition extends Condition {
         if (pAmount < 0) {
             pAmount = -pAmount;
         }
-        return VaultIntegrator.getEconomy().has(profile.getOfflinePlayer(), pAmount);
+        return VaultIntegrator.getEconomy().has(profile.getPlayer(), pAmount);
     }
 
 }

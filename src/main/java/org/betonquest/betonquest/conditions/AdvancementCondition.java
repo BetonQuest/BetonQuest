@@ -33,7 +33,7 @@ public class AdvancementCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) {
-        final AdvancementProgress progress = profile.getOnlineProfile().getOnlinePlayer().getAdvancementProgress(advancement);
+        final AdvancementProgress progress = profile.getOnlineProfile().get().getPlayer().getAdvancementProgress(advancement);
         return progress.isDone();
     }
 
