@@ -34,21 +34,47 @@ import java.util.Set;
 @CustomLog
 public class MythicMobKillObjective extends CountingObjective implements Listener {
 
+    /**
+     * The names of all mobs that this objective should count.
+     */
     private final Set<String> names = new HashSet<>();
-    private final double neutralDeathRadiusAllPlayers;
-    private final double neutralDeathRadiusAllPlayersSquared;
+    /**
+     * The minimal level the killed mob must have to count.
+     */
     private final VariableNumber minMobLevel;
+    /**
+     * The maximal level the killed mob must have to count.
+     */
     private final VariableNumber maxMobLevel;
+    /**
+     * The radius in which any of the specified mobs dying will progress the objective for players.
+     */
+    private final double deathRadiusAllPlayers;
+    /**
+     * The radius in which any of the specified mobs dying without a killer will progress the objective for players.
+     */
+    private final double neutralDeathRadiusAllPlayers;
+    /**
+     * The text with which the mob must have been marked to count.
+     */
     protected String marked;
 
+    /**
+     * Creates a new MythicMobKillObjective.
+     *
+     * @param instruction the user-provided instruction
+     * @throws InstructionParseException if the instruction is invalid
+     */
     public MythicMobKillObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "mobs_to_kill");
 
         Collections.addAll(names, instruction.getArray());
         targetAmount = instruction.getInt(instruction.getOptional("amount"), 1);
 
-        neutralDeathRadiusAllPlayers = instruction.getDouble(instruction.getOptional("neutralDeathRadiusAllPlayers"), 0);
-        neutralDeathRadiusAllPlayersSquared = neutralDeathRadiusAllPlayers * neutralDeathRadiusAllPlayers;
+        final double deathRadiusAllPlayersTemp = instruction.getDouble(instruction.getOptional("deathRadiusAllPlayers"), 0);
+        deathRadiusAllPlayers = Math.pow(deathRadiusAllPlayersTemp, 2);
+        final double neutralDeathRadiusAllPlayersTemp = instruction.getDouble(instruction.getOptional("neutralDeathRadiusAllPlayers"), 0);
+        neutralDeathRadiusAllPlayers = Math.pow(neutralDeathRadiusAllPlayersTemp, 2);
 
         final String unsafeMinMobLevel = instruction.getOptional("minLevel");
         final String unsafeMaxMobLevel = instruction.getOptional("maxLevel");
@@ -62,6 +88,11 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
         }
     }
 
+    /**
+     * Registers a listener for the MythicMobDeathEvent and handles all incoming ones.
+     *
+     * @param event the MythicMobDeathEvent
+     */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @EventHandler(ignoreCancelled = true)
@@ -70,14 +101,20 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
                 || marked != null && !event.getEntity().hasMetadata("betonquest-marked")) {
             return;
         }
-        if (event.getKiller() instanceof Player) {
+        if (deathRadiusAllPlayers > 0) {
+            executeForEveryoneInRange(event, deathRadiusAllPlayers);
+        } else if (event.getKiller() instanceof Player) {
             checkKill(event, PlayerConverter.getID((Player) event.getKiller()));
         } else if (neutralDeathRadiusAllPlayers > 0) {
-            final Location center = BukkitAdapter.adapt(event.getMob().getLocation());
-            for (final Player player : center.getWorld().getPlayers()) {
-                if (isValidPlayer(player) && player.getLocation().distanceSquared(center) <= neutralDeathRadiusAllPlayersSquared) {
-                    checkKill(event, PlayerConverter.getID(player));
-                }
+            executeForEveryoneInRange(event, neutralDeathRadiusAllPlayers);
+        }
+    }
+
+    private void executeForEveryoneInRange(final MythicMobDeathEvent event, final double range) {
+        final Location center = BukkitAdapter.adapt(event.getMob().getLocation());
+        for (final Player player : center.getWorld().getPlayers()) {
+            if (isValidPlayer(player) && player.getLocation().distanceSquared(center) <= range) {
+                checkKill(event, PlayerConverter.getID(player));
             }
         }
     }

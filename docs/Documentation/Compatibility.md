@@ -766,6 +766,8 @@ You can optionally add the `amount:` argument to specify how many of these mobs 
 to add the optional arguments `minLevel` and `maxLevel` to further customize what mobs need to be killed.
 You can also add an optional `neutralDeathRadiusAllPlayers` argument to complete the objective for each nearby player
 within the defined radius when the mob is killed by any non-player source.
+Alternatively, you could use the `deathRadiusAllPlayers` argument to count all deaths of the specified mythic mob(s),
+no matter if it was killed by a non-player source or not.
 You can add a `notify` keyword if you want to send a notification to players whenever the objective progresses.
 You can also add an optional `marked` argument to only count kills marked with the `mspawn` event.
 The only supported variable for the marked argument is `%player%`.
@@ -778,6 +780,7 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
     mmobkill SkeletalKnight amount:2 events:reward
     mmobkill SnekBoss,SnailBoss,SunBoss amount:10 events:reward
     mmobkill SnekBoss amount:2 minlevel:4 maxlevel:6 events:reward marked:DungeonBoss3
+    mmobkill dungeonDevil deathRadiusAllPlayers:30 events:reward
     ```
 
 ### Conditions
