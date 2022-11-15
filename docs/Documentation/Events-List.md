@@ -357,12 +357,12 @@ Displays a notification using the NotifyIO system.
     `eventName: {=="==}notify Peter:Heya %player%!{=="==}` :arrow_right: `eventName: {=="==}notify Peter{++\\++}:Heya %player%!{=="==}`<br>
     `otherEvent: notify You own %math.calc:5% fish!` :arrow_right: `otherEvent: You own %math.calc{++\++}:5% fish!`
 
-| Option                                                     | Description                                                                                                                                 |
-|------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
-| message  	                                                 | The message that will be displayed. Supports variables and translations. *Required, must be first*             	                            |
-| category 	                                                 | Will load all settings from that Notification Category. Can be a comma-seperated list. The first existent category will be used. *Optional* |   
-| io       	                                                 | Any [NotifyIO](Notification-IO's-&-Categories.md). Overrides the "category" settings. *Optional*                                            |
-| [NotifyIO](Notification-IO's-&-Categories.md#notify-ios) 	 | Any setting from the defined notifyIO. Can be used multiple times. Overrides the "category" settings. *Optional*                            |
+| Option                                                   | Description                                                                                                                                 |
+|----------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| message                                                  | The message that will be displayed. Supports variables and translations. *Required, must be first*                                          |
+| category                                                 | Will load all settings from that Notification Category. Can be a comma-seperated list. The first existent category will be used. *Optional* |   
+| io                                                       | Any [NotifyIO](Notification-IO's-&-Categories.md). Overrides the "category" settings. *Optional*                                            |
+| [NotifyIO](Notification-IO's-&-Categories.md#notify-ios) | Any setting from the defined notifyIO. Can be used multiple times. Overrides the "category" settings. *Optional*                            |
 
 The fallback NotifyIO is `chat` if no argument other than `message` is specified.    
 `message` is the only argument of this event that is not `key:value` based. You can freely add any text with spaces there.
