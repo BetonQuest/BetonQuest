@@ -3,6 +3,7 @@ package org.betonquest.betonquest.conversation;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.profiles.ProfileCache;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -15,8 +16,6 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Tags profiles that are in combat to prevent them from starting the conversation.
@@ -24,8 +23,8 @@ import java.util.Map;
 @SuppressWarnings("PMD.CommentRequired")
 public class CombatTagger implements Listener {
 
-    private static final Map<Profile, Boolean> TAGGED = new HashMap<>();
-    private static final Map<Profile, BukkitRunnable> UNTAGGERS = new HashMap<>();
+    private static final ProfileCache<Boolean> TAGGED = new ProfileCache<>(Bukkit.getServer());
+    private static final ProfileCache<BukkitRunnable> UNTAGGERS = new ProfileCache<>(Bukkit.getServer());
     private final int delay;
 
     /**
