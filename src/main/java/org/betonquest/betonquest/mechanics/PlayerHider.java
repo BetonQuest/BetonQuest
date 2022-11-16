@@ -85,14 +85,14 @@ public class PlayerHider {
      * Trigger an update for the visibility
      */
     public void updateVisibility() {
-        final Collection<? extends OnlineProfile> onlineProfiles = PlayerConverter.getOnlineProfiles();
+        final Collection<OnlineProfile> onlineProfiles = PlayerConverter.getOnlineProfiles();
         final Map<OnlineProfile, List<OnlineProfile>> profilesToHide = getProfilesToHide(onlineProfiles);
         for (final OnlineProfile source : onlineProfiles) {
             updateVisibilityForProfiles(onlineProfiles, source, profilesToHide.get(source));
         }
     }
 
-    private void updateVisibilityForProfiles(final Collection<? extends OnlineProfile> onlineProfiles, final OnlineProfile source, final List<OnlineProfile> profilesToHide) {
+    private void updateVisibilityForProfiles(final Collection<OnlineProfile> onlineProfiles, final OnlineProfile source, final List<OnlineProfile> profilesToHide) {
         if (profilesToHide == null) {
             for (final OnlineProfile target : onlineProfiles) {
                 source.getPlayer().showPlayer(BetonQuest.getInstance(), target.getPlayer());
@@ -108,7 +108,7 @@ public class PlayerHider {
         }
     }
 
-    private Map<OnlineProfile, List<OnlineProfile>> getProfilesToHide(final Collection<? extends OnlineProfile> onlineProfiles) {
+    private Map<OnlineProfile, List<OnlineProfile>> getProfilesToHide(final Collection<OnlineProfile> onlineProfiles) {
         final Map<OnlineProfile, List<OnlineProfile>> profilesToHide = new HashMap<>();
         for (final Map.Entry<ConditionID[], ConditionID[]> hider : hiders.entrySet()) {
             final List<OnlineProfile> targetProfiles = new ArrayList<>();

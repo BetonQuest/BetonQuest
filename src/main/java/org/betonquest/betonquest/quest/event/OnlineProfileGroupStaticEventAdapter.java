@@ -16,7 +16,7 @@ public class OnlineProfileGroupStaticEventAdapter implements StaticEvent {
     /**
      * The supplier for generating the group of online players to use.
      */
-    private final Supplier<? extends Iterable<? extends OnlineProfile>> profileCollectionSupplier;
+    private final Supplier<? extends Iterable<OnlineProfile>> profileCollectionSupplier;
 
     /**
      * The event to execute for every player of the group.
@@ -29,7 +29,7 @@ public class OnlineProfileGroupStaticEventAdapter implements StaticEvent {
      * @param profileSupplier supplier for the player group
      * @param event           event to execute
      */
-    public OnlineProfileGroupStaticEventAdapter(final Supplier<? extends Iterable<? extends OnlineProfile>> profileSupplier, final Event event) {
+    public OnlineProfileGroupStaticEventAdapter(final Supplier<? extends Iterable<OnlineProfile>> profileSupplier, final Event event) {
         profileCollectionSupplier = profileSupplier;
         this.event = event;
     }
