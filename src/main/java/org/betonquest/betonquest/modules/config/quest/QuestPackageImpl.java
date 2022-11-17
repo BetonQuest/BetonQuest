@@ -27,7 +27,7 @@ public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
      *
      * @param questPath the path that addresses this {@link QuestPackage}
      * @param root      the root file of this {@link QuestPackage}
-     * @param files     all files contained by this {@link QuestPackage} except the {@code questFile}
+     * @param files     all files contained by this {@link QuestPackage}
      * @throws InvalidConfigurationException thrown if a {@link QuestPackage} could not be created
      *                                       or an exception occurred while creating the {@link MultiConfiguration}
      * @throws FileNotFoundException         thrown if a file could not be found during the creation

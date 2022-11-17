@@ -34,7 +34,7 @@ public class QuestTemplate extends Quest {
      *
      * @param questPath the path that addresses this {@link QuestTemplate}
      * @param root      the root file of this {@link QuestTemplate}
-     * @param files     all files contained by this {@link QuestTemplate} except the {@code questFile}
+     * @param files     all files contained by this {@link QuestTemplate}
      * @throws InvalidConfigurationException thrown if a {@link org.betonquest.betonquest.api.config.ConfigAccessor}
      *                                       could not be created or an exception occurred while creating the
      *                                       {@link MultiConfiguration}
