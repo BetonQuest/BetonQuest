@@ -30,13 +30,13 @@ Run `mvn verify -PTest-None` or `mvn package -PTest-None` or activate the profil
 This will skip all tests. 
 
 The `Test-All` profile will run all tests, even the ones that are normally skipped.
-Run `mvn verify -PTest-All` or `mvn package -PTest-All` or activate the profile in your IDE's Maven tab on the right side.
+Run `mvn verify -PTest-All`, `mvn package -PTest-All` or activate the profile in your IDE's Maven tab on the right side.
 This will run all tests. This is not really recommended, but if you did lots of big changes that
 may affect the whole project, you can use this profile to make sure that everything is working.
 
 There are more profiles, but you don't need to know them in most cases.
 
-??? success "The other Profiles"
+??? info "The other Profiles"
     There are other profiles prefixed with `Test-`.
     You can use them to select a specific scope of tests that you want to run, after changing code in that scope.
     
