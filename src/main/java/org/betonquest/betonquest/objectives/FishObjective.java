@@ -41,7 +41,7 @@ public class FishObjective extends CountingObjective implements Listener {
         blockSelector = new BlockSelector(instruction.next());
         targetAmount = instruction.getInt();
 
-        final String pack = instruction.getPackage().getPackagePath();
+        final String pack = instruction.getPackage().getQuestPath();
         final String loc = instruction.getOptional("hookLocation");
         final String range = instruction.getOptional("range");
         if (loc != null && range != null) {

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.menu.config;
 
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;

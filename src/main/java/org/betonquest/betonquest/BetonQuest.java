@@ -13,7 +13,7 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
@@ -619,7 +619,7 @@ public class BetonQuest extends JavaPlugin {
                     try {
                         CANCELERS.put(entry.getKey() + "." + key, new QuestCanceler(pack, key));
                     } catch (final InstructionParseException e) {
-                        log.warn(pack, "Could not load '" + pack.getPackagePath() + "." + key + "' quest canceler: " + e.getMessage(), e);
+                        log.warn(pack, "Could not load '" + pack.getQuestPath() + "." + key + "' quest canceler: " + e.getMessage(), e);
                     }
                 }
             }
@@ -998,7 +998,7 @@ public class BetonQuest extends JavaPlugin {
 
         // load new data
         for (final QuestPackage pack : Config.getPackages().values()) {
-            final String packName = pack.getPackagePath();
+            final String packName = pack.getQuestPath();
             log.debug(pack, "Loading stuff in package " + packName);
             final ConfigurationSection eConfig = Config.getPackages().get(packName).getConfig().getConfigurationSection("events");
             if (eConfig != null) {
@@ -1136,7 +1136,7 @@ public class BetonQuest extends JavaPlugin {
             if (conversationsConfig != null) {
                 for (final String convName : conversationsConfig.getKeys(false)) {
                     try {
-                        CONVERSATIONS.put(pack.getPackagePath() + "." + convName, new ConversationData(pack, convName, conversationsConfig.getConfigurationSection(convName)));
+                        CONVERSATIONS.put(pack.getQuestPath() + "." + convName, new ConversationData(pack, convName, conversationsConfig.getConfigurationSection(convName)));
                     } catch (final InstructionParseException e) {
                         log.warn(pack, "Error in '" + packName + "." + convName + "' conversation: " + e.getMessage(), e);
                     }

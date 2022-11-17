@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.id;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 
@@ -32,7 +32,7 @@ public abstract class ID {
             final String packName = identifier.substring(0, dotIndex);
             if (pack != null && packName.startsWith(UP_STR + "-")) {
                 // resolve relative name if we have a supplied package
-                final String[] root = pack.getPackagePath().split("-");
+                final String[] root = pack.getQuestPath().split("-");
                 final String[] path = packName.split("-");
                 // count how many packages up we need to go
                 int stepsUp = 0;
@@ -61,7 +61,7 @@ public abstract class ID {
                 }
                 // We want to go down
             } else if (pack != null && packName.startsWith("-")) {
-                final String currentPath = pack.getPackagePath();
+                final String currentPath = pack.getQuestPath();
                 final String fullPath = currentPath + packName;
 
                 this.pack = Config.getPackages().get(fullPath);
@@ -101,7 +101,7 @@ public abstract class ID {
     }
 
     public String getFullID() {
-        return pack.getPackagePath() + "." + getBaseID();
+        return pack.getQuestPath() + "." + getBaseID();
     }
 
     @Override
@@ -113,14 +113,14 @@ public abstract class ID {
     public boolean equals(final Object other) {
         if (other instanceof ID identifier) {
             return identifier.identifier.equals(this.identifier) &&
-                    identifier.pack.getPackagePath().equals(this.pack.getPackagePath());
+                    identifier.pack.getQuestPath().equals(this.pack.getQuestPath());
         }
         return false;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(identifier, pack.getPackagePath());
+        return Objects.hash(identifier, pack.getQuestPath());
     }
 
     public Instruction generateInstruction() {

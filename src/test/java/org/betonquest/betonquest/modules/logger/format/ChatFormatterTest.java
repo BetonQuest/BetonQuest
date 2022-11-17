@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.modules.logger.format;
 
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.bukkit.plugin.Plugin;
@@ -100,7 +100,7 @@ class ChatFormatterTest {
     @Test
     void testChatFormattingPackage() {
         final QuestPackage pack = mock(QuestPackage.class);
-        when(pack.getPackagePath()).thenReturn("TestPackage");
+        when(pack.getQuestPath()).thenReturn("TestPackage");
         final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.INFO, MESSAGE, plugin, pack);
         final String expected = "{\"text\":\"\\u003cTestPackage\\u003e " + FORMATTED_MESSAGE;
         assertLogMessage(ChatFormatter.PluginDisplayMethod.NONE, null, null, record, expected);

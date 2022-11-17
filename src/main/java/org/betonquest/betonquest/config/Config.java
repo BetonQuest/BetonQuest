@@ -5,10 +5,11 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.database.PlayerData;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.modules.config.QuestManager;
 import org.betonquest.betonquest.notify.Notify;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -18,9 +19,7 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,13 +27,12 @@ import java.util.Map;
  * Handles the configuration of the plugin
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyMethods", "PMD.UseObjectForClearerAPI",
-        "PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition", "PMD.AvoidFieldNameMatchingTypeName"})
+        "PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition", "PMD.AvoidFieldNameMatchingTypeName",
+        "PMD.ClassNamingConventions"})
 @CustomLog
 public final class Config {
-    public static final String CONFIG_PACKAGE_SEPARATOR = "-";
-
-    private static final Map<String, QuestPackage> PACKAGES = new HashMap<>();
     private static final List<String> LANGUAGES = new ArrayList<>();
+    private static QuestManager questManager;
     private static BetonQuest plugin;
     private static ConfigurationFile messages;
     private static ConfigAccessor internal;
@@ -50,7 +48,6 @@ public final class Config {
     @SuppressFBWarnings({"NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", "EI_EXPOSE_STATIC_REP2"})
     public static void setup(final BetonQuest plugin) {
         Config.plugin = plugin;
-        PACKAGES.clear();
         LANGUAGES.clear();
 
         final File root = plugin.getDataFolder();
@@ -70,20 +67,7 @@ public final class Config {
             }
         }
 
-        final File packages = new File(root, "QuestPackages");
-
-        // Create QuestPackages folder
-        if (!packages.exists() && !packages.mkdir()) {
-            LOG.error("It was not possible to create the folder '" + packages.getPath() + "'!");
-            return;
-        }
-
-        // load packages
-        try {
-            searchForPackages(packages, packages, "package", ".yml");
-        } catch (final IOException e) {
-            LOG.error("Error while loading '" + packages.getPath() + "'!", e);
-        }
+        questManager = new QuestManager(root);
     }
 
     /**
@@ -137,7 +121,7 @@ public final class Config {
      * @return the map of packages and their names
      */
     public static Map<String, QuestPackage> getPackages() {
-        return PACKAGES;
+        return questManager.getPackages();
     }
 
     /**
@@ -162,7 +146,7 @@ public final class Config {
         } else if ("messages".equals(main)) {
             return messages.getString(address.substring(9));
         } else {
-            final QuestPackage pack = PACKAGES.get(main);
+            final QuestPackage pack = getPackages().get(main);
             if (pack == null) {
                 return null;
             }
@@ -195,7 +179,7 @@ public final class Config {
      */
     public static String getNpc(final String value) {
         // load npc assignments from all packages
-        for (final Map.Entry<String, QuestPackage> entry : PACKAGES.entrySet()) {
+        for (final Map.Entry<String, QuestPackage> entry : getPackages().entrySet()) {
             final QuestPackage pack = entry.getValue();
             final ConfigurationSection assignments = pack.getConfig().getConfigurationSection("npcs");
             if (assignments != null) {
@@ -371,56 +355,5 @@ public final class Config {
      */
     public static List<String> getLanguages() {
         return LANGUAGES;
-    }
-
-
-    @SuppressWarnings("PMD.CognitiveComplexity")
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    private static List<File> searchForPackages(final File root, final File file, final String packageIndicator, final String fileIndicator) throws IOException {
-        if (!file.isDirectory()) {
-            throw new IOException("File '" + file.getPath() + "' is not a directory!");
-        }
-        final File[] listFiles = file.listFiles();
-        if (listFiles == null) {
-            throw new IOException("Invalid list of file for directory '\" + file.getPath() + \"'!");
-        }
-        final List<File> files = new ArrayList<>();
-        File packageIndicatorFile = null;
-        for (final File subFile : listFiles) {
-            if (subFile.isDirectory()) {
-                try {
-                    files.addAll(searchForPackages(root, subFile, packageIndicator, fileIndicator));
-                } catch (final IOException e) {
-                    LOG.warn(e.getMessage(), e);
-                }
-            } else {
-                if (!subFile.getName().endsWith(fileIndicator)) {
-                    continue;
-                }
-                if (subFile.getName().equals(packageIndicator + fileIndicator)) {
-                    packageIndicatorFile = subFile;
-                } else {
-                    files.add(subFile);
-                }
-            }
-        }
-        if (packageIndicatorFile != null) {
-            createPackage(root, packageIndicatorFile, files);
-            files.clear();
-        }
-        return files;
-    }
-
-    private static void createPackage(final File root, final File main, final List<File> files) {
-        final String packagePath = root.toURI().relativize(main.getParentFile().toURI())
-                .toString().replace('/', ' ').trim().replaceAll(" ", CONFIG_PACKAGE_SEPARATOR);
-        try {
-            final QuestPackage pack = new QuestPackage(packagePath, main, files);
-            if (!pack.getConfig().contains("enabled") || pack.isFromPackageConfig("enabled") && "true".equals(pack.getConfig().getString("enabled"))) {
-                PACKAGES.put(pack.getPackagePath(), pack);
-            }
-        } catch (final InvalidConfigurationException | FileNotFoundException e) {
-            LOG.warn("QuestPackage '" + packagePath + "' could not be loaded, reason: " + e.getMessage(), e);
-        }
     }
 }

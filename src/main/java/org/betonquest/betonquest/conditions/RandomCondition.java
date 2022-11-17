@@ -28,7 +28,7 @@ public class RandomCondition extends Condition {
         if (values.length != 2) {
             throw new InstructionParseException("Wrong randomness format");
         }
-        final String packName = instruction.getPackage().getPackagePath();
+        final String packName = instruction.getPackage().getQuestPath();
         try {
             valueMax = new VariableNumber(packName, values[0]);
             rangeOfRandom = new VariableNumber(packName, values[1]);

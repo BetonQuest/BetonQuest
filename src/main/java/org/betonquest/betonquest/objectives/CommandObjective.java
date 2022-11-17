@@ -108,7 +108,7 @@ public class CommandObjective extends Objective implements Listener {
         for (final String variable : commandVariables) {
             replaceCommand = replaceCommand.replace(
                     variable,
-                    BetonQuest.getInstance().getVariableValue(instruction.getPackage().getPackagePath(), variable, profile)
+                    BetonQuest.getInstance().getVariableValue(instruction.getPackage().getQuestPath(), variable, profile)
             );
         }
         return replaceCommand;

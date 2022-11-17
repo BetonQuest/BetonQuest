@@ -6,7 +6,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.QuestEvent;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -40,7 +40,7 @@ public class CompassEvent extends QuestEvent {
         for (final QuestPackage pack : Config.getPackages().values()) {
             final ConfigurationSection section = pack.getConfig().getConfigurationSection("compass");
             if (section != null && section.contains(compass)) {
-                compassLocation = new CompoundLocation(pack.getPackagePath(), pack.getString("compass." + compass + ".location"));
+                compassLocation = new CompoundLocation(pack.getQuestPath(), pack.getString("compass." + compass + ".location"));
                 break;
             }
         }

@@ -4,7 +4,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestCompassTargetChangeEvent;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.config.QuestCanceler;
@@ -410,7 +410,7 @@ public class Backpack implements Listener {
             int counter = 0;
             // for every package
             for (final QuestPackage pack : Config.getPackages().values()) {
-                final String packName = pack.getPackagePath();
+                final String packName = pack.getQuestPath();
                 // loop all compass locations
                 final ConfigurationSection section = pack.getConfig().getConfigurationSection("compass");
                 if (section != null) {

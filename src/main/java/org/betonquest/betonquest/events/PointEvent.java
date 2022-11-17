@@ -39,7 +39,7 @@ public class PointEvent extends QuestEvent {
             multi = false;
         }
         try {
-            count = new VariableNumber(instruction.getPackage().getPackagePath(), number);
+            count = new VariableNumber(instruction.getPackage().getQuestPath(), number);
         } catch (final InstructionParseException e) {
             throw new InstructionParseException("Could not parse point count", e);
         }
@@ -77,7 +77,7 @@ public class PointEvent extends QuestEvent {
                     playerData.modifyPoints(category, (int) Math.floor(p.getCount() * count.getDouble(profile) - p.getCount()));
                     if (notify && profile.getOnlineProfile().isPresent()) {
                         try {
-                            Config.sendNotify(instruction.getPackage().getPackagePath(), profile.getOnlineProfile().get(), "point_multiplied", new String[]{String.valueOf(intCount), categoryName}, "point_multiplied,info");
+                            Config.sendNotify(instruction.getPackage().getQuestPath(), profile.getOnlineProfile().get(), "point_multiplied", new String[]{String.valueOf(intCount), categoryName}, "point_multiplied,info");
                         } catch (final QuestRuntimeException e) {
                             LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'point_multiplied' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
                         }
@@ -88,14 +88,14 @@ public class PointEvent extends QuestEvent {
             playerData.modifyPoints(category, (int) Math.floor(count.getDouble(profile)));
             if (notify && intCount > 0 && profile.getOnlineProfile().isPresent()) {
                 try {
-                    Config.sendNotify(instruction.getPackage().getPackagePath(), profile.getOnlineProfile().get(), "point_given", new String[]{String.valueOf(intCount), categoryName}, "point_given,info");
+                    Config.sendNotify(instruction.getPackage().getQuestPath(), profile.getOnlineProfile().get(), "point_given", new String[]{String.valueOf(intCount), categoryName}, "point_given,info");
                 } catch (final QuestRuntimeException e) {
                     LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'point_given' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
                 }
 
             } else if (notify && profile.getOnlineProfile().isPresent()) {
                 try {
-                    Config.sendNotify(instruction.getPackage().getPackagePath(), profile.getOnlineProfile().get(), "point_taken", new String[]{String.valueOf(Math.abs(intCount)), categoryName}, "point_taken,info");
+                    Config.sendNotify(instruction.getPackage().getQuestPath(), profile.getOnlineProfile().get(), "point_taken", new String[]{String.valueOf(Math.abs(intCount)), categoryName}, "point_taken,info");
                 } catch (final QuestRuntimeException e) {
                     LOG.warn(instruction.getPackage(), "The notify system was unable to play a sound for the 'point_taken' category in '" + getFullId() + "'. Error was: '" + e.getMessage() + "'", e);
                 }

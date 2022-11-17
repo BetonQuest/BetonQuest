@@ -3,7 +3,7 @@ package org.betonquest.betonquest.compatibility.holographicdisplays;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.hologram.VisibilitySettings;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.compatibility.holographicdisplays.lines.AbstractLine;
 import org.betonquest.betonquest.id.ConditionID;

@@ -4,7 +4,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.VariableString;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
