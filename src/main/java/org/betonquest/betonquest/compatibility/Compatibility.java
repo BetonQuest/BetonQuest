@@ -61,7 +61,7 @@ public class Compatibility implements Listener {
      * The key is the name of the plugin, the value a pair of the integrator class and an instance of it.
      * The instance must only exist if the plugin was hooked.
      */
-    private final Map<String, Pair<Class<? extends Integrator>, Integrator>> integrators = new LinkedHashMap<>();
+    private final Map<String, Pair<Class<? extends Integrator>, Integrator>> integrators = new HashMap<>();
 
     /**
      * Loads all compatibility with other plugins that is available in the current runtime.
