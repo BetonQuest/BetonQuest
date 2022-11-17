@@ -21,25 +21,24 @@ If you have problems solving issues with our requirements there is also a page
     But don't forget, you need to successfully run `mvn verify`, before you make a pull request on GitHub!
 
 ### Maven profiles
-We have some maven profiles, that you can use to change the behavior of `mvn verify` and `mvn package`.
-For you the two profiles `Test-All` and `Test-None` are the most important ones.
-If you run `mvn verify` or `mvn package` normally it will only run a selected scope of our tests.
+There are some Maven profiles that you can use to speed up `mvn verify` and `mvn package`.
+This can be useful when iterating versions on your test server. However, you should always run `mvn verify` with no
+enabled profiles before making a pull request on GitHub.
 
-You can use the `Test-None` profile to skip all tests, to get a big speedup improvement.
-Run `mvn verify -PTest-None` or `mvn package -PTest-None` or activate the profile in your IDEs maven tab on the right side.
-This will skip all tests. This is not really recommended, but if you want to build a jar,
-and you don't want to wait for the tests, you can use this profile.
+You can use the `Test-None` profile to speed up the build process by skipping all tests.
+Run `mvn verify -PTest-None` or `mvn package -PTest-None` or activate the profile in your IDE's Maven tab on the right side.
+This will skip all tests. 
 
 The `Test-All` profile will run all tests, even the ones that are normally skipped.
-Run `mvn verify -PTest-All` or `mvn package -PTest-All` or activate the profile in your IDEs maven tab on the right side.
-This will run all tests. This is not really recommended, but if you did a lot of big changes,
+Run `mvn verify -PTest-All` or `mvn package -PTest-All` or activate the profile in your IDE's Maven tab on the right side.
+This will run all tests. This is not really recommended, but if you did lots of big changes that
 may affect the whole project, you can use this profile to make sure that everything is working.
 
-There are more profiles, but you don't need to know them for now.
+There are more profiles, but you don't need to know them in most cases.
 
 ??? success "The other Profiles"
     There are other profiles prefixed with `Test-`.
-    You can use them to select a specific scope of tests that you want to run, after changed code of that scope.
+    You can use them to select a specific scope of tests that you want to run, after changing code in that scope.
     
     There is also a profile `Skip-Verification`, that will skip all verifications.
     It is only used in the build pipeline to skip verifications that were already done in earlier pipeline steps.
