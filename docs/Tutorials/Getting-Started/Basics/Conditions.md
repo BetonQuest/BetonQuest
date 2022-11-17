@@ -155,7 +155,7 @@ This tag condition is "true" if the player has the defined tag. Let's break it d
   it after what it should check.
 *  The Condition Instruction:
     - `tag`: The first value in the instruction is always the **condition type**.
-    - `foodReceivedTag`: This is the name of the tag that the player must have.
+    - `foodReceived`: This is the name of the tag that the player must have.
 
 
 Tags can be assigned to a player using events. Let's create an event that gives the player the tag:
@@ -191,7 +191,7 @@ conversations:
         text: "You're welcome! Take it... &7*gives food*"
         events: "giveFoodToPlayer,{==addFoodReceivedTag==}" #(3)!
         pointer: "thankYou"
-        conditions: "!foodReceivedTag"
+        conditions: "!hasReceivedFood"
       alreadyReceivedFood:
         text: "Hey %player%! I think I already gave you your welcome food..."
         conditions: "hasReceivedFood"  #(4)!
@@ -215,7 +215,7 @@ conversations:
    This is because this option has no conditions and is the last option in the `first` list.
 3. These events will be executed if the player chooses the `foodAnswer` option. It will give the player the food and the
    tag `foodReceived`.
-4. This condition ensures that the player will only see the `alreadyFoodReceived` option if he has the tag `foodReceivedTag`.
+4. This condition ensures that the player will only see the `alreadyFoodReceived` option if he has the tag `foodReceived`.
 
 
 As you can see we also added new options to it. Now the NPC will say that you already received the food
