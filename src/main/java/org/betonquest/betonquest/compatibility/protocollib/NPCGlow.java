@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.protocollib;
 
-import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import lombok.CustomLog;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCDeathEvent;
@@ -9,18 +8,15 @@ import net.citizensnpcs.api.event.NPCSpawnEvent;
 import net.citizensnpcs.api.npc.NPC;
 import org.apache.commons.lang3.EnumUtils;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.config.QuestPackage;
-import org.betonquest.betonquest.compatibility.protocollib.wrappers.WrapperPlayServerEntityMetadata;
-import org.betonquest.betonquest.compatibility.protocollib.wrappers.WrapperPlayServerScoreboardTeam;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.compatibility.protocollib.api.GlowAPI;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -29,15 +25,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
 /**
  * NPCGlow class
@@ -47,17 +40,22 @@ import java.util.stream.Collectors;
 public final class NPCGlow extends BukkitRunnable implements Listener {
 
     /**
+     * instance of GlowAPI
+     */
+    private GlowAPI glowAPI;
+
+    /**
      * instance of NPCGlow
      */
     private static NPCGlow instance;
     /**
-     * List of conditions for spesific NPC that will get glow
+     * List of conditions for specific NPC that will get glow
      */
     private final Map<Integer, Set<ConditionID>> npcs;
     /**
      * List player that can seen glowing npc.
      */
-    private final Map<Integer, Set<Player>> npcPlayersMap;
+    private final Map<Integer, Collection<Player>> npcPlayersMap;
     /**
      * Store NPCID for each color
      */
@@ -71,10 +69,8 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
         npcPlayersMap = new HashMap<>();
         npcs = new HashMap<>();
         npcColor = new HashMap<>();
-        Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), () -> {
-            loadFromConfig();
-            applyTeamAsync(Mode.TEAM_CREATED);
-        }, 5L);
+        glowAPI = new GlowAPI();
+        Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), this::loadFromConfig, 5L);
         runTaskTimer(BetonQuest.getInstance(), 0, 5);
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
@@ -182,54 +178,34 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
                 if (npcPlayersMap.containsKey(npcID)
                         && npcPlayersMap.get(npcID).contains(player)) {
                     npcPlayersMap.get(npcID).remove(player);
-                    applyGlow(npcID, false, player);
-                    applyTeamAsync(Mode.TEAM_REMOVED, npcColor.get(npcID), player, npc).join();
+                    glowAPI.glowPacketAsync(npcID, npcColor.get(npcID),false, player).join();
                 }
             } else {
                 if (npcPlayersMap.containsKey(npcID) && npcPlayersMap.get(npcID).add(player)) {
-                    applyTeamAsync(Mode.TEAM_CREATED, npcColor.get(npcID), player, npc).join();
+                    glowAPI.glowPacketAsync(npcID, npcColor.get(npcID),true, player).join();
                 }
             }
         }
     }
 
     /**
-     * Create and Sending glow packet for a player
-     *
-     * @param npc    ID for npc that Will get Glow
-     * @param glow   true if npc need to be glowing
-     * @param player Player that can see the Glowing NPC
+     * Updates all NPCs for All Players
      */
-    public void applyGlow(final int npc, final boolean glow, final Player player) {
-        final Entity entity = CitizensAPI.getNPCRegistry().getById(npc).getEntity();
-
-        final WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata();
-        final WrappedDataWatcher watcher = WrappedDataWatcher.getEntityWatcher(entity).deepClone();
-        final WrappedDataWatcher.Serializer serializer = WrappedDataWatcher.Registry.get(Byte.class);
-        watcher.setEntity(entity);
-        byte mask = watcher.getByte(0);
-        if (glow) {
-            mask |= 0x40;
-        } else {
-            mask &= ~0x40;
+    public void applyGlow() {
+        for (final Player p : Bukkit.getOnlinePlayers()) {
+            for (final Integer id : npcs.keySet()) {
+                applyVisibility(p, id);
+            }
         }
-        watcher.setObject(0, serializer, mask);
 
-        packet.setEntityID(entity.getEntityId());
-        packet.setMetadata(watcher.getWatchableObjects());
-        packet.sendPacket(player);
-    }
-
-    /**
-     * apply glow to all npc for player if conditions are met
-     *
-     * @param player send packet to player
-     */
-    public void applyGlow(final Player player) {
-        npcs
-                .keySet()
-                .parallelStream()
-                .forEach((npcID) -> applyVisibility(player, npcID));
+        npcPlayersMap.forEach((npcId, players) -> {
+            final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
+            if (npc == null) {
+                LOG.warn("NPC Glow could not update Glowing for npc " + npcId + ": No npc with this id found!");
+                return;
+            }
+            glowAPI.glowPacketAsync(npcId, npcColor.get(npcId),true, players).join();
+        });
     }
 
     /**
@@ -246,98 +222,6 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
                 .parallelStream()
                 .forEach((player)
                         -> applyVisibility(player, npc.getId()));
-    }
-
-    /**
-     * Updates all NPCs for All Players
-     */
-    public void applyGlow() {
-        for (final Player p : Bukkit.getOnlinePlayers()) {
-            for (final Integer id : npcs.keySet()) {
-                applyVisibility(p, id);
-            }
-        }
-
-        npcPlayersMap.forEach((k, v) -> {
-            final NPC npc = CitizensAPI.getNPCRegistry().getById(k);
-            if (npc == null) {
-                LOG.warn("NPC Glow could not update Glowing for npc " + k + ": No npc with this id found!");
-                return;
-            }
-            applyGlowAsync(npc, v).join();
-        });
-    }
-
-    /**
-     * Create and Sending glow packet in background (async) for a List of players
-     *
-     * @param npc     NPC that will be Glowing
-     * @param players List of players that can see the glowing NPC
-     * @return void
-     */
-    public CompletableFuture<Void> applyGlowAsync(final NPC npc, final Collection<? extends Player> players) {
-        final Entity entity = npc.getEntity();
-        return CompletableFuture.runAsync(() -> players
-                .parallelStream()
-                .forEach((player) -> {
-                    final WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata();
-                    final WrappedDataWatcher watcher = WrappedDataWatcher.getEntityWatcher(entity).deepClone();
-                    final WrappedDataWatcher.Serializer serializer = WrappedDataWatcher.Registry.get(Byte.class);
-                    watcher.setEntity(entity);
-                    byte mask = watcher.getByte(0);
-                    mask |= 0x40;
-                    watcher.setObject(0, serializer, mask);
-
-                    packet.setEntityID(entity.getEntityId());
-                    packet.setMetadata(watcher.getWatchableObjects());
-                    packet.sendPacket(player);
-                }));
-    }
-
-    /**
-     * Create and Sending Scoreboard Team packet in background (async) for a List of npcs on npcPlayersMap
-     *
-     * @param mode Mode of the Team
-     */
-    public void applyTeamAsync(final Mode mode) {
-        npcPlayersMap.forEach((npcID, players) -> players.parallelStream().forEach((player) -> {
-            final NPC npc = CitizensAPI.getNPCRegistry().getById(npcID);
-            if (npc.isSpawned()) {
-                applyTeamAsync(mode, npcColor.get(npcID), player, npc).join();
-            }
-        }));
-    }
-
-    /**
-     * Create and Sending Scoreboard Team packet in background (async) for a List of npcs
-     *
-     * @param color  color of the team
-     * @param mode   Mode of the team
-     * @param player player that can see the glowing NPC
-     * @param npcs   NPCs that will be in the Team
-     * @return void
-     */
-    public CompletableFuture<Void> applyTeamAsync(final Mode mode, final ChatColor color, final Player player, final NPC... npcs) {
-        return CompletableFuture.runAsync(() -> {
-            final WrapperPlayServerScoreboardTeam packet = new WrapperPlayServerScoreboardTeam();
-            packet.setMode(mode.ordinal());
-            packet.setName("Color#" + color.name());
-            packet.setColor(color);
-            if (mode == Mode.TEAM_REMOVED) {
-                packet.sendPacket(player);
-                return;
-            }
-
-            packet.setPlayers(Arrays.stream(npcs).map((npc) -> {
-                final Entity entity = npc.getEntity();
-                if (entity instanceof OfflinePlayer) {
-                    return entity.getName();
-                } else {
-                    return entity.getUniqueId().toString();
-                }
-            }).collect(Collectors.toList()));
-            packet.sendPacket(player);
-        });
     }
 
     /**
@@ -362,9 +246,8 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
                     if (npc == null) {
                         return;
                     }
-                    players.forEach((player) -> applyGlow(npcId, false, player));
+                    glowAPI.glowPacketAsync(npcId, npcColor.get(npcId), false, players);
                 });
-        applyTeamAsync(Mode.TEAM_REMOVED);
     }
 
     /**
@@ -375,6 +258,7 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
         npcPlayersMap.clear();
         npcs.clear();
         npcColor.clear();
+        glowAPI = null;
         cancel();
         HandlerList.unregisterAll(this);
     }
@@ -414,7 +298,6 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onNPCSpawn(final NPCSpawnEvent event) {
         applyGlow(event.getNPC());
-        applyTeamAsync(Mode.TEAM_CREATED);
     }
 
     /**
@@ -428,31 +311,5 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
                 .values()
                 .parallelStream()
                 .forEach((players) -> players.remove(event.getPlayer()));
-    }
-
-    /**
-     * List mode for Team Packet
-     */
-    protected enum Mode {
-        /**
-         * Create a Team
-         */
-        TEAM_CREATED,
-        /**
-         * Remove Existed Team
-         */
-        TEAM_REMOVED,
-        /**
-         * Update Team
-         */
-        TEAM_UPDATED,
-        /**
-         * Added players to the Team
-         */
-        PLAYERS_ADDED,
-        /**
-         * Remove players from the team
-         */
-        PLAYERS_REMOVED
     }
 }
