@@ -229,6 +229,12 @@ The items need to be defined in a package, and then you need to reference the it
   - `cancel_button` the item to show the quest cancelers.  
   - `compass_button` the item to show the quest compass.
 
+### Backpack
+
+ `backpack` gives the option to disable displaying certain buttons in the backpack, such as the compass targets and
+ cancel quest buttons.
+ * `show_compass_targets`
+ * `show_cancel`
 ### Misc settings
 
 * `date_format` is the Java [date format](https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html)
