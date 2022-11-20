@@ -16,7 +16,7 @@ import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.profiles.ProfileCache;
+import org.betonquest.betonquest.api.profiles.ProfileKeyMap;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.api.schedule.Schedule;
@@ -305,7 +305,7 @@ public class BetonQuest extends JavaPlugin {
      * Map of registered events.
      */
     private final Map<String, QuestEventFactory> eventTypes = new HashMap<>();
-    private final ProfileCache<PlayerData> playerDataMap = new ProfileCache<>(getServer());
+    private final ProfileKeyMap<PlayerData> playerDataMap = new ProfileKeyMap<>(getServer());
     private String pluginTag;
     private ConfigurationFile config;
     /**

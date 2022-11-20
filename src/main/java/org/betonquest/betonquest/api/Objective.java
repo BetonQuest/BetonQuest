@@ -6,7 +6,7 @@ import org.betonquest.betonquest.GlobalObjectives;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.profiles.ProfileCache;
+import org.betonquest.betonquest.api.profiles.ProfileKeyMap;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.database.UpdateType;
@@ -51,7 +51,7 @@ public abstract class Objective {
     /**
      * Contains all data objects of the profiles with this objective active.
      */
-    protected ProfileCache<ObjectiveData> dataMap = new ProfileCache<>(Bukkit.getServer());
+    protected ProfileKeyMap<ObjectiveData> dataMap = new ProfileKeyMap<>(Bukkit.getServer());
     /**
      * Should be set to the data class used to hold the objective specific information.
      */

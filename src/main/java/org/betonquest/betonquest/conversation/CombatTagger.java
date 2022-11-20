@@ -3,7 +3,7 @@ package org.betonquest.betonquest.conversation;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.api.profiles.ProfileCache;
+import org.betonquest.betonquest.api.profiles.ProfileKeyMap;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -23,8 +23,8 @@ import java.util.ArrayList;
 @SuppressWarnings("PMD.CommentRequired")
 public class CombatTagger implements Listener {
 
-    private static final ProfileCache<Boolean> TAGGED = new ProfileCache<>(Bukkit.getServer());
-    private static final ProfileCache<BukkitRunnable> UNTAGGERS = new ProfileCache<>(Bukkit.getServer());
+    private static final ProfileKeyMap<Boolean> TAGGED = new ProfileKeyMap<>(Bukkit.getServer());
+    private static final ProfileKeyMap<BukkitRunnable> UNTAGGERS = new ProfileKeyMap<>(Bukkit.getServer());
     private final int delay;
 
     /**
