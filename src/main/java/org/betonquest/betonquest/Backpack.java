@@ -144,6 +144,8 @@ public class Backpack implements Listener {
         private final int pages;
         private final int pageOffset;
         private final boolean showJournal;
+        private final boolean showCancel;
+        private final boolean showCompassTargets;
         private final List<ItemStack> backpackItems;
 
         /**
@@ -211,6 +213,7 @@ public class Backpack implements Listener {
                 content[50] = next;
             }
             // set "cancel quest" button
+            this.showCancel = Boolean.parseBoolean(Config.getString("config.backpack.show_cancel"));
             ItemStack cancel = null;
             final String cancelButton = Config.getString("config.items.backpack.cancel_button");
             if (cancelButton != null && !cancelButton.isEmpty()) {
@@ -226,8 +229,11 @@ public class Backpack implements Listener {
             final ItemMeta meta = cancel.getItemMeta();
             meta.setDisplayName(Config.getMessage(lang, "cancel").replaceAll("&", "§"));
             cancel.setItemMeta(meta);
-            content[45] = cancel;
+            if (showCancel) {
+                content[45] = cancel;
+            }
             // set "compass targets" button
+            this.showCompassTargets = Boolean.parseBoolean(Config.getString("config.backpack.show_compass_targets"));
             ItemStack compassItem = null;
             final String compassButton = Config.getString("config.items.backpack.compass_button");
             if (compassButton != null && !compassButton.isEmpty()) {
@@ -243,7 +249,9 @@ public class Backpack implements Listener {
             final ItemMeta compassMeta = compassItem.getItemMeta();
             compassMeta.setDisplayName(Config.getMessage(lang, "compass").replace('&', '&'));
             compassItem.setItemMeta(compassMeta);
-            content[46] = compassItem;
+            if (showCompassTargets) {
+                content[46] = compassItem;
+            }
             // set the inventory and display it
             inv.setContents(content);
             onlineProfile.getPlayer().openInventory(inv);
@@ -334,10 +342,10 @@ public class Backpack implements Listener {
                 display = new Page(page - 1);
             } else if (slot == 50 && page < pages) {
                 display = new Page(page + 1);
-            } else if (slot == 45) {
+            } else if (slot == 45 && showCancel) {
                 // slot 45 is a slot with quest cancelers
                 display = new Cancelers();
-            } else if (slot == 46) {
+            } else if (slot == 46 && showCompassTargets) {
                 // slot 46 is a slot with compass pointers
                 display = new Compass();
             }
