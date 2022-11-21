@@ -86,7 +86,7 @@ BrewObjective extends CountingObjective implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBrew(final BrewEvent event) {
         final Profile profile = locations.remove(event.getBlock().getLocation());
-        if (profile.getOnlineProfile().isEmpty()) {
+        if (profile == null) {
             return;
         }
         final boolean[] alreadyDone = getMatchingPotions(event.getContents());
