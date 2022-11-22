@@ -38,7 +38,7 @@ public class
 BrewObjective extends CountingObjective implements Listener {
 
     private final QuestItem potion;
-    private final Map<Location, Profile> locations = new ProfileValueMap<>(Bukkit.getServer(), Location.class);
+    private final ProfileValueMap<Location> locations = new ProfileValueMap<>(Bukkit.getServer(), Location.class);
 
     public BrewObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "potions_to_brew");
