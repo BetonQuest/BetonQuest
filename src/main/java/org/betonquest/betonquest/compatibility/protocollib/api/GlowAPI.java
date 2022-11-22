@@ -7,8 +7,6 @@ import com.comphenix.protocol.utility.MinecraftReflection;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import lombok.CustomLog;
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
@@ -21,7 +19,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Glow API class
+ * Glow API class, Creating and Sending the packet using Protocollib all of this is doing in Asynchronous
  */
 @CustomLog
 public class GlowAPI {
@@ -33,51 +31,13 @@ public class GlowAPI {
     }
 
     /**
-     * Creating and Sending Glow Packet for NPC in async (background).
-     *
-     * @param npcId   the id of NPC
-     * @param color   Set color for glowing entity
-     * @param glowing true if entity need to be glowing
-     * @param players List of players that can see the glowing NPC
-     * @return void
-     */
-    public CompletableFuture<Void> glowPacketAsync(final int npcId, final ChatColor color, final boolean glowing, final Collection<? extends Player> players) {
-        final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
-        if (npc == null) {
-            LOG.warn("NPC Glow could not update Glowing for npc " + npcId + ": No npc with this id found!");
-            return null;
-        }
-        final Entity entity = npc.getEntity();
-        return glowPacketAsync(entity, color, glowing, players);
-    }
-
-    /**
-     * Creating and Sending Glow Packet for NPC in async (background).
-     *
-     * @param npcId   the id of NPC
-     * @param color   Set color for glowing entity
-     * @param glowing true if entity need to be glowing
-     * @param player  Target Player that can see the glow
-     * @return void
-     */
-    public CompletableFuture<Void> glowPacketAsync(final int npcId, final ChatColor color, final boolean glowing, final Player player) {
-        final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
-        if (npc == null) {
-            LOG.warn("NPC Glow could not update Glowing for npc " + npcId + ": No npc with this id found!");
-            return null;
-        }
-        final Entity entity = npc.getEntity();
-        return glowPacketAsync(entity, color, glowing, player);
-    }
-
-    /**
      * Creating and Sending Glow Packet in async (background).
      *
      * @param entity  entity that will get glow
      * @param color   Set color for glowing entity
      * @param glowing true if entity need to be glowing
      * @param player  Target Player that can see the glow
-     * @return void
+     * @return a future that completes a results of the supplied stages
      */
     public CompletableFuture<Void> glowPacketAsync(final Entity entity, final ChatColor color, final boolean glowing, final Player player) {
         final Collection<Entity> entities = Collections.singletonList(entity);
@@ -91,7 +51,7 @@ public class GlowAPI {
      * @param color   Set color for glowing entity
      * @param glowing true if entity need to be glowing
      * @param players List of players that can see the glowing NPC
-     * @return void
+     * @return a future that completes a results of the supplied stages
      */
     public CompletableFuture<Void> glowPacketAsync(final Entity entity, final ChatColor color, final boolean glowing, final Collection<? extends Player> players) {
         return CompletableFuture.allOf(players.parallelStream().map(player -> glowPacketAsync(entity, color, glowing, player)).toArray(CompletableFuture[]::new));
@@ -104,7 +64,7 @@ public class GlowAPI {
      * @param color    Set color for glowing entity
      * @param glowing  true if entity need to be glowing
      * @param player   Target Player that can see the glow
-     * @return void
+     * @return a future that completes a results of the supplied stages
      */
     public CompletableFuture<Void> glowPacketAsync(final Collection<Entity> entities, final ChatColor color, final boolean glowing, final Player player) {
         return CompletableFuture.allOf(entities.parallelStream().map(entity -> sendGlowPacketAsync(entity, glowing, player)).toArray(CompletableFuture[]::new))
@@ -123,7 +83,7 @@ public class GlowAPI {
      * @param entity  Target entity that will get glow
      * @param glowing true if entity need to be glowing
      * @param player  Target Player that can see the glow
-     * @return void
+     * @return a future that completes a results of the supplied stages
      */
     private CompletableFuture<Void> sendGlowPacketAsync(final Entity entity, final boolean glowing, final Player player) {
         return CompletableFuture.runAsync(() -> {
@@ -178,7 +138,7 @@ public class GlowAPI {
      * @param color      Color of the team
      * @param packetMode Mode of the team
      * @param player     Player that have the team
-     * @return void
+     * @return a future that completes a results of the supplied stages
      */
     public static CompletableFuture<Void> sendTeamPacketAsync(final Collection<? extends Entity> entities, final ChatColor color, final Mode packetMode, final Player player) {
         return CompletableFuture.runAsync(() -> {

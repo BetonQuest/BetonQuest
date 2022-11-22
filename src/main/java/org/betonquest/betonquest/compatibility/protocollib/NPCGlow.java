@@ -2,6 +2,7 @@ package org.betonquest.betonquest.compatibility.protocollib;
 
 import lombok.CustomLog;
 import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.event.CitizensReloadEvent;
 import net.citizensnpcs.api.event.NPCDeathEvent;
 import net.citizensnpcs.api.event.NPCDespawnEvent;
 import net.citizensnpcs.api.event.NPCSpawnEvent;
@@ -17,6 +18,7 @@ import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -97,61 +99,41 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
     /**
      * load all data from config
      */
-    @SuppressWarnings({"PMD.ShortVariable", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
+    @SuppressWarnings("PMD.CognitiveComplexity")
     private void loadFromConfig() {
-
         for (final QuestPackage cfgPackage : Config.getPackages().values()) {
             final ConfigurationSection custom = cfgPackage.getConfig();
-            if (custom == null) {
-                continue;
-            }
-
             final ConfigurationSection section = custom.getConfigurationSection("glow_npc");
             if (section == null) {
                 continue;
             }
 
             for (final String key : section.getKeys(false)) {
-                final String id = section.getString(key + ".id");
+                final String npcSectionId = section.getString(key + ".id");
                 final String color = section.getString(key + ".color");
                 final String rawConditions = section.getString(key + ".conditions");
-                final Set<ConditionID> conditions = new HashSet<>();
-                if (rawConditions != null) {
-                    for (final String condition : rawConditions.split(",")) {
-                        try {
-                            conditions.add(new ConditionID(cfgPackage, condition));
-                        } catch (final ObjectNotFoundException e) {
-                            LOG.warn(cfgPackage, "Condition '" + condition + "' does not exist, in glow_npc with ID " + id, e);
-                        }
-                    }
-                }
-                if (id == null) {
+                final Set<ConditionID> conditions = conditionSet(cfgPackage, key, rawConditions);
+                if (npcSectionId == null) {
                     LOG.warn(cfgPackage, "No ID found in glow_npc for '" + key + "'");
                     continue;
                 }
                 final int npcId;
                 try {
-                    npcId = Integer.parseInt(id);
+                    npcId = Integer.parseInt(npcSectionId);
                 } catch (final NumberFormatException e) {
-                    LOG.warn(cfgPackage, "NPC ID '" + id + "' is not a valid number, in glow_npc", e);
+                    LOG.warn(cfgPackage, "NPC ID '" + npcSectionId + "' is not a valid number, in glow_npc", e);
                     continue;
                 }
                 if (CitizensAPI.getNPCRegistry().getById(npcId) == null) {
-                    LOG.warn(cfgPackage, "NPC Glow could not update Glowing for npc " + id + ": No npc with this id found!");
+                    LOG.warn(cfgPackage, "NPC Glow could not update Glowing for npc " + npcSectionId + ": No npc with this id found!");
                     continue;
                 }
                 ChatColor chatColor = ChatColor.WHITE;
                 if (color != null && EnumUtils.isValidEnum(ChatColor.class, color.toUpperCase(Locale.ROOT))) {
                     chatColor = ChatColor.valueOf(color.toUpperCase(Locale.ROOT));
                 }
-                if (npcs.containsKey(npcId)) {
-                    npcs.get(npcId).addAll(conditions);
-                } else {
-                    npcs.put(npcId, conditions);
-                }
-                if (!npcPlayersMap.containsKey(npcId)) {
-                    npcPlayersMap.put(npcId, new HashSet<>());
-                }
+                npcs.put(npcId, conditions);
+                npcPlayersMap.put(npcId, new HashSet<>());
                 npcColor.put(npcId, chatColor);
             }
         }
@@ -174,15 +156,16 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
 
         if (npc.isSpawned()) {
             final Set<ConditionID> conditions = npcs.get(npcID);
+            final Entity entity = npc.getEntity();
             if (conditions == null || conditions.isEmpty() || !BetonQuest.conditions(PlayerConverter.getID(player), conditions)) {
                 if (npcPlayersMap.containsKey(npcID)
                         && npcPlayersMap.get(npcID).contains(player)) {
                     npcPlayersMap.get(npcID).remove(player);
-                    glowAPI.glowPacketAsync(npcID, npcColor.get(npcID),false, player).join();
+                    glowAPI.glowPacketAsync(entity, npcColor.get(npcID), false, player).join();
                 }
             } else {
                 if (npcPlayersMap.containsKey(npcID) && npcPlayersMap.get(npcID).add(player)) {
-                    glowAPI.glowPacketAsync(npcID, npcColor.get(npcID),true, player).join();
+                    glowAPI.glowPacketAsync(entity, npcColor.get(npcID), true, player).join();
                 }
             }
         }
@@ -204,7 +187,8 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
                 LOG.warn("NPC Glow could not update Glowing for npc " + npcId + ": No npc with this id found!");
                 return;
             }
-            glowAPI.glowPacketAsync(npcId, npcColor.get(npcId),true, players).join();
+            final Entity entity = npc.getEntity();
+            glowAPI.glowPacketAsync(entity, npcColor.get(npcId), true, players).join();
         });
     }
 
@@ -246,7 +230,8 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
                     if (npc == null) {
                         return;
                     }
-                    glowAPI.glowPacketAsync(npcId, npcColor.get(npcId), false, players);
+                    final Entity entity = npc.getEntity();
+                    glowAPI.glowPacketAsync(entity, npcColor.get(npcId), false, players);
                 });
     }
 
@@ -264,6 +249,29 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
     }
 
     /**
+     *  Creating Set collections of ConditionID from raw conditions
+     *
+     * @param cfgPackage QuestPackage that contain the raw conditions
+     * @param key Name of the Glow Section
+     * @param rawConditions String of raw conditions
+     * @return Set Collections of ConditionID
+     */
+    private Set<ConditionID> conditionSet(final QuestPackage cfgPackage, final String key, final String rawConditions){
+        final Set<ConditionID> conditions = new HashSet<>();
+        if(rawConditions == null){
+            return conditions;
+        }
+        for (final String condition : rawConditions.split(",")) {
+            try {
+                conditions.add(new ConditionID(cfgPackage, condition));
+            } catch (final ObjectNotFoundException e) {
+                LOG.warn(cfgPackage, "Condition '" + condition + "' does not exist, in glow_npc with ID " + key, e);
+            }
+        }
+        return conditions;
+    }
+
+    /**
      * If NPC got despawn it gets remove the npc from all map.
      *
      * @param event NPCDespawn
@@ -275,7 +283,6 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
         npcs.remove(npc.getId());
         npcColor.remove(npc.getId());
     }
-
     /**
      * If NPC death it gets remove the npc from all map.
      *
@@ -289,6 +296,15 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
         npcColor.remove(npc.getId());
     }
 
+    /**
+     * Restart the NPCGlow Instance when citizens plugin is getting reload
+     *
+     * @param event CitizensReload
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onCitizensReload(final CitizensReloadEvent event){
+        start();
+    }
 
     /**
      * apply glowing to npc that just spawn (if it registered on map).
@@ -312,4 +328,5 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
                 .parallelStream()
                 .forEach((players) -> players.remove(event.getPlayer()));
     }
+
 }
