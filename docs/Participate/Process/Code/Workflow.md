@@ -21,18 +21,18 @@ If you have problems solving issues with our requirements there is also a page
     But don't forget, you need to successfully run `mvn verify`, before you make a pull request on GitHub!
 
 ### Maven profiles
-There are some Maven profiles that you can use to speed up `mvn verify` and `mvn package`.
-This can be useful when iterating versions on your test server. However, you should always run `mvn verify` with no
-enabled profiles before making a pull request on GitHub.
+There are some Maven profiles that you can use to change which tests are executed upon `mvn verify` and `mvn package`.
+Some profiles can be used to speed up the build time.
+However, you should always run `mvn verify` with no enabled profiles before making a pull request on GitHub.
 
 You can use the `Test-None` profile to speed up the build process by skipping all tests.
+This can be useful when rapidly developing and testing changes in game. 
 Run `mvn verify -PTest-None` or `mvn package -PTest-None` or activate the profile in your IDE's Maven tab on the right side.
-This will skip all tests. 
 
 The `Test-All` profile will run all tests, even the ones that are normally skipped.
-Run `mvn verify -PTest-All`, `mvn package -PTest-All` or activate the profile in your IDE's Maven tab on the right side.
-This will run all tests. This is not really recommended, but if you did lots of big changes that
+This is not really recommended, but if you did lots of big changes that
 may affect the whole project, you can use this profile to make sure that everything is working.
+kRun `mvn verify -PTest-All`, `mvn package -PTest-All` or activate the profile in your IDE's Maven tab on the right side.
 
 There are more profiles, but you don't need to know them in most cases.
 
