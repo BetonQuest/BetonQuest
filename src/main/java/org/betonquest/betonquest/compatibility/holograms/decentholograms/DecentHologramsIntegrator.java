@@ -12,9 +12,13 @@ import org.betonquest.betonquest.compatibility.holograms.HologramIntegrator;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
 import org.betonquest.betonquest.exceptions.HookException;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.modules.versioning.UpdateStrategy;
+import org.betonquest.betonquest.modules.versioning.Version;
+import org.betonquest.betonquest.modules.versioning.VersionComparator;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
+import java.util.Objects;
 import java.util.UUID;
 import java.util.regex.Matcher;
 
@@ -43,6 +47,14 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
         if (!Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             LOG.warn("Holograms from DecentHolograms will not be able to use BetonQuest variables in text lines " +
                     "without PlaceholderAPI plugin! Install it to use holograms with variables!");
+        }
+        final Version version = new Version(
+                Objects.requireNonNull(Bukkit.getPluginManager().getPlugin(getPluginName()),
+                        "DecentHolograms plugin should not be null!").getDescription().getVersion());
+        final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR);
+        if (comparator.compare(version, new Version("2.7.3")) != 0 && comparator.compare(version, new Version("2.7.4")) != 0) {
+            LOG.warn("Holograms from DecentHolograms may not work correctly using versions of DecentHolograms other " +
+                    "than 2.7.3 or 2.7.4. If you encounter any issues, please use either of those versions!");
         }
     }
 
