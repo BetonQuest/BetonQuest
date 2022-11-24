@@ -343,7 +343,7 @@ This event simply gives the player specified amount of Heroes experience. The fi
     ```
 
 ## Holograms
-### Via [DecentHolograms](https://www.spigotmc.org/resources/96927/) OR [HolographicDisplays](http://dev.bukkit.org/bukkit-plugins/holographic-displays/)
+### [DecentHolograms](https://www.spigotmc.org/resources/96927/) | [HolographicDisplays](http://dev.bukkit.org/bukkit-plugins/holographic-displays/)
 
 
 ### Hidden Holograms

@@ -21,7 +21,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - added AureliumStatsLevelCondition
     - added AureliumSkillsLevelExperienceEvent
 - add DecentHolograms Compatibility
-    - requires DecentHolograms version 2.7.3 or newer
+    - requires DecentHolograms version 2.7.3 or 2.7.4. Versions 2.7.5 and 2.7.6 have been proven to have issues
     - holograms from DecentHolograms are a direct alternative to HolographicDisplays
 - add LuckPerms context integration for tags
     - All existing users must add luckperms: 'true' to their config.yml's hook section.
