@@ -3,7 +3,7 @@ package org.betonquest.betonquest.notify;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.VariableNumber;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -62,7 +62,7 @@ public class BossBarNotifyIO extends NotifyIO {
 
         progress = normalizeBossBarProgress(getFloatData("progress", 1));
         final String stayString = data.get("stay");
-        stayVariable = stayString == null ? new VariableNumber(70) : new VariableNumber(pack.getPackagePath(), stayString);
+        stayVariable = stayString == null ? new VariableNumber(70) : new VariableNumber(pack.getQuestPath(), stayString);
         countdown = getIntegerData("countdown", 0);
     }
 
@@ -76,7 +76,7 @@ public class BossBarNotifyIO extends NotifyIO {
         try {
             resolvedProgress = normalizeBossBarProgress(getFloatData(onlineProfile.getPlayer(), "progress", 1));
         } catch (final InstructionParseException | QuestRuntimeException e) {
-            LOG.warn(pack, "Invalid variable in bossbar notification from package " + pack.getPackagePath() + ": " + e.getMessage(), e);
+            LOG.warn(pack, "Invalid variable in bossbar notification from package " + pack.getQuestPath() + ": " + e.getMessage(), e);
         }
         bossBar.setProgress(resolvedProgress);
         bossBar.addPlayer(onlineProfile.getPlayer());

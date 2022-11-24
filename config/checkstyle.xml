@@ -16,6 +16,10 @@
       <property name="option" value="bottom"/>
       <property name="sortStaticImportsAlphabetically" value="true"/>
     </module>
+    <module name="RegexpSinglelineJava">
+      <property name="format" value="\t"/>
+      <property name="message" value="Indent must use space characters"/>
+    </module>
   </module>
   <module name="SuppressionFilter">
     <property name="file" value="${checkstyle.config.path}/checkstyle-suppressions.xml"/>

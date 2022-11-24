@@ -39,7 +39,7 @@ public class OpSudoEvent extends QuestEvent {
                 String com = command.command;
                 for (final String var : command.variables) {
                     com = com.replace(var, BetonQuest.getInstance().getVariableValue(
-                            instruction.getPackage().getPackagePath(), var, profile));
+                            instruction.getPackage().getQuestPath(), var, profile));
                 }
                 player.performCommand(com);
             }

@@ -4,7 +4,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -54,7 +54,7 @@ public class ConversationData {
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public ConversationData(final QuestPackage pack, final String name, final ConfigurationSection conv) throws InstructionParseException {
         this.pack = pack;
-        final String pkg = pack.getPackagePath();
+        final String pkg = pack.getQuestPath();
         LOG.debug(pack, String.format("Loading %s conversation from %s package", name, pkg));
         // package and name must be correct, it loads only existing
         // conversations
@@ -155,7 +155,7 @@ public class ConversationData {
         }
         for (final String startingOption : startingOptions) {
             if (startingOption.contains(".")) {
-                final String entirePointer = pack.getPackagePath() + "." + convName + ".<starting_option>."
+                final String entirePointer = pack.getQuestPath() + "." + convName + ".<starting_option>."
                         + startingOption;
                 EXTERNAL_POINTERS.add(entirePointer);
             } else if (!npcOptions.containsKey(startingOption)) {
@@ -191,7 +191,7 @@ public class ConversationData {
         for (final Option option : playerOptions.values()) {
             for (final String pointer : option.getPointers()) {
                 if (pointer.contains(".")) {
-                    final String entirePointer = pack.getPackagePath() + "." + convName + "." + option.getName() + "." + pointer;
+                    final String entirePointer = pack.getQuestPath() + "." + convName + "." + option.getName() + "." + pointer;
                     EXTERNAL_POINTERS.add(entirePointer);
                 } else if (!npcOptions.containsKey(pointer)) {
                     throw new InstructionParseException(
@@ -353,7 +353,7 @@ public class ConversationData {
      * @return the name of the package
      */
     public String getPackName() {
-        return pack.getPackagePath();
+        return pack.getQuestPath();
     }
 
     public ConditionID[] getConditionIDs(final String option, final OptionType type) {
@@ -414,7 +414,7 @@ public class ConversationData {
                 optionName = option;
             }
             final QuestPackage pack = Config.getPackages().get(getPackName());
-            final ConversationData currentData = BetonQuest.getInstance().getConversation(pack.getPackagePath() + "." + convName);
+            final ConversationData currentData = BetonQuest.getInstance().getConversation(pack.getQuestPath() + "." + convName);
             if (BetonQuest.conditions(profile, currentData.getConditionIDs(optionName, ConversationData.OptionType.NPC))) {
                 return true;
             }

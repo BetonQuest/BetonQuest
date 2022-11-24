@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event;
 
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
@@ -28,7 +28,7 @@ class InfoNotificationSenderTest {
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     void testSendNotifyIsCalled(@Mock final QuestPackage questPackage) {
-        when(questPackage.getPackagePath()).thenReturn("package.path");
+        when(questPackage.getQuestPath()).thenReturn("package.path");
         final NotificationSender sender = new InfoNotificationSender("message-name", questPackage, "full.id");
 
         try (MockedStatic<Config> config = mockStatic(Config.class)) {
@@ -41,7 +41,7 @@ class InfoNotificationSenderTest {
 
     @Test
     void testSendNotifyHandlesError(@Mock final QuestPackage questPackage, final LogValidator logValidator) {
-        when(questPackage.getPackagePath()).thenReturn("package.path");
+        when(questPackage.getQuestPath()).thenReturn("package.path");
         final NotificationSender sender = new InfoNotificationSender("message-name", questPackage, "full.id");
 
         try (MockedStatic<Config> config = mockStatic(Config.class)) {

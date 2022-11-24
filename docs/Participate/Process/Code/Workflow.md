@@ -7,10 +7,10 @@ Make sure to [set up the project](../../Setup-Project.md) before doing this step
 You should always [create a new branch](../Create-a-new-Branch.md) everytime you develop a new feature,
 fix a bug or make other changes.
 
-## Maven verify
-Before you [make changes](#make-changes) you should run `mvn verify` as explained
-[here](../../Setup-Project.md#building-the-plugin-jar) to ensure the plugin successfully builds.
+## Make changes
+Now go ahead and make your changes. Take a look at the sub-pages of this page for more information about specific topics.
 
+## Maven verify
 After you made changes, you should also run `mvn verify` to check our requirements.
 If you have problems solving issues with our requirements there is also a page
 [Checking Requirements](Checking-Requirements.md), that you will probably read later.
@@ -20,8 +20,29 @@ If you have problems solving issues with our requirements there is also a page
     You can execute `mvn package` instead of `mvn verify` for that.
     But don't forget, you need to successfully run `mvn verify`, before you make a pull request on GitHub!
 
-## Make changes
-Now go ahead and make your changes. Take a look at the sub-pages of this page for more information about specific topics. 
+### Maven profiles
+There are some Maven profiles that you can use to change which tests are executed upon `mvn verify` and `mvn package`.
+Some profiles can be used to speed up the build time.
+However, you should always run `mvn verify` with no enabled profiles before making a pull request on GitHub.
+
+You can use the `Test-None` profile to speed up the build process by skipping all tests.
+This can be useful when rapidly developing and testing changes in game. 
+Run `mvn verify -PTest-None` or `mvn package -PTest-None` or activate the profile in your IDE's Maven tab on the right side.
+
+The `Test-All` profile will run all tests, even the ones that are normally skipped.
+This is not really recommended, but if you did lots of big changes that
+may affect the whole project, you can use this profile to make sure that everything is working.
+kRun `mvn verify -PTest-All`, `mvn package -PTest-All` or activate the profile in your IDE's Maven tab on the right side.
+
+There are more profiles, but you don't need to know them in most cases.
+
+??? info "The other Profiles"
+    There are other profiles prefixed with `Test-`.
+    You can use them to select a specific scope of tests that you want to run, after changing code in that scope.
+    
+    There is also a profile `Skip-Verification`, that will skip all verifications.
+    It is only used in the build pipeline to skip verifications that were already done in earlier pipeline steps.
+    
 
 ## Commit
 

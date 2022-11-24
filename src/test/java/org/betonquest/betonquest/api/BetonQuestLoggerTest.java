@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api;
 
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.junit.jupiter.api.Test;
@@ -43,7 +43,7 @@ class BetonQuestLoggerTest {
 
     private QuestPackage mockQuestPackage() {
         final QuestPackage questPackage = mock(QuestPackage.class);
-        when(questPackage.getPackagePath()).thenReturn(CUSTOM_CONFIG_PACKAGE);
+        when(questPackage.getQuestPath()).thenReturn(CUSTOM_CONFIG_PACKAGE);
         return questPackage;
     }
 

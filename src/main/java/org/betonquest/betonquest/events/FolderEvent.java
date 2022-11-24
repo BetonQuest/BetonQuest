@@ -86,10 +86,10 @@ public class FolderEvent extends QuestEvent {
                     @Override
                     public void run() {
                         final EventID event = chosenList.remove(0);
-                        BetonQuest.event(profile, event);
                         if (chosenList.isEmpty()) {
                             this.cancel();
                         }
+                        BetonQuest.event(profile, event);
                     }
                 }.runTaskTimer(BetonQuest.getInstance(), execDelay == null ? execPeriod : execDelay, execPeriod);
             }

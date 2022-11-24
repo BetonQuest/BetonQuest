@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event;
 
 import lombok.CustomLog;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -42,7 +42,7 @@ public class InfoNotificationSender implements NotificationSender {
     public void sendNotification(final Profile profile) {
         profile.getOnlineProfile().ifPresent(onlineProfile -> {
             try {
-                Config.sendNotify(questPackage.getPackagePath(), onlineProfile, messageName, null, messageName + ",info");
+                Config.sendNotify(questPackage.getQuestPath(), onlineProfile, messageName, null, messageName + ",info");
             } catch (final QuestRuntimeException e) {
                 LOG.warn(questPackage, "The notify system was unable to play a sound for the '" + messageName + "' category in '" + fullId + "'. Error was: '" + e.getMessage() + "'", e);
             }

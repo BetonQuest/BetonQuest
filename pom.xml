@@ -166,7 +166,6 @@
     </dependency>
 
     <!-- from codemc repository -->
-    <!-- BStats cannot be provided by the server, it must be relocated. They have custom code that ensures that. -->
     <dependency>
       <groupId>org.bstats</groupId>
       <artifactId>bstats-bukkit</artifactId>
@@ -314,19 +313,16 @@
       <groupId>net.kyori</groupId>
       <artifactId>adventure-api</artifactId>
       <version>4.11.0</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>net.kyori</groupId>
       <artifactId>adventure-platform-bukkit</artifactId>
       <version>4.1.2</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>net.kyori</groupId>
       <artifactId>adventure-text-serializer-plain</artifactId>
       <version>4.11.0</version>
-      <scope>provided</scope>
     </dependency>
 
     <!-- from minecraft repository -->
@@ -387,31 +383,26 @@
           <artifactId>commons-lang3</artifactId>
         </exclusion>
       </exclusions>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>31.1-jre</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <version>2.11.0</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
       <version>3.12.0</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
       <version>20220924</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.github.spotbugs</groupId>
@@ -422,13 +413,11 @@
       <groupId>com.cronutils</groupId>
       <artifactId>cron-utils</artifactId>
       <version>9.2.0</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.zaxxer</groupId>
       <artifactId>HikariCP</artifactId>
       <version>5.0.1</version>
-      <scope>provided</scope>
     </dependency>
 
     <!-- only dependencies from maven central that are for testing -->
@@ -646,8 +635,16 @@
               <artifactSet>
                 <includes>
                   <include>org.bstats</include>
+                  <include>org.apache.maven</include>
+                  <include>org.apache.commons</include>
+                  <include>com.google.guava</include>
+                  <include>commons-io</include>
+                  <include>org.json</include>
+                  <include>net.kyori</include>
                   <include>com.comphenix.packetwrapper</include>
                   <include>io.papermc:paperlib</include>
+                  <include>com.cronutils:cron-utils</include>
+                  <include>com.zaxxer</include>
                 </includes>
               </artifactSet>
               <filters>
@@ -676,12 +673,42 @@
                   <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.org.bstats</shadedPattern>
                 </relocation>
                 <relocation>
+                  <pattern>org.apache.maven</pattern>
+                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.org.apache.maven</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.apache.commons</pattern>
+                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.org.apache.commons
+                  </shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.google.common</pattern>
+                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.com.google.common</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.json</pattern>
+                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.org.json</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>net.kyori</pattern>
+                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.net.kyori</shadedPattern>
+                </relocation>
+                <relocation>
                   <pattern>com.comphenix.packetwrapper</pattern>
-                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.com.comphenix.packetwrapper</shadedPattern>
+                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.com.comphenix.packetwrapper
+                  </shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>io.papermc.lib</pattern>
                   <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.io.papermc.lib</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.cronutils</pattern>
+                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.com.cronutils</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.zaxxer.hikari</pattern>
+                  <shadedPattern>${project.groupId}.${project.artifactId}.dependencies.com.zaxxer.hikari</shadedPattern>
                 </relocation>
               </relocations>
             </configuration>

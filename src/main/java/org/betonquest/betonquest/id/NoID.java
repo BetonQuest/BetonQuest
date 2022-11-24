@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.id;
 
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 
 @SuppressWarnings({"PMD.ShortClassName", "PMD.CommentRequired"})

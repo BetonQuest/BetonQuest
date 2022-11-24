@@ -1,8 +1,9 @@
 package org.betonquest.betonquest.bstats;
 
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.id.ID;
+import org.betonquest.betonquest.modules.config.quest.QuestPackageImpl;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.CustomChart;
@@ -98,7 +99,7 @@ class BStatsMetricsTest {
         if (!packageConfigFile.createNewFile()) {
             throw new IOException("Failed to create test package main configuration file.");
         }
-        return new QuestPackage(PACKAGE_PATH, packageConfigFile, Collections.emptyList());
+        return new QuestPackageImpl(PACKAGE_PATH, packageConfigFile, Collections.emptyList());
     }
 
     @Test

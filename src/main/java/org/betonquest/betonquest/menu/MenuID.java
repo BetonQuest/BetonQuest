@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.menu;
 
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ID;
 import org.bukkit.configuration.ConfigurationSection;

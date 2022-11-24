@@ -2,7 +2,7 @@ package org.betonquest.betonquest.modules.schedule;
 
 import lombok.CustomLog;
 import org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable.UnmodifiableConfigurationSection;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -40,7 +40,7 @@ public class EventScheduling {
      * @param questPackage package to load
      */
     public void loadData(final QuestPackage questPackage) {
-        LOG.debug(questPackage, "Parsing schedules for package '" + questPackage.getPackagePath() + "'.");
+        LOG.debug(questPackage, "Parsing schedules for package '" + questPackage.getQuestPath() + "'.");
         final ConfigurationSection configuration = questPackage.getConfig().getConfigurationSection("schedules");
         if (configuration == null) {
             LOG.debug(questPackage, "Package contains no schedules.");
@@ -49,7 +49,7 @@ public class EventScheduling {
         for (final String key : configuration.getKeys(false)) {
             if (key.contains(" ")) {
                 LOG.warn(questPackage,
-                        "Schedule name cannot contain spaces: '" + key + "' (in " + questPackage.getPackagePath() + " package)");
+                        "Schedule name cannot contain spaces: '" + key + "' (in " + questPackage.getQuestPath() + " package)");
                 continue;
             }
 
@@ -75,7 +75,7 @@ public class EventScheduling {
                 LOG.warn(questPackage, "Cannot load schedule with name '" + key + "': " + e.getMessage(), e);
             }
         }
-        LOG.debug(questPackage, "Finished loading schedules from package '" + questPackage.getPackagePath() + "'.");
+        LOG.debug(questPackage, "Finished loading schedules from package '" + questPackage.getQuestPath() + "'.");
     }
 
     /**

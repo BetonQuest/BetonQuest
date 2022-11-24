@@ -4,7 +4,7 @@ import lombok.CustomLog;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
@@ -149,7 +149,7 @@ public class CitizensHologram extends BukkitRunnable {
                 final String[] vectorParts = vector.split(";");
                 return new Vector(Double.parseDouble(vectorParts[0]), Double.parseDouble(vectorParts[1]), Double.parseDouble(vectorParts[2]));
             } catch (final NumberFormatException e) {
-                LOG.warn(pack, pack.getPackagePath() + ": Invalid vector in Hologram '" + key + "': " + vector, e);
+                LOG.warn(pack, pack.getQuestPath() + ": Invalid vector in Hologram '" + key + "': " + vector, e);
             }
         }
         return new Vector(0, 3, 0);
@@ -162,7 +162,7 @@ public class CitizensHologram extends BukkitRunnable {
                 try {
                     conditions.add(new ConditionID(pack, part));
                 } catch (final ObjectNotFoundException e) {
-                    LOG.warn(pack, "Error while loading " + part + " condition for hologram " + pack.getPackagePath() + "."
+                    LOG.warn(pack, "Error while loading " + part + " condition for hologram " + pack.getQuestPath() + "."
                             + key + ": " + e.getMessage(), e);
                 }
             }
@@ -259,9 +259,9 @@ public class CitizensHologram extends BukkitRunnable {
                     final ItemStack stack = new QuestItem(itemID).generate(stackSize);
                     hologram.setLine(i, stack);
                 } catch (final InstructionParseException e) {
-                    LOG.warn(npcHologram.pack, "Could not parse item in " + npcHologram.pack.getPackagePath() + " hologram: " + e.getMessage(), e);
+                    LOG.warn(npcHologram.pack, "Could not parse item in " + npcHologram.pack.getQuestPath() + " hologram: " + e.getMessage(), e);
                 } catch (final ObjectNotFoundException e) {
-                    LOG.warn(npcHologram.pack, "Could not find item in " + npcHologram.pack.getPackagePath() + " hologram: " + e.getMessage(), e);
+                    LOG.warn(npcHologram.pack, "Could not find item in " + npcHologram.pack.getQuestPath() + " hologram: " + e.getMessage(), e);
                 }
             } else {
                 hologram.setLine(i, line.replace('&', '§'));

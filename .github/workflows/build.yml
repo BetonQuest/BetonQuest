@@ -81,7 +81,7 @@ jobs:
         id: save_type
         run: |
           echo "The version type is '$VERSION_TYPE'"
-          echo "version=$VERSION_TYPE" >> $GITHUB_OUTPUT
+          echo "version_type=$VERSION_TYPE" >> $GITHUB_OUTPUT
 
   build-artifacts:
     name: Build Artifacts

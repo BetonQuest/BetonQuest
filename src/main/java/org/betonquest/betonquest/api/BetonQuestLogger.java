@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api;
 
 import lombok.CustomLog;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.modules.logger.BetonQuestLoggerImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;

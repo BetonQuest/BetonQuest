@@ -67,7 +67,7 @@ public class GlobalObjectives {
      * @return the tag which marks that the given global objective has already been started for the player
      */
     public static String getTag(final ObjectiveID objectiveID) {
-        return objectiveID.getPackage().getPackagePath() + ".global-" + objectiveID.getBaseID();
+        return objectiveID.getPackage().getQuestPath() + ".global-" + objectiveID.getBaseID();
     }
 
     /**

@@ -2,7 +2,7 @@ package org.betonquest.betonquest.utils.math;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.Variable;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;

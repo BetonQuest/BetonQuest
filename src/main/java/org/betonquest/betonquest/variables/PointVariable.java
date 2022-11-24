@@ -31,12 +31,12 @@ public class PointVariable extends Variable {
         category = instruction.next();
 
         if (instruction.size() == 4) {
-            final String packagePath = instruction.current();
+            final String questPath = instruction.current();
             final String pointCategory = instruction.next();
             try {
-                final ID id = new ID(instruction.getPackage(), packagePath + "." + pointCategory) {
+                final ID id = new ID(instruction.getPackage(), questPath + "." + pointCategory) {
                 };
-                category = id.getPackage().getPackagePath() + "." + pointCategory;
+                category = id.getPackage().getQuestPath() + "." + pointCategory;
             } catch (final ObjectNotFoundException e) {
                 LOG.warn(instruction.getPackage(), e.getMessage());
             }
@@ -45,7 +45,7 @@ public class PointVariable extends Variable {
             if (category.contains("*")) {
                 category = category.replace('*', '.');
             } else {
-                category = instruction.getPackage().getPackagePath() + "." + category;
+                category = instruction.getPackage().getQuestPath() + "." + category;
             }
         }
 

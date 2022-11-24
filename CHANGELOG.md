@@ -12,6 +12,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - New command `/q debug ingame`
     - Debug logging to separate file
     - Log history length can be freely configured
+- Quest Templates
+  - A new folder `QuestTemplates` can now be used to define templates for packages
+  - templates can also extend templates
 - add AureliumSkills Compatiblity
     - added AureliumSkillsLevelCondition
     - All existing users must add aureliumskills: 'true' to their config.yml's hook section.
@@ -66,7 +69,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `mmspawn` event now has argument `private` Visually hides the spawned mob from other players. Does not stop sound or particles
 - `mmspawn` event now supports the `marked` argument
 - `objective` event now supports a comma separated list of objectives
-- `mmobkill` objective now supports the `marked` argument
+- `mmobkill` objective now supports the `marked` and `deathRadiusAllPlayers` argument
 - `marked` argument now supports %player% variable 
 - `globaltag` and `globalpoint` variables
 - `burn` event - ignites player for given seconds, supports variables
@@ -99,6 +102,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
       names
     - `conversations` and `menus` are now defined in a config section matching their names and a unique identifier like
       the file name before
+    - The `enabled` boolean is now defined in the `package` section
 - all objectives that can be advanced without directly completing now support notify
 - all objectives that can be advanced without directly completing now support `left`, `amount` and `total` variables
     - the `left` and `amount` variables of some objectives were swapped and have been corrected: `left` is the amount

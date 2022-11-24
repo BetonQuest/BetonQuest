@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.menu;
 
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.ChatColor;
@@ -95,7 +95,7 @@ public class ItemDescription {
         public String resolve(final Profile profile) {
             String line = this.line;
             for (final String variable : variables) {
-                line = line.replace(variable, BetonQuest.getInstance().getVariableValue(pack.getPackagePath(), variable, profile));
+                line = line.replace(variable, BetonQuest.getInstance().getVariableValue(pack.getQuestPath(), variable, profile));
             }
             return line;
         }

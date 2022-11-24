@@ -1,7 +1,7 @@
 package org.betonquest.betonquest;
 
 import lombok.CustomLog;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
@@ -154,7 +154,7 @@ public class Instruction {
             return null;
         }
         try {
-            return new CompoundLocation(pack.getPackagePath(), string);
+            return new CompoundLocation(pack.getQuestPath(), string);
         } catch (final InstructionParseException e) {
             throw new PartParseException("Error while parsing location: " + e.getMessage(), e);
         }
@@ -169,7 +169,7 @@ public class Instruction {
             return null;
         }
         try {
-            return new VariableNumber(pack.getPackagePath(), string);
+            return new VariableNumber(pack.getQuestPath(), string);
         } catch (final InstructionParseException e) {
             throw new PartParseException("Could not parse a number: " + e.getMessage(), e);
         }
