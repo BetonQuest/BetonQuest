@@ -28,11 +28,6 @@ public class CitizensIntegrator implements Integrator {
             new CitizensParticle();
         }
 
-        // if HolographicAPI is hooked, start CitizensHologram
-        if (Compatibility.getHooked().contains("HolographicDisplays")) {
-            new CitizensHologram();
-        }
-
         // if ProtocolLib is hooked, start NPCHider
         if (Compatibility.getHooked().contains("ProtocolLib")) {
             NPCHider.start();
