@@ -7,7 +7,7 @@ import me.filoghost.holographicdisplays.api.hologram.PlaceholderSetting;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.betonquest.betonquest.compatibility.holograms.HologramIntegrator;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
@@ -56,7 +56,7 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
                 if (variable != null) {
                     final Instruction instruction = variable.getInstruction();
                     final String prefix = variable.isStaticness() ? "{bqg:" : "{bq:";
-                    return prefix + instruction.getPackage().getPackagePath() + ":" + instruction.getInstruction() + "}";
+                    return prefix + instruction.getPackage().getQuestPath() + ":" + instruction.getInstruction() + "}";
                 }
             } catch (final InstructionParseException exception) {
                 LOG.warn("Could not create variable '" + group + "' variable: " + exception.getMessage(), exception);

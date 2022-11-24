@@ -6,7 +6,7 @@ import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.betonquest.betonquest.compatibility.holograms.HologramIntegrator;
 import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
@@ -18,7 +18,6 @@ import org.betonquest.betonquest.modules.versioning.VersionComparator;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
-import java.util.Objects;
 import java.util.UUID;
 import java.util.regex.Matcher;
 
@@ -48,9 +47,7 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
             LOG.warn("Holograms from DecentHolograms will not be able to use BetonQuest variables in text lines " +
                     "without PlaceholderAPI plugin! Install it to use holograms with variables!");
         }
-        final Version version = new Version(
-                Objects.requireNonNull(Bukkit.getPluginManager().getPlugin(getPluginName()),
-                        "DecentHolograms plugin should not be null!").getDescription().getVersion());
+        final Version version = new Version(getPlugin().getDescription().getVersion());
         final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR);
         if (comparator.compare(version, new Version("2.7.3")) != 0 && comparator.compare(version, new Version("2.7.4")) != 0) {
             LOG.warn("Holograms from DecentHolograms may not work correctly using versions of DecentHolograms other " +
@@ -69,7 +66,7 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
                 final Variable variable = BetonQuest.createVariable(pack, group);
                 if (variable != null) {
                     final Instruction instruction = variable.getInstruction();
-                    return "%betonquest_" + instruction.getPackage().getPackagePath() + ":" + instruction.getInstruction() + "%";
+                    return "%betonquest_" + instruction.getPackage().getQuestPath() + ":" + instruction.getInstruction() + "%";
                 }
             } catch (final InstructionParseException exception) {
                 LOG.warn("Could not create variable '" + group + "' variable: " + exception.getMessage(), exception);

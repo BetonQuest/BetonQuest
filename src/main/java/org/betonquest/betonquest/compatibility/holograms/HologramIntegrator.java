@@ -2,7 +2,7 @@ package org.betonquest.betonquest.compatibility.holograms;
 
 import lombok.Getter;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.api.config.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.exceptions.HookException;
 import org.betonquest.betonquest.exceptions.UnsupportedVersionException;
@@ -24,16 +24,19 @@ public abstract class HologramIntegrator implements Integrator, Comparable<Holog
      */
     @Getter
     private final String pluginName;
-
     /**
      * The minimum required version
      */
     private final String requiredVersion;
-
     /**
      * The qualifiers to parse the minimum required version
      */
     private final String[] qualifiers;
+    /**
+     * The plugin hooked by this integrator
+     */
+    @Getter
+    private Plugin plugin;
 
     /**
      * Create a sub-integrator representing a specific implementation of BetonHolograms
@@ -79,7 +82,14 @@ public abstract class HologramIntegrator implements Integrator, Comparable<Holog
 
     @Override
     public void hook() throws HookException {
-        validateVersion();
+        plugin = Bukkit.getPluginManager().getPlugin(pluginName);
+        if (plugin != null) {
+            final Version version = new Version(plugin.getDescription().getVersion());
+            final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR, qualifiers);
+            if (comparator.isOtherNewerThanCurrent(version, new Version(requiredVersion))) {
+                throw new UnsupportedVersionException(plugin, requiredVersion);
+            }
+        }
         HologramProvider.addIntegrator(this);
     }
 
@@ -96,22 +106,6 @@ public abstract class HologramIntegrator implements Integrator, Comparable<Holog
         final HologramProvider provider = HologramProvider.getInstance();
         if (provider.isHooked(pluginName)) {
             provider.close();
-        }
-    }
-
-    /**
-     * Validate the version based on object parameters
-     *
-     * @throws UnsupportedVersionException If hooked plugin version is invalid
-     */
-    private void validateVersion() throws UnsupportedVersionException {
-        final Plugin plugin = Bukkit.getPluginManager().getPlugin(pluginName);
-        if (plugin != null) {
-            final Version version = new Version(plugin.getDescription().getVersion());
-            final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR, qualifiers);
-            if (comparator.isOtherNewerThanCurrent(version, new Version(requiredVersion))) {
-                throw new UnsupportedVersionException(plugin, requiredVersion);
-            }
         }
     }
 
