@@ -4,13 +4,11 @@ import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
 import eu.decentsoftware.holograms.api.holograms.HologramPage;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * DecentHolograms specific implementation of BetonHologram
@@ -72,11 +70,13 @@ public class DecentHologramsHologram implements BetonHologram {
     @Override
     public void show(final Player player) {
         hologram.removeHidePlayer(player);
+        hologram.setShowPlayer(player);
         hologram.show(player, 0);
     }
 
     @Override
     public void hide(final Player player) {
+        hologram.removeShowPlayer(player);
         hologram.setHidePlayer(player);
         hologram.hide(player);
     }
@@ -88,8 +88,9 @@ public class DecentHologramsHologram implements BetonHologram {
 
     @Override
     public void showAll() {
-        final List<Player> players = hologram.getHidePlayers().stream().map(Bukkit::getPlayer).collect(Collectors.toList());
+        final List<Player> players = hologram.getViewerPlayers();
         players.forEach(hologram::removeHidePlayer);
+        players.forEach(hologram::setShowPlayer);
         hologram.setDefaultVisibleState(true);
         hologram.showAll();
     }
@@ -97,6 +98,7 @@ public class DecentHologramsHologram implements BetonHologram {
     @Override
     public void hideAll() {
         final List<Player> players = hologram.getViewerPlayers();
+        players.forEach(hologram::removeShowPlayer);
         players.forEach(hologram::setHidePlayer);
         hologram.setDefaultVisibleState(false);
         hologram.hideAll();
