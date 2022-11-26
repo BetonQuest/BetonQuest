@@ -103,7 +103,7 @@ public class ChestPutObjective extends Objective implements Listener {
         return event.getInventory().getViewers().equals(List.of(event.getPlayer()));
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings("PMD.CyclomaticComplexity,PMD.CognitiveComplexity")
     @EventHandler(ignoreCancelled = true)
     public void onChestClose(final InventoryCloseEvent event) {
         if (!(event.getPlayer() instanceof Player)) {
