@@ -143,8 +143,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   other slots present
 - `menu`(open) event - showed the previous menu again
 - non .yml files causing errors when loading quest packages
-- `pickrandom` event did not calculated chance correctly
-- `pickrandom` event did not allowed dashes in event names
+- `pickrandom` event - did not calculated chance correctly
+- `pickrandom` event - did not allowed dashes in event names
+- `action` objective - ignored offhand at all
 - Things that are also fixed in 1.12.X:
     - parsing of math variable
     - Citizens compatibility for not spawned NPCs
