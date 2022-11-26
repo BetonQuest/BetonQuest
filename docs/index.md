@@ -42,11 +42,6 @@ thead a, thead p {
 .md-typeset__table {
   width: 100%;
 }
-/* compare table - first colum - set sticky */
-tbody td:nth-child(1), th:nth-child(1) {
-  left: 0;
-  background-color: var(--md-default-bg-color) !important;
-}
 tbody > tr:nth-child(1) > td:not(:first-child) {
   font-weight: bold;
 }
