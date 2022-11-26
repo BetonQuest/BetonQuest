@@ -44,7 +44,6 @@ thead a, thead p {
 }
 /* compare table - first colum - set sticky */
 tbody td:nth-child(1), th:nth-child(1) {
-  position: -webkit-sticky;
   left: 0;
   background-color: var(--md-default-bg-color) !important;
 }
