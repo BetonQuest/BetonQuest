@@ -21,6 +21,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
+import org.bukkit.block.DoubleChest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -112,32 +114,52 @@ public class ChestPutObjective extends Objective implements Listener {
             return;
         }
         try {
-            final Location targetChestLocation = loc.getLocation(onlineProfile);
-            final Block block = targetChestLocation.getBlock();
-            if (!(block.getState() instanceof InventoryHolder)) {
-                final World world = targetChestLocation.getWorld();
-                LOG.warn(instruction.getPackage(),
-                        String.format("Error in '%s' chestput objective: Block at location x:%d y:%d z:%d in world '%s' isn't a chest!",
-                                instruction.getID().getFullID(),
-                                targetChestLocation.getBlockX(),
-                                targetChestLocation.getBlockY(),
-                                targetChestLocation.getBlockZ(),
-                                world == null ? "null" : world.getName()));
+            final Location targetLocation = loc.getLocation(onlineProfile);
+            if (isNotInventory(targetLocation)) {
                 return;
             }
-            final InventoryHolder chest = (InventoryHolder) block.getState();
-            if (!chest.equals(event.getInventory().getHolder())) {
-                return;
-            }
-            if (chestItemCondition.handle(onlineProfile) && checkConditions(onlineProfile)) {
-                completeObjective(onlineProfile);
-                if (chestTakeEvent != null) {
-                    chestTakeEvent.handle(onlineProfile);
+
+            if (targetLocation.equals(event.getInventory().getLocation().getBlock().getLocation())) {
+                checkItems(onlineProfile);
+            } else {
+                final InventoryHolder holder = event.getInventory().getHolder();
+                if (holder instanceof DoubleChest doubleChest) {
+                    final Chest leftChest = (Chest) doubleChest.getLeftSide();
+                    final Chest rightChest = (Chest) doubleChest.getRightSide();
+                    if (leftChest.getLocation().getBlock().getLocation().equals(targetLocation)
+                            || rightChest.getLocation().getBlock().getLocation().equals(targetLocation)) {
+                        checkItems(onlineProfile);
+                    }
                 }
             }
         } catch (final QuestRuntimeException e) {
             LOG.warn(instruction.getPackage(), "Error while handling '" + instruction.getID() + "' objective: " + e.getMessage(), e);
         }
+    }
+
+    private void checkItems(final OnlineProfile onlineProfile) throws QuestRuntimeException {
+        if (chestItemCondition.handle(onlineProfile) && checkConditions(onlineProfile)) {
+            completeObjective(onlineProfile);
+            if (chestTakeEvent != null) {
+                chestTakeEvent.handle(onlineProfile);
+            }
+        }
+    }
+
+    private boolean isNotInventory(final Location targetChestLocation) {
+        final Block block = targetChestLocation.getBlock();
+        if (!(block.getState() instanceof InventoryHolder)) {
+            final World world = targetChestLocation.getWorld();
+            LOG.warn(instruction.getPackage(),
+                    String.format("Error in '%s' chestput objective: Block at location x:%d y:%d z:%d in world '%s' isn't a chest!",
+                            instruction.getID().getFullID(),
+                            targetChestLocation.getBlockX(),
+                            targetChestLocation.getBlockY(),
+                            targetChestLocation.getBlockZ(),
+                            world == null ? "null" : world.getName()));
+            return true;
+        }
+        return false;
     }
 
     @Override
