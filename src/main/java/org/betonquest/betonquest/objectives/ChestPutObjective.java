@@ -119,13 +119,17 @@ public class ChestPutObjective extends Objective implements Listener {
                 return;
             }
 
-            if (targetLocation.equals(event.getInventory().getLocation().getBlock().getLocation())) {
+            final Location invLocation = event.getInventory().getLocation();
+            if (invLocation != null && targetLocation.equals(invLocation.getBlock().getLocation())) {
                 checkItems(onlineProfile);
             } else {
                 final InventoryHolder holder = event.getInventory().getHolder();
                 if (holder instanceof DoubleChest doubleChest) {
                     final Chest leftChest = (Chest) doubleChest.getLeftSide();
                     final Chest rightChest = (Chest) doubleChest.getRightSide();
+                    if (leftChest == null || rightChest == null) {
+                        return;
+                    }
                     if (leftChest.getLocation().getBlock().getLocation().equals(targetLocation)
                             || rightChest.getLocation().getBlock().getLocation().equals(targetLocation)) {
                         checkItems(onlineProfile);
