@@ -16,6 +16,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Tags profiles that are in combat to prevent them from starting the conversation.
@@ -23,8 +24,8 @@ import java.util.ArrayList;
 @SuppressWarnings("PMD.CommentRequired")
 public class CombatTagger implements Listener {
 
-    private static final ProfileKeyMap<Boolean> TAGGED = new ProfileKeyMap<>(Bukkit.getServer());
-    private static final ProfileKeyMap<BukkitRunnable> UNTAGGERS = new ProfileKeyMap<>(Bukkit.getServer());
+    private static final Map<Profile, Boolean> TAGGED = new ProfileKeyMap<>(Bukkit.getServer());
+    private static final Map<Profile, BukkitRunnable> UNTAGGERS = new ProfileKeyMap<>(Bukkit.getServer());
     private final int delay;
 
     /**

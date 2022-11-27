@@ -305,7 +305,7 @@ public class BetonQuest extends JavaPlugin {
      * Map of registered events.
      */
     private final Map<String, QuestEventFactory> eventTypes = new HashMap<>();
-    private final ProfileKeyMap<PlayerData> playerDataMap = new ProfileKeyMap<>(getServer());
+    private final Map<Profile, PlayerData> playerDataMap = new ProfileKeyMap<>(getServer());
     private String pluginTag;
     private ConfigurationFile config;
     /**

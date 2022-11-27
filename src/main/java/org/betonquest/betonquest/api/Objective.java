@@ -51,7 +51,7 @@ public abstract class Objective {
     /**
      * Contains all data objects of the profiles with this objective active.
      */
-    protected ProfileKeyMap<ObjectiveData> dataMap = new ProfileKeyMap<>(Bukkit.getServer());
+    protected Map<Profile, ObjectiveData> dataMap = new ProfileKeyMap<>(Bukkit.getServer());
     /**
      * Should be set to the data class used to hold the objective specific information.
      */
