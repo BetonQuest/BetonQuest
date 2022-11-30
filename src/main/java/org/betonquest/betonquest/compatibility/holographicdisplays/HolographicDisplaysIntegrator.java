@@ -5,6 +5,13 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.citizens.CitizensHologram;
+import org.betonquest.betonquest.exceptions.HookException;
+import org.betonquest.betonquest.exceptions.UnsupportedVersionException;
+import org.betonquest.betonquest.modules.versioning.UpdateStrategy;
+import org.betonquest.betonquest.modules.versioning.Version;
+import org.betonquest.betonquest.modules.versioning.VersionComparator;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 
 /**
  * Integrator for HolographicDisplays API
@@ -30,7 +37,9 @@ public class HolographicDisplaysIntegrator implements Integrator {
     }
 
     @Override
-    public void hook() {
+    public void hook() throws HookException {
+        validateVersion();
+
         hologramLoop = new HologramLoop();
 
         HolographicDisplaysAPI.get(BetonQuest.getInstance()).registerIndividualPlaceholder("bq", new HologramPlaceholder());
@@ -39,6 +48,20 @@ public class HolographicDisplaysIntegrator implements Integrator {
         // if Citizens is hooked, start CitizensHologram
         if (Compatibility.getHooked().contains("Citizens")) {
             new CitizensHologram();
+        }
+    }
+
+    /**
+     * Aborts the hooking process if the installed version of HolographicDisplays is invalid.
+     *
+     * @throws UnsupportedVersionException if the installed version of HolographicDisplays is < 3.0.0.
+     */
+    private void validateVersion() throws UnsupportedVersionException {
+        final Plugin holographicDisplays = Bukkit.getPluginManager().getPlugin("HolographicDisplays");
+        final Version holographicDisplaysVersion = new Version(holographicDisplays.getDescription().getVersion());
+        final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR);
+        if (comparator.isOtherNewerThanCurrent(holographicDisplaysVersion, new Version("3.0.0+"))) {
+            throw new UnsupportedVersionException(holographicDisplays, "5.0.0");
         }
     }
 
