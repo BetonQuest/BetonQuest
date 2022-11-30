@@ -19,7 +19,7 @@ import java.util.Optional;
 @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.AbstractClassWithoutAbstractMethod", "PMD.CommentRequired"})
 public abstract class SimpleYMLSection {
 
-    public static final String RPG_MENU_CONFIG_SETTING = "RPGMenuConfig setting §7";
+    public static final String RPG_MENU_CONFIG_SETTING = "RPGMenuConfig setting ";
 
     protected final ConfigurationSection config;
     protected final String name;
@@ -308,14 +308,14 @@ public abstract class SimpleYMLSection {
 
         public InvalidSimpleConfigException(final String cause) {
             super();
-            this.cause = "  §c" + cause;
-            this.message = "§4Could not load §7" + name + "§4:\n" + this.cause;
+            this.cause = cause;
+            this.message = "Could not load '" + name + "':\n" + this.cause;
         }
 
         public InvalidSimpleConfigException(final InvalidSimpleConfigException exception) {
             super();
-            this.cause = "  §4Error in §7" + exception.getName() + "§4:\n" + exception.cause;
-            this.message = "Could not load §7" + getName() + "§4\n" + this.cause;
+            this.cause = "  Error in '" + exception.getName() + "':\n" + exception.cause;
+            this.message = "Could not load '" + getName() + "'\n" + this.cause;
         }
 
         @Override
@@ -335,7 +335,7 @@ public abstract class SimpleYMLSection {
         private static final long serialVersionUID = 1827433702663413827L;
 
         public Missing(final String missingSetting) {
-            super(RPG_MENU_CONFIG_SETTING + missingSetting + "§c is missing!");
+            super(RPG_MENU_CONFIG_SETTING + missingSetting + " is missing!");
         }
     }
 
@@ -347,15 +347,15 @@ public abstract class SimpleYMLSection {
         private static final long serialVersionUID = -4898301219445719212L;
 
         public Invalid(final String invalidSetting) {
-            super(RPG_MENU_CONFIG_SETTING + invalidSetting + "§c is invalid!");
+            super(RPG_MENU_CONFIG_SETTING + invalidSetting + " is invalid!");
         }
 
         public Invalid(final String invalidSetting, final String cause) {
-            super(RPG_MENU_CONFIG_SETTING + invalidSetting + "§c is invalid: §7" + cause);
+            super(RPG_MENU_CONFIG_SETTING + invalidSetting + " is invalid: " + cause);
         }
 
         public Invalid(final String invalidSetting, final Throwable cause) {
-            super(RPG_MENU_CONFIG_SETTING + invalidSetting + "§c is invalid: §7" + cause.getMessage());
+            super(RPG_MENU_CONFIG_SETTING + invalidSetting + " is invalid: " + cause.getMessage());
         }
     }
 }

@@ -215,7 +215,6 @@ nav:
           - 'Menus': Documentation/Menu-Menu.md
           - 'Menu Example': Documentation/Menu-Example.md
           - 'Elements': Documentation/Menu-Elements.md
-          - 'Commands': Documentation/Menu-Commands.md
           - 'Config': Documentation/Menu-Config.md
       - 'Technical':
           - 'Permissions & Commands': Documentation/Commands-and-permissions.md

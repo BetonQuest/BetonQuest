@@ -18,74 +18,74 @@ Read the related docs in the menu section to learn more about these configuratio
 menus:
   questMenu:
     height: 4
-    title: '&6&lQuests'
-    bind: openMenuItem
-    command: '/quests'
+    title: "&6&lQuests"
+    bind: "openMenuItem"
+    command: "/quests"
     slots:
-      0-3: filler,filler,filler,filler
-      4: reputation
-      5-8: filler,filler,filler,filler
-      9: 'skeletonQuestActive,skeletonQuestDone'
-      10: 'goldQuestActive,goldQuestDone'
-      27-35: filler,filler,filler,filler,filler,filler,filler,filler,filler
+      0-3: "filler,filler,filler,filler"
+      4: "reputation"
+      5-8: "filler,filler,filler,filler"
+      9: "skeletonQuestActive,skeletonQuestDone"
+      10: "goldQuestActive,goldQuestDone"
+      27-35: "filler,filler,filler,filler,filler,filler,filler,filler,filler"
 
     items:
       skeletonQuestActive:
-        item: skeletonQuestActiveItem
+        item: "skeletonQuestActiveItem"
         amount: 1
-        conditions: '!skeletonQuestDone'
+        conditions: "!skeletonQuestDone"
         text:
-            - '&7[Quest] &f&lBone ripper'
-            - '&f&oRipp some skeletons off'
-            - '&f&otheir bones to complete'
-            - '&f&othis quest.'
-            - '&f&o'
-            - '&eLeft click to locate NPC.'
+            - "&7[Quest] &f&lBone ripper"
+            - "&f&oRipp some skeletons off"
+            - "&f&otheir bones to complete"
+            - "&f&othis quest."
+            - "&f&o"
+            - "&eLeft click to locate NPC."
         click:
-          left: locationNotify
+          left: "locationNotify"
         close: true
       skeletonQuestDone:
-        item: questDone
+        item: "questDone"
         amount: 1
-        conditions: skeletonQuestDone
+        conditions: "skeletonQuestDone"
         text:
-            - '&2[Quest] &f&lBone ripper'
-            - '&f&oRipp some skeletons off'
-            - '&f&otheir bones to complete'
-            - '&f&othis quest.'
-            - '&f&o'
-            - '&2Quest completed!'
+            - "&2[Quest] &f&lBone ripper"
+            - "&f&oRipp some skeletons off"
+            - "&f&otheir bones to complete"
+            - "&f&othis quest."
+            - "&f&o"
+            - "&2Quest completed!"
         close: false
       goldQuestActive:
-        item: goldQuestActiveItem
+        item: "goldQuestActiveItem"
         amount: 1
-        conditions: '!goldQuestDone'
+        conditions: "!goldQuestDone"
         text:
-            - '&7[Quest] &f&lGold rush'
-            - '&f&oMine some gold'
-            - '&f&oto complete this quest.'
+            - "&7[Quest] &f&lGold rush"
+            - "&f&oMine some gold"
+            - "&f&oto complete this quest."
         click:
-          left: locationNotify
+          left: "locationNotify"
         close: true
       goldQuestDone:
-        item: questDone
+        item: "questDone"
         amount: 1
-        conditions: goldQuestDone
+        conditions: "goldQuestDone"
         text:
-            - '&2[Quest] &f&lGold rush'
-            - '&f&oMine some gold'
-            - '&f&oto complete this quest.'
-            - '&2Quest completed!'
+            - "&2[Quest] &f&lGold rush"
+            - "&f&oMine some gold"
+            - "&f&oto complete this quest."
+            - "&2Quest completed!"
         close: false
       reputation:
-        item: xpBottle  
+        item: "xpBottle" 
         amount: 1
         text:
-            - '&2Quest Level: &6&l%point.quest_reputation.amount%'
+            - "&2Quest Level: &6&l%point.quest_reputation.amount%"
         close: true
       filler: 
-        text: "a "
-        item: filler
+        text: "&a "
+        item: "filler"
 
 conditions:
   skeletonQuestDone: "tag skeletonQuestDone"
@@ -93,9 +93,9 @@ conditions:
 events:
   locationNotify: "notify &cThe skeletons roam at x\\:123 z\\:456!"
 items:
-  openMenuItem: BOOK title:Quests
+  openMenuItem: "BOOK title:Quests"
   
-  xpBottle: EXPERIENCE_BOTTLE
+  xpBottle: "EXPERIENCE_BOTTLE"
   filler: "GRAY_STAINED_GLASS_PANE"
 
   skeletonQuestActiveItem: "BONE"
