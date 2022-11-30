@@ -176,7 +176,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
             }
             return false;
         } catch (final Exception e) {
-            LOG.error("Could not unregister command §7" + getName() + "§4:", e);
+            LOG.error("Could not unregister command '" + getName() + "':", e);
             return false;
         }
     }

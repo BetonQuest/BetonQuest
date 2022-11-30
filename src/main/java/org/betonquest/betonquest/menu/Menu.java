@@ -363,7 +363,7 @@ public class Menu extends SimpleYMLSection implements Listener {
         @Override
         public boolean simpleCommand(final CommandSender sender, final String alias, final String[] args) {
             if (!(sender instanceof final Player player)) {
-                sender.sendMessage("§cCommand can only be run by players!");
+                sender.sendMessage("Command can only be run by players!");
                 return false;
             }
             final OnlineProfile onlineProfile = PlayerConverter.getID(player);
