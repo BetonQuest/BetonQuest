@@ -4,62 +4,72 @@ icon: fontawesome/solid/lock
 # Commands and permissions
 
 ## Commands
+Required arguments are displayed as such: `<argument>`.
+Optional arguments are displayed as such: `[argument]`.
 
-* **/j** - gives the journal
-* **/backpack** - opens the backpack
-* **/q** - lists all available admin commands
-* **/q reload** - reloads the plugin
-* **/q objectives {playerName} [list/add/del/complete] [instruction]** - shows player's currently active objectives
-* **/q tags {playerName} [list/add/del] [tag]** - lists all player's tags
-* **/q globaltags {playerName} [list/add/del] [tag]** - lists all global tags
-* **/q points {playerName} [list/add/del] [category] [amount]** - lists all player's points in all categories
-* **/q globalpoints {playerName} [list/add/del] [category] [amount]**
-* **/q journal {playerName} [list/add/del] [package.pointer] [date]**
-* **/q event {playerName} {package.eventID}** - fires an event for the player
-* **/q condition {playerName} {package.conditionID}** - shows if the player meet specified condition or not
-* **/q item {package.itemID}** - creates an item based on what you're holding in hand
-* **/q give {package.itemID}** - gives you an item defined in the configuration
-* **/q purge {playerName}** - deletes all player's data from the database
-* **/q rename {tag/point/globalpoint/objective/entry} {oldName} {newName}** - renames all specified things in the database
-* **/q delete {tag/point/objective/entry} {name}** - deletes all specified things in the database
-* **/q backup** - creates a backup of configuration files and database
-* **/q update** - updates the plugin to the newest version.
-* **/q version**: displays the versions of BetonQuest, the server and all hooked plugins
-* **/q debug [true/false/ingame]**: enable debug mode and write all down in a log file or disable the debug mode
-* **/q download {gitHubNamespace} {ref} {type} {sourcePath} [targetPath] [recursive] [overwrite]**: download
-  quests and templates from a github repository
-* **/questlang {lang}** - changes the language for the player (and globally if used from console). `default` language
-  will use the language defined in _config.yml_.
+* `/j` - Gives the journal
+* `/backpack` - Opens the backpack
+* `/q` - Lists all available admin commands
+* `/q reload` - Reloads the plugin
+* `/q objectives <playerName> <list/add/del/complete> <objectiveName>` - Shows player's currently active objectives
+* `/q tags <playerName> <list/add/del> <tag>` - Lists all player's tags
+* `/q globaltags <playerName> <list/add/del> <tag>` - Lists all global tags
+* `/q points <playerName> <list/add/del> <category> <amount>` - Lists all player's points in all categories
+* `/q globalpoints <playerName> <list/add/del> <category> <amount>`
+* `/q journal <playerName> <list/add/del> <package.pointer> <date>`
+* `/q event <playerName> <package.eventID>` - Fires an event for the player
+* `/q condition <playerName> <package.conditionID>` - Shows if the player meet specified condition or not
+* `/q item <package.itemID>` - Creates an item based on what you're holding in hand
+* `/q give <package.itemID>` - Gives you an item defined in the configuration
+* `/q purge <playerName>` - Deletes all player's data from the database
+* `/q rename <tag/point/globalpoint/objective/entry> <oldName> <newName>` - Renames all specified things in the database
+* `/q delete <tag/point/objective/entry> <name>` - Deletes all specified things in the database
+* `/q backup` - Creates a backup of configuration files and database
+* `/q update` - Updates the plugin to the newest version.
+* `/q version`: Displays the versions of BetonQuest, the server and all hooked plugins
+* `/q debug [true/false/ingame]`: Enable debug mode and write all down in a log file or disable the debug mode
+* `/q download <gitHubNamespace> <ref> <type> <sourcePath> [targetPath] [recursive] [overwrite]`: Download quests and templates from a GitHub repository
+* `/questlang <lang>` - Changes the language for the player (and globally if used from console). `default` language will use the language defined in _config.yml_.
+* `/rpgmenu reload <menu>` - Allows reloading all configuration files or just reloading the configuration of one specific menu.
+* `/rpgmenu list` - Lists all currently loaded menus and allows opening them just by clicking on them.
+* `/rpgmenu open <menu> [player]` - Opens a menu for you or another player. [Opening conditions](Menu-Menu.md#general-menu-settings) of the menu will be ignored when using this command.
+
+### Custom Menu Opening commands
+The plugin lets you create a new command for each menu which allows all players to open the menu.  
+You can also specify BetonQuest conditions so that the menu can only be opened if the player matches specific conditions.
+Have a look at the [menu settings](Menu-Menu.md#general-menu-settings) for more information.
+
+The server must be restarted to unregister command tab completions.
 
 ## Aliases
 
-* **/j**: bj, journal, bjournal, betonjournal, betonquestjournal
-* **/backpack**: b, bb, bbackpack, betonbackpack, betonquestbackpack
-* **/q**: bq, bquest, bquests, betonquest, betonquests, quest, quests
-    * **objective**: o, objectives
-    * **tag**: t, tags
-    * **point**: p, points
-    * **event**: e, events
-    * **condition**: c, conditions
-    * **journal**: j, journals
-    * **item**: i, items
-    * **give**: g
-    * **rename**: r
-    * **delete**: d, del
-    * **create**: package
-* **/questlang**: ql
+* `/j`: bj, journal, bjournal, betonjournal, betonquestjournal
+* `/backpack`: b, bb, bbackpack, betonbackpack, betonquestbackpack
+* `/q`: bq, bquest, bquests, betonquest, betonquests, quest, quests
+    * `objective`: o, objectives
+    * `tag`: t, tags
+    * `point`: p, points
+    * `event`: e, events
+    * `condition`: c, conditions
+    * `journal`: j, journals
+    * `item`: i, items
+    * `give`: g
+    * `rename`: r
+    * `delete`: d, del
+    * `create`: package
+* `/questlang`: ql
+* `/rpgmenu`: rpgmenus, menu, menus, rpgm, qm
 
 ## Permissions
 
-
-* **betonquest.admin** - allows using admin commands (/q ...) and creating an NPC from blocks
-* **betonquest.journal** - allows using /j command (default for players)
-* **betonquest.backpack** - allows using /backpack command (default for players)
-* **betonquest.conversation** - allows talking with NPCs (default for players)
-* **betonquest.language** - allows changing the language (default for players)
+* `betonquest.admin` - allows using admin commands (/q, /rpgmenu ...)
+* `betonquest.journal` - allows using /j command (default for players)
+* `betonquest.backpack` - allows using /backpack command (default for players)
+* `betonquest.conversation` - allows talking with NPCs (default for players)
+* `betonquest.language` - allows changing the language (default for players)
 
 !!! warning
-    Don't give **betonquest.admin** permission to people you don't fully trust. They can use **/q config** command to add a `command` event, and this way execute any command as the console. This might be dangerous.
+    Don't give `betonquest.admin` permission to people you don't fully trust. They can use `/q config` command to add a `command` event, and this way execute any command as the console. This might be dangerous.
 
 ## Main command details
 
