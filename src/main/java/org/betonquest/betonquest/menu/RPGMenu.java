@@ -205,7 +205,7 @@ public class RPGMenu {
             info.loaded = 1;
             LOG.info(menuID.getPackage(), "Reloaded menu " + menuID);
         } catch (final InvalidConfigurationException e) {
-            LOG.error(menuID.getPackage(), "Invalid configuration:", e);
+            LOG.warn(menuID.getPackage(), e.getMessage());
             info.result = ReloadResult.FAILED;
             info.addError(e);
         }

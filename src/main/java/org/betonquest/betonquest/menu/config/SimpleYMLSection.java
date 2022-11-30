@@ -309,7 +309,7 @@ public abstract class SimpleYMLSection {
         public InvalidSimpleConfigException(final String cause) {
             super();
             this.cause = cause;
-            this.message = "Could not load '" + name + "':\n" + this.cause;
+            this.message = "Could not load '" + name + "':" + this.cause;
         }
 
         public InvalidSimpleConfigException(final InvalidSimpleConfigException exception) {
