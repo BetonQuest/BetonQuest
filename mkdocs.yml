@@ -111,9 +111,6 @@ plugins:
       glob:
         - _snippets/*
         - _custom_theme/*
-  - meta:
-      meta_file: '**/.meta.yml'
-
 
 extra:
   version:
