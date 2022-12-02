@@ -266,13 +266,13 @@ public class MenuItem extends SimpleYMLSection {
                     meta.setLore(description.getLore(profile));
                     item.setItemMeta(meta);
                 } catch (final NullPointerException npe) {
-                    LOG.error(pack, "Couldn't add custom text to §7" + name + "§4: No text for language §7" + Config.getLanguage() + "§4 " +
+                    LOG.error(pack, "Couldn't add custom text to '" + name + "': No text for language '" + Config.getLanguage() + "' " +
                             "specified");
                 }
             }
             return item;
         } catch (final QuestRuntimeException qre) {
-            LOG.error(pack, "QuestRuntimeException while creating §7" + name + "§4: " + qre.getMessage());
+            LOG.error(pack, "QuestRuntimeException while creating '" + name + "': " + qre.getMessage());
             return new ItemStack(Material.AIR);
         }
     }

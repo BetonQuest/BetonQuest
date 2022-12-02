@@ -198,7 +198,7 @@ public class RPGMenuCommand extends SimpleCommand {
     private void showHelp(final CommandSender sender) {
         final ComponentBuilder builder = new ComponentBuilder("");
         builder
-                .append(TextComponent.fromLegacyText("§e----- §aRPGMenu for Betonquest §e-----\n"))
+                .append(TextComponent.fromLegacyText("----- RPGMenu for Betonquest -----\n"))
                 .append("/rpgmenu reload [menu]\n").color(ChatColor.RED)
                 .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                         TextComponent.fromLegacyText(RPGMenuConfig.getMessage(sender, "command_info_reload"))))

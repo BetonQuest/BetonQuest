@@ -96,7 +96,7 @@ public class RPGMenu {
     public void openMenu(final OnlineProfile onlineProfile, final MenuID menuID) {
         final Menu menu = menus.get(menuID);
         if (menu == null) {
-            LOG.error(menuID.getPackage(), "Could not open menu §7" + menuID + "§4: §cUnknown menu");
+            LOG.error(menuID.getPackage(), "Could not open menu '" + menuID + "': Unknown menu");
             return;
         }
         final MenuOpenEvent openEvent = new MenuOpenEvent(onlineProfile, menuID);
@@ -171,7 +171,7 @@ public class RPGMenu {
                     this.menus.put(menuID, new Menu(menuID));
                     info.loaded++;
                 } catch (final InvalidConfigurationException e) {
-                    LOG.error(pack, "Invalid configuration.", e);
+                    LOG.warn(pack, e.getMessage());
                     info.addError(e);
                     info.result = ReloadResult.SUCCESS;
                 } catch (final ObjectNotFoundException e) {
@@ -182,7 +182,7 @@ public class RPGMenu {
             }
         }
         final ChatColor color = (info.result == ReloadResult.FULL_SUCCESS) ? ChatColor.GREEN : ChatColor.YELLOW;
-        LOG.info(color + "Reloaded §7" + info.loaded + color + " menus");
+        LOG.info(color + "Reloaded " + info.loaded + color + " menus");
         return info;
     }
 
@@ -203,9 +203,9 @@ public class RPGMenu {
             this.menus.put(menuID, new Menu(menuID));
             info.result = ReloadResult.FULL_SUCCESS;
             info.loaded = 1;
-            LOG.info(menuID.getPackage(), "§aReloaded menu " + menuID);
+            LOG.info(menuID.getPackage(), "Reloaded menu " + menuID);
         } catch (final InvalidConfigurationException e) {
-            LOG.error(menuID.getPackage(), "Invalid configuration:", e);
+            LOG.warn(menuID.getPackage(), e.getMessage());
             info.result = ReloadResult.FAILED;
             info.addError(e);
         }
@@ -255,7 +255,7 @@ public class RPGMenu {
         private ReloadResult result = ReloadResult.FULL_SUCCESS;
 
         private void addError(final Throwable throwable) {
-            errorMessages.add("§4" + throwable.getMessage());
+            errorMessages.add(throwable.getMessage());
         }
 
         /**

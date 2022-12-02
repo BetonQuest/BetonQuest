@@ -32,6 +32,8 @@ outerName:
 ```
 
 Tabs are not supported. Use spaces instead.
+
+You shouldn't name anything `yes`, `no`, `on`, `off`, `null`, `true` or `false` as those names are reserved keywords in YAML.  
  
 ---
 [:material-arrow-right: Next Step: Conversations](../Basics/Conversations.md){ .md-button .md-button--primary }

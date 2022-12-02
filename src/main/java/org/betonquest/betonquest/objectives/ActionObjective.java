@@ -23,7 +23,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.EquipmentSlot;
 
 import static org.bukkit.event.block.Action.LEFT_CLICK_AIR;
 import static org.bukkit.event.block.Action.LEFT_CLICK_BLOCK;
@@ -65,10 +64,6 @@ public class ActionObjective extends Objective implements Listener {
     @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
     @EventHandler(priority = EventPriority.LOWEST)
     public void onInteract(final PlayerInteractEvent event) {
-        if (event.getHand() != null && event.getHand() == EquipmentSlot.OFF_HAND) {
-            return;
-        }
-
         final OnlineProfile onlineProfile = PlayerConverter.getID(event.getPlayer());
         if (!containsPlayer(onlineProfile) || !action.match(event.getAction())) {
             return;
