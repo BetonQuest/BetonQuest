@@ -67,7 +67,7 @@ jobs:
 
       - name: Build with mkdocs
         run: |
-          if [ "$TXT" = "docs-requirements-insiders.txt"]
+          if [ "$TXT" = "docs-requirements-insiders.txt" ]
           then
             mkdocs build --config-file mkdocs.insiders.yml
           else
