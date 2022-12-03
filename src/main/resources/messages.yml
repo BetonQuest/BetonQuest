@@ -454,7 +454,7 @@ it:
   password: 'password: '
   condition_variable_met: 'si'
   condition_variable_not_met: 'no'
-  chest_occupied: 'This chest is already in use' # TODO: missing translation
+  chest_occupied: 'Questo baule è già in uso'
 hu:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&bBeszélgetés a következővel {1}&b elkezdve!&e===='
