@@ -124,6 +124,7 @@ Install all other dependencies by entering `pip install -r config/docs-requireme
     Set your license key by executing `setx MKDOCS_MATERIAL_INSIDERS LICENSE_KEY_HERE /M` (Windows) in the terminal.
     Now you need to restart IntelliJ for the changes to take effect. 
     Then run `pip install -r config/docs-requirements-insiders.txt` instead of `docs-requirements.txt`.
+    Run `mkdocs serve --config-file mkdocs.insiders.yml` to preview the docs.
 
 ### See your changes live
 Run this command in IntelliJ's integrated terminal (at the bottom) to create a docs preview in your browser:
