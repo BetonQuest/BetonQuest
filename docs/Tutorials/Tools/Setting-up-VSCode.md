@@ -5,104 +5,99 @@ tags:
   - Editor
 ---
 
-What is the most important thing, before we can start writing quests?
-Correct! We need an editor to edit our files and make life easier with some shortcuts
-and a good syntax highlighting. For this tutorial we will introduce you to
-Visual Studio Code (VSCode). It is one of the most popular code editors.
-You will learn how to install it, how to use it and some tips and tricks!
+What is the most important thing before writing quests?
+Correct! We need a good text editor to make our lives easier with shortcuts and syntax highlighting.
+In this tutorial you will be introduced to Visual Studio Code (VSCode), the most popular text editor.
 
-But very first: What is YAML?
-YAML is a data-serialization language that is readable by humans. It is frequently used for configuration files and in programs that store or send data.
+In this tutorial you will learn how to install and use it to your advantage!
+
 
 <div class="grid" markdown>
 !!! danger "Requirements"
     * No further requirements.
 
 !!! example "Related Docs"
-    * No references.
+    * [YAML](../Getting-Started/Basics/YAML.md)
 </div>
 
 
 ## 1. Download and installing VSCode
 
-In this topic we go through the download and installing steps that need to be done.
+In this step we will install VSCode on your computer.
 
-_Step 1:_ [Download the right version from the VSCode website](https://code.visualstudio.com/download) 
+_Step 1:_ [Download the right version of Visual Studio Code](https://code.visualstudio.com/download) for your operating system from their website. 
 for your operating system.
-
-??? example "VSCode Download Screenshot"
-    ![VSCode Website](../../_media/content/Tutorials/VSCode-Setup/download_VSCode.png)
-
-After you successfully downloaded the right version you can move on with the next step.
 
 ---
 _Step 2:_ Click on the VSCodeUserSetup-xXX-X.XX.X.exe in your download folder. (You'll
-find your _downloads_ folder in your explorer.)
+find your _downloads_ folder in your file explorer.)
 
 ---
-_Step 3:_ Go through the installation steps you can leave everything default. No need to change ticks of any checkbox!
+_Step 3:_ Go through the installation steps. The default settings are sufficient for BetonQuest usage.
 If you completed the installation and have the setup is closed. Move on with _Step 4_.
 
 ---
-_Step 4:_ Double click Visual Studio Code on your desktop or search it in your searchbar.
+_Step 4:_ Start Visual Studio Code by double-clicking it on your desktop or starting it through your searchbar.
 
 ---
 _Step 5:_ In this last step we will activate the `Auto-Save` function from VSCode.
 Go to "File" and then click on "Auto-Save" to activate it.
 
-This is a very useful feature because it automatically saves your progress and no data will
-get lost on unexpected shutdowns or whatever can happen.
-This is also good because there is no need for extra save your files. You can just
-go inGame and reload the plugin.
+This is a very useful feature that automatically saves your files. No data will ever be lost again!
+It also saves you from one of the most common errors when writing quests: Forgetting to save!
+From now on, you can just execute `/bq reload` as soon as your mouse leaves the editor.
 
-??? example "VSCode Auto-Save Screenshot"
+??? example "VSCode Auto-Save Setup"
     ![auto_save](../../_media/content/Tutorials/VSCode-Setup/auto_save.png)
     
-In this topic you learned how to download and install Visual Studio Code and even
-how to activate the _Auto-Save_ function that's built-in. Now you are good to go
-to the next topic and learn how to create a workspace!
+Now that you have a working VS Code installation you can learn how to use it.
     
 ## 2. Creating a workspace in VSCode
 
 If you want to work fast and effectively, it is necessary to create a workspace!
-The advantage of a workspace is that you can edit your files directly from the folder, so
-there is no need to extra save them or open them again every time you closed them.
+A workspace is a folder that contains all your project's files. In this case, it will be the BetonQuest folder with all
+quests and settings.
 
-??? tip ""
-    If you want to have more than one workspace, simply right-click in the folder box as showed in the screenshot.
-    This is useful when having a production server and a test server for example.
-    ![more workspace](../../_media/content/Tutorials/VSCode-Setup/auto_save.png)
+??? tip "More than one workspace"
+    If you want to have more than one plugin in your workspace, you can click on "File" and then "Add Folder to Workspace"
+    to add any other folder.
+    You can also close and reopen the workspace at any time using the steps below.
     
 
 And this is how to do it:
 
-_Step 1: Left-click on the folder button._
+_Step 1:_ Left-click on the folder button.
 ![folder button](../../_media/content/Tutorials/VSCode-Setup/creating_workspace_1.png)
 
-_Step 2: Left-click on the "Open Folder"._
+_Step 2:_ Left-click on "Open Folder".
 ![Open Folder](../../_media/content/Tutorials/VSCode-Setup/creating_workspace_2.png)
 
 
-_Step 3: Define a path and click on "Add"._
+_Step 3:_ Define a path and click on "Add".
 
-_Navigate to your server files -> got to plugins folder -> click on "BetonQuest" folder -> click on "Add"_
-(DO NOT DOUBLE CLICK BETONQQUEST FOLDER!)
+Navigate to your server files :arrow_right: Go to the "_plugins_" folder :arrow_right: Single-Click the "_BetonQuest_" folder
+:arrow_right: Click "Add" in the bottom right of the dialog.
+
 ![Define a path](../../_media/content/Tutorials/VSCode-Setup/creating_workspace_3.png)
 
-If you have done everything correctly it should look like this (If not, start this topic
-again):
+If you have done everything correctly it will look like this:
 
 ![Workspace result](../../_media/content/Tutorials/VSCode-Setup/creating_workspace_result.png)
 
-Now that our workspace is ready to work aty, you can edit the configs, create new quest files/folders and
-even create new templates. You can do everything you want from just this one place!
+Now that our workspace is ready to work with, you can edit the configs, create new quest packages or templates!
+Everything that can be done with BetonQuest is accessible within the workspace.
 
-In the next topic you will learn more about how to find YAML syntax errors and the meaning of it.
+In the next topic you will learn more about how to deal with YAML syntax errors.
 
 ## 3. Installing YAML Syntax extension
 
-You'll soon find out that something is not working because you miss typed something or
-have a space too much... VSCode showing these errors and highlighting them.
+You'll soon experience that your quest is not working because you made a YAML syntax error.
+But what is YAML?
+
+YAML is a data-serialization language that is readable by humans. It is frequently used for Minecraft related configuration files.
+Unfortunately it is quite easy to make a mistake in YAML syntax. 
+
+VSCode can highlight these mistakes and suggests how to fix them. 
 Because this is NOT a built-in function we need to install the _YAML Plugin_ from the
 Extensions store!
 
@@ -122,11 +117,9 @@ side again.
 
 ## 4. Checking YAML Syntax
 
-You wonder how to use the new _YAML_ plugin and how to read these errors?
-In this topic we will show you how to interpret some kinds of errors and how
-to fix them.
+Now that you have the plugin, let's see how it works!
 
-Let me show you a not working example of a small quest:
+Let me show you an example of a small quest with a few YAML errors:
 ```YAML
 conversations:
   Jack:
@@ -149,43 +142,35 @@ objectives:
   fishObj: "fish COD 5 events:addTag"
 ```
 
-On the first look, you can see that in the events section is one event written in green instead of blue.
+You will notice that two events in the events section are written in green instead of blue.
 That's because of a YAML Syntax error.
-Do you already see the mistake here? It is simple: There is a colon missing after
-the key `giveFishObj`. Because of the missing colon, now the YAML don't know that this should be a key.
+Do you already see the mistake here? It is simple: There is a colon (`:`) missing after
+the key `giveFishObj`. Because of the missing colon YAML will fail to parse this file.
 
 But now we will have a look at VSCode:
 
 ![yaml errors 1](../../_media/content/Tutorials/VSCode-Setup/yaml_errors_1.png)
 
-The YAML Syntax extension already shows you the mistakes and try to give you a solution for
-it. To look at the proposed solution you have to hover with your mouse over the word/sentences
-underlined with a red line and click `ALT` + `F8`.
+The YAML Syntax extension will highlight the error. If you hover over the error you will see more information:
 
-It looks like this:
 ![yaml errors 2](../../_media/content/Tutorials/VSCode-Setup/yaml_errors_2.png)
 
-This is how you could solve the problems on your own if anything is not working as you expect it.
-
-!!! warning ""
-    Not everything could be displayed here. There are several more errors, but we
-    tried to cover the most common ones
+Whilst these are quite technical and hard to understand, the highlighting will clearly show you where errors need to be fixed.
 
 Let's have a look at the condition `!hasEnoughFish` in the conversations part:
 
 ![yaml errors 3](../../_media/content/Tutorials/VSCode-Setup/yaml_errors_3.png)
 
-This will give us a _unresolved tag: ..._ error because we need to recognize, that
-we can't negate a condition with a _( ! ) exclamation mark_ without surrounding it with _( " " ) double quotes_.
+This will give us an _unresolved tag: ..._ error because special characters like the exclamation mark (`!`) 
+cannot be written without surrounding (`" "`) double quotes.
 
-Another common mistake is to use single quotes to surround a value and then use it in a conversation
+Another common mistake is to use single quotes to surround a value and then also use it in the conversation text
 like this:
 
 ![yaml errors 4](../../_media/content/Tutorials/VSCode-Setup/yaml_errors_4.png)
 
 You'll notice that there are three single quotes in one line. To prevent those errors
-we highly recommend to use double quotes to surround a value and single quotes in a simple
-sentence.
+we highly recommend to use double quotes.
  
 ## Summary
 
