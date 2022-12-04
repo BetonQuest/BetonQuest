@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.compatibility.holographicdisplays;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Compatibility;
@@ -56,6 +57,7 @@ public class HolographicDisplaysIntegrator implements Integrator {
      *
      * @throws UnsupportedVersionException if the installed version of HolographicDisplays is < 3.0.0.
      */
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private void validateVersion() throws UnsupportedVersionException {
         final Plugin holographicDisplays = Bukkit.getPluginManager().getPlugin("HolographicDisplays");
         final Version holographicDisplaysVersion = new Version(holographicDisplays.getDescription().getVersion());
