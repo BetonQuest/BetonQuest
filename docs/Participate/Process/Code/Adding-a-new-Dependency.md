@@ -17,6 +17,13 @@ Then add a new dependency block for that repository. There needs to be a comment
 which repository holds this dependency. Take a look at the other blocks for guidance.
 
 ## Finishing up
-We speed our builds up using our own mirror repository. It needs to be configured in your local Maven settings file as
-shown on the [Setup Project](../../Setup-Project.md#build-speed-up) page.
-**Please add any new repositories to your local file and to [that documentation page](../../Setup-Project.md#build-speed-up).**
+We speed our builds up using our own mirror repository.
+If you add new repositories, we also need to add it as mirror to our maven repository.
+
+Normally we do this, when you open your PullRequest on GitHub.  
+If you need to exclude your new dependency from the mirrors (because we did not add it yet),
+so it will be downloaded from the original repository, you can add the following to the `mirrorOf` entry in the file
+`.mvn/settings.xml`:
+```xml
+      <mirrorOf>*,!betonquest-repoName-repo</mirrorOf>
+```

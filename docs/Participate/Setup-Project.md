@@ -76,29 +76,8 @@ You can then find a `BetonQuest.jar` in the newly created folder `/target/artifa
 
 ### Build speed up
 As BetonQuest has a lot of dependencies, the build can take a long time, especially for the first build.
-You can speed this up with the following configuration, that downloads all dependencies from our own Repository Manager
-instead of searching through all repositories that are defined in the project.
-
-If you do not already have the file, create a new file in this location: `<HOME DIRECTORY>\.m2\settings.xml`.
-The home directory on Windows is `C:\Users\<YOUR USER NAME>`.
-Then adopt or copy the following into the file:
-
-````XML linenums="1"
-<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
-                      http://maven.apache.org/xsd/settings-1.0.0.xsd">
-
-  <mirrors>
-    <mirror>
-      <id>BetonQuest-Mirror</id>
-      <url>https://betonquest.org/nexus/repository/default/</url>
-      <mirrorOf>betonquest-papermc-repo,betonquest-enginehub-repo,betonquest-heroes-repo,betonquest-lumine-repo,betonquest-citizensnpcs-repo,betonquest-codemc-repo,betonquest-placeholderapi-repo,betonquest-dmulloy2-repo,betonquest-lichtspiele-repo,betonquest-elmakers-repo,betonquest-jitpack-repo,betonquest-sonatype-releases-repo,betonquest-sonatype-snapshots-repo,betonquest-minecraft-repo</mirrorOf>
-    </mirror>
-  </mirrors>
-
-</settings>
-````
+By default, the build speed up is already active from the command line, but normally not from IntelliJ.
+To enable it, go to `File/Settings/Build, Execution, Deployment/Build Tools/Maven` and check `Use settings from .mvn/maven.config`.
 
 ### Build on Start
 The first build of a day can take a while, because every version gets re-checked once every day.
