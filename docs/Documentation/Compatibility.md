@@ -343,7 +343,8 @@ This event simply gives the player specified amount of Heroes experience. The fi
     ```
 
 ## [HolographicDisplays](http://dev.bukkit.org/bukkit-plugins/holographic-displays/)
-
+!!! info ""
+    **Required HolographicDisplays version: _3.0.0_ or above** 
 
 ### Hidden Holograms
 Installing this plugin will enable you to create hidden holograms, which will be shown to players only if they meet specified conditions. Note that you need to have [ProtocolLib](https://www.spigotmc.org/resources/1997/) installed in order to hide holograms from certain players.
@@ -753,8 +754,9 @@ mmoitemtake ARMOR KINGS_CHESTPLATE invOrder:Armor,Backpack
 
 
 ## [MythicMobs](http://dev.bukkit.org/bukkit-plugins/mythicmobs/)
+!!! info ""
+    **Required MythicMobs version: _5.0.0_ or above** 
 
-Having MythicMobs allows you to use MythicMobs MobKill objective and MythicMobs SpawnMob event.
 
 ### Objectives
 

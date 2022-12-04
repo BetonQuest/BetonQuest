@@ -151,8 +151,9 @@ public class Compatibility implements Listener {
         try {
             integrator = integratorClass.getConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-                 NoSuchMethodException e) {
-            LOG.warn(null, "Error while integrating " + name + ": " + e.getMessage());
+                 NoSuchMethodException | NoClassDefFoundError e) {
+            LOG.warn(null, "Error while integrating " + name + " with version " + hookedPlugin.getDescription().getVersion() + ": " + e, e);
+            LOG.warn("You are likely running an incompatible version of " + name + ".");
             return;
         }
 
