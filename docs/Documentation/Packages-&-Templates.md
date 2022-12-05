@@ -172,7 +172,7 @@ to match the current location, relative paths will still work.
     
 ### Disabling Packages
 
-Each package can optionally be disabled/enabled in the "_package.yml_" file, by setting `enabled` inside the `package` section to `true` or `false`.
+Each package can optionally be disabled/enabled by setting `enabled` inside the `package` section to `true` or `false`.
 
 ```YAML
 package:
