@@ -5,23 +5,23 @@ import org.bukkit.Server;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
+import java.util.AbstractMap;
+import java.util.AbstractSet;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
- * This class is used to cache profiles.
- * <p>
- * It implements a simple cache that stores the profile's UUIDs as value in a map.
- * It uses T as key.
- * The interface runs via profiles.
+ * This class is used to map profiles as values.
+ * It saves the UUID of the profile instead of the profile itself and converts it to
+ * profiles on return. It also takes profiles as input
  *
- * @param <T> the type of the object to be cached
+ * @param <T> the type of the object to be mapped
  */
-public class ProfileValueMap<T> implements Map<T, Profile> {
+public class ProfileValueMap<T> extends AbstractMap<T, Profile> implements Map<T, Profile> {
 
     /**
      * The map used to store the profile's UUIDs.
@@ -31,20 +31,18 @@ public class ProfileValueMap<T> implements Map<T, Profile> {
      * The server instance.
      */
     private final Server server;
-    /**
-     * Type of the object to be cached.
-     */
-    private final Class<T> type;
 
     /**
-     * Creates a new profile cache.
+     * Creates a new profile value mapping.
      *
      * @param server the server instance
-     * @param clazz  the Class T of the object to be cached
      */
-    public ProfileValueMap(final Server server, final Class<T> clazz) {
-        this.profileMap = new HashMap<>();
-        this.type = clazz;
+    public ProfileValueMap(final Server server) {
+        this(new HashMap<>(), server);
+    }
+
+    public ProfileValueMap(final Map<T, UUID> profileMap, final Server server) {
+        this.profileMap = profileMap;
         this.server = server;
     }
 
@@ -60,10 +58,7 @@ public class ProfileValueMap<T> implements Map<T, Profile> {
 
     @Override
     public boolean containsKey(final Object key) {
-        if (type.isInstance(key)) {
-            return profileMap.containsKey(key);
-        }
-        return false;
+        return profileMap.containsKey(key);
     }
 
     @Override
@@ -76,10 +71,7 @@ public class ProfileValueMap<T> implements Map<T, Profile> {
 
     @Override
     public Profile get(final Object key) {
-        if (type.isInstance(key)) {
-            return PlayerConverter.getID(server.getPlayer(profileMap.get(key)));
-        }
-        return null;
+        return toProfileOrNull(profileMap.get(key));
     }
 
     @Nullable
@@ -91,15 +83,12 @@ public class ProfileValueMap<T> implements Map<T, Profile> {
 
     @Override
     public Profile remove(final Object key) {
-        if (type.isInstance(key)) {
-            return PlayerConverter.getID(server.getPlayer(profileMap.remove(key)));
-        }
-        return null;
+        return toProfileOrNull(profileMap.remove(key));
     }
 
     @Override
     public void putAll(@NotNull final Map<? extends T, ? extends Profile> map) {
-        final Map<T, UUID> entries = map.entrySet().stream()
+        final Map<? extends T, UUID> entries = map.entrySet().stream()
                 .collect(Collectors.toMap(Entry::getKey, entry -> entry.getValue().getProfileUUID()));
         profileMap.putAll(entries);
     }
@@ -117,33 +106,42 @@ public class ProfileValueMap<T> implements Map<T, Profile> {
 
     @NotNull
     @Override
-    public Collection<Profile> values() {
-        return profileMap.values().stream()
-                .map(uuid -> PlayerConverter.getID(server.getPlayer(uuid)))
-                .collect(Collectors.toList());
+    public Set<Entry<T, Profile>> entrySet() {
+        return;
     }
 
-    @NotNull
-    @Override
-    public Set<Entry<T, Profile>> entrySet() {
-        return profileMap.entrySet().stream()
-                .map(entry -> new Entry<T, Profile>() {
-                    @Override
-                    public T getKey() {
-                        return entry.getKey();
-                    }
+    private Profile toProfileOrNull(final UUID profileId) {
+        if (profileId == null) {
+            return null;
+        }
+        return PlayerConverter.getID(server.getPlayer(profileId));
+    }
 
-                    @Override
-                    public Profile getValue() {
-                        return PlayerConverter.getID(server.getPlayer(entry.getValue()));
-                    }
+    final class EntrySet extends AbstractSet<Entry<T, Profile>> {
 
-                    @Override
-                    public Profile setValue(final Profile value) {
-                        entry.setValue(value.getProfileUUID());
-                        return value;
-                    }
-                })
-                .collect(Collectors.toSet());
+        @Override
+        public Iterator<Entry<T, Profile>> iterator() {
+            return null;
+        }
+
+        @Override
+        public int size() {
+            return profileMap.size();
+        }
+
+        @Override
+        public boolean contains(final Object o) {
+            return super.contains(o);
+        }
+
+        @Override
+        public boolean remove(final Object o) {
+            return super.remove(o);
+        }
+
+        @Override
+        public void clear() {
+            profileMap.clear();
+        }
     }
 }
