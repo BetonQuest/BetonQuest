@@ -138,6 +138,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - spectator mode is now disabled for chest conversation io to prevent being stuck in the conversation
 - packet chat interceptor does not catch action bar anymore
 - time event does not work with floating point values
+- global variable recursive resolution cross packages
 - `location` objective - is now more robust if the player changes a world
 - `brew` objective - now counts newly brewed potions even if there were already some potions of the desired type in
 - `chestput` objective - did now work with double chests
