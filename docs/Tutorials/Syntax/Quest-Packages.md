@@ -352,4 +352,3 @@ in the directory tree.
 ## Summary
 
 You have learned how to structure your quest packages. Now you are able to pick the best structure for your quests. 
----
