@@ -22,7 +22,7 @@ jobs:
 
       - name: Build with Maven
         run: |
-          mvn -P Test-All -B package
+          mvn -P Test-All -B package -DskipProjectSettings=true
 
   docs:
     name: Build Docs
