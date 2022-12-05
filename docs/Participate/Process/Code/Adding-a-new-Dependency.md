@@ -16,7 +16,24 @@ New repository tags need to be added in this format: `betonquest-<repoName>-repo
 Then add a new dependency block for that repository. There needs to be a comment above that dependency block that indicates
 which repository holds this dependency. Take a look at the other blocks for guidance.
 
-## Finishing up
-We speed our builds up using our own mirror repository. It needs to be configured in your local Maven settings file as
-shown on the [Setup Project](../../Setup-Project.md#build-speed-up) page.
-**Please add any new repositories to your local file and to [that documentation page](../../Setup-Project.md#build-speed-up).**
+## Setting up the mirror for the new repo
+We have configured our Maven project to speed our builds up using mirror repositories.
+When adding new repositories we need to add them as mirrors to our Maven repository. As long as they are not added, your
+local Maven build will fail. We will add the repository as a mirror when you open your pull request on GitHub.  
+
+However, to test your changes you need to compile. 
+Therefore, you need to bypass the mirrors so your dependency will be downloaded from the original repository.
+There are three ways do this:
+
+The first option is to temporarily add the following to the `mirrorOf` entry in the file
+`.mvn/settings.xml`. This allows Maven to find the new repo as it is excluded from our mirror repo.  
+```xml
+      <mirrorOf>*,!betonquest-repoName-repo</mirrorOf>
+```
+
+Second option, you add the following to the command line when executing Maven to disable our mirrors.
+````
+-DskipProjectSettings=true
+````
+
+Third option, you ask us on GitHub (Issue or PullRequest) to add the new repository to our mirrors.
