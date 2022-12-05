@@ -19,11 +19,20 @@ which repository holds this dependency. Take a look at the other blocks for guid
 ## Finishing up
 We speed our builds up using our own mirror repository.
 If you add new repositories, we also need to add it as mirror to our maven repository.
-
 Normally we do this, when you open your PullRequest on GitHub.  
-If you need to exclude your new dependency from the mirrors (because we did not add it yet),
-so it will be downloaded from the original repository, you can add the following to the `mirrorOf` entry in the file
-`.mvn/settings.xml`:
+
+If you need to exclude your newly added dependency from the mirrors (because we did not add it yet),
+so it will be downloaded from the original repository, you have three options:
+
+First option, you temporarily add the following to the `mirrorOf` entry in the file
+`.mvn/settings.xml` to only exclude the new repository:
 ```xml
       <mirrorOf>*,!betonquest-repoName-repo</mirrorOf>
 ```
+
+Second option, you add the following to the command line when executing maven to disable our mirrors
+````
+-DskipProjectSettings=true
+````
+
+Third option, you ask in GitHub (Issue or PullRequest) to add the new repository to our mirrors.
