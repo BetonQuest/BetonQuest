@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.AbstractMap;
+import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -115,7 +116,7 @@ public class ProfileKeyMap<V> extends AbstractMap<Profile, V> implements Map<Pro
     @Override
     public Set<Entry<Profile, V>> entrySet() {
         final Set<Entry<UUID, V>> entries = profileMap.entrySet();
-        return new Set<>() {
+        return new AbstractSet<>() {
             @Override
             public int size() {
                 return entries.size();
@@ -152,60 +153,22 @@ public class ProfileKeyMap<V> extends AbstractMap<Profile, V> implements Map<Pro
 
                     @Override
                     public Entry<Profile, V> next() {
-                        return getEntryFromUUID(iterator.next());
+                        return new ProfileEntry<>(iterator.next());
+                    }
+
+                    @Override
+                    public void remove() {
+                        iterator.remove();
                     }
                 };
             }
 
-            @NotNull
-            @Override
-            public Object[] toArray() {
-                final Object[] objects = entries.toArray();
-                final Object[] convertedObjects = new Object[objects.length];
-                for (int i = 0; i < objects.length; i++) {
-                    convertedObjects[i] = getEntryFromUUID((Entry<UUID, V>) objects[i]);
-                }
-                return convertedObjects;
-            }
-
-            @NotNull
-            @Override
-            public <T> T[] toArray(@NotNull final T[] a) {
-                final T[] objects = entries.toArray(a);
-                final T[] convertedObjects = new T[objects.length];
-                for (int i = 0; i < objects.length; i++) {
-                    convertedObjects[i] = getEntryFromUUID((Entry<UUID, V>) objects[i]);
-                }
-                return convertedObjects;
-            }
-
-            @Override
-            public boolean add(final Entry<Profile, V> profileTEntry) {
-                return entries.add(getEntryFromProfile(profileTEntry));
-            }
-
+            @SuppressWarnings("unchecked")
             @Override
             public boolean remove(final Object o) {
-                return false;
-            }
-
-            @Override
-            public boolean containsAll(@NotNull final Collection<?> c) {
-                return false;
-            }
-
-            @Override
-            public boolean addAll(@NotNull final Collection<? extends Entry<Profile, V>> c) {
-                return false;
-            }
-
-            @Override
-            public boolean retainAll(@NotNull final Collection<?> c) {
-                return false;
-            }
-
-            @Override
-            public boolean removeAll(@NotNull final Collection<?> c) {
+                if (o instanceof Entry<?, ?> objectEntry && objectEntry.getKey() instanceof Profile) {
+                    return entries.remove(new UUIDEntry<>((Entry<Profile, V>) objectEntry));
+                }
                 return false;
             }
 
@@ -213,46 +176,80 @@ public class ProfileKeyMap<V> extends AbstractMap<Profile, V> implements Map<Pro
             public void clear() {
                 entries.clear();
             }
-
-            @NotNull
-            private Entry<Profile, V> getEntryFromUUID(final Entry<UUID, V> entry) {
-                return new Entry<>() {
-                    @Override
-                    public Profile getKey() {
-                        return PlayerConverter.getID(server.getOfflinePlayer(entry.getKey()));
-                    }
-
-                    @Override
-                    public V getValue() {
-                        return entry.getValue();
-                    }
-
-                    @Override
-                    public V setValue(final V value) {
-                        return entry.setValue(value);
-                    }
-                };
-            }
-
-            @NotNull
-            private Entry<UUID, V> getEntryFromProfile(final Entry<Profile, V> entry) {
-                return new Entry<>() {
-                    @Override
-                    public UUID getKey() {
-                        return entry.getKey().getProfileUUID();
-                    }
-
-                    @Override
-                    public V getValue() {
-                        return entry.getValue();
-                    }
-
-                    @Override
-                    public V setValue(final V value) {
-                        return entry.setValue(value);
-                    }
-                };
-            }
         };
+    }
+
+    private class ProfileEntry<V> implements Entry<Profile, V> {
+
+        private final Entry<UUID, V> entry;
+
+        public ProfileEntry(final Entry<UUID, V> entry) {
+            this.entry = entry;
+        }
+
+        @Override
+        public Profile getKey() {
+            return PlayerConverter.getID(server.getPlayer(entry.getKey()));
+        }
+
+        @Override
+        public V getValue() {
+            return entry.getValue();
+        }
+
+        @Override
+        public V setValue(final V value) {
+            return entry.setValue(value);
+        }
+    }
+
+    private class UUIDEntry<V> implements Entry<UUID, V> {
+
+        private final UUID key;
+        private V value;
+
+        public UUIDEntry(final UUID uuid, final V value) {
+            this.key = uuid;
+            this.value = value;
+        }
+
+        public UUIDEntry(final Entry<Profile, V> entry) {
+            this.key = entry.getKey().getProfileUUID();
+            this.value = entry.getValue();
+        }
+
+        @Override
+        public UUID getKey() {
+            return key;
+        }
+
+        @Override
+        public V getValue() {
+            return value;
+        }
+
+        @Override
+        public V setValue(final V value) {
+            final V oldValue = this.value;
+            this.value = value;
+            return oldValue;
+        }
+
+        @Override
+        public boolean equals(final Object obj) {
+            if (obj instanceof Entry<?, ?> other) {
+                return (this.getKey() == null ?
+                        other.getKey() == null : this.getKey().equals(other.getKey())) &&
+                        (this.getValue() == null ?
+                                other.getValue() == null : this.getValue().equals(other.getValue()));
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return (this.getKey() == null ? 0 : this.getKey().hashCode()) ^
+                    (this.getValue() == null ? 0 : this.getValue().hashCode());
+        }
     }
 }
