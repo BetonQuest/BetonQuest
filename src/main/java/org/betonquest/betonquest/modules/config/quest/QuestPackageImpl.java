@@ -78,7 +78,7 @@ public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
         if (input == null) {
             return null;
         }
-        String variableInput = input.replace("$this$", getQuestPath());
+        String variableInput = input;
 
         final Pattern globalVariableRegex = Pattern.compile("\\$([^ $\\s]+)\\$");
         while (true) {
@@ -88,16 +88,22 @@ public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
             }
             final String varName = matcher.group(1);
             final String varVal;
-            try {
-                final GlobalVariableID variableID = new GlobalVariableID(this, varName);
-                varVal = variableID.getPackage().getConfig().getString("variables." + variableID.getBaseID());
-            } catch (final ObjectNotFoundException e) {
-                LOG.warn(this, e.getMessage(), e);
-                return variableInput;
-            }
-            if (varVal == null) {
-                LOG.warn(this, String.format("Variable %s not defined in package %s", varName, getQuestPath()));
-                return variableInput;
+            if ("this".equals(varName)) {
+                varVal = getQuestPath();
+            } else {
+                final GlobalVariableID variableID;
+                try {
+                    variableID = new GlobalVariableID(this, varName);
+                } catch (final ObjectNotFoundException e) {
+                    LOG.warn(this, e.getMessage(), e);
+                    return variableInput;
+                }
+                final String varRaw = variableID.getPackage().getConfig().getString("variables." + variableID.getBaseID());
+                if (varRaw == null) {
+                    LOG.warn(this, String.format("Variable %s not defined in package %s", variableID.getBaseID(), variableID.getPackage().getQuestPath()));
+                    return variableInput;
+                }
+                varVal = variableID.getPackage().resolve(varRaw);
             }
 
             if (varVal
@@ -161,6 +167,34 @@ public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
         }
 
         return variableInput;
+    }
+
+    @Override
+    public String resolve(final String input) {
+        if (input == null) {
+            return null;
+        }
+        final Pattern globalVariableRegex = Pattern.compile("\\$([^ $\\s]+)\\$");
+        final Matcher matcher = globalVariableRegex.matcher(input);
+        final StringBuilder builder = new StringBuilder();
+        while (matcher.find()) {
+            final String varName = matcher.group(1);
+            final String varVal;
+            if ("this".equals(varName)) {
+                varVal = getQuestPath();
+            } else {
+                try {
+                    final GlobalVariableID variableID = new GlobalVariableID(this, varName);
+                    varVal = "$" + variableID.getPackage().getQuestPath() + "." + variableID.getBaseID() + "$";
+                } catch (final ObjectNotFoundException e) {
+                    LOG.warn(this, e.getMessage(), e);
+                    return input;
+                }
+            }
+            matcher.appendReplacement(builder, Matcher.quoteReplacement(varVal));
+        }
+        matcher.appendTail(builder);
+        return builder.toString();
     }
 
     @Override

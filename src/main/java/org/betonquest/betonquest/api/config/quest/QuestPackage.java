@@ -72,6 +72,9 @@ public interface QuestPackage {
     String subst(String input);
 
     @Deprecated
+    String resolve(String input);
+
+    @Deprecated
     String getString(String address);
 
     @Deprecated
