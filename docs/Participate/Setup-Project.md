@@ -76,7 +76,7 @@ You can then find a `BetonQuest.jar` in the newly created folder `/target/artifa
 
 ### Build speed up
 As BetonQuest has a lot of dependencies, the build can take a long time, especially for the first build.
-By default, the build speed up is already active from the command line, but normally not from IntelliJ.
+By default, the build speed up is only enabled when running Maven from the command line, but not when using IntelliJ.
 To enable it, go to `File/Settings/Build, Execution, Deployment/Build Tools/Maven` and check `Use settings from .mvn/maven.config`.
 
 ### Build on Start
