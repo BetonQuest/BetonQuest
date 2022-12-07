@@ -201,8 +201,12 @@ nav:
           - 'Items': Documentation/Items.md
           - 'Journal': Documentation/Journal.md
           - 'Packages & Templates': Documentation/Packages-&-Templates.md
-          - 'Reference': Documentation/Reference.md
+          - 'Quest Cancelers': Documentation/Quest-Cancelers.md
+          - 'Parties': Documentation/Parties.md
+          - 'Player Hider': Documentation/Player-Hider.md
+          - 'Data Formats': Documentation/Data-Formats.md
       - 'Types':
+          - 'About Types': Documentation/About-Types.md
           - 'Objectives List': Documentation/Objectives-List.md
           - 'Events List': Documentation/Events-List.md
           - 'Conditions List': Documentation/Conditions-List.md

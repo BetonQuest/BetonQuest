@@ -122,7 +122,7 @@ amount. The first argument is the name of an item (as defined in the _items_ sec
 ### Location Variable
 
 This variable resolves to all aspects of the player's location. The x, y and z coordinates, the world name, the yaw and pitch (head rotation).
-There are also modes for the [Unified Location Formatting](Reference.md#unified-location-formating) (ULF from now on)
+There are also modes for the [Unified Location Formatting](Data-Formats.md#unified-location-formating) (ULF from now on)
 which means that this variable can also be used in events, conditions etc.
 If you just specify `%location%` the variables will resolve to a ULF with yaw and pitch.
 You can add two options to that base, one will give back parts of the ULF and the other will set to how many decimal places 

@@ -40,7 +40,7 @@ These are general settings for customizing a menu.
 |              `open_conditions`              | `open_conditions: "unlockedMenu,!sneaking"` | One or multiple conditions (separated by a `,`) which all have to be true to open the menu with a bound item or a bound command.                 |
 |                `open_events`                | `open_events: "menuOpenSound"`              | One or multiple events (separated by a `,`) which will be fired when the menu is opened.                                                         |
 |               `close_events`                | `close_events: "menuCloseSound"`            | One or multiple events (separated by a `,`) which will be fired when the menu is closed.                                                         |  
-|                   `bind`                    | `bind: "openMenuItem"`                      | Clicking with this [quest item](Reference.md#items) in hand will open the menu. You can create this item in the `items` section of your package. |
+|                   `bind`                    | `bind: "openMenuItem"`                      | Clicking with this [quest item](Items.md) in hand will open the menu. You can create this item in the `items` section of your package. |
 |                  `command`                  | `command: "/quests"`                        | This command can be executed to open the menu. **The server must be restarted to unregister command tab completions.**                           |
 
 ## The `items` section
@@ -61,7 +61,7 @@ menus:
 
 1. The `items` section with all items that are displayed in the menu.
 2. The name of the item. Used to reference the item in the `slots` section.
-3. The name of any [quest item](Reference.md#items). This **cannot** be a vanilla item, it must be a quest item.
+3. The name of any [quest item](Items.md). This **cannot** be a vanilla item, it must be a quest item.
 4. Another item just like the previous one.
 
 ### Optional Item Settings

@@ -23,8 +23,8 @@ up to you!
     * [Basic Tutorial](../Getting-Started/About.md)
 
 !!! example "Related Docs"
-    * [Package Structure Reference](../../Documentation/Reference.md#structure)
-    * [Defining Features Reference](../../Documentation/Reference.md#defining-features)
+    * [Package Structure Reference](../../Documentation/Packages-&-Templates.md#structure)
+    * [Defining Features Reference](../../Documentation/Packages-&-Templates.md#defining-features)
 </div>
 
 ## 1. What is a Quest Package?

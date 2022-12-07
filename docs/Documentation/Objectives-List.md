@@ -6,7 +6,7 @@ icon: material/check-circle
 ## Action: `action`
 
 This objective completes when the player clicks on the given block type. The first argument is the type of the click,
-it can be right, left or any. Next is a [Block Selector](./Reference.md#block-selectors) or `any` if you
+it can be right, left or any. Next is a [Block Selector](Data-Formats.md#block-selectors) or `any` if you
 want to count all clicks, even into the air. You can also specify the `loc:` argument, followed by the standard location
 format and the `range:` followed by a number (or variable). The specified location is the center of a sphere, the range it's radius.
 Therefore, these arguments define where the clicked block needs to be, as opposed to "where you must be" in location condition.
@@ -39,12 +39,12 @@ give accurate results. Experiment with this objective a bit to make sure you've 
 
 To complete this objective the player must break or place the specified amount of blocks.
 
-| Parameter       | Syntax                                           | Default Value          | Explanation                                                                                                                                                                                                                                                               |
-|-----------------|--------------------------------------------------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| _Block Type_    | [Block Selector](./Reference.md#block-selectors) | :octicons-x-circle-16: | The block which must be broken / placed.                                                                                                                                                                                                                                  |
-| _Amount_        | Number                                           | :octicons-x-circle-16: | The amount of blocks to break / place. Less than 0 for breaking and more than 0 for placing blocks.                                                                                                                                                                       |
-| _Safety Check_  | Keyword (`noSafety`)                             | Safety Check Enabled   | The Safety Check prevents faking the objective. The progress will be reduced when the player does to opposite of what they are supposed to do. Example: Player must break 10 blocks. They place 10 of their stored blocks. Now the total amount of blocks to break is 20. |
-| _Notifications_ | Keyword (`notify`)                               | Disabled               | Displays messages to the player each time they progress the objective. Optionally with the notification interval after colon.                                                                                                                                             |
+| Parameter       | Syntax                                            | Default Value          | Explanation                                                                                                                                                                                                                                                               |
+|-----------------|---------------------------------------------------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| _Block Type_    | [Block Selector](Data-Formats.md#block-selectors) | :octicons-x-circle-16: | The block which must be broken / placed.                                                                                                                                                                                                                                  |
+| _Amount_        | Number                                            | :octicons-x-circle-16: | The amount of blocks to break / place. Less than 0 for breaking and more than 0 for placing blocks.                                                                                                                                                                       |
+| _Safety Check_  | Keyword (`noSafety`)                              | Safety Check Enabled   | The Safety Check prevents faking the objective. The progress will be reduced when the player does to opposite of what they are supposed to do. Example: Player must break 10 blocks. They place 10 of their stored blocks. Now the total amount of blocks to break is 20. |
+| _Notifications_ | Keyword (`notify`)                                | Disabled               | Displays messages to the player each time they progress the objective. Optionally with the notification interval after colon.                                                                                                                                             |
 
 
 ```YAML
@@ -107,10 +107,10 @@ argument. By default, only one player can look into the chest at the same time. 
 
 This objective is completed by eating the specified food or drinking the specified potion. 
 
-| Parameter       | Syntax                       | Default Value          | Explanation                                                                                                                   |
-|-----------------|------------------------------|------------------------|-------------------------------------------------------------------------------------------------------------------------------|
-| _Item_          | [Item](./Reference.md#items) | :octicons-x-circle-16: | The item or potion that must be consumed.                                                                                     |
-| _Amount_        | amount:number                | 1                      | The amount of items to consume.                                                                                               |
+| Parameter | Syntax           | Default Value          | Explanation                               |
+|-----------|------------------|------------------------|-------------------------------------------|
+| _Item_    | [Item](Items.md) | :octicons-x-circle-16: | The item or potion that must be consumed. |
+| _Amount_  | amount:number    | 1                      | The amount of items to consume.           |
 
 
 ```YAML
@@ -215,13 +215,13 @@ add them right after type of objective.
 
 Requires the player to catch something with the fishing rod. It doesn't have to be a fish, it can also be any other item.
 
-| Parameter       | Syntax                                                             | Default Value          | Explanation                                                                                                            |
-|-----------------|--------------------------------------------------------------------|------------------------|------------------------------------------------------------------------------------------------------------------------|
-| _item_          | [Block Selector](./Reference.md#block-selectors)                   | :octicons-x-circle-16: | The item that must be caught.                                                                                          |
-| _amount_        | Any Number                                                         | :octicons-x-circle-16: | The amount that must be caught.                                                                                        |
-| _notifications_ | notify:number                                                      | notify:0               | Add `notify` to display a notification when a fish is caught. Optionally with the notification interval after a colon. |
-| _hookLocation_  | hookLocation:[Location](./Reference.md#unified-location-formating) | Everywhere             | The location at which the item must be caught. Range must also be defined.                                             |
-| _range_         | range:number                                                       | Everywhere             | The range around the `hookLocation`.                                                                                   |
+| Parameter       | Syntax                                                              | Default Value          | Explanation                                                                                                            |
+|-----------------|---------------------------------------------------------------------|------------------------|------------------------------------------------------------------------------------------------------------------------|
+| _item_          | [Block Selector](Data-Formats.md#block-selectors)                   | :octicons-x-circle-16: | The item that must be caught.                                                                                          |
+| _amount_        | Any Number                                                          | :octicons-x-circle-16: | The amount that must be caught.                                                                                        |
+| _notifications_ | notify:number                                                       | notify:0               | Add `notify` to display a notification when a fish is caught. Optionally with the notification interval after a colon. |
+| _hookLocation_  | hookLocation:[Location](Data-Formats.md#unified-location-formating) | Everywhere             | The location at which the item must be caught. Range must also be defined.                                             |
+| _range_         | range:number                                                        | Everywhere             | The range around the `hookLocation`.                                                                                   |
 
 
 
@@ -326,7 +326,7 @@ Solution: The Cake is a lie!
 The objective's instruction string is defined as follows:
 
 1. The first argument is the password, use underscore characters (`_`) instead of spaces.
-   The password is a [regular expression](Reference.md#regex-regular-expressions). 
+   The password is a [regular expression](Data-Formats.md#regex-regular-expressions). 
 
 2. The prefix can be changed: The default (when no prefix is set) is the translated prefix from the *messages.yml* config in the user's language.             
    Note that every custom prefix is suffixed with `:⠀`, so `prefix:Library_password` will require the user to enter `Library password: myfancypassword`.     
@@ -442,7 +442,7 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 ## Smelting: `smelt`
 
 To complete this objective the player must smelt a specified item. Note that you must define the output item, not the
-ingredient. The first argument is a [Block Selector](./Reference.md#block-selectors) for the output
+ingredient. The first argument is a [Block Selector](Data-Formats.md#block-selectors) for the output
 item. The second is the amount (integer). You can use the `notify` keyword to display a message each time the player
 advances the objective, optionally with the notification interval after a colon.
 

@@ -310,7 +310,12 @@ The example is true between the 1st and the 5th or on the 20th of each month, bu
 
 ## Party: `party`
 
-To see details about parties read "Party" chapter in **Reference** section. This condition takes three optional arguments: `every:`, `any:` and `count:`. "Every" is a list of conditions that must be met by every player in the party. Any is a list of conditions that must be met by at least one player in a party (it doesn't have to be the same player, one can meet first condition, another one can meet the rest and it will work). Count is just a number, minimal amount of players in the party. You don't have to specify all those arguments, you can use only one if you want.
+This is part of the [party system](Parties.md).
+This condition takes three optional arguments: `every:`, `any:` and `count:`.
+"Every" is a list of conditions that must be met by every player in the party.
+Any is a list of conditions that must be met by at least one player in a party (it doesn't have to be the same player,
+one can meet first condition, another one can meet the rest and it will work). Count is just a number, minimal amount of
+players in the party. You don't have to specify all those arguments, you can use only one if you want.
 
 !!! example
     ```YAML
@@ -425,13 +430,13 @@ There must be specific (Minecraft) time on the player's world for this condition
 
 ## Variable: `variable`
 
-This condition checks if a variable value matches given [regular expression](Reference.md#regex-regular-expressions).
+This condition checks if a variable value matches given [regular expression](Data-Formats.md#regex-regular-expressions)
 
-| Parameter   | Syntax          | Default Value          | Explanation                                                                                                                          |
-|-------------|-----------------|------------------------|--------------------------------------------------------------------------------------------------------------------------------------|
-| _Variable_  | Any variable    | :octicons-x-circle-16: | The variable (surrounded by `%` characters).                                                                                         |
-| _Regex_     | A regex pattern | :octicons-x-circle-16: | The [regex](Reference.md#regex-regular-expressions) that the variables value must match. The regex can also be stored in a variable. |
-| _forceSync_ | Keyword         | False                  | Forces the variables to be resolved on the main thread. This may be required by some third party variables.                          |
+| Parameter   | Syntax          | Default Value          | Explanation                                                                                                                             |
+|-------------|-----------------|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| _Variable_  | Any variable    | :octicons-x-circle-16: | The variable (surrounded by `%` characters).                                                                                            |
+| _Regex_     | A regex pattern | :octicons-x-circle-16: | The [regex](Data-Formats.md#regex-regular-expressions) that the variables value must match. The regex can also be stored in a variable. |
+| _forceSync_ | Keyword         | False                  | Forces the variables to be resolved on the main thread. This may be required by some third party variables.                             |
 
 
 ```YAML

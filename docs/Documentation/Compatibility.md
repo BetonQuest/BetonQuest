@@ -800,14 +800,14 @@ Check whether the player is near a specific MythicMobs entity. The first argumen
 
 #### :material-skull: Spawn MythicMob: `mspawnmob`
 
-| Parameter  | Syntax                                           | Default Value          | Explanation                                                                                                                             |
-|------------|--------------------------------------------------|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
-| _location_ | [ULF](./Reference.md#unified-location-formating) | :octicons-x-circle-16: | The location to spawn the mob at.                                                                                                       |
-| _name_     | name:level                                       | :octicons-x-circle-16: | MythicMobs mob name. A level must be specifed after a colon.                                                                            |
-| _amount_   | Positive Number                                  | :octicons-x-circle-16: | Amount of mobs to spawn.                                                                                                                |
-| _target_   | Keyword                                          | False                  | Will make the mob target the player.                                                                                                    |
-| _private_  | Keyword                                          | Disabled               | Will hide the mob from all other players until restart. This does not hide particles or block sound from the mob. Also see notes below. |
-| _marked_   | marked:text                                      | None                   | Marks the mob. You can check for marked mobs in mmobkill objective.                                                                     |
+| Parameter  | Syntax                                              | Default Value          | Explanation                                                                                                                             |
+|------------|-----------------------------------------------------|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| _location_ | [ULF](./Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | The location to spawn the mob at.                                                                                                       |
+| _name_     | name:level                                          | :octicons-x-circle-16: | MythicMobs mob name. A level must be specifed after a colon.                                                                            |
+| _amount_   | Positive Number                                     | :octicons-x-circle-16: | Amount of mobs to spawn.                                                                                                                |
+| _target_   | Keyword                                             | False                  | Will make the mob target the player.                                                                                                    |
+| _private_  | Keyword                                             | Disabled               | Will hide the mob from all other players until restart. This does not hide particles or block sound from the mob. Also see notes below. |
+| _marked_   | marked:text                                         | None                   | Marks the mob. You can check for marked mobs in mmobkill objective.                                                                     |
 
 
 ```YAML title="Example"

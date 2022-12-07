@@ -17,7 +17,7 @@ In this tutorial you will learn how to create and use conditions!
     * [Objectives Tutorial](Objectives.md)
 
 !!! example "Related Docs"
-    * [Conditions Reference](../../../Documentation/Reference.md#conditions)
+    * [Conditions Reference](../../../Documentation/About-Types.md#conditions)
     * [Conditions List](../../../Documentation/Conditions-List.md)
 </div>
 --8<-- "Tutorials/download-setup-warning.md"
