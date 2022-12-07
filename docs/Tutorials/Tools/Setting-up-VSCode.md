@@ -25,7 +25,7 @@ In this tutorial you will learn how to install and use it to your advantage!
 
 In this step we will install VSCode on your computer.
 
-_Step 1:_ [Download the right version of Visual Studio Code](https://code.visualstudio.com/download) for your operating system from their website. 
+_Step 1:_ [Download the right version of Visual Studio Code](https://code.visualstudio.com/download) for your operating system from their website
 for your operating system.
 
 ---
