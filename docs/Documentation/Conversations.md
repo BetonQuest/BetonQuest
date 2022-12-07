@@ -88,6 +88,25 @@ As said before, the same rule applies to all options and quester's name. The pla
 
 You can also translate journal entries, quest cancelers and `message` events, more about that later.
 
+## Binding Conversations to NPCs
+
+Conversations can be assigned to NPCs created with Citizens. This is done in the `npcs` section:
+
+```YAML title="Example"
+npcs:
+  '0': innkeeper
+  '4': woodcutter
+```
+
+The first part is the ID of the NPC. To acquire the NPCs ID select the NPC using `/npc select`, then run `/npc id`.
+!!! note
+    The Citizens ID must be enclosed in quotes.
+
+The second part is the identifier of the corresponding conversation name as defined in the `conversations` section. 
+You can assign the same conversation to multiple NPCs.
+
+
+
 ## Conversation displaying
 
 BetonQuest provides different conversation styles, so called "conversationIO's". They all look different but the biggest difference

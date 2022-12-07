@@ -198,8 +198,10 @@ nav:
   - 'Documentation':
       - 'General':
           - 'Conversations': Documentation/Conversations.md
-          - 'Reference': Documentation/Reference.md
+          - 'Items': Documentation/Items.md
+          - 'Journal': Documentation/Journal.md
           - 'Packages & Templates': Documentation/Packages-&-Templates.md
+          - 'Reference': Documentation/Reference.md
       - 'Types':
           - 'Objectives List': Documentation/Objectives-List.md
           - 'Events List': Documentation/Events-List.md
