@@ -200,11 +200,11 @@ nav:
           - 'Conversations': Documentation/Conversations.md
           - 'Items': Documentation/Items.md
           - 'Journal': Documentation/Journal.md
-          - 'Packages & Templates': Documentation/Packages-&-Templates.md
-          - 'Quest Cancelers': Documentation/Quest-Cancelers.md
           - 'Parties': Documentation/Parties.md
           - 'Player Hider': Documentation/Player-Hider.md
+          - 'Quest Cancelers': Documentation/Quest-Cancelers.md
           - 'Data Formats': Documentation/Data-Formats.md
+          - 'Packages & Templates': Documentation/Packages-&-Templates.md
       - 'Types':
           - 'About Types': Documentation/About-Types.md
           - 'Objectives List': Documentation/Objectives-List.md
