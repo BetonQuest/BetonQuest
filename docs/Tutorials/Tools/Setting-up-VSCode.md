@@ -1,5 +1,5 @@
 ---
-icon: octicons/paste-16
+icon: simple/visualstudiocode
 tags:
   - VSCode
   - Editor
@@ -30,14 +30,14 @@ for your operating system.
 
 ---
 _Step 2:_ Click on the VSCodeUserSetup-xXX-X.XX.X.exe in your download folder. (You'll
-find your _downloads_ folder in your file explorer.)
+find your _downloads_ folder in your file explorer).
 
 ---
 _Step 3:_ Go through the installation steps. The default settings are sufficient for BetonQuest usage.
-If you completed the installation and have the setup is closed. Move on with _Step 4_.
+If you completed the installation and have the setup is closed.
 
 ---
-_Step 4:_ Start Visual Studio Code by double-clicking it on your desktop or starting it through your searchbar.
+_Step 4:_ Start Visual Studio Code.
 
 ---
 _Step 5:_ In this last step we will activate the `Auto-Save` function from VSCode.
@@ -75,8 +75,7 @@ _Step 2:_ Left-click on "Open Folder".
 
 _Step 3:_ Define a path and click on "Add".
 
-Navigate to your server files :arrow_right: Go to the "_plugins_" folder :arrow_right: Single-Click the "_BetonQuest_" folder
-:arrow_right: Click "Add" in the bottom right of the dialog.
+Navigate to your server files :arrow_right: Go to the "_plugins_" folder :arrow_right: Select the "_BetonQuest_" folder
 
 ![Define a path](../../_media/content/Tutorials/VSCode-Setup/creating_workspace_3.png)
 

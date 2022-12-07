@@ -190,7 +190,7 @@ nav:
               - 'Objectives': Tutorials/Getting-Started/Basics/Objectives.md
               - 'Conditions': Tutorials/Getting-Started/Basics/Conditions.md
       - 'Tools':
-          - 'VSCode Editor Setup': Tutorials/Tools/Setting-up-VSCode.md
+          - 'Setting up VSCode': Tutorials/Tools/Setting-up-VSCode.md
       - 'Syntax':
           - 'Quest Packages': Tutorials/Syntax/Quest-Packages.md
       - 'Frequently Asked Questions':
