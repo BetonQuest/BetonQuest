@@ -84,6 +84,24 @@ in the messages.yml config.
 It is possible to save text per player. This works by using the [`variable`](Objectives-List.md#variable-variable)
  objective and the [`variable`](Events-List.md#variable-variable) event. 
 
+## Global variables
+
+You can insert a global variable in any instruction text. It looks like this: `$beton$` (and this one would be
+called "beton"). When the plugin loads that instruction string it will replace those variables with values assigned to
+them in the `variables:` section **before** all instructions are parsed. This is useful for example when installing a
+package containing a WorldEdit schematic of the quest building. Instead of going through the whole code to set those
+locations, names or texts you will only have to specify a few variables (that is, of course, if the author of the
+package used those variables properly in his code).
+
+Note that these variables are something entirely different from other variables. Global ones use `$` characters
+and conversation ones use `%` characters. The former is resolved before the instruction text is parsed while the
+latter is resolved when the quests are running, usually on a per-player basis.
+
+```YAML
+variables:
+  village_location: 100;200;300;world
+  village_name: Concrete
+```
 
 ## Other Variables
 ```
@@ -104,7 +122,7 @@ amount. The first argument is the name of an item (as defined in the _items_ sec
 ### Location Variable
 
 This variable resolves to all aspects of the player's location. The x, y and z coordinates, the world name, the yaw and pitch (head rotation).
-There are also modes for the [Unified Location Formatting](Reference.md#unified-location-formating) (ULF from now on)
+There are also modes for the [Unified Location Formatting](Data-Formats.md#unified-location-formating) (ULF from now on)
 which means that this variable can also be used in events, conditions etc.
 If you just specify `%location%` the variables will resolve to a ULF with yaw and pitch.
 You can add two options to that base, one will give back parts of the ULF and the other will set to how many decimal places 
