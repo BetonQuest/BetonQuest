@@ -34,7 +34,6 @@ find your _downloads_ folder in your file explorer).
 
 ---
 _Step 3:_ Go through the installation steps. The default settings are sufficient for BetonQuest usage.
-If you completed the installation and have the setup is closed.
 
 ---
 _Step 4:_ Start Visual Studio Code.
