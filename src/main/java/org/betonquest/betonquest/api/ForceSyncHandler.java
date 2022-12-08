@@ -63,7 +63,7 @@ abstract public class ForceSyncHandler<T> {
                 if (e.getCause() instanceof QuestRuntimeException) {
                     throw (QuestRuntimeException) e.getCause();
                 }
-                throw new QuestRuntimeException(e);
+                throw new QuestRuntimeException(e.getCause().getMessage(), e);
             }
         } else {
             return execute(profile);
