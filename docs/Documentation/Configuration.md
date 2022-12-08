@@ -99,6 +99,14 @@ Read [this page](Conversations.md) for more information about conversation inter
 `default_interceptor` is a comma-separated list of chat interceptors with the first valid one used.
 Read [this page](Conversations.md) for more information about chat interceptors.
 
+### Default Hologram Plugin
+The [holograms integration](Compatibility.md#holograms) works with multiple plugins.
+You can use the `default_hologram` option to set which plugin should be used.
+        
+`default_hologram: DecentHolograms,HolographicDisplays` will make DecentHolograms the default hologram plugin. If it is not installed, 
+HolographicDisplays will be used instead. If you want to use HolographicDisplays as the default, you can use `default_hologram: HolographicDisplays`
+
+
 ### Conversation Chat Display options
 `display_chat_after_conversation` this will prevent all chat messages from displaying during a conversation and it will show them once it's finished.
 
