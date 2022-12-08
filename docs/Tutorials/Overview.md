@@ -23,7 +23,7 @@ Help is never far away if you get stuck. We have a
  
      Improve your quest writing efficiency with modern tools.
  
-     [:octicons-arrow-right-24: Tools](./Tools/VSCode-Extension.md)
+     [:octicons-arrow-right-24: Tools](./Tools/Setting-up-VSCode.md)
 
  -   :material-format-font:{ .lg .middle }  __Syntax__
  
