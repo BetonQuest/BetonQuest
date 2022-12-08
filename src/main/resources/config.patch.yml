@@ -1,6 +1,6 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/ConfigPatcher.md
 
-2.0.0.3:
+2.0.0.4:
   - type: SET
     key: hook.decentholograms
     value: true
@@ -9,6 +9,130 @@
     key: default_hologram
     value: HolographicDisplays,DecentHolograms
     override: false
+2.0.0.3:
+  - type: TYPE_TRANSFORM
+    key: default_journal_slot
+    newType: integer
+  - type: TYPE_TRANSFORM
+    key: max_npc_distance
+    newType: double
+  - type: TYPE_TRANSFORM
+    key: citizens_npcs_by_name
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: acceptNPCLeftClick
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: display_chat_after_conversation
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: combat_delay
+    newType: integer
+  - type: TYPE_TRANSFORM
+    key: notify_pullback
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: remove_items_after_respawn
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: quest_items_unbreakable
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: sounds.update
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: sounds.full
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: hook.citizens
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: hook.mythicmobs
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: hook.vault
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: hook.worldguard
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: hook.skript
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: hook.mcmmo
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: hook.effectlib
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: hook.playerpoints
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: hook.heroes
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: hook.magic
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: hook.denizen
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: hook.proskillapi
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: hook.quests
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: hook.shopkeepers
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: hook.placeholderapi
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: hook.holographicdisplays
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: hook.worldedit
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: hook.fastasyncworldedit
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: hook.protocollib
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: hook.brewery
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: hook.jobs
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: hook.mythiclib
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: hook.mmocore
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: hook.mmoitems
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: hook.luckperms
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: hook.aureliumskills
+    newType: boolean
+  - type: TYPE_TRANSFORM
+    key: journal_colors.date.day
+    newType: integer
+  - type: TYPE_TRANSFORM
+    key: journal_colors.date.hour
+    newType: integer
+  - type: TYPE_TRANSFORM
+    key: journal_colors.line
+    newType: integer
+  - type: TYPE_TRANSFORM
+    key: journal_colors.text
+    newType: integer
 2.0.0.2:
   - type: TYPE_TRANSFORM
     key: journal.lock_default_journal_slot

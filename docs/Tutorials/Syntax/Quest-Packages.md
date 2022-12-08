@@ -23,8 +23,8 @@ up to you!
     * [Basic Tutorial](../Getting-Started/About.md)
 
 !!! example "Related Docs"
-    * [Package Structure Reference](../../Documentation/Reference.md#structure)
-    * [Defining Features Reference](../../Documentation/Reference.md#defining-features)
+    * [Package Structure Reference](../../Documentation/Packages-&-Templates.md#structure)
+    * [Defining Features Reference](../../Documentation/Packages-&-Templates.md#defining-features)
 </div>
 
 ## 1. What is a Quest Package?
@@ -352,4 +352,3 @@ in the directory tree.
 ## Summary
 
 You have learned how to structure your quest packages. Now you are able to pick the best structure for your quests. 
----

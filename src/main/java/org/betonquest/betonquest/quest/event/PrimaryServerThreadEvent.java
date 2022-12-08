@@ -74,8 +74,8 @@ public class PrimaryServerThreadEvent implements Event {
             executingEventFuture.cancel(true);
             throw new QuestRuntimeException("Thread was Interrupted!", e);
         } catch (final ExecutionException e) {
-            if (e.getCause() instanceof QuestRuntimeException) {
-                throw (QuestRuntimeException) e.getCause();
+            if (e.getCause() instanceof QuestRuntimeException cause) {
+                throw cause;
             }
             throw new QuestRuntimeException(e);
         }

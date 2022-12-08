@@ -127,17 +127,6 @@ jobs:
       - name: Activate lf line ending check in editorconfig
         run: |
           sed -i "s~#end_of_line = ~end_of_line = ~g" ./.editorconfig
-      - name: Set mirror for all repositories in settings.xml
-        uses: whelk-io/maven-settings-xml-action@v21
-        with:
-          mirrors: |
-            [
-              {
-                "id": "betonquest-mirror",
-                "mirrorOf": "*",
-                "url": "https://betonquest.org/nexus/repository/default/"
-              }
-            ]
       - name: Build with Maven. Phase 'verify'
         run: |
           mvn -P Test-All -B verify
@@ -213,7 +202,12 @@ jobs:
           sed -i "s~%VERSION%~${VERSION}~g" ./mkdocs.yml
       - name: Build with mkdocs
         run: |
-          mkdocs build
+          if [ "$TXT" = "docs-requirements-insiders.txt" ]
+          then
+            mkdocs build --config-file mkdocs.insiders.yml
+          else
+            mkdocs build --config-file mkdocs.yml
+          fi
           git diff > target/docs/changes.patch
       - name: Upload Docs
         uses: actions/upload-artifact@v3
@@ -274,14 +268,6 @@ jobs:
                     }
                   }
                 }
-              }
-            ]
-          mirrors: |
-            [
-              {
-                "id": "betonquest-mirror",
-                "mirrorOf": "*",
-                "url": "https://betonquest.org/nexus/repository/default/"
               }
             ]
       - name: Publish to Maven Repository

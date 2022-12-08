@@ -5,7 +5,7 @@ icon: octicons/gear-16
 
 ## Cancel quest: `cancel`
 
-This event works in the same way as a [quest canceler in the backpack](Reference.md#canceling-quests).
+This event works in the same way as a [quest canceler in the backpack](Quest-Cancelers.md).
 Running it is equal to the player clicking on the bone. The only argument is a name of a quest canceler, as defined in the _cancel_ section
 
 !!! example
@@ -449,7 +449,7 @@ Looking for [console commands](#command-command)?
 
 ## Party event: `party`
 
-Runs the specified list of events (third argument) for every player in a party. More info about parties in "Party" chapter in **Reference** section.
+Runs the specified list of events (third argument) for every player in a [party](Parties.md).
 
 !!! example
     ```YAML
@@ -522,7 +522,7 @@ This event works in the same way as `point` event, the only difference is that i
 **persistent**, **static**
 
 Changes the block at the given position.
-The first argument is a [Block Selector](../Reference/#block-selectors), the second a location.
+The first argument is a [Block Selector](Data-Formats.md#block-selectors), the second a location.
 Very powerful if used to trigger redstone contraptions.
 
 !!! example
@@ -613,9 +613,9 @@ Minutes can be achieved with floating point. Six minutes equals 0.1 hours.
 Teleports the player to the specified location. 
 Ends any active conversations.
 
-| Parameter  | Syntax                                                                 | Default Value          | Explanation                                          |
-|------------|------------------------------------------------------------------------|------------------------|------------------------------------------------------|
-| _location_ | [Unified Location Formatting](Reference.md#unified-location-formating) | :octicons-x-circle-16: | The location to which the player will be teleported. |
+| Parameter  | Syntax                                                                    | Default Value          | Explanation                                          |
+|------------|---------------------------------------------------------------------------|------------------------|------------------------------------------------------|
+| _location_ | [Unified Location Formatting](Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | The location to which the player will be teleported. |
 
 ```YAML title="Example"
 events:
@@ -644,6 +644,9 @@ storing variables. This event will do nothing if the player does not already hav
 ## :fontawesome-solid-cloud-sun-rain: Weather: `weather`
 
 **persistent**, **static**  
+
+Sets the weather in the world the player is currently in. The argument is `sun` for clear, sunny weather, `rain` for pure rain,
+`storm` for storm with rain, lightning and thunder or `thunder` for just lighting and thunder with no rain.
 
 | Parameter  | Syntax            | Default Value               | Explanation                                                                                                   |
 |------------|-------------------|-----------------------------|---------------------------------------------------------------------------------------------------------------|

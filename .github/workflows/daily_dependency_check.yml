@@ -22,7 +22,7 @@ jobs:
 
       - name: Build with Maven
         run: |
-          mvn -P Test-All -B package
+          mvn -P Test-All -B package -DskipProjectSettings=true
 
   docs:
     name: Build Docs
@@ -67,7 +67,13 @@ jobs:
 
       - name: Build with mkdocs
         run: |
-          mkdocs build
+          if [ "$TXT" = "docs-requirements-insiders.txt" ]
+          then
+            mkdocs build --config-file mkdocs.insiders.yml
+          else
+            mkdocs build --config-file mkdocs.yml
+          fi
+  
 
   alert:
     name: Alert to Discord

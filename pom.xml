@@ -146,8 +146,8 @@
     <!-- from citizensnpcs repository -->
     <dependency>
       <groupId>net.citizensnpcs</groupId>
-      <artifactId>citizens</artifactId>
-      <version>2.0.27-SNAPSHOT</version>
+      <artifactId>citizens-main</artifactId>
+      <version>2.0.30-SNAPSHOT</version>
       <scope>provided</scope>
       <optional>true</optional>
       <exclusions>
@@ -481,7 +481,7 @@
     </repository>
     <repository>
       <id>betonquest-citizensnpcs-repo</id>
-      <url>https://repo.citizensnpcs.co/</url>
+      <url>https://maven.citizensnpcs.co/repo</url>
     </repository>
     <repository>
       <id>betonquest-codemc-repo</id>

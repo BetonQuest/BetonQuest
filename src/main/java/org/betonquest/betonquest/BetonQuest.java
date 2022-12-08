@@ -108,10 +108,8 @@ import org.betonquest.betonquest.events.ClearEvent;
 import org.betonquest.betonquest.events.CommandEvent;
 import org.betonquest.betonquest.events.CompassEvent;
 import org.betonquest.betonquest.events.ConversationEvent;
-import org.betonquest.betonquest.events.DamageEvent;
 import org.betonquest.betonquest.events.DelEffectEvent;
 import org.betonquest.betonquest.events.DeletePointEvent;
-import org.betonquest.betonquest.events.DoorEvent;
 import org.betonquest.betonquest.events.EffectEvent;
 import org.betonquest.betonquest.events.ExperienceEvent;
 import org.betonquest.betonquest.events.ExplosionEvent;
@@ -142,7 +140,6 @@ import org.betonquest.betonquest.events.TakeEvent;
 import org.betonquest.betonquest.events.TeleportEvent;
 import org.betonquest.betonquest.events.TimeEvent;
 import org.betonquest.betonquest.events.VariableEvent;
-import org.betonquest.betonquest.events.WeatherEvent;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -218,6 +215,8 @@ import org.betonquest.betonquest.objectives.TameObjective;
 import org.betonquest.betonquest.objectives.VariableObjective;
 import org.betonquest.betonquest.quest.event.NullStaticEventFactory;
 import org.betonquest.betonquest.quest.event.burn.BurnEventFactory;
+import org.betonquest.betonquest.quest.event.damage.DamageEventFactory;
+import org.betonquest.betonquest.quest.event.door.DoorEventFactory;
 import org.betonquest.betonquest.quest.event.journal.JournalEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.FromClassQuestEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactory;
@@ -225,6 +224,7 @@ import org.betonquest.betonquest.quest.event.legacy.QuestEventFactoryAdapter;
 import org.betonquest.betonquest.quest.event.tag.TagGlobalEventFactory;
 import org.betonquest.betonquest.quest.event.tag.TagPlayerEventFactory;
 import org.betonquest.betonquest.quest.event.velocity.VelocityEventFactory;
+import org.betonquest.betonquest.quest.event.weather.WeatherEventFactory;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.variables.ConditionVariable;
@@ -788,12 +788,9 @@ public class BetonQuest extends JavaPlugin {
 
         registerEvents("objective", ObjectiveEvent.class);
         registerEvents("command", CommandEvent.class);
-        final TagPlayerEventFactory tagPlayerEventFactory = new TagPlayerEventFactory(this, getSaver());
-        registerEvent("tag", tagPlayerEventFactory, tagPlayerEventFactory);
-        final TagGlobalEventFactory tagGlobalEventFactory = new TagGlobalEventFactory(this);
-        registerEvent("globaltag", tagGlobalEventFactory, tagGlobalEventFactory);
-        final JournalEventFactory journalEventFactory = new JournalEventFactory(this, InstantSource.system(), getSaver());
-        registerEvent("journal", journalEventFactory, journalEventFactory);
+        registerEvent("tag", new TagPlayerEventFactory(this, getSaver()));
+        registerEvent("globaltag", new TagGlobalEventFactory(this));
+        registerEvent("journal", new JournalEventFactory(this, InstantSource.system(), getSaver()));
         registerEvents("teleport", TeleportEvent.class);
         registerEvents("explosion", ExplosionEvent.class);
         registerEvents("lightning", LightningEvent.class);
@@ -809,10 +806,10 @@ public class BetonQuest extends JavaPlugin {
         registerEvents("spawn", SpawnMobEvent.class);
         registerEvents("killmob", KillMobEvent.class);
         registerEvents("time", TimeEvent.class);
-        registerEvents("weather", WeatherEvent.class);
+        registerNonStaticEvent("weather", new WeatherEventFactory(getServer(), getServer().getScheduler(), this));
         registerEvents("folder", FolderEvent.class);
         registerEvents("setblock", SetBlockEvent.class);
-        registerEvents("damage", DamageEvent.class);
+        registerNonStaticEvent("damage", new DamageEventFactory(getServer(), getServer().getScheduler(), this));
         registerEvents("party", PartyEvent.class);
         registerEvents("clear", ClearEvent.class);
         registerEvents("run", RunEvent.class);
@@ -826,7 +823,7 @@ public class BetonQuest extends JavaPlugin {
         registerEvents("cancel", CancelEvent.class);
         registerEvents("score", ScoreboardEvent.class);
         registerEvents("lever", LeverEvent.class);
-        registerEvents("door", DoorEvent.class);
+        registerEvent("door", new DoorEventFactory(getServer(), getServer().getScheduler(), this));
         registerEvents("if", IfElseEvent.class);
         registerEvents("variable", VariableEvent.class);
         registerEvents("language", LanguageEvent.class);
@@ -836,8 +833,8 @@ public class BetonQuest extends JavaPlugin {
         registerEvents("notifyall", NotifyAllEvent.class);
         registerEvents("chat", ChatEvent.class);
         registerEvents("freeze", FreezeEvent.class);
-        registerEvent("burn", new BurnEventFactory(getServer(), getServer().getScheduler(), this));
-        registerEvent("velocity", new VelocityEventFactory(getServer(), getServer().getScheduler(), this));
+        registerNonStaticEvent("burn", new BurnEventFactory(getServer(), getServer().getScheduler(), this));
+        registerNonStaticEvent("velocity", new VelocityEventFactory(getServer(), getServer().getScheduler(), this));
         registerEvents("hunger", HungerEvent.class);
 
         registerObjectives("location", LocationObjective.class);
@@ -1367,8 +1364,20 @@ public class BetonQuest extends JavaPlugin {
      * @param name         name of the event
      * @param eventFactory factory to create the event
      */
-    public void registerEvent(final String name, final EventFactory eventFactory) {
+    public void registerNonStaticEvent(final String name, final EventFactory eventFactory) {
         registerEvent(name, eventFactory, new NullStaticEventFactory());
+    }
+
+    /**
+     * Registers an event with its name and a single factory to create both normal and
+     * static instances of the event.
+     *
+     * @param name         name of the event
+     * @param eventFactory factory to create the event and the static event
+     * @param <T>          type of factory that creates both normal and static instances of the event.
+     */
+    public <T extends EventFactory & StaticEventFactory> void registerEvent(final String name, final T eventFactory) {
+        registerEvent(name, eventFactory, eventFactory);
     }
 
     /**

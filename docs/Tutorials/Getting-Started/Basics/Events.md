@@ -12,7 +12,7 @@ In this tutorial, we will give the player items and teleport them to different l
     * [Conversations Tutorial](Conversations.md)
 
 !!! example "Related Docs"
-    * [Events Reference](../../../Documentation/Reference.md#events)
+    * [Events Reference](../../../Documentation/About-Types.md#events)
     * [Events List](../../../Documentation/Events-List.md)
 </div>
 --8<-- "Tutorials/download-setup-warning.md"
@@ -149,10 +149,10 @@ events:
   tpBlacksmith: "teleport 50;70;50;world" # (4)!
 ```
 
-1. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating)
-2. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating)
-3. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating)
-4. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Reference.md#unified-location-formating)
+1. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Data-Formats.md#unified-location-formating)
+2. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Data-Formats.md#unified-location-formating)
+3. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Data-Formats.md#unified-location-formating)
+4. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Data-Formats.md#unified-location-formating)
 
 As you can see, there are a few new events of the types `folder` and `teleport`.
 The folder event wraps multiple events inside itself. Once triggered, it simply executes its events. 
