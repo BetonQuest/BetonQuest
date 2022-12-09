@@ -18,9 +18,14 @@ import org.bukkit.Location;
 
 import java.util.regex.Matcher;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Integrates with HolographicDisplays
+ */
 @CustomLog
 public class HolographicDisplaysIntegrator extends HologramIntegrator {
+    /**
+     * Creates a new HolographicDisplaysIntegrator for HolographicDisplays
+     */
     public HolographicDisplaysIntegrator() {
         super("HolographicDisplays", "3.0.0", "SNAPSHOT-b");
     }
