@@ -1,5 +1,14 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/ConfigPatcher.md
 
+2.0.0.4:
+  - type: SET
+    key: hook.decentholograms
+    value: true
+    override: false
+  - type: SET
+    key: default_hologram
+    value: HolographicDisplays,DecentHolograms
+    override: false
 2.0.0.3:
   - type: TYPE_TRANSFORM
     key: default_journal_slot

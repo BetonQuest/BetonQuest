@@ -1,10 +1,13 @@
 package org.betonquest.betonquest.id;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 
+import java.util.List;
 import java.util.Objects;
 
 @SuppressWarnings({"PMD.ShortClassName", "PMD.AbstractClassWithoutAbstractMethod", "PMD.CommentRequired"})
@@ -12,23 +15,23 @@ public abstract class ID {
 
     public static final String UP_STR = "_"; // string used as "up the hierarchy" package
 
+    public static final List<String> PATHS = List.of("events", "conditions", "objectives", "variables");
+
     protected String identifier;
     protected QuestPackage pack;
     protected Instruction instruction;
     protected String rawInstruction;
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.ExcessiveMethodLength", "PMD.NcssCount"})
     protected ID(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
-
         // id must be specified
         if (identifier == null || identifier.length() == 0) {
             throw new ObjectNotFoundException("ID is null");
         }
-
         // resolve package name
         if (identifier.contains(".")) {
             // id has specified a package, get it!
-            final int dotIndex = identifier.indexOf('.');
+            int dotIndex = identifier.indexOf('.');
             final String packName = identifier.substring(0, dotIndex);
             if (pack != null && packName.startsWith(UP_STR + "-")) {
                 // resolve relative name if we have a supplied package
@@ -71,8 +74,39 @@ public abstract class ID {
                             "', but this package does not exist!");
                 }
             } else {
-                // use package name as absolute path if no relative path is available
-                this.pack = Config.getPackages().get(packName);
+                // if no relative path is available, check if packName is a package or if it is an ID
+                // split at ':' first as to only consider the identifier before the ':' in the case of the math variable
+                final String[] parts = identifier.split(":")[0].split("\\.");
+                final QuestPackage potentialPack = Config.getPackages().get(packName);
+                if (potentialPack == null) {
+                    this.pack = pack;
+                    dotIndex = -1;
+                } else {
+                    if (BetonQuest.isVariableType(packName)) {
+                        // if first term shares the same name as a variable type
+                        if (parts.length == 2 && isIdFromPack(potentialPack, parts[1])) {
+                            this.pack = potentialPack;
+                        } else if (parts.length > 2) {
+                            if (BetonQuest.isVariableType(parts[1]) && isIdFromPack(potentialPack, parts[2])) {
+                                // if second term is a variable type and third term is an ID
+                                // we can assume that the ID is in the form pack.variable.id.args
+                                this.pack = potentialPack;
+                            } else if (isIdFromPack(potentialPack, parts[1])) {
+                                // if second term is not a variable type, check if it's an ID. If it is an ID
+                                // we can assume that the ID is in the form variable.id.args
+                                this.pack = pack;
+                                dotIndex = -1;
+                            } else {
+                                this.pack = potentialPack;
+                            }
+                        } else {
+                            this.pack = pack;
+                            dotIndex = -1;
+                        }
+                    } else {
+                        this.pack = potentialPack;
+                    }
+                }
             }
             if (identifier.length() == dotIndex + 1) {
                 throw new ObjectNotFoundException("ID of the pack '" + this.pack + "' is null");
@@ -90,6 +124,24 @@ public abstract class ID {
         if (this.pack == null) {
             throw new ObjectNotFoundException("Package in ID '" + identifier + "' does not exist");
         }
+    }
+
+    /**
+     * Checks if an ID belongs to a provided QuestPackage. This checks all events, conditions, objectives and variables
+     * for any ID matching the provided string
+     *
+     * @param pack       The quest package to search
+     * @param identifier The id
+     * @return true if the id exists in the quest package
+     */
+    private boolean isIdFromPack(final QuestPackage pack, final String identifier) {
+        final MultiConfiguration config = pack.getConfig();
+        for (final String path : PATHS) {
+            if (config.getString(path + "." + identifier, null) != null) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public QuestPackage getPackage() {

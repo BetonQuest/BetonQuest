@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.holographicdisplays;
+package org.betonquest.betonquest.compatibility.holograms.lines;
 
 /**
  * Stores entry data of a {@link TopXObject}.

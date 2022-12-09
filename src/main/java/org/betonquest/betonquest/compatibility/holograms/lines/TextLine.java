@@ -1,12 +1,14 @@
-package org.betonquest.betonquest.compatibility.holographicdisplays.lines;
+package org.betonquest.betonquest.compatibility.holograms.lines;
 
+import lombok.CustomLog;
 import lombok.Getter;
-import me.filoghost.holographicdisplays.api.hologram.Hologram;
+import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 
 /**
  * Displays a simple text line with optional color codes
  */
 @Getter
+@CustomLog
 public class TextLine extends AbstractLine {
     /**
      * Text to be displayed.
@@ -19,12 +21,12 @@ public class TextLine extends AbstractLine {
      * @param text Text to be displayed
      */
     public TextLine(final String text) {
-        super();
+        super(true, 1);
         this.text = text;
     }
 
     @Override
-    public void addLine(final Hologram hologram) {
-        hologram.getLines().appendText(this.text);
+    public void setLine(final BetonHologram hologram, final int index) {
+        hologram.setLine(index, text);
     }
 }

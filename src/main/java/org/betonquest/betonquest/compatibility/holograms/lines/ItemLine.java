@@ -1,7 +1,7 @@
-package org.betonquest.betonquest.compatibility.holographicdisplays.lines;
+package org.betonquest.betonquest.compatibility.holograms.lines;
 
 import lombok.Getter;
-import me.filoghost.holographicdisplays.api.hologram.Hologram;
+import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -20,12 +20,12 @@ public class ItemLine extends AbstractLine {
      * @param item Item to be displayed
      */
     public ItemLine(final ItemStack item) {
-        super();
+        super(true, 1);
         this.item = item;
     }
 
     @Override
-    public void addLine(final Hologram hologram) {
-        hologram.getLines().appendItem(this.item);
+    public void setLine(final BetonHologram hologram, final int index) {
+        hologram.setLine(index, this.item);
     }
 }

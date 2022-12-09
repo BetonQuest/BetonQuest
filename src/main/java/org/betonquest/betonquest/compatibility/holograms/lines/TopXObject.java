@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.holographicdisplays;
+package org.betonquest.betonquest.compatibility.holograms.lines;
 
 import lombok.CustomLog;
 import lombok.Getter;

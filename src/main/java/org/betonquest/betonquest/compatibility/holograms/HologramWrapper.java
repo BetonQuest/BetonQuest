@@ -1,18 +1,17 @@
-package org.betonquest.betonquest.compatibility.holographicdisplays;
+package org.betonquest.betonquest.compatibility.holograms;
 
-import me.filoghost.holographicdisplays.api.hologram.Hologram;
-import me.filoghost.holographicdisplays.api.hologram.VisibilitySettings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.compatibility.holographicdisplays.lines.AbstractLine;
+import org.betonquest.betonquest.compatibility.holograms.lines.AbstractLine;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.utils.PlayerConverter;
 
 import java.util.List;
 
+@SuppressWarnings("PMD.CommentSize")
 /**
- * Wrapper class for {@link Hologram} that stores data parsed from hologram configuration inside <code>custom.yml</code>.
+ * Wrapper class for {@link BetonHologram} that stores data parsed from hologram configuration inside <code>custom.yml</code>.
  *
  * @param hologram      Actual hologram
  * @param interval      Interval in ticks that lie between updates to the visibility and content
@@ -32,38 +31,64 @@ import java.util.List;
  * @param identifier    Name of hologram from <code>custom.yml</code>
  * @param questPackage  {@link QuestPackage} in which the hologram is specified in.
  */
-public record HologramWrapper(int interval, Hologram hologram, boolean staticContent, ConditionID[] conditionList,
+public record HologramWrapper(int interval, BetonHologram hologram, boolean staticContent, ConditionID[] conditionList,
                               List<AbstractLine> cleanedLines, String identifier, QuestPackage questPackage) {
     /**
      * Checks whether all conditions are met by a players and displays or hides the hologram.
      */
     public void updateVisibility() {
         if (conditionList.length == 0) {
-            hologram.getVisibilitySettings().setGlobalVisibility(VisibilitySettings.Visibility.VISIBLE);
+            hologram.showAll();
             return;
         }
 
-        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
-            if (BetonQuest.conditions(onlineProfile, conditionList)) {
-                hologram.getVisibilitySettings().setIndividualVisibility(onlineProfile.getPlayer(), VisibilitySettings.Visibility.VISIBLE);
-            } else {
-                hologram.getVisibilitySettings().setIndividualVisibility(onlineProfile.getPlayer(), VisibilitySettings.Visibility.HIDDEN);
-            }
+        PlayerConverter.getOnlineProfiles().forEach(this::updateVisibilityForPlayer);
+    }
+
+    /**
+     * Update the visibility for a particular player
+     *
+     * @param profile The online player's profile
+     */
+    public void updateVisibilityForPlayer(final OnlineProfile profile) {
+        if (BetonQuest.conditions(profile, conditionList)) {
+            hologram.show(profile.getPlayer());
+        } else {
+            hologram.hide(profile.getPlayer());
         }
     }
 
     /**
-     * Updates the content if necessary. On first load after the server start this fills holograms with static content,
-     * but is ignored by them afterwards.
+     * Fills the hologram with content. Called after a hologram is first created or if plugin is reloaded.
+     */
+    public void initialiseContent() {
+        hologram.clear();
+        int length = 0;
+        for (final AbstractLine line : cleanedLines) {
+            length += line.getLinesAdded();
+        }
+        hologram.createLines(0, length);
+        int index = 0;
+        for (final AbstractLine line : cleanedLines) {
+            line.setLine(hologram, index);
+            index += line.getLinesAdded();
+        }
+    }
+
+    /**
+     * Updates the content if necessary.
      */
     public void updateContent() {
-        if (staticContent && hologram.getLines().size() > 0) { //Allow first initializing of static holograms
+        if (staticContent) {
             return;
         }
 
-        hologram.getLines().clear();
+        int index = 0;
         for (final AbstractLine line : cleanedLines) {
-            line.addLine(hologram);
+            if (line.isNotStaticText()) {
+                line.setLine(hologram, index);
+            }
+            index += line.getLinesAdded();
         }
     }
 }

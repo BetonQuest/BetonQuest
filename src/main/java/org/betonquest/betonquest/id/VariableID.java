@@ -7,19 +7,18 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class VariableID extends ID {
-
     public VariableID(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
-        super(pack, pack.getQuestPath() + "." + identifier);
-        if (!super.identifier.isEmpty() && super.identifier.charAt(0) != '%' && !super.identifier.endsWith("%")) {
+        super(pack, identifier.replaceAll("%", ""));
+        if (!super.identifier.isEmpty() && identifier.charAt(0) != '%' && !identifier.endsWith("%")) {
             throw new ObjectNotFoundException("Variable instruction has to start and end with '%' characters");
         }
-        rawInstruction = identifier;
-
+        super.rawInstruction = identifier;
+        super.identifier = "%" + super.identifier + "%";
     }
 
     @Override
     public Instruction generateInstruction() {
-        return new VariableInstruction(pack, this, identifier);
+        return new VariableInstruction(super.pack, this, super.identifier);
     }
 
     @Override

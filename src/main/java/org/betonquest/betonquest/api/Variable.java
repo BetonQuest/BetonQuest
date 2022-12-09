@@ -12,7 +12,12 @@ abstract public class Variable {
 
     /**
      * Stores instruction string for the condition.
+     * -- GETTER --
+     * Get the instruction object for this variable
+     *
+     * @return The instruction
      */
+    @Getter
     protected Instruction instruction;
 
     /**

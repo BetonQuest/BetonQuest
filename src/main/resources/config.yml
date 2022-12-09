@@ -31,6 +31,7 @@ conversation_IO_config:
     show_number: true
     show_npc_text: true
 default_interceptor: packet,simple
+default_hologram: DecentHolograms,HolographicDisplays
 display_chat_after_conversation: true
 combat_delay: 10
 notify_pullback: true
@@ -63,6 +64,7 @@ hook:
   shopkeepers: true
   placeholderapi: true
   holographicdisplays: true
+  decentholograms: true
   worldedit: true
   fastasyncworldedit: true
   protocollib: true

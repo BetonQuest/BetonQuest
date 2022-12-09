@@ -1,15 +1,13 @@
 package org.betonquest.betonquest.compatibility.citizens;
 
 import lombok.CustomLog;
-import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
-import me.filoghost.holographicdisplays.api.hologram.Hologram;
-import me.filoghost.holographicdisplays.api.hologram.PlaceholderSetting;
-import me.filoghost.holographicdisplays.api.hologram.VisibilitySettings;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
+import org.betonquest.betonquest.compatibility.holograms.HologramProvider;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -36,17 +34,13 @@ import java.util.Map;
  * shared between players and
  * we only have a fast update when needed to ensure they are relative to the NPC position
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.GodClass", "PMD.AssignmentToNonFinalStatic"})
+@SuppressWarnings({"PMD.CommentRequired", "PMD.GodClass", "PMD.AssignmentToNonFinalStatic", "PMD.TooManyMethods"})
 @CustomLog
 public class CitizensHologram extends BukkitRunnable {
     /**
      * Singleton instance of CitizensHologram
      */
     private static CitizensHologram instance;
-    /**
-     * Instance of HolographicDisplaysAPI
-     */
-    private final HolographicDisplaysAPI holographicDisplaysAPI;
 
     private final Map<Integer, List<NPCHologram>> npcs = new HashMap<>();
     private boolean follow;
@@ -55,12 +49,10 @@ public class CitizensHologram extends BukkitRunnable {
 
     public CitizensHologram() {
         super();
-        holographicDisplaysAPI = HolographicDisplaysAPI.get(BetonQuest.getInstance());
         if (instance != null) {
             return;
         }
         instance = this;
-
 
         initHolograms();
     }
@@ -74,6 +66,18 @@ public class CitizensHologram extends BukkitRunnable {
                 instance.cancel();
                 instance = null;
                 new CitizensHologram();
+            }
+        }
+    }
+
+    /**
+     * Reloads the particle effect
+     */
+    public static void close() {
+        synchronized (CitizensHologram.class) {
+            if (instance != null) {
+                instance.cancel();
+                instance = null;
             }
         }
     }
@@ -96,7 +100,7 @@ public class CitizensHologram extends BukkitRunnable {
         for (final List<NPCHologram> holograms : npcs.values()) {
             for (final NPCHologram npcHologram : holograms) {
                 if (npcHologram.hologram != null) {
-                    npcHologram.hologram.getVisibilitySettings().clearIndividualVisibilities();
+                    npcHologram.hologram.hideAll();
                     npcHologram.hologram.delete();
                     npcHologram.hologram = null;
                 }
@@ -179,7 +183,7 @@ public class CitizensHologram extends BukkitRunnable {
                 if (updateHologramsForPlayers(npcHologram, npc)) {
                     npcUpdater = true;
                 } else if (npcHologram.hologram != null) {
-                    npcHologram.hologram.getVisibilitySettings().clearIndividualVisibilities();
+                    npcHologram.hologram.hideAll();
                     npcHologram.hologram.delete();
                     npcHologram.hologram = null;
                 }
@@ -209,7 +213,7 @@ public class CitizensHologram extends BukkitRunnable {
                 if (npcHologram.hologram != null) {
                     final NPC npc = CitizensAPI.getNPCRegistry().getById(entry.getKey());
                     if (npc != null) {
-                        npcHologram.hologram.setPosition(npc.getStoredLocation().add(npcHologram.vector));
+                        npcHologram.hologram.move(npc.getStoredLocation().add(npcHologram.vector));
                     }
                 }
             }
@@ -222,26 +226,26 @@ public class CitizensHologram extends BukkitRunnable {
             if (BetonQuest.conditions(onlineProfile, npcHologram.conditions)) {
                 hologramEnabled = true;
                 if (npcHologram.hologram == null) {
-                    final Hologram hologram = holographicDisplaysAPI.createHologram(npc.getStoredLocation().add(npcHologram.vector));
-                    hologram.setPlaceholderSetting(PlaceholderSetting.ENABLE_ALL);
-                    hologram.getVisibilitySettings().setGlobalVisibility(VisibilitySettings.Visibility.HIDDEN);
-                    updateHologramForPlayersLines(npcHologram, hologram);
+                    final BetonHologram hologram = HologramProvider.getInstance().createHologram(String.valueOf(npc.getId()), npc.getStoredLocation().add(npcHologram.vector));
+                    hologram.createLines(0, npcHologram.lines.size());
+                    hologram.hideAll();
                     npcHologram.hologram = hologram;
                 }
-                if (!npcHologram.hologram.getVisibilitySettings().isVisibleTo(onlineProfile.getPlayer())) {
-                    npcHologram.hologram.getVisibilitySettings().setIndividualVisibility(onlineProfile.getPlayer(), VisibilitySettings.Visibility.VISIBLE);
-                }
+                updateHologramForPlayersLines(npcHologram);
+                npcHologram.hologram.show(onlineProfile.getPlayer());
             } else {
-                if (npcHologram.hologram != null && npcHologram.hologram.getVisibilitySettings().isVisibleTo(onlineProfile.getPlayer())) {
-                    npcHologram.hologram.getVisibilitySettings().setIndividualVisibility(onlineProfile.getPlayer(), VisibilitySettings.Visibility.HIDDEN);
+                if (npcHologram.hologram != null) {
+                    npcHologram.hologram.hide(onlineProfile.getPlayer());
                 }
             }
         }
         return hologramEnabled;
     }
 
-    private void updateHologramForPlayersLines(final NPCHologram npcHologram, final Hologram hologram) {
-        for (final String line : npcHologram.lines) {
+    private void updateHologramForPlayersLines(final NPCHologram npcHologram) {
+        final BetonHologram hologram = npcHologram.hologram;
+        for (int i = 0; i < npcHologram.lines.size(); i++) {
+            final String line = npcHologram.lines.get(i);
             if (line.startsWith("item:")) {
                 try {
                     final String[] args = line.substring(5).split(":");
@@ -253,14 +257,14 @@ public class CitizensHologram extends BukkitRunnable {
                         stackSize = 1;
                     }
                     final ItemStack stack = new QuestItem(itemID).generate(stackSize);
-                    hologram.getLines().appendItem(stack);
+                    hologram.setLine(i, stack);
                 } catch (final InstructionParseException e) {
                     LOG.warn(npcHologram.pack, "Could not parse item in " + npcHologram.pack.getQuestPath() + " hologram: " + e.getMessage(), e);
                 } catch (final ObjectNotFoundException e) {
                     LOG.warn(npcHologram.pack, "Could not find item in " + npcHologram.pack.getQuestPath() + " hologram: " + e.getMessage(), e);
                 }
             } else {
-                hologram.getLines().appendText(line.replace('&', '§'));
+                hologram.setLine(i, line.replace('&', '§'));
             }
         }
     }
@@ -270,7 +274,7 @@ public class CitizensHologram extends BukkitRunnable {
         private final Vector vector;
         private final List<String> lines;
         private final List<ConditionID> conditions;
-        private Hologram hologram;
+        private BetonHologram hologram;
 
         public NPCHologram(final QuestPackage pack, final Vector vector, final List<String> lines, final List<ConditionID> conditions) {
             this.pack = pack;
