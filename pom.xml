@@ -303,7 +303,7 @@
     <dependency>
       <groupId>com.github.decentsoftware-eu</groupId>
       <artifactId>decentholograms</artifactId>
-      <version>2.7.7</version>
+      <version>2.7.5</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
