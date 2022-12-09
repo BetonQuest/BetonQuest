@@ -69,16 +69,20 @@ public class DecentHologramsHologram implements BetonHologram {
 
     @Override
     public void show(final Player player) {
-        hologram.removeHidePlayer(player);
-        hologram.setShowPlayer(player);
-        hologram.show(player, 0);
+        if (!hologram.isVisible(player)) {
+            hologram.removeHidePlayer(player);
+            hologram.setShowPlayer(player);
+            hologram.show(player, 0);
+        }
     }
 
     @Override
     public void hide(final Player player) {
-        hologram.removeShowPlayer(player);
-        hologram.setHidePlayer(player);
-        hologram.hide(player);
+        if (hologram.isVisible(player)) {
+            hologram.removeShowPlayer(player);
+            hologram.setHidePlayer(player);
+            hologram.hide(player);
+        }
     }
 
     @Override
