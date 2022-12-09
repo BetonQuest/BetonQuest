@@ -22,7 +22,7 @@ import java.util.regex.Matcher;
 @CustomLog
 public class HolographicDisplaysIntegrator extends HologramIntegrator {
     public HolographicDisplaysIntegrator() {
-        super("HolographicDisplays", "3.0.0-SNAPSHOT-b000", "SNAPSHOT-b");
+        super("HolographicDisplays", "3.0.0", "SNAPSHOT-b");
     }
 
     @Override
