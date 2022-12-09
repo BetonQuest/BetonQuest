@@ -18,10 +18,15 @@ import org.bukkit.Location;
 import java.util.UUID;
 import java.util.regex.Matcher;
 
-@SuppressWarnings("PMD.CommentRequired")
+/**
+ * Integrates with DecentHolograms
+ */
 @CustomLog
 public class DecentHologramsIntegrator extends HologramIntegrator {
 
+    /**
+     * Creates a new DecentHologramsIntegrator for DecentHolograms
+     */
     public DecentHologramsIntegrator() {
         super("DecentHolograms", "2.7.5");
     }

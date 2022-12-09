@@ -182,12 +182,22 @@ public class HologramProvider implements Integrator {
 
     }
 
-    @SuppressWarnings("PMD.CommentRequired")
+    /**
+     * A listener class for bukkit events that are used by holograms
+     */
     public static class HologramListener implements Listener {
+        /**
+         * Creates and registers a new HologramListener
+         */
         public HologramListener() {
             Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
         }
 
+        /**
+         * Called when a player joins the server
+         *
+         * @param event The event
+         */
         @EventHandler
         public void onPlayerJoin(final PlayerJoinEvent event) {
             if (instance != null && instance.hologramLoop != null) {

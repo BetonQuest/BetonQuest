@@ -9,9 +9,14 @@ import org.betonquest.betonquest.compatibility.holograms.HologramLoop;
  * HologramLoop parses and validates the hologram instructions into instances of AbstractLine
  * so the content can be updated without dealing with parsing errors again.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public abstract class AbstractLine {
+    /**
+     * False if this line needs to be updated
+     */
     protected final boolean staticText;
+    /**
+     * The amount of lines added by this line
+     */
     protected final int linesAdded;
 
     /**
