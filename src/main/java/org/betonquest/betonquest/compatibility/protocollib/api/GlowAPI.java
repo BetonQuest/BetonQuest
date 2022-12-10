@@ -7,19 +7,19 @@ import com.comphenix.protocol.utility.MinecraftReflection;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import lombok.CustomLog;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 /**
- * Glow API class, Creating and Sending the packet using Protocollib all of this is doing in Asynchronous
+ * Creates and sends glow packets using ProtocolLib.
+ * May be called asynchronously.
  */
 @CustomLog
 public class GlowAPI {
@@ -31,143 +31,129 @@ public class GlowAPI {
     }
 
     /**
-     * Creating and Sending Glow Packet in async (background).
+     * Creates and sends a team packet.
      *
-     * @param entity  entity that will get glow
-     * @param color   Set color for glowing entity
-     * @param glowing true if entity need to be glowing
-     * @param player  Target Player that can see the glow
-     * @return a future that completes a results of the supplied stages
+     * @param entities   List of entities that will be on team
+     * @param color      Color of the team
+     * @param packetMode Mode of the team
+     * @param profile    Player that have the team
      */
-    public CompletableFuture<Void> glowPacketAsync(final Entity entity, final ChatColor color, final boolean glowing, final Player player) {
-        final Collection<Entity> entities = Collections.singletonList(entity);
-        return glowPacketAsync(entities, color, glowing, player);
-    }
+    public void sendTeamGlowPacket(final Collection<? extends Entity> entities, final ChatColor color, final Mode packetMode, final OnlineProfile profile) {
+        final PacketContainer packet = new PacketContainer(PacketType.Play.Server.SCOREBOARD_TEAM);
+        packet.getIntegers().write(0, packetMode.ordinal());
 
-    /**
-     * Creating and Sending Glow Packet in async (background).
-     *
-     * @param entity  entity that will get glow
-     * @param color   Set color for glowing entity
-     * @param glowing true if entity need to be glowing
-     * @param players List of players that can see the glowing NPC
-     * @return a future that completes a results of the supplied stages
-     */
-    public CompletableFuture<Void> glowPacketAsync(final Entity entity, final ChatColor color, final boolean glowing, final Collection<? extends Player> players) {
-        return CompletableFuture.allOf(players.parallelStream().map(player -> glowPacketAsync(entity, color, glowing, player)).toArray(CompletableFuture[]::new));
-    }
+        packet.getStrings().write(0, "Color#" + color.name());
+        if (packetMode == Mode.TEAM_REMOVED) {
+            sendPacket(profile, packet);
+        }
+        packet.getOptionalStructures().read(0).map((structure) ->
+                structure.getEnumModifier(ChatColor.class,
+                                MinecraftReflection.getMinecraftClass("EnumChatFormat"))
+                        .write(0, color));
 
-    /**
-     * Creating and Sending Glow Packet for a list of entities in async (background).
-     *
-     * @param entities List of entities that will get glow
-     * @param color    Set color for glowing entity
-     * @param glowing  true if entity need to be glowing
-     * @param player   Target Player that can see the glow
-     * @return a future that completes a results of the supplied stages
-     */
-    public CompletableFuture<Void> glowPacketAsync(final Collection<Entity> entities, final ChatColor color, final boolean glowing, final Player player) {
-        return CompletableFuture.allOf(entities.parallelStream().map(entity -> sendGlowPacketAsync(entity, glowing, player)).toArray(CompletableFuture[]::new))
-                .thenRun(() -> {
-                    if (glowing) {
-                        sendTeamPacketAsync(entities, color, Mode.TEAM_CREATED, player);
+        @SuppressWarnings("unchecked") final Collection<String> entries = packet.getSpecificModifier(Collection.class).read(0);
+        entities.stream()
+                .map(entity -> {
+                    if (entity instanceof OfflinePlayer) {
+                        return entity.getName();
                     } else {
-                        sendTeamPacketAsync(entities, color, Mode.TEAM_REMOVED, player);
+                        return entity.getUniqueId().toString();
                     }
-                });
-    }
-
-    /**
-     * Creating and Sending Glow Packet in async (background)
-     *
-     * @param entity  Target entity that will get glow
-     * @param glowing true if entity need to be glowing
-     * @param player  Target Player that can see the glow
-     * @return a future that completes a results of the supplied stages
-     */
-    private CompletableFuture<Void> sendGlowPacketAsync(final Entity entity, final boolean glowing, final Player player) {
-        return CompletableFuture.runAsync(() -> {
-            final WrappedDataWatcher.WrappedDataWatcherObject dataWatcherObject = new WrappedDataWatcher.WrappedDataWatcherObject(0, WrappedDataWatcher.Registry.get(Byte.class));
-            final PacketContainer packetContainer = new PacketContainer(PacketType.Play.Server.ENTITY_METADATA);
-
-            final int entityId = entity.getEntityId();
-
-            final WrappedDataWatcher dataWatcher = WrappedDataWatcher.getEntityWatcher(entity);
-            final List<WrappedWatchableObject> dataWatcherObjects = dataWatcher.getWatchableObjects();
-
-            byte entityByte = 0x00;
-            if (!dataWatcherObjects.isEmpty()) {
-                entityByte = (byte) dataWatcherObjects.get(0).getValue();
-            }
-            if (glowing) {
-                entityByte = (byte) (entityByte | 0x40);
-            } else {
-                entityByte = (byte) (entityByte & ~0x40);
-                final Collection<Entity> entities = Collections.singletonList(entity);
-                sendTeamPacketAsync(entities, null, Mode.TEAM_REMOVED, player);
-            }
-
-            final WrappedWatchableObject wrappedMetadata = new WrappedWatchableObject(dataWatcherObject, entityByte);
-            final List<WrappedWatchableObject> metadata = Collections.singletonList(wrappedMetadata);
-
-            packetContainer.getIntegers().write(0, entityId);
-            packetContainer.getWatchableCollectionModifier().write(0, metadata);
-
-            sendPacket(player, packetContainer);
-        });
+                })
+                .forEach(entries::add);
+        sendPacket(profile, packet);
     }
 
     /**
      * Sending a PacketContainer.
      *
-     * @param player          Send PacketContainer to Player
+     * @param profile         Send PacketContainer to Player
      * @param packetContainer PacketContainer that will get send
      */
-    private static void sendPacket(final Player player, final PacketContainer packetContainer) {
+    private void sendPacket(final OnlineProfile profile, final PacketContainer packetContainer) {
         try {
-            ProtocolLibrary.getProtocolManager().sendServerPacket(player, packetContainer);
+            ProtocolLibrary.getProtocolManager().sendServerPacket(profile.getPlayer(), packetContainer);
         } catch (final InvocationTargetException e) {
             LOG.warn("Error while sending the Packet", e);
         }
     }
 
     /**
-     * Creating and Sending Team Packet in async (background)
+     * Creates and send a glow packet.
      *
-     * @param entities   List of entities that will be on team
-     * @param color      Color of the team
-     * @param packetMode Mode of the team
-     * @param player     Player that have the team
-     * @return a future that completes a results of the supplied stages
+     * @param entity   entity that will get glow
+     * @param color    the glow color
+     * @param willGlow the new glow state of the entity
+     * @param profiles List of profiles that can see the glowing entity
      */
-    public static CompletableFuture<Void> sendTeamPacketAsync(final Collection<? extends Entity> entities, final ChatColor color, final Mode packetMode, final Player player) {
-        return CompletableFuture.runAsync(() -> {
-            final PacketContainer packet = new PacketContainer(PacketType.Play.Server.SCOREBOARD_TEAM);
-            packet.getIntegers().write(0, packetMode.ordinal());
+    public void sendGlowPacket(final Entity entity, final ChatColor color, final boolean willGlow, final Collection<? extends OnlineProfile> profiles) {
+        profiles.forEach(profile -> sendGlowPacket(entity, color, willGlow, profile));
+    }
 
-            packet.getStrings().write(0, "Color#" + color.name());
-            if (packetMode == Mode.TEAM_REMOVED) {
-                sendPacket(player, packet);
-            }
-            packet.getOptionalStructures().read(0).map((structure) ->
-                    structure.getEnumModifier(ChatColor.class,
-                                    MinecraftReflection.getMinecraftClass("EnumChatFormat"))
-                            .write(0, color));
+    /**
+     * Creating and Sending Glow Packet in async (background).
+     *
+     * @param entity   entity that will glow
+     * @param color    the glow color
+     * @param willGlow the new glow state of the entity
+     * @param profile  profile that can see the glow
+     */
+    public void sendGlowPacket(final Entity entity, final ChatColor color, final boolean willGlow, final OnlineProfile profile) {
+        final Collection<Entity> entities = Collections.singletonList(entity);
+        sendGlowPacket(entities, color, willGlow, profile);
+    }
 
-            @SuppressWarnings("unchecked") final Collection<String> entries = packet.getSpecificModifier(Collection.class)
-                    .read(0);
-            entities
-                    .parallelStream()
-                    .map(entity -> {
-                        if (entity instanceof OfflinePlayer) {
-                            return entity.getName();
-                        } else {
-                            return entity.getUniqueId().toString();
-                        }
-                    })
-                    .forEach(entries::add);
-            sendPacket(player, packet);
-        });
+    /**
+     * Creates and sends a glow packet for a list of entities.
+     *
+     * @param entities a list of entities that will glow
+     * @param color    the glow color
+     * @param willGlow the new glow state of the entity
+     * @param profile  profile that can see the glow
+     */
+    public void sendGlowPacket(final Collection<Entity> entities, final ChatColor color, final boolean willGlow, final OnlineProfile profile) {
+        entities.forEach(entity -> createAndSendGlowPacket(entity, willGlow, profile));
+
+        if (willGlow) {
+            sendTeamGlowPacket(entities, color, Mode.TEAM_CREATED, profile);
+        } else {
+            sendTeamGlowPacket(entities, color, Mode.TEAM_REMOVED, profile);
+        }
+    }
+
+    /**
+     * Creates and sends the glow packet.
+     *
+     * @param entity   target entity that will get glow
+     * @param willGlow the new glow state of the entity
+     * @param profile  target player that can see the glow
+     */
+    private void createAndSendGlowPacket(final Entity entity, final boolean willGlow, final OnlineProfile profile) {
+        final WrappedDataWatcher.WrappedDataWatcherObject dataWatcherObject = new WrappedDataWatcher.WrappedDataWatcherObject(0, WrappedDataWatcher.Registry.get(Byte.class));
+        final PacketContainer packetContainer = new PacketContainer(PacketType.Play.Server.ENTITY_METADATA);
+
+        final int entityId = entity.getEntityId();
+
+        final WrappedDataWatcher dataWatcher = WrappedDataWatcher.getEntityWatcher(entity);
+        final List<WrappedWatchableObject> dataWatcherObjects = dataWatcher.getWatchableObjects();
+
+        byte entityByte = 0x00;
+        if (!dataWatcherObjects.isEmpty()) {
+            entityByte = (byte) dataWatcherObjects.get(0).getValue();
+        }
+        if (willGlow) {
+            entityByte = (byte) (entityByte | 0x40);
+        } else {
+            entityByte = (byte) (entityByte & ~0x40);
+        }
+
+        final WrappedWatchableObject wrappedMetadata = new WrappedWatchableObject(dataWatcherObject, entityByte);
+        final List<WrappedWatchableObject> metadata = Collections.singletonList(wrappedMetadata);
+
+        packetContainer.getIntegers().write(0, entityId);
+        packetContainer.getWatchableCollectionModifier().write(0, metadata);
+
+        sendPacket(profile, packetContainer);
     }
 
     /**

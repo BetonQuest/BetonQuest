@@ -10,6 +10,7 @@ import net.citizensnpcs.api.npc.NPC;
 import org.apache.commons.lang3.EnumUtils;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.compatibility.protocollib.api.GlowAPI;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -19,7 +20,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
@@ -42,38 +42,37 @@ import java.util.Set;
 public final class NPCGlow extends BukkitRunnable implements Listener {
 
     /**
-     * instance of GlowAPI
-     */
-    private GlowAPI glowAPI;
-
-    /**
      * instance of NPCGlow
      */
     private static NPCGlow instance;
     /**
      * List of conditions for specific NPC that will get glow
      */
-    private final Map<Integer, Set<ConditionID>> npcs;
+    private final Map<Integer, Set<ConditionID>> npcConditions;
     /**
-     * List player that can seen glowing npc.
+     * A map of NPCs with a collection of profiles that can see the npc glowing.
      */
-    private final Map<Integer, Collection<Player>> npcPlayersMap;
+    private final Map<Integer, Collection<OnlineProfile>> npcProfilesMap;
     /**
      * Store NPCID for each color
      */
     private final Map<Integer, ChatColor> npcColor;
+    /**
+     * instance of GlowAPI
+     */
+    private GlowAPI glowAPI;
 
     /**
      * Constructor of NPCGlow instance
      */
     public NPCGlow() {
         super();
-        npcPlayersMap = new HashMap<>();
-        npcs = new HashMap<>();
+        npcProfilesMap = new HashMap<>();
+        npcConditions = new HashMap<>();
         npcColor = new HashMap<>();
         glowAPI = new GlowAPI();
         Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), this::loadFromConfig, 5L);
-        runTaskTimer(BetonQuest.getInstance(), 0, 5);
+        runTaskTimerAsynchronously(BetonQuest.getInstance(), 0, 5);
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
@@ -112,7 +111,7 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
                 final String npcSectionId = section.getString(key + ".id");
                 final String color = section.getString(key + ".color");
                 final String rawConditions = section.getString(key + ".conditions");
-                final Set<ConditionID> conditions = conditionSet(cfgPackage, key, rawConditions);
+                final Set<ConditionID> conditions = parseConditions(cfgPackage, key, rawConditions);
                 if (npcSectionId == null) {
                     LOG.warn(cfgPackage, "No ID found in glow_npc for '" + key + "'");
                     continue;
@@ -132,80 +131,72 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
                 if (color != null && EnumUtils.isValidEnum(ChatColor.class, color.toUpperCase(Locale.ROOT))) {
                     chatColor = ChatColor.valueOf(color.toUpperCase(Locale.ROOT));
                 }
-                npcs.put(npcId, conditions);
-                npcPlayersMap.put(npcId, new HashSet<>());
+                npcConditions.put(npcId, conditions);
+                npcProfilesMap.put(npcId, new HashSet<>());
                 npcColor.put(npcId, chatColor);
             }
         }
     }
 
     /**
-     * Checked if player have met the conditions
+     * Applies the glow if profile meets the conditions.
      *
-     * @param player player that will get checked
-     * @param npcID  ID of npc that will get checked
+     * @param profile profile that will get checked
+     * @param npc     the npc that will get checked
      */
     @SuppressWarnings("PMD.CyclomaticComplexity")
-    public void applyVisibility(final Player player, final Integer npcID) {
-        final NPC npc = CitizensAPI.getNPCRegistry().getById(npcID);
-
-        if (npc == null) {
-            LOG.warn("NPC Glow could not update Glowing for npc " + npcID + ": No npc with this id found!");
+    public void applyVisibility(final OnlineProfile profile, final NPC npc) {
+        if (!npc.isSpawned()) {
             return;
         }
+        final Integer npcID = npc.getId();
 
-        if (npc.isSpawned()) {
-            final Set<ConditionID> conditions = npcs.get(npcID);
-            final Entity entity = npc.getEntity();
-            if (conditions == null || conditions.isEmpty() || !BetonQuest.conditions(PlayerConverter.getID(player), conditions)) {
-                if (npcPlayersMap.containsKey(npcID)
-                        && npcPlayersMap.get(npcID).contains(player)) {
-                    npcPlayersMap.get(npcID).remove(player);
-                    glowAPI.glowPacketAsync(entity, npcColor.get(npcID), false, player).join();
-                }
-            } else {
-                if (npcPlayersMap.containsKey(npcID) && npcPlayersMap.get(npcID).add(player)) {
-                    glowAPI.glowPacketAsync(entity, npcColor.get(npcID), true, player).join();
-                }
+        final Entity entity = npc.getEntity();
+        final Set<ConditionID> conditions = npcConditions.get(npcID);
+        final Collection<OnlineProfile> glowingProfiles = npcProfilesMap.get(npcID);
+        if (conditions.isEmpty() || BetonQuest.conditions(profile, conditions)) {
+            if (npcProfilesMap.containsKey(npcID) && glowingProfiles.add(profile)) {
+                glowAPI.sendGlowPacket(entity, npcColor.get(npcID), true, profile);
+            }
+        } else {
+            if (npcProfilesMap.containsKey(npcID) && glowingProfiles.contains(profile)) {
+                glowingProfiles.remove(profile);
+                glowAPI.sendGlowPacket(entity, npcColor.get(npcID), false, profile);
             }
         }
     }
 
     /**
-     * Updates all NPCs for All Players
+     * Updates all NPCs for all profiles.
      */
     public void applyGlow() {
-        for (final Player p : Bukkit.getOnlinePlayers()) {
-            for (final Integer id : npcs.keySet()) {
-                applyVisibility(p, id);
-            }
+        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+            npcConditions.keySet().parallelStream()
+                    .forEach((id) -> applyVisibility(onlineProfile, CitizensAPI.getNPCRegistry().getById(id)));
         }
 
-        npcPlayersMap.forEach((npcId, players) -> {
+        npcProfilesMap.forEach((npcId, profiles) -> {
             final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
             if (npc == null) {
                 LOG.warn("NPC Glow could not update Glowing for npc " + npcId + ": No npc with this id found!");
                 return;
             }
             final Entity entity = npc.getEntity();
-            glowAPI.glowPacketAsync(entity, npcColor.get(npcId), true, players).join();
+            glowAPI.sendGlowPacket(entity, npcColor.get(npcId), true, profiles);
         });
     }
 
     /**
-     * apply glow to npc for all online players if condition are met
+     * Applies glow to npc for all online profiles if the conditions are met.
      *
-     * @param npc npc that get checked
+     * @param npc npc that gets checked
      */
     public void applyGlow(final NPC npc) {
         if (!npc.getOwningRegistry().equals(CitizensAPI.getNPCRegistry())) {
             return;
         }
-        Bukkit
-                .getOnlinePlayers()
-                .parallelStream()
-                .forEach((player)
-                        -> applyVisibility(player, npc.getId()));
+        PlayerConverter.getOnlineProfiles().parallelStream()
+                .forEach((profile) -> applyVisibility(profile, npc));
     }
 
     /**
@@ -219,19 +210,18 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
     /**
      * Reset all Glowing NPCs
      *
-     * @param npcs    List of NPCs that will be unGlow
-     * @param players List of Players that will get the packet
+     * @param npcs     List of NPCs that will be unGlow
+     * @param profiles List of profiles that will get the packet
      */
-    public void resetGlow(final Collection<Integer> npcs, final Collection<? extends Player> players) {
-        npcs
-                .parallelStream()
+    public void resetGlow(final Collection<Integer> npcs, final Collection<? extends OnlineProfile> profiles) {
+        npcs.parallelStream()
                 .forEach((npcId) -> {
                     final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
                     if (npc == null) {
                         return;
                     }
                     final Entity entity = npc.getEntity();
-                    glowAPI.glowPacketAsync(entity, npcColor.get(npcId), false, players);
+                    glowAPI.sendGlowPacket(entity, npcColor.get(npcId), false, profiles);
                 });
     }
 
@@ -239,9 +229,9 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
      * stop the NPCGlow instance, cleaning up all maps, Runnable, Listener, etc. And Reset all the glowing npc.
      */
     public void stop() {
-        resetGlow(npcs.keySet(), Bukkit.getOnlinePlayers());
-        npcPlayersMap.clear();
-        npcs.clear();
+        resetGlow(npcConditions.keySet(), PlayerConverter.getOnlineProfiles());
+        npcProfilesMap.clear();
+        npcConditions.clear();
         npcColor.clear();
         glowAPI = null;
         cancel();
@@ -249,23 +239,23 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
     }
 
     /**
-     *  Creating Set collections of ConditionID from raw conditions
+     * Parses the provided instruction string into a set of conditions.
      *
-     * @param cfgPackage QuestPackage that contain the raw conditions
-     * @param key Name of the Glow Section
+     * @param questPackage  QuestPackage that contain the raw conditions
+     * @param key           Name of the Glow Section
      * @param rawConditions String of raw conditions
      * @return Set Collections of ConditionID
      */
-    private Set<ConditionID> conditionSet(final QuestPackage cfgPackage, final String key, final String rawConditions){
+    private Set<ConditionID> parseConditions(final QuestPackage questPackage, final String key, final String rawConditions) {
         final Set<ConditionID> conditions = new HashSet<>();
-        if(rawConditions == null){
+        if (rawConditions == null) {
             return conditions;
         }
         for (final String condition : rawConditions.split(",")) {
             try {
-                conditions.add(new ConditionID(cfgPackage, condition));
+                conditions.add(new ConditionID(questPackage, condition));
             } catch (final ObjectNotFoundException e) {
-                LOG.warn(cfgPackage, "Condition '" + condition + "' does not exist, in glow_npc with ID " + key, e);
+                LOG.warn(questPackage, "Condition '" + condition + "' does not exist, in glow_npc with ID " + key, e);
             }
         }
         return conditions;
@@ -279,10 +269,9 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onNPCDespawn(final NPCDespawnEvent event) {
         final NPC npc = event.getNPC();
-        npcPlayersMap.remove(npc.getId());
-        npcs.remove(npc.getId());
-        npcColor.remove(npc.getId());
+        npcProfilesMap.get(npc.getId()).clear();
     }
+
     /**
      * If NPC death it gets remove the npc from all map.
      *
@@ -291,9 +280,7 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onNPCDeath(final NPCDeathEvent event) {
         final NPC npc = event.getNPC();
-        npcPlayersMap.remove(npc.getId());
-        npcs.remove(npc.getId());
-        npcColor.remove(npc.getId());
+        npcProfilesMap.get(npc.getId()).clear();
     }
 
     /**
@@ -302,7 +289,7 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
      * @param event CitizensReload
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onCitizensReload(final CitizensReloadEvent event){
+    public void onCitizensReload(final CitizensReloadEvent event) {
         start();
     }
 
@@ -317,16 +304,14 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
     }
 
     /**
-     * Remove Player that just quit from all map.
+     * Removes the profile that just quit from all maps.
      *
-     * @param event PlayerQuit
+     * @param event PlayerQuitEvent
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerLogout(final PlayerQuitEvent event) {
-        npcPlayersMap
-                .values()
-                .parallelStream()
-                .forEach((players) -> players.remove(event.getPlayer()));
+        npcProfilesMap.values().forEach(
+                (profileCollection) -> profileCollection.remove(PlayerConverter.getID(event.getPlayer())));
     }
 
 }
