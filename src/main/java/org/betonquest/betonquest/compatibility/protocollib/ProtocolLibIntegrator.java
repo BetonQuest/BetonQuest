@@ -38,6 +38,7 @@ public class ProtocolLibIntegrator implements Integrator {
         // if Citizens is hooked, start NPCHider
         if (Compatibility.getHooked().contains("Citizens")) {
             NPCHider.start();
+            NPCGlow.start();
             plugin.registerEvents("updatevisibility", UpdateVisibilityNowEvent.class);
         }
         if (Compatibility.getHooked().contains("MythicMobs")) {
@@ -56,6 +57,10 @@ public class ProtocolLibIntegrator implements Integrator {
         //if MythicHider is running, reload it
         if (MythicHider.getInstance() != null) {
             MythicHider.start();
+        }
+        //if NPCGlow is running, reload it
+        if (NPCGlow.getInstance() != null) {
+            NPCGlow.start();
         }
     }
 
