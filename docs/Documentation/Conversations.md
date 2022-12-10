@@ -4,58 +4,198 @@ tags:
   - Conversation
 ---
 
+Conversations are the main way to interact with players in BetonQuest. They are used to display text, ask questions and 
+execute commands. This page contains the reference documentation for all conversation related features. Consider doing the
+[conversation tutorial](../Tutorials/Getting-Started/Basics/Conversations.md) if you are just getting started.
+
+
 ## General Information
-Each conversation must define name of the NPC 
-(some conversations can be not bound to any NPC, so it’s important to specify it even though an NPC will have a name) and his initial options.
-```YAML
-conversations:
-  conversationName:
-    quester: Name
-    first: option1, option2
-    stop: 'true'
-    final_events: event1, event2
-    interceptor: simple
-    NPC_options:
-      option1:
-        text: Some text in default language
-        events: event3, event4
-        conditions: condition1, !condition2
-        pointers: reply1, reply2
-      option2:
-        text: '&3This ends the conversation'
-    player_options:
-      reply1:
-        text:
-          en: Text in English
-          pl: Tekst po polsku
-        event: event5
-        condition: '!condition3'
-        pointer: option2
-      reply2:
-        text: 'Text containing '' character'
+A conversation is a sequence of questions and answers. It is started by a NPC and can be ended by both the player or
+the NPC.
+
+```YAML title="Example conversation"
+conversations: #(1)!
+  mayorHans: #(2)!
+    quester: "Hans the Mayor" #(3)!
+    first: "welcome,blacksmithReminder" #(4)!
+    stop: "true"  #(5)!
+    final_events: "setCityState" #(6)!
+    interceptor: "simple" #(7)!
+    NPC_options: #(8)!
+      welcome:
+        text: "Good day, dear %player%! Welcome back to my town." #(10)!
+        events: "playSound,giveMoney" #(12)!
+        conditions: "firstVisit,!criminal" #(11)!
+        pointers: "friendly,hostile" #(13)!
+      blacksmithReminder:
+        text: "Please visit the blacksmith, he has a task for you."
+        conditions: "!criminal"
+      howDareYou:
+        text: "How dare you to talk to me like that?! Get out of my sight!"
+    player_options: #(9)!
+      friendly:
+        text: "Thank you your honor, I'm happy to be here."
+        event: "givePresent"
+        pointer: "blacksmithReminder"
+      hostile:
+        text: "Your Honor, I come bearing a ultimatum letter from the people. They have grown tired of your corruption and greed."
+        condition: 'hasUltimatumLetter'
+        pointers: "howDareYou"
+```
+    
+
+1. All conversation must be defined in a `conversations` section.
+2. `mayorHans` is the name of the conversation, which is used to reference the conversation, e.g. when [linking it to an NPC](#binding-conversations-to-npcs). 
+3. `Hans` is the visual name of NPC that is displayed during the conversation.
+4. `first` are pointers to options the NPC will use at the beginning of the conversation. He will choose the first one that meets all conditions. You 
+    define these options in `npc_options` branch.
+5. `stop` determines if player can move away from an NPC while in this conversation (false) or if he's stopped every time
+    he tries to (true). If enabled, it will also suspend the conversation when the player quits, and resume it after he 
+    joins back in. This way he will have to finish his conversation no matter what. You can modify
+    the distance at which the conversation is automatically stopped / player is teleported back with `max_npc_distance` option in _config.yml_.
+6. `final_events` are events that will fire when the conversation ends, no matter how it ends (so you can create e.g. guards attacking
+    the player if he tries to run). You can leave this option out if you don't need any final events.
+7. `interceptor` optionally set a chat interceptor for this conversation. Multiple interceptors can be provided in a comma-separated list with the first valid one used. It's better to set this as a global config setting in _config.yml_.
+8. `NPC_options` is a branch with texts said by the NPC.
+9. `player_options` is a branch with options the player can choose from.
+10. `text` defines what will display on screen. If you don't want to set any events/conditions/pointers to the option, just skip them. Only `text` is always required.
+11. `conditions` are names of conditions which must be met for this option to display, separated by commas.
+12. `events` is a list of event names that will fire when an option is chosen (either by NPC or a player), defined similar to conditions.
+13. `pointer` is list of pointers to the opposite branch (from NPC branch it will point to options player can choose from when answering, and from player branch it will point to different NPC reactions).
+
+When an NPC wants to say something he will check conditions for the first option (in this case `welcome`). If they are met,
+he will choose it. Otherwise, he will skip to next option (note: conversation ends when there are no options left to choose).
+After choosing an option the NPC will execute any events defined in it and say it's text. Then the player will see options
+defined in the `player_options` branch to which the `pointers` setting points, in this case `friendly` and `hostile`. If
+the conditions for a player options is not met, the option is simply not displayed, similar to texts from NPC. The player
+will choose the option they want, and it will point back to other NPC text, which points to next player options and so on.
+
+If there are no possible options for player or NPC (either from not meeting any conditions or being not defined) the
+conversations ends. If the conversation ends unexpectedly, check the console - it could be an error in the configuration.
+
+This can and will be a little confusing, so you should name your options, conditions and events in a way which you will
+understand in the future. Don't worry though, if you make some mistake in configuration, the plugin will tell you this when running `/q reload`.
+
+
+## Binding Conversations to NPCs
+
+Conversations can be assigned to NPCs created with Citizens. This is done in the `npcs` section:
+
+```YAML title="Example"
+npcs:
+  0: innkeeper
+  4: mayorHans
 ```
 
-!!! note
-    Configuration files use YAML syntax. Google it if you don't know anything about it. Main rule is that you must use two spaces instead of tabs when going deeper into the hierarchy tree. If you want to write `'` character, you must double it and surround the whole text with another `'` characters. When writing `true` or `false` it also needs to be surrounded with `'`. If you want to start the line with `&` character, the whole line needs to be surrounded with `'`. You can check if the file is correct using [this tool](http://www.yamllint.com).
-* `conversations` defines the section as a conversation section.
-* `ConversationName` is the name of the conversation, which you assign then to an NPC in the `npcs` section. Alternatively, you can combine `conversations` and `ConversationName` and use `conversations.ConversationName` instead.
-* `quester` is name of NPC. It should be the same as name of NPC this conversation is assigned to for greater immersion, but it's your call.
-* `first` are pointers to options the NPC will use at the beginning of the conversation. He will choose the first one that meets all conditions. You define these options in `npc_options` branch.
-* `final_events` are events that will fire on conversation end, no matter how it ends (so you can create e.g. guards attacking the player if he tries to run). You can leave this option out if you don't need any final events.
-* `stop` determines if player can move away from an NPC while in this conversation (false) or if he's stopped every time he tries to (true). If enabled, it will also suspend the conversation when the player quits, and resume it after he joins back in. This way he will have to finish his conversation no matter what. _It needs to be in `''`!_ You can modify the distance at which the conversation is ended / player is moved back with `max_npc_distance` option in the _config.yml_.
-* `interceptor` optionally set a chat interceptor for this conversation. Multiple interceptors can be provided in a comma-separated list with the first valid one used.
-* `NPC_options` is a branch with texts said by the NPC.
-* `player_options` is a branch with options the player can choose.
-* `text` defines what will display on screen. If you don't want to set any events/conditions/pointers to the option, just skip them. Only `text` is always required.
-* `conditions` are names of conditions which must be met for this option to display, separated by commas.
-* `events` is a list of events that will fire when an option is chosen (either by NPC or a player), defined similarly to conditions.
-* `pointer` is list of pointers to the opposite branch (from NPC branch it will point to options player can choose from when answering, and from player branch it will point to different NPC reactions).
+The first part is the ID of the NPC. To acquire the NPCs ID select the NPC using `/npc select`, then run `/npc id`.
+The second part is the identifier of the corresponding conversation name as defined in the `conversations` section. 
+You can assign the same conversation to multiple NPCs.
 
-When an NPC wants to say something he will check conditions for the first option (in this case `option1`). If they are met, he will choose it. Otherwise, he will skip to next option (note: conversation ends when there are no options left to choose). After choosing an option NPC will execute any events defined in it, say it, and then the player will see options defined in `player_options` branch to which `pointers` setting points, in this case `reply1` and `reply2`. If the conditions for the player option are not met, the option is simply not displayed, similar to texts from NPC. Player will choose option he wants, and it will point back to other NPC text, which points to next player options and so on.
+## Conversation displaying
 
-If there are no possible options for player or NPC (either from not meeting any conditions or being not defined) the conversations ends. If the conversation ends unexpectedly, check the console - it could be an error in the configuration.
+BetonQuest provides different conversation styles, so called "conversationIO's". They differ in their visual style
+and the way the player interacts with them.
 
-This can and will be a little confusing, so you should name your options, conditions and events in a way which you will understand in the future. Don't worry though, if you make some mistake in configuration, the plugin will tell you this in console when testing a conversation.
+!!! example "Conversation Styles"
+    === "Menu Style"
+        A modern conversation style that works with some of Minecraft's native controls.
+        
+        **Requires [ProtocolLib](https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/)**
+            
+        ??? "Customizing the Menu Style"
+            Customize the look of the menu style by adding the following lines to any of your quest packages. These
+            are global settings that currently cannot be changed on a NPC level.
+            
+            ```YAML
+            menu_conv_io:
+              line_length: 50 # (1)!
+              refresh_delay: 180 # (2)!
+              selectionCooldown: 10 # (3)!
+            
+              npc_wrap: '&l &r' # (4)!
+              npc_text: '&l &r&f{npc_text}' # (5)!
+              npc_text_reset: '&f' # (6)!
+              option_wrap: '&r&l &l &l &l &r' # (7)!
+              option_text: '&l &l &l &l &r&8[ &b{option_text}&8 ]' # (8)!
+              option_text_reset: '&b' # (9)! 
+              option_selected: '&l &r &r&7»&r &8[ &f&n{option_text}&8 ]' # (10)!
+              option_selected_reset: '&f' # (11)!
+              option_selected_wrap: '&r&l &l &l &l &r&f&n' # (12)!
+            
+              control_select: jump,left_click # (13)!
+              control_cancel: sneak # (14)! 
+              control_move: scroll,move # (15)! 
+            
+              npc_name_type: chat # (16)!
+              npc_name_align: center # (17)!
+              npc_name_format: '&e{npc_name}&r' # (18)!
+              npc_name_newline_separator: true # (19)!
+            ```
+            
+            1. Maximum size of a line till its wrapped.
+            2. Specify how many ticks to auto update display. Default 180.
+            3. The cooldown for selecting another option after selecting an option. Measured in ticks. 20 ticks = 1 second.
+            4. What text to prefix each new line in the NPC text that wraps.
+            5. How to write the NPC text. Replaces {1} with the npcs text.
+            6. When a color reset is found, what to replace it with.
+            7. What text to prefix each new line in an option that wraps.
+            8. How to write an option. Replaces {1} with the option text.
+            9. When a color reset is found, what to replace it with.
+            10. How to write a selected option. Replaces {1} with the option text.
+            11. When a color reset is found, what to replace it with.
+            12. What text to prefix each new line in a selected option that wraps.
+            13. Comma separated actions to select options. Can be any of `jump`, `left_click`, `sneak`.
+            14. Comma separated actions to cancel the conversation. Can be any of `jump`, `left_click`, `sneak`.
+            15. Comma separated actions to move the selection. Can be any of `move`, `scroll`.
+            16. Type of NPC name display. Can be one of: `none`, `chat`.
+            17. For npc name type of `chat`, how to align name. One of: `left`, `right`, `center`.
+            18. How to format the npc name.
+            19. Whether an empty line is inserted after the NPC's name if there is space leftover.
+                                    
+            | Text Variable   | Meaning               |
+            |-----------------|-----------------------|
+            | `{npc_text`     | The text the NPC says |
+            | `{option_text}` | The option text       |
+            | `{npc_name}`    | The name of the NPC   |
+            
+        <video controls loop src="../../_media/content/Documentation/Conversations/MenuConvIO.mp4" width="100%">
+          Sorry, your browser doesn't support embedded videos.
+        </video>
+        The blue overlay shows the player's key presses.
+    === "Chest Style"
+        A chest GUI with clickable buttons where the NPC's text and options will be shown as item lore.
+        ??? "Customizing the Chest Style"
+            The colors of this style can be configured with the [`conversation_colors` config option](./Configuration.md#conversation-colors).
+            
+            The formatting of this style can be configured with the [`conversation_IO_config.chest` config option](./Configuration.md#conversation-settings-chestio).
+            
+            You can change the option's item to something else than ender pearls by adding a prefix to that option's text.
+            The prefix is a name of the material (like in the _items_ section) inside curly braces, with an optional damage value after a colon. Custom Model Data is not supported yet.
+            Example of such option text: `{diamond_sword}I want to start a quest!`.
+        <video controls loop src="../../_media/content/Documentation/Conversations/ChestIO.mp4" width="100%">
+          Sorry, your browser doesn't support embedded videos.
+        </video>
+    === "Simple Style"
+        A chat output. The user has to write a number into their chat to select an option.
+        ??? "Customizing the Simple Style"
+            The colors of this style can be configured with the [`conversation_colors` config option](./Configuration.md#conversation-colors).
+        ![SimpleIO](../../_media/content/Documentation/Conversations/SimpleIO.png)
+    === "Tellraw Style"
+        The same as the simple style but the user can also click the numbers instead of writing them in the chat.
+        ??? "Customizing the Simple Style"
+            The colors of this style can be configured with the [`conversation_colors` config option](./Configuration.md#conversation-colors).
+        ![SimpleIO](../../_media/content/Documentation/Conversations/SimpleIO.png)
+    === "Slowtellraw Style"
+        The same as tellraw style but the NPC's text is printed line by line, delayed by 0.5 seconds.
+        ??? "Customizing the Simple Style"
+            The colors of this style can be configured with the [`conversation_colors` config option](./Configuration.md#conversation-colors).
+        ![SimpleIO](../../_media/content/Documentation/Conversations/SimpleIO.png)
+
+BetonQuest uses the `menu` style by default. If ProtocolLib is not installed, the `chest` style will be used.
+You can however change the utilized conversationIO by changing the `default_conversation_IO` option in the _config.yml_ file.
+
+In case you want to use a different type of conversation display for just one specific conversation you can add a `conversationIO:
+<type>` setting to the conversation file at the top of the YAML hierarchy (which is the same level as `quester` or `first` options).
 
 ## Cross-conversation pointers
 
@@ -66,80 +206,38 @@ Keep in mind that you can only cross-point to NPC options. It means that you can
 !!! warning 
     This does not work across packages yet.
 
-## Conversation variables
+## Conversation Variables
 
-You can use variables in the conversations. They will be resolved and displayed to the player when he starts a conversation. A variable generally looks like that: `%type.optional.arguments%`. Type is a mandatory argument, it defines what kind of variable it is. Optional arguments depend on the type of the variable, i.e. `%npc%` does not have any additional arguments, but `%player%` can also have `display` (it will look like that: `%player.display%`). You can find a list of all available variable types in the "Variables List" chapter.
+You can use variables in the conversations. They will be resolved and displayed to the player when he starts a conversation.
+Check the [variables list](Variables-List.md) for more information about which variables exist.
 
 !!! note
     If you use a variable incorrectly (for example trying to get a property of an objective which isn't active for the player, or using %npc% in `message` event), the variable will be replaced with empty string ("").
 
 ## Translations
 
-As you can see in this example conversation, there are additional messages in other languages. That's because you can translate your conversations into multiple languages. The players will be able to choose their preferred one with **/questlang** command. You can translate every NPC/player option and quester's name. You do this like this:
+Conversation can be fully translated into multiple languages. A players can choose their preferred language with the **/questlang** command. You can translate every NPC option, player option and the NPC's name. This is how it's done:
 
 ```YAML
 quester:
-  en: Innkeeper
-  pl: Karczmarz
-  de: Gastwirt
+  en: "Innkeeper"
+  pl: "Karczmarz"
+  de: "Gastwirt"
+first: "example1" 
+NPC_options:
+  example1:
+    text:
+      en: "Good day, dear %player%! Welcome back to my town."
+      de: "Guten Tag, lieber %player%! Willkommen zurück in meiner Stadt." 
+player_options:
+  example2:
+    text:
+      en: "Thank you your honor, I'm happy to be here."
+      de: "Danke, Euer Ehren, ich bin froh, hier zu sein."
 ```
+`en` and `de` are identifiers of languages present in the _messages.yml_ config. If the conversation is not translated in the players' language, the plugin will fall back to the default language, as defined in _config.yml_.
 
-As said before, the same rule applies to all options and quester's name. The player can choose only from languages present in _messages.yml_, and if there will be no translation to this language in the conversation, the plugin will fall back to the default language, as defined in _config.yml_. If that one is not defined, there will be an error.
-
-You can also translate journal entries, quest cancelers and `message` events, more about that later.
-
-## Binding Conversations to NPCs
-
-Conversations can be assigned to NPCs created with Citizens. This is done in the `npcs` section:
-
-```YAML title="Example"
-npcs:
-  '0': innkeeper
-  '4': woodcutter
-```
-
-The first part is the ID of the NPC. To acquire the NPCs ID select the NPC using `/npc select`, then run `/npc id`.
-!!! note
-    The Citizens ID must be enclosed in quotes.
-
-The second part is the identifier of the corresponding conversation name as defined in the `conversations` section. 
-You can assign the same conversation to multiple NPCs.
-
-
-
-## Conversation displaying
-
-BetonQuest provides different conversation styles, so called "conversationIO's". They all look different but the biggest difference
-is the way the user interacts with them.
-
-!!! note ""
-    === "menu"
-        A modern conversation style that works with some of Minecraft's native controls.
-        All options can be found in the [compatibility](Compatibility.md#conversation-io-menu) section.
-        This is a video of it in action: <br/>
-        <video controls loop src="../../_media/content/Documentation/Conversations/MenuConvIO.mp4" width="100%">
-          Sorry, your browser doesn't support embedded videos.
-        </video>
-    === "simple"
-        A chat output. The user has to write a number into their chat to select an option.
-    === "tellraw"
-        Also a chat output. The user can click on the options instead of typing them.
-    === "slowtellraw"
-        The same as `tellraw` but the NPC's text is printed line by line, delayed by 0.5 seconds.
-    === "chest"
-        A chest GUI with clickable buttons where the NPC's text and options will be shown as item lore.
-
-        You can change the option's item to something else than ender pearls by adding a prefix to that option's text.
-        The prefix is a name of the material (like in the _items_ section) inside curly braces, with an optional damage value after a colon.
-        Example of such option text: `{diamond_sword}I want to start a quest!`.
-
-You can control the colors of conversation elements in the _config.yml_ file, in `conversation_colors` section. Here you must use names of the colors.
-
-BetonQuest uses the `menu` conversationIO by default. If ProtocolLib is not installed, the `chest` IO will be used.
-You can however change the utilized conversationIO by setting the `default_conversation_IO` option in the _config.yml_ file.
-
-In case you want to use a different type of conversation display for just one specific conversation you can add a `conversationIO:
-<type>` setting to the conversation file at the top of the YAML hierarchy (which is the same level as `quester` or `first` options).
+The same syntax can be applied in a few other features, e.g. the journal entries, quest cancelers and `notify` events.
 
 ## Chat Interceptors
 While engaged in a conversation, it can be distracting when messages from other players or system messages interfere with the dialogue.
@@ -161,7 +259,7 @@ The `none` interceptor is an interceptor that won't intercept messages. That sou
 that you want to be excluded from interception. In this case you can just set `interceptor: none` inside your conversation file.
 
 ## Advanced: Extends
-Conversation also supports the concept of inheritance. Any option can include the key `extends` with a comma delimited list of other options of the same time. The first option that does not have any false conditions will have it's text, pointers and events merged with the extending option. The extended option may itself extend other options. Infinite loops are detected.
+Conversations also support the concept of inheritance. Any option can include the key `extends` with a comma delimited list of other options of the same time. The first option that does not have any false conditions will have its text, pointers and events merged with the extending option. The extended option may itself extend other options. Infinite loops are detected.
 
 ```YAML
 NPC_options:

@@ -905,68 +905,6 @@ The interval the conditions are checked in can be configured in the [config.yml]
 You can run the `updatevisibility` event to manually update the visibility. This is useful for performance optimizations
 on large servers if used together with the [npc hider interval](./Configuration.md#npc-hider-interval) set to high values.
 
-### Conversation IO: `menu`
-
-ProtocolLib also enables a conversation IO that makes use of a chat menu system.
-
-<video controls loop src="../../_media/content/Documentation/Conversations/MenuConvIO.mp4" width="100%">
-  Sorry, your browser doesn't support embedded videos.
-</video>
-
-Customize how it looks by adding the following lines to your quest package:
-
-```YAML
-menu_conv_io:
-  line_length: 50 # (1)!
-  refresh_delay: 180 # (2)!
-  selectionCooldown: 10 # (3)!
-
-  npc_wrap: '&l &r' # (4)!
-  npc_text: '&l &r&f{npc_text}' # (5)!
-  npc_text_reset: '&f' # (6)!
-  option_wrap: '&r&l &l &l &l &r' # (7)!
-  option_text: '&l &l &l &l &r&8[ &b{option_text}&8 ]' # (8)!
-  option_text_reset: '&b' # (9)! 
-  option_selected: '&l &r &r&7»&r &8[ &f&n{option_text}&8 ]' # (10)!
-  option_selected_reset: '&f' # (11)!
-  option_selected_wrap: '&r&l &l &l &l &r&f&n' # (12)!
-
-  control_select: jump,left_click # (13)!
-  control_cancel: sneak # (14)! 
-  control_move: scroll,move # (15)! 
-
-  npc_name_type: chat # (16)!
-  npc_name_align: center # (17)!
-  npc_name_format: '&e{npc_name}&r' # (18)!
-  npc_name_newline_separator: true # (19)!
-```
-
-1. Maximum size of a line till its wrapped.
-2. Specify how many ticks to auto update display. Default 180.
-3. The cooldown for selecting another option after selecting an option. Measured in ticks. 20 ticks = 1 second.
-4. What text to prefix each new line in the NPC text that wraps.
-5. How to write the NPC text. Replaces {1} with the npcs text.
-6. When a color reset is found, what to replace it with.
-7. What text to prefix each new line in an option that wraps.
-8. How to write an option. Replaces {1} with the option text.
-9. When a color reset is found, what to replace it with.
-10. How to write a selected option. Replaces {1} with the option text.
-11. When a color reset is found, what to replace it with.
-12. What text to prefix each new line in a selected option that wraps.
-13. Comma separated actions to select options. Can be any of `jump`, `left_click`, `sneak`.
-14. Comma separated actions to cancel the conversation. Can be any of `jump`, `left_click`, `sneak`.
-15. Comma separated actions to move the selection. Can be any of `move`, `scroll`.
-16. Type of NPC name display. Can be one of: `none`, `chat`.
-17. For npc name type of `chat`, how to align name. One of: `left`, `right`, `center`.
-18. How to format the npc name.
-19. Whether an empty line is inserted after the NPC's name if there is space leftover.
-
-Variables:
-
-  * `{npc_text}` - The text the NPC says
-  * `{option_text}` - The option text
-  * `{npc_name}` - The name of the NPC
-
 ### Chat Interceptor: `packet`
 
 Intercepts pretty much anything sent to the player by intercepting packets sent to them. This can be enabled by default by setting the `default_interceptor` to `packet` in config.yml or per conversation by setting `interceptor` to `packet` in the top level of the conversation.

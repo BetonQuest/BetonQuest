@@ -169,7 +169,8 @@ braces `{ }`. Inside the curly braces you have to escape with `\`, so to have a 
 
 ### NPC Name Variable
 
-It's a very simple variable. It's replaced by the name of the NPC in player's language.
+Contains the NPC name in the player's language of the current conversation. If the player is not in a conversation, the
+variable is empty.
 
 ```
 %npc%
