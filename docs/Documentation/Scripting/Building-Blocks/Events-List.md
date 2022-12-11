@@ -1,11 +1,13 @@
 ---
 icon: octicons/gear-16
+hide:
+  - footer
 ---
 # Events List
 
 ## Cancel quest: `cancel`
 
-This event works in the same way as a [quest canceler in the backpack](Quest-Cancelers.md).
+This event works in the same way as a [quest canceler in the backpack](../../Quest-Cancelers.md).
 Running it is equal to the player clicking on the bone. The only argument is a name of a quest canceler, as defined in the _cancel_ section
 
 !!! example
@@ -363,8 +365,8 @@ Displays a notification using the NotifyIO system.
 |----------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
 | message                                                  | The message that will be displayed. Supports variables and translations. *Required, must be first*                                          |
 | category                                                 | Will load all settings from that Notification Category. Can be a comma-seperated list. The first existent category will be used. *Optional* |   
-| io                                                       | Any [NotifyIO](Notification-IO's-&-Categories.md). Overrides the "category" settings. *Optional*                                            |
-| [NotifyIO](Notification-IO's-&-Categories.md#notify-ios) | Any setting from the defined notifyIO. Can be used multiple times. Overrides the "category" settings. *Optional*                            |
+| io                                                       | Any [NotifyIO](../../Notification-IO's-&-Categories.md). Overrides the "category" settings. *Optional*                                            |
+| [NotifyIO](../../Notification-IO's-&-Categories.md#notify-ios) | Any setting from the defined notifyIO. Can be used multiple times. Overrides the "category" settings. *Optional*                            |
 
 The fallback NotifyIO is `chat` if no argument other than `message` is specified.    
 `message` is the only argument of this event that is not `key:value` based. You can freely add any text with spaces there.
@@ -379,8 +381,8 @@ In this example, english users would see `ABC` and german ones would see `DEF`.
 
 <h3>Examples:</h3>
 
-Check out the documentation about [Notify Categories](Notification-IO's-&-Categories.md#categories) and 
-[Notify IO options](Notification-IO's-&-Categories.md#notify-ios) if you haven't yet. You must understand these two if
+Check out the documentation about [Notify Categories](../../Notification-IO's-&-Categories.md#categories) and 
+[Notify IO options](../../Notification-IO's-&-Categories.md#notify-ios) if you haven't yet. You must understand these two if
 you want to use the Notify system to it's full extend.
 ```YAML
 #The simplest of all notify events. Just a chat message:
@@ -451,7 +453,7 @@ Looking for [console commands](#command-command)?
 
 ## Party event: `party`
 
-Runs the specified list of events (third argument) for every player in a [party](Parties.md).
+Runs the specified list of events (third argument) for every player in a [party](../Parties.md).
 
 !!! example
     ```YAML
@@ -524,7 +526,7 @@ This event works in the same way as `point` event, the only difference is that i
 **persistent**, **static**
 
 Changes the block at the given position.
-The first argument is a [Block Selector](Data-Formats.md#block-selectors), the second a location.
+The first argument is a [Block Selector](../Data-Formats.md#block-selectors), the second a location.
 Very powerful if used to trigger redstone contraptions.
 
 !!! example
@@ -617,7 +619,7 @@ Ends any active conversations.
 
 | Parameter  | Syntax                                                                    | Default Value          | Explanation                                          |
 |------------|---------------------------------------------------------------------------|------------------------|------------------------------------------------------|
-| _location_ | [Unified Location Formatting](Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | The location to which the player will be teleported. |
+| _location_ | [Unified Location Formatting](../Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | The location to which the player will be teleported. |
 
 ```YAML title="Example"
 events:

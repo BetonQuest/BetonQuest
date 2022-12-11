@@ -1,5 +1,7 @@
 ---
 icon: material/magnify
+hide:
+  - footer
 ---
 ###Fulfil the Contributing Requirements
 Run `mvn verify` before [Submitting Changes](../Submitting-Changes.md) to check if your change

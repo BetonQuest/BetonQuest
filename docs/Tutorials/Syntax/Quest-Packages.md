@@ -14,7 +14,7 @@ up to you!
 !!! warning "Attention"
     <!-- TODO: Remove this after the release of BetonQuest 2.0 -->
     If you are using an older version of BetonQuest and just want to convert your 1.12 packages to the new 2.0 format,
-    use the [Migration Guide](../../Documentation/Migration.md).
+    use the [Migration Guide](../../Documentation/Configuration/Version-Changes/Migration.md).
 
 <div class="grid" markdown>
 !!! danger "Requirements"

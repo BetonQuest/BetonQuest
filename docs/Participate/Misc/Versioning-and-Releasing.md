@@ -1,5 +1,7 @@
 ---
 icon: material/factory
+hide:
+  - footer
 ---
 #Versioning and Releasing
 

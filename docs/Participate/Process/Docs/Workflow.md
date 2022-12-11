@@ -1,5 +1,7 @@
 ---
 icon: material/pen
+hide:
+  - footer
 ---
 # 👨‍🏫 Changing Docs
 

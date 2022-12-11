@@ -35,9 +35,9 @@ theme:
     - navigation.sections
     - navigation.top
     - search.share
-    - navigation.indexes
     - search.suggest
     - content.tooltips
+    - toc.follow
   palette:
     - scheme: slate
       primary: indigo
@@ -195,37 +195,51 @@ nav:
       - 'Frequently Asked Questions':
           - 'General FAQ': Tutorials/Frequently-Asked-Questions.md
   - 'Documentation':
-      - 'General':
+      - 'Overview': Documentation/Overview.md
+      - 'Features':
           - 'Conversations': Documentation/Conversations.md
-          - 'Items': Documentation/Items.md
-          - 'Journal': Documentation/Journal.md
-          - 'Parties': Documentation/Parties.md
-          - 'Player Hider': Documentation/Player-Hider.md
+          - 'Quest Menus':
+              - 'Menus': Documentation/Menus/Menu-Menu.md
+              - 'Menu Example': Documentation/Menus/Menu-Example.md
+              - 'Elements': Documentation/Menus/Menu-Elements.md
+              - 'Menu Settings': Documentation/Menus/Menu-Config.md
+          - 'The Journal': Documentation/Journal.md
+          - 'Quest Items': Documentation/Items.md
           - 'Quest Cancelers': Documentation/Quest-Cancelers.md
-          - 'Data Formats': Documentation/Data-Formats.md
+
+      - 'Scripting':
+          - 'About Scripting': Documentation/Scripting/About-Scripting.md
           - 'Packages & Templates': Documentation/Packages-&-Templates.md
-      - 'Types':
-          - 'About Types': Documentation/About-Types.md
-          - 'Objectives List': Documentation/Objectives-List.md
-          - 'Events List': Documentation/Events-List.md
-          - 'Conditions List': Documentation/Conditions-List.md
-          - 'Compatibility List': Documentation/Compatibility.md
-          - 'Variables List': Documentation/Variables-List.md
-          - 'Schedules': Documentation/Schedules.md
-      - 'Notifications':
-          - 'Settings': Documentation/Notification-Settings.md
-          - "IO's & Categories": Documentation/Notification-IO's-&-Categories.md
-      - 'Menus':
-          - 'Menus': Documentation/Menu-Menu.md
-          - 'Menu Example': Documentation/Menu-Example.md
-          - 'Elements': Documentation/Menu-Elements.md
-          - 'Config': Documentation/Menu-Config.md
-      - 'Technical':
-          - 'Permissions & Commands': Documentation/Commands-and-permissions.md
-          - 'Updating': Documentation/Updating.md
-          - 'Migration': Documentation/Migration.md
-          - 'Configuration': Documentation/Configuration.md
-          - 'Changelog': Documentation/CHANGELOG.md
+          - 'Building Blocks':
+              - 'Objectives List': Documentation/Scripting/Building-Blocks/Objectives-List.md
+              - 'Events List': Documentation/Scripting/Building-Blocks/Events-List.md
+              - 'Conditions List': Documentation/Scripting/Building-Blocks/Conditions-List.md
+              - 'Integration List': Documentation/Scripting/Building-Blocks/Compatibility.md
+              - 'Variables List': Documentation/Scripting/Building-Blocks/Variables-List.md
+          - 'Additional Features':
+              - 'Schedules': Documentation/Scripting/Schedules.md
+              - 'Parties': Documentation/Scripting/Parties.md
+              - 'Data Formats': Documentation/Scripting/Data-Formats.md
+
+      - 'Visual Effects':
+          - 'Notifications':
+              - 'Settings': Documentation/Notification-Settings.md
+              - "IO's & Categories": Documentation/Notification-IO's-&-Categories.md
+          - 'NPC Effects':
+              - 'NPC Hiding': Documentation/Visual-Effects/NPC-Hiding.md
+              - 'NPC Holograms': Documentation/Visual-Effects/NPC-Holograms.md
+              - 'NPC Glow': Documentation/Visual-Effects/NPC-Glow.md
+          - 'Additional Effects':
+              - 'Quest Holograms': Documentation/Visual-Effects/Quest-Holograms.md
+              - 'Player Hider': Documentation/Player-Hider.md
+
+      - 'Configuration':
+          - 'Configuration': Documentation/Configuration/Configuration.md
+          - 'Permissions & Commands': Documentation/Configuration/Commands-and-permissions.md
+          - 'Version Changes':
+              - 'Updating': Documentation/Version-Changes/Updating.md
+              - 'Migration': Documentation/Version-Changes/Migration.md
+      - 'Changelog': Documentation/CHANGELOG.md
   - 'API':
       - 'Overview': API/Overview.md
       - 'Legacy API': API/API.md

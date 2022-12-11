@@ -1,5 +1,7 @@
 ---
 icon: material/cube
+hide:
+  - footer
 ---
 
 ## :octicons-location-16: Unified location formating
@@ -89,8 +91,8 @@ A regex is allowed in any block state value when the block selector is used to m
 A regular expression is a sequence of characters that specifies a search pattern for text. It's used in BetonQuest to
 check if game objects match a user-defined input. For example, [Block Selectors](#block-selectors) use a regex to match
 multiple materials or block states. You can also use regular expressions in the 
-[variable condition](Conditions-List.md#variable-variable) or the 
-[password objective](Objectives-List.md#password-password) to match player names, item names, etc. These expressions are
+[variable condition](Building-Blocks/Conditions-List.md#variable-variable) or the 
+[password objective](Building-Blocks/Objectives-List.md#password-password) to match player names, item names, etc. These expressions are
 a very powerful tool, but can be confusing at first.
 
 ### Common Use Cases

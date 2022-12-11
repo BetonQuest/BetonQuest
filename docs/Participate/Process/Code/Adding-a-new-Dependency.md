@@ -1,5 +1,7 @@
 ---
 icon: octicons/package-dependencies-16
+hide:
+  - footer
 ---
 ## Requirements 
 You can only add support for plugins that have a public API. This means Maven must be able to resolve the dependency 

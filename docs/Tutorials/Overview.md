@@ -1,5 +1,5 @@
 ---
-icon: material/hand-wave
+icon: octicons/info-16
 ---
 # :material-hand-wave: Welcome to the Tutorials
 This documentation provides you with a large number of high quality tutorials that will make you a great quest writer.

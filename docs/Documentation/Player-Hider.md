@@ -1,5 +1,7 @@
 ---
 icon: simple/apachenetbeanside
+hide:
+  - footer
 ---
 
 ## Hiding Players
@@ -12,7 +14,7 @@ You can also hide players for specific players in the `player_hider` section of 
 every player that meets the `target_player` conditions will be completely hidden from them. 
 This is really useful if you want a lonely place on your server 
 or your quests break when multiple players can see or affect each other.
-You can configure the interval which checks the conditions in the [config.yml](./Configuration.md#player-hider-interval).
+You can configure the interval which checks the conditions in the [config.yml](Configuration/Configuration.md#player-hider-interval).
 
 Special behaviour:
 

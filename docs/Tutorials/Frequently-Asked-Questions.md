@@ -13,7 +13,7 @@ We have a [VSCode addon](./Tools/Setting-up-VSCode.md) to make editing easier.
 
 
 ## Can you add particles over NPCs' heads like in "Quests" plugin?
-Yes! Check out the [EffectLib](../Documentation/Compatibility.md/#effectlib) compatibility documentation.
+Yes! Check out the [EffectLib](../Documentation/Scripting/Building-Blocks/Compatibility.md/#effectlib) compatibility documentation.
 
 
 ## Can I assign multiple conversation files to one NPC?
@@ -27,7 +27,7 @@ Or use a `run` event in which you specify all tag-deleting events at once.
 (We will improve this don't worry)
 
 ## How do I start an objective from a conversation?
-Use the [objective event](../Documentation/Events-List.md/#objective-objective).
+Use the [objective event](../Documentation/Scripting/Building-Blocks/Events-List.md/#objective-objective).
 
 ## Why is X thing not working?
 If something stopped working before asking for help please do /q reload and READ THE OUTPUT IN CONSOLE!
@@ -101,7 +101,7 @@ You can just add them together using `math.calc`.
 ## How to match different items with just one condition?
 If you want a player to have e.g. `potato + poisonous_potato = 64` in his inventory you can make a special item in your 
 `items` section file that matches items based of their names. 
-More specifically, you can have a [*Block Selector*](../Documentation/Data-Formats.md#block-selectors) that is a *regex*.
+More specifically, you can have a [*Block Selector*](../Documentation/Scripting/Data-Formats.md#block-selectors) that is a *regex*.
 It would look like this in the example:
 ```YAML
 items:
@@ -159,7 +159,7 @@ Starting the random quest must be blocked with a special tag. If there is no suc
 
 ## The same random daily quest for every player
 
-To do this use something called "[Static event](../Documentation/Schedules.md#static-events)
+To do this use something called "[Static event](../Documentation/Scripting/Schedules.md#static-events)
 Run a static `folder` event every day at some late hour (for example 4am).
 The `folder` event should be `random:1` and contain several different `globaltag` events.
 These events will set a specific tag. Now when the player starts the conversation and asks about the daily quest the NPC
@@ -283,7 +283,7 @@ have to add the additional objectives to the conditions.
 
 ## Creating quest menus
 To create a menu that gives the player a overview of his open quests just define one menu item for each quest.
-Set the [conditions](../Documentation/Menu-Menu.md#the-items-section) for this item so it is only displayed if the quest is not finished (use the [tag condition](../Documentation/Conditions-List.md#tag-tag)).  
+Set the [conditions](../Documentation/Menu-Menu.md#the-items-section) for this item so it is only displayed if the quest is not finished (use the [tag condition](../Documentation/Scripting/Building-Blocks/Conditions-List.md#tag-tag)).  
 Then assign all those items to [a row of slots](../Documentation/Menu-Menu.md#the-slots-section) so that they are sorted perfectly.
 
 You can also add click events to display npc locations, add compass targets, directly open the conversations or cancel the quest.
@@ -291,7 +291,7 @@ You can also add click events to display npc locations, add compass targets, dir
 Or you could define separate items for open and finished quests or even to show the progress. Just be a bit creative.
 
 ## Menus displaying players stats
-You may also use menus to display the stats of a player. Just use [variables](../Documentation/Variables-List.md) in the text or for the amount of an item.
+You may also use menus to display the stats of a player. Just use [variables](../Documentation/Scripting/Building-Blocks/Variables-List.md) in the text or for the amount of an item.
 
 For example try displaying a players money using the variable from [Vault integration](http://dev.bukkit.org/bukkit-plugins/vault/)
-or use [PlaceholderAPI](../Documentation/Compatibility.md#placeholderapi) to show placeholders from many other plugins.
+or use [PlaceholderAPI](../Documentation/Scripting/Building-Blocks/Compatibility.md#placeholderapi) to show placeholders from many other plugins.

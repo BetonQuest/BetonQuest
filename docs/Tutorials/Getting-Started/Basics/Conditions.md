@@ -17,8 +17,8 @@ In this tutorial you will learn how to create and use conditions!
     * [Objectives Tutorial](Objectives.md)
 
 !!! example "Related Docs"
-    * [Conditions Reference](../../../Documentation/About-Types.md#conditions)
-    * [Conditions List](../../../Documentation/Conditions-List.md)
+    * [Conditions Reference](../../../Documentation/Scripting/About-Types.md#conditions)
+    * [Conditions List](../../../Documentation/Scripting/Building-Blocks/Conditions-List.md)
 </div>
 --8<-- "Tutorials/download-setup-warning.md"
     ```
@@ -340,7 +340,7 @@ conversations:
 #### 5.3.2 Handing out the armor
 
 Now add an event to reward the player on your own. Tip: You must use the
-[`give`](../../../Documentation/Events-List.md#give-items-give) event to hand out items that are defined
+[`give`](../../../Documentation/Scripting/Building-Blocks/Events-List.md#give-items-give) event to hand out items that are defined
 in the `items` section of your "_package.yml_" file.
 
 ??? example "SPOILER: Solution"
@@ -432,7 +432,7 @@ in events.
 ## Summary
 
 You've learned what conditions are and how to use them in objectives, conversations and events.
-More conditions can be found in the [conditions list](../../../Documentation/Conditions-List.md).
+More conditions can be found in the [conditions list](../../../Documentation/Scripting/Building-Blocks/Conditions-List.md).
 ---
 
 

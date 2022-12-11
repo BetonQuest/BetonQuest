@@ -1,5 +1,7 @@
 ---
 icon: material/flag
+hide:
+  - footer
 ---
 The BetonQuest Organisation recommends [IntelliJ](https://www.jetbrains.com/idea/)
 (Community Edition) as the IDE (Integrated Development Environment).

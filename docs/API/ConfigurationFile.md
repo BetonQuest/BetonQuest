@@ -1,5 +1,7 @@
 ---
 icon: material/note-edit
+hide:
+  - footer
 ---
 --8<-- "API-State/Draft.md"
 

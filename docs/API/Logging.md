@@ -1,5 +1,7 @@
 ---
 icon: material/text-box-outline
+hide:
+  - footer
 ---
 --8<-- "API-State/Stable.md"
 

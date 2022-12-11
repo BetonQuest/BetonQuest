@@ -1,5 +1,7 @@
 ---
 icon: material/test-tube
+hide:
+  - footer
 ---
 Here you can find a summary on how to write JUnit tests for BetonQuest. In order to understand this, you need to have
 basic knowledge of JUnit tests and mocking of objects and classes.

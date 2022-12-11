@@ -1,5 +1,7 @@
 ---
-icon: material/handshake
+icon: octicons/info-16
+hide:
+  - footer
 ---
 !!! caution "Work in Progress! :construction: :construction_worker:  :construction_site:"
 

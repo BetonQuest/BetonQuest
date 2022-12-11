@@ -1,5 +1,7 @@
 ---
 icon: material/download
+hide:
+  - footer
 ---
 <style>
 .table {
@@ -20,10 +22,10 @@ td {
 BetonQuest has a comfortable Auto-Updater, that you can use without any problem, but there are some things that you need
 to be aware of. Alternatively you can install updated manual by your self.
 
-Read the [update](./Configuration.md#updating) section to correctly set up the Auto-Updater.
+Read the [update](../Configuration.md#updating) section to correctly set up the Auto-Updater.
 
 For a production/live system it is recommended to [disable automatic updates](#enable-or-disable-auto-updates)
-and to check out the [CHANGELOG](./CHANGELOG.md) before you execute `/q update` for manual updates.
+and to check out the [CHANGELOG](../../CHANGELOG.md) before you execute `/q update` for manual updates.
 
 !!! warning "Updating to 2.0"
     If you update to BetonQuest 2.0 you should read the [Migration](Migration.md) guide to see, what you need to do
@@ -77,7 +79,7 @@ After a manual or automatic update BetonQuest might update some quest packages o
 file or the database is touched, an automatic backup will be created and is saved as a zip file to `BetonQuest/Backups/`
 to prevent losing your work due to errors.
 
-A backup can also be created manually by running the [backup command](./Commands-and-permissions.md#commands).
+A backup can also be created manually by running the [backup command](../Commands-and-permissions.md#commands).
 
 ### Restoring Backups
 You find your backups as zip file in the folder `BetonQuest/Backups/` containing every configuration and a dump of you

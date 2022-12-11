@@ -12,8 +12,8 @@ In this tutorial, we will give the player items and teleport them to different l
     * [Conversations Tutorial](Conversations.md)
 
 !!! example "Related Docs"
-    * [Events Reference](../../../Documentation/About-Types.md#events)
-    * [Events List](../../../Documentation/Events-List.md)
+    * [Events Reference](../../../Documentation/Scripting/About-Types.md#events)
+    * [Events List](../../../Documentation/Scripting/Building-Blocks/Events-List.md)
 </div>
 --8<-- "Tutorials/download-setup-warning.md"
     ```
@@ -149,15 +149,15 @@ events:
   tpBlacksmith: "teleport 50;70;50;world" # (4)!
 ```
 
-1. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Data-Formats.md#unified-location-formating)
-2. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Data-Formats.md#unified-location-formating)
-3. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Data-Formats.md#unified-location-formating)
-4. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Data-Formats.md#unified-location-formating)
+1. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Scripting/Data-Formats.md#unified-location-formating)
+2. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Scripting/Data-Formats.md#unified-location-formating)
+3. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Scripting/Data-Formats.md#unified-location-formating)
+4. Adjust the coordinates and world name to your world. It must be in the [unified location format](../../../Documentation/Scripting/Data-Formats.md#unified-location-formating)
 
 As you can see, there are a few new events of the types `folder` and `teleport`.
 The folder event wraps multiple events inside itself. Once triggered, it simply executes its events. 
-Every event type is documented in the events list, read more about the [folder](../../../Documentation/Events-List.md#run-multiple-events-folder)
-and [teleport](../../../Documentation/Events-List.md#teleport-teleport) events there. 
+Every event type is documented in the events list, read more about the [folder](../../../Documentation/Scripting/Building-Blocks/Events-List.md#run-multiple-events-folder)
+and [teleport](../../../Documentation/Scripting/Building-Blocks/Events-List.md#teleport-teleport) events there. 
 
 Running the `townTour` event will teleport you to a new location every five seconds
 until we get to our final destination, the blacksmith. The folder event is done after the `tpBlacksmith` event was run.
@@ -215,7 +215,7 @@ Now speak with the NPC again to take the tour.
 ## Summary
 
 You've learned what events are and how to create them. You can now give a player some food or
-even teleport him through the whole town! More events can be found in the [events list](../../../Documentation/Events-List.md).
+even teleport him through the whole town! More events can be found in the [events list](../../../Documentation/Scripting/Building-Blocks/Events-List.md).
 Next you will learn how to give tasks to the player using **objectives**. 
 ---
 [Objectives Tutorial](./Objectives.md){ .md-button .md-button--primary}

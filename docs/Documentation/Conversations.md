@@ -2,6 +2,8 @@
 icon: material/message-text
 tags:
   - Conversation
+hide:
+  - footer
 ---
 
 Conversations are the main way to interact with players in BetonQuest. They are used to display text, ask questions and 
@@ -209,7 +211,7 @@ Keep in mind that you can only cross-point to NPC options. It means that you can
 ## Conversation Variables
 
 You can use variables in the conversations. They will be resolved and displayed to the player when he starts a conversation.
-Check the [variables list](Variables-List.md) for more information about which variables exist.
+Check the [variables list](Scripting/Building-Blocks/Variables-List.md) for more information about which variables exist.
 
 !!! note
     If you use a variable incorrectly (for example trying to get a property of an objective which isn't active for the player, or using %npc% in `message` event), the variable will be replaced with empty string ("").

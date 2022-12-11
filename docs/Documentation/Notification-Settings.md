@@ -1,5 +1,7 @@
 ---
 icon: material/volume-high
+hide:
+  - footer
 ---
 BetonQuest features a powerful notify system that allows you to display any information to your players.
 You can freely choose between many NotifyIO's like simple chat output, (sub)titles, advancements or sounds. They all come
@@ -12,8 +14,8 @@ with unique options that allow you to customize them. Just take a look at this e
 
 ## Sending custom notifications
 
-A truly custom notification can be sent using the [`notify`](Events-List.md#notification-notify) event at any time.
-Check out the [events documentation](Events-List.md#notification-notify) to learn how.
+A truly custom notification can be sent using the [`notify`](Scripting/Building-Blocks/Events-List.md#notification-notify) event at any time.
+Check out the [events documentation](Scripting/Building-Blocks/Events-List.md#notification-notify) to learn how.
 
 ## Changing BetonQuest's built-in notifications
   

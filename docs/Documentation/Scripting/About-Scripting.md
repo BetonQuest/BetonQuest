@@ -1,9 +1,81 @@
 ---
-icon: material/format-list-bulleted-type
+hide:
+  - footer
 ---
-## Fundamental BetonQuest Types
+BetonQuest's quests do not have a predefined structure but can be freely designed.
+This is made possible by a powerful quest scripting language.
 
-Conditions, events and objectives are defined with an "instruction string". It's a piece of text, formatted in a specific way, containing the instruction for the condition/event/objective. Thanks to this string they know what should they do. To define the instruction string you will need a reference, few pages below. It describes how something behaves and how it should be created. All instruction strings are defined in appropriate sections, for example all conditions are in the _conditions_ section. The syntax used to define them looks like this: `name: 'the instruction string containing the data'`. Apostrophes are optional in most cases, you can find out when to use them by looking up "YAML syntax" in Google.
+<div class="grid" markdown>
+!!! example "Traditional Quest Plugin Quest Structure"
+    ```mermaid
+      flowchart TD
+          A[Quest Starts] --> B[Bring X Iron to NPC Y]
+          B --> C[Quest Ends]
+          
+          style C fill:#16a349,stroke:#16a349
+    ```
+    
+!!! example "BetonQuest Quest Structure"
+    === "Explanation"
+        BetonQuest's quests can have any structure you want! You imagination is the only limit!
+        
+        You can make anything from simple grind quests to complex story quests with dozends of player decisions and side
+        quests. You can easily create different quest outcomes or story endings!
+    === "Rebel Quest"
+        ```mermaid
+           flowchart TD
+              A[Quest Starts] --> B[Spy on Rebels]
+              B--> C[Decision: Inform King]
+              B--> D[Decision: Betray King]
+              
+              C --> E[King rewards you]
+              
+              D --> F[Hunt the King down]
+              F --Too slow--> H[Quest Fails]
+              F --In Time--> G[You become King]
+              
+              style G fill:#16a349,stroke:#16a349
+              style E fill:#16a349,stroke:#16a349
+              style H fill:#ed1c24,stroke:#ed1c24
+        ```
+    === "Dragon Hunter Quest"
+        ```mermaid
+           flowchart TD
+              A[Quest Starts] --> B[Gather Information about the Dragon]
+              B--> C[Ignore wounded NPC]
+              B--> D[Help wounded NPC to\n recieve secret information]
+              
+              C--> E[Harder Dragon Fight]
+              D--> X[Easier Dragon Fight]
+              
+              E--You Die--> H[Quest Fails]
+              X--You Die--> H[Quest Fails]
+              
+              E--Dragon Killed--> W[Quest Completed]
+              X--Dragon Killed--> W[Quest Completed]
+              
+              style W fill:#16a349,stroke:#16a349
+              style H fill:#ed1c24,stroke:#ed1c24
+        ```      
+</div>
+
+## Building Blocks
+The BetonQuest scripting language is based on a few basic building blocks which are outlined in the following sections.
+They can be freely combined to create any quest you want.
+All of these are defined using an _instruction text_.
+
+```YAML title="Intstruction Text Example"
+conditions: #(1)!
+  myCondition: "health 10" #(2)!
+events:
+  myEvent: "hunger set 20"
+objectives:
+  myObjective: "mobkill ZOMBIE 10"
+```
+
+1. Every building block is defined in its own section. In this case, the sections contents is a condition.
+2. `myCondition` is the name of this condition. The instruction text is `health 10`. 
+   This is a condition which checks if the player has 10 health.
 
 ### Conditions
 

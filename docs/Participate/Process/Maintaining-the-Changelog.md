@@ -1,5 +1,7 @@
 ---
 icon: material/cards-variant
+hide:
+  - footer
 ---
 Before you make a commit, you should keep in mind, that you need to add a changelog entry.
 

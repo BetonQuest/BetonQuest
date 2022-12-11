@@ -1,5 +1,7 @@
 ---
 icon: material/upload
+hide:
+  - footer
 ---
 This guide explains how to migrate from BetonQuest 1.12.X or any BetonQuest 2.0.0 dev build to the latest BetonQuest
 2.0.0 dev build.
@@ -32,7 +34,7 @@ All existing RPGMenu users must update their RPGMenu config file. Simply rename 
 - Rename all "_main.yml_" files to "_package.yml_"
 - Quest packages can now contain nested quest packages in sub folders. You can also have any file and folder structure
   with any file and folder names you want. Only the "_package.yml_" is reserved as indicator for a [quest
-  package](Packages-&-Templates.md).
+  package](../../Packages-&-Templates.md).
   * Therefore, the "_events.yml_`, "_objectives.yml_", "_conditions.yml_", "_journal.yml_" and "_items.yml_" files must
     be updated to the following format:
     Every type that was previously a separate file with a special name is now identified by a "parent-section". It's
@@ -107,7 +109,7 @@ All existing RPGMenu users must update their RPGMenu config file. Simply rename 
 ### 2.0.0-DEV-337 - Event Scheduling Rework
 
 - All your static events need to be converted to the new scheduling system.
-  The [`realtime-daily`](./Schedules.md#daily-realtime-schedule-realtime-daily) schedule makes this easy:
+  The [`realtime-daily`](../../Scripting/Schedules.md#daily-realtime-schedule-realtime-daily) schedule makes this easy:
   
     !!! info "Example"
             ```YAML title="Old Syntax"

@@ -1,7 +1,9 @@
 ---
-icon: material/handshake
+icon: octicons/info-16
+hide:
+  - footer
 ---
-There are two options to support projects like this one:
+You have a few options to support projects like this one:
 
 ## Donate Time :material-clock-time-four:
 
@@ -16,15 +18,6 @@ There are two options to support projects like this one:
     * The feature does not exist yet (Search docs / Ask on Discord)
     * No one has already requested it (Search GitHub discussion). You can comment on an existing discussion to add details.
 
-??? note "Write Code"
-    We have written a guide about contributing code:
-    
-    Please follow our detailed [Setup Project](Setup-Project.md) guide to obtain a local working environment. 
-
-    After that, you can follow the `Process` chapter. It explains every step in the contributing process.
-    Start by [creating a new branch](Process/Create-a-new-Branch.md), then change
-    [Code](./Process/Code/Workflow.md) and finally [submit any changes](./Process/Submitting-Changes.md) you made.
-
 ??? abstract "Write Documentation"
     We have written a guide about contributing documentation:
 
@@ -34,5 +27,13 @@ There are two options to support projects like this one:
     Start by [creating a new branch](Process/Create-a-new-Branch.md), then change [Docs](./Process/Docs/Workflow.md)
     and finally [submit any changes](Process/Submitting-Changes.md) you made.
 
+??? note "Write Code"
+    We have written a guide about contributing code:
+    
+    Please follow our detailed [Setup Project](Setup-Project.md) guide to obtain a local working environment. 
+
+    After that, you can follow the `Process` chapter. It explains every step in the contributing process.
+    Start by [creating a new branch](Process/Create-a-new-Branch.md), then change
+    [Code](./Process/Code/Workflow.md) and finally [submit any changes](./Process/Submitting-Changes.md) you made.
 
 --8<-- "sponsors.md"

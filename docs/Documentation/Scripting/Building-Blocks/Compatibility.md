@@ -342,112 +342,6 @@ This event simply gives the player specified amount of Heroes experience. The fi
     heroesexp primary 1000
     ```
 
-## Holograms
-
-!!! info "Required Dependencies"
-    The following feature can be activated by using any of the following plugins:
-    
-    | Plugin                                                                      | Required Version | Additional Dependencies                                                            |
-    |-----------------------------------------------------------------------------|------------------|------------------------------------------------------------------------------------|
-    | [DecentHolograms](https://www.spigotmc.org/resources/96927)                 | 2.7.5 or above   | [PlaceholderAPI](https://www.spigotmc.org/resources/6245/) for in-line variables.  |
-    | [HolographicDisplays](https://dev.bukkit.org/projects/holographic-displays) | 3.0.0 or above   | [ProtocolLib](https://www.spigotmc.org/resources/1997/) for conditioned holograms. | 
-    
-    If you have both plugins installed, you can use the [`default_hologram` option in "_config.yml_"](Configuration.md#default-hologram-plugin) to set which plugin should be used.
-    
-    !!! bug ""
-        **When used by external plugins like BetonQuest, DecentHolograms does not support custom model data in items lines!**
-        Last checked: DecentHolograms version 2.7.9 on 2023-01-03.
-
-### Hidden Holograms
-Installing either of these plugins will enable you to create hidden holograms, which will be shown to players only if they meet specified conditions.
-
-In order to create a hologram, you have to add a `holograms` section. Add a node named as your hologram to this section
-and define `lines`, `conditions` and `location` subnodes. The first one should be a list of texts - these will be the lines
-of a hologram. Color codes are supported. Second is a list of conditions separated by commas. Third is a location in a standard
-format, like in `teleport` event. An example of such hologram definition:
-
-```YAML
-holograms:
-  beton:
-    lines:
-    - 'item:custom_item'
-    - '&2Top questers this month'
-    - 'top:completed_quests;desc;10;&a;§6;2;&6'
-    - '&2Your amount: &6%point.completed_quests.amount%'
-    - '&Total amount: &6%azerothquests.globalpoint.total_completed_quests.amount%'
-    conditions: has_some_quest, !finished_some_quest    
-    location: 100;200;300;world
-    # How often to check conditions (optional)
-    check_interval: 20
-```
-
-#### Item Lines
-A line can also represent a floating item. To do so enter the line as 'item:`custom_item`'. It will be replaced with the
-`custom_item` defined in the `items` section. If the Item is defined for example as map, a floating map will be seen between two lines of text.
-!!! bug ""
-    **When used by external plugins like BetonQuest, DecentHolograms does not support custom model data in items lines!**
-
-#### Ranking Holograms
-Holograms created by BetonQuest can rank users by the score of a point. Such scoreboards (not to be confused with the
-Minecraft vanilla scoreboard) are configured as one line and replaced by multiple lines according to the limit definition.
-Each scoreboard line comes in the format `#. name - score` The short syntax is 'top:`point`;`order`;`limit`'. The specified
-`point` must be located inside the package the hologram is declared in. To use a point from another package, put `package.point`
-instead. The `order` is either 'desc' for descending or 'asc' for ascending. If something other is specified, descending will
-be used by default. The limit should be a positive number. In the short declaration, the whole line will be white. To color
-each of the four elements of a line (place, name, dash and score), the definition syntax can be extended to
-'top:`point`;`order`;`limit`;`c1`;`c2`;`c3`;`c4`'. The color codes can be prefixed with either `§` or `&`, but do not have
-to be. If for example `c2` is left blank (two following semicolons), it is treated as an 'f' (color code for white).
-
-Each BetonQuest variable can be displayed on a hologram in a text line. These variables use the same definition syntax as
-in conversations such that; '`%package.variable%`'. Where the `package` part is optional if the hologram is defined in the
-same package as the variable. If you wish to refer to a variable that is *not* in the same package as the hologram, then you
-must specify a [package](Packages-&-Templates.md) before the `variable`.
-
-!!! warning "Potential lags"
-    The HolographicDisplays documentations warns against using too many individual hologram variables since they are rendered
-    for each player individually. If you are using HolographicDisplays, to save resources, it is recommended to minimise the use of non-static variables.
-
-The hologram's conditions are checked every 10 seconds, meaning a hologram will respond to a condition being met or un-met
-every 10 seconds. If you want to make it faster, add `hologram_update_interval` option in _config.yml_ file and set it to a
-number of ticks you want to pass between updates (one second is 20 ticks). Don't set it to 0 or negative numbers, it will result in an error.
-
-Keep in mind that each hologram plugin also updates it's holograms on a timer individually, meaning that hologram variables will refresh at a much quicker rate than the above.
-
-### NPC Holograms
-
-If Citizens is also installed then you can have holograms configured relative to an NPC.
-If you have moving NPCs (walking around) then you can have the holograms follow them by setting `follow: true`,
-but this will cause a lot of updates to the holograms and may cause lag if used on a lot of NPCs.
-So only set this to true for holograms with an NPC that actually moves.
-
-Add the following for NPC Holograms:
-
-```YAML
-npc_holograms:
-  # Hologram Settings
-  default:
-    # Lines in hologram
-    lines:
-      - "Some text!"
-    # Vector offset to NPC position to place hologram
-    vector: 0;0.5;0
-    # follow boolean
-    follow: true
-    # Conditions to display hologram
-    conditions: has_some_quest,!finished_some_quest
-    # How often to check conditions (optional)
-    check_interval: 20
-
-    # NPC's to apply these settings to. If blank, applies by default
-    npcs:
-      - 0
-      - 22
-```
-
-Item lines are also supported here.
-!!! bug ""
-    **When used by external plugins like BetonQuest, DecentHolograms does not support custom model data in items lines!**
-
 ## [JobsReborn](https://www.spigotmc.org/resources/4216/)
 
 Requires adding the following to _config.yml_:
@@ -839,7 +733,7 @@ Check whether the player is near a specific MythicMobs entity. The first argumen
 
 | Parameter  | Syntax                                              | Default Value          | Explanation                                                                                                                             |
 |------------|-----------------------------------------------------|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
-| _location_ | [ULF](./Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | The location to spawn the mob at.                                                                                                       |
+| _location_ | [ULF](../Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | The location to spawn the mob at.                                                                                                       |
 | _name_     | name:level                                          | :octicons-x-circle-16: | MythicMobs mob name. A level must be specifed after a colon.                                                                            |
 | _amount_   | Positive Number                                     | :octicons-x-circle-16: | Amount of mobs to spawn.                                                                                                                |
 | _target_   | Keyword                                             | False                  | Will make the mob target the player.                                                                                                    |
@@ -888,33 +782,11 @@ You can also use placeholders from other plugins in BetonQuest. Simply insert a 
 
 ## [ProtocolLib](https://www.spigotmc.org/resources/1997/)
 
-### Hiding NPC's
-Having ProtocolLib installed will let you hide Citizens NPCs if specified conditions are met.
-You can do that by adding a `hide_npcs` section in your package. 
-It allows you to assign conditions to specific NPC IDs like so:
-
-```YAML
-hide_npcs:
-  41: killedAlready,questStarted
-  127: '!questStarted'
-```
-
-The interval the conditions are checked in can be configured in the [config.yml](./Configuration.md#npc-hider-interval).
-
-### Force Visibility update
-You can run the `updatevisibility` event to manually update the visibility. This is useful for performance optimizations
-on large servers if used together with the [npc hider interval](./Configuration.md#npc-hider-interval) set to high values.
-
-### Chat Interceptor: `packet`
-
-Intercepts pretty much anything sent to the player by intercepting packets sent to them. This can be enabled by default by setting the `default_interceptor` to `packet` in config.yml or per conversation by setting `interceptor` to `packet` in the top level of the conversation.
-
 ### Freeze players: 'freeze'
 This event allows you to freeze player for the given amount of ticks:
 ```YAML
 freezeMe: "freeze 100" #Freezes the player for 5 seconds
 ```
-
 
 ## [Quests](https://www.spigotmc.org/resources/3711/)
 

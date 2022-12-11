@@ -1,5 +1,7 @@
 ---
 icon: fontawesome/solid/wrench
+hide:
+  - footer
 ---
 # Plugin configuration
 The plugin's config is stored in a file called `menuConfig.yml` which is located in the plugin folder of BetonQuest, right near the config file of BetonQuest.  

@@ -1,5 +1,7 @@
 ---
 icon: material/television-guide
+hide:
+  - footer
 ---
 
 # Menus
@@ -69,14 +71,14 @@ The three basic optional settings.
 
 | <div style="width:90px">Name</div> |          Example          | Description                                                                                                                                          |
 |:----------------------------------:|:-------------------------:|------------------------------------------------------------------------------------------------------------------------------------------------------|
-|              `amount`              |       `amount: 30`        | The size of the stack that will be displayed in the menu. [Variables](Variables-List.md) are supported.                                              |
+|              `amount`              |       `amount: 30`        | The size of the stack that will be displayed in the menu. [Variables](Scripting/Building-Blocks/Variables-List.md) are supported.                                              |
 |            `conditions`            | `conditions: "questDone"` | One or multiple conditions (separated by a `,`) which all have to be true to display the item.                                                       |
 |              `close`               |       `close: true`       | If set to `true` the menu will be closed after clicking the item. If this is not set the `default_close` value from the plugins config will be used. |
 
 ### The optional `text` setting
 By default, the name and description of the quest item is displayed when hovering over the item.
 You can overwrite this by using the `text` setting.
-Both [color codes](https://minecraft.gamepedia.com/Formatting_codes) and [variables](Variables-List.md) are supported.
+Both [color codes](https://minecraft.gamepedia.com/Formatting_codes) and [variables](Scripting/Building-Blocks/Variables-List.md) are supported.
 
 ``` YAML title="Example"
 skeletonQuestDone:

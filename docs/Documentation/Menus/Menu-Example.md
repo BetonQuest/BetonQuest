@@ -1,5 +1,7 @@
 ---
 icon: material/menu-open
+hide:
+  - footer
 ---
 # Basic Menu Example
 

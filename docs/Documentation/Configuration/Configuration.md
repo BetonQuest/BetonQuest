@@ -1,5 +1,7 @@
 ---
 icon: fontawesome/solid/wrench
+hide:
+  - footer
 ---
 # Configuration
 
@@ -57,10 +59,10 @@ The `update` section controls the Auto-Updater. It has the following settings:
 * `enabled` (default `true`). Enables or disables the Updater. If set to false, it is not possible to update with the
   updater and no version checks are executed.
 * `strategy` (default `MINOR`). The update strategy is the most important feature of the Auto-Updater. An explanation is
-  available [here](./Updating.md#choose-an-update-strategy).
+  available [here](Version-Changes/Updating.md#choose-an-update-strategy).
 * `automatic` (default `true`). If true the updater will download new Versions automatically. Otherwise, the updater
   will only download new versions when the update command is executed. Advice is
-  available [here](./Updating.md#enable-or-disable-automatic-updates).
+  available [here](Version-Changes/Updating.md#enable-or-disable-automatic-updates).
 
 ### Journal slots
 
@@ -92,15 +94,15 @@ chat-based conversation interface).
 ### Default conversation style
 
 `default_conversation_IO` is a comma-separated list of conversation interfaces with the first valid one used.
-Read [this page](Conversations.md) for more information about conversation interfaces.
+Read [this page](../Conversations.md) for more information about conversation interfaces.
 
 ### Default Chat interceptor
 
 `default_interceptor` is a comma-separated list of chat interceptors with the first valid one used.
-Read [this page](Conversations.md) for more information about chat interceptors.
+Read [this page](../Conversations.md) for more information about chat interceptors.
 
 ### Default Hologram Plugin
-The [holograms integration](Compatibility.md#holograms) works with multiple plugins.
+The [holograms integration](../Scripting/Building-Blocks/Compatibility.md#holograms) works with multiple plugins.
 You can use the `default_hologram` option to set which plugin should be used.
         
 `default_hologram: DecentHolograms,HolographicDisplays` will make DecentHolograms the default hologram plugin. If it is not installed, 

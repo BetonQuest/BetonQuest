@@ -1,5 +1,7 @@
 ---
 icon: material/party-popper
+hide:
+  - footer
 ---
 ## Notify IO's
 
@@ -18,7 +20,7 @@ Therefore, you can play a sound whenever a notification is shown.
 The actual message is either defined in the event that triggers the NotifyIO or
 in the *messages.yml* for all built-in notifications. 
 
-**Check the [notification event documentation](Events-List.md#notification-notify) on how to use the notify event!**
+**Check the [notification event documentation](Scripting/Building-Blocks/Events-List.md#notification-notify) on how to use the notify event!**
 
 ### Chat
 Writes the notification in the player's chat.
