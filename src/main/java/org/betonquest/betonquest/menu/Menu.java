@@ -229,13 +229,14 @@ public class Menu extends SimpleYMLSection implements Listener {
             return;
         }
         event.setCancelled(true);
-        if (!mayOpen(PlayerConverter.getID(event.getPlayer()))) {
+        final OnlineProfile onlineprofile = PlayerConverter.getID(event.getPlayer());
+        if (!mayOpen(onlineprofile)) {
             RPGMenuConfig.sendMessage(event.getPlayer(), "menu_do_not_open");
             return;
         }
         //open the menu
-        LOG.debug(getPackage(), event.getPlayer().getName() + " used bound item of menu " + this.menuID);
-        menu.openMenu(PlayerConverter.getID(event.getPlayer()), this.menuID);
+        LOG.debug(getPackage(), onlineprofile + " used bound item of menu " + this.menuID);
+        menu.openMenu(onlineprofile, this.menuID);
     }
 
     /**

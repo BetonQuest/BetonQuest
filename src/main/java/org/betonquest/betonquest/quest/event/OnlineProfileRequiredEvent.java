@@ -10,7 +10,7 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
  * Decorator for events that do not support execution with offline players.
  */
 @CustomLog
-public class OnlinePlayerRequiredEvent implements Event {
+public class OnlineProfileRequiredEvent implements Event {
 
     /**
      * The event to execute.
@@ -28,7 +28,7 @@ public class OnlinePlayerRequiredEvent implements Event {
      * @param event        event to execute
      * @param questPackage quest package to use for reporting execution failures
      */
-    public OnlinePlayerRequiredEvent(final Event event, final QuestPackage questPackage) {
+    public OnlineProfileRequiredEvent(final Event event, final QuestPackage questPackage) {
         this.event = event;
         this.questPackage = questPackage;
     }

@@ -962,7 +962,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         // if the player is offline then get his PlayerData outside of the
         // list
         if (playerData == null) {
-            LOG.debug("Player is offline, loading his data");
+            LOG.debug("Profile is offline, loading his data");
             playerData = new PlayerData(profile);
         }
         // if there are no arguments then list player's tags
@@ -1118,7 +1118,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         PlayerData playerData = instance.getPlayerData(profile);
         // if the player is offline then get his PlayerData outside the list
         if (playerData == null) {
-            LOG.debug("Player is offline, loading his data");
+            LOG.debug("Profile is offline, loading his data");
             playerData = new PlayerData(profile);
         }
         // if there are no arguments then list player's objectives

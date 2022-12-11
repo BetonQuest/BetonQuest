@@ -5,7 +5,7 @@ import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.quest.event.OnlinePlayerRequiredEvent;
+import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
@@ -31,9 +31,9 @@ public class DamageEventFactory implements EventFactory {
     /**
      * Create the damage event factory.
      *
-     * @param server server to use
+     * @param server    server to use
      * @param scheduler scheduler to use
-     * @param plugin plugin to use
+     * @param plugin    plugin to use
      */
     public DamageEventFactory(final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
         this.server = server;
@@ -45,7 +45,7 @@ public class DamageEventFactory implements EventFactory {
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         final VariableNumber damage = instruction.getVarNum();
         return new PrimaryServerThreadEvent(
-                new OnlinePlayerRequiredEvent(
+                new OnlineProfileRequiredEvent(
                         new DamageEvent(damage), instruction.getPackage()),
                 server, scheduler, plugin);
     }

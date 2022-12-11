@@ -8,7 +8,7 @@ import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.quest.event.DoNothingStaticEvent;
 import org.betonquest.betonquest.quest.event.NullStaticEventAdapter;
-import org.betonquest.betonquest.quest.event.OnlinePlayerRequiredEvent;
+import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.bukkit.Server;
 import org.bukkit.World;
@@ -38,9 +38,9 @@ public class WeatherEventFactory implements EventFactory, StaticEventFactory {
     /**
      * Create the weather event factory.
      *
-     * @param server server to use
+     * @param server    server to use
      * @param scheduler scheduler to use
-     * @param plugin plugin to use
+     * @param plugin    plugin to use
      */
     public WeatherEventFactory(final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
         this.server = server;
@@ -53,7 +53,7 @@ public class WeatherEventFactory implements EventFactory, StaticEventFactory {
         final Weather weather = parseWeather(instruction.next());
         final WorldSelector worldSelector = parseWorld(instruction.getOptional("world"));
         return new PrimaryServerThreadEvent(
-                new OnlinePlayerRequiredEvent(
+                new OnlineProfileRequiredEvent(
                         new WeatherEvent(weather, worldSelector), instruction.getPackage()),
                 server, scheduler, plugin);
     }

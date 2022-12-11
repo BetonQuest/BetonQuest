@@ -189,9 +189,9 @@ public class OpenedMenu implements Listener {
         //call event
         final MenuClickEvent clickEvent = new MenuClickEvent(onlineProfile, getId(), event.getSlot(), item.getId(), event.getClick());
         Bukkit.getPluginManager().callEvent(clickEvent);
-        LOG.debug(getId().getPackage(), player.getName() + " clicked on slot " + event.getSlot() + " with item " + item.getId() + " in menu " + getId());
+        LOG.debug(getId().getPackage(), onlineProfile + " clicked on slot " + event.getSlot() + " with item " + item.getId() + " in menu " + getId());
         if (clickEvent.isCancelled()) {
-            LOG.debug(getId().getPackage(), "click of " + player.getName() + " in menu " + getId() + " was cancelled by a bukkit event listener");
+            LOG.debug(getId().getPackage(), "click of " + onlineProfile + " in menu " + getId() + " was cancelled by a bukkit event listener");
             return;
         }
         //done if already closed by a 3rd party listener
@@ -231,7 +231,7 @@ public class OpenedMenu implements Listener {
         //call event
         final MenuCloseEvent closeEvent = new MenuCloseEvent(onlineProfile, getId());
         Bukkit.getPluginManager().callEvent(closeEvent);
-        LOG.debug(getId().getPackage(), player.getName() + " closed menu " + getId());
+        LOG.debug(getId().getPackage(), onlineProfile + " closed menu " + getId());
         //clean up
         HandlerList.unregisterAll(this);
         OPENED_MENUS.remove(onlineProfile.getProfileUUID());
