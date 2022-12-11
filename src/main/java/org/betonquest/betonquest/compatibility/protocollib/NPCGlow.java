@@ -149,7 +149,11 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
         if (!npc.isSpawned()) {
             return;
         }
+
         final Integer npcID = npc.getId();
+        if(!npcConditions.containsKey(npcID)){
+            return;
+        }
 
         final Entity entity = npc.getEntity();
         final Set<ConditionID> conditions = npcConditions.get(npcID);
