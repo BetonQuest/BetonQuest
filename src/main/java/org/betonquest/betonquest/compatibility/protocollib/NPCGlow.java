@@ -4,7 +4,7 @@ import lombok.CustomLog;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.CitizensReloadEvent;
 import net.citizensnpcs.api.event.NPCDeathEvent;
-import net.citizensnpcs.api.event.NPCDespawnEvent;
+import net.citizensnpcs.api.event.NPCRemoveEvent;
 import net.citizensnpcs.api.event.NPCSpawnEvent;
 import net.citizensnpcs.api.npc.NPC;
 import org.apache.commons.lang3.EnumUtils;
@@ -273,12 +273,12 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
     }
 
     /**
-     * If NPC got despawn it gets remove the npc from all map.
+     * If NPC got removed it remove the npc from all map.
      *
-     * @param event NPCDespawn
+     * @param event NPCRemove
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onNPCDespawn(final NPCDespawnEvent event) {
+    public void onNPCRemove(final NPCRemoveEvent event) {
         final NPC npc = event.getNPC();
         final int npcId = npc.getId();
         if(!npcConditions.containsKey(npcId)){
