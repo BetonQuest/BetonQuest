@@ -53,7 +53,7 @@ public class JoinQuitListener implements Listener {
         if (playerData == null) {
             playerData = new PlayerData(onlineProfile);
             BetonQuest.getInstance().putPlayerData(onlineProfile, playerData);
-            LOG.warn("Failed to load data for player " + event.getPlayer().getName() + ", forcing.");
+            LOG.warn("Failed to load data for " + onlineProfile + ", forcing.");
         }
         playerData.startObjectives();
         GlobalObjectives.startAll(onlineProfile);

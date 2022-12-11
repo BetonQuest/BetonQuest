@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.events;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
@@ -12,7 +11,6 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
  * Gives journal to the player.
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class GiveJournalEvent extends QuestEvent {
     public GiveJournalEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, false);

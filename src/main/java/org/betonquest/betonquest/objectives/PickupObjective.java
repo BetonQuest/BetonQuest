@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.objectives;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Instruction.Item;
@@ -17,7 +16,6 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class PickupObjective extends CountingObjective implements Listener {
 
     private final Item[] pickupItems;

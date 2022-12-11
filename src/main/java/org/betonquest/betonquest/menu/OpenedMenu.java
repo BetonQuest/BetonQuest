@@ -143,7 +143,7 @@ public class OpenedMenu implements Listener {
         for (int i = 0; i < items.length; i++) {
             content[i] = (items[i] == null) ? new ItemStack(Material.AIR) : items[i].generateItem(onlineProfile);
         }
-        LOG.debug(getId().getPackage(), "updated contents of menu " + getId() + " for " + onlineProfile.getProfileName());
+        LOG.debug(getId().getPackage(), "updated contents of menu " + getId() + " for " + onlineProfile);
         inventory.setContents(content);
     }
 

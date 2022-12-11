@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.objectives;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
@@ -16,7 +15,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class KillPlayerObjective extends CountingObjective implements Listener {
 
     private final String name;

@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.objectives;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
@@ -21,7 +20,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
  * (breaking when should be placing) will reverse the progress.
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
-@CustomLog
 public class BlockObjective extends CountingObjective implements Listener {
 
     private final BlockSelector selector;

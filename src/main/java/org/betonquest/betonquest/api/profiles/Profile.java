@@ -41,7 +41,7 @@ public interface Profile {
     Optional<OnlineProfile> getOnlineProfile();
 
     /**
-     * @return the name of the player with the name of the active profile
+     * @return the name of the player with the name of the profile
      */
     @Override
     String toString();

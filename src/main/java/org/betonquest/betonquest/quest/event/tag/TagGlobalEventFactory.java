@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.event.tag;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.Event;
@@ -16,7 +15,6 @@ import java.util.Locale;
 /**
  * Factory to create global tag events from {@link Instruction}s.
  */
-@CustomLog
 public class TagGlobalEventFactory implements EventFactory, StaticEventFactory {
     /**
      * BetonQuest instance to provide to events.

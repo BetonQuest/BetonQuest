@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.events;
 
-import lombok.CustomLog;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Instruction.Item;
@@ -19,7 +18,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * Removes items from player's inventory and/or backpack
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class TakeEvent extends AbstractTakeEvent {
 
     protected final Map<UUID, Pair<QuestItem, Integer>> neededDeletions = new ConcurrentHashMap<>();

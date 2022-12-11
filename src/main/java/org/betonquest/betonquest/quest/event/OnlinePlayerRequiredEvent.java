@@ -38,7 +38,7 @@ public class OnlinePlayerRequiredEvent implements Event {
         if (profile.getOnlineProfile().isPresent()) {
             event.execute(profile);
         } else {
-            LOG.debug(questPackage, "Player " + profile.getPlayer().getName() + " is offline, cannot fire event because it's not persistent.");
+            LOG.debug(questPackage, profile + " is offline, cannot fire event because it's not persistent.");
         }
     }
 }

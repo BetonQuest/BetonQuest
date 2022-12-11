@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.objectives;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
@@ -33,7 +32,6 @@ import java.util.stream.Collectors;
  * Requires the player to manually brew a potion.
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class
 BrewObjective extends CountingObjective implements Listener {
 
