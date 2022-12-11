@@ -42,10 +42,6 @@ public class GlowAPI {
         final PacketContainer packet = new PacketContainer(PacketType.Play.Server.SCOREBOARD_TEAM);
         packet.getIntegers().write(0, packetMode.ordinal());
 
-        if (packetMode == Mode.TEAM_REMOVED) {
-            sendPacket(profile, packet);
-            return;
-        }
         packet.getStrings().write(0, "Color#" + color.name());
         packet.getOptionalStructures().read(0).map((structure) ->
                 structure.getEnumModifier(ChatColor.class,

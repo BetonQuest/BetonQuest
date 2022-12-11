@@ -233,7 +233,7 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
                         return;
                     }
                     final Entity entity = npc.getEntity();
-                    glowAPI.sendGlowPacket(entity, null, false, profiles);
+                    glowAPI.sendGlowPacket(entity, ChatColor.WHITE, false, profiles);
                 });
     }
 
@@ -281,8 +281,11 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
     public void onNPCDespawn(final NPCDespawnEvent event) {
         final NPC npc = event.getNPC();
         final int npcId = npc.getId();
+        if(!npcConditions.containsKey(npcId)){
+            return;
+        }
         for (final NPCData npcData : npcConditions.get(npcId)) {
-            npcProfilesMap.get(npcData).clear();
+            npcProfilesMap.remove(npcData);
         }
         npcConditions.remove(npcId);
     }
@@ -294,10 +297,12 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onNPCDeath(final NPCDeathEvent event) {
-        final NPC npc = event.getNPC();
-        final int npcId = npc.getId();
+        final int npcId = event.getNPC().getId();
+        if(!npcConditions.containsKey(npcId)){
+            return;
+        }
         for (final NPCData npcData : npcConditions.get(npcId)) {
-            npcProfilesMap.get(npcData).clear();
+            npcProfilesMap.remove(npcData);
         }
         npcConditions.remove(npcId);
     }
