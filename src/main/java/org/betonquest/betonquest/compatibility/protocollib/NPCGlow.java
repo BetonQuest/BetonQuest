@@ -33,7 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * NPCGlow class
@@ -53,14 +53,14 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
     /**
      * instance of GlowAPI
      */
-    private GlowAPI glowAPI;
+    private final GlowAPI glowAPI;
 
     /**
      * Constructor of NPCGlow instance
      */
     public NPCGlow() {
         super();
-        glowStates = new CopyOnWriteArrayList<>();
+        glowStates = new ArrayList<>();
         glowAPI = new GlowAPI();
         Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), this::loadFromConfig, 5L);
         runTaskTimerAsynchronously(BetonQuest.getInstance(), 0, 5);
@@ -123,7 +123,7 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
                     chatColor = ChatColor.valueOf(color.toUpperCase(Locale.ROOT));
                 }
 
-                final GlowState glowState = new GlowState(npcId, conditions, chatColor, new ArrayList<>());
+                final GlowState glowState = new GlowState(npcId, conditions, chatColor, new ConcurrentLinkedQueue<>());
                 glowStates.add(glowState);
             }
         }
@@ -229,29 +229,11 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
         applyAll();
     }
 
-    /**
-     * Resets all glowing NPCs.
-     *
-     * @param profiles List of profiles that will get the packet
-     */
-    public void resetGlow(final Collection<? extends OnlineProfile> profiles) {
-        glowStates.parallelStream().forEach((glowState) -> {
-            final NPC npc = CitizensAPI.getNPCRegistry().getById(glowState.npcID);
-            if (npc == null) {
-                return;
-            }
-            final Entity entity = npc.getEntity();
-            glowAPI.sendGlowPacket(entity, ChatColor.WHITE, false, profiles);
-        });
-    }
 
     /**
-     * stop the NPCGlow instance, cleaning up all maps, Runnable, Listener, etc. And Reset all the glowing npc.
+     * Stops the NPCGlow instance, cleaning up all maps, Runnable, Listener, etc. And Reset all the glowing npc.
      */
     public void stop() {
-        resetGlow(PlayerConverter.getOnlineProfiles());
-        glowStates.clear();
-        glowAPI = null;
         cancel();
         HandlerList.unregisterAll(this);
     }

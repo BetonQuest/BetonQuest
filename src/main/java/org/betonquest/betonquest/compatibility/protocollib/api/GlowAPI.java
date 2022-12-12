@@ -111,7 +111,7 @@ public class GlowAPI {
      * @param profile  profile that can see the glow
      */
     public void sendGlowPacket(final Collection<Entity> entities, final ChatColor color, final boolean willGlow, final OnlineProfile profile) {
-        entities.forEach(entity -> createAndSendGlowPacket(entity, willGlow, profile));
+        entities.parallelStream().forEach(entity -> createAndSendGlowPacket(entity, willGlow, profile));
 
         if (willGlow) {
             sendTeamGlowPacket(entities, color, Mode.TEAM_CREATED, profile);
