@@ -369,7 +369,7 @@ public class Menu extends SimpleYMLSection implements Listener {
             }
             final OnlineProfile onlineProfile = PlayerConverter.getID(player);
             if (mayOpen(onlineProfile)) {
-                LOG.debug(getPackage(), player.getName() + " run bound command of " + menuID);
+                LOG.debug(getPackage(), onlineProfile + " run bound command of " + menuID);
                 menu.openMenu(onlineProfile, menuID);
                 return true;
             } else {

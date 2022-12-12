@@ -60,7 +60,7 @@ public class CompassEvent extends QuestEvent {
                     final Instruction tagInstruction = new Instruction(instruction.getPackage(), null, "tag " + action.toString().toLowerCase(Locale.ROOT) + " compass-" + compass);
                     BetonQuest.getInstance().getEventFactory("tag").parseEventInstruction(tagInstruction).handle(profile);
                 } catch (final InstructionParseException e) {
-                    LOG.warn(instruction.getPackage(), "Failed to tag profile with compass point: " + compass, e);
+                    LOG.warn(instruction.getPackage(), "Failed to tag " + profile + " with compass point: " + compass, e);
                 }
                 return null;
             case SET:

@@ -79,7 +79,7 @@ public class ObjectiveEvent extends QuestEvent {
                         case "start", "add" -> playerData.addNewRawObjective(objective);
                         case "delete", "remove" -> playerData.removeRawObjective(objective);
                         case "complete", "finish" ->
-                                LOG.warn(instruction.getPackage(), "Cannot complete objective for offline profile!");
+                                LOG.warn(instruction.getPackage(), "Cannot complete objective for " + profile + ", because he is offline!");
                         default -> {
                         }
                     }
