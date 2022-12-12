@@ -29,12 +29,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * NPCGlow class
@@ -50,11 +49,7 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
     /**
      * List of conditions for specific NPC that will get glow
      */
-    private final Map<Integer, List<NPCData>> npcConditions;
-    /**
-     * A map of NPCs with a collection of profiles that can see the npc glowing.
-     */
-    private final Map<NPCData, Collection<OnlineProfile>> npcProfilesMap;
+    private final List<GlowState> glowStates;
     /**
      * instance of GlowAPI
      */
@@ -65,8 +60,7 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
      */
     public NPCGlow() {
         super();
-        npcProfilesMap = new HashMap<>();
-        npcConditions = new HashMap<>();
+        glowStates = new CopyOnWriteArrayList<>();
         glowAPI = new GlowAPI();
         Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), this::loadFromConfig, 5L);
         runTaskTimerAsynchronously(BetonQuest.getInstance(), 0, 5);
@@ -74,7 +68,7 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
     }
 
     /**
-     * Starts (or restarts) the NPCGlow. It loads the current configuration for hidden NPCs
+     * Starts (or restarts) the NPCGlow. Used for reloading this feature.
      */
     public static void start() {
         synchronized (NPCGlow.class) {
@@ -95,7 +89,7 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
     /**
      * load all data from config
      */
-    @SuppressWarnings({"PMD.CognitiveComplexity","PMD.CyclomaticComplexity"})
+    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
     private void loadFromConfig() {
         for (final QuestPackage cfgPackage : Config.getPackages().values()) {
             final ConfigurationSection custom = cfgPackage.getConfig();
@@ -129,124 +123,10 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
                     chatColor = ChatColor.valueOf(color.toUpperCase(Locale.ROOT));
                 }
 
-                final NPCData npcData = new NPCData(npcId, conditions, chatColor);
-                if (npcConditions.containsKey(npcId)) {
-                    npcConditions.get(npcId).add(npcData);
-                } else {
-                    npcConditions.putIfAbsent(npcId, new ArrayList<>());
-                    npcConditions.get(npcId).add(npcData);
-                }
-
-                npcProfilesMap.put(npcData, new HashSet<>());
+                final GlowState glowState = new GlowState(npcId, conditions, chatColor, new ArrayList<>());
+                glowStates.add(glowState);
             }
         }
-    }
-
-    /**
-     * Applies the glow if profile meets the conditions.
-     *
-     * @param profile profile that will get checked
-     * @param npc     the npc that will get checked
-     */
-    @SuppressWarnings("PMD.CyclomaticComplexity")
-    public void applyVisibility(final OnlineProfile profile, final NPC npc) {
-        if (!npc.isSpawned()) {
-            return;
-        }
-
-        final Integer npcID = npc.getId();
-        if (!npcConditions.containsKey(npcID)) {
-            return;
-        }
-
-        final Entity entity = npc.getEntity();
-        npcConditions.get(npcID).parallelStream().forEach(npcData -> {
-            final Set<ConditionID> conditions = npcData.conditions();
-
-            final Collection<OnlineProfile> glowingProfiles = npcProfilesMap.get(npcData);
-            if (conditions.isEmpty() || BetonQuest.conditions(profile, conditions)) {
-                if (npcProfilesMap.containsKey(npcData) && glowingProfiles.add(profile)) {
-                    glowAPI.sendGlowPacket(entity, npcData.color(), true, profile);
-                }
-            } else {
-                if (npcProfilesMap.containsKey(npcData) && glowingProfiles.contains(profile)) {
-                    glowingProfiles.remove(profile);
-                    glowAPI.sendGlowPacket(entity, npcData.color(), false, profile);
-                }
-            }
-        });
-    }
-
-    /**
-     * Updates all NPCs for all profiles.
-     */
-    public void applyGlow() {
-        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
-            npcConditions.keySet().parallelStream()
-                    .forEach((id) -> applyVisibility(onlineProfile, CitizensAPI.getNPCRegistry().getById(id)));
-        }
-
-        npcProfilesMap.forEach((npcData, profiles) -> {
-            final int npcId = npcData.npcID();
-            final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
-            if (npc == null) {
-                LOG.warn("NPC Glow could not update Glowing for npc " + npcId + ": No npc with this id found!");
-                return;
-            }
-            final Entity entity = npc.getEntity();
-            glowAPI.sendGlowPacket(entity, npcData.color(), true, profiles);
-        });
-    }
-
-    /**
-     * Applies glow to npc for all online profiles if the conditions are met.
-     *
-     * @param npc npc that gets checked
-     */
-    public void applyGlow(final NPC npc) {
-        if (!npc.getOwningRegistry().equals(CitizensAPI.getNPCRegistry())) {
-            return;
-        }
-        PlayerConverter.getOnlineProfiles().parallelStream()
-                .forEach((profile) -> applyVisibility(profile, npc));
-    }
-
-    /**
-     * Starting the Runnable
-     */
-    @Override
-    public void run() {
-        applyGlow();
-    }
-
-    /**
-     * Reset all Glowing NPCs
-     *
-     * @param npcs     List of NPCs that will be unGlow
-     * @param profiles List of profiles that will get the packet
-     */
-    public void resetGlow(final Collection<Integer> npcs, final Collection<? extends OnlineProfile> profiles) {
-        npcs.parallelStream()
-                .forEach((npcId) -> {
-                    final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
-                    if (npc == null) {
-                        return;
-                    }
-                    final Entity entity = npc.getEntity();
-                    glowAPI.sendGlowPacket(entity, ChatColor.WHITE, false, profiles);
-                });
-    }
-
-    /**
-     * stop the NPCGlow instance, cleaning up all maps, Runnable, Listener, etc. And Reset all the glowing npc.
-     */
-    public void stop() {
-        resetGlow(npcConditions.keySet(), PlayerConverter.getOnlineProfiles());
-        npcProfilesMap.clear();
-        npcConditions.clear();
-        glowAPI = null;
-        cancel();
-        HandlerList.unregisterAll(this);
     }
 
     /**
@@ -273,38 +153,137 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
     }
 
     /**
-     * If NPC got removed it remove the npc from all map.
+     * Applies the glow to one NPC if profile meets the conditions.
      *
-     * @param event NPCRemove
+     * @param profile profile that will get checked
+     * @param npc     the npc that will get checked
      */
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onNPCRemove(final NPCRemoveEvent event) {
-        final NPC npc = event.getNPC();
-        final int npcId = npc.getId();
-        if(!npcConditions.containsKey(npcId)){
+    @SuppressWarnings("PMD.CyclomaticComplexity")
+    public void applyVisibility(final OnlineProfile profile, final NPC npc) {
+        if (!npc.isSpawned()) {
             return;
         }
-        for (final NPCData npcData : npcConditions.get(npcId)) {
-            npcProfilesMap.remove(npcData);
+
+        final Integer npcId = npc.getId();
+        if (glowStates.stream().noneMatch(glowState -> glowState.npcID().equals(npcId))) {
+            return;
         }
-        npcConditions.remove(npcId);
+
+        final Entity entity = npc.getEntity();
+        glowStates.stream()
+                .filter((glowState) -> glowState.npcID().equals(npcId))
+                .forEach(glowState -> {
+                    final Set<ConditionID> conditions = glowState.conditions();
+
+                    final Collection<OnlineProfile> glowingProfiles = glowState.activeProfiles();
+                    if (conditions.isEmpty() || BetonQuest.conditions(profile, conditions)) {
+                        if (glowingProfiles.add(profile)) {
+                            glowAPI.sendGlowPacket(entity, glowState.color(), true, profile);
+                        }
+                    } else {
+                        if (glowingProfiles.remove(profile)) {
+                            glowAPI.sendGlowPacket(entity, glowState.color(), false, profile);
+                        }
+                    }
+                });
     }
 
     /**
-     * If NPC death it gets remove the npc from all map.
+     * Updates all NPCs for all profiles.
+     */
+    public void applyAll() {
+        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+            glowStates.forEach((glowState) -> applyVisibility(onlineProfile, CitizensAPI.getNPCRegistry().getById(glowState.npcID())));
+        }
+
+        glowStates.forEach((glowState) -> {
+            final int npcId = glowState.npcID();
+            final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
+            if (npc == null) {
+                LOG.warn("NPC Glow could not update the NPC with id %s! It is null.".formatted(npcId));
+                return;
+            }
+            final Entity entity = npc.getEntity();
+            glowAPI.sendGlowPacket(entity, glowState.color(), true, glowState.activeProfiles());
+        });
+    }
+
+    /**
+     * Applies glow to npc for all online profiles if the conditions are met.
      *
-     * @param event NPCDeath
+     * @param npc npc that gets checked
+     */
+    public void applyGlow(final NPC npc) {
+        if (!npc.getOwningRegistry().equals(CitizensAPI.getNPCRegistry())) {
+            return;
+        }
+        PlayerConverter.getOnlineProfiles().parallelStream()
+                .forEach((profile) -> applyVisibility(profile, npc));
+    }
+
+    /**
+     * Starts the Runnable.
+     */
+    @Override
+    public void run() {
+        applyAll();
+    }
+
+    /**
+     * Resets all glowing NPCs.
+     *
+     * @param profiles List of profiles that will get the packet
+     */
+    public void resetGlow(final Collection<? extends OnlineProfile> profiles) {
+        glowStates.parallelStream().forEach((glowState) -> {
+            final NPC npc = CitizensAPI.getNPCRegistry().getById(glowState.npcID);
+            if (npc == null) {
+                return;
+            }
+            final Entity entity = npc.getEntity();
+            glowAPI.sendGlowPacket(entity, ChatColor.WHITE, false, profiles);
+        });
+    }
+
+    /**
+     * stop the NPCGlow instance, cleaning up all maps, Runnable, Listener, etc. And Reset all the glowing npc.
+     */
+    public void stop() {
+        resetGlow(PlayerConverter.getOnlineProfiles());
+        glowStates.clear();
+        glowAPI = null;
+        cancel();
+        HandlerList.unregisterAll(this);
+    }
+
+    /**
+     * When an NPC is removed, the current glowing profiles are removed as well.
+     * This is done to avoid the NPC glowing for a split second after getting recreated.
+     *
+     * @param event NPCRemoveEvent
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onNPCRemove(final NPCRemoveEvent event) {
+        clearActiveProfiles(event.getNPC().getId());
+    }
+
+    /**
+     * When an NPC dies, the current glowing profiles are removed.
+     * This is done to avoid the NPC glowing for a split second after respawn.
+     *
+     * @param event NPCDeathEvent
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onNPCDeath(final NPCDeathEvent event) {
-        final int npcId = event.getNPC().getId();
-        if(!npcConditions.containsKey(npcId)){
-            return;
-        }
-        for (final NPCData npcData : npcConditions.get(npcId)) {
-            npcProfilesMap.remove(npcData);
-        }
-        npcConditions.remove(npcId);
+        clearActiveProfiles(event.getNPC().getId());
+    }
+
+    private void clearActiveProfiles(final Integer npcId) {
+        glowStates.forEach((glowState) -> {
+            if (glowState.npcID().equals(npcId)) {
+                glowState.activeProfiles().clear();
+            }
+        });
     }
 
     /**
@@ -334,17 +313,19 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerLogout(final PlayerQuitEvent event) {
-        npcProfilesMap.values().forEach(
-                (profileCollection) -> profileCollection.remove(PlayerConverter.getID(event.getPlayer())));
+        glowStates.forEach((glowState) -> glowState.activeProfiles.remove(PlayerConverter.getID(event.getPlayer())));
     }
 
     /**
-     * NPC Data class to wrapped all the glow Data from {@link NPCGlow}
+     * Data class that stores different configurations of glowing NPCs.
+     * A single NPC can have multiple GlowStates, each with a different color, condition set and active profiles.
      *
-     * @param npcID      ID of NPC that will be registered
-     * @param conditions List of conditions for glowing
-     * @param color      Color of the glow
+     * @param npcID          ID of NPC that has this state
+     * @param conditions     List of conditions for when to activate the state
+     * @param color          Color of the glow state
+     * @param activeProfiles Collection of profiles that can see this state
      */
-    private record NPCData(Integer npcID, Set<ConditionID> conditions, ChatColor color){
+    private record GlowState(Integer npcID, Set<ConditionID> conditions, ChatColor color,
+                             Collection<OnlineProfile> activeProfiles) {
     }
 }

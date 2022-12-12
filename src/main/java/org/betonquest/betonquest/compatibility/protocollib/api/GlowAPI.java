@@ -96,8 +96,10 @@ public class GlowAPI {
      * @param profile  profile that can see the glow
      */
     public void sendGlowPacket(final Entity entity, final ChatColor color, final boolean willGlow, final OnlineProfile profile) {
-        final Collection<Entity> entities = Collections.singletonList(entity);
-        sendGlowPacket(entities, color, willGlow, profile);
+        if (entity != null) {
+            final Collection<Entity> entities = Collections.singletonList(entity);
+            sendGlowPacket(entities, color, willGlow, profile);
+        }
     }
 
     /**
