@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmocore;
 
-import lombok.CustomLog;
 import net.Indyuce.mmocore.api.block.BlockType;
 import net.Indyuce.mmocore.api.block.SkullBlockType;
 import net.Indyuce.mmocore.api.block.VanillaBlockType;
@@ -18,7 +17,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class MMOCoreBreakCustomBlockObjective extends CountingObjective implements Listener {
 
     private final String desiredBlockId;

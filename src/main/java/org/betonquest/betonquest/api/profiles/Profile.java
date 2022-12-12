@@ -39,4 +39,10 @@ public interface Profile {
      * @return The {@link OnlineProfile} of this Profile
      */
     Optional<OnlineProfile> getOnlineProfile();
+
+    /**
+     * @return the name of the player with the name of the profile
+     */
+    @Override
+    String toString();
 }

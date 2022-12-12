@@ -500,7 +500,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         // if the player is offline then get his PlayerData outside of the
         // list
         if (playerData == null) {
-            LOG.debug("Player is offline, loading his data");
+            LOG.debug("Profile is offline, loading his data");
             playerData = new PlayerData(profile);
         }
         // purge the player
@@ -532,7 +532,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         // if the player is offline then get his PlayerData outside of the
         // list
         if (playerData == null) {
-            LOG.debug("Player is offline, loading his data");
+            LOG.debug("Profile is offline, loading his data");
             playerData = new PlayerData(profile);
         }
         final Journal journal = playerData.getJournal();
@@ -630,7 +630,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         // if the player is offline then get his PlayerData outside of the
         // list
         if (playerData == null) {
-            LOG.debug("Player is offline, loading his data");
+            LOG.debug("Profile is offline, loading his data");
             playerData = new PlayerData(profile);
         }
         // if there are no arguments then list player's points
@@ -962,7 +962,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         // if the player is offline then get his PlayerData outside of the
         // list
         if (playerData == null) {
-            LOG.debug("Player is offline, loading his data");
+            LOG.debug("Profile is offline, loading his data");
             playerData = new PlayerData(profile);
         }
         // if there are no arguments then list player's tags
@@ -989,7 +989,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "a":
                 // add the tag
                 LOG.debug(
-                        "Adding tag " + tag + " for player " + profile.getProfileName());
+                        "Adding tag " + tag + " for " + profile);
                 playerData.addTag(tag);
                 sendMessage(sender, "tag_added");
                 break;
@@ -1000,7 +1000,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "d":
                 // remove the tag
                 LOG.debug(
-                        "Removing tag " + tag + " for player " + profile.getProfileName());
+                        "Removing tag " + tag + " from " + profile);
                 playerData.removeTag(tag);
                 sendMessage(sender, "tag_removed");
                 break;
@@ -1118,7 +1118,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         PlayerData playerData = instance.getPlayerData(profile);
         // if the player is offline then get his PlayerData outside the list
         if (playerData == null) {
-            LOG.debug("Player is offline, loading his data");
+            LOG.debug("Profile is offline, loading his data");
             playerData = new PlayerData(profile);
         }
         // if there are no arguments then list player's objectives
@@ -1172,7 +1172,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "add":
             case "a":
                 LOG.debug(
-                        "Adding new objective " + objectiveID + " for player " + profile.getProfileName());
+                        "Adding new objective " + objectiveID + " for " + profile);
                 // add the objective
                 if (isOnline) {
                     BetonQuest.newObjective(profile, objectiveID);
@@ -1187,7 +1187,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "r":
             case "d":
                 LOG.debug(
-                        "Deleting objective " + objectiveID + " for player " + profile.getProfileName());
+                        "Deleting objective " + objectiveID + " for " + profile);
                 objective.cancelObjectiveForPlayer(profile);
                 playerData.removeRawObjective(objectiveID);
                 sendMessage(sender, "objective_removed");
@@ -1195,7 +1195,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             case "complete":
             case "c":
                 LOG.debug(
-                        "Completing objective " + objectiveID + " for player " + profile.getProfileName());
+                        "Completing objective " + objectiveID + " for " + profile);
                 if (isOnline) {
                     objective.completeObjective(profile);
                 } else {

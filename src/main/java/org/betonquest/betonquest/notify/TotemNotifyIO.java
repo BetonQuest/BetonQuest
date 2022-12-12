@@ -2,7 +2,6 @@ package org.betonquest.betonquest.notify;
 
 import com.comphenix.packetwrapper.WrapperPlayServerEntityStatus;
 import com.comphenix.packetwrapper.WrapperPlayServerSetSlot;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
@@ -21,7 +20,6 @@ import java.util.Map;
 /**
  * Shows a totem of undying animation with a "customModelData" NBT tag.
  */
-@CustomLog
 public class TotemNotifyIO extends NotifyIO {
 
     /**

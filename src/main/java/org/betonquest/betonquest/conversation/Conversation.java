@@ -116,7 +116,7 @@ public class Conversation implements Listener {
 
         // if the player has active conversation, terminate this one
         if (LIST.containsKey(onlineProfile)) {
-            LOG.debug(pack, "Player " + onlineProfile.getProfileName() + " is in conversation right now, returning.");
+            LOG.debug(pack, onlineProfile + " is in conversation right now, returning.");
             return;
         }
 

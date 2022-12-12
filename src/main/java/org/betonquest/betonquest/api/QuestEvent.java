@@ -121,10 +121,10 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
         LOG.debug(instruction.getPackage(), "Static event will be fired once for every online profile:");
         for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
             if (!BetonQuest.conditions(onlineProfile, conditions)) {
-                LOG.debug(instruction.getPackage(), "Event conditions were not met for profile " + onlineProfile.getProfileName());
+                LOG.debug(instruction.getPackage(), "Event conditions were not met for " + onlineProfile);
                 return;
             }
-            LOG.debug(instruction.getPackage(), "Firing this static event for profile " + onlineProfile.getProfileName());
+            LOG.debug(instruction.getPackage(), "Firing this static event for " + onlineProfile);
             handle(onlineProfile);
         }
     }
@@ -134,13 +134,13 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
             LOG.debug(instruction.getPackage(), "Persistent event will be fired for offline profile.");
             handle(profile);
         } else {
-            LOG.debug(instruction.getPackage(), "Player " + profile.getPlayer() + " is offline, cannot fire event because it's not persistent.");
+            LOG.debug(instruction.getPackage(), profile + " is offline, cannot fire event because it's not persistent.");
         }
     }
 
     private void handleOnlineProfile(final Profile profile) throws QuestRuntimeException {
         if (!BetonQuest.conditions(profile, conditions)) {
-            LOG.debug(instruction.getPackage(), "Event conditions were not met for profile " + profile.getProfileName());
+            LOG.debug(instruction.getPackage(), "Event conditions were not met for " + profile);
             return;
         }
         handle(profile);

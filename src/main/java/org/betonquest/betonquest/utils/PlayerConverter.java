@@ -54,6 +54,11 @@ public final class PlayerConverter {
             }
 
             @Override
+            public String toString() {
+                return player.getName() + " with profile " + this.getProfileName();
+            }
+
+            @Override
             public boolean equals(final Object obj) {
                 return obj instanceof Profile profile && getProfileUUID().equals(profile.getProfileUUID());
             }
@@ -94,6 +99,11 @@ public final class PlayerConverter {
                     return Optional.of(this);
                 }
                 return Optional.empty();
+            }
+
+            @Override
+            public String toString() {
+                return player.getName() + " with profile " + this.getProfileName();
             }
 
             @Override

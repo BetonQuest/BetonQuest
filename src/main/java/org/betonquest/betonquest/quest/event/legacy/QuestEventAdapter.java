@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.event.legacy;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -12,7 +11,6 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 /**
  * Adapter for {@link Event} and {@link StaticEvent} to fit the old convention of {@link QuestEvent}.
  */
-@CustomLog
 public class QuestEventAdapter extends QuestEvent {
 
     /**

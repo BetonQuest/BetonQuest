@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.objectives;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
@@ -22,7 +21,6 @@ import java.util.regex.Pattern;
  * Requires the player to shear a sheep.
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class ShearObjective extends CountingObjective implements Listener {
 
     private final String color;

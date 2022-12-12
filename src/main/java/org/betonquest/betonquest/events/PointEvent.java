@@ -60,7 +60,7 @@ public class PointEvent extends QuestEvent {
                         addPoints(profile, playerData);
                     } catch (final QuestRuntimeException e) {
                         LOG.warn(instruction.getPackage(), "Error while asynchronously adding " + count + " points of '" + category
-                                + "' category to player " + profile.getPlayer().getName() + ": " + e.getMessage(), e);
+                                + "' category to " + profile + ": " + e.getMessage(), e);
                     }
                 }
             }.runTaskAsynchronously(BetonQuest.getInstance());

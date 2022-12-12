@@ -98,7 +98,7 @@ public class PlayerData implements TagData {
                     try {
                         item = new QuestItem(instruction).generate(amount);
                     } catch (final InstructionParseException e) {
-                        LOG.warn("Could not load backpack item for player " + profile.getProfileName()
+                        LOG.warn("Could not load backpack item for " + profile
                                 + ", with instruction '" + instruction + "', because: " + e.getMessage(), e);
                         continue;
                     }
@@ -121,7 +121,7 @@ public class PlayerData implements TagData {
 
                 LOG.debug("There are " + objectives.size() + " objectives, " + tags.size() + " tags, " + points.size()
                         + " points, " + entries.size() + " journal entries and " + backpack.size()
-                        + " items loaded for player " + profile.getProfileName());
+                        + " items loaded for " + profile);
             }
         } catch (final SQLException e) {
             LOG.error("There was an exception with SQL", e);

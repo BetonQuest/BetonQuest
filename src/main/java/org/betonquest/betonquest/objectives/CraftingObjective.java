@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.objectives;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
@@ -23,7 +22,6 @@ import org.bukkit.inventory.PlayerInventory;
  * Player has to craft specified amount of items.
  */
 @SuppressWarnings({"PMD.CommentRequired"})
-@CustomLog
 public class CraftingObjective extends CountingObjective implements Listener {
 
     private final QuestItem item;

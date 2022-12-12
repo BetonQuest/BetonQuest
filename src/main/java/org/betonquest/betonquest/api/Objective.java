@@ -189,17 +189,15 @@ public abstract class Objective {
             createObjectiveForPlayer(profile, getDefaultDataInstruction(profile));
         }
         LOG.debug(instruction.getPackage(),
-                "Objective \"" + instruction.getID().getFullID() + "\" has been completed for player "
-                        + profile.getProfileName()
-                        + ", firing events.");
+                "Objective \"" + instruction.getID().getFullID() + "\" has been completed for "
+                        + profile + ", firing events.");
         // fire all events
         for (final EventID event : events) {
             BetonQuest.event(profile, event);
         }
         LOG.debug(instruction.getPackage(),
-                "Firing events in objective \"" + instruction.getID().getFullID() + "\" for player "
-                        + profile.getProfileName()
-                        + " finished");
+                "Firing events in objective \"" + instruction.getID().getFullID() + "\" for "
+                        + profile + " finished");
     }
 
     /**
@@ -212,7 +210,7 @@ public abstract class Objective {
      */
     public final boolean checkConditions(final Profile profile) {
         LOG.debug(instruction.getPackage(), "Condition check in \"" + instruction.getID().getFullID()
-                + "\" objective for player " + profile.getProfileName());
+                + "\" objective for " + profile);
         return BetonQuest.conditions(profile, conditions);
     }
 
@@ -300,8 +298,8 @@ public abstract class Objective {
 
     private void handleObjectiveDataConstructionError(final Profile profile, final ReflectiveOperationException exception) {
         if (exception.getCause() instanceof InstructionParseException) {
-            LOG.warn(instruction.getPackage(), "Error while loading " + this.instruction.getID().getFullID() + " objective data for player "
-                    + profile.getProfileName() + ": " + exception.getCause().getMessage(), exception);
+            LOG.warn(instruction.getPackage(), "Error while loading " + this.instruction.getID().getFullID() + " objective data for "
+                    + profile + ": " + exception.getCause().getMessage(), exception);
         } else {
             LOG.reportException(instruction.getPackage(), exception);
         }

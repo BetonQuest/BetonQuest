@@ -1,14 +1,12 @@
 package org.betonquest.betonquest.modules.versioning.java;
 
-import lombok.CustomLog;
-
 import java.util.Properties;
 import java.util.stream.Collectors;
 
 /**
  * Utility class for getting information about the Java Runtime Environment version.
  */
-@CustomLog
+
 public final class JREVersionPrinter {
 
     /**

@@ -369,7 +369,7 @@ public class Backpack implements Listener {
             int numberOfRows = (size - size % 9) / 9 + 1;
             if (numberOfRows > 6) {
                 numberOfRows = 6;
-                LOG.warn("Player " + onlineProfile.getPlayer().getName() + " has too many active quests, please"
+                LOG.warn(onlineProfile + " has too many active quests, please"
                         + " don't allow for so many of them. It slows down your server!");
             }
             inv = Bukkit.createInventory(null, numberOfRows * 9, Config.getMessage(lang, "cancel_page"));
@@ -480,7 +480,7 @@ public class Backpack implements Listener {
             final int size = locations.size();
             final int numberOfRows = (size - size % 9) / 9 + 1;
             if (numberOfRows > 6) {
-                LOG.warn("Player " + onlineProfile.getPlayer().getName() + " has too many compass pointers, please"
+                LOG.warn(onlineProfile + " has too many compass pointers, please"
                         + " don't allow for so many of them. It slows down your server!");
                 onlineProfile.getPlayer().closeInventory();
                 return;

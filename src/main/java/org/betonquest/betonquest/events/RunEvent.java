@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.events;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.QuestEvent;
@@ -16,7 +15,6 @@ import java.util.List;
  * Allows for running multiple events with one instruction string.
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class RunEvent extends QuestEvent {
 
     private final List<QuestEvent> internalEvents = new ArrayList<>();

@@ -2,7 +2,6 @@ package org.betonquest.betonquest.compatibility.protocollib.hider;
 
 import io.lumine.mythic.bukkit.events.MythicMobDeathEvent;
 import io.lumine.mythic.bukkit.events.MythicMobDespawnEvent;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -22,7 +21,6 @@ import java.util.Set;
 import java.util.UUID;
 
 @SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods"})
-@CustomLog
 public final class MythicHider extends BukkitRunnable implements Listener {
 
     private static MythicHider instance;

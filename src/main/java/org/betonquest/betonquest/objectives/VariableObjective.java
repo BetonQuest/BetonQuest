@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.objectives;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Objective;
@@ -27,7 +26,6 @@ import java.util.regex.Pattern;
  * The only way to remove it is using "objective cancel" event.
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class VariableObjective extends Objective implements Listener {
 
     public static final Pattern CHAT_VARIABLE_PATTERN = Pattern.compile("^(?<key>[a-zA-Z]+): (?<value>.+)$");

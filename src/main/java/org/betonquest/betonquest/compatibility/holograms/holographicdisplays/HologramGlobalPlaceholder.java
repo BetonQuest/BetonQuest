@@ -35,7 +35,7 @@ public class HologramGlobalPlaceholder implements GlobalPlaceholder {
         } catch (final Exception e) {
             LOG.warn("Could not parse hologram variable " + arguments + "! " +
                     "Expected format {bqg:<package>:<variable>}." +
-                    "Use {bq:<package>:<variable>} for variables related directly to a player.");
+                    "Use {bq:<package>:<variable>} for variables related directly to a profile.");
         }
         return arguments;
     }

@@ -4,7 +4,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.quest.event.OnlinePlayerRequiredEvent;
+import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.utils.location.VectorData;
 import org.bukkit.Server;
@@ -51,7 +51,7 @@ public class VelocityEventFactory implements EventFactory {
         final VectorDirection direction = instruction.getEnum(instruction.getOptional("direction"), VectorDirection.class, VectorDirection.ABSOLUTE);
         final VectorModification modification = instruction.getEnum(instruction.getOptional("modification"), VectorModification.class, VectorModification.SET);
         return new PrimaryServerThreadEvent(
-                new OnlinePlayerRequiredEvent(
+                new OnlineProfileRequiredEvent(
                         new VelocityEvent(vector, direction, modification),
                         instruction.getPackage()),
                 server, scheduler, plugin);

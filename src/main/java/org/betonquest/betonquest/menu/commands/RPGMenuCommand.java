@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.menu.commands;
 
-import lombok.CustomLog;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -28,7 +27,7 @@ import java.util.Locale;
 /**
  * The plugins main command
  */
-@CustomLog
+
 @SuppressWarnings("PMD.CommentRequired")
 public class RPGMenuCommand extends SimpleCommand {
 

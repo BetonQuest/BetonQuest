@@ -190,7 +190,7 @@ public class QuestCanceler {
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     public void cancel(final OnlineProfile onlineProfile) {
-        LOG.debug("Canceling the quest " + name + " for player " + onlineProfile.getProfileName());
+        LOG.debug("Canceling the quest " + name + " for " + onlineProfile);
         final PlayerData playerData = BetonQuest.getInstance().getPlayerData(onlineProfile);
         // remove tags, points, objectives and journals
         if (tags != null) {

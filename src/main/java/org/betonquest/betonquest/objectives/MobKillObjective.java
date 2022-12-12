@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.objectives;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
@@ -24,7 +23,6 @@ import java.util.List;
  * amount.
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class MobKillObjective extends CountingObjective implements Listener {
 
     private final List<EntityType> entities;
