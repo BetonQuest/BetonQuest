@@ -78,7 +78,7 @@ public class LocationVariable extends Variable {
 
         if (decimalPlaces == 0) {
             final DecimalFormat formatter = new DecimalFormat("#");
-            formatter.setRoundingMode(RoundingMode.DOWN);
+            formatter.setRoundingMode(RoundingMode.FLOOR);
             return String.format(Locale.US, format,
                     formatter.format(posX),
                     formatter.format(posY),
