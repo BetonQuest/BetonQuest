@@ -34,8 +34,7 @@ public class HologramGlobalPlaceholder implements GlobalPlaceholder {
             return BetonQuest.getInstance().getVariableValue(args[0], "%" + args[1] + "%", null);
         } catch (final Exception e) {
             LOG.warn("Could not parse hologram variable " + arguments + "! " +
-                    "Expected format {bqg:<package>:<variable>}." +
-                    "Use {bq:<package>:<variable>} for variables related directly to a profile.");
+                    "Expected format %<package>.<variable>%");
         }
         return arguments;
     }
