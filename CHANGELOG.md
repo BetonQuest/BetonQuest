@@ -41,6 +41,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - compass now supports items from other packages
 - new messages.yml entries `inventory_full_backpack` and `inventory_full_drop` to have more specific messages,
   when the inventory of the player is full
+- `NPC Glow` Glow NPC if specific conditions met
 - `menu` conversationIO option `npc_name_newline_separator`
 - added `q download` command
 - variable support for menu titles
