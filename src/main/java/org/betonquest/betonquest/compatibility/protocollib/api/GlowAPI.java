@@ -31,6 +31,37 @@ public class GlowAPI {
     }
 
     /**
+     * Creates and sends a team packet.
+     *
+     * @param entities   List of entities that will be on team
+     * @param color      Color of the team
+     * @param packetMode Mode of the team
+     * @param profile    Player that have the team
+     */
+    public void sendTeamGlowPacket(final Collection<? extends Entity> entities, final ChatColor color, final Mode packetMode, final OnlineProfile profile) {
+        final PacketContainer packet = new PacketContainer(PacketType.Play.Server.SCOREBOARD_TEAM);
+        packet.getIntegers().write(0, packetMode.ordinal());
+
+        packet.getStrings().write(0, "Color#" + color.name());
+        packet.getOptionalStructures().read(0).map((structure) ->
+                structure.getEnumModifier(ChatColor.class,
+                                MinecraftReflection.getMinecraftClass("EnumChatFormat"))
+                        .write(0, color));
+
+        @SuppressWarnings("unchecked") final Collection<String> entries = packet.getSpecificModifier(Collection.class).read(0);
+        entities.stream()
+                .map(entity -> {
+                    if (entity instanceof OfflinePlayer) {
+                        return entity.getName();
+                    } else {
+                        return entity.getUniqueId().toString();
+                    }
+                })
+                .forEach(entries::add);
+        sendPacket(profile, packet);
+    }
+
+    /**
      * Sending a PacketContainer.
      *
      * @param profile         Send PacketContainer to Player
@@ -122,37 +153,6 @@ public class GlowAPI {
         packetContainer.getWatchableCollectionModifier().write(0, metadata);
 
         sendPacket(profile, packetContainer);
-    }
-
-    /**
-     * Creates and sends a team packet.
-     *
-     * @param entities   List of entities that will be on team
-     * @param color      Color of the team
-     * @param packetMode Mode of the team
-     * @param profile    Player that have the team
-     */
-    public void sendTeamGlowPacket(final Collection<? extends Entity> entities, final ChatColor color, final Mode packetMode, final OnlineProfile profile) {
-        final PacketContainer packet = new PacketContainer(PacketType.Play.Server.SCOREBOARD_TEAM);
-        packet.getIntegers().write(0, packetMode.ordinal());
-
-        packet.getStrings().write(0, "Color#" + color.name());
-        packet.getOptionalStructures().read(0).map((structure) ->
-                structure.getEnumModifier(ChatColor.class,
-                                MinecraftReflection.getMinecraftClass("EnumChatFormat"))
-                        .write(0, color));
-
-        @SuppressWarnings("unchecked") final Collection<String> entries = packet.getSpecificModifier(Collection.class).read(0);
-        entities.stream()
-                .map(entity -> {
-                    if (entity instanceof OfflinePlayer) {
-                        return entity.getName();
-                    } else {
-                        return entity.getUniqueId().toString();
-                    }
-                })
-                .forEach(entries::add);
-        sendPacket(profile, packet);
     }
 
     /**

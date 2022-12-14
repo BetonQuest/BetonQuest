@@ -14,7 +14,6 @@ import lombok.CustomLog;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.CitizensReloadEvent;
 import net.citizensnpcs.api.event.NPCDeathEvent;
-import net.citizensnpcs.api.event.NPCDespawnEvent;
 import net.citizensnpcs.api.event.NPCRemoveEvent;
 import net.citizensnpcs.api.event.NPCSpawnEvent;
 import net.citizensnpcs.api.npc.NPC;
@@ -41,13 +40,11 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * NPCGlow class
@@ -145,7 +142,7 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
                     chatColor = ChatColor.valueOf(color.toUpperCase(Locale.ROOT));
                 }
 
-                final GlowState glowState = new GlowState(npcId, conditions, chatColor, new ConcurrentLinkedQueue<>());
+                final GlowState glowState = new GlowState(npcId, conditions, chatColor, new HashSet<>());
                 glowStates.add(glowState);
             }
         }
@@ -182,6 +179,10 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
      */
     @SuppressWarnings("PMD.CyclomaticComplexity")
     public void applyVisibility(final OnlineProfile profile, final NPC npc) {
+        if(npc == null){
+            return;
+        }
+
         if (!npc.isSpawned()) {
             return;
         }
@@ -199,7 +200,7 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
 
                     final Collection<OnlineProfile> glowingProfiles = glowState.activeProfiles();
                     if (conditions.isEmpty() || BetonQuest.conditions(profile, conditions)) {
-                        if (!isGlowing(npc, profile) && glowingProfiles.add(profile)) {
+                        if (glowingProfiles.add(profile)) {
                             glowAPI.sendGlowPacket(entity, glowState.color(), true, profile);
                         }
                     } else {
@@ -389,13 +390,14 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
                 return;
             }
 
-            final Object dataWatcherValue = metadata.get(0).getValue();
+            final WrappedWatchableObject watchableObject = metadata.get(0);
+            final Object dataWatcherValue = watchableObject.getValue();
             if (!(dataWatcherValue instanceof Byte)) {
                 return;
             }
             byte entityByte = (byte) dataWatcherValue;
             entityByte = (byte) (entityByte | 0x40);
-            packet.getWatchableCollectionModifier().write(0, metadata);
+            watchableObject.setValue(entityByte);
         }
 
         @Override
