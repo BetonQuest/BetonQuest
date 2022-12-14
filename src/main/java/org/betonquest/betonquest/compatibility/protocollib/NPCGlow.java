@@ -1,9 +1,20 @@
 package org.betonquest.betonquest.compatibility.protocollib;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.async.AsyncListenerHandler;
+import com.comphenix.protocol.events.ListenerPriority;
+import com.comphenix.protocol.events.ListeningWhitelist;
+import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.events.PacketEvent;
+import com.comphenix.protocol.events.PacketListener;
+import com.comphenix.protocol.injector.GamePhase;
+import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import lombok.CustomLog;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.CitizensReloadEvent;
 import net.citizensnpcs.api.event.NPCDeathEvent;
+import net.citizensnpcs.api.event.NPCDespawnEvent;
 import net.citizensnpcs.api.event.NPCRemoveEvent;
 import net.citizensnpcs.api.event.NPCSpawnEvent;
 import net.citizensnpcs.api.npc.NPC;
@@ -20,14 +31,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -55,6 +69,9 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
      */
     private final GlowAPI glowAPI;
 
+    private final AsyncListenerHandler metadataListener;
+    private final EntityMetadataListener entityMetadata;
+
     /**
      * Constructor of NPCGlow instance
      */
@@ -65,6 +82,11 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
         Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), this::loadFromConfig, 5L);
         runTaskTimerAsynchronously(BetonQuest.getInstance(), 0, 5);
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+        entityMetadata = new EntityMetadataListener();
+        metadataListener = ProtocolLibrary.getProtocolManager()
+                .getAsynchronousManager()
+                .registerAsyncHandler(entityMetadata);
+        metadataListener.syncStart();
     }
 
     /**
@@ -177,7 +199,7 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
 
                     final Collection<OnlineProfile> glowingProfiles = glowState.activeProfiles();
                     if (conditions.isEmpty() || BetonQuest.conditions(profile, conditions)) {
-                        if (glowingProfiles.add(profile)) {
+                        if (!isGlowing(npc, profile) && glowingProfiles.add(profile)) {
                             glowAPI.sendGlowPacket(entity, glowState.color(), true, profile);
                         }
                     } else {
@@ -196,16 +218,6 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
             glowStates.forEach((glowState) -> applyVisibility(onlineProfile, CitizensAPI.getNPCRegistry().getById(glowState.npcID())));
         }
 
-        glowStates.forEach((glowState) -> {
-            final int npcId = glowState.npcID();
-            final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
-            if (npc == null) {
-                LOG.warn("NPC Glow could not update the NPC with id %s! It is null.".formatted(npcId));
-                return;
-            }
-            final Entity entity = npc.getEntity();
-            glowAPI.sendGlowPacket(entity, glowState.color(), true, glowState.activeProfiles());
-        });
     }
 
     /**
@@ -221,6 +233,13 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
                 .forEach((profile) -> applyVisibility(profile, npc));
     }
 
+    public boolean isGlowing(final NPC npc, final OnlineProfile profile) {
+        final int npcId = npc.getId();
+        return glowStates.parallelStream()
+                .filter((state) -> state.npcID == npcId)
+                .anyMatch((state) -> state.activeProfiles.contains(profile));
+    }
+
     /**
      * Starts the Runnable.
      */
@@ -229,13 +248,33 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
         applyAll();
     }
 
+    /**
+     * Resets all glowing NPCs.
+     *
+     * @param profiles List of profiles that will get the packet
+     */
+    public void resetGlow(final Collection<? extends OnlineProfile> profiles) {
+        glowStates.parallelStream().forEach((glowState) -> {
+            final NPC npc = CitizensAPI.getNPCRegistry().getById(glowState.npcID);
+            if (npc == null) {
+                return;
+            }
+            final Entity entity = npc.getEntity();
+            glowAPI.sendGlowPacket(entity, glowState.color, false, profiles);
+        });
+    }
 
     /**
      * Stops the NPCGlow instance, cleaning up all maps, Runnable, Listener, etc. And Reset all the glowing npc.
      */
     public void stop() {
         cancel();
+        resetGlow(PlayerConverter.getOnlineProfiles());
         HandlerList.unregisterAll(this);
+        ProtocolLibrary.getProtocolManager()
+                .getAsynchronousManager()
+                .unregisterAsyncHandler(entityMetadata);
+        metadataListener.stop();
     }
 
     /**
@@ -310,4 +349,77 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
     private record GlowState(Integer npcID, Set<ConditionID> conditions, ChatColor color,
                              Collection<OnlineProfile> activeProfiles) {
     }
+
+    private class EntityMetadataListener implements PacketListener {
+
+        @Override
+        public void onPacketSending(PacketEvent event) {
+            PacketContainer packet = event.getPacket();
+            if (packet.getType() != PacketType.Play.Server.ENTITY_METADATA) {
+                return;
+            }
+
+            final int entityId = packet.getIntegers().read(0);
+
+            final List<WrappedWatchableObject> metadata = packet.getWatchableCollectionModifier().read(0);
+            if (metadata == null || metadata.isEmpty()) {
+                return;
+            }
+
+            final Player player = event.getPlayer();
+            final Entity entity = player.getWorld().getEntities().parallelStream()
+                    .filter(entities -> entities.getEntityId() == entityId)
+                    .findAny()
+                    .orElse(null);
+
+            if (entity == null) {
+                return;
+            }
+
+            if (!CitizensAPI.getNPCRegistry().isNPC(entity)) {
+                return;
+            }
+
+            final NPC npc = CitizensAPI.getNPCRegistry().getNPC(entity);
+            if (npc == null || !npc.isSpawned()) {
+                return;
+            }
+
+            if (!isGlowing(npc, PlayerConverter.getID(player))) {
+                return;
+            }
+
+            final Object dataWatcherValue = metadata.get(0).getValue();
+            if (!(dataWatcherValue instanceof Byte)) {
+                return;
+            }
+            byte entityByte = (byte) dataWatcherValue;
+            entityByte = (byte) (entityByte | 0x40);
+            packet.getWatchableCollectionModifier().write(0, metadata);
+        }
+
+        @Override
+        public void onPacketReceiving(PacketEvent event) {
+        }
+
+        @Override
+        public ListeningWhitelist getSendingWhitelist() {
+            return ListeningWhitelist.newBuilder()
+                    .priority(ListenerPriority.NORMAL)
+                    .types(PacketType.Play.Server.ENTITY_METADATA)
+                    .gamePhase(GamePhase.PLAYING)
+                    .build();
+        }
+
+        @Override
+        public ListeningWhitelist getReceivingWhitelist() {
+            return ListeningWhitelist.newBuilder().build();
+        }
+
+        @Override
+        public Plugin getPlugin() {
+            return BetonQuest.getInstance();
+        }
+    }
+
 }
