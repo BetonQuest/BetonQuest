@@ -501,7 +501,7 @@ This event also supports an optional `notify` argument that will display informa
 This event allows you to specify multiple instructions in one, long instruction. Each instruction must be started
 with the `^` character (it divides all the instructions). It's not the same as the `folder` event, because you have to
 specify the actual instruction, not an event name.
-Don't use conditions here, it behaves strangely. We will fix this in 2.0.
+Don't use conditions here, it behaves strangely.
 
 !!! example
     ```YAML
