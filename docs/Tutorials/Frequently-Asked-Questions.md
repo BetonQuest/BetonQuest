@@ -72,7 +72,9 @@ events:
   addPoint: "point blockCounter 1"
   sendNotify: "notify &a%point.blockCounter.amount%&8/&210 &7stone broken. io:chat"
   
-  checkForCompletion: "run ^objective remove mineStone ^deletepoint blockCounter conditions:has10Points"
+  checkForCompletion: "folder deleteObjective,deletePoint conditions:has10Points"
+  deleteObjective: "objective remove mineStone"
+  deletePoint: "deletepoint blockCounter"
 
 conditions:
   has10Points: "point blockCounter 10"
