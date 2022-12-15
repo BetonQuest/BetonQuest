@@ -1,15 +1,18 @@
 package org.betonquest.betonquest.api;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * An objective that is not completed by doing some action just once, but multiple times. It provides common properties
  * and a versatile data object to track the progress.
  */
+@CustomLog(topic = "CountingObjective")
 public abstract class CountingObjective extends Objective {
 
     /**
@@ -154,10 +157,14 @@ public abstract class CountingObjective extends Objective {
             final String[] instructionParts = countingInstruction.split("/");
             switch (instructionParts.length) {
                 case 1:
-                    targetAmount = Integer.parseInt(countingInstruction);
+                    final AtomicBoolean dirty = new AtomicBoolean(false);
+                    targetAmount = getTargetAmount(countingInstruction, dirty);
                     amountLeft = targetAmount;
                     directionFactor = amountLeft < 0 ? -1 : 1;
                     lastChange = 0;
+                    if (dirty.get()) {
+                        update();
+                    }
                     break;
                 case 4:
                     targetAmount = Integer.parseInt(instructionParts[0]);
@@ -167,6 +174,20 @@ public abstract class CountingObjective extends Objective {
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid instruction string: " + instruction);
+            }
+        }
+
+        private int getTargetAmount(final String countingInstruction, final AtomicBoolean dirty) {
+            try {
+                return Integer.parseInt(countingInstruction);
+            } catch (final NumberFormatException e) {
+                LOG.warn("Loaded counting objective '" + objID + "' from database with invalid amount."
+                        + " This is probably caused by a change of the objective's implementation."
+                        + " The objective will be reset to an amount of 1."
+                        + " This is normally the previous amount and can be ignored.");
+                LOG.debug("Invalid instruction string: '" + instruction + "'");
+                dirty.set(true);
+                return 1;
             }
         }
 
