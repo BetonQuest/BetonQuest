@@ -165,8 +165,8 @@ public class Compatibility implements Listener {
         LOG.info("Hooking into " + name);
 
         try {
-            integrators.get(name).setValue(integrator);
             integrator.hook();
+            integrators.get(name).setValue(integrator);
         } catch (final HookException exception) {
             final String message = String.format("Could not hook into %s %s! %s",
                     hookedPlugin.getName(),
