@@ -156,7 +156,7 @@ with a colon. If you need to check for multiple enchantments you can add a list 
 
 ## Experience: `experience`
 
-This objective can by completed by reaching specified amount of experience levels.
+This objective can be completed by reaching the specified amount of experience levels.
 You can also define decimal numbers, for example `experience 1.5` will complete when the player reaches 1.5 experience levels or more.
 If you want to check for an absolute amount of experience points by converting it to levels.
 The objective is checked every time the player gets experience by a natural way, such as killing mobs or mining blocks
