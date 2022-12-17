@@ -664,7 +664,7 @@ events:
 ## Give experience: `experience`
 
 Gives the specified amount of experience points to the player. You can give levels by adding the `level` argument.
-You can also define decimal numbers for level, for example `experience 1.5 level` will give 1 level and half.
+You can also define decimal numbers when giving levels, for example `experience 1.5 level` will give 1 level and half.
 
 !!! example
     ```YAML
