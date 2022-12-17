@@ -159,8 +159,8 @@ with a colon. If you need to check for multiple enchantments you can add a list 
 This objective can be completed by reaching the specified amount of experience levels.
 You can also define decimal numbers, for example `experience 1.5` will complete when the player reaches 1.5 experience levels or more.
 If you want to check for an absolute amount of experience points by converting it to levels.
-The objective is checked every time the player gets experience by a natural way, such as killing mobs or mining blocks
-or if the player reaches a new level, also by a command or other plugin.
+The objective is checked every time the player gets experience naturally, such as killing mobs or mining blocks.
+Additionally, it is checked if the player reaches a new level in any way (vanilla level up, commands or other plugins).
 You can use the `notify` keyword to display a message each
 time the player advances the objective, optionally with the notification interval after a colon.
 
