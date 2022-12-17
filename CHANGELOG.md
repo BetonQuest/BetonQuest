@@ -120,7 +120,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - HolographicDisplays updated to 3.0.0
 - Added staticness indicator to variables that can be executed without a direct player connection
 - written book quest items can now be read
-- `experience` objective event and condition where reworked
+- `experience` objective event and condition were reworked
   - condition and objective do not support raw experience anymore
   - all allow decimal level and variables now
 - Things that are also changed in 1.12.X:
