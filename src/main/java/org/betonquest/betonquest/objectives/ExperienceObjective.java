@@ -1,11 +1,14 @@
 package org.betonquest.betonquest.objectives;
 
+import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -17,54 +20,54 @@ import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerLevelChangeEvent;
 
 import java.util.Locale;
-import java.util.function.Function;
 
 /**
- * Player needs to get specified experience level.
+ * Player needs to get specified experience level or more.
  */
 @SuppressWarnings("PMD.CommentRequired")
+@CustomLog
 public class ExperienceObjective extends Objective implements Listener {
 
-    private final int amount;
-    private final String notifyMessageName;
-    private final Function<Player, Integer> toData;
-    private final Listener eventListener;
+    /**
+     * The experience level the player needs to get.
+     * The decimal part of the number is a percentage of the next level.
+     */
+    private final VariableNumber amount;
 
     public ExperienceObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
-        this.amount = instruction.getInt();
-        if (amount <= 0) {
-            throw new InstructionParseException("Amount cannot be less than 1");
-        }
-        if (instruction.hasArgument("level")) {
-            notifyMessageName = "level_to_gain";
-            toData = Player::getLevel;
-            eventListener = new LevelChangeListener();
-        } else {
-            notifyMessageName = "experience_to_gain";
-            toData = Player::getTotalExperience;
-            eventListener = new ExperienceChangeListener();
-        }
+        this.amount = instruction.getVarNum();
     }
 
-    private void onExperienceChange(final OnlineProfile onlineProfile, final int newAmount, final int oldAmount) {
-        if (containsPlayer(onlineProfile)) {
-            if (newAmount >= amount && checkConditions(onlineProfile)) {
-                completeObjective(onlineProfile);
-            } else if (notify && (amount - newAmount) / notifyInterval != (amount - oldAmount) / notifyInterval) {
-                sendNotify(onlineProfile, notifyMessageName, amount - newAmount);
+    private void onExperienceChange(final OnlineProfile onlineProfile, final double newAmount, final boolean notify) {
+        if (!containsPlayer(onlineProfile)) {
+            return;
+        }
+        try {
+            final double amount = this.amount.getDouble(onlineProfile);
+            if (newAmount >= amount) {
+                if (checkConditions(onlineProfile)) {
+                    completeObjective(onlineProfile);
+                }
+            } else if (this.notify && notify) {
+                final int level = (int) (amount - newAmount);
+                if (level % notifyInterval == 0) {
+                    sendNotify(onlineProfile, "level_to_gain", level);
+                }
             }
+        } catch (final QuestRuntimeException e) {
+            LOG.warn("Error in experience objective '" + instruction.getID() + "': " + e.getMessage());
         }
     }
 
     @Override
     public void start() {
-        Bukkit.getPluginManager().registerEvents(eventListener, BetonQuest.getInstance());
+        Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
     @Override
     public void stop() {
-        HandlerList.unregisterAll(eventListener);
+        HandlerList.unregisterAll(this);
     }
 
     @Override
@@ -74,41 +77,44 @@ public class ExperienceObjective extends Objective implements Listener {
 
     @Override
     public String getProperty(final String name, final Profile profile) {
-        return switch (name.toLowerCase(Locale.ROOT)) {
-            case "amount" -> profile.getOnlineProfile()
-                    .map(OnlineProfile::getPlayer)
-                    .map(toData)
-                    .map(String::valueOf)
-                    .orElse("");
-            case "left" -> profile.getOnlineProfile()
-                    .map(OnlineProfile::getPlayer)
-                    .map(toData)
-                    .map(exp -> amount - exp)
-                    .map(String::valueOf)
-                    .orElse("");
-            case "total" -> Integer.toString(amount);
-            default -> "";
-        };
-    }
-
-    private class LevelChangeListener implements Listener {
-        public LevelChangeListener() {
-        }
-
-        @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-        public void onLevelChangeEvent(final PlayerLevelChangeEvent event) {
-            onExperienceChange(PlayerConverter.getID(event.getPlayer()), event.getNewLevel(), event.getOldLevel());
+        try {
+            return switch (name.toLowerCase(Locale.ROOT)) {
+                case "amount" -> profile.getOnlineProfile()
+                        .map(OnlineProfile::getPlayer)
+                        .map(player -> player.getLevel() + player.getExp())
+                        .map(String::valueOf)
+                        .orElse("");
+                case "left" -> {
+                    final double pAmount = amount.getDouble(profile);
+                    yield profile.getOnlineProfile()
+                            .map(OnlineProfile::getPlayer)
+                            .map(player -> player.getLevel() + player.getExp())
+                            .map(exp -> pAmount - exp)
+                            .map(String::valueOf)
+                            .orElse("");
+                }
+                case "total" -> String.valueOf(amount.getDouble(profile));
+                default -> "";
+            };
+        } catch (final QuestRuntimeException e) {
+            LOG.warn("Error in experience objective '" + instruction.getID() + "': " + e.getMessage());
+            return "";
         }
     }
 
-    private class ExperienceChangeListener implements Listener {
-        public ExperienceChangeListener() {
-        }
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onLevelChangeEvent(final PlayerLevelChangeEvent event) {
+        final Player player = event.getPlayer();
+        final double newAmount = player.getLevel() + player.getExp();
+        onExperienceChange(PlayerConverter.getID(player), newAmount, true);
+    }
 
-        @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-        public void onExpChangeEvent(final PlayerExpChangeEvent event) {
-            final int oldExperience = event.getPlayer().getTotalExperience();
-            onExperienceChange(PlayerConverter.getID(event.getPlayer()), oldExperience + event.getAmount(), oldExperience);
-        }
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onExpChangeEvent(final PlayerExpChangeEvent event) {
+        final Player player = event.getPlayer();
+        Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
+            final double newAmount = player.getLevel() + player.getExp();
+            onExperienceChange(PlayerConverter.getID(player), newAmount, false);
+        });
     }
 }

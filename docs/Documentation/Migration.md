@@ -16,6 +16,7 @@ Skip to the first version that is newer than the version that you're migrating f
 - [2.0.0-DEV-238 - Package Structure Rework](#200-dev-238-package-structure-rework)
 - [2.0.0-DEV-337 - Event Scheduling Rework](#200-dev-337-event-scheduling-rework)
 - [2.0.0-DEV-450 - Package section](#200-dev-450-package-section)
+- [2.0.0-DEV-485 - Experience changes](#200-dev-485-experience-changes)
 
 ### 2.0.0-DEV-98 - RPGMenu Merge
 
@@ -150,3 +151,10 @@ All existing RPGMenu users must update their RPGMenu config file. Simply rename 
             package:
               enabled: false
             ```
+
+### 2.0.0-DEV-485 - Experience changes
+
+- The `experience` event objective and condition has been changed regarding levels. 
+  The condition and the objective do not now allow raw experience anymore, only levels.
+  But for now on they will support decimal numbers, so you can use `experience 1.5` to check for half a level.
+  With that you can convert raw experience to levels.

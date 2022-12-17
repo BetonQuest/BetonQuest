@@ -156,13 +156,16 @@ with a colon. If you need to check for multiple enchantments you can add a list 
 
 ## Experience: `experience`
 
-This objective can by completed by reaching specified amount of experience points. You can check for whole levels by
-adding the `level` argument. The conditions are checked when the player levels up, so if they are not met the first
-time, the player will have to meet them and levelup again. You can use the `notify` keyword to display a message each
+This objective can by completed by reaching specified amount of experience levels.
+You can also define decimal numbers, for example `experience 1.5` will complete when the player reaches 1.5 experience levels or more.
+If you want to check for an absolute amount of experience points by converting it to levels.
+The objective is checked every time the player gets experience by a natural way, such as killing mobs or mining blocks
+or if the player reaches a new level, also by a command or other plugin.
+You can use the `notify` keyword to display a message each
 time the player advances the objective, optionally with the notification interval after a colon.
 
-This objective has three properties: `amount`, `left` and `total`. `amount` is the current amount of experience,
-`left` is the amount of experience still needed and `total` is the amount of experience required.
+This objective has three properties: `amount`, `left` and `total`. `amount` is the current amount of experience levels,
+`left` is the amount of experience levels still needed and `total` is the amount of experience required.
 
 !!! example
     ```YAML
