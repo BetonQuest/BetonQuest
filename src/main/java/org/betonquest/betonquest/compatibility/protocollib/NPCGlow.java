@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+
 /**
  * NPCGlow class
  */
@@ -54,40 +55,50 @@ import java.util.Set;
 public final class NPCGlow extends BukkitRunnable implements Listener {
 
     /**
-     * instance of NPCGlow
+     * instance of {@link NPCGlow}
      */
     private static NPCGlow instance;
+
     /**
-     * List of conditions for specific NPC that will get glow
+     * List of {@link GlowState} that are registered in configuration
      */
     private final List<GlowState> glowStates;
+
     /**
-     * instance of GlowAPI
+     * instance of {@link GlowAPI}
      */
     private final GlowAPI glowAPI;
 
+    /**
+     * Async Packet Listener for {@link EntityMetadataListener} class
+     */
     private final AsyncListenerHandler metadataListener;
+
+    /**
+     * instance of {@link EntityMetadataListener}
+     */
     private final EntityMetadataListener entityMetadata;
 
     /**
-     * Constructor of NPCGlow instance
+     * Constructor of {@link NPCGlow} instance
      */
     public NPCGlow() {
         super();
-        glowStates = new ArrayList<>();
         glowAPI = new GlowAPI();
+        glowStates = new ArrayList<>();
         Bukkit.getScheduler().runTaskLater(BetonQuest.getInstance(), this::loadFromConfig, 5L);
-        runTaskTimerAsynchronously(BetonQuest.getInstance(), 0, 5);
+        runTaskTimer(BetonQuest.getInstance(), 0, 5);
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
         entityMetadata = new EntityMetadataListener();
-        metadataListener = ProtocolLibrary.getProtocolManager()
+        metadataListener = ProtocolLibrary
+                .getProtocolManager()
                 .getAsynchronousManager()
                 .registerAsyncHandler(entityMetadata);
         metadataListener.syncStart();
     }
 
     /**
-     * Starts (or restarts) the NPCGlow. Used for reloading this feature.
+     * Starts (or restarts) the {@link NPCGlow}. Used for reloading this feature.
      */
     public static void start() {
         synchronized (NPCGlow.class) {
@@ -99,7 +110,7 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
     }
 
     /**
-     * @return the currently used NPCGlow instance
+     * @return the currently used {@link NPCGlow} instance
      */
     public static NPCGlow getInstance() {
         return instance;
@@ -137,7 +148,7 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
                     LOG.warn(cfgPackage, "NPC Glow could not update Glowing for npc " + npcSectionId + ": No npc with this id found!");
                     continue;
                 }
-                ChatColor chatColor = ChatColor.WHITE;
+                ChatColor chatColor = ChatColor.RESET;
                 if (color != null && EnumUtils.isValidEnum(ChatColor.class, color.toUpperCase(Locale.ROOT))) {
                     chatColor = ChatColor.valueOf(color.toUpperCase(Locale.ROOT));
                 }
@@ -149,12 +160,12 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
     }
 
     /**
-     * Parses the provided instruction string into a set of conditions.
+     * Parses the provided instruction string into a set of {@link ConditionID}.
      *
-     * @param questPackage  QuestPackage that contain the raw conditions
+     * @param questPackage  {@link QuestPackage} that contain the raw conditions
      * @param key           Name of the Glow Section
-     * @param rawConditions String of raw conditions
-     * @return Set Collections of ConditionID
+     * @param rawConditions String of raw {@link ConditionID}
+     * @return Set Collections of {@link ConditionID}
      */
     private Set<ConditionID> parseConditions(final QuestPackage questPackage, final String key, final String rawConditions) {
         final Set<ConditionID> conditions = new HashSet<>();
@@ -172,10 +183,10 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
     }
 
     /**
-     * Applies the glow to one NPC if profile meets the conditions.
+     * Applies the glow to one {@link NPC} if {@link OnlineProfile} meets the conditions.
      *
-     * @param profile profile that will get checked
-     * @param npc     the npc that will get checked
+     * @param profile {@link OnlineProfile} that will get checked
+     * @param npc     the {@link NPC} that will get checked
      */
     @SuppressWarnings("PMD.CyclomaticComplexity")
     public void applyVisibility(final OnlineProfile profile, final NPC npc) {
@@ -188,17 +199,16 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
         }
 
         final Integer npcId = npc.getId();
-        if (glowStates.stream().noneMatch(glowState -> glowState.npcID().equals(npcId))) {
+        if (glowStates.parallelStream().noneMatch(glowState -> glowState.npcID.equals(npcId))) {
             return;
         }
 
-        final Entity entity = npc.getEntity();
-        glowStates.stream()
-                .filter((glowState) -> glowState.npcID().equals(npcId))
+        glowStates.parallelStream()
+                .filter((glowState) -> glowState.npcID.equals(npcId))
                 .forEach(glowState -> {
                     final Set<ConditionID> conditions = glowState.conditions();
-
                     final Collection<OnlineProfile> glowingProfiles = glowState.activeProfiles();
+                    final Entity entity = glowState.getEntity();
                     if (conditions.isEmpty() || BetonQuest.conditions(profile, conditions)) {
                         if (glowingProfiles.add(profile)) {
                             glowAPI.sendGlowPacket(entity, glowState.color(), true, profile);
@@ -212,33 +222,49 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
     }
 
     /**
-     * Updates all NPCs for all profiles.
+     * Updates all {@link NPC} for all {@link OnlineProfile}.
      */
     public void applyAll() {
         for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
-            glowStates.forEach((glowState) -> applyVisibility(onlineProfile, CitizensAPI.getNPCRegistry().getById(glowState.npcID())));
+            glowStates
+                    .forEach((glowState) -> applyVisibility(onlineProfile, CitizensAPI.getNPCRegistry().getById(glowState.npcID)));
         }
 
     }
 
     /**
-     * Applies glow to npc for all online profiles if the conditions are met.
+     * Applies glow to {@link NPC} for all online {@link OnlineProfile} if the conditions are met.
      *
      * @param npc npc that gets checked
      */
     public void applyGlow(final NPC npc) {
+        if (npc == null) {
+            return;
+        }
+
         if (!npc.getOwningRegistry().equals(CitizensAPI.getNPCRegistry())) {
             return;
         }
-        PlayerConverter.getOnlineProfiles().parallelStream()
+
+        PlayerConverter
+                .getOnlineProfiles()
+                .parallelStream()
                 .forEach((profile) -> applyVisibility(profile, npc));
     }
 
+    /**
+     * Check if target {@link NPC} is glowing for {@link OnlineProfile}
+     *
+     * @param npc     Target {@link NPC}
+     * @param profile {@link OnlineProfile} that will get check if it on {@link GlowState} active profile
+     * @return return true if target {@link NPC} is glowing for {@link OnlineProfile}
+     */
     public boolean isGlowing(final NPC npc, final OnlineProfile profile) {
         final int npcId = npc.getId();
-        return glowStates.parallelStream()
-                .filter((state) -> state.npcID == npcId)
-                .anyMatch((state) -> state.activeProfiles.contains(profile));
+        return glowStates
+                .parallelStream()
+                .filter((glowState) -> glowState.npcID.equals(npcId))
+                .anyMatch((glowState) -> glowState.activeProfiles().contains(profile));
     }
 
     /**
@@ -250,37 +276,38 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
     }
 
     /**
-     * Resets all glowing NPCs.
+     * Resets all glowing {@link NPC}.
      *
-     * @param profiles List of profiles that will get the packet
+     * @param profiles List of {@link OnlineProfile} that will get the packet
      */
     public void resetGlow(final Collection<? extends OnlineProfile> profiles) {
-        glowStates.parallelStream().forEach((glowState) -> {
+        glowStates.forEach((glowState) -> {
             final NPC npc = CitizensAPI.getNPCRegistry().getById(glowState.npcID);
             if (npc == null) {
                 return;
             }
             final Entity entity = npc.getEntity();
-            glowAPI.sendGlowPacket(entity, glowState.color, false, profiles);
+            glowAPI.sendGlowPacket(entity, glowState.color(), false, profiles);
         });
     }
 
     /**
-     * Stops the NPCGlow instance, cleaning up all maps, Runnable, Listener, etc. And Reset all the glowing npc.
+     * Stops the {@link NPCGlow} instance, cleaning up all maps, Runnable, Listener, etc. And Reset all the glowing npc.
      */
     public void stop() {
         cancel();
         resetGlow(PlayerConverter.getOnlineProfiles());
         HandlerList.unregisterAll(this);
-        ProtocolLibrary.getProtocolManager()
+        ProtocolLibrary
+                .getProtocolManager()
                 .getAsynchronousManager()
                 .unregisterAsyncHandler(entityMetadata);
         metadataListener.stop();
     }
 
     /**
-     * When an NPC is removed, the current glowing profiles are removed as well.
-     * This is done to avoid the NPC glowing for a split second after getting recreated.
+     * When an {@link NPC} is removed, the current glowing profiles are removed as well.
+     * This is done to avoid the {@link NPC} glowing for a split second after getting recreated.
      *
      * @param event NPCRemoveEvent
      */
@@ -290,8 +317,8 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
     }
 
     /**
-     * When an NPC dies, the current glowing profiles are removed.
-     * This is done to avoid the NPC glowing for a split second after respawn.
+     * When an {@link NPC} dies, the current glowing profiles are removed.
+     * This is done to avoid the {@link NPC} glowing for a split second after respawn.
      *
      * @param event NPCDeathEvent
      */
@@ -300,16 +327,21 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
         clearActiveProfiles(event.getNPC().getId());
     }
 
+    /**
+     * Clear all active {@link OnlineProfile} from {@link GlowState}
+     *
+     * @param npcId Target NPCId that will get cleared
+     */
     private void clearActiveProfiles(final Integer npcId) {
-        glowStates.forEach((glowState) -> {
-            if (glowState.npcID().equals(npcId)) {
-                glowState.activeProfiles().clear();
-            }
-        });
+        glowStates
+                .parallelStream()
+                .filter((glowState) -> glowState.npcID.equals(npcId))
+                .findAny()
+                .ifPresent((glowState) -> glowState.activeProfiles().clear());
     }
 
     /**
-     * Restart the NPCGlow Instance when citizens plugin is getting reload
+     * Restart the {@link NPCGlow} Instance when citizens plugin is getting reload
      *
      * @param event CitizensReload
      */
@@ -319,7 +351,7 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
     }
 
     /**
-     * apply glowing to npc that just spawn (if it registered on map).
+     * apply glowing to {@link NPC} that just spawn (if it registered on map).
      *
      * @param event NPCSpawn
      */
@@ -329,38 +361,53 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
     }
 
     /**
-     * Removes the profile that just quit from all maps.
+     * Removes the {@link OnlineProfile} that just quit from all maps.
      *
      * @param event PlayerQuitEvent
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerLogout(final PlayerQuitEvent event) {
-        glowStates.forEach((glowState) -> glowState.activeProfiles.remove(PlayerConverter.getID(event.getPlayer())));
+        glowStates
+                .parallelStream()
+                .forEach((glowState) -> glowState.activeProfiles.remove(PlayerConverter.getID(event.getPlayer())));
     }
 
     /**
      * Data class that stores different configurations of glowing NPCs.
-     * A single NPC can have multiple GlowStates, each with a different color, condition set and active profiles.
+     * A single {@link NPC} can have multiple {@link GlowState}, each with a different color,
+     * condition set and active profiles.
      *
-     * @param npcID          ID of NPC that has this state
-     * @param conditions     List of conditions for when to activate the state
-     * @param color          Color of the glow state
-     * @param activeProfiles Collection of profiles that can see this state
+     * @param npcID          ID of {@link NPC} that has this state
+     * @param conditions     List of {@link ConditionID} for when to activate the state
+     * @param color          Color of the glow state from {@link ChatColor}
+     * @param activeProfiles Collection of {@link OnlineProfile} that can see this state
      */
     private record GlowState(Integer npcID, Set<ConditionID> conditions, ChatColor color,
                              Collection<OnlineProfile> activeProfiles) {
+        public Entity getEntity(){
+            return CitizensAPI.getNPCRegistry().getById(npcID).getEntity();
+        }
     }
 
+    /**
+     * Packet Listener for Entity Metadata, Constantly Update the {@link Entity} everytime the metadata packet from
+     * glowing {@link Entity} is changed
+     */
     private class EntityMetadataListener implements PacketListener {
 
+        /**
+         * Empty Constructor of {@link EntityMetadataListener} class
+         */
+        public EntityMetadataListener() {
+        }
+
+        @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
         @Override
-        public void onPacketSending(PacketEvent event) {
-            PacketContainer packet = event.getPacket();
-            if (packet.getType() != PacketType.Play.Server.ENTITY_METADATA) {
+        public void onPacketSending(final PacketEvent event) {
+            final PacketContainer packet = event.getPacket();
+            if (packet.getType().equals(PacketType.Play.Server.ENTITY_METADATA)) {
                 return;
             }
-
-            final int entityId = packet.getIntegers().read(0);
 
             final List<WrappedWatchableObject> metadata = packet.getWatchableCollectionModifier().read(0);
             if (metadata == null || metadata.isEmpty()) {
@@ -369,7 +416,7 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
 
             final Player player = event.getPlayer();
             final Entity entity = player.getWorld().getEntities().parallelStream()
-                    .filter(entities -> entities.getEntityId() == entityId)
+                    .filter(entities -> entities.getEntityId() == packet.getIntegers().readSafely(0))
                     .findAny()
                     .orElse(null);
 
@@ -400,14 +447,15 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
             watchableObject.setValue(entityByte);
         }
 
+        @SuppressWarnings("PMD.UncommentedEmptyMethodBody")
         @Override
-        public void onPacketReceiving(PacketEvent event) {
+        public void onPacketReceiving(final PacketEvent event) {
         }
 
         @Override
         public ListeningWhitelist getSendingWhitelist() {
             return ListeningWhitelist.newBuilder()
-                    .priority(ListenerPriority.NORMAL)
+                    .priority(ListenerPriority.MONITOR)
                     .types(PacketType.Play.Server.ENTITY_METADATA)
                     .gamePhase(GamePhase.PLAYING)
                     .build();
@@ -415,7 +463,9 @@ public final class NPCGlow extends BukkitRunnable implements Listener {
 
         @Override
         public ListeningWhitelist getReceivingWhitelist() {
-            return ListeningWhitelist.newBuilder().build();
+            return ListeningWhitelist
+                    .newBuilder()
+                    .build();
         }
 
         @Override
