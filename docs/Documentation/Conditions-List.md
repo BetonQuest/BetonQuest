@@ -125,11 +125,14 @@ with the name of the required entity. Replace all spaces with `_` here. You can 
 
 ## Experience: `experience`
 
-This condition is met when the player has the specified amount of experience points. You can check for whole levels by adding the `level` argument.
+This condition is met when the player has the specified amount of experience levels.
+You can also define decimal numbers, for example `experience 1.5` will be met when the player has 1.5 or more experience levels.
+If you want to check for an absolute amount of experience points you can convert it to decimal levels.
 
 !!! example
     ```YAML
-    experience 30 level
+    experience 30
+    experience 5.5
     ```
 
 ## Facing direction: `facing`
