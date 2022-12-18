@@ -127,7 +127,7 @@ with the name of the required entity. Replace all spaces with `_` here. You can 
 
 This condition is met when the player has the specified amount of experience levels.
 You can also define decimal numbers, for example `experience 1.5` will be met when the player has 1.5 or more experience levels.
-If you want to check for an absolute amount of experience points by converting it to levels.
+If you want to check for an absolute amount of experience points you can convert it to decimal levels.
 
 !!! example
     ```YAML
