@@ -154,7 +154,11 @@ All existing RPGMenu users must update their RPGMenu config file. Simply rename 
 
 ### 2.0.0-DEV-485 - Experience changes
 
-- The `experience` event objective and condition has been changed regarding levels. 
-  The condition and the objective do not now allow raw experience anymore, only levels.
-  But for now on they will support decimal numbers, so you can use `experience 1.5` to check for half a level.
-  With that you can convert raw experience to levels.
+Due to a misuse, all code regarding player experience (`experience` event, condition and objective) has been changed.
+It is not possible to obtain the amount of experience points a player has, only their level can be obtained.  
+If you used these you might have to adjust the configured values because the behaviour changed as follows:
+
+- The `experience` objective and condition do not allow raw experience anymore. Only levels are supported from now on.
+- The `experience` objective, condition and event now supports decimal numbers.  
+  For example, you can use `experience 1.5` to check for one and a half level.  
+  You can convert raw experience points to levels, using such decimal numbers.
