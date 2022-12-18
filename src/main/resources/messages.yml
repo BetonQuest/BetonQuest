@@ -33,7 +33,7 @@ pl:
   items_to_pickup: '&2Pozostalo {1} przedmiotow do podniesienia'
   items_to_smelt: '&2{1} items left to smelt' # TODO: missing translation
   items_to_craft: '&2{1} items left to craft' # TODO: missing translation
-  level_to_gain: '&2{1} level left to gain' # TODO: missing translation
+  level_to_gain: '&2{1} levels left to gain' # TODO: missing translation
   busy: '&cNie mozesz rozmawiac w trakcie walki.'
   quest_canceled: '&2Zadanie {1}&2 anulowane!'
   cancel: '&cAnuluj zadanie'
@@ -91,7 +91,7 @@ en:
   items_to_pickup: '&2{1} items left to pickup'
   items_to_smelt: '&2{1} items left to smelt'
   items_to_craft: '&2{1} items left to craft'
-  level_to_gain: '&2{1} level left to gain'
+  level_to_gain: '&2{1} levels left to gain'
   busy: '&cYou can''t talk while fighting.'
   quest_canceled: '&2Quest {1}&2 canceled!'
   cancel: '&cCancel the quest'
@@ -207,7 +207,7 @@ fr:
   items_to_pickup: '&2{1} objets restant à ramasser'
   items_to_smelt: '&2{1} objets restant à cuire'
   items_to_craft: '&2{1} objets restant à fabriquer'
-  level_to_gain: '&2{1} level left to gain' # TODO: missing translation
+  level_to_gain: '&2{1} levels left to gain' # TODO: missing translation
   busy: '&cVous ne pouvez pas parler pendant un combat.'
   quest_canceled: '&2Quête {1}&2 annulée!'
   cancel: '&cAnnuler cette quête'
@@ -265,7 +265,7 @@ cn:
   items_to_pickup: '&2{1} 个物品需要拾取'
   items_to_smelt: '&2{1} 个物品需要熔炼'
   items_to_craft: '&2{1} 个物品需要制作'
-  level_to_gain: '&2{1} level left to gain' # TODO: missing translation
+  level_to_gain: '&2{1} levels left to gain' # TODO: missing translation
   busy: '&c你还在战斗中'
   quest_canceled: '&2任务 {1}&2 已取消!'
   cancel: '&c取消任务'
@@ -323,7 +323,7 @@ es:
   items_to_pickup: '&2{1} objetos restantes para recoger'
   items_to_smelt: '&2{1} objetos restantes para fundir'
   items_to_craft: '&2{1} objetos restantes para crear'
-  level_to_gain: '&2{1} level left to gain' # TODO: missing translation
+  level_to_gain: '&2{1} levels left to gain' # TODO: missing translation
   busy: '&cNo puedes hablar mientras luchas!'
   quest_canceled: '&2Mision {1}&2 cancelada!'
   cancel: '&cCancelar la mision'
@@ -381,7 +381,7 @@ nl:
   items_to_pickup: '&2{1} items over om op te pakken'
   items_to_smelt: '&2{1} items over om te smelten'
   items_to_craft: '&2{1} items over om te craften'
-  level_to_gain: '&2{1} level left to gain' # TODO: missing translation
+  level_to_gain: '&2{1} levels left to gain' # TODO: missing translation
   busy: '&cJe kunt niet praten tijdens het vechten.'
   quest_canceled: '&2Quest {1}&2 geannuleerd!'
   cancel: '&cAnnuleer de quest'
@@ -439,7 +439,7 @@ it:
   items_to_pickup: '&2{1} oggetti rimasti da raccogliere'
   items_to_smelt: '&2{1} oggetti rimasti da cuocere'
   items_to_craft: '&2{1} oggetti da creare'
-  level_to_gain: '&2{1} level left to gain' # TODO: missing translation
+  level_to_gain: '&2{1} levels left to gain' # TODO: missing translation
   busy: '&cNon puoi parlare mentre stai combattendo.'
   quest_canceled: '&2Quest {1}&2 annullata!'
   cancel: '&cAnnulla quest'
@@ -497,7 +497,7 @@ hu:
   items_to_pickup: '&2{1} items left to pickup' # TODO: missing translation
   items_to_smelt: '&2{1} items left to smelt' # TODO: missing translation
   items_to_craft: '&2{1} items left to craft' # TODO: missing translation
-  level_to_gain: '&2{1} level left to gain' # TODO: missing translation
+  level_to_gain: '&2{1} levels left to gain' # TODO: missing translation
   busy: '&cNem harcolhat harc közben.'
   quest_canceled: '&2Küldetés {1}&2 törölve!'
   cancel: '&cTörölje a küldetést'
@@ -555,7 +555,7 @@ vi:
   items_to_pickup: '&2{1} vật phẩm cần nhặt lên còn lại'
   items_to_smelt: '&2{1} vật phẩm cần nung chảy còn lại'
   items_to_craft: '&2{1} vật phẩm cần chế tạo còn lại'
-  level_to_gain: '&2{1} level left to gain' # TODO: missing translation
+  level_to_gain: '&2{1} levels left to gain' # TODO: missing translation
   busy: '&cBạn không được nói khi đang đánh nhau.'
   quest_canceled: '&2Nhiệm vụ {1}&2 đã bị hủy!'
   cancel: '&cHủy nhiệm vụ'
@@ -612,7 +612,7 @@ pt-br:
   items_to_pickup: '&2{1} itens restantes para pegar'
   items_to_smelt: '&2{1} itens restantes para derreter'
   items_to_craft: '&2{1} itens restantes para construir'
-  level_to_gain: '&2{1} level left to gain' # TODO: missing translation
+  level_to_gain: '&2{1} levels left to gain' # TODO: missing translation
   busy: '&cVocê não pode conversar enquanto luta.'
   quest_canceled: '&2Missão {1}&2 cancelada!'
   cancel: '&cCancelar a Missão'
@@ -666,7 +666,7 @@ pt-pt:
   items_to_pickup: '&2{1} itens restantes para coletar'
   items_to_smelt: '&2{1} itens restantes para fundir'
   items_to_craft: '&2{1} items restantes para criar'
-  level_to_gain: '&2{1} level left to gain' # TODO: missing translation
+  level_to_gain: '&2{1} levels left to gain' # TODO: missing translation
   busy: '&cNão podes falar enquanto lutas!'
   quest_canceled: '&2Missão {1}&2 cancelada!'
   cancel: '&cCancelar a missão'
