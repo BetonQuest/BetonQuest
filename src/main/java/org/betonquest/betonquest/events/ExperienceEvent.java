@@ -19,12 +19,12 @@ public class ExperienceEvent extends QuestEvent {
      * The decimal part of the number is a percentage of the next level.
      */
     private final VariableNumber amount;
-    private final boolean checkForLevel;
+    private final boolean useLevels;
 
     public ExperienceEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         this.amount = instruction.getVarNum();
-        this.checkForLevel = instruction.hasArgument("level");
+        this.useLevels = instruction.hasArgument("level");
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ExperienceEvent extends QuestEvent {
         profile.getOnlineProfile()
                 .map(OnlineProfile::getPlayer)
                 .ifPresent(player -> {
-                    if (checkForLevel) {
+                    if (useLevels) {
                         final double current = player.getLevel() + player.getExp();
                         final double amountToAdd = current + amount;
                         player.setLevel((int) amountToAdd);
