@@ -161,8 +161,10 @@ You can also define decimal numbers, for example `experience 1.5` will complete 
 If you want to check for an absolute amount of experience points you can convert it to decimal levels.
 The objective is checked every time the player gets experience naturally, such as killing mobs or mining blocks.
 Additionally, it is checked if the player reaches a new level in any way (vanilla level up, commands or other plugins).
-You can use the `notify` keyword to display a message each
-time the player advances the objective, optionally with the notification interval after a colon.
+The objective will also imminently complete if the player already has the experience level or more.
+And it will also be completed if the player joins the game with the specified amount of experience levels or more.
+You can use the `notify` keyword to display a message each time the player advances the objective,
+optionally with the notification interval after a colon.
 
 This objective has three properties: `amount`, `left` and `total`. `amount` is the current amount of experience levels,
 `left` is the amount of experience levels still needed and `total` is the amount of experience required.

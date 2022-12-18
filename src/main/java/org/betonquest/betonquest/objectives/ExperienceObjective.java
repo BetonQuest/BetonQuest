@@ -17,6 +17,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerExpChangeEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLevelChangeEvent;
 
 import java.util.Locale;
@@ -71,6 +72,17 @@ public class ExperienceObjective extends Objective implements Listener {
     }
 
     @Override
+    public void start(final Profile profile) {
+        super.start(profile);
+        profile.getOnlineProfile()
+                .ifPresent(onlineProfile -> {
+                    final Player player = onlineProfile.getPlayer();
+                    final double newAmount = player.getLevel() + player.getExp();
+                    onExperienceChange(onlineProfile, newAmount, false);
+                });
+    }
+
+    @Override
     public String getDefaultDataInstruction() {
         return "";
     }
@@ -116,5 +128,13 @@ public class ExperienceObjective extends Objective implements Listener {
             final double newAmount = player.getLevel() + player.getExp();
             onExperienceChange(PlayerConverter.getID(player), newAmount, false);
         });
+    }
+
+    @EventHandler
+    public void onPlayerJoin(final PlayerJoinEvent event) {
+        final Player player = event.getPlayer();
+        final OnlineProfile onlineProfile = PlayerConverter.getID(player);
+        final double newAmount = player.getLevel() + player.getExp();
+        onExperienceChange(onlineProfile, newAmount, false);
     }
 }
