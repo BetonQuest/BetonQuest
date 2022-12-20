@@ -9,6 +9,7 @@ Optional arguments are displayed as such: `[argument]`.
 
 * `/j` - Gives the journal
 * `/backpack` - Opens the backpack
+* `/compass` - Opens the quest tracking compass
 * `/q` - Lists all available admin commands
 * `/q reload` - Reloads the plugin
 * `/q objectives <playerName> <list/add/del/complete> <objectiveName>` - Shows player's currently active objectives
@@ -45,6 +46,7 @@ The server must be restarted to unregister command tab completions.
 
 * `/j`: bj, journal, bjournal, betonjournal, betonquestjournal
 * `/backpack`: b, bb, bbackpack, betonbackpack, betonquestbackpack
+* `/compass`: bc, bcompass, betoncompass, betonquestcompass
 * `/q`: bq, bquest, bquests, betonquest, betonquests, quest, quests
     * `objective`: o, objectives
     * `tag`: t, tags
