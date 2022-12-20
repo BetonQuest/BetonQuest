@@ -1,13 +1,13 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/ConfigPatcher.md
 2.0.0.5:
   - type: VALUE_RENAME
-    oldKey: items.backpack.compass_button
+    key: items.backpack.compass_button
     oldValueRegex: ''
-    newKey: 'DEFAULT'
+    newValue: 'DEFAULT'
   - type: VALUE_RENAME
-    oldKey: items.backpack.cancel_button
+    key: items.backpack.cancel_button
     oldValueRegex: ''
-    newKey: 'DEFAULT'
+    newValue: 'DEFAULT'
 2.0.0.4:
   - type: SET
     key: hook.decentholograms
