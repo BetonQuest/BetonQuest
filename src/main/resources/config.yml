@@ -104,5 +104,5 @@ items:
   backpack:
     previous_button: ''
     next_button: ''
-    cancel_button: ''
-    compass_button: ''
+    cancel_button: "DEFAULT"
+    compass_button: "DEFAULT"

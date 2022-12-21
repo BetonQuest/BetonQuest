@@ -123,6 +123,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `experience` objective event and condition were reworked
   - condition and objective do not support raw experience anymore
   - all allow decimal level and variables now
+- changed backpack configuration. "" will hide the compass or canceler
 - Things that are also changed in 1.12.X:
     - math variable now allows rounding output with the ~ operator
     - French translation has been updated
