@@ -28,7 +28,7 @@ public class NotifyEvent extends QuestEvent {
     /**
      * A pattern for the notation of multiple translations in a single event.
      */
-    private static final Pattern LANGUAGE_PATTERN = Pattern.compile("\\{(?<lang>[a-z]{2})\\} (?<message>.*?)(?=(?: )\\{[a-z]{2}\\} |$)");
+    private static final Pattern LANGUAGE_PATTERN = Pattern.compile("\\{(?<lang>[a-z-]{2,5})} (?<message>.*?)(?= \\{[a-z-]{2,5}} |$)");
     /**
      * This map contains language codes as keys and messages as values. Since the messages may include variables, they
      * are stored as VariableString objects.

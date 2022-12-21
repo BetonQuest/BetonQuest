@@ -349,13 +349,15 @@ Displays a notification using the NotifyIO system.
 !!! warning
     All colons (`:`) in the message part of the notification need to be escaped, including those inside variables.
     One backslash (`\`) is required when using no quoting at all (`...`) or single quotes
-    (`'...'`). Two backslashes are required (`\\`) when using double quotes (`"..."`).
+    (`'...'`). Two backslashes are required (`\\`) when using double quotes (`"..."`).  
+    You also need to escape the backslash itself, if you use double quotes for some things like `\n`.
 
     Examples:<br>
     `eventName: notify Peter:Heya %player%!` :arrow_right: `eventName: notify Peter{++\++}:Heya %player%!`<br>
     `eventName: {=='==}notify Peter:Heya %player%!{=='==}` :arrow_right: `eventName: {=='==}notify Peter{++\++}:Heya %player%!{=='==}`<br>
     `eventName: {=="==}notify Peter:Heya %player%!{=="==}` :arrow_right: `eventName: {=="==}notify Peter{++\\++}:Heya %player%!{=="==}`<br>
-    `otherEvent: notify You own %math.calc:5% fish!` :arrow_right: `otherEvent: You own %math.calc{++\++}:5% fish!`
+    `otherEvent: notify You own %math.calc:5% fish!` :arrow_right: `otherEvent: You own %math.calc{++\++}:5% fish!`<br>
+    `newLine: {=="==}notify Some multiline \n message{=="==}` :arrow_right: `newLine: {=="==}notify Some multiline {++\++}\n message{=="==}`
 
 | Option                                                   | Description                                                                                                                                 |
 |----------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
