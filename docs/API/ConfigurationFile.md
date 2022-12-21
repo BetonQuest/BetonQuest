@@ -34,6 +34,9 @@ methods.
 
 ## Updating ConfigurationFiles
 
+When you just want to add a new option to the config, you can simply add it to the "_config.yml_" resource file. It will 
+automatically be added to the users existing config. However, if you change or rename existing options you need to use the config patcher: 
+
 The config patcher automatically updates all configs loaded using the `ConfigurationFile` API.
 This is needed when changes are made to the existing config format.
 This patcher only works on configuration files! It's not used for files that contain quests as these should not be loaded 
@@ -103,7 +106,6 @@ The version format is slightly different from the patch file - `1.2.3-CONFIG-4` 
           - type: SET
             key: hook.decentholograms
             value: true
-            override: false
         2.0.0.1: #(1)!
           - type: SET
             key: journal.custom_model_data
@@ -123,7 +125,6 @@ The version format is slightly different from the patch file - `1.2.3-CONFIG-4` 
           - type: SET
             key: hook.decentholograms
             value: true
-            override: false
         2.0.0.1: #(1)!
           - type: SET
             key: journal.custom_model_data
@@ -145,7 +146,6 @@ The version format is slightly different from the patch file - `1.2.3-CONFIG-4` 
           - type: SET
             key: hook.decentholograms
             value: true
-            override: false
         2.0.0.1: #(1)!
           - type: SET
             key: journal.custom_model_data
@@ -167,12 +167,14 @@ By default, these transformers are available:
 
 #### SET
 
-Sets a key to the given value. Already set keys will be overridden if `override` is set to `true`.
+Sets a key to the given value. Already set keys will be overridden.
+You can also add new config entries by adding them to the "_config.yml_" resource file.
+The new key will automatically be added to the users existing config. For such simple cases the patcher is not needed.
+
 ``` YAML title="Syntax"
 - type: SET
   key: journalLocked
   value: true
-  override: true
 ```
 
 #### KEY_RENAME
