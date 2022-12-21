@@ -191,7 +191,7 @@ so those events should not be blocked by any conditions!
 | Parameter       | Syntax            | Default Value          | Explanation                                                                                     |
 |-----------------|-------------------|------------------------|-------------------------------------------------------------------------------------------------|
 | _events to run_ | eventName1,event2 | :octicons-x-circle-16: | One or multiple events to run. Contains event names seperated by commas.                        |
-| _delay_         | Keyword           | 1 tick                 | The delay before the folder starts executing it's events.                                       |
+| _delay_         | Keyword           | without delay          | The delay before the folder starts executing it's events.                                       |
 | _period_        | period:number     | 1 tick                 | The time between each event. Minimum value is one tick (~20ms).                                 |
 | _time unit_     | Keyword           | Seconds                | The unit of time to use for delay and period. Either `ticks` or `minutes`. Omit to use seconds. |
 | _random_        | random:number     | Disabled               | Enables "random mode". Will randomly pick the defined amount of events .                        |
