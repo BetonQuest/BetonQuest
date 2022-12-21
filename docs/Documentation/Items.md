@@ -101,7 +101,7 @@ _This applies to human heads._
 
 - `owner` - this is the name of the head owner. It will **not** use color codes nor replace underscores with spaces. If you want to check for heads without any owner, use `none` keyword.
   - Use `%player%` to get the current players head.
-  - Custom Heads are not supported yet.
+  - Heads with a custom texture (Base64 code) are not supported yet.
 
 **Examples**:
 
