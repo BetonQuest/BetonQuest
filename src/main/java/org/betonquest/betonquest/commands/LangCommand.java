@@ -14,7 +14,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,8 +78,8 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
     @Override
     public Optional<List<String>> simpleTabComplete(final CommandSender sender, final Command command, final String alias, final String[] args) {
         if (args.length == 1) {
-            return Optional.of(Config.getLanguages());
+            return Optional.of(Config.getLanguages().stream().toList());
         }
-        return Optional.of(new ArrayList<>());
+        return Optional.of(Collections.emptyList());
     }
 }
