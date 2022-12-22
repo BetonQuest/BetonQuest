@@ -62,6 +62,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `mmoprofessionlevelup` objective can now check the main character level as well
 - `burning` condition
 - `inconversation` condition
+- `language` condition
 - `heroesattribute` condition - Heroes compatibility feature: Checks a player's level for a particular attribute against a value
 - `variable` condition - regex can now also be a variable
 - `mmspawn` event now has argument `target` Makes the spawned mob target the player

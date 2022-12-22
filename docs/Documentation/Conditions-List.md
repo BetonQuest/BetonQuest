@@ -255,6 +255,15 @@ This condition will return true if the player has specified entry in his journal
     journal wood_started
     ```
 
+## Language: `language`
+
+This condition is fulfilled as long as the player has one of the specified languages selected as their quest language.
+
+!!! example
+    ```YAML
+    language en,de,fr
+    ```
+
 ## Location: `location`
 
 It returns true only when the player is closer to specified location than the specified distance. Just two mandatory attributes - location and radius around it (can be a variable).

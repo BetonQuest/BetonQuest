@@ -19,9 +19,9 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Handles the configuration of the plugin
@@ -31,7 +31,7 @@ import java.util.Map;
         "PMD.ClassNamingConventions"})
 @CustomLog
 public final class Config {
-    private static final List<String> LANGUAGES = new ArrayList<>();
+    private static final Set<String> LANGUAGES = new LinkedHashSet<>();
     private static QuestManager questManager;
     private static BetonQuest plugin;
     private static ConfigurationFile messages;
@@ -353,7 +353,7 @@ public final class Config {
     /**
      * @return the languages defined for this plugin
      */
-    public static List<String> getLanguages() {
+    public static Set<String> getLanguages() {
         return LANGUAGES;
     }
 }
