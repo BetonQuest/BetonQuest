@@ -358,7 +358,6 @@ class TransformerTest {
                     - type: SET
                       key: journalLock
                       value: true
-                      override: true
                 """;
         final String serializedConfig = getSerializedPatchedConfig(patch);
 
