@@ -21,13 +21,7 @@ public class SetTransformer implements PatchTransformer {
     public void transform(final Map<String, String> options, final ConfigurationSection config) throws PatchException {
         final String key = options.get("key");
         final String value = options.get("value");
-        final boolean doOverride = Boolean.parseBoolean(options.get("override"));
 
-        if (!config.isSet(key) || doOverride) {
-            config.set(key, value);
-        } else {
-            throw new PatchException("The key '%s' is already set and won't be overridden with '%s' since override is disabled."
-                    .formatted(key, value));
-        }
+        config.set(key, value);
     }
 }

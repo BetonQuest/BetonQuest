@@ -358,7 +358,6 @@ class TransformerTest {
                     - type: SET
                       key: journalLock
                       value: true
-                      override: true
                 """;
         final String serializedConfig = getSerializedPatchedConfig(patch);
 
@@ -366,37 +365,6 @@ class TransformerTest {
 
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
-
-
-    @Test
-    void testSetOverrideTrue() throws InvalidConfigurationException {
-        final String patch = """
-                  2.0.0.1:
-                    - type: SET
-                      key: section.test
-                      value: someNewValue
-                      override: true
-                """;
-        final String serializedConfig = getSerializedPatchedConfig(patch);
-
-        CONFIG.set("section.test", "someNewValue");
-        assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
-    }
-
-    @Test
-    void testSetOverrideFalse() throws InvalidConfigurationException {
-        final String patch = """
-                  2.0.0.1:
-                    - type: SET
-                      key: section.test
-                      value: someNewValue
-                      override: false
-                """;
-        final String serializedConfig = getSerializedPatchedConfig(patch);
-
-        assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
-    }
-
 
     @Test
     void testTransformStringToBoolean() throws InvalidConfigurationException {

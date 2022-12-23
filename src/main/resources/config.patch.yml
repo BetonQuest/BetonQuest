@@ -8,15 +8,6 @@
     key: items.backpack.cancel_button
     oldValueRegex: ''
     newValue: 'DEFAULT'
-2.0.0.4:
-  - type: SET
-    key: hook.decentholograms
-    value: true
-    override: false
-  - type: SET
-    key: default_hologram
-    value: HolographicDisplays,DecentHolograms
-    override: false
 2.0.0.3:
   - type: TYPE_TRANSFORM
     key: default_journal_slot
@@ -169,7 +160,3 @@
   - type: TYPE_TRANSFORM
     key: journal.full_main_page
     newType: boolean
-2.0.0.1:
-  - type: SET
-    key: journal.custom_model_data
-    value: -1
