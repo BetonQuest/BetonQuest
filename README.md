@@ -1,5 +1,5 @@
 <div align="center">
-  <a href="https://docs.betonquest.org/2.0.0-DEV/"><img src="https://github.com/BetonQuest/BetonQuest/blob/master/docs/_media/brand/Logo/LogoChainless1K.png?raw=true" alt="BetonQuest-Logo"/></a>
+  <a href="https://docs.betonquest.org/2.0.0-DEV/"><img src="https://github.com/BetonQuest/BetonQuest/blob/main/docs/_media/brand/Logo/LogoChainless1K.png?raw=true" alt="BetonQuest-Logo"/></a>
   <br>
   <a href="https://bstats.org/plugin/bukkit/BetonQuest/551/" title="See how many servers run this plugin.">
       <img src="https://img.shields.io/bstats/servers/551?style=plastic"/>
@@ -10,10 +10,10 @@
   <a href="https://discord.gg/MvmkHEu" title="Join our discord for support.">
       <img src="https://img.shields.io/discord/407221862980911105?label=discord&logo=discord&style=plastic" />
   </a>
-  <a href="https://github.com/BetonQuest/BetonQuest/actions?query=workflow%3ABuild+branch%3Amaster+event%3Apush++" title="See the projects build status here.">
-      <img src="https://img.shields.io/github/workflow/status/BetonQuest/BetonQuest/Build/master?event=push&logo=githubactions&style=plastic">
+  <a href="https://github.com/BetonQuest/BetonQuest/actions?query=workflow%3ABuild+branch%3Amain+event%3Apush++" title="See the projects build status here.">
+      <img src="https://img.shields.io/github/workflow/status/BetonQuest/BetonQuest/Build/main?event=push&logo=githubactions&style=plastic">
   </a>
-  <a href="https://github.com/BetonQuest/BetonQuest/blob/master/LICENSE" title="This project is licensed under the GPLv3 license!">
+  <a href="https://github.com/BetonQuest/BetonQuest/blob/main/LICENSE" title="This project is licensed under the GPLv3 license!">
       <img src="https://img.shields.io/badge/license-GPLv3-blue?logo=github&style=plastic"/>
     </a>
   <a href="https://opencollective.com/betonquest" title="Donate to this project using open collective!">
