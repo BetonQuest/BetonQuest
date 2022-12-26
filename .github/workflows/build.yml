@@ -459,11 +459,10 @@ jobs:
           IFS='-' read -r -a array <<< "$VERSION"
           echo "VERSION_KEY=${array[0]}" >> $GITHUB_ENV
           echo "VERSION_NUMBER=${array[2]}" >> $GITHUB_ENV
-          echo "BRANCH_NAME=${GITHUB_REF:11}" >> $GITHUB_ENV
       - name: Create development
         run: |
           if [ -z "$PASSWORD" ]; then echo "WARNING! You need to pass the SNAPSHOT_UPLOAD_PASSWORD environment variable."; exit 1; fi
-          RESPONSE="$(curl --form-string "secret=$PASSWORD" --form-string "version=$VERSION_KEY" --form-string "versionNumber=$VERSION_NUMBER" --form-string "runID=$RUN_ID" --form-string "branch=$BRANCH_NAME" --form-string "commitHash=$COMMIT_HASH" --form "plugin=@\"$PLUGIN\"" --form "docs=@\"$DOCS\"" https://dev.betonquest.org/api/v1/builds/upload)"
+          RESPONSE="$(curl --form-string "secret=$PASSWORD" --form-string "version=$VERSION_KEY" --form-string "versionNumber=$VERSION_NUMBER" --form-string "runID=$RUN_ID" --form-string "commitHash=$COMMIT_HASH" --form "plugin=@\"$PLUGIN\"" --form "docs=@\"$DOCS\"" https://dev.betonquest.org/api/v1/builds/upload)"
           if [ "$RESPONSE" != "Upload successful" ]; then echo "WARNING! The upload was not successful. The response was '$RESPONSE'"; exit 1; fi
         env:
           PASSWORD: ${{ secrets.SNAPSHOT_UPLOAD_PASSWORD }}
