@@ -64,7 +64,7 @@ jobs:
         run: |
           if [ $CHANGES_IN_DOCS_ONLY == true ]; then MAVEN_VERSION=${PREVIOUS_VERSION_TAG/build-number/DEV}; else MAVEN_VERSION=${MAVEN_VERSION}-DEV-${BUILD_NUMBER}; fi
           echo "MAVEN_VERSION=$MAVEN_VERSION" >> $GITHUB_ENV
-          echo "VERSION_TYPE=developement" >> $GITHUB_ENV
+          echo "VERSION_TYPE=development" >> $GITHUB_ENV
       - name: Set version for 'Artifact Build'
         if: "github.repository != 'BetonQuest/BetonQuest' || !startsWith(github.ref,'refs/tags/v') && github.ref != 'refs/heads/master' && !startsWith(github.ref,'refs/heads/master_v')"
         run: |
@@ -125,7 +125,7 @@ jobs:
         run: |
           sed -i "s~\${betonquest\.version}~${VERSION}~g" ./src/main/resources/plugin.yml
       - name: Set pom.xml build number
-        if: "env.VERSION_TYPE == 'developement'"
+        if: "env.VERSION_TYPE == 'development'"
         run: |
           mvn versions:set-property -DgenerateBackupPoms=false -Dproperty=betonquest.version.buildnumber -DnewVersion="${VERSION##*-DEV-}"
       - name: Activate lf line ending check in editorconfig
@@ -222,7 +222,7 @@ jobs:
             !target/docs/changes.patch
   deploy-artifacts:
     name: Deploy Artifacts
-    if: "needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'developement' && needs.prepare.outputs.CHANGES_IN_DOCS_ONLY == 'false'"
+    if: "needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' && needs.prepare.outputs.CHANGES_IN_DOCS_ONLY == 'false'"
     needs: [ prepare, build-artifacts, build-docs ]
     runs-on: ubuntu-latest
 
@@ -284,7 +284,7 @@ jobs:
   deploy-docs:
     name: Deploy Docs
     concurrency: gh-pages-deploy
-    if: "needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'developement'"
+    if: "needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development'"
     needs: [ prepare, build-artifacts, build-docs ]
     runs-on: ubuntu-latest
 
@@ -350,8 +350,8 @@ jobs:
 
           mike deploy --push --update-aliases ${VERSION} RELEASE
           mike delete --push ${VERSION}-DEV
-      - name: Deploy Developement to Github Pages
-        if: "env.VERSION_TYPE == 'developement'"
+      - name: Deploy development to Github Pages
+        if: "env.VERSION_TYPE == 'development'"
         run: |
           git config --global user.name "BetonQuest-Bot"
           git config --global user.email "contact@betonquest.org"
@@ -420,9 +420,9 @@ jobs:
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
           VERSION: ${{ env.VERSION }}
           RELEASE: "release"
-  create-developement:
-    name: Create Developement Build
-    if: "always() && !cancelled() && needs.prepare.outputs.VERSION_TYPE == 'developement' && needs.prepare.outputs.CHANGES_IN_DOCS_ONLY != 'true'"
+  create-development:
+    name: Create development Build
+    if: "always() && !cancelled() && needs.prepare.outputs.VERSION_TYPE == 'development' && needs.prepare.outputs.CHANGES_IN_DOCS_ONLY != 'true'"
     needs: [ prepare, deploy-artifacts, deploy-docs ]
     runs-on: ubuntu-latest
 
@@ -454,13 +454,13 @@ jobs:
           cd target/docs/
           zip -r Docs.zip . -x *.mp4
           cd ../..
-      - name: Prepare developement variables
+      - name: Prepare development variables
         run: |
           IFS='-' read -r -a array <<< "$VERSION"
           echo "VERSION_KEY=${array[0]}" >> $GITHUB_ENV
           echo "VERSION_NUMBER=${array[2]}" >> $GITHUB_ENV
           echo "BRANCH_NAME=${GITHUB_REF:11}" >> $GITHUB_ENV
-      - name: Create developement
+      - name: Create development
         run: |
           if [ -z "$PASSWORD" ]; then echo "WARNING! You need to pass the SNAPSHOT_UPLOAD_PASSWORD environment variable."; exit 1; fi
           RESPONSE="$(curl --form-string "secret=$PASSWORD" --form-string "version=$VERSION_KEY" --form-string "versionNumber=$VERSION_NUMBER" --form-string "runID=$RUN_ID" --form-string "branch=$BRANCH_NAME" --form-string "commitHash=$COMMIT_HASH" --form "plugin=@\"$PLUGIN\"" --form "docs=@\"$DOCS\"" https://dev.betonquest.org/api/v1/builds/upload)"
