@@ -5,7 +5,8 @@
 
   <properties>
     <betonquest.version.base>2.0.0</betonquest.version.base>
-    <betonquest.version>${betonquest.version.base}-DEV-UNOFFICIAL</betonquest.version>
+    <betonquest.version.buildnumber>UNOFFICIAL</betonquest.version.buildnumber>
+    <betonquest.version>${betonquest.version.base}-DEV-${betonquest.version.buildnumber}</betonquest.version>
     <minecraft.api.version>1.18</minecraft.api.version>
     <maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
