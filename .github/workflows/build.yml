@@ -127,8 +127,7 @@ jobs:
       - name: Set pom.xml build number
         if: "env.VERSION_TYPE == 'developement'"
         run: |
-          BUILD_NUMBER=$(echo $VERSION | sed 's/.*-DEV-//')
-          mvn versions:set-property -DgenerateBackupPoms=false -Dproperty=betonquest.version.buildnumber -DnewVersion="$BUILD_NUMBER"
+          mvn versions:set-property -DgenerateBackupPoms=false -Dproperty=betonquest.version.buildnumber -DnewVersion="${VERSION##*-DEV-}"
       - name: Activate lf line ending check in editorconfig
         run: |
           sed -i "s~#end_of_line = ~end_of_line = ~g" ./.editorconfig
