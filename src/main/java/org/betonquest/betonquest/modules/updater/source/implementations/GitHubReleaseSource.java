@@ -19,7 +19,7 @@ public class GitHubReleaseSource extends UpdateSource implements ReleaseUpdateSo
     /**
      * The basic url for the api of GitHub.
      */
-    private static final String RELEASES_URL = "/releases";
+    public static final String RELEASES_URL = "/releases";
     /**
      * The apiUrl to the GitHub releases API target.
      */
