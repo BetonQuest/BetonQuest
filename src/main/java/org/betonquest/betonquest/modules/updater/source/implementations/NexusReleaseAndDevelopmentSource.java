@@ -52,6 +52,7 @@ public class NexusReleaseAndDevelopmentSource extends UpdateSource implements Re
 
     /**
      * Creates a {@link NexusReleaseAndDevelopmentSource} with the given apiUrl.
+     * Provide only the url to the nexus, not the url to the search itself.
      *
      * @param apiUrl to the Nexus API root target
      */
