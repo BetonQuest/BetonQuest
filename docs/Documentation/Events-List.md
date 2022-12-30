@@ -129,7 +129,7 @@ Damages the player by specified amount of damage. The only argument is a number 
 
 **persistent**, **static**
 
-Delete the player points in a specified category.
+Clear all player points in a specified category.
 
 !!! example
     ```YAML
