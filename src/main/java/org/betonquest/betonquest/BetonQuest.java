@@ -168,7 +168,6 @@ import org.betonquest.betonquest.modules.updater.UpdateSourceHandler;
 import org.betonquest.betonquest.modules.updater.Updater;
 import org.betonquest.betonquest.modules.updater.source.DevelopmentUpdateSource;
 import org.betonquest.betonquest.modules.updater.source.ReleaseUpdateSource;
-import org.betonquest.betonquest.modules.updater.source.implementations.BetonQuestDevelopmentSource;
 import org.betonquest.betonquest.modules.updater.source.implementations.GitHubReleaseSource;
 import org.betonquest.betonquest.modules.updater.source.implementations.NexusReleaseAndDevelopmentSource;
 import org.betonquest.betonquest.modules.versioning.Version;
@@ -956,9 +955,8 @@ public class BetonQuest extends JavaPlugin {
         final UpdateDownloader updateDownloader = new UpdateDownloader(updateFolder.getParentFile().toURI(), tempFile, finalFile);
         final GitHubReleaseSource gitHubReleaseSource = new GitHubReleaseSource("https://api.github.com/repos/BetonQuest/BetonQuest");
         final NexusReleaseAndDevelopmentSource nexusReleaseAndDevelopmentSource = new NexusReleaseAndDevelopmentSource("https://betonquest.org/nexus");
-        final BetonQuestDevelopmentSource betonQuestDevelopmentSource = new BetonQuestDevelopmentSource("https://dev.betonquest.org/api/v1");
         final List<ReleaseUpdateSource> releaseHandlers = List.of(gitHubReleaseSource, nexusReleaseAndDevelopmentSource);
-        final List<DevelopmentUpdateSource> developmentHandlers = List.of(nexusReleaseAndDevelopmentSource, betonQuestDevelopmentSource);
+        final List<DevelopmentUpdateSource> developmentHandlers = List.of(nexusReleaseAndDevelopmentSource);
         final UpdateSourceHandler updateSourceHandler = new UpdateSourceHandler(releaseHandlers, developmentHandlers);
         updater = new Updater(config, pluginVersion, updateSourceHandler, updateDownloader, this,
                 getServer().getScheduler(), InstantSource.system());
