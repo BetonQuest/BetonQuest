@@ -54,7 +54,7 @@ jobs:
       - name: Set version for 'Release Build'
         if: "startsWith(github.ref,'refs/tags/v')"
         run: |
-          TAG_VERSION=${GITHUB_REF:11}
+          TAG_VERSION="$(echo "$GITHUB_REF" | sed 's/^[^/]*\/[^/]*\///g')"
           echo "Collected the tag version. The version is '$TAG_VERSION'"
           if [ $TAG_VERSION != $MAVEN_VERSION ]; then echo "::error::The version of the tag and the version of the pom are not equal! Tag is '$TAG_VERSION' and pom is '$MAVEN_VERSION'."; exit 1; fi
           echo "MAVEN_VERSION=$MAVEN_VERSION" >> $GITHUB_ENV
@@ -226,6 +226,9 @@ jobs:
     needs: [ prepare, build-artifacts, build-docs ]
     runs-on: ubuntu-latest
 
+    outputs:
+      UPLOAD_URL: ${{ steps.save_upload_url.outputs.upload_url }}
+
     steps:
       - name: Set variables from 'Prepare Build Variables'
         run: |
@@ -276,11 +279,16 @@ jobs:
             ]
       - name: Publish to Maven Repository
         run: |
-          mvn -P Skip-Verification,Test-None -B deploy
+          mvn -P Skip-Verification,Test-None -B deploy | tee -a maven-deploy.log
         env:
           REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
           REPOSITORY_USER: ${{ secrets.REPOSITORY_USER }}
           REPOSITORY_PASS: ${{ secrets.REPOSITORY_PASS }}
+      - name: Get upload URL from deploy log
+        id: save_upload_url
+        run: |
+          UPLOAD_URL = $(cat maven-deploy.log | grep -oP '(?<=Uploading to betonquest: \*\*\*).*-shaded.jar')
+          echo "UPLOAD_URL=$UPLOAD_URL" >> $GITHUB_ENV
   deploy-docs:
     name: Deploy Docs
     concurrency: gh-pages-deploy
@@ -359,9 +367,9 @@ jobs:
           IFS='-' read -r -a array <<< "$VERSION"
           [ ${{ github.ref }} == 'refs/heads/main' ] && mike deploy --push --update-aliases ${array[0]}-DEV DEV || mike deploy --push --update-aliases ${array[0]}-DEV
 
-  create-release:
-    name: Create Release Build
-    if: "always() && !cancelled() && needs.prepare.outputs.VERSION_TYPE == 'release'"
+  announce-deployment:
+    name: Official Deployment
+    if: "always() && !cancelled() && (needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development')"
     needs: [ prepare, deploy-artifacts, deploy-docs ]
     runs-on: ubuntu-latest
 
@@ -372,6 +380,7 @@ jobs:
           echo "VERSION_TYPE=${{ needs.prepare.outputs.VERSION_TYPE }}" >> $GITHUB_ENV
           echo "PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}" >> $GITHUB_ENV
           echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
+          echo "UPLOAD_URL=${{ needs.deploy-artifacts.outputs.UPLOAD_URL }}" >> $GITHUB_ENV
       - name: Checkout source code
         uses: actions/checkout@v3
       - name: Check previous Jobs
@@ -379,24 +388,29 @@ jobs:
         run: |
           exit 1
       - name: Cache target/artifacts
+        if: "env.VERSION_TYPE == 'release'"
         uses: actions/cache@v3
         with:
           path: target/artifacts
           key: ${{ runner.os }}-target/artifacts-${{ github.run_number }}
       - name: Cache target/docs
+        if: "env.VERSION_TYPE == 'release'"
         uses: actions/cache@v3
         with:
           path: target/docs
           key: ${{ runner.os }}-target/docs-${{ github.run_number }}
       - name: Zip Docs
+        if: "env.VERSION_TYPE == 'release'"
         run: |
           zip -r target/docs/Docs.zip target/docs/
       - name: Set CHANGELOG.md version
+        if: "env.VERSION_TYPE == 'release'"
         run: |
           sed -i "s~## \[Unreleased\]~## \[${VERSION}\]~g" ./CHANGELOG.md
           DATE=$(date +%Y-%m-%d)
           sed -i "s~\${maven\.build\.timestamp}~$DATE~g" ./CHANGELOG.md
       - name: Create release
+        if: "env.VERSION_TYPE == 'release'"
         uses: docker://antonyurchenko/git-release:latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -409,67 +423,9 @@ jobs:
             target/artifacts/BetonQuest.jar
             target/docs/Docs.zip
       - name: Delete obsolete git tag
+        if: "env.VERSION_TYPE == 'release'"
         run: |
           git push origin :${PREVIOUS_VERSION_TAG}
-      - name: Publish to Discord
-        if: "always()"
-        run: |
-          bash .github/scripts/discord.sh
-        env:
-          JOB_STATUS: ${{ job.status }}
-          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
-          VERSION: ${{ env.VERSION }}
-          RELEASE: "release"
-  create-development:
-    name: Create development Build
-    if: "always() && !cancelled() && needs.prepare.outputs.VERSION_TYPE == 'development' && needs.prepare.outputs.CHANGES_IN_DOCS_ONLY != 'true'"
-    needs: [ prepare, deploy-artifacts, deploy-docs ]
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Set variables from 'Prepare Build Variables'
-        run: |
-          echo "VERSION=${{ needs.prepare.outputs.VERSION }}" >> $GITHUB_ENV
-          echo "VERSION_TYPE=${{ needs.prepare.outputs.VERSION_TYPE }}" >> $GITHUB_ENV
-          echo "PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}" >> $GITHUB_ENV
-          echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
-      - name: Checkout source code
-        uses: actions/checkout@v3
-      - name: Check previous Jobs
-        if: "needs.deploy-artifacts.result != 'success' || needs.deploy-docs.result != 'success'"
-        run: |
-          exit 1
-      - name: Cache target/artifacts
-        uses: actions/cache@v3
-        with:
-          path: target/artifacts
-          key: ${{ runner.os }}-target/artifacts-${{ github.run_number }}
-      - name: Cache target/docs
-        uses: actions/cache@v3
-        with:
-          path: target/docs
-          key: ${{ runner.os }}-target/docs-${{ github.run_number }}
-      - name: Zip Docs
-        run: |
-          cd target/docs/
-          zip -r Docs.zip . -x *.mp4
-          cd ../..
-      - name: Prepare development variables
-        run: |
-          IFS='-' read -r -a array <<< "$VERSION"
-          echo "VERSION_KEY=${array[0]}" >> $GITHUB_ENV
-          echo "VERSION_NUMBER=${array[2]}" >> $GITHUB_ENV
-      - name: Create development
-        run: |
-          if [ -z "$PASSWORD" ]; then echo "WARNING! You need to pass the SNAPSHOT_UPLOAD_PASSWORD environment variable."; exit 1; fi
-          RESPONSE="$(curl --form-string "secret=$PASSWORD" --form-string "version=$VERSION_KEY" --form-string "versionNumber=$VERSION_NUMBER" --form-string "runID=$RUN_ID" --form-string "commitHash=$COMMIT_HASH" --form "plugin=@\"$PLUGIN\"" --form "docs=@\"$DOCS\"" https://dev.betonquest.org/api/v1/builds/upload)"
-          if [ "$RESPONSE" != "Upload successful" ]; then echo "WARNING! The upload was not successful. The response was '$RESPONSE'"; exit 1; fi
-        env:
-          PASSWORD: ${{ secrets.SNAPSHOT_UPLOAD_PASSWORD }}
-          RUN_ID: ${{ github.run_id }}
-          COMMIT_HASH: ${{ github.sha }}
-          PLUGIN: "target/artifacts/BetonQuest.jar"
-          DOCS: "target/docs/Docs.zip"
       - name: Publish to Discord
         if: "always()"
         run: |
