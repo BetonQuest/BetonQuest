@@ -1,0 +1,29 @@
+{
+  "items": [
+    {
+      "downloadUrl": "https://betonquest.org/nexus/repository/betonquest/org/betonquest/betonquest/1.12.10-SNAPSHOT/betonquest-1.12.10-20221230.085132-398.pom",
+      "repository": "betonquest",
+      "format": "maven2",
+      "contentType": "application/xml",
+      "maven2": {
+        "extension": "pom",
+        "groupId": "org.betonquest",
+        "artifactId": "betonquest",
+        "version": "1.12.10-20221230.085132-398"
+      }
+    },
+    {
+      "downloadUrl": "https://betonquest.org/nexus/repository/betonquest/org/betonquest/betonquest/1.12.10-SNAPSHOT/betonquest-1.12.10-20221229.093042-397.pom",
+      "repository": "betonquest",
+      "format": "maven2",
+      "contentType": "application/xml",
+      "maven2": {
+        "extension": "pom",
+        "groupId": "org.betonquest",
+        "artifactId": "betonquest",
+        "version": "1.12.10-20221229.093042-397"
+      }
+    }
+  ],
+  "continuationToken": null
+}

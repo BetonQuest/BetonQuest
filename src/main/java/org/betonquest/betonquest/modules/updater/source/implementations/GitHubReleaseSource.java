@@ -15,16 +15,20 @@ import java.util.Map;
  * This is a {@link ReleaseUpdateSource} for GitHub's releases API.
  */
 public class GitHubReleaseSource extends UpdateSource implements ReleaseUpdateSource {
-
     /**
-     * The apiUrl to the GitHub releases API target.
+     * The sub path of the release API of GitHub to append on the {@link GitHubReleaseSource#apiUrl}.
+     */
+    public static final String RELEASES_URL = "/releases";
+    /**
+     * The path to the GitHub API for a specific repository.
      */
     private final String apiUrl;
 
     /**
      * Creates a {@link GitHubReleaseSource} with the given apiUrl.
+     * Provide only the path to the repository, not the path to a specific API backend itself.
      *
-     * @param apiUrl to the GitHub releases API target
+     * @param apiUrl path to the GitHub API for a specific repository
      */
     public GitHubReleaseSource(final String apiUrl) {
         super();
@@ -34,7 +38,7 @@ public class GitHubReleaseSource extends UpdateSource implements ReleaseUpdateSo
     @Override
     public Map<Version, String> getReleaseVersions() throws IOException {
         final Map<Version, String> versions = new HashMap<>();
-        final JSONArray releaseArray = new JSONArray(readStringFromURL(new URL(apiUrl)));
+        final JSONArray releaseArray = new JSONArray(readStringFromURL(new URL(apiUrl + RELEASES_URL)));
         for (int index = 0; index < releaseArray.length(); index++) {
             final JSONObject release = releaseArray.getJSONObject(index);
             final Version version = new Version(release.getString("tag_name").substring(1));
