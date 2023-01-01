@@ -29,7 +29,7 @@ jobs:
           echo "Collected the pom.xml version. The version is '$MAVEN_VERSION'"
       - name: Get the previous build-number tag from Development Build
         id: save_tag
-        if: "github.repository == 'BetonQuest/BetonQuest' && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v') || startsWith(github.ref,'refs/tags/v') )"
+        if: "github.repository == 'BetonQuest/BetonQuest' && ( github.ref == 'refs/heads/main' || startsWith(github.ref,'refs/heads/main_v') || startsWith(github.ref,'refs/tags/v') )"
         run: |
           PREVIOUS_VERSION_TAG=$(git tag -l ${MAVEN_VERSION}-build-number-* | head -n 1)
           echo "PREVIOUS_VERSION_TAG=$PREVIOUS_VERSION_TAG" >> $GITHUB_ENV
@@ -37,7 +37,7 @@ jobs:
           echo "Collected the previous build-number tag. The tag is '$PREVIOUS_VERSION_TAG'"
       - name: Check for difference in docs only
         id: save_changes
-        if: "github.repository == 'BetonQuest/BetonQuest' && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v') )"
+        if: "github.repository == 'BetonQuest/BetonQuest' && ( github.ref == 'refs/heads/main' || startsWith(github.ref,'refs/heads/main_v') )"
         run: |
           DIFF_OUTSIDE=$(git diff --quiet ${PREVIOUS_VERSION_TAG} -- . ':(exclude)docs/' && echo Nothing || echo Changes)
           DIFF_INSIDE=$(git diff --quiet ${PREVIOUS_VERSION_TAG} -- docs/ && echo Nothing || echo Changes)
@@ -46,7 +46,7 @@ jobs:
           echo "changes_in_docs_only=$CHANGES_IN_DOCS_ONLY" >> $GITHUB_OUTPUT
           echo "Check for difference in docs only. The value is '$CHANGES_IN_DOCS_ONLY'"
       - name: Generate build number for Development Build
-        if: "github.repository == 'BetonQuest/BetonQuest' && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v') ) && env.CHANGES_IN_DOCS_ONLY == 'false'"
+        if: "github.repository == 'BetonQuest/BetonQuest' && ( github.ref == 'refs/heads/main' || startsWith(github.ref,'refs/heads/main_v') ) && env.CHANGES_IN_DOCS_ONLY == 'false'"
         uses: einaregilsson/build-number@v3
         with:
           token: ${{ secrets.github_token }}
@@ -60,13 +60,13 @@ jobs:
           echo "MAVEN_VERSION=$MAVEN_VERSION" >> $GITHUB_ENV
           echo "VERSION_TYPE=release" >> $GITHUB_ENV
       - name: Set version for 'Development Build'
-        if: "github.repository == 'BetonQuest/BetonQuest' && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v') )"
+        if: "github.repository == 'BetonQuest/BetonQuest' && ( github.ref == 'refs/heads/main' || startsWith(github.ref,'refs/heads/main_v') )"
         run: |
           if [ $CHANGES_IN_DOCS_ONLY == true ]; then MAVEN_VERSION=${PREVIOUS_VERSION_TAG/build-number/DEV}; else MAVEN_VERSION=${MAVEN_VERSION}-DEV-${BUILD_NUMBER}; fi
           echo "MAVEN_VERSION=$MAVEN_VERSION" >> $GITHUB_ENV
           echo "VERSION_TYPE=development" >> $GITHUB_ENV
       - name: Set version for 'Artifact Build'
-        if: "github.repository != 'BetonQuest/BetonQuest' || !startsWith(github.ref,'refs/tags/v') && github.ref != 'refs/heads/master' && !startsWith(github.ref,'refs/heads/master_v')"
+        if: "github.repository != 'BetonQuest/BetonQuest' || !startsWith(github.ref,'refs/tags/v') && github.ref != 'refs/heads/main' && !startsWith(github.ref,'refs/heads/main_v')"
         run: |
           if [ ${{ github.repository }} != 'BetonQuest/BetonQuest' ]; then REPO=${{ github.repository }}-; fi
           MAVEN_VERSION=${MAVEN_VERSION}-DEV-ARTIFACT-${REPO}${{ github.run_number }}
@@ -357,7 +357,7 @@ jobs:
           git config --global user.email "contact@betonquest.org"
 
           IFS='-' read -r -a array <<< "$VERSION"
-          [ ${{ github.ref }} == 'refs/heads/master' ] && mike deploy --push --update-aliases ${array[0]}-DEV DEV || mike deploy --push --update-aliases ${array[0]}-DEV
+          [ ${{ github.ref }} == 'refs/heads/main' ] && mike deploy --push --update-aliases ${array[0]}-DEV DEV || mike deploy --push --update-aliases ${array[0]}-DEV
 
   create-release:
     name: Create Release Build
@@ -459,11 +459,10 @@ jobs:
           IFS='-' read -r -a array <<< "$VERSION"
           echo "VERSION_KEY=${array[0]}" >> $GITHUB_ENV
           echo "VERSION_NUMBER=${array[2]}" >> $GITHUB_ENV
-          echo "BRANCH_NAME=${GITHUB_REF:11}" >> $GITHUB_ENV
       - name: Create development
         run: |
           if [ -z "$PASSWORD" ]; then echo "WARNING! You need to pass the SNAPSHOT_UPLOAD_PASSWORD environment variable."; exit 1; fi
-          RESPONSE="$(curl --form-string "secret=$PASSWORD" --form-string "version=$VERSION_KEY" --form-string "versionNumber=$VERSION_NUMBER" --form-string "runID=$RUN_ID" --form-string "branch=$BRANCH_NAME" --form-string "commitHash=$COMMIT_HASH" --form "plugin=@\"$PLUGIN\"" --form "docs=@\"$DOCS\"" https://dev.betonquest.org/api/v1/builds/upload)"
+          RESPONSE="$(curl --form-string "secret=$PASSWORD" --form-string "version=$VERSION_KEY" --form-string "versionNumber=$VERSION_NUMBER" --form-string "runID=$RUN_ID" --form-string "commitHash=$COMMIT_HASH" --form "plugin=@\"$PLUGIN\"" --form "docs=@\"$DOCS\"" https://dev.betonquest.org/api/v1/builds/upload)"
           if [ "$RESPONSE" != "Upload successful" ]; then echo "WARNING! The upload was not successful. The response was '$RESPONSE'"; exit 1; fi
         env:
           PASSWORD: ${{ secrets.SNAPSHOT_UPLOAD_PASSWORD }}
