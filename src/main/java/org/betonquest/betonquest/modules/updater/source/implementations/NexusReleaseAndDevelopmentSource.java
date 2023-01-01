@@ -21,23 +21,27 @@ import java.util.regex.Pattern;
 public class NexusReleaseAndDevelopmentSource extends UpdateSource implements ReleaseUpdateSource, DevelopmentUpdateSource {
 
     /**
-     * The basic url for the api of the nexus.
+     * The sub path for the rest API of Nexus to append on the {@link NexusReleaseAndDevelopmentSource#apiUrl}.
      */
     public static final String SERVICE_REST_V_1 = "/service/rest/v1";
     /**
-     * The basic url to search artifacts in the nexus repository.
+     * The sub path for a rest API call to Nexus for an unspecific search.
      */
     public static final String SEARCH = "/search/assets?repository=betonquest&group=org.betonquest&name=betonquest";
     /**
-     * The url to get all shaded jars
+     * The sub path for a rest API call to Nexus to search for shaded jars
+     * to append on a {@link NexusReleaseAndDevelopmentSource#SERVICE_REST_V_1}.
+     * This also includes the {@link NexusReleaseAndDevelopmentSource#SEARCH} path.
      */
     public static final String SEARCH_SHADED = SEARCH + "&maven.extension=jar&maven.classifier=shaded";
     /**
-     * The url to get all pom file artifact sorted by version
+     * The sub path for a rest API call to Nexus to search for poms sorted by version
+     * to append on a {@link NexusReleaseAndDevelopmentSource#SERVICE_REST_V_1}.
+     * This also includes the {@link NexusReleaseAndDevelopmentSource#SEARCH} path.
      */
     public static final String SEARCH_POM = SEARCH + "&maven.extension=pom&sort=version";
     /**
-     * The url token for pagination.
+     * The sub path for a rest API call to Nexus with pagination to append to any path that has pagination.
      */
     public static final String CONTINUATION_TOKEN = "&continuationToken=";
     /**
@@ -46,7 +50,7 @@ public class NexusReleaseAndDevelopmentSource extends UpdateSource implements Re
     public static final Pattern POM_PATTERN = Pattern.compile("<betonquest\\.version>(?<version>.*)</betonquest\\.version>");
 
     /**
-     * The apiUrl to the Nexus API root.
+     * The path to the root page for a specific Nexus.
      */
     private final String apiUrl;
 
@@ -54,7 +58,7 @@ public class NexusReleaseAndDevelopmentSource extends UpdateSource implements Re
      * Creates a {@link NexusReleaseAndDevelopmentSource} with the given apiUrl.
      * Provide only the url to the nexus, not the url to the search itself.
      *
-     * @param apiUrl to the Nexus API root target
+     * @param apiUrl path to the root page for a specific Nexus
      */
     public NexusReleaseAndDevelopmentSource(final String apiUrl) {
         super();

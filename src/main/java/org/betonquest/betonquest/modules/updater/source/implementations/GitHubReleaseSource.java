@@ -15,21 +15,20 @@ import java.util.Map;
  * This is a {@link ReleaseUpdateSource} for GitHub's releases API.
  */
 public class GitHubReleaseSource extends UpdateSource implements ReleaseUpdateSource {
-
     /**
-     * The basic url for the api of GitHub.
+     * The sub path of the release API of GitHub to append on the {@link GitHubReleaseSource#apiUrl}.
      */
     public static final String RELEASES_URL = "/releases";
     /**
-     * The apiUrl to the GitHub releases API target.
+     * The path to the GitHub API for a specific repository.
      */
     private final String apiUrl;
 
     /**
      * Creates a {@link GitHubReleaseSource} with the given apiUrl.
-     * Provide only the url to the repository, not the url to the releases itself.
+     * Provide only the path to the repository, not the path to a specific API backend itself.
      *
-     * @param apiUrl to the GitHub releases API target
+     * @param apiUrl path to the GitHub API for a specific repository
      */
     public GitHubReleaseSource(final String apiUrl) {
         super();
