@@ -353,6 +353,9 @@ This event simply gives the player specified amount of Heroes experience. The fi
     | Holographic Displays | 3.0.0 or above   | [ProtocolLib](https://www.spigotmc.org/resources/1997/) for conditioned holograms. | 
     
     If you have both plugins installed, you can use the [`default_hologram` option in "_config.yml_"](Configuration.md#default-hologram-plugin) to set which plugin should be used.
+    
+    !!! bug ""
+        **When used by external plugins like BetonQuest, DecentHolograms does not support custom model data in items lines!**
 
 ### Hidden Holograms
 Installing either of these plugins will enable you to create hidden holograms, which will be shown to players only if they meet specified conditions.
@@ -377,9 +380,13 @@ holograms:
     check_interval: 20
 ```
 
+#### Item Lines
 A line can also represent a floating item. To do so enter the line as 'item:`custom_item`'. It will be replaced with the
 `custom_item` defined in the `items` section. If the Item is defined for example as map, a floating map will be seen between two lines of text.
+!!! bug ""
+    **When used by external plugins like BetonQuest, DecentHolograms does not support custom model data in items lines!**
 
+#### Ranking Holograms
 Holograms created by BetonQuest can rank users by the score of a point. Such scoreboards (not to be confused with the
 Minecraft vanilla scoreboard) are configured as one line and replaced by multiple lines according to the limit definition.
 Each scoreboard line comes in the format `#. name - score` The short syntax is 'top:`point`;`order`;`limit`'. The specified
@@ -438,6 +445,8 @@ npc_holograms:
 ```
 
 Item lines are also supported here.
+!!! bug ""
+    **When used by external plugins like BetonQuest, DecentHolograms does not support custom model data in items lines!**
 
 ## [JobsReborn](https://www.spigotmc.org/resources/4216/)
 
