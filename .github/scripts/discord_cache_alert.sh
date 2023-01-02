@@ -1,5 +1,7 @@
 #!/bin/bash
 # This script was created by using the this source: https://github.com/DiscordHooks/github-actions-discord-webhook
+set -euo pipefail
+IFS=$'\n\t'
 
 if [ -z "$WEBHOOK_URL" ]; then
   echo "[Webhook]: WARNING! You need to pass the WEBHOOK_URL environment variable."
@@ -40,5 +42,4 @@ WEBHOOK_DATA='{
 
 echo "[Webhook]: Sending webhook to Discord...";
 echo "$WEBHOOK_DATA"
-(curl --fail --progress-bar -A "GitHub-Actions-Webhook" -H Content-Type:application/json -H X-Author:k3rn31p4nic#8383 -d "$WEBHOOK_DATA" "$WEBHOOK_URL" \
-  && echo "[Webhook]: Successfully sent the webhook.") || echo "[Webhook]: Unable to send webhook."; exit 1
+curl --fail-with-body --progress-bar -A "GitHub-Actions-Webhook" -H Content-Type:application/json -H X-Author:k3rn31p4nic#8383 -d "$WEBHOOK_DATA" "$WEBHOOK_URL"
