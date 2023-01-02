@@ -279,7 +279,7 @@ jobs:
             ]
       - name: Publish to Maven Repository
         run: |
-          mvn -P Skip-Verification,Test-None -B deploy | tee -a maven-deploy.log
+          mvn -P Skip-Verification,Test-None -B deploy | tee maven-deploy.log
         env:
           REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
           REPOSITORY_USER: ${{ secrets.REPOSITORY_USER }}
@@ -287,7 +287,7 @@ jobs:
       - name: Get upload URL from deploy log
         id: save_upload_url
         run: |
-          UPLOAD_URL = $(cat maven-deploy.log | grep -oP '(?<=Uploading to betonquest: \*\*\*).*-shaded.jar')
+          UPLOAD_URL = $(grep -oP '(?<=Uploading to betonquest: \*\*\*).*-shaded.jar' maven-deploy.log)
           echo "UPLOAD_URL=$UPLOAD_URL" >> $GITHUB_ENV
   deploy-docs:
     name: Deploy Docs
