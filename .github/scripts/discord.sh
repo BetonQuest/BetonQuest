@@ -42,13 +42,13 @@ case "$VERSION_TYPE" in
   "release" )
     RELEASE_NAME="Release-Build"
     RELEASE_DOWNLOAD_URL="https://github.com/BetonQuest/BetonQuest/releases"
-    RELEASE_COMMIT_ICON_SUCCESS=$COMMIT_ICON_RELEASE
+    RELEASE_COMMIT_ICON_SUCCESS="$COMMIT_ICON_RELEASE"
     ;;
 
   "development" )
     RELEASE_NAME="Dev-Build"
     RELEASE_DOWNLOAD_URL="https://betonquest.org/nexus/service/rest/repository/browse/betonquest/org/betonquest/betonquest/2.0.0-SNAPSHOT/"
-    RELEASE_COMMIT_ICON_SUCCESS=$COMMIT_ICON_SUCCESS
+    RELEASE_COMMIT_ICON_SUCCESS="$COMMIT_ICON_SUCCESS"
     ;;
 
   * )
@@ -62,19 +62,19 @@ case "$JOB_STATUS" in
   "success" )
     EMBED_COLOR=3066993
     DEV_BUILD_DOWNLOAD="Click to Download $VERSION!"
-    STATUS_MESSAGE="${RELEASE_NAME} is now available"
-    BUILD_DOWNLOAD_URL=$DOWNLOAD_URL
+    STATUS_MESSAGE="$RELEASE_NAME is now available"
+    BUILD_DOWNLOAD_URL="$DOWNLOAD_URL"
     DESCRIPTION="${RELEASE_NAME}s available [HERE](${RELEASE_DOWNLOAD_URL}). Report bugs [HERE](https://github.com/BetonQuest/BetonQuest/issues)"
-    COMMIT_ICON=$RELEASE_COMMIT_ICON_SUCCESS
+    COMMIT_ICON="$RELEASE_COMMIT_ICON_SUCCESS"
     ;;
 
   "failure"|"cancelled" )
     EMBED_COLOR=15158332
     STATUS_MESSAGE="There was an error building a $RELEASE_NAME!"
     DEV_BUILD_DOWNLOAD="Inspect the failure on $VERSION!"
-    BUILD_DOWNLOAD_URL=$COMMIT_URL
+    BUILD_DOWNLOAD_URL="$COMMIT_URL"
     DESCRIPTION=""
-    COMMIT_ICON=$COMMIT_ICON_FAILURE
+    COMMIT_ICON="$COMMIT_ICON_FAILURE"
     ;;
 
   * )
