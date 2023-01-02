@@ -1,11 +1,11 @@
 name: ${project.name}
 main: ${project.groupId}.${project.artifactId}.${project.name}
 version: ${betonquest.version}
+api-version: ${minecraft.api.version}
 description: ${project.description}
 website: ${project.organization.url}
 author: ${project.organization.name}
 authors: [ Wolf2323, SaltyAimbOtter, seyfahni, joblo2213, bundabrg, Co0sh ]
-api-version: ${minecraft.api.version}
 softdepend:
   - Skript
   - MMOLib
