@@ -119,4 +119,4 @@ WEBHOOK_DATA='{
 
 echo "[Webhook]: Sending webhook to Discord...";
 echo "$WEBHOOK_DATA"
-curl --fail-with-body --progress-bar -A "GitHub-Actions-Webhook" -H Content-Type:application/json -H X-Author:k3rn31p4nic#8383 -d "$WEBHOOK_DATA" "$WEBHOOK_URL"
+curl --fail-with-body --no-progress-meter -A "GitHub-Actions-Webhook" -H Content-Type:application/json -H X-Author:k3rn31p4nic#8383 -d "$WEBHOOK_DATA" "$WEBHOOK_URL"
