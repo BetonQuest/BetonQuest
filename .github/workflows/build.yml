@@ -367,9 +367,9 @@ jobs:
           IFS='-' read -r -a array <<< "$VERSION"
           [ ${{ github.ref }} == 'refs/heads/main' ] && mike deploy --push --update-aliases ${array[0]}-DEV DEV || mike deploy --push --update-aliases ${array[0]}-DEV
 
-  announce-deployment:
-    name: Official Deployment
-    if: "always() && !cancelled() && (needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development')"
+  create-release:
+    name: Create GitHub Release
+    if: "needs.prepare.outputs.VERSION_TYPE == 'release' && needs.deploy-artifacts.result == 'success' && needs.deploy-docs.result == 'success'"
     needs: [ prepare, deploy-artifacts, deploy-docs ]
     runs-on: ubuntu-latest
 
@@ -380,37 +380,27 @@ jobs:
           echo "VERSION_TYPE=${{ needs.prepare.outputs.VERSION_TYPE }}" >> $GITHUB_ENV
           echo "PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}" >> $GITHUB_ENV
           echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
-          echo "UPLOAD_URL=${{ needs.deploy-artifacts.outputs.UPLOAD_URL }}" >> $GITHUB_ENV
       - name: Checkout source code
         uses: actions/checkout@v3
-      - name: Check previous Jobs
-        if: "needs.deploy-artifacts.result != 'success' || needs.deploy-docs.result != 'success'"
-        run: |
-          exit 1
       - name: Cache target/artifacts
-        if: "env.VERSION_TYPE == 'release'"
         uses: actions/cache@v3
         with:
           path: target/artifacts
           key: ${{ runner.os }}-target/artifacts-${{ github.run_number }}
       - name: Cache target/docs
-        if: "env.VERSION_TYPE == 'release'"
         uses: actions/cache@v3
         with:
           path: target/docs
           key: ${{ runner.os }}-target/docs-${{ github.run_number }}
       - name: Zip Docs
-        if: "env.VERSION_TYPE == 'release'"
         run: |
           zip -r target/docs/Docs.zip target/docs/
       - name: Set CHANGELOG.md version
-        if: "env.VERSION_TYPE == 'release'"
         run: |
           sed -i "s~## \[Unreleased\]~## \[${VERSION}\]~g" ./CHANGELOG.md
           DATE=$(date +%Y-%m-%d)
           sed -i "s~\${maven\.build\.timestamp}~$DATE~g" ./CHANGELOG.md
       - name: Create release
-        if: "env.VERSION_TYPE == 'release'"
         uses: docker://antonyurchenko/git-release:latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -423,11 +413,27 @@ jobs:
             target/artifacts/BetonQuest.jar
             target/docs/Docs.zip
       - name: Delete obsolete git tag
-        if: "env.VERSION_TYPE == 'release'"
         run: |
           git push origin :${PREVIOUS_VERSION_TAG}
+
+  discord-announcement:
+    name: Official Deployment
+    if: "always() && !cancelled() && (needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development')"
+    needs: [ prepare, deploy-artifacts, deploy-docs, create-release ]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set variables from 'Prepare Build Variables'
+        run: |
+          echo "VERSION=${{ needs.prepare.outputs.VERSION }}" >> $GITHUB_ENV
+          echo "VERSION_TYPE=${{ needs.prepare.outputs.VERSION_TYPE }}" >> $GITHUB_ENV
+          echo "PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}" >> $GITHUB_ENV
+          echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
+          echo "UPLOAD_URL=${{ needs.deploy-artifacts.outputs.UPLOAD_URL }}" >> $GITHUB_ENV
+      - name: Checkout source code
+        uses: actions/checkout@v3
       - name: Publish to Discord
-        if: "always()"
+        if: "always() && !cancelled()"
         run: |
           bash .github/scripts/discord.sh
         env:
