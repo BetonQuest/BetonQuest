@@ -290,7 +290,7 @@ jobs:
         id: save_upload_url
         run: |
           UPLOAD_URL="$(grep -oP "(?<=Uploading to betonquest: )${REPOSITORY_URL}.*-shaded.jar" maven-deploy.log)"
-          echo "UPLOAD_URL=$UPLOAD_URL" >> $GITHUB_ENV
+          echo "upload_url=$UPLOAD_URL" >> $GITHUB_ENV
         env:
           REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
 
