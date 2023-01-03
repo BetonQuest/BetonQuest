@@ -1,7 +1,7 @@
 {
   "items": [
     {
-      "downloadUrl": "https://betonquest.org/nexus/repository/betonquest/org/betonquest/betonquest/2.0.0-SNAPSHOT/betonquest-2.0.0-20221210.125708-379-shaded.jar",
+      "downloadUrl": "https://betonquest.org/nexus/repository/betonquest/org/betonquest/betonquest/1.12.7-SNAPSHOT/betonquest-1.12.7-20221210.125708-379-shaded.jar",
       "repository": "betonquest",
       "format": "maven2",
       "contentType": "application/java-archive",
@@ -10,7 +10,7 @@
         "groupId": "org.betonquest",
         "classifier": "shaded",
         "artifactId": "betonquest",
-        "version": "1.12.10-20221210.125708-379"
+        "version": "1.12.7-20221210.125708-379"
       }
     },
     {
@@ -24,6 +24,19 @@
         "classifier": "shaded",
         "artifactId": "betonquest",
         "version": "1.12.5"
+      }
+    },
+    {
+      "downloadUrl": "https://betonquest.org/nexus/repository/betonquest/org/betonquest/betonquest/1.12.6/betonquest-1.12.6-shaded.jar",
+      "repository": "betonquest",
+      "format": "maven2",
+      "contentType": "application/java-archive",
+      "maven2": {
+        "extension": "jar",
+        "groupId": "org.betonquest",
+        "classifier": "shaded",
+        "artifactId": "betonquest",
+        "version": "1.12.6"
       }
     }
   ],
