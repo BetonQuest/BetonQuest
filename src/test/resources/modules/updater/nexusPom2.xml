@@ -1,8 +1,8 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <properties>
-    <betonquest.version.base>1.12.10</betonquest.version.base>
-    <betonquest.version>1.12.10-DEV-495</betonquest.version>
+    <betonquest.version.base>1.12.7</betonquest.version.base>
+    <betonquest.version>1.12.7-DEV-379</betonquest.version>
     <minecraft.api.version>1.18</minecraft.api.version>
     <maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

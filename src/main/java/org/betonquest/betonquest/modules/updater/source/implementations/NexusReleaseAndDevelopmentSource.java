@@ -21,27 +21,16 @@ import java.util.regex.Pattern;
 public class NexusReleaseAndDevelopmentSource extends UpdateSource implements ReleaseUpdateSource, DevelopmentUpdateSource {
 
     /**
-     * The sub path for the rest API of Nexus to append on the {@link NexusReleaseAndDevelopmentSource#apiUrl}.
+     * The sub path for the REST API of Nexus to append on the {@link NexusReleaseAndDevelopmentSource#apiUrl}.
      */
     public static final String SERVICE_REST_V_1 = "/service/rest/v1";
     /**
-     * The sub path for a rest API call to Nexus for an unspecific search.
-     */
-    public static final String SEARCH = "/search/assets?repository=betonquest&group=org.betonquest&name=betonquest";
-    /**
-     * The sub path for a rest API call to Nexus to search for shaded jars
+     * The sub path for a REST API call to Nexus to search for shaded jars
      * to append on a {@link NexusReleaseAndDevelopmentSource#SERVICE_REST_V_1}.
-     * This also includes the {@link NexusReleaseAndDevelopmentSource#SEARCH} path.
      */
-    public static final String SEARCH_SHADED = SEARCH + "&maven.extension=jar&maven.classifier=shaded";
+    public static final String SEARCH_URL = "/search/assets?repository=betonquest&group=org.betonquest&name=betonquest&maven.extension=jar&maven.classifier=shaded&sort=version";
     /**
-     * The sub path for a rest API call to Nexus to search for poms sorted by version
-     * to append on a {@link NexusReleaseAndDevelopmentSource#SERVICE_REST_V_1}.
-     * This also includes the {@link NexusReleaseAndDevelopmentSource#SEARCH} path.
-     */
-    public static final String SEARCH_POM = SEARCH + "&maven.extension=pom&sort=version";
-    /**
-     * The sub path for a rest API call to Nexus with pagination to append to any path that has pagination.
+     * The sub path for a REST API call to Nexus with pagination to append to any path that has pagination.
      */
     public static final String CONTINUATION_TOKEN = "&continuationToken=";
     /**
@@ -67,7 +56,7 @@ public class NexusReleaseAndDevelopmentSource extends UpdateSource implements Re
 
     @Override
     public Map<Version, String> getReleaseVersions() throws IOException {
-        return getVersions(SEARCH_SHADED, (versions, version, downloadUrl) -> {
+        return getVersions((versions, version, downloadUrl) -> {
             if (!version.hasQualifier() && !version.hasBuildNumber()) {
                 versions.put(version, downloadUrl);
             }
@@ -76,7 +65,7 @@ public class NexusReleaseAndDevelopmentSource extends UpdateSource implements Re
 
     @Override
     public Map<Version, String> getDevelopmentVersions() throws IOException {
-        return getVersions(SEARCH_POM, (versions, version, downloadUrl) -> {
+        return getVersions((versions, version, downloadUrl) -> {
             if (!version.hasQualifier() && !version.hasBuildNumber()) {
                 return;
             }
@@ -88,22 +77,22 @@ public class NexusReleaseAndDevelopmentSource extends UpdateSource implements Re
             if (alreadyConsumed) {
                 return;
             }
-            final String pomXml = readStringFromURL(new URL(downloadUrl));
+            final String pomXml = readStringFromURL(new URL(downloadUrl.replace("-shaded.jar", ".pom")));
             final Matcher matcher = POM_PATTERN.matcher(pomXml);
             if (matcher.find()) {
                 final Version pomVersion = new Version(matcher.group("version"));
-                versions.put(pomVersion, downloadUrl.replace(".pom", "-shaded.jar"));
+                versions.put(pomVersion, downloadUrl);
             }
         });
     }
 
     @NotNull
-    private Map<Version, String> getVersions(final String searchURL, final VersionConsumer consumer) throws IOException {
+    private Map<Version, String> getVersions(final VersionConsumer consumer) throws IOException {
         final Map<Version, String> versions = new HashMap<>();
 
         String continuationToken = "";
         while (continuationToken != null) {
-            final String url = apiUrl + SERVICE_REST_V_1 + searchURL + continuationToken;
+            final String url = apiUrl + SERVICE_REST_V_1 + SEARCH_URL + continuationToken;
             final JSONObject nexusResponse = new JSONObject(readStringFromURL(new URL(url)));
             final JSONArray items = nexusResponse.getJSONArray("items");
             for (int index = 0; index < items.length(); index++) {
