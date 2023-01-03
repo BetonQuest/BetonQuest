@@ -84,7 +84,7 @@ case "$JOB_STATUS" in
 esac
 
 echo "[Webhook]: Create the webhook data...";
-TIMESTAMP=$(date -u +%FT%TZ)
+TIMESTAMP="$(date -u +%FT%TZ)"
 WEBHOOK_DATA='{
   "username": "GitHub Actions",
   "avatar_url": "'$AVATAR'",
