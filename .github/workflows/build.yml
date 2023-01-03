@@ -142,6 +142,7 @@ jobs:
           path: |
             target/artifacts/BetonQuest.jar
             target/artifacts/betonquest-*-*.jar
+
   build-docs:
     name: Build Docs
     needs: [ prepare ]
@@ -220,6 +221,7 @@ jobs:
           path: |
             target/docs/
             !target/docs/changes.patch
+
   deploy-artifacts:
     name: Deploy Artifacts
     if: "needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' && needs.prepare.outputs.CHANGES_IN_DOCS_ONLY == 'false'"
@@ -287,8 +289,11 @@ jobs:
       - name: Get upload URL from deploy log
         id: save_upload_url
         run: |
-          UPLOAD_URL="$(grep -oP '(?<=Uploading to betonquest: \*\*\*).*-shaded.jar' maven-deploy.log)"
+          UPLOAD_URL="$(grep -oP "(?<=Uploading to betonquest: )${REPOSITORY_URL}.*-shaded.jar" maven-deploy.log)"
           echo "UPLOAD_URL=$UPLOAD_URL" >> $GITHUB_ENV
+        env:
+          REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
+
   deploy-docs:
     name: Deploy Docs
     concurrency: gh-pages-deploy
