@@ -356,6 +356,7 @@ This event simply gives the player specified amount of Heroes experience. The fi
     
     !!! bug ""
         **When used by external plugins like BetonQuest, DecentHolograms does not support custom model data in items lines!**
+        Last checked: DecentHolograms version 2.7.9 on 2023-01-03.
 
 ### Hidden Holograms
 Installing either of these plugins will enable you to create hidden holograms, which will be shown to players only if they meet specified conditions.
