@@ -521,14 +521,6 @@
     </repository>
   </repositories>
 
-  <pluginRepositories>
-    <!-- needed for maven-shade-plugin 3.X.X-SNAPSHOT for java 17 support -->
-    <pluginRepository>
-      <id>apache-snapshot-repo</id>
-      <url>https://repository.apache.org/content/repositories/snapshots/</url>
-    </pluginRepository>
-  </pluginRepositories>
-
   <build>
     <directory>target/artifacts</directory>
     <sourceDirectory>src/main/java</sourceDirectory>
