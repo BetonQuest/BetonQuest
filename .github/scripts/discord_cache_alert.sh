@@ -20,7 +20,7 @@ STATUS_MESSAGE="Daily Dependency Check failed!"
 STATUS_MESSAGE_DETAILS="Click here to inspect which dependencies couldn't be resolved."
 
 echo "[Webhook]: Create the webhook data...";
-TIMESTAMP=$(date -u +%FT%TZ)
+TIMESTAMP="$(date -u +%FT%TZ)"
 WEBHOOK_DATA='{
   "username": "GitHub Actions",
   "avatar_url": "'$AVATAR'",
