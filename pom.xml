@@ -523,17 +523,7 @@
 
   <build>
     <directory>target/artifacts</directory>
-    <sourceDirectory>src/main/java</sourceDirectory>
     <resources>
-      <resource>
-        <directory>src/main/java</directory>
-        <includes>
-          <include>**/*.class</include>
-        </includes>
-        <excludes>
-          <exclude>**/*</exclude>
-        </excludes>
-      </resource>
       <resource>
         <directory>src/main/resources</directory>
         <filtering>true</filtering>
@@ -547,22 +537,6 @@
         </includes>
       </resource>
     </resources>
-
-    <testSourceDirectory>src/test/java</testSourceDirectory>
-    <testResources>
-      <testResource>
-        <directory>src/test/java</directory>
-        <includes>
-          <include>**/*.class</include>
-        </includes>
-        <excludes>
-          <exclude>**/*</exclude>
-        </excludes>
-      </testResource>
-      <testResource>
-        <directory>src/test/resources</directory>
-      </testResource>
-    </testResources>
 
     <plugins>
       <plugin>
