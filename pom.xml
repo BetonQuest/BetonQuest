@@ -4,8 +4,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <properties>
-    <betonquest.version.base>2.0.0</betonquest.version.base>
-    <betonquest.version>${betonquest.version.base}-DEV-UNOFFICIAL</betonquest.version>
+    <revision>2.0.0</revision>
+    <betonquest.version>${revision}-DEV-UNOFFICIAL</betonquest.version>
     <minecraft.api.version>1.18</minecraft.api.version>
     <maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -18,7 +18,7 @@
   <name>BetonQuest</name>
   <groupId>org.betonquest</groupId>
   <artifactId>betonquest</artifactId>
-  <version>${betonquest.version.base}-SNAPSHOT</version>
+  <version>${revision}-SNAPSHOT</version>
   <description>All Your Adventure Supplies</description>
 
   <licenses>
@@ -612,6 +612,31 @@
         </executions>
       </plugin>
       <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>flatten-maven-plugin</artifactId>
+        <configuration>
+          <updatePomFile>true</updatePomFile>
+          <flattenMode>resolveCiFriendliesOnly</flattenMode>
+          <outputDirectory>${project.build.directory}</outputDirectory>
+        </configuration>
+        <executions>
+          <execution>
+            <id>flatten</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>flatten</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>flatten.clean</id>
+            <phase>clean</phase>
+            <goals>
+              <goal>clean</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
         <executions>
@@ -823,6 +848,11 @@
           <version>3.10.1</version>
         </plugin>
         <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>flatten-maven-plugin</artifactId>
+          <version>1.2.5</version>
+        </plugin>
+        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
           <version>3.4.1</version>
@@ -846,7 +876,7 @@
           <configuration>
             <analysisCache>true</analysisCache>
             <rulesets>
-              <ruleset>config/pmd-ruleset.xml</ruleset>
+              <ruleset>${basedir}/config/pmd-ruleset.xml</ruleset>
             </rulesets>
             <includeTests>true</includeTests>
           </configuration>
@@ -856,7 +886,7 @@
           <artifactId>spotbugs-maven-plugin</artifactId>
           <version>4.7.3.0</version>
           <configuration>
-            <excludeFilterFile>config/spotbugs-exclude.xml</excludeFilterFile>
+            <excludeFilterFile>${basedir}/config/spotbugs-exclude.xml</excludeFilterFile>
             <effort>max</effort>
             <threshold>low</threshold>
           </configuration>
@@ -873,7 +903,7 @@
             </dependency>
           </dependencies>
           <configuration>
-            <configLocation>config/checkstyle.xml</configLocation>
+            <configLocation>${basedir}/config/checkstyle.xml</configLocation>
             <propertyExpansion>checkstyle.config.path=${basedir}/config</propertyExpansion>
             <includeTestSourceDirectory>true</includeTestSourceDirectory>
           </configuration>
