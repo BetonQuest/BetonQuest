@@ -289,7 +289,7 @@ jobs:
       - name: Get upload URL from deploy log
         id: save_upload_url
         run: |
-          UPLOAD_URL="$(grep -oP "(?<=Uploading to betonquest: )${REPOSITORY_URL}.*-shaded.jar" maven-deploy.log)"
+          UPLOAD_URL="$(grep -oP "(?<=Uploading to betonquest: ${REPOSITORY_URL}).*-shaded.jar" maven-deploy.log)"
           echo "upload_url=$UPLOAD_URL" >> $GITHUB_OUTPUT
         env:
           REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
@@ -434,7 +434,9 @@ jobs:
           echo "VERSION_TYPE=${{ needs.prepare.outputs.VERSION_TYPE }}" >> $GITHUB_ENV
           echo "PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}" >> $GITHUB_ENV
           echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
-          echo "UPLOAD_URL=${{ needs.deploy-artifacts.outputs.UPLOAD_URL }}" >> $GITHUB_ENV
+          echo "UPLOAD_URL=${REPOSITORY_URL}${{ needs.deploy-artifacts.outputs.UPLOAD_URL }}" >> $GITHUB_ENV
+        env:
+          REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
       - name: Checkout source code
         uses: actions/checkout@v3
       - name: Publish to Discord
