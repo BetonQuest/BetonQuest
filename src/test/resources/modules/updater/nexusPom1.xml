@@ -1,7 +1,7 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <properties>
-    <betonquest.version.base>2.0.0</betonquest.version.base>
+    <revision>2.0.0</revision>
     <betonquest.version>2.0.0-DEV-495</betonquest.version>
     <minecraft.api.version>1.18</minecraft.api.version>
     <maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
@@ -14,6 +14,6 @@
   <name>BetonQuest</name>
   <groupId>org.betonquest</groupId>
   <artifactId>betonquest</artifactId>
-  <version>${betonquest.version.base}-SNAPSHOT</version>
+  <version>2.0.0-SNAPSHOT</version>
   <description>All Your Adventure Supplies</description>
 </project>

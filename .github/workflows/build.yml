@@ -24,7 +24,7 @@ jobs:
           fetch-depth: 0
       - name: Read version from pom.xml
         run: |
-          MAVEN_VERSION="$(mvn help:evaluate -Dexpression=betonquest.version.base -q -DforceStdout)"
+          MAVEN_VERSION="$(mvn help:evaluate -Dexpression=revision -q -DforceStdout)"
           echo "MAVEN_VERSION=$MAVEN_VERSION" >> $GITHUB_ENV
           echo "Collected the pom.xml version. The version is '$MAVEN_VERSION'"
       - name: Get the previous build-number tag from Development Build
