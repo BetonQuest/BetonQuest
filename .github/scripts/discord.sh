@@ -47,7 +47,7 @@ case "$VERSION_TYPE" in
 
   "development" )
     RELEASE_NAME="Dev-Build"
-    RELEASE_DOWNLOAD_URL="https://betonquest.org/nexus/service/rest/repository/browse/betonquest/org/betonquest/betonquest/2.0.0-SNAPSHOT/"
+    RELEASE_DOWNLOAD_URL="https://docs.betonquest.org/DEV/Participate/Downloads/"
     RELEASE_COMMIT_ICON_SUCCESS="$COMMIT_ICON_SUCCESS"
     ;;
 
@@ -63,7 +63,7 @@ case "$JOB_STATUS" in
     EMBED_COLOR=3066993
     DEV_BUILD_DOWNLOAD="Click to Download $VERSION!"
     STATUS_MESSAGE="$RELEASE_NAME is now available"
-    BUILD_DOWNLOAD_URL="$UPLOAD_URL"
+    BUILD_DOWNLOAD_URL="https://docs.betonquest.org/DEV/Participate/Downloads/?path=$UPLOAD_PATH&filename=BetonQuest.jar"
     DESCRIPTION="${RELEASE_NAME}s available [HERE](${RELEASE_DOWNLOAD_URL}). Report bugs [HERE](https://github.com/BetonQuest/BetonQuest/issues)"
     COMMIT_ICON="$RELEASE_COMMIT_ICON_SUCCESS"
     ;;

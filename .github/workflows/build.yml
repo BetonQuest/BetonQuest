@@ -226,7 +226,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      UPLOAD_URL: ${{ steps.save_upload_url.outputs.upload_url }}
+      UPLOAD_PATH: ${{ steps.save_upload_path.outputs.upload_path }}
 
     steps:
       - name: Set variables from 'Prepare Build Variables'
@@ -285,10 +285,10 @@ jobs:
           REPOSITORY_USER: ${{ secrets.REPOSITORY_USER }}
           REPOSITORY_PASS: ${{ secrets.REPOSITORY_PASS }}
       - name: Get upload URL from deploy log
-        id: save_upload_url
+        id: save_upload_path
         run: |
-          UPLOAD_URL="$(grep -oP "(?<=Uploading to betonquest: ${REPOSITORY_URL}).*-shaded.jar" maven-deploy.log)"
-          echo "upload_url=$UPLOAD_URL" >> $GITHUB_OUTPUT
+          UPLOAD_PATH="$(grep -oP "(?<=Uploading to betonquest: ${REPOSITORY_URL}).*-shaded.jar" maven-deploy.log)"
+          echo "upload_path=$UPLOAD_PATH" >> $GITHUB_OUTPUT
         env:
           REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
 
@@ -432,7 +432,7 @@ jobs:
           echo "VERSION_TYPE=${{ needs.prepare.outputs.VERSION_TYPE }}" >> $GITHUB_ENV
           echo "PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}" >> $GITHUB_ENV
           echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
-          echo "UPLOAD_URL=${REPOSITORY_URL}${{ needs.deploy-artifacts.outputs.UPLOAD_URL }}" >> $GITHUB_ENV
+          echo "UPLOAD_PATH=${{ needs.deploy-artifacts.outputs.UPLOAD_PATH }}" >> $GITHUB_ENV
         env:
           REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
       - name: Checkout source code
