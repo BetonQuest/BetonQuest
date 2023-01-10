@@ -148,11 +148,7 @@
   <rule ref="category/java/design.xml/CognitiveComplexity"/>
   <rule ref="category/java/design.xml/CollapsibleIfStatements"/>
   <rule ref="category/java/design.xml/CouplingBetweenObjects"/>
-  <rule ref="category/java/design.xml/CyclomaticComplexity">
-    <properties>
-      <property name="violationSuppressXPath" value="//ClassOrInterfaceDeclaration[matches(@Image, '^.*Test$')]"/>
-    </properties>
-  </rule>
+  <rule ref="category/java/design.xml/CyclomaticComplexity"/>
   <rule ref="category/java/design.xml/DataClass"/>
   <rule ref="category/java/design.xml/DoNotExtendJavaLangError"/>
   <rule ref="category/java/design.xml/ExceptionAsFlowControl"/>
