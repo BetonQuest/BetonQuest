@@ -114,10 +114,6 @@ jobs:
         with:
           path: target/artifacts
           key: ${{ runner.os }}-target/artifacts-${{ github.run_number }}
-      - name: Remove SNAPSHOT version for Release Build
-        if: "env.VERSION_TYPE == 'release'"
-        run: |
-          mvn versions:set -DremoveSnapshot
       - name: Set CHANGELOG.md version
         run: |
           sed -i "s~## \[Unreleased\]~## \[${VERSION}\]~g" ./CHANGELOG.md
@@ -133,7 +129,8 @@ jobs:
           sed -i "s~#end_of_line = ~end_of_line = ~g" ./.editorconfig
       - name: Build with Maven. Phase 'verify'
         run: |
-          mvn -P Test-All -B verify
+          if [ $VERSION_TYPE == 'release' ]; then CHANGELIST=-Dchangelist=; fi
+          mvn $CHANGELIST -P Test-All -B verify
           git diff > target/artifacts/changes.patch
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
@@ -281,7 +278,8 @@ jobs:
             ]
       - name: Publish to Maven Repository
         run: |
-          mvn -P Skip-Verification,Test-None -B deploy | tee maven-deploy.log
+          if [ $VERSION_TYPE == 'release' ]; then CHANGELIST=-Dchangelist=; fi
+          mvn $CHANGELIST -P Skip-Verification,Test-None -B deploy | tee maven-deploy.log
         env:
           REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
           REPOSITORY_USER: ${{ secrets.REPOSITORY_USER }}
