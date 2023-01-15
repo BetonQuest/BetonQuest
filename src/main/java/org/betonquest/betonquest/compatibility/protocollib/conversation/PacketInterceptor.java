@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.protocollib.conversation;
 
-import com.comphenix.packetwrapper.WrapperPlayServerChat;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.async.AsyncListenerHandler;
@@ -8,6 +7,7 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
+import com.comphenix.protocol.utility.MinecraftVersion;
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -28,7 +28,6 @@ import java.util.List;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class PacketInterceptor implements Interceptor, Listener {
-
     /**
      * A prefix that marks messages to be ignored by this interceptor.
      * To be invisible if the interceptor was closed before the message was sent the tag is a color code.
@@ -38,7 +37,7 @@ public class PacketInterceptor implements Interceptor, Listener {
 
     protected final Conversation conv;
     protected final Player player;
-    private final List<WrapperPlayServerChat> messages = new ArrayList<>();
+    private final List<PacketContainer> messages;
     private final PacketAdapter packetAdapter;
     private int baseComponentIndex = -1;
 
@@ -46,20 +45,27 @@ public class PacketInterceptor implements Interceptor, Listener {
     public PacketInterceptor(final Conversation conv, final OnlineProfile onlineProfile) {
         this.conv = conv;
         this.player = onlineProfile.getPlayer();
+        this.messages = new ArrayList<>();
 
-        // Intercept Packets
-        packetAdapter = new PacketAdapter(BetonQuest.getInstance(), ListenerPriority.HIGHEST,
-                PacketType.Play.Server.CHAT
-
-        ) {
+        final PacketType[] packets = MinecraftVersion.WILD_UPDATE.atOrAbove()
+                ? new PacketType[]{PacketType.Play.Server.CHAT, PacketType.Play.Server.SYSTEM_CHAT, PacketType.Play.Server.DISGUISED_CHAT}
+                : new PacketType[]{PacketType.Play.Server.CHAT};
+        packetAdapter = new PacketAdapter(BetonQuest.getInstance(), ListenerPriority.HIGHEST, packets) {
             @Override
             public void onPacketSending(final PacketEvent event) {
                 if (!event.getPlayer().equals(player)) {
                     return;
                 }
-
-                if (event.getPacketType().equals(PacketType.Play.Server.CHAT)) {
-                    final PacketContainer packet = event.getPacket();
+                final PacketContainer packet = event.getPacket();
+                final PacketType packetType = packet.getType();
+                if (MinecraftVersion.WILD_UPDATE.atOrAbove()) {
+                    if (packetType.equals(PacketType.Play.Server.SYSTEM_CHAT)) {
+                        final String message = packet.getStrings().read(0);
+                        if (message != null && message.contains("{\"extra\":[{\"text\":\"" + MESSAGE_PASSTHROUGH_TAG + "\"}")) {
+                            return;
+                        }
+                    }
+                } else {
                     if (baseComponentIndex == -1) {
                         if (packet.getModifier().read(1) instanceof BaseComponent[]) {
                             baseComponentIndex = 1;
@@ -71,15 +77,12 @@ public class PacketInterceptor implements Interceptor, Listener {
                     if (components != null && components.length > 0 && ((TextComponent) components[0]).getText().contains(MESSAGE_PASSTHROUGH_TAG)) {
                         return;
                     }
-
-                    final WrapperPlayServerChat chat = new WrapperPlayServerChat(packet);
-                    if (chat.getChatType() == EnumWrappers.ChatType.GAME_INFO) {
+                    if (packet.getChatTypes().read(0) == EnumWrappers.ChatType.GAME_INFO) {
                         return;
                     }
-
-                    event.setCancelled(true);
-                    messages.add(chat);
                 }
+                event.setCancelled(true);
+                messages.add(packet);
             }
         };
 
@@ -108,8 +111,8 @@ public class PacketInterceptor implements Interceptor, Listener {
         ProtocolLibrary.getProtocolManager().getAsynchronousManager().unregisterAsyncHandler(packetAdapter);
 
         //Send all messages to player
-        for (final WrapperPlayServerChat message : messages) {
-            message.sendPacket(player);
+        for (final PacketContainer message : messages) {
+            ProtocolLibrary.getProtocolManager().sendServerPacket(player, message);
         }
     }
 }
