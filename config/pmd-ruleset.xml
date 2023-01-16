@@ -18,7 +18,6 @@
   <rule ref="category/java/bestpractices.xml/AvoidReassigningCatchVariables"/>
   <rule ref="category/java/bestpractices.xml/AvoidReassigningLoopVariables">
     <properties>
-      <property name="foreachReassign" value="deny"/>
       <property name="forReassign" value="skip"/>
     </properties>
   </rule>
