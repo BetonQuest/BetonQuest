@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @Tag("ConfigurationSection")
 @SuppressWarnings({"PMD.GodClass", "PMD.JUnitAssertionsShouldIncludeMessage", "PMD.JUnit5TestShouldBePackagePrivate",
-        "PMD.ExcessivePublicCount"})
+        "PMD.CyclomaticComplexity", "PMD.ExcessivePublicCount"})
 public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<ConfigurationSection> implements ConfigurationSectionTestInterface {
 
     @Override

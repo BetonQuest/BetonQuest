@@ -25,7 +25,7 @@ import static org.mockito.Mockito.*;
 /**
  * Test the {@link Tokenizer}.
  */
-@SuppressWarnings({"deprecation"})
+@SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity"})
 @ExtendWith(BetonQuestLoggerService.class)
 @Execution(ExecutionMode.SAME_THREAD)
 class TokenizerTest {
