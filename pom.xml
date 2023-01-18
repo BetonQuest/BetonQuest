@@ -5,6 +5,7 @@
 
   <properties>
     <revision>2.0.0</revision>
+    <changelist>-SNAPSHOT</changelist>
     <betonquest.version>${revision}-DEV-UNOFFICIAL</betonquest.version>
     <minecraft.api.version>1.18</minecraft.api.version>
     <maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
@@ -18,7 +19,7 @@
   <name>BetonQuest</name>
   <groupId>org.betonquest</groupId>
   <artifactId>betonquest</artifactId>
-  <version>${revision}-SNAPSHOT</version>
+  <version>${revision}${changelist}</version>
   <description>All Your Adventure Supplies</description>
 
   <licenses>
