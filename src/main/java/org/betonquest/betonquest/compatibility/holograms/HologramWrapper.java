@@ -9,9 +9,8 @@ import org.betonquest.betonquest.utils.PlayerConverter;
 
 import java.util.List;
 
-@SuppressWarnings("PMD.CommentSize")
 /**
- * Wrapper class for {@link BetonHologram} that stores data parsed from hologram configuration inside <code>custom.yml</code>.
+ * Wrapper class for {@link BetonHologram} that stores data parsed from hologram configuration.
  *
  * @param hologram      Actual hologram
  * @param interval      Interval in ticks that lie between updates to the visibility and content
