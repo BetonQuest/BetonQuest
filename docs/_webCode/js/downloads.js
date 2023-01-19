@@ -1,13 +1,15 @@
 // For local testing you need to disable CORS in your browser
 // On the Nexus Repository Manager you need to ensure CORS is set up correctly
 
-const nexusUrl = "https://betonquest.org/nexus/";
-const nexusRepositoryUrl = nexusUrl + "repository/betonquest/";
+const nexusUrl = "https://betonquest.org/nexus/repository/betonquest/";
+const parts = nexusUrl.split("/");
+const baseUrl = parts.slice(0, -3).join("/") + "/";
+const repositoryName = parts[parts.length - 2];
 
 window.onload = async function () {
   const path = new URLSearchParams(window.location.search).get("path");
   if (path) {
-    const url = nexusRepositoryUrl + path;
+    const url = nexusUrl + path;
     const filename = new URLSearchParams(window.location.search).get("filename");
     downloadWithRename(url, filename).then(() => window.location.href = window.location.href.split("?")[0]);
   }
@@ -78,7 +80,7 @@ async function getBuilds() {
   while (continuationToken !== null) {
     const params = getURLParams(continuationToken);
     try {
-      const response = await fetch(nexusUrl + `service/rest/v1/search/assets?${params}`);
+      const response = await fetch(baseUrl + `service/rest/v1/search/assets?${params}`);
       const data = await response.json();
 
       buildRequests.push(...data["items"].map(build => getVersion(build, cachedVersions, newCachedVersions)));
@@ -100,7 +102,7 @@ async function getBuilds() {
 
 function getURLParams(continuationToken) {
   const params = new URLSearchParams();
-  params.set("repository", "betonquest");
+  params.set("repository", repositoryName);
   params.set("group", "org.betonquest");
   params.set("name", "betonquest");
   params.set("maven.extension", "jar");
