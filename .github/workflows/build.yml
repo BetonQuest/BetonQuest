@@ -444,3 +444,4 @@ jobs:
         env:
           JOB_STATUS: ${{ job.status }}
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+          DOCS_URL: ${{ secrets.DOCS_URL }}
