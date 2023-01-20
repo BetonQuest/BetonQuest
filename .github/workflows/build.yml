@@ -205,6 +205,8 @@ jobs:
       - name: Set secret in downloads.js script
         run: |
           sed -i "s~\${REPOSITORY_URL}~${REPOSITORY_URL}~g" ./docs/_webCode/js/downloads.js
+        env:
+          REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
       - name: Build with mkdocs
         run: |
           if [ "$TXT" = "docs-requirements-insiders.txt" ]
