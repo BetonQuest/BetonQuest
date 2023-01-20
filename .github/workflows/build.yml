@@ -202,6 +202,9 @@ jobs:
       - name: Set mkdocs.yml version
         run: |
           sed -i "s~%VERSION%~${VERSION}~g" ./mkdocs.yml
+      - name: Set secret in downloads.js script
+        run: |
+          sed -i "s~\${REPOSITORY_URL}~${REPOSITORY_URL}~g" ./docs/_webCode/js/downloads.js
       - name: Build with mkdocs
         run: |
           if [ "$TXT" = "docs-requirements-insiders.txt" ]

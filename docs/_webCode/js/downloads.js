@@ -1,7 +1,8 @@
-// For local testing you need to disable CORS in your browser
-// On the Nexus Repository Manager you need to ensure CORS is set up correctly
+// For this script to work on GitHub Pages, you need to ensure CORS is set up correctly on your Nexus server.
+// For local testing you need to disable CORS in your browser,
+// and you need to set the nexusUrl to the actual URL of your Nexus server including the target repository.
 
-const nexusUrl = "https://betonquest.org/nexus/repository/betonquest/";
+const nexusUrl = "${REPOSITORY_URL}";
 const parts = nexusUrl.split("/");
 const baseUrl = parts.slice(0, -3).join("/") + "/";
 const repositoryName = parts[parts.length - 2];
