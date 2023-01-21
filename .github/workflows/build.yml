@@ -47,7 +47,7 @@ jobs:
           echo "Check for difference in docs only. The value is '$CHANGES_IN_DOCS_ONLY'"
       - name: Generate build number for Development Build
         if: "github.repository == 'BetonQuest/BetonQuest' && ( github.ref == 'refs/heads/main' || startsWith(github.ref,'refs/heads/main_v') ) && env.CHANGES_IN_DOCS_ONLY == 'false'"
-        uses: einaregilsson/build-number@v3
+        uses: onyxmueller/build-tag-number@v1
         with:
           token: ${{ secrets.github_token }}
           prefix: ${{ env.MAVEN_VERSION }}
