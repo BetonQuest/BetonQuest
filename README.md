@@ -1,5 +1,5 @@
 <div align="center">
-  <a href="https://docs.betonquest.org/2.0.0-DEV/"><img src="https://github.com/BetonQuest/BetonQuest/blob/main/docs/_media/brand/Logo/LogoChainless1K.png?raw=true" alt="BetonQuest-Logo"/></a>
+  <a href="https://docs.betonquest.org/DEV/"><img src="https://github.com/BetonQuest/BetonQuest/blob/main/docs/_media/brand/Logo/LogoChainless1K.png?raw=true" alt="BetonQuest-Logo"/></a>
   <br>
   <a href="https://bstats.org/plugin/bukkit/BetonQuest/551/" title="See how many servers run this plugin.">
       <img src="https://img.shields.io/bstats/servers/551?style=plastic"/>
@@ -22,8 +22,8 @@
   <hr/>
       <p>BetonQuest is an advanced and powerful quest plugin. It offers RPG-style conversations with NPCs and a very flexible quest system.</p>
   <br>
-  <a href="https://docs.betonquest.org/2.0.0-DEV/">Website</a> |  
-  <a href="https://docs.betonquest.org/2.0.0-DEV/API/Overview/">API Documentation</a> | 
-  <a href="https://docs.betonquest.org/2.0.0-DEV/Participate/Overview/">Contributing Documentation</a> |  
+  <a href="https://docs.betonquest.org/DEV/">Website</a> |  
+  <a href="https://docs.betonquest.org/DEV/API/Overview/">API Documentation</a> | 
+  <a href="https://docs.betonquest.org/DEV/Participate/Overview/">Contributing Documentation</a> |  
   <a href="https://discord.com/invite/rK6mfHq">Discord</a> 
 </div>

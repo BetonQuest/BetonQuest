@@ -167,8 +167,6 @@ extra:
       link: https://spigotmc.org/resources/2117/
     - icon: fontawesome/brands/github
       link: https://github.com/BetonQuest/BetonQuest
-    - icon: material/file-download
-      link: https://dev.betonquest.org
     - icon: brands/mail
       link: mailto://contact@betonquest.org
 

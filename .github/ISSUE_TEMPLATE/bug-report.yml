@@ -9,7 +9,7 @@ body:
         Please make sure you use the latest version.
         Also ensure that our problem hasn't already been reported.
       options:
-        - label: "I use the latest release or dev-build. I also checked that this problem hasn't already been fixed in a newer [dev-build](https://dev.betonquest.org/)."
+        - label: "I use the latest release or dev-build. I also checked that this problem hasn't already been fixed in a newer [dev-build](https://docs.betonquest.org/DEV/Downloads/)."
           required: true
         - label: "There are no open or closed issues that are related to my problem."
           required: true
