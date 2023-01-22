@@ -1,23 +1,25 @@
 package org.betonquest.betonquest.events;
 
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.VariableString;
 import org.betonquest.betonquest.api.QuestEvent;
+import org.betonquest.betonquest.api.bukkit.command.SilentConsoleCommandSender;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Fires a list of commands for the player.
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class CommandEvent extends QuestEvent {
+    private static final CommandSender SILENT_SENDER = new SilentConsoleCommandSender(Bukkit.getConsoleSender());
 
-    private final Command[] commands;
+    private final VariableString[] commands;
 
     public CommandEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
@@ -32,66 +34,40 @@ public class CommandEvent extends QuestEvent {
                 .map(s -> s.replace("\\|", "|"))
                 .map(String::trim)
                 .toArray(String[]::new);
-        commands = new Command[rawCommands.length];
+        commands = new VariableString[rawCommands.length];
         for (int i = 0; i < rawCommands.length; i++) {
-            commands[i] = new Command(rawCommands[i]);
+            commands[i] = new VariableString(instruction.getPackage(), rawCommands[i]);
         }
     }
 
     @SuppressWarnings("PMD.CognitiveComplexity")
     @Override
     protected Void execute(final Profile profile) {
-        for (final Command command : commands) {
-            if (command.variables.isEmpty()) {
-                // if there are no variables, this is a global command
-                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command.command);
-            } else {
-                if (profile == null) {
-                    // this is a static command, run for each player
-                    for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
-                        String com = command.command;
-                        for (final String var : command.variables) {
-                            com = com.replace(var, BetonQuest.getInstance().getVariableValue(
-                                    instruction.getPackage().getQuestPath(), var, onlineProfile));
-                        }
-                        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), com);
-                    }
-                } else {
-                    if (profile.getOnlineProfile().isPresent()) {
-                        // run the command for the single player
-                        String com = command.command;
-                        for (final String var : command.variables) {
-                            com = com.replace(var, BetonQuest.getInstance().getVariableValue(
-                                    instruction.getPackage().getQuestPath(), var, profile));
-                        }
-                        final String finalCom = com;
-                        Bukkit.getScheduler().callSyncMethod(BetonQuest.getInstance(), () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), finalCom));
-                    } else {
-                        // the player is offline, cannot resolve variables, at least replace %player%
-                        final String name = profile.getPlayer().getName();
-                        if (name == null) {
-                            // this should never happen, but just in case
-                            continue;
-                        }
-                        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command.command
-                                .replaceAll("%player%", name));
-                    }
-                }
+        for (final VariableString variableCommand : commands) {
+            if (!variableCommand.containsVariables()) {
+                final String command = variableCommand.getString(profile);
+                Bukkit.getServer().dispatchCommand(SILENT_SENDER, command);
+                continue;
             }
+            if (profile == null) {
+                for (final Profile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+                    final String command = variableCommand.getString(onlineProfile);
+                    Bukkit.getServer().dispatchCommand(SILENT_SENDER, command);
+                }
+                continue;
+            }
+            if (profile.getOnlineProfile().isPresent()) {
+                final String command = variableCommand.getString(profile);
+                Bukkit.getServer().dispatchCommand(SILENT_SENDER, command);
+                continue;
+            }
+            final String name = profile.getPlayer().getName();
+            if (name == null) {
+                continue;
+            }
+            final String command = variableCommand.getString(profile).replaceAll("%player%", name);
+            Bukkit.getServer().dispatchCommand(SILENT_SENDER, command);
         }
         return null;
-    }
-
-    @SuppressWarnings("PMD.AvoidFieldNameMatchingTypeName")
-    private static class Command {
-
-        private final String command;
-        private final List<String> variables;
-
-        public Command(final String command) {
-            this.command = command;
-            variables = BetonQuest.resolveVariables(command);
-        }
-
     }
 }
