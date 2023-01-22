@@ -1,4 +1,1 @@
 INHERIT: mkdocs.yml
-plugins:
-  - meta:
-      meta_file: '**/.meta.yml'
