@@ -347,10 +347,10 @@ This event simply gives the player specified amount of Heroes experience. The fi
 !!! info "Required Dependencies"
     The following feature can be activated by using any of the following plugins:
     
-    | Plugin               | Required Version | Additional Dependencies                                                            |
-    |----------------------|------------------|------------------------------------------------------------------------------------|
-    | DecentHolograms      | 2.7.5 or above   | [PlaceholderAPI](https://www.spigotmc.org/resources/6245/) for in-line variables.  |
-    | Holographic Displays | 3.0.0 or above   | [ProtocolLib](https://www.spigotmc.org/resources/1997/) for conditioned holograms. | 
+    | Plugin                                                                      | Required Version | Additional Dependencies                                                            |
+    |-----------------------------------------------------------------------------|------------------|------------------------------------------------------------------------------------|
+    | [DecentHolograms](https://www.spigotmc.org/resources/96927)                 | 2.7.5 or above   | [PlaceholderAPI](https://www.spigotmc.org/resources/6245/) for in-line variables.  |
+    | [HolographicDisplays](https://dev.bukkit.org/projects/holographic-displays) | 3.0.0 or above   | [ProtocolLib](https://www.spigotmc.org/resources/1997/) for conditioned holograms. | 
     
     If you have both plugins installed, you can use the [`default_hologram` option in "_config.yml_"](Configuration.md#default-hologram-plugin) to set which plugin should be used.
     
