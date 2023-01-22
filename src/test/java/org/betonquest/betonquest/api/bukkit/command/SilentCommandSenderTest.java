@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.api.bukkit.command;
 
+import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.bukkit.command.CommandSender;
@@ -84,24 +85,28 @@ class SilentCommandSenderTest {
 
     @Test
     void testGetServer() {
+        when(sender.getServer()).thenReturn(mock(org.bukkit.Server.class));
         silentSender.getServer();
         verify(sender, times(1)).getServer();
     }
 
     @Test
     void testGetName() {
+        when(sender.getName()).thenReturn("test");
         silentSender.getName();
         verify(sender, times(1)).getName();
     }
 
     @Test
     void testSpigot() {
+        when(sender.spigot()).thenReturn(mock(CommandSender.Spigot.class));
         silentSender.spigot();
         verify(sender, times(1)).spigot();
     }
 
     @Test
     void testName() {
+        when(sender.name()).thenReturn(mock(Component.class));
         silentSender.name();
         verify(sender, times(1)).name();
     }
@@ -132,12 +137,14 @@ class SilentCommandSenderTest {
 
     @Test
     void testAddAttachment() {
+        when(sender.addAttachment(any(org.bukkit.plugin.Plugin.class))).thenReturn(mock(org.bukkit.permissions.PermissionAttachment.class));
         silentSender.addAttachment(mock(org.bukkit.plugin.Plugin.class));
         verify(sender, times(1)).addAttachment(any(org.bukkit.plugin.Plugin.class));
     }
 
     @Test
     void testTestAddAttachment() {
+        when(sender.addAttachment(any(org.bukkit.plugin.Plugin.class), anyString(), anyBoolean())).thenReturn(mock(org.bukkit.permissions.PermissionAttachment.class));
         silentSender.addAttachment(mock(org.bukkit.plugin.Plugin.class), "test", true);
         verify(sender, times(1)).addAttachment(any(org.bukkit.plugin.Plugin.class), anyString(), anyBoolean());
     }

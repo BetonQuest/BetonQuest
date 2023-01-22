@@ -73,7 +73,7 @@ class SilentConsoleCommandSenderTest extends SilentCommandSenderTest {
     void sendRawMessage(final LogValidator validator) {
         silentSender.sendRawMessage("test1");
         verify(sender, never()).sendRawMessage("test1");
-        validator.assertLogEntry(Level.FINE, "(SilentCommandSender) Silently sending message to console: test1");
+        validator.assertLogEntry(Level.FINE, "(SilentConsoleCommandSender) Silently sending message to console: test1");
         validator.assertEmpty();
     }
 
@@ -81,7 +81,7 @@ class SilentConsoleCommandSenderTest extends SilentCommandSenderTest {
     void testSendRawMessage(final LogValidator validator) {
         silentSender.sendRawMessage(null, "test3");
         verify(sender, never()).sendRawMessage(any(UUID.class), anyString());
-        validator.assertLogEntry(Level.FINE, "(SilentCommandSender) Silently sending message to console: test3");
+        validator.assertLogEntry(Level.FINE, "(SilentConsoleCommandSender) Silently sending message to console: test3");
         validator.assertEmpty();
     }
 }
