@@ -1,6 +1,7 @@
 ---
 icon: material/note-edit
 ---
+--8<-- "API-State/Draft.md"
 
 BetonQuest provides the `ConfigurationFile`, a simple API to load, reload, save and delete configuration files.
 It extends `ConfigurationSection` and therefore also provides the well-known Bukkit methods to access and modify the configuration.
