@@ -53,7 +53,6 @@ public class CitizensHologram extends BukkitRunnable {
             return;
         }
         instance = this;
-
         initHolograms();
     }
 
@@ -118,7 +117,11 @@ public class CitizensHologram extends BukkitRunnable {
             }
             interval = hologramsSection.getInt("check_interval", interval);
             follow = hologramsSection.getBoolean("follow", false);
-            initHologramsConfig(pack, hologramsSection);
+            try {
+                initHologramsConfig(pack, hologramsSection);
+            } catch (final InstructionParseException e) {
+                LOG.warn("Error while loading holograms from package " + pack.getQuestPath() + ": " + e.getMessage(), e);
+            }
         }
         if (interval <= 0) {
             interval = 100;
@@ -126,7 +129,7 @@ public class CitizensHologram extends BukkitRunnable {
         updateTask = runTaskTimer(BetonQuest.getInstance(), 1, interval);
     }
 
-    private void initHologramsConfig(final QuestPackage pack, final ConfigurationSection hologramsSection) {
+    private void initHologramsConfig(final QuestPackage pack, final ConfigurationSection hologramsSection) throws InstructionParseException {
         for (final String key : hologramsSection.getKeys(false)) {
             final ConfigurationSection settingsSection = hologramsSection.getConfigurationSection(key);
             if (settingsSection == null) {
@@ -136,9 +139,16 @@ public class CitizensHologram extends BukkitRunnable {
             final List<String> lines = settingsSection.getStringList("lines");
             final List<ConditionID> conditions = initHologramsConfigConditions(pack, key, settingsSection.getString("conditions"));
 
-            for (final int id : settingsSection.getIntegerList("npcs")) {
-                npcs.putIfAbsent(id, new ArrayList<>());
-                npcs.get(id).add(new NPCHologram(pack, vector, lines, conditions));
+            for (final String stringID : settingsSection.getStringList("npcs")) {
+                final String subst = pack.subst(stringID);
+                final int npcId;
+                try {
+                    npcId = Integer.parseInt(subst);
+                } catch (final NumberFormatException e) {
+                    throw new InstructionParseException("Invalid NPC ID: " + subst, e);
+                }
+                npcs.putIfAbsent(npcId, new ArrayList<>());
+                npcs.get(npcId).add(new NPCHologram(pack, vector, lines, conditions));
             }
         }
     }
