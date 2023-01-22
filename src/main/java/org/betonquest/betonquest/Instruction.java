@@ -154,7 +154,7 @@ public class Instruction {
             return null;
         }
         try {
-            return new CompoundLocation(pack.getQuestPath(), string);
+            return new CompoundLocation(pack, string);
         } catch (final InstructionParseException e) {
             throw new PartParseException("Error while parsing location: " + e.getMessage(), e);
         }
@@ -169,7 +169,7 @@ public class Instruction {
             return null;
         }
         try {
-            return new VariableNumber(pack.getQuestPath(), string);
+            return new VariableNumber(pack, string);
         } catch (final InstructionParseException e) {
             throw new PartParseException("Could not parse a number: " + e.getMessage(), e);
         }

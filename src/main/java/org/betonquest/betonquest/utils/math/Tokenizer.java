@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.utils.math;
 
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.math.tokens.AbsoluteValue;
 import org.betonquest.betonquest.utils.math.tokens.Negation;
@@ -39,15 +40,15 @@ public class Tokenizer {
     /**
      * Name of the package in which the tokenizer is operating.
      */
-    private final String packageName;
+    private final QuestPackage pack;
 
     /**
      * Create a new Tokenizer in given package.
      *
-     * @param packageName name of the package
+     * @param pack name of the package
      */
-    public Tokenizer(final String packageName) {
-        this.packageName = packageName;
+    public Tokenizer(final QuestPackage pack) {
+        this.pack = pack;
     }
 
     /**
@@ -108,7 +109,7 @@ public class Tokenizer {
             final String variableName = ESCAPE_REGEX.matcher(rawVariableName).replaceAll("$1");
 
             try {
-                nextInLine = new Variable(new VariableNumber(packageName, "%" + variableName + "%"));
+                nextInLine = new Variable(new VariableNumber(pack, "%" + variableName + "%"));
             } catch (final InstructionParseException e) {
                 throw new InstructionParseException("invalid calculation (" + e.getMessage() + ")", e);
             }
@@ -155,7 +156,7 @@ public class Tokenizer {
                 }
             }
             try {
-                nextInLine = new Variable(new VariableNumber(packageName, "%" + val2.substring(start, index--) + "%"));
+                nextInLine = new Variable(new VariableNumber(pack, "%" + val2.substring(start, index--) + "%"));
             } catch (final InstructionParseException e) {
                 throw new InstructionParseException("invalid calculation (" + e.getMessage() + ")", e);
             }

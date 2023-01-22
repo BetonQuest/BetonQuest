@@ -3,6 +3,7 @@ package org.betonquest.betonquest.conditions;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -19,16 +20,16 @@ public class HeightCondition extends Condition {
     public HeightCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         final String string = instruction.next();
-        final String packName = instruction.getPackage().getQuestPath();
+        final QuestPackage pack = instruction.getPackage();
         if (string.matches("\\-?\\d+\\.?\\d*")) {
             try {
-                height = new VariableNumber(packName, string);
+                height = new VariableNumber(pack, string);
             } catch (final InstructionParseException e) {
                 throw new InstructionParseException("Could not parse height", e);
             }
         } else {
             try {
-                height = new VariableNumber(new CompoundLocation(packName, string).getLocation(null).getY());
+                height = new VariableNumber(new CompoundLocation(pack, string).getLocation(null).getY());
             } catch (final QuestRuntimeException e) {
                 throw new InstructionParseException("Could not parse height", e);
             }

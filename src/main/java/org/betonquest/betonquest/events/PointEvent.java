@@ -39,7 +39,7 @@ public class PointEvent extends QuestEvent {
             multi = false;
         }
         try {
-            count = new VariableNumber(instruction.getPackage().getQuestPath(), number);
+            count = new VariableNumber(instruction.getPackage(), number);
         } catch (final InstructionParseException e) {
             throw new InstructionParseException("Could not parse point count", e);
         }

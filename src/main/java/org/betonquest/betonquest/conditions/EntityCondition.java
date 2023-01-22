@@ -69,7 +69,7 @@ public class EntityCondition extends Condition {
 
     private VariableNumber getAmount(final String typePart) throws InstructionParseException {
         try {
-            return new VariableNumber(instruction.getPackage().getQuestPath(), typePart);
+            return new VariableNumber(instruction.getPackage(), typePart);
         } catch (final InstructionParseException e) {
             throw new InstructionParseException("Could not parse amount", e);
         }
