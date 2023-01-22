@@ -78,7 +78,7 @@ public class JournalEventFactory implements EventFactory, StaticEventFactory {
 
     @NotNull
     private JournalEvent createJournalDeleteEvent(final Instruction instruction) throws InstructionParseException {
-        final String entryName = Utils.addPackage(instruction.getPackage(), instruction.next());
+        final String entryName = Utils.addPackage(instruction.getPackage(), instruction.getPart(2));
         final JournalChanger journalChanger = new RemoveEntryJournalChanger(entryName);
         final NotificationSender notificationSender = new NoNotificationSender();
         return new JournalEvent(betonQuest, journalChanger, notificationSender);
@@ -86,7 +86,7 @@ public class JournalEventFactory implements EventFactory, StaticEventFactory {
 
     @NotNull
     private JournalEvent createJournalAddEvent(final Instruction instruction) throws InstructionParseException {
-        final String entryName = Utils.addPackage(instruction.getPackage(), instruction.next());
+        final String entryName = Utils.addPackage(instruction.getPackage(), instruction.getPart(2));
         final JournalChanger journalChanger = new AddEntryJournalChanger(instantSource, entryName);
         final NotificationSender notificationSender = new InfoNotificationSender("new_journal_entry", instruction.getPackage(), instruction.getID().getFullID());
         return new JournalEvent(betonQuest, journalChanger, notificationSender);
@@ -102,7 +102,7 @@ public class JournalEventFactory implements EventFactory, StaticEventFactory {
     @NotNull
     private StaticEvent createStaticJournalDeleteEvent(final Instruction instruction) throws InstructionParseException {
         final JournalEvent journalDeleteEvent = createJournalDeleteEvent(instruction.copy());
-        final String entryName = Utils.addPackage(instruction.getPackage(), instruction.next());
+        final String entryName = Utils.addPackage(instruction.getPackage(), instruction.getPart(2));
         return new SequentialStaticEvent(
                 new OnlineProfileGroupStaticEventAdapter(PlayerConverter::getOnlineProfiles, journalDeleteEvent),
                 new DatabaseSaverStaticEvent(saver, () -> new Saver.Record(UpdateType.REMOVE_ALL_ENTRIES, entryName))
