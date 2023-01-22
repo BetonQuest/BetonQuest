@@ -68,4 +68,13 @@ public class VariableString {
         }
         return resolvedString;
     }
+
+    /**
+     * Returns true if the string contains variables.
+     *
+     * @return true if the string contains variables
+     */
+    public boolean containsVariables() {
+        return !variables.isEmpty();
+    }
 }
