@@ -40,7 +40,7 @@ public class CompassEvent extends QuestEvent {
         for (final QuestPackage pack : Config.getPackages().values()) {
             final ConfigurationSection section = pack.getConfig().getConfigurationSection("compass");
             if (section != null && section.contains(compass)) {
-                compassLocation = new CompoundLocation(pack.getQuestPath(), pack.getString("compass." + compass + ".location"));
+                compassLocation = new CompoundLocation(pack, pack.getString("compass." + compass + ".location"));
                 break;
             }
         }

@@ -23,7 +23,7 @@ public class WorldCondition extends Condition {
         world = Bukkit.getWorld(name);
         if (world == null) {
             try {
-                world = new CompoundLocation(instruction.getPackage().getQuestPath(), name).getLocation(null).getWorld();
+                world = new CompoundLocation(instruction.getPackage(), name).getLocation(null).getWorld();
             } catch (InstructionParseException | QuestRuntimeException e) {
                 throw new InstructionParseException("There is no such world: " + name, e);
             }

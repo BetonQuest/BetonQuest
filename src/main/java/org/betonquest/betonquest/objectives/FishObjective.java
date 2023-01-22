@@ -6,6 +6,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.CountingObjective;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -41,7 +42,7 @@ public class FishObjective extends CountingObjective implements Listener {
         blockSelector = new BlockSelector(instruction.next());
         targetAmount = instruction.getInt();
 
-        final String pack = instruction.getPackage().getQuestPath();
+        final QuestPackage pack = instruction.getPackage();
         final String loc = instruction.getOptional("hookLocation");
         final String range = instruction.getOptional("range");
         if (loc != null && range != null) {

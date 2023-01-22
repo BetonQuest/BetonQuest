@@ -3,6 +3,7 @@ package org.betonquest.betonquest.conditions;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Condition;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -28,10 +29,10 @@ public class RandomCondition extends Condition {
         if (values.length != 2) {
             throw new InstructionParseException("Wrong randomness format");
         }
-        final String packName = instruction.getPackage().getQuestPath();
+        final QuestPackage pack = instruction.getPackage();
         try {
-            valueMax = new VariableNumber(packName, values[0]);
-            rangeOfRandom = new VariableNumber(packName, values[1]);
+            valueMax = new VariableNumber(pack, values[0]);
+            rangeOfRandom = new VariableNumber(pack, values[1]);
         } catch (final InstructionParseException e) {
             throw new InstructionParseException("Cannot parse randomness values", e);
         }

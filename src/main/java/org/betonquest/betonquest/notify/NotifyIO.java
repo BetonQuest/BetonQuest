@@ -65,7 +65,7 @@ public abstract class NotifyIO {
         if (dataString == null) {
             return defaultData;
         } else if (dataString.startsWith("%")) {
-            return (float) new VariableNumber(pack.getQuestPath(), dataString).getDouble(PlayerConverter.getID(player));
+            return (float) new VariableNumber(pack, dataString).getDouble(PlayerConverter.getID(player));
         }
         try {
             return Float.parseFloat(dataString);

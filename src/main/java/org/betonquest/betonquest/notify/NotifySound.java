@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.notify;
 
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -115,7 +116,7 @@ class NotifySound {
 
     private CompoundLocation getCompoundLocation(final Map<String, String> data) throws InstructionParseException {
         final String locationString = data.get(KEY_SOUND_LOCATION);
-        return locationString == null ? null : new CompoundLocation(null, locationString);
+        return locationString == null ? null : new CompoundLocation((QuestPackage) null, locationString);
     }
 
     private SoundCategory getSoundCategory(final Map<String, String> data) throws InstructionParseException {
@@ -130,7 +131,7 @@ class NotifySound {
     private VectorData getPlayerOffset(final String playerOffsetString) throws InstructionParseException {
         if (playerOffsetString != null) {
             try {
-                return new VectorData(null, playerOffsetString);
+                return new VectorData((QuestPackage) null, playerOffsetString);
             } catch (final InstructionParseException exception) {
                 throw new InstructionParseException(String.format("%s '%s' couldn't be parsed, it is not a valid vector or a floating point number!", KEY_SOUND_PLAYER_OFFSET, playerOffsetString), exception);
             }

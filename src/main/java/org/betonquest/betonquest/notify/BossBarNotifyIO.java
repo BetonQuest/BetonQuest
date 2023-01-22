@@ -62,7 +62,7 @@ public class BossBarNotifyIO extends NotifyIO {
 
         progress = normalizeBossBarProgress(getFloatData("progress", 1));
         final String stayString = data.get("stay");
-        stayVariable = stayString == null ? new VariableNumber(70) : new VariableNumber(pack.getQuestPath(), stayString);
+        stayVariable = stayString == null ? new VariableNumber(70) : new VariableNumber(pack, stayString);
         countdown = getIntegerData("countdown", 0);
     }
 

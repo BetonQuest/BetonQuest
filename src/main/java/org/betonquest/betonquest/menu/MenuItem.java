@@ -95,7 +95,7 @@ public class MenuItem extends SimpleYMLSection {
             //load item
             final ItemID itemID = new ItemID(pack, getString("item").trim());
             final VariableNumber amount;
-            amount = new VariableNumber(pack.getQuestPath(), new DefaultSetting<>("1") {
+            amount = new VariableNumber(pack, new DefaultSetting<>("1") {
                 @Override
                 @SuppressWarnings("PMD.ShortMethodName")
                 protected String of() throws Missing {

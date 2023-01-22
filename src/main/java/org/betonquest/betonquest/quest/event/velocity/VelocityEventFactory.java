@@ -47,7 +47,7 @@ public class VelocityEventFactory implements EventFactory {
         if (rawVector == null) {
             throw new InstructionParseException("A 'vector' is required");
         }
-        final VectorData vector = new VectorData(instruction.getPackage().getQuestPath(), rawVector);
+        final VectorData vector = new VectorData(instruction.getPackage(), rawVector);
         final VectorDirection direction = instruction.getEnum(instruction.getOptional("direction"), VectorDirection.class, VectorDirection.ABSOLUTE);
         final VectorModification modification = instruction.getEnum(instruction.getOptional("modification"), VectorModification.class, VectorModification.SET);
         return new PrimaryServerThreadEvent(

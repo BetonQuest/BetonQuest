@@ -2,6 +2,7 @@ package org.betonquest.betonquest;
 
 import lombok.CustomLog;
 import org.betonquest.betonquest.api.Variable;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -27,18 +28,31 @@ public class VariableNumber {
     /**
      * Parses the string as a variable or as a number if it's not a variable.
      *
-     * @param packName the package in which the variable is defined
-     * @param tmp the string to parse
+     * @param pack the package in which the variable is defined
+     * @param tmp  the string to parse
      * @throws InstructionParseException If the variable could not be created.
      */
-    public VariableNumber(final String packName, final String tmp) throws InstructionParseException {
+    public VariableNumber(final QuestPackage pack, final String tmp) throws InstructionParseException {
         if (tmp.length() > 2 && tmp.charAt(0) == '%' && tmp.endsWith("%")) {
-            this.variable = parseAsVariable(packName, tmp);
+            this.variable = parseAsVariable(pack, tmp);
             this.number = 0.0;
         } else {
             this.variable = null;
             this.number = parseAsNumber(tmp);
         }
+    }
+
+    /**
+     * Parses the string as a variable or as a number if it's not a variable.
+     *
+     * @param packName the package in which the variable is defined
+     * @param tmp      the string to parse
+     * @throws InstructionParseException If the variable could not be created.
+     * @deprecated Use {@link #VariableNumber(QuestPackage, String)} instead.
+     */
+    @Deprecated
+    public VariableNumber(final String packName, final String tmp) throws InstructionParseException {
+        this(Config.getPackages().get(packName), tmp);
     }
 
     /**
@@ -61,10 +75,10 @@ public class VariableNumber {
         this.variable = null;
     }
 
-    private Variable parseAsVariable(final String packName, final String variable) throws InstructionParseException {
+    private Variable parseAsVariable(final QuestPackage pack, final String variable) throws InstructionParseException {
         final Variable parsed;
         try {
-            parsed = BetonQuest.createVariable(Config.getPackages().get(packName), variable);
+            parsed = BetonQuest.createVariable(pack, variable);
         } catch (final InstructionParseException e) {
             throw new InstructionParseException("Could not create variable: " + e.getMessage(), e);
         }
@@ -77,7 +91,7 @@ public class VariableNumber {
     private double parseAsNumber(final String variable) throws InstructionParseException {
         try {
             return Double.parseDouble(variable);
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             throw new InstructionParseException("Not a number: " + variable, e);
         }
     }

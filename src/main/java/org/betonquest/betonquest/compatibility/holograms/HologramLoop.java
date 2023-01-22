@@ -118,7 +118,7 @@ public class HologramLoop {
             LOG.warn(pack, "Location is not specified in " + key + " hologram");
         } else {
             try {
-                location = new CompoundLocation(pack.getQuestPath(), pack.subst(rawLocation)).getLocation(null);
+                location = new CompoundLocation(pack, pack.subst(rawLocation)).getLocation(null);
             } catch (QuestRuntimeException | InstructionParseException e) {
                 LOG.warn(pack, "Could not parse location in " + key + " hologram: " + e.getMessage(), e);
             }

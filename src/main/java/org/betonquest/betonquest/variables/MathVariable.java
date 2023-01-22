@@ -27,7 +27,7 @@ public class MathVariable extends Variable {
             throw new InstructionParseException("invalid format");
         }
         final String expression = instructionString.substring("math.calc:".length());
-        this.calculation = new Tokenizer(instruction.getPackage().getQuestPath()).tokenize(expression);
+        this.calculation = new Tokenizer(instruction.getPackage()).tokenize(expression);
     }
 
     @Override

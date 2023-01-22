@@ -33,7 +33,7 @@ public class MoneyEvent extends QuestEvent {
             multi = false;
         }
         try {
-            amount = new VariableNumber(instruction.getPackage().getQuestPath(), string);
+            amount = new VariableNumber(instruction.getPackage(), string);
         } catch (final InstructionParseException e) {
             throw new InstructionParseException("Could not parse money amount", e);
         }
