@@ -175,10 +175,10 @@ jobs:
           key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}-v1
       - name: Git LFS Pull
         run: git lfs pull
-      - name: Setup Python 3.6
-        uses: actions/setup-python@v2
+      - name: Setup Python 3.10
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.6'
+          python-version: '3.10'
           architecture: 'x64'
       - name: Select mkDocs requirements
         run: |
@@ -317,10 +317,10 @@ jobs:
           key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}-v1
       - name: Git LFS Pull
         run: git lfs pull
-      - name: Setup Python 3.6
-        uses: actions/setup-python@v2
+      - name: Setup Python 3.10
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.6'
+          python-version: '3.10'
           architecture: 'x64'
       - name: Download Docs
         uses: actions/download-artifact@v2
