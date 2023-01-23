@@ -14,7 +14,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import pl.betoncraft.betonquest.*;
+import pl.betoncraft.betonquest.BetonQuest;
+import pl.betoncraft.betonquest.Instruction;
+import pl.betoncraft.betonquest.Journal;
+import pl.betoncraft.betonquest.Point;
+import pl.betoncraft.betonquest.Pointer;
 import pl.betoncraft.betonquest.api.Objective;
 import pl.betoncraft.betonquest.compatibility.Compatibility;
 import pl.betoncraft.betonquest.config.Config;
@@ -33,12 +37,26 @@ import pl.betoncraft.betonquest.id.EventID;
 import pl.betoncraft.betonquest.id.ItemID;
 import pl.betoncraft.betonquest.id.ObjectiveID;
 import pl.betoncraft.betonquest.item.QuestItem;
-import pl.betoncraft.betonquest.utils.*;
+import pl.betoncraft.betonquest.utils.ComponentBuilder;
+import pl.betoncraft.betonquest.utils.LogUtils;
+import pl.betoncraft.betonquest.utils.PlayerConverter;
+import pl.betoncraft.betonquest.utils.Utils;
 import pl.betoncraft.betonquest.utils.location.VectorData;
+import pl.betoncraft.betonquest.utils.updater.Updater;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.StringJoiner;
+import java.util.TreeMap;
 import java.util.logging.Level;
 
 /**
@@ -1753,14 +1771,14 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         builder.append("- - - - - - - - - - - - - - -\n", ChatColor.YELLOW);
         builder.append("BetonQuest version: ", ChatColor.AQUA).append(betonquestVersion, ChatColor.GRAY)
                 .hover(clickToCopy).click(
-                ComponentBuilder.ClickEvent.SUGGEST_COMMAND, betonquestVersion);
+                        ComponentBuilder.ClickEvent.SUGGEST_COMMAND, betonquestVersion);
         if (updatesCommand != null) {
             builder.append("\n        " + updatesString, ChatColor.YELLOW).hover(clickToDownload)
                     .click(ComponentBuilder.ClickEvent.RUN_COMMAND, updatesCommand);
         }
         builder.append("\n", ChatColor.RESET).append("Server version: ", ChatColor.GOLD)
                 .append(spigotVersion, ChatColor.GRAY).hover(clickToCopy).click(
-                ComponentBuilder.ClickEvent.SUGGEST_COMMAND, spigotVersion)
+                        ComponentBuilder.ClickEvent.SUGGEST_COMMAND, spigotVersion)
                 .append("\n\n", ChatColor.RESET).append("Hooked into:\n", ChatColor.GREEN);
         if (hooked.isEmpty()) {
             builder.append("  ---", ChatColor.GRAY);
@@ -1775,7 +1793,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 }
                 builder.append(key, ChatColor.RESET).hover(clickToCopy)
                         .click(ComponentBuilder.ClickEvent.SUGGEST_COMMAND, hookedRaw.toString()).append(" (" + hooked
-                        .get(key) + ")", ChatColor.GRAY)
+                                .get(key) + ")", ChatColor.GRAY)
                         .hover(clickToCopy).click(ComponentBuilder.ClickEvent.SUGGEST_COMMAND, hookedRaw.toString());
 
             }
