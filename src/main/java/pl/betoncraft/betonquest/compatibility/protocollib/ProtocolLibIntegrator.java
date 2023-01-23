@@ -34,14 +34,14 @@ public class ProtocolLibIntegrator implements Integrator {
             final int part2 = Integer.parseInt(versionParts[1]);
             final int part3 = Integer.parseInt(versionParts[2]);
             final int buildNr = qualifierParts.length == 2 ? Integer.parseInt(qualifierParts[1]) : Integer.MAX_VALUE;
-            if (part1 < 4
-                    || part1 == 4 && part2 < 7
-                    || part1 == 4 && part2 == 7 && part3 < 1
-                    || part1 == 4 && part2 == 7 && part3 == 1 && buildNr < 531) {
-                throw new UnsupportedVersionException(protocolLib, "4.7.1-SNAPSHOT-b531");
+            if (part1 < 5
+                    || part1 == 5 && part2 < 0
+                    || part1 == 5 && part2 == 0 && part3 < 0
+                    || part1 == 5 && part2 == 0 && part3 == 0 && buildNr < 610) {
+                throw new UnsupportedVersionException(protocolLib, "5.0.0-SNAPSHOT-b610");
             }
         } catch (final NumberFormatException e) {
-            throw new UnsupportedVersionException(protocolLib, "4.7.1-SNAPSHOT-b531");
+            throw new UnsupportedVersionException(protocolLib, "5.0.0-SNAPSHOT-b610");
         }
         // if Citizens is hooked, start NPCHider
         if (Compatibility.getHooked().contains("Citizens")) {
