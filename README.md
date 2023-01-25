@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://docs.betonquest.org"><img src="https://github.com/BetonQuest/BetonQuest/blob/master/docs/_media/brand/Logo/LogoChainless1K.png?raw=true" alt="BetonQuest-Logo"/></a>
+  <a href="https://docs.betonquest.org"><img src="https://github.com/BetonQuest/BetonQuest/blob/main/docs/_media/brand/Logo/LogoChainless1K.png?raw=true" alt="BetonQuest-Logo"/></a>
 </p>
 
 <p align="center">Minecraft RPG Questing Plugin</p>

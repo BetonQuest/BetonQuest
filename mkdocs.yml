@@ -1,12 +1,12 @@
 site_name: BetonQuest
 site_author: BetonQuest Organisation
-site_url: https://betonquest.github.io/BetonQuest/
+site_url: https://docs.betonquest.org/
 site_dir: target/docs
 docs_dir: documentation
 repo_name: BetonQuest on GitHub
-edit_uri: /BetonQuest/BetonQuest/edit/master_v1.12/documentation/
+edit_uri: /BetonQuest/BetonQuest/edit/main_v1.12/documentation/
 repo_url: https://github.com/BetonQuest/BetonQuest
-copyright: '© 2020  BetonQuest Organisation. GPLv3'
+copyright: '© 2023  BetonQuest Organisation. GPLv3'
 
 
 extra_css:
@@ -92,21 +92,20 @@ extra:
     provider: mike
   analytics:
     provider: google
-    property: G-312814001
+    property: G-VEBGTNXWEL
 
   social:
     - icon: fontawesome/brands/discord
       link: https://discord.gg/rK6mfHq
-    - icon: fontawesome/brands/patreon
-      link: https://patreon.com/betonquest
+    - icon: fontawesome/solid/faucet-drip
+      link: https://spigotmc.org/resources/2117/
     - icon: fontawesome/brands/github
       link: https://github.com/BetonQuest/BetonQuest
-    - icon: fontawesome/solid/box-archive
-      link: https://dev.betonquest.org
-    - icon: fontawesome/solid/faucet
-      link: https://spigotmc.org/resources/betonquest.2117/
+    - icon: octicons/mail-16
+      link: mailto://contact@betonquest.org
 
-#Notice that here are a few strange looking hairspaces in here. They make the space between the emojis and the text look equal
+#Notice that here are a few strange looking hairspaces in here.
+#They make the space between the emojis and the text look equal
 nav:
   - 'Home':
       - '👋 Welcome!': index.md
@@ -158,5 +157,6 @@ nav:
           - '📚 Guidelines': Contributing/Documentation/Guidelines.md
       - 'Sponsorships':
           - '💲 Patreon': Contributing/Sponsors.md
+  - 'Downloads': Downloads/index.md
 
 

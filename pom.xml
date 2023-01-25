@@ -4,9 +4,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <properties>
-    <version>1.12.10</version>
-    <maven-version>${version}-DEV-UNOFFICIAL</maven-version>
-    <current-date>${maven.build.timestamp}</current-date>
+    <revision>1.12.10</revision>
+    <changelist>-SNAPSHOT</changelist>
+    <betonquest.version>${revision}-DEV-UNOFFICIAL</betonquest.version>
+    <minecraft.api.version>1.13</minecraft.api.version>
     <maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.target>1.8</maven.compiler.target>
@@ -16,7 +17,7 @@
   <name>BetonQuest</name>
   <groupId>pl.betoncraft</groupId>
   <artifactId>betonquest</artifactId>
-  <version>${version}-SNAPSHOT</version>
+  <version>${revision}${changelist}</version>
   <description>All Your Adventure Supplies</description>
 
   <licenses>
@@ -524,7 +525,7 @@
     </repository>
     <repository>
       <id>betonquest-citizensnpcs-repo</id>
-      <url>https://repo.citizensnpcs.co/</url>
+      <url>https://maven.citizensnpcs.co/repo</url>
     </repository>
     <repository>
       <id>betonquest-codemc-repo</id>
@@ -566,17 +567,7 @@
 
   <build>
     <directory>target/artifacts</directory>
-    <sourceDirectory>src/main/java</sourceDirectory>
     <resources>
-      <resource>
-        <directory>src/main/java</directory>
-        <includes>
-          <include>**/*.class</include>
-        </includes>
-        <excludes>
-          <exclude>**/*</exclude>
-        </excludes>
-      </resource>
       <resource>
         <directory>src/main/resources</directory>
         <filtering>true</filtering>
@@ -617,6 +608,31 @@
               </rules>
               <fail>true</fail>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>flatten-maven-plugin</artifactId>
+        <configuration>
+          <updatePomFile>true</updatePomFile>
+          <flattenMode>resolveCiFriendliesOnly</flattenMode>
+          <outputDirectory>${project.build.directory}</outputDirectory>
+        </configuration>
+        <executions>
+          <execution>
+            <id>flatten</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>flatten</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>flatten.clean</id>
+            <phase>clean</phase>
+            <goals>
+              <goal>clean</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
@@ -810,6 +826,11 @@
           <version>3.8.1</version>
         </plugin>
         <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>flatten-maven-plugin</artifactId>
+          <version>1.2.5</version>
+        </plugin>
+        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
           <version>3.2.4</version>
@@ -820,7 +841,7 @@
           <version>3.14.0</version>
           <configuration>
             <rulesets>
-              <ruleset>config/pmd-ruleset.xml</ruleset>
+              <ruleset>${basedir}/config/pmd-ruleset.xml</ruleset>
             </rulesets>
             <includeTests>true</includeTests>
           </configuration>
@@ -846,7 +867,7 @@
             </dependency>
           </dependencies>
           <configuration>
-            <configLocation>config/checkstyle.xml</configLocation>
+            <configLocation>${basedir}/config/checkstyle.xml</configLocation>
             <propertyExpansion>checkstyle.config.path=${basedir}/config</propertyExpansion>
           </configuration>
         </plugin>
@@ -991,4 +1012,42 @@
       </plugin>
     </plugins>
   </reporting>
+
+  <profiles>
+    <profile>
+      <id>Skip-Verification</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.ec4j.maven</groupId>
+            <artifactId>editorconfig-maven-plugin</artifactId>
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-pmd-plugin</artifactId>
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-maven-plugin</artifactId>
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
