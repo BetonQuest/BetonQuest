@@ -1,7 +1,5 @@
 ---
 icon: material/volume-high
-hide:
-  - footer
 ---
 BetonQuest features a powerful notify system that allows you to display any information to your players.
 You can freely choose between many NotifyIO's like simple chat output, (sub)titles, advancements or sounds. They all come

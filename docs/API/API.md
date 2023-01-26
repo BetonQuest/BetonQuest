@@ -1,7 +1,5 @@
 ---
 icon: octicons/gear-16
-hide:
-  - footer
 ---
 !!! warning
     All existing API will break in BetonQuest 2.0 which is being worked on while you read this.

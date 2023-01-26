@@ -1,7 +1,5 @@
 ---
 icon: simple/apachenetbeanside
-hide:
-  - footer
 ---
 
 ## Hiding Players

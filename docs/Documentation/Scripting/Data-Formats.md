@@ -1,7 +1,5 @@
 ---
 icon: material/cube
-hide:
-  - footer
 ---
 
 ## :octicons-location-16: Unified location formating

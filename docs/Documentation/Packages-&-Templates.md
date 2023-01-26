@@ -1,7 +1,5 @@
 ---
 icon: material/folder-open
-hide:
-  - footer
 ---
 ## Packages
 

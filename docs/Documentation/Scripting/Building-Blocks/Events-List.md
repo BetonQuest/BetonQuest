@@ -1,7 +1,5 @@
 ---
 icon: octicons/gear-16
-hide:
-  - footer
 ---
 # Events List
 

@@ -1,6 +1,4 @@
 ---
-hide:
-  - footer
 ---
 If Citizens and ProtocolLib are installed you can make NPCs glow.
 This can also be linked to conditions that must be met. For that you have to add a `glow_npc` section.

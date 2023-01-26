@@ -1,7 +1,5 @@
 ---
 icon: octicons/question-16
-hide:
-  - footer
 ---
 # Conditions List
 

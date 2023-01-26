@@ -1,7 +1,5 @@
 ---
 icon: octicons/workflow-16
-hide:
-  - footer
 ---
 # Changing Code
 

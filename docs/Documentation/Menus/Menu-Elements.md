@@ -1,7 +1,5 @@
 ---
 icon: material/table-of-contents
-hide:
-  - footer
 ---
 # Events
 ### Menu event: `menu`

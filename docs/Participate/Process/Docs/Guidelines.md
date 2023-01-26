@@ -1,7 +1,5 @@
 ---
 icon: fontawesome/solid/pen-nib
-hide:
-  - footer
 ---
 You need to follow these rules in order to contribute to the docs. They are important for a good user experience and provide
 a consistent baseline for other contributors to work with.

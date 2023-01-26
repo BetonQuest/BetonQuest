@@ -2,8 +2,6 @@
 icon: material/message-text
 tags:
   - Conversation
-hide:
-  - footer
 ---
 
 Conversations are the main way to interact with players in BetonQuest. They are used to display text, ask questions and 

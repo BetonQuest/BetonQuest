@@ -1,7 +1,5 @@
 ---
 icon: material/party-popper
-hide:
-  - footer
 ---
 
 Parties are very simple. So simple, that they are hard to understand if you already know some other party system.

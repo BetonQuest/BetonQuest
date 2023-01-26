@@ -1,7 +1,5 @@
 ---
 icon: material/variable-box
-hide:
-  - footer
 ---
 # Variables List
 

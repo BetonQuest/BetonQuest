@@ -1,7 +1,5 @@
 ---
 icon: octicons/clock-16
-hide:
-  - footer
 ---
 # Schedules
 --8<-- "API-State/Unfinished.md"

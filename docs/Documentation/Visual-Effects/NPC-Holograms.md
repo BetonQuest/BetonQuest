@@ -1,6 +1,4 @@
 ---
-hide:
-  - footer
 ---
 !!! info "Required Dependencies"
     The following feature can be activated by using any of the following plugins:

@@ -1,7 +1,5 @@
 ---
 icon: fontawesome/solid/lock
-hide:
-  - footer
 ---
 # Commands and permissions
 

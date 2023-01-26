@@ -1,7 +1,5 @@
 ---
 icon: fontawesome/solid/wrench
-hide:
-  - footer
 ---
 # Configuration
 

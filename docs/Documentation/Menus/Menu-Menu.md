@@ -1,7 +1,5 @@
 ---
 icon: material/television-guide
-hide:
-  - footer
 ---
 
 # Menus

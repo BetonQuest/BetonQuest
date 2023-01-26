@@ -1,6 +1,4 @@
 ---
-hide:
-  - footer
 ---
 
 !!! info "Required Dependencies"

@@ -1,7 +1,5 @@
 ---
 icon: material/party-popper
-hide:
-  - footer
 ---
 ## Notify IO's
 

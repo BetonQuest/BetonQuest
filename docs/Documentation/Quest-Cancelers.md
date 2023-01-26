@@ -1,7 +1,5 @@
 ---
 icon: material/cancel
-hide:
-  - footer
 ---
 
 If you want to let your players cancel their quest there is a function for that. In _package.yml_ file there is `cancel`

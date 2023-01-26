@@ -1,7 +1,5 @@
 ---
 icon: octicons/clock-16
-hide:
-  - footer
 ---
 # Schedules
 Schedules allow you to run events periodically at specific times for the entire server.

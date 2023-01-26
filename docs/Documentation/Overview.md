@@ -1,7 +1,5 @@
 ---
 icon: octicons/info-16
-hide:
-  - footer
 ---
 This is the complete reference documentation for BetonQuest.
 It has in depth explanations for all of BetonQuest's features, config options and permissions. 

@@ -1,6 +1,4 @@
 ---
-hide:
-  - footer
 ---
 Having ProtocolLib installed will let you hide Citizens NPCs if specified conditions are met.
 You can do that by adding a `hide_npcs` section in your package. 

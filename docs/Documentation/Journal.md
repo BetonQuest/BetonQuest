@@ -1,7 +1,5 @@
 ---
 icon: material/notebook
-hide:
-  - footer
 ---
 
 The journal is a book which can be used to display any quest related information in an immersive way.

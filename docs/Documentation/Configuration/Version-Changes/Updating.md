@@ -1,7 +1,5 @@
 ---
 icon: material/download
-hide:
-  - footer
 ---
 <style>
 .table {

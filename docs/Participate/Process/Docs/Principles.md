@@ -1,7 +1,5 @@
 ---
 icon: fontawesome/solid/book
-hide:
-  - footer
 ---
 A brief overview of basic documentation principles.
 

@@ -1,7 +1,5 @@
 ---
 icon: octicons/info-16
-hide:
-  - footer
 ---
 You have a few options to support projects like this one:
 

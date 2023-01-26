@@ -1,7 +1,5 @@
 ---
 icon: material/upload
-hide:
-  - footer
 ---
 This guide explains how to migrate from BetonQuest 1.12.X or any BetonQuest 2.0.0 dev build to the latest BetonQuest
 2.0.0 dev build.

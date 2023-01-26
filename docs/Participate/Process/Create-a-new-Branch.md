@@ -1,7 +1,5 @@
 ---
 icon: material/source-branch-plus
-hide:
-  - footer
 ---
 A new branch should always be created from an up to date `main` branch.
 That's why you [added the BetonQuest repository](../Setup-Project.md#adding-remote-repository) `upstream`.
