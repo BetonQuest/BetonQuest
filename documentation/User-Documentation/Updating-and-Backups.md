@@ -59,7 +59,7 @@ has changed by clicking the link in the third step. If it did not your comments 
 * Stop server.
 * Open up /plugins/BetonQuest/config.yml
 * Set the version: option to the one that you see here: This might change so please look it up each time you update!     
- https://github.com/BetonQuest/BetonQuest/blob/master/src/main/resources/config.yml
+ https://github.com/BetonQuest/BetonQuest/blob/main/src/main/resources/config.yml
 * Update BetonQuest.jar
 * Start Server
 * Fix all issues (we changed the stuff down below.)

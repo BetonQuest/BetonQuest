@@ -15,9 +15,9 @@
         <img src="https://img.shields.io/badge/discord-join-7289DA.svg?logo=discord&longCache=true&style=flat" />
     </a>
     <a href="https://github.com/BetonQuest/BetonQuest/actions" title="See the projects build status here.">
-        <img src="https://github.com/BetonQuest/BetonQuest/workflows/Build/badge.svg?branch=master&event=push">
+        <img src="https://github.com/BetonQuest/BetonQuest/workflows/Build/badge.svg?branch=main&event=push">
     </a>
-    <a href="https://github.com/BetonQuest/BetonQuest/blob/master/LICENSE" title="This project is licensed under the GPLv3 license!">
+    <a href="https://github.com/BetonQuest/BetonQuest/blob/main/LICENSE" title="This project is licensed under the GPLv3 license!">
         <img src="https://img.shields.io/badge/license-GPLv3-blue" alt="License" />
       </a>
     <a href="https://patreon.com/BetonQuest" title="Donate to this project using Patreon!">
