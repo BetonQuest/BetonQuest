@@ -32,7 +32,7 @@ If the feature already has an issue, simply comment there saying that you'd like
 
 ### You implemented a feature / fixed a bug?
 
-Great, thank you so much. Simply submit a pull request and wait for a code review. After your code is perfected (or immediately, who knows?) we'll merge it into the master.
+Great, thank you so much. Simply submit a pull request and wait for a code review. After your code is perfected (or immediately, who knows?) we'll merge it into the main.
 
 If you want to automatically close the issue related to your pull request (you should have one, see above), simply add `Fix #100` or `Close #100` to your commit message (replace `100` with the issue number of course).
 

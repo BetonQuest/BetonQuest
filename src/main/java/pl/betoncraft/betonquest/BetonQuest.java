@@ -186,8 +186,15 @@ import pl.betoncraft.betonquest.objectives.VehicleObjective;
 import pl.betoncraft.betonquest.utils.BStatsMetrics;
 import pl.betoncraft.betonquest.utils.LogUtils;
 import pl.betoncraft.betonquest.utils.PlayerConverter;
-import pl.betoncraft.betonquest.utils.Updater;
 import pl.betoncraft.betonquest.utils.Utils;
+import pl.betoncraft.betonquest.utils.updater.UpdateDownloader;
+import pl.betoncraft.betonquest.utils.updater.UpdateSourceHandler;
+import pl.betoncraft.betonquest.utils.updater.Updater;
+import pl.betoncraft.betonquest.utils.updater.source.DevelopmentUpdateSource;
+import pl.betoncraft.betonquest.utils.updater.source.ReleaseUpdateSource;
+import pl.betoncraft.betonquest.utils.updater.source.implementations.GitHubReleaseSource;
+import pl.betoncraft.betonquest.utils.updater.source.implementations.NexusReleaseAndDevelopmentSource;
+import pl.betoncraft.betonquest.utils.versioning.Version;
 import pl.betoncraft.betonquest.variables.ConditionVariable;
 import pl.betoncraft.betonquest.variables.GlobalPointVariable;
 import pl.betoncraft.betonquest.variables.ItemAmountVariable;
@@ -199,9 +206,12 @@ import pl.betoncraft.betonquest.variables.PlayerNameVariable;
 import pl.betoncraft.betonquest.variables.PointVariable;
 import pl.betoncraft.betonquest.variables.VersionVariable;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -827,8 +837,18 @@ public class BetonQuest extends JavaPlugin {
         // metrics
         new BStatsMetrics(this, CONDITIONS, EVENTS, OBJECTIVES, VARIABLES, CONDITION_TYPES, EVENT_TYPES, OBJECTIVE_TYPES, VARIABLE_TYPES);
 
-        // updater
-        updater = new Updater(this.getDescription().getVersion(), this.getFile());
+        final Version pluginVersion = new Version(this.getDescription().getVersion());
+        final File updateFolder = getServer().getUpdateFolderFile();
+        final File tempFile = new File(updateFolder, this.getFile().getName() + ".temp");
+        final File finalFile = new File(updateFolder, this.getFile().getName());
+        final UpdateDownloader updateDownloader = new UpdateDownloader(updateFolder.getParentFile().toURI(), tempFile, finalFile);
+        final GitHubReleaseSource gitHubReleaseSource = new GitHubReleaseSource("https://api.github.com/repos/BetonQuest/BetonQuest");
+        final NexusReleaseAndDevelopmentSource nexusReleaseAndDevelopmentSource = new NexusReleaseAndDevelopmentSource("https://betonquest.org/nexus");
+        final List<ReleaseUpdateSource> releaseHandlers = Arrays.asList(gitHubReleaseSource, nexusReleaseAndDevelopmentSource);
+        final List<DevelopmentUpdateSource> developmentHandlers = Collections.singletonList(nexusReleaseAndDevelopmentSource);
+        final UpdateSourceHandler updateSourceHandler = new UpdateSourceHandler(releaseHandlers, developmentHandlers);
+        updater = new Updater(getConfig(), pluginVersion, updateSourceHandler, updateDownloader, this,
+                getServer().getScheduler());
 
         // done
         LogUtils.getLogger().log(Level.INFO, "BetonQuest succesfully enabled!");
@@ -1044,8 +1064,6 @@ public class BetonQuest extends JavaPlugin {
         LogUtils.getLogger().log(Level.FINE, "Reloading configuration");
         new Config();
         Notify.load();
-        // reload updater settings
-        BetonQuest.getInstance().getUpdater().searchUpdate();
         // load new static events
         new StaticEvents();
         // stop current global locations listener

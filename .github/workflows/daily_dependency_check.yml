@@ -11,10 +11,10 @@ jobs:
 
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up JDK 1.8
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: 8
@@ -22,7 +22,7 @@ jobs:
 
       - name: Build with Maven
         run: |
-          mvn -B package
+          mvn -B package -DskipProjectSettings=true
 
   docs:
     name: Build Docs
@@ -31,13 +31,13 @@ jobs:
 
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Create LFS file list
         run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
 
       - name: Restore LFS cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: lfs-cache
         with:
           path: .git/lfs
@@ -46,10 +46,10 @@ jobs:
       - name: Git LFS Pull
         run: git lfs pull
 
-      - name: Setup Python
-        uses: actions/setup-python@v1
+      - name: Setup Python 3.10
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.6'
+          python-version: '3.10'
           architecture: 'x64'
 
       - name: Select mkDocs requirements
@@ -67,7 +67,13 @@ jobs:
 
       - name: Build with mkdocs
         run: |
-          mkdocs build
+          if [ "$TXT" = "docs-requirements-insiders.txt" ]
+          then
+            mkdocs build --config-file mkdocs.insiders.yml
+          else
+            mkdocs build --config-file mkdocs.yml
+          fi
+  
 
   alert:
     name: Alert to Discord
@@ -77,7 +83,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Publish to Discord
         if: "always() && github.repository == 'BetonQuest/BetonQuest'"

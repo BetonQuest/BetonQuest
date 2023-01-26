@@ -19,54 +19,54 @@ jobs:
           echo "Version tags are not supported in forks!"
           exit 1
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Read version from pom.xml
         run: |
-          MAVEN_VERSION=$(mvn help:evaluate -Dexpression=version -q -DforceStdout)
+          MAVEN_VERSION="$(mvn help:evaluate -Dexpression=revision -q -DforceStdout)"
           echo "MAVEN_VERSION=$MAVEN_VERSION" >> $GITHUB_ENV
           echo "Collected the pom.xml version. The version is '$MAVEN_VERSION'"
       - name: Get the previous build-number tag from Development Build
         id: save_tag
-        if: "github.repository == 'BetonQuest/BetonQuest' && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v') || startsWith(github.ref,'refs/tags/v') )"
+        if: "github.repository == 'BetonQuest/BetonQuest' && ( github.ref == 'refs/heads/main' || startsWith(github.ref,'refs/heads/main_v') || startsWith(github.ref,'refs/tags/v') )"
         run: |
-          PREVIOUS_VERSION_TAG=$(git tag -l ${MAVEN_VERSION}-build-number-* | head -n 1)
+          PREVIOUS_VERSION_TAG="$(git tag -l ${MAVEN_VERSION}-build-number-* | head -n 1)"
           echo "PREVIOUS_VERSION_TAG=$PREVIOUS_VERSION_TAG" >> $GITHUB_ENV
-          echo ::set-output name=previous_version_tag::$PREVIOUS_VERSION_TAG
+          echo "previous_version_tag=$PREVIOUS_VERSION_TAG" >> $GITHUB_OUTPUT
           echo "Collected the previous build-number tag. The tag is '$PREVIOUS_VERSION_TAG'"
       - name: Check for difference in docs only
         id: save_changes
-        if: "github.repository == 'BetonQuest/BetonQuest' && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v') )"
+        if: "github.repository == 'BetonQuest/BetonQuest' && ( github.ref == 'refs/heads/main' || startsWith(github.ref,'refs/heads/main_v') )"
         run: |
-          DIFF_OUTSIDE=$(git diff --quiet ${PREVIOUS_VERSION_TAG} -- . ':(exclude)docs/' && echo Nothing || echo Changes)
-          DIFF_INSIDE=$(git diff --quiet ${PREVIOUS_VERSION_TAG} -- docs/ && echo Nothing || echo Changes)
+          DIFF_OUTSIDE="$(git diff --quiet ${PREVIOUS_VERSION_TAG} -- . ':(exclude)docs/' && echo Nothing || echo Changes)"
+          DIFF_INSIDE="$(git diff --quiet ${PREVIOUS_VERSION_TAG} -- docs/ && echo Nothing || echo Changes)"
           if [[ $DIFF_OUTSIDE == Nothing && $DIFF_INSIDE == Changes ]]; then CHANGES_IN_DOCS_ONLY=true; else CHANGES_IN_DOCS_ONLY=false; fi
           echo "CHANGES_IN_DOCS_ONLY=$CHANGES_IN_DOCS_ONLY" >> $GITHUB_ENV
-          echo ::set-output name=changes_in_docs_only::$CHANGES_IN_DOCS_ONLY
+          echo "changes_in_docs_only=$CHANGES_IN_DOCS_ONLY" >> $GITHUB_OUTPUT
           echo "Check for difference in docs only. The value is '$CHANGES_IN_DOCS_ONLY'"
       - name: Generate build number for Development Build
-        if: "github.repository == 'BetonQuest/BetonQuest' && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v') ) && env.CHANGES_IN_DOCS_ONLY == 'false'"
-        uses: einaregilsson/build-number@v3
+        if: "github.repository == 'BetonQuest/BetonQuest' && ( github.ref == 'refs/heads/main' || startsWith(github.ref,'refs/heads/main_v') ) && env.CHANGES_IN_DOCS_ONLY == 'false'"
+        uses: onyxmueller/build-tag-number@v1
         with:
           token: ${{ secrets.github_token }}
           prefix: ${{ env.MAVEN_VERSION }}
       - name: Set version for 'Release Build'
         if: "startsWith(github.ref,'refs/tags/v')"
         run: |
-          TAG_VERSION=${GITHUB_REF:11}
+          TAG_VERSION="${GITHUB_REF#*/*/}"
           echo "Collected the tag version. The version is '$TAG_VERSION'"
           if [ $TAG_VERSION != $MAVEN_VERSION ]; then echo "::error::The version of the tag and the version of the pom are not equal! Tag is '$TAG_VERSION' and pom is '$MAVEN_VERSION'."; exit 1; fi
           echo "MAVEN_VERSION=$MAVEN_VERSION" >> $GITHUB_ENV
           echo "VERSION_TYPE=release" >> $GITHUB_ENV
       - name: Set version for 'Development Build'
-        if: "github.repository == 'BetonQuest/BetonQuest' && ( github.ref == 'refs/heads/master' || startsWith(github.ref,'refs/heads/master_v') )"
+        if: "github.repository == 'BetonQuest/BetonQuest' && ( github.ref == 'refs/heads/main' || startsWith(github.ref,'refs/heads/main_v') )"
         run: |
           if [ $CHANGES_IN_DOCS_ONLY == true ]; then MAVEN_VERSION=${PREVIOUS_VERSION_TAG/build-number/DEV}; else MAVEN_VERSION=${MAVEN_VERSION}-DEV-${BUILD_NUMBER}; fi
           echo "MAVEN_VERSION=$MAVEN_VERSION" >> $GITHUB_ENV
-          echo "VERSION_TYPE=developement" >> $GITHUB_ENV
+          echo "VERSION_TYPE=development" >> $GITHUB_ENV
       - name: Set version for 'Artifact Build'
-        if: "github.repository != 'BetonQuest/BetonQuest' || !startsWith(github.ref,'refs/tags/v') && github.ref != 'refs/heads/master' && !startsWith(github.ref,'refs/heads/master_v')"
+        if: "github.repository != 'BetonQuest/BetonQuest' || !startsWith(github.ref,'refs/tags/v') && github.ref != 'refs/heads/main' && !startsWith(github.ref,'refs/heads/main_v')"
         run: |
           if [ ${{ github.repository }} != 'BetonQuest/BetonQuest' ]; then REPO=${{ github.repository }}-; fi
           MAVEN_VERSION=${MAVEN_VERSION}-DEV-ARTIFACT-${REPO}${{ github.run_number }}
@@ -76,12 +76,12 @@ jobs:
         id: save_version
         run: |
           echo "The version is '$MAVEN_VERSION'"
-          echo ::set-output name=version::$MAVEN_VERSION
+          echo "version=$MAVEN_VERSION" >> $GITHUB_OUTPUT
       - name: Save version type to output variable
         id: save_type
         run: |
           echo "The version type is '$VERSION_TYPE'"
-          echo ::set-output name=version_type::$VERSION_TYPE
+          echo "version_type=$VERSION_TYPE" >> $GITHUB_OUTPUT
 
   build-artifacts:
     name: Build Artifacts
@@ -96,58 +96,49 @@ jobs:
           echo "PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}" >> $GITHUB_ENV
           echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup JDK 1.8
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: 8
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
-      - name: Remove SNAPSHOT version for Release Build
-        if: "env.VERSION_TYPE == 'release'"
-        run: |
-          mvn versions:set -DremoveSnapshot
+      - name: Cache target/artifacts
+        uses: actions/cache@v3
+        with:
+          path: target/artifacts
+          key: ${{ runner.os }}-target/artifacts-${{ github.run_number }}
       - name: Set CHANGELOG.md version
         run: |
           sed -i "s~## \[Unreleased\]~## \[${VERSION}\]~g" ./CHANGELOG.md
       - name: Set plugin version
         run: |
-          sed -i "s~\${maven-version}~${VERSION}~g" ./src/main/resources/plugin.yml
+          sed -i "s~\${betonquest\.version}~${VERSION}~g" ./src/main/resources/plugin.yml
+      - name: Set pom.xml BetonQuest version
+        if: "env.VERSION_TYPE == 'development'"
+        run: |
+          mvn versions:set-property -DgenerateBackupPoms=false -Dproperty=betonquest.version -DnewVersion="$VERSION"
       - name: Activate lf line ending check in editorconfig
         run: |
           sed -i "s~#end_of_line = ~end_of_line = ~g" ./.editorconfig
-      - name: Set mirror for all repositories in settings.xml
-        uses: whelk-io/maven-settings-xml-action@v15
-        with:
-          mirrors: |
-            [
-              {
-                "id": "betonquest-mirror",
-                "mirrorOf": "*",
-                "url": "https://betonquest.org/nexus/repository/default/"
-              }
-            ]
-      - name: Build with Maven. Phase 'package'
-        if: "github.event_name == 'pull_request'"
-        run: |
-          mvn -B package
       - name: Build with Maven. Phase 'verify'
         run: |
-          mvn -B verify
-          mkdir -p build/artifacts
-          cp -r target/artifacts/* build/artifacts/
-          git diff > build/artifacts/changes.patch
+          if [ $VERSION_TYPE == 'release' ]; then CHANGELIST=-Dchangelist=; fi
+          mvn $CHANGELIST -B verify
+          git diff > target/artifacts/changes.patch
       - name: Upload Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: BetonQuest-Artifacts
-          path: build/artifacts
+          path: |
+            target/artifacts/BetonQuest.jar
+            target/artifacts/betonquest-*-*.jar
 
   build-docs:
     name: Build Docs
@@ -162,13 +153,11 @@ jobs:
           echo "PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}" >> $GITHUB_ENV
           echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
       - name: Checkout source code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+        uses: actions/checkout@v3
       - name: Create LFS file list
         run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
       - name: Restore LFS cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: lfs-cache
         with:
           path: .git/lfs
@@ -187,12 +176,17 @@ jobs:
         env:
           MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/config/${{ env.TXT }}') }}
           restore-keys: |
             ${{ runner.os }}-pip-
+      - name: Cache target/docs
+        uses: actions/cache@v3
+        with:
+          path: target/docs
+          key: ${{ runner.os }}-target/docs-${{ github.run_number }}
       - name: Install dependencies
         run: |
           python3 -m pip install --upgrade pip
@@ -202,26 +196,39 @@ jobs:
       - name: Set CHANGELOG.md version
         run: |
           sed -i "s~## \[Unreleased\]~## \[${VERSION}\]~g" ./CHANGELOG.md
-          DATE=$(date +%Y-%m-%d)
-          sed -i "s~\${current-date}~$DATE~g" ./CHANGELOG.md
-          cp ./CHANGELOG.md './documentation/User-Documentation/CHANGELOG.md'
+          DATE="$(date +%Y-%m-%d)"
+          sed -i "s~\${maven\.build\.timestamp}~$DATE~g" ./CHANGELOG.md
+          echo "$(cat ./CHANGELOG.md)" >> './documentation/User-Documentation/CHANGELOG.md'
+      - name: Set secret in downloads.js script
+        run: |
+          sed -i "s~\${REPOSITORY_URL}~${REPOSITORY_URL}~g" ./documentation/webCode/js/downloads.js
+        env:
+          REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
       - name: Build with mkdocs
         run: |
-          mkdocs build
-          mkdir -p build/docs
-          cp -r target/docs/* build/docs/
-          git diff > build/docs/changes.patch
+          if [ "$TXT" = "docs-requirements-insiders.txt" ]
+          then
+            mkdocs build --config-file mkdocs.insiders.yml
+          else
+            mkdocs build --config-file mkdocs.yml
+          fi
+          git diff > target/docs/changes.patch
       - name: Upload Docs
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: BetonQuest-Docs
-          path: build/docs
+          path: |
+            target/docs/
+            !target/docs/changes.patch
 
   deploy-artifacts:
     name: Deploy Artifacts
-    if: "needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'developement' && needs.prepare.outputs.CHANGES_IN_DOCS_ONLY == 'false'"
+    if: "needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development' && needs.prepare.outputs.CHANGES_IN_DOCS_ONLY == 'false'"
     needs: [ prepare, build-artifacts, build-docs ]
     runs-on: ubuntu-latest
+
+    outputs:
+      UPLOAD_PATH: ${{ steps.save_upload_path.outputs.upload_path }}
 
     steps:
       - name: Set variables from 'Prepare Build Variables'
@@ -231,32 +238,30 @@ jobs:
           echo "PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}" >> $GITHUB_ENV
           echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup JDK 1.8
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: 8
-      - name: Download Artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: BetonQuest-Artifacts
-          path: build/artifacts/
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
-      - name: Load target folder and patch file
+      - name: Cache target/artifacts
+        uses: actions/cache@v3
+        with:
+          path: target/artifacts
+          key: ${{ runner.os }}-target/artifacts-${{ github.run_number }}
+      - name: Load patch file
         run: |
-          mkdir -p target/artifacts
-          cp -r build/artifacts/* target/artifacts/
-          git apply build/artifacts/changes.patch
-          rm build/artifacts/changes.patch
+          git apply target/artifacts/changes.patch
+          rm target/artifacts/changes.patch
       - name: Set mirror for all repositories in settings.xml
-        uses: whelk-io/maven-settings-xml-action@v15
+        uses: whelk-io/maven-settings-xml-action@v21
         with:
           servers: |
             [
@@ -273,26 +278,26 @@ jobs:
                 }
               }
             ]
-          mirrors: |
-            [
-              {
-                "id": "betonquest-mirror",
-                "mirrorOf": "*",
-                "url": "https://betonquest.org/nexus/repository/default/"
-              }
-            ]
       - name: Publish to Maven Repository
         run: |
-          mvn -B deploy
+          if [ $VERSION_TYPE == 'release' ]; then CHANGELIST=-Dchangelist=; fi
+          mvn $CHANGELIST -P Skip-Verification -B deploy | tee maven-deploy.log
         env:
           REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
           REPOSITORY_USER: ${{ secrets.REPOSITORY_USER }}
           REPOSITORY_PASS: ${{ secrets.REPOSITORY_PASS }}
+      - name: Get upload URL from deploy log
+        id: save_upload_path
+        run: |
+          UPLOAD_PATH="$(grep -oP "(?<=Uploading to betonquest: ${REPOSITORY_URL}).*-shaded.jar" maven-deploy.log)"
+          echo "upload_path=$UPLOAD_PATH" >> $GITHUB_OUTPUT
+        env:
+          REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
 
   deploy-docs:
     name: Deploy Docs
     concurrency: gh-pages-deploy
-    if: "needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'developement'"
+    if: "needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development'"
     needs: [ prepare, build-artifacts, build-docs ]
     runs-on: ubuntu-latest
 
@@ -304,13 +309,13 @@ jobs:
           echo "PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}" >> $GITHUB_ENV
           echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Create LFS file list
         run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
       - name: Restore LFS cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: lfs-cache
         with:
           path: .git/lfs
@@ -322,11 +327,6 @@ jobs:
         with:
           python-version: '3.10'
           architecture: 'x64'
-      - name: Download Docs
-        uses: actions/download-artifact@v2
-        with:
-          name: BetonQuest-Docs
-          path: build/docs/
       - name: Select mkDocs requirements
         run: |
           [ -z $MKDOCS_MATERIAL_INSIDERS ] && TXT=docs-requirements.txt || TXT=docs-requirements-insiders.txt
@@ -334,24 +334,27 @@ jobs:
         env:
           MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/config/${{ env.TXT }}') }}
           restore-keys: |
             ${{ runner.os }}-pip-
+      - name: Cache target/docs
+        uses: actions/cache@v3
+        with:
+          path: target/docs
+          key: ${{ runner.os }}-target/docs-${{ github.run_number }}
       - name: Install dependencies
         run: |
           python3 -m pip install --upgrade pip
           pip install -r ./config/$TXT
         env:
           MKDOCS_MATERIAL_INSIDERS: ${{ secrets.MKDOCS_MATERIAL_INSIDERS }}
-      - name: Load target folder and patch file
+      - name: Load patch file
         run: |
-          mkdir -p target/docs
-          cp -r build/docs/* target/docs/
-          git apply build/docs/changes.patch
-          rm build/docs/changes.patch
+          git apply target/docs/changes.patch
+          rm target/docs/changes.patch
       - name: Deploy Release to Github Pages
         if: "env.VERSION_TYPE == 'release'"
         run: |
@@ -360,18 +363,18 @@ jobs:
 
           mike deploy --push --update-aliases ${VERSION} RELEASE
           mike delete --push ${VERSION}-DEV
-      - name: Deploy Developement to Github Pages
-        if: "env.VERSION_TYPE == 'developement'"
+      - name: Deploy development to Github Pages
+        if: "env.VERSION_TYPE == 'development'"
         run: |
           git config --global user.name "BetonQuest-Bot"
           git config --global user.email "contact@betonquest.org"
 
           IFS='-' read -r -a array <<< "$VERSION"
-          [ ${{ github.ref }} == 'refs/heads/master' ] && mike deploy --push --update-aliases ${array[0]}-DEV DEV || mike deploy --push --update-aliases ${array[0]}-DEV
+          [ ${{ github.ref }} == 'refs/heads/main' ] && mike deploy --push --update-aliases ${array[0]}-DEV DEV || mike deploy --push --update-aliases ${array[0]}-DEV
 
   create-release:
-    name: Create Release Build
-    if: "always() && !cancelled() && needs.prepare.outputs.VERSION_TYPE == 'release'"
+    name: Create GitHub Release
+    if: "needs.prepare.outputs.VERSION_TYPE == 'release' && needs.deploy-artifacts.result == 'success' && needs.deploy-docs.result == 'success'"
     needs: [ prepare, deploy-artifacts, deploy-docs ]
     runs-on: ubuntu-latest
 
@@ -383,40 +386,25 @@ jobs:
           echo "PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}" >> $GITHUB_ENV
           echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
       - name: Checkout source code
-        uses: actions/checkout@v2
-      - name: Check previous Jobs
-        if: "needs.deploy-artifacts.result != 'success' || needs.deploy-docs.result != 'success'"
-        run: |
-          exit 1
-      - name: Download Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/checkout@v3
+      - name: Cache target/artifacts
+        uses: actions/cache@v3
         with:
-          name: BetonQuest-Artifacts
-          path: build/artifacts/
-      - name: Download Docs
-        uses: actions/download-artifact@v2
+          path: target/artifacts
+          key: ${{ runner.os }}-target/artifacts-${{ github.run_number }}
+      - name: Cache target/docs
+        uses: actions/cache@v3
         with:
-          name: BetonQuest-Docs
-          path: build/docs/
-      - name: Load target folder
-        run: |
-          mkdir -p target/artifacts
-          mkdir -p target/docs
-          cp -r build/artifacts/* target/artifacts/
-          cp -r build/docs/* target/docs/
-          rm build/artifacts/changes.patch
-          rm build/docs/changes.patch
+          path: target/docs
+          key: ${{ runner.os }}-target/docs-${{ github.run_number }}
       - name: Zip Docs
         run: |
-          cd build/docs/
-          find . -name \*.mp4 -type f -delete
-          zip -r Docs.zip .
-          cd ../..
+          zip -r target/docs/Docs.zip target/docs/
       - name: Set CHANGELOG.md version
         run: |
           sed -i "s~## \[Unreleased\]~## \[${VERSION}\]~g" ./CHANGELOG.md
-          DATE=$(date +%Y-%m-%d)
-          sed -i "s~\${current-date}~$DATE~g" ./CHANGELOG.md
+          DATE="$(date +%Y-%m-%d)"
+          sed -i "s~\${maven\.build\.timestamp}~$DATE~g" ./CHANGELOG.md
       - name: Create release
         uses: docker://antonyurchenko/git-release:latest
         env:
@@ -427,25 +415,16 @@ jobs:
           RELEASE_NAME: BetonQuest ${{ env.VERSION }}
         with:
           args: |
-            build/artifacts/BetonQuest.jar
-            build/docs/Docs.zip
+            target/artifacts/BetonQuest.jar
+            target/docs/Docs.zip
       - name: Delete obsolete git tag
         run: |
           git push origin :${PREVIOUS_VERSION_TAG}
-      - name: Publish to Discord
-        if: "always()"
-        run: |
-          bash .github/scripts/discord.sh
-        env:
-          JOB_STATUS: ${{ job.status }}
-          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
-          VERSION: ${{ env.VERSION }}
-          RELEASE: "release"
 
-  create-developement:
-    name: Create Developement Build
-    if: "always() && !cancelled() && needs.prepare.outputs.VERSION_TYPE == 'developement' && needs.prepare.outputs.CHANGES_IN_DOCS_ONLY != 'true'"
-    needs: [ prepare, deploy-artifacts, deploy-docs ]
+  discord-announcement:
+    name: Official Deployment
+    if: "always() && !cancelled() && (needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development')"
+    needs: [ prepare, deploy-artifacts, deploy-docs, create-release ]
     runs-on: ubuntu-latest
 
     steps:
@@ -455,57 +434,16 @@ jobs:
           echo "VERSION_TYPE=${{ needs.prepare.outputs.VERSION_TYPE }}" >> $GITHUB_ENV
           echo "PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}" >> $GITHUB_ENV
           echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
-      - name: Checkout source code
-        uses: actions/checkout@v2
-      - name: Check previous Jobs
-        if: "needs.deploy-artifacts.result != 'success' || needs.deploy-docs.result != 'success'"
-        run: |
-          exit 1
-      - name: Download Artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: BetonQuest-Artifacts
-          path: build/artifacts/
-      - name: Download Docs
-        uses: actions/download-artifact@v2
-        with:
-          name: BetonQuest-Docs
-          path: build/docs/
-      - name: Load target folder
-        run: |
-          mkdir -p target/artifacts
-          mkdir -p target/docs
-          cp -r build/artifacts/* target/artifacts/
-          cp -r build/docs/* target/docs/
-          rm build/artifacts/changes.patch
-          rm build/docs/changes.patch
-      - name: Zip Docs
-        run: |
-          cd build/docs/
-          find . -name \*.mp4 -type f -delete
-          zip -r Docs.zip .
-          cd ../..
-      - name: Prepare developement variables
-        run: |
-          IFS='-' read -r -a array <<< "$VERSION"
-          echo "VERSION_KEY=${array[0]}" >> $GITHUB_ENV
-          echo "VERSION_NUMBER=${array[2]}" >> $GITHUB_ENV
-          echo "BRANCH_NAME=${GITHUB_REF:11}" >> $GITHUB_ENV
-      - name: Create developement
-        run: |
-          if [ -z "$PASSWORD" ]; then echo "WARNING! You need to pass the SNAPSHOT_UPLOAD_PASSWORD environment variable."; exit 1; fi
-          RESPONSE="$(curl --form-string "secret=$PASSWORD" --form-string "version=$VERSION_KEY" --form-string "versionNumber=$VERSION_NUMBER" --form-string "runID=$RUN_ID" --form-string "branch=$BRANCH_NAME" --form-string "commitHash=$COMMIT_HASH" --form "plugin=@\"$PLUGIN\"" --form "docs=@\"$DOCS\"" https://dev.betonquest.org/api/v1/builds/upload)"
-          if [ "$RESPONSE" != "Upload successful" ]; then echo "WARNING! The upload was not successful. The response was '$RESPONSE'"; exit 1; fi
+          echo "UPLOAD_PATH=${{ needs.deploy-artifacts.outputs.UPLOAD_PATH }}" >> $GITHUB_ENV
         env:
-          PASSWORD: ${{ secrets.SNAPSHOT_UPLOAD_PASSWORD }}
-          RUN_ID: ${{ github.run_id }}
-          COMMIT_HASH: ${{ github.sha }}
-          PLUGIN: "build/artifacts/BetonQuest.jar"
-          DOCS: "build/docs/Docs.zip"
+          REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
+      - name: Checkout source code
+        uses: actions/checkout@v3
       - name: Publish to Discord
-        if: "always()"
+        if: "always() && !cancelled()"
         run: |
           bash .github/scripts/discord.sh
         env:
           JOB_STATUS: ${{ job.status }}
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+          DOCS_URL: ${{ secrets.DOCS_URL }}
