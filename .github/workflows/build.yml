@@ -187,6 +187,15 @@ jobs:
         with:
           path: target/docs
           key: ${{ runner.os }}-target/docs-${{ github.run_number }}
+      - name: Cache target/docs/.cache/plugins/optimize
+        uses: actions/cache@v3
+        with:
+          path: target/docs/.cache/plugins/optimize
+          key: ${{ runner.os }}-hardcoded-media-cache
+      - name: Install pngquant, a CI only dependency for mkdocs-material image optimization
+        uses: awalsh128/cache-apt-pkgs-action@v1.2.2
+        with:
+          packages: pngquant
       - name: Install dependencies
         run: |
           python3 -m pip install --upgrade pip
@@ -199,7 +208,7 @@ jobs:
           DATE="$(date +%Y-%m-%d)"
           sed -i "s~\${maven\.build\.timestamp}~$DATE~g" ./CHANGELOG.md
           echo "$(cat ./CHANGELOG.md)" >> './docs/Documentation/CHANGELOG.md'
-      - name: Set mkdocs.yml version
+      - name: Set user feedback form version in mkdocs.yml
         run: |
           sed -i "s~%VERSION%~${VERSION}~g" ./mkdocs.yml
       - name: Set secret in downloads.js script
@@ -349,6 +358,15 @@ jobs:
         with:
           path: target/docs
           key: ${{ runner.os }}-target/docs-${{ github.run_number }}
+      - name: Cache target/docs/.cache/plugins/optimize
+        uses: actions/cache@v3
+        with:
+          path: target/docs/.cache/plugins/optimize
+          key: ${{ runner.os }}-hardcoded-media-cache
+      - name: Install pngquant, a CI only dependency for mkdocs-material image optimization
+        uses: awalsh128/cache-apt-pkgs-action@v1.2.2
+        with:
+          packages: pngquant
       - name: Install dependencies
         run: |
           python3 -m pip install --upgrade pip

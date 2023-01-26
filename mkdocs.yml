@@ -29,6 +29,8 @@ theme:
   language: en
   features:
     - content.code.annotate
+    - content.code.copy
+    - content.action.edit
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.tracking
