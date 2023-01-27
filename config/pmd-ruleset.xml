@@ -177,6 +177,7 @@
   <rule ref="category/java/design.xml/FinalFieldCouldBeStatic"/>
   <rule ref="category/java/design.xml/GodClass"/>
   <rule ref="category/java/design.xml/ImmutableField"/>
+  <rule ref="category/java/design.xml/InvalidJavaBean"/>
   <!--<rule ref="category/java/design.xml/LawOfDemeter"/>-->
   <rule ref="category/java/design.xml/LogicInversion"/>
   <!--<rule ref="category/java/design.xml/LoosePackageCoupling"/>-->
@@ -239,7 +240,6 @@
   <rule ref="category/java/errorprone.xml/AvoidMultipleUnaryOperators"/>
   <rule ref="category/java/errorprone.xml/AvoidUsingOctalValues"/>
   <rule ref="category/java/errorprone.xml/ComparisonWithNaN"/>
-  <!--<rule ref="category/java/errorprone.xml/BeanMembersShouldSerialize"/>-->
   <rule ref="category/java/errorprone.xml/BrokenNullCheck"/>
   <rule ref="category/java/errorprone.xml/CallSuperFirst"/>
   <rule ref="category/java/errorprone.xml/CallSuperLast"/>
@@ -279,6 +279,7 @@
   <rule ref="category/java/errorprone.xml/MissingStaticMethodInNonInstantiatableClass"/>
   <rule ref="category/java/errorprone.xml/MoreThanOneLogger"/>
   <rule ref="category/java/errorprone.xml/NonCaseLabelInSwitchStatement"/>
+  <rule ref="category/java/errorprone.xml/NonSerializableClass"/>
   <rule ref="category/java/errorprone.xml/NonStaticInitializer"/>
   <!--<rule ref="category/java/errorprone.xml/NullAssignment"/>-->
   <rule ref="category/java/errorprone.xml/OverrideBothEqualsAndHashcode"/>
