@@ -12,7 +12,7 @@ information GUIs that display player stats.
 [:material-play-outline: Try the working example for a quick overview.](./Example.md){ .md-button }
 
 ## Creating a menu
-To create a new menu just create a `menus` section in any file inside a [quest package](../Packages-&-Templates.md).
+To create a new menu just create a `menus` section in any file inside a [quest package](../Scripting/Packages-&-Templates.md).
 The name which can be used to identify each menu will be the name of another section as shown below.
 
 ``` YAML title="Menu Definition Example"

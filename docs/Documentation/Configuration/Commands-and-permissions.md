@@ -143,6 +143,6 @@ Optionally you may add a 5th parameter:
 QuestTemplates folder defined as `type`. If you want to place some QuestTemplates inside `QuestPackages` you can
 do this by adding `../QuestTemplates/` to the beginning of the target path.  
 Additionally you can add tags to the end of the command to control behavior of the downloader:
-If `recursive` is added [nested packages](../Packages-&-Templates.md#__tabbed_1_3) or templates will be downloaded while by default they
+If `recursive` is added [nested packages](../Scripting/Packages-&-Templates.md#__tabbed_1_3) or templates will be downloaded while by default they
 will be skipped. The tag `overwrite` defines that already existing files may be overwritten. By default, an error is
 logged and the download is stopped.

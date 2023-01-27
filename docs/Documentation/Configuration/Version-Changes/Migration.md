@@ -32,7 +32,7 @@ All existing RPGMenu users must update their RPGMenu config file. Simply rename 
 - Rename all "_main.yml_" files to "_package.yml_"
 - Quest packages can now contain nested quest packages in sub folders. You can also have any file and folder structure
   with any file and folder names you want. Only the "_package.yml_" is reserved as indicator for a [quest
-  package](../../Packages-&-Templates.md).
+  package](../../Scripting/Packages-&-Templates.md).
   * Therefore, the "_events.yml_`, "_objectives.yml_", "_conditions.yml_", "_journal.yml_" and "_items.yml_" files must
     be updated to the following format:
     Every type that was previously a separate file with a special name is now identified by a "parent-section". It's

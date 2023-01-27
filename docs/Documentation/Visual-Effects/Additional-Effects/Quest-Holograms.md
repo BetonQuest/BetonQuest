@@ -9,7 +9,7 @@
     | DecentHolograms      | 2.7.5 or above   | [PlaceholderAPI](https://www.spigotmc.org/resources/6245/) for in-line variables.  |
     | Holographic Displays | 3.0.0 or above   | [ProtocolLib](https://www.spigotmc.org/resources/1997/) for conditioned holograms. | 
     
-    If you have both plugins installed, you can use the [`default_hologram` option in "_config.yml_"](../Configuration/Configuration.md#default-hologram-plugin) to set which plugin should be used.
+    If you have both plugins installed, you can use the [`default_hologram` option in "_config.yml_"](../../Configuration/Configuration.md#default-hologram-plugin) to set which plugin should be used.
 
 Installing either of these plugins will enable you to create quest holograms, which can be hidden based on conditions or display quest scoreboards.
  
@@ -53,7 +53,7 @@ to be. If for example `c2` is left blank (two following semicolons), it is treat
 Each BetonQuest variable can be displayed on a hologram in a text line. These variables use the same definition syntax as
 in conversations such that; '`%package.variable%`'. Where the `package` part is optional if the hologram is defined in the
 same package as the variable. If you wish to refer to a variable that is *not* in the same package as the hologram, then you
-must specify a [package](../Packages-&-Templates.md) before the `variable`.
+must specify a [package](../../Scripting/Packages-&-Templates.md) before the `variable`.
 
 !!! warning "Potential lags"
     The HolographicDisplays documentations warns against using too many individual hologram variables since they are rendered

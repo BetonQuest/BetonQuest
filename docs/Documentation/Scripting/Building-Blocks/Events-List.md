@@ -360,12 +360,12 @@ Displays a notification using the NotifyIO system.
     `otherEvent: notify You own %math.calc:5% fish!` :arrow_right: `otherEvent: You own %math.calc{++\++}:5% fish!`<br>
     `newLine: {=="==}notify Some multiline \n message{=="==}` :arrow_right: `newLine: {=="==}notify Some multiline {++\++}\n message{=="==}`
 
-| Option                                                   | Description                                                                                                                                 |
-|----------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
-| message                                                  | The message that will be displayed. Supports variables and translations. *Required, must be first*                                          |
-| category                                                 | Will load all settings from that Notification Category. Can be a comma-seperated list. The first existent category will be used. *Optional* |   
-| io                                                       | Any [NotifyIO](../../Notification-IO's-&-Categories.md). Overrides the "category" settings. *Optional*                                            |
-| [NotifyIO](../../Notification-IO's-&-Categories.md#notify-ios) | Any setting from the defined notifyIO. Can be used multiple times. Overrides the "category" settings. *Optional*                            |
+| Option                                                                                      | Description                                                                                                                                 |
+|---------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| message                                                                                     | The message that will be displayed. Supports variables and translations. *Required, must be first*                                          |
+| category                                                                                    | Will load all settings from that Notification Category. Can be a comma-seperated list. The first existent category will be used. *Optional* |   
+| io                                                                                          | Any [NotifyIO](../../Visual-Effects/Notifications/Notification-IO's-&-Categories.md). Overrides the "category" settings. *Optional*         |
+| [NotifyIO](../../Visual-Effects/Notifications/Notification-IO's-&-Categories.md#notify-ios) | Any setting from the defined notifyIO. Can be used multiple times. Overrides the "category" settings. *Optional*                            |
 
 The fallback NotifyIO is `chat` if no argument other than `message` is specified.    
 `message` is the only argument of this event that is not `key:value` based. You can freely add any text with spaces there.
@@ -380,8 +380,8 @@ In this example, english users would see `ABC` and german ones would see `DEF`.
 
 <h3>Examples:</h3>
 
-Check out the documentation about [Notify Categories](../../Notification-IO's-&-Categories.md#categories) and 
-[Notify IO options](../../Notification-IO's-&-Categories.md#notify-ios) if you haven't yet. You must understand these two if
+Check out the documentation about [Notify Categories](../../Visual-Effects/Notifications/Notification-IO's-&-Categories.md#categories) and 
+[Notify IO options](../../Visual-Effects/Notifications/Notification-IO's-&-Categories.md#notify-ios) if you haven't yet. You must understand these two if
 you want to use the Notify system to it's full extend.
 ```YAML
 #The simplest of all notify events. Just a chat message:
@@ -616,8 +616,8 @@ Minutes can be achieved with floating point. Six minutes equals 0.1 hours.
 Teleports the player to the specified location. 
 Ends any active conversations.
 
-| Parameter  | Syntax                                                                    | Default Value          | Explanation                                          |
-|------------|---------------------------------------------------------------------------|------------------------|------------------------------------------------------|
+| Parameter  | Syntax                                                                       | Default Value          | Explanation                                          |
+|------------|------------------------------------------------------------------------------|------------------------|------------------------------------------------------|
 | _location_ | [Unified Location Formatting](../Data-Formats.md#unified-location-formating) | :octicons-x-circle-16: | The location to which the player will be teleported. |
 
 ```YAML title="Example"

@@ -6,7 +6,7 @@ icon: material/party-popper
 A NotifyIO is a method of displaying a notification to the player. Here's a demo video showing an example configuration
 of all NotifyIO's.
 
-<video controls loop src="../../_media/content/Documentation/Notifications/NotifySystemOverview.mp4" width="100%">
+<video controls loop src="../../../../_media/content/Documentation/Notifications/NotifySystemOverview.mp4" width="100%">
   Sorry, your browser doesn't support embedded videos.
 </video>
 
@@ -18,13 +18,13 @@ Therefore, you can play a sound whenever a notification is shown.
 The actual message is either defined in the event that triggers the NotifyIO or
 in the *messages.yml* for all built-in notifications. 
 
-**Check the [notification event documentation](Scripting/Building-Blocks/Events-List.md#notification-notify) on how to use the notify event!**
+**Check the [notification event documentation](../../Scripting/Building-Blocks/Events-List.md#notification-notify) on how to use the notify event!**
 
 ### Chat
 Writes the notification in the player's chat.
 
 ??? info "Preview"
-    ![chat image](../_media/content/Documentation/Notifications/chat.png)
+    ![chat image](../../../_media/content/Documentation/Notifications/chat.png)
 
 | Option          | Description                            |
 |-----------------|----------------------------------------|
@@ -38,7 +38,7 @@ You can still add your own additional sound as usual though.
 It will then be played together with the default advancement sound.
 
 ??? info "Preview"
-    ![advancement image](../_media/content/Documentation/Notifications/advancement.png)
+    ![advancement image](../../../_media/content/Documentation/Notifications/advancement.png)
 
 | Option          | Description                                                                    |
 |-----------------|--------------------------------------------------------------------------------|
@@ -50,7 +50,7 @@ It will then be played together with the default advancement sound.
 Shows the notification using the actionbar.
 
 ??? info "Preview"
-    ![actionbar image](../_media/content/Documentation/Notifications/actionbar.png)
+    ![actionbar image](../../../_media/content/Documentation/Notifications/actionbar.png)
 
 | Option          | Description                            |
 |-----------------|----------------------------------------|
@@ -61,7 +61,7 @@ Shows the notification using a bossbar at the top of the players screen.
 
 ??? info "Preview"
     <div style="text-align: center">
-    ![bossbar image](../_media/content/Documentation/Notifications/bossbar.png)
+    ![bossbar image](../../../_media/content/Documentation/Notifications/bossbar.png)
     </div>
 | Option | Description |
 |--------|-------------|
@@ -79,7 +79,7 @@ A subtitle can be played simultaneously by adding `\n` to the notification text.
 Anything after these characters will be shown in the subtitle.
 
 ??? info "Preview"     
-    ![title](../_media/content/Documentation/Notifications/title.png)
+    ![title](../../../_media/content/Documentation/Notifications/title.png)
 
 | Option          | Description                               |
 |-----------------|-------------------------------------------|
@@ -93,7 +93,7 @@ Anything after these characters will be shown in the subtitle.
 Shows the notification using a subtitle.
 
 ??? info "Preview"
-    ![subtitle](../_media/content/Documentation/Notifications/subtitle.png)
+    ![subtitle](../../../_media/content/Documentation/Notifications/subtitle.png)
 
 | Option          | Description                               |
 |-----------------|-------------------------------------------|
@@ -128,7 +128,7 @@ Keep that in mind when creating sounds close to a player. They can move around t
 | soundcategory     | The [category](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/SoundCategory.html) in which the sound will be played.                                  |
 | soundvolume       | Minecraft's [special sound volume](https://minecraft.gamepedia.com/Commands/playsound#Arguments). Default: _1_                                             |
 | soundpitch        | Pitch of the sound. Default: _1_ Min: _0_ Max: _2_                                                                                                         |
-| soundlocation     | Default: The player's location. A location using the BetonQuest [ULF](./Scripting/Data-Formats#unified-location-formating). Can include variables.         |
+| soundlocation     | Default: The player's location. A location using the BetonQuest [ULF](../../Scripting/Data-Formats#unified-location-formating). Can include variables.     |
 | soundplayeroffset | This option is special. See below.                                                                                                                         |
 
 <h3>soundplayeroffset:</h3>
@@ -143,13 +143,13 @@ then the `soundplayeroffset` would allow.
 
 ??? info "Visual Explanation"  
     <div style="text-align: center">
-    ![offset image](../_media/content/Documentation/Notifications/offset.png)
+    ![offset image](../../../_media/content/Documentation/Notifications/offset.png)
     </div>
 
     This shows how the sound will be played at the `soundlocation` if the `soundplayeroffset` is bigger then the current
     distance between the player and the `soundlocation` 
     <div style="text-align: center">
-    ![offsetBiggerThanDistance image](../_media/content/Documentation/Notifications/offsetBiggerThanDistance.png)
+    ![offsetBiggerThanDistance image](../../../_media/content/Documentation/Notifications/offsetBiggerThanDistance.png)
     </div>
 
 *Example usage*:
@@ -165,7 +165,7 @@ and the z axis is before / behind the players face. It will move along the playe
     In contrast to their global counterparts, relative x,y,z axes do not change their orientation relative to the player.
     Example: The positive x-axis will always point left from the perspective of the player.
     <div style="text-align: center">
-    ![relativeAxis image](../_media/content/Documentation/Notifications/relativeAxis.png)
+    ![relativeAxis image](../../../_media/content/Documentation/Notifications/relativeAxis.png)
     </div>  
 
 This makes it possible to go crazy with sounds. Just one example: A halloween special

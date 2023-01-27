@@ -10,8 +10,8 @@ hide_npcs:
   127: '!questStarted'
 ```
 
-The interval the conditions are checked in can be configured in the [config.yml](../Configuration/Configuration.md#npc-hider-interval).
+The interval the conditions are checked in can be configured in the [config.yml](../../Configuration/Configuration.md#npc-hider-interval).
 
 ### Force Visibility update
 You can run the `updatevisibility` event to manually update the visibility. This is useful for performance optimizations
-on large servers if used together with the [npc hider interval](../Configuration/Configuration.md#npc-hider-interval) set to high values.
+on large servers if used together with the [npc hider interval](../../Configuration/Configuration.md#npc-hider-interval) set to high values.

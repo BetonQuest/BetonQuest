@@ -211,7 +211,7 @@ nav:
 
       - 'Scripting':
           - 'About Scripting': Documentation/Scripting/About-Scripting.md
-          - 'Packages & Templates': Documentation/Packages-&-Templates.md
+          - 'Packages & Templates': Documentation/Scripting/Packages-&-Templates.md
           - 'Building Blocks':
               - 'Objectives List': Documentation/Scripting/Building-Blocks/Objectives-List.md
               - 'Events List': Documentation/Scripting/Building-Blocks/Events-List.md
@@ -225,15 +225,15 @@ nav:
 
       - 'Visual Effects':
           - 'Notifications':
-              - 'Settings': Documentation/Notification-Settings.md
-              - "IO's & Categories": Documentation/Notification-IO's-&-Categories.md
+              - 'Settings': Documentation/Visual-Effects/Notifications/Notification-Settings.md
+              - "IO's & Categories": Documentation/Visual-Effects/Notifications/Notification-IO's-&-Categories.md
           - 'NPC Effects':
-              - 'NPC Hiding': Documentation/Visual-Effects/NPC-Hiding.md
-              - 'NPC Holograms': Documentation/Visual-Effects/NPC-Holograms.md
-              - 'NPC Glow': Documentation/Visual-Effects/NPC-Glow.md
+              - 'NPC Hiding': Documentation/Visual-Effects/NPC-Effects/NPC-Hiding.md
+              - 'NPC Holograms': Documentation/Visual-Effects/NPC-Effects/NPC-Holograms.md
+              - 'NPC Glow': Documentation/Visual-Effects/NPC-Effects/NPC-Glow.md
           - 'Additional Effects':
-              - 'Quest Holograms': Documentation/Visual-Effects/Quest-Holograms.md
-              - 'Player Hider': Documentation/Player-Hider.md
+              - 'Quest Holograms': Documentation/Visual-Effects/Additional-Effects/Quest-Holograms.md
+              - 'Player Hider': Documentation/Visual-Effects/Additional-Effects/Player-Hider.md
 
       - 'Configuration':
           - 'Configuration': Documentation/Configuration/Configuration.md
