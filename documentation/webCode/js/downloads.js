@@ -1,6 +1,7 @@
 // For this script to work on GitHub Pages, you need to ensure CORS is set up correctly on your Nexus server.
 // For local testing you need to disable CORS in your browser,
-// and you need to set the nexusUrl to the actual URL of your Nexus server including the target repository (like in your pom.xml).
+// and you need to set the nexusUrl to the actual URL of your Nexus server including the target repository
+// (like in your pom.xml).
 
 const nexusUrl = "${REPOSITORY_URL}";
 const parts = nexusUrl.split("/");
@@ -13,8 +14,8 @@ window.onload = async function () {
   if (path) {
     const url = nexusUrl + path;
     const filename = urlParams.get("filename");
-    await downloadWithRename(url, filename)
-    window.location.href = window.location.href.split("?")[0]
+    await downloadWithRename(url, filename);
+    window.location.href = window.location.href.split("?")[0];
   }
 };
 
@@ -89,7 +90,7 @@ async function getBuilds() {
       continuationToken = data["continuationToken"];
     } catch (error) {
       console.error("Failed to fetch builds:", error);
-      continuationToken = null
+      continuationToken = null;
     }
   }
   const results = await Promise.allSettled(buildRequests);
