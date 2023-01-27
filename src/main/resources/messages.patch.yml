@@ -1,0 +1,16 @@
+2.0.0.1:
+  - type: SET
+    key: en.cancel
+    value: "&cCancel a Quest"
+  - type: SET
+    key: en.cancel_page
+    value: "&cSelect which quest to cancel"
+  - type: SET
+    key: en.compass
+    value: "&cSelect a Quest Compass target"
+  - type: SET
+    key: de.cancel
+    value: "&cEine Quest abbrechen"
+  - type: SET
+    key: de.cancel_page
+    value: "&cWähle welche Quest du abbrichst"
