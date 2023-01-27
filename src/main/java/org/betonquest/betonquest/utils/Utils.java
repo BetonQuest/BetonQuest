@@ -43,7 +43,8 @@ import java.util.regex.Pattern;
 /**
  * Various utilities.
  */
-@SuppressWarnings({"PMD.ClassNamingConventions", "PMD.GodClass", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
+@SuppressWarnings({"PMD.ClassNamingConventions", "PMD.GodClass", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals",
+        "PMD.TooManyMethods"})
 @CustomLog
 public final class Utils {
 

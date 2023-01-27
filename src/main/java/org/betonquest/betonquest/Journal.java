@@ -39,7 +39,8 @@ import java.util.Objects;
 /**
  * Represents player's journal.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition", "PMD.CyclomaticComplexity"})
+@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition", "PMD.CyclomaticComplexity",
+        "PMD.TooManyMethods"})
 @CustomLog
 public class Journal {
 
