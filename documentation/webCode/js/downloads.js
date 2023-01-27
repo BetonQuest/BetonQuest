@@ -2,17 +2,20 @@
 // For local testing you need to disable CORS in your browser,
 // and you need to set the nexusUrl to the actual URL of your Nexus server including the target repository.
 
-const nexusUrl = "${REPOSITORY_URL}";
+// For local testing: Replace this with the URL of the nexus repository that you also use in the pom.xml file
+const nexusUrl = "https://betonquest.org/nexus/repository/betonquest/";
 const parts = nexusUrl.split("/");
 const baseUrl = parts.slice(0, -3).join("/") + "/";
 const repositoryName = parts[parts.length - 2];
 
 window.onload = async function () {
-  const path = new URLSearchParams(window.location.search).get("path");
+  let urlParams = new URLSearchParams(window.location.search);
+  const path = urlParams.get("path");
   if (path) {
     const url = nexusUrl + path;
-    const filename = new URLSearchParams(window.location.search).get("filename");
-    downloadWithRename(url, filename).then(() => window.location.href = window.location.href.split("?")[0]);
+    const filename = urlParams.get("filename");
+    await downloadWithRename(url, filename)
+    window.location.href = window.location.href.split("?")[0]
   }
 };
 
@@ -81,14 +84,13 @@ async function getBuilds() {
   while (continuationToken !== null) {
     const params = getURLParams(continuationToken);
     try {
-      const response = await fetch(baseUrl + `service/rest/v1/search/assets?${params}`);
-      const data = await response.json();
-
+      let data = await fetch(baseUrl + `service/rest/v1/search/assets?${params}`)
+        .then(response => response.json());
       buildRequests.push(...data["items"].map(build => getVersion(build, cachedVersions, newCachedVersions)));
       continuationToken = data["continuationToken"];
     } catch (error) {
-      console.error(error);
-      continuationToken = null;
+      console.error("Failed to fetch builds:", error);
+      continuationToken = null
     }
   }
   const results = await Promise.allSettled(buildRequests);
@@ -147,9 +149,11 @@ async function getVersion(build, cachedVersions, newCachedVersions) {
   return {version: version, downloadUrl: build["downloadUrl"]};
 }
 
-async function downloadWithRename(url, filename) {
-  fetch(url).then(async response => {
-    if (response.ok) {
+function downloadWithRename(url, filename) {
+  return fetch(url).then(async response => {
+    if (!response.ok) {
+      log.error("Error while downloading file: " + response.status + " " + response.statusText + "")
+    } else {
       const link = document.createElement("a");
       link.href = URL.createObjectURL(await response.blob());
       link.download = filename ? filename : url.split("/").pop();
