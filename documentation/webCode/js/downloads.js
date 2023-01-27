@@ -148,22 +148,12 @@ async function getVersion(build, cachedVersions, newCachedVersions) {
 }
 
 async function downloadWithRename(url, filename) {
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", url, true);
-    xhr.responseType = "blob";
-    xhr.onload = function () {
-      if (this.status === 200) {
-        const blob = this.response;
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = filename ? filename : url.split("/").pop();
-        link.click();
-        resolve();
-      } else {
-        reject();
-      }
-    };
-    xhr.send();
+  fetch(url).then(async response => {
+    if (response.ok) {
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(await response.blob());
+      link.download = filename ? filename : url.split("/").pop();
+      link.click();
+    }
   });
 }
