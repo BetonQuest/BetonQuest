@@ -3,15 +3,16 @@ icon: octicons/gear-16
 ---
 # Events List
 
-## Cancel quest: `cancel`
+## Cancel a quest: `cancel`
 
 This event works in the same way as a [quest canceler in the backpack](../../Quest-Cancelers.md).
-Running it is equal to the player clicking on the bone. The only argument is a name of a quest canceler, as defined in the _cancel_ section
 
-!!! example
-    ```YAML
-    cancel wood
-    ```
+Running this event is equal to the player canceling a quest using the backpack.
+The only argument is the identifier of a quest canceler, as defined in the `cancel` section.
+
+```YAML title="Example"
+cancelQuest: "cancel woodQuest"
+```
 
 ## Chat player message `chat`
 
