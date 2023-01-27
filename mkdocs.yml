@@ -199,15 +199,15 @@ nav:
   - 'Documentation':
       - 'Overview': Documentation/Overview.md
       - 'Features':
-          - 'Conversations': Documentation/Conversations.md
+          - 'Conversations': Documentation/Features/Conversations.md
           - 'Quest Menus':
-              - 'Menus': Documentation/Menus/Menu.md
-              - 'Menu Example': Documentation/Menus/Example.md
-              - 'Elements': Documentation/Menus/Elements.md
-              - 'Menu Settings': Documentation/Menus/Config.md
-          - 'The Journal': Documentation/Journal.md
-          - 'Quest Items': Documentation/Items.md
-          - 'Quest Cancelers': Documentation/Quest-Cancelers.md
+              - 'Menus': Documentation/Features/Menus/Menu.md
+              - 'Menu Example': Documentation/Features/Menus/Example.md
+              - 'Elements': Documentation/Features/Menus/Elements.md
+              - 'Menu Settings': Documentation/Features/Menus/Config.md
+          - 'The Journal': Documentation/Features/Journal.md
+          - 'Quest Items': Documentation/Features/Items.md
+          - 'Quest Cancelers': Documentation/Features/Quest-Cancelers.md
 
       - 'Scripting':
           - 'About Scripting': Documentation/Scripting/About-Scripting.md

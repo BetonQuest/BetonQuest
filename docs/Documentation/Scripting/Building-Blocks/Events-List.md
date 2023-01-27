@@ -5,7 +5,7 @@ icon: octicons/gear-16
 
 ## Cancel a quest: `cancel`
 
-This event works in the same way as a [quest canceler in the backpack](../../Quest-Cancelers.md).
+This event works in the same way as a [quest canceler in the backpack](../../Features/Quest-Cancelers.md).
 
 Running this event is equal to the player canceling a quest using the backpack.
 The only argument is the identifier of a quest canceler, as defined in the `cancel` section.

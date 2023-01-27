@@ -92,12 +92,12 @@ chat-based conversation interface).
 ### Default conversation style
 
 `default_conversation_IO` is a comma-separated list of conversation interfaces with the first valid one used.
-Read [this page](../Conversations.md) for more information about conversation interfaces.
+Read [this page](../Features/Conversations.md) for more information about conversation interfaces.
 
 ### Default Chat interceptor
 
 `default_interceptor` is a comma-separated list of chat interceptors with the first valid one used.
-Read [this page](../Conversations.md) for more information about chat interceptors.
+Read [this page](../Features/Conversations.md) for more information about chat interceptors.
 
 ### Default Hologram Plugin
 The [holograms integration](../Scripting/Building-Blocks/Compatibility.md#holograms) works with multiple plugins.

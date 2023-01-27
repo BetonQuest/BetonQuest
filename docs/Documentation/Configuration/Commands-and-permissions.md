@@ -33,12 +33,12 @@ Optional arguments are displayed as such: `[argument]`.
 * `/questlang <lang>` - Changes the language for the player (and globally if used from console). `default` language will use the language defined in _config.yml_.
 * `/rpgmenu reload <menu>` - Allows reloading all configuration files or just reloading the configuration of one specific menu.
 * `/rpgmenu list` - Lists all currently loaded menus and allows opening them just by clicking on them.
-* `/rpgmenu open <menu> [player]` - Opens a menu for you or another player. [Opening conditions](../Menus/Menu.md#general-menu-settings) of the menu will be ignored when using this command.
+* `/rpgmenu open <menu> [player]` - Opens a menu for you or another player. [Opening conditions](../Features/Menus/Menu.md#general-menu-settings) of the menu will be ignored when using this command.
 
 ### Custom Menu Opening commands
 The plugin lets you create a new command for each menu which allows all players to open the menu.  
 You can also specify BetonQuest conditions so that the menu can only be opened if the player matches specific conditions.
-Have a look at the [menu settings](../Menus/Menu.md#general-menu-settings) for more information.
+Have a look at the [menu settings](../Features/Menus/Menu.md#general-menu-settings) for more information.
 
 The server must be restarted to unregister command tab completions.
 

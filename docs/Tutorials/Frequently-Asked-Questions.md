@@ -17,7 +17,7 @@ Yes! Check out the [EffectLib](../Documentation/Scripting/Building-Blocks/Compat
 
 
 ## Can I assign multiple conversation files to one NPC?
-No. You can use [cross-conversation-pointers](../Documentation/Conversations.md#cross-conversation-pointers) though.
+No. You can use [cross-conversation-pointers](../Documentation/Features/Conversations.md#cross-conversation-pointers) though.
 
 ## Can I delete all tags from a player at once?
 No. You either need to run all `/q t del PLAYER PACKAGE.TAG` commands, or you can use `/q purge PLAYER` to reset an entire player profile.
@@ -283,8 +283,8 @@ have to add the additional objectives to the conditions.
 
 ## Creating quest menus
 To create a menu that gives the player an overview of his open quests just define one menu item for each quest.
-Set the [conditions](../Documentation/Menus/Menu.md#the-items-section) for this item, so it is only displayed if the quest is not finished (use the [tag condition](../Documentation/Scripting/Building-Blocks/Conditions-List.md#tag-tag)).  
-Then assign all those items to [a row of slots](../Documentation/Menus/Menu.md#the-slots-section) so that they are sorted perfectly.
+Set the [conditions](../Documentation/Features/Menus/Menu.md#the-items-section) for this item, so it is only displayed if the quest is not finished (use the [tag condition](../Documentation/Scripting/Building-Blocks/Conditions-List.md#tag-tag)).  
+Then assign all those items to [a row of slots](../Documentation/Features/Menus/Menu.md#the-slots-section) so that they are sorted perfectly.
 
 You can also add click events to display npc locations, add compass targets, directly open the conversations or cancel the quest.
 

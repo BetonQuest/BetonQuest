@@ -109,7 +109,7 @@ This objective is completed by eating the specified food or drinking the specifi
 
 | Parameter | Syntax           | Default Value          | Explanation                               |
 |-----------|------------------|------------------------|-------------------------------------------|
-| _Item_    | [Item](../../Items.md) | :octicons-x-circle-16: | The item or potion that must be consumed. |
+| _Item_    | [Item](../../Features/Items.md) | :octicons-x-circle-16: | The item or potion that must be consumed. |
 | _Amount_  | amount:number    | 1                      | The amount of items to consume.           |
 
 

@@ -5,7 +5,7 @@ icon: material/menu-open
 
 This is an example of a basic menu that displays the progress of two quests.
 
-![Example](../../_media/content/Documentation/Menu/ResultOverview.png)
+![Example](../../../_media/content/Documentation/Menu/ResultOverview.png)
 
 ## Usage
 You can copy and paste this example into any file in a package. 

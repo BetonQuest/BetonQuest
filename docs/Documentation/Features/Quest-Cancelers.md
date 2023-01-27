@@ -37,7 +37,7 @@ cancel:
 5. A list of all points that will be entirely deleted from the player.
 6. These journal entries will be removed from the player's journal.
 7. You can run any event when the player cancels a quest. For example, if you want to punish the player for canceling a quest list the related events here.
-8. This is a location to which the player will be teleported when canceling the quest. Use the [ULF](./Scripting/Data-Formats.md#unified-location-formating) format.
+8. This is a location to which the player will be teleported when canceling the quest. Use the [ULF](../Scripting/Data-Formats.md#unified-location-formating) format.
 
 ## Related Events
 

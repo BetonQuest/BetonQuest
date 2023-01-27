@@ -24,7 +24,7 @@ It has in depth explanations for all of BetonQuest's features, config options an
  
      Write immersive conversations between NPCs and players.
  
-     [:octicons-arrow-right-24: Conversations](./Conversations.md)
+     [:octicons-arrow-right-24: Conversations](./Features/Conversations.md)
 
  -   :material-format-font:{ .lg .middle }  __Visual Effects__
  
@@ -32,7 +32,7 @@ It has in depth explanations for all of BetonQuest's features, config options an
  
      Customize your server with quest npcs, holograms, particles and more.
  
-     [:octicons-arrow-right-24: Visual Effects](Visual-Effects/NPC-Effects/NPC-Hiding.md)
+     [:octicons-arrow-right-24: Visual Effects](./Visual-Effects/NPC-Effects/NPC-Hiding.md)
 
  
  -   :material-television-guide:  __Quest Menus__
@@ -41,6 +41,6 @@ It has in depth explanations for all of BetonQuest's features, config options an
  
      Create custom GUI menus for your quests and server.
   
-     [:octicons-arrow-right-24: Quest Menus](./Menus/Menu.md)
+     [:octicons-arrow-right-24: Quest Menus](./Features/Menus/Menu.md)
 
 </div>

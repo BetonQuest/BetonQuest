@@ -11,7 +11,7 @@ and a NPC. Therefore, these are the basic tool for story telling.
     * [Setup Guide](../Setup-Guide/Setting-up-a-test-server.md)
 
 !!! example "Related Docs"
-    * [Conversations](../../../Documentation/Conversations.md)
+    * [Conversations](../../../Documentation/Features/Conversations.md)
 </div>
 
 --8<-- "Tutorials/download-setup.md"
