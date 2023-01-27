@@ -15,7 +15,7 @@ class ProfileEventTest {
     @Test
     void testGetProfile() {
         final Profile profile = mock(Profile.class);
-        final ProfileEvent profileEvent = new TestProfileEvent(profile);
+        final ProfileEvent profileEvent = new ProfileEventMock(profile);
         assertEquals(profile, profileEvent.getProfile(), "getProfile should return the profile");
         assertFalse(profileEvent.isAsynchronous(), "isAsynchronous should return false");
     }
@@ -23,7 +23,7 @@ class ProfileEventTest {
     @Test
     void testGetProfileAsync() {
         final Profile profile = mock(Profile.class);
-        final ProfileEvent profileEvent = new TestProfileEvent(profile, true);
+        final ProfileEvent profileEvent = new ProfileEventMock(profile, true);
         assertEquals(profile, profileEvent.getProfile(), "getProfile should return the profile");
         assertTrue(profileEvent.isAsynchronous(), "isAsynchronous should return true");
     }
@@ -31,7 +31,7 @@ class ProfileEventTest {
     @Test
     void testGetProfileSync() {
         final Profile profile = mock(Profile.class);
-        final ProfileEvent profileEvent = new TestProfileEvent(profile, false);
+        final ProfileEvent profileEvent = new ProfileEventMock(profile, false);
         assertEquals(profile, profileEvent.getProfile(), "getProfile should return the profile");
         assertFalse(profileEvent.isAsynchronous(), "isAsynchronous should return false");
     }
@@ -40,13 +40,13 @@ class ProfileEventTest {
      * Test implementation of {@link ProfileEvent}
      */
     @SuppressWarnings("PMD.CommentRequired")
-    private static class TestProfileEvent extends ProfileEvent {
+    private static class ProfileEventMock extends ProfileEvent {
 
-        public TestProfileEvent(@NotNull final Profile who) {
+        public ProfileEventMock(@NotNull final Profile who) {
             super(who);
         }
 
-        public TestProfileEvent(@NotNull final Profile who, final boolean isAsync) {
+        public ProfileEventMock(@NotNull final Profile who, final boolean isAsync) {
             super(who, isAsync);
         }
 

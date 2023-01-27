@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Tag;
  * Tests the {@link FallbackConfigurationSection} class.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
+@SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.TestClassWithoutTestCases"})
 public class FallbackConfigurationSectionNonFallbackTest extends ConfigurationSectionBaseTest {
     @Override
     public ConfigurationSection getConfig() {

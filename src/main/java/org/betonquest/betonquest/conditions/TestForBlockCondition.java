@@ -12,7 +12,7 @@ import org.bukkit.block.Block;
 /**
  * Checks block at specified location against specified {@link BlockSelector}
  */
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "PMD.TestClassWithoutTestCases"})
 public class TestForBlockCondition extends Condition {
 
     private final CompoundLocation loc;
