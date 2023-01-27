@@ -4,7 +4,7 @@ icon: octicons/info-16
 This is the complete reference documentation for BetonQuest.
 It has in depth explanations for all of BetonQuest's features, config options and permissions. 
 
-[:hatching_chick: New here? Start with the tutorials!](../Tutorials/Getting-Started/About.md){ .md-button .md-button--primary }
+[:hatching_chick: New here? Start with the tutorials!](../Tutorials/Overview.md){ .md-button .md-button--primary }
 
 
 ## BetonQuest Fundamentals
@@ -18,13 +18,13 @@ It has in depth explanations for all of BetonQuest's features, config options an
  
      [:octicons-arrow-right-24: About Scripting](./Scripting/About-Scripting.md)
  
- -   :simple-visualstudiocode: __Tools__
+ -   :material-message-text: __Conversations__
  
      ---
  
-     Improve your quest writing efficiency with modern tools.
+     Write immersive conversations between NPCs and players.
  
-     [:octicons-arrow-right-24: Tools](./Tools/Setting-up-VSCode.md)
+     [:octicons-arrow-right-24: Conversations](./Conversations.md)
 
  -   :material-format-font:{ .lg .middle }  __Visual Effects__
  
@@ -35,12 +35,12 @@ It has in depth explanations for all of BetonQuest's features, config options an
      [:octicons-arrow-right-24: Visual Effects](./Visual-Effects/NPC-Hiding.md)
 
  
- -   :fontawesome-solid-screwdriver-wrench:  __More to come__
+ -   :material-television-guide:  __More to come__
  
      ---
  
-     Additional tutorials and examples are being worked on. Stay tuned!
-
-     [:octicons-arrow-right-24: Help us by donating](https://opencollective.com/betonquest/contribute/individual-quester-32899/checkout)
+     Create custom GUI menus for your quests and server.
+  
+     [:octicons-arrow-right-24: Quest Menus](./Menus/Menu-Menu.md)
 
 </div>
