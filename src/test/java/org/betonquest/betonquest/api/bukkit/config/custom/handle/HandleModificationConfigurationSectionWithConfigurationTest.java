@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Tag;
  * This is a test for the {@link HandleModificationConfigurationSection} as a {@link ConfigurationSection}.
  */
 @Tag("ConfigurationSection")
+@SuppressWarnings("PMD.TestClassWithoutTestCases")
 public class HandleModificationConfigurationSectionWithConfigurationTest extends HandleModificationConfigurationSectionTest {
 
     @Override

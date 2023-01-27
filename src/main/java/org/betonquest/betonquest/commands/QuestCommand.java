@@ -77,8 +77,9 @@ import java.util.stream.Stream;
 /**
  * Main admin command for quest editing.
  */
-@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength", "PMD.GodClass", "PMD.NPathComplexity",
-        "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
+@SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.NPathComplexity", "PMD.TooManyMethods",
+        "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition",
+        "PMD.CognitiveComplexity"})
 @CustomLog
 public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
@@ -107,7 +108,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         BetonQuest.getInstance().getCommand("betonquest").setTabCompleter(this);
     }
 
-    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount"})
+    @SuppressWarnings("PMD.NcssCount")
     @Override
     public boolean onCommand(final CommandSender sender, final Command cmd, final String alias, final String... args) {
 
@@ -1108,7 +1109,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Lists, adds or removes objectives.
      */
-    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount"})
+    @SuppressWarnings("PMD.NcssCount")
     private void handleObjectives(final CommandSender sender, final String... args) {
         final Profile profile = getTargetProfile(sender, args);
         if (profile == null) {
@@ -1234,7 +1235,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Renames stuff.
      */
-    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount"})
+    @SuppressWarnings("PMD.NcssCount")
     private void handleRenaming(final CommandSender sender, final String... args) {
         if (args.length < 4) {
             sendMessage(sender, "arguments");

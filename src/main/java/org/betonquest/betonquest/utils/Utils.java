@@ -43,7 +43,8 @@ import java.util.regex.Pattern;
 /**
  * Various utilities.
  */
-@SuppressWarnings({"PMD.ClassNamingConventions", "PMD.GodClass", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
+@SuppressWarnings({"PMD.ClassNamingConventions", "PMD.GodClass", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals",
+        "PMD.TooManyMethods"})
 @CustomLog
 public final class Utils {
 
@@ -235,7 +236,7 @@ public final class Utils {
     /**
      * If the database backup file exists, loads it into the database.
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "PMD.NcssCount", "PMD.ExcessiveMethodLength"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "PMD.NcssCount"})
     @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
     public static void loadDatabaseFromBackup() {
         final BetonQuest instance = BetonQuest.getInstance();

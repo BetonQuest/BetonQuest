@@ -36,7 +36,7 @@ class OnlineProfileGroupStaticEventAdapterTest {
     public OnlineProfileGroupStaticEventAdapterTest() {
     }
 
-    static Stream<List<OnlineProfile>> playerListSource() {
+    private static Stream<List<OnlineProfile>> playerListSource() {
         return Stream.of(
                 List.of(createRandomProfile()),
                 List.of(createRandomProfile(), createRandomProfile()),
@@ -44,7 +44,7 @@ class OnlineProfileGroupStaticEventAdapterTest {
         );
     }
 
-    static OnlineProfile createRandomProfile() {
+    private static OnlineProfile createRandomProfile() {
         return mock(OnlineProfile.class);
     }
 

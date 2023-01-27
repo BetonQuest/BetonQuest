@@ -6,6 +6,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 /**
  * Tests for realtime cron schedule.
  */
+@SuppressWarnings("PMD.TestClassWithoutTestCases")
 public class RealtimeCronScheduleTest extends CronRebootScheduleTest {
 
     @Override

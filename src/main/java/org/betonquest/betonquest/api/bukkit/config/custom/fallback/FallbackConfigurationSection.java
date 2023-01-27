@@ -23,7 +23,7 @@ import java.util.function.Function;
  * This class hides an original and a fallback {@link ConfigurationSection} and exposes it,
  * as if it were the original {@link ConfigurationSection}, except for missing key, then the fallback is used.
  */
-@SuppressWarnings({"PMD.GodClass", "PMD.CyclomaticComplexity", "PMD.ExcessivePublicCount"})
+@SuppressWarnings({"PMD.GodClass", "PMD.CyclomaticComplexity", "PMD.ExcessivePublicCount", "PMD.TooManyMethods"})
 public class FallbackConfigurationSection implements ConfigurationSection {
     /**
      * Manager holing the original and the fallback {@link ConfigurationSection} instances.

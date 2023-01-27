@@ -273,7 +273,7 @@ public class MenuConvIO extends ChatConvIO {
         }
     }
 
-    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     protected void updateDisplay() {
         if (npcText == null) {
             displayOutput = null;
@@ -488,7 +488,7 @@ public class MenuConvIO extends ChatConvIO {
         }
     }
 
-    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
     private PacketAdapter getPacketAdapter() {
         return new PacketAdapter(BetonQuest.getInstance(), ListenerPriority.HIGHEST,
                 PacketType.Play.Client.STEER_VEHICLE,

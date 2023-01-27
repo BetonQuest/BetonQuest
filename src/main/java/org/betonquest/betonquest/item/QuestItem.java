@@ -164,7 +164,7 @@ public class QuestItem {
      * @param item ItemStack to convert
      * @return converted string
      */
-    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity"})
+    @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public static String itemToString(final ItemStack item) {
         String durability = "";

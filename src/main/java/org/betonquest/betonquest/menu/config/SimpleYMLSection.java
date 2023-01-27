@@ -16,7 +16,8 @@ import java.util.Optional;
 /**
  * Abstract class to help parsing of yml config files
  */
-@SuppressWarnings({"PMD.PreserveStackTrace", "PMD.AbstractClassWithoutAbstractMethod", "PMD.CommentRequired"})
+@SuppressWarnings({"PMD.PreserveStackTrace", "PMD.AbstractClassWithoutAbstractMethod", "PMD.CommentRequired",
+        "PMD.TooManyMethods"})
 public abstract class SimpleYMLSection {
 
     public static final String RPG_MENU_CONFIG_SETTING = "RPGMenuConfig setting ";

@@ -153,7 +153,7 @@ public class Backpack implements Listener {
          *
          * @param page number of the page to display, starting from 1
          */
-        @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
+        @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
         @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
         public Page(final int page) {
             super();
@@ -415,7 +415,8 @@ public class Backpack implements Listener {
         private final Map<Integer, String> names = new HashMap<>();
         private final Map<Integer, Pair<QuestPackage, String>> items = new HashMap<>();
 
-        @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
+        @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity",
+                "PMD.CognitiveComplexity"})
         @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
         public Compass() {
             super();

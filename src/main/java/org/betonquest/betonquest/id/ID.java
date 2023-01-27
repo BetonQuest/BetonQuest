@@ -22,7 +22,8 @@ public abstract class ID {
     protected Instruction instruction;
     protected String rawInstruction;
 
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.ExcessiveMethodLength", "PMD.NcssCount"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity",
+            "PMD.AvoidLiteralsInIfCondition", "PMD.NcssCount"})
     protected ID(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
         // id must be specified
         if (identifier == null || identifier.length() == 0) {

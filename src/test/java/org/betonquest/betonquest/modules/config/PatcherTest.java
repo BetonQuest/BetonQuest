@@ -31,11 +31,11 @@ class PatcherTest {
     /**
      * The patch file for this test.
      */
-    final YamlConfiguration patch = YamlConfiguration.loadConfiguration(new File("src/test/resources/modules.config/config.patch.yml"));
+    private final YamlConfiguration patch = YamlConfiguration.loadConfiguration(new File("src/test/resources/modules.config/config.patch.yml"));
     /**
      * The config that will be patched.
      */
-    YamlConfiguration config;
+    private YamlConfiguration config;
 
     @BeforeEach
     void cleanConfig() {

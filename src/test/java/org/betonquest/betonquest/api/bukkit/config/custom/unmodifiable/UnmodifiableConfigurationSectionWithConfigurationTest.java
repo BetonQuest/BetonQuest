@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Tag;
  * This is a test for {@link UnmodifiableConfiguration} as a {@link ConfigurationSection}.
  */
 @Tag("ConfigurationSection")
+@SuppressWarnings("PMD.TestClassWithoutTestCases")
 public class UnmodifiableConfigurationSectionWithConfigurationTest extends UnmodifiableConfigurationSectionTest {
 
     @Override

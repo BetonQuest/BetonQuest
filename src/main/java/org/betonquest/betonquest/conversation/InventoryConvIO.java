@@ -120,7 +120,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
         options.put(playerOptionsCount, Utils.replaceReset(option, optionColor));
     }
 
-    @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.NcssCount",
+    @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity", "PMD.NcssCount",
             "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @Override

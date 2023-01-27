@@ -272,8 +272,8 @@ import java.util.regex.Pattern;
 /**
  * Represents BetonQuest plugin.
  */
-@SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength", "PMD.GodClass",
-        "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidFieldNameMatchingMethodName",
+@SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyMethods",
+        "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidFieldNameMatchingMethodName",
         "PMD.AtLeastOneConstructor", "PMD.ExcessivePublicCount", "PMD.TooManyFields"})
 public class BetonQuest extends JavaPlugin {
     private final static int BSTATS_METRICS_ID = 551;
@@ -655,7 +655,7 @@ public class BetonQuest extends JavaPlugin {
         }
     }
 
-    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.DoNotUseThreads", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.NcssCount", "PMD.DoNotUseThreads", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     @Override
     public void onEnable() {
         instance = this;
@@ -981,7 +981,7 @@ public class BetonQuest extends JavaPlugin {
     /**
      * Loads events and conditions to the maps
      */
-    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
     public void loadData() {
         eventScheduling.stopAll();
 

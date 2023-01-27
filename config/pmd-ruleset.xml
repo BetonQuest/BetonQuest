@@ -82,8 +82,21 @@
   <rule ref="category/java/codestyle.xml/ClassNamingConventions"/>
   <rule ref="category/java/codestyle.xml/CommentDefaultAccessModifier">
     <properties>
-      <property name="ignoredAnnotations" value="org.betonquest.betonquest.api.annotation.VisibleForTesting"/>
-      <property name="violationSuppressXPath" value="//ClassOrInterfaceDeclaration[matches(@Image, '^.*Test$')]"/>
+      <property name="ignoredAnnotations" value="com.google.common.annotations.VisibleForTesting
+			| android.support.annotation.VisibleForTesting
+			| org.junit.jupiter.api.Test
+			| org.junit.jupiter.api.ParameterizedTest
+			| org.junit.jupiter.api.RepeatedTest
+			| org.junit.jupiter.api.TestFactory
+			| org.junit.jupiter.api.TestTemplate
+			| org.junit.jupiter.api.BeforeEach
+			| org.junit.jupiter.api.BeforeAll
+			| org.junit.jupiter.api.AfterEach
+			| org.junit.jupiter.api.AfterAll
+			| org.junit.jupiter.api.Nested
+			| org.junit.jupiter.params.ParameterizedTest
+			| org.jetbrains.annotations.VisibleForTesting
+			"/>
     </properties>
   </rule>
   <rule ref="category/java/codestyle.xml/ConfusingTernary">
@@ -152,18 +165,13 @@
   <rule ref="category/java/design.xml/DataClass"/>
   <rule ref="category/java/design.xml/DoNotExtendJavaLangError"/>
   <rule ref="category/java/design.xml/ExceptionAsFlowControl"/>
-  <rule ref="category/java/design.xml/ExcessiveClassLength">
-    <properties>
-      <property name="violationSuppressXPath" value="//ClassOrInterfaceDeclaration[matches(@Image, '^.*Test$')]"/>
-    </properties>
-  </rule>
   <!--<rule ref="category/java/design.xml/ExcessiveImports"/>-->
-  <rule ref="category/java/design.xml/ExcessiveMethodLength"/>
   <rule ref="category/java/design.xml/ExcessiveParameterList"/>
   <rule ref="category/java/design.xml/ExcessivePublicCount"/>
   <rule ref="category/java/design.xml/FinalFieldCouldBeStatic"/>
   <rule ref="category/java/design.xml/GodClass"/>
   <rule ref="category/java/design.xml/ImmutableField"/>
+  <rule ref="category/java/design.xml/InvalidJavaBean"/>
   <!--<rule ref="category/java/design.xml/LawOfDemeter"/>-->
   <rule ref="category/java/design.xml/LogicInversion"/>
   <!--<rule ref="category/java/design.xml/LoosePackageCoupling"/>-->
@@ -226,7 +234,6 @@
   <rule ref="category/java/errorprone.xml/AvoidMultipleUnaryOperators"/>
   <rule ref="category/java/errorprone.xml/AvoidUsingOctalValues"/>
   <rule ref="category/java/errorprone.xml/ComparisonWithNaN"/>
-  <!--<rule ref="category/java/errorprone.xml/BeanMembersShouldSerialize"/>-->
   <rule ref="category/java/errorprone.xml/BrokenNullCheck"/>
   <rule ref="category/java/errorprone.xml/CallSuperFirst"/>
   <rule ref="category/java/errorprone.xml/CallSuperLast"/>
@@ -266,6 +273,7 @@
   <rule ref="category/java/errorprone.xml/MissingStaticMethodInNonInstantiatableClass"/>
   <rule ref="category/java/errorprone.xml/MoreThanOneLogger"/>
   <rule ref="category/java/errorprone.xml/NonCaseLabelInSwitchStatement"/>
+  <rule ref="category/java/errorprone.xml/NonSerializableClass"/>
   <rule ref="category/java/errorprone.xml/NonStaticInitializer"/>
   <!--<rule ref="category/java/errorprone.xml/NullAssignment"/>-->
   <rule ref="category/java/errorprone.xml/OverrideBothEqualsAndHashcode"/>

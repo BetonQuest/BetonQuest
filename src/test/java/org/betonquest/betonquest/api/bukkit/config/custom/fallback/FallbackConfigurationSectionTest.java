@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Tests the {@link FallbackConfigurationSection} class.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
+@SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.TestClassWithoutTestCases"})
 public class FallbackConfigurationSectionTest extends ConfigurationSectionBaseTest {
     /**
      * The fallback {@link Configuration that should not be modified.

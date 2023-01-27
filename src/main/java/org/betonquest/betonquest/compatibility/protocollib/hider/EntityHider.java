@@ -33,7 +33,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * EntityHider From: https://gist.github.com/aadnk/5871793
  * We use the fork: https://gist.github.com/dmulloy2/5526f5bf906c064c255e
  */
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods"})
 public class EntityHider implements Listener {
 
     /**

@@ -53,7 +53,6 @@ final class UpdaterConfigTest {
      */
     private static final String DEV_INDICATOR = "DEV";
 
-    @SuppressWarnings("PMD.ExcessiveMethodLength")
     private static Stream<Arguments> combinations() {
         return Stream.of(
                 Arguments.of(
@@ -166,7 +165,7 @@ final class UpdaterConfigTest {
         );
     }
 
-    /* default */
+    @SuppressWarnings("PMD.CommentDefaultAccessModifier")
     static ConfigurationFile getMockedConfig(final Input input) {
         final ConfigurationFile config = mock(ConfigurationFile.class);
         when(config.getBoolean("update.enabled", true)).thenReturn(input.enabled);
