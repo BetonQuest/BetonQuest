@@ -143,7 +143,7 @@ Of course the unit tests must be located in the same package for this to work.
 
 To clearly mark such elements, that are more widely visible than necessary only for use in test code, 
 the `@VisibleForTesting` annotation can be added.
-Make sure you import it from `org.betonquest.betonquest.api.annotation`, not from Google Commons or Apache.
+Make sure you import it from `org.jetbrains.annotations`, not from Google Commons or Apache.
 
 This will also suppress the PMD rule [`CommentDefaultAccessModifier`](https://pmd.github.io/latest/pmd_rules_java_codestyle.html#commentdefaultaccessmodifier) 
 which requires you to add a `/* default */` or `/* package */` comment when using default access modifier.

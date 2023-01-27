@@ -45,7 +45,7 @@ class PlayerPackageReceiverSelectorTest {
      */
     private final Set<UUID> uuids = Set.of(UUID.randomUUID(), UUID.randomUUID());
 
-    static Stream<BetonQuestLogRecord> fineLevelRecordSource() {
+    private static Stream<BetonQuestLogRecord> fineLevelRecordSource() {
         return Stream.of(
                 recordWith(Level.FINE, OUTER_PACKAGE),
                 recordWith(Level.FINE, MIDDLE_PACKAGE),
@@ -53,21 +53,21 @@ class PlayerPackageReceiverSelectorTest {
         );
     }
 
-    static Stream<BetonQuestLogRecord> outerPackageRecordSource() {
+    private static Stream<BetonQuestLogRecord> outerPackageRecordSource() {
         return Stream.of(
                 recordWith(Level.INFO, OUTER_PACKAGE),
                 recordWith(Level.WARNING, OUTER_PACKAGE)
         );
     }
 
-    static Stream<BetonQuestLogRecord> middlePackageRecordSource() {
+    private static Stream<BetonQuestLogRecord> middlePackageRecordSource() {
         return Stream.of(
                 recordWith(Level.INFO, MIDDLE_PACKAGE),
                 recordWith(Level.WARNING, MIDDLE_PACKAGE)
         );
     }
 
-    static Stream<BetonQuestLogRecord> innerPackageRecordSource() {
+    private static Stream<BetonQuestLogRecord> innerPackageRecordSource() {
         return Stream.of(
                 recordWith(Level.INFO, INNER_PACKAGE),
                 recordWith(Level.WARNING, INNER_PACKAGE)

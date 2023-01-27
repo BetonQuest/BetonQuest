@@ -166,7 +166,7 @@ final class UpdaterConfigTest {
         );
     }
 
-    /* default */
+    @SuppressWarnings("PMD.CommentDefaultAccessModifier")
     static ConfigurationFile getMockedConfig(final Input input) {
         final ConfigurationFile config = mock(ConfigurationFile.class);
         when(config.getBoolean("update.enabled", true)).thenReturn(input.enabled);

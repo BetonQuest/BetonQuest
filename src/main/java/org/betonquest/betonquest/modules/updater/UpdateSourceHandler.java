@@ -2,12 +2,12 @@ package org.betonquest.betonquest.modules.updater;
 
 import lombok.CustomLog;
 import org.apache.commons.lang3.tuple.Pair;
-import org.betonquest.betonquest.api.annotation.VisibleForTesting;
 import org.betonquest.betonquest.modules.updater.source.DevelopmentUpdateSource;
 import org.betonquest.betonquest.modules.updater.source.ReleaseUpdateSource;
 import org.betonquest.betonquest.modules.updater.source.UpdateSource;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.modules.versioning.VersionComparator;
+import org.jetbrains.annotations.VisibleForTesting;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
