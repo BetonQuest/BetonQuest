@@ -3,4 +3,7 @@ plugins:
   - typeset
   - optimize:
       enabled: !ENV [ CI, false ]
-
+  - exclude:
+      glob:
+        - _snippets/*
+        - _custom_theme/*

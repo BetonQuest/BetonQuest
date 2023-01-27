@@ -695,7 +695,13 @@ events:
 | _direction_    | `direction:directionType`       | `absolute`             | There are 3 types how the vector can get applied to the player:<br> `absolute` won't change the vector at all.<br> `relative` will redirect the vector to the view of the player.<br> `relative_y` is a mix between absolute and relative. It will still direct to the view but only horizontally, so y will be absolute. |
 | _modification_ | `modification:modificationType` | `set`                  | Possible modifications are `set` and `add`. The modification type determines how the vector should be merged with the player's velocity. The player's velocity is the external force applied on the player.                                                                                                               |
 
---8<-- "Documentation/Vector-Explanation.md"
+??? info "Visual Explanation"
+    In contrast to their global counterparts, relative x,y,z axes do not change their orientation relative to the player.
+    Example: The positive x-axis will always point left from the perspective of the player.
+    <div style="text-align: center">
+    ![relativeAxis image](../../../_media/content/Documentation/Notifications/relativeAxis.png)
+    </div>  
+
 
 ```YAML title="Example"
 events:

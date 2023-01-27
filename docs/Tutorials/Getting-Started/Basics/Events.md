@@ -12,7 +12,7 @@ In this tutorial, we will give the player items and teleport them to different l
     * [Conversations Tutorial](Conversations.md)
 
 !!! example "Related Docs"
-    * [Events Reference](../../../Documentation/Scripting/About-Types.md#events)
+    * [Events Reference](../../../Documentation/Scripting/About-Scripting.md#events)
     * [Events List](../../../Documentation/Scripting/Building-Blocks/Events-List.md)
 </div>
 --8<-- "Tutorials/download-setup-warning.md"

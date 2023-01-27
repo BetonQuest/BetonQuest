@@ -128,7 +128,7 @@ Keep that in mind when creating sounds close to a player. They can move around t
 | soundcategory     | The [category](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/SoundCategory.html) in which the sound will be played.                                  |
 | soundvolume       | Minecraft's [special sound volume](https://minecraft.gamepedia.com/Commands/playsound#Arguments). Default: _1_                                             |
 | soundpitch        | Pitch of the sound. Default: _1_ Min: _0_ Max: _2_                                                                                                         |
-| soundlocation     | Default: The player's location. A location using the BetonQuest [ULF](../Reference/#unified-location-formating). Can include variables.                    |
+| soundlocation     | Default: The player's location. A location using the BetonQuest [ULF](./Scripting/Data-Formats#unified-location-formating). Can include variables.         |
 | soundplayeroffset | This option is special. See below.                                                                                                                         |
 
 <h3>soundplayeroffset:</h3>
@@ -161,8 +161,13 @@ A vector has to be in the format`(x;y;z)`. This system will use the players rela
 This means that the vectors x axis is right / left from the players head, the y axis is up or down from where ever the players face is
 and the z axis is before / behind the players face. It will move along the players  head.
 
---8<-- "Documentation/Vector-Explanation.md"
-  
+??? info "Visual Explanation"
+    In contrast to their global counterparts, relative x,y,z axes do not change their orientation relative to the player.
+    Example: The positive x-axis will always point left from the perspective of the player.
+    <div style="text-align: center">
+    ![relativeAxis image](../_media/content/Documentation/Notifications/relativeAxis.png)
+    </div>  
+
 This makes it possible to go crazy with sounds. Just one example: A halloween special
 where the player hears a :ghost: whispering into his left ear - no matter where he is or how he turns his head... 🎃
 
@@ -173,7 +178,7 @@ Here is a small example:
     🔴  = the actual location the sound is played at    
     *soundplayeroffset = (0,0,5)*
 
-    <video controls loop src="../../_media/content/Documentation/Notifications/RelativeVectorExample.mp4" width="100%">
+    <video controls loop src="../_media/content/Documentation/Notifications/RelativeVectorExample.mp4" width="100%">
       Sorry, your browser doesn't support embedded videos.
     </video>
     The sound is always played 5 block away from the soundlocation. The direction is however based on where the player is looking.

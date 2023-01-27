@@ -201,10 +201,10 @@ nav:
       - 'Features':
           - 'Conversations': Documentation/Conversations.md
           - 'Quest Menus':
-              - 'Menus': Documentation/Menus/Menu-Menu.md
-              - 'Menu Example': Documentation/Menus/Menu-Example.md
-              - 'Elements': Documentation/Menus/Menu-Elements.md
-              - 'Menu Settings': Documentation/Menus/Menu-Config.md
+              - 'Menus': Documentation/Menus/Menu.md
+              - 'Menu Example': Documentation/Menus/Example.md
+              - 'Elements': Documentation/Menus/Elements.md
+              - 'Menu Settings': Documentation/Menus/Config.md
           - 'The Journal': Documentation/Journal.md
           - 'Quest Items': Documentation/Items.md
           - 'Quest Cancelers': Documentation/Quest-Cancelers.md
@@ -239,8 +239,8 @@ nav:
           - 'Configuration': Documentation/Configuration/Configuration.md
           - 'Permissions & Commands': Documentation/Configuration/Commands-and-permissions.md
           - 'Version Changes':
-              - 'Updating': Documentation/Version-Changes/Updating.md
-              - 'Migration': Documentation/Version-Changes/Migration.md
+              - 'Updating': Documentation/Configuration/Version-Changes/Updating.md
+              - 'Migration': Documentation/Configuration/Version-Changes/Migration.md
       - 'Changelog': Documentation/CHANGELOG.md
   - 'API':
       - 'Overview': API/Overview.md

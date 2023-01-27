@@ -16,7 +16,7 @@ td {
 }
 </style>
 
-# 📥 Updating BetonQuest
+# :material-download: Updating BetonQuest
 BetonQuest has a comfortable Auto-Updater, that you can use without any problem, but there are some things that you need
 to be aware of. Alternatively you can install updated manual by your self.
 

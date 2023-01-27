@@ -165,9 +165,9 @@ and the way the player interacts with them.
     === "Chest Style"
         A chest GUI with clickable buttons where the NPC's text and options will be shown as item lore.
         ??? "Customizing the Chest Style"
-            The colors of this style can be configured with the [`conversation_colors` config option](./Configuration.md#conversation-colors).
+            The colors of this style can be configured with the [`conversation_colors` config option](./Configuration/Configuration.md#conversation-colors).
             
-            The formatting of this style can be configured with the [`conversation_IO_config.chest` config option](./Configuration.md#conversation-settings-chestio).
+            The formatting of this style can be configured with the [`conversation_IO_config.chest` config option](./Configuration/Configuration.md#conversation-settings-chestio).
             
             You can change the option's item to something else than ender pearls by adding a prefix to that option's text.
             The prefix is a name of the material (like in the _items_ section) inside curly braces, with an optional damage value after a colon. Custom Model Data is not supported yet.
@@ -178,18 +178,18 @@ and the way the player interacts with them.
     === "Simple Style"
         A chat output. The user has to write a number into their chat to select an option.
         ??? "Customizing the Simple Style"
-            The colors of this style can be configured with the [`conversation_colors` config option](./Configuration.md#conversation-colors).
-        ![SimpleIO](../../_media/content/Documentation/Conversations/SimpleIO.png)
+            The colors of this style can be configured with the [`conversation_colors` config option](./Configuration/Configuration.md#conversation-colors).
+        ![SimpleIO](../_media/content/Documentation/Conversations/SimpleIO.png)
     === "Tellraw Style"
         The same as the simple style but the user can also click the numbers instead of writing them in the chat.
         ??? "Customizing the Simple Style"
-            The colors of this style can be configured with the [`conversation_colors` config option](./Configuration.md#conversation-colors).
-        ![SimpleIO](../../_media/content/Documentation/Conversations/SimpleIO.png)
+            The colors of this style can be configured with the [`conversation_colors` config option](./Configuration/Configuration.md#conversation-colors).
+        ![SimpleIO](../_media/content/Documentation/Conversations/SimpleIO.png)
     === "Slowtellraw Style"
         The same as tellraw style but the NPC's text is printed line by line, delayed by 0.5 seconds.
         ??? "Customizing the Simple Style"
-            The colors of this style can be configured with the [`conversation_colors` config option](./Configuration.md#conversation-colors).
-        ![SimpleIO](../../_media/content/Documentation/Conversations/SimpleIO.png)
+            The colors of this style can be configured with the [`conversation_colors` config option](./Configuration/Configuration.md#conversation-colors).
+        ![SimpleIO](../_media/content/Documentation/Conversations/SimpleIO.png)
 
 BetonQuest uses the `menu` style by default. If ProtocolLib is not installed, the `chest` style will be used.
 You can however change the utilized conversationIO by changing the `default_conversation_IO` option in the _config.yml_ file.

@@ -41,6 +41,6 @@ It has in depth explanations for all of BetonQuest's features, config options an
  
      Create custom GUI menus for your quests and server.
   
-     [:octicons-arrow-right-24: Quest Menus](./Menus/Menu-Menu.md)
+     [:octicons-arrow-right-24: Quest Menus](./Menus/Menu.md)
 
 </div>

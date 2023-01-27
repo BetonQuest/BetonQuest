@@ -7,12 +7,12 @@ BetonQuest allows the creation of fully custom GUIs using the events and items s
 Nearly everything can be done with these, from guis listing open quests over simple warp systems to
 information GUIs that display player stats.
 
-<span class="centered">![Menu example](../_media/content/Documentation/Menu/RPGMenuExample.png)</span>
+<span class="centered">![Menu example](../../_media/content/Documentation/Menu/RPGMenuExample.png)</span>
 
-[:material-play-outline: Try the working example for a quick overview.](./Menu-Example.md){ .md-button }
+[:material-play-outline: Try the working example for a quick overview.](./Example.md){ .md-button }
 
 ## Creating a menu
-To create a new menu just create a `menus` section in any file inside a [quest package](Packages-&-Templates.md).
+To create a new menu just create a `menus` section in any file inside a [quest package](../Packages-&-Templates.md).
 The name which can be used to identify each menu will be the name of another section as shown below.
 
 ``` YAML title="Menu Definition Example"
@@ -35,13 +35,13 @@ These are general settings for customizing a menu.
 
 #### Optional Settings
 
-| <div style="width:130px">Setting Name</div> | Example                                     | Description                                                                                                                                      |
-|:-------------------------------------------:|---------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
-|              `open_conditions`              | `open_conditions: "unlockedMenu,!sneaking"` | One or multiple conditions (separated by a `,`) which all have to be true to open the menu with a bound item or a bound command.                 |
-|                `open_events`                | `open_events: "menuOpenSound"`              | One or multiple events (separated by a `,`) which will be fired when the menu is opened.                                                         |
-|               `close_events`                | `close_events: "menuCloseSound"`            | One or multiple events (separated by a `,`) which will be fired when the menu is closed.                                                         |  
-|                   `bind`                    | `bind: "openMenuItem"`                      | Clicking with this [quest item](Items.md) in hand will open the menu. You can create this item in the `items` section of your package. |
-|                  `command`                  | `command: "/quests"`                        | This command can be executed to open the menu. **The server must be restarted to unregister command tab completions.**                           |
+| <div style="width:130px">Setting Name</div> | Example                                     | Description                                                                                                                               |
+|:-------------------------------------------:|---------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
+|              `open_conditions`              | `open_conditions: "unlockedMenu,!sneaking"` | One or multiple conditions (separated by a `,`) which all have to be true to open the menu with a bound item or a bound command.          |
+|                `open_events`                | `open_events: "menuOpenSound"`              | One or multiple events (separated by a `,`) which will be fired when the menu is opened.                                                  |
+|               `close_events`                | `close_events: "menuCloseSound"`            | One or multiple events (separated by a `,`) which will be fired when the menu is closed.                                                  |  
+|                   `bind`                    | `bind: "openMenuItem"`                      | Clicking with this [quest item](../Items.md) in hand will open the menu. You can create this item in the `items` section of your package. |
+|                  `command`                  | `command: "/quests"`                        | This command can be executed to open the menu. **The server must be restarted to unregister command tab completions.**                    |
 
 ## The `items` section
 The items section contains all items which should be displayed in the menu, defined as individual sections of the config.
@@ -61,7 +61,7 @@ menus:
 
 1. The `items` section with all items that are displayed in the menu.
 2. The name of the item. Used to reference the item in the `slots` section.
-3. The name of any [quest item](Items.md). This **cannot** be a vanilla item, it must be a quest item.
+3. The name of any [quest item](../Items.md). This **cannot** be a vanilla item, it must be a quest item.
 4. Another item just like the previous one.
 
 ### Optional Item Settings
@@ -69,14 +69,14 @@ The three basic optional settings.
 
 | <div style="width:90px">Name</div> |          Example          | Description                                                                                                                                          |
 |:----------------------------------:|:-------------------------:|------------------------------------------------------------------------------------------------------------------------------------------------------|
-|              `amount`              |       `amount: 30`        | The size of the stack that will be displayed in the menu. [Variables](Scripting/Building-Blocks/Variables-List.md) are supported.                                              |
+|              `amount`              |       `amount: 30`        | The size of the stack that will be displayed in the menu. [Variables](../Scripting/Building-Blocks/Variables-List.md) are supported.                 |
 |            `conditions`            | `conditions: "questDone"` | One or multiple conditions (separated by a `,`) which all have to be true to display the item.                                                       |
 |              `close`               |       `close: true`       | If set to `true` the menu will be closed after clicking the item. If this is not set the `default_close` value from the plugins config will be used. |
 
 ### The optional `text` setting
 By default, the name and description of the quest item is displayed when hovering over the item.
 You can overwrite this by using the `text` setting.
-Both [color codes](https://minecraft.gamepedia.com/Formatting_codes) and [variables](Scripting/Building-Blocks/Variables-List.md) are supported.
+Both [color codes](https://minecraft.gamepedia.com/Formatting_codes) and [variables](../Scripting/Building-Blocks/Variables-List.md) are supported.
 
 ``` YAML title="Example"
 skeletonQuestDone:
@@ -89,7 +89,7 @@ skeletonQuestDone:
 1. The name of the item.
 2. The description of the item.
 
-Just like the text in conversations you can provide [translations](Conversations.md#translations) for all languages:
+Just like the text in conversations you can provide [translations](../Conversations.md#translations) for all languages:
 ``` YAML title="Translation Example"
 items: 
   skeletonQuestDone: 
@@ -164,7 +164,7 @@ menus:
 
 ??? info "Slot Numbers"
     Use these numbers to assign items to slots:  
-    ![Inventory Slot Numbers](../_media/content/Documentation/Menu/DoubleChestSlots.png)
+    ![Inventory Slot Numbers](../../_media/content/Documentation/Menu/DoubleChestSlots.png)
 
 
 ### Row Assignment
@@ -185,4 +185,4 @@ the slots in this rectangle are filled up one by one using the items whose condi
 14*25: "quest1,quest2,quest3"
 ```
 
-![RectangleExample](../_media/content/Documentation/Menu/RectangleExample.png)
+![RectangleExample](../../_media/content/Documentation/Menu/RectangleExample.png)

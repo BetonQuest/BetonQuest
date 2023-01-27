@@ -13,7 +13,7 @@ fishing fish. The possibilities are nearly endless! You will learn about these i
     * [Events Tutorial](Events.md)
 
 !!! example "Related Docs"
-    * [Objectives Reference](../../../Documentation/Scripting/About-Types.md#objectives)
+    * [Objectives Reference](../../../Documentation/Scripting/About-Scripting.md#objectives)
     * [Objectives List](../../../Documentation/Scripting/Building-Blocks/Objectives-List.md)
 </div>
 --8<-- "Tutorials/download-setup-warning.md"
