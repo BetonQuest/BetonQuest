@@ -53,7 +53,6 @@ final class UpdaterConfigTest {
      */
     private static final String DEV_INDICATOR = "DEV";
 
-    @SuppressWarnings("PMD.ExcessiveMethodLength")
     private static Stream<Arguments> combinations() {
         return Stream.of(
                 Arguments.of(

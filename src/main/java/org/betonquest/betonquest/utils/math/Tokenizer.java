@@ -77,7 +77,7 @@ public class Tokenizer {
      * @throws InstructionParseException if the expression is invalid and therefore couldn't be parsed
      */
     @SuppressWarnings({"PMD.AssignmentInOperand", "PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition",
-            "PMD.NcssCount", "PMD.ExcessiveMethodLength", "PMD.CognitiveComplexity"})
+            "PMD.NcssCount", "PMD.CognitiveComplexity"})
     private Token tokenize(final Token val1, final Operator operator, final String val2) throws InstructionParseException {
         if (val2.isEmpty()) {
             if (operator != null) {

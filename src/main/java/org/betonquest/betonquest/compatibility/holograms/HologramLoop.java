@@ -46,7 +46,8 @@ public class HologramLoop {
     /**
      * Starts a loop, which checks hologram conditions and shows them to players.
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveMethodLength", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "PMD.UseStringBufferForStringAppends"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity",
+            "PMD.UseStringBufferForStringAppends"})
     public HologramLoop() {
         final int defaultInterval = BetonQuest.getInstance().getPluginConfig().getInt("hologram_update_interval", 10 * 20);
         // get all holograms and their condition
