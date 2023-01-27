@@ -23,6 +23,10 @@ cancel:
     journal: "wood_started,wood_done,wood_paid" #(6)!
     events: "punishPlayer,sendMessage" #(7)!
     location: "100;200;300;world" #(8)!
+  dragonQuest:
+    name: "&4Dragon Slayer"
+    conditions: "dragon_started,!dragon_done"
+    objectives: "killDragon"
 ```
 
 1. Display name that will be shown in the GUI.The name can be translated with this syntax:
