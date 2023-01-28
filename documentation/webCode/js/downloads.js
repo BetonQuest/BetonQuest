@@ -152,7 +152,7 @@ async function getVersion(build, cachedVersions, newCachedVersions) {
 function downloadWithRename(url, filename) {
   return fetch(url).then(async response => {
     if (!response.ok) {
-      log.error("Error while downloading file: " + response.status + " " + response.statusText + "");
+      console.error("Error while downloading file: " + response.status + " " + response.statusText + "");
     } else {
       const link = document.createElement("a");
       link.href = URL.createObjectURL(await response.blob());
