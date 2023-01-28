@@ -262,6 +262,7 @@ nav:
               - 'Workflow': Participate/Process/Docs/Workflow.md
               - 'Fundamental Principles': Participate/Process/Docs/Principles.md
               - 'Guidelines': Participate/Process/Docs/Guidelines.md
+              - 'mkdocs Customizations': Participate/Process/Docs/Customizations.md
           - 'Maintaining the Changelog': Participate/Process/Maintaining-the-Changelog.md
           - 'Submitting Changes': Participate/Process/Submitting-Changes.md
       - Misc:
