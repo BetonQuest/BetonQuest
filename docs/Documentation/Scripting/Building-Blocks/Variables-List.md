@@ -4,7 +4,7 @@ icon: material/variable-box
 # Variables List
 
 This page lists all the variables that are available in BetonQuest.
-Some of them are only useful when exported for use in other plugins through the [support for PlaceHolderAPI](Compatibility.md#placeholderapi).
+Some of them are only useful when exported for use in other plugins through the [support for PlaceHolderAPI](Integration-List.md#placeholderapi).
 
 Variables marked as **static** can be resolved without a player specified.
 
@@ -24,7 +24,7 @@ All properties are described in "Objectives List" chapter.
 ### Condition Variable
 
 You can expose BetonQuest's conditions to 3rd party plugins by using the `condition` variable together with the 
-[PAPI support](Compatibility.md#placeholderapi).
+[PAPI support](Integration-List.md#placeholderapi).
 The variable will return `true` or `false` by default. If you add `papiMode` to the instruction it will return `yes` or `no`.    
 You can translate the papiMode's result by changing the values of `condition_variable_met` `condition_variable_not_met` in 
 the *messages.yml* config.

@@ -13,7 +13,7 @@ We have a [VSCode addon](./Tools/Setting-up-VSCode.md) to make editing easier.
 
 
 ## Can you add particles over NPCs' heads like in "Quests" plugin?
-Yes! Check out the [EffectLib](../Documentation/Scripting/Building-Blocks/Compatibility.md/#effectlib) compatibility documentation.
+Yes! Check out the [EffectLib](../Documentation/Scripting/Building-Blocks/Integration-List.md/#effectlib) compatibility documentation.
 
 
 ## Can I assign multiple conversation files to one NPC?
@@ -294,4 +294,4 @@ Or you could define separate items for open and finished quests or even to show 
 You may also use menus to display the stats of a player. Just use [variables](../Documentation/Scripting/Building-Blocks/Variables-List.md) in the text or for the amount of an item.
 
 For example try displaying a players money using the variable from [Vault integration](http://dev.bukkit.org/bukkit-plugins/vault/)
-or use [PlaceholderAPI](../Documentation/Scripting/Building-Blocks/Compatibility.md#placeholderapi) to show placeholders from many other plugins.
+or use [PlaceholderAPI](../Documentation/Scripting/Building-Blocks/Integration-List.md#placeholderapi) to show placeholders from many other plugins.

@@ -1,15 +1,20 @@
 ---
 icon: material/handshake
+toc_depth: 2
 ---
-# Compatibility
-**In total 33 plugins have dedicated support for BetonQuest.**
+# Integration List
+This page contains documentation for most integrations that exist for third party plugins.
+Some integrations also have dedicated pages in the documentation.
+ 
+## Provided by BetonQuest
+In total 33 plugins have dedicated support for BetonQuest.
 
-BetonQuest hooks into other plugins by itself to provide more events, conditions and objectives or other features. 
-26 plugins are supported right now:    
+BetonQuest hooks into other plugins by itself to provide more events, conditions and objectives or other features.  
 _AureliumSkills, Brewery, Citizens, DecentHolograms, Denizen, EffectLib, Heroes, HolographicDisplays, JobsReborn, LuckPerms, Magic,
 mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, ProtocolLib, Quests, Shopkeepers, ProSkillAPI,
 Skript, Vault, WorldEdit, FastAsyncWorldEdit and WorldGuard._
 
+## Provided by other plugins
 Some plugins also hook into BetonQuest and provide support by themselves:  
 [nuNPCDestinations](https://www.spigotmc.org/resources/13863/),
 [CalebCompass](https://www.spigotmc.org/resources/82674/),
@@ -22,7 +27,7 @@ There are also plugins that hook into BetonQuest that require a clientside mod:
 [NGVexJournal](https://www.spigotmc.org/resources/76938/)
 
 
-## [AureliumSkills](https://www.spigotmc.org/resources/81069/)
+## AureliumSkills[](https://www.spigotmc.org/resources/81069/)
 
 ### Conditions
 
@@ -55,7 +60,7 @@ aureliumskillsxp farming 10 level
 ```
 
 
-## [Brewery](https://www.spigotmc.org/resources/3082/)
+## Brewery[](https://www.spigotmc.org/resources/3082/)
 
 ### Conditions
 
@@ -96,7 +101,7 @@ Removes the specified drink from the players inventory. An amount needs to be sp
 takebrew 2 MY_OTHER_BREW 
 ```
 
-## NPC's using [Citizens](https://www.spigotmc.org/resources/13811/)
+## Citizens[](https://www.spigotmc.org/resources/13811/)
 
 If you have this plugin you can use it's NPCs for conversations. I highly recommend you installing it,
 it's NPCs are way more immersive. Having Citizens also allows you to use NPCKill objective and to have moving NPC's.
@@ -221,7 +226,7 @@ This means that `enter` is not completed when the player gets the objective and 
     npcrange 3,5 enter 20 events:master_inRange
     ```
 
-## [Denizen](http://dev.bukkit.org/bukkit-plugins/denizen/)
+## Denizen[](http://dev.bukkit.org/bukkit-plugins/denizen/)
 
 ### Events
 
@@ -234,7 +239,7 @@ With this event you can fire Denizen task scripts. Don't confuse it with `skript
     script beton
     ```
 
-## [EffectLib](http://dev.bukkit.org/bukkit-plugins/effectlib/)
+## EffectLib[](http://dev.bukkit.org/bukkit-plugins/effectlib/)
 
 If you install this plugin on your server you will be able to set a particle effect on NPCs with conversations and use `particle` event.
 
@@ -298,7 +303,7 @@ be displayed to the player for which you ran the event.
       playEffect: particle beton loc:100;200;300;world;180;-90 private
     ```
 
-## [Heroes](https://www.spigotmc.org/resources/24734/)
+## Heroes[](https://www.spigotmc.org/resources/24734/)
 
 When you install Heroes, all kills done via this plugin's skills will be counted in MobKill objectives.
 
@@ -342,7 +347,7 @@ This event simply gives the player specified amount of Heroes experience. The fi
     heroesexp primary 1000
     ```
 
-## [JobsReborn](https://www.spigotmc.org/resources/4216/)
+## JobsReborn[](https://www.spigotmc.org/resources/4216/)
 
 Requires adding the following to _config.yml_:
 ```YAML
@@ -430,7 +435,7 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 `left` is the amount of money still needed to receive and `total` is the amount of money initially required.
 
 
-## [LuckPerms](https://luckperms.net/)
+## LuckPerms[](https://luckperms.net/)
 
 ### Context Integration
 
@@ -450,7 +455,7 @@ The syntax is as follows:
 Check the [Luck Perms documentation](https://luckperms.net/wiki/Context)
 for an in-depth explanation on what contexts are and how to add them to permissions.
 
-## [Magic](http://dev.bukkit.org/bukkit-plugins/magic/)
+## Magic[](http://dev.bukkit.org/bukkit-plugins/magic/)
 
 ### Conditions
 
@@ -463,7 +468,7 @@ This condition can check wands. The first argument is either `hand`, `inventory`
     wand hand name:master spells:flare:3,missile:2
     ```
 
-## [McMMO](https://www.spigotmc.org/resources/64348/)
+## McMMO[](https://www.spigotmc.org/resources/64348/)
 
 ### Conditions
 
@@ -487,7 +492,7 @@ This event adds experience points in a specified skill. The first argument is th
     mcmmoexp swords 1500
     ```
 
-## TeamRequiem ([MMOCore](https://www.spigotmc.org/resources/70575/), [MMOItem](https://www.spigotmc.org/resources/39267/), [MythicLib](https://www.spigotmc.org/resources/73855/))
+## MMOCore[](https://www.spigotmc.org/resources/70575/) & MMOItems[](https://www.spigotmc.org/resources/39267/) & MythicLib[](https://www.spigotmc.org/resources/90306/)
 
 
 ### Conditions
@@ -684,7 +689,7 @@ mmoitemtake ARMOR KINGS_CHESTPLATE invOrder:Armor,Backpack
 ```
 
 
-## [MythicMobs](http://dev.bukkit.org/bukkit-plugins/mythicmobs/)
+## MythicMobs[](http://dev.bukkit.org/bukkit-plugins/mythicmobs/)
 !!! info ""
     **Required MythicMobs version: _5.0.0_ or above** 
 
@@ -754,7 +759,7 @@ events:
     players that cannot see it.
     Additionally, the mob should be configured to never change its AI target using MythicMobs.
 
-## [PlaceholderAPI](https://www.spigotmc.org/resources/6245/)
+## PlaceholderAPI[](https://www.spigotmc.org/resources/6245/)
 
 If you have this plugin, BetonQuest will add a `betonquest` placeholder to it and you will be able to use `ph` variable in your conversations.
 
@@ -788,7 +793,7 @@ This event allows you to freeze player for the given amount of ticks:
 freezeMe: "freeze 100" #Freezes the player for 5 seconds
 ```
 
-## [Quests](https://www.spigotmc.org/resources/3711/)
+## Quests[](https://www.spigotmc.org/resources/3711/)
 
 Quests is another questing plugin, which offers very simple creation of quests. If you don't want to spend a lot of time to write advanced quests in BetonQuest but you need a specific thing from this plugin you can use Custom Event Reward or Custom Condition Requirement. Alternatively, if you have a lot of quests written in Quests, but want to integrate them with the conversation system, you can use `quest` event and `quest` condition.
 
@@ -822,7 +827,7 @@ This event will start the quest for the player. The first argument must be the n
     quest stone_miner check-requirements
     ```
 
-## [Shopkeepers](http://dev.bukkit.org/bukkit-plugins/shopkeepers/)
+## Shopkeepers[](http://dev.bukkit.org/bukkit-plugins/shopkeepers/)
 
 ### Conditions
 
@@ -846,7 +851,7 @@ This event opens a trading window of a Villager. The only argument is the unique
     shopkeeper b687538e-14ce-4b77-ae9f-e83b12f0b929
     ```
 
-## :material-sword-cross: [ProSkillAPI](https://www.spigotmc.org/resources/91913/)
+## ProSkillAPI[](https://www.spigotmc.org/resources/91913/)
 
 This adds support for [ProMCTeam's SkillAPI fork](https://www.spigotmc.org/resources/91913/). They still update SkillAPI.  
 
@@ -870,7 +875,7 @@ This condition checks if the player has specified or greater level is the specif
     skillapilevel warrior 3
     ```
 
-## [Skript](http://dev.bukkit.org/bukkit-plugins/skript/)
+## Skript[](http://dev.bukkit.org/bukkit-plugins/skript/)
 
 BetonQuest can also hook into Skript. Firstly, to avoid any confusion, I will refere to everything here by name of the plugin (Skript event is something else than BetonQuest event). Having Skript on your server will enable using BetonQuest events and conditions in scripts, and also trigger them by BetonQuest event.
 
@@ -924,7 +929,7 @@ You can also fire BetonQuest events with scripts. The syntax for Skript effect i
       give_emeralds: give emerald:5
     ```
 
-## :material-treasure-chest: [Vault](http://dev.bukkit.org/bukkit-plugins/vault/)
+## Vault[](http://dev.bukkit.org/bukkit-plugins/vault/)
 
 ### Conditions
 
@@ -999,7 +1004,7 @@ events:
   notifyNotEnough: "notify You still need %money.left:10000%$ to buy this plot."
 ```
 
-## [WorldEdit](http://dev.bukkit.org/bukkit-plugins/worldedit/) or [FastAsyncWorldEdit](https://www.spigotmc.org/resources/13932/)
+## WorldEdit[](http://dev.bukkit.org/bukkit-plugins/worldedit/) or FastAsyncWorldEdit[](https://www.spigotmc.org/resources/13932/)
 
 ### Events
 
@@ -1010,12 +1015,12 @@ events:
 This event will paste a schematic at the given location. The first argument is a location and the second one is the name of schematic file. The file must be located in `WorldEdit/schematics` or `FastAsyncWorldEdit/schematics` and have a name like `some_building.schematic`. An optional `noair` can be added to paste ignoring air blocks.
 If you have only a `.schem` schematic, simply append `.schem` to the schematic name.
 
-!!! example
-    ```YAML
-    paste 100;200;300;world some_building noair
-    ```
+```YAML title="Example"
+events:
+  pasteCastle: "paste 100;200;300;world castle noair"
+```
 
-## [WorldGuard](http://dev.bukkit.org/bukkit-plugins/worldguard/)
+## WorldGuard[](http://dev.bukkit.org/bukkit-plugins/worldguard/)
 
 ### Conditions
 
@@ -1023,10 +1028,11 @@ If you have only a `.schem` schematic, simply append `.schem` to the schematic n
 
 This condition is met when the player is inside the specified region. The only argument is the name of the region.
 
-!!! example
-    ```YAML
-    region beton
-    ```
+
+```YAML title="Example"
+conditions:
+  inCastle: "region castle"
+```
 
 ### Objectives
 
@@ -1034,7 +1040,8 @@ This condition is met when the player is inside the specified region. The only a
 
 To complete this objective you need to enter WorldGuard region with specified name. A required argument is the name of the region and you may also pass an optional `entry` and/or `exit` to only trigger when entering or exiting a region instead of anytime inside a region.
 
-!!! example
-    ```YAML
-    region beton events:kill
-    ```
+
+```YAML title="Example"
+objectives:
+  deathZone: "region deathZone entry events:kill"
+```

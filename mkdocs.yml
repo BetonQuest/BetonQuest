@@ -87,7 +87,7 @@ markdown_extensions:
       emoji_generator: !!python/name:materialx.emoji.to_svg
       options:
         custom_icons:
-          - custom_theme/.icons
+          - '_custom_theme/.icons'
   - pymdownx.inlinehilite
   - pymdownx.magiclink
   - pymdownx.mark
@@ -205,19 +205,19 @@ nav:
               - 'Menu Example': Documentation/Features/Menus/Example.md
               - 'Elements': Documentation/Features/Menus/Elements.md
               - 'Menu Settings': Documentation/Features/Menus/Config.md
-          - 'The Journal': Documentation/Features/Journal.md
-          - 'Quest Items': Documentation/Features/Items.md
-          - 'Quest Cancelers': Documentation/Features/Quest-Cancelers.md
+          - 'Additional Features':
+              - 'Journal': Documentation/Features/Journal.md
+              - 'Quest Items': Documentation/Features/Items.md
+              - 'Quest Cancelers': Documentation/Features/Quest-Cancelers.md
 
       - 'Scripting':
           - 'About Scripting': Documentation/Scripting/About-Scripting.md
           - 'Packages & Templates': Documentation/Scripting/Packages-&-Templates.md
-          - 'Building Blocks':
-              - 'Objectives List': Documentation/Scripting/Building-Blocks/Objectives-List.md
-              - 'Events List': Documentation/Scripting/Building-Blocks/Events-List.md
-              - 'Conditions List': Documentation/Scripting/Building-Blocks/Conditions-List.md
-              - 'Integration List': Documentation/Scripting/Building-Blocks/Compatibility.md
-              - 'Variables List': Documentation/Scripting/Building-Blocks/Variables-List.md
+          - 'Objectives List': Documentation/Scripting/Building-Blocks/Objectives-List.md
+          - 'Events List': Documentation/Scripting/Building-Blocks/Events-List.md
+          - 'Conditions List': Documentation/Scripting/Building-Blocks/Conditions-List.md
+          - 'Integration List': Documentation/Scripting/Building-Blocks/Integration-List.md
+          - 'Variables List': Documentation/Scripting/Building-Blocks/Variables-List.md
           - 'Additional Features':
               - 'Schedules': Documentation/Scripting/Schedules.md
               - 'Parties': Documentation/Scripting/Parties.md
@@ -230,7 +230,6 @@ nav:
           - 'NPC Effects':
               - 'NPC Hiding': Documentation/Visual-Effects/NPC-Effects/NPC-Hiding.md
               - 'NPC Holograms': Documentation/Visual-Effects/NPC-Effects/NPC-Holograms.md
-              - 'NPC Glow': Documentation/Visual-Effects/NPC-Effects/NPC-Glow.md
           - 'Additional Effects':
               - 'Quest Holograms': Documentation/Visual-Effects/Additional-Effects/Quest-Holograms.md
               - 'Player Hider': Documentation/Visual-Effects/Additional-Effects/Player-Hider.md
@@ -241,7 +240,7 @@ nav:
           - 'Version Changes':
               - 'Updating': Documentation/Configuration/Version-Changes/Updating.md
               - 'Migration': Documentation/Configuration/Version-Changes/Migration.md
-      - 'Changelog': Documentation/CHANGELOG.md
+              - 'Changelog': Documentation/CHANGELOG.md
   - 'API':
       - 'Overview': API/Overview.md
       - 'Legacy API': API/API.md
