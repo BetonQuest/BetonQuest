@@ -27,19 +27,18 @@ public class HologramPlaceholder implements IndividualPlaceholder {
     }
 
     @Override
-    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public @Nullable
     String getReplacement(@NotNull final Player player, @Nullable final String arguments) {
-        try {
-            if (arguments == null) {
-                return "";
-            }
-            final Profile profile = PlayerConverter.getID(player);
-            final String[] args = arguments.split(":", 2);
-            return BetonQuest.getInstance().getVariableValue(args[0], "%" + args[1] + "%", profile);
-        } catch (final Exception e) {
-            LOG.warn("Could not parse hologram variable " + arguments + "! Expected format %<package>.<variable>%");
-            return arguments;
+        if (arguments == null) {
+            return "";
         }
+        final Profile profile = PlayerConverter.getID(player);
+        final int limit = 2;
+        final String[] args = arguments.split(":", limit);
+        if (args.length == limit) {
+            return BetonQuest.getInstance().getVariableValue(args[0], "%" + args[1] + "%", profile);
+        }
+        LOG.warn("Could not parse hologram variable " + arguments + "! Expected format %<package>.<variable>%");
+        return arguments;
     }
 }
