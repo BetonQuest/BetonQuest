@@ -1,6 +1,7 @@
 // For this script to work on GitHub Pages, you need to ensure CORS is set up correctly on your Nexus server.
 // For local testing you need to disable CORS in your browser,
-// and you need to set the nexusUrl to the actual URL of your Nexus server including the target repository.
+// and you need to set the nexusUrl to the actual URL of your Nexus server including the target repository
+// (like in your pom.xml).
 
 const nexusUrl = "${REPOSITORY_URL}";
 const parts = nexusUrl.split("/");
@@ -8,11 +9,13 @@ const baseUrl = parts.slice(0, -3).join("/") + "/";
 const repositoryName = parts[parts.length - 2];
 
 window.onload = async function () {
-  const path = new URLSearchParams(window.location.search).get("path");
+  let urlParams = new URLSearchParams(window.location.search);
+  const path = urlParams.get("path");
   if (path) {
     const url = nexusUrl + path;
-    const filename = new URLSearchParams(window.location.search).get("filename");
-    downloadWithRename(url, filename).then(() => window.location.href = window.location.href.split("?")[0]);
+    const filename = urlParams.get("filename");
+    await downloadWithRename(url, filename);
+    window.location.href = window.location.href.split("?")[0];
   }
 };
 
@@ -81,13 +84,12 @@ async function getBuilds() {
   while (continuationToken !== null) {
     const params = getURLParams(continuationToken);
     try {
-      const response = await fetch(baseUrl + `service/rest/v1/search/assets?${params}`);
-      const data = await response.json();
-
+      let data = await fetch(baseUrl + `service/rest/v1/search/assets?${params}`)
+        .then(response => response.json());
       buildRequests.push(...data["items"].map(build => getVersion(build, cachedVersions, newCachedVersions)));
       continuationToken = data["continuationToken"];
     } catch (error) {
-      console.error(error);
+      console.error("Failed to fetch builds:", error);
       continuationToken = null;
     }
   }
@@ -147,23 +149,15 @@ async function getVersion(build, cachedVersions, newCachedVersions) {
   return {version: version, downloadUrl: build["downloadUrl"]};
 }
 
-async function downloadWithRename(url, filename) {
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", url, true);
-    xhr.responseType = "blob";
-    xhr.onload = function () {
-      if (this.status === 200) {
-        const blob = this.response;
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = filename ? filename : url.split("/").pop();
-        link.click();
-        resolve();
-      } else {
-        reject();
-      }
-    };
-    xhr.send();
+function downloadWithRename(url, filename) {
+  return fetch(url).then(async response => {
+    if (response.ok) {
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(await response.blob());
+      link.download = filename ? filename : url.split("/").pop();
+      link.click();
+    } else {
+      console.error("Error while downloading file: " + response.status + " " + response.statusText + "");
+    }
   });
 }
