@@ -55,8 +55,8 @@ All existing RPGMenu users must update their RPGMenu config file. Simply rename 
             conditions:
               myCondition: "location 300;200;300;world"
             ```
-            As described in the previous paragraph, the events and conditions must not be in the same file anymore.
-            You could also do this or use any file structure:
+            As described in the previous paragraph, the events and conditions must not be in seperate files anymore.
+            You could also put everything in a single file or use any other file structure:
             ``` YAML title="anyFileName.yml"
             events:
               myEvent: "teleport 1;2;3;world"
