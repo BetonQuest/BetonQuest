@@ -175,13 +175,10 @@ After you did this, you need to replace the BlockSelector in the `smelt` objecti
 
 ### 2.0.0-DEV-539 - NPC Holograms
 
-Holograms where reworked, for the migration mainly three things have to be changed:
-- The `vector` now is by default on the head of the NPC, so you have to adjust the vector to get the old position.
-  - The default value was `0;3;0` before and the new one is `0;0;0`, but they are both at the same position now.
-    So if you heave `0;3;0` you can just delete it.
-    If you have another value you just need to subtract `3` from the y value.
-- The `follow` boolean is now individual for each NPC Hologram, so you have to add it to each NPC Hologram.
-- The `check_interval` is now individual for each NPC Hologram, so you have to add it to each NPC Hologram.
+Holograms were reworked. Mainly three things have to be changed:
+- The `vector` is now above the head of the NPC by default. This was previously achieved with `0;3;0`. Therefore every hologram is now three blocks higher then you want. If you have `0;3;0` you can just delete the vector argument. If you have another value you need to subtract `3` from the y-axis.
+- The `follow` boolean can now be set for each NPC Hologram, so you have to add it to each NPC Hologram. Don't add it to still-standing NPCs. That will save you a lot of performance.
+- The `check_interval` is now individual for each NPC Hologram as well, so you have to add it to each NPC Hologram. This allows for finer control over how much server ressources are used.
 
 !!! info "Example"
     === "Old Syntax" 
