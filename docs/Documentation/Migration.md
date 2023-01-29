@@ -34,7 +34,7 @@ All existing RPGMenu users must update their RPGMenu config file. Simply rename 
   * Therefore, the "_events.yml_`, "_objectives.yml_", "_conditions.yml_", "_journal.yml_" and "_items.yml_" files must
     be updated to the following format:
     Every type that was previously a separate file with a special name is now identified by a "parent-section". It's
-    the names of the types / the names the file previously had. Let's take a look at an example for events and conditions:
+    the names of the type / the name the file previously had. Let's take a look at an example for events and conditions:
   
     !!! info "Example"
         === "Old Way"
@@ -55,7 +55,7 @@ All existing RPGMenu users must update their RPGMenu config file. Simply rename 
             conditions:
               myCondition: "location 300;200;300;world"
             ```
-            As described in the previous paragraph, the events and conditions must not be in separate files anymore.
+            This allows you to freely name the files. Also, it is no longer necessary that events, conditions etc. are in separate files.
             You could also put everything in a single file or use any other file structure:
             ``` YAML title="anyFileName.yml"
             events:
