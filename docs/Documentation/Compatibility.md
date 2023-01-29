@@ -416,7 +416,7 @@ Keep in mind that each hologram plugin also updates it's holograms on a timer in
 ### NPC Holograms
 
 If Citizens is also installed then you can have holograms configured relative to an NPC.
-If you have moving NPCs (waling around) then you can have the holograms follow them by setting `follow: true`,
+If you have moving NPCs (walking around) then you can have the holograms follow them by setting `follow: true`,
 but this will cause a lot of updates to the holograms and may cause lag if used on a lot of NPCs.
 So only set this to true for holograms with an NPC that actually moves.
 
