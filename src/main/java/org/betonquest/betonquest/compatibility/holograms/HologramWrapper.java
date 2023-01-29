@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Wrapper class for {@link BetonHologram} that stores data parsed from hologram configuration.
  *
- * @param hologram      Actual hologram
+ * @param holograms     A list of actual hologram
  * @param interval      Interval in ticks that lie between updates to the visibility and content
  * @param staticContent Indicates whether the displayed content of the hologram is changing after a while.
  *                      HolographicDisplays variables are not updated BetonQuest, it does not make a hologram flexible.
@@ -27,17 +27,17 @@ import java.util.List;
  *                      unneeded load.
  * @param cleanedLines  List of validated lines. Used by {@link #updateContent()} to update content without
  *                      revalidating content and dealing with potential errors.
- * @param identifier    Name of hologram from <code>custom.yml</code>
  * @param questPackage  {@link QuestPackage} in which the hologram is specified in.
  */
-public record HologramWrapper(int interval, BetonHologram hologram, boolean staticContent, ConditionID[] conditionList,
-                              List<AbstractLine> cleanedLines, String identifier, QuestPackage questPackage) {
+public record HologramWrapper(int interval, List<BetonHologram> holograms, boolean staticContent,
+                              ConditionID[] conditionList,
+                              List<AbstractLine> cleanedLines, QuestPackage questPackage) {
     /**
      * Checks whether all conditions are met by a players and displays or hides the hologram.
      */
     public void updateVisibility() {
         if (conditionList.length == 0) {
-            hologram.showAll();
+            holograms.forEach(BetonHologram::showAll);
             return;
         }
 
@@ -51,9 +51,9 @@ public record HologramWrapper(int interval, BetonHologram hologram, boolean stat
      */
     public void updateVisibilityForPlayer(final OnlineProfile profile) {
         if (BetonQuest.conditions(profile, conditionList)) {
-            hologram.show(profile.getPlayer());
+            holograms.forEach(hologram -> hologram.show(profile.getPlayer()));
         } else {
-            hologram.hide(profile.getPlayer());
+            holograms.forEach(hologram -> hologram.hide(profile.getPlayer()));
         }
     }
 
@@ -61,15 +61,13 @@ public record HologramWrapper(int interval, BetonHologram hologram, boolean stat
      * Fills the hologram with content. Called after a hologram is first created or if plugin is reloaded.
      */
     public void initialiseContent() {
-        hologram.clear();
-        int length = 0;
-        for (final AbstractLine line : cleanedLines) {
-            length += line.getLinesAdded();
-        }
-        hologram.createLines(0, length);
+        holograms.forEach(BetonHologram::clear);
+        final int length = cleanedLines.stream().mapToInt(AbstractLine::getLinesAdded).sum();
+        holograms.forEach(hologram -> hologram.createLines(0, length));
         int index = 0;
         for (final AbstractLine line : cleanedLines) {
-            line.setLine(hologram, index);
+            final int finalIndex = index;
+            holograms.forEach(hologram -> line.setLine(hologram, finalIndex));
             index += line.getLinesAdded();
         }
     }
@@ -85,7 +83,8 @@ public record HologramWrapper(int interval, BetonHologram hologram, boolean stat
         int index = 0;
         for (final AbstractLine line : cleanedLines) {
             if (line.isNotStaticText()) {
-                line.setLine(hologram, index);
+                final int finalIndex = index;
+                holograms.forEach(hologram -> line.setLine(hologram, finalIndex));
             }
             index += line.getLinesAdded();
         }

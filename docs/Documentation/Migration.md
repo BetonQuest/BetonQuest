@@ -18,6 +18,7 @@ Skip to the first version that is newer than the version that you're migrating f
 - [2.0.0-DEV-450 - Package section](#200-dev-450-package-section)
 - [2.0.0-DEV-485 - Experience changes](#200-dev-485-experience-changes)
 - [2.0.0-DEV-538 - Smelt Objective](#200-dev-538-smelt-objective)
+- [2.0.0-DEV-539 - NPC Holograms](#200-dev-529-npc-holograms)
 
 ### 2.0.0-DEV-98 - RPGMenu Merge
 
@@ -171,3 +172,43 @@ Therefore, you now need to define the item you want to smelt in the items sectio
 It is recommended to use the `/q item packageName.ItemName` command to save the target item from in-game. This will save the
 item you currently hold in your hand to the given package with the given name.
 After you did this, you need to replace the BlockSelector in the `smelt` objective with the item's name. 
+
+### 2.0.0-DEV-539 - NPC Holograms
+
+Holograms where reworked, for the migration mainly three things have to be changed:
+- The `vector` now is by default on the head of the NPC, so you have to adjust the vector to get the old position.
+  - The default value was `0;3;0` before and the new one is `0;0;0`, but they are both at the same position now.
+    So if you heave `0;3;0` you can just delete it.
+    If you have another value you just need to subtract `3` from the y value.
+- The `follow` boolean is now individual for each NPC Hologram, so you have to add it to each NPC Hologram.
+- The `check_interval` is now individual for each NPC Hologram, so you have to add it to each NPC Hologram.
+
+!!! info "Example"
+    === "Old Syntax" 
+        ``` YAML title="lisa.yml" 
+        npc_holograms:
+          check_interval: 100
+          follow: true
+          default:
+            lines:
+              - "Some text!"
+            conditions: has_some_quest, !finished_some_quest
+            vector: 0;3;0
+            npcs:
+              - 0
+              - 22
+        ```
+    === "New Syntax"
+        ``` YAML title="anyFileName.yml"
+        npc_holograms:
+          default:
+            lines:
+              - "Some text!"
+            conditions: has_some_quest, !finished_some_quest
+            vector: 0;0;0 # You dont need this line with the default value 0;0;0
+            check_interval: 100 # You dont need this line with the default value
+            follow: true # You dont need this line with the default value false
+            npcs:
+              - 0
+              - 22
+        ```

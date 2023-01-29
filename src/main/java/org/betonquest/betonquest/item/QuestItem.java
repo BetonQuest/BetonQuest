@@ -93,7 +93,7 @@ public class QuestItem {
             throw new InstructionParseException("Item instruction is null");
         }
         final String[] parts = instruction.split(" ");
-        if (parts.length <= 0) {
+        if (parts.length == 0) {
             throw new InstructionParseException("Not enough arguments");
         }
 

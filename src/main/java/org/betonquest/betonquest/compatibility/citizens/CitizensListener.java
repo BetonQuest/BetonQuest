@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.compatibility.citizens;
 
 import lombok.CustomLog;
-import net.citizensnpcs.api.event.CitizensReloadEvent;
 import net.citizensnpcs.api.event.NPCClickEvent;
 import net.citizensnpcs.api.event.NPCLeftClickEvent;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
@@ -94,11 +93,6 @@ public class CitizensListener implements Listener {
             new CitizensConversation(onlineProfile, assignment, event.getNPC().getEntity().getLocation(),
                     event.getNPC());
         }
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onCitizensReload(final CitizensReloadEvent event) {
-        CitizensHologram.reload();
     }
 
     private class RightClickListener implements Listener {

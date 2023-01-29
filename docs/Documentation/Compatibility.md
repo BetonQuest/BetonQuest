@@ -415,29 +415,28 @@ Keep in mind that each hologram plugin also updates it's holograms on a timer in
 
 ### NPC Holograms
 
-If Citizens is also installed then you can have holograms configured relative to an npc. Add the following:
+If Citizens is also installed then you can have holograms configured relative to an NPC.
+If you have moving NPCs (waling around) then you can have the holograms follow them by setting `follow: true`,
+but this will cause a lot of updates to the holograms and may cause lag if used on a lot of NPCs.
+So only set this to true on holograms that are on NPCs that are actually moving.
+
+Add the following for NPC Holograms:
 
 ```YAML
 npc_holograms:
-  # How often to check conditions
-  check_interval: 100
-  
-  # Holograms follow npcs when they move (higher cpu usage when true)
-  follow: false
-
-  # Disable npc_holograms
-  disabled: false
-
   # Hologram Settings
   default:
     # Lines in hologram
     lines:
       - "Some text!"
     # Vector offset to NPC position to place hologram
-    vector: 0;3;0
-
+    vector: 0;0.5;0
+    # follow boolean
+    follow: true
     # Conditions to display hologram
-    conditions: has_some_quest, !finished_some_quest
+    conditions: has_some_quest,!finished_some_quest
+    # How often to check conditions (optional)
+    check_interval: 20
 
     # NPC's to apply these settings to. If blank, applies by default
     npcs:
