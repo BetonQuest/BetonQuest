@@ -121,6 +121,9 @@ public class CitizensHologramLoop extends HologramLoop implements Listener {
                     final BetonHologram hologram = entry.getValue();
                     final NPC npc = CitizensAPI.getNPCRegistry().getById(npcID);
                     if (npc == null || !npc.isSpawned()) {
+                        if (hologram == null) {
+                            return;
+                        }
                         hologram.hideAll();
                         entry.setValue(null);
                         npcHologram.holograms().remove(hologram);
