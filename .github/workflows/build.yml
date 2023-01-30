@@ -426,7 +426,7 @@ jobs:
 
   discord-announcement:
     name: Official Deployment
-    if: "always() && !cancelled() && (needs.prepare.outputs.CHANGES_IN_DOCS_ONLY == 'false' || !failure()) && (needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development')"
+    if: "always() && !cancelled() && (needs.prepare.outputs.CHANGES_IN_DOCS_ONLY == 'false' || failure()) && (needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development')"
     needs: [ prepare, deploy-artifacts, deploy-docs, create-release ]
     runs-on: ubuntu-latest
 
