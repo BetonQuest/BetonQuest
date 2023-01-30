@@ -39,8 +39,8 @@ jobs:
         id: save_changes
         if: "github.repository == 'BetonQuest/BetonQuest' && ( github.ref == 'refs/heads/main' || startsWith(github.ref,'refs/heads/main_v') )"
         run: |
-          DIFF_OUTSIDE="$(git diff --quiet ${PREVIOUS_VERSION_TAG} -- . ':(exclude)docs/' && echo Nothing || echo Changes)"
-          DIFF_INSIDE="$(git diff --quiet ${PREVIOUS_VERSION_TAG} -- docs/ && echo Nothing || echo Changes)"
+          DIFF_OUTSIDE="$(git diff --quiet ${PREVIOUS_VERSION_TAG} -- . ':(exclude)documentation/' && echo Nothing || echo Changes)"
+          DIFF_INSIDE="$(git diff --quiet ${PREVIOUS_VERSION_TAG} -- documentation/ && echo Nothing || echo Changes)"
           if [[ $DIFF_OUTSIDE == Nothing && $DIFF_INSIDE == Changes ]]; then CHANGES_IN_DOCS_ONLY=true; else CHANGES_IN_DOCS_ONLY=false; fi
           echo "CHANGES_IN_DOCS_ONLY=$CHANGES_IN_DOCS_ONLY" >> $GITHUB_ENV
           echo "changes_in_docs_only=$CHANGES_IN_DOCS_ONLY" >> $GITHUB_OUTPUT
