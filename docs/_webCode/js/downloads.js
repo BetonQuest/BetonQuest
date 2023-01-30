@@ -32,8 +32,9 @@ function loadBuilds(idKey, builds) {
   const latestBuild = document.getElementsByClassName("download-latest-" + idKey)[0];
   if (builds.length > 0) {
     latestBuild.textContent = builds[0].version;
+    const downloadUrl = builds[0].downloadUrl;
     latestBuild.onclick = function () {
-      downloadWithRename(builds[0].downloadUrl, "BetonQuest.jar");
+      downloadWithRename(downloadUrl, "BetonQuest.jar");
     };
     resetDisabled(latestBuild);
   } else {
