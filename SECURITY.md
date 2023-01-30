@@ -6,7 +6,7 @@ The following versions are supported with security updates.
 | -------- | ------------------ |
 | 2.0      | :white_check_mark: |
 | 1.12 LTS | :white_check_mark: |
-| < 1.12   | :x:               |
+| < 1.12   | :x:                |
 
 ## Reporting a Vulnerability
 
