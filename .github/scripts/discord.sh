@@ -54,8 +54,8 @@ case "$VERSION_TYPE" in
     RELEASE_NAME="Dev-Build"
     RELEASE_DOWNLOAD_URL="${DOCS_URL}DEV/Downloads/"
     RELEASE_COMMIT_ICON_SUCCESS="$COMMIT_ICON_SUCCESS"
-    IFS='-' read -r -a array <<< "$VERSION"
-    DOCS_VERSION="${array[0]}-${array[1]}"
+    IFS='.' read -r major minor _ <<< "$VERSION"
+    DOCS_VERSION="$major.$minor-DEV"
     ;;
 
   * )

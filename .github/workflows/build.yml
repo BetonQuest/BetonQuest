@@ -360,17 +360,22 @@ jobs:
         run: |
           git config --global user.name "BetonQuest-Bot"
           git config --global user.email "contact@betonquest.org"
+          
+          IFS='.' read -r major minor _ <<< "$VERSION"
+          TWO_DIGIT_VERSION="$major.$minor"
 
-          mike deploy --push --update-aliases ${VERSION} RELEASE
-          mike delete --push ${VERSION}-DEV
+          mike deploy --push --update-aliases "$TWO_DIGIT_VERSION" RELEASE
+          mike delete --push "$TWO_DIGIT_VERSION-DEV"
       - name: Deploy development to Github Pages
         if: "env.VERSION_TYPE == 'development'"
         run: |
           git config --global user.name "BetonQuest-Bot"
           git config --global user.email "contact@betonquest.org"
 
-          IFS='-' read -r -a array <<< "$VERSION"
-          [ ${{ github.ref }} == 'refs/heads/main' ] && mike deploy --push --update-aliases ${array[0]}-DEV DEV || mike deploy --push --update-aliases ${array[0]}-DEV
+          IFS='.' read -r major minor _ <<< "$VERSION"
+          TWO_DIGIT_VERSION="$major.$minor"
+          
+          [ ${{ github.ref }} == 'refs/heads/main' ] && mike deploy --push --update-aliases "$TWO_DIGIT_VERSION-DEV" DEV || mike deploy --push --update-aliases "$TWO_DIGIT_VERSION-DEV"
 
   create-release:
     name: Create GitHub Release
