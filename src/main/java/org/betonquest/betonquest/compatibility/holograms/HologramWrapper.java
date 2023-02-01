@@ -37,11 +37,15 @@ public record HologramWrapper(int interval, List<BetonHologram> holograms, boole
      */
     public void updateVisibility() {
         if (conditionList.length == 0) {
-            holograms.forEach(BetonHologram::showAll);
+            for (final BetonHologram hologram : holograms) {
+                hologram.showAll();
+            }
             return;
         }
 
-        PlayerConverter.getOnlineProfiles().forEach(this::updateVisibilityForPlayer);
+        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+            updateVisibilityForPlayer(onlineProfile);
+        }
     }
 
     /**
@@ -51,9 +55,13 @@ public record HologramWrapper(int interval, List<BetonHologram> holograms, boole
      */
     public void updateVisibilityForPlayer(final OnlineProfile profile) {
         if (BetonQuest.conditions(profile, conditionList)) {
-            holograms.forEach(hologram -> hologram.show(profile.getPlayer()));
+            for (final BetonHologram hologram : holograms) {
+                hologram.show(profile.getPlayer());
+            }
         } else {
-            holograms.forEach(hologram -> hologram.hide(profile.getPlayer()));
+            for (final BetonHologram hologram : holograms) {
+                hologram.hide(profile.getPlayer());
+            }
         }
     }
 
@@ -61,13 +69,19 @@ public record HologramWrapper(int interval, List<BetonHologram> holograms, boole
      * Fills the hologram with content. Called after a hologram is first created or if plugin is reloaded.
      */
     public void initialiseContent() {
-        holograms.forEach(BetonHologram::clear);
+        for (final BetonHologram betonHologram : holograms) {
+            betonHologram.clear();
+        }
         final int length = cleanedLines.stream().mapToInt(AbstractLine::getLinesAdded).sum();
-        holograms.forEach(hologram -> hologram.createLines(0, length));
+        for (final BetonHologram betonHologram : holograms) {
+            betonHologram.createLines(0, length);
+        }
         int index = 0;
         for (final AbstractLine line : cleanedLines) {
             final int finalIndex = index;
-            holograms.forEach(hologram -> line.setLine(hologram, finalIndex));
+            for (final BetonHologram hologram : holograms) {
+                line.setLine(hologram, finalIndex);
+            }
             index += line.getLinesAdded();
         }
     }
@@ -84,7 +98,9 @@ public record HologramWrapper(int interval, List<BetonHologram> holograms, boole
         for (final AbstractLine line : cleanedLines) {
             if (line.isNotStaticText()) {
                 final int finalIndex = index;
-                holograms.forEach(hologram -> line.setLine(hologram, finalIndex));
+                for (final BetonHologram hologram : holograms) {
+                    line.setLine(hologram, finalIndex);
+                }
             }
             index += line.getLinesAdded();
         }

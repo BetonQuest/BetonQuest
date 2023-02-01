@@ -9,7 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,8 +28,9 @@ public class LocationHologramLoop extends HologramLoop {
     @Override
     protected List<BetonHologram> getHologramsFor(final QuestPackage pack, final ConfigurationSection section) throws InstructionParseException {
         final Location location = getParsedLocation(pack, section);
-        final BetonHologram hologram = HologramProvider.getInstance().createHologram(pack.getQuestPath() + section.getCurrentPath(), location);
-        return Collections.singletonList(hologram);
+        final List<BetonHologram> holograms = new ArrayList<>();
+        holograms.add(HologramProvider.getInstance().createHologram(pack.getQuestPath() + section.getCurrentPath(), location));
+        return holograms;
     }
 
     @Nullable

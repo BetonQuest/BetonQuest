@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.holograms;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +26,7 @@ public final class HologramRunner {
     /**
      * Times the periodic execution of content and visibility refresh.
      */
-    private final BukkitRunnable runnable;
+    private final BukkitTask task;
 
     /**
      * Creates a new instance of the HologramRunner with the specified interval.
@@ -33,16 +34,16 @@ public final class HologramRunner {
      * @param interval Interval in ticks
      */
     private HologramRunner(final int interval) {
-        runnable = new BukkitRunnable() {
+        final BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
-                holograms.forEach(h -> {
+                for (final HologramWrapper h : holograms) {
                     h.updateVisibility();
                     h.updateContent();
-                });
+                }
             }
         };
-        runnable.runTaskTimerAsynchronously(BetonQuest.getInstance(), 20, interval);
+        task = runnable.runTaskTimer(BetonQuest.getInstance(), 1, interval);
     }
 
     /**
@@ -66,14 +67,18 @@ public final class HologramRunner {
      * @param profile The online player's profile
      */
     public static void refresh(final OnlineProfile profile) {
-        RUNNERS.values().forEach(hologramRunner -> hologramRunner.refreshRunner(profile));
+        for (final HologramRunner hologramRunner : RUNNERS.values()) {
+            hologramRunner.refreshRunner(profile);
+        }
     }
 
     /**
      * Cancels hologram updating loop and removes all BetonQuest-registered holograms.
      */
     public static void cancel() {
-        RUNNERS.values().forEach(HologramRunner::cancelRunner);
+        for (final HologramRunner hologramRunner : RUNNERS.values()) {
+            hologramRunner.cancelRunner();
+        }
         RUNNERS.clear();
     }
 
@@ -92,11 +97,20 @@ public final class HologramRunner {
      * @param profile The online player's profile
      */
     private void refreshRunner(final OnlineProfile profile) {
-        holograms.forEach(wrapper -> wrapper.updateVisibilityForPlayer(profile));
+        for (final HologramWrapper wrapper : holograms) {
+            wrapper.updateVisibilityForPlayer(profile);
+        }
     }
 
     private void cancelRunner() {
-        runnable.cancel();
-        holograms.forEach(hologramWrapper -> hologramWrapper.holograms().forEach(BetonHologram::delete));
+        task.cancel();
+        for (final HologramWrapper hologramWrapper : holograms) {
+            for (final BetonHologram betonHologram : hologramWrapper.holograms()) {
+                betonHologram.hideAll();
+                betonHologram.delete();
+            }
+            hologramWrapper.holograms().clear();
+        }
+        holograms.clear();
     }
 }

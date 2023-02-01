@@ -88,7 +88,9 @@ public abstract class HologramLoop {
             }
         }
         final List<BetonHologram> holograms = getHologramsFor(pack, section);
-        holograms.forEach(BetonHologram::hideAll);
+        for (final BetonHologram hologram : holograms) {
+            hologram.hideAll();
+        }
         final HologramWrapper hologramWrapper = new HologramWrapper(
                 checkInterval,
                 holograms,
