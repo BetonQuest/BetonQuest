@@ -18,6 +18,7 @@ import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.Interceptor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,10 +48,7 @@ public class PacketInterceptor implements Interceptor, Listener {
         this.player = onlineProfile.getPlayer();
         this.messages = new ArrayList<>();
 
-        final PacketType[] packets = MinecraftVersion.WILD_UPDATE.atOrAbove()
-                ? new PacketType[]{PacketType.Play.Server.CHAT, PacketType.Play.Server.SYSTEM_CHAT, PacketType.Play.Server.DISGUISED_CHAT}
-                : new PacketType[]{PacketType.Play.Server.CHAT};
-        packetAdapter = new PacketAdapter(BetonQuest.getInstance(), ListenerPriority.HIGHEST, packets) {
+        packetAdapter = new PacketAdapter(BetonQuest.getInstance(), ListenerPriority.HIGHEST, getPacketTypes()) {
             @Override
             public void onPacketSending(final PacketEvent event) {
                 if (!event.getPlayer().equals(player)) {
@@ -88,6 +86,19 @@ public class PacketInterceptor implements Interceptor, Listener {
 
         final AsyncListenerHandler handler = ProtocolLibrary.getProtocolManager().getAsynchronousManager().registerAsyncHandler(packetAdapter);
         handler.start();
+    }
+
+    @NotNull
+    private static List<PacketType> getPacketTypes() {
+        final List<PacketType> packets = new ArrayList<>();
+        packets.add(PacketType.Play.Server.CHAT);
+        if (MinecraftVersion.WILD_UPDATE.atOrAbove()) {
+            packets.add(PacketType.Play.Server.SYSTEM_CHAT);
+        }
+        if (MinecraftVersion.FEATURE_PREVIEW_UPDATE.atOrAbove()) {
+            packets.add(PacketType.Play.Server.DISGUISED_CHAT);
+        }
+        return packets;
     }
 
     /**
