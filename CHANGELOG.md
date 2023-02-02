@@ -150,6 +150,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - time event does not work with floating point values
 - global variable recursive resolution cross packages
 - inaccurate location variable decimal rounding
+- NPC holograms from Citizens are not hidden correctly
 - `location` objective - is now more robust if the player changes a world
 - `brew` objective - now counts newly brewed potions even if there were already some potions of the desired type in
 - `chestput` objective - did now work with double chests
