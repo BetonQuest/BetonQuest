@@ -5,6 +5,7 @@ import lombok.CustomLog;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCSpawnEvent;
 import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.trait.HologramTrait;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
@@ -14,6 +15,8 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
@@ -21,8 +24,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -135,11 +140,27 @@ public final class NPCHider extends BukkitRunnable implements Listener {
         if (npc.isSpawned()) {
             final Set<ConditionID> conditions = npcs.get(npcID);
             if (conditions == null || conditions.isEmpty() || !BetonQuest.conditions(onlineProfile, conditions)) {
-                hider.showEntity(onlineProfile, npc.getEntity());
+                getEntityList(npc).forEach(entity -> hider.showEntity(onlineProfile, entity));
             } else {
-                hider.hideEntity(onlineProfile, npc.getEntity());
+                getEntityList(npc).forEach(entity -> hider.hideEntity(onlineProfile, entity));
             }
         }
+    }
+
+    private List<Entity> getEntityList(final NPC npc) {
+        final List<Entity> entityList = new ArrayList<>();
+        entityList.add(npc.getEntity());
+
+        final HologramTrait hologramTrait = npc.getTraitNullable(HologramTrait.class);
+        if (hologramTrait != null) {
+            final ArmorStand nameEntity = hologramTrait.getNameEntity();
+            if (nameEntity != null) {
+                entityList.add(nameEntity);
+            }
+            entityList.addAll(hologramTrait.getHologramEntities());
+        }
+
+        return entityList;
     }
 
     /**
