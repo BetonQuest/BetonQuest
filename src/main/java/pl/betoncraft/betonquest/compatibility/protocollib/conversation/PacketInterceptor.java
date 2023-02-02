@@ -40,18 +40,16 @@ public class PacketInterceptor implements Interceptor, Listener {
     private final PacketAdapter packetAdapter;
     private int baseComponentIndex = -1;
 
+    @SuppressWarnings("PMD.CognitiveComplexity")
     public PacketInterceptor(final Conversation conv, final String playerID) {
         this.conv = conv;
         this.player = PlayerConverter.getPlayer(playerID);
         this.messages = new ArrayList<>();
 
-        final PacketType[] packets = MinecraftVersion.WILD_UPDATE.atOrAbove()
-                ? new PacketType[]{PacketType.Play.Server.CHAT, PacketType.Play.Server.SYSTEM_CHAT, PacketType.Play.Server.DISGUISED_CHAT}
-                : new PacketType[]{PacketType.Play.Server.CHAT};
-        packetAdapter = new PacketAdapter(BetonQuest.getInstance(), ListenerPriority.HIGHEST, packets) {
+        packetAdapter = new PacketAdapter(BetonQuest.getInstance(), ListenerPriority.HIGHEST, getPacketTypes()) {
             @Override
             public void onPacketSending(final PacketEvent event) {
-                if (event.getPlayer() != player) {
+                if (!event.getPlayer().equals(player)) {
                     return;
                 }
                 final PacketContainer packet = event.getPacket();
@@ -86,6 +84,18 @@ public class PacketInterceptor implements Interceptor, Listener {
 
         final AsyncListenerHandler handler = ProtocolLibrary.getProtocolManager().getAsynchronousManager().registerAsyncHandler(packetAdapter);
         handler.start();
+    }
+
+    private static List<PacketType> getPacketTypes() {
+        final List<PacketType> packets = new ArrayList<>();
+        packets.add(PacketType.Play.Server.CHAT);
+        if (MinecraftVersion.WILD_UPDATE.atOrAbove()) {
+            packets.add(PacketType.Play.Server.SYSTEM_CHAT);
+        }
+        if (MinecraftVersion.FEATURE_PREVIEW_UPDATE.atOrAbove()) {
+            packets.add(PacketType.Play.Server.DISGUISED_CHAT);
+        }
+        return packets;
     }
 
     /**
