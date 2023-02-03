@@ -18,7 +18,7 @@ Skip to the first version that is newer than the version that you're migrating f
 - [2.0.0-DEV-450 - Package section](#200-dev-450-package-section)
 - [2.0.0-DEV-485 - Experience changes](#200-dev-485-experience-changes)
 - [2.0.0-DEV-538 - Smelt Objective](#200-dev-538-smelt-objective)
-- [2.0.0-DEV-539 - NPC Holograms](#200-dev-529-npc-holograms)
+- [2.0.0-DEV-539 - NPC Holograms](#200-dev-539-npc-holograms)
 
 ### 2.0.0-DEV-98 - RPGMenu Merge
 
@@ -182,37 +182,37 @@ Holograms were reworked. Mainly three things have to be changed:
 - The `check_interval` can now be set for each NPC Hologram as well. This allows for finer control over how much server resources are used.
 
 
- <div class="grid" markdown>
+<div class="grid" markdown>
 
- ```YAML title="Old Syntax"
-  npc_holograms:
-    check_interval: 100
-    follow: true
-    default:
-      lines:
-        - "Some text!"
-      conditions: "has_some_quest"
-      vector: 0;3;0
-      npcs:
-        - 0
-        - 22
- ```
+```YAML title="Old Syntax"
+npc_holograms:
+  check_interval: 100
+  follow: true
+  default:
+    lines:
+      - "Some text!"
+    conditions: "has_some_quest"
+    vector: 0;3;0
+    npcs:
+      - 0
+      - 22
+```
 
- ```YAML title="New Syntax"
-  npc_holograms:
-    default:
-      lines:
-        - "Some text!"
-      conditions: "has_some_quest"
-      vector: 0;0;0 #(1)!
-      check_interval: 100 #(2)!
-      follow: true #(3)!
-      npcs:
-        - 0
-        - 22
- ```
- 
- 1. You can delete this if you had `0;3;0` previously as the origin was changed. Subtract 3 from the y-axis for any other value.
- 2. You can delete this if you had the default value of `100` (or whatever you set in "_config.yml_").
- 3. You can delete this if you had the default value of `false`.
+```YAML title="New Syntax"
+npc_holograms:
+  default:
+    lines:
+      - "Some text!"
+    conditions: "has_some_quest"
+    vector: 0;0;0 #(1)!
+    check_interval: 100 #(2)!
+    follow: true #(3)!
+    npcs:
+      - 0
+      - 22
+```
+
+1. You can delete this if you had `0;3;0` previously as the origin was changed. Subtract 3 from the y-axis for any other value.
+2. You can delete this if you had the default value of `100` (or whatever you set in "_config.yml_").
+3. You can delete this if you had the default value of `false`.
 </div>
