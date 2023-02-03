@@ -166,7 +166,8 @@ If you used these you might have to adjust the configured values because the beh
 
 ### 2.0.0-DEV-538 - Smelt Objective
 
-The `smelt` objective now requires a quest item instead of a BlockSelector.
-So if you used the BlockSelector until now, you now need to define the item you want to smelt in the items section.
-It is recommended to use the `/q item` command to save the target item from in-game if you hold it in your hand.
-After you done this, you need to replace the BlockSelector in the `smelt` objective with the item's name. 
+The `smelt` objective now requires a [quest item](./Items.md) instead of a BlockSelector.
+Therefore, you now need to define the item you want to smelt in the items section.
+It is recommended to use the `/q item packageName.ItemName` command to save the target item from in-game. This will save the
+item you currently hold in your hand to the given package with the given name.
+After you did this, you need to replace the BlockSelector in the `smelt` objective with the item's name. 
