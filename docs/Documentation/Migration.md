@@ -169,4 +169,4 @@ If you used these you might have to adjust the configured values because the beh
 The `smelt` objective now requires a item instead io a BlockSelector.
 So if you used the BlockSelector until now, you now need to define the item you want to smelt in the items section.
 It is recommended to use the `/q item` command to save the target item from in-game if you hold it in your hand.
-After you done this, you need to replace the BlockSelector with the item name in the `smelt` objective. 
+After you done this, you need to replace the BlockSelector in the `smelt` objective with the item's name. 
