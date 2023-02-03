@@ -447,8 +447,8 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 ## Smelting: `smelt`
 
 To complete this objective the player must smelt a specified item. Note that you must define the output item, not the
-ingredient. The first argument is a [Block Selector](Data-Formats.md#block-selectors) for the output
-item. The second is the amount (integer). You can use the `notify` keyword to display a message each time the player
+ingredient. The first argument is a  item ID from the _items_ section.
+The second is the amount (integer). You can use the `notify` keyword to display a message each time the player
 advances the objective, optionally with the notification interval after a colon.
 
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of items already smelted,
@@ -456,7 +456,7 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 
 !!! example
     ```YAML
-    smelt IRON_INGOT 5 events:reward
+    smelt ironIngot 5 events:reward
     ```
 
 ## Step on pressure plate: `step`

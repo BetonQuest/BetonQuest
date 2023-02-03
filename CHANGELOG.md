@@ -127,6 +127,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   - condition and objective do not support raw experience anymore
   - all allow decimal level and variables now
 - changed backpack configuration. "" will hide the compass or canceler
+- `smelt` objective - now requires a QuestItem instead of a BlockSelector
 - Things that are also changed in 1.12.X:
     - math variable now allows rounding output with the ~ operator
     - French translation has been updated
