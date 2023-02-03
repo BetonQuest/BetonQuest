@@ -17,6 +17,7 @@ Skip to the first version that is newer than the version that you're migrating f
 - [2.0.0-DEV-337 - Event Scheduling Rework](#200-dev-337-event-scheduling-rework)
 - [2.0.0-DEV-450 - Package section](#200-dev-450-package-section)
 - [2.0.0-DEV-485 - Experience changes](#200-dev-485-experience-changes)
+- [2.0.0-DEV-538 - Smelt Objective](#200-dev-538-smelt-objective)
 
 ### 2.0.0-DEV-98 - RPGMenu Merge
 
@@ -162,3 +163,11 @@ If you used these you might have to adjust the configured values because the beh
 - The `experience` objective, condition and event now supports decimal numbers.  
   For example, you can use `experience 1.5` to check for one and a half level.  
   You can convert raw experience points to levels, using such decimal numbers.
+
+### 2.0.0-DEV-538 - Smelt Objective
+
+The `smelt` objective now requires a [quest item](./Items.md) instead of a BlockSelector.
+Therefore, you now need to define the item you want to smelt in the items section.
+It is recommended to use the `/q item packageName.ItemName` command to save the target item from in-game. This will save the
+item you currently hold in your hand to the given package with the given name.
+After you did this, you need to replace the BlockSelector in the `smelt` objective with the item's name. 
