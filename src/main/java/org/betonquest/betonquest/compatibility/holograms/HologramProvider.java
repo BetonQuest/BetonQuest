@@ -5,7 +5,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
-import org.betonquest.betonquest.compatibility.citizens.CitizensHologram;
+import org.betonquest.betonquest.compatibility.citizens.CitizensHologramLoop;
 import org.betonquest.betonquest.exceptions.HookException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -45,9 +45,14 @@ public class HologramProvider implements Integrator {
     private HologramIntegrator integrator;
 
     /**
-     * The current hologramLoop
+     * The current {@link LocationHologramLoop}.
      */
-    private HologramLoop hologramLoop;
+    private LocationHologramLoop locationHologramLoop;
+
+    /**
+     * The current {@link CitizensHologramLoop}.
+     */
+    private CitizensHologramLoop citizensHologramLoop;
 
 
     /**
@@ -142,27 +147,26 @@ public class HologramProvider implements Integrator {
 
     @Override
     public void hook() throws HookException {
-        this.hologramLoop = new HologramLoop();
-        new HologramListener();
-
-        // if Citizens is hooked, start CitizensHologram
+        this.locationHologramLoop = new LocationHologramLoop();
         if (Compatibility.getHooked().contains("Citizens")) {
-            new CitizensHologram();
+            this.citizensHologramLoop = new CitizensHologramLoop();
         }
+        new HologramListener();
     }
 
     @Override
     public void reload() {
         synchronized (HologramProvider.class) {
-            if (instance.hologramLoop != null) {
-                instance.hologramLoop.cancel();
+            if (instance.locationHologramLoop != null) {
+                HologramRunner.cancel();
 
                 Collections.sort(ATTEMPTED_INTEGRATIONS);
 
                 instance.integrator = ATTEMPTED_INTEGRATIONS.get(0);
-                instance.hologramLoop = new HologramLoop();
-                if (Compatibility.getHooked().contains("Citizens")) {
-                    CitizensHologram.reload();
+                instance.locationHologramLoop = new LocationHologramLoop();
+                if (instance.citizensHologramLoop != null) {
+                    this.citizensHologramLoop.close();
+                    this.citizensHologramLoop = new CitizensHologramLoop();
                 }
             }
         }
@@ -171,11 +175,12 @@ public class HologramProvider implements Integrator {
     @Override
     public void close() {
         synchronized (HologramProvider.class) {
-            if (instance.hologramLoop != null) {
-                instance.hologramLoop.cancel();
-                instance.hologramLoop = null;
-                if (Compatibility.getHooked().contains("Citizens")) {
-                    CitizensHologram.close();
+            if (instance.locationHologramLoop != null) {
+                HologramRunner.cancel();
+                instance.locationHologramLoop = null;
+                if (instance.citizensHologramLoop != null) {
+                    instance.citizensHologramLoop.close();
+                    instance.citizensHologramLoop = null;
                 }
             }
         }
@@ -200,10 +205,7 @@ public class HologramProvider implements Integrator {
          */
         @EventHandler
         public void onPlayerJoin(final PlayerJoinEvent event) {
-            if (instance != null && instance.hologramLoop != null) {
-                instance.hologramLoop.refresh(PlayerConverter.getID(event.getPlayer()));
-            }
+            HologramRunner.refresh(PlayerConverter.getID(event.getPlayer()));
         }
     }
-
 }

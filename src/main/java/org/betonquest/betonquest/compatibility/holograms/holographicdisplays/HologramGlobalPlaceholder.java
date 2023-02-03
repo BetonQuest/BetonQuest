@@ -23,19 +23,17 @@ public class HologramGlobalPlaceholder implements GlobalPlaceholder {
     }
 
     @Override
-    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public @Nullable
     String getReplacement(@Nullable final String arguments) {
-        try {
-            if (arguments == null) {
-                return "";
-            }
-            final String[] args = arguments.split(":", 2);
-            return BetonQuest.getInstance().getVariableValue(args[0], "%" + args[1] + "%", null);
-        } catch (final Exception e) {
-            LOG.warn("Could not parse hologram variable " + arguments + "! " +
-                    "Expected format %<package>.<variable>%");
+        if (arguments == null) {
+            return "";
         }
+        final int limit = 2;
+        final String[] args = arguments.split(":", limit);
+        if (args.length == limit) {
+            return BetonQuest.getInstance().getVariableValue(args[0], "%" + args[1] + "%", null);
+        }
+        LOG.warn("Could not parse hologram variable " + arguments + "! " + "Expected format %<package>.<variable>%");
         return arguments;
     }
 }

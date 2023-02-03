@@ -18,6 +18,7 @@ Skip to the first version that is newer than the version that you're migrating f
 - [2.0.0-DEV-450 - Package section](#200-dev-450-package-section)
 - [2.0.0-DEV-485 - Experience changes](#200-dev-485-experience-changes)
 - [2.0.0-DEV-538 - Smelt Objective](#200-dev-538-smelt-objective)
+- [2.0.0-DEV-539 - NPC Holograms](#200-dev-529-npc-holograms)
 
 ### 2.0.0-DEV-98 - RPGMenu Merge
 
@@ -171,3 +172,47 @@ Therefore, you now need to define the item you want to smelt in the items sectio
 It is recommended to use the `/q item packageName.ItemName` command to save the target item from in-game. This will save the
 item you currently hold in your hand to the given package with the given name.
 After you did this, you need to replace the BlockSelector in the `smelt` objective with the item's name. 
+
+### 2.0.0-DEV-539 - NPC Holograms
+
+Holograms were reworked. Mainly three things have to be changed:
+
+- The `vector` is now above the head of the NPC by default. This was previously achieved with `0;3;0`. Therefore, every hologram that has defined a vector is now three blocks higher than you want. If you have `0;3;0` you can just delete the vector argument. If you have another value you need to subtract `3` from the y-axis.
+- The `follow` boolean can now be set for each NPC Hologram, so you have to add it to each NPC Hologram. It's off by default. Don't add it to still-standing NPCs. This will save you a lot of performance.
+- The `check_interval` can now be set for each NPC Hologram as well. This allows for finer control over how much server resources are used.
+
+
+ <div class="grid" markdown>
+
+ ```YAML title="Old Syntax"
+  npc_holograms:
+    check_interval: 100
+    follow: true
+    default:
+      lines:
+        - "Some text!"
+      conditions: "has_some_quest"
+      vector: 0;3;0
+      npcs:
+        - 0
+        - 22
+ ```
+
+ ```YAML title="New Syntax"
+  npc_holograms:
+    default:
+      lines:
+        - "Some text!"
+      conditions: "has_some_quest"
+      vector: 0;0;0 #(1)!
+      check_interval: 100 #(2)!
+      follow: true #(3)!
+      npcs:
+        - 0
+        - 22
+ ```
+ 
+ 1. You can delete this if you had `0;3;0` previously as the origin was changed. Subtract 3 from the y-axis for any other value.
+ 2. You can delete this if you had the default value of `100` (or whatever you set in "_config.yml_").
+ 3. You can delete this if you had the default value of `false`.
+</div>
