@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Groups together all holograms with same update interval and updates them with the same {@link BukkitRunnable}
+ * Groups all holograms with same update interval and updates them with a single {@link BukkitRunnable}.
  */
 public final class HologramRunner {
     /**

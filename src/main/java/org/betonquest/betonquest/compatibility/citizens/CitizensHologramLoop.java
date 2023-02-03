@@ -32,16 +32,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Hides and shows holograms to players, based on conditions at a fixed location.
+ * Hides and shows holograms to players at an NPC's location. Based on conditions.
  */
 @CustomLog
 public class CitizensHologramLoop extends HologramLoop implements Listener {
     /**
-     * The task that let Holograms follow NPCs.
+     * The task that lets holograms follow NPCs.
      */
     private final BukkitTask followTask;
     /**
-     * List of all {@link NPCHologram}.
+     * List of all {@link NPCHologram}s.
      */
     private final List<NPCHologram> npcHolograms;
     /**
