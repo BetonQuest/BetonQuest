@@ -177,42 +177,42 @@ After you did this, you need to replace the BlockSelector in the `smelt` objecti
 
 Holograms were reworked. Mainly three things have to be changed:
 
-- The `vector` is now above the head of the NPC by default. This was previously achieved with `0;3;0`. Therefore, every hologram is now three blocks higher then you want. If you have `0;3;0` you can just delete the vector argument. If you have another value you need to subtract `3` from the y-axis.
-- The `follow` boolean must now be set for each NPC Hologram, so you have to add it to each NPC Hologram. Don't add it to still-standing NPCs. This will save you a lot of performance.
-- The `check_interval` must now be set for each NPC Hologram as well. This allows for finer control over how much server resources are used.
+- The `vector` is now above the head of the NPC by default. This was previously achieved with `0;3;0`. Therefore, every hologram that has defined a vector is now three blocks higher than you want. If you have `0;3;0` you can just delete the vector argument. If you have another value you need to subtract `3` from the y-axis.
+- The `follow` boolean can now be set for each NPC Hologram, so you have to add it to each NPC Hologram. It's off by default. Don't add it to still-standing NPCs. This will save you a lot of performance.
+- The `check_interval` can now be set for each NPC Hologram as well. This allows for finer control over how much server resources are used.
 
-!!! info "Example"
-    <div class="grid" markdown>
-  
-    ```YAML title="Old Syntax"
-     npc_holograms:
-       check_interval: 100
-       follow: true
-       default:
-         lines:
-           - "Some text!"
-         conditions: "has_some_quest"
-         vector: 0;3;0
-         npcs:
-           - 0
-           - 22
-    ```
-  
-    ```YAML title="New Syntax"
-     npc_holograms:
-       default:
-         lines:
-           - "Some text!"
-         conditions: "has_some_quest"
-         vector: 0;0;0 #(1)!
-         check_interval: 100 #(2)!
-         follow: true #(3)!
-         npcs:
-           - 0
-           - 22
-    ```
-    
-    1. You can delete this if you had `0;3;0` previosuly as the origin was changed. Subtract 3 from the y-axis for any other value.
-    2. You can delete this if you had the default value of `100`.
-    3. You can delete this if you had the default value of `false`.
-   </div>
+
+ <div class="grid" markdown>
+
+ ```YAML title="Old Syntax"
+  npc_holograms:
+    check_interval: 100
+    follow: true
+    default:
+      lines:
+        - "Some text!"
+      conditions: "has_some_quest"
+      vector: 0;3;0
+      npcs:
+        - 0
+        - 22
+ ```
+
+ ```YAML title="New Syntax"
+  npc_holograms:
+    default:
+      lines:
+        - "Some text!"
+      conditions: "has_some_quest"
+      vector: 0;0;0 #(1)!
+      check_interval: 100 #(2)!
+      follow: true #(3)!
+      npcs:
+        - 0
+        - 22
+ ```
+ 
+ 1. You can delete this if you had `0;3;0` previously as the origin was changed. Subtract 3 from the y-axis for any other value.
+ 2. You can delete this if you had the default value of `100` (or whatever you set in "_config.yml_").
+ 3. You can delete this if you had the default value of `false`.
+</div>

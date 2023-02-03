@@ -112,7 +112,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - NPC Holograms are reworked
     - individual refresh rate for each hologram
     - the boolean follow is now set per hologram
-    - the vector offset origin has been changed. The hologram is now directly above the NPC's head by default. This means all previous values are now increased by 3 blocks on the y axis.
+    - the vector offset origin has been changed. The hologram is now directly above the NPCs head by default. This means all previously custom vectors are now increased by 3 blocks on the y-axis.
 - AureliumSkills updated to version Beta1.2.5
 - PikaMug Quests updated to version 4.1.3
 - Items now support AIR
