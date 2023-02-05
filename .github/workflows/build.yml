@@ -293,7 +293,7 @@ jobs:
         uses: mikefarah/yq@v4.30.8
         id: supported-versions
         with:
-          cmd: yq -r '."supportedVersions"[]'
+          cmd: yq eval -r '.supportedVersions[]' ./mcinfo.yml
       - name: Determine version type
         run: |
           if [ "$VERSION_TYPE" == development ]; then
