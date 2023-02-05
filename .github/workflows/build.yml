@@ -88,7 +88,7 @@ jobs:
     needs: [ prepare ]
     runs-on: ubuntu-latest
 
-    env:
+    env: &version-env
       VERSION: ${{ needs.prepare.outputs.VERSION }}
       VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
       PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG
@@ -145,11 +145,7 @@ jobs:
     needs: [ prepare ]
     runs-on: ubuntu-latest
 
-    env:
-      VERSION: ${{ needs.prepare.outputs.VERSION }}
-      VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
-      PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
-      CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
+    env: *version-env
 
     steps:
       - name: Checkout source code
@@ -230,11 +226,7 @@ jobs:
     needs: [ prepare, build-artifacts, build-docs ]
     runs-on: ubuntu-latest
 
-    env:
-      VERSION: ${{ needs.prepare.outputs.VERSION }}
-      VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}"
-      PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
-      CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
+    env: *version-env
 
     outputs:
       UPLOAD_PATH: ${{ steps.save_upload_path.outputs.upload_path }}
@@ -326,11 +318,7 @@ jobs:
     needs: [ prepare, build-artifacts, build-docs ]
     runs-on: ubuntu-latest
 
-    env:
-      VERSION: ${{ needs.prepare.outputs.VERSION }}
-      VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}"
-      PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
-      CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
+    env: *version-env
 
     steps:
       - name: Checkout source code
@@ -408,11 +396,7 @@ jobs:
     needs: [ prepare, deploy-artifacts, deploy-docs ]
     runs-on: ubuntu-latest
 
-    env:
-      VERSION: ${{ needs.prepare.outputs.VERSION }}
-      VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
-      PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
-      CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
+    env: *version-env
 
     steps:
       - name: Checkout source code
@@ -457,6 +441,8 @@ jobs:
     needs: [ prepare, deploy-artifacts, deploy-docs, create-release ]
     runs-on: ubuntu-latest
 
+    env: *version-env
+
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
@@ -468,8 +454,4 @@ jobs:
           JOB_STATUS: ${{ job.status }}
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
           DOCS_URL: ${{ vars.DOCS_URL }}
-          VERSION: ${{ needs.prepare.outputs.VERSION }}
-          VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
-          PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
-          CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
           UPLOAD_PATH: ${{ needs.deploy-artifacts.outputs.UPLOAD_PATH }}
