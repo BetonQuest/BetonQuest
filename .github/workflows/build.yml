@@ -204,9 +204,9 @@ jobs:
           sed -i "s~%VERSION%~${VERSION}~g" ./mkdocs.yml
       - name: Set secret in downloads.js script
         run: |
-          sed -i "s~\${REPOSITORY_URL}~${REPOSITORY_URL}~g" ./docs/_webCode/js/downloads.js
+          sed -i "s~\${REPOSITORY_URL}~$REPOSITORY_URL~g" ./docs/_webCode/js/downloads.js
         env:
-          REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
+          REPOSITORY_URL: ${{ vars.REPOSITORY_URL }}
       - name: Build with mkdocs
         run: |
           if [ "$TXT" = "docs-requirements-insiders.txt" ]
@@ -286,12 +286,12 @@ jobs:
           if [ $VERSION_TYPE == 'release' ]; then CHANGELIST=-Dchangelist=; fi
           mvn $CHANGELIST -P Skip-Verification,Test-None -B deploy | tee maven-deploy.log
         env:
-          REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
+          REPOSITORY_URL: ${{ vars.REPOSITORY_URL }}
           REPOSITORY_USER: ${{ secrets.REPOSITORY_USER }}
           REPOSITORY_PASS: ${{ secrets.REPOSITORY_PASS }}
       - uses: Kir-Antipov/mc-publish@v3.2
         with:
-          modrinth-id: uVhukxY9
+          modrinth-id: ${{ vars.MODRINTH_ID }}
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           modrinth-unfeature-mode: version-subset
 
@@ -311,10 +311,10 @@ jobs:
       - name: Get upload URL from deploy log
         id: save_upload_path
         run: |
-          UPLOAD_PATH="$(grep -oP "(?<=Uploading to betonquest: ${REPOSITORY_URL}).*-shaded.jar" maven-deploy.log)"
+          UPLOAD_PATH="$(grep -oP "(?<=Uploading to betonquest: $REPOSITORY_URL).*-shaded.jar" maven-deploy.log)"
           echo "upload_path=$UPLOAD_PATH" >> $GITHUB_OUTPUT
         env:
-          REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
+          REPOSITORY_URL: ${{ vars.REPOSITORY_URL }}
 
   deploy-docs:
     name: Deploy Docs
@@ -464,7 +464,7 @@ jobs:
         env:
           JOB_STATUS: ${{ job.status }}
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
-          DOCS_URL: ${{ secrets.DOCS_URL }}
+          DOCS_URL: ${{ vars.DOCS_URL }}
           VERSION: ${{ needs.prepare.outputs.VERSION }}
           VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
           PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
