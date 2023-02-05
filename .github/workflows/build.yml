@@ -314,9 +314,6 @@ jobs:
           name: ${{ env.VERSION }}
           version: ${{ env.VERSION }}
           version-type: ${{ env.MODRINTH_VERSION_TYPE }}
-          loaders: |
-            Spigot
-            Paper
           game-versions: ${{ steps.supported-versions.outputs.result }}
 
       - name: Get upload URL from deploy log
