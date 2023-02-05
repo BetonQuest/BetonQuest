@@ -295,6 +295,7 @@ jobs:
         with:
           cmd: yq -r '."supportedVersions"[]'
       - uses: Kir-Antipov/mc-publish@v3.2
+        name: Deploy to Modrinth
         with:
           modrinth-id: ${{ vars.MODRINTH_ID }}
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
