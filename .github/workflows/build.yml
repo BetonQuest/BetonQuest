@@ -88,13 +88,13 @@ jobs:
     needs: [ prepare ]
     runs-on: ubuntu-latest
 
+    env:
+      VERSION: ${{ needs.prepare.outputs.VERSION }}
+      VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
+      PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG
+      CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY
+
     steps:
-      - name: Set variables from 'Prepare Build Variables'
-        run: |
-          echo "VERSION=${{ needs.prepare.outputs.VERSION }}" >> $GITHUB_ENV
-          echo "VERSION_TYPE=${{ needs.prepare.outputs.VERSION_TYPE }}" >> $GITHUB_ENV
-          echo "PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}" >> $GITHUB_ENV
-          echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
       - name: Checkout source code
         uses: actions/checkout@v3
       - name: Setup JDK 17
@@ -145,13 +145,13 @@ jobs:
     needs: [ prepare ]
     runs-on: ubuntu-latest
 
+    env:
+      VERSION: ${{ needs.prepare.outputs.VERSION }}
+      VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
+      PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
+      CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
+
     steps:
-      - name: Set variables from 'Prepare Build Variables'
-        run: |
-          echo "VERSION=${{ needs.prepare.outputs.VERSION }}" >> $GITHUB_ENV
-          echo "VERSION_TYPE=${{ needs.prepare.outputs.VERSION_TYPE }}" >> $GITHUB_ENV
-          echo "PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}" >> $GITHUB_ENV
-          echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
       - name: Checkout source code
         uses: actions/checkout@v3
       - name: Create LFS file list
@@ -231,10 +231,10 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      VERSION=${{ needs.prepare.outputs.VERSION }}
-      VERSION_TYPE=${{ needs.prepare.outputs.VERSION_TYPE }}"
-      PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
-      CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
+      VERSION: ${{ needs.prepare.outputs.VERSION }}
+      VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}"
+      PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
+      CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
 
     outputs:
       UPLOAD_PATH: ${{ steps.save_upload_path.outputs.upload_path }}
@@ -324,10 +324,10 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      VERSION=${{ needs.prepare.outputs.VERSION }}
-      VERSION_TYPE=${{ needs.prepare.outputs.VERSION_TYPE }}"
-      PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
-      CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
+      VERSION: ${{ needs.prepare.outputs.VERSION }}
+      VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}"
+      PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
+      CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
 
     steps:
       - name: Checkout source code
@@ -405,13 +405,13 @@ jobs:
     needs: [ prepare, deploy-artifacts, deploy-docs ]
     runs-on: ubuntu-latest
 
+    env:
+      VERSION: ${{ needs.prepare.outputs.VERSION }}
+      VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
+      PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
+      CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
+
     steps:
-      - name: Set variables from 'Prepare Build Variables'
-        run: |
-          echo "VERSION=${{ needs.prepare.outputs.VERSION }}" >> $GITHUB_ENV
-          echo "VERSION_TYPE=${{ needs.prepare.outputs.VERSION_TYPE }}" >> $GITHUB_ENV
-          echo "PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}" >> $GITHUB_ENV
-          echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
       - name: Checkout source code
         uses: actions/checkout@v3
       - name: Cache target/artifacts
@@ -455,15 +455,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set variables from 'Prepare Build Variables'
-        run: |
-          echo "VERSION=${{ needs.prepare.outputs.VERSION }}" >> $GITHUB_ENV
-          echo "VERSION_TYPE=${{ needs.prepare.outputs.VERSION_TYPE }}" >> $GITHUB_ENV
-          echo "PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}" >> $GITHUB_ENV
-          echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
-          echo "UPLOAD_PATH=${{ needs.deploy-artifacts.outputs.UPLOAD_PATH }}" >> $GITHUB_ENV
-        env:
-          REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
       - name: Checkout source code
         uses: actions/checkout@v3
       - name: Publish to Discord
@@ -474,3 +465,8 @@ jobs:
           JOB_STATUS: ${{ job.status }}
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
           DOCS_URL: ${{ secrets.DOCS_URL }}
+          VERSION: ${{ needs.prepare.outputs.VERSION }}
+          VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
+          PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
+          CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
+          UPLOAD_PATH: ${{ needs.deploy-artifacts.outputs.UPLOAD_PATH }}
