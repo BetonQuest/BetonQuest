@@ -289,32 +289,6 @@ jobs:
           REPOSITORY_URL: ${{ vars.REPOSITORY_URL }}
           REPOSITORY_USER: ${{ secrets.REPOSITORY_USER }}
           REPOSITORY_PASS: ${{ secrets.REPOSITORY_PASS }}
-      - name: Extract supported Minecraft versions
-        uses: mikefarah/yq@v4.30.8
-        id: supported-versions
-        with:
-          cmd: yq eval -r '.supportedVersions[]' ./mcinfo.yml
-      - name: Determine version type
-        run: |
-          if [ "$VERSION_TYPE" == development ]; then
-            echo "MODRINTH_VERSION_TYPE=beta" >> $GITHUB_ENV
-          else
-            echo "MODRINTH_VERSION_TYPE=release" >> $GITHUB_ENV
-          fi
-      - uses: Kir-Antipov/mc-publish@v3.2
-        name: Deploy to Modrinth
-        with:
-          modrinth-id: ${{ vars.MODRINTH_ID }}
-          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-          modrinth-unfeature-mode: version-subset
-
-          github-prerelease: false
-
-          files: target/artifacts/BetonQuest.jar
-          name: ${{ env.VERSION }}
-          version: ${{ env.VERSION }}
-          version-type: ${{ env.MODRINTH_VERSION_TYPE }}
-          game-versions: ${{ steps.supported-versions.outputs.result }}
 
       - name: Get upload URL from deploy log
         id: save_upload_path
