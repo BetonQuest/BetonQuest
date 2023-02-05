@@ -294,7 +294,15 @@ jobs:
         id: supported-versions
         with:
           cmd: yq -r '."supportedVersions"[]'
+      - name: Determine version type
+        run: |
+          if [ "$VERSION_TYPE" == development ]; then
+            echo "MODRINTH_VERSION_TYPE=beta" >> $GITHUB_ENV
+          else
+            echo "MODRINTH_VERSION_TYPE=release" >> $GITHUB_ENV
+          fi
       - uses: Kir-Antipov/mc-publish@v3.2
+        name: Deploy to Modrinth
         with:
           modrinth-id: ${{ vars.MODRINTH_ID }}
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
@@ -305,7 +313,7 @@ jobs:
           files: target/artifacts/BetonQuest.jar
           name: ${{ env.VERSION }}
           version: ${{ env.VERSION }}
-          version-type: ${{ env.VERSION_TYPE }}
+          version-type: ${{ env.MODRINTH_VERSION_TYPE }}
           loaders: |
             Spigot
             Paper
