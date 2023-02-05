@@ -88,13 +88,13 @@ jobs:
     needs: [ prepare ]
     runs-on: ubuntu-latest
 
+    env:
+      VERSION: ${{ needs.prepare.outputs.VERSION }}
+      VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
+      PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
+      CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
+
     steps:
-      - name: Set variables from 'Prepare Build Variables'
-        run: |
-          echo "VERSION=${{ needs.prepare.outputs.VERSION }}" >> $GITHUB_ENV
-          echo "VERSION_TYPE=${{ needs.prepare.outputs.VERSION_TYPE }}" >> $GITHUB_ENV
-          echo "PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}" >> $GITHUB_ENV
-          echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
       - name: Checkout source code
         uses: actions/checkout@v3
       - name: Setup JDK 17
@@ -145,13 +145,13 @@ jobs:
     needs: [ prepare ]
     runs-on: ubuntu-latest
 
+    env:
+      VERSION: ${{ needs.prepare.outputs.VERSION }}
+      VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
+      PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
+      CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
+
     steps:
-      - name: Set variables from 'Prepare Build Variables'
-        run: |
-          echo "VERSION=${{ needs.prepare.outputs.VERSION }}" >> $GITHUB_ENV
-          echo "VERSION_TYPE=${{ needs.prepare.outputs.VERSION_TYPE }}" >> $GITHUB_ENV
-          echo "PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}" >> $GITHUB_ENV
-          echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
       - name: Checkout source code
         uses: actions/checkout@v3
       - name: Create LFS file list
@@ -204,9 +204,9 @@ jobs:
           sed -i "s~%VERSION%~${VERSION}~g" ./mkdocs.yml
       - name: Set secret in downloads.js script
         run: |
-          sed -i "s~\${REPOSITORY_URL}~${REPOSITORY_URL}~g" ./docs/_webCode/js/downloads.js
+          sed -i "s~\${REPOSITORY_URL}~$REPOSITORY_URL~g" ./docs/_webCode/js/downloads.js
         env:
-          REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
+          REPOSITORY_URL: ${{ vars.REPOSITORY_URL }}
       - name: Build with mkdocs
         run: |
           if [ "$TXT" = "docs-requirements-insiders.txt" ]
@@ -230,16 +230,16 @@ jobs:
     needs: [ prepare, build-artifacts, build-docs ]
     runs-on: ubuntu-latest
 
+    env:
+      VERSION: ${{ needs.prepare.outputs.VERSION }}
+      VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
+      PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
+      CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
+
     outputs:
       UPLOAD_PATH: ${{ steps.save_upload_path.outputs.upload_path }}
 
     steps:
-      - name: Set variables from 'Prepare Build Variables'
-        run: |
-          echo "VERSION=${{ needs.prepare.outputs.VERSION }}" >> $GITHUB_ENV
-          echo "VERSION_TYPE=${{ needs.prepare.outputs.VERSION_TYPE }}" >> $GITHUB_ENV
-          echo "PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}" >> $GITHUB_ENV
-          echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
       - name: Checkout source code
         uses: actions/checkout@v3
       - name: Setup JDK 17
@@ -286,16 +286,38 @@ jobs:
           if [ $VERSION_TYPE == 'release' ]; then CHANGELIST=-Dchangelist=; fi
           mvn $CHANGELIST -P Skip-Verification,Test-None -B deploy | tee maven-deploy.log
         env:
-          REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
+          REPOSITORY_URL: ${{ vars.REPOSITORY_URL }}
           REPOSITORY_USER: ${{ secrets.REPOSITORY_USER }}
           REPOSITORY_PASS: ${{ secrets.REPOSITORY_PASS }}
+      - name: Extract supported Minecraft versions
+        uses: mikefarah/yq@v4.30.8
+        id: supported-versions
+        with:
+          cmd: yq -r '."supportedVersions"[]'
+      - uses: Kir-Antipov/mc-publish@v3.2
+        with:
+          modrinth-id: ${{ vars.MODRINTH_ID }}
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          modrinth-unfeature-mode: version-subset
+
+          github-prerelease: false
+
+          files: target/artifacts/BetonQuest.jar
+          name: ${{ env.VERSION }}
+          version: ${{ env.VERSION }}
+          version-type: ${{ env.VERSION_TYPE }}
+          loaders: |
+            Spigot
+            Paper
+          game-versions: ${{ steps.supported-versions.outputs.result }}
+
       - name: Get upload URL from deploy log
         id: save_upload_path
         run: |
-          UPLOAD_PATH="$(grep -oP "(?<=Uploading to betonquest: ${REPOSITORY_URL}).*-shaded.jar" maven-deploy.log)"
+          UPLOAD_PATH="$(grep -oP "(?<=Uploading to betonquest: $REPOSITORY_URL).*-shaded.jar" maven-deploy.log)"
           echo "upload_path=$UPLOAD_PATH" >> $GITHUB_OUTPUT
         env:
-          REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
+          REPOSITORY_URL: ${{ vars.REPOSITORY_URL }}
 
   deploy-docs:
     name: Deploy Docs
@@ -304,13 +326,13 @@ jobs:
     needs: [ prepare, build-artifacts, build-docs ]
     runs-on: ubuntu-latest
 
+    env:
+      VERSION: ${{ needs.prepare.outputs.VERSION }}
+      VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
+      PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
+      CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
+
     steps:
-      - name: Set variables from 'Prepare Build Variables'
-        run: |
-          echo "VERSION=${{ needs.prepare.outputs.VERSION }}" >> $GITHUB_ENV
-          echo "VERSION_TYPE=${{ needs.prepare.outputs.VERSION_TYPE }}" >> $GITHUB_ENV
-          echo "PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}" >> $GITHUB_ENV
-          echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
       - name: Checkout source code
         uses: actions/checkout@v3
         with:
@@ -386,13 +408,13 @@ jobs:
     needs: [ prepare, deploy-artifacts, deploy-docs ]
     runs-on: ubuntu-latest
 
+    env:
+      VERSION: ${{ needs.prepare.outputs.VERSION }}
+      VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
+      PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
+      CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
+
     steps:
-      - name: Set variables from 'Prepare Build Variables'
-        run: |
-          echo "VERSION=${{ needs.prepare.outputs.VERSION }}" >> $GITHUB_ENV
-          echo "VERSION_TYPE=${{ needs.prepare.outputs.VERSION_TYPE }}" >> $GITHUB_ENV
-          echo "PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}" >> $GITHUB_ENV
-          echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
       - name: Checkout source code
         uses: actions/checkout@v3
       - name: Cache target/artifacts
@@ -435,16 +457,13 @@ jobs:
     needs: [ prepare, deploy-artifacts, deploy-docs, create-release ]
     runs-on: ubuntu-latest
 
+    env:
+      VERSION: ${{ needs.prepare.outputs.VERSION }}
+      VERSION_TYPE: ${{ needs.prepare.outputs.VERSION_TYPE }}
+      PREVIOUS_VERSION_TAG: ${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}
+      CHANGES_IN_DOCS_ONLY: ${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}
+
     steps:
-      - name: Set variables from 'Prepare Build Variables'
-        run: |
-          echo "VERSION=${{ needs.prepare.outputs.VERSION }}" >> $GITHUB_ENV
-          echo "VERSION_TYPE=${{ needs.prepare.outputs.VERSION_TYPE }}" >> $GITHUB_ENV
-          echo "PREVIOUS_VERSION_TAG=${{ needs.prepare.outputs.PREVIOUS_VERSION_TAG }}" >> $GITHUB_ENV
-          echo "CHANGES_IN_DOCS_ONLY=${{ needs.prepare.outputs.CHANGES_IN_DOCS_ONLY }}" >> $GITHUB_ENV
-          echo "UPLOAD_PATH=${{ needs.deploy-artifacts.outputs.UPLOAD_PATH }}" >> $GITHUB_ENV
-        env:
-          REPOSITORY_URL: ${{ secrets.REPOSITORY_URL }}
       - name: Checkout source code
         uses: actions/checkout@v3
       - name: Publish to Discord
@@ -454,4 +473,5 @@ jobs:
         env:
           JOB_STATUS: ${{ job.status }}
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
-          DOCS_URL: ${{ secrets.DOCS_URL }}
+          DOCS_URL: ${{ vars.DOCS_URL }}
+          UPLOAD_PATH: ${{ needs.deploy-artifacts.outputs.UPLOAD_PATH }}
