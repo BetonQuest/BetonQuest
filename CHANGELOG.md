@@ -165,6 +165,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `pickrandom` event - did not calculated chance correctly
 - `pickrandom` event - did not allowed dashes in event names
 - `action` objective - ignored offhand at all
+- quest command feedback is sent async to non-players
 - Things that are also fixed in 1.12.X:
     - ProtocolLib's based `packet` interceptor was fixed for MC 1.19, now ProtocolLib 5.0.0 is required
     - parsing of math variable

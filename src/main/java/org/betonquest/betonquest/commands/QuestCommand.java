@@ -1814,8 +1814,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         if (sender instanceof Player) {
             Config.sendMessage(null, PlayerConverter.getID((Player) sender), messageName, variables);
         } else {
-            final String message = Config.getMessage(Config.getLanguage(), messageName, variables);
-            sender.sendMessage(message);
+            Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> {
+                final String message = Config.getMessage(Config.getLanguage(), messageName, variables);
+                sender.sendMessage(message);
+            });
         }
     }
 
