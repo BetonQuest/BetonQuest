@@ -1,6 +1,8 @@
 #MkDocs and the MkDocs-material theme
 git+https://${MKDOCS_MATERIAL_INSIDERS}@github.com/squidfunk/mkdocs-material-insiders.git@9.0.6-insiders-4.29.0
 
+mkdocs-snippets
+
 #Tool for MkDocs versioning
 mike==1.1.2
 #mkdocs-exclude plugin to directories inside /docs from the build

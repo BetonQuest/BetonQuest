@@ -20,7 +20,7 @@ In this tutorial you will learn how to create and use conditions!
     * [Conditions Reference](../../../Documentation/Scripting/About-Scripting.md#conditions)
     * [Conditions List](../../../Documentation/Scripting/Building-Blocks/Conditions-List.md)
 </div>
---8<-- "Tutorials/download-setup-warning.md"
+@snippet:tutorials:download-setup-warning@
     ```
     /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conditions/1-DirectoryStructure /tutorialQuest
     ```
@@ -92,7 +92,7 @@ If it is day it should show true and if it is night, false.
 | `isDay`          | The name of the condition to check. Don't forget to separate it with a dot from the package `tutorialQuest{==.==}isDay`. |
 
 
---8<-- "Tutorials/download-solution.md"
+@snippet:tutorials:download-solution@
     ```
     /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conditions/2-FirstCondition /tutorialQuest overwrite
     ```
@@ -225,7 +225,7 @@ and won't give you more!
     If you want to test this conversation again, you need to remove the tag from the player.
     You can do this by using the `/bq tag remove <player> <tag>` command.
 
---8<-- "Tutorials/download-solution.md"
+@snippet:tutorials:download-solution@
        ```
        /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conditions/3-ConditionsInConversations /tutorialQuest overwrite
        ```
@@ -368,7 +368,7 @@ in the `items` section of your "_package.yml_" file.
     ``` 
         
 
---8<-- "Tutorials/download-solution.md"
+@snippet:tutorials:download-solution@
        ```
        /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conditions/5-FullExample /tutorialQuest overwrite
        ```

@@ -85,7 +85,7 @@ Download this example quest and take a look at the following structure overview 
 It's a simple woodcutting quest with a reward upon completion.
 Then play around with this system to get a feel for it.
 
---8<-- "Tutorials/download-complete-files.md"
+@snippet:tutorials:download-complete-files@
     ```
     /bq download BetonQuest/Quest-Tutorials main QuestPackages /Syntax/packageStructure/1-MultiFileStructure /packageStructure/MultiFile
     ```
@@ -275,7 +275,7 @@ It's the exact same quest but in just one file:
 You can download this example as well. No worries, the files of the previous example will not get overwritten.
 Instead, a new folder will be created in the previous package.
 
---8<-- "Tutorials/download-complete-files.md"
+@snippet:tutorials:download-complete-files@
     ```
     /bq download BetonQuest/Quest-Tutorials main QuestPackages /Syntax/packageStructure/2-SingleFileStructure /packageStructure/SingleFile
     ```
@@ -309,7 +309,7 @@ Not hard to understand but to make things clearer:
 Every folder that contains a _package.yml_ file is a standalone quest package.
 By creating a folder with a _package.yml_ file inside another package, you create a standalone "subpackage". 
 
---8<-- "Tutorials/download-complete-files.md"
+@snippet:tutorials:download-complete-files@
     ```
     /bq download BetonQuest/Quest-Tutorials main QuestPackages /Syntax/packageStructure/3-PackageInPackage /packageStructure/PackageInPackage
     ```
@@ -341,7 +341,7 @@ in the directory tree.
 !!! warning "Directory names with spaces"
     The only limitation for directory names are spaces. These cannot be used. 
 
---8<-- "Tutorials/download-complete-files.md"
+@snippet:tutorials:download-complete-files@
     ```
     /bq download BetonQuest/Quest-Tutorials main QuestPackages /Syntax/packageStructure/4-SubDirectory /packageStructure/SubDirectory
     ```

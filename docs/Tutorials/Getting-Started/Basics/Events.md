@@ -15,7 +15,7 @@ In this tutorial, we will give the player items and teleport them to different l
     * [Events Reference](../../../Documentation/Scripting/About-Scripting.md#events)
     * [Events List](../../../Documentation/Scripting/Building-Blocks/Events-List.md)
 </div>
---8<-- "Tutorials/download-setup-warning.md"
+"Tutorials/download-setup-warning.md"
     ```
     /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conversations/1-DirectoryStructure /tutorialQuest
     ```
@@ -128,7 +128,7 @@ This command will give you the specified amount of steak if you've done everythi
 
 You can also run this command from the console (without the slash at the start). 
 
---8<-- "Tutorials/download-solution.md"
+@snippet:tutorials:download-solution@
     ```
     /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Events/1-FirstEvent /tutorialQuest overwrite
     ```
@@ -207,7 +207,7 @@ These modifications allow the player to choose whether they want to take a town 
 
 Now speak with the NPC again to take the tour.
 
---8<-- "Tutorials/download-solution.md"
+@snippet:tutorials:download-solution@
     ```
     /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Events/2-TownTour /tutorialQuest overwrite
     ```

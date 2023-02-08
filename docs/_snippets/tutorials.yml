@@ -1,0 +1,20 @@
+download-complete-files: |-
+  ??? hint "Download the files for this tutorial"
+      Instead of manually creating / filling the files, just download them using the command below:
+
+download-setup: |-
+  !!! info "Download Tutorial Setup"
+      Enter this command in the chat to download the pre-made setup for this tutorial:
+
+download-setup-warning: |-
+  !!! info "Download Tutorial Setup"
+      :warning: **Don't do this if you already have the configs of the previous tutorial step.** :warning:
+
+      Enter this command in the chat to download the pre-made setup for this tutorial:
+
+download-solution: |-
+  ??? hint "Is the example not working?"
+      Get the correct configs by running the following command.<br>
+      :warning: _This will overwrite any changes (including NPC ID's and locations) you have made to the example.<br>_
+      Linking NPCs to conversations is explained in the [basics tutorial](Tutorials/Getting-Started/Basics/Conversations.md#1-linking-a-conversation-to-a-npc).
+

@@ -14,7 +14,7 @@ and a NPC. Therefore, these are the basic tool for story telling.
     * [Conversations](../../../Documentation/Features/Conversations.md)
 </div>
 
---8<-- "Tutorials/download-setup.md"
+@snippet:tutorials:download-setup@
     ```
     /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conversations/1-DirectoryStructure /tutorialQuest overwrite
     ```
@@ -229,7 +229,7 @@ Select different options by using the keys for walking forwards and backwards (+
 options by jumping (++space++ by default).
 
 
---8<-- "Tutorials/download-solution.md"
+@snippet:tutorials:download-solution@
     ```
     /q download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conversations/2-FullExample /tutorialQuest overwrite
     ```

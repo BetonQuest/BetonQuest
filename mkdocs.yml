@@ -102,14 +102,15 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
-  - pymdownx.snippets:
-      base_path: docs/_snippets
   - abbr
   - toc:
       permalink: 🔗
 
 plugins:
   - search
+  - snippets:
+      directory: "_snippets"
+      identifier: "snippet"
   - exclude:
       glob:
         - _snippets/*
