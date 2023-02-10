@@ -4,7 +4,7 @@ icon: simple/apachenetbeanside
 
 ## Hiding Players
 
-<video controls loop src="../../../_media/content/Documentation/Compatibility/PlayerHider.mp4" width="100%">
+<video controls loop src="../../../../_media/content/Documentation/Compatibility/PlayerHider.mp4" width="100%">
   Sorry, your browser doesn't support embedded videos.
 </video>
 
