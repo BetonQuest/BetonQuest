@@ -1,3 +1,7 @@
+---
+icon: octicons/info-16
+---
+
 BetonQuest's quests do not have a predefined structure but can be freely designed.
 This is made possible by a powerful quest scripting language.
 

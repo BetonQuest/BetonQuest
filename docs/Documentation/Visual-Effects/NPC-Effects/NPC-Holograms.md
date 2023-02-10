@@ -1,3 +1,6 @@
+---
+icon: material/text-account
+---
 # NPC Holograms
 
 ## Requirements

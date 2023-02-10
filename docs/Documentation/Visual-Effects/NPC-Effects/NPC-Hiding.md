@@ -1,3 +1,7 @@
+---
+icon: fontawesome/solid/person-through-window
+---
+
 # NPC Hiding
 
 ## Requirements

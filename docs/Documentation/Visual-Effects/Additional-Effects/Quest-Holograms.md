@@ -1,3 +1,7 @@
+---
+icon: material/text
+---
+
 ## Holograms
 
 @snippet:integrations:holograms@
