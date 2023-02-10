@@ -100,7 +100,7 @@ Read [this page](../Features/Conversations.md) for more information about conver
 Read [this page](../Features/Conversations.md) for more information about chat interceptors.
 
 ### Default Hologram Plugin
-The [holograms integration](../Scripting/Building-Blocks/Integration-List.md#holograms) works with multiple plugins.
+The holograms related features work with multiple plugins.
 You can use the `default_hologram` option to set which plugin should be used.
         
 `default_hologram: DecentHolograms,HolographicDisplays` will make DecentHolograms the default hologram plugin. If it is not installed, 
