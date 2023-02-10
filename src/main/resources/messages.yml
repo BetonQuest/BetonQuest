@@ -20,6 +20,7 @@ pl:
   money_taken: '&2Lost {1} {2}' # TODO: missing translation
   point_given: '&2You received {1} points to {2}' # TODO: missing translation
   point_taken: '&2You lost {1} points to {2}' # TODO: missing translation
+  point_taken: '&2You lost {1} points to {2}' # TODO: missing translation
   point_multiplied: '&2Your points {2} are multiplied by {1}' # TODO: missing translation
   blocks_to_break: '&2Pozostalo {1} blokow do zniszczenia'
   blocks_to_place: '&2Pozostalo {1} blokow do postawienia'
@@ -154,7 +155,7 @@ de:
   quest_canceled: '&2Quest {1}&2 abgebrochen!'
   cancel: '&cEine Quest abbrechen'
   cancel_page: 'Wähle welche Quest du abbrichst'
-  compass: '&cKompassziel'
+  compass: 'Kompassziel verwalten'
   compass_page: 'Wähle Ziel'
   command_blocked: '&cDu kannst diesen Befehl nicht benutzen, solange du in einem Gespräch bist.'
   language_changed: '&2Sprache geändert!'

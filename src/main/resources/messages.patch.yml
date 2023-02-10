@@ -1,16 +1,26 @@
 2.0.0.1:
-  - type: SET
+  - type: VALUE_RENAME
     key: en.cancel
-    value: "&cCancel a Quest"
-  - type: SET
+    oldValueRegex: "&cCancel the quest"
+    newValue: "&cCancel a Quest"
+  - type: VALUE_RENAME
     key: en.cancel_page
-    value: "&cSelect which quest to cancel"
-  - type: SET
+    oldValueRegex: "Canceling quests"
+    newValue: "&cSelect which quest to cancel"
+  - type: VALUE_RENAME
     key: en.compass
-    value: "&cSelect a Quest Compass target"
-  - type: SET
+    oldValueRegex: "&cCompass targets"
+    newValue: "&cSelect a Quest Compass target"
+  - type: VALUE_RENAME
     key: de.cancel
-    value: "&cEine Quest abbrechen"
-  - type: SET
+    oldValueRegex: "&cQuest abbrechen"
+    newValue: "&cEine Quest abbrechen"
+  - type: VALUE_RENAME
     key: de.cancel_page
-    value: "&cWähle welche Quest du abbrichst"
+    oldValueRegex: "Quests abbrechen"
+    newValue: "&cWähle welche Quest du abbrichst"
+  - type: VALUE_RENAME
+    key: de.compass
+    oldValueRegex: "&cKompassziel"
+    newValue: "Kompassziel verwalten"
+
