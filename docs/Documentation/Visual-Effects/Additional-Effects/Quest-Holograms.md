@@ -1,20 +1,21 @@
----
----
+## Holograms
 
 !!! info "Required Dependencies"
     The following feature can be activated by using any of the following plugins:
     
-    | Plugin               | Required Version | Additional Dependencies                                                            |
-    |----------------------|------------------|------------------------------------------------------------------------------------|
-    | DecentHolograms      | 2.7.5 or above   | [PlaceholderAPI](https://www.spigotmc.org/resources/6245/) for in-line variables.  |
-    | Holographic Displays | 3.0.0 or above   | [ProtocolLib](https://www.spigotmc.org/resources/1997/) for conditioned holograms. | 
+    | Plugin                                                                      | Required Version | Additional Dependencies                                                            |
+    |-----------------------------------------------------------------------------|------------------|------------------------------------------------------------------------------------|
+    | [DecentHolograms](https://www.spigotmc.org/resources/96927)                 | 2.7.5 or above   | [PlaceholderAPI](https://www.spigotmc.org/resources/6245/) for in-line variables.  |
+    | [HolographicDisplays](https://dev.bukkit.org/projects/holographic-displays) | 3.0.0 or above   | [ProtocolLib](https://www.spigotmc.org/resources/1997/) for conditioned holograms. | 
     
     If you have both plugins installed, you can use the [`default_hologram` option in "_config.yml_"](../../Configuration/Configuration.md#default-hologram-plugin) to set which plugin should be used.
+    
+    !!! bug ""
+        **When used by external plugins like BetonQuest, DecentHolograms does not support custom model data in items lines!**
+        Last checked: DecentHolograms version 2.7.9 on 2023-01-03.
 
-Installing either of these plugins will enable you to create quest holograms, which can be hidden based on conditions or display quest scoreboards.
- 
-## Hidden Quest Holograms
-These will be shown to players only if they meet specified conditions.
+### Hidden Holograms
+Installing either of these plugins will enable you to create hidden holograms, which will be shown to players only if they meet specified conditions.
 
 In order to create a hologram, you have to add a `holograms` section. Add a node named as your hologram to this section
 and define `lines`, `conditions` and `location` subnodes. The first one should be a list of texts - these will be the lines
@@ -36,10 +37,13 @@ holograms:
     check_interval: 20
 ```
 
+#### Item Lines
 A line can also represent a floating item. To do so enter the line as 'item:`custom_item`'. It will be replaced with the
 `custom_item` defined in the `items` section. If the Item is defined for example as map, a floating map will be seen between two lines of text.
+!!! bug ""
+    **When used by external plugins like BetonQuest, DecentHolograms does not support custom model data in items lines!**
 
-## Scoreboard Quest Holograms
+#### Ranking Holograms
 Holograms created by BetonQuest can rank users by the score of a point. Such scoreboards (not to be confused with the
 Minecraft vanilla scoreboard) are configured as one line and replaced by multiple lines according to the limit definition.
 Each scoreboard line comes in the format `#. name - score` The short syntax is 'top:`point`;`order`;`limit`'. The specified
