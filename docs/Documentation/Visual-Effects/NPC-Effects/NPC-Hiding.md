@@ -1,6 +1,12 @@
----
----
-Having ProtocolLib installed will let you hide Citizens NPCs if specified conditions are met.
+# NPC Hiding
+
+## Requirements
+@snippet:integrations:citizens@
+@snippet:integrations:protocollib@
+
+
+## Usage
+Hide Citizens NPCs if specified conditions are met!
 You can do that by adding a `hide_npcs` section in your package. 
 It allows you to assign conditions to specific NPC IDs like so:
 
@@ -12,6 +18,6 @@ hide_npcs:
 
 The interval the conditions are checked in can be configured in the [config.yml](../../Configuration/Configuration.md#npc-hider-interval).
 
-### Force Visibility update
+### Force Visibility Update
 You can run the `updatevisibility` event to manually update the visibility. This is useful for performance optimizations
-on large servers if used together with the [npc hider interval](../../Configuration/Configuration.md#npc-hider-interval) set to high values.
+if used with the [npc hider interval](../../Configuration/Configuration.md#npc-hider-interval) set to high values.

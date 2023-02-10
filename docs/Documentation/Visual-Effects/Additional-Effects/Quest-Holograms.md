@@ -1,18 +1,7 @@
 ## Holograms
 
-!!! info "Required Dependencies"
-    The following feature can be activated by using any of the following plugins:
-    
-    | Plugin                                                                      | Required Version | Additional Dependencies                                                            |
-    |-----------------------------------------------------------------------------|------------------|------------------------------------------------------------------------------------|
-    | [DecentHolograms](https://www.spigotmc.org/resources/96927)                 | 2.7.5 or above   | [PlaceholderAPI](https://www.spigotmc.org/resources/6245/) for in-line variables.  |
-    | [HolographicDisplays](https://dev.bukkit.org/projects/holographic-displays) | 3.0.0 or above   | [ProtocolLib](https://www.spigotmc.org/resources/1997/) for conditioned holograms. | 
-    
-    If you have both plugins installed, you can use the [`default_hologram` option in "_config.yml_"](../../Configuration/Configuration.md#default-hologram-plugin) to set which plugin should be used.
-    
-    !!! bug ""
-        **When used by external plugins like BetonQuest, DecentHolograms does not support custom model data in items lines!**
-        Last checked: DecentHolograms version 2.7.9 on 2023-01-03.
+@snippet:integrations:holograms@
+
 
 ### Hidden Holograms
 Installing either of these plugins will enable you to create hidden holograms, which will be shown to players only if they meet specified conditions.
