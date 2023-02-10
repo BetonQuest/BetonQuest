@@ -34,12 +34,15 @@ npcs:
 This links the NPC with the given Citizens ID (`1`) to the conversation with the given identifier (`Jack`).
 Save the file after editing.
 
-??? info "How to find the Citizens NPC ID"
+??? info "How to create a Citizens NPC? Where do I find the NPC's ID?"
     Execute this command if you haven't created an NPC yet: `/npc create Jack`  
+    This will show you the ID of the newly created NPC.
     
-    1. Stay close to the NPC you want to select
+    If you already have one, do this:    
+
+    1. Stay close to the NPC who's ID you want.
     2. Type the command `/npc select` to select the nearest NPC.
-    3. Type the command `/npc id` to get the ID from your NPC.
+    3. Type the command `/npc id` to get the ID from the selected NPC.
 
 
 ## 2. Creating your first conversation
