@@ -8,3 +8,7 @@ mike==1.1.2
 #mkdocs-exclude plugin to directories inside /docs from the build
 #Used to exclude snippets, theme customization etc.
 mkdocs-exclude==1.0.2
+
+#mkdocs-material image processing dependencies
+pillow
+cairosvg
