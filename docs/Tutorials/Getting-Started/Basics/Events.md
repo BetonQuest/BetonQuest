@@ -15,7 +15,7 @@ In this tutorial, we will give the player items and teleport them to different l
     * [Events Reference](../../../Documentation/Scripting/About-Scripting.md#events)
     * [Events List](../../../Documentation/Scripting/Building-Blocks/Events-List.md)
 </div>
-"Tutorials/download-setup-warning.md"
+@snippet:tutorials:download-setup-warning@
     ```
     /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conversations/1-DirectoryStructure /tutorialQuest
     ```
