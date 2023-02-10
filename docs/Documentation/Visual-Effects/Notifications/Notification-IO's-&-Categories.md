@@ -107,7 +107,7 @@ Shows a totem with a "customModelData" NBT tag. This allows you to replace the t
 during the animation.
 
 ??? info "Preview"
-    <video controls loop src="../../_media/content/Documentation/Notifications/TotemIO.mp4" width="100%">
+    <video controls loop src="../../../_media/content/Documentation/Notifications/TotemIO.mp4" width="100%">
       Sorry, your browser doesn't support embedded videos.
     </video>
 
@@ -173,7 +173,7 @@ Here is a small example:
     🔴  = the actual location the sound is played at    
     *soundplayeroffset = (0,0,5)*
 
-    <video controls loop src="../_media/content/Documentation/Notifications/RelativeVectorExample.mp4" width="100%">
+    <video controls loop src="../../_media/content/Documentation/Notifications/RelativeVectorExample.mp4" width="100%">
       Sorry, your browser doesn't support embedded videos.
     </video>
     The sound is always played 5 block away from the soundlocation. The direction is however based on where the player is looking.

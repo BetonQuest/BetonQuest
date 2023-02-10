@@ -158,7 +158,7 @@ and the way the player interacts with them.
             | `{option_text}` | The option text       |
             | `{npc_name}`    | The name of the NPC   |
             
-        <video controls loop src="../../_media/content/Documentation/Conversations/MenuConvIO.mp4" width="100%">
+        <video controls loop src="../../../_media/content/Documentation/Conversations/MenuConvIO.mp4" width="100%">
           Sorry, your browser doesn't support embedded videos.
         </video>
         The blue overlay shows the player's key presses.
@@ -172,7 +172,7 @@ and the way the player interacts with them.
             You can change the option's item to something else than ender pearls by adding a prefix to that option's text.
             The prefix is a name of the material (like in the _items_ section) inside curly braces, with an optional damage value after a colon. Custom Model Data is not supported yet.
             Example of such option text: `{diamond_sword}I want to start a quest!`.
-        <video controls loop src="../../_media/content/Documentation/Conversations/ChestIO.mp4" width="100%">
+        <video controls loop src="../../../_media/content/Documentation/Conversations/ChestIO.mp4" width="100%">
           Sorry, your browser doesn't support embedded videos.
         </video>
     === "Simple Style"

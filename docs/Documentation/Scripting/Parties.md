@@ -2,6 +2,8 @@
 icon: material/party-popper
 ---
 
+# Quest Parties
+
 Parties are very simple. So simple, that they are hard to understand if you already know some other party system.
 Basically, they don't even have to be created before using them. 
 Parties are defined directly in conditions/events (`party` event, `party` conditions, check them out in the reference 

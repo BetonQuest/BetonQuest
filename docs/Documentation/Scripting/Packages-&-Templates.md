@@ -20,18 +20,18 @@ Let's take a look at a few examples:
    
     === "Simple Package"
         A very simple package. It's defined by the _package.yml_ and has two additional files.       
-        <img src="../../_media/content/Documentation/Reference/PackageSimple.png" width=450>
+        <img src="../../../_media/content/Documentation/Reference/PackageSimple.png" width=450>
         
     === "Complex Package"
         The package `storyLine` is defined by the _package.yml_. It contains two sub-folders, both of them
         (including their files) are part of the package.<br>
-        <img src="../../_media/content/Documentation/Reference/PackageComplex.png" width=450>
+        <img src="../../../_media/content/Documentation/Reference/PackageComplex.png" width=450>
         
     === "Nested Packages"
         The package `weeklyQuests` is defined by the _package.yml_. It contains two sub-folders, they are **not** part
         of the package `weeklyQuests`. This is the case because they have their own _package.yml_ files. Because of that they are 
         separate packages.<br> 
-        <img src="../../_media/content/Documentation/Reference/PackagesNested.png" width=450>
+        <img src="../../../_media/content/Documentation/Reference/PackagesNested.png" width=450>
 
 ### Defining features
 

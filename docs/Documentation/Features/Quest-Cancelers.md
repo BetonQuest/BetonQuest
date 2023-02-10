@@ -2,7 +2,7 @@
 icon: material/cancel
 ---
 # :material-cancel: Quest Cancelers
-<video controls autoplay muted loop src="../../_media/content/Documentation/Features/QuestCanceler.mp4" width="100%">
+<video controls autoplay muted loop src="../../../_media/content/Documentation/Features/QuestCanceler.mp4" width="100%">
           Sorry, your browser doesn't support embedded videos.
 </video>   
 
