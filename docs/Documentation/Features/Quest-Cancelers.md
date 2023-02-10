@@ -45,11 +45,4 @@ cancel:
 
 ## Related Events
 
-### Cancel a quest: `cancel`
-
-Running this event is equal to the player canceling a quest using the backpack.
-The only argument is the identifier of a quest canceler, as defined in the `cancel` section.
-
-```YAML title="Example"
-cancelQuest: "cancel woodQuest"
-```
+@snippet:events:cancel@

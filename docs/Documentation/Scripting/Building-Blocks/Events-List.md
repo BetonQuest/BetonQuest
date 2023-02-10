@@ -3,16 +3,7 @@ icon: octicons/gear-16
 ---
 # Events List
 
-## Cancel a quest: `cancel`
-
-This event works in the same way as a [quest canceler in the backpack](../../Features/Quest-Cancelers.md).
-
-Running this event is equal to the player canceling a quest using the backpack.
-The only argument is the identifier of a quest canceler, as defined in the `cancel` section.
-
-```YAML title="Example"
-cancelQuest: "cancel woodQuest"
-```
+@snippet:events:cancel@
 
 ## Chat player message `chat`
 
@@ -695,13 +686,7 @@ events:
 | _direction_    | `direction:directionType`       | `absolute`             | There are 3 types how the vector can get applied to the player:<br> `absolute` won't change the vector at all.<br> `relative` will redirect the vector to the view of the player.<br> `relative_y` is a mix between absolute and relative. It will still direct to the view but only horizontally, so y will be absolute. |
 | _modification_ | `modification:modificationType` | `set`                  | Possible modifications are `set` and `add`. The modification type determines how the vector should be merged with the player's velocity. The player's velocity is the external force applied on the player.                                                                                                               |
 
-??? info "Visual Explanation"
-    In contrast to their global counterparts, relative x,y,z axes do not change their orientation relative to the player.
-    Example: The positive x-axis will always point left from the perspective of the player.
-    <div style="text-align: center">
-    ![relativeAxis image](../../../_media/content/Documentation/Notifications/relativeAxis.png)
-    </div>  
-
+@snippet:generalSnippets:relativeAxisExplanation@
 
 ```YAML title="Example"
 events:
