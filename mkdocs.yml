@@ -121,7 +121,7 @@ extra:
     provider: mike
   analytics:
     provider: google
-    property: G-VEBGTNXWEL
+    property: !ENV [ ANALYTICS_PROPERTY ]
     feedback:
       title: Was this page helpful?
       ratings:

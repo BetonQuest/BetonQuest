@@ -225,6 +225,8 @@ jobs:
             mkdocs build --config-file mkdocs.yml
           fi
           git diff > target/docs/changes.patch
+        env:
+          ANALYTICS_PROPERTY: ${{ vars.ANALYTICS_PROPERTY }}
       - name: Upload Docs
         uses: actions/upload-artifact@v3
         with:

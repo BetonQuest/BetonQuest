@@ -78,7 +78,9 @@ jobs:
           else
             mkdocs build --config-file mkdocs.yml
           fi
-  
+        env:
+          ANALYTICS_PROPERTY: ${{ vars.ANALYTICS_PROPERTY }}
+
 
   alert:
     name: Alert to Discord
