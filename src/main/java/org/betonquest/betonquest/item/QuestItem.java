@@ -2,6 +2,7 @@ package org.betonquest.betonquest.item;
 
 import com.destroystokyo.paper.profile.ProfileProperty;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import io.papermc.lib.PaperLib;
 import lombok.val;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -562,16 +563,7 @@ public class QuestItem {
             if (playerId == null || texture == null) {
                 skullMeta.setOwner(head.getOwner(profile));
             } else {
-                // TODO: Should be a better way of doing this
-                boolean isPaper;
-                try {
-                    Class.forName("com.destroystokyo.paper.ParticleBuilder");
-                    isPaper = true;
-                } catch (final ClassNotFoundException e) {
-                    isPaper = false;
-                }
-
-                if (isPaper) {
+                if (PaperLib.isPaper()) {
                     val playerProfile = Bukkit.getServer().createProfile(playerId);
                     playerProfile.getProperties().add(new ProfileProperty("textures", texture));
                     skullMeta.setPlayerProfile(playerProfile);
