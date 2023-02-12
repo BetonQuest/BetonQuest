@@ -1,6 +1,8 @@
 package org.betonquest.betonquest.item;
 
+import com.destroystokyo.paper.profile.ProfileProperty;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.val;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -11,7 +13,7 @@ import org.betonquest.betonquest.item.typehandler.CustomModelDataHandler;
 import org.betonquest.betonquest.item.typehandler.DurabilityHandler;
 import org.betonquest.betonquest.item.typehandler.EnchantmentsHandler;
 import org.betonquest.betonquest.item.typehandler.FireworkHandler;
-import org.betonquest.betonquest.item.typehandler.HeadOwnerHandler;
+import org.betonquest.betonquest.item.typehandler.HeadHandler;
 import org.betonquest.betonquest.item.typehandler.LoreHandler;
 import org.betonquest.betonquest.item.typehandler.NameHandler;
 import org.betonquest.betonquest.item.typehandler.PotionHandler;
@@ -36,11 +38,8 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Objects;
 
 /**
  * Represents an item handled by the configuration.
@@ -56,7 +55,7 @@ public class QuestItem {
     private final UnbreakableHandler unbreakable = new UnbreakableHandler();
     private final PotionHandler potion = new PotionHandler();
     private final BookHandler book = new BookHandler();
-    private final HeadOwnerHandler head = new HeadOwnerHandler();
+    private final HeadHandler head = new HeadHandler();
     private final ColorHandler color = new ColorHandler();
     private final FireworkHandler firework = new FireworkHandler();
     private final CustomModelDataHandler customModelData = new CustomModelDataHandler();
@@ -141,7 +140,11 @@ public class QuestItem {
             } else if ("effects-containing".equals(part.toLowerCase(Locale.ROOT))) {
                 potion.setNotExact();
             } else if (part.toLowerCase(Locale.ROOT).startsWith("owner:")) {
-                head.set(cut(part));
+                head.setOwner(cut(part));
+            } else if (part.toLowerCase(Locale.ROOT).startsWith("player-id:")) {
+                head.setPlayerId(cut(part));
+            } else if (part.toLowerCase(Locale.ROOT).startsWith("texture:")) {
+                head.setTexture(cut(part));
             } else if (part.toLowerCase(Locale.ROOT).startsWith("color:")) {
                 color.set(cut(part));
             } else if (part.toLowerCase(Locale.ROOT).startsWith("firework:")) {
@@ -177,6 +180,8 @@ public class QuestItem {
         String effects = "";
         String color = "";
         String owner = "";
+        String skullPlayerId = "";
+        String skullTexture = "";
         String firework = "";
         String unbreakable = "";
         String customModelData = "";
@@ -267,6 +272,28 @@ public class QuestItem {
                 if (skullMeta.hasOwner()) {
                     owner = " owner:" + skullMeta.getOwner();
                 }
+
+                val ownerProfile = skullMeta.getOwningPlayer();
+                val playerProfile = skullMeta.getPlayerProfile();
+                if (ownerProfile != null) {
+                    // For Bukkit / Spigot Server
+                    val playerUniqueId = ownerProfile.getUniqueId();
+                    // TODO
+                    val textures = ""; // TODO Implement for Bukkit / Spigot with deprecated APIs
+                    // TODO
+                    skullPlayerId = " player-id:" + playerUniqueId;
+//                    skullTexture = " texture:" + textures;
+                } else if (playerProfile != null) {
+                    // For Paper Server
+                    val playerUniqueId = playerProfile.getId();
+                    val textures = playerProfile.getProperties().stream()
+                            .filter(it -> it.getName().equals("textures"))
+                            .map(ProfileProperty::getValue)
+                            .findFirst()
+                            .orElse(null);
+                    skullPlayerId = " player-id:" + playerUniqueId;
+                    skullTexture = " texture:" + textures;
+                }
             }
             if (meta instanceof FireworkMeta) {
                 final FireworkMeta fireworkMeta = (FireworkMeta) meta;
@@ -318,7 +345,8 @@ public class QuestItem {
         }
         // put it all together in a single string
         return item.getType() + durability + name + lore + enchants + title + author + text
-                + effects + color + owner + firework + unbreakable + customModelData;
+                + effects + color + owner + skullPlayerId + skullTexture + firework + unbreakable
+                + customModelData;
     }
 
     @Override
@@ -417,8 +445,30 @@ public class QuestItem {
         }
         if (meta instanceof SkullMeta) {
             final SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
-            if (!head.check(skullMeta.getOwner())) {
-                return false;
+            if (!head.checkOwner(skullMeta.getOwner())) {
+                val ownerProfile = skullMeta.getOwningPlayer();
+                val playerProfile = skullMeta.getPlayerProfile();
+                if (ownerProfile != null) {
+                    // For Bukkit / Spigot Server
+                    val playerUniqueId = ownerProfile.getUniqueId();
+                    // TODO
+                    val textures = ""; // TODO Implement for Bukkit / Spigot with deprecated APIs
+                    // TODO
+                    if (!head.checkPlayerId(playerUniqueId) || !head.checkTexture(textures)) {
+                        return false;
+                    }
+                } else if (playerProfile != null) {
+                    // For Paper Server
+                    val playerUniqueId = playerProfile.getId();
+                    val textures = playerProfile.getProperties().stream()
+                            .filter(it -> it.getName().equals("textures"))
+                            .map(ProfileProperty::getValue)
+                            .findFirst()
+                            .orElse(null);
+                    if (!head.checkPlayerId(playerUniqueId) || !head.checkTexture(textures)) {
+                        return false;
+                    }
+                }
             }
         }
         if (meta instanceof LeatherArmorMeta) {
@@ -505,7 +555,34 @@ public class QuestItem {
         }
         if (meta instanceof SkullMeta) {
             final SkullMeta skullMeta = (SkullMeta) meta;
-            skullMeta.setOwner(head.get(profile));
+            val owner = head.getOwner(profile);
+            val playerId = head.getPlayerId();
+            val texture = head.getTexture();
+
+            if (playerId == null || texture == null) {
+                skullMeta.setOwner(head.getOwner(profile));
+            } else {
+                // TODO: Should be a better way of doing this
+                boolean isPaper;
+                try {
+                    Class.forName("com.destroystokyo.paper.ParticleBuilder");
+                    isPaper = true;
+                } catch (final ClassNotFoundException e) {
+                    isPaper = false;
+                }
+
+                if (isPaper) {
+                    val playerProfile = Bukkit.getServer().createProfile(playerId);
+                    playerProfile.getProperties().add(new ProfileProperty("textures", texture));
+                    skullMeta.setPlayerProfile(playerProfile);
+                } else {
+                    val ownerProfile = Bukkit.getServer().createPlayerProfile(playerId);
+                    // TODO
+                    // TODO Support bukkit / spigot properties
+                    // TODO
+                    skullMeta.setOwnerProfile(ownerProfile);
+                }
+            }
         }
         if (meta instanceof LeatherArmorMeta) {
             final LeatherArmorMeta armorMeta = (LeatherArmorMeta) meta;
@@ -603,7 +680,15 @@ public class QuestItem {
      * @return owner of the head
      */
     public String getOwner() {
-        return head.get(null);
+        return head.getOwner(null);
+    }
+
+    public UUID getPlayerId() {
+        return head.getPlayerId();
+    }
+
+    public String getTexture() {
+        return head.getTexture();
     }
 
     /**

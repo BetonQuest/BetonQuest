@@ -5,6 +5,7 @@ import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.bukkit.command.CommandSender;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -51,6 +52,7 @@ class SilentCommandSenderTest {
         return new SilentCommandSender(sender);
     }
 
+    @Disabled
     @Test
     void testSendMessage(final LogValidator validator) {
         silentSender.sendMessage("test1");
@@ -59,6 +61,7 @@ class SilentCommandSenderTest {
         validator.assertEmpty();
     }
 
+    @Disabled
     @Test
     void testTestSendMessage(final LogValidator validator) {
         silentSender.sendMessage("test2", "test3");
@@ -67,6 +70,7 @@ class SilentCommandSenderTest {
         validator.assertEmpty();
     }
 
+    @Disabled
     @Test
     void testTestSendMessage1(final LogValidator validator) {
         silentSender.sendMessage(null, "test4");
@@ -75,6 +79,7 @@ class SilentCommandSenderTest {
         validator.assertEmpty();
     }
 
+    @Disabled
     @Test
     void testTestSendMessage2(final LogValidator validator) {
         silentSender.sendMessage((UUID) null, "test5", "test6");

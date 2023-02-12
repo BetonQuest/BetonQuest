@@ -4,10 +4,11 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.modules.logger.BetonQuestLogRecord;
-import org.bukkit.ChatColor;
+//import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -63,7 +64,7 @@ public final class ChatFormatter extends Formatter {
 
     @Override
     public String format(final LogRecord record) {
-        final String color = formatColor(record.getLevel());
+        final TextColor color = formatColor(record.getLevel());
         final Optional<BetonQuestLogRecord> betonRecord = BetonQuestLogRecord.safeCast(record);
         final String plugin = betonRecord
                 .map(BetonQuestLogRecord::getPlugin)
@@ -76,23 +77,25 @@ public final class ChatFormatter extends Formatter {
         final String message = record.getMessage();
         final Component throwable = formatComponentThrowable(record);
 
-        final TextComponent formattedRecord = Component.text(displayMethod.getPluginTag(pluginName, plugin, shortName) + questPackage + color + message)
+        final TextComponent formattedRecord = displayMethod.getPluginTag(pluginName, plugin, shortName)
+                .append(Component.text(questPackage))
+                .append(Component.text(message, color))
                 .append(throwable);
         return GsonComponentSerializer.gson().serialize(formattedRecord);
     }
 
-    private String formatColor(final Level level) {
+    private TextColor formatColor(final Level level) {
         final int levelValue = level.intValue();
         if (levelValue >= Level.SEVERE.intValue()) {
-            return ChatColor.DARK_RED.toString();
+            return NamedTextColor.DARK_RED;
         }
         if (levelValue >= Level.WARNING.intValue()) {
-            return ChatColor.RED.toString();
+            return NamedTextColor.RED;
         }
         if (levelValue >= Level.INFO.intValue()) {
-            return ChatColor.WHITE.toString();
+            return NamedTextColor.WHITE;
         }
-        return ChatColor.GRAY.toString();
+        return NamedTextColor.GRAY;
     }
 
     /**
@@ -158,14 +161,17 @@ public final class ChatFormatter extends Formatter {
          * @param shortName       The short tag of the pluginName
          * @return the processed plugin tag
          */
-        public String getPluginTag(final String pluginName, final String otherPluginName, final String shortName) {
+        public TextComponent getPluginTag(final String pluginName, final String otherPluginName, final String shortName) {
             final boolean match = pluginName != null && pluginName.equals(otherPluginName);
             final Pair<String, String> tagParts = producer.apply(new Parameters(pluginName, otherPluginName, shortName, match));
             if (tagParts == null) {
-                return "";
+                return Component.empty();
             }
             final String tag = tagParts.getLeft() + (tagParts.getLeft().isEmpty() || tagParts.getRight().isEmpty() ? "" : " | ") + tagParts.getRight();
-            return ChatColor.GRAY + "[" + ChatColor.DARK_GRAY + tag + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
+            return Component.text("[", NamedTextColor.GRAY)
+                    .append(Component.text(tag, NamedTextColor.DARK_GRAY))
+                    .append(Component.text("]", NamedTextColor.GRAY))
+                    .append(Component.text(" "));
         }
 
         /**
