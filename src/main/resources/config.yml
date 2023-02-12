@@ -102,6 +102,7 @@ download:
     - BetonQuest/Quest-Tutorials
 items:
   backpack:
+    previous_button: ''
     next_button: ''
     cancel_button: "DEFAULT"
     compass_button: "DEFAULT"

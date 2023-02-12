@@ -94,6 +94,7 @@ import org.betonquest.betonquest.conversation.SimpleInterceptor;
 import org.betonquest.betonquest.conversation.SlowTellrawConvIO;
 import org.betonquest.betonquest.conversation.TellrawConvIO;
 import org.betonquest.betonquest.database.AsyncSaver;
+import org.betonquest.betonquest.database.Backup;
 import org.betonquest.betonquest.database.Database;
 import org.betonquest.betonquest.database.GlobalData;
 import org.betonquest.betonquest.database.MySQL;
@@ -227,7 +228,6 @@ import org.betonquest.betonquest.quest.event.tag.TagPlayerEventFactory;
 import org.betonquest.betonquest.quest.event.velocity.VelocityEventFactory;
 import org.betonquest.betonquest.quest.event.weather.WeatherEventFactory;
 import org.betonquest.betonquest.utils.PlayerConverter;
-import org.betonquest.betonquest.utils.Utils;
 import org.betonquest.betonquest.variables.ConditionVariable;
 import org.betonquest.betonquest.variables.GlobalPointVariable;
 import org.betonquest.betonquest.variables.GlobalTagVariable;
@@ -713,8 +713,7 @@ public class BetonQuest extends JavaPlugin {
 
         saver = new AsyncSaver();
         saver.start();
-
-        Utils.loadDatabaseFromBackup();
+        Backup.loadDatabaseFromBackup();
 
         new JoinQuitListener();
 
