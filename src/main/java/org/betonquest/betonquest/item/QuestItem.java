@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.item;
 
+import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.papermc.lib.PaperLib;
-import lombok.val;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -274,20 +274,20 @@ public class QuestItem {
                     owner = " owner:" + skullMeta.getOwner();
                 }
 
-                val ownerProfile = skullMeta.getOwningPlayer();
-                val playerProfile = skullMeta.getPlayerProfile();
+                final OfflinePlayer ownerProfile = skullMeta.getOwningPlayer();
+                final PlayerProfile playerProfile = skullMeta.getPlayerProfile();
                 if (ownerProfile != null) {
                     // For Bukkit / Spigot Server
-                    val playerUniqueId = ownerProfile.getUniqueId();
+                    final UUID playerUniqueId = ownerProfile.getUniqueId();
                     // TODO
-                    val textures = ""; // TODO Implement for Bukkit / Spigot with deprecated APIs
+                    final String textures = ""; // TODO Implement for Bukkit / Spigot with deprecated APIs
                     // TODO
                     skullPlayerId = " player-id:" + playerUniqueId;
 //                    skullTexture = " texture:" + textures;
                 } else if (playerProfile != null) {
                     // For Paper Server
-                    val playerUniqueId = playerProfile.getId();
-                    val textures = playerProfile.getProperties().stream()
+                    final UUID playerUniqueId = playerProfile.getId();
+                    final String textures = playerProfile.getProperties().stream()
                             .filter(it -> it.getName().equals("textures"))
                             .map(ProfileProperty::getValue)
                             .findFirst()
@@ -447,21 +447,21 @@ public class QuestItem {
         if (meta instanceof SkullMeta) {
             final SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
             if (!head.checkOwner(skullMeta.getOwner())) {
-                val ownerProfile = skullMeta.getOwningPlayer();
-                val playerProfile = skullMeta.getPlayerProfile();
+                final OfflinePlayer ownerProfile = skullMeta.getOwningPlayer();
+                final PlayerProfile playerProfile = skullMeta.getPlayerProfile();
                 if (ownerProfile != null) {
                     // For Bukkit / Spigot Server
-                    val playerUniqueId = ownerProfile.getUniqueId();
+                    final UUID playerUniqueId = ownerProfile.getUniqueId();
                     // TODO
-                    val textures = ""; // TODO Implement for Bukkit / Spigot with deprecated APIs
+                    final String textures = ""; // TODO Implement for Bukkit / Spigot with deprecated APIs
                     // TODO
                     if (!head.checkPlayerId(playerUniqueId) || !head.checkTexture(textures)) {
                         return false;
                     }
                 } else if (playerProfile != null) {
                     // For Paper Server
-                    val playerUniqueId = playerProfile.getId();
-                    val textures = playerProfile.getProperties().stream()
+                    final UUID playerUniqueId = playerProfile.getId();
+                    final String textures = playerProfile.getProperties().stream()
                             .filter(it -> it.getName().equals("textures"))
                             .map(ProfileProperty::getValue)
                             .findFirst()
@@ -556,19 +556,19 @@ public class QuestItem {
         }
         if (meta instanceof SkullMeta) {
             final SkullMeta skullMeta = (SkullMeta) meta;
-            val owner = head.getOwner(profile);
-            val playerId = head.getPlayerId();
-            val texture = head.getTexture();
+            final String owner = head.getOwner(profile);
+            final UUID playerId = head.getPlayerId();
+            final String texture = head.getTexture();
 
             if (playerId == null || texture == null) {
                 skullMeta.setOwner(head.getOwner(profile));
             } else {
                 if (PaperLib.isPaper()) {
-                    val playerProfile = Bukkit.getServer().createProfile(playerId);
+                    final PlayerProfile playerProfile = Bukkit.getServer().createProfile(playerId);
                     playerProfile.getProperties().add(new ProfileProperty("textures", texture));
                     skullMeta.setPlayerProfile(playerProfile);
                 } else {
-                    val ownerProfile = Bukkit.getServer().createPlayerProfile(playerId);
+                    final org.bukkit.profile.PlayerProfile ownerProfile = Bukkit.getServer().createPlayerProfile(playerId);
                     // TODO
                     // TODO Support bukkit / spigot properties
                     // TODO
