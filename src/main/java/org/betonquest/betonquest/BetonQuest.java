@@ -709,7 +709,7 @@ public class BetonQuest extends JavaPlugin {
             }
         }
 
-        database.createTables(isMySQLUsed);
+        database.createTables();
 
         saver = new AsyncSaver();
         saver.start();

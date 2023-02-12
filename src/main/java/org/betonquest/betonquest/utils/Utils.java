@@ -44,7 +44,7 @@ import java.util.regex.Pattern;
  * Various utilities.
  */
 @SuppressWarnings({"PMD.ClassNamingConventions", "PMD.GodClass", "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals",
-        "PMD.TooManyMethods"})
+        "PMD.TooManyMethods", "PMD.CyclomaticComplexity"})
 @CustomLog
 public final class Utils {
 
@@ -89,7 +89,7 @@ public final class Utils {
      * @return true if the backup was successful, false if there was an error
      */
     @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
-    @SuppressWarnings("PMD.CognitiveComplexity")
+    @SuppressWarnings({"PMD.CognitiveComplexity"})
     public static boolean backupDatabase(final File databaseBackupFile) {
         final BetonQuest instance = BetonQuest.getInstance();
         try {
@@ -100,7 +100,8 @@ public final class Utils {
             final FileConfiguration config = accessor.getConfig();
             // prepare the database and map
             final HashMap<String, ResultSet> map = new HashMap<>();
-            final String[] tables = {"objectives", "tags", "points", "journals", "player"};
+            final String[] tables = {"objectives", "tags", "points", "journals", "player", "backpack", "global_points",
+                    "global_tags", "migration", "player_profile", "profile"};
             // open database connection
             final Connector database = new Connector();
             // load resultsets into the map
@@ -275,7 +276,7 @@ public final class Utils {
         // create tables if they don't exist, so we can be 100% sure
         // that we can drop them without an error (should've been done
         // in a different way...)
-        database.createTables(instance.isMySQLUsed());
+        database.createTables();
         // drop all tables
         final Connector con = new Connector();
         con.updateSQL(UpdateType.DROP_OBJECTIVES);
@@ -283,14 +284,20 @@ public final class Utils {
         con.updateSQL(UpdateType.DROP_POINTS);
         con.updateSQL(UpdateType.DROP_JOURNALS);
         con.updateSQL(UpdateType.DROP_PLAYER);
+        con.updateSQL(UpdateType.DROP_BACKPACK);
+        con.updateSQL(UpdateType.DROP_GLOBAL_POINTS);
+        con.updateSQL(UpdateType.DROP_GLOBAL_TAGS);
+        con.updateSQL(UpdateType.DROP_MIRGATION);
+        con.updateSQL(UpdateType.DROP_PROFILE);
+        con.updateSQL(UpdateType.DROP_PLAYER_PROFILE);
         // create new tables
-        database.createTables(instance.isMySQLUsed());
+        database.createTables();
         // load objectives
         final ConfigurationSection objectives = config.getConfigurationSection("objectives");
         if (objectives != null) {
             for (final String key : objectives.getKeys(false)) {
                 con.updateSQL(UpdateType.INSERT_OBJECTIVE,
-                        objectives.getString(key + ".id"), objectives.getString(key + ".playerID"),
+                        objectives.getString(key + ".profileID"),
                         objectives.getString(key + ".objective"),
                         objectives.getString(key + ".instructions"));
             }
@@ -299,8 +306,9 @@ public final class Utils {
         final ConfigurationSection tags = config.getConfigurationSection("tags");
         if (tags != null) {
             for (final String key : tags.getKeys(false)) {
-                con.updateSQL(UpdateType.INSERT_TAG, tags.getString(key + ".id"),
-                        tags.getString(key + ".playerID"), tags.getString(key + ".tag"));
+                con.updateSQL(UpdateType.INSERT_TAG,
+                        tags.getString(key + ".profileID"),
+                        tags.getString(key + ".tag"));
             }
         }
         // load points
@@ -308,8 +316,9 @@ public final class Utils {
         if (points != null) {
             for (final String key : points.getKeys(false)) {
                 con.updateSQL(UpdateType.INSERT_POINT,
-                        points.getString(key + ".id"), points.getString(key + ".playerID"),
-                        points.getString(key + ".category"), points.getString(key + ".count"));
+                        points.getString(key + ".profileID"),
+                        points.getString(key + ".category"),
+                        points.getString(key + ".count"));
             }
         }
         // load journals
@@ -317,8 +326,10 @@ public final class Utils {
         if (journals != null) {
             for (final String key : journals.getKeys(false)) {
                 con.updateSQL(UpdateType.INSERT_JOURNAL,
-                        journals.getString(key + ".id"), journals.getString(key + ".playerID"),
-                        journals.getString(key + ".pointer"), journals.getString(key + ".date"));
+                        journals.getString(key + ".id"),
+                        journals.getString(key + ".profileID"),
+                        journals.getString(key + ".pointer"),
+                        journals.getString(key + ".date"));
             }
         }
         // load backpack
@@ -326,8 +337,10 @@ public final class Utils {
         if (backpack != null) {
             for (final String key : backpack.getKeys(false)) {
                 con.updateSQL(UpdateType.INSERT_BACKPACK,
-                        backpack.getString(key + ".id"), backpack.getString(key + ".playerID"),
-                        backpack.getString(key + ".instruction"), backpack.getString(key + ".amount"));
+                        backpack.getString(key + ".id"),
+                        backpack.getString(key + ".profileID"),
+                        backpack.getString(key + ".instruction"),
+                        backpack.getString(key + ".amount"));
             }
         }
         // load player
@@ -335,8 +348,50 @@ public final class Utils {
         if (player != null) {
             for (final String key : player.getKeys(false)) {
                 con.updateSQL(UpdateType.INSERT_PLAYER,
-                        player.getString(key + ".id"), player.getString(key + ".playerID"),
-                        player.getString(key + ".language"), player.getString(key + ".conversation"));
+                        player.getString(key + ".playerID"),
+                        player.getString(key + ".active_profile"),
+                        player.getString(key + ".language"),
+                        player.getString(key + ".conversation"));
+            }
+        }
+        final ConfigurationSection globalPoints = config.getConfigurationSection("global_points");
+        if (globalPoints != null) {
+            for (final String key : globalPoints.getKeys(false)) {
+                con.updateSQL(UpdateType.INSERT_GLOBAL_POINT,
+                        globalPoints.getString(key + ".category"),
+                        globalPoints.getString(key + ".count"));
+            }
+        }
+        final ConfigurationSection globalTags = config.getConfigurationSection("global_tags");
+        if (globalTags != null) {
+            for (final String key : globalTags.getKeys(false)) {
+                con.updateSQL(UpdateType.INSERT_GLOBAL_TAG,
+                        globalTags.getString(key + ".tag"));
+            }
+        }
+        final ConfigurationSection migration = config.getConfigurationSection("migration");
+        if (migration != null) {
+            for (final String key : migration.getKeys(false)) {
+                con.updateSQL(UpdateType.INSERT_MIGRATION,
+                        migration.getString(key + ".namespace"),
+                        migration.getString(key + ".migration_id"),
+                        migration.getString(key + ".time"));
+            }
+        }
+        final ConfigurationSection profile = config.getConfigurationSection("profile");
+        if (profile != null) {
+            for (final String key : profile.getKeys(false)) {
+                con.updateSQL(UpdateType.INSERT_PROFILE,
+                        profile.getString(key + ".profileID"));
+            }
+        }
+        final ConfigurationSection playerProfile = config.getConfigurationSection("player_profile");
+        if (playerProfile != null) {
+            for (final String key : playerProfile.getKeys(false)) {
+                con.updateSQL(UpdateType.INSERT_PLAYER_PROFILE,
+                        playerProfile.getString(key + ".playerID"),
+                        playerProfile.getString(key + ".profileID"),
+                        playerProfile.getString(key + ".name"));
             }
         }
         // delete backup file so it doesn't get loaded again
