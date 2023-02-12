@@ -126,8 +126,10 @@ public class OpenedMenu implements Listener {
      * Closes the menu
      */
     public void close() {
-        getProfile().getPlayer().closeInventory();
-        closed = true;
+        Bukkit.getServer().getScheduler().runTask(BetonQuest.getInstance(), () -> {
+            getProfile().getPlayer().closeInventory();
+            closed = true;
+        });
     }
 
     /**
