@@ -181,8 +181,9 @@ public class RPGMenu {
                 }
             }
         }
-        final ChatColor color = (info.result == ReloadResult.FULL_SUCCESS) ? ChatColor.GREEN : ChatColor.YELLOW;
-        LOG.info(color + "Reloaded " + info.loaded + color + " menus");
+//        final ChatColor color = (info.result == ReloadResult.FULL_SUCCESS) ? ChatColor.GREEN : ChatColor.YELLOW;
+//        LOG.info(color + "Reloaded " + info.loaded + color + " menus");
+        LOG.info("Reloaded " + info.loaded + " menus");
         return info;
     }
 
