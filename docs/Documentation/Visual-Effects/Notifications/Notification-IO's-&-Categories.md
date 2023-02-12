@@ -1,10 +1,9 @@
 ---
 icon: material/party-popper
 ---
-## Notify IO's
 
 A NotifyIO is a method of displaying a notification to the player. Here's a demo video showing an example configuration
-of all NotifyIO's.
+of all NotifyIO's:
 
 <video controls loop src="../../../../_media/content/Documentation/Notifications/NotifySystemOverview.mp4" width="100%">
   Sorry, your browser doesn't support embedded videos.
@@ -18,7 +17,12 @@ Therefore, you can play a sound whenever a notification is shown.
 The actual message is either defined in the event that triggers the NotifyIO or
 in the *messages.yml* for all built-in notifications. 
 
-**Check the [notification event documentation](../../Scripting/Building-Blocks/Events-List.md#notification-notify) on how to use the notify event!**
+@snippet:events:notify@
+
+## Available NotifyIOs
+
+There are a bunch of notify IOs available. They all have their own settings and are listed below.
+
 
 ### Chat
 Writes the notification in the player's chat.

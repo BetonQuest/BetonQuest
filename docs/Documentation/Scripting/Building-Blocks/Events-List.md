@@ -1,5 +1,6 @@
 ---
 icon: octicons/gear-16
+toc_depth: 2
 ---
 # Events List
 
@@ -334,78 +335,7 @@ Strikes a lightning at given location. The only argument is the location.
     lightning 100;64;-100;survival
     ```
 
-## Notification: `notify`
-
-Displays a notification using the NotifyIO system.
-
-!!! warning
-    All colons (`:`) in the message part of the notification need to be escaped, including those inside variables.
-    One backslash (`\`) is required when using no quoting at all (`...`) or single quotes
-    (`'...'`). Two backslashes are required (`\\`) when using double quotes (`"..."`).  
-    You also need to escape the backslash itself, if you use double quotes for some things like `\n`.
-
-    Examples:<br>
-    `eventName: notify Peter:Heya %player%!` :arrow_right: `eventName: notify Peter{++\++}:Heya %player%!`<br>
-    `eventName: {=='==}notify Peter:Heya %player%!{=='==}` :arrow_right: `eventName: {=='==}notify Peter{++\++}:Heya %player%!{=='==}`<br>
-    `eventName: {=="==}notify Peter:Heya %player%!{=="==}` :arrow_right: `eventName: {=="==}notify Peter{++\\++}:Heya %player%!{=="==}`<br>
-    `otherEvent: notify You own %math.calc:5% fish!` :arrow_right: `otherEvent: You own %math.calc{++\++}:5% fish!`<br>
-    `newLine: {=="==}notify Some multiline \n message{=="==}` :arrow_right: `newLine: {=="==}notify Some multiline {++\++}\n message{=="==}`
-
-| Option                                                                                      | Description                                                                                                                                 |
-|---------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
-| message                                                                                     | The message that will be displayed. Supports variables and translations. *Required, must be first*                                          |
-| category                                                                                    | Will load all settings from that Notification Category. Can be a comma-seperated list. The first existent category will be used. *Optional* |   
-| io                                                                                          | Any [NotifyIO](../../Visual-Effects/Notifications/Notification-IO's-&-Categories.md). Overrides the "category" settings. *Optional*         |
-| [NotifyIO](../../Visual-Effects/Notifications/Notification-IO's-&-Categories.md#notify-ios) | Any setting from the defined notifyIO. Can be used multiple times. Overrides the "category" settings. *Optional*                            |
-
-The fallback NotifyIO is `chat` if no argument other than `message` is specified.    
-`message` is the only argument of this event that is not `key:value` based. You can freely add any text with spaces there.
-
-It also allows you to provide multiple translations using a special syntax: 
-```YAML
-example: "notify {en} ABC {de} DEF"
-```
-The value in `{}` is a language key from messages.yml. Any text after the language key until the next language key
-belongs to the specified language. There must be a space between the language key and the message.
-In this example, english users would see `ABC` and german ones would see `DEF`.
-
-<h3>Examples:</h3>
-
-Check out the documentation about [Notify Categories](../../Visual-Effects/Notifications/Notification-IO's-&-Categories.md#categories) and 
-[Notify IO options](../../Visual-Effects/Notifications/Notification-IO's-&-Categories.md#notify-ios) if you haven't yet. You must understand these two if
-you want to use the Notify system to it's full extend.
-```YAML
-#The simplest of all notify events. Just a chat message:
-customEvent: "notify Hello %player%!"  
-
-#It's the same as this one since 'chat' is the default IO.
-theSame: "notify Hello %player%! io:chat"
-
-#This one displays a title and a subtile:
-myTitle: "notify This is a title.\nThis is a subtitle. io:title"
-
-#Plays a sound:
-mySound: "notify io:sound sound:x.y.z"
-
-#This one explicitly defines an io (bossbar) and adds one bossbarIO option + one soundIO option:
-myBar: "notify This is a custom message. io:bossbar barColor:red sound:block.anvil.use"
-
-#Some events with categories.
-myEvent1: "notify This is a custom message! category:info"
-myEvent2: "notify This is a custom message! category:firstChoice,secondChoice"
-
-#You can also override category settings:
-myEvent3: "notify Another message! category:info io:advancement frame:challenge"
-
-#Use multiple languages:
-multilanguage: "notify {en} Hello english person! {de} Hello german person! {es} Hello spanish person!"
-```
-
-
-
-## Broadcast: `notifyall`
-
-This events works just like the [notify](#notification-notify) event but shows the notification for all online players.
+@snippet:events:notify@
 
 ## Objective: `objective`
 
