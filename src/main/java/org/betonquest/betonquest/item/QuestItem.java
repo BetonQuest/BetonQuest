@@ -8,17 +8,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.id.ItemID;
-import org.betonquest.betonquest.item.typehandler.BookHandler;
-import org.betonquest.betonquest.item.typehandler.ColorHandler;
-import org.betonquest.betonquest.item.typehandler.CustomModelDataHandler;
-import org.betonquest.betonquest.item.typehandler.DurabilityHandler;
-import org.betonquest.betonquest.item.typehandler.EnchantmentsHandler;
-import org.betonquest.betonquest.item.typehandler.FireworkHandler;
-import org.betonquest.betonquest.item.typehandler.HeadHandler;
-import org.betonquest.betonquest.item.typehandler.LoreHandler;
-import org.betonquest.betonquest.item.typehandler.NameHandler;
-import org.betonquest.betonquest.item.typehandler.PotionHandler;
-import org.betonquest.betonquest.item.typehandler.UnbreakableHandler;
+import org.betonquest.betonquest.item.typehandler.*;
 import org.betonquest.betonquest.utils.BlockSelector;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -37,9 +27,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -61,6 +53,7 @@ public class QuestItem {
     private final ColorHandler color = new ColorHandler();
     private final FireworkHandler firework = new FireworkHandler();
     private final CustomModelDataHandler customModelData = new CustomModelDataHandler();
+    private final PersistentDataContainerHandler persistentDataContainer = new PersistentDataContainerHandler();
 
     /**
      * Creates new instance of the quest item using the ID
@@ -155,6 +148,8 @@ public class QuestItem {
                 firework.setPower(cut(part));
             } else if ("firework-containing".equals(part.toLowerCase(Locale.ROOT))) {
                 firework.setNotExact();
+            } else if (part.toLowerCase(Locale.ROOT).startsWith("pdc:")) {
+                persistentDataContainer.set(cut(part));
             }
         }
     }
@@ -187,6 +182,7 @@ public class QuestItem {
         String firework = "";
         String unbreakable = "";
         String customModelData = "";
+        String persistentData = "";
         if (item.getDurability() != 0) {
             durability = " durability:" + item.getDurability();
         }
@@ -344,11 +340,20 @@ public class QuestItem {
                     builder.append(':').append(effect.hasTrail()).append(':').append(effect.hasFlicker());
                 }
             }
+
+            final PersistentDataContainer pdc = meta.getPersistentDataContainer();
+            if (!pdc.isEmpty()) {
+                try {
+                    persistentData = " pdc:" + Base64.getEncoder().encodeToString(pdc.serializeToBytes());
+                } catch (final IOException e) {
+                    // TODO Handle exception?
+                }
+            }
         }
         // put it all together in a single string
         return item.getType() + durability + name + lore + enchants + title + author + text
                 + effects + color + owner + skullPlayerId + skullTexture + firework + unbreakable
-                + customModelData;
+                + customModelData + persistentData;
     }
 
     @Override
@@ -368,12 +373,14 @@ public class QuestItem {
                 && item.head.equals(head)
                 && item.color.equals(color)
                 && item.firework.equals(firework)
-                && item.customModelData.equals(customModelData);
+                && item.customModelData.equals(customModelData)
+                && item.persistentDataContainer.equals(persistentDataContainer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(selector, durability, name, lore, enchants, unbreakable, potion, book, head, color, firework, customModelData);
+        return Objects.hash(selector, durability, name, lore, enchants, unbreakable, potion, book, head, color, firework,
+                customModelData, persistentDataContainer);
     }
 
     /**
@@ -492,6 +499,19 @@ public class QuestItem {
             final FireworkEffectMeta fireworkMeta = (FireworkEffectMeta) item.getItemMeta();
             return firework.checkSingleEffect(fireworkMeta.getEffect());
         }
+
+        final PersistentDataContainer pdc = meta.getPersistentDataContainer();
+        if (!pdc.isEmpty()) {
+            try {
+                if (!persistentDataContainer.check(pdc.serializeToBytes())) {
+                    return false;
+                }
+            } catch (final IOException e) {
+                // TODO Handle exception?
+                return false;
+            }
+        }
+
         return true;
     }
 
@@ -557,7 +577,6 @@ public class QuestItem {
         }
         if (meta instanceof SkullMeta) {
             final SkullMeta skullMeta = (SkullMeta) meta;
-            final String owner = head.getOwner(profile);
             final UUID playerId = head.getPlayerId();
             final String texture = head.getTexture();
 
@@ -594,6 +613,14 @@ public class QuestItem {
         if (meta instanceof Damageable) {
             final Damageable damageableMeta = (Damageable) meta;
             damageableMeta.setDamage(getDurability());
+        }
+        if (persistentDataContainer.get() != null) {
+            final PersistentDataContainer pdc = meta.getPersistentDataContainer();
+            try {
+                pdc.readFromBytes(persistentDataContainer.get(), true); // Clear existing persistent data
+            } catch (final IOException e) {
+                // TODO Handle exception?
+            }
         }
         item.setItemMeta(meta);
         return item;

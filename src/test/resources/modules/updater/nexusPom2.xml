@@ -3,7 +3,7 @@
   <properties>
     <revision>1.12.7</revision>
     <betonquest.version>1.12.7-DEV-379</betonquest.version>
-    <minecraft.api.version>1.18</minecraft.api.version>
+    <minecraft.api.version>1.19</minecraft.api.version>
     <maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.target>17</maven.compiler.target>

@@ -7,7 +7,7 @@
     <revision>2.0.0</revision>
     <changelist>-SNAPSHOT</changelist>
     <betonquest.version>${revision}-DEV-UNOFFICIAL</betonquest.version>
-    <minecraft.api.version>1.18</minecraft.api.version>
+    <minecraft.api.version>1.19</minecraft.api.version>
     <maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.target>17</maven.compiler.target>
@@ -48,7 +48,7 @@
     <dependency>
       <groupId>io.papermc.paper</groupId>
       <artifactId>paper-api</artifactId>
-      <version>1.18.2-R0.1-SNAPSHOT</version>
+      <version>1.19.2-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>
