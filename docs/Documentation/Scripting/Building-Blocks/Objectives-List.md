@@ -142,17 +142,30 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
     craft saddle 5 events:reward
     ```
 
-## Enchant item: `enchant`
+## :fontawesome-solid-wand-magic-sparkles: Enchant item: `enchant`
 
-This objective is completed when the player enchants specified item with specified enchantment. The first argument is an
-item name, as defined it the _items_ section. Second one is the
-[enchantment](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html) and a level, separated
-with a colon. If you need to check for multiple enchantments you can add a list of them, separated by colons.
+This objective is completed when the player enchants the specified quest item with the specified enchantment. 
 
-!!! example
-    ```YAML
-    enchant sword damage_all:1,knockback:1 events:reward
-    ```
+| Parameter         | Syntax                       | Default Value          | Explanation                                                                                                                                                                                                                                                                                                                                        |
+|-------------------|------------------------------|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| _item_            | Any [Quest Item](./Items.md) | :octicons-x-circle-16: | The quest item that must be enchanted.                                                                                                                                                                                                                                                                                                             |
+| _enchants_        | enchantment:level            | :octicons-x-circle-16: | The enchants that must be added to the item. [Enchantment names](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html) are different from the vanilla ones. If a level is present, the enchanted level must be equal or bigger then the specified one. Multiple enchants are supported: `ARROW_DAMAGE:1,ARROW_FIRE:1` |
+| _requirementMode_ | requirementMode:one          | `all`                  | The amount of enchantments from the `enchants` option that must be added to the item. Either `one` or `all`.                                                                                                                                                                                                                                       |
+| _amount_          | amount:number                | 1                      | The amount of items to enchant.                                                                                                                                                                                                                                                                                                                    |
+
+```YAML title="Example"
+lordSword: "enchant lordsSword damage_all,knockback events:rewardLord"
+kingSword: "enchant kingsSword damage_all:2,knockback:1 events:rewardKing"
+massProduction: "enchant ironSword sharpness amount:10 events:blacksmithLevel2Reward"
+```
+
+<h5> Variable Properties </h5> 
+
+| Name     | Example Output | Explanation                                                                                  |
+|----------|----------------|----------------------------------------------------------------------------------------------|
+| _amount_ | 6              | Shows the amount of items already enchanted.                                                 |
+| _left_   | 4              | Shows the amount of items that still need to be enchanted for the objective to be completed. |
+| _total_  | 10             | Shows the initial amount of items that needed to be enchanted.                               |
 
 ## Experience: `experience`
 

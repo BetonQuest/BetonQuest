@@ -2,9 +2,8 @@ package org.betonquest.betonquest.objectives;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.Objective;
+import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
-import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -17,24 +16,31 @@ import org.bukkit.event.enchantment.EnchantItemEvent;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
- * Requires the player to enchant an item.
+ * An objective that requires the player to enchant a {@link QuestItem}.
  */
-@SuppressWarnings("PMD.CommentRequired")
-public class EnchantObjective extends Objective implements Listener {
+public class EnchantObjective extends CountingObjective implements Listener {
 
     private final QuestItem item;
-    private final List<EnchantmentData> enchantments;
+    private final List<EnchantmentData> desiredEnchantments;
+
+    private boolean requireOne = false;
 
     public EnchantObjective(final Instruction instruction) throws InstructionParseException {
-        super(instruction);
-        template = ObjectiveData.class;
-        item = instruction.getQuestItem();
-        enchantments = instruction.getList(EnchantmentData::convert);
-        if (enchantments.isEmpty()) {
-            throw new InstructionParseException("Not enough arguments");
+        super(instruction, "items_to_enchant");
+        targetAmount = instruction.getInt(instruction.getOptional("amount"), 1);
+        if (targetAmount <= 0) {
+            throw new InstructionParseException("Amount cannot be less than 1.");
         }
+        item = instruction.getQuestItem();
+        desiredEnchantments = instruction.getList(EnchantmentData::convert);
+        if (desiredEnchantments.isEmpty()) {
+            throw new InstructionParseException("No enchantments were given! You must specify at least one enchantment.");
+        }
+
+        instruction.getOptionalArgument("requirementMode").ifPresent((mode) -> requireOne = mode.equalsIgnoreCase("one"));
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -46,15 +52,28 @@ public class EnchantObjective extends Objective implements Listener {
         if (!item.compare(event.getItem())) {
             return;
         }
-        for (final EnchantmentData enchant : enchantments) {
-            if (!event.getEnchantsToAdd().containsKey(enchant.getEnchantment())
-                    || event.getEnchantsToAdd().get(enchant.getEnchantment()) < enchant.getLevel()) {
-                return;
+
+        if (matchesDesiredEnchants(event.getEnchantsToAdd()) && checkConditions(onlineProfile)) {
+            getCountingData(onlineProfile).progress();
+            completeIfDoneOrNotify(onlineProfile);
+        }
+    }
+
+    private boolean matchesDesiredEnchants(final Map<Enchantment, Integer> addedEnchants) {
+        int matches = 0;
+
+        for (final EnchantmentData enchant : desiredEnchantments) {
+            final Enchantment desiredEnchant = enchant.enchantment();
+            final int desiredLevel = enchant.level();
+
+            if (addedEnchants.containsKey(desiredEnchant)) {
+                final int addedLevel = addedEnchants.get(desiredEnchant);
+                if (addedLevel >= desiredLevel) {
+                    matches++;
+                }
             }
         }
-        if (checkConditions(onlineProfile)) {
-            completeObjective(onlineProfile);
-        }
+        return requireOne ? matches > 0 : matches == desiredEnchantments.size();
     }
 
     @Override
@@ -67,52 +86,38 @@ public class EnchantObjective extends Objective implements Listener {
         HandlerList.unregisterAll(this);
     }
 
-    @Override
-    public String getDefaultDataInstruction() {
-        return "";
-    }
+    /**
+     * Represents an enchantment and its level.
+     *
+     * @param enchantment the enchantment
+     * @param level       the level
+     */
+    public record EnchantmentData(Enchantment enchantment, int level) {
 
-    @Override
-    public String getProperty(final String name, final Profile profile) {
-        return "";
-    }
-
-    public static class EnchantmentData {
-
-        private final Enchantment enchantment;
-        private final int level;
-
-        public EnchantmentData(final Enchantment enchantment, final int level) {
-            this.enchantment = enchantment;
-            this.level = level;
-        }
-
-        @SuppressWarnings({"deprecation", "PMD.AvoidLiteralsInIfCondition"})
+        /**
+         * Converts user input to an EnchantmentData object.
+         *
+         * @param string the string to parse
+         * @return the parsed EnchantmentData object
+         * @throws InstructionParseException if the user defined string is not a valid enchantment or does not
+         *                                   contain a level
+         */
+        @SuppressWarnings({"deprecation"})
         public static EnchantmentData convert(final String string) throws InstructionParseException {
             final String[] parts = string.split(":");
-            if (parts.length != 2) {
-                throw new InstructionParseException("Could not parse enchantment: " + string);
-            }
             final Enchantment enchantment = Enchantment.getByName(parts[0].toUpperCase(Locale.ROOT));
             if (enchantment == null) {
                 throw new InstructionParseException("Enchantment type '" + parts[0] + "' does not exist");
             }
-            final int level;
-            try {
-                level = Integer.parseInt(parts[1]);
-            } catch (final NumberFormatException e) {
-                throw new InstructionParseException("Could not parse enchantment level: " + string, e);
+            int level = 1;
+            if (parts.length == 2) {
+                try {
+                    level = Integer.parseInt(parts[1]);
+                } catch (final NumberFormatException e) {
+                    throw new InstructionParseException("Could not parse enchantment level: " + string, e);
+                }
             }
             return new EnchantmentData(enchantment, level);
         }
-
-        public Enchantment getEnchantment() {
-            return enchantment;
-        }
-
-        public int getLevel() {
-            return level;
-        }
     }
-
 }
