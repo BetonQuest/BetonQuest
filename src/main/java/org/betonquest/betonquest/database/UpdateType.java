@@ -101,6 +101,7 @@ public enum UpdateType {
     UPDATE_PLAYERS_JOURNAL(prefix -> "UPDATE " + prefix + "journal SET profileID = ? WHERE profileID = ?;"),
     UPDATE_PLAYERS_BACKPACK(prefix -> "UPDATE " + prefix + "backpack SET profileID = ? WHERE profileID = ?;"),
     UPDATE_PROFILE_NAME(prefix -> "UPDATE " + prefix + "player_profile SET name = ? WHERE profileID = ?;"),
+    UPDATE_PLAYER_LANGUAGE(prefix -> "UPDATE " + prefix + "player SET language = ? WHERE playerID = ?;"),
 
     DROP_OBJECTIVES(prefix -> "DROP TABLE " + prefix + "objectives"),
     DROP_TAGS(prefix -> "DROP TABLE " + prefix + "tags"),

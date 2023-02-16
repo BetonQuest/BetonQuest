@@ -1,5 +1,11 @@
 package org.betonquest.betonquest.database;
 
+/**
+ * Key for the migration with the information about the name and version.
+ *
+ * @param namespace name of the plugin
+ * @param version   version of the migration
+ */
 public record MigrationKey(
         String namespace,
         int version

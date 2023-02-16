@@ -38,7 +38,7 @@ public class PlayerData implements TagData {
     private final Saver saver = BetonQuest.getInstance().getSaver();
 
     private final Profile profile;
-    private final String profileUUID;
+    private final String profileID;
     private final List<String> tags = new CopyOnWriteArrayList<>();
     private final List<Pointer> entries = new CopyOnWriteArrayList<>();
     private final List<Point> points = new CopyOnWriteArrayList<>();
@@ -55,7 +55,7 @@ public class PlayerData implements TagData {
      */
     public PlayerData(final Profile profile) {
         this.profile = profile;
-        this.profileUUID = profile.getProfileUUID().toString();
+        this.profileID = profile.getProfileUUID().toString();
         loadAllPlayerData();
     }
 
@@ -68,12 +68,12 @@ public class PlayerData implements TagData {
 
             final Connector con = new Connector();
 
-            try (ResultSet objectiveResults = con.querySQL(QueryType.SELECT_OBJECTIVES, profileUUID);
-                 ResultSet tagResults = con.querySQL(QueryType.SELECT_TAGS, profileUUID);
-                 ResultSet journalResults = con.querySQL(QueryType.SELECT_JOURNAL, profileUUID);
-                 ResultSet pointResults = con.querySQL(QueryType.SELECT_POINTS, profileUUID);
-                 ResultSet backpackResults = con.querySQL(QueryType.SELECT_BACKPACK, profileUUID);
-                 ResultSet playerResult = con.querySQL(QueryType.SELECT_PLAYER, profileUUID)) {
+            try (ResultSet objectiveResults = con.querySQL(QueryType.SELECT_OBJECTIVES, profileID);
+                 ResultSet tagResults = con.querySQL(QueryType.SELECT_TAGS, profileID);
+                 ResultSet journalResults = con.querySQL(QueryType.SELECT_JOURNAL, profileID);
+                 ResultSet pointResults = con.querySQL(QueryType.SELECT_POINTS, profileID);
+                 ResultSet backpackResults = con.querySQL(QueryType.SELECT_BACKPACK, profileID);
+                 ResultSet playerResult = con.querySQL(QueryType.SELECT_PLAYER, profileID)) {
 
                 while (objectiveResults.next()) {
                     objectives.put(objectiveResults.getString("objective"), objectiveResults.getString("instructions"));
@@ -116,7 +116,11 @@ public class PlayerData implements TagData {
                     }
                 } else {
                     profileLanguage = Config.getLanguage();
-                    saver.add(new Record(UpdateType.ADD_PLAYER, profileUUID, "default"));
+                    saver.add(new Record(UpdateType.ADD_PROFILE, profileID));
+                    saver.add(new Record(UpdateType.ADD_PLAYER, profile.getPlayer().getUniqueId().toString()
+                            , profileID, "default"));
+                    saver.add(new Record(UpdateType.ADD_PLAYER_PROFILE, profile.getPlayer().getUniqueId().toString(),
+                            profileID, BetonQuest.getInstance().getPluginConfig().getString("profiles.default_name", "")));
                 }
 
                 LOG.debug("There are " + objectives.size() + " objectives, " + tags.size() + " tags, " + points.size()
@@ -159,7 +163,7 @@ public class PlayerData implements TagData {
         synchronized (tags) {
             if (!tags.contains(tag)) {
                 tags.add(tag);
-                saver.add(new Record(UpdateType.ADD_TAGS, profileUUID, tag));
+                saver.add(new Record(UpdateType.ADD_TAGS, profileID, tag));
                 BetonQuest.getInstance()
                         .callSyncBukkitEvent(new PlayerTagAddEvent(profile, tag));
             }
@@ -177,7 +181,7 @@ public class PlayerData implements TagData {
         synchronized (tags) {
             if (tags.contains(tag)) {
                 tags.remove(tag);
-                saver.add(new Record(UpdateType.REMOVE_TAGS, profileUUID, tag));
+                saver.add(new Record(UpdateType.REMOVE_TAGS, profileID, tag));
                 BetonQuest.getInstance()
                         .callSyncBukkitEvent(new PlayerTagRemoveEvent(profile, tag));
             }
@@ -221,20 +225,20 @@ public class PlayerData implements TagData {
      */
     public void modifyPoints(final String category, final int count) {
         synchronized (points) {
-            saver.add(new Record(UpdateType.REMOVE_POINTS, profileUUID, category));
+            saver.add(new Record(UpdateType.REMOVE_POINTS, profileID, category));
             // check if the category already exists
             for (final Point point : points) {
                 if (point.getCategory().equalsIgnoreCase(category)) {
                     // if it does, add points to it
                     saver.add(new Record(UpdateType.ADD_POINTS,
-                            profileUUID, category, String.valueOf(point.getCount() + count)));
+                            profileID, category, String.valueOf(point.getCount() + count)));
                     point.addPoints(count);
                     return;
                 }
             }
             // if not then create new point category with given amount of points
             points.add(new Point(category, count));
-            saver.add(new Record(UpdateType.ADD_POINTS, profileUUID, category, String.valueOf(count)));
+            saver.add(new Record(UpdateType.ADD_POINTS, profileID, category, String.valueOf(count)));
         }
     }
 
@@ -254,7 +258,7 @@ public class PlayerData implements TagData {
             if (pointToRemove != null) {
                 points.remove(pointToRemove);
             }
-            saver.add(new Record(UpdateType.REMOVE_POINTS, profileUUID, category));
+            saver.add(new Record(UpdateType.REMOVE_POINTS, profileID, category));
         }
     }
 
@@ -310,7 +314,7 @@ public class PlayerData implements TagData {
         }
         final String data = obj.getDefaultDataInstruction(profile);
         if (addRawObjective(objectiveID.toString(), data)) {
-            saver.add(new Record(UpdateType.ADD_OBJECTIVES, profileUUID, objectiveID.toString(), data));
+            saver.add(new Record(UpdateType.ADD_OBJECTIVES, profileID, objectiveID.toString(), data));
         }
     }
 
@@ -349,7 +353,7 @@ public class PlayerData implements TagData {
      * @param data        the data string of this objective (the one associated with ObjectiveData)
      */
     public void addObjToDB(final String objectiveID, final String data) {
-        saver.add(new Record(UpdateType.ADD_OBJECTIVES, profileUUID, objectiveID, data));
+        saver.add(new Record(UpdateType.ADD_OBJECTIVES, profileID, objectiveID, data));
     }
 
     /**
@@ -358,7 +362,7 @@ public class PlayerData implements TagData {
      * @param objectiveID the ID of the objective to remove
      */
     public void removeObjFromDB(final String objectiveID) {
-        saver.add(new Record(UpdateType.REMOVE_OBJECTIVES, profileUUID, objectiveID));
+        saver.add(new Record(UpdateType.REMOVE_OBJECTIVES, profileID, objectiveID));
     }
 
     /**
@@ -379,11 +383,11 @@ public class PlayerData implements TagData {
         this.backpack = (List<ItemStack>) copyItemList(list, new CopyOnWriteArrayList<>());
 
         // update the database (quite expensive way, should be changed)
-        saver.add(new Record(UpdateType.DELETE_BACKPACK, profileUUID));
+        saver.add(new Record(UpdateType.DELETE_BACKPACK, profileID));
         for (final ItemStack itemStack : list) {
             final String instruction = QuestItem.itemToString(itemStack);
             final String amount = String.valueOf(itemStack.getAmount());
-            saver.add(new Record(UpdateType.ADD_BACKPACK, profileUUID, instruction, amount));
+            saver.add(new Record(UpdateType.ADD_BACKPACK, profileID, instruction, amount));
         }
     }
 
@@ -440,11 +444,11 @@ public class PlayerData implements TagData {
             backpack.add(newItem);
         }
         // update the database (quite expensive way, should be changed)
-        saver.add(new Record(UpdateType.DELETE_BACKPACK, profileUUID));
+        saver.add(new Record(UpdateType.DELETE_BACKPACK, profileID));
         for (final ItemStack itemStack : backpack) {
             final String instruction = QuestItem.itemToString(itemStack);
             final String newAmount = String.valueOf(itemStack.getAmount());
-            saver.add(new Record(UpdateType.ADD_BACKPACK, profileUUID, instruction, newAmount));
+            saver.add(new Record(UpdateType.ADD_BACKPACK, profileID, instruction, newAmount));
         }
     }
 
@@ -466,8 +470,7 @@ public class PlayerData implements TagData {
         } else {
             this.profileLanguage = lang;
         }
-        saver.add(new Record(UpdateType.DELETE_PLAYER, profileUUID));
-        saver.add(new Record(UpdateType.ADD_PLAYER, profileUUID, lang));
+        saver.add(new Record(UpdateType.UPDATE_PLAYER_LANGUAGE, lang, profileID));
     }
 
     /**
@@ -493,12 +496,12 @@ public class PlayerData implements TagData {
         getJournal().clear(); // journal can be null, so use a method to get it
         backpack.clear();
         // clear the database
-        saver.add(new Record(UpdateType.DELETE_OBJECTIVES, profileUUID));
-        saver.add(new Record(UpdateType.DELETE_JOURNAL, profileUUID));
-        saver.add(new Record(UpdateType.DELETE_POINTS, profileUUID));
-        saver.add(new Record(UpdateType.DELETE_TAGS, profileUUID));
-        saver.add(new Record(UpdateType.DELETE_BACKPACK, profileUUID));
-        saver.add(new Record(UpdateType.UPDATE_CONVERSATION, "null", profileUUID));
+        saver.add(new Record(UpdateType.DELETE_OBJECTIVES, profileID));
+        saver.add(new Record(UpdateType.DELETE_JOURNAL, profileID));
+        saver.add(new Record(UpdateType.DELETE_POINTS, profileID));
+        saver.add(new Record(UpdateType.DELETE_TAGS, profileID));
+        saver.add(new Record(UpdateType.DELETE_BACKPACK, profileID));
+        saver.add(new Record(UpdateType.UPDATE_CONVERSATION, "null", profileID));
         // update the journal so it's empty
         if (profile.getOnlineProfile().isPresent()) {
             getJournal().update();
