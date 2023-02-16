@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ProtocolLib's based `packet` interceptor was fixed for MC 1.19, now ProtocolLib 5.0.0 is required
 - conversation IO chest did not show the correct NPC heads
 - `objective` event - static calls did not remove the objective for online players
+- legacy `§x` HEX color format not working in some contexts
 ### Security
 
 ## [1.12.9] - 2022-06-22

@@ -3,7 +3,9 @@ package pl.betoncraft.betonquest.utils;
 import org.bukkit.ChatColor;
 import org.bukkit.util.ChatPaginator;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -34,50 +36,6 @@ public class LocalChatPaginator extends ChatPaginator {
         }).collect(Collectors.toMap(data -> (Character) data[0], data -> (Integer) data[1]));
     }
 
-    /**
-     * Takes a string and returns the last colors that can be copied to a new line
-     */
-    @SuppressWarnings("PMD.CyclomaticComplexity")
-    public static String getLastColors(final String input) {
-        ChatColor lastColor = null;
-        final List<ChatColor> lastFormats = new ArrayList<>();
-
-        final int length = input.length();
-
-        for (int index = length - 1; index > -1; --index) {
-            final char section = input.charAt(index);
-            if (section != 167 || index >= length - 1) {
-                continue;
-            }
-            final char colorChar = input.charAt(index + 1);
-            final ChatColor color = ChatColor.getByChar(colorChar);
-
-            if (color != null) {
-                if (color.equals(ChatColor.RESET)) {
-                    break;
-                }
-
-                if (color.isColor() && lastColor == null) {
-                    lastColor = color;
-                    continue;
-                }
-
-                if (color.isFormat() && !lastFormats.contains(color)) {
-                    lastFormats.add(color);
-                }
-            }
-        }
-
-        String result = lastFormats.stream()
-                .map(ChatColor::toString)
-                .collect(Collectors.joining(""));
-
-        if (lastColor != null) {
-            result = lastColor.toString() + result;
-        }
-        return result;
-    }
-
     public static String[] wordWrap(final String rawString, final int lineLength) {
         return wordWrap(rawString, lineLength, "");
     }
@@ -91,7 +49,7 @@ public class LocalChatPaginator extends ChatPaginator {
      * @param wrapPrefix The string to prefix the wrapped line with
      * @return An array of word-wrapped lines.
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
     public static String[] wordWrap(final String rawString, final int lineLength, final String wrapPrefix) {
 
         // A null string is a single line
@@ -124,7 +82,7 @@ public class LocalChatPaginator extends ChatPaginator {
                 if (rawChars.length <= i + 1) {
                     break;
                 }
-                word.append(ChatColor.getByChar(String.valueOf(rawChars[i + 1]).toLowerCase(Locale.ROOT)));
+                word.append(ChatColor.COLOR_CHAR).append(rawChars[i + 1]);
                 i++; // Eat the next character as we have already processed it
                 continue;
             }
@@ -185,7 +143,7 @@ public class LocalChatPaginator extends ChatPaginator {
             final String subLine = lines.get(i);
 
             //char color = pLine.charAt(pLine.lastIndexOf(ChatColor.COLOR_CHAR) + 1);
-            lines.set(i, wrapPrefix + getLastColors(pLine) + subLine);
+            lines.set(i, wrapPrefix + ChatColor.getLastColors(pLine) + subLine);
         }
 
         return lines.toArray(new String[0]);
@@ -193,6 +151,9 @@ public class LocalChatPaginator extends ChatPaginator {
 
     /**
      * Return the width of text taking into account variable font size and ignoring hidden characters
+     *
+     * @param input the input string.
+     * @return width of text
      */
     public static int getWidth(final String input) {
         int ret = 0;
@@ -213,7 +174,10 @@ public class LocalChatPaginator extends ChatPaginator {
     }
 
     /**
-     * Return the length of the line minus hidden characters
+     * Returns the length of the line minus hidden characters.
+     *
+     * @param input the input string.
+     * @return the length of the line minus hidden characters.
      */
     public static int lineLength(final String input) {
         int ret = 0;
@@ -230,6 +194,9 @@ public class LocalChatPaginator extends ChatPaginator {
 
     /**
      * Return the number of hidden characters in input
+     *
+     * @param input the input string.
+     * @return number of hidden characters.
      */
     public static int hiddenCount(final String input) {
         final char[] rawChars = input.toCharArray();
