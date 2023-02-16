@@ -213,14 +213,14 @@ public class SQLite extends Database {
             statement.executeUpdate("CREATE TABLE " + prefix + "player_profile" +
                     "(playerID CHAR(36) NOT NULL, " +
                     "profileID CHAR(36) NOT NULL, " +
-                    "name VARCHAR(63) NOT NULL, " +
+                    "name VARCHAR(63), " +
                     "PRIMARY KEY (playerID, profileID), " +
                     "FOREIGN KEY (playerID) REFERENCES " + prefix + "player (playerID) ON DELETE CASCADE, " +
                     "FOREIGN KEY (profileID) REFERENCES " + prefix + "profile (profileID) ON DELETE CASCADE, " +
                     "UNIQUE (playerID, name))");
             statement.executeUpdate("INSERT OR IGNORE INTO " + prefix + "player_profile " +
                     "(playerID, profileID, name) " +
-                    "SELECT playerID, active_profile, '" + profileDefaultName + "' FROM " + prefix + "player");
+                    "SELECT playerID, active_profile, NULL FROM " + prefix + "player");
             statement.executeUpdate("CREATE TABLE " + prefix + "gloabl_tags_tmp" +
                     "(tag VARCHAR(510) NOT NULL, " +
                     "PRIMARY KEY (tag))");

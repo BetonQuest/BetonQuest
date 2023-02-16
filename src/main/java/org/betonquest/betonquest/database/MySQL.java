@@ -187,14 +187,14 @@ public class MySQL extends Database {
             statement.executeUpdate("CREATE TABLE " + prefix + "player_profile " +
                     "(playerID CHAR(36) NOT NULL, " +
                     "profileID CHAR(36) NOT NULL, " +
-                    "name VARCHAR(510) NOT NULL, " +
+                    "name VARCHAR(510), " +
                     "PRIMARY KEY (profileID, playerID), " +
                     "FOREIGN KEY (playerID) REFERENCES " + prefix + "player (playerID) ON DELETE CASCADE, " +
                     "FOREIGN KEY (profileID) REFERENCES " + prefix + "profile (profileID) ON DELETE CASCADE, " +
                     "UNIQUE KEY (playerID, name))");
             statement.executeUpdate("INSERT INTO " + prefix + "player_profile " +
-                    "(playerID, profileID, name) SELECT playerID, active_profile, '" + profileDefaultName +
-                    "' FROM " + prefix + "player");
+                    "(playerID, profileID, name) SELECT playerID, active_profile, NULL " +
+                    "FROM " + prefix + "player");
             statement.executeUpdate("ALTER TABLE " + prefix + "global_points " +
                     "DROP PRIMARY KEY," +
                     "DROP COLUMN id, " +

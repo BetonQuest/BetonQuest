@@ -120,7 +120,7 @@ public class PlayerData implements TagData {
                     saver.add(new Record(UpdateType.ADD_PLAYER, profile.getPlayer().getUniqueId().toString()
                             , profileID, "default"));
                     saver.add(new Record(UpdateType.ADD_PLAYER_PROFILE, profile.getPlayer().getUniqueId().toString(),
-                            profileID, BetonQuest.getInstance().getPluginConfig().getString("profiles.default_name", "")));
+                            profileID, null));
                 }
 
                 LOG.debug("There are " + objectives.size() + " objectives, " + tags.size() + " tags, " + points.size()
