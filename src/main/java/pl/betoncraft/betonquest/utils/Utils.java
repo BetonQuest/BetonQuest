@@ -27,7 +27,13 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -120,7 +126,7 @@ public final class Utils {
                             try {
                                 final String value = res.getString(columnName);
                                 config.set(entry.getKey() + "." + counter + "." + columnName, value);
-                            } catch (SQLException e) {
+                            } catch (final SQLException e) {
                                 LogUtils.getLogger().log(Level.WARNING, "Could not read SQL: " + e.getMessage());
                                 LogUtils.logThrowable(e);
                                 done = false;
@@ -389,22 +395,22 @@ public final class Utils {
         }
         try {
             return Color.fromRGB(Integer.parseInt(string));
-        } catch (NumberFormatException e1) {
+        } catch (final NumberFormatException e1) {
             LogUtils.logThrowableIgnore(e1);
             // string is not a decimal number
             try {
                 return Color.fromRGB(Integer.parseInt(string.replace("#", ""), 16));
-            } catch (NumberFormatException e2) {
+            } catch (final NumberFormatException e2) {
                 LogUtils.logThrowableIgnore(e2);
                 // string is not a hexadecimal number, try dye color
                 try {
                     return DyeColor.valueOf(string.trim().toUpperCase(Locale.ROOT).replace(' ', '_')).getColor();
-                } catch (IllegalArgumentException e3) {
+                } catch (final IllegalArgumentException e3) {
                     // this was not a dye color name
                     throw new InstructionParseException("Dye color does not exist: " + string, e3);
                 }
             }
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             // string was a number, but incorrect
             throw new InstructionParseException("Incorrect RGB code: " + string, e);
         }
@@ -425,7 +431,7 @@ public final class Utils {
         while (iterator.hasNext()) {
             final String line = iterator.next();
             result.add(lastCodes + replaceReset(line, def));
-            lastCodes = LocalChatPaginator.getLastColors(line);
+            lastCodes = ChatColor.getLastColors(line);
         }
 
         return result;
