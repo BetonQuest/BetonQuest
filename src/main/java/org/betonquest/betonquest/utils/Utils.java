@@ -436,7 +436,7 @@ public final class Utils {
         while (iterator.hasNext()) {
             final String line = iterator.next();
             result.add(lastCodes + replaceReset(line, def));
-            lastCodes = LocalChatPaginator.getLastColors(line);
+            lastCodes = ChatColor.getLastColors(line);
         }
 
         return result;

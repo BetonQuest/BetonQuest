@@ -3,10 +3,8 @@ package org.betonquest.betonquest.utils;
 import org.bukkit.ChatColor;
 import org.bukkit.util.ChatPaginator;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -36,53 +34,6 @@ public class LocalChatPaginator extends ChatPaginator {
                 {'p', 6}, {'q', 6}, {'r', 6}, {'s', 6}, {'t', 4}, {'u', 6}, {'v', 6}, {'w', 6},
                 {'x', 6}, {'y', 6}, {'z', 6}, {'{', 5}, {'|', 2}, {'}', 5}, {'~', 7}
         }).collect(Collectors.toMap(data -> (Character) data[0], data -> (Integer) data[1]));
-    }
-
-    /**
-     * Takes a string and returns the last colors that can be copied to a new line
-     *
-     * @param input the input string.
-     * @return last colors that can be copied to a new line
-     */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
-    public static String getLastColors(final String input) {
-        ChatColor lastColor = null;
-        final List<ChatColor> lastFormats = new ArrayList<>();
-
-        final int length = input.length();
-
-        for (int index = length - 1; index > -1; --index) {
-            final char section = input.charAt(index);
-            if (section != 167 || index >= length - 1) {
-                continue;
-            }
-            final char colorChar = input.charAt(index + 1);
-            final ChatColor color = ChatColor.getByChar(colorChar);
-
-            if (color != null) {
-                if (color.equals(ChatColor.RESET)) {
-                    break;
-                }
-
-                if (color.isColor() && lastColor == null) {
-                    lastColor = color;
-                    continue;
-                }
-
-                if (color.isFormat() && !lastFormats.contains(color)) {
-                    lastFormats.add(color);
-                }
-            }
-        }
-
-        String result = lastFormats.stream()
-                .map(ChatColor::toString)
-                .collect(Collectors.joining(""));
-
-        if (lastColor != null) {
-            result = lastColor + result;
-        }
-        return result;
     }
 
     public static String[] wordWrap(final String rawString, final int lineLength) {
@@ -131,7 +82,7 @@ public class LocalChatPaginator extends ChatPaginator {
                 if (rawChars.length <= i + 1) {
                     break;
                 }
-                word.append(ChatColor.getByChar(String.valueOf(rawChars[i + 1]).toLowerCase(Locale.ROOT)));
+                word.append(ChatColor.COLOR_CHAR).append(rawChars[i + 1]);
                 i++; // Eat the next character as we have already processed it
                 continue;
             }
@@ -192,7 +143,7 @@ public class LocalChatPaginator extends ChatPaginator {
             final String subLine = lines.get(i);
 
             //char color = pLine.charAt(pLine.lastIndexOf(ChatColor.COLOR_CHAR) + 1);
-            lines.set(i, wrapPrefix + getLastColors(pLine) + subLine);
+            lines.set(i, wrapPrefix + ChatColor.getLastColors(pLine) + subLine);
         }
 
         return lines.toArray(new String[0]);
