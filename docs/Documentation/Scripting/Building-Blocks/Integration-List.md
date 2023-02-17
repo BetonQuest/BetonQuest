@@ -3,11 +3,11 @@ icon: material/handshake
 toc_depth: 2
 ---
 # Integration List
-This page contains documentation for most integrations that exist for third party plugins.
+This page contains documentation for known integrations that exist for third party plugins.
 Some integrations also have dedicated pages in the documentation.
+In total @snippet:constants:totalIntegratedPluginsNumber@ plugins have dedicated support for BetonQuest.
  
 ## Provided by BetonQuest
-In total 33 plugins have dedicated support for BetonQuest.
 
 BetonQuest hooks into other plugins by itself to provide more events, conditions and objectives or other features.  
 _AureliumSkills, Brewery, Citizens, DecentHolograms, Denizen, EffectLib, Heroes, HolographicDisplays, JobsReborn, LuckPerms, Magic,
