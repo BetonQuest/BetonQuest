@@ -265,7 +265,7 @@ public final class Utils {
     public static String format(final String string, final boolean colorCodes, final boolean lineBreaks) {
         String input = string;
         if (colorCodes) {
-            input = input.replaceAll("&(?=[A-Ra-r0-9])", "§");
+            input = ChatColor.translateAlternateColorCodes('&', input);
         }
         if (lineBreaks) {
             input = input.replaceAll("(?<!\\\\)\\\\n", "\n");
