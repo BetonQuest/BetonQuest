@@ -10,7 +10,7 @@ Optional arguments are displayed as such: `[argument]`.
 * `/j` - Gives the journal
 * `/backpack` - Opens the backpack
 * `/compass` - Opens the quest tracking compass
-* `cancelquest` - Opens the quest canceler menu
+* `/cancelquest` - Opens the quest canceler menu
 * `/q` - Lists all available admin commands
 * `/q reload` - Reloads the plugin
 * `/q objectives <playerName> <list/add/del/complete> <objectiveName>` - Shows player's currently active objectives
