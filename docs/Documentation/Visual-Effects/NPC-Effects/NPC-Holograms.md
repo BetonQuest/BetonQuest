@@ -31,7 +31,7 @@ npc_holograms: #(7)!
 7. The section that all holograms must be placed in.
 8. The identifier of the hologram. Must be unique.
 
-All [other hologram features](../Additional-Effects/Quest-Holograms.md) are also supported.
+All other [hologram features](../Additional-Effects/Quest-Holograms.md) are also supported.
 
 If you have moving NPCs (walking around) then you can have the holograms follow them by setting `follow: true`,
 but this will cause a lot of updates to the holograms and may cause lag if used on a lot of NPCs.
