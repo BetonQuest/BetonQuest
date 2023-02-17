@@ -166,6 +166,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `pickrandom` event - did not allowed dashes in event names
 - `action` objective - ignored offhand at all
 - Things that are also fixed in 1.12.X:
+    - eating of items when entering the chest conversation io actually consumed the item 
     - legacy `§x` HEX color format not working in some contexts
     - ProtocolLib's based `packet` interceptor was fixed for MC 1.19, now ProtocolLib 5.0.0 is required
     - parsing of math variable
