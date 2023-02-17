@@ -33,8 +33,6 @@ holograms:
 #### Item Lines
 A line can also represent a floating item. To do so enter the line as 'item:`custom_item`'. It will be replaced with the
 `custom_item` defined in the `items` section. If the Item is defined for example as map, a floating map will be seen between two lines of text.
-!!! bug ""
-    **When used by external plugins like BetonQuest, DecentHolograms does not support custom model data in items lines!**
 
 #### Ranking Holograms
 Holograms created by BetonQuest can rank users by the score of a point. Such scoreboards (not to be confused with the
