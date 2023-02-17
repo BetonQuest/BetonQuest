@@ -1,5 +1,5 @@
 ---
-icon: material/check-circle
+icon: octicons/codescan-checkmark-16
 ---
 # Objectives List
 

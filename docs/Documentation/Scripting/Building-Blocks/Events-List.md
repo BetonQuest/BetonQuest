@@ -1,5 +1,5 @@
 ---
-icon: octicons/gear-16
+icon: fontawesome/solid/play
 toc_depth: 2
 ---
 # Events List
