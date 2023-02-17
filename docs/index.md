@@ -147,7 +147,7 @@ Sometimes, user reviews describe a plugin better than the author can:
 | Custom Menus             | :white_check_mark: |                :x:                |     :material-check-bold: [^2]     |        :x:         |            :x:             |     :white_check_mark:     |     :white_check_mark:     |
 | Quest Items              | :white_check_mark: |                :x:                |                :x:                 |        :x:         |            :x:             |            :x:             |            :x:             |
 | Backpack for Quest Items | :white_check_mark: |                :x:                |                :x:                 |        :x:         |            :x:             |            :x:             |            :x:             |
-| Translations             | :white_check_mark: |                :x:                |                :x:                 |        :x:         |            :x:             |            :x:             |            :x:             |
+| Per Player Translations  | :white_check_mark: |                :x:                |                :x:                 |        :x:         |            :x:             |            :x:             |            :x:             |
 | Clientside NPCs          | :white_check_mark: |                :x:                |                :x:                 |        :x:         |            :x:             |     :white_check_mark:     |            :x:             |
 | Clientside Players       | :white_check_mark: |                :x:                |                :x:                 |        :x:         |            :x:             |            :x:             |            :x:             |
 | Clientside Holograms     | :white_check_mark: |                :x:                |                :x:                 |        :x:         |     :white_check_mark:     |     :white_check_mark:     |            :x:             |
@@ -163,7 +163,7 @@ Please let us know if there is any outdated information.
 *[Custom Menus]: Are there freely configurable GUI?
 *[Backpack for Quest Items]: Is there a way to store Quest Items so they to not need space in the players inventory?
 *[Quest Items]: Are there special items that cannot be dropped, eaten, lost etc. and must be used in a quest?
-*[Translations]: Can players choose their language for most gameplay elements (dialogs, notifications etc.)?
+*[Per Player Translations]: Can players choose their language for most gameplay elements (dialogs, notifications etc.)?
 *[Clientside Particles]: Can particles for NPCs etc. be displayed exclusively to players that meet certain conditions?
 *[Clientside NPCs]: Is it possible to show NPCs only for certain players based on conditions?
 *[Clientside Players]: Can player be hidden from each other using conditions?
