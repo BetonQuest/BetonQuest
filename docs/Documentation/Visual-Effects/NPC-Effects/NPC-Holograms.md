@@ -5,7 +5,7 @@ icon: material/text-account
 
 ## Requirements
 @snippet:integrations:holograms@
-@snippet:integrations:citizens@
+@snippet:integrations:npcs@
 
 ## Usage
 ```YAML title="Example"

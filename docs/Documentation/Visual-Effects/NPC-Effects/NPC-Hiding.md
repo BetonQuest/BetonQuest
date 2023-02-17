@@ -5,7 +5,7 @@ icon: fontawesome/solid/person-through-window
 # NPC Hiding
 
 ## Requirements
-@snippet:integrations:citizens@
+@snippet:integrations:npcs@
 @snippet:integrations:protocollib@
 
 
