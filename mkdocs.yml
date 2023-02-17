@@ -201,17 +201,6 @@ nav:
           - 'General FAQ': Tutorials/Frequently-Asked-Questions.md
   - 'Documentation':
       - 'Overview': Documentation/Overview.md
-      - 'Features':
-          - 'Conversations': Documentation/Features/Conversations.md
-          - 'Quest Menus':
-              - 'Menus': Documentation/Features/Menus/Menu.md
-              - 'Menu Example': Documentation/Features/Menus/Example.md
-              - 'Elements': Documentation/Features/Menus/Elements.md
-              - 'Menu Settings': Documentation/Features/Menus/Config.md
-          - 'Additional Features':
-              - 'Journal': Documentation/Features/Journal.md
-              - 'Quest Items': Documentation/Features/Items.md
-              - 'Quest Cancelers': Documentation/Features/Quest-Cancelers.md
 
       - 'Scripting':
           - 'About Scripting': Documentation/Scripting/About-Scripting.md
@@ -225,6 +214,18 @@ nav:
               - 'Schedules': Documentation/Scripting/Schedules.md
               - 'Parties': Documentation/Scripting/Parties.md
               - 'Data Formats': Documentation/Scripting/Data-Formats.md
+
+      - 'Features':
+          - 'Conversations': Documentation/Features/Conversations.md
+          - 'Quest Menus':
+              - 'Menus': Documentation/Features/Menus/Menu.md
+              - 'Menu Example': Documentation/Features/Menus/Example.md
+              - 'Elements': Documentation/Features/Menus/Elements.md
+              - 'Menu Settings': Documentation/Features/Menus/Config.md
+          - 'Additional Features':
+              - 'Journal': Documentation/Features/Journal.md
+              - 'Quest Items': Documentation/Features/Items.md
+              - 'Quest Cancelers': Documentation/Features/Quest-Cancelers.md
 
       - 'Visual Effects':
           - 'Notifications':
