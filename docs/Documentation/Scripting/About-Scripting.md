@@ -83,44 +83,39 @@ objectives:
   myObjective: "mobkill ZOMBIE 10"
 ```
 
-1. Every building block is defined in its own section. In this case, the sections contents is a condition.
+1. Every building block is defined in its own section. In this case, the section's content is a condition.
 2. `myCondition` is the name of this condition. The instruction text is `health 10`. 
    This is a condition which checks if the player has 10 health.
 
-### Conditions
-
-Conditions are the most versatile and useful tools in creating advanced quests. They allow you to control what options are available to player in conversations, how the NPC responds or if the objective will be completed. The reference of all possible conditions is down below.
-
-You can negate the condition (revert its output) by adding an exclamation mark (`!`) at the beginning of it's name (in the place you use it, i.e. in conversations, not in the _conditions_ section).
-
-You can use conversation variables instead of numeric arguments in conditions. If the variable fails to resolve (i.e. it will return an empty string) BetonQuest will use 0 instead.
-
 ### Events
 
-In certain moments you will want something to happen. Updating the journal, setting tags, giving rewards, all these are done using events. You define them just like conditions, by specifying a name and instruction string. You can find instruction strings to all events in the event reference. At the end of the instruction string you can add `conditions:` or `condition:` (with or without `s` at the end) attribute followed by a list of condition names separated by commas, like `conditions:angry,!quest_started`. This will make an event fire only when these conditions are met.
+In certain moments you will want something to happen. Updating the journal, setting tags, giving rewards, all these are
+done using events. You define them by specifying a name and instruction string like shown above.
+At the end of the instruction string you can add the `conditions:` (with or without `s` at the end)
+attribute followed by a list of condition names separated by commas, 
+like `conditions:angry,!quest_started`. This will make an event fire only when these conditions are met.
 
-You can use conversation variables instead of numeric arguments in events. If the variable fails to resolve (i.e. it will return an empty string) BetonQuest will use 0 instead.
+[Explore all Events](./Building-Blocks/Events-List.md){ .md-button }
+
 
 ### Objectives
 
-Objectives are the main things you will use when creating complex quests. You start them with a special
-event, `objective`. You define them in the _objectives.yml_ file, just as you would conditions or events. At the end of
-the instruction string you can add conditions and events for the objective. Conditions will limit when the objective can
-be completed (e.g. killing zombies only at given location in quest for defending city gates), and events will fire when
-the objective is completed (e.g. giving a reward, or setting a tag which will enable collecting a reward from an NPC).
-You define these like that: `conditions:con1,con2 events:event1,event2` at the end of instruction string . Separate them
-by commas and never use spaces! You can also use singular forms of these arguments: `condition:` and `event:`.
+Objective are goals that player must complete. At first, they must be started for a player with the `objective` event.
+When the player completes the objective, all defined events are run. For example, you could reward the player by giving
+them an item.
 
-If you want to start an objective right after it was completed (for example `die` objective: when you die, teleport you
-to a special spawnpoint and start `die` objective again), you can add `persistent` argument at the end of an instruction
-string. It will prevent the objective from being completed, although it will run all its events. To cancel such
-objective you will need to use `objective delete` event.
+You define them in the `objectives` section as shown above. At the end of the instruction text you can add conditions
+and events for the objective. Conditions will limit when the objective can be completed (e.g. killing zombies only at
+given location), and events will fire when the objective is completed (e.g. giving a reward, or setting a tag which
+will enable collecting a reward from an NPC). You define these like that: `conditions:con1,con2 events:event1,event2`
+at the end of instruction text. Separate them
+by commas and never use spaces! You can also use the singular forms of these arguments: `condition:` and `event:`.
 
-Objectives are loaded at start-up, but they do not consume resources without player actually having them active. This
-means that if you have 100 objectives defined, and 20 players doing one objective, 20 another players doing second
-objective, and the rest objectives are inactive (no one does them), then only 2 objectives will be consuming your server
-resources, not 100, not 40.
-
+If you want to start an objective right after it was completed you can add the `persistent` argument at the end of its instruction string.
+For example, you could create a custom respawn system with a `die` objective. When the player dies, they will be
+teleported to the spawnpoint and the `die` objective will be started again.
+The `perstistent` argument prevents the objective from being completed, although it will run all its events. To cancel such
+an objective you need to use `objective delete` event.
 
 #### Global objectives
 
@@ -140,10 +135,38 @@ objectives:
   start_quest_mine: 'location 100;200;300;world 5 events:start_quest_mine_folder {++global++}'
 ```
 
+[Explore all Objectives](./Building-Blocks/Objectives-List.md){ .md-button }
+
+
+### Conditions
+Conditions allow you to control what options are available to players in conversations, how the NPC responds or if the objective
+will be completed. They check if a given in-game state is present and return `true` or `false` as a result.
+
+You can negate the condition (revert its output) by adding an exclamation mark (`!`) at the beginning of its name. 
+This only works in the place where conditions are used, i.e. in conversations, not in the _conditions_ section).
+If you do so, make sure to enclose the condition in quotes, otherwise YAML will give you a syntax error.
+```YAML title="Example"
+conditions:
+  hasFullHealth: "health 20"
+events:
+  helpWithHealing: "hunger set 20 conditions:!hasFullHealth"
+```
+
+[Explore all Conditions](./Building-Blocks/Conditions-List.md){ .md-button }
+
 ## Tags
 
-Tags are little pieces of text you can assign to player and then check if he has them. They are particularly useful to determine if player has started or completed quest. They are given with `tag` event and checked with `tag` condition. All tags are bound to a package, so if you add `beton` tag from within a package named `example`, the tag will look like `example.beton`. If you're checking for `beton` tag from within `example` package, you're actually checking for `example.beton`. If you want to check a tag from another package, then you just need to prefix it's name with that package, for example `quest.beton`.
+Tags are little pieces of text you can assign to player and then check if he has them. They are particularly useful to 
+determine if player has started or completed quest. They are given with `tag` event and checked with `tag` condition.
+All tags are bound to a package, so if you add `beton` tag from within a package named `example`, the tag will look
+like `example.beton`. If you're checking for `beton` tag from within `example` package, you're actually checking for
+`example.beton`. If you want to check a tag from another package, then you just need to prefix it's name with that
+package, for example `quest.beton`.
 
 ## Points
 
-Points are like tags, but with amount. You can earn them for doing quest, talking with NPC’s, basically for everything you want. You can also take the points away, even to negative numbers. Points can be divided to categories, so the ones from _beton_ category won’t mix with points from _quests_ group. Of course then you can check if player has (or doesn't have) certain amount and do something based on this condition. They can be used as counter for specific number of quest done, as a reputation system in villages and even NPC’s attitude to player.
+Points are like tags, but with amount. You can earn them for doing quest, talking with NPC’s, basically for everything
+you want. You can also take the points away, even to negative numbers. Points can be divided to categories, so the ones
+from _beton_ category won’t mix with points from _quests_ group. Of course then you can check if player has (or doesn't have)
+certain amount and do something based on this condition. They can be used as counter for specific number of quest done,
+as a reputation system in villages and even NPC’s attitude to player.
