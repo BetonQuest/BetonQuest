@@ -37,8 +37,8 @@ notify: |-
 
   ### Usage Examples
 
-  Check out the documentation about [Notify Categories](Documentation/Visual-Effects/Notifications/Notification-IO's-&-Categories.md#categories) and 
-  the notify IO specific options if you haven't yet. You must understand these two if you want to use the Notify system to it's full extend.
+  Check out the notify IO specific options if you haven't yet. You must understand these two if you want to use the Notify system to it's full extend.
+  Advanced users may also use [Notify Categories](Documentation/Visual-Effects/Notifications/Notification-IO's-&-Categories.md#categories) to make their lives easier.
   ```YAML
   #The simplest of all notify events. Just a chat message:
   customEvent: "notify Hello %player%!"  

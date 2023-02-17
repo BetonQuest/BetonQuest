@@ -137,8 +137,7 @@ Sometimes, user reviews describe a plugin better than the author can:
 | Version Support          |    1.18 - 1.19     |            1.8 - 1.19             |             1.8 - 1.19             |    1.17 - 1.19     |         1.8 - 1.19         |         1.7 - 1.19         |         1.7 - 1.19         |
 | Integrated Plugins       |         33         |                13                 |                 14                 |         20         |             15             |             29             |             1              |
 | BetonQuest integration   |                    |    :material-check-bold: [^5]     |                :x:                 | :white_check_mark: |            :x:             |            :x:             |            :x:             |
-| Ingame Editor            |        :x:         |         Chat & GUI(Paid)          |                :x:                 | :white_check_mark: |            GUI             |            GUI             |            GUI             |
-| External Editor          | :white_check_mark: |                :x:                |                :x:                 |        :x:         |            :x:             |            :x:             |            :x:             |
+| Ingame Editor            |      :x: [^6]      |         Chat & GUI (Paid)         |                :x:                 | :white_check_mark: |            GUI             |            GUI             |            GUI             |
 | Database Support         |   SQLite & MySQL   |               MySQL               |               MySQL                |   SQLite & MySQL   |           MySQL            |           MySQL            |       SQLite & MySQL       |
 | BungeeCord Support       | :white_check_mark: |                :x:                |         :white_check_mark:         | :white_check_mark: |            :x:             |            :x:             |            :x:             |
 | Organized File Structure | :white_check_mark: |                :x:                |                :x:                 | :white_check_mark: |            :x:             |     :white_check_mark:     |            :x:             |
@@ -148,7 +147,7 @@ Sometimes, user reviews describe a plugin better than the author can:
 | Custom Menus             | :white_check_mark: |                :x:                |     :material-check-bold: [^2]     |        :x:         |            :x:             |     :white_check_mark:     |     :white_check_mark:     |
 | Quest Items              | :white_check_mark: |                :x:                |                :x:                 |        :x:         |            :x:             |            :x:             |            :x:             |
 | Backpack for Quest Items | :white_check_mark: |                :x:                |                :x:                 |        :x:         |            :x:             |            :x:             |            :x:             |
-| Per Player Language      | :white_check_mark: |                :x:                |                :x:                 |        :x:         |            :x:             |            :x:             |            :x:             |
+| Translations             | :white_check_mark: |                :x:                |                :x:                 |        :x:         |            :x:             |            :x:             |            :x:             |
 | Clientside NPCs          | :white_check_mark: |                :x:                |                :x:                 |        :x:         |            :x:             |     :white_check_mark:     |            :x:             |
 | Clientside Players       | :white_check_mark: |                :x:                |                :x:                 |        :x:         |            :x:             |            :x:             |            :x:             |
 | Clientside Holograms     | :white_check_mark: |                :x:                |                :x:                 |        :x:         |     :white_check_mark:     |     :white_check_mark:     |            :x:             |
@@ -164,7 +163,7 @@ Please let us know if there is any outdated information.
 *[Custom Menus]: Are there freely configurable GUI?
 *[Backpack for Quest Items]: Is there a way to store Quest Items so they to not need space in the players inventory?
 *[Quest Items]: Are there special items that cannot be dropped, eaten, lost etc. and must be used in a quest?
-*[Per Player Language]: Can players choose their language for most gameplay elements (dialogs, notifications etc.)?
+*[Translations]: Can players choose their language for most gameplay elements (dialogs, notifications etc.)?
 *[Clientside Particles]: Can particles for NPCs etc. be displayed exclusively to players that meet certain conditions?
 *[Clientside NPCs]: Is it possible to show NPCs only for certain players based on conditions?
 *[Clientside Players]: Can player be hidden from each other using conditions?
@@ -182,6 +181,7 @@ Please let us know if there is any outdated information.
 [^3]: There are conversations, but they are not multi-path.
 [^4]: Only particles above NPCs and a limited configuration.
 [^5]: Integration from the BetonQuest side.
+[^6]: BetonQuest's scripting is too complex for the limited possibilities of in-game editing. There are plans for a web editor.
 
 !!! info "Major Difference"
     BetonQuest is not only a quest plugin. All features and systems work outside of quests too.
