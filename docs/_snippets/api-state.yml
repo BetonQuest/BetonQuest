@@ -16,12 +16,6 @@ unfinished: |-
 
 
 state-explanation: |-
-  **BetonQuest 2.0 is currently in development.**  
-  This will take some time. Any part of the API may change more than once during development.
-  Sure, any API is supposed to be stable. But we cannot guarantee this - BetonQuest 2.0 includes many redesigns
-  of core concepts. It's possible that these turn out to be flawed.
-  However, API states help you understand how finalized an API part is.
-
   <h3><u>Unfinished</u> </h3>
   This part of the API is brand-new.
   It will be changed if there are any bugs, missing features or usability improvements.
