@@ -6,7 +6,7 @@ icon: material/cancel
           Sorry, your browser doesn't support embedded videos.
 </video>   
 
-You can easily let players cancel their quests using the cancel option in the quest backpack. 
+You can easily let players cancel their quests using the cancel option in the quest backpack (or `/cancelquest`). 
 Cancelers also provide an easy way to clean up all the data that was created during the quest. They can also be triggered by events.
      
 ## Setup 
