@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.modules.schedule.impl;
 
 import lombok.CustomLog;
-import org.betonquest.betonquest.api.annotation.VisibleForTesting;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.modules.schedule.impl.realtime.daily.RealtimeDailyScheduler;
+import org.jetbrains.annotations.VisibleForTesting;
 
 import java.util.Locale;
 import java.util.concurrent.Executors;
