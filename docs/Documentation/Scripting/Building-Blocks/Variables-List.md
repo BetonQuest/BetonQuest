@@ -169,8 +169,8 @@ braces `{ }`. Inside the curly braces you have to escape with `\`, so to have a 
 
 ### NPC Name Variable
 
-Contains the NPC name in the player's language of the current conversation. If the player is not in a conversation, the
-variable is empty.
+When the player is in a conversation, this variable will contain the questers name in the player's quest language.
+If the player is not in a conversation, the variable is empty.
 
 ```
 %npc%
