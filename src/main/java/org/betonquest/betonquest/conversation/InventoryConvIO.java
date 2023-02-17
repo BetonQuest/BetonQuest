@@ -21,6 +21,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -342,6 +343,13 @@ public class InventoryConvIO implements Listener, ConversationIO {
         } else {
             conv.endConversation();
             HandlerList.unregisterAll(this);
+        }
+    }
+
+    @EventHandler
+    public void onConsume(final PlayerItemConsumeEvent event) {
+        if (Conversation.containsPlayer(PlayerConverter.getID(event.getPlayer()))) {
+            event.setCancelled(true);
         }
     }
 
