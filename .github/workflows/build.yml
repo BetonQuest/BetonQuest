@@ -387,8 +387,14 @@ jobs:
           
           IFS='.' read -r major minor _ <<< "$VERSION"
           TWO_DIGIT_VERSION="$major.$minor"
-
-          mike deploy --push --update-aliases "$TWO_DIGIT_VERSION" RELEASE
+          
+          if [ "$TXT" = "docs-requirements-insiders.txt" ]
+          then
+            mike deploy --push --update-aliases "$TWO_DIGIT_VERSION" RELEASE --config-file mkdocs.insiders.yml
+          else
+             mike deploy --push --update-aliases "$TWO_DIGIT_VERSION" RELEASE
+          fi
+          
           mike delete --push "$TWO_DIGIT_VERSION-DEV"
       - name: Deploy development to Github Pages
         if: "env.VERSION_TYPE == 'development'"
@@ -399,7 +405,13 @@ jobs:
           IFS='.' read -r major minor _ <<< "$VERSION"
           TWO_DIGIT_VERSION="$major.$minor"
           
-          [ ${{ github.ref }} == 'refs/heads/main' ] && mike deploy --push --update-aliases "$TWO_DIGIT_VERSION-DEV" DEV || mike deploy --push --update-aliases "$TWO_DIGIT_VERSION-DEV"
+          if [ "$TXT" = "docs-requirements-insiders.txt" ]
+          then
+            [ ${{ github.ref }} == 'refs/heads/main' ] && mike deploy --push --update-aliases "$TWO_DIGIT_VERSION-DEV" DEV --config-file mkdocs.insiders.yml || mike deploy --push --update-aliases "$TWO_DIGIT_VERSION-DEV" --config-file mkdocs.insiders.yml
+          else
+            [ ${{ github.ref }} == 'refs/heads/main' ] && mike deploy --push --update-aliases "$TWO_DIGIT_VERSION-DEV" DEV || mike deploy --push --update-aliases "$TWO_DIGIT_VERSION-DEV"
+          fi
+  
 
   create-release:
     name: Create GitHub Release
