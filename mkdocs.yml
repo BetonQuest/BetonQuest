@@ -253,16 +253,16 @@ nav:
       - 'Setup Project': Participate/Setup-Project.md
       - Process:
           - 'Create a new Branch': Participate/Process/Create-a-new-Branch.md
-          - 'Changing Code':
-              - 'Workflow': Participate/Process/Code/Workflow.md
-              - 'Checking Requirements': Participate/Process/Code/Checking-Requirements.md
-              - 'Adding a Dependency': Participate/Process/Code/Adding-a-new-Dependency.md
-              - 'Writing JUnit Tests': Participate/Process/Code/Writing-JUnit-Tests.md
           - 'Changing Docs':
               - 'Workflow': Participate/Process/Docs/Workflow.md
               - 'Fundamental Principles': Participate/Process/Docs/Principles.md
               - 'Guidelines': Participate/Process/Docs/Guidelines.md
               - 'mkdocs Customizations': Participate/Process/Docs/Customizations.md
+          - 'Changing Code':
+              - 'Workflow': Participate/Process/Code/Workflow.md
+              - 'Checking Requirements': Participate/Process/Code/Checking-Requirements.md
+              - 'Adding a Dependency': Participate/Process/Code/Adding-a-new-Dependency.md
+              - 'Writing JUnit Tests': Participate/Process/Code/Writing-JUnit-Tests.md
           - 'Maintaining the Changelog': Participate/Process/Maintaining-the-Changelog.md
           - 'Submitting Changes': Participate/Process/Submitting-Changes.md
       - Misc:

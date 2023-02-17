@@ -11,4 +11,4 @@ Now give the branch a name that describes the changes you want to make and click
 
 ---
 ## Where to Continue?
-Now you can continue by changing [Code](./Code/Workflow.md#maven-verify) or [Docs](./Docs/Workflow.md#live-preview), depending on your needs.
+Now you can continue by changing [Docs](./Docs/Workflow.md#live-preview) or [Code](./Code/Workflow.md#maven-verify), depending on your needs.
