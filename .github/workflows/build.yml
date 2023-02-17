@@ -187,6 +187,15 @@ jobs:
         with:
           path: target/docs
           key: ${{ runner.os }}-target/docs-${{ github.run_number }}
+      - name: Cache target/docs/.cache/plugins/optimize
+        uses: actions/cache@v3
+        with:
+          path: target/docs/.cache/plugins/optimize
+          key: ${{ runner.os }}-hardcoded-media-cache
+      - name: Install pngquant, a CI only dependency for mkdocs-material image optimization
+        uses: awalsh128/cache-apt-pkgs-action@v1.2.2
+        with:
+          packages: pngquant
       - name: Install dependencies
         run: |
           python3 -m pip install --upgrade pip
@@ -199,7 +208,7 @@ jobs:
           DATE="$(date +%Y-%m-%d)"
           sed -i "s~\${maven\.build\.timestamp}~$DATE~g" ./CHANGELOG.md
           echo "$(cat ./CHANGELOG.md)" >> './docs/Documentation/CHANGELOG.md'
-      - name: Set mkdocs.yml version
+      - name: Set user feedback form version in mkdocs.yml
         run: |
           sed -i "s~%VERSION%~${VERSION}~g" ./mkdocs.yml
       - name: Set secret in downloads.js script
@@ -216,6 +225,8 @@ jobs:
             mkdocs build --config-file mkdocs.yml
           fi
           git diff > target/docs/changes.patch
+        env:
+          ANALYTICS_PROPERTY: ${{ vars.ANALYTICS_PROPERTY }}
       - name: Upload Docs
         uses: actions/upload-artifact@v3
         with:
@@ -349,6 +360,15 @@ jobs:
         with:
           path: target/docs
           key: ${{ runner.os }}-target/docs-${{ github.run_number }}
+      - name: Cache target/docs/.cache/plugins/optimize
+        uses: actions/cache@v3
+        with:
+          path: target/docs/.cache/plugins/optimize
+          key: ${{ runner.os }}-hardcoded-media-cache
+      - name: Install pngquant, a CI only dependency for mkdocs-material image optimization
+        uses: awalsh128/cache-apt-pkgs-action@v1.2.2
+        with:
+          packages: pngquant
       - name: Install dependencies
         run: |
           python3 -m pip install --upgrade pip
@@ -367,8 +387,14 @@ jobs:
           
           IFS='.' read -r major minor _ <<< "$VERSION"
           TWO_DIGIT_VERSION="$major.$minor"
-
-          mike deploy --push --update-aliases "$TWO_DIGIT_VERSION" RELEASE
+          
+          if [ "$TXT" = "docs-requirements-insiders.txt" ]
+          then
+            mike deploy --push --update-aliases "$TWO_DIGIT_VERSION" RELEASE --config-file mkdocs.insiders.yml
+          else
+             mike deploy --push --update-aliases "$TWO_DIGIT_VERSION" RELEASE
+          fi
+          
           mike delete --push "$TWO_DIGIT_VERSION-DEV"
       - name: Deploy development to Github Pages
         if: "env.VERSION_TYPE == 'development'"
@@ -379,7 +405,13 @@ jobs:
           IFS='.' read -r major minor _ <<< "$VERSION"
           TWO_DIGIT_VERSION="$major.$minor"
           
-          [ ${{ github.ref }} == 'refs/heads/main' ] && mike deploy --push --update-aliases "$TWO_DIGIT_VERSION-DEV" DEV || mike deploy --push --update-aliases "$TWO_DIGIT_VERSION-DEV"
+          if [ "$TXT" = "docs-requirements-insiders.txt" ]
+          then
+            [ ${{ github.ref }} == 'refs/heads/main' ] && mike deploy --push --update-aliases "$TWO_DIGIT_VERSION-DEV" DEV --config-file mkdocs.insiders.yml || mike deploy --push --update-aliases "$TWO_DIGIT_VERSION-DEV" --config-file mkdocs.insiders.yml
+          else
+            [ ${{ github.ref }} == 'refs/heads/main' ] && mike deploy --push --update-aliases "$TWO_DIGIT_VERSION-DEV" DEV || mike deploy --push --update-aliases "$TWO_DIGIT_VERSION-DEV"
+          fi
+  
 
   create-release:
     name: Create GitHub Release

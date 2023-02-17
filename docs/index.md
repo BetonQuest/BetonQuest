@@ -1,5 +1,4 @@
 ---
-icon: material/rocket-launch
 template: home.html
 title: Home
 hide:
@@ -129,31 +128,30 @@ Sometimes, user reviews describe a plugin better than the author can:
 
 <script defer type="text/javascript" src="./_webCode/js/tableRating.js"></script>
 
-| <p>Feature</p>           |  [BetonQuest][L1]  | [Quests][L2]<span> PikaMug</span> | [Quests][L3]<span> LMBishop</span> |  [NotQuests][L4]   |     [BeautyQuests][L5]     |     [QuestCreator][L7]     |       [ProQuest][L8]       |
-|--------------------------|:------------------:|:---------------------------------:|:----------------------------------:|:------------------:|:--------------------------:|:--------------------------:|:--------------------------:|
-| Spigot Rating            |     Loading...     |            Loading...             |             Loading...             |     Loading...     |         Loading...         |         Loading...         |         Loading...         |
-| Free                     | :white_check_mark: |        :white_check_mark:         |         :white_check_mark:         | :white_check_mark: |     :white_check_mark:     |         :x:  (20$)         |       :x:  (19.99$)        |
-| OpenSource               | :white_check_mark: |        :white_check_mark:         |         :white_check_mark:         | :white_check_mark: |     :white_check_mark:     |            :x:             |            :x:             |
-| API                      | :white_check_mark: |        :white_check_mark:         |         :white_check_mark:         | :white_check_mark: |     :white_check_mark:     | :material-check-bold: [^1] | :material-check-bold: [^1] |
-| Version Support          |    1.18 - 1.19     |            1.8 - 1.19             |             1.8 - 1.19             |    1.17 - 1.19     |         1.8 - 1.19         |         1.7 - 1.19         |         1.7 - 1.19         |
-| Integrated Plugins       |         33         |                13                 |                 14                 |         20         |             15             |             29             |             1              |
-| BetonQuest integration   |                    |    :material-check-bold: [^5]     |                :x:                 | :white_check_mark: |            :x:             |            :x:             |            :x:             |
-| Ingame Editor            |        :x:         |         Chat & GUI(Paid)          |                :x:                 | :white_check_mark: |            GUI             |            GUI             |            GUI             |
-| External Editor          | :white_check_mark: |                :x:                |                :x:                 |        :x:         |            :x:             |            :x:             |            :x:             |
-| Database Support         |   SQLite & MySQL   |               MySQL               |               MySQL                |   SQLite & MySQL   |           MySQL            |           MySQL            |       SQLite & MySQL       |
-| BungeeCord Support       | :white_check_mark: |                :x:                |         :white_check_mark:         | :white_check_mark: |            :x:             |            :x:             |            :x:             |
-| Organized File Structure | :white_check_mark: |                :x:                |                :x:                 | :white_check_mark: |            :x:             |     :white_check_mark:     |            :x:             |
-| <p>Unique Features</p>   |                    |                                   |                                    |                    |                            |                            |                            |
-| Multi-Path Conversations | :white_check_mark: |                :x:                |                :x:                 | :white_check_mark: | :material-check-bold: [^3] |     :white_check_mark:     |            :x:             |
-| Quest Journal            | :white_check_mark: |        :white_check_mark:         |                :x:                 | :white_check_mark: |            :x:             |     :white_check_mark:     |            :x:             |
-| Custom Menus             | :white_check_mark: |                :x:                |     :material-check-bold: [^2]     |        :x:         |            :x:             |     :white_check_mark:     |     :white_check_mark:     |
-| Quest Items              | :white_check_mark: |                :x:                |                :x:                 |        :x:         |            :x:             |            :x:             |            :x:             |
-| Backpack for Quest Items | :white_check_mark: |                :x:                |                :x:                 |        :x:         |            :x:             |            :x:             |            :x:             |
-| Per Player Language      | :white_check_mark: |                :x:                |                :x:                 |        :x:         |            :x:             |            :x:             |            :x:             |
-| Clientside NPCs          | :white_check_mark: |                :x:                |                :x:                 |        :x:         |            :x:             |     :white_check_mark:     |            :x:             |
-| Clientside Players       | :white_check_mark: |                :x:                |                :x:                 |        :x:         |            :x:             |            :x:             |            :x:             |
-| Clientside Holograms     | :white_check_mark: |                :x:                |                :x:                 |        :x:         |     :white_check_mark:     |     :white_check_mark:     |            :x:             |
-| Clientside Particles     | :white_check_mark: |                :x:                |                :x:                 |        :x:         | :material-check-bold: [^4] |     :white_check_mark:     |            :x:             |
+| <p>Feature</p>           |                 [BetonQuest][L1]                 | [Quests][L2]<span> PikaMug</span> | [Quests][L3]<span> LMBishop</span> |  [NotQuests][L4]   |     [BeautyQuests][L5]     |     [QuestCreator][L7]     |       [ProQuest][L8]       |
+|--------------------------|:------------------------------------------------:|:---------------------------------:|:----------------------------------:|:------------------:|:--------------------------:|:--------------------------:|:--------------------------:|
+| Spigot Rating            |                    Loading...                    |            Loading...             |             Loading...             |     Loading...     |         Loading...         |         Loading...         |         Loading...         |
+| Free                     |                :white_check_mark:                |        :white_check_mark:         |         :white_check_mark:         | :white_check_mark: |     :white_check_mark:     |         :x:  (20$)         |       :x:  (19.99$)        |
+| OpenSource               |                :white_check_mark:                |        :white_check_mark:         |         :white_check_mark:         | :white_check_mark: |     :white_check_mark:     |            :x:             |            :x:             |
+| API                      |                :white_check_mark:                |        :white_check_mark:         |         :white_check_mark:         | :white_check_mark: |     :white_check_mark:     | :material-check-bold: [^1] | :material-check-bold: [^1] |
+| Version Support          |                   1.18 - 1.19                    |            1.8 - 1.19             |             1.8 - 1.19             |    1.17 - 1.19     |         1.8 - 1.19         |         1.7 - 1.19         |         1.7 - 1.19         |
+| Integrated Plugins       | @snippet:constants:totalIntegratedPluginsNumber@ |                13                 |                 14                 |         20         |             15             |             29             |             1              |
+| BetonQuest integration   |                                                  |    :material-check-bold: [^5]     |                :x:                 | :white_check_mark: |            :x:             |            :x:             |            :x:             |
+| Ingame Editor            |                     :x: [^6]                     |         Chat & GUI (Paid)         |                :x:                 | :white_check_mark: |            GUI             |            GUI             |            GUI             |
+| Database Support         |                  SQLite & MySQL                  |               MySQL               |               MySQL                |   SQLite & MySQL   |           MySQL            |           MySQL            |       SQLite & MySQL       |
+| BungeeCord Support       |                :white_check_mark:                |                :x:                |         :white_check_mark:         | :white_check_mark: |            :x:             |            :x:             |            :x:             |
+| Organized File Structure |                :white_check_mark:                |                :x:                |                :x:                 | :white_check_mark: |            :x:             |     :white_check_mark:     |            :x:             |
+| <p>Unique Features</p>   |                                                  |                                   |                                    |                    |                            |                            |                            |
+| Multi-Path Conversations |                :white_check_mark:                |                :x:                |                :x:                 | :white_check_mark: | :material-check-bold: [^3] |     :white_check_mark:     |            :x:             |
+| Quest Journal            |                :white_check_mark:                |        :white_check_mark:         |                :x:                 | :white_check_mark: |            :x:             |     :white_check_mark:     |            :x:             |
+| Custom Menus             |                :white_check_mark:                |                :x:                |     :material-check-bold: [^2]     |        :x:         |            :x:             |     :white_check_mark:     |     :white_check_mark:     |
+| Quest Items              |                :white_check_mark:                |                :x:                |                :x:                 |        :x:         |            :x:             |            :x:             |            :x:             |
+| Backpack for Quest Items |                :white_check_mark:                |                :x:                |                :x:                 |        :x:         |            :x:             |            :x:             |            :x:             |
+| Per Player Translations  |                :white_check_mark:                |                :x:                |                :x:                 |        :x:         |            :x:             |            :x:             |            :x:             |
+| Clientside NPCs          |                :white_check_mark:                |                :x:                |                :x:                 |        :x:         |            :x:             |     :white_check_mark:     |            :x:             |
+| Clientside Players       |                :white_check_mark:                |                :x:                |                :x:                 |        :x:         |            :x:             |            :x:             |            :x:             |
+| Clientside Holograms     |                :white_check_mark:                |                :x:                |                :x:                 |        :x:         |     :white_check_mark:     |     :white_check_mark:     |            :x:             |
+| Clientside Particles     |                :white_check_mark:                |                :x:                |                :x:                 |        :x:         | :material-check-bold: [^4] |     :white_check_mark:     |            :x:             |
 
 
 Use this table with caution, it might be outdated (last update <span class="bq-highlight">**3rd of September 2021**</span>).
@@ -165,7 +163,7 @@ Please let us know if there is any outdated information.
 *[Custom Menus]: Are there freely configurable GUI?
 *[Backpack for Quest Items]: Is there a way to store Quest Items so they to not need space in the players inventory?
 *[Quest Items]: Are there special items that cannot be dropped, eaten, lost etc. and must be used in a quest?
-*[Per Player Language]: Can players choose their language for most gameplay elements (dialogs, notifications etc.)?
+*[Per Player Translations]: Can players choose their language for most gameplay elements (dialogs, notifications etc.)?
 *[Clientside Particles]: Can particles for NPCs etc. be displayed exclusively to players that meet certain conditions?
 *[Clientside NPCs]: Is it possible to show NPCs only for certain players based on conditions?
 *[Clientside Players]: Can player be hidden from each other using conditions?
@@ -183,6 +181,7 @@ Please let us know if there is any outdated information.
 [^3]: There are conversations, but they are not multi-path.
 [^4]: Only particles above NPCs and a limited configuration.
 [^5]: Integration from the BetonQuest side.
+[^6]: BetonQuest's scripting is too complex for the limited possibilities of in-game editing. There are plans for a web editor.
 
 !!! info "Major Difference"
     BetonQuest is not only a quest plugin. All features and systems work outside of quests too.
@@ -219,12 +218,13 @@ gameplay. Questers can also choose between five different styles to display thei
 
 ## Endless Integrations
 
-BetonQuest supports more than 30 other plugins, ranging from standard plugins like WorldGuard/WorldEdit and Citizens to
+BetonQuest supports @snippet:constants:totalIntegratedPluginsNumber@ other plugins, ranging from standard plugins like
+WorldGuard/WorldEdit and Citizens to
 more advanced ones such as EffectLib. It also offers support for other quest plugins, so you can just keep your old
 quests and create further additions to your quest lines based upon the progress in your old plugin. If just Beton isn't
 enough you can always just hook into Skript or Denizen too.
 
-See the full list of integrations [here](Documentation/Compatibility.md).
+See the full list of integrations [here](Documentation/Scripting/Building-Blocks/Integration-List.md).
 
 ## Custom Notification System
 
@@ -317,4 +317,4 @@ Take a look at this handpicked selection:
   </div>
 </div>
 
---8<-- "sponsors.md"
+@snippet:general:sponsors@

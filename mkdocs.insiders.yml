@@ -1,1 +1,13 @@
 INHERIT: mkdocs.yml
+plugins:
+  - search
+  - snippets:
+      directory: "_snippets"
+      identifier: "snippet"
+  - exclude:
+      glob:
+        - _snippets/*
+        - _custom_theme/*
+  - typeset
+  - optimize:
+      enabled: !ENV [ CI, false ]

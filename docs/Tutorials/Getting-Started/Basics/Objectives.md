@@ -13,10 +13,10 @@ fishing fish. The possibilities are nearly endless! You will learn about these i
     * [Events Tutorial](Events.md)
 
 !!! example "Related Docs"
-    * [Objectives Reference](../../../Documentation/About-Types.md#objectives)
-    * [Objectives List](../../../Documentation/Objectives-List.md)
+    * [Objectives Reference](../../../Documentation/Scripting/About-Scripting.md#objectives)
+    * [Objectives List](../../../Documentation/Scripting/Building-Blocks/Objectives-List.md)
 </div>
---8<-- "Tutorials/download-setup-warning.md"
+@snippet:tutorials:download-setup-warning@
     ```
     /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Objectives/1-DirectoryStructure /tutorialQuest
     ```
@@ -201,7 +201,7 @@ the dialog to the npc in "_package.yml_". If not, [check the previous tutorials]
     Type `/bq reload` on your server after saving.
 
 
---8<-- "Tutorials/download-solution.md"
+@snippet:tutorials:download-solution@
     ```
     /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Objectives/2-FullExample /tutorialQuest
     ```
@@ -209,7 +209,7 @@ the dialog to the npc in "_package.yml_". If not, [check the previous tutorials]
 ## Summary
 
 You've learned what objectives are and how to create them. You can now give a player an 
-objective to have a more advanced quest! More objectives can be found in the [objectives list](../../../Documentation/Objectives-List.md).
+objective to have a more advanced quest! More objectives can be found in the [objectives list](../../../Documentation/Scripting/Building-Blocks/Objectives-List.md).
 In the next tutorial you will learn how **conditions** work and how to use them to make the Blacksmith react to the completed objective.
 ---
 [ Conditions Tutorial ](Conditions.md){ .md-button .md-button--primary}

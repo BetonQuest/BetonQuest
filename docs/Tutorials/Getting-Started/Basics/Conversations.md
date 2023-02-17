@@ -11,10 +11,10 @@ and a NPC. Therefore, these are the basic tool for story telling.
     * [Setup Guide](../Setup-Guide/Setting-up-a-test-server.md)
 
 !!! example "Related Docs"
-    * [Conversations](../../../Documentation/Conversations.md)
+    * [Conversations](../../../Documentation/Features/Conversations.md)
 </div>
 
---8<-- "Tutorials/download-setup.md"
+@snippet:tutorials:download-setup@
     ```
     /bq download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conversations/1-DirectoryStructure /tutorialQuest overwrite
     ```
@@ -34,12 +34,15 @@ npcs:
 This links the NPC with the given Citizens ID (`1`) to the conversation with the given identifier (`Jack`).
 Save the file after editing.
 
-??? info "How to find the Citizens NPC ID"
+??? info "How to create a Citizens NPC? Where do I find the NPC's ID?"
     Execute this command if you haven't created an NPC yet: `/npc create Jack`  
+    This will show you the ID of the newly created NPC.
     
-    1. Stay close to the NPC you want to select
+    If you already have one, do this:    
+
+    1. Stay close to the NPC who's ID you want.
     2. Type the command `/npc select` to select the nearest NPC.
-    3. Type the command `/npc id` to get the ID from your NPC.
+    3. Type the command `/npc id` to get the ID from the selected NPC.
 
 
 ## 2. Creating your first conversation
@@ -229,7 +232,7 @@ Select different options by using the keys for walking forwards and backwards (+
 options by jumping (++space++ by default).
 
 
---8<-- "Tutorials/download-solution.md"
+@snippet:tutorials:download-solution@
     ```
     /q download BetonQuest/Quest-Tutorials main QuestPackages /Basics/Conversations/2-FullExample /tutorialQuest overwrite
     ```

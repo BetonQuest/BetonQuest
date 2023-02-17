@@ -14,6 +14,7 @@ extra_css:
   - '_webCode/css/contentAreaFullWidth.css'
   - '_webCode/css/coloredIcons.css'
   - '_webCode/css/ExternalLinkIcon.css'
+  - '_webCode/css/mermaidCentered.css'
 
 extra_javascript:
   - '_webCode/js/copyLinkToClipboard.js'
@@ -28,16 +29,19 @@ theme:
   custom_dir: 'docs/_custom_theme/'
   language: en
   features:
+    - content.action.edit
     - content.code.annotate
+    - content.code.copy
+    - content.tabs.link
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.tracking
     - navigation.sections
     - navigation.top
     - search.share
-    - navigation.indexes
     - search.suggest
     - content.tooltips
+    - toc.follow
   palette:
     - scheme: slate
       primary: indigo
@@ -85,7 +89,7 @@ markdown_extensions:
       emoji_generator: !!python/name:materialx.emoji.to_svg
       options:
         custom_icons:
-          - custom_theme/.icons
+          - '_custom_theme/.icons'
   - pymdownx.inlinehilite
   - pymdownx.magiclink
   - pymdownx.mark
@@ -100,14 +104,15 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
-  - pymdownx.snippets:
-      base_path: docs/_snippets
   - abbr
   - toc:
       permalink: 🔗
 
 plugins:
   - search
+  - snippets:
+      directory: "_snippets"
+      identifier: "snippet"
   - exclude:
       glob:
         - _snippets/*
@@ -118,7 +123,7 @@ extra:
     provider: mike
   analytics:
     provider: google
-    property: G-VEBGTNXWEL
+    property: !ENV [ ANALYTICS_PROPERTY ]
     feedback:
       title: Was this page helpful?
       ratings:
@@ -195,37 +200,51 @@ nav:
       - 'Frequently Asked Questions':
           - 'General FAQ': Tutorials/Frequently-Asked-Questions.md
   - 'Documentation':
-      - 'General':
-          - 'Conversations': Documentation/Conversations.md
-          - 'Items': Documentation/Items.md
-          - 'Journal': Documentation/Journal.md
-          - 'Parties': Documentation/Parties.md
-          - 'Player Hider': Documentation/Player-Hider.md
-          - 'Quest Cancelers': Documentation/Quest-Cancelers.md
-          - 'Data Formats': Documentation/Data-Formats.md
-          - 'Packages & Templates': Documentation/Packages-&-Templates.md
-      - 'Types':
-          - 'About Types': Documentation/About-Types.md
-          - 'Objectives List': Documentation/Objectives-List.md
-          - 'Events List': Documentation/Events-List.md
-          - 'Conditions List': Documentation/Conditions-List.md
-          - 'Compatibility List': Documentation/Compatibility.md
-          - 'Variables List': Documentation/Variables-List.md
-          - 'Schedules': Documentation/Schedules.md
-      - 'Notifications':
-          - 'Settings': Documentation/Notification-Settings.md
-          - "IO's & Categories": Documentation/Notification-IO's-&-Categories.md
-      - 'Menus':
-          - 'Menus': Documentation/Menu-Menu.md
-          - 'Menu Example': Documentation/Menu-Example.md
-          - 'Elements': Documentation/Menu-Elements.md
-          - 'Config': Documentation/Menu-Config.md
-      - 'Technical':
-          - 'Permissions & Commands': Documentation/Commands-and-permissions.md
-          - 'Updating': Documentation/Updating.md
-          - 'Migration': Documentation/Migration.md
-          - 'Configuration': Documentation/Configuration.md
-          - 'Changelog': Documentation/CHANGELOG.md
+      - 'Overview': Documentation/Overview.md
+
+      - 'Scripting':
+          - 'About Scripting': Documentation/Scripting/About-Scripting.md
+          - 'Packages & Templates': Documentation/Scripting/Packages-&-Templates.md
+          - 'Events List': Documentation/Scripting/Building-Blocks/Events-List.md
+          - 'Objectives List': Documentation/Scripting/Building-Blocks/Objectives-List.md
+          - 'Conditions List': Documentation/Scripting/Building-Blocks/Conditions-List.md
+          - 'Integration List': Documentation/Scripting/Building-Blocks/Integration-List.md
+          - 'Variables List': Documentation/Scripting/Building-Blocks/Variables-List.md
+          - 'Additional Features':
+              - 'Schedules': Documentation/Scripting/Schedules.md
+              - 'Parties': Documentation/Scripting/Parties.md
+              - 'Data Formats': Documentation/Scripting/Data-Formats.md
+
+      - 'Features':
+          - 'Conversations': Documentation/Features/Conversations.md
+          - 'Quest Menus':
+              - 'Menus': Documentation/Features/Menus/Menu.md
+              - 'Menu Example': Documentation/Features/Menus/Example.md
+              - 'Elements': Documentation/Features/Menus/Elements.md
+              - 'Menu Settings': Documentation/Features/Menus/Config.md
+          - 'Additional Features':
+              - 'Journal': Documentation/Features/Journal.md
+              - 'Quest Items': Documentation/Features/Items.md
+              - 'Quest Cancelers': Documentation/Features/Quest-Cancelers.md
+
+      - 'Visual Effects':
+          - 'Notifications':
+              - 'Settings': Documentation/Visual-Effects/Notifications/Notification-Settings.md
+              - "IO's & Categories": Documentation/Visual-Effects/Notifications/Notification-IO's-&-Categories.md
+          - 'NPC Effects':
+              - 'NPC Hiding': Documentation/Visual-Effects/NPC-Effects/NPC-Hiding.md
+              - 'NPC Holograms': Documentation/Visual-Effects/NPC-Effects/NPC-Holograms.md
+          - 'Additional Effects':
+              - 'Quest Holograms': Documentation/Visual-Effects/Additional-Effects/Quest-Holograms.md
+              - 'Player Hider': Documentation/Visual-Effects/Additional-Effects/Player-Hider.md
+
+      - 'Configuration':
+          - 'Configuration': Documentation/Configuration/Configuration.md
+          - 'Permissions & Commands': Documentation/Configuration/Commands-and-permissions.md
+          - 'Version Changes':
+              - 'Updating': Documentation/Configuration/Version-Changes/Updating.md
+              - 'Migration': Documentation/Configuration/Version-Changes/Migration.md
+              - 'Changelog': Documentation/CHANGELOG.md
   - 'API':
       - 'Overview': API/Overview.md
       - 'Legacy API': API/API.md
@@ -237,15 +256,16 @@ nav:
       - 'Setup Project': Participate/Setup-Project.md
       - Process:
           - 'Create a new Branch': Participate/Process/Create-a-new-Branch.md
+          - 'Changing Docs':
+              - 'Workflow': Participate/Process/Docs/Workflow.md
+              - 'Fundamental Principles': Participate/Process/Docs/Principles.md
+              - 'Guidelines': Participate/Process/Docs/Guidelines.md
+              - 'mkdocs Customizations': Participate/Process/Docs/Customizations.md
           - 'Changing Code':
               - 'Workflow': Participate/Process/Code/Workflow.md
               - 'Checking Requirements': Participate/Process/Code/Checking-Requirements.md
               - 'Adding a Dependency': Participate/Process/Code/Adding-a-new-Dependency.md
               - 'Writing JUnit Tests': Participate/Process/Code/Writing-JUnit-Tests.md
-          - 'Changing Docs':
-              - 'Workflow': Participate/Process/Docs/Workflow.md
-              - 'Fundamental Principles': Participate/Process/Docs/Principles.md
-              - 'Guidelines': Participate/Process/Docs/Guidelines.md
           - 'Maintaining the Changelog': Participate/Process/Maintaining-the-Changelog.md
           - 'Submitting Changes': Participate/Process/Submitting-Changes.md
       - Misc:
