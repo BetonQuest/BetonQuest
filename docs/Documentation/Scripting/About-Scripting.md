@@ -6,7 +6,7 @@ BetonQuest's quests do not have a predefined structure and can be freely designe
 This is made possible by a powerful quest scripting language.
 
 <div class="grid" markdown>
-!!! example "Traditional Quest Plugin Quest Structure"
+!!! example "Quest Structure with a Traditional Quest Plugin"
     === "Rebel Quest" 
         ```mermaid
            flowchart TD
@@ -22,7 +22,7 @@ This is made possible by a powerful quest scripting language.
         
         The capabilities of the quest plugin cannot be used outside of these linear quests.
     
-!!! example "BetonQuest Quest Structure"
+!!! example "Quest Structure with BetonQuest"
     === "Rebel Quest"
         ```mermaid
            flowchart TD
