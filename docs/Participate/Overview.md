@@ -34,4 +34,4 @@ You have a few options to support projects like this one:
     Start by [creating a new branch](Process/Create-a-new-Branch.md), then change
     [Code](./Process/Code/Workflow.md) and finally [submit any changes](./Process/Submitting-Changes.md) you made.
 
-@snippet:generalSnippets:sponsors@
+@snippet:general:sponsors@

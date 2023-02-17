@@ -316,4 +316,4 @@ Take a look at this handpicked selection:
   </div>
 </div>
 
-@snippet:generalSnippets:sponsors@
+@snippet:general:sponsors@

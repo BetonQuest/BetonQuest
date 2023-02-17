@@ -616,7 +616,7 @@ events:
 | _direction_    | `direction:directionType`       | `absolute`             | There are 3 types how the vector can get applied to the player:<br> `absolute` won't change the vector at all.<br> `relative` will redirect the vector to the view of the player.<br> `relative_y` is a mix between absolute and relative. It will still direct to the view but only horizontally, so y will be absolute. |
 | _modification_ | `modification:modificationType` | `set`                  | Possible modifications are `set` and `add`. The modification type determines how the vector should be merged with the player's velocity. The player's velocity is the external force applied on the player.                                                                                                               |
 
-@snippet:generalSnippets:relativeAxisExplanation@
+@snippet:general:relativeAxisExplanation@
 
 ```YAML title="Example"
 events:
