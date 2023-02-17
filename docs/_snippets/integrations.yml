@@ -10,6 +10,7 @@ holograms: |-
       If you have both plugins installed, you can use the [`default_hologram` option in "_config.yml_"](Documentation/Configuration/Configuration.md#default-hologram-plugin) to set which plugin should be used.
       !!! bug ""
           **When used by external plugins like BetonQuest, DecentHolograms does not support custom model data in items lines!**
+  
           You need to use [their syntax](https://wiki.decentholograms.eu/general/format-and-colors#icon) for item holograms
           instead of the BetonQuest syntax. 
           Last checked: DecentHolograms version 2.7.9 on 2023-01-03.
