@@ -28,9 +28,10 @@ theme:
   custom_dir: 'docs/_custom_theme/'
   language: en
   features:
+    - content.action.edit
     - content.code.annotate
     - content.code.copy
-    - content.action.edit
+    - content.tabs.link
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.tracking
