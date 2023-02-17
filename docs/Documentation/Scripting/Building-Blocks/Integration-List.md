@@ -785,7 +785,7 @@ You can also use placeholders from other plugins in BetonQuest. Simply insert a 
     %ph.player_item_in_hand%
     ```
 
-## [ProtocolLib](https://www.spigotmc.org/resources/1997/)
+## ProtocolLib[](https://www.spigotmc.org/resources/1997/)
 
 ### Freeze players: 'freeze'
 This event allows you to freeze player for the given amount of ticks:
