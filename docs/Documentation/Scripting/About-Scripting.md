@@ -119,20 +119,20 @@ an objective you need to use `objective delete` event.
 
 #### Global objectives
 
-If you want an objective to be active for every player right after joining you can create a global objective.
+If you want an objective to be active for every player right after joining, you can create a global objective.
 This is done by adding `global` argument to the instruction of the objective.
 When you then reload BetonQuest it is started for all online players and also will be started for every player who joins.
 
-To prevent the objective from being started every time a player joins a tag is set for the player whenever the objective
-is started and as long as the player has the tag the objective won't be started again if the player joins.  
-These tags follow syntax `<package>.global-<id>`, where `<id>` is the objectives id and `<package>` the package where
-the objective is located.
-
 Possible use cases would be a quest which starts if a player reaches a specific location or breaks a specific block.
+
+To prevent the objective from being started every time a player joins, a tag is set for the player whenever the objective
+is started. With this tag, the objective will not be started again.  
+These tags follow the syntax `<package>.global-<id>`, where `<id>` is the objectives id and `<package>` the package where
+the objective is located.
 
 ```YAML title="Example"
 objectives:
-  start_quest_mine: 'location 100;200;300;world 5 events:start_quest_mine_folder {++global++}'
+  startQuestByMining: 'location 100;200;300;world 5 events:start_quest_mine_folder {++global++}'
 ```
 
 [Explore all Objectives](./Building-Blocks/Objectives-List.md){ .md-button }
@@ -156,17 +156,17 @@ events:
 
 ## Tags
 
-Tags are little pieces of text you can assign to player and then check if he has them. They are particularly useful to 
+Tags are little pieces of text you can assign to player. They are particularly useful to 
 determine if player has started or completed quest. They are given with `tag` event and checked with `tag` condition.
-All tags are bound to a package, so if you add `beton` tag from within a package named `example`, the tag will look
-like `example.beton`. If you're checking for `beton` tag from within `example` package, you're actually checking for
-`example.beton`. If you want to check a tag from another package, then you just need to prefix it's name with that
-package, for example `quest.beton`.
+All tags are bound to a package, so if you add the `questCompleted` tag from within a package named `monsterQuest`,
+the tag will look like `monsterQuest.questCompleted`.
+ 
+Read [working across packages](./Packages-&-Templates.md#working-across-packages) to learn how to work with tags across packages.
 
 ## Points
 
-Points are like tags, but with amount. You can earn them for doing quest, talking with NPC’s, basically for everything
-you want. You can also take the points away, even to negative numbers. Points can be divided to categories, so the ones
-from _beton_ category won’t mix with points from _quests_ group. Of course then you can check if player has (or doesn't have)
-certain amount and do something based on this condition. They can be used as counter for specific number of quest done,
-as a reputation system in villages and even NPC’s attitude to player.
+Points are numbers that can be assigned to a player. You can set them with the [`point` event](./Building-Blocks/Events-List.md#point-point).
+you want. You can also take the points away, even to negative numbers. 
+Of course then you can check if player has (or doesn't have) certain amount with the [`point` condition](./Building-Blocks/Conditions-List.md#point-point). 
+They can be used as counter for specific number of quest done, as a reputation system in villages or even an NPC's 
+attitude to player.
