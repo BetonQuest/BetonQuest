@@ -53,6 +53,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -110,7 +111,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     @SuppressWarnings("PMD.NcssCount")
     @Override
-    public boolean onCommand(final CommandSender sender, final Command cmd, final String alias, final String... args) {
+    public boolean onCommand(@NotNull final CommandSender sender, final Command cmd, @NotNull final String alias, @NotNull final String... args) {
 
         if ("betonquest".equalsIgnoreCase(cmd.getName())) {
             LOG.debug("Executing /betonquest command for user " + sender.getName()
@@ -262,7 +263,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 case "version":
                 case "ver":
                 case "v":
-                    displayVersionInfo(sender);
+                    displayVersionInfo(sender, alias);
                     break;
                 case "purge":
                     LOG.debug("Loading data asynchronously");
@@ -1561,9 +1562,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     }
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    private void displayVersionInfo(final CommandSender sender) {
+    private void displayVersionInfo(final CommandSender sender, final String commandAlias) {
         final Updater updater = BetonQuest.getInstance().getUpdater();
-        final String updateCommand = "/q update";
+        final String updateCommand = "/" + commandAlias + " update";
 
         final String lang = sender instanceof Player
                 ? BetonQuest.getInstance().getPlayerData(PlayerConverter.getID((Player) sender)).getLanguage()
