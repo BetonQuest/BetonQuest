@@ -12,5 +12,4 @@ Now give the branch a name that describes the changes you want to make and click
 ---
 ## Next Steps
 Now you are ready to make your changes!
-Either change [Docs](./Docs/Workflow.md#live-preview), write [Tutorials](./Docs/Workflow.md#live-preview),
-or [Code](./Code/Workflow.md#maven-verify), depending on your skills.
+Either change [Docs](./Docs/Workflow.md#live-preview) or [Code](./Code/Workflow.md#maven-verify), depending on your skills.
