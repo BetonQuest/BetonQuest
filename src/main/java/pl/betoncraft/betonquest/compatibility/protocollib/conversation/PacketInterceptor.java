@@ -2,7 +2,6 @@ package pl.betoncraft.betonquest.compatibility.protocollib.conversation;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.async.AsyncListenerHandler;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
@@ -46,7 +45,7 @@ public class PacketInterceptor implements Interceptor, Listener {
         this.player = PlayerConverter.getPlayer(playerID);
         this.messages = new ArrayList<>();
 
-        packetAdapter = new PacketAdapter(BetonQuest.getInstance(), ListenerPriority.HIGHEST, getPacketTypes()) {
+        packetAdapter = new PacketAdapter(BetonQuest.getInstance(), ListenerPriority.LOWEST, getPacketTypes()) {
             @Override
             public void onPacketSending(final PacketEvent event) {
                 if (!event.getPlayer().equals(player)) {
@@ -82,8 +81,7 @@ public class PacketInterceptor implements Interceptor, Listener {
             }
         };
 
-        final AsyncListenerHandler handler = ProtocolLibrary.getProtocolManager().getAsynchronousManager().registerAsyncHandler(packetAdapter);
-        handler.start();
+        ProtocolLibrary.getProtocolManager().addPacketListener(packetAdapter);
     }
 
     private static List<PacketType> getPacketTypes() {
@@ -116,7 +114,7 @@ public class PacketInterceptor implements Interceptor, Listener {
     @Override
     public void end() {
         // Stop Listening for Packets
-        ProtocolLibrary.getProtocolManager().getAsynchronousManager().unregisterAsyncHandler(packetAdapter);
+        ProtocolLibrary.getProtocolManager().removePacketListener(packetAdapter);
 
         //Send all messages to player
         for (final PacketContainer message : messages) {
