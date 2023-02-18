@@ -1,0 +1,4 @@
+addAssignees: author
+addReviewers: true
+reviewers:
+  - "/betonquest-admins" # This is an organisation team
