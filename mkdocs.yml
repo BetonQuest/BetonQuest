@@ -121,6 +121,9 @@ plugins:
 extra:
   version:
     provider: mike
+    default:
+      - RELEASE
+      - DEV
   analytics:
     provider: google
     property: !ENV [ ANALYTICS_PROPERTY ]

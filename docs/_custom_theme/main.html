@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block outdated %}
+<a style="color: black"> You're viewing the docs of an outdated or legacy development version! </a>
+<a href="{{ '../' ~ base_url }}">
+  <strong>Click here to go to the latest BetonQuest release.</strong>
+</a>
+{% endblock %}
