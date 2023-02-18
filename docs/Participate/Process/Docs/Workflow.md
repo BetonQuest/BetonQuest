@@ -62,5 +62,6 @@ With other words, don't mix up different changes.
 ---
 ## Next Steps
 If you also want to adjust the code switch to [Changing Code](../Code/Workflow.md).
+If you already made code changes you should continue with [Maintaining Changelog](../Maintaining-the-Changelog.md).
 
-Otherwise, continue with [Submitting Changes](../Submitting-Changes.md).  
+Otherwise, please continue with [Submitting Changes](../Submitting-Changes.md).  

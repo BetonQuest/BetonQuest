@@ -9,6 +9,7 @@ fix a bug or make other changes.
 
 ## Make changes
 Now go ahead and make your changes. Take a look at the sub-pages of this page for more information about specific topics.
+Then come back here to verify, commit and finally submit your changes.
 
 ## Maven verify
 After you made changes, you should also run `mvn verify` to check our requirements.
