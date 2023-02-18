@@ -1,10 +1,6 @@
-**This is a community funded project! Our monthly costs (server, domain, software licences) are paid by our Patreons.**
+**This is a community funded project! Our monthly costs (server, domain, software licences) are paid by our Sponsors.**
 
-[Support us on Patreon!  :heart:](https://patreon.com/betonquest/){: .md-button .md-button--primary }
+[Support us on Open Collective!  :heart:](https://opencollective.com/betonquest){: .md-button .md-button--primary }
 
 
-Thanks to all our Patreons for making this project possible!
-This is a list of our major sponsors:
-
-## KGB Edition:
-- finder17
+Thanks to all our Sponsors for making this project possible!
