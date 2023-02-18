@@ -21,7 +21,10 @@ extra_javascript:
 theme:
   name: material
   language: en
+  custom_dir: 'documentation/_custom_theme'
   features:
+    - content.code.copy
+    - content.action.edit
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.tracking
@@ -90,6 +93,9 @@ plugins:
 extra:
   version:
     provider: mike
+    default:
+      - RELEASE
+      - DEV
   analytics:
     provider: google
     property: G-VEBGTNXWEL
