@@ -56,7 +56,7 @@ jobs:
         run: |
           TAG_VERSION="${GITHUB_REF#*/*/}"
           echo "Collected the tag version. The version is '$TAG_VERSION'"
-          if [ $TAG_VERSION != $MAVEN_VERSION ]; then echo "::error::The version of the tag and the version of the pom are not equal! Tag is '$TAG_VERSION' and pom is '$MAVEN_VERSION'."; exit 1; fi
+          if [ ${TAG_VERSION:1} != $MAVEN_VERSION ]; then echo "::error::The version of the tag and the version of the pom are not equal! Tag is '$TAG_VERSION' and pom is '$MAVEN_VERSION'."; exit 1; fi
           echo "MAVEN_VERSION=$MAVEN_VERSION" >> $GITHUB_ENV
           echo "VERSION_TYPE=release" >> $GITHUB_ENV
       - name: Set version for 'Development Build'
