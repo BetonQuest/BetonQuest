@@ -10,6 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated
 ### Removed
 ### Fixed
+### Security
+
+## [1.12.10] - 2023-02-18
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
 - ProtocolLib's based `packet` interceptor was fixed for MC 1.19, now ProtocolLib 5.0.0 is required
 - conversation IO chest did not show the correct NPC heads
 - `objective` event - static calls did not remove the objective for online players
