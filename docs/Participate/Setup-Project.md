@@ -115,6 +115,6 @@ mkdocs serve
 Then visit [127.0.0.1:8000](http://127.0.0.1:8000) to make sure that everything works.
 
 ---
-## Where to Continue?
-You should now continue with [Create a new Branch](Process/Create-a-new-Branch.md),
+## Next Steps
+You can now continue by [Creating a new Branch](Process/Create-a-new-Branch.md),
 before you start changing [Code](Process/Code/Workflow.md) or [Docs](Process/Docs/Workflow.md).

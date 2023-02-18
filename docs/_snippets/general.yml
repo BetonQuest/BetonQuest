@@ -7,12 +7,12 @@ relativeAxisExplanation: |-
       </div>   
 
 sponsors: |-
-  ## Donate Money :money_with_wings:
+  We are part of the non-profit [Open Source Collective](https://www.oscollective.org/)!
+  This means all donations must be re-invested into the project.
+  Thanks you for making this project possible!
 
-  We are part of the non-profit open source collective!
-  Our monthly costs (server, domain, software licences) are paid by our community. 
-  Thanks to you for making this project possible!
-  Any additional money has to be re-invested in the project.
+  Donations will be used for our monthly costs (server, domain, software licences) and developer commissions to speed up
+  the development. 
 
   [![OpenCollective](https://opencollective.com/betonquest/donate/button@2x.png?color=blue){ width="300" }](https://opencollective.com/betonquest){ class="noExternalLinkIcon" }
   [![mcmodels](https://github.com/BetonQuest/BetonQuest/blob/main/docs/_media/content/Participate/Overview/mcmodels.png?raw=true){ width="300" }](https://mcmodels.net/?wpam_id=3){ class="noExternalLinkIcon" }

@@ -317,4 +317,6 @@ Take a look at this handpicked selection:
   </div>
 </div>
 
+## Donate Money :money_with_wings:
+
 @snippet:general:sponsors@
