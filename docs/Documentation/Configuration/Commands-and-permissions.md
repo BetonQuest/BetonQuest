@@ -69,8 +69,8 @@ The server must be restarted to unregister command tab completions.
 * `betonquest.admin` - allows using admin commands (/q, /rpgmenu ...)
 * `betonquest.journal` - allows using /j command (default for players)
 * `betonquest.backpack` - allows using /backpack command (default for players)
-* `betonquest.cancelquest` - allows using /cancelquest command (default for players)
 * `betonquest.compass` - allows using /compass command (default for players)
+* `betonquest.cancelquest` - allows using /cancelquest command (default for players)
 * `betonquest.conversation` - allows talking with NPCs (default for players)
 * `betonquest.language` - allows changing the language (default for players)
 
