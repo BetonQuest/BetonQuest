@@ -19,7 +19,6 @@ import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
 import java.util.logging.Level;
 
 import static org.mockito.Mockito.*;
@@ -164,8 +163,7 @@ class RealtimeCronSchedulerTest {
             runnable.run();
             return null;
         });
-        final Supplier<ScheduledExecutorService> executorSupplier = () -> executorService;
-        final RealtimeCronScheduler scheduler = new RealtimeCronScheduler(executorSupplier, cache);
+        final RealtimeCronScheduler scheduler = new RealtimeCronScheduler(() -> executorService, cache);
         final RealtimeCronSchedule schedule = getSchedule(CatchupStrategy.NONE, false);
         final ExecutionTime executionTime = mock(ExecutionTime.class);
         when(executionTime.timeToNextExecution(any())).thenReturn(

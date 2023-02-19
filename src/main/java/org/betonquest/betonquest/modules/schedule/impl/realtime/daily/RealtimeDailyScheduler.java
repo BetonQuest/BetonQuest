@@ -1,9 +1,7 @@
 package org.betonquest.betonquest.modules.schedule.impl.realtime.daily;
 
 import lombok.CustomLog;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
-import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.modules.schedule.LastExecutionCache;
 import org.betonquest.betonquest.modules.schedule.impl.ExecutorServiceScheduler;
 
@@ -14,7 +12,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.PriorityQueue;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 /**
  * The scheduler for {@link RealtimeDailySchedule}.
@@ -31,6 +31,17 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
     /**
      * Create a new simple scheduler and pass BetonQuest instance to it.
      *
+     * @param executor           supplier used to create new instances of the executor used by this scheduler
+     * @param lastExecutionCache cache where the last execution times of a schedule are stored
+     */
+    public RealtimeDailyScheduler(final Supplier<ScheduledExecutorService> executor, final LastExecutionCache lastExecutionCache) {
+        super(executor);
+        this.lastExecutionCache = lastExecutionCache;
+    }
+
+    /**
+     * Create a new simple scheduler and pass BetonQuest instance to it.
+     *
      * @param lastExecutionCache cache where the last execution times of a schedule are stored
      */
     public RealtimeDailyScheduler(final LastExecutionCache lastExecutionCache) {
@@ -41,8 +52,8 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
     @Override
     public void start() {
         LOG.debug("Starting simple scheduler.");
-        super.start();
         catchupMissedSchedules();
+        super.start();
         LOG.debug("Simple scheduler start complete.");
     }
 
@@ -58,10 +69,7 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
             LOG.debug("Running missed schedules to catch up...");
             for (final RealtimeDailySchedule schedule : missedSchedules) {
                 lastExecutionCache.cacheExecutionTime(schedule.getId(), Instant.now());
-                LOG.debug(schedule.getId().getPackage(), "Schedule '" + schedule + "' runs its events.");
-                for (final EventID event : schedule.getEvents()) {
-                    BetonQuest.event(null, event);
-                }
+                executeEvents(schedule);
             }
         }
     }
