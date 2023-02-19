@@ -6,7 +6,7 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: wow-actions/auto-assign@v1
+      - uses: wow-actions/auto-assign@v3
         with:
           GITHUB_TOKEN: ${{ secrets.AUTO_ASSIGNMENT_GITHUB_TOKEN }}
           CONFIG_FILE: .github/auto_assign.yml
