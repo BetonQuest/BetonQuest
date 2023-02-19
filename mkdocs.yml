@@ -110,14 +110,14 @@ markdown_extensions:
       permalink: 🔗
 
 plugins:
-  - search
-  - snippets:
-      directory: "_snippets"
-      identifier: "snippet"
-  - exclude:
-      glob:
-        - _snippets/*
-        - _custom_theme/*
+  search: { }
+  snippets:
+    directory: "_snippets"
+    identifier: "snippet"
+  exclude:
+    glob:
+      - _snippets/*
+      - _custom_theme/*
 
 extra:
   version:
