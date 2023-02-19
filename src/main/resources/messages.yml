@@ -33,6 +33,7 @@ pl:
   animals_to_breed: '&2Pozostalo {1} zwierzat do rozmnozenia'
   items_to_pickup: '&2Pozostalo {1} przedmiotow do podniesienia'
   items_to_smelt: '&2{1} items left to smelt' # TODO: missing translation
+  items_to_craft: '&2{1} items left to craft'
   items_to_enchant: '&2{1} items left to enchant' # TODO: missing translation
   level_to_gain: '&2{1} levels left to gain' # TODO: missing translation
   busy: '&cNie mozesz rozmawiac w trakcie walki.'
@@ -504,7 +505,7 @@ hu:
   animals_to_breed: '&2{1} állatokat hagytak szaporodni'
   items_to_pickup: '&2{1} items left to pickup' # TODO: missing translation
   items_to_smelt: '&2{1} items left to smelt' # TODO: missing translation
-  items_to_enchant: '&2{1} items left to enchant' # TODO: missing translation
+  items_to_craft: '&2{1} items left to craft' # TODO: missing translation
   items_to_enchant: '&2{1} items left to enchant' # TODO: missing translation
   level_to_gain: '&2{1} levels left to gain' # TODO: missing translation
   busy: '&cNem harcolhat harc közben.'
