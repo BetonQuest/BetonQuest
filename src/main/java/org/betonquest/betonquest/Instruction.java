@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -130,6 +131,23 @@ public class Instruction {
             }
         }
         return null;
+    }
+
+    /**
+     * Gets an optional value with the given prefix.
+     *
+     * @param prefix the prefix of the optional value
+     * @return an {@link Optional} containing the value or an empty {@link Optional} if the value is not present
+     */
+    public Optional<String> getOptionalArgument(final String prefix) {
+        for (final String part : parts) {
+            if (part.toLowerCase(Locale.ROOT).startsWith(prefix.toLowerCase(Locale.ROOT) + ":")) {
+                lastOptional = prefix;
+                currentIndex = -1;
+                return Optional.of(part.substring(prefix.length() + 1));
+            }
+        }
+        return Optional.empty();
     }
 
     public boolean hasArgument(final String argument) {
