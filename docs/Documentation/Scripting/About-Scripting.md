@@ -117,6 +117,12 @@ teleported to the spawnpoint and the `die` objective will be started again.
 The `perstistent` argument prevents the objective from being completed, although it will run all its events. To cancel such
 an objective you need to use `objective delete` event.
 
+```YAML title="Example"
+objectives:
+  mineDiamonds: 'block DIAMONDS -10 events:reward'
+  die: 'die cancel respawn:100;200;300;world;90;0 events:sendRespawnMessage conditions:hasCustomTotem'
+```
+
 #### Global objectives
 
 If you want an objective to be active for every player right after joining, you can create a global objective.
