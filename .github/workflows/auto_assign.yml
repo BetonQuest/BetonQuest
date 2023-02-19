@@ -6,9 +6,10 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: wow-actions/auto-assign@v3
+      - uses: SaltyAimbOtter/auto-assign@v3
         with:
           GITHUB_TOKEN: ${{ secrets.AUTO_ASSIGNMENT_GITHUB_TOKEN }}
-          addAssignees: author
+          addAssignees: true
           addReviewers: true
+          assignees: "_author" # This is the author of the PR or issue
           reviewers: "/betonquest-admins" # This is an organisation team
