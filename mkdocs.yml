@@ -38,6 +38,7 @@ theme:
     - navigation.tracking
     - navigation.sections
     - navigation.top
+    - navigation.path
     - search.share
     - search.suggest
     - content.tooltips
@@ -109,14 +110,14 @@ markdown_extensions:
       permalink: 🔗
 
 plugins:
-  - search
-  - snippets:
-      directory: "_snippets"
-      identifier: "snippet"
-  - exclude:
-      glob:
-        - _snippets/*
-        - _custom_theme/*
+  search: { }
+  snippets:
+    directory: "_snippets"
+    identifier: "snippet"
+  exclude:
+    glob:
+      - _snippets/*
+      - _custom_theme/*
 
 extra:
   version:
