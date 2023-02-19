@@ -132,12 +132,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   - all allow decimal level and variables now
 - changed backpack configuration. "" will hide the compass or canceler
 - `smelt` objective - now requires a QuestItem instead of a BlockSelector
+- `cancelquest` command - has its own permission now
+- `compass` command - has its own permission now
 - Things that are also changed in 1.12.X:
     - math variable now allows rounding output with the ~ operator
     - French translation has been updated
     - `action` objective - cancels now the event, before other plugins check for it (better third-party support)
-- `cancelquest` command - has its own permission now
-- `compass` command - has its own permission now
 ### Deprecated
 ### Removed
 - deprecated internals, code and old features
