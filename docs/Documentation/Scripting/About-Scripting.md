@@ -157,7 +157,8 @@ events:
 ## Tags
 
 Tags are little pieces of text you can assign to player. They are particularly useful to 
-determine if player has started or completed quest. They are given with `tag` event and checked with `tag` condition.
+determine if player has started or completed quest. They are given with [`tag` event](./Building-Blocks/Events-List.md#point-point) and checked with
+[`tag` condition](./Building-Blocks/Conditions-List.md#tag-tag).
 All tags are bound to a package, so if you add the `questCompleted` tag from within a package named `monsterQuest`,
 the tag will look like `monsterQuest.questCompleted`.
  
