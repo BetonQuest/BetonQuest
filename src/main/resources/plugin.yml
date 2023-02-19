@@ -53,12 +53,12 @@ commands:
   cancelquest:
     description: Opens the window with quest cancelers
     usage: /<command>
-    permission: betonquest.backpack
+    permission: betonquest.cancelquest
     aliases: [ bcq, bcancelquest, betoncancelquest, betonquestcancelquest ]
   compass:
     description: Opens the compass menu
     usage: /<command>
-    permission: betonquest.backpack
+    permission: betonquest.compass
     aliases: [ bc, bcompass, betoncompass, betonquestcompass ]
   questlang:
     description: Changes the language
@@ -72,8 +72,12 @@ permissions:
     default: true
   betonquest.backpack:
     default: true
+  betonquest.cancelquest:
+    default: true
+  betonquest.compass:
+    default: true
   betonquest.conversation:
     default: true
   betonquest.language:
     default: true
-  
+
