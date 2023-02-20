@@ -306,6 +306,8 @@ Only mobs that are in loaded chunks can be killed by using this event.
 
 ## Language Event: `language`
 
+**persistent**
+
 This event changes player's language to the specified one. There is only one argument, the language name.
 
 !!! example
