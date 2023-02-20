@@ -134,7 +134,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `smelt` objective - now requires a QuestItem instead of a BlockSelector
 - `cancelquest` command - has its own permission now
 - `compass` command - has its own permission now
-- `language` command - is new persistent
+- `language` command - is now persistent
 - Things that are also changed in 1.12.X:
     - math variable now allows rounding output with the ~ operator
     - French translation has been updated
