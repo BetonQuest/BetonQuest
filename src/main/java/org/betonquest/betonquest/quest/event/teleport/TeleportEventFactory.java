@@ -29,7 +29,7 @@ public class TeleportEventFactory implements EventFactory {
     private final Plugin plugin;
 
     /**
-     * Create the door event factory.
+     * Create the teleport event factory.
      *
      * @param server    server to use
      * @param scheduler scheduler to use
