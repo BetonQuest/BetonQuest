@@ -446,12 +446,14 @@ This event works in the same way as `point` event, the only difference is that i
 **persistent**, **static**
 
 Changes the block at the given position.
-The first argument is a [Block Selector](../Data-Formats.md#block-selectors), the second a location.
+The first argument is a [Block Selector](../Data-Formats.md#block-selectors), the second a location. It's possible to 
+deactivate the physics of the block by adding `ignorePhysics` at the end.
 Very powerful if used to trigger redstone contraptions.
 
 !!! example
     ```YAML
     setblock REDSTONE_BLOCK 100;200;300;world
+    setblock SAND 100;200;300;world ignorePhysics
     ```
 
 ## Spawn Mob: `spawn`
