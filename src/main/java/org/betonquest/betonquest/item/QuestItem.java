@@ -57,7 +57,7 @@ public class QuestItem {
     private final UnbreakableHandler unbreakable = new UnbreakableHandler();
     private final PotionHandler potion = new PotionHandler();
     private final BookHandler book = new BookHandler();
-    private final HeadHandler head = new HeadHandler();
+    private final HeadHandler head = HeadHandler.getInstance();
     private final ColorHandler color = new ColorHandler();
     private final FireworkHandler firework = new FireworkHandler();
     private final CustomModelDataHandler customModelData = new CustomModelDataHandler();
@@ -181,9 +181,7 @@ public class QuestItem {
         String author = "";
         String effects = "";
         String color = "";
-        String owner = "";
-        String skullPlayerId = "";
-        String skullTexture = "";
+        String skull = "";
         String firework = "";
         String unbreakable = "";
         String customModelData = "";
@@ -270,32 +268,7 @@ public class QuestItem {
                 }
             }
             if (meta instanceof SkullMeta) {
-                final SkullMeta skullMeta = (SkullMeta) meta;
-                if (skullMeta.hasOwner()) {
-                    owner = " owner:" + skullMeta.getOwner();
-                }
-
-                final OfflinePlayer ownerProfile = skullMeta.getOwningPlayer();
-                final PlayerProfile playerProfile = skullMeta.getPlayerProfile();
-                if (ownerProfile != null) {
-                    // For Bukkit / Spigot Server
-                    final UUID playerUniqueId = ownerProfile.getUniqueId();
-                    // TODO
-                    final String textures = ""; // TODO Implement for Bukkit / Spigot with deprecated APIs
-                    // TODO
-                    skullPlayerId = " player-id:" + playerUniqueId;
-//                    skullTexture = " texture:" + textures;
-                } else if (playerProfile != null) {
-                    // For Paper Server
-                    final UUID playerUniqueId = playerProfile.getId();
-                    final String textures = playerProfile.getProperties().stream()
-                            .filter(it -> it.getName().equals("textures"))
-                            .map(ProfileProperty::getValue)
-                            .findFirst()
-                            .orElse(null);
-                    skullPlayerId = " player-id:" + playerUniqueId;
-                    skullTexture = " texture:" + textures;
-                }
+                skull = HeadHandler.serializeSkullMeta((SkullMeta) meta);
             }
             if (meta instanceof FireworkMeta) {
                 final FireworkMeta fireworkMeta = (FireworkMeta) meta;
@@ -347,8 +320,7 @@ public class QuestItem {
         }
         // put it all together in a single string
         return item.getType() + durability + name + lore + enchants + title + author + text
-                + effects + color + owner + skullPlayerId + skullTexture + firework + unbreakable
-                + customModelData;
+                + effects + color + skull + firework + unbreakable + customModelData;
     }
 
     @Override
@@ -447,30 +419,8 @@ public class QuestItem {
         }
         if (meta instanceof SkullMeta) {
             final SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
-            if (!head.checkOwner(skullMeta.getOwner())) {
-                final OfflinePlayer ownerProfile = skullMeta.getOwningPlayer();
-                final PlayerProfile playerProfile = skullMeta.getPlayerProfile();
-                if (ownerProfile != null) {
-                    // For Bukkit / Spigot Server
-                    final UUID playerUniqueId = ownerProfile.getUniqueId();
-                    // TODO
-                    final String textures = ""; // TODO Implement for Bukkit / Spigot with deprecated APIs
-                    // TODO
-                    if (!head.checkPlayerId(playerUniqueId) || !head.checkTexture(textures)) {
-                        return false;
-                    }
-                } else if (playerProfile != null) {
-                    // For Paper Server
-                    final UUID playerUniqueId = playerProfile.getId();
-                    final String textures = playerProfile.getProperties().stream()
-                            .filter(it -> it.getName().equals("textures"))
-                            .map(ProfileProperty::getValue)
-                            .findFirst()
-                            .orElse(null);
-                    if (!head.checkPlayerId(playerUniqueId) || !head.checkTexture(textures)) {
-                        return false;
-                    }
-                }
+            if (!head.check(skullMeta)) {
+                return false;
             }
         }
         if (meta instanceof LeatherArmorMeta) {
@@ -556,26 +506,7 @@ public class QuestItem {
             bookMeta.setPages(book.getText());
         }
         if (meta instanceof SkullMeta) {
-            final SkullMeta skullMeta = (SkullMeta) meta;
-            final String owner = head.getOwner(profile);
-            final UUID playerId = head.getPlayerId();
-            final String texture = head.getTexture();
-
-            if (playerId == null || texture == null) {
-                skullMeta.setOwner(head.getOwner(profile));
-            } else {
-                if (PaperLib.isPaper()) {
-                    final PlayerProfile playerProfile = Bukkit.getServer().createProfile(playerId);
-                    playerProfile.getProperties().add(new ProfileProperty("textures", texture));
-                    skullMeta.setPlayerProfile(playerProfile);
-                } else {
-                    final org.bukkit.profile.PlayerProfile ownerProfile = Bukkit.getServer().createPlayerProfile(playerId);
-                    // TODO
-                    // TODO Support bukkit / spigot properties
-                    // TODO
-                    skullMeta.setOwnerProfile(ownerProfile);
-                }
-            }
+            head.populate((SkullMeta) meta, profile);
         }
         if (meta instanceof LeatherArmorMeta) {
             final LeatherArmorMeta armorMeta = (LeatherArmorMeta) meta;

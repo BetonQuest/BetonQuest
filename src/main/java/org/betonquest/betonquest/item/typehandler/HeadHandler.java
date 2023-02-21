@@ -1,29 +1,52 @@
 package org.betonquest.betonquest.item.typehandler;
 
+import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.item.QuestItem.Existence;
+import org.betonquest.betonquest.item.QuestItem;
+import org.bukkit.inventory.meta.SkullMeta;
 
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
-@SuppressWarnings("PMD.CommentRequired")
-public class HeadHandler {
+public abstract class HeadHandler {
+    public static final String META_OWNER = "owner";
+    public static final String META_PLAYER_ID = "player-id";
+    public static final String META_TEXTURE = "texture";
+
+    public static HeadHandler getInstance() {
+        if (PaperLib.isPaper()) {
+            return new PaperHeadHandler();
+        } else {
+            return new SpigotHeadHandler();
+        }
+    }
+
+    public static String serializeSkullMeta(final SkullMeta skullMeta) {
+        final Map<String, String> props;
+        if (PaperLib.isPaper()) {
+            props = PaperHeadHandler.parseSkullMeta(skullMeta);
+        } else {
+            props = SpigotHeadHandler.parseSkullMeta(skullMeta);
+        }
+        return props.entrySet().stream()
+                .map(it -> it.getKey() + ":" + it.getValue())
+                .collect(Collectors.joining(" ", " ", ""));
+    }
 
     private String owner;
     private UUID playerId;
     private String texture;
-    private Existence ownerE = Existence.WHATEVER;
-    private Existence playerIdE = Existence.WHATEVER;
-    private Existence textureE = Existence.WHATEVER;
-
-    public HeadHandler() {
-    }
+    private QuestItem.Existence ownerE = QuestItem.Existence.WHATEVER;
+    private QuestItem.Existence playerIdE = QuestItem.Existence.WHATEVER;
+    private QuestItem.Existence textureE = QuestItem.Existence.WHATEVER;
 
     public void setOwner(final String string) {
         if ("none".equalsIgnoreCase(string)) {
-            ownerE = Existence.FORBIDDEN;
+            ownerE = QuestItem.Existence.FORBIDDEN;
         } else {
             owner = string;
-            ownerE = Existence.REQUIRED;
+            ownerE = QuestItem.Existence.REQUIRED;
         }
     }
 
@@ -89,4 +112,12 @@ public class HeadHandler {
                 return false;
         }
     }
+
+    /**
+     * Reconstitute this head data into the specified skullMeta object.
+     * @param skullMeta The SkullMeta object to populate.
+     * @param profile An optional Profile.
+     */
+    public abstract void populate(SkullMeta skullMeta, Profile profile);
+    public abstract boolean check(SkullMeta skullMeta);
 }
