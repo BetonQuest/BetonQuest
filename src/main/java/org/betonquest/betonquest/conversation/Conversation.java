@@ -16,8 +16,11 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.ConversationData.OptionType;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
+import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
+import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
@@ -133,7 +136,11 @@ public class Conversation implements Listener {
         this.language = plugin.getPlayerData(onlineProfile).getLanguage();
         this.location = location;
         this.convID = conversationID;
-        this.data = plugin.getConversation(convID);
+        try {
+            this.data = plugin.getConversation(new ConversationID(pack, conversationID));
+        } catch (final ObjectNotFoundException e) {
+            throw new InstructionParseException(e);
+        }
         this.blacklist = plugin.getPluginConfig().getStringList("cmd_blacklist");
         this.messagesDelaying = "true".equalsIgnoreCase(plugin.getPluginConfig().getString("display_chat_after_conversation"));
 

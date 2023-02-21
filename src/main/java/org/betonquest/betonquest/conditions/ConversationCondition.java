@@ -6,8 +6,9 @@ import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.conversation.ConversationData;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.utils.Utils;
+import org.betonquest.betonquest.id.ConversationID;
 
 /**
  * Checks if the conversation with player has at least one possible option
@@ -32,14 +33,12 @@ public class ConversationCondition extends Condition {
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
-
-        final ConversationData conversation = BetonQuest.getInstance().getConversation(Utils.addPackage(instruction.getPackage(), conversationID));
-
-        if (conversation == null) {
+        try {
+            final ConversationData conversation = BetonQuest.getInstance().getConversation(new ConversationID(instruction.getPackage(), conversationID));
+            return conversation.isReady(profile);
+        } catch (final ObjectNotFoundException e) {
             throw new QuestRuntimeException("Conversation does not exist: " + instruction.getPackage().getQuestPath() + conversationID);
         }
-
-        return conversation.isReady(profile);
     }
 
 }

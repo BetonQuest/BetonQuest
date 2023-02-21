@@ -11,7 +11,9 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.database.PlayerData;
+import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.modules.config.QuestManager;
 import org.betonquest.betonquest.notify.Notify;
 import org.bukkit.ChatColor;
@@ -192,7 +194,7 @@ public final class Config {
      * @return the ID of the conversation assigned to this NPC or null if there
      * isn't one
      */
-    public static String getNpc(final String value) {
+    public static ConversationID getNpc(final String value) throws ObjectNotFoundException {
         // load npc assignments from all packages
         for (final Map.Entry<String, QuestPackage> entry : getPackages().entrySet()) {
             final QuestPackage pack = entry.getValue();
@@ -200,7 +202,7 @@ public final class Config {
             if (assignments != null) {
                 for (final String assignment : assignments.getKeys(false)) {
                     if (assignment.equalsIgnoreCase(value)) {
-                        return entry.getKey() + "." + assignments.getString(assignment);
+                        return new ConversationID(pack, assignments.getString(assignment));
                     }
                 }
             }
