@@ -29,7 +29,7 @@ public class PaperHeadHandler extends HeadHandler {
             if (playerId != null) {
                 parsedValues.put(META_PLAYER_ID, playerId.toString());
             }
-            final String texture = toEncodedSkinJson(playerProfile);
+            final String texture = encodeSkin(playerProfile);
             if (texture != null) {
                 parsedValues.put(META_TEXTURE, texture);
             }
@@ -60,14 +60,14 @@ public class PaperHeadHandler extends HeadHandler {
         final PlayerProfile playerProfile = skullMeta.getPlayerProfile();
         if (playerProfile != null) {
             final UUID playerUniqueId = playerProfile.getId();
-            final String texture = toEncodedSkinJson(playerProfile);
+            final String texture = encodeSkin(playerProfile);
             return checkOwner(ownerName) && checkPlayerId(playerUniqueId) && checkTexture(texture);
         } else {
             return checkOwner(ownerName);
         }
     }
 
-    private static String toEncodedSkinJson(final PlayerProfile playerProfile) {
+    private static String encodeSkin(final PlayerProfile playerProfile) {
         return playerProfile.getProperties().stream()
                 .filter(it -> it.getName().equals("textures"))
                 .map(ProfileProperty::getValue)

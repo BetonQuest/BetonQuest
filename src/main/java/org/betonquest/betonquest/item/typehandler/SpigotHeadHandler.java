@@ -58,7 +58,7 @@ public class SpigotHeadHandler extends HeadHandler {
             final UUID playerUniqueId = playerProfile.getUniqueId();
             final URL skin = playerProfile.getTextures().getSkin();
             if (skin != null) {
-                final String texture = toEncodedSkinJson(skin);
+                final String texture = encodeSkin(skin);
                 return checkOwner(ownerName) && checkPlayerId(playerUniqueId) && checkTexture(texture);
             } else {
                 return checkOwner(ownerName);
@@ -68,7 +68,7 @@ public class SpigotHeadHandler extends HeadHandler {
         }
     }
 
-    private static String toEncodedSkinJson(final URL skinUrl) {
+    private static String encodeSkin(final URL skinUrl) {
         return Base64.getEncoder()
                 .encodeToString(skinUrl.toString().getBytes());
     }
