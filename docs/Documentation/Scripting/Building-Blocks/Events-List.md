@@ -255,7 +255,12 @@ This event changes the food level of the player. The second argument is the modi
 
 ## If else: `if`
 
-This event will check a condition, and based on the outcome it will run the first or second event. The instruction string is `if condition event1 else event2`, where `condition` is a condition ID and `event1` and `event2` are event IDs. `else` keyword is mandatory between events for no practical reason.
+**persistent**, **static**
+
+This event will check a condition, and based on the outcome it will run the first or second event. The instruction 
+string is `if condition event1 else event2`, where `condition` is a condition ID and `event1` and `event2` are event IDs.
+ `else` keyword is mandatory between events for no practical reason. Keep in mind that this event is `persistent` 
+ and `static` but probably the condition or the events are not.
 
 !!! example
     ```YAML
