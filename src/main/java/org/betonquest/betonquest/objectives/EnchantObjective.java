@@ -21,12 +21,13 @@ import java.util.Map;
 /**
  * An objective that requires the player to enchant a {@link QuestItem}.
  */
+@SuppressWarnings("PMD.CommentRequired")
 public class EnchantObjective extends CountingObjective implements Listener {
 
+    private static final String JUST_ONE_ENCHANT = "one";
     private final QuestItem item;
     private final List<EnchantmentData> desiredEnchantments;
-
-    private boolean requireOne = false;
+    private boolean requireOne;
 
     public EnchantObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "items_to_enchant");
@@ -40,7 +41,7 @@ public class EnchantObjective extends CountingObjective implements Listener {
             throw new InstructionParseException("No enchantments were given! You must specify at least one enchantment.");
         }
 
-        instruction.getOptionalArgument("requirementMode").ifPresent((mode) -> requireOne = mode.equalsIgnoreCase("one"));
+        instruction.getOptionalArgument("requirementMode").ifPresent((mode) -> requireOne = mode.equalsIgnoreCase(JUST_ONE_ENCHANT));
     }
 
     @EventHandler(ignoreCancelled = true)
