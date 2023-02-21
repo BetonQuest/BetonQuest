@@ -16,7 +16,6 @@ import org.betonquest.betonquest.menu.commands.RPGMenuCommand;
 import org.betonquest.betonquest.menu.config.RPGMenuConfig;
 import org.betonquest.betonquest.menu.events.MenuOpenEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.event.HandlerList;
@@ -181,8 +180,6 @@ public class RPGMenu {
                 }
             }
         }
-//        final ChatColor color = (info.result == ReloadResult.FULL_SUCCESS) ? ChatColor.GREEN : ChatColor.YELLOW;
-//        LOG.info(color + "Reloaded " + info.loaded + color + " menus");
         LOG.info("Reloaded " + info.loaded + " menus");
         return info;
     }
