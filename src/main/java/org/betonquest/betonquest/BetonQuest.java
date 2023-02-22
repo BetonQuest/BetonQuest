@@ -1053,8 +1053,8 @@ public class BetonQuest extends JavaPlugin {
                 playerDataMap.put(onlineProfile, playerData);
                 playerData.startObjectives();
                 playerData.getJournal().update();
-                if (playerData.getConversation() != null) {
-                    new ConversationResumer(loggerFactory, onlineProfile, playerData.getConversation());
+                if (playerData.getActiveConversation() != null) {
+                    new ConversationResumer(loggerFactory, onlineProfile, playerData.getActiveConversation());
                 }
             }
 

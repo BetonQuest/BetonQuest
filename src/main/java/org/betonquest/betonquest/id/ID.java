@@ -10,12 +10,23 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Identifies any object(events, objectives, conversations etc.) of BetonQuest's scripting system via the path syntax.
+ * Handles relative and absolute paths.
+ */
 @SuppressWarnings({"PMD.ShortClassName", "PMD.AbstractClassWithoutAbstractMethod", "PMD.CommentRequired"})
 public abstract class ID {
 
-    public static final String UP_STR = "_"; // string used as "up the hierarchy" package
+    /**
+     * The string used to go "up the hierarchy" in relative paths.
+     */
+    public static final String UP_STR = "_";
 
-    public static final List<String> PATHS = List.of("events", "conditions", "objectives", "variables");
+    /**
+     * A list of all objects that can be addressed via this ID.
+     */
+    public static final List<String> PATHS = List.of("events", "conditions", "objectives", "variables",
+            "conversations", "cancel", "items");
 
     protected String identifier;
 
@@ -148,14 +159,30 @@ public abstract class ID {
         return false;
     }
 
+    /**
+     * Returns the package the object exist in.
+     *
+     * @return the package
+     */
     public QuestPackage getPackage() {
         return pack;
     }
 
+    /**
+     * Returns the base ID of the object. This is the ID without the package name.
+     *
+     * @return the base ID
+     */
     public String getBaseID() {
         return identifier;
     }
 
+    /**
+     * Returns the full ID of the object, which is in this format: <br>
+     * <code>pack.identifier</code>
+     *
+     * @return the full ID
+     */
     public String getFullID() {
         return pack.getQuestPath() + "." + getBaseID();
     }
@@ -192,5 +219,4 @@ public abstract class ID {
         }
         return instruction;
     }
-
 }

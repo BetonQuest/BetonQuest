@@ -10,6 +10,7 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
+import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.ChatColor;
@@ -238,24 +239,32 @@ public class ConversationData {
         for (final String externalPointer : EXTERNAL_POINTERS) {
             final String[] parts = externalPointer.split("\\.");
             final String packName = parts[0];
+            final QuestPackage questPackage = Config.getPackages().get(packName);
             final String sourceConv = parts[1];
             final String sourceOption = parts[2];
             final String targetConv = parts[3];
             final String targetOption = parts[4];
-            final ConversationData conv = BetonQuest.getInstance().getConversation(packName + "." + targetConv);
+            final ConversationData conv;
+            try {
+                conv = BetonQuest.getInstance().getConversation(new ConversationID(questPackage, targetConv));
+            } catch (final ObjectNotFoundException e) {
+                LOG.warn("External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, "
+                        + "'" + sourceOption + "' player option points to '" + targetConv
+                        + "' conversation, but it does not even exist. Check your spelling!");
+                continue;
+            }
+
+            final String option = "<starting_option>".equals(sourceOption) ? "starting option"
+                    : "'" + sourceOption + "' player option";
             if (conv == null) {
                 LOG.warn("External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, "
-                        + ("<starting_option>".equals(sourceOption) ? "starting option"
-                        : "'" + sourceOption + "' player option")
-                        + " points to '" + targetConv
+                        + option + " points to '" + targetConv
                         + "' conversation, but it does not even exist. Check your spelling!");
                 continue;
             }
             if (conv.getText(Config.getLanguage(), targetOption, OptionType.NPC) == null) {
                 LOG.warn(conv.pack, "External pointer in '" + packName + "' package, '" + sourceConv + "' conversation, "
-                        + ("<starting_option>".equals(sourceOption) ? "starting option"
-                        : "'" + sourceOption + "' player option")
-                        + " points to '" + targetOption + "' NPC option in '" + targetConv
+                        + option + " points to '" + targetOption + "' NPC option in '" + targetConv
                         + "' conversation, but it does not exist.");
             }
         }
@@ -414,7 +423,7 @@ public class ConversationData {
      * @return True, if the player can star the conversation.
      */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public boolean isReady(final Profile profile) {
+    public boolean isReady(final Profile profile) throws ObjectNotFoundException {
         for (final String option : getStartingOptions()) {
             final String convName;
             final String optionName;
@@ -427,7 +436,7 @@ public class ConversationData {
                 optionName = option;
             }
             final QuestPackage pack = Config.getPackages().get(getPackName());
-            final ConversationData currentData = BetonQuest.getInstance().getConversation(pack.getQuestPath() + "." + convName);
+            final ConversationData currentData = BetonQuest.getInstance().getConversation(new ConversationID(pack, convName));
             if (BetonQuest.conditions(profile, currentData.getConditionIDs(optionName, ConversationData.OptionType.NPC))) {
                 return true;
             }

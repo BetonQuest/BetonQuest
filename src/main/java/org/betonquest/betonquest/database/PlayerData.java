@@ -12,10 +12,10 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.conversation.PlayerConversationState;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
-import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.id.ObjectiveID;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.inventory.ItemStack;
@@ -60,7 +60,7 @@ public class PlayerData implements TagData {
 
     private List<ItemStack> backpack = new CopyOnWriteArrayList<>();
 
-    private ConversationID activeConversation;
+    private PlayerConversationState activeConversation;
 
     private String profileLanguage;
 
@@ -136,14 +136,13 @@ public class PlayerData implements TagData {
 
     private void loadActiveConversation(final ResultSet playerResult) throws SQLException {
         final String fullInstruction = playerResult.getString("conversation");
-        final String[] parts = fullInstruction.split("\\.");
-        final QuestPackage questPackage = Config.getPackages().get(parts[0]);
+
         try {
-            activeConversation = new ConversationID(questPackage, parts[1]);
+            activeConversation = PlayerConversationState.fromString(fullInstruction);
         } catch (final ObjectNotFoundException e) {
             LOG.debug("The profile" + profile + " is in a conversation that does not exist anymore (" +
                     fullInstruction + "). The player will ", e);
-            saver.add(new Record(UpdateType.UPDATE_CONVERSATION, null, profileID));
+            saver.add(new Record(UpdateType.UPDATE_CONVERSATION, "null", profileID));
         }
     }
 
@@ -528,7 +527,7 @@ public class PlayerData implements TagData {
      * @return the id of a conversation if the profile has an active one or
      * null.
      */
-    public ConversationID getActiveConversation() {
+    public PlayerConversationState getActiveConversation() {
         return activeConversation;
     }
 

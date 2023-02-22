@@ -16,8 +16,6 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.ConversationData.OptionType;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ConversationID;
@@ -56,7 +54,11 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 @SuppressWarnings({"PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.CommentRequired"})
 public class Conversation implements Listener {
-    private static final ConcurrentHashMap<Profile, Conversation> LIST = new ConcurrentHashMap<>();
+
+    /**
+     * The map of all active conversations.
+     */
+    private static final ConcurrentHashMap<Profile, Conversation> ACTIVE_CONVERSATIONS = new ConcurrentHashMap<>();
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -78,7 +80,7 @@ public class Conversation implements Listener {
 
     private final Location location;
 
-    private final String convID;
+    private final ConversationID id;
 
     private final List<String> blacklist;
 
@@ -110,7 +112,7 @@ public class Conversation implements Listener {
      * @param conversationID ID of the conversation
      * @param location       location where the conversation has been started
      */
-    public Conversation(final BetonQuestLogger log, final OnlineProfile onlineProfile, final String conversationID, final Location location) {
+    public Conversation(final BetonQuestLogger log, final OnlineProfile onlineProfile, final ConversationID conversationID, final Location location) {
         this(log, onlineProfile, conversationID, location, null);
     }
 
@@ -125,26 +127,22 @@ public class Conversation implements Listener {
      * @param location       location where the conversation has been started
      * @param option         ID of the option from where to start
      */
-    public Conversation(final BetonQuestLogger log, final OnlineProfile onlineProfile, final String conversationID,
+    public Conversation(final BetonQuestLogger log, final OnlineProfile onlineProfile, final ConversationID conversationID,
                         final Location location, final String option) {
         this.log = log;
         this.conv = this;
         this.plugin = BetonQuest.getInstance();
         this.onlineProfile = onlineProfile;
         this.player = onlineProfile.getPlayer();
-        this.pack = Config.getPackages().get(conversationID.substring(0, conversationID.indexOf('.')));
+        this.id = conversationID;
+        this.pack = conversationID.getPackage();
         this.language = plugin.getPlayerData(onlineProfile).getLanguage();
         this.location = location;
-        this.convID = conversationID;
-        try {
-            this.data = plugin.getConversation(new ConversationID(pack, conversationID));
-        } catch (final ObjectNotFoundException e) {
-            throw new InstructionParseException(e);
-        }
+        this.data = plugin.getConversation(conversationID);
         this.blacklist = plugin.getPluginConfig().getStringList("cmd_blacklist");
         this.messagesDelaying = "true".equalsIgnoreCase(plugin.getPluginConfig().getString("display_chat_after_conversation"));
 
-        // check if data is present
+        //TODO: Impossible?
         if (data == null) {
             this.log.warn(pack, "Conversation '" + conversationID
                     + "' does not exist. Check for errors on /bq reload! It probably couldn't be loaded due to some other error.");
@@ -152,13 +150,12 @@ public class Conversation implements Listener {
         }
 
         // if the player has active conversation, terminate this one
-        if (LIST.containsKey(onlineProfile)) {
+        if (ACTIVE_CONVERSATIONS.containsKey(onlineProfile)) {
             this.log.debug(pack, onlineProfile + " is in conversation right now, returning.");
             return;
         }
 
-        // add the player to the list of active conversations
-        LIST.put(onlineProfile, conv);
+        ACTIVE_CONVERSATIONS.put(onlineProfile, conv);
 
         String inputOption = option;
         final String[] options;
@@ -166,7 +163,7 @@ public class Conversation implements Listener {
             options = null;
         } else {
             if (!inputOption.contains(".")) {
-                inputOption = conversationID.substring(conversationID.indexOf('.') + 1) + "." + inputOption;
+                inputOption = conversationID.getBaseID() + "." + inputOption;
             }
             options = new String[]{inputOption};
         }
@@ -175,13 +172,13 @@ public class Conversation implements Listener {
     }
 
     /**
-     * Checks if the player is in a conversation
+     * Checks if the player is in a conversation.
      *
      * @param profile the {@link Profile} of the player
-     * @return if the player is on the list of active conversations
+     * @return if the player is the list of active conversations
      */
     public static boolean containsPlayer(final Profile profile) {
-        return LIST.containsKey(profile);
+        return ACTIVE_CONVERSATIONS.containsKey(profile);
     }
 
     /**
@@ -191,7 +188,7 @@ public class Conversation implements Listener {
      * @return player's active conversation or null if there is no conversation
      */
     public static Conversation getConversation(final Profile profile) {
-        return LIST.get(profile);
+        return ACTIVE_CONVERSATIONS.get(profile);
     }
 
     /**
@@ -217,7 +214,7 @@ public class Conversation implements Listener {
                 convName = data.getName();
                 optionName = option;
             }
-            final ConversationData currentData = plugin.getConversation(pack.getQuestPath() + "." + convName);
+            final ConversationData currentData = plugin.getConversation(id);
             if (force || BetonQuest.conditions(this.onlineProfile, currentData.getConditionIDs(optionName, OptionType.NPC))) {
                 this.option = optionName;
                 data = currentData;
@@ -232,7 +229,6 @@ public class Conversation implements Listener {
      * selectOption()
      */
     private void printNPCText() {
-
         // if there are no possible options, end conversation
         if (option == null) {
             new ConversationEnder().runTask(BetonQuest.getInstance());
@@ -370,7 +366,7 @@ public class Conversation implements Listener {
             }
 
             // delete conversation
-            LIST.remove(onlineProfile);
+            ACTIVE_CONVERSATIONS.remove(onlineProfile);
             HandlerList.unregisterAll(this);
 
             new BukkitRunnable() {
@@ -482,17 +478,15 @@ public class Conversation implements Listener {
             if (inOut == null) {
                 log.warn(pack, "Conversation IO is not loaded, conversation will end for player "
                         + onlineProfile.getProfileName());
-                LIST.remove(onlineProfile);
+                ACTIVE_CONVERSATIONS.remove(onlineProfile);
                 HandlerList.unregisterAll(this);
                 return;
             }
             inOut.end();
 
             // save the conversation to the database
-            final String loc = location.getX() + ";" + location.getY() + ";" + location.getZ() + ";"
-                    + location.getWorld().getName();
-            plugin.getSaver().add(new Record(UpdateType.UPDATE_CONVERSATION,
-                    convID + " " + option + " " + loc, onlineProfile.getProfileUUID().toString()));
+            final PlayerConversationState state = new PlayerConversationState(id, option, location);
+            plugin.getSaver().add(new Record(UpdateType.UPDATE_CONVERSATION, state.toString(), onlineProfile.getProfileUUID().toString()));
 
             // End interceptor
             if (interceptor != null) {
@@ -500,7 +494,7 @@ public class Conversation implements Listener {
             }
 
             // delete conversation
-            LIST.remove(onlineProfile);
+            ACTIVE_CONVERSATIONS.remove(onlineProfile);
             HandlerList.unregisterAll(this);
 
             new BukkitRunnable() {
@@ -546,8 +540,8 @@ public class Conversation implements Listener {
     /**
      * @return the ID of the conversation
      */
-    public String getID() {
-        return convID;
+    public ConversationID getID() {
+        return id;
     }
 
     /**

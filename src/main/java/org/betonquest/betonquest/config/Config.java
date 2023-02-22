@@ -11,14 +11,11 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.database.PlayerData;
-import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.id.ConversationID;
 import org.betonquest.betonquest.modules.config.QuestManager;
 import org.betonquest.betonquest.notify.Notify;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 
@@ -183,31 +180,6 @@ public final class Config {
      */
     public static String getLanguage() {
         return lang;
-    }
-
-    /**
-     * Returns the ID of a conversation assigned to specified NPC, across all
-     * packages. If there are multiple assignments for the same value, the first
-     * one will be returned.
-     *
-     * @param value the name of the NPC (as defined in <i>package.yml</i>)
-     * @return the ID of the conversation assigned to this NPC or null if there
-     * isn't one
-     */
-    public static ConversationID getNpc(final String value) throws ObjectNotFoundException {
-        // load npc assignments from all packages
-        for (final Map.Entry<String, QuestPackage> entry : getPackages().entrySet()) {
-            final QuestPackage pack = entry.getValue();
-            final ConfigurationSection assignments = pack.getConfig().getConfigurationSection("npcs");
-            if (assignments != null) {
-                for (final String assignment : assignments.getKeys(false)) {
-                    if (assignment.equalsIgnoreCase(value)) {
-                        return new ConversationID(pack, assignments.getString(assignment));
-                    }
-                }
-            }
-        }
-        return null;
     }
 
     /**

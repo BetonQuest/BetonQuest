@@ -8,7 +8,6 @@ import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.Saver.Record;
 import org.betonquest.betonquest.database.UpdateType;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -17,63 +16,59 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 /**
- * Resumes the conversation for the player.
+ * Resumes the conversation for a disconnected or "fleeing" player.
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class ConversationResumer implements Listener {
     /**
      * The {@link BetonQuestLoggerFactory} to use for creating {@link BetonQuestLogger} instances.
      */
     private final BetonQuestLoggerFactory loggerFactory;
 
-    private final String original;
-
+    private final PlayerConversationState state;
     private final Player player;
 
     private final OnlineProfile onlineProfile;
-
-    private final String conversationID;
-
-    private final String option;
-
-    private final Location loc;
-
     private final double distance;
 
-    public ConversationResumer(final BetonQuestLoggerFactory loggerFactory, final OnlineProfile onlineProfile, final String convID) {
+    /**
+     * Creates a new ConversationResumer for a profile and a conversation state.
+     *
+     * @param onlineProfile the profile to resume the conversation for
+     * @param state         the state of a suspended conversation
+     */
+    public ConversationResumer(final BetonQuestLoggerFactory loggerFactory, final OnlineProfile onlineProfile, final PlayerConversationState state) {
         this.loggerFactory = loggerFactory;
-        this.original = convID;
-        this.player = onlineProfile.getPlayer();
         this.onlineProfile = onlineProfile;
-        final String[] parts = convID.split(" ");
-        this.conversationID = parts[0];
-        this.option = parts[1];
-        if ("null".equalsIgnoreCase(option)) {
-            loc = null;
-            distance = 0;
-            return;
-        }
-        final String[] locParts = parts[2].split(";");
-        this.loc = new Location(Bukkit.getWorld(locParts[3]), Double.parseDouble(locParts[0]),
-                Double.parseDouble(locParts[1]), Double.parseDouble(locParts[2]));
+        this.player = onlineProfile.getPlayer();
+        this.state = state;
         this.distance = Double.parseDouble(Config.getString("config.max_npc_distance"));
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
     }
 
+    /**
+     * Resumes the conversation once the player moves and is still close enough to the NPC.
+     *
+     * @param event a PlayerMoveEvent
+     */
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @EventHandler(ignoreCancelled = true)
     public void onMove(final PlayerMoveEvent event) {
         if (!event.getPlayer().equals(player)) {
             return;
         }
-        if (event.getTo().getWorld().equals(loc.getWorld()) && event.getTo().distanceSquared(loc) < distance * distance) {
+        if (event.getTo().getWorld().equals(state.location().getWorld()) && event.getTo().distanceSquared(state.location()) < distance * distance) {
             HandlerList.unregisterAll(this);
             BetonQuest.getInstance().getSaver()
                     .add(new Record(UpdateType.UPDATE_CONVERSATION, "null", onlineProfile.getProfileUUID().toString()));
-            new Conversation(loggerFactory.create(Conversation.class), onlineProfile, conversationID, loc, option);
+            new Conversation(loggerFactory.create(Conversation.class), onlineProfile, state.currentConversation(), state.location(), state.currentOption());
         }
     }
 
+    /**
+     * Saves the conversation state when the player quits while already in a resumed conversation.
+     *
+     * @param event a PlayerQuitEvent
+     */
     @EventHandler(ignoreCancelled = true)
     public void onQuit(final PlayerQuitEvent event) {
         if (!event.getPlayer().equals(player)) {
@@ -81,6 +76,6 @@ public class ConversationResumer implements Listener {
         }
         HandlerList.unregisterAll(this);
         BetonQuest.getInstance().getSaver()
-                .add(new Record(UpdateType.UPDATE_CONVERSATION, original, onlineProfile.getProfileUUID().toString()));
+                .add(new Record(UpdateType.UPDATE_CONVERSATION, state.toString(), onlineProfile.getProfileUUID().toString()));
     }
 }
