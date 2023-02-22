@@ -41,7 +41,7 @@ public class EnchantObjective extends CountingObjective implements Listener {
             throw new InstructionParseException("No enchantments were given! You must specify at least one enchantment.");
         }
 
-        instruction.getOptionalArgument("requirementMode").ifPresent((mode) -> requireOne = mode.equalsIgnoreCase(JUST_ONE_ENCHANT));
+        instruction.getOptionalArgument("requirementMode").ifPresent((mode) -> requireOne = JUST_ONE_ENCHANT.equalsIgnoreCase(mode));
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -103,7 +103,7 @@ public class EnchantObjective extends CountingObjective implements Listener {
          * @throws InstructionParseException if the user defined string is not a valid enchantment or does not
          *                                   contain a level
          */
-        @SuppressWarnings({"deprecation"})
+        @SuppressWarnings({"deprecation", "PMD.AvoidLiteralsInIfCondition"})
         public static EnchantmentData convert(final String string) throws InstructionParseException {
             final String[] parts = string.split(":");
             final Enchantment enchantment = Enchantment.getByName(parts[0].toUpperCase(Locale.ROOT));
