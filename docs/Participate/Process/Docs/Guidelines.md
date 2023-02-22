@@ -18,7 +18,7 @@ Click the [highlighted words](Contributing.md).
 Result: Click the [highlighted words](../../Overview.md).
 
 
-##Displaying (YAML) code
+## Displaying (YAML) code
 
 You must use code boxes with the specific language set in the header (`YAML` in this example).
 You also have to enable line numbers by adding the `linenums="1"` argument. 

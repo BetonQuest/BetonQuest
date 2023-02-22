@@ -126,10 +126,8 @@ public class OpenedMenu implements Listener {
      * Closes the menu
      */
     public void close() {
-        Bukkit.getServer().getScheduler().runTask(BetonQuest.getInstance(), () -> {
-            getProfile().getPlayer().closeInventory();
-            closed = true;
-        });
+        getProfile().getPlayer().closeInventory();
+        closed = true;
     }
 
     /**
@@ -157,7 +155,7 @@ public class OpenedMenu implements Listener {
     }
 
     @EventHandler
-    @SuppressWarnings({"PMD.NPathComplexity", "PMD.CyclomaticComplexity", "PMD.PrematureDeclaration"})
+    @SuppressWarnings({"PMD.NPathComplexity", "PMD.CyclomaticComplexity", "PMD.PrematureDeclaration", "PMD.CognitiveComplexity"})
     public void onClick(final InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player)) {
             return;
@@ -189,36 +187,38 @@ public class OpenedMenu implements Listener {
                 return;
         }
         //call event
-        final MenuClickEvent clickEvent = new MenuClickEvent(onlineProfile, getId(), event.getSlot(), item.getId(), event.getClick());
-        Bukkit.getPluginManager().callEvent(clickEvent);
-        LOG.debug(getId().getPackage(), onlineProfile + " clicked on slot " + event.getSlot() + " with item " + item.getId() + " in menu " + getId());
-        if (clickEvent.isCancelled()) {
-            LOG.debug(getId().getPackage(), "click of " + onlineProfile + " in menu " + getId() + " was cancelled by a bukkit event listener");
-            return;
-        }
-        //done if already closed by a 3rd party listener
-        if (closed) {
-            return;
-        }
-
-        //run click events
-        final boolean close = item.onClick(player, event.getClick());
-
-        //check if the inventory was closed by an event (teleport event etc.)
-        if (closed) {
-            return;
-        }
-
-        if (getMenu(onlineProfile).equals(this)) {
-            //if close was set close the menu
-            if (close) {
-                this.close();
+        Bukkit.getServer().getScheduler().runTask(BetonQuest.getInstance(), () -> {
+            final MenuClickEvent clickEvent = new MenuClickEvent(onlineProfile, getId(), event.getSlot(), item.getId(), event.getClick());
+            Bukkit.getPluginManager().callEvent(clickEvent);
+            LOG.debug(getId().getPackage(), onlineProfile + " clicked on slot " + event.getSlot() + " with item " + item.getId() + " in menu " + getId());
+            if (clickEvent.isCancelled()) {
+                LOG.debug(getId().getPackage(), "click of " + onlineProfile + " in menu " + getId() + " was cancelled by a bukkit event listener");
+                return;
             }
-            // otherwise update the contents
-            else {
-                this.update();
+            //done if already closed by a 3rd party listener
+            if (closed) {
+                return;
             }
-        }
+
+            //run click events
+            final boolean close = item.onClick(player, event.getClick());
+
+            //check if the inventory was closed by an event (teleport event etc.)
+            if (closed) {
+                return;
+            }
+
+            if (getMenu(onlineProfile).equals(this)) {
+                //if close was set close the menu
+                if (close) {
+                    this.close();
+                }
+                // otherwise update the contents
+                else {
+                    this.update();
+                }
+            }
+        });
     }
 
     @EventHandler

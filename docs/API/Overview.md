@@ -1,5 +1,5 @@
 ---
-icon: material/handshake
+icon: octicons/info-16
 ---
 !!! caution "Work in Progress! :construction: :construction_worker:  :construction_site:"
 
@@ -12,7 +12,7 @@ icon: material/handshake
     The [old API page](API.md) is still available.
 
     ??? question "API States"
-        --8<-- "API-State/State-Explanation.md"
+        @snippet:api-state:state-explanation@
 
  
 ## Adding BetonQuest as a dependency

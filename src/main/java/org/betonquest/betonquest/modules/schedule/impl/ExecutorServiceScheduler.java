@@ -5,13 +5,14 @@ import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
 import org.betonquest.betonquest.modules.schedule.impl.realtime.daily.RealtimeDailyScheduler;
-import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.VisibleForTesting;
 
 import java.util.Locale;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.function.Supplier;
 
 /**
  * A scheduler that already provides a {@link ScheduledExecutorService} for scheduling events to run at a specific
@@ -27,12 +28,13 @@ public abstract class ExecutorServiceScheduler<S extends Schedule> extends Sched
     /**
      * Maximum time that the scheduler will wait on shutdown/reload for currently executing schedules.
      */
-    private static final int TERMINATION_TIMEOUT_MS = 5;
+    @VisibleForTesting
+    static final int TERMINATION_TIMEOUT_MS = 5;
 
     /**
-     * Plugin instance to be used for bukkit scheduling, should be BetonQuest instance.
+     * Supplier used to create the {@link #executor}.
      */
-    protected final Plugin plugin;
+    private final Supplier<ScheduledExecutorService> executorServiceSupplier;
 
     /**
      * Executor service that can be used to run code at a specific time in the future.
@@ -41,12 +43,19 @@ public abstract class ExecutorServiceScheduler<S extends Schedule> extends Sched
 
     /**
      * Constructor to create a new instance of this scheduler.
-     *
-     * @param plugin plugin used for bukkit scheduling, should be BetonQuest instance!
      */
-    public ExecutorServiceScheduler(final Plugin plugin) {
+    public ExecutorServiceScheduler() {
+        this(Executors::newSingleThreadScheduledExecutor);
+    }
+
+    /**
+     * Constructor to create a new instance of this scheduler with a custom executor.
+     *
+     * @param executor supplier used to create new instances of the executor used by this scheduler
+     */
+    public ExecutorServiceScheduler(final Supplier<ScheduledExecutorService> executor) {
         super();
-        this.plugin = plugin;
+        this.executorServiceSupplier = executor;
     }
 
     /**
@@ -65,19 +74,8 @@ public abstract class ExecutorServiceScheduler<S extends Schedule> extends Sched
     @Override
     public void start() {
         super.start();
-        executor = Executors.newSingleThreadScheduledExecutor();
+        executor = executorServiceSupplier.get();
         schedules.values().forEach(this::schedule);
-    }
-
-    /**
-     * This method shall be called whenever the execution time of a schedule is reached.
-     * It executes all events that should be run by the schedule synchronously on the servers main thread.
-     *
-     * @param schedule a schedule that reached execution time, providing a list of events to run
-     */
-    @Override
-    protected void executeEvents(final S schedule) {
-        plugin.getServer().getScheduler().runTask(plugin, () -> super.executeEvents(schedule));
     }
 
     /**
@@ -117,7 +115,7 @@ public abstract class ExecutorServiceScheduler<S extends Schedule> extends Sched
                 }
                 LOG.debug("Successfully shut down executor service.");
             } catch (final InterruptedException | TimeoutException e) {
-                LOG.reportException(e);
+                LOG.error("Error while stopping scheduler", e);
             }
             super.stop();
             LOG.debug("Stop complete.");

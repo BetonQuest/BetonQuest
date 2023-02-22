@@ -2,9 +2,9 @@
 icon: octicons/clock-16
 ---
 # Schedules
---8<-- "API-State/Unfinished.md"
+@snippet:api-state:unfinished@
 
-If the native [schedule](../Documentation/Schedules.md) types are not enough for you, this API enables you to create your own type.
+If the native [schedule](../Documentation/Scripting/Schedules.md) types are not enough for you, this API enables you to create your own type.
 
 ## API Overview
 ![](../_media/content/API/Schedules/Schedule-dark.svg#only-dark)

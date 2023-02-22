@@ -132,6 +132,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   - all allow decimal level and variables now
 - changed backpack configuration. "" will hide the compass or canceler
 - `smelt` objective - now requires a QuestItem instead of a BlockSelector
+- `cancelquest` command - has its own permission now
+- `compass` command - has its own permission now
+- `language` command - is now persistent
 - Things that are also changed in 1.12.X:
     - math variable now allows rounding output with the ~ operator
     - French translation has been updated
@@ -165,7 +168,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `pickrandom` event - did not calculated chance correctly
 - `pickrandom` event - did not allowed dashes in event names
 - `action` objective - ignored offhand at all
+- `enchant` objective - did not work at all, now has `amount` and `requirementMode` parameters
 - Things that are also fixed in 1.12.X:
+    - eating of items when entering the chest conversation io actually consumed the item 
+    - legacy `§x` HEX color format not working in some contexts
     - ProtocolLib's based `packet` interceptor was fixed for MC 1.19, now ProtocolLib 5.0.0 is required
     - parsing of math variable
     - Citizens compatibility for not spawned NPCs

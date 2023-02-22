@@ -1,12 +1,13 @@
 package org.betonquest.betonquest.database;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.bukkit.plugin.Plugin;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Set;
+import java.util.SortedMap;
 
 /**
  * Abstract Database class, serves as a base for any connection method (MySQL,
@@ -16,8 +17,8 @@ import java.sql.SQLException;
 @CustomLog
 public abstract class Database {
 
-    protected Plugin plugin;
-    protected String prefix;
+    protected final Plugin plugin;
+    protected final String prefix;
     protected Connection con;
 
     protected Database(final BetonQuest plugin) {
@@ -26,13 +27,17 @@ public abstract class Database {
     }
 
     public Connection getConnection() {
-        if (con == null) {
-            con = openConnection();
+        try {
+            if (con == null || con.isClosed()) {
+                con = openConnection();
+            }
+        } catch (final SQLException e) {
+            LOG.warn("Failed opening database connection: " + e.getMessage(), e);
         }
         return con;
     }
 
-    protected abstract Connection openConnection();
+    protected abstract Connection openConnection() throws SQLException;
 
     public void closeConnection() {
         try {
@@ -43,46 +48,48 @@ public abstract class Database {
         con = null;
     }
 
-    @SuppressFBWarnings({"SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE", "OBL_UNSATISFIED_OBLIGATION", "ODR_OPEN_DATABASE_RESOURCE"})
-    public void createTables(final boolean isMySQLUsed) {
-        final String autoIncrement;
-        if (isMySQLUsed) {
-            autoIncrement = "AUTO_INCREMENT";
-        } else {
-            autoIncrement = "AUTOINCREMENT";
-        }
+    public final void createTables() {
         try {
-            getConnection().createStatement()
-                    .executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "objectives (id INTEGER PRIMARY KEY "
-                            + autoIncrement + ", playerID VARCHAR(256) NOT NULL, objective VARCHAR(512)"
-                            + " NOT NULL, instructions VARCHAR(2048) NOT NULL);");
-            getConnection().createStatement()
-                    .executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "tags (id INTEGER PRIMARY KEY "
-                            + autoIncrement + ", playerID VARCHAR(256) NOT NULL, tag TEXT NOT NULL);");
-            getConnection().createStatement()
-                    .executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "points (id INTEGER PRIMARY KEY "
-                            + autoIncrement + ", playerID VARCHAR(256) NOT NULL, category VARCHAR(256) "
-                            + "NOT NULL, count INT NOT NULL);");
-            getConnection().createStatement()
-                    .executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "journal (id INTEGER PRIMARY KEY "
-                            + autoIncrement + ", playerID VARCHAR(256) NOT NULL, pointer "
-                            + "VARCHAR(256) NOT NULL, date TIMESTAMP NOT NULL);");
-            getConnection().createStatement()
-                    .executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "backpack (id INTEGER PRIMARY KEY "
-                            + autoIncrement + ", playerID VARCHAR(256) NOT NULL, instruction "
-                            + "TEXT NOT NULL, amount INT NOT NULL);");
-            getConnection().createStatement()
-                    .executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "player (id INTEGER PRIMARY KEY "
-                            + autoIncrement + ", playerID VARCHAR(256) NOT NULL, language VARCHAR(16) NOT NULL, "
-                            + "conversation VARCHAR(512));");
-            getConnection().createStatement()
-                    .executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "global_tags (id INTEGER PRIMARY KEY "
-                            + autoIncrement + ", tag TEXT NOT NULL);");
-            getConnection().createStatement()
-                    .executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "global_points (id INTEGER PRIMARY KEY "
-                            + autoIncrement + ", category VARCHAR(256) NOT NULL, count INT NOT NULL);");
-        } catch (final SQLException e) {
-            LOG.error("There was an exception with SQL", e);
+            final SortedMap<MigrationKey, DatabaseUpdate> migrations = getMigrations();
+            final Set<MigrationKey> executedMigrations = queryExecutedMigrations(getConnection());
+            executedMigrations.forEach(migrations::remove);
+
+
+            while (!migrations.isEmpty()) {
+                final MigrationKey key = migrations.firstKey();
+                final var migration = migrations.remove(key);
+                migration.executeUpdate(getConnection());
+                markMigrationExecuted(getConnection(), key);
+            }
+        } catch (final SQLException sqlException) {
+            LOG.error("There was an exception with SQL", sqlException);
         }
     }
+
+    /**
+     * Returns a SortedMap of all migrations with an identifier as {@link MigrationKey} and the migration function as
+     * Value.
+     *
+     * @return the SortedMap of all migrations
+     */
+    protected abstract SortedMap<MigrationKey, DatabaseUpdate> getMigrations();
+
+    /**
+     * Queries the database for all migrations that have been executed. The function have to ensure that the table
+     * containing the executed migrations exists.
+     *
+     * @param connection the connection to the database
+     * @return a set of all migrations, in form of {@link MigrationKey}, that have been executed
+     * @throws SQLException if something went wrong with the query
+     */
+    protected abstract Set<MigrationKey> queryExecutedMigrations(Connection connection) throws SQLException;
+
+    /**
+     * Marks the migration as executed in the database to have been executed.
+     *
+     * @param connection   the connection to the database
+     * @param migrationKey the specific migration to mark as executed
+     * @throws SQLException if the migration could not be marked as executed
+     */
+    protected abstract void markMigrationExecuted(Connection connection, MigrationKey migrationKey) throws SQLException;
 }

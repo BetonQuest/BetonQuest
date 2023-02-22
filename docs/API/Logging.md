@@ -1,7 +1,7 @@
 ---
 icon: material/text-box-outline
 ---
---8<-- "API-State/Stable.md"
+@snippet:api-state:stable@
 
 This page shows you everything you need to know about the BetonQuest logger, no matter if you are working on BetonQuest 
 itself or an integration / addon.

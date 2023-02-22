@@ -9,6 +9,7 @@ fix a bug or make other changes.
 
 ## Make changes
 Now go ahead and make your changes. Take a look at the sub-pages of this page for more information about specific topics.
+Then come back here to verify, commit and finally submit your changes.
 
 ## Maven verify
 After you made changes, you should also run `mvn verify` to check our requirements.
@@ -68,7 +69,7 @@ You should give more qualified information like `fixed deadlock, when a huge amo
 Also, you shouldn't write `cleaned the code`, instead you should write things like this `renamed methods and variables`.  
 
 ---
-## Where to Continue?
+## Next Steps
 If you also want to adjust the documentation switch to [Changing Docs](../Docs/Workflow.md).
 Once you are done with all changes, continue with [Maintaining Changelog](../Maintaining-the-Changelog.md)
 In case you already did that: Continue with [Submitting Changes](../Submitting-Changes.md).  

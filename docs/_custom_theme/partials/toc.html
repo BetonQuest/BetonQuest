@@ -1,0 +1,34 @@
+{# Copied and customized from: https://github.com/squidfunk/mkdocs-material-insiders/blob/master/src/partials/toc.html #}
+{% set title = lang.t("toc") %}
+{% if config.mdx_configs.toc and config.mdx_configs.toc.title %}
+{% set title = config.mdx_configs.toc.title %}
+{% endif %}
+
+<nav aria-label="{{ title }}" class="md-nav md-nav--secondary">
+  {% set toc = page.toc %}
+
+  {% set first = toc | first %}
+  {% if first and first.level == 1 %}
+  {% set toc = first.children %}
+  {% endif %}
+
+  {% if toc %}
+  <label class="md-nav__title" for="__toc">
+    <span class="md-nav__icon md-icon"></span>
+    {{ title }}
+  </label>
+  <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+    {# Checks if the page metadata contains the toc_depth setting. If yes, it doesn't generate toc below the given value
+    #}
+    {% for toc_item in toc %}
+    {% if page.meta.toc_depth %}
+    {% if toc_item.level <= page.meta.toc_depth %}
+    {% include "partials/toc-item.html" %}
+    {% endif %}
+    {% else %}
+    {% include "partials/toc-item.html" %}
+    {% endif%}
+    {% endfor %}
+  </ul>
+  {% endif %}
+</nav>

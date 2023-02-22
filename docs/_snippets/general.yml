@@ -1,0 +1,24 @@
+relativeAxisExplanation: |-
+  ??? info "Visual Explanation"
+      In contrast to their global counterparts, relative x,y,z axes do not change their orientation relative to the player.
+      Example: The positive x-axis will always point left from the perspective of the player.
+      <div style="text-align: center">
+      ![relativeAxis image](_media/content/Documentation/Notifications/relativeAxis.png)
+      </div>   
+
+sponsors: |-
+  We are part of the non-profit [Open Source Collective](https://www.oscollective.org/)!
+  This means all donations must be re-invested into the project.
+  Thanks you for making this project possible!
+
+  Donations will be used for our monthly costs (server, domain, software licences) and developer commissions to speed up
+  the development. 
+
+  [![OpenCollective](https://opencollective.com/betonquest/donate/button@2x.png?color=blue){ width="300" }](https://opencollective.com/betonquest){ class="noExternalLinkIcon" }
+  [![mcmodels](https://github.com/BetonQuest/BetonQuest/blob/main/docs/_media/content/Participate/Overview/mcmodels.png?raw=true){ width="300" }](https://mcmodels.net/?wpam_id=3){ class="noExternalLinkIcon" }
+
+  <p style="font-size:medium;">You donate a small amount of the sales price by purchasing on mcmodels.net using our affiliate links. </p>
+
+  ### Our Community Sponsors
+
+  [![Sponsors](https://opencollective.com/betonquest/backers.svg?&button=false&avatarHeight=70&width=1000)](https://opencollective.com/betonquest#category-CONTRIBUTE){ class="noExternalLinkIcon" }

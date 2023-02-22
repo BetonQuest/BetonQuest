@@ -1,12 +1,9 @@
 package org.betonquest.betonquest.modules.schedule.impl.realtime.daily;
 
 import lombok.CustomLog;
-import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
-import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.modules.schedule.LastExecutionCache;
 import org.betonquest.betonquest.modules.schedule.impl.ExecutorServiceScheduler;
-import org.bukkit.plugin.Plugin;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -15,7 +12,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.PriorityQueue;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 /**
  * The scheduler for {@link RealtimeDailySchedule}.
@@ -32,19 +31,29 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
     /**
      * Create a new simple scheduler and pass BetonQuest instance to it.
      *
-     * @param plugin             plugin used for bukkit scheduling, should be BetonQuest instance!
+     * @param executor           supplier used to create new instances of the executor used by this scheduler
      * @param lastExecutionCache cache where the last execution times of a schedule are stored
      */
-    public RealtimeDailyScheduler(final Plugin plugin, final LastExecutionCache lastExecutionCache) {
-        super(plugin);
+    public RealtimeDailyScheduler(final Supplier<ScheduledExecutorService> executor, final LastExecutionCache lastExecutionCache) {
+        super(executor);
+        this.lastExecutionCache = lastExecutionCache;
+    }
+
+    /**
+     * Create a new simple scheduler and pass BetonQuest instance to it.
+     *
+     * @param lastExecutionCache cache where the last execution times of a schedule are stored
+     */
+    public RealtimeDailyScheduler(final LastExecutionCache lastExecutionCache) {
+        super();
         this.lastExecutionCache = lastExecutionCache;
     }
 
     @Override
     public void start() {
         LOG.debug("Starting simple scheduler.");
-        super.start();
         catchupMissedSchedules();
+        super.start();
         LOG.debug("Simple scheduler start complete.");
     }
 
@@ -57,16 +66,11 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
         final List<RealtimeDailySchedule> missedSchedules = listMissedSchedules();
         LOG.debug("Found " + missedSchedules.size() + " missed schedule runs that will be caught up.");
         if (!missedSchedules.isEmpty()) {
-            plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-                LOG.debug("Running missed schedules to catch up...");
-                for (final RealtimeDailySchedule schedule : missedSchedules) {
-                    lastExecutionCache.cacheExecutionTime(schedule.getId(), Instant.now());
-                    LOG.debug(schedule.getId().getPackage(), "Schedule '" + schedule + "' runs its events.");
-                    for (final EventID event : schedule.getEvents()) {
-                        BetonQuest.event(null, event);
-                    }
-                }
-            }, 1L);
+            LOG.debug("Running missed schedules to catch up...");
+            for (final RealtimeDailySchedule schedule : missedSchedules) {
+                lastExecutionCache.cacheExecutionTime(schedule.getId(), Instant.now());
+                executeEvents(schedule);
+            }
         }
     }
 

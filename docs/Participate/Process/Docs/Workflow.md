@@ -38,7 +38,7 @@ Check [their documentation](https://squidfunk.github.io/mkdocs-material/) to see
 
 ## Make changes
 Now go ahead and make your changes. Take a look at the sub-pages of this page for more information about how to write
-good documentation.
+good documentation or [tutorials](./Writing-Tutorials.md). Then come back here to commit and submit your changes.
 
 ## Commit
 You need to commit your changes once they are done.
@@ -60,7 +60,8 @@ With other words, don't mix up different changes.
 
 
 ---
-## Where to Continue?
+## Next Steps
 If you also want to adjust the code switch to [Changing Code](../Code/Workflow.md).
-Once you are done with all changes, continue with [Maintaining Changelog](../Maintaining-the-Changelog.md).
-In case you already did that: Continue with [Submitting Changes](../Submitting-Changes.md).  
+If you already made code changes you should continue with [Maintaining Changelog](../Maintaining-the-Changelog.md).
+
+Otherwise, please continue with [Submitting Changes](../Submitting-Changes.md).  

@@ -81,6 +81,6 @@ Here is a breakdown of what belongs in each section:
      ```
 
 ---
-## Where to Continue?
+## Next Steps
 Continue with [Submitting Changes](Submitting-Changes.md) if all your changes are finished.
 But maybe you are not finished yet, and you want to go back to change [Code](./Code/Workflow.md) or [Docs](./Docs/Workflow.md).
