@@ -33,7 +33,7 @@ public class VariableCondition extends Condition {
     public VariableCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, instruction.hasArgument("forceSync"));
         variable = new VariableString(instruction.getPackage(), instruction.next());
-        regex = new VariableString(instruction.getPackage(), instruction.next().replaceAll("(?<!\\\\)_", " ").replaceAll("\\\\_", "_"));
+        regex = new VariableString(instruction.getPackage(), instruction.next(), true);
     }
 
     @Override

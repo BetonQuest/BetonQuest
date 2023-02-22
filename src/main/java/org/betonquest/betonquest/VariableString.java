@@ -28,19 +28,38 @@ public class VariableString {
      */
     private final QuestPackage questPackage;
 
-
     /**
-     * Creates a new VariableString.
+     * Creates a new VariableString.<br>
+     * Does not replace underscores.
      *
      * @param questPackage the package in which the string is used
      * @param string       the string that may contain variables
      * @throws InstructionParseException if the variables could not be created
+     * @see VariableString#VariableString(QuestPackage, String, boolean)
      */
     public VariableString(final QuestPackage questPackage, final String string) throws InstructionParseException {
-        this.string = string;
+        this(questPackage, string, false);
+    }
+
+    /**
+     * Creates a new VariableString.<br>
+     * Replaces underscores with spaces except when they are escaped with a backslash.
+     *
+     * @param questPackage       the package in which the string is used
+     * @param string             the string that may contain variables
+     * @param replaceUnderscores whether underscores should be replaced
+     * @throws InstructionParseException if the variables could not be created
+     */
+    public VariableString(final QuestPackage questPackage, final String string, final boolean replaceUnderscores) throws InstructionParseException {
         this.questPackage = questPackage;
 
-        for (final String variable : BetonQuest.resolveVariables(string)) {
+        if (replaceUnderscores) {
+            this.string = string.replaceAll("(?<!\\\\)_", " ").replaceAll("\\\\_", "_");
+        } else {
+            this.string = string;
+        }
+
+        for (final String variable : BetonQuest.resolveVariables(this.string)) {
             try {
                 BetonQuest.createVariable(questPackage, variable);
             } catch (final InstructionParseException exception) {
