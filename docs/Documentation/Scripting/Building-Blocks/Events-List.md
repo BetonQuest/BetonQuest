@@ -536,7 +536,7 @@ You can also specify `notify` keyword to display a simple message to the player 
 Changes the time of the world. The time is represented in 24 hours format as a float number, so 0 is midnight, 12 is 
 noon and 23 is 11 PM. For minutes, you can use floating point numbers, so 0.5 is half past midnight, 0.25 is quarter 
 past midnight and so on. (0.1 hours is 6 minutes). It's possible to add or subtract time by using `+` or `-` prefix or 
-,by setting no prefix, set the time.
+to set the time by setting no prefix.
 Additionally, you can specify the world in which the time will be changed, by adding `world:`. 
 
 !!! example
