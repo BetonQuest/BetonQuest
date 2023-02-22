@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest.event.weather;
+package org.betonquest.betonquest.quest.event.worldselector;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;

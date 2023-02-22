@@ -531,14 +531,19 @@ You can also specify `notify` keyword to display a simple message to the player 
 
 ## Time: `time`
 
-Sets or adds time. The only argument is time to be set (integer) or time to be added (integer prefixed with +),
-in 24 hours format. Subtracting time is done by adding more time (if you think of this, it actually makes sense).
-Minutes can be achieved with floating point. Six minutes equals 0.1 hours.
+**persistent**, **static**
+
+Changes the time of the world. The time is represented in 24 hours format as a float number, so 0 is midnight, 12 is 
+noon and 23 is 11 PM. For minutes, you can use floating point numbers, so 0.5 is half past midnight, 0.25 is quarter 
+past midnight and so on. (0.1 hours is 6 minutes). It's possible to add or subtract time by using `+` or `-` prefix or 
+,by setting no prefix, set the time.
+Additionally, you can specify the world in which the time will be changed, by adding `world:`. 
 
 !!! example
     ```YAML
-    time +6
+    time 6
     time +0.1
+    time -12 world:rpgworld
     ```
 
 ## :fontawesome-solid-person-walking-dashed-line-arrow-right: Teleport: `teleport`

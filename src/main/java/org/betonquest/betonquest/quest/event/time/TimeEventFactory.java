@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest.event.weather;
+package org.betonquest.betonquest.quest.event.time;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.Event;
@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.quest.event.StaticEventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.quest.event.DoNothingStaticEvent;
 import org.betonquest.betonquest.quest.event.NullStaticEventAdapter;
-import org.betonquest.betonquest.quest.event.OnlineProfileRequiredEvent;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
 import org.betonquest.betonquest.quest.event.worldselector.ConstantWorldSelector;
 import org.betonquest.betonquest.quest.event.worldselector.PlayerWorldSelector;
@@ -19,12 +18,10 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Locale;
-
 /**
- * Factory to create weather events from {@link Instruction}s.
+ * Factory to create time events from {@link Instruction}s.
  */
-public class WeatherEventFactory implements EventFactory, StaticEventFactory {
+public class TimeEventFactory implements EventFactory, StaticEventFactory {
     /**
      * Server to use for syncing to the primary server thread.
      */
@@ -39,13 +36,13 @@ public class WeatherEventFactory implements EventFactory, StaticEventFactory {
     private final Plugin plugin;
 
     /**
-     * Create the weather event factory.
+     * Create the time event factory.
      *
      * @param server    server to use
      * @param scheduler scheduler to use
      * @param plugin    plugin to use
      */
-    public WeatherEventFactory(final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+    public TimeEventFactory(final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
         this.server = server;
         this.scheduler = scheduler;
         this.plugin = plugin;
@@ -53,11 +50,12 @@ public class WeatherEventFactory implements EventFactory, StaticEventFactory {
 
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
-        final Weather weather = parseWeather(instruction.next());
+        final String timeString = instruction.next();
+        final Time time = parseTimeType(timeString);
+        final long rawTime = parseTime(timeString);
         final WorldSelector worldSelector = parseWorld(instruction.getOptional("world"));
         return new PrimaryServerThreadEvent(
-                new OnlineProfileRequiredEvent(
-                        new WeatherEvent(weather, worldSelector), instruction.getPackage()),
+                new TimeEvent(time, rawTime, worldSelector),
                 server, scheduler, plugin);
     }
 
@@ -70,15 +68,19 @@ public class WeatherEventFactory implements EventFactory, StaticEventFactory {
         }
     }
 
-    @NotNull
-    private Weather parseWeather(final String weatherName) throws InstructionParseException {
-        return switch (weatherName.toLowerCase(Locale.ROOT)) {
-            case "sun", "clear" -> Weather.SUN;
-            case "rain" -> Weather.RAIN;
-            case "storm" -> Weather.STORM;
-            default ->
-                    throw new InstructionParseException("Unknown weather state (valid options are: sun, clear, rain, storm): " + weatherName);
+    private Time parseTimeType(final String timeString) throws InstructionParseException {
+        if (timeString.isEmpty()) {
+            throw new InstructionParseException("Time cannot be empty");
+        }
+        return switch (timeString.charAt(0)) {
+            case '+' -> Time.ADD;
+            case '-' -> Time.SUBTRACT;
+            default -> Time.SET;
         };
+    }
+
+    private Long parseTime(final String timeString) {
+        return Math.abs((long) Float.parseFloat(timeString) * 1000);
     }
 
     @NotNull
