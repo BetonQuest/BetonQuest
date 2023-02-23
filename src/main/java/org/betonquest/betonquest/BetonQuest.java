@@ -119,7 +119,6 @@ import org.betonquest.betonquest.events.FolderEvent;
 import org.betonquest.betonquest.events.GiveEvent;
 import org.betonquest.betonquest.events.GiveJournalEvent;
 import org.betonquest.betonquest.events.GlobalPointEvent;
-import org.betonquest.betonquest.events.HungerEvent;
 import org.betonquest.betonquest.events.KillEvent;
 import org.betonquest.betonquest.events.KillMobEvent;
 import org.betonquest.betonquest.events.LeverEvent;
@@ -215,6 +214,7 @@ import org.betonquest.betonquest.quest.event.NullStaticEventFactory;
 import org.betonquest.betonquest.quest.event.burn.BurnEventFactory;
 import org.betonquest.betonquest.quest.event.damage.DamageEventFactory;
 import org.betonquest.betonquest.quest.event.door.DoorEventFactory;
+import org.betonquest.betonquest.quest.event.hunger.HungerEventFactory;
 import org.betonquest.betonquest.quest.event.journal.JournalEventFactory;
 import org.betonquest.betonquest.quest.event.language.LanguageEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.FromClassQuestEventFactory;
@@ -836,7 +836,7 @@ public class BetonQuest extends JavaPlugin {
         registerEvents("freeze", FreezeEvent.class);
         registerNonStaticEvent("burn", new BurnEventFactory(getServer(), getServer().getScheduler(), this));
         registerNonStaticEvent("velocity", new VelocityEventFactory(getServer(), getServer().getScheduler(), this));
-        registerEvents("hunger", HungerEvent.class);
+        registerNonStaticEvent("hunger", new HungerEventFactory(getServer(), getServer().getScheduler(), this));
 
         registerObjectives("location", LocationObjective.class);
         registerObjectives("block", BlockObjective.class);
