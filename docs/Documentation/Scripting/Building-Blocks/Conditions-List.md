@@ -442,7 +442,7 @@ There must be specific (Minecraft) time on the player's world for this condition
 
 ## Variable: `variable`
 
-This condition checks if a variable value matches given [regular expression](Data-Formats.md#regex-regular-expressions)
+This condition checks if a variable value matches given [regular expression](../Data-Formats.md#regex-regular-expressions)
 
 | Parameter   | Syntax          | Default Value          | Explanation                                                                                                                             |
 |-------------|-----------------|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
