@@ -107,10 +107,10 @@ argument. By default, only one player can look into the chest at the same time. 
 
 This objective is completed by eating the specified food or drinking the specified potion. 
 
-| Parameter | Syntax           | Default Value          | Explanation                               |
-|-----------|------------------|------------------------|-------------------------------------------|
-| _Item_    | [Item](../../Features/Items.md) | :octicons-x-circle-16: | The item or potion that must be consumed. |
-| _Amount_  | amount:number    | 1                      | The amount of items to consume.           |
+| Parameter | Syntax                                | Default Value          | Explanation                               |
+|-----------|---------------------------------------|------------------------|-------------------------------------------|
+| _Item_    | [Quest Item](../../Features/Items.md) | :octicons-x-circle-16: | The item or potion that must be consumed. |
+| _Amount_  | amount:number                         | 1                      | The amount of items to consume.           |
 
 
 ```YAML
@@ -146,12 +146,12 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 
 This objective is completed when the player enchants the specified quest item with the specified enchantment. 
 
-| Parameter         | Syntax                       | Default Value          | Explanation                                                                                                                                                                                                                                                                                                                                        |
-|-------------------|------------------------------|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| _item_            | Any [Quest Item](./Items.md) | :octicons-x-circle-16: | The quest item that must be enchanted.                                                                                                                                                                                                                                                                                                             |
-| _enchants_        | enchantment:level            | :octicons-x-circle-16: | The enchants that must be added to the item. [Enchantment names](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html) are different from the vanilla ones. If a level is present, the enchanted level must be equal or bigger then the specified one. Multiple enchants are supported: `ARROW_DAMAGE:1,ARROW_FIRE:1` |
-| _requirementMode_ | requirementMode:mode         | `all`                  | Use `one` if any enchantment from `enchants` should complete the objective. Use `all` if all are required at the same time.                                                                                                                                                                                                                        |
-| _amount_          | amount:number                | 1                      | The amount of items to enchant.                                                                                                                                                                                                                                                                                                                    |
+| Parameter         | Syntax                                | Default Value          | Explanation                                                                                                                                                                                                                                                                                                                                        |
+|-------------------|---------------------------------------|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| _item_            | [Quest Item](../../Features/Items.md) | :octicons-x-circle-16: | The quest item that must be enchanted.                                                                                                                                                                                                                                                                                                             |
+| _enchants_        | enchantment:level                     | :octicons-x-circle-16: | The enchants that must be added to the item. [Enchantment names](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html) are different from the vanilla ones. If a level is present, the enchanted level must be equal or bigger then the specified one. Multiple enchants are supported: `ARROW_DAMAGE:1,ARROW_FIRE:1` |
+| _requirementMode_ | requirementMode:mode                  | `all`                  | Use `one` if any enchantment from `enchants` should complete the objective. Use `all` if all are required at the same time.                                                                                                                                                                                                                        |
+| _amount_          | amount:number                         | 1                      | The amount of items to enchant.                                                                                                                                                                                                                                                                                                                    |
 
 ```YAML title="Example"
 lordSword: "enchant lordsSword damage_all,knockback events:rewardLord"
@@ -460,7 +460,7 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 ## Smelting: `smelt`
 
 To complete this objective the player must smelt the specified item. Note that you must define the output item, not the
-ingredient. The first argument is the name of a [quest item](../../Features/Items.md).
+ingredient. The first argument is the name of a [Quest Item](../../Features/Items.md).
 The second one is the amount (integer).
 
 You can use the `notify` keyword to display a message each time the player advances the objective,
