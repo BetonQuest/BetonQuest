@@ -447,7 +447,7 @@ This condition checks if a variable value matches given [regular expression](Dat
 | Parameter   | Syntax          | Default Value          | Explanation                                                                                                                             |
 |-------------|-----------------|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
 | _Variable_  | Any variable    | :octicons-x-circle-16: | The variable (surrounded by `%` characters).                                                                                            |
-| _Regex_     | A regex pattern | :octicons-x-circle-16: | The [regex](Data-Formats.md#regex-regular-expressions) that the variables value must match. The regex can also be stored in a variable. |
+| _Regex_     | A regex pattern | :octicons-x-circle-16: | The [regex](../Data-Formats.md#regex-regular-expressions) that the variables value must match. The regex can also be stored in a variable. |
 | _forceSync_ | Keyword         | False                  | Forces the variables to be resolved on the main thread. This may be required by some third party variables.                             |
 
 
