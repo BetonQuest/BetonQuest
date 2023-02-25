@@ -135,6 +135,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `cancelquest` command - has its own permission now
 - `compass` command - has its own permission now
 - `language` command - is now persistent
+- `variable` condition supports escapable underscores to avoid replacement
 - Things that are also changed in 1.12.X:
     - math variable now allows rounding output with the ~ operator
     - French translation has been updated
