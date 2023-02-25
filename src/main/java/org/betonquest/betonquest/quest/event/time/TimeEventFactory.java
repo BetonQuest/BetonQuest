@@ -1,6 +1,9 @@
 package org.betonquest.betonquest.quest.event.time;
 
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.common.worldselector.ConstantWorldSelector;
+import org.betonquest.betonquest.api.common.worldselector.PlayerWorldSelector;
+import org.betonquest.betonquest.api.common.worldselector.WorldSelector;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.api.quest.event.StaticEvent;
@@ -9,9 +12,6 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.quest.event.DoNothingStaticEvent;
 import org.betonquest.betonquest.quest.event.NullStaticEventAdapter;
 import org.betonquest.betonquest.quest.event.PrimaryServerThreadEvent;
-import org.betonquest.betonquest.quest.event.worldselector.ConstantWorldSelector;
-import org.betonquest.betonquest.quest.event.worldselector.PlayerWorldSelector;
-import org.betonquest.betonquest.quest.event.worldselector.WorldSelector;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;

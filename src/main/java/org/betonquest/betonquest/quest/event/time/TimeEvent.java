@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.quest.event.time;
 
+import org.betonquest.betonquest.api.common.worldselector.WorldSelector;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import org.betonquest.betonquest.quest.event.worldselector.WorldSelector;
 import org.bukkit.World;
 
 /**

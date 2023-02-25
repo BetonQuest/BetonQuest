@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest.event.worldselector;
+package org.betonquest.betonquest.api.common.worldselector;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.bukkit.World;
