@@ -1,9 +1,10 @@
 package org.betonquest.betonquest.modules.web.updater.source.implementations;
 
 import org.betonquest.betonquest.modules.versioning.Version;
+import org.betonquest.betonquest.modules.web.ContentSource;
+import org.betonquest.betonquest.modules.web.WebContentSource;
 import org.betonquest.betonquest.modules.web.updater.source.DevelopmentUpdateSource;
 import org.betonquest.betonquest.modules.web.updater.source.ReleaseUpdateSource;
-import org.betonquest.betonquest.modules.web.updater.source.UpdateSource;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -16,9 +17,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * This is a {@link UpdateSource} for the Nexus repository.
+ * This is a {@link WebContentSource} for the Nexus repository.
  */
-public class NexusReleaseAndDevelopmentSource extends UpdateSource implements ReleaseUpdateSource, DevelopmentUpdateSource {
+public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, DevelopmentUpdateSource {
 
     /**
      * The sub path for the REST API of Nexus to append on the {@link NexusReleaseAndDevelopmentSource#apiUrl}.
@@ -44,14 +45,21 @@ public class NexusReleaseAndDevelopmentSource extends UpdateSource implements Re
     private final String apiUrl;
 
     /**
+     * The {@link ContentSource} to use to read the content from the given {@link URL}.
+     */
+    private final ContentSource contentSource;
+
+    /**
      * Creates a {@link NexusReleaseAndDevelopmentSource} with the given apiUrl.
      * Provide only the url to the nexus, not the url to the search itself.
      *
-     * @param apiUrl path to the root page for a specific Nexus
+     * @param apiUrl        path to the root page for a specific Nexus
+     * @param contentSource the {@link ContentSource} to use to read the content from the given {@link URL}
      */
-    public NexusReleaseAndDevelopmentSource(final String apiUrl) {
+    public NexusReleaseAndDevelopmentSource(final String apiUrl, final ContentSource contentSource) {
         super();
         this.apiUrl = apiUrl;
+        this.contentSource = contentSource;
     }
 
     @Override
@@ -77,7 +85,7 @@ public class NexusReleaseAndDevelopmentSource extends UpdateSource implements Re
             if (alreadyConsumed) {
                 return;
             }
-            final String pomXml = readStringFromURL(new URL(downloadUrl.replace("-shaded.jar", ".pom")));
+            final String pomXml = contentSource.get(new URL(downloadUrl.replace("-shaded.jar", ".pom")));
             final Matcher matcher = POM_PATTERN.matcher(pomXml);
             if (matcher.find()) {
                 final Version pomVersion = new Version(matcher.group("version"));
@@ -93,7 +101,7 @@ public class NexusReleaseAndDevelopmentSource extends UpdateSource implements Re
         String continuationToken = "";
         while (continuationToken != null) {
             final String url = apiUrl + SERVICE_REST_V_1 + SEARCH_URL + continuationToken;
-            final JSONObject nexusResponse = new JSONObject(readStringFromURL(new URL(url)));
+            final JSONObject nexusResponse = new JSONObject(contentSource.get(new URL(url)));
             final JSONArray items = nexusResponse.getJSONArray("items");
             for (int index = 0; index < items.length(); index++) {
                 final JSONObject entry = items.getJSONObject(index);

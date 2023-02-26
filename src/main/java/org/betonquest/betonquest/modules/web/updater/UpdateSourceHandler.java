@@ -6,7 +6,6 @@ import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.modules.versioning.VersionComparator;
 import org.betonquest.betonquest.modules.web.updater.source.DevelopmentUpdateSource;
 import org.betonquest.betonquest.modules.web.updater.source.ReleaseUpdateSource;
-import org.betonquest.betonquest.modules.web.updater.source.UpdateSource;
 import org.jetbrains.annotations.VisibleForTesting;
 
 import java.io.IOException;
@@ -15,7 +14,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Two lists of {@link UpdateSource}s can be passed to this class in the constructor.
+ * A list of {@link ReleaseUpdateSource} and {@link DevelopmentUpdateSource}
+ * can be passed to this class in the constructor.
  * One is for release builds, the other for development builds.
  * <p>
  * If an update is searched, it will then first search in the list of {@link ReleaseUpdateSource} instances
@@ -35,7 +35,7 @@ public class UpdateSourceHandler {
     private final List<DevelopmentUpdateSource> developmentHandlerList;
 
     /**
-     * Creates a new {@link UpdateSourceHandler} with the given {@link UpdateSource} lists.
+     * Creates a new {@link UpdateSourceHandler} with the given lists.
      *
      * @param releaseHandlerList     A list of {@link ReleaseUpdateSource} instances
      * @param developmentHandlerList A list of {@link DevelopmentUpdateSource} instances
@@ -93,9 +93,9 @@ public class UpdateSourceHandler {
     }
 
     /**
-     * A consumer for {@link UpdateSource}s.
+     * A consumer for any {@link DevelopmentUpdateSource} or {@link ReleaseUpdateSource}.
      *
-     * @param <T> something implementing {@link UpdateSource}
+     * @param <T> something that is a {@link DevelopmentUpdateSource} or {@link ReleaseUpdateSource}
      */
     private interface UpdateSourceConsumer<T> {
 

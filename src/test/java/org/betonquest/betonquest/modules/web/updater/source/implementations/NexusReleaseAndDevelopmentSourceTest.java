@@ -1,16 +1,15 @@
 package org.betonquest.betonquest.modules.web.updater.source.implementations;
 
 import org.betonquest.betonquest.modules.versioning.Version;
+import org.betonquest.betonquest.modules.web.ContentSource;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 /**
  * This class tests the {@link NexusReleaseAndDevelopmentSource}.
@@ -21,22 +20,23 @@ class NexusReleaseAndDevelopmentSourceTest {
      */
     public static final String API_URL = "https://betonquest.org/nexus";
 
-    private static NexusReleaseAndDevelopmentSource getMockedNexusSource() throws IOException {
+    @SuppressWarnings({"PMD.JUnitTestContainsTooManyAsserts"})
+    @Test
+    void testNexusReleaseSource() throws IOException {
         final Path filePathShadedPage1 = Path.of("src/test/resources/modules/web/updater/nexusShadedPage1.json");
         final Path filePathShadedPage2 = Path.of("src/test/resources/modules/web/updater/nexusShadedPage2.json");
         final String apiUrlShadedPage1 = API_URL + NexusReleaseAndDevelopmentSource.SERVICE_REST_V_1 + NexusReleaseAndDevelopmentSource.SEARCH_URL;
         final String apiUrlShadedPage2 = API_URL + NexusReleaseAndDevelopmentSource.SERVICE_REST_V_1 + NexusReleaseAndDevelopmentSource.SEARCH_URL + NexusReleaseAndDevelopmentSource.CONTINUATION_TOKEN + "2";
 
-        final NexusReleaseAndDevelopmentSource source = spy(new NexusReleaseAndDevelopmentSource(API_URL));
-        doReturn(Files.readString(filePathShadedPage1)).when(source).readStringFromURL(new URL(apiUrlShadedPage1));
-        doReturn(Files.readString(filePathShadedPage2)).when(source).readStringFromURL(new URL(apiUrlShadedPage2));
-        return source;
-    }
+        final ContentSource contentSource = url ->
+                switch (url.toString()) {
+                    case apiUrlShadedPage1 -> Files.readString(filePathShadedPage1);
+                    case apiUrlShadedPage2 -> Files.readString(filePathShadedPage2);
+                    default -> throw new IOException("Unexpected URL: " + url);
+                };
+        final NexusReleaseAndDevelopmentSource source = new NexusReleaseAndDevelopmentSource(API_URL, contentSource);
 
-    @SuppressWarnings({"PMD.JUnitTestContainsTooManyAsserts"})
-    @Test
-    void testNexusReleaseSource() throws IOException {
-        final Map<Version, String> versions = getMockedNexusSource().getReleaseVersions();
+        final Map<Version, String> versions = source.getReleaseVersions();
 
         assertEquals(3, versions.size(), "Expected two versions from getReleaseVersions");
         final String url1 = versions.get(new Version("1.12.4"));
@@ -52,15 +52,27 @@ class NexusReleaseAndDevelopmentSourceTest {
 
     @SuppressWarnings({"PMD.JUnitTestContainsTooManyAsserts"})
     @Test
-    void testNexusDevelopementSource() throws IOException {
+    void testNexusDevelopmentSource() throws IOException {
+        final Path filePathShadedPage1 = Path.of("src/test/resources/modules/web/updater/nexusShadedPage1.json");
+        final Path filePathShadedPage2 = Path.of("src/test/resources/modules/web/updater/nexusShadedPage2.json");
+        final String apiUrlShadedPage1 = API_URL + NexusReleaseAndDevelopmentSource.SERVICE_REST_V_1 + NexusReleaseAndDevelopmentSource.SEARCH_URL;
+        final String apiUrlShadedPage2 = API_URL + NexusReleaseAndDevelopmentSource.SERVICE_REST_V_1 + NexusReleaseAndDevelopmentSource.SEARCH_URL + NexusReleaseAndDevelopmentSource.CONTINUATION_TOKEN + "2";
+
         final Path filePathPom1 = Path.of("src/test/resources/modules/web/updater/nexusPom1.xml");
         final Path filePathPom2 = Path.of("src/test/resources/modules/web/updater/nexusPom2.xml");
         final String apiUrlPom1 = API_URL + "/repository/betonquest/org/betonquest/betonquest/2.0.0-SNAPSHOT/betonquest-2.0.0-20221230.085132-398.pom";
         final String apiUrlPom2 = API_URL + "/repository/betonquest/org/betonquest/betonquest/1.12.7-SNAPSHOT/betonquest-1.12.7-20221210.125708-379.pom";
 
-        final NexusReleaseAndDevelopmentSource source = getMockedNexusSource();
-        doReturn(Files.readString(filePathPom1)).when(source).readStringFromURL(new URL(apiUrlPom1));
-        doReturn(Files.readString(filePathPom2)).when(source).readStringFromURL(new URL(apiUrlPom2));
+        final ContentSource contentSource = url ->
+                switch (url.toString()) {
+                    case apiUrlShadedPage1 -> Files.readString(filePathShadedPage1);
+                    case apiUrlShadedPage2 -> Files.readString(filePathShadedPage2);
+                    case apiUrlPom1 -> Files.readString(filePathPom1);
+                    case apiUrlPom2 -> Files.readString(filePathPom2);
+                    default -> throw new IOException("Unexpected URL: " + url);
+                };
+        final NexusReleaseAndDevelopmentSource source = new NexusReleaseAndDevelopmentSource(API_URL, contentSource);
+
         final Map<Version, String> versions = source.getDevelopmentVersions();
 
         assertEquals(2, versions.size(), "Expected two versions from getReleaseVersions");
