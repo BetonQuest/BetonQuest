@@ -546,7 +546,7 @@ Minutes can be achieved with floating point. Six minutes equals 0.1 hours.
 Teleports the player to the specified location. 
 Ends any active conversations. 
 
-Do you only want to cancel the conversation? Use [Cancel Conversation](#cancels-the-conversation-cancelconversation).
+Do you only want to [CancelConversation](#cancels-the-conversation-cancelconversation)?
 
 | Parameter  | Syntax                                                                       | Default Value          | Explanation                                          |
 |------------|------------------------------------------------------------------------------|------------------------|------------------------------------------------------|
