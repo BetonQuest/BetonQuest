@@ -34,6 +34,7 @@ softdepend:
   - Jobs
   - LuckPerms
   - AureliumSkills
+  - fake-block
 commands:
   betonquest:
     description: General quest command

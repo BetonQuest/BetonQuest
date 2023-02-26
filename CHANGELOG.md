@@ -24,6 +24,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - holograms from DecentHolograms are a direct alternative to HolographicDisplays
 - add LuckPerms context integration for tags
     - All existing users must add luckperms: 'true' to their config.yml's hook section.
+- add FakeBlock Compatibility
+    - added `fakeblock` event that has the arguments `showgroup` and `hidegroup` to show and hide FakeBlock groups
+    - added `hook.fake-block` config option, default: `true`
 - added Event Schedules to replace old static-events system
 - NotifyIO "totemIO"
 - Support for MythicLib
