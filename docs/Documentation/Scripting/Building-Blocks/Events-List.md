@@ -544,7 +544,9 @@ Minutes can be achieved with floating point. Six minutes equals 0.1 hours.
 ## :fontawesome-solid-person-walking-dashed-line-arrow-right: Teleport: `teleport`
 
 Teleports the player to the specified location. 
-Ends any active conversations.
+Ends any active conversations. 
+
+Do you only want to [cancel the conversation](#cancels-the-conversation-cancelconversation)?
 
 | Parameter  | Syntax                                                                       | Default Value          | Explanation                                          |
 |------------|------------------------------------------------------------------------------|------------------------|------------------------------------------------------|
@@ -634,4 +636,13 @@ events:
   variable_dash: "velocity vector:%objective.customVariable.dashLength% direction:relative_y"
   fly: "velocity vector:(0;0.1;2) direction:relative modification:add"
   
+```
+
+## Cancels the Conversation: `cancelconversation`
+
+  Cancels the active conversation of the player.
+  
+```YAML title="Example"
+  events:
+    cancel: "cancelconversation"
 ```
