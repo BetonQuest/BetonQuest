@@ -9,7 +9,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import java.util.List;
 
 /**
- * Shows the FakeBlock groups to the player.
+ * Shows FakeBlock groups to the player.
  */
 public class ShowGroupEvent implements Event {
     /**
@@ -22,10 +22,10 @@ public class ShowGroupEvent implements Event {
     private final RegisteredServiceProvider<PlayerGroupService> playerGroupService;
 
     /**
-     * Create the showgroup event.
+     * Creates the showgroup event.
      *
-     * @param groupNames         is a list that contains Strings of group names that should be shown to the player.
-     * @param playerGroupService the FakeBlock PlayerGroupService.
+     * @param groupNames         is a list that contains Strings of group names that should be shown to the player
+     * @param playerGroupService the FakeBlock PlayerGroupService
      */
     public ShowGroupEvent(final List<String> groupNames, final RegisteredServiceProvider<PlayerGroupService> playerGroupService) {
         this.groupNames = groupNames;
@@ -34,9 +34,6 @@ public class ShowGroupEvent implements Event {
 
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
-        if (groupNames.isEmpty()) {
-            throw new QuestRuntimeException("FakeBlock no Groups were specified.");
-        }
         for (final String groupName : groupNames) {
             playerGroupService.getProvider().showGroup(groupName, profile.getPlayer());
         }

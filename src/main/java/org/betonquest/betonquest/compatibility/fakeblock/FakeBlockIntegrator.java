@@ -8,7 +8,7 @@ import org.bukkit.Server;
 /**
  * Integrates with FakeBlock
  */
-public class FakeBlockApiIntegrator implements Integrator {
+public class FakeBlockIntegrator implements Integrator {
     /**
      * The instance of {@link BetonQuest}.
      */
@@ -17,7 +17,7 @@ public class FakeBlockApiIntegrator implements Integrator {
     /**
      * Create the FakeBlock integration.
      */
-    public FakeBlockApiIntegrator() {
+    public FakeBlockIntegrator() {
         this.plugin = BetonQuest.getInstance();
     }
 

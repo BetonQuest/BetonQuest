@@ -9,23 +9,23 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import java.util.List;
 
 /**
- * Hides the FakeBlock groups to the player.
+ * Hides the FakeBlock groups from the player.
  */
 public class HideGroupEvent implements Event {
     /**
-     * The groupNames that should be hidden for the player.
+     * The names of the groups that should be hidden for the player.
      */
     private final List<String> groupNames;
     /**
-     * PlayerGroupService to change group states for the player
+     * PlayerGroupService to change group states for the player.
      */
     private final RegisteredServiceProvider<PlayerGroupService> playerGroupService;
 
     /**
-     * Create the hidegroup event.
+     * Creates the hidegroup event.
      *
-     * @param groupNames         is a list that contains Strings of group names that should be hidden for the player.
-     * @param playerGroupService the FakeBlock PlayerGroupService.
+     * @param groupNames         is a string list with group names that should be hidden for the player
+     * @param playerGroupService the FakeBlock PlayerGroupService
      */
     public HideGroupEvent(final List<String> groupNames, final RegisteredServiceProvider<PlayerGroupService> playerGroupService) {
         this.groupNames = groupNames;
@@ -34,9 +34,6 @@ public class HideGroupEvent implements Event {
 
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
-        if (groupNames.isEmpty()) {
-            throw new QuestRuntimeException("FakeBlock no Groups were specified.");
-        }
         for (final String groupName : groupNames) {
             playerGroupService.getProvider().hideGroup(groupName, profile.getPlayer());
         }

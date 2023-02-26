@@ -44,7 +44,7 @@ public class FakeBlockEventFactory implements EventFactory {
     private final RegisteredServiceProvider<PlayerGroupService> playerGroupService;
 
     /**
-     * Create the FakeBlock event factory.
+     * Creates the FakeBlock event factory.
      *
      * @param server    server to use
      * @param scheduler scheduler to use
@@ -54,8 +54,8 @@ public class FakeBlockEventFactory implements EventFactory {
         this.server = server;
         this.scheduler = scheduler;
         this.plugin = plugin;
-        this.groupService = plugin.getServer().getServicesManager().getRegistration(GroupService.class);
-        this.playerGroupService = plugin.getServer().getServicesManager().getRegistration(PlayerGroupService.class);
+        this.groupService = server.getServicesManager().getRegistration(GroupService.class);
+        this.playerGroupService = server.getServicesManager().getRegistration(PlayerGroupService.class);
     }
 
     @Override
@@ -86,6 +86,6 @@ public class FakeBlockEventFactory implements EventFactory {
         if (notExistingGroups.isEmpty()) {
             return;
         }
-        throw new InstructionParseException("The following groups were not found: " + notExistingGroups);
+        throw new InstructionParseException("The following groups do not exist: " + notExistingGroups);
     }
 }
