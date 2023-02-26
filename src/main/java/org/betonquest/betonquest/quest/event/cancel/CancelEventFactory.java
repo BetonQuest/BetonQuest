@@ -21,9 +21,10 @@ public class CancelEventFactory implements EventFactory {
 
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
-        final QuestCanceler canceler = BetonQuest.getCanceler().get(instruction.getPackage().getQuestPath() + "." + instruction.next());
+        final String cancelerName = instruction.getPackage().getQuestPath() + "." + instruction.next();
+        final QuestCanceler canceler = BetonQuest.getCanceler().get(cancelerName);
         if (canceler == null) {
-            throw new InstructionParseException("Canceler is null");
+            throw new InstructionParseException("Could not find canceler '" + cancelerName + "'");
         }
         return new OnlineProfileRequiredEvent(new CancelEvent(canceler), instruction.getPackage());
     }
