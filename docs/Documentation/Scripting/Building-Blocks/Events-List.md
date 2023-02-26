@@ -544,7 +544,9 @@ Minutes can be achieved with floating point. Six minutes equals 0.1 hours.
 ## :fontawesome-solid-person-walking-dashed-line-arrow-right: Teleport: `teleport`
 
 Teleports the player to the specified location. 
-Ends any active conversations.
+Ends any active conversations. 
+
+Do you only want to cancel the conversation? Use [Cancel Conversation](#cancels-the-conversation-cancelconversation).
 
 | Parameter  | Syntax                                                                       | Default Value          | Explanation                                          |
 |------------|------------------------------------------------------------------------------|------------------------|------------------------------------------------------|
@@ -638,7 +640,7 @@ events:
 
 ## Cancels the Conversation: `cancelconversation`
 
-  Cancels the conversation, if the player is participating a conversation.
+  Cancels the active conversation of the player.
   
 ```YAML title="Example"
   events:
