@@ -363,7 +363,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
     @Override
     public void end() {
         allowClose = true;
-        if (response == null && options.isEmpty() && inv != null) {
+        if (inv != null) {
             player.closeInventory();
         }
     }
