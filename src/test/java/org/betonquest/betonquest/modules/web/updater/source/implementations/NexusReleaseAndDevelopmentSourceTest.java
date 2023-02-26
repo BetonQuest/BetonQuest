@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.updater.source.implementations;
+package org.betonquest.betonquest.modules.web.updater.source.implementations;
 
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.junit.jupiter.api.Test;
@@ -22,8 +22,8 @@ class NexusReleaseAndDevelopmentSourceTest {
     public static final String API_URL = "https://betonquest.org/nexus";
 
     private static NexusReleaseAndDevelopmentSource getMockedNexusSource() throws IOException {
-        final Path filePathShadedPage1 = Path.of("src/test/resources/modules/updater/nexusShadedPage1.json");
-        final Path filePathShadedPage2 = Path.of("src/test/resources/modules/updater/nexusShadedPage2.json");
+        final Path filePathShadedPage1 = Path.of("src/test/resources/modules/web/updater/nexusShadedPage1.json");
+        final Path filePathShadedPage2 = Path.of("src/test/resources/modules/web/updater/nexusShadedPage2.json");
         final String apiUrlShadedPage1 = API_URL + NexusReleaseAndDevelopmentSource.SERVICE_REST_V_1 + NexusReleaseAndDevelopmentSource.SEARCH_URL;
         final String apiUrlShadedPage2 = API_URL + NexusReleaseAndDevelopmentSource.SERVICE_REST_V_1 + NexusReleaseAndDevelopmentSource.SEARCH_URL + NexusReleaseAndDevelopmentSource.CONTINUATION_TOKEN + "2";
 
@@ -53,8 +53,8 @@ class NexusReleaseAndDevelopmentSourceTest {
     @SuppressWarnings({"PMD.JUnitTestContainsTooManyAsserts"})
     @Test
     void testNexusDevelopementSource() throws IOException {
-        final Path filePathPom1 = Path.of("src/test/resources/modules/updater/nexusPom1.xml");
-        final Path filePathPom2 = Path.of("src/test/resources/modules/updater/nexusPom2.xml");
+        final Path filePathPom1 = Path.of("src/test/resources/modules/web/updater/nexusPom1.xml");
+        final Path filePathPom2 = Path.of("src/test/resources/modules/web/updater/nexusPom2.xml");
         final String apiUrlPom1 = API_URL + "/repository/betonquest/org/betonquest/betonquest/2.0.0-SNAPSHOT/betonquest-2.0.0-20221230.085132-398.pom";
         final String apiUrlPom2 = API_URL + "/repository/betonquest/org/betonquest/betonquest/1.12.7-SNAPSHOT/betonquest-1.12.7-20221210.125708-379.pom";
 

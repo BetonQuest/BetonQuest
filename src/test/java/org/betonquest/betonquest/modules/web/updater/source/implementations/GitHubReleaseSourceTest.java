@@ -1,7 +1,7 @@
-package org.betonquest.betonquest.modules.updater.source.implementations;
+package org.betonquest.betonquest.modules.web.updater.source.implementations;
 
-import org.betonquest.betonquest.modules.updater.source.UpdateSource;
 import org.betonquest.betonquest.modules.versioning.Version;
+import org.betonquest.betonquest.modules.web.updater.source.UpdateSource;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -21,7 +21,7 @@ class GitHubReleaseSourceTest {
     @SuppressWarnings({"PMD.JUnitTestContainsTooManyAsserts"})
     @Test
     void testGitHubReleaseSource() throws IOException {
-        final Path filePath = Path.of("src/test/resources/modules/updater/github.json");
+        final Path filePath = Path.of("src/test/resources/modules/web/updater/github.json");
         final String apiUrl = "https://github.com/BetonQuest/BetonQuest";
         final String apiUrlReleases = "https://github.com/BetonQuest/BetonQuest" + GitHubReleaseSource.RELEASES_URL;
 

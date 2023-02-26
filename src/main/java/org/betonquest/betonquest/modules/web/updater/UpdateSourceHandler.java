@@ -1,12 +1,12 @@
-package org.betonquest.betonquest.modules.updater;
+package org.betonquest.betonquest.modules.web.updater;
 
 import lombok.CustomLog;
 import org.apache.commons.lang3.tuple.Pair;
-import org.betonquest.betonquest.modules.updater.source.DevelopmentUpdateSource;
-import org.betonquest.betonquest.modules.updater.source.ReleaseUpdateSource;
-import org.betonquest.betonquest.modules.updater.source.UpdateSource;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.modules.versioning.VersionComparator;
+import org.betonquest.betonquest.modules.web.updater.source.DevelopmentUpdateSource;
+import org.betonquest.betonquest.modules.web.updater.source.ReleaseUpdateSource;
+import org.betonquest.betonquest.modules.web.updater.source.UpdateSource;
 import org.jetbrains.annotations.VisibleForTesting;
 
 import java.io.IOException;

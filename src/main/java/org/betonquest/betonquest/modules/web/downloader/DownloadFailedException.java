@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.downloader;
+package org.betonquest.betonquest.modules.web.downloader;
 
 import java.io.Serial;
 

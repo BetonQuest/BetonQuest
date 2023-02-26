@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.updater;
+package org.betonquest.betonquest.modules.web.updater;
 
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;

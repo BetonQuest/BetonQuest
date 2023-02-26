@@ -1,8 +1,8 @@
-package org.betonquest.betonquest.modules.updater.source.implementations;
+package org.betonquest.betonquest.modules.web.updater.source.implementations;
 
-import org.betonquest.betonquest.modules.updater.source.ReleaseUpdateSource;
-import org.betonquest.betonquest.modules.updater.source.UpdateSource;
 import org.betonquest.betonquest.modules.versioning.Version;
+import org.betonquest.betonquest.modules.web.updater.source.ReleaseUpdateSource;
+import org.betonquest.betonquest.modules.web.updater.source.UpdateSource;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

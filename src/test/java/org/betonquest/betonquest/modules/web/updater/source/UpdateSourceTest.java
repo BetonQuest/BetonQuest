@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.updater.source;
+package org.betonquest.betonquest.modules.web.updater.source;
 
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +18,7 @@ class UpdateSourceTest {
 
     @Test
     void testReadStringFromURL() throws IOException {
-        final Path filePath = Path.of("src/test/resources/modules/updater/latest.json");
+        final Path filePath = Path.of("src/test/resources/modules/web/updater/latest.json");
 
         final UpdateSource handler = mock(UpdateSource.class);
         when(handler.readStringFromURL(any())).thenCallRealMethod();

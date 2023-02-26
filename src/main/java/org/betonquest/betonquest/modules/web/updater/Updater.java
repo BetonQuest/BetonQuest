@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.updater;
+package org.betonquest.betonquest.modules.web.updater;
 
 import lombok.CustomLog;
 import org.apache.commons.lang3.tuple.Pair;

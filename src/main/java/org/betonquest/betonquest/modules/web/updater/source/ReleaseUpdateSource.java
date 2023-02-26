@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.updater.source;
+package org.betonquest.betonquest.modules.web.updater.source;
 
 import org.betonquest.betonquest.modules.versioning.Version;
 

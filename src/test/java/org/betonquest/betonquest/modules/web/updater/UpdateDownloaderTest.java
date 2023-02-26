@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.updater;
+package org.betonquest.betonquest.modules.web.updater;
 
 import org.apache.commons.io.FileUtils;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -23,7 +23,7 @@ class UpdateDownloaderTest {
     /**
      * The {@link File} to the BetonQuest.jar in the resources.
      */
-    private static final File UPDATE_FILE = new File("src/test/resources/modules/updater/BetonQuest.jar");
+    private static final File UPDATE_FILE = new File("src/test/resources/modules/web/updater/BetonQuest.jar");
     /**
      * The {@link Path} to the BetonQuest.jar in the resources.
      */
