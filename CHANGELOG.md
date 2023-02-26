@@ -81,6 +81,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `variable` condition - forceSync argument forces the condition to be checked on the main thread
 - `variable` condition - now supports variables as both the input and the regular expression
 - `command` event - now suppress console output
+- `cancelconversation` event
 - Things that are also added in 1.12.X:
     - new line support for `journal_lore` in `messages.yml`
     - FastAsyncWorldEdit compatibility

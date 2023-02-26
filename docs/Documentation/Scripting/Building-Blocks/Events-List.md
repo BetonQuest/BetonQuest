@@ -635,3 +635,12 @@ events:
   fly: "velocity vector:(0;0.1;2) direction:relative modification:add"
   
 ```
+
+## Cancels the Conversation: `cancelconversation`
+
+  Cancels the conversation, if the player is participating a conversation.
+  
+```YAML title="Example"
+  events:
+    cancel: "cancelconversation"
+```
