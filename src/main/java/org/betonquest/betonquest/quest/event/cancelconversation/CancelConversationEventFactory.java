@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest.event.conversationcancel;
+package org.betonquest.betonquest.quest.event.cancelconversation;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.Event;
@@ -13,7 +13,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 /**
  * Factory to create conversation cancel events from {@link Instruction}s.
  */
-public class ConversationCancelEventFactory implements EventFactory {
+public class CancelConversationEventFactory implements EventFactory {
     /**
      * Server to use for syncing to the primary server thread.
      */
@@ -34,7 +34,7 @@ public class ConversationCancelEventFactory implements EventFactory {
      * @param scheduler scheduler to use
      * @param plugin    plugin to use
      */
-    public ConversationCancelEventFactory(final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
+    public CancelConversationEventFactory(final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
         this.server = server;
         this.scheduler = scheduler;
         this.plugin = plugin;
@@ -44,7 +44,7 @@ public class ConversationCancelEventFactory implements EventFactory {
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         return new PrimaryServerThreadEvent(
                 new OnlineProfileRequiredEvent(
-                        new ConversationCancelEvent(), instruction.getPackage()),
+                        new CancelConversationEvent(), instruction.getPackage()),
                 server, scheduler, plugin);
     }
 }

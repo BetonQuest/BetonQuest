@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest.event.conversationcancel;
+package org.betonquest.betonquest.quest.event.cancelconversation;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
@@ -8,12 +8,12 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 /**
  * Cancels the conversation
  */
-public class ConversationCancelEvent implements Event {
+public class CancelConversationEvent implements Event {
 
     /**
      * Create a new conversation cancel event
      */
-    public ConversationCancelEvent() {
+    public CancelConversationEvent() {
     }
 
     @Override
