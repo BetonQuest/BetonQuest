@@ -82,7 +82,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `variable` condition - now supports variables as both the input and the regular expression
 - `command` event - now suppress console output
 - `cancelconversation` event
-- `time` event - now supports substation and world selection, which made it persistent and static
+- `time` event - now supports subtraction and world selection, which made it persistent and static
 - Things that are also added in 1.12.X:
     - new line support for `journal_lore` in `messages.yml`
     - FastAsyncWorldEdit compatibility
