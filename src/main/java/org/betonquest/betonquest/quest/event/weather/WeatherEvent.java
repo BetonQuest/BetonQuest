@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.event.weather;
 
+import org.betonquest.betonquest.api.common.worldselector.WorldSelector;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -23,7 +24,7 @@ public class WeatherEvent implements Event {
     /**
      * Create the weather event to set the given state.
      *
-     * @param weather the weather to set
+     * @param weather       the weather to set
      * @param worldSelector to get the world that should be affected
      */
     public WeatherEvent(final Weather weather, final WorldSelector worldSelector) {
