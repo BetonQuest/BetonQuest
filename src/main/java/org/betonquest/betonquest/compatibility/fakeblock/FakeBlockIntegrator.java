@@ -40,10 +40,12 @@ public class FakeBlockIntegrator implements Integrator {
 
     private void checkRequiredVersion() throws UnsupportedVersionException {
         final Plugin fakeBlockPlugin = Bukkit.getPluginManager().getPlugin("fake-block");
-        final Version version = new Version(fakeBlockPlugin.getDescription().getVersion());
-        final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR);
-        if (comparator.isOtherNewerThanCurrent(version, new Version(REQUIRED_VERSION))) {
-            throw new UnsupportedVersionException(plugin, REQUIRED_VERSION);
+        if (fakeBlockPlugin != null) {
+            final Version version = new Version(fakeBlockPlugin.getDescription().getVersion());
+            final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR);
+            if (comparator.isOtherNewerThanCurrent(version, new Version(REQUIRED_VERSION))) {
+                throw new UnsupportedVersionException(plugin, REQUIRED_VERSION);
+            }
         }
     }
 
