@@ -249,6 +249,12 @@
 
     <!-- from jitpack repository -->
     <dependency>
+      <groupId>com.github.toddharrison.BriarCode</groupId>
+      <artifactId>fake-block-api</artifactId>
+      <version>test-1</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>com.github.MilkBowl</groupId>
       <artifactId>VaultAPI</artifactId>
       <version>1.7.1</version>

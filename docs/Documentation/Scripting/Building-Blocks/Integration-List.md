@@ -10,7 +10,7 @@ In total @snippet:constants:totalIntegratedPluginsNumber@ plugins have dedicated
 ## Provided by BetonQuest
 
 BetonQuest hooks into other plugins by itself to provide more events, conditions and objectives or other features.  
-_AureliumSkills, Brewery, Citizens, DecentHolograms, Denizen, EffectLib, Heroes, HolographicDisplays, JobsReborn, LuckPerms, Magic,
+_AureliumSkills, Brewery, Citizens, DecentHolograms, Denizen, EffectLib, FakeBlock, Heroes, HolographicDisplays, JobsReborn, LuckPerms, Magic,
 mcMMO, MythicLib, MMOCore, MMOItems, MythicMobs, PlaceholderAPI, ProtocolLib, Quests, Shopkeepers, ProSkillAPI,
 Skript, Vault, WorldEdit, FastAsyncWorldEdit and WorldGuard._
 
@@ -302,6 +302,25 @@ be displayed to the player for which you ran the event.
     events:
       playEffect: particle beton loc:100;200;300;world;180;-90 private
     ```
+
+## FakeBlock[](https://github.com/toddharrison/BriarCode/tree/main/fake-block)
+
+If you have the FakeBlock integration installed, you will be able to view and hide the block groups 
+created in FakeBlock on a player-specific basis.
+
+### Events
+
+#### Show and hide block groups: `fakeblock` 
+
+Shows or hides the block group for the player. The block group can be specified as a comma-separated list. 
+The groups are case-sensitive. To show a group the `showgroup` argument is required. To hide a group the `hidegroup` argument is required.
+
+
+```YAML
+events:
+  showBridge: "fakeblock showgroup bridge"
+  hideCityBorder: "fakeblock hidegroup gate,wall,door"
+```
 
 ## Heroes[](https://www.spigotmc.org/resources/24734/)
 
