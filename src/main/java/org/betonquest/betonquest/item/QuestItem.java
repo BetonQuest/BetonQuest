@@ -11,7 +11,7 @@ import org.betonquest.betonquest.item.typehandler.CustomModelDataHandler;
 import org.betonquest.betonquest.item.typehandler.DurabilityHandler;
 import org.betonquest.betonquest.item.typehandler.EnchantmentsHandler;
 import org.betonquest.betonquest.item.typehandler.FireworkHandler;
-import org.betonquest.betonquest.item.typehandler.HeadOwnerHandler;
+import org.betonquest.betonquest.item.typehandler.HeadHandler;
 import org.betonquest.betonquest.item.typehandler.LoreHandler;
 import org.betonquest.betonquest.item.typehandler.NameHandler;
 import org.betonquest.betonquest.item.typehandler.PotionHandler;
@@ -41,6 +41,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Represents an item handled by the configuration.
@@ -56,7 +57,7 @@ public class QuestItem {
     private final UnbreakableHandler unbreakable = new UnbreakableHandler();
     private final PotionHandler potion = new PotionHandler();
     private final BookHandler book = new BookHandler();
-    private final HeadOwnerHandler head = new HeadOwnerHandler();
+    private final HeadHandler head = HeadHandler.getServerInstance();
     private final ColorHandler color = new ColorHandler();
     private final FireworkHandler firework = new FireworkHandler();
     private final CustomModelDataHandler customModelData = new CustomModelDataHandler();
@@ -140,8 +141,12 @@ public class QuestItem {
                 potion.setCustom(cut(part));
             } else if ("effects-containing".equals(part.toLowerCase(Locale.ROOT))) {
                 potion.setNotExact();
-            } else if (part.toLowerCase(Locale.ROOT).startsWith("owner:")) {
-                head.set(cut(part));
+            } else if (part.toLowerCase(Locale.ROOT).startsWith(HeadHandler.META_OWNER + ":")) {
+                head.setOwner(cut(part));
+            } else if (part.toLowerCase(Locale.ROOT).startsWith(HeadHandler.META_PLAYER_ID + ":")) {
+                head.setPlayerId(cut(part));
+            } else if (part.toLowerCase(Locale.ROOT).startsWith(HeadHandler.META_TEXTURE + ":")) {
+                head.setTexture(cut(part));
             } else if (part.toLowerCase(Locale.ROOT).startsWith("color:")) {
                 color.set(cut(part));
             } else if (part.toLowerCase(Locale.ROOT).startsWith("firework:")) {
@@ -176,7 +181,7 @@ public class QuestItem {
         String author = "";
         String effects = "";
         String color = "";
-        String owner = "";
+        String skull = "";
         String firework = "";
         String unbreakable = "";
         String customModelData = "";
@@ -263,10 +268,7 @@ public class QuestItem {
                 }
             }
             if (meta instanceof SkullMeta) {
-                final SkullMeta skullMeta = (SkullMeta) meta;
-                if (skullMeta.hasOwner()) {
-                    owner = " owner:" + skullMeta.getOwner();
-                }
+                skull = HeadHandler.serializeSkullMeta((SkullMeta) meta);
             }
             if (meta instanceof FireworkMeta) {
                 final FireworkMeta fireworkMeta = (FireworkMeta) meta;
@@ -318,7 +320,7 @@ public class QuestItem {
         }
         // put it all together in a single string
         return item.getType() + durability + name + lore + enchants + title + author + text
-                + effects + color + owner + firework + unbreakable + customModelData;
+                + effects + color + skull + firework + unbreakable + customModelData;
     }
 
     @Override
@@ -417,7 +419,7 @@ public class QuestItem {
         }
         if (meta instanceof SkullMeta) {
             final SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
-            if (!head.check(skullMeta.getOwner())) {
+            if (!head.check(skullMeta)) {
                 return false;
             }
         }
@@ -504,8 +506,7 @@ public class QuestItem {
             bookMeta.setPages(book.getText());
         }
         if (meta instanceof SkullMeta) {
-            final SkullMeta skullMeta = (SkullMeta) meta;
-            skullMeta.setOwner(head.get(profile));
+            head.populate((SkullMeta) meta, profile);
         }
         if (meta instanceof LeatherArmorMeta) {
             final LeatherArmorMeta armorMeta = (LeatherArmorMeta) meta;
@@ -600,10 +601,24 @@ public class QuestItem {
     }
 
     /**
-     * @return owner of the head
+     * @return owner of the head, used independently of player ID and texture
      */
     public String getOwner() {
-        return head.get(null);
+        return head.getOwner(null);
+    }
+
+    /**
+     * @return playerId of the head, used in combination with the texture
+     */
+    public UUID getPlayerId() {
+        return head.getPlayerId();
+    }
+
+    /**
+     * @return texture URL of the head, used in combination with the player ID
+     */
+    public String getTexture() {
+        return head.getTexture();
     }
 
     /**
