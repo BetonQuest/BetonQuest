@@ -133,7 +133,7 @@ public class Conversation implements Listener {
             }
             options = new String[]{inputOption};
         }
-
+        LOG.debug(pack, "Starting conversation '" + convID + "' for '" + onlineProfile + "'.");
         new Starter(options).runTaskAsynchronously(BetonQuest.getInstance());
     }
 
@@ -290,6 +290,7 @@ public class Conversation implements Listener {
         if (ended) {
             return;
         }
+        LOG.debug(pack, "Ending conversation '" + convID + "' for '" + onlineProfile + "'.");
         ended = true;
         inOut.end();
         // fire final events
@@ -508,6 +509,8 @@ public class Conversation implements Listener {
 
             // stop the conversation if it's canceled
             if (event.isCancelled()) {
+                LOG.debug(pack, "Conversation '" + convID + "' for '" + player.getPlayerProfile() + "' has been " +
+                        "canceled because it's PlayerConversationStartEvent has been canceled.");
                 return;
             }
 
