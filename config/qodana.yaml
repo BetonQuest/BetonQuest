@@ -1,0 +1,7 @@
+version: "1.0"
+linter: jetbrains/qodana-jvm-community:2022.3
+include:
+  - name: ClassCanBeRecord
+  - name: EnhancedSwitchMigration
+  - name: OptionalIsPresent
+  - name: AssignmentToStaticFieldFromInstanceMethod
