@@ -100,7 +100,9 @@ public class QuestItem {
 
         selector = new BlockSelector(parts[0]);
 
-        for (final String part : parts) {
+        // Skip the block selector part to process remaining arguments
+        for (int i = 1; i < parts.length; i++) {
+            final String part = parts[i];
             final String argumentName = getArgumentName(part.toLowerCase(Locale.ROOT));
             final String data = getArgumentData(part);
 
