@@ -28,6 +28,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - added `fakeblock` event that has the arguments `showgroup` and `hidegroup` to show and hide FakeBlock groups
     - added `hook.fake-block` config option, default: `true`
 - added Event Schedules to replace old static-events system
+- added support for Base64 encode custom heads
+    - can be created from items in inventory using the BetonQuest `item` command (Paper only, Bukkit/Spigot can be configured manually)
+    - can be given to players using the BetonQuest `give` command
 - NotifyIO "totemIO"
 - Support for MythicLib
 - player attribute to QuestCompassTargetChangeEvent

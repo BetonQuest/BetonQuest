@@ -3,6 +3,7 @@ package org.betonquest.betonquest.item.typehandler;
 import lombok.CustomLog;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.profile.PlayerProfile;
 
@@ -16,9 +17,21 @@ import java.util.UUID;
 
 /**
  * Handles metadata about player Skulls for Spigot/Bukkit server.
+ * This class relies on classes and methods that Paper has defined as deprecated, even though they are not deprecated
+ * in Bukkit / Spigot. Thus, deprecation warnings are suppressed for this class.
  */
+@SuppressWarnings("deprecation")
 @CustomLog
 public class SpigotHeadHandler extends HeadHandler {
+    /**
+     * Prefix for JSON structure minecraft uses for defining skin texture URL.
+     */
+    private static final String TEXTURE_PREFIX = "{\"textures\":{\"SKIN\":{\"url\":\"";
+    /**
+     * Suffix for JSON structure minecraft uses for defining skin texture URL.
+     */
+    private static final String TEXTURE_SUFFIX = "\"}}}";
+
     /**
      * Construct a new HeadHandler.
      */
@@ -35,14 +48,23 @@ public class SpigotHeadHandler extends HeadHandler {
     public static Map<String, String> parseSkullMeta(final SkullMeta skullMeta) {
         final Map<String, String> parsedValues = new HashMap<>();
         if (skullMeta.hasOwner()) {
-            parsedValues.put(META_OWNER, skullMeta.getOwningPlayer().getName());
+            final OfflinePlayer owningPlayer = skullMeta.getOwningPlayer();
+            if (owningPlayer != null) {
+                parsedValues.put(META_OWNER, owningPlayer.getName());
+            }
         }
         return parsedValues;
     }
 
     private static String encodeSkin(final URL skinUrl) {
         return Base64.getEncoder()
-                .encodeToString(skinUrl.toString().getBytes(Charset.defaultCharset()));
+                .encodeToString((TEXTURE_PREFIX + skinUrl.toString() + TEXTURE_SUFFIX)
+                        .getBytes(Charset.defaultCharset()));
+    }
+
+    private URL decodeSkin(final String texture) throws MalformedURLException {
+        final String json = new String(Base64.getDecoder().decode(texture), Charset.defaultCharset());
+        return new URL(json.substring(TEXTURE_PREFIX.length(), json.length() - TEXTURE_SUFFIX.length()));
     }
 
     @Override
@@ -56,7 +78,7 @@ public class SpigotHeadHandler extends HeadHandler {
         }
         if (playerId != null && texture != null) {
             try {
-                final URL url = new URL(new String(Base64.getDecoder().decode(texture), Charset.defaultCharset()));
+                final URL url = decodeSkin(texture);
 
                 final PlayerProfile playerProfile = Bukkit.getServer().createPlayerProfile(playerId);
                 playerProfile.getTextures().setSkin(url);
@@ -69,7 +91,13 @@ public class SpigotHeadHandler extends HeadHandler {
 
     @Override
     public boolean check(final SkullMeta skullMeta) {
-        final String ownerName = skullMeta.getOwningPlayer().getName();
+        final OfflinePlayer owningPlayer = skullMeta.getOwningPlayer();
+        final String ownerName;
+        if (owningPlayer != null) {
+            ownerName = owningPlayer.getName();
+        } else {
+            ownerName = null;
+        }
         final PlayerProfile playerProfile = skullMeta.getOwnerProfile();
         if (playerProfile != null) {
             final UUID playerUniqueId = playerProfile.getUniqueId();

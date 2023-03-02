@@ -31,7 +31,10 @@ public class PaperHeadHandler extends HeadHandler {
     public static Map<String, String> parseSkullMeta(final SkullMeta skullMeta) {
         final Map<String, String> parsedValues = new HashMap<>();
         if (skullMeta.hasOwner()) {
-            parsedValues.put(META_OWNER, skullMeta.getOwningPlayer().getName());
+            final OfflinePlayer owningPlayer = skullMeta.getOwningPlayer();
+            if (owningPlayer != null) {
+                parsedValues.put(META_OWNER, owningPlayer.getName());
+            }
         }
         final PlayerProfile playerProfile = skullMeta.getPlayerProfile();
         if (playerProfile != null) {
