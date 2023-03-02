@@ -101,66 +101,55 @@ public class QuestItem {
         selector = new BlockSelector(parts[0]);
 
         for (final String part : parts) {
-            if (part.toLowerCase(Locale.ROOT).startsWith("durability:")) {
-                durability.set(cut(part));
-            } else if (part.toLowerCase(Locale.ROOT).startsWith("enchants:")) {
-                enchants.set(cut(part));
-            } else if ("enchants-containing".equals(part.toLowerCase(Locale.ROOT))) {
-                enchants.setNotExact();
-            } else if (part.toLowerCase(Locale.ROOT).startsWith("name:")) {
-                name.set(cut(part));
-            } else if (part.toLowerCase(Locale.ROOT).startsWith("lore:")) {
-                lore.set(cut(part));
-            } else if ("lore-containing".equals(part.toLowerCase(Locale.ROOT))) {
-                lore.setNotExact();
-            } else if (part.toLowerCase(Locale.ROOT).startsWith("unbreakable:")) {
-                unbreakable.set(cut(part));
-            } else if ("unbreakable".equals(part.toLowerCase(Locale.ROOT))) {
-                unbreakable.set("true");
-            } else if (part.toLowerCase(Locale.ROOT).startsWith("custom-model-data:")) {
-                customModelData.parse(cut(part));
-            } else if (part.toLowerCase(Locale.ROOT).startsWith("no-custom-model-data")) {
-                customModelData.forbid();
-            } else if (part.toLowerCase(Locale.ROOT).startsWith("title:")) {
-                book.setTitle(cut(part));
-            } else if (part.toLowerCase(Locale.ROOT).startsWith("author:")) {
-                book.setAuthor(cut(part));
-            } else if (part.toLowerCase(Locale.ROOT).startsWith("text:")) {
-                book.setText(cut(part));
-            } else if (part.toLowerCase(Locale.ROOT).startsWith("type:")) {
-                potion.setType(cut(part));
-            } else if ("extended".equals(part.toLowerCase(Locale.ROOT))) {
-                potion.setExtended("true");
-            } else if (part.toLowerCase(Locale.ROOT).startsWith("extended:")) {
-                potion.setExtended(cut(part));
-            } else if ("upgraded".equals(part.toLowerCase(Locale.ROOT))) {
-                potion.setUpgraded("true");
-            } else if (part.toLowerCase(Locale.ROOT).startsWith("upgraded:")) {
-                potion.setUpgraded(cut(part));
-            } else if (part.toLowerCase(Locale.ROOT).startsWith("effects:")) {
-                potion.setCustom(cut(part));
-            } else if ("effects-containing".equals(part.toLowerCase(Locale.ROOT))) {
-                potion.setNotExact();
-            } else if (part.toLowerCase(Locale.ROOT).startsWith(HeadHandler.META_OWNER + ":")) {
-                head.setOwner(cut(part));
-            } else if (part.toLowerCase(Locale.ROOT).startsWith(HeadHandler.META_PLAYER_ID + ":")) {
-                head.setPlayerId(cut(part));
-            } else if (part.toLowerCase(Locale.ROOT).startsWith(HeadHandler.META_TEXTURE + ":")) {
-                head.setTexture(cut(part));
-            } else if (part.toLowerCase(Locale.ROOT).startsWith("color:")) {
-                color.set(cut(part));
-            } else if (part.toLowerCase(Locale.ROOT).startsWith("firework:")) {
-                firework.setEffects(cut(part));
-            } else if (part.toLowerCase(Locale.ROOT).startsWith("power:")) {
-                firework.setPower(cut(part));
-            } else if ("firework-containing".equals(part.toLowerCase(Locale.ROOT))) {
-                firework.setNotExact();
+            final String argumentName = getArgumentName(part.toLowerCase(Locale.ROOT));
+            final String data = getArgumentData(part);
+
+            switch (argumentName) {
+                case "durability" -> durability.set(data);
+                case "enchants" -> enchants.set(data);
+                case "enchants-containing" -> enchants.setNotExact();
+                case "name" -> name.set(data);
+                case "lore" -> lore.set(data);
+                case "lore-containing" -> lore.setNotExact();
+                case "unbreakable" -> {
+                    if ("unbreakable".equals(data)) {
+                        unbreakable.set("true");
+                    } else {
+                        unbreakable.set(data);
+                    }
+                }
+                case "custom-model-data" -> customModelData.parse(data);
+                case "no-custom-model-data" -> customModelData.forbid();
+                case "title" -> book.setTitle(data);
+                case "author" -> book.setAuthor(data);
+                case "text" -> book.setText(data);
+                case "type" -> potion.setType(data);
+                case "extended" -> {
+                    if ("extended".equals(data)) {
+                        potion.setExtended("true");
+                    } else {
+                        potion.setExtended(data);
+                    }
+                }
+                case "upgraded" -> {
+                    if ("upgraded".equals(data)) {
+                        potion.setUpgraded("true");
+                    } else {
+                        potion.setUpgraded(data);
+                    }
+                }
+                case "effects" -> potion.setCustom(data);
+                case "effects-containing" -> potion.setNotExact();
+                case HeadHandler.META_OWNER -> head.setOwner(data);
+                case HeadHandler.META_PLAYER_ID -> head.setPlayerId(data);
+                case HeadHandler.META_TEXTURE -> head.setTexture(data);
+                case "color" -> color.set(data);
+                case "firework" -> firework.setEffects(data);
+                case "power" -> firework.setPower(data);
+                case "firework-containing" -> firework.setNotExact();
+                default -> throw new InstructionParseException("Unknown argument: " + argumentName);
             }
         }
-    }
-
-    private static String cut(final String uncut) {
-        return uncut.substring(uncut.indexOf(':') + 1);
     }
 
     /**
@@ -321,6 +310,31 @@ public class QuestItem {
         // put it all together in a single string
         return item.getType() + durability + name + lore + enchants + title + author + text
                 + effects + color + skull + firework + unbreakable + customModelData;
+    }
+
+    /**
+     * Returns the data behind the argument name.
+     * If the argument does not contain a colon, it returns the full argument.
+     *
+     * @param argument the full argument
+     * @return the data behind the argument name
+     */
+    private String getArgumentData(final String argument) {
+        return argument.substring(argument.indexOf(':') + 1);
+    }
+
+    /**
+     * Returns the argument name.
+     * If the argument does not contain a colon, it returns the full argument.
+     *
+     * @param argument the full argument
+     * @return the argument name
+     */
+    private String getArgumentName(final String argument) {
+        if (argument.contains(":")) {
+            return argument.substring(0, argument.indexOf(':'));
+        }
+        return argument;
     }
 
     @Override
@@ -603,7 +617,7 @@ public class QuestItem {
     /**
      * @return owner of the head, used independently of player ID and texture
      */
-    public String getOwner() {
+    public Profile getOwner() {
         return head.getOwner(null);
     }
 

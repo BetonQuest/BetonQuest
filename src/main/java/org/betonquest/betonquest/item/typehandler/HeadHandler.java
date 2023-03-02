@@ -3,7 +3,11 @@ package org.betonquest.betonquest.item.typehandler;
 import io.papermc.lib.PaperLib;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.item.QuestItem;
+import org.betonquest.betonquest.utils.PlayerConverter;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.UUID;
@@ -32,39 +36,40 @@ public abstract class HeadHandler {
      * Variable placeholder literal for player name.
      */
     private static final String VARIABLE_PLAYER_NAME = "%player%";
-
+    /**
+     * Existence of the player UUID.
+     */
+    private final QuestItem.Existence playerIdE = QuestItem.Existence.WHATEVER;
+    /**
+     * Existence of the encoded texture.
+     */
+    private final QuestItem.Existence textureE = QuestItem.Existence.WHATEVER;
     /**
      * An optional player name owner of the skull.
      */
     private String owner;
-
     /**
      * An optional player ID owner of the skull, used in conjunction with the encoded texture.
      */
     private UUID playerId;
-
     /**
      * An optional encoded texture URL of the skull, used in conjunction with the player UUID.
      */
     private String texture;
-
     /**
      * Existence of the owner.
      */
     private QuestItem.Existence ownerE = QuestItem.Existence.WHATEVER;
 
     /**
-     * Existence of the player UUID.
+     * Construct a new HeadHandler.
      */
-    private final QuestItem.Existence playerIdE = QuestItem.Existence.WHATEVER;
-
-    /**
-     * Existence of the encoded texture.
-     */
-    private final QuestItem.Existence textureE = QuestItem.Existence.WHATEVER;
+    public HeadHandler() {
+    }
 
     /**
      * Get an appropriate implementation of the HeadHandler based upon the type of server running.
+     *
      * @return An appropriate HeadHandler instance.
      */
     public static HeadHandler getServerInstance() {
@@ -77,6 +82,7 @@ public abstract class HeadHandler {
 
     /**
      * Serialize the specified SkullMeta data into a String for item persistence.
+     *
      * @param skullMeta The SkullMeta data to serialize.
      * @return A String representation of the SkullMeta data.
      */
@@ -93,13 +99,8 @@ public abstract class HeadHandler {
     }
 
     /**
-     * Construct a new HeadHandler.
-     */
-    public HeadHandler() {
-    }
-
-    /**
      * Set the owner name to the specified value.
+     *
      * @param string The new String name for the owner.
      */
     public void setOwner(final String string) {
@@ -112,27 +113,26 @@ public abstract class HeadHandler {
     }
 
     /**
-     * Get the owner name, or default to the player name in the specified Profile.
-     * @param profile The Profile providing the default owner name.
-     * @return The player name.
+     * Get the profile of the skull's owner.
+     * Also resolves the owner name to a player if it is a variable.
+     *
+     * @param profile The Profile that the item is made for
+     * @return The profile of the skull's owner.
      */
-    public String getOwner(final Profile profile) {
+    public @Nullable Profile getOwner(final Profile profile) {
         if (profile != null && VARIABLE_PLAYER_NAME.equals(owner)) {
-            return profile.getPlayer().getName();
+            return profile;
         }
-        return owner;
-    }
-
-    /**
-     * Set the player UUID to the specified value.
-     * @param playerId The new UUID player ID.
-     */
-    public void setPlayerId(final String playerId) {
-        this.playerId = UUID.fromString(playerId);
+        if (owner != null) {
+            final OfflinePlayer player = Bukkit.getOfflinePlayer(owner);
+            return PlayerConverter.getID(player);
+        }
+        return null;
     }
 
     /**
      * Get the player UUID.
+     *
      * @return The player ID.
      */
     public UUID getPlayerId() {
@@ -140,15 +140,17 @@ public abstract class HeadHandler {
     }
 
     /**
-     * Set the encoded texture to the specified value.
-     * @param texture The new encoded texture.
+     * Set the player UUID to the specified value.
+     *
+     * @param playerId The new UUID player ID.
      */
-    public void setTexture(final String texture) {
-        this.texture = texture;
+    public void setPlayerId(final String playerId) {
+        this.playerId = UUID.fromString(playerId);
     }
 
     /**
      * Get the encoded texture.
+     *
      * @return The encoded texture.
      */
     public String getTexture() {
@@ -156,68 +158,67 @@ public abstract class HeadHandler {
     }
 
     /**
+     * Set the encoded texture to the specified value.
+     *
+     * @param texture The new encoded texture.
+     */
+    public void setTexture(final String texture) {
+        this.texture = texture;
+    }
+
+    /**
      * Check to see if the specified owner name matches this HeadHandler metadata.
+     *
      * @param string The owner to check.
      * @return True if this metadata is required and matches, false otherwise.
      */
     public boolean checkOwner(final String string) {
-        switch (ownerE) {
-            case WHATEVER:
-                return true;
-            case REQUIRED:
-                return string != null && string.equals(owner);
-            case FORBIDDEN:
-                return string == null;
-            default:
-                return false;
-        }
+        return switch (ownerE) {
+            case WHATEVER -> true;
+            case REQUIRED -> string != null && string.equals(owner);
+            case FORBIDDEN -> string == null;
+        };
     }
 
     /**
      * Check to see if the specified player UUID matches this HeadHandler metadata.
+     *
      * @param playerId The player UUID to check.
      * @return True if this metadata is required and matches, false otherwise.
      */
     public boolean checkPlayerId(final UUID playerId) {
-        switch (playerIdE) {
-            case WHATEVER:
-                return true;
-            case REQUIRED:
-                return playerId != null && playerId.equals(this.playerId);
-            case FORBIDDEN:
-                return playerId == null;
-            default:
-                return false;
-        }
+        return switch (playerIdE) {
+            case WHATEVER -> true;
+            case REQUIRED -> playerId != null && playerId.equals(this.playerId);
+            case FORBIDDEN -> playerId == null;
+        };
     }
 
     /**
      * Check to see if the specified encoded texture matches this HeadHandler metadata.
+     *
      * @param string The encoded texture to check.
      * @return True if this metadata is required and matches, false otherwise.
      */
     public boolean checkTexture(final String string) {
-        switch (textureE) {
-            case WHATEVER:
-                return true;
-            case REQUIRED:
-                return string != null && string.equals(texture);
-            case FORBIDDEN:
-                return string == null;
-            default:
-                return false;
-        }
+        return switch (textureE) {
+            case WHATEVER -> true;
+            case REQUIRED -> string != null && string.equals(texture);
+            case FORBIDDEN -> string == null;
+        };
     }
 
     /**
      * Reconstitute this head data into the specified skullMeta object.
+     *
      * @param skullMeta The SkullMeta object to populate.
-     * @param profile An optional Profile.
+     * @param profile   An optional Profile.
      */
     public abstract void populate(SkullMeta skullMeta, Profile profile);
 
     /**
      * Check to see if the specified SkullMeta matches this HeadHandler metadata.
+     *
      * @param skullMeta The SkullMeta to check.
      * @return True if this metadata is required and matches, false otherwise.
      */
