@@ -16,18 +16,26 @@ import java.util.UUID;
  */
 public class PaperHeadHandler extends HeadHandler {
     /**
+     * Construct a new HeadHandler.
+     */
+    public PaperHeadHandler() {
+        super();
+    }
+
+    /**
      * Parse the metadata of a SkullMeta instance that needs to be persisted so that it can be correctly reconstituted.
+     *
      * @param skullMeta The SkullMeta to parse.
      * @return A Map of the properties parsed from the SkullMeta.
      */
     public static Map<String, String> parseSkullMeta(final SkullMeta skullMeta) {
         final Map<String, String> parsedValues = new HashMap<>();
         if (skullMeta.hasOwner()) {
-            parsedValues.put(META_OWNER, skullMeta.getOwner());
+            parsedValues.put(META_OWNER, skullMeta.getOwningPlayer().getName());
         }
         final PlayerProfile playerProfile = skullMeta.getPlayerProfile();
         if (playerProfile != null) {
-            final UUID playerId = playerProfile.getUniqueId();
+            final UUID playerId = playerProfile.getId();
             if (playerId != null) {
                 parsedValues.put(META_PLAYER_ID, playerId.toString());
             }
@@ -39,21 +47,22 @@ public class PaperHeadHandler extends HeadHandler {
         return parsedValues;
     }
 
-    /**
-     * Construct a new HeadHandler.
-     */
-    public PaperHeadHandler() {
-        super();
+    private static String encodeSkin(final PlayerProfile playerProfile) {
+        return playerProfile.getProperties().stream()
+                .filter(it -> "textures".equals(it.getName()))
+                .map(ProfileProperty::getValue)
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
     public void populate(final SkullMeta skullMeta, final Profile profile) {
-        final String owner = getOwner(profile);
+        final Profile owner = getOwner(profile);
         final UUID playerId = getPlayerId();
         final String texture = getTexture();
 
         if (owner != null) {
-            skullMeta.setOwner(owner);
+            skullMeta.setOwningPlayer(owner.getPlayer());
         }
         if (playerId != null && texture != null) {
             final PlayerProfile playerProfile = Bukkit.getServer().createProfile(playerId);
@@ -74,13 +83,5 @@ public class PaperHeadHandler extends HeadHandler {
         } else {
             return checkOwner(ownerName);
         }
-    }
-
-    private static String encodeSkin(final PlayerProfile playerProfile) {
-        return playerProfile.getProperties().stream()
-                .filter(it -> "textures".equals(it.getName()))
-                .map(ProfileProperty::getValue)
-                .findFirst()
-                .orElse(null);
     }
 }
