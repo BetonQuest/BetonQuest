@@ -56,13 +56,13 @@ public class SpigotHeadHandler extends HeadHandler {
         return parsedValues;
     }
 
-    private static String encodeSkin(final URL skinUrl) {
+    private String encodeSkin(final URL skinUrl) {
         return Base64.getEncoder()
                 .encodeToString((TEXTURE_PREFIX + skinUrl.toString() + TEXTURE_SUFFIX)
                         .getBytes(Charset.defaultCharset()));
     }
 
-    private URL decodeSkin(final String texture) throws MalformedURLException {
+    private URL decodeSkin(final String texture) throws MalformedURLException, IllegalArgumentException {
         final String json = new String(Base64.getDecoder().decode(texture), Charset.defaultCharset());
         return new URL(json.substring(TEXTURE_PREFIX.length(), json.length() - TEXTURE_SUFFIX.length()));
     }
@@ -83,8 +83,8 @@ public class SpigotHeadHandler extends HeadHandler {
                 final PlayerProfile playerProfile = Bukkit.getServer().createPlayerProfile(playerId);
                 playerProfile.getTextures().setSkin(url);
                 skullMeta.setOwnerProfile(playerProfile);
-            } catch (final MalformedURLException e) {
-                LOG.error("Error determining texture URL", e);
+            } catch (final MalformedURLException | IllegalArgumentException e) {
+                LOG.warn("The quest item that was just given to '" + profile.getPlayer().getName() + "' has an invalid head texture.", e);
             }
         }
     }
