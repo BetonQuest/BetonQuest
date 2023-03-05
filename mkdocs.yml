@@ -4,10 +4,9 @@ site_url: https://docs.betonquest.org/
 site_dir: target/docs
 docs_dir: documentation
 repo_name: BetonQuest on GitHub
-edit_uri: /BetonQuest/BetonQuest/edit/main_v1.12/documentation/
 repo_url: https://github.com/BetonQuest/BetonQuest
+edit_uri: /BetonQuest/BetonQuest/edit/main_v1.12/documentation/
 copyright: '© 2023  BetonQuest Organisation. GPLv3'
-
 
 extra_css:
   - 'webCode/css/centered.css'
@@ -20,8 +19,8 @@ extra_javascript:
 # More info on this theme: https://squidfunk.github.io/mkdocs-material
 theme:
   name: material
-  language: en
   custom_dir: 'documentation/_custom_theme'
+  language: en
   features:
     - content.code.copy
     - content.action.edit
@@ -98,7 +97,7 @@ extra:
       - DEV
   analytics:
     provider: google
-    property: G-VEBGTNXWEL
+    property: !ENV [ ANALYTICS_PROPERTY ]
 
   social:
     - icon: fontawesome/brands/discord
@@ -164,5 +163,3 @@ nav:
       - 'Sponsorships':
           - '💲 Patreon': Contributing/Sponsors.md
   - 'Downloads': Downloads/index.md
-
-
