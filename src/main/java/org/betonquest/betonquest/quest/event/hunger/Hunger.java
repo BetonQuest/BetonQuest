@@ -40,7 +40,7 @@ public enum Hunger {
     }
 
     /**
-     * Functional interface to calculate the vector
+     * Functional interface to calculate the hunger
      */
     private interface Calculator {
         /**
