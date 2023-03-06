@@ -62,7 +62,15 @@ public class SpigotHeadHandler extends HeadHandler {
                         .getBytes(Charset.defaultCharset()));
     }
 
-    private URL decodeSkin(final String texture) throws MalformedURLException, IllegalArgumentException {
+    /**
+     * Decode the skin texture URL from the JSON structure minecraft uses for defining skin texture URL.
+     *
+     * @param texture The JSON structure minecraft uses for defining skin texture URL.
+     * @return The skin texture URL.
+     * @throws MalformedURLException    If the texture URL is malformed.
+     * @throws IllegalArgumentException If src is not in valid Base64 scheme
+     */
+    private URL decodeSkin(final String texture) throws MalformedURLException {
         final String json = new String(Base64.getDecoder().decode(texture), Charset.defaultCharset());
         return new URL(json.substring(TEXTURE_PREFIX.length(), json.length() - TEXTURE_SUFFIX.length()));
     }
