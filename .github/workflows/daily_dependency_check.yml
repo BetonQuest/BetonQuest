@@ -18,10 +18,6 @@ jobs:
           distribution: 'zulu'
           java-version: 17
           overwrite-settings: false
-      - name: Set up Maven
-        uses: stCarolas/setup-maven@v4.5
-        with:
-          maven-version: 3.8.7
       - name: Build with Maven
         run: |
           mvn -P Test-All -B package -DskipProjectSettings=true
