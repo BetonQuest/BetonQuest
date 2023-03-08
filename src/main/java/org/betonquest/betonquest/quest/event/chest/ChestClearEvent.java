@@ -1,9 +1,7 @@
-package org.betonquest.betonquest.events;
+package org.betonquest.betonquest.quest.event.chest;
 
-import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
-import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.block.Block;
@@ -12,21 +10,25 @@ import org.bukkit.inventory.InventoryHolder;
 /**
  * Clears a specified chest from all items inside.
  */
-@SuppressWarnings({"PMD.CommentRequired", "PMD.CommentRequired"})
-public class ChestClearEvent extends QuestEvent {
+public class ChestClearEvent implements Event {
 
-    private final CompoundLocation loc;
+    /**
+     * The location of the chest.
+     */
+    private final CompoundLocation compoundLocation;
 
-    public ChestClearEvent(final Instruction instruction) throws InstructionParseException {
-        super(instruction, true);
-        staticness = true;
-        persistent = true;
-        loc = instruction.getLocation();
+    /**
+     * Creates a new chest clear event.
+     *
+     * @param compoundLocation the location of the chest
+     */
+    public ChestClearEvent(final CompoundLocation compoundLocation) {
+        this.compoundLocation = compoundLocation;
     }
 
     @Override
-    protected Void execute(final Profile profile) throws QuestRuntimeException {
-        final Block block = loc.getLocation(profile).getBlock();
+    public void execute(final Profile profile) throws QuestRuntimeException {
+        final Block block = compoundLocation.getLocation(profile).getBlock();
         final InventoryHolder chest;
         try {
             chest = (InventoryHolder) block.getState();
@@ -35,7 +37,5 @@ public class ChestClearEvent extends QuestEvent {
                     + block.getX() + " Y" + block.getY() + " Z" + block.getZ(), e);
         }
         chest.getInventory().clear();
-        return null;
     }
-
 }
