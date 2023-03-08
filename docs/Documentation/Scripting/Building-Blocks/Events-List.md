@@ -160,7 +160,7 @@ Adds a specified potion effect to player. First argument is potion type. You can
 
 ## Explosion: `explosion`
 
-**static**
+**persistent**, **static**
 
 Creates an explosion. It can make fire and destroy blocks. You can also define power, so be careful not to blow your server away. Default TNT power is 4, while Wither on creation is 7. First argument can be 0 or 1 and states if explosion will generate fire (like Ghast's fireball). Second is also 0 or 1 but this defines if block will be destroyed or not. Third argument is the power (float number). At the end (4th attribute) there is location.
 

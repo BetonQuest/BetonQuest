@@ -112,7 +112,6 @@ import org.betonquest.betonquest.events.ConversationEvent;
 import org.betonquest.betonquest.events.DelEffectEvent;
 import org.betonquest.betonquest.events.DeletePointEvent;
 import org.betonquest.betonquest.events.ExperienceEvent;
-import org.betonquest.betonquest.events.ExplosionEvent;
 import org.betonquest.betonquest.events.FolderEvent;
 import org.betonquest.betonquest.events.GiveEvent;
 import org.betonquest.betonquest.events.GiveJournalEvent;
@@ -212,6 +211,7 @@ import org.betonquest.betonquest.quest.event.cancelconversation.CancelConversati
 import org.betonquest.betonquest.quest.event.damage.DamageEventFactory;
 import org.betonquest.betonquest.quest.event.door.DoorEventFactory;
 import org.betonquest.betonquest.quest.event.effect.EffectEventFactory;
+import org.betonquest.betonquest.quest.event.explosion.ExplosionEventFactory;
 import org.betonquest.betonquest.quest.event.hunger.HungerEventFactory;
 import org.betonquest.betonquest.quest.event.journal.JournalEventFactory;
 import org.betonquest.betonquest.quest.event.language.LanguageEventFactory;
@@ -794,7 +794,7 @@ public class BetonQuest extends JavaPlugin {
         registerEvent("globaltag", new TagGlobalEventFactory(this));
         registerEvent("journal", new JournalEventFactory(this, InstantSource.system(), getSaver()));
         registerNonStaticEvent("teleport", new TeleportEventFactory(getServer(), getServer().getScheduler(), this));
-        registerEvents("explosion", ExplosionEvent.class);
+        registerEvent("explosion", new ExplosionEventFactory(getServer(), getServer().getScheduler(), this));
         registerEvents("lightning", LightningEvent.class);
         registerEvents("point", PointEvent.class);
         registerEvents("globalpoint", GlobalPointEvent.class);
