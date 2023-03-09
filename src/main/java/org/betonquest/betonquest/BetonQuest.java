@@ -953,7 +953,7 @@ public class BetonQuest extends JavaPlugin {
         final File updateFolder = getServer().getUpdateFolderFile();
         final File tempFile = new File(updateFolder, this.getFile().getName() + ".temp");
         final File finalFile = new File(updateFolder, this.getFile().getName());
-        final UpdateDownloader updateDownloader = new UpdateDownloader(updateFolder.getParentFile().toURI(), tempFile, finalFile);
+        final UpdateDownloader updateDownloader = new UpdateDownloader(new File(".").toURI(), tempFile, finalFile);
         final GitHubReleaseSource gitHubReleaseSource = new GitHubReleaseSource("https://api.github.com/repos/BetonQuest/BetonQuest");
         final NexusReleaseAndDevelopmentSource nexusReleaseAndDevelopmentSource = new NexusReleaseAndDevelopmentSource("https://betonquest.org/nexus");
         final List<ReleaseUpdateSource> releaseHandlers = List.of(gitHubReleaseSource, nexusReleaseAndDevelopmentSource);
