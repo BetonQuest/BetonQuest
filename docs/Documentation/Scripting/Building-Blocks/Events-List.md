@@ -143,10 +143,13 @@ This event can open and close doors, trapdoors and fence gates. The syntax is ex
 ## Remove Potion Effect: `deleffect`
 
 Removes the specified potion effects from the player. Use `any` instead of a list of types to remove all potion effects from the player.
+Alternatively to `any`, you just can leave it blank.
 
 !!! example
     ```YAML
     deleffect ABSORPTION,BLINDNESS
+    deleffect any
+    deleffect
     ```
 
 ## Potion Effect: `effect`
