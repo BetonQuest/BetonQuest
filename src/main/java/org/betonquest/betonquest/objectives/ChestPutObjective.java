@@ -5,16 +5,16 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.Objective;
-import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.conditions.ChestItemCondition;
 import org.betonquest.betonquest.config.Config;
-import org.betonquest.betonquest.events.ChestTakeEvent;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.NoID;
+import org.betonquest.betonquest.quest.event.chest.ChestTakeEvent;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.location.CompoundLocation;
 import org.bukkit.Bukkit;
@@ -42,7 +42,7 @@ import java.util.List;
 public class ChestPutObjective extends Objective implements Listener {
 
     private final Condition chestItemCondition;
-    private final QuestEvent chestTakeEvent;
+    private final Event chestTakeEvent;
     private final CompoundLocation loc;
     /**
      * Argument to manage the chest access for one or multiple players. False by default which means only one player
@@ -66,11 +66,10 @@ public class ChestPutObjective extends Objective implements Listener {
         if (instruction.hasArgument("items-stay")) {
             chestTakeEvent = null;
         } else {
-            try {
-                chestTakeEvent = new ChestTakeEvent(new Instruction(instruction.getPackage(), new NoID(instruction.getPackage()), "chesttake " + location + " " + items));
-            } catch (final ObjectNotFoundException e) {
-                throw new InstructionParseException("Could not create inner chest take event: " + e.getMessage(), e);
-            }
+            final Instruction newInstruction = instruction.copy();
+            final CompoundLocation compoundLocation = newInstruction.getLocation();
+            final Instruction.Item[] instructionItemList = newInstruction.getItemList();
+            chestTakeEvent = new ChestTakeEvent(compoundLocation, instructionItemList);
         }
 
     }
@@ -145,7 +144,7 @@ public class ChestPutObjective extends Objective implements Listener {
         if (chestItemCondition.handle(onlineProfile) && checkConditions(onlineProfile)) {
             completeObjective(onlineProfile);
             if (chestTakeEvent != null) {
-                chestTakeEvent.handle(onlineProfile);
+                chestTakeEvent.execute(onlineProfile);
             }
         }
     }
