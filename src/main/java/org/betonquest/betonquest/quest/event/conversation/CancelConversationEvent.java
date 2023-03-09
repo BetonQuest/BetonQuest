@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest.event.cancelconversation;
+package org.betonquest.betonquest.quest.event.conversation;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
