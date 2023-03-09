@@ -129,8 +129,8 @@ public class EnchantmentsHandler {
             } catch (final NumberFormatException e) {
                 throw new InstructionParseException("Could not parse enchantment level: " + parts[1], e);
             }
-            if (level <= 0) {
-                throw new InstructionParseException("Enchantment level must be a positive integer");
+            if (level < 0) {
+                throw new InstructionParseException("Enchantment level must be a positive integer or zero");
             }
         }
 
