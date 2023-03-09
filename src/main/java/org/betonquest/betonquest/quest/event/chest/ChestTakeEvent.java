@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.event.chest;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
@@ -32,7 +31,6 @@ public class ChestTakeEvent extends AbstractChestEvent implements Event {
     }
 
     @Override
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public void execute(final Profile profile) throws QuestRuntimeException {
         try {
             final Inventory inventory = getChest(profile).getInventory();
