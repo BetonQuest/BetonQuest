@@ -20,7 +20,7 @@ These are arguments that can be applied to every item:
 
 - `enchants` - a list of enchantments and their levels. Each enchantment consists of these things, separated by colons:
     - [name](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html)
-    - level (a positive number)
+    - level (only positive numbers, including zero)
     
     For example `damage_all:3` is _Sharpness III_. You can specify additional enchantments by separating them with commas.
     
