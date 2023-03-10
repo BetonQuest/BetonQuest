@@ -611,14 +611,28 @@ events:
     
 ## Give experience: `experience`
 
-Gives the specified amount of experience points to the player. You can give levels by adding the `level` argument.
-You can also define decimal numbers when giving levels, for example `experience 1.5 level` will give 1 level and half.
+With this event you can manipulate the experience of the player. First specify the amount, then the modification type.
+You can use `add_experience`, `add_level`, `set_experience_bar` and`set_level` as modification typs.
+
+
+For a better understanding, the player has tree values for experience: The experience points in total. The levels, shown
+as the number at the experience bar and which increments after reaching a certain amount of experience points. And the 
+experience bar itself, which is a percentage of the experience points needed to reach the next level.
+
+
+`add_experience` adds only experience points, `add_level` adds the level and the percentage of the next level, for 
+example `experience 1.5 add_level` will give 1 level and half. Both can be used to take experience points by using negative 
+numbers. `set_experience_bar` sets the progress of the bar. `0` is empty and `1` is full, while adjusting the 
+experience points. `set_level` sets only the level, expect you specify a decimal number, then the experience bar will be
+set to the specified percentage.
 
 !!! example
     ```YAML
-    experience 15
-    experience 4 level
-    experience 4.5 level
+    experience 15 add_experience
+    experience 4.5 add_level
+    experience -2 add_level
+    experience 0.5 set_experience_bar
+    experience 0.01 set_level
     ```
 ## Burn: `burn`
 
