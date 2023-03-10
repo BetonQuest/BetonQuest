@@ -615,7 +615,7 @@ With this event you can manipulate the experience of the player. First specify t
 You can use `add_experience`, `add_level`, `set_experience_bar` and`set_level` as modification typs.
 
 
-For a better understanding, the player has tree values for experience: The experience points in total. The levels, shown
+For a better understanding, the player has three values for experience: The experience points in total. The levels, shown
 as the number at the experience bar and which increments after reaching a certain amount of experience points. And the 
 experience bar itself, which is a percentage of the experience points needed to reach the next level.
 
