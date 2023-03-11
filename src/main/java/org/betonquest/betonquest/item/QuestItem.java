@@ -149,6 +149,7 @@ public class QuestItem {
                 case "firework" -> firework.setEffects(data);
                 case "power" -> firework.setPower(data);
                 case "firework-containing" -> firework.setNotExact();
+                case "" -> {}
                 default -> throw new InstructionParseException("Unknown argument: " + argumentName);
             }
         }
