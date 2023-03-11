@@ -37,7 +37,9 @@ public class ChestTakeEvent extends AbstractChestEvent implements Event {
             for (final Item item : items) {
                 final QuestItem questItem = item.getItem();
                 final int amount = item.getAmount().getInt(profile);
-                inventory.setContents(removeItems(inventory.getContents(), questItem, amount));
+                final ItemStack[] contents = inventory.getContents();
+                final ItemStack[] newItems = removeItems(contents, questItem, amount);
+                inventory.setContents(newItems);
             }
         } catch (final QuestRuntimeException e) {
             throw new QuestRuntimeException("Trying to take items from chest. " + e.getMessage(), e);

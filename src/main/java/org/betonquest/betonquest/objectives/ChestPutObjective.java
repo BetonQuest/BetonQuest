@@ -66,10 +66,7 @@ public class ChestPutObjective extends Objective implements Listener {
         if (instruction.hasArgument("items-stay")) {
             chestTakeEvent = null;
         } else {
-            final Instruction newInstruction = instruction.copy();
-            final CompoundLocation compoundLocation = newInstruction.getLocation();
-            final Instruction.Item[] instructionItemList = newInstruction.getItemList();
-            chestTakeEvent = new ChestTakeEvent(compoundLocation, instructionItemList);
+            chestTakeEvent = new ChestTakeEvent(loc, instruction.getItemList(items));
         }
 
     }
