@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.mechanics;
+package org.betonquest.betonquest.modules.playerhider;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
