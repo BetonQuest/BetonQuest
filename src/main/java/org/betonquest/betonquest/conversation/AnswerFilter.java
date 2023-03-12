@@ -1,4 +1,4 @@
-package org.betonquest.betonquest;
+package org.betonquest.betonquest.conversation;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Marker;
