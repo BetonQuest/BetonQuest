@@ -14,13 +14,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A list of {@link ReleaseUpdateSource} and {@link DevelopmentUpdateSource}
- * can be passed to this class in the constructor.
- * One is for release builds, the other for development builds.
- * <p>
- * If an update is searched, it will then first search in the list of {@link ReleaseUpdateSource} instances
- * and then in the list of {@link DevelopmentUpdateSource} instances.
- * Development builds are only searched, if the {@link UpdaterConfig} is configured for it.
+ * This {@link UpdateSourceHandler} handles all {@link ReleaseUpdateSource} and {@link DevelopmentUpdateSource}
+ * instances and searches for updates in them.
+ * When calling {@link #searchUpdateFor(Pair, List, VersionComparator, UpdateSourceConsumer)},
+ * it will provide the latest version and the URL to download it from.
  */
 @CustomLog
 public class UpdateSourceHandler {
@@ -36,6 +33,8 @@ public class UpdateSourceHandler {
 
     /**
      * Creates a new {@link UpdateSourceHandler} with the given lists.
+     * One list for {@link ReleaseUpdateSource} and one for {@link DevelopmentUpdateSource}
+     * can be passed. One is for release builds, the other for development builds.
      *
      * @param releaseHandlerList     A list of {@link ReleaseUpdateSource} instances
      * @param developmentHandlerList A list of {@link DevelopmentUpdateSource} instances
@@ -49,6 +48,10 @@ public class UpdateSourceHandler {
      * Searches for updates in the provided {@link ReleaseUpdateSource} and {@link DevelopmentUpdateSource} lists
      * and returns the latest version with the URL to download it from.
      * If there is no update available, the URL in the pair is null.
+     * <p>
+     * If an update is searched, it will then first search in the list of {@link ReleaseUpdateSource} instances
+     * and then in the list of {@link DevelopmentUpdateSource} instances.
+     * Development builds are only searched, if the {@link UpdaterConfig} is configured for it.
      *
      * @param config       The {@link UpdaterConfig} containing all settings
      * @param current      The current {@link Version}
@@ -93,9 +96,12 @@ public class UpdateSourceHandler {
     }
 
     /**
-     * A consumer for any {@link DevelopmentUpdateSource} or {@link ReleaseUpdateSource}.
+     * Interface for a function that consumes an update source of type {@link T}
+     * and returns a map of versions and download urls.
+     * This is used to provide a generic way to consume both
+     * {@link ReleaseUpdateSource} and {@link DevelopmentUpdateSource}.
      *
-     * @param <T> something that is a {@link DevelopmentUpdateSource} or {@link ReleaseUpdateSource}
+     * @param <T> The type of the update source.
      */
     private interface UpdateSourceConsumer<T> {
 
