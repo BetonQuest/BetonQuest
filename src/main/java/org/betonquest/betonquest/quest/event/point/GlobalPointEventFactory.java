@@ -29,13 +29,15 @@ public class GlobalPointEventFactory implements EventFactory, StaticEventFactory
         final String category = Utils.addPackage(instruction.getPackage(), instruction.next());
         final String number = instruction.next();
         if (instruction.size() > 3) {
+            final String action = instruction.getOptional("action");
+            if (action == null) {
+                throw new InstructionParseException("Missing modification action: " + instruction.current());
+            }
             try {
-                final Point type = Point.valueOf(instruction.getOptional("action").toUpperCase(Locale.ROOT));
+                final Point type = Point.valueOf(action.toUpperCase(Locale.ROOT));
                 return new GlobalPointEvent(category, new VariableNumber(instruction.getPackage(), number), type);
             } catch (final IllegalArgumentException e) {
                 throw new InstructionParseException("Unknown modification action: " + instruction.current(), e);
-            } catch (final NullPointerException e) {
-                throw new InstructionParseException("Missing modification action", e);
             }
         }
         if (!number.isEmpty() && number.charAt(0) == '*') {
