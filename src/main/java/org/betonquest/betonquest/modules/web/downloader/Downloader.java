@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.downloader;
+package org.betonquest.betonquest.modules.web.downloader;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
@@ -40,38 +40,32 @@ import static java.nio.file.FileVisitResult.CONTINUE;
 public class Downloader implements Callable<Boolean> {
 
     /**
+     * Values that are allowed as {@link #offsetPath}.
+     * Currently, only {@code QuestPackages} and {@code QuestTemplates}
+     */
+    public static final List<String> ALLOWED_OFFSET_PATHS = List.of("QuestPackages", "QuestTemplates");
+    /**
+     * The http status code 400 - Bad Request
+     */
+    public static final int RESPONSE_400 = 400;
+    /**
      * Directory where downloaded repositories should be cached
      */
     private static final String CACHE_DIR = ".cache/downloader/";
-
     /**
      * Base URL of the GitHub refs RestAPI.
      * Namespace and ref must be replaced with actual values.
      */
     private static final String GITHUB_REFS_URL = "https://api.github.com/repos/{namespace}/git/{ref}";
-
     /**
      * Base url where the files can be downloaded.
      * Namespace and commit sha must be replaced with actual values
      */
     private static final String GITHUB_DOWNLOAD_URL = "https://github.com/{namespace}/archive/{sha}.zip";
-
     /**
      * Used to identify zip entries that are package.yml files
      */
     private static final String PACKAGE_YML = "package.yml";
-
-    /**
-     * Values that are allowed as {@link #offsetPath}.
-     * Currently, only {@code QuestPackages} and {@code QuestTemplates}
-     */
-    public static final List<String> ALLOWED_OFFSET_PATHS = List.of("QuestPackages", "QuestTemplates");
-
-    /**
-     * The http status code 400 - Bad Request
-     */
-    public static final int RESPONSE_400 = 400;
-
     /**
      * The BetonQuest Data folder that contains all plugin configuration
      */
@@ -346,7 +340,7 @@ public class Downloader implements Callable<Boolean> {
             try (OutputStream out = Files.newOutputStream(newFile, options)) {
                 input.transferTo(out);
                 LOG.debug("Extracted " + newFile);
-            } catch (FileAlreadyExistsException e) {
+            } catch (final FileAlreadyExistsException e) {
                 throw new DownloadFailedException("File already exists: " + e.getMessage(), e);
             }
 

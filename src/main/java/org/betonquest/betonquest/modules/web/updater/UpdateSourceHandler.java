@@ -1,12 +1,11 @@
-package org.betonquest.betonquest.modules.updater;
+package org.betonquest.betonquest.modules.web.updater;
 
 import lombok.CustomLog;
 import org.apache.commons.lang3.tuple.Pair;
-import org.betonquest.betonquest.modules.updater.source.DevelopmentUpdateSource;
-import org.betonquest.betonquest.modules.updater.source.ReleaseUpdateSource;
-import org.betonquest.betonquest.modules.updater.source.UpdateSource;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.modules.versioning.VersionComparator;
+import org.betonquest.betonquest.modules.web.updater.source.DevelopmentUpdateSource;
+import org.betonquest.betonquest.modules.web.updater.source.ReleaseUpdateSource;
 import org.jetbrains.annotations.VisibleForTesting;
 
 import java.io.IOException;
@@ -15,12 +14,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Two lists of {@link UpdateSource}s can be passed to this class in the constructor.
- * One is for release builds, the other for development builds.
- * <p>
- * If an update is searched, it will then first search in the list of {@link ReleaseUpdateSource} instances
- * and then in the list of {@link DevelopmentUpdateSource} instances.
- * Development builds are only searched, if the {@link UpdaterConfig} is configured for it.
+ * This {@link UpdateSourceHandler} handles all {@link ReleaseUpdateSource} and {@link DevelopmentUpdateSource}
+ * instances and searches for updates in them.
+ * When calling {@link #searchUpdateFor(Pair, List, VersionComparator, UpdateSourceConsumer)},
+ * it will provide the latest version and the URL to download it from.
  */
 @CustomLog
 public class UpdateSourceHandler {
@@ -35,7 +32,9 @@ public class UpdateSourceHandler {
     private final List<DevelopmentUpdateSource> developmentHandlerList;
 
     /**
-     * Creates a new {@link UpdateSourceHandler} with the given {@link UpdateSource} lists.
+     * Creates a new {@link UpdateSourceHandler} with the given lists.
+     * One list for {@link ReleaseUpdateSource} and one for {@link DevelopmentUpdateSource}
+     * can be passed. One is for release builds, the other for development builds.
      *
      * @param releaseHandlerList     A list of {@link ReleaseUpdateSource} instances
      * @param developmentHandlerList A list of {@link DevelopmentUpdateSource} instances
@@ -49,6 +48,10 @@ public class UpdateSourceHandler {
      * Searches for updates in the provided {@link ReleaseUpdateSource} and {@link DevelopmentUpdateSource} lists
      * and returns the latest version with the URL to download it from.
      * If there is no update available, the URL in the pair is null.
+     * <p>
+     * If an update is searched, it will then first search in the list of {@link ReleaseUpdateSource} instances
+     * and then in the list of {@link DevelopmentUpdateSource} instances.
+     * Development builds are only searched, if the {@link UpdaterConfig} is configured for it.
      *
      * @param config       The {@link UpdaterConfig} containing all settings
      * @param current      The current {@link Version}
@@ -93,9 +96,12 @@ public class UpdateSourceHandler {
     }
 
     /**
-     * A consumer for {@link UpdateSource}s.
+     * Interface for a function that consumes an update source of type {@link T}
+     * and returns a map of versions and download urls.
+     * This is used to provide a generic way to consume both
+     * {@link ReleaseUpdateSource} and {@link DevelopmentUpdateSource}.
      *
-     * @param <T> something implementing {@link UpdateSource}
+     * @param <T> The type of the update source.
      */
     private interface UpdateSourceConsumer<T> {
 

@@ -1,12 +1,12 @@
-package org.betonquest.betonquest.modules.updater;
+package org.betonquest.betonquest.modules.web.updater;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
-import org.betonquest.betonquest.modules.updater.source.DevelopmentUpdateSource;
-import org.betonquest.betonquest.modules.updater.source.ReleaseUpdateSource;
 import org.betonquest.betonquest.modules.versioning.UpdateStrategy;
 import org.betonquest.betonquest.modules.versioning.Version;
+import org.betonquest.betonquest.modules.web.updater.source.DevelopmentUpdateSource;
+import org.betonquest.betonquest.modules.web.updater.source.ReleaseUpdateSource;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

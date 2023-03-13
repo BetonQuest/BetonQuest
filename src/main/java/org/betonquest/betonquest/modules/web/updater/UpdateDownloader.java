@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.modules.updater;
+package org.betonquest.betonquest.modules.web.updater;
 
 import org.apache.commons.io.FileUtils;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;

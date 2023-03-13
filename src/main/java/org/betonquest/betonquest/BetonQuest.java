@@ -149,15 +149,16 @@ import org.betonquest.betonquest.modules.schedule.impl.realtime.cron.RealtimeCro
 import org.betonquest.betonquest.modules.schedule.impl.realtime.cron.RealtimeCronScheduler;
 import org.betonquest.betonquest.modules.schedule.impl.realtime.daily.RealtimeDailySchedule;
 import org.betonquest.betonquest.modules.schedule.impl.realtime.daily.RealtimeDailyScheduler;
-import org.betonquest.betonquest.modules.updater.UpdateDownloader;
-import org.betonquest.betonquest.modules.updater.UpdateSourceHandler;
-import org.betonquest.betonquest.modules.updater.Updater;
-import org.betonquest.betonquest.modules.updater.source.DevelopmentUpdateSource;
-import org.betonquest.betonquest.modules.updater.source.ReleaseUpdateSource;
-import org.betonquest.betonquest.modules.updater.source.implementations.GitHubReleaseSource;
-import org.betonquest.betonquest.modules.updater.source.implementations.NexusReleaseAndDevelopmentSource;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.modules.versioning.java.JREVersionPrinter;
+import org.betonquest.betonquest.modules.web.WebContentSource;
+import org.betonquest.betonquest.modules.web.updater.UpdateDownloader;
+import org.betonquest.betonquest.modules.web.updater.UpdateSourceHandler;
+import org.betonquest.betonquest.modules.web.updater.Updater;
+import org.betonquest.betonquest.modules.web.updater.source.DevelopmentUpdateSource;
+import org.betonquest.betonquest.modules.web.updater.source.ReleaseUpdateSource;
+import org.betonquest.betonquest.modules.web.updater.source.implementations.GitHubReleaseSource;
+import org.betonquest.betonquest.modules.web.updater.source.implementations.NexusReleaseAndDevelopmentSource;
 import org.betonquest.betonquest.notify.ActionBarNotifyIO;
 import org.betonquest.betonquest.notify.AdvancementNotifyIO;
 import org.betonquest.betonquest.notify.BossBarNotifyIO;
@@ -950,24 +951,30 @@ public class BetonQuest extends JavaPlugin {
         metricsSuppliers.put("variables", new CompositeInstructionMetricsSupplier<>(VARIABLES::keySet, VARIABLE_TYPES::keySet));
         new BStatsMetrics(this, new Metrics(this, BSTATS_METRICS_ID), metricsSuppliers);
 
-        final Version pluginVersion = new Version(this.getDescription().getVersion());
-        final File updateFolder = getServer().getUpdateFolderFile();
-        final File tempFile = new File(updateFolder, this.getFile().getName() + ".temp");
-        final File finalFile = new File(updateFolder, this.getFile().getName());
-        final UpdateDownloader updateDownloader = new UpdateDownloader(new File(".").toURI(), tempFile, finalFile);
-        final GitHubReleaseSource gitHubReleaseSource = new GitHubReleaseSource("https://api.github.com/repos/BetonQuest/BetonQuest");
-        final NexusReleaseAndDevelopmentSource nexusReleaseAndDevelopmentSource = new NexusReleaseAndDevelopmentSource("https://betonquest.org/nexus");
-        final List<ReleaseUpdateSource> releaseHandlers = List.of(gitHubReleaseSource, nexusReleaseAndDevelopmentSource);
-        final List<DevelopmentUpdateSource> developmentHandlers = List.of(nexusReleaseAndDevelopmentSource);
-        final UpdateSourceHandler updateSourceHandler = new UpdateSourceHandler(releaseHandlers, developmentHandlers);
-        updater = new Updater(config, pluginVersion, updateSourceHandler, updateDownloader, this,
-                getServer().getScheduler(), InstantSource.system());
+        setupUpdater();
 
         rpgMenu = new RPGMenu();
         rpgMenu.onEnable();
 
         PaperLib.suggestPaper(this);
         log.info("BetonQuest successfully enabled!");
+    }
+
+    private void setupUpdater() {
+        final Version pluginVersion = new Version(this.getDescription().getVersion());
+        final File updateFolder = getServer().getUpdateFolderFile();
+        final File tempFile = new File(updateFolder, this.getFile().getName() + ".temp");
+        final File finalFile = new File(updateFolder, this.getFile().getName());
+        final UpdateDownloader updateDownloader = new UpdateDownloader(new File(".").toURI(), tempFile, finalFile);
+        final GitHubReleaseSource gitHubReleaseSource = new GitHubReleaseSource("https://api.github.com/repos/BetonQuest/BetonQuest",
+                new WebContentSource(GitHubReleaseSource.HTTP_CODE_HANDLER));
+        final NexusReleaseAndDevelopmentSource nexusReleaseAndDevelopmentSource = new NexusReleaseAndDevelopmentSource("https://betonquest.org/nexus",
+                new WebContentSource());
+        final List<ReleaseUpdateSource> releaseHandlers = List.of(gitHubReleaseSource, nexusReleaseAndDevelopmentSource);
+        final List<DevelopmentUpdateSource> developmentHandlers = List.of(nexusReleaseAndDevelopmentSource);
+        final UpdateSourceHandler updateSourceHandler = new UpdateSourceHandler(releaseHandlers, developmentHandlers);
+        updater = new Updater(config, pluginVersion, updateSourceHandler, updateDownloader, this,
+                getServer().getScheduler(), InstantSource.system());
     }
 
     @SuppressWarnings("PMD.DoNotUseThreads")
