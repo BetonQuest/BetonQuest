@@ -48,14 +48,18 @@ public class ExperienceEventFactory implements EventFactory {
     @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.PrematureDeclaration"})
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         final VariableNumber amount = instruction.getVarNum();
-        Experience experienceType = Experience.ADD_EXPERIENCE;
+        Experience experienceType = Experience.ADDEXPERIENCE;
         if (instruction.hasArgument("level")) {
-            experienceType = Experience.ADD_LEVEL;
+            experienceType = Experience.ADDLEVEL;
         } else if (instruction.size() > 2) {
+            final String action = instruction.getOptional("action");
+            if (action == null) {
+                throw new InstructionParseException("Missing modification action");
+            }
             try {
-                experienceType = Experience.valueOf(instruction.next().toUpperCase(Locale.ROOT));
+                experienceType = Experience.valueOf(action.toUpperCase(Locale.ROOT));
             } catch (final IllegalArgumentException e) {
-                throw new InstructionParseException("Could not parse: '" + instruction.current() +
+                throw new InstructionParseException("Could not parse: '" + action +
                         "' to an experience modification typ", e);
             }
         }

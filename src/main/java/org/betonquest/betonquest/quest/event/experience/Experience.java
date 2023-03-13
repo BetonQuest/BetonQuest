@@ -9,11 +9,11 @@ public enum Experience {
     /**
      * Adds the given amount to the player-experience, just experience points
      */
-    ADD_EXPERIENCE((player, amount) -> player.giveExp((int) amount)),
+    ADDEXPERIENCE((player, amount) -> player.giveExp((int) amount)),
     /**
      * Adds the given amount to the player-experience, levels and or percentage to the next level
      */
-    ADD_LEVEL((player, amount) -> {
+    ADDLEVEL((player, amount) -> {
         if (amount % 1 == 0) {
             player.giveExpLevels((int) amount);
         } else {
@@ -26,14 +26,14 @@ public enum Experience {
     /**
      * Sets the player-experience to the next level to the given amount
      */
-    SET_EXPERIENCE_BAR(Player::setExp),
+    SETEXPERIENCEBAR(Player::setExp),
     /**
      * Sets the player-experience-level to the given amount
      */
-    SET_LEVEL((player, amount) -> {
+    SETLEVEL((player, amount) -> {
         player.setLevel((int) amount);
         if (amount % 1 != 0) {
-            player.setExp((float) (amount - (int) amount));
+            player.setExp(amount - (int) amount);
         }
     });
 
