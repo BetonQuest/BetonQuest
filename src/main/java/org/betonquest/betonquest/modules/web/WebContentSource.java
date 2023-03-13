@@ -11,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * This class implements the {@link ContentSource} interface and provides a default implementation for web content.
  */
-public class WebContentSource implements ContentSource {
+public final class WebContentSource implements ContentSource {
 
     /**
      * The {@link HTTPCodeHandler} to use.
@@ -43,7 +43,7 @@ public class WebContentSource implements ContentSource {
      * @throws IOException is thrown if any problem occurred while reading the String from the {@link URL}
      */
     @Override
-    public final String get(final URL url) throws IOException {
+    public String get(final URL url) throws IOException {
         final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.connect();
         try {
@@ -63,8 +63,7 @@ public class WebContentSource implements ContentSource {
     public interface HTTPCodeHandler {
 
         /**
-         * This method is called from the default implementation of the {@link WebContentSource#get(URL)} method.
-         * By default, it will ignore all response codes.
+         * Handle response codes of all incoming http requests.
          *
          * @param responseCode the response code that occurred
          * @throws IOException This can be thrown, if the response code prevents a successful download.

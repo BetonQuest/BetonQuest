@@ -12,6 +12,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
+
 /**
  * This is a {@link ReleaseUpdateSource} for GitHub's releases API.
  */
@@ -22,16 +24,10 @@ public class GitHubReleaseSource implements ReleaseUpdateSource {
     public static final String RELEASES_URL = "/releases";
 
     /**
-     * Response code 403 forbidden is returned by GitHub if too many requests are made.
-     */
-    /* default */ static final int RESPONSE_CODE_403 = 403;
-
-
-    /**
      * The default {@link WebContentSource.HTTPCodeHandler} to use for GitHub releases api.
      */
     public static final WebContentSource.HTTPCodeHandler HTTP_CODE_HANDLER = (code) -> {
-        if (code == RESPONSE_CODE_403) {
+        if (code == HTTP_FORBIDDEN) {
             throw new IOException("It looks like too many requests were made to the update server, please wait until you have been unblocked.");
         }
     };

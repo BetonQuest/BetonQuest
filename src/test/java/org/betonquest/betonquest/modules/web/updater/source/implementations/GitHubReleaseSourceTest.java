@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 
+import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -44,7 +45,7 @@ class GitHubReleaseSourceTest {
     void testReadStringFromURLThrowsException() {
         final WebContentSource.HTTPCodeHandler handler = GitHubReleaseSource.HTTP_CODE_HANDLER;
 
-        final IOException exception = assertThrowsExactly(IOException.class, () -> handler.handle(GitHubReleaseSource.RESPONSE_CODE_403), "Expected IOException");
+        final IOException exception = assertThrowsExactly(IOException.class, () -> handler.handle(HTTP_FORBIDDEN), "Expected IOException");
         assertEquals("It looks like too many requests were made to the update server, please wait until you have been unblocked.", exception.getMessage(), "Exception messages are not equal");
 
     }
