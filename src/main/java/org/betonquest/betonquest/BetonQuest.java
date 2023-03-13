@@ -107,8 +107,6 @@ import org.betonquest.betonquest.events.ChestGiveEvent;
 import org.betonquest.betonquest.events.ClearEvent;
 import org.betonquest.betonquest.events.CommandEvent;
 import org.betonquest.betonquest.events.CompassEvent;
-import org.betonquest.betonquest.events.ConversationEvent;
-import org.betonquest.betonquest.events.ExperienceEvent;
 import org.betonquest.betonquest.events.FolderEvent;
 import org.betonquest.betonquest.events.GiveEvent;
 import org.betonquest.betonquest.events.GiveJournalEvent;
