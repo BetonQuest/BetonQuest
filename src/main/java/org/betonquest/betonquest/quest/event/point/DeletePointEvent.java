@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest.event.points;
+package org.betonquest.betonquest.quest.event.point;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -11,7 +11,7 @@ import org.betonquest.betonquest.utils.PlayerConverter;
 /**
  * Deletes all points of a category.
  */
-public class DeletePointsEvent implements Event {
+public class DeletePointEvent implements Event {
 
     /**
      * The category to delete.
@@ -23,7 +23,7 @@ public class DeletePointsEvent implements Event {
      *
      * @param category the category to delete
      */
-    public DeletePointsEvent(final String category) {
+    public DeletePointEvent(final String category) {
         this.category = category;
     }
 

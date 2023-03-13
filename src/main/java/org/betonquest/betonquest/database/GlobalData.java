@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Represents an object storing all player-related data, which can load and save it.
  */
-@SuppressWarnings("PMD.CommentRequired")
+@SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods"})
 @CustomLog
 public class GlobalData implements TagData {
 
@@ -144,6 +144,20 @@ public class GlobalData implements TagData {
             }
         }
         // if not then create new point category with given amount of global_points
+        globalPoints.add(new Point(category, count));
+        saver.add(new Record(UpdateType.ADD_GLOBAL_POINTS, category, String.valueOf(count)));
+    }
+
+    /**
+     * Sets the amount of global_points in specified category. If there is no such category it will
+     * be created.
+     *
+     * @param category global_points will be added to this category
+     * @param count    how much global_points will be set
+     */
+    public void setPoints(final String category, final int count) {
+        saver.add(new Record(UpdateType.REMOVE_GLOBAL_POINTS, category));
+        globalPoints.removeIf(point -> point.getCategory().equalsIgnoreCase(category));
         globalPoints.add(new Point(category, count));
         saver.add(new Record(UpdateType.ADD_GLOBAL_POINTS, category, String.valueOf(count)));
     }
