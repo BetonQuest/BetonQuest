@@ -149,6 +149,8 @@ public class QuestItem {
                 case "firework" -> firework.setEffects(data);
                 case "power" -> firework.setPower(data);
                 case "firework-containing" -> firework.setNotExact();
+                //catch empty string caused by multiple whitespaces in instruction split
+                case "" -> {}
                 default -> throw new InstructionParseException("Unknown argument: " + argumentName);
             }
         }
