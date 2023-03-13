@@ -188,8 +188,8 @@ fr:
   backpack_title: 'Sac à dos'
   previous: '&2Précédent'
   next: '&2Suivant'
-  inventory_full_backpack: '&e*&bVotre inventaire est plein! L''objet était posé dans votre sac á dos.&e*'
-  inventory_full_drop: '&e*&bVotre inventaire est plein! L''objet était posé au plancher.&e*'
+  inventory_full_backpack: '&e*&bVotre inventaire est plein! L''objet a été placé dans votre sac á dos.&e*'
+  inventory_full_drop: '&e*&bVotre inventaire est plein! L''objet a été déposé au sol.&e*'
   changelog: '&f[BetonQuest]: &e*&bLa liste des modifications est dans le repertoire du plugin. Lisez bien ce fichier des changements puis supprimez le pour masquer ce message!&e*'
   pullback: '&cVous devez terminer la conversation!'
   items_given: '&2Vous recevez {1}&2 x{2}'
@@ -211,8 +211,8 @@ fr:
   items_to_pickup: '&2{1} objets restant à ramasser'
   items_to_smelt: '&2{1} objets restant à cuire'
   items_to_craft: '&2{1} objets restant à fabriquer'
-  items_to_enchant: '&2{1} items left to enchant' # TODO: missing translation
-  level_to_gain: '&2{1} levels left to gain' # TODO: missing translation
+  items_to_enchant: '&2{1} objets restant à enchanter'
+  level_to_gain: '&2{1} niveaux restant à gagner'
   busy: '&cVous ne pouvez pas parler pendant un combat.'
   quest_canceled: '&2Quête {1}&2 annulée!'
   cancel: '&cAnnuler cette quête'
@@ -234,7 +234,7 @@ fr:
   password: 'mot de passe : '
   condition_variable_met: 'oui'
   condition_variable_not_met: 'non'
-  chest_occupied: 'This chest is already in use' # TODO: missing translation
+  chest_occupied: 'Ce coffre est déjà en cours d''utilisation'
 cn:
   conversation_prefix: '&2[&9{1}&2] '
   conversation_start: '&e====&b与{1}&b对话中&e===='

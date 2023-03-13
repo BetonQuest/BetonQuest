@@ -23,4 +23,24 @@
     key: de.compass
     oldValueRegex: "&cKompassziel"
     newValue: "Kompassziel verwalten"
-
+2.0.0.2:
+  - type: VALUE_RENAME
+    key: fr.inventory_full_backpack
+    oldValueRegex: "&e*&bVotre inventaire est plein! L''objet était posé dans votre sac á dos.&e*"
+    newValue: "&e*&bVotre inventaire est plein! L''objet a été placé dans votre sac á dos.&e*"
+  - type: VALUE_RENAME
+    key: fr.inventory_full_drop
+    oldValueRegex: "&e*&bVotre inventaire est plein! L''objet était posé au plancher.&e*"
+    newValue: "&e*&bVotre inventaire est plein! L''objet a été déposé au sol.&e*"
+  - type: VALUE_RENAME
+    key: fr.items_to_enchant
+    oldValueRegex: "&2{1} items left to enchant"
+    newValue: "&2{1} objets restant à enchanter"
+  - type: VALUE_RENAME
+    key: fr.level_to_gain
+    oldValueRegex: "&2{1} levels left to gain"
+    newValue: "&2{1} niveaux restant à gagner"
+  - type: VALUE_RENAME
+    key: fr.chest_occupied
+    oldValueRegex: "This chest is already in use"
+    newValue: "Ce coffre est déjà en cours d''utilisation"
