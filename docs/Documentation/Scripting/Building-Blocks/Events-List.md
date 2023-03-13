@@ -611,29 +611,29 @@ events:
     
 ## Give experience: `experience`
 
-With this event you can manipulate the experience of the player. First specify the amount, then the modification type.
-You can use `add_experience`, `add_level`, `set_experience_bar` and`set_level` as modification typs.
+This event allows you to manipulate player's experience. First you specify a number as the amount, then the modification action.
+You can use `action:addExperience`, `action:addLevel`, `action:setExperienceBar` and `action:setLevel` as modification types.
 
+To use this correctly, you need to understand this:
 
-For a better understanding, the player has three values for experience: The experience points in total. The levels, shown
-as the number at the experience bar and which increments after reaching a certain amount of experience points. And the 
-experience bar itself, which is a percentage of the experience points needed to reach the next level.
+* A player has experience points.
+* Experience levels, shown are shown as a number in the experience bar. Every level requires more experience points than the previous.  
+* The experience bar itself shows the percentage of the experience points needed to reach the next level.
 
-
-`add_experience` adds only experience points, `add_level` adds the level and the percentage of the next level, for 
-example `experience 1.5 add_level` will give 1 level and half. Both can be used to take experience points by using negative 
-numbers. `set_experience_bar` sets the progress of the bar. `0` is empty and `1` is full, while adjusting the 
-experience points. `set_level` sets only the level, expect you specify a decimal number, then the experience bar will be
+While `action:addExperience` only adds experience points, `action:addLevel` adds a level and keeps the current percentage.
+`action:setExperienceBar` sets the progress of the bar. Decimal values between `0` and `1` represent the fill level.
+This changes the underlying experience points, it's **not** just a visual change.
+`action:setLevel` sets only the level, expect if you specify a decimal number, then the experience bar will be
 set to the specified percentage.
 
-!!! example
-    ```YAML
-    experience 15 add_experience
-    experience 4.5 add_level
-    experience -2 add_level
-    experience 0.5 set_experience_bar
-    experience 0.01 set_level
-    ```
+```YAML title="Example"
+add15XP: "experience 15 action:addExperience"
+add4andAHalfLevel: "experience 4.5 action:addLevel"
+remove2Level: "experience -2 action:addLevel"
+setXPBar: "experience 0.5 action:setExperienceBar"
+resetLevel: "experience 0.01 action:setLevel"
+```
+
 ## Burn: `burn`
 
 | Parameter  | Syntax            | Default Value               | Explanation                                                        |
