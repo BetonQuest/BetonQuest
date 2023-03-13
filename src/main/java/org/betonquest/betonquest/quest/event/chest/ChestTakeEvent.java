@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.event.chest;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
@@ -31,14 +32,14 @@ public class ChestTakeEvent extends AbstractChestEvent implements Event {
     }
 
     @Override
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public void execute(final Profile profile) throws QuestRuntimeException {
         try {
             final Inventory inventory = getChest(profile).getInventory();
             for (final Item item : items) {
                 final QuestItem questItem = item.getItem();
                 final int amount = item.getAmount().getInt(profile);
-                final ItemStack[] contents = inventory.getContents();
-                final ItemStack[] newItems = removeItems(contents, questItem, amount);
+                final ItemStack[] newItems = removeItems(inventory.getContents(), questItem, amount);
                 inventory.setContents(newItems);
             }
         } catch (final QuestRuntimeException e) {
