@@ -15,6 +15,7 @@ import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.menu.config.SimpleYMLSection;
+import org.betonquest.betonquest.menu.utils.Utils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -93,13 +94,13 @@ public class MenuItem extends SimpleYMLSection {
         try {
             this.pack = pack;
             //load item
-            final ItemID itemID = new ItemID(pack, getString("item").trim());
+            final ItemID itemID = new ItemID(pack, Utils.resolveGlobalVariables(getString("item"), pack).trim());
             final VariableNumber amount;
             amount = new VariableNumber(pack, new DefaultSetting<>("1") {
                 @Override
                 @SuppressWarnings("PMD.ShortMethodName")
                 protected String of() throws Missing {
-                    return getString("amount");
+                    return Utils.resolveGlobalVariables(getString("amount"), pack);
                 }
             }.get());
             this.item = new Item(itemID, amount);
@@ -172,7 +173,14 @@ public class MenuItem extends SimpleYMLSection {
                 @Override
                 @SuppressWarnings("PMD.ShortMethodName")
                 protected Boolean of() throws Missing, Invalid {
-                    return getBoolean("close");
+                    //this ensures the visibility of the error in the Log
+                    final String key = Utils.resolveGlobalVariables(getString("close"), pack);
+                    if ("true".equalsIgnoreCase(key)) {
+                        return true;
+                    } else if ("false".equalsIgnoreCase(key)) {
+                        return false;
+                    }
+                    throw new Invalid(key);
                 }
             }.get();
         } catch (ObjectNotFoundException | InstructionParseException e) {

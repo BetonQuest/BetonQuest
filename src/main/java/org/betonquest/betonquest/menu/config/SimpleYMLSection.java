@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.menu.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -73,11 +74,12 @@ public abstract class SimpleYMLSection {
      * Parse a list of multiple strings, separated by ',' from config file
      *
      * @param key where to search
+     * @param pack associated QuestPackage for variables
      * @throws Missing if no strings are given
      */
-    protected List<String> getStrings(final String key) throws Missing {
+    protected List<String> getStrings(final String key, final QuestPackage pack) throws Missing {
         final List<String> list = new ArrayList<>();
-        final String[] args = getString(key).split(",");
+        final String[] args = Utils.resolveGlobalVariables(getString(key), pack).split(",");
         for (final String arg : args) {
             final String argTrim = arg.trim();
             if (argTrim.length() != 0) {
@@ -215,7 +217,7 @@ public abstract class SimpleYMLSection {
      * @throws Invalid if one of the events can't be found
      */
     protected List<EventID> getEvents(final String key, final QuestPackage pack) throws Missing, Invalid {
-        final List<String> strings = getStrings(key);
+        final List<String> strings = getStrings(key, pack);
         final List<EventID> events = new ArrayList<>(strings.size());
         for (final String string : strings) {
             try {
@@ -236,7 +238,7 @@ public abstract class SimpleYMLSection {
      * @throws Invalid if one of the conditions can't be found
      */
     protected List<ConditionID> getConditions(final String key, final QuestPackage pack) throws Missing, Invalid {
-        final List<String> strings = getStrings(key);
+        final List<String> strings = getStrings(key, pack);
         final List<ConditionID> conditions = new ArrayList<>(strings.size());
         for (final String string : strings) {
             try {

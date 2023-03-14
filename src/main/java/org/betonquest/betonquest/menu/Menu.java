@@ -16,6 +16,7 @@ import org.betonquest.betonquest.item.QuestItem;
 import org.betonquest.betonquest.menu.commands.SimpleCommand;
 import org.betonquest.betonquest.menu.config.RPGMenuConfig;
 import org.betonquest.betonquest.menu.config.SimpleYMLSection;
+import org.betonquest.betonquest.menu.utils.Utils;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -89,19 +90,25 @@ public class Menu extends SimpleYMLSection implements Listener {
     private final RPGMenu menu = BetonQuest.getInstance().getRpgMenu();
 
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.NPathComplexity", "PMD.CyclomaticComplexity",
-            "PMD.CognitiveComplexity"})
+            "PMD.CognitiveComplexity", "PMD.PreserveStackTrace"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public Menu(final MenuID menuID) throws InvalidConfigurationException {
         super(menuID.getFullID(), menuID.getConfig());
         this.menuID = menuID;
         //load size
-        this.height = getInt("height");
+        try {
+            this.height = Integer.parseInt(
+                    Utils.resolveGlobalVariables(getString("height"), this.menuID.getPackage()));
+        } catch (NumberFormatException e) {
+            throw new Invalid("height");
+        }
         if (this.height < 1 || this.height > 6) {
             throw new Invalid("height");
         }
         //load title
         try {
-            final String title = ChatColor.translateAlternateColorCodes('&', getString("title"));
+            final String title = ChatColor.translateAlternateColorCodes('&',
+                    Utils.resolveGlobalVariables(getString("title"), this.menuID.getPackage()));
             this.title = new VariableString(this.menuID.getPackage(), title);
         } catch (final InstructionParseException e) {
             throw new InvalidConfigurationException(e.getMessage(), e);
@@ -130,7 +137,8 @@ public class Menu extends SimpleYMLSection implements Listener {
             @SuppressWarnings("PMD.ShortMethodName")
             protected QuestItem of() throws Missing, Invalid {
                 try {
-                    return new QuestItem(new ItemID(Menu.this.menuID.getPackage(), getString("bind")));
+                    return new QuestItem(new ItemID(Menu.this.menuID.getPackage(),
+                            Utils.resolveGlobalVariables(getString("bind"), menuID.getPackage())));
                 } catch (ObjectNotFoundException | InstructionParseException e) {
                     throw new Invalid("bind", e);
                 }
@@ -141,7 +149,7 @@ public class Menu extends SimpleYMLSection implements Listener {
             @Override
             @SuppressWarnings("PMD.ShortMethodName")
             protected MenuBoundCommand of() throws Missing, Invalid {
-                String command = getString("command").trim();
+                String command = Utils.resolveGlobalVariables(getString("command"), menuID.getPackage()).trim();
                 if (!command.matches("/*[0-9A-Za-z\\-]+")) {
                     throw new Invalid("command");
                 }
@@ -167,7 +175,7 @@ public class Menu extends SimpleYMLSection implements Listener {
         for (final String key : config.getConfigurationSection("slots").getKeys(false)) {
             final List<MenuItem> itemsList = new ArrayList<>();
             //check if items from list are all valid
-            for (final String item : getStrings("slots." + key)) {
+            for (final String item : getStrings("slots." + key, this.menuID.getPackage())) {
                 if (itemsMap.containsKey(item)) {
                     itemsList.add(itemsMap.get(item));
                 } else {

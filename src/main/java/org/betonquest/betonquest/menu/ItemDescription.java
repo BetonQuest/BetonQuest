@@ -4,6 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.menu.utils.Utils;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class ItemDescription {
         this.pack = pack;
         this.lines = new ArrayList<>();
         for (final String line : content) {
-            new Line(line);
+            new Line(Utils.resolveGlobalVariables(line, pack));
         }
     }
 
