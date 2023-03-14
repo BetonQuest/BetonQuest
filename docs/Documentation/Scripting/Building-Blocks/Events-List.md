@@ -228,11 +228,16 @@ This event simply gives the player his journal. It acts the same way as **/j** c
 
 **persistent**, **static**
 
-This works the same way as the normal point event but instead to manipulating the points for a category of a specific player it manipulates points in a global category. These global categories are player independent, so you could for example add a point to such a global category every time a player does a quest and give some special rewards for the 100th player who does the quest.
+This works the same way as the normal [point event](#point-point) but instead to manipulating the points for a category of a specific 
+player it manipulates points in a global category. These global categories are player independent, so you could for 
+example add a point to such a global category every time a player does a quest and give some special rewards for 
+the 100th player who does the quest.
 
 !!! example
     ```YAML
-    globalpoint global_knownusers 1
+    globalpoint global_knownusers 1 action:add
+    globalpoint daily_login 0 action:set
+    globalpoint reputaion 2 action:multiply
     ```
 
 ## Global tag: `globaltag`
