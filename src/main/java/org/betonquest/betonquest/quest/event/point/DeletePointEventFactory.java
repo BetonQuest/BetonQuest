@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.quest.event.points;
+package org.betonquest.betonquest.quest.event.point;
 
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.event.Event;
@@ -12,18 +12,18 @@ import org.betonquest.betonquest.utils.Utils;
 /**
  * Factory to create delete points events from {@link Instruction}s.
  */
-public class DeletePointsEventFactory implements EventFactory, StaticEventFactory {
+public class DeletePointEventFactory implements EventFactory, StaticEventFactory {
 
     /**
      * Create the delete points event factory.
      */
-    public DeletePointsEventFactory() {
+    public DeletePointEventFactory() {
     }
 
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         final String category = Utils.addPackage(instruction.getPackage(), instruction.next());
-        return new DeletePointsEvent(category);
+        return new DeletePointEvent(category);
     }
 
     @Override

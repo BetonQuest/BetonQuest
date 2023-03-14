@@ -89,6 +89,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `command` event - now suppress console output
 - `cancelconversation` event
 - `time` event - now supports subtraction and world selection, which made it persistent and static
+- `globalpoint` event - new syntax for manipulating global points
 - RPGMenu global variable support
 - Things that are also added in 1.12.X:
     - new line support for `journal_lore` in `messages.yml`
