@@ -48,9 +48,9 @@ public class ExperienceEventFactory implements EventFactory {
     @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.PrematureDeclaration"})
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         final VariableNumber amount = instruction.getVarNum();
-        Experience experienceType = Experience.ADDEXPERIENCE;
+        Experience experienceType = Experience.ADD_EXPERIENCE;
         if (instruction.hasArgument("level")) {
-            experienceType = Experience.ADDLEVEL;
+            experienceType = Experience.ADD_LEVEL;
         } else if (instruction.size() > 2) {
             final String action = instruction.getOptional("action");
             if (action == null) {

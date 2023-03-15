@@ -3,17 +3,17 @@ package org.betonquest.betonquest.quest.event.experience;
 import org.bukkit.entity.Player;
 
 /**
- * Represents the type of modification how the given amount should get applied to the player-experience
+ * Represents the type of modification with the given amount on the player's experience.
  */
 public enum Experience {
     /**
-     * Adds the given amount to the player-experience, just experience points
+     * Adds the given amount to the player's experience, just experience points.
      */
-    ADDEXPERIENCE((player, amount) -> player.giveExp((int) amount)),
+    ADD_EXPERIENCE((player, amount) -> player.giveExp((int) amount)),
     /**
-     * Adds the given amount to the player-experience, levels and or percentage to the next level
+     * Adds the given amount to the player's experience, levels and or percentage to the next level.
      */
-    ADDLEVEL((player, amount) -> {
+    ADD_LEVEL((player, amount) -> {
         if (amount % 1 == 0) {
             player.giveExpLevels((int) amount);
         } else {
@@ -24,13 +24,13 @@ public enum Experience {
         }
     }),
     /**
-     * Sets the player-experience to the next level to the given amount
+     * Sets the player's experience to the next level to the given amount.
      */
-    SETEXPERIENCEBAR(Player::setExp),
+    SET_EXPERIENCE_BAR(Player::setExp),
     /**
-     * Sets the player-experience-level to the given amount
+     * Sets the player's experience-level to the given amount.
      */
-    SETLEVEL((player, amount) -> {
+    SET_LEVEL((player, amount) -> {
         player.setLevel((int) amount);
         if (amount % 1 != 0) {
             player.setExp(amount - (int) amount);
@@ -38,7 +38,7 @@ public enum Experience {
     });
 
     /**
-     * Instance of the calculator to calculate the experience
+     * Instance of the calculator to calculate the experience.
      */
     private final Calculator calculator;
 
@@ -47,7 +47,7 @@ public enum Experience {
     }
 
     /**
-     * Calculate the new experience with the modification type
+     * Calculate the new experience with the modification type.
      *
      * @param player the player
      * @param amount the amount
@@ -57,11 +57,11 @@ public enum Experience {
     }
 
     /**
-     * Functional interface to calculate the experience
+     * Functional interface to calculate the experience.
      */
     private interface Calculator {
         /**
-         * Calculates the amount to apply to the player
+         * Calculates the amount to apply to the player.
          *
          * @param player the player to apply the amount to
          * @param amount the amount to apply
@@ -69,5 +69,4 @@ public enum Experience {
          */
         void calculate(Player player, float amount);
     }
-
 }

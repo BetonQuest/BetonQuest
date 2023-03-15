@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.quest.event.Event;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 /**
- * Gives the player specified amount of experience
+ * Gives the player specified amount of experience.
  */
 public class ExperienceEvent implements Event {
 
@@ -21,7 +21,7 @@ public class ExperienceEvent implements Event {
     private final VariableNumber amount;
 
     /**
-     * Create a new experience event.
+     * Creates a new experience event.
      *
      * @param experienceType the experience type
      * @param amount         the amount of experience
