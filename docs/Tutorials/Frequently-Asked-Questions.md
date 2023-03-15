@@ -139,7 +139,7 @@ Copy your file into http://www.yamllint.com/ to confirm that it is actually a YA
 Best practise is to define all options like this: `myOptionName: "myData"` The double quotes prevent YAMl issues with e.g. `!`.
 
 ## Other plugins override BetonQuest commands / BetonQuest overrides other commands!
-You can change which command is used, using a Bukkit feature: https://bukkit.gamepedia.com/Commands.yml
+You can change which command is used, using a Bukkit feature: https://bukkit.fandom.com/wiki/Commands.yml
 
 ## Handling death in your quests
 
