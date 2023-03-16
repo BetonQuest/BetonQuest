@@ -183,6 +183,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `pickrandom` event - did not allowed dashes in event names
 - `action` objective - ignored offhand at all
 - `enchant` objective - did not work at all, now has `amount` and `requirementMode` parameters
+- Hologram topX line not working with profiles
 - Things that are also fixed in 1.12.X:
     - eating of items when entering the chest conversation io actually consumed the item 
     - legacy `§x` HEX color format not working in some contexts
