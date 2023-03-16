@@ -89,8 +89,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `command` event - now suppress console output
 - `cancelconversation` event
 - `time` event - now supports subtraction and world selection, which made it persistent and static
+- `globalpoint` event - new syntax for manipulating global points
 - `experience` event - it's now possible to change xp, change and set levels and set the xp bar
-- `globalpoint` event - new syntax for manipulating global points 
 - Things that are also added in 1.12.X:
     - new line support for `journal_lore` in `messages.yml`
     - FastAsyncWorldEdit compatibility
