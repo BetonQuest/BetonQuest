@@ -11,9 +11,9 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 public class ExperienceEvent implements Event {
 
     /**
-     * The experience type.
+     * The modification to apply.
      */
-    private final ExperienceModification experienceType;
+    private final ExperienceModification experienceModification;
 
     /**
      * The amount of experience or level.
@@ -23,16 +23,16 @@ public class ExperienceEvent implements Event {
     /**
      * Creates a new experience event.
      *
-     * @param experienceType the experience type
+     * @param experienceModification the modification to apply
      * @param amount         the amount of experience
      */
-    public ExperienceEvent(final ExperienceModification experienceType, final VariableNumber amount) {
-        this.experienceType = experienceType;
+    public ExperienceEvent(final ExperienceModification experienceModification, final VariableNumber amount) {
+        this.experienceModification = experienceModification;
         this.amount = amount;
     }
 
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
-        experienceType.apply(profile.getOnlineProfile().get().getPlayer(), (float) amount.getDouble(profile));
+        experienceModification.apply(profile.getOnlineProfile().get().getPlayer(), (float) amount.getDouble(profile));
     }
 }
