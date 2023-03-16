@@ -69,7 +69,11 @@ public class Connector {
         try {
             final PreparedStatement statement = connection.prepareStatement(sql);
             for (int i = 0; i < args.length; i++) {
-                statement.setString(i + 1, args[i]);
+                try {
+                    statement.setInt(i + 1, Integer.parseInt(args[i]));
+                } catch (NumberFormatException nfe) {
+                    statement.setString(i + 1, args[i]);
+                }
             }
             return statement.executeQuery();
         } catch (final SQLException e) {
