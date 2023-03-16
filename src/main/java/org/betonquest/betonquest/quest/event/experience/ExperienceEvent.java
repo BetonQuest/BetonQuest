@@ -13,7 +13,7 @@ public class ExperienceEvent implements Event {
     /**
      * The experience type.
      */
-    private final Experience experienceType;
+    private final ExperienceModification experienceType;
 
     /**
      * The amount of experience or level.
@@ -26,7 +26,7 @@ public class ExperienceEvent implements Event {
      * @param experienceType the experience type
      * @param amount         the amount of experience
      */
-    public ExperienceEvent(final Experience experienceType, final VariableNumber amount) {
+    public ExperienceEvent(final ExperienceModification experienceType, final VariableNumber amount) {
         this.experienceType = experienceType;
         this.amount = amount;
     }

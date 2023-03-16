@@ -11,7 +11,9 @@ import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import java.util.Arrays;
 import java.util.Locale;
+import java.util.Optional;
 
 /**
  * Factory for the experience event.
@@ -48,25 +50,26 @@ public class ExperienceEventFactory implements EventFactory {
     @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.PrematureDeclaration"})
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         final VariableNumber amount = instruction.getVarNum();
-        Experience experienceType = Experience.ADD_EXPERIENCE;
+        ExperienceModification experienceType = ExperienceModification.ADD_EXPERIENCE;
         if (instruction.hasArgument("level")) {
-            experienceType = Experience.ADD_LEVEL;
+            experienceType = ExperienceModification.ADD_LEVEL;
         } else if (instruction.size() > 2) {
-            final String action = instruction.getOptional("action");
+            String action = instruction.getOptional("action");
             if (action == null) {
-                throw new InstructionParseException("Missing modification action");
+                throw new InstructionParseException("Missing modification action.");
             }
-            try {
-                experienceType = Experience.valueOf(action.toUpperCase(Locale.ROOT));
-            } catch (final IllegalArgumentException e) {
-                throw new InstructionParseException("Could not parse: '" + action +
-                        "' to an experience modification typ", e);
+            action = action.toUpperCase(Locale.ROOT);
+
+            final Optional<ExperienceModification> modification = ExperienceModification.getFromInstruction(action);
+            if (modification.isPresent()) {
+                experienceType = modification.get();
+            } else {
+                throw new InstructionParseException(action + " is not a valid experience modification type.");
             }
         }
         return new PrimaryServerThreadEvent(
                 new OnlineProfileRequiredEvent(
                         new ExperienceEvent(experienceType, amount), instruction.getPackage()
-
                 ), server, scheduler, plugin
         );
     }

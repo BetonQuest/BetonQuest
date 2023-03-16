@@ -2,18 +2,21 @@ package org.betonquest.betonquest.quest.event.experience;
 
 import org.bukkit.entity.Player;
 
+import java.util.Optional;
+import java.util.stream.Stream;
+
 /**
  * Represents the type of modification with the given amount on the player's experience.
  */
-public enum Experience {
+public enum ExperienceModification {
     /**
      * Adds the given amount to the player's experience, just experience points.
      */
-    ADD_EXPERIENCE((player, amount) -> player.giveExp((int) amount)),
+    ADD_EXPERIENCE("addExperience", (player, amount) -> player.giveExp((int) amount)),
     /**
      * Adds the given amount to the player's experience, levels and or percentage to the next level.
      */
-    ADD_LEVEL((player, amount) -> {
+    ADD_LEVEL("addLevel", (player, amount) -> {
         if (amount % 1 == 0) {
             player.giveExpLevels((int) amount);
         } else {
@@ -26,11 +29,11 @@ public enum Experience {
     /**
      * Sets the player's experience to the next level to the given amount.
      */
-    SET_EXPERIENCE_BAR(Player::setExp),
+    SET_EXPERIENCE_BAR("setExperienceBar", Player::setExp),
     /**
      * Sets the player's experience-level to the given amount.
      */
-    SET_LEVEL((player, amount) -> {
+    SET_LEVEL("setLevel", (player, amount) -> {
         player.setLevel((int) amount);
         if (amount % 1 != 0) {
             player.setExp(amount - (int) amount);
@@ -38,11 +41,16 @@ public enum Experience {
     });
 
     /**
+     * The name of the ExperienceModification in the user-facing instruction.
+     */
+    private final String instructionName;
+    /**
      * Instance of the calculator to calculate the experience.
      */
     private final Calculator calculator;
 
-    Experience(final Calculator calculator) {
+    ExperienceModification(final String instructionName, final Calculator calculator) {
+        this.instructionName = instructionName;
         this.calculator = calculator;
     }
 
@@ -54,6 +62,15 @@ public enum Experience {
      */
     public void applyExperience(final Player player, final float amount) {
         calculator.calculate(player, amount);
+    }
+
+    /**
+     * Gets the instance that matches the name.
+     * @param name the name used in the instruction
+     * @return an {@link Optional}
+     */
+    public static Optional<ExperienceModification> getFromInstruction(final String name) {
+        return Stream.of(values()).filter((modification) -> modification.instructionName.equalsIgnoreCase(name)).findFirst();
     }
 
     /**
