@@ -55,6 +55,16 @@ public enum ExperienceModification {
     }
 
     /**
+     * Gets the instance that matches the name.
+     *
+     * @param name the name used in the instruction
+     * @return an {@link Optional}
+     */
+    public static Optional<ExperienceModification> getFromInstruction(final String name) {
+        return Stream.of(values()).filter((modification) -> modification.instructionName.equalsIgnoreCase(name)).findFirst();
+    }
+
+    /**
      * Calculates the new experience with the modification type.
      *
      * @param player the player
@@ -62,15 +72,6 @@ public enum ExperienceModification {
      */
     public void apply(final Player player, final float amount) {
         calculator.calculate(player, amount);
-    }
-
-    /**
-     * Gets the instance that matches the name.
-     * @param name the name used in the instruction
-     * @return an {@link Optional}
-     */
-    public static Optional<ExperienceModification> getFromInstruction(final String name) {
-        return Stream.of(values()).filter((modification) -> modification.instructionName.equalsIgnoreCase(name)).findFirst();
     }
 
     /**

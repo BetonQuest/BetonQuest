@@ -24,7 +24,7 @@ public class ExperienceEvent implements Event {
      * Creates a new experience event.
      *
      * @param experienceModification the modification to apply
-     * @param amount         the amount of experience
+     * @param amount                 the amount of experience
      */
     public ExperienceEvent(final ExperienceModification experienceModification, final VariableNumber amount) {
         this.experienceModification = experienceModification;

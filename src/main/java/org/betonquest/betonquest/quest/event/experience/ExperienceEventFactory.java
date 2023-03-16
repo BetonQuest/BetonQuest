@@ -11,7 +11,6 @@ import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.Optional;
 
