@@ -55,12 +55,12 @@ public enum ExperienceModification {
     }
 
     /**
-     * Calculate the new experience with the modification type.
+     * Calculates the new experience with the modification type.
      *
      * @param player the player
      * @param amount the amount
      */
-    public void applyExperience(final Player player, final float amount) {
+    public void apply(final Player player, final float amount) {
         calculator.calculate(player, amount);
     }
 
