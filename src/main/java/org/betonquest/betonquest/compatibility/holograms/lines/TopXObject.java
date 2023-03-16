@@ -100,7 +100,7 @@ public class TopXObject {
 
         private final QueryType type;
 
-        OrderType(QueryType type) {
+        OrderType(final QueryType type) {
             this.type = type;
         }
 
