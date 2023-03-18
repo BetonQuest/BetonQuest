@@ -418,20 +418,17 @@ There must be two `%%` before the event's name if variables are used, one is fro
 
 **persistent**
 
-Gives the player a specified amount of points in a specified category. Amount can be negative if you want to subtract points.
-You can also use an asterisk to do multiplication (or division, if you use a fraction).
-First argument after the event name must be a category, and the second one - amount of points to give/take/multiply.
-This event also supports an optional `notify` argument that will display information about the change using the notification system.
+This event allows you to manipulate player's points in a specified category. First you can specify a number of points, 
+then the modification action. For that, you can use `action:add`, `action:subtract`, `action:set` and `action:multiply` 
+as modification types. This event also supports an optional `notify` argument that will display information about the 
+change using the notification system.
 
-!!! example
-    ```YAML
-    point npc_attitude 10
-    ```
-    
-!!! example    
-    ```YAML
-    point village_reputation *0.75
-    ```
+```YAML title="Example"
+gainattitude: "point npc_attitude 5 action:add"
+loseattitude: "point npc_attitude 2 action:subtract"
+resetcombo: "point combo 0 action:set"
+boostpoints: "point points 1.25 action:multiply notify"
+```
 
 ## Run events: `run`
 
