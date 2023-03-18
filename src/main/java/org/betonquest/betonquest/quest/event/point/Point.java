@@ -8,15 +8,15 @@ public enum Point {
     /**
      * Adds the count to the current value.
      */
-    ADD(Integer::sum),
+    ADD((current, count) -> current + (int) count),
     /**
      * Subtracts the count from the current value.
      */
-    SET((current, count) -> count),
+    SET((current, count) -> (int) count),
     /**
      * Multiplies the current value by the count.
      */
-    MULTIPLY((current, count) -> current * count);
+    MULTIPLY((current, count) -> (int) (current * count));
 
     /**
      * The calculator to use for this point type.
@@ -34,7 +34,7 @@ public enum Point {
      * @param count   the count
      * @return the new value
      */
-    public int modify(final int current, final int count) {
+    public int modify(final int current, final double count) {
         return calculator.calculate(current, count);
     }
 
@@ -49,6 +49,6 @@ public enum Point {
          * @param count   the count
          * @return the new value
          */
-        int calculate(int current, int count);
+        int calculate(int current, double count);
     }
 }

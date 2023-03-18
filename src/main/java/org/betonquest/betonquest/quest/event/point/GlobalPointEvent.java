@@ -53,6 +53,6 @@ public class GlobalPointEvent implements Event {
                 .filter(p -> p.getCategory().equalsIgnoreCase(category))
                 .findFirst();
         globalData.setPoints(category, pointType.modify(
-                globalPoint.map(org.betonquest.betonquest.Point::getCount).orElse(0), count.getInt(profile)));
+                globalPoint.map(org.betonquest.betonquest.Point::getCount).orElse(0), count.getDouble(profile)));
     }
 }
