@@ -30,9 +30,9 @@ public final class GlobalVariableResolver {
     }
 
     /**
-     * Resolved all global variables recursively in the given string.
+     * Resolves all global variables recursively in the given string.
      *
-     * @param pack  the package to resolve the variables in
+     * @param pack  the package in which the input string is defined
      * @param input the input string
      * @return the string with all global variables resolved
      */
