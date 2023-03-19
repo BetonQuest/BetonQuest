@@ -74,7 +74,7 @@ public interface QuestPackage {
      * @param input the string to resolve
      * @return the resolved string
      * @deprecated instead use
-     * {@link org.betonquest.betonquest.variables.GlobalVariableResolver#resolveGlobalVariables(QuestPackage, String)}.
+     * {@link org.betonquest.betonquest.variables.GlobalVariableResolver#resolve(QuestPackage, String)}.
      */
     @Deprecated
     String subst(String input);

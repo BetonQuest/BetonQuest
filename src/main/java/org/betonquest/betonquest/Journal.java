@@ -318,7 +318,7 @@ public class Journal {
                         text = text.replace(variable,
                                 BetonQuest.getInstance().getVariableValue(packName, variable, profile));
                     }
-                    text = GlobalVariableResolver.resolveGlobalVariables(pack, text);
+                    text = GlobalVariableResolver.resolve(pack, text);
                     // add the text to HashMap
                     numbers.add(number);
                     final ArrayList<String> linesOrder;

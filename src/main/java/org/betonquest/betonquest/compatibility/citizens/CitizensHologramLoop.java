@@ -106,7 +106,7 @@ public class CitizensHologramLoop extends HologramLoop implements Listener {
     private List<Integer> getNPCs(final QuestPackage pack, final ConfigurationSection section) throws InstructionParseException {
         final List<Integer> npcIDs = new ArrayList<>();
         for (final String stringID : section.getStringList("npcs")) {
-            final String subst = GlobalVariableResolver.resolveGlobalVariables(pack, stringID);
+            final String subst = GlobalVariableResolver.resolve(pack, stringID);
             try {
                 npcIDs.add(Integer.parseInt(subst));
             } catch (final NumberFormatException e) {

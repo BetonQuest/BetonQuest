@@ -36,7 +36,7 @@ public final class GlobalVariableResolver {
      * @param input the input string
      * @return the string with all global variables resolved
      */
-    public static String resolveGlobalVariables(final QuestPackage pack, final String input) {
+    public static String resolve(final QuestPackage pack, final String input) {
         if (input == null) {
             return null;
         }

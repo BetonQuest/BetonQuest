@@ -70,7 +70,7 @@ public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
 
     @Override
     public String subst(final String input) {
-        return GlobalVariableResolver.resolveGlobalVariables(this, input);
+        return GlobalVariableResolver.resolve(this, input);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
             return value;
         }
 
-        return GlobalVariableResolver.resolveGlobalVariables(this, value);
+        return GlobalVariableResolver.resolve(this, value);
     }
 
     @Override

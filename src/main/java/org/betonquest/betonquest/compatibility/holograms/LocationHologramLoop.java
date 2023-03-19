@@ -41,7 +41,7 @@ public class LocationHologramLoop extends HologramLoop {
             throw new InstructionParseException("Location is not specified");
         } else {
             try {
-                return new CompoundLocation(pack, GlobalVariableResolver.resolveGlobalVariables(pack, rawLocation)).getLocation(null);
+                return new CompoundLocation(pack, GlobalVariableResolver.resolve(pack, rawLocation)).getLocation(null);
             } catch (QuestRuntimeException | InstructionParseException e) {
                 throw new InstructionParseException("Could not parse location: " + e.getMessage(), e);
             }
