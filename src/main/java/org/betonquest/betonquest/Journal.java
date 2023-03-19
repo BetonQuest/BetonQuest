@@ -18,6 +18,7 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.utils.Utils;
+import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -317,7 +318,7 @@ public class Journal {
                         text = text.replace(variable,
                                 BetonQuest.getInstance().getVariableValue(packName, variable, profile));
                     }
-                    text = pack.subst(text);
+                    text = GlobalVariableResolver.resolveGlobalVariables(pack, text);
                     // add the text to HashMap
                     numbers.add(number);
                     final ArrayList<String> linesOrder;
