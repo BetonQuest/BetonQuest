@@ -10,9 +10,22 @@ import java.util.regex.Pattern;
 
 /**
  * This class resolves all global variables in a string.
+ * <p>
+ * The format of a global variable is {@code $<package>.<variable>$}.
+ * The package part is optional and defaults to the current package.
+ * Example: {@code $myVariable$}
+ * Example: {@code $my.package.myVariable$}
+ * <p>
+ * The variables are defined in the {@code variables} section.
  */
 @CustomLog
 public final class GlobalVariableResolver {
+
+    /**
+     * A regex pattern to match global variables.
+     */
+    public static final Pattern GLOBAL_VARIABLE_PATTERN = Pattern.compile("\\$(?<variable>[^ $\\s]+)\\$");
+
     private GlobalVariableResolver() {
     }
 
@@ -27,58 +40,23 @@ public final class GlobalVariableResolver {
         if (input == null) {
             return null;
         }
-        String variableInput = input;
-
-        final Pattern globalVariableRegex = Pattern.compile("\\$([^ $\\s]+)\\$");
-        while (true) {
-            final Matcher matcher = globalVariableRegex.matcher(variableInput);
-            if (!matcher.find()) {
-                break;
-            }
-            final String varName = matcher.group(1);
-            final GlobalVariableID variableID;
-            try {
-                variableID = new GlobalVariableID(pack, varName);
-            } catch (final ObjectNotFoundException e) {
-                LOG.warn(pack, e.getMessage(), e);
-                return variableInput;
-            }
-            final String varRaw = variableID.getPackage().getConfig().getString("variables." + variableID.getBaseID());
-            if (varRaw == null) {
-                LOG.warn(pack, String.format("Variable %s not defined in package %s", variableID.getBaseID(), variableID.getPackage().getQuestPath()));
-                return variableInput;
-            }
-            final String varVal = resolve(variableID.getPackage(), varRaw);
-            variableInput = variableInput.replace("$" + varName + "$", varVal);
+        final Matcher matcher = GLOBAL_VARIABLE_PATTERN.matcher(input);
+        final StringBuilder variableInput = new StringBuilder();
+        while (matcher.find()) {
+            final String variable = matcher.group("variable");
+            final String replacement = getReplacement(pack, variable);
+            matcher.appendReplacement(variableInput, replacement);
         }
-
-        return variableInput;
+        matcher.appendTail(variableInput);
+        return variableInput.toString();
     }
 
-    private static String resolve(final QuestPackage pack, final String input) {
-        if (input == null) {
-            return null;
+    private static String getReplacement(final QuestPackage pack, final String variable) {
+        try {
+            return new GlobalVariableID(pack, variable).generateInstruction().getInstruction();
+        } catch (final ObjectNotFoundException e) {
+            LOG.warn(pack, e.getMessage(), e);
+            return variable + "(not found)";
         }
-        final Pattern globalVariableRegex = Pattern.compile("\\$([^ $\\s]+)\\$");
-        final Matcher matcher = globalVariableRegex.matcher(input);
-        final StringBuilder builder = new StringBuilder();
-        while (matcher.find()) {
-            final String varName = matcher.group(1);
-            final String varVal;
-            if ("this".equals(varName)) {
-                varVal = pack.getQuestPath();
-            } else {
-                try {
-                    final GlobalVariableID variableID = new GlobalVariableID(pack, varName);
-                    varVal = "$" + variableID.getPackage().getQuestPath() + "." + variableID.getBaseID() + "$";
-                } catch (final ObjectNotFoundException e) {
-                    LOG.warn(pack, e.getMessage(), e);
-                    return input;
-                }
-            }
-            matcher.appendReplacement(builder, Matcher.quoteReplacement(varVal));
-        }
-        matcher.appendTail(builder);
-        return builder.toString();
     }
 }
