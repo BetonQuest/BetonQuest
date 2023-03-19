@@ -1,7 +1,5 @@
 package org.betonquest.betonquest.id;
 
-import org.betonquest.betonquest.Instruction;
-import org.betonquest.betonquest.VariableInstruction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 
@@ -9,16 +7,9 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 public class GlobalVariableID extends ID {
     public GlobalVariableID(final QuestPackage pack, final String identifier) throws ObjectNotFoundException {
         super(pack, identifier);
+        rawInstruction = super.pack.getString("variables." + super.identifier);
+        if (rawInstruction == null) {
+            throw new ObjectNotFoundException("Global variable '" + getFullID() + "' is not defined");
+        }
     }
-
-    @Override
-    public Instruction generateInstruction() {
-        return new VariableInstruction(pack, this, identifier);
-    }
-
-    @Override
-    public String getFullID() {
-        return pack.getQuestPath() + "-" + getBaseID();
-    }
-
 }

@@ -11,6 +11,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -477,7 +478,7 @@ public class ConversationData {
             if (conv.contains("prefix")) {
                 if (conv.isConfigurationSection("prefix")) {
                     for (final String lang : conv.getConfigurationSection("prefix").getKeys(false)) {
-                        final String pref = pack.subst(conv.getConfigurationSection("prefix").getString(lang));
+                        final String pref = GlobalVariableResolver.resolve(pack, conv.getConfigurationSection("prefix").getString(lang));
                         if (pref != null && !pref.equals("")) {
                             inlinePrefix.put(lang, pref);
                         }
@@ -487,7 +488,7 @@ public class ConversationData {
                                 + " prefix");
                     }
                 } else {
-                    final String pref = pack.subst(conv.getString("prefix"));
+                    final String pref = GlobalVariableResolver.resolve(pack, conv.getString("prefix"));
                     if (pref != null && !pref.equals("")) {
                         inlinePrefix.put(defaultLang, pref);
                     }
@@ -535,7 +536,7 @@ public class ConversationData {
 
             // Conditions
             try {
-                for (final String rawCondition : pack.subst(conv.getString("conditions", conv.getString("condition", ""))).split(",")) {
+                for (final String rawCondition : GlobalVariableResolver.resolve(pack, conv.getString("conditions", conv.getString("condition", ""))).split(",")) {
                     if (!Objects.equals(rawCondition, "")) {
                         conditions.add(new ConditionID(pack, rawCondition.trim()));
                     }
@@ -547,7 +548,7 @@ public class ConversationData {
 
             // Events
             try {
-                for (final String rawEvent : pack.subst(conv.getString("events", conv.getString("event", ""))).split(",")) {
+                for (final String rawEvent : GlobalVariableResolver.resolve(pack, conv.getString("events", conv.getString("event", ""))).split(",")) {
                     if (!Objects.equals(rawEvent, "")) {
                         events.add(new EventID(pack, rawEvent.trim()));
                     }
@@ -558,12 +559,12 @@ public class ConversationData {
             }
 
             // Pointers
-            pointers = Arrays.stream(pack.subst(conv.getString("pointers", conv.getString("pointer", ""))).split(","))
+            pointers = Arrays.stream(GlobalVariableResolver.resolve(pack, conv.getString("pointers", conv.getString("pointer", ""))).split(","))
                     .filter(StringUtils::isNotEmpty)
                     .map(String::trim).toList();
 
 
-            extendLinks = Arrays.stream(pack.subst(conv.getString("extends", conv.getString("extend", ""))).split(","))
+            extendLinks = Arrays.stream(GlobalVariableResolver.resolve(pack, conv.getString("extends", conv.getString("extend", ""))).split(","))
                     .filter(StringUtils::isNotEmpty)
                     .map(String::trim).toList();
         }

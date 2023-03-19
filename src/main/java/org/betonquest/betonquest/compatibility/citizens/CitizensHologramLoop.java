@@ -16,6 +16,7 @@ import org.betonquest.betonquest.compatibility.holograms.HologramWrapper;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.location.VectorData;
+import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -105,7 +106,7 @@ public class CitizensHologramLoop extends HologramLoop implements Listener {
     private List<Integer> getNPCs(final QuestPackage pack, final ConfigurationSection section) throws InstructionParseException {
         final List<Integer> npcIDs = new ArrayList<>();
         for (final String stringID : section.getStringList("npcs")) {
-            final String subst = pack.subst(stringID);
+            final String subst = GlobalVariableResolver.resolve(pack, stringID);
             try {
                 npcIDs.add(Integer.parseInt(subst));
             } catch (final NumberFormatException e) {
