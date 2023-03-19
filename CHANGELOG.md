@@ -55,6 +55,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - variable support
     - top lists ordered by point values of players
     - `npcs` list now supports global variables as NPC ID in NPC Holograms
+- menus now support global variables
 - `freeze` event - ProtocolLib compatibility feature: Blocks the player from moving for the specified amount of ticks
 - `block` objective - properties: `absoluteAmount`, `absoluteLeft` and `absoluteTotal`
 - `command` objective

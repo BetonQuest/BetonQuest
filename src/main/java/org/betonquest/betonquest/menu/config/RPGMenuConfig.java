@@ -42,7 +42,7 @@ public class RPGMenuConfig extends SimpleYMLSection {
     @SuppressWarnings("PMD.AvoidDuplicateLiterals")
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public RPGMenuConfig() throws InvalidConfigurationException, FileNotFoundException {
-        super("menuConfig.yml", ConfigAccessor.create(new File(BetonQuest.getInstance().getDataFolder(), "menuConfig.yml"), BetonQuest.getInstance(), "menuConfig.yml").getConfig());
+        super(null, "menuConfig.yml", ConfigAccessor.create(new File(BetonQuest.getInstance().getDataFolder(), "menuConfig.yml"), BetonQuest.getInstance(), "menuConfig.yml").getConfig());
         //load languages
         if (!config.contains("messages") || !config.isConfigurationSection("messages")) {
             throw new Missing("messages");

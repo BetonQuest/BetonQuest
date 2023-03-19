@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -22,15 +23,24 @@ public abstract class SimpleYMLSection {
 
     public static final String RPG_MENU_CONFIG_SETTING = "RPGMenuConfig setting ";
 
+    protected final QuestPackage pack;
     protected final ConfigurationSection config;
     protected final String name;
 
-    public SimpleYMLSection(final String name, final ConfigurationSection config) throws InvalidConfigurationException {
+    public SimpleYMLSection(final QuestPackage pack, final String name, final ConfigurationSection config) throws InvalidConfigurationException {
+        this.pack = pack;
         this.config = config;
         this.name = name;
         if (config == null || config.getKeys(false).size() == 0) {
             throw new InvalidSimpleConfigException("RPGMenuConfig is invalid or empty!");
         }
+    }
+
+    private String resolveGlobalVariable(final String string) {
+        if (pack == null) {
+            return string;
+        }
+        return GlobalVariableResolver.resolve(pack, string);
     }
 
     /**
@@ -44,7 +54,7 @@ public abstract class SimpleYMLSection {
         if (string == null) {
             throw new Missing(key);
         } else {
-            return string;
+            return resolveGlobalVariable(string);
         }
     }
 
@@ -65,7 +75,7 @@ public abstract class SimpleYMLSection {
         if (list.isEmpty()) {
             throw new Missing(key);
         } else {
-            return list;
+            return list.stream().map(this::resolveGlobalVariable).toList();
         }
     }
 
