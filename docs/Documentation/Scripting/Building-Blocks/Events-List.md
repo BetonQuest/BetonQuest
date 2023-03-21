@@ -449,12 +449,18 @@ Don't use conditions here, it behaves strangely.
 
 ## Scoreboard: `score`
 
-This event works in the same way as `point` event, the only difference is that is uses scoreboards instead of points. You can add, subtract, multiply and divide scores in objectives on the scoreboard. The first argument is the name of the objective, second one is a number. It can be positive for addition, negative for subtraction or prefixed with an asterisk for multiplication. Multiplying by fractions is the same as dividing.
+**persistent**
 
-!!! example
-    ```YAML
-    score kills 1
-    ```
+This event works in the same way as [point](#point-point), the only difference is that is uses scoreboards instead of 
+points. You can use `action:add`, `action:subtract`, `action:set` and `action:multiply` to change the value.
+It's only possible to change the value, you have to create the scoreboard-objective beforehand.
+
+```YAML title="Example"
+gotKill: "score kill 1 action:add"
+gotKilled: "score kill 1 action:subtract"
+resetKill: "score kill 0 action:set"
+applyBonus: "score kill 1.2 action:multiply"
+```
 
 ## Set Block: `setblock`
 
