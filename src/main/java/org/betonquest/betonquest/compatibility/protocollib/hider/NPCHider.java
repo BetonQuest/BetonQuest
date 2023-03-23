@@ -15,7 +15,6 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -24,12 +23,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods"})
 @CustomLog
@@ -153,7 +147,7 @@ public final class NPCHider extends BukkitRunnable implements Listener {
 
         final HologramTrait hologramTrait = npc.getTraitNullable(HologramTrait.class);
         if (hologramTrait != null) {
-            final ArmorStand nameEntity = hologramTrait.getNameEntity();
+            final Entity nameEntity = hologramTrait.getNameEntity();
             if (nameEntity != null) {
                 entityList.add(nameEntity);
             }
