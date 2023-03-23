@@ -48,7 +48,7 @@ public class ScoreboardEventFactory implements EventFactory {
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         final String objective = instruction.next();
         final String number = instruction.next();
-        if (instruction.size() > 3) {
+        if (instruction.hasArgument("action")) {
             final String action = instruction.getOptional("action");
             if (action == null) {
                 throw new InstructionParseException("Missing modification action: " + instruction.current());
