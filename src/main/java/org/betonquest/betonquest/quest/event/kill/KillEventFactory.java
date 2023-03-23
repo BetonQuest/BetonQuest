@@ -28,7 +28,7 @@ public class KillEventFactory implements EventFactory {
     private final Plugin plugin;
 
     /**
-     * Create the kill event factory.
+     * Creates the kill event factory.
      *
      * @param server    server to use
      * @param scheduler scheduler to use
