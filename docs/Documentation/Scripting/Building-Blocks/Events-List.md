@@ -128,6 +128,16 @@ Clear all player points in a specified category.
     ```YAML
     deletepoint npc_attitude
     ```
+    
+## Delete Globalpoint: `deleteglobalpoint`
+
+**persistent**, **static**
+
+Removes the specified category from the global points list.
+
+```YAML
+deleteBonus: "deleteglobalpoint bonus"
+```
 
 ## Door: `door`
 
