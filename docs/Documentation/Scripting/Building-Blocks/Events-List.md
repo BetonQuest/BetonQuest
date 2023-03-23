@@ -451,9 +451,9 @@ Don't use conditions here, it behaves strangely.
 
 **persistent**
 
-This event works in the same way as [point](#point-point), the only difference is that is uses scoreboards instead of 
+This event works in the same way as [point](#point-point), the only difference being that it uses scoreboards instead of 
 points. You can use `action:add`, `action:subtract`, `action:set` and `action:multiply` to change the value.
-It's only possible to change the value, you have to create the scoreboard-objective beforehand.
+It's only possible to change the value, you have to create the scoreboard target first.
 
 ```YAML title="Example"
 gotKill: "score kill 1 action:add"
