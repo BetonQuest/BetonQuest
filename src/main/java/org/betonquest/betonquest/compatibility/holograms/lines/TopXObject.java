@@ -59,7 +59,10 @@ public class TopXObject {
         entries.clear();
         final Connector con = new Connector();
 
-        try (ResultSet resultSet = con.querySQL(orderType.getType(), category, String.valueOf(limit))) {
+        try (ResultSet resultSet = con.querySQL(orderType.getType(), statement -> {
+            statement.setString(1, category);
+            statement.setInt(2, limit);
+        })) {
             while (resultSet.next()) {
                 final String playerName = Bukkit.getOfflinePlayer(UUID.fromString(resultSet.getString("playerID"))).getName();
                 entries.add(new TopXLine(playerName, resultSet.getLong("count")));
