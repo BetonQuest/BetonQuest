@@ -62,15 +62,28 @@ public class Connector {
      * @param args arguments
      * @return ResultSet with the requested data
      */
-    @SuppressWarnings("PMD.CloseResource")
-    @SuppressFBWarnings({"ODR_OPEN_DATABASE_RESOURCE", "OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE"})
     public ResultSet querySQL(final QueryType type, final String... args) {
-        final String sql = type.createSql(prefix);
-        try {
-            final PreparedStatement statement = connection.prepareStatement(sql);
+        return querySQL(type, statement -> {
             for (int i = 0; i < args.length; i++) {
                 statement.setString(i + 1, args[i]);
             }
+        });
+    }
+
+    /**
+     * Queries the database with the given type and arguments.
+     *
+     * @param type             type of the query
+     * @param variableResolver resolver for variables in prepared statements
+     * @return ResultSet with the requested data
+     */
+    @SuppressWarnings("PMD.CloseResource")
+    @SuppressFBWarnings({"ODR_OPEN_DATABASE_RESOURCE", "OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE"})
+    public ResultSet querySQL(final QueryType type, final VariableResolver variableResolver) {
+        final String sql = type.createSql(prefix);
+        try {
+            final PreparedStatement statement = connection.prepareStatement(sql);
+            variableResolver.resolve(statement);
             return statement.executeQuery();
         } catch (final SQLException e) {
             LOG.warn("There was a exception with SQL", e);
@@ -94,5 +107,19 @@ public class Connector {
         } catch (final SQLException e) {
             LOG.error("There was an exception with SQL", e);
         }
+    }
+
+    /**
+     * Resolver for variables in prepared statements.
+     */
+    @FunctionalInterface
+    public interface VariableResolver {
+        /**
+         * Resolves the variables in the prepared statement.
+         *
+         * @param statement the statement to resolve
+         * @throws SQLException if there is an error resolving the variables
+         */
+        void resolve(PreparedStatement statement) throws SQLException;
     }
 }
