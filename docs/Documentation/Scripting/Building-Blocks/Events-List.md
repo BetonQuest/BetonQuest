@@ -424,10 +424,10 @@ as modification types. This event also supports an optional `notify` argument th
 change using the notification system.
 
 ```YAML title="Example"
-gainattitude: "point npc_attitude 5 action:add"
-loseattitude: "point npc_attitude 2 action:subtract"
-resetcombo: "point combo 0 action:set"
-boostpoints: "point points 1.25 action:multiply notify"
+gainAttitude: "point npc_attitude 5 action:add"
+loseAttitude: "point npc_attitude 2 action:subtract"
+resetCombo: "point combo 0 action:set"
+boostPoints: "point points 1.25 action:multiply notify"
 ```
 
 ## Run events: `run`
