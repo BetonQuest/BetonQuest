@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Allows you to count items in player's inventory and display number remaining
- * to some amount or showing the items name.
+ * Allows you to display properties of QuestItems like the name
+ * or the amount in player's inventory.
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CommentRequired"})
 public class ItemVariable extends Variable {
