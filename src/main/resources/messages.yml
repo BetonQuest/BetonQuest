@@ -20,7 +20,7 @@ pl:
   money_taken: '&2Lost {1} {2}' # TODO: missing translation
   point_given: '&2You received {1} points to {2}' # TODO: missing translation
   point_taken: '&2You lost {1} points to {2}' # TODO: missing translation
-  point_taken: '&2You lost {1} points to {2}' # TODO: missing translation
+  point_set: '&2Your points {2} are set to {1}' #TODO: missing translation
   point_multiplied: '&2Your points {2} are multiplied by {1}' # TODO: missing translation
   blocks_to_break: '&2Pozostalo {1} blokow do zniszczenia'
   blocks_to_place: '&2Pozostalo {1} blokow do postawienia'
@@ -80,6 +80,7 @@ en:
   money_taken: '&2Lost {1} {2}'
   point_given: '&2You received {1} points to {2}'
   point_taken: '&2You lost {1} points to {2}'
+  point_set: '&2Your points {2} are set to {1}'
   point_multiplied: '&2Your points {2} are multiplied by {1}'
   blocks_to_break: '&2{1} blocks left to break'
   blocks_to_place: '&2{1} blocks left to place'
@@ -139,6 +140,7 @@ de:
   money_taken: '&2{1} {2} weggenommen.'
   point_given: '&2Du hast {1} Punkte für {2} erhalten'
   point_taken: '&2Du hast {1} Punkte von {2} verloren'
+  point_set: '&2Deine Punkte von {2} wurden auf {1} gesetzt'
   point_multiplied: '&2Deine Punkte in {2} wurden mit {1} multipliziert'
   blocks_to_break: '&2Noch {1} Blöcke abzubauen.'
   blocks_to_place: '&2Noch {1} Blöcke zu setzen.'
@@ -198,6 +200,7 @@ fr:
   money_taken: '&2{1} {2} perdu'
   point_given: '&2Vous avez reçu {1} points à {2}'
   point_taken: '&2Vous avez perdu {1} points à {2}'
+  point_set: '&2Your points {2} are set to {1}' #TODO: missing translation
   point_multiplied: '&2Vos points {2} sont multipliés par {1}'
   blocks_to_break: '&2Encore {1} blocs à casser'
   blocks_to_place: '&2Encore {1} blocs à poser'
@@ -257,6 +260,7 @@ cn:
   money_taken: '&2丢失 {1} {2}'
   point_given: '&2你收到了 {1} 点券，来自 {2}'
   point_taken: '&2你花费了 {1} 点券，在 {2}'
+  point_set: '&2Your points {2} are set to {1}' #TODO: missing translation
   point_multiplied: '&2你的点券 {2} 被乘以 {1}'
   blocks_to_break: '&2还需要再破坏{1}个方块'
   blocks_to_place: '&2还需要再放置{1}个方块'
@@ -316,6 +320,7 @@ es:
   money_taken: '&2Perdido {1} {2}'
   point_given: '&2Recibiste {1} puntos para {2}'
   point_taken: '&2Perdiste {1} puntos por {2}'
+  point_set: '&2Your points {2} are set to {1}' #TODO: missing translation
   point_multiplied: '&2Tus puntos {2} se multiplican por {1}'
   blocks_to_break: '&2{1} bloques restantes que romper'
   blocks_to_place: '&2{1} bloques restantes que colocar'
@@ -375,6 +380,7 @@ nl:
   money_taken: '&2Geld verloren: {1} {2}'
   point_given: '&2Je hebt {1} punten ontvangen voor {2}'
   point_taken: '&2Je hebt {1} punten verloren voor {2}'
+  point_set: '&2Your points {2} are set to {1}' #TODO: missing translation
   point_multiplied: '&2Je punten voor {2} zijn vermenigvuldigd met {1}'
   blocks_to_break: '&2{1} blokken over om te breken.'
   blocks_to_place: '&2{1} blokken over om te plaatsen.'
@@ -434,6 +440,7 @@ it:
   money_taken: '&2Hai perso {1} {2}'
   point_given: '&2Hai ricevuto {1} punti da {2}'
   point_taken: '&2Hai perso {1} punti da {2}'
+  point_set: '&2Your points {2} are set to {1}' #TODO: missing translation
   point_multiplied: '&2I tuoi punti {2} sono moltiplicati di {1}'
   blocks_to_break: '&2{1} blocchi rimasti da rompere'
   blocks_to_place: '&2{1} blocchi rimasti da piazzare'
@@ -493,6 +500,7 @@ hu:
   money_taken: '&2Lost {1} {2}' # TODO: missing translation
   point_given: '&2You received {1} points to {2}' # TODO: missing translation
   point_taken: '&2You lost {1} points to {2}' # TODO: missing translation
+  point_set: '&2Your points {2} are set to {1}' #TODO: missing translation
   point_multiplied: '&2Your points {2} are multiplied by {1}' # TODO: missing translation
   blocks_to_break: '&2{1} blokkot hagyott kitörni'
   blocks_to_place: '&2{1} blokkot hagyott lerakni'
@@ -552,6 +560,7 @@ vi:
   money_taken: '&2Đã mất {1} {2}'
   point_given: '&2Bạn đã nhận {1} points từ {2}'
   point_taken: '&2Bạn đã mất {1} points từ {2}'
+  point_set: '&2Your points {2} are set to {1}' #TODO: missing translation
   point_multiplied: '&2Points của bạn {2} sẽ được nhân {1} lần'
   blocks_to_break: '&2{1} khối cần phá còn lại'
   blocks_to_place: '&2{1} khối cần đặt còn lại'
@@ -610,6 +619,7 @@ pt-br:
   money_taken: '&2Perdeu {1} {2}'
   point_given: '&2Você recebeu {1} pontos de {2}'
   point_taken: '&2Você perdeu {1} pontos de {2}'
+  point_set: '&2Your points {2} are set to {1}' #TODO: missing translation
   point_multiplied: '&2Seus pontos {2} são multiplicados por {1}'
   blocks_to_break: '&2{1} blocos para quebrar restantes'
   blocks_to_place: '&2{1} blocos para colocar restantes'
@@ -665,6 +675,7 @@ pt-pt:
   money_taken: '&2Perdido {1} {2}'
   point_given: '&2Tu recebeste {1} pontos para {2}'
   point_taken: '&2Tu perdeste {1} pontos para {2}'
+  point_set: '&2Your points {2} are set to {1}' #TODO: missing translation
   point_multiplied: '&2Os teus pontos {2} foram multiplicados por {1}'
   blocks_to_break: '&2{1} blocos restantes para quebrar'
   blocks_to_place: '&2{1} blocos restantes para colocar'
