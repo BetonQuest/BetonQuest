@@ -47,7 +47,7 @@ public class ItemVariable extends Variable {
                     throw new InstructionParseException(String.format("Lore does not have this line: '%d'", amount));
                 }
             } catch (final NumberFormatException e) {
-                throw new InstructionParseException("Could not parse lore row", e);
+                throw new InstructionParseException("Could not parse line", e);
             }
         } else {
             throw new InstructionParseException(String.format("Unknown variable type: '%s'",
