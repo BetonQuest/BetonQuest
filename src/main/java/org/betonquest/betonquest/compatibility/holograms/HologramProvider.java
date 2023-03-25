@@ -125,12 +125,11 @@ public class HologramProvider implements Integrator {
     /**
      * Creates a wrapped hologram using a hooked hologram plugin
      *
-     * @param name     Name of the hologram (Not always applicable)
      * @param location Location of where the hologram should be spawned
      * @return The hologram
      */
-    public BetonHologram createHologram(final String name, final Location location) {
-        return integrator.createHologram(name, location);
+    public BetonHologram createHologram(final Location location) {
+        return integrator.createHologram(location);
     }
 
     /**
