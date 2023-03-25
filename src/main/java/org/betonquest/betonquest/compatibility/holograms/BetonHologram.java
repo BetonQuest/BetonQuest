@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack;
 
 /**
  * Interface class to wrap a hologram from another supported plugin
- * Instances of this class should only be created by {@link HologramIntegrator#createHologram(String, Location)}
+ * Instances of this class should only be created by {@link HologramIntegrator#createHologram(Location)}
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public interface BetonHologram {

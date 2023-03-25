@@ -30,7 +30,7 @@ public class LocationHologramLoop extends HologramLoop {
     protected List<BetonHologram> getHologramsFor(final QuestPackage pack, final ConfigurationSection section) throws InstructionParseException {
         final Location location = getParsedLocation(pack, section);
         final List<BetonHologram> holograms = new ArrayList<>();
-        holograms.add(HologramProvider.getInstance().createHologram(pack.getQuestPath() + section.getCurrentPath(), location));
+        holograms.add(HologramProvider.getInstance().createHologram(location));
         return holograms;
     }
 
