@@ -220,6 +220,6 @@ public final class NPCHider extends BukkitRunnable implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(final PlayerJoinEvent event) {
-        applyVisibility(PlayerConverter.getID(event.getPlayer()));
+        Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> applyVisibility(PlayerConverter.getID(event.getPlayer())));
     }
 }
