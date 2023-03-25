@@ -59,12 +59,10 @@ public class TopXObject {
         entries.clear();
         final Connector con = new Connector();
 
-        QueryType query = QueryType.LOAD_TOP_X_POINTS_DESC;
-        if (orderType == OrderType.ASCENDING) {
-            query = QueryType.LOAD_TOP_X_POINTS_ASC;
-        }
-
-        try (ResultSet resultSet = con.querySQL(query, category, String.valueOf(limit))) {
+        try (ResultSet resultSet = con.querySQL(orderType.getType(), statement -> {
+            statement.setString(1, category);
+            statement.setInt(2, limit);
+        })) {
             while (resultSet.next()) {
                 final String playerName = Bukkit.getOfflinePlayer(UUID.fromString(resultSet.getString("playerID"))).getName();
                 entries.add(new TopXLine(playerName, resultSet.getLong("count")));
@@ -96,11 +94,21 @@ public class TopXObject {
         /**
          * From largest to smallest. Default.
          */
-        DESCENDING,
+        DESCENDING(QueryType.LOAD_TOP_X_POINTS_DESC),
 
         /**
          * From smallest to largest.
          */
-        ASCENDING
+        ASCENDING(QueryType.LOAD_TOP_X_POINTS_ASC);
+
+        private final QueryType type;
+
+        OrderType(final QueryType type) {
+            this.type = type;
+        }
+
+        public QueryType getType() {
+            return type;
+        }
     }
 }

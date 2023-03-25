@@ -74,11 +74,10 @@ public abstract class HologramIntegrator implements Integrator, Comparable<Holog
     /**
      * Create a BetonHologram object which wraps this specific integrator's plugin's hologram
      *
-     * @param name     The name of the hologram (for internal use only)
      * @param location The location of where to create the hologram
      * @return A new BetonHologram object
      */
-    public abstract BetonHologram createHologram(String name, Location location);
+    public abstract BetonHologram createHologram(Location location);
 
     @Override
     public void hook() throws HookException {

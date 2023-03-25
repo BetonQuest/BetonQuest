@@ -32,9 +32,8 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
     }
 
     @Override
-    public BetonHologram createHologram(final String name, final Location location) {
-        final String hologramName = name + UUID.randomUUID();
-        final Hologram hologram = DHAPI.createHologram(hologramName, location);
+    public BetonHologram createHologram(final Location location) {
+        final Hologram hologram = DHAPI.createHologram(UUID.randomUUID().toString(), location);
         hologram.enable();
         return new DecentHologramsHologram(hologram);
     }

@@ -15,7 +15,6 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -153,7 +152,7 @@ public final class NPCHider extends BukkitRunnable implements Listener {
 
         final HologramTrait hologramTrait = npc.getTraitNullable(HologramTrait.class);
         if (hologramTrait != null) {
-            final ArmorStand nameEntity = hologramTrait.getNameEntity();
+            final Entity nameEntity = hologramTrait.getNameEntity();
             if (nameEntity != null) {
                 entityList.add(nameEntity);
             }
@@ -221,6 +220,6 @@ public final class NPCHider extends BukkitRunnable implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(final PlayerJoinEvent event) {
-        applyVisibility(PlayerConverter.getID(event.getPlayer()));
+        Bukkit.getScheduler().runTask(BetonQuest.getInstance(), () -> applyVisibility(PlayerConverter.getID(event.getPlayer())));
     }
 }

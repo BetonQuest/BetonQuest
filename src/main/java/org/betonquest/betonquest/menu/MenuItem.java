@@ -37,11 +37,6 @@ import java.util.Map;
 public class MenuItem extends SimpleYMLSection {
 
     /**
-     * The package this item is inside
-     */
-    private final QuestPackage pack;
-
-    /**
      * The betonquest quest item this item is based on
      */
     private final Item item;
@@ -89,9 +84,8 @@ public class MenuItem extends SimpleYMLSection {
     @SuppressWarnings({"PMD.ExceptionAsFlowControl", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity", "PMD.NPathComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public MenuItem(final QuestPackage pack, final String name, final ConfigurationSection section) throws InvalidConfigurationException {
-        super(name, section);
+        super(pack, name, section);
         try {
-            this.pack = pack;
             //load item
             final ItemID itemID = new ItemID(pack, getString("item").trim());
             final VariableNumber amount;

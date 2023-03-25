@@ -16,6 +16,7 @@ import org.betonquest.betonquest.compatibility.holograms.HologramWrapper;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.location.VectorData;
+import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -83,7 +84,6 @@ public class CitizensHologramLoop extends HologramLoop implements Listener {
         }
         final List<Integer> npcIDs = getNPCs(pack, section);
         final boolean follow = section.getBoolean("follow", false);
-        final String baseName = pack.getQuestPath() + "." + section.getCurrentPath();
         final Map<Integer, BetonHologram> npcBetonHolograms = new HashMap<>();
         final List<BetonHologram> holograms = new ArrayList<>();
         npcIDs.forEach(npcID -> {
@@ -92,12 +92,12 @@ public class CitizensHologramLoop extends HologramLoop implements Listener {
                 npcBetonHolograms.put(npcID, null);
             } else {
                 final BetonHologram hologram = HologramProvider.getInstance()
-                        .createHologram(baseName + npc.getId(), npc.getStoredLocation().add(vector));
+                        .createHologram(npc.getStoredLocation().add(vector));
                 npcBetonHolograms.put(npcID, hologram);
                 holograms.add(hologram);
             }
         });
-        npcHolograms.add(new NPCHologram(baseName, npcBetonHolograms, holograms, vector, follow));
+        npcHolograms.add(new NPCHologram(npcBetonHolograms, holograms, vector, follow));
         return holograms;
     }
 
@@ -105,7 +105,7 @@ public class CitizensHologramLoop extends HologramLoop implements Listener {
     private List<Integer> getNPCs(final QuestPackage pack, final ConfigurationSection section) throws InstructionParseException {
         final List<Integer> npcIDs = new ArrayList<>();
         for (final String stringID : section.getStringList("npcs")) {
-            final String subst = pack.subst(stringID);
+            final String subst = GlobalVariableResolver.resolve(pack, stringID);
             try {
                 npcIDs.add(Integer.parseInt(subst));
             } catch (final NumberFormatException e) {
@@ -131,8 +131,7 @@ public class CitizensHologramLoop extends HologramLoop implements Listener {
                     } else {
                         final Location location = npc.getStoredLocation().add(npcHologram.vector());
                         if (hologram == null) {
-                            final BetonHologram newHologram = HologramProvider.getInstance()
-                                    .createHologram(npcHologram.baseName + npcID, location);
+                            final BetonHologram newHologram = HologramProvider.getInstance().createHologram(location);
                             entry.setValue(newHologram);
                             npcHologram.holograms().add(newHologram);
                             updateHologram(newHologram);
@@ -205,7 +204,7 @@ public class CitizensHologramLoop extends HologramLoop implements Listener {
      * @param npcHolograms the list of NPC IDs and there linked holograms.
      * @param holograms    The holograms.
      */
-    private record NPCHologram(String baseName, Map<Integer, BetonHologram> npcHolograms, List<BetonHologram> holograms,
+    private record NPCHologram(Map<Integer, BetonHologram> npcHolograms, List<BetonHologram> holograms,
                                Vector vector, boolean follow) {
     }
 }

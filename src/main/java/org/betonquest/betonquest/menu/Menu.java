@@ -92,7 +92,7 @@ public class Menu extends SimpleYMLSection implements Listener {
             "PMD.CognitiveComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public Menu(final MenuID menuID) throws InvalidConfigurationException {
-        super(menuID.getFullID(), menuID.getConfig());
+        super(menuID.getPackage(), menuID.getFullID(), menuID.getConfig());
         this.menuID = menuID;
         //load size
         this.height = getInt("height");
@@ -102,26 +102,26 @@ public class Menu extends SimpleYMLSection implements Listener {
         //load title
         try {
             final String title = ChatColor.translateAlternateColorCodes('&', getString("title"));
-            this.title = new VariableString(this.menuID.getPackage(), title);
+            this.title = new VariableString(pack, title);
         } catch (final InstructionParseException e) {
             throw new InvalidConfigurationException(e.getMessage(), e);
         }
         //load opening conditions
         this.openConditions = new ArrayList<>();
         try {
-            this.openConditions.addAll(getConditions("open_conditions", this.menuID.getPackage()));
+            this.openConditions.addAll(getConditions("open_conditions", pack));
         } catch (final Missing ignored) {
         }
         //load opening events
         this.openEvents = new ArrayList<>();
         try {
-            this.openEvents.addAll(getEvents("open_events", this.menuID.getPackage()));
+            this.openEvents.addAll(getEvents("open_events", pack));
         } catch (final Missing ignored) {
         }
         //load closing events
         this.closeEvents = new ArrayList<>();
         try {
-            this.closeEvents.addAll(getEvents("close_events", this.menuID.getPackage()));
+            this.closeEvents.addAll(getEvents("close_events", pack));
         } catch (final Missing ignored) {
         }
         //load bound item
@@ -130,7 +130,7 @@ public class Menu extends SimpleYMLSection implements Listener {
             @SuppressWarnings("PMD.ShortMethodName")
             protected QuestItem of() throws Missing, Invalid {
                 try {
-                    return new QuestItem(new ItemID(Menu.this.menuID.getPackage(), getString("bind")));
+                    return new QuestItem(new ItemID(Menu.this.pack, getString("bind")));
                 } catch (ObjectNotFoundException | InstructionParseException e) {
                     throw new Invalid("bind", e);
                 }
@@ -157,7 +157,7 @@ public class Menu extends SimpleYMLSection implements Listener {
         }
         final HashMap<String, MenuItem> itemsMap = new HashMap<>();
         for (final String key : config.getConfigurationSection("items").getKeys(false)) {
-            itemsMap.put(key, new MenuItem(this.menuID.getPackage(), key, config.getConfigurationSection("items." + key)));
+            itemsMap.put(key, new MenuItem(pack, key, config.getConfigurationSection("items." + key)));
         }
         //load slots
         this.slots = new ArrayList<>();
@@ -204,7 +204,7 @@ public class Menu extends SimpleYMLSection implements Listener {
     public boolean mayOpen(final Profile profile) {
         for (final ConditionID conditionID : openConditions) {
             if (!BetonQuest.condition(profile, conditionID)) {
-                LOG.debug(getPackage(), "Denied opening of " + name + ": Condition " + conditionID + "returned false.");
+                LOG.debug(pack, "Denied opening of " + name + ": Condition " + conditionID + "returned false.");
                 return false;
             }
         }
@@ -236,7 +236,7 @@ public class Menu extends SimpleYMLSection implements Listener {
             return;
         }
         //open the menu
-        LOG.debug(getPackage(), onlineprofile + " used bound item of menu " + this.menuID);
+        LOG.debug(pack, onlineprofile + " used bound item of menu " + this.menuID);
         menu.openMenu(onlineprofile, this.menuID);
     }
 
@@ -247,10 +247,10 @@ public class Menu extends SimpleYMLSection implements Listener {
      */
     @SuppressWarnings("PMD.AvoidDuplicateLiterals")
     public void runOpenEvents(final Profile profile) {
-        LOG.debug(getPackage(), "Menu " + menuID + ": Running open events");
+        LOG.debug(pack, "Menu " + menuID + ": Running open events");
         for (final EventID event : this.openEvents) {
             BetonQuest.event(profile, event);
-            LOG.debug(getPackage(), "Menu " + menuID + ": Run event " + event);
+            LOG.debug(pack, "Menu " + menuID + ": Run event " + event);
         }
     }
 
@@ -260,10 +260,10 @@ public class Menu extends SimpleYMLSection implements Listener {
      * @param player the player to run the events for
      */
     public void runCloseEvents(final Player player) {
-        LOG.debug(getPackage(), "Menu " + menuID + ": Running close events");
+        LOG.debug(pack, "Menu " + menuID + ": Running close events");
         for (final EventID event : this.closeEvents) {
             BetonQuest.event(PlayerConverter.getID(player), event);
-            LOG.debug(getPackage(), "Menu " + menuID + ": Run event " + event);
+            LOG.debug(pack, "Menu " + menuID + ": Run event " + event);
         }
     }
 
@@ -278,7 +278,7 @@ public class Menu extends SimpleYMLSection implements Listener {
      * @return the package this menu is located in
      */
     public QuestPackage getPackage() {
-        return this.menuID.getPackage();
+        return pack;
     }
 
     /**
@@ -370,7 +370,7 @@ public class Menu extends SimpleYMLSection implements Listener {
             }
             final OnlineProfile onlineProfile = PlayerConverter.getID(player);
             if (mayOpen(onlineProfile)) {
-                LOG.debug(getPackage(), onlineProfile + " run bound command of " + menuID);
+                LOG.debug(pack, onlineProfile + " run bound command of " + menuID);
                 menu.openMenu(onlineProfile, menuID);
                 return true;
             } else {
