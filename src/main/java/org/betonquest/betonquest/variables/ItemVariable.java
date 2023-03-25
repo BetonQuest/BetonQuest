@@ -15,16 +15,17 @@ import java.util.Locale;
 
 /**
  * Allows you to count items in player's inventory and display number remaining
- * to some amount.
+ * to some amount or showing the items name.
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CommentRequired"})
-public class ItemAmountVariable extends Variable {
+public class ItemVariable extends Variable {
 
     private final QuestItem questItem;
     private final Type type;
     private int amount;
 
-    public ItemAmountVariable(final Instruction instruction) throws InstructionParseException {
+    @SuppressWarnings("PMD.CognitiveComplexity")
+    public ItemVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         questItem = instruction.getQuestItem();
         if (instruction.next().toLowerCase(Locale.ROOT).startsWith("left:")) {
@@ -36,6 +37,18 @@ public class ItemAmountVariable extends Variable {
             }
         } else if ("amount".equalsIgnoreCase(instruction.current())) {
             type = Type.AMOUNT;
+        } else if ("name".equalsIgnoreCase(instruction.current())) {
+            type = Type.NAME;
+        } else if (instruction.current().toLowerCase(Locale.ROOT).startsWith("lore:")) {
+            type = Type.LORE;
+            try {
+                amount = Integer.parseInt(instruction.current().substring(5));
+                if (amount >= questItem.getLore().size()) {
+                    throw new InstructionParseException(String.format("Lore does not have this line: '%d'", amount));
+                }
+            } catch (final NumberFormatException e) {
+                throw new InstructionParseException("Could not parse lore row", e);
+            }
         } else {
             throw new InstructionParseException(String.format("Unknown variable type: '%s'",
                     instruction.current()));
@@ -43,8 +56,24 @@ public class ItemAmountVariable extends Variable {
     }
 
     @Override
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public String getValue(final Profile profile) {
+        switch (type) {
+            case AMOUNT:
+                return Integer.toString(playersAmount(profile));
+            case LEFT:
+                return Integer.toString(amount - playersAmount(profile));
+            case NAME:
+                final String name = questItem.getName();
+                return name == null ? "" : name;
+            case LORE:
+                return questItem.getLore().get(amount);
+            default:
+                return "";
+        }
+    }
+
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
+    private int playersAmount(final Profile profile) {
         final Player player = profile.getOnlineProfile().get().getPlayer();
         int playersAmount = 0;
         for (final ItemStack item : player.getInventory().getContents()) {
@@ -66,18 +95,11 @@ public class ItemAmountVariable extends Variable {
             }
             playersAmount += item.getAmount();
         }
-        switch (type) {
-            case AMOUNT:
-                return Integer.toString(playersAmount);
-            case LEFT:
-                return Integer.toString(amount - playersAmount);
-            default:
-                return "";
-        }
+        return playersAmount;
     }
 
     private enum Type {
-        AMOUNT, LEFT
+        AMOUNT, LEFT, NAME, LORE
     }
 
 }
