@@ -92,6 +92,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `time` event - now supports subtraction and world selection, which made it persistent and static
 - `globalpoint` event - new syntax for manipulating global points
 - `experience` event - it's now possible to change xp, change and set levels and set the xp bar
+- `deleteglobalpoint` event
 - `score` event - more options for manipulating the scoreboard
 - Things that are also added in 1.12.X:
     - new line support for `journal_lore` in `messages.yml`

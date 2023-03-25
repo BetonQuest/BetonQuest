@@ -220,6 +220,7 @@ import org.betonquest.betonquest.quest.event.legacy.QuestEventFactoryAdapter;
 import org.betonquest.betonquest.quest.event.lever.LeverEventFactory;
 import org.betonquest.betonquest.quest.event.logic.IfElseEventFactory;
 import org.betonquest.betonquest.quest.event.party.PartyEventFactory;
+import org.betonquest.betonquest.quest.event.point.DeleteGlobalPointEventFactory;
 import org.betonquest.betonquest.quest.event.point.DeletePointEventFactory;
 import org.betonquest.betonquest.quest.event.point.GlobalPointEventFactory;
 import org.betonquest.betonquest.quest.event.scoreboard.ScoreboardEventFactory;
@@ -841,6 +842,7 @@ public class BetonQuest extends JavaPlugin {
         registerNonStaticEvent("velocity", new VelocityEventFactory(getServer(), getServer().getScheduler(), this));
         registerNonStaticEvent("hunger", new HungerEventFactory(getServer(), getServer().getScheduler(), this));
         registerNonStaticEvent("cancelconversation", new CancelConversationEventFactory());
+        registerEvent("deleteglobalpoint", new DeleteGlobalPointEventFactory());
 
         registerObjectives("location", LocationObjective.class);
         registerObjectives("block", BlockObjective.class);
