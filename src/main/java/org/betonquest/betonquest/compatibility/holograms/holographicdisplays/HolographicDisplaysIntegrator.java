@@ -31,7 +31,7 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
     }
 
     @Override
-    public BetonHologram createHologram(final String name, final Location location) {
+    public BetonHologram createHologram(final Location location) {
         final Hologram hologram = HolographicDisplaysAPI.get(BetonQuest.getInstance()).createHologram(location);
         hologram.setPlaceholderSetting(PlaceholderSetting.ENABLE_ALL);
         return new HolographicDisplaysHologram(hologram);

@@ -8,23 +8,32 @@ public enum Point {
     /**
      * Adds the count to the current value.
      */
-    ADD((current, count) -> current + (int) count),
+    ADD((current, count) -> current + (int) count, "point_given"),
     /**
      * Subtracts the count from the current value.
      */
-    SET((current, count) -> (int) count),
+    SUBTRACT((current, count) -> current - (int) count, "point_taken"),
+    /**
+     * Sets the current value to the count.
+     */
+    SET((current, count) -> (int) count, "point_set"),
     /**
      * Multiplies the current value by the count.
      */
-    MULTIPLY((current, count) -> (int) (current * count));
+    MULTIPLY((current, count) -> (int) (current * count), "point_multiplied");
 
     /**
      * The calculator to use for this point type.
      */
     private final Calculator calculator;
+    /**
+     * The name of the category of the modification.
+     */
+    private final String notifyCategory;
 
-    Point(final Calculator calculator) {
+    Point(final Calculator calculator, final String notifyCategory) {
         this.calculator = calculator;
+        this.notifyCategory = notifyCategory;
     }
 
     /**
@@ -36,6 +45,15 @@ public enum Point {
      */
     public int modify(final int current, final double count) {
         return calculator.calculate(current, count);
+    }
+
+    /**
+     * Returns the name of the category of the modification.
+     *
+     * @return the name of the category of the modification
+     */
+    public String getNotifyCategory() {
+        return notifyCategory;
     }
 
     /**

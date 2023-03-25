@@ -243,6 +243,22 @@ public class PlayerData implements TagData {
     }
 
     /**
+     * Sets the amount of points in specified category. If there is no such category it will be
+     * created.
+     *
+     * @param category points will be added to this category
+     * @param count    how much points will be set
+     */
+    public void setPoints(final String category, final int count) {
+        synchronized (points) {
+            saver.add(new Record(UpdateType.REMOVE_POINTS, profileID, category));
+            points.removeIf(point -> point.getCategory().equalsIgnoreCase(category));
+            points.add(new Point(category, count));
+            saver.add(new Record(UpdateType.ADD_POINTS, profileID, category, String.valueOf(count)));
+        }
+    }
+
+    /**
      * Removes the whole category of points.
      *
      * @param category name of a point category
