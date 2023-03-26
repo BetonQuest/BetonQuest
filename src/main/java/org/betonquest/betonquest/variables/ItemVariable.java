@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.item.QuestItem;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -23,6 +24,7 @@ public class ItemVariable extends Variable {
     private final QuestItem questItem;
     private final Type type;
     private int amount;
+    private boolean raw;
 
     @SuppressWarnings("PMD.CognitiveComplexity")
     public ItemVariable(final Instruction instruction) throws InstructionParseException {
@@ -39,6 +41,7 @@ public class ItemVariable extends Variable {
             type = Type.AMOUNT;
         } else if ("name".equalsIgnoreCase(instruction.current())) {
             type = Type.NAME;
+            checkForRawString(instruction);
         } else if (instruction.current().toLowerCase(Locale.ROOT).startsWith("lore:")) {
             type = Type.LORE;
             try {
@@ -49,9 +52,19 @@ public class ItemVariable extends Variable {
             } catch (final NumberFormatException e) {
                 throw new InstructionParseException("Could not parse line", e);
             }
+            checkForRawString(instruction);
         } else {
             throw new InstructionParseException(String.format("Unknown variable type: '%s'",
                     instruction.current()));
+        }
+    }
+
+    private void checkForRawString(final Instruction instruction) {
+        try {
+            if ("raw".equalsIgnoreCase(instruction.next())) {
+                raw = true;
+            }
+        } catch (final InstructionParseException ignored) {
         }
     }
 
@@ -64,9 +77,9 @@ public class ItemVariable extends Variable {
                 return Integer.toString(amount - playersAmount(profile));
             case NAME:
                 final String name = questItem.getName();
-                return name == null ? "" : name;
+                return name == null ? "" : conditionalRaw(name);
             case LORE:
-                return questItem.getLore().get(amount);
+                return conditionalRaw(questItem.getLore().get(amount));
             default:
                 return "";
         }
@@ -96,6 +109,13 @@ public class ItemVariable extends Variable {
             playersAmount += item.getAmount();
         }
         return playersAmount;
+    }
+
+    private String conditionalRaw(final String string) {
+        if (raw) {
+            return ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', string));
+        }
+        return string;
     }
 
     private enum Type {

@@ -117,12 +117,13 @@ The `amount` argument displays the number of items in the players inventory and 
 the `left:x` gives the difference to the `x` value (when the amount is higher than the value it will be negative).
 The `name` argument simply gives the defined name or an empty String, when not set
 and `lore:x` displays the lore row with index `x` (starting with 0).
+Both `name` and `lore` supports the `raw` subargument to get the text without formatting.
 
 ```
 %item.stick.amount%
 %item.stick.left:32%
 %item.epic_sword.name%
-%item.epic_sword.lore:0%
+%item.epic_sword.lore:0.raw%
 ```
 
 ### Location Variable
