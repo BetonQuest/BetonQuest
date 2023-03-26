@@ -6,6 +6,8 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -29,7 +31,7 @@ public class ItemVariable extends Variable {
     @SuppressWarnings("PMD.CognitiveComplexity")
     public ItemVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
-        questItem = instruction.getQuestItem();
+        questItem = parseQuestItem(instruction);
         if (instruction.next().toLowerCase(Locale.ROOT).startsWith("left:")) {
             type = Type.LEFT;
             try {
@@ -56,6 +58,20 @@ public class ItemVariable extends Variable {
         } else {
             throw new InstructionParseException(String.format("Unknown variable type: '%s'",
                     instruction.current()));
+        }
+    }
+
+    @SuppressWarnings({"PMD.ExceptionAsFlowControl", "PMD.PreserveStackTrace"})
+    private QuestItem parseQuestItem(final Instruction instruction) throws InstructionParseException {
+        try {
+            return instruction.getQuestItem();
+        } catch (final InstructionParseException e) {
+            final String path = instruction.current() + "." + instruction.next();
+            try {
+                return new QuestItem(new ItemID(instruction.getPackage(), path));
+            } catch (final ObjectNotFoundException ex) {
+                throw new InstructionParseException("Could not load '" + path + "' item: " + ex.getMessage(), ex);
+            }
         }
     }
 
