@@ -307,7 +307,7 @@ public class Journal {
                     if (text == null || text.length() == 0) {
                         continue;
                     }
-                    // resolve variables
+                    text = GlobalVariableResolver.resolve(pack, text);
                     for (final String variable : BetonQuest.resolveVariables(text)) {
                         try {
                             BetonQuest.createVariable(pack, variable);
@@ -318,7 +318,6 @@ public class Journal {
                         text = text.replace(variable,
                                 BetonQuest.getInstance().getVariableValue(packName, variable, profile));
                     }
-                    text = GlobalVariableResolver.resolve(pack, text);
                     // add the text to HashMap
                     numbers.add(number);
                     final ArrayList<String> linesOrder;
