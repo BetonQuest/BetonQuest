@@ -94,6 +94,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `experience` event - it's now possible to change xp, change and set levels and set the xp bar
 - `deleteglobalpoint` event
 - `score` event - more options for manipulating the scoreboard
+- `item` variable - new `name` and `lore` argument and now supports items from other packages
 - Things that are also added in 1.12.X:
     - new line support for `journal_lore` in `messages.yml`
     - FastAsyncWorldEdit compatibility

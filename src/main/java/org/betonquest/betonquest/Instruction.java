@@ -197,7 +197,7 @@ public class Instruction {
         return getQuestItem(next());
     }
 
-    private QuestItem getQuestItem(final String string) throws InstructionParseException {
+    public QuestItem getQuestItem(final String string) throws InstructionParseException {
         if (string == null) {
             return null;
         }

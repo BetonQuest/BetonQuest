@@ -111,12 +111,19 @@ variables:
 
 ### Item Variable
 
-With this variable you can display amount of specific items in player's inventory or a number needed to reach specific
-amount. The first argument is the name of an item (as defined in the _items_ section) and the second one is either 
-`amount` or `left:x`, where `x` is a number.
+With this variable you can display different properties of a specific QuestItem.
+The first argument is the name of the item (as defined in the _items_ section).
+The `amount` argument displays the number of items in the players inventory and backpack,
+the `left:x` gives the difference to the `x` value (when the amount is higher than the value it will be negative).
+The `name` argument simply gives the defined name or an empty String, when not set
+and `lore:x` displays the lore row with index `x` (starting with 0).
+Both `name` and `lore` supports the `raw` subargument to get the text without formatting.
 
 ```
 %item.stick.amount%
+%item.stick.left:32%
+%item.epic_sword.name%
+%item.epic_sword.lore:0.raw%
 ```
 
 ### Location Variable
