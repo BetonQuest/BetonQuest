@@ -86,48 +86,38 @@ public class ItemVariable extends Variable {
 
     @Override
     public String getValue(final Profile profile) {
-        switch (type) {
-            case AMOUNT:
-                return Integer.toString(playersAmount(profile));
-            case LEFT:
-                return Integer.toString(amount - playersAmount(profile));
-            case NAME:
-                final String name = questItem.getName();
-                return name == null ? "" : conditionalRaw(name);
-            case LORE:
-                return conditionalRaw(questItem.getLore().get(amount));
-            default:
-                return "";
-        }
+        return switch (type) {
+            case AMOUNT -> Integer.toString(itemAmount(profile));
+            case LEFT -> Integer.toString(amount - itemAmount(profile));
+            case NAME -> conditionalRaw(questItem.getName());
+            case LORE -> conditionalRaw(questItem.getLore().get(amount));
+        };
     }
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    private int playersAmount(final Profile profile) {
+    private int itemAmount(final Profile profile) {
         final Player player = profile.getOnlineProfile().get().getPlayer();
-        int playersAmount = 0;
+        int itemAmount = 0;
         for (final ItemStack item : player.getInventory().getContents()) {
-            if (item == null) {
+            if (item == null || !questItem.compare(item)) {
                 continue;
             }
-            if (!questItem.compare(item)) {
-                continue;
-            }
-            playersAmount += item.getAmount();
+            itemAmount += item.getAmount();
         }
         final List<ItemStack> backpackItems = BetonQuest.getInstance().getPlayerData(profile).getBackpack();
         for (final ItemStack item : backpackItems) {
-            if (item == null) {
+            if (item == null || !questItem.compare(item)) {
                 continue;
             }
-            if (!questItem.compare(item)) {
-                continue;
-            }
-            playersAmount += item.getAmount();
+            itemAmount += item.getAmount();
         }
-        return playersAmount;
+        return itemAmount;
     }
 
     private String conditionalRaw(final String string) {
+        if (string == null) {
+            return "";
+        }
         if (raw) {
             return ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', string));
         }
