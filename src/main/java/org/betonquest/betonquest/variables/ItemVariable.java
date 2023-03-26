@@ -25,62 +25,51 @@ public class ItemVariable extends Variable {
 
     private final QuestItem questItem;
     private final Type type;
+    private final boolean raw;
     private int amount;
-    private boolean raw;
 
-    @SuppressWarnings("PMD.CognitiveComplexity")
+    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.PreserveStackTrace"})
     public ItemVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
-        questItem = parseQuestItem(instruction);
-        if (instruction.next().toLowerCase(Locale.ROOT).startsWith("left:")) {
+        int pos = instruction.size() - 1;
+        if ("raw".equalsIgnoreCase(instruction.getPart(pos))) {
+            raw = true;
+            pos--;
+        } else {
+            raw = false;
+        }
+        final String argument = instruction.getPart(pos).toLowerCase(Locale.ROOT);
+        if (argument.startsWith("left:")) {
             type = Type.LEFT;
             try {
-                amount = Integer.parseInt(instruction.current().substring(5));
+                amount = Integer.parseInt(argument.substring(5));
             } catch (final NumberFormatException e) {
                 throw new InstructionParseException("Could not parse item amount", e);
             }
-        } else if ("amount".equalsIgnoreCase(instruction.current())) {
+        } else if ("amount".equals(argument)) {
             type = Type.AMOUNT;
-        } else if ("name".equalsIgnoreCase(instruction.current())) {
+        } else if ("name".equals(argument)) {
             type = Type.NAME;
-            checkForRawString(instruction);
-        } else if (instruction.current().toLowerCase(Locale.ROOT).startsWith("lore:")) {
+        } else if (argument.startsWith("lore:")) {
             type = Type.LORE;
             try {
-                amount = Integer.parseInt(instruction.current().substring(5));
-                if (amount >= questItem.getLore().size()) {
-                    throw new InstructionParseException(String.format("Lore does not have this line: '%d'", amount));
-                }
+                amount = Integer.parseInt(argument.substring(5));
             } catch (final NumberFormatException e) {
                 throw new InstructionParseException("Could not parse line", e);
             }
-            checkForRawString(instruction);
         } else {
-            throw new InstructionParseException(String.format("Unknown variable type: '%s'",
-                    instruction.current()));
+            throw new InstructionParseException(String.format("Unknown argument type: '%s'",
+                    argument));
         }
-    }
-
-    @SuppressWarnings({"PMD.ExceptionAsFlowControl", "PMD.PreserveStackTrace"})
-    private QuestItem parseQuestItem(final Instruction instruction) throws InstructionParseException {
-        try {
-            return instruction.getQuestItem();
-        } catch (final InstructionParseException e) {
-            final String path = instruction.current() + "." + instruction.next();
+        if (pos == 3) {
+            final String path = instruction.getPart(1) + "." + instruction.getPart(2);
             try {
-                return new QuestItem(new ItemID(instruction.getPackage(), path));
-            } catch (final ObjectNotFoundException ex) {
-                throw new InstructionParseException("Could not load '" + path + "' item: " + ex.getMessage(), ex);
+                questItem = new QuestItem(new ItemID(instruction.getPackage(), path));
+            } catch (final ObjectNotFoundException e) {
+                throw new InstructionParseException("Could not load '" + path + "' item: " + e.getMessage());
             }
-        }
-    }
-
-    private void checkForRawString(final Instruction instruction) {
-        try {
-            if ("raw".equalsIgnoreCase(instruction.next())) {
-                raw = true;
-            }
-        } catch (final InstructionParseException ignored) {
+        } else {
+            questItem = instruction.getQuestItem();
         }
     }
 
@@ -90,7 +79,13 @@ public class ItemVariable extends Variable {
             case AMOUNT -> Integer.toString(itemAmount(profile));
             case LEFT -> Integer.toString(amount - itemAmount(profile));
             case NAME -> conditionalRaw(questItem.getName());
-            case LORE -> conditionalRaw(questItem.getLore().get(amount));
+            case LORE -> {
+                try {
+                    yield conditionalRaw(questItem.getLore().get(amount));
+                } catch (final IndexOutOfBoundsException e) {
+                    yield "";
+                }
+            }
         };
     }
 
