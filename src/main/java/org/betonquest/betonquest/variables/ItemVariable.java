@@ -6,8 +6,6 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
-import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.item.QuestItem;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -28,7 +26,7 @@ public class ItemVariable extends Variable {
     private final boolean raw;
     private int amount;
 
-    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.PreserveStackTrace"})
+    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.AvoidLiteralsInIfCondition"})
     public ItemVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         int pos = instruction.size() - 1;
@@ -63,11 +61,7 @@ public class ItemVariable extends Variable {
         }
         if (pos == 3) {
             final String path = instruction.getPart(1) + "." + instruction.getPart(2);
-            try {
-                questItem = new QuestItem(new ItemID(instruction.getPackage(), path));
-            } catch (final ObjectNotFoundException e) {
-                throw new InstructionParseException("Could not load '" + path + "' item: " + e.getMessage());
-            }
+            questItem = instruction.getQuestItem(path);
         } else {
             questItem = instruction.getQuestItem();
         }
