@@ -242,6 +242,7 @@ import org.betonquest.betonquest.variables.NpcNameVariable;
 import org.betonquest.betonquest.variables.ObjectivePropertyVariable;
 import org.betonquest.betonquest.variables.PlayerNameVariable;
 import org.betonquest.betonquest.variables.PointVariable;
+import org.betonquest.betonquest.variables.RandomNumberVariable;
 import org.betonquest.betonquest.variables.TagVariable;
 import org.betonquest.betonquest.variables.VersionVariable;
 import org.bstats.bukkit.Metrics;
@@ -909,6 +910,7 @@ public class BetonQuest extends JavaPlugin {
         registerVariable("version", VersionVariable.class);
         registerVariable("location", LocationVariable.class);
         registerVariable("math", MathVariable.class);
+        registerVariable("randomnumber", RandomNumberVariable.class);
 
         registerScheduleType("realtime-daily", RealtimeDailySchedule.class, new RealtimeDailyScheduler(lastExecutionCache));
         registerScheduleType("realtime-cron", RealtimeCronSchedule.class, new RealtimeCronScheduler(lastExecutionCache));
