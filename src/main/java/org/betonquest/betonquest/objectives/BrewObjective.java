@@ -41,7 +41,8 @@ BrewObjective extends CountingObjective implements Listener {
     public BrewObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "potions_to_brew");
         potion = instruction.getQuestItem();
-        targetAmount = instruction.getInt();
+        targetAmount = instruction.getVarNum();
+        preCheckAmountNotLessThanOne(targetAmount);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)

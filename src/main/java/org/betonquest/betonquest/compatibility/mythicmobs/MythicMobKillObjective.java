@@ -78,7 +78,8 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
         super(instruction, "mobs_to_kill");
 
         Collections.addAll(names, instruction.getArray());
-        targetAmount = instruction.getInt(instruction.getOptional("amount"), 1);
+        targetAmount = instruction.getVarNum(instruction.getOptional("amount", "1"));
+        preCheckAmountNotLessThanOne(targetAmount);
 
         final double deathRadiusAllPlayersTemp = instruction.getDouble(instruction.getOptional("deathRadiusAllPlayers"), 0);
         deathRadiusAllPlayers = Math.pow(deathRadiusAllPlayersTemp, 2);

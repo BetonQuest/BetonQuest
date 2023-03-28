@@ -29,7 +29,8 @@ public class SmeltingObjective extends CountingObjective implements Listener {
     public SmeltingObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "items_to_smelt");
         item = instruction.getQuestItem();
-        targetAmount = instruction.getPositive();
+        targetAmount = instruction.getVarNum();
+        preCheckAmountNotLessThanOne(targetAmount);
     }
 
     @EventHandler(ignoreCancelled = true)

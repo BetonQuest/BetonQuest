@@ -33,7 +33,8 @@ public class MobKillObjective extends CountingObjective implements Listener {
     public MobKillObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "mobs_to_kill");
         entities = instruction.getList(mob -> instruction.getEnum(mob, EntityType.class));
-        targetAmount = instruction.getPositive();
+        targetAmount = instruction.getVarNum();
+        preCheckAmountNotLessThanOne(targetAmount);
         name = instruction.getOptional("name");
         if (name != null) {
             name = Utils.format(name, true, false).replace('_', ' ');

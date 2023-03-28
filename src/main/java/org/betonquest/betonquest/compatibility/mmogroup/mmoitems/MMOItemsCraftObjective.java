@@ -40,8 +40,8 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
         itemType = typeManager.get(instruction.next());
         itemId = instruction.next();
 
-        final String amountStr = instruction.getOptional("amount");
-        targetAmount = amountStr == null ? 1 : Integer.parseInt(instruction.getOptional("amount"));
+        targetAmount = instruction.getVarNum(instruction.getOptional("amount", "1"));
+        preCheckAmountNotLessThanOne(targetAmount);
     }
 
     /**

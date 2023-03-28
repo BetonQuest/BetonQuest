@@ -138,6 +138,16 @@ public class VariableNumber {
         }
     }
 
+    /**
+     * To check if a value will be guarantied not zero or less
+     *
+     * @return true if a variable is set or the constant value is greater zero,
+     * false if no variable is set and the constant value is zero or less
+     */
+    public boolean explicitLessThanOne() {
+        return variable == null && number < 1;
+    }
+
     @Override
     public String toString() {
         return variable == null ? String.valueOf(number) : variable.toString();

@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.api;
 
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 
@@ -25,7 +26,7 @@ public abstract class CountingObjective extends Objective {
     /**
      * The amount of units required for completion.
      */
-    protected int targetAmount;
+    protected VariableNumber targetAmount;
 
     /**
      * Create a counting objective.
@@ -50,9 +51,29 @@ public abstract class CountingObjective extends Objective {
         defaultNotifyMessageName = notifyMessageName;
     }
 
+    /**
+     * This checks the {@link VariableNumber} absence to a variable and ensures the absolute value is positive
+     * if no variable is present
+     *
+     * @param variableNumber The variable to check
+     * @throws InstructionParseException if the stored value is explicit negative
+     */
+    protected final void preCheckAmountNotLessThanOne(final VariableNumber variableNumber)
+            throws InstructionParseException {
+        if (variableNumber.explicitLessThanOne()) {
+            throw new InstructionParseException("Amount cannot be less than 1");
+        }
+    }
+
     @Override
     public final String getDefaultDataInstruction() {
-        return Integer.toString(targetAmount);
+        return targetAmount.toString();
+    }
+
+    @Override
+    public String getDefaultDataInstruction(final Profile profile) {
+        final int value = targetAmount.getInt(profile);
+        return value > 0 ? String.valueOf(value) : "1";
     }
 
     @Override

@@ -32,7 +32,8 @@ public class ShearObjective extends CountingObjective implements Listener {
 
     public ShearObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "sheep_to_shear");
-        targetAmount = instruction.getPositive();
+        targetAmount = instruction.getVarNum();
+        preCheckAmountNotLessThanOne(targetAmount);
         final String rawName = instruction.getOptional("name");
         name = rawName != null ? escapedUnderscore.matcher(underscore.matcher(rawName).replaceAll(" ")).replaceAll("_") : null;
         color = instruction.getOptional("color");
