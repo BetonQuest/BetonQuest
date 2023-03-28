@@ -77,13 +77,28 @@ The three basic optional settings.
 By default, the name and description of the quest item is displayed when hovering over the item.
 You can overwrite this by using the `text` setting.
 Both [color codes](https://minecraft.gamepedia.com/Formatting_codes) and [variables](../../Scripting/Building-Blocks/Variables-List.md) are supported.
+The text can be provided as a single string with newlines, a multi-line string, or a list of strings, see examples.
 
-``` YAML title="Example"
+``` YAML title="List Example"
 skeletonQuestDone:
   item: "questDoneItem"
-   text:
-     - "&2Quest reputation: &6&l%point.quest_reputation.amount%" #(1)!
-     - "Complete quests to gain reputation!" #(2)!
+  text:
+    - "&2Quest reputation: &6&l%point.quest_reputation.amount%" #(1)!
+    - "Complete quests to gain reputation!" #(2)!
+```
+
+``` YAML title="String with Newlines Example"
+skeletonQuestDone:
+  item: "questDoneItem"
+  text: "&2Quest reputation: &6&l%point.quest_reputation.amount%\nComplete quests to gain reputation!" #(1)! #(2)!
+```
+
+``` YAML title="Multi-line String Example"
+skeletonQuestDone:
+  item: "questDoneItem"
+  text: |-
+    &2Quest reputation: &6&l%point.quest_reputation.amount% #(1)!
+    Complete quests to gain reputation! #(2)!
 ```
 
 1. The name of the item.

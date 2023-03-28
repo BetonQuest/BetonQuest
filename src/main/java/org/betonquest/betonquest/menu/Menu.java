@@ -157,7 +157,8 @@ public class Menu extends SimpleYMLSection implements Listener {
         }
         final HashMap<String, MenuItem> itemsMap = new HashMap<>();
         for (final String key : config.getConfigurationSection("items").getKeys(false)) {
-            itemsMap.put(key, new MenuItem(pack, key, config.getConfigurationSection("items." + key)));
+            itemsMap.put(key, new MenuItem(pack, menuID.getFullID(), key,
+                    config.getConfigurationSection("items." + key)));
         }
         //load slots
         this.slots = new ArrayList<>();
