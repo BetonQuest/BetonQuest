@@ -5,8 +5,10 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.GlobalVariableID;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * This class resolves all global variables in a string.
@@ -58,5 +60,17 @@ public final class GlobalVariableResolver {
             LOG.warn(pack, e.getMessage(), e);
             return variable + "(not found)";
         }
+    }
+
+    /**
+     * Resolves all global variables recursively in the given strings
+     * with the {@link #resolve(QuestPackage, String)} method.
+     *
+     * @param pack   the package in which the input strings are defined
+     * @param inputs the inputs string
+     * @return the strings with all global variables resolved
+     */
+    public static List<String> resolve(final QuestPackage pack, final List<String> inputs) {
+        return inputs.stream().map(string -> resolve(pack, string)).collect(Collectors.toList());
     }
 }
