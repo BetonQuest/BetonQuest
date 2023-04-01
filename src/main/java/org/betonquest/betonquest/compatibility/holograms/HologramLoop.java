@@ -14,6 +14,7 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.item.QuestItem;
+import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 
@@ -71,9 +72,15 @@ public abstract class HologramLoop {
     }
 
     private HologramWrapper initializeHolograms(final int defaultInterval, final QuestPackage pack, final ConfigurationSection section) throws InstructionParseException {
-        final List<String> lines = section.getStringList("lines");
-        final String rawConditions = section.getString("conditions");
-        final int checkInterval = section.getInt("check_interval", defaultInterval);
+        final String checkIntervalString = GlobalVariableResolver.resolve(pack, section.getString("check_interval"));
+        final int checkInterval;
+        try {
+            checkInterval = checkIntervalString != null ? Integer.parseInt(checkIntervalString) : defaultInterval;
+        } catch (final NumberFormatException e) {
+            throw new InstructionParseException("Could not parse check interval", e);
+        }
+        final List<String> lines = GlobalVariableResolver.resolve(pack, section.getStringList("lines"));
+        final String rawConditions = GlobalVariableResolver.resolve(pack, section.getString("conditions"));
 
         final ConditionID[] conditions = parseConditions(pack, rawConditions);
 
