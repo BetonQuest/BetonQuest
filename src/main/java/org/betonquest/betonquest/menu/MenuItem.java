@@ -92,7 +92,7 @@ public class MenuItem extends SimpleYMLSection {
 
     @SuppressWarnings({"PMD.ExceptionAsFlowControl", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity", "PMD.NPathComplexity"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public MenuItem(final QuestPackage pack, final String menuId, final String name, final ConfigurationSection section)
+    public MenuItem(final QuestPackage pack, final MenuID menuID, final String name, final ConfigurationSection section)
             throws InvalidConfigurationException {
         super(pack, name, section);
         try {
@@ -110,7 +110,7 @@ public class MenuItem extends SimpleYMLSection {
             // load description
             this.descriptions = new HashMap<>();
             try {
-                this.descriptions.putAll(generateDescriptions(menuId, section));
+                this.descriptions.putAll(generateDescriptions(menuID.getFullID(), section));
             } catch (final Missing ignored) {
             }
             //load events
