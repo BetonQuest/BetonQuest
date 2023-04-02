@@ -86,16 +86,16 @@ public class GiveEvent extends QuestEvent {
 
     private void notifyPlayer(final Profile profile, final NotifyType type) {
         try {
-            Config.sendNotify(null, profile.getOnlineProfile().get(), "inventory_full_" + type.getString(), null, "inventory_full_" + type.getString() + ",inventory_full,error");
+            Config.sendNotify(null, profile.getOnlineProfile().get(), "inventory_full_" + type.toStringLowercase(), null, "inventory_full_" + type.toStringLowercase() + ",inventory_full,error");
         } catch (final QuestRuntimeException e) {
-            LOG.warn("The notify system was unable to play a sound for the 'inventory_full_" + type.getString() + "' category. Error was: '" + e.getMessage() + "'", e);
+            LOG.warn("The notify system was unable to play a sound for the 'inventory_full_" + type.toStringLowercase() + "' category. Error was: '" + e.getMessage() + "'", e);
         }
     }
 
     private enum NotifyType {
         BACKPACK, DROP;
 
-        public String getString() {
+        public String toStringLowercase() {
             return this.toString().toLowerCase(Locale.ROOT);
         }
     }
