@@ -222,7 +222,7 @@ Gives the player predefined items. They are specified exactly as in `item` condi
 list separated by commas, every item can have amount separated by colon. Default amount is 1. 
 If the player doesn't have required space in the inventory, the items are dropped on the ground,
 unless they are quest items. Then they will be put into the backpack. You can also specify `notify` keyword to display a simple message to the player about receiving items.
-The optional `backpack` argument places items always in the backpack (if they can be placed there).
+The optional `backpack` argument forces quest items to be placed in the backpack.
 
 !!! example
     ```YAML
