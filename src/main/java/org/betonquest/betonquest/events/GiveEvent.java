@@ -57,23 +57,17 @@ public class GiveEvent extends QuestEvent {
             while (amountInt > 0) {
                 final int stackSize = Math.min(amountInt, 64);
                 final ItemStack item = questItem.generate(stackSize, profile);
-                if (backpack) {
-                    if (!addToBackpack(profile, item)) {
-                        final HashMap<Integer, ItemStack> left = player.getInventory().addItem(item);
-                        for (final ItemStack itemStack : left.values()) {
-                            player.getWorld().dropItem(player.getLocation(), itemStack);
-                            notifyPlayer(profile, NotifyType.DROP);
-                        }
-                    }
-                } else {
-                    final HashMap<Integer, ItemStack> left = player.getInventory().addItem(item);
-                    for (final ItemStack itemStack : left.values()) {
-                        if (addToBackpack(profile, itemStack)) {
-                            notifyPlayer(profile, NotifyType.BACKPACK);
-                        } else {
-                            player.getWorld().dropItem(player.getLocation(), itemStack);
-                            notifyPlayer(profile, NotifyType.DROP);
-                        }
+                if (backpack && addToBackpack(profile, item)) {
+                    amountInt -= stackSize;
+                    continue;
+                }
+                final HashMap<Integer, ItemStack> left = player.getInventory().addItem(item);
+                for (final ItemStack itemStack : left.values()) {
+                    if (!backpack && addToBackpack(profile, itemStack)) {
+                        notifyPlayer(profile, NotifyType.BACKPACK);
+                    } else {
+                        player.getWorld().dropItem(player.getLocation(), itemStack);
+                        notifyPlayer(profile, NotifyType.DROP);
                     }
                 }
                 amountInt -= stackSize;
