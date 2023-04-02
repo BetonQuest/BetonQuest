@@ -193,19 +193,19 @@ This variable will be replaced with the name of the player. If you add `display`
 
 ### Random Number Variable
 
-This variable gives a number from the first value to the second.
-The first argument is `int` or `double`. the second and third arguments are numbers
-(for decimal numbers use a comma instead of a point) or variables.
+This variable gives a random number from the first value to the second.
+The first argument is `int` or `double`, the second and third arguments are numbers or variables,
+seperated by a `~`.
 Like the `math` variable you can round the decimal value by using
 instead of `double` the argument `double~x` where `x` is the maximal amount of decimal places. 
-Variables can be used with `{}` instead of `%%`
+Variables can be used with `{}` instead of `%%`.
 Note that the first value is returned when it is higher than the second.
 
 ```
-%randomnumber.int.0.10%
-%randomnumber.int.-70.70%
-%randomnumber.double~3.3,112.100%
-%randomnumber.double~1.0.{location.y}%
+%randomnumber.int.0~10%
+%randomnumber.int.-70~70%
+%randomnumber.double~3.3.112~100%
+%randomnumber.double~1.0~{location.y}%
 ```
 
 ### Version Variable
