@@ -89,6 +89,10 @@ public class Instruction {
     ///    GENERAL    ///
     /////////////////////
 
+    public boolean hasNext() {
+        return currentIndex < parts.length - 1;
+    }
+
     public String next() throws InstructionParseException {
         lastOptional = null;
         currentIndex = nextIndex;
