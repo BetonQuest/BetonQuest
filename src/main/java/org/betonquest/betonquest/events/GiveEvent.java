@@ -27,14 +27,16 @@ public class GiveEvent extends QuestEvent {
 
     private final Item[] questItems;
     private final boolean notify;
+    private final boolean backpack;
 
     public GiveEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);
         questItems = instruction.getItemList();
         notify = instruction.hasArgument("notify");
+        backpack = instruction.hasArgument("backpack");
     }
 
-    @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     @Override
     protected Void execute(final Profile profile) {
         final Player player = profile.getOnlineProfile().get().getPlayer();
@@ -53,30 +55,48 @@ public class GiveEvent extends QuestEvent {
                 }
             }
             while (amountInt > 0) {
-                final int stackSize;
-                if (amountInt > 64) {
-                    stackSize = 64;
-                } else {
-                    stackSize = amountInt;
-                }
+                final int stackSize = Math.min(amountInt, 64);
                 final ItemStack item = questItem.generate(stackSize, profile);
+                if (backpack && addToBackpack(profile, item)) {
+                    amountInt -= stackSize;
+                    continue;
+                }
                 final HashMap<Integer, ItemStack> left = player.getInventory().addItem(item);
                 for (final ItemStack itemStack : left.values()) {
-                    if (Utils.isQuestItem(itemStack)) {
-                        BetonQuest.getInstance().getPlayerData(profile).addItem(itemStack, stackSize);
+                    if (!backpack && addToBackpack(profile, itemStack)) {
+                        notifyPlayer(profile, NotifyType.BACKPACK);
                     } else {
                         player.getWorld().dropItem(player.getLocation(), itemStack);
-                    }
-                    final String type = Utils.isQuestItem(itemStack) ? "backpack" : "drop";
-                    try {
-                        Config.sendNotify(null, profile.getOnlineProfile().get(), "inventory_full_" + type, null, "inventory_full_" + type + ",inventory_full,error");
-                    } catch (final QuestRuntimeException e) {
-                        LOG.warn("The notify system was unable to play a sound for the 'inventory_full_" + type + "' category. Error was: '" + e.getMessage() + "'", e);
+                        notifyPlayer(profile, NotifyType.DROP);
                     }
                 }
-                amountInt = amountInt - stackSize;
+                amountInt -= stackSize;
             }
         }
         return null;
+    }
+
+    private boolean addToBackpack(final Profile profile, final ItemStack itemStack) {
+        if (Utils.isQuestItem(itemStack)) {
+            BetonQuest.getInstance().getPlayerData(profile).addItem(itemStack, itemStack.getAmount());
+            return true;
+        }
+        return false;
+    }
+
+    private void notifyPlayer(final Profile profile, final NotifyType type) {
+        try {
+            Config.sendNotify(null, profile.getOnlineProfile().get(), "inventory_full_" + type.toStringLowercase(), null, "inventory_full_" + type.toStringLowercase() + ",inventory_full,error");
+        } catch (final QuestRuntimeException e) {
+            LOG.warn("The notify system was unable to play a sound for the 'inventory_full_" + type.toStringLowercase() + "' category. Error was: '" + e.getMessage() + "'", e);
+        }
+    }
+
+    private enum NotifyType {
+        BACKPACK, DROP;
+
+        public String toStringLowercase() {
+            return this.toString().toLowerCase(Locale.ROOT);
+        }
     }
 }
