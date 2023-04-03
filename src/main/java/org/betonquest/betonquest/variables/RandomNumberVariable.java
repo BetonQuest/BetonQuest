@@ -19,7 +19,7 @@ public class RandomNumberVariable extends Variable {
     /**
      * Used for check if fractional uses limited decimal places
      */
-    private static final int DOUBLE_LENGTH = "double".length();
+    private static final int DECIMAL_LENGTH = "decimal".length();
     /**
      * The lower bar of the random amount
      */
@@ -46,10 +46,10 @@ public class RandomNumberVariable extends Variable {
     public RandomNumberVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         final String type = instruction.next();
-        if ("int".equalsIgnoreCase(type)) {
+        if ("whole".equalsIgnoreCase(type)) {
             this.fractional = false;
             this.format = null;
-        } else if (type.startsWith("double")) {
+        } else if (type.startsWith("decimal")) {
             this.fractional = true;
             this.format = getFormat(type);
         } else {
@@ -61,9 +61,9 @@ public class RandomNumberVariable extends Variable {
     }
 
     private DecimalFormat getFormat(final String type) throws InstructionParseException {
-        if (type.length() > DOUBLE_LENGTH) {
+        if (type.length() > DECIMAL_LENGTH) {
             try {
-                final int amount = Integer.parseInt(type.substring(DOUBLE_LENGTH + 1));
+                final int amount = Integer.parseInt(type.substring(DECIMAL_LENGTH + 1));
                 if (amount > 0) {
                     return new DecimalFormat("#." + "#".repeat(amount));
                 }
