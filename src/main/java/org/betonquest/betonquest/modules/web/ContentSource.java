@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 
 /**
- * This is an interface that provides basic methods to read update information from a given {@link URL}.
+ * This is an interface that provides basic methods to read information from a given {@link URL}
+ * and return it as a {@link String}.
  */
 public interface ContentSource {
 
