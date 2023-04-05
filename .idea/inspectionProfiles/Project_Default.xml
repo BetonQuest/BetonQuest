@@ -38,5 +38,9 @@
       <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="public" />
       <option name="REQUIRED_TAGS" value="" />
     </inspection_tool>
+    <inspection_tool class="LocalCanBeFinal" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="REPORT_VARIABLES" value="true" />
+      <option name="REPORT_PARAMETERS" value="true" />
+    </inspection_tool>
   </profile>
 </component>
