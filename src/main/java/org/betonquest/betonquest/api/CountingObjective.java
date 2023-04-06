@@ -58,9 +58,8 @@ public abstract class CountingObjective extends Objective {
      * @param variableNumber The variable to check
      * @throws InstructionParseException if the stored value is explicit negative
      */
-    protected final void preCheckAmountNotLessThanOne(final VariableNumber variableNumber)
-            throws InstructionParseException {
-        if (variableNumber.explicitLessThanOne()) {
+    protected final void preCheckAmountNotLessThanOne(final VariableNumber variableNumber) throws InstructionParseException {
+        if (variableNumber.isExplicitLessThanOne()) {
             throw new InstructionParseException("Amount cannot be less than 1");
         }
     }
