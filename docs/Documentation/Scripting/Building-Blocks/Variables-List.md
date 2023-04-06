@@ -191,6 +191,22 @@ This variable will be replaced with the name of the player. If you add `display`
 %player.display%
 ```
 
+### Random Number Variable
+
+This variable gives a random number from the first value to the second.
+The first argument is `whole` or `decimal`, the second and third arguments are numbers or variables,
+seperated by a `~`.
+Like the `math` variable you can round the decimal value by using
+instead of `decimal` the argument `decimal~x` where `x` is the maximal amount of decimal places. 
+Variables can be used with `{}` instead of `%%`.
+Note that the first value is returned when it is higher than the second.
+
+```
+%randomnumber.whole.0~10%
+%randomnumber.whole.-70~70%
+%randomnumber.decimal~3.3.112~100%
+%randomnumber.decimal~1.0~{location.y}%
+```
 
 ### Version Variable
 
