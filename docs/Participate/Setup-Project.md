@@ -10,10 +10,13 @@ You can still use your preferred IDE, but then you need to check on your own tha
 ##Installing IntelliJ 
 First download [IntelliJ](https://www.jetbrains.com/idea/download) and install it.
 
-After you installed IntelliJ, we recommend installing the plugin
-[Save Actions](https://plugins.jetbrains.com/plugin/7642-save-actions).
-The plugin automatically formats code, organizes imports, adds final modifiers, and fulfils some other requirements we have.
-You don't need to configure that plugin, the project contains the configuration file.
+### Recommended IntelliJ Settings
+In IntelliJ go to `File/Settings/Tools/Actions on Save` and check the following entries:
+
+- Reformat code - Whole file
+- Optimize imports
+- Rearrange code
+- Run code cleanup
 
 ## Check out the repository
 You need a Git installation to be able to check out code from GitHub.
