@@ -141,6 +141,31 @@ objectives:
   startQuestByMining: 'location 100;200;300;world 5 events:start_quest_mine_folder {++global++}'
 ```
 
+#### Variables
+
+!!! warning
+    Use with caution!
+    Variable means here the variable with `%%`, not global variables with `$$`!
+    Global variables are absolutely safe and will result in an error on reload if used wrong.
+
+Instead of hardcoded numbers you can use variables as amount in Objectives.
+Note that the value of the variable at the moment of assigning the objective is used and will then be stored per active objective independent.
+To assign a new value you would have to delete the old objective and start a new one,
+discards all process.
+Also, when an invalid amount for the objective is given a default value of `1` is used.
+This can happen when the variable is not initiated, has a negative value in an objective which requires a positive amount or other things.
+
+Important: Nobody will be informed when the default value is used!
+
+Also expect this feature to get changed in the future.
+
+```YAML title="Example"
+objectives:
+  killMonsters: 'mobkill ZOMBIE %math.calc:(100-{point.reputation.amount})*2% events:endSiege'
+  breakObsidian: 'block OBSIDIAN %randomnumber.whole.-60~-40% events:dailyReward'
+  eatSteak: 'consume steak amount:%randomnumber.whole.2~6% events:health_boost'
+```
+
 [Explore all Objectives](./Building-Blocks/Objectives-List.md){ .md-button }
 
 
