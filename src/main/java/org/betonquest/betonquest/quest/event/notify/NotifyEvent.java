@@ -35,7 +35,6 @@ public class NotifyEvent implements Event {
         this.translations = translations;
     }
 
-    final
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
         final String playerLanguageKey = BetonQuest.getInstance().getPlayerData(profile).getLanguage();
