@@ -13,16 +13,7 @@ import java.util.Map;
 /**
  * {@link Event} the implementation of the notify all event.
  */
-public class NotifyAllEvent implements Event {
-
-    /**
-     * The {@link NotifyIO} to use.
-     */
-    private final NotifyIO notifyIO;
-    /**
-     * The translations to use.
-     */
-    private final Map<String, VariableString> translations;
+public class NotifyAllEvent extends NotifyEvent implements Event {
 
     /**
      * Creates a new {@link NotifyAllEvent}.
@@ -31,14 +22,13 @@ public class NotifyAllEvent implements Event {
      * @param translations the translations to use
      */
     public NotifyAllEvent(final NotifyIO notifyIO, final Map<String, VariableString> translations) {
-        this.notifyIO = notifyIO;
-        this.translations = translations;
+        super(notifyIO, translations);
     }
 
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
         for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
-            new NotifyEvent(notifyIO, translations).execute(onlineProfile);
+            super.execute(onlineProfile);
         }
     }
 }
