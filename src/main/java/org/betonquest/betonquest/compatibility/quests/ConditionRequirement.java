@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.compatibility.quests;
 
-import lombok.CustomLog;
 import me.blackvein.quests.CustomRequirement;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
@@ -15,8 +15,11 @@ import java.util.Map;
  * Requires the player to meet specified condition.
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class ConditionRequirement extends CustomRequirement {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(ConditionRequirement.class);
 
     public ConditionRequirement() {
         super();

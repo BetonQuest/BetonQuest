@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.quest.event.legacy;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.quest.event.EventFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -15,9 +15,12 @@ import java.lang.reflect.InvocationTargetException;
  * @param <T> type of the event
  * @deprecated new events must use an {@link EventFactory} instead
  */
-@CustomLog
 @Deprecated
 public class FromClassQuestEventFactory<T extends QuestEvent> implements QuestEventFactory {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(FromClassQuestEventFactory.class);
 
     /**
      * Class of the event to create.

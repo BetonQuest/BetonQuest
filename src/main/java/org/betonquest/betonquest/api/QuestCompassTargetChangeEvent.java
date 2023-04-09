@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.api;
 
-import lombok.Getter;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.profiles.ProfileEvent;
 import org.bukkit.Location;
@@ -15,7 +14,6 @@ public class QuestCompassTargetChangeEvent extends ProfileEvent implements Cance
 
     private static final HandlerList HANDLERS = new HandlerList();
 
-    @Getter
     private final Location location;
     private boolean cancelled;
 
@@ -26,6 +24,10 @@ public class QuestCompassTargetChangeEvent extends ProfileEvent implements Cance
 
     public static HandlerList getHandlerList() {
         return HANDLERS;
+    }
+
+    public Location getLocation() {
+        return location;
     }
 
     @Override

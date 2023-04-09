@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.objectives;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -27,8 +27,11 @@ import org.bukkit.scheduler.BukkitRunnable;
  * Requires the player to shoot a target with a bow
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class ArrowShootObjective extends Objective implements Listener {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(ArrowShootObjective.class);
 
     private final CompoundLocation loc;
     private final VariableNumber range;

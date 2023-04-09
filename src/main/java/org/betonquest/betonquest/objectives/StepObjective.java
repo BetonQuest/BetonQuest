@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.objectives;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -24,8 +24,11 @@ import org.bukkit.inventory.EquipmentSlot;
  * The player must step on the pressure plate
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class StepObjective extends Objective implements Listener {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(StepObjective.class);
     private static final BlockSelector PRESSURE_PLATE_SELECTOR = getPressurePlateSelector();
 
     private final CompoundLocation loc;

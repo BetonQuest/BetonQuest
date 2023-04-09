@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.modules.schedule.impl;
 
-import lombok.CustomLog;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.api.schedule.Schedule;
 import org.betonquest.betonquest.api.schedule.Scheduler;
@@ -22,15 +22,16 @@ import java.util.function.Supplier;
  * @param <S> Type of Schedule
  */
 @SuppressWarnings("PMD.DoNotUseThreads")
-@CustomLog(topic = "Schedules")
 public abstract class ExecutorServiceScheduler<S extends Schedule> extends Scheduler<S> {
-
     /**
      * Maximum time that the scheduler will wait on shutdown/reload for currently executing schedules.
      */
     @VisibleForTesting
     static final int TERMINATION_TIMEOUT_MS = 5;
-
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(ExecutorServiceScheduler.class, "Schedules");
     /**
      * Supplier used to create the {@link #executor}.
      */

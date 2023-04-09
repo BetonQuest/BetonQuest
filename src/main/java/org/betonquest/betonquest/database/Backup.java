@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.database;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -23,8 +23,11 @@ import java.util.Map;
 /**
  * This class is responsible for backing up and restoring the database.
  */
-@CustomLog
 public final class Backup {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Backup.class);
 
     /**
      * Private constructor to hide the implicit public one.
@@ -99,7 +102,7 @@ public final class Backup {
             // save the config at the end
             accessor.save();
             return done;
-        } catch (IOException | SQLException | InvalidConfigurationException e) {
+        } catch (final IOException | SQLException | InvalidConfigurationException e) {
             LOG.warn("There was an error during database backup: " + e.getMessage(), e);
             final File brokenFile = new File(instance.getDataFolder(), "database-backup.yml");
             if (brokenFile.exists()) {

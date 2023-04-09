@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
@@ -22,13 +22,15 @@ import java.util.regex.Pattern;
 /**
  * Singleton class which provides Hologram
  */
-@CustomLog
 public class HologramProvider implements Integrator {
     /**
      * Pattern to match an instruction variable in string
      */
     public static final Pattern VARIABLE_VALIDATOR = Pattern.compile("%[^ %\\s]+%");
-
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(HologramProvider.class);
     /**
      * HologramIntegrators when 'hooked' add themselves to this list
      */

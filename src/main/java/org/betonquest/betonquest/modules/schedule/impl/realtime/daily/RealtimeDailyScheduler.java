@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.modules.schedule.impl.realtime.daily;
 
-import lombok.CustomLog;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.schedule.CatchupStrategy;
 import org.betonquest.betonquest.modules.schedule.LastExecutionCache;
 import org.betonquest.betonquest.modules.schedule.impl.ExecutorServiceScheduler;
@@ -20,8 +20,11 @@ import java.util.function.Supplier;
  * The scheduler for {@link RealtimeDailySchedule}.
  */
 @SuppressWarnings("PMD.DoNotUseThreads")
-@CustomLog(topic = "Schedules")
 public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDailySchedule> {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(RealtimeDailyScheduler.class, "Schedules");
 
     /**
      * A cache where the last execution times of a schedule are stored.

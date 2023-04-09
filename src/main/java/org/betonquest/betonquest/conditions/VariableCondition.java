@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.conditions;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableString;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -12,8 +12,11 @@ import java.util.regex.PatternSyntaxException;
 /**
  * Checks if the variable value matches given pattern.
  */
-@CustomLog
 public class VariableCondition extends Condition {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(VariableCondition.class);
 
     /**
      * The variable to compare with the regex.

@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.database;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,8 +19,11 @@ import java.util.TreeMap;
  * Connects to and uses a MySQL database
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
-@CustomLog
 public class MySQL extends Database {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(MySQL.class);
     private final String user;
     private final String database;
     private final String password;
@@ -53,7 +56,7 @@ public class MySQL extends Database {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(
                     "jdbc:mysql://" + this.hostname + ":" + this.port + "/" + this.database + "?&useSSL=false", this.user, this.password);
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (final ClassNotFoundException | SQLException e) {
             LOG.warn("MySQL says: " + e.getMessage(), e);
         }
         return connection;

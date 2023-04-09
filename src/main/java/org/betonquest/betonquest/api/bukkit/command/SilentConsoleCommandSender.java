@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.api.bukkit.command;
 
-import lombok.CustomLog;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
@@ -12,8 +12,11 @@ import java.util.UUID;
 /**
  * A wrapper for a {@link ConsoleCommandSender} that does not send any messages.
  */
-@CustomLog(topic = "SilentConsoleCommandSender")
 public class SilentConsoleCommandSender extends SilentCommandSender implements ConsoleCommandSender {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(SilentConsoleCommandSender.class, "SilentConsoleCommandSender");
     /**
      * The wrapped command sender.
      */

@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.events;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.QuestCompassTargetChangeEvent;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
@@ -22,8 +22,11 @@ import java.util.Locale;
  * Adds a compass specific tag to the player.
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class CompassEvent extends QuestEvent {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(CompassEvent.class);
 
     private final Action action;
     private final String compass;

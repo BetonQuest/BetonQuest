@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.conversation;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.ConversationOptionEvent;
 import org.betonquest.betonquest.api.PlayerConversationEndEvent;
 import org.betonquest.betonquest.api.PlayerConversationStartEvent;
@@ -48,8 +48,11 @@ import java.util.concurrent.TimeoutException;
  * Represents a conversation between player and NPC
  */
 @SuppressWarnings({"PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.CommentRequired"})
-@CustomLog
 public class Conversation implements Listener {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Conversation.class);
 
     private static final ConcurrentHashMap<Profile, Conversation> LIST = new ConcurrentHashMap<>();
 
@@ -278,7 +281,6 @@ public class Conversation implements Listener {
         // end conversations if there are no possible options
         if (current.isEmpty()) {
             new ConversationEnder().runTask(BetonQuest.getInstance());
-            return;
         }
     }
 

@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.quest.event.point;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
@@ -13,8 +13,11 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 /**
  * Modifies players Points
  */
-@CustomLog
 public class PointEvent implements Event {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(PointEvent.class);
 
     /**
      * The plain name of the category

@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.objectives;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
@@ -30,8 +30,11 @@ import org.bukkit.inventory.ItemStack;
  * Requires the player to catch the fish.
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class FishObjective extends CountingObjective implements Listener {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(FishObjective.class);
 
     private final BlockSelector blockSelector;
     private final CompoundLocation hookTargetLocation;

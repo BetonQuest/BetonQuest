@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.item.typehandler;
 
-import lombok.CustomLog;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -21,8 +21,11 @@ import java.util.UUID;
  * in Bukkit / Spigot. Thus, deprecation warnings are suppressed for this class.
  */
 @SuppressWarnings("deprecation")
-@CustomLog
 public class SpigotHeadHandler extends HeadHandler {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(SpigotHeadHandler.class);
     /**
      * Prefix for JSON structure minecraft uses for defining skin texture URL.
      */

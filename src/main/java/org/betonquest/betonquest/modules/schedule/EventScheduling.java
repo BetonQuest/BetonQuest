@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.modules.schedule;
 
-import lombok.CustomLog;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.bukkit.config.custom.unmodifiable.UnmodifiableConfigurationSection;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.schedule.Schedule;
@@ -16,8 +16,11 @@ import java.util.Optional;
 /**
  * Class responsible for managing schedule types, their schedulers, as well as parsing schedules from config.
  */
-@CustomLog(topic = "Schedules")
 public class EventScheduling {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(EventScheduling.class, "Schedules");
 
     /**
      * Map that contains all types of schedulers,
@@ -123,7 +126,7 @@ public class EventScheduling {
                         .getConstructor(ScheduleID.class, ConfigurationSection.class)
                         .newInstance(scheduleID, scheduleConfig);
             } catch (final InvocationTargetException e) {
-                if (e.getCause() instanceof InstructionParseException cause) {
+                if (e.getCause() instanceof final InstructionParseException cause) {
                     throw cause;
                 } else {
                     throw e;

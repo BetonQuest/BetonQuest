@@ -1,15 +1,18 @@
 package org.betonquest.betonquest.compatibility.holograms.holographicdisplays;
 
-import lombok.CustomLog;
 import me.filoghost.holographicdisplays.api.placeholder.GlobalPlaceholder;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Defines HolographicDisplays global placeholder <code>{bqg:package:variable}</code>.
  */
-@CustomLog
 public class HologramGlobalPlaceholder implements GlobalPlaceholder {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(HologramGlobalPlaceholder.class);
 
     /**
      * Creates new instance of HologramGlobalPlaceholder

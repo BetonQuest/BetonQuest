@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.compatibility.vault;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
@@ -16,8 +16,11 @@ import java.text.DecimalFormat;
  * Modifies player's balance
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class MoneyEvent extends QuestEvent {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(MoneyEvent.class);
 
     private final VariableNumber amount;
     private final boolean notify;

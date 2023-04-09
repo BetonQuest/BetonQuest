@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.objectives;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -41,8 +41,11 @@ import java.util.stream.Collectors;
  * The interaction can optionally be canceled by adding the argument cancel.
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class EntityInteractObjective extends CountingObjective {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(EntityInteractObjective.class);
 
     private final CompoundLocation loc;
     private final VariableNumber range;

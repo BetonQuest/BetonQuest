@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
-import lombok.Getter;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.compatibility.Integrator;
@@ -22,7 +21,6 @@ public abstract class HologramIntegrator implements Integrator, Comparable<Holog
     /**
      * The name of the plugin
      */
-    @Getter
     private final String pluginName;
     /**
      * The minimum required version
@@ -35,7 +33,6 @@ public abstract class HologramIntegrator implements Integrator, Comparable<Holog
     /**
      * The plugin hooked by this integrator
      */
-    @Getter
     private Plugin plugin;
 
     /**
@@ -49,6 +46,14 @@ public abstract class HologramIntegrator implements Integrator, Comparable<Holog
         this.pluginName = pluginName;
         this.requiredVersion = requiredVersion;
         this.qualifiers = qualifiers.clone();
+    }
+
+    public String getPluginName() {
+        return pluginName;
+    }
+
+    public Plugin getPlugin() {
+        return plugin;
     }
 
     /**

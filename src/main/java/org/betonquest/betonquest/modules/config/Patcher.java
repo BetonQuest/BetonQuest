@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.modules.config;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.patcher.PatchException;
 import org.betonquest.betonquest.api.config.patcher.PatchTransformer;
 import org.betonquest.betonquest.modules.versioning.UpdateStrategy;
@@ -22,8 +22,11 @@ import java.util.regex.Pattern;
 /**
  * Patches BetonQuest's configuration file.
  */
-@CustomLog(topic = "ConfigurationFile Patcher")
 public class Patcher {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Patcher.class, "ConfigurationFile Patcher");
 
     /**
      * The comment at the version entry in the config.

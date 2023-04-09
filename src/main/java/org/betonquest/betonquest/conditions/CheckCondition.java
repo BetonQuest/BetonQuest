@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.conditions;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -16,8 +16,11 @@ import java.util.List;
  * Allows for checking multiple conditions with one instruction string.
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class CheckCondition extends Condition {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(CheckCondition.class);
 
     private final List<Condition> internalConditions = new ArrayList<>();
 
@@ -59,8 +62,8 @@ public class CheckCondition extends Condition {
         try {
             return conditionClass.getConstructor(Instruction.class).newInstance(
                     new Instruction(this.instruction.getPackage(), null, instruction));
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
-                 InvocationTargetException e) {
+        } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException |
+                       InvocationTargetException e) {
             if (e.getCause() instanceof InstructionParseException) {
                 throw new InstructionParseException("Error in internal condition: " + e.getCause().getMessage(), e);
             } else {

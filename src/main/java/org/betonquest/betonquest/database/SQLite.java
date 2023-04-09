@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.database;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,8 +21,11 @@ import java.util.TreeMap;
  * Connects to and uses a SQLite database
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
-@CustomLog
 public class SQLite extends Database {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(SQLite.class);
     private final String dbLocation;
 
     /**

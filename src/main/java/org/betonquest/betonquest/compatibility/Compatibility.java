@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.compatibility;
 
-import lombok.CustomLog;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.compatibility.aureliumskills.AureliumSkillsIntegrator;
 import org.betonquest.betonquest.compatibility.brewery.BreweryIntegrator;
 import org.betonquest.betonquest.compatibility.citizens.CitizensIntegrator;
@@ -50,8 +50,11 @@ import java.util.Objects;
  * Loads compatibility with other plugins.
  */
 @SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.AssignmentToNonFinalStatic"})
-@CustomLog
 public class Compatibility implements Listener {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Compatibility.class);
 
     /**
      * An instance of this class.
@@ -156,8 +159,8 @@ public class Compatibility implements Listener {
         final Integrator integrator;
         try {
             integrator = integratorClass.getConstructor().newInstance();
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-                 NoSuchMethodException | NoClassDefFoundError e) {
+        } catch (final InstantiationException | IllegalAccessException | InvocationTargetException |
+                       NoSuchMethodException | NoClassDefFoundError e) {
             LOG.warn(null, "Error while integrating " + name + " with version " + hookedPlugin.getDescription().getVersion() + ": " + e, e);
             LOG.warn("You are likely running an incompatible version of " + name + ".");
             return;

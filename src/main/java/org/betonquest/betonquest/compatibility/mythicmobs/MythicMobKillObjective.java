@@ -4,10 +4,10 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.lumine.mythic.bukkit.BukkitAdapter;
 import io.lumine.mythic.bukkit.events.MythicMobDeathEvent;
 import io.lumine.mythic.core.mobs.ActiveMob;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
@@ -32,8 +32,11 @@ import java.util.Set;
  * Player has to kill MythicMobs monster.
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class MythicMobKillObjective extends CountingObjective implements Listener {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(MythicMobKillObjective.class);
 
     /**
      * The names of all mobs that this objective should count.

@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.variables;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -15,8 +15,11 @@ import java.util.Locale;
  * This variable evaluates the given calculation and returns the result.
  */
 @SuppressWarnings({"PMD.CommentRequired", "deprecation"})
-@CustomLog
 public class MathVariable extends Variable {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(MathVariable.class);
 
     private final Token calculation;
 

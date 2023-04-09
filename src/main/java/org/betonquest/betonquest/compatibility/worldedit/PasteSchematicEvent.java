@@ -13,8 +13,8 @@ import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -31,8 +31,11 @@ import java.nio.file.Files;
  * Pastes a schematic at a given location.
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class PasteSchematicEvent extends QuestEvent {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(PasteSchematicEvent.class);
 
     private final CompoundLocation loc;
     private final boolean noAir;
@@ -85,7 +88,7 @@ public class PasteSchematicEvent extends QuestEvent {
 
                 Operations.complete(operation);
             }
-        } catch (IOException | WorldEditException e) {
+        } catch (final IOException | WorldEditException e) {
             LOG.warn(instruction.getPackage(), "Error while pasting a schematic: " + e.getMessage(), e);
         }
         return null;

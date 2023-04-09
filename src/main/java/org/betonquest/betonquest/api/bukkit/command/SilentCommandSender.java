@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.bukkit.command;
 
-import lombok.CustomLog;
 import net.kyori.adventure.text.Component;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.Permission;
@@ -18,8 +18,11 @@ import java.util.UUID;
  * A wrapper for a {@link CommandSender} that does not send any messages.
  */
 @SuppressWarnings("PMD.TooManyMethods")
-@CustomLog(topic = "SilentCommandSender")
 public class SilentCommandSender implements CommandSender {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(SilentCommandSender.class, "SilentCommandSender");
     /**
      * The wrapped command sender.
      */

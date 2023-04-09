@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.modules.schedule;
 
-import lombok.CustomLog;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.bukkit.configuration.InvalidConfigurationException;
 
@@ -17,14 +17,15 @@ import java.util.Optional;
  * Cache that holds the last execution time of schedules.
  * Only one instance may exist.
  */
-@CustomLog(topic = "cache")
 public class LastExecutionCache {
-
     /**
      * The File where last executions should be cached.
      */
     public static final String CACHE_FILE = ".cache/schedules.yml";
-
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(LastExecutionCache.class, "Cache");
     /**
      * Config accessor for the cache.
      */
@@ -44,7 +45,7 @@ public class LastExecutionCache {
             }
             this.cache = ConfigAccessor.create(cacheFile.toFile());
             LOG.debug("Successfully loaded schedule cache.");
-        } catch (IOException | InvalidConfigurationException e) {
+        } catch (final IOException | InvalidConfigurationException e) {
             LOG.error("Error while loading schedule cache: " + e.getMessage(), e);
         }
     }

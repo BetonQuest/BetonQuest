@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.objectives;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -28,8 +28,11 @@ import org.bukkit.scheduler.BukkitRunnable;
  * Player needs to die. Death can be canceled, also respawn location can be set
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class DieObjective extends Objective implements Listener {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(DieObjective.class);
 
     private final boolean cancel;
     private final CompoundLocation location;

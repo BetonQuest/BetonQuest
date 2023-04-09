@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.api;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.GlobalObjectives;
 import org.betonquest.betonquest.Instruction;
@@ -35,8 +34,11 @@ import java.util.Optional;
  * </p>
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition", "PMD.TooManyMethods", "PMD.GodClass"})
-@CustomLog
 public abstract class Objective {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Objective.class);
 
     protected final int notifyInterval;
     protected final boolean notify;
@@ -289,8 +291,8 @@ public abstract class Objective {
     private Optional<ObjectiveData> createObjectiveData(final Profile profile, final String instructionString) {
         try {
             return Optional.of(constructObjectiveDataUnsafe(profile, instructionString));
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
-                 InvocationTargetException exception) {
+        } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException |
+                       InvocationTargetException exception) {
             handleObjectiveDataConstructionError(profile, exception);
             return Optional.empty();
         }

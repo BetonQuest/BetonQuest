@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.modules.logger;
 
-import lombok.CustomLog;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.modules.logger.filter.LogRecordTypeFilter;
 import org.betonquest.betonquest.modules.logger.format.ChatFormatter;
@@ -34,8 +34,12 @@ import java.util.logging.Handler;
 /**
  * A static helper class to create {@link Handler}s in the way they are usually used by BetonQuest.
  */
-@CustomLog(topic = "LogWatcherFactory")
 public final class HandlerFactory {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(HandlerFactory.class, "LogWatcherFactory");
+
     private HandlerFactory() {
         // Empty
     }
@@ -43,9 +47,9 @@ public final class HandlerFactory {
     /**
      * Create a {@link ChatHandler}.
      *
-     * @param plugin the main plugin
+     * @param plugin           the main plugin
      * @param receiverSelector the receiver selector
-     * @param bukkitAudiences the audience provider
+     * @param bukkitAudiences  the audience provider
      * @return a new {@link ChatHandler}
      */
     public static ChatHandler createChatHandler(final Plugin plugin, final RecordReceiverSelector receiverSelector, final BukkitAudiences bukkitAudiences) {
@@ -58,9 +62,9 @@ public final class HandlerFactory {
     /**
      * Create a {@link HistoryHandler}.
      *
-     * @param plugin {@link Plugin} instance
-     * @param scheduler {@link BukkitScheduler} instance
-     * @param config {@link ConfigurationFile} instance
+     * @param plugin        {@link Plugin} instance
+     * @param scheduler     {@link BukkitScheduler} instance
+     * @param config        {@link ConfigurationFile} instance
      * @param logFileFolder {@link File} to the log folder
      * @param instantSource {@link InstantSource} instance
      * @return a new {@link HistoryHandler}

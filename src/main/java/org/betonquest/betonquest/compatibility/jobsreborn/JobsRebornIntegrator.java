@@ -1,13 +1,16 @@
 package org.betonquest.betonquest.compatibility.jobsreborn;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.compatibility.Integrator;
 
 
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class JobsRebornIntegrator implements Integrator {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(JobsRebornIntegrator.class);
 
     private final BetonQuest plugin;
 

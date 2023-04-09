@@ -2,9 +2,9 @@ package org.betonquest.betonquest.compatibility.holograms.decentholograms;
 
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
@@ -21,8 +21,11 @@ import java.util.regex.Matcher;
 /**
  * Integrates with DecentHolograms
  */
-@CustomLog
 public class DecentHologramsIntegrator extends HologramIntegrator {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(DecentHologramsIntegrator.class);
 
     /**
      * Creates a new DecentHologramsIntegrator for DecentHolograms

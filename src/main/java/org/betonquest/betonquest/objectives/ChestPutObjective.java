@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.objectives;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
@@ -38,8 +38,11 @@ import java.util.List;
  * disappear once the chest is closed.
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class ChestPutObjective extends Objective implements Listener {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(ChestPutObjective.class);
 
     private final Condition chestItemCondition;
     private final Event chestTakeEvent;
@@ -60,7 +63,7 @@ public class ChestPutObjective extends Objective implements Listener {
         multipleAccess = Boolean.parseBoolean(instruction.getOptional("multipleaccess"));
         try {
             chestItemCondition = new ChestItemCondition(new Instruction(instruction.getPackage(), new NoID(instruction.getPackage()), "chestitem " + location + " " + items));
-        } catch (InstructionParseException | ObjectNotFoundException e) {
+        } catch (final InstructionParseException | ObjectNotFoundException e) {
             throw new InstructionParseException("Could not create inner chest item condition: " + e.getMessage(), e);
         }
         if (instruction.hasArgument("items-stay")) {
@@ -120,7 +123,7 @@ public class ChestPutObjective extends Objective implements Listener {
                 checkItems(onlineProfile);
             } else {
                 final InventoryHolder holder = event.getInventory().getHolder();
-                if (holder instanceof DoubleChest doubleChest) {
+                if (holder instanceof final DoubleChest doubleChest) {
                     final Chest leftChest = (Chest) doubleChest.getLeftSide();
                     final Chest rightChest = (Chest) doubleChest.getRightSide();
                     if (leftChest == null || rightChest == null) {

@@ -3,8 +3,8 @@ package org.betonquest.betonquest.notify;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -20,8 +20,11 @@ import java.util.Map;
 import java.util.UUID;
 
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class AdvancementNotifyIO extends NotifyIO {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(AdvancementNotifyIO.class);
 
     private final String frame;
     private final String icon;

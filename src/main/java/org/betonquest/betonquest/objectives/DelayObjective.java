@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.objectives;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
@@ -28,8 +28,11 @@ import java.util.Map.Entry;
  * will be completed as soon as the time is up and he logs in again.
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class DelayObjective extends Objective {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(DelayObjective.class);
 
     private final int interval;
     private VariableNumber delay;

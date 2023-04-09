@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.api;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.modules.logger.BetonQuestLoggerImpl;
 import org.bukkit.Bukkit;
@@ -12,8 +11,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.logging.Level;
 
 /**
- * This is the BetonQuest log facade for manual usage or for the {@link CustomLog} annotation for usage with Lombok.
- * <p>
  * This facade uses the {@link PluginLogger} from the {@link Plugin#getLogger()} method.
  * It registers a new child logger for each class it's used in.
  * <p>

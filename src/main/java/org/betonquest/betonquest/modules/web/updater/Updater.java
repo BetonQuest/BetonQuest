@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.modules.web.updater;
 
-import lombok.CustomLog;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.modules.versioning.Version;
@@ -25,8 +25,11 @@ import java.util.UUID;
 /**
  * This {@link Updater} checks for new versions on the BetonQuest page and on the GitHub page and download them if wanted.
  */
-@CustomLog
 public class Updater {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Updater.class);
     /**
      * The minimum delay when checking for updates, this prevents too many api requests when reloading the plugin often.
      */

@@ -40,7 +40,24 @@ These advantages are mainly for BetonQuest, but it is also very useful for 3rd p
 ## Obtaining a BetonQuestLogger Instance
 
 !!! note ""
+
+    === "Using plain Java"    
+        !!! abstract ""
+            Simply create a BetonQuestLogger instance in your class.
+    
+            === "Without topic"
+                ````java linenums="1"
+                public final class MyCustomEvent {
+                    private final static BetonQuestLogger LOG = BetonQuestLogger.create(MyCustomEvent.class);
+                ````
+            
+            === "With topic"
+                ````java linenums="1"
+                public final class MyCustomEvent {
+                    private final static BetonQuestLogger LOG = BetonQuestLogger.create(MyCustomEvent.class, "MyCustomTopic");
+                ````
     === "Using Lombok"
+        **This is for BetonQuest addons that rely on BetonQuest and have Lombok set up**  
         Using Lombok enables you to use the handy [@CustomLog](https://projectlombok.org/features/log)
         annotation on each class you want a logger for.
         This requires a Lombok setup in your project and in your IDE.
@@ -65,35 +82,13 @@ These advantages are mainly for BetonQuest, but it is also very useful for 3rd p
                 ````java linenums="1"
                 @CustomLog
                 public final class MyCustomEvent {
-                //...
-                    LOG.info("Hello Log!");
-                //...
                 ````
             === "With topic"
                 ````java linenums="1"
                 @CustomLog(topic = "MyCustomTopic")
                 public final class MyCustomEvent {
-                //...
-                    LOG.info("Hello Log!");
-                //...
                 ````
     
-    === "Using plain Java"    
-        !!! abstract ""
-            This method works without Lombok.
-            Simply create a BetonQuestLogger instance.
-    
-            === "Without topic"
-                ````java linenums="1"
-                public final class MyCustomEvent {
-                    private final static BetonQuestLogger LOG = BetonQuestLogger.create(MyCustomEvent.class);
-                ````
-            
-            === "With topic"
-                ````java linenums="1"
-                public final class MyCustomEvent {
-                    private final static BetonQuestLogger LOG = BetonQuestLogger.create(MyCustomEvent.class, "MyCustomTopic");
-                ````
 
 
 !!! warning "Get the logger in your JavaPlugin class"
@@ -109,7 +104,6 @@ These advantages are mainly for BetonQuest, but it is also very useful for 3rd p
             @Override
             public void onEnable() {
                 log = BetonQuestLogger.create(this);
-            }
         ````
 
     === "With topic"
@@ -121,13 +115,17 @@ These advantages are mainly for BetonQuest, but it is also very useful for 3rd p
             @Override
             public void onEnable() {
                 log = BetonQuestLogger.create(this, "MyCustomTopic");
-            }
         ````
 
 ## Using the BetonQuestLogger
 A BetonQuestLogger will be available as the variable `LOG` once you [obtained a BetonQuestLogger instance](#obtaining-a-betonquestlogger-instance). 
 It has a bunch of methods for all use cases. Its JavaDocs explain when and how to use these.
-Make sure to give the JavaDocs a quick read! 
+Make sure to give the JavaDocs a quick read!
+
+The usage then look like this:
+````java linenums="1"
+LOG.info("Hello Log!");
+````
 
 ### Method Overview
 

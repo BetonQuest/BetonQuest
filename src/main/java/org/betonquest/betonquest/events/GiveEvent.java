@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.events;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Instruction.Item;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
@@ -22,8 +22,11 @@ import java.util.Locale;
  * Gives the player specified items
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class GiveEvent extends QuestEvent {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(GiveEvent.class);
 
     private final Item[] questItems;
     private final boolean notify;

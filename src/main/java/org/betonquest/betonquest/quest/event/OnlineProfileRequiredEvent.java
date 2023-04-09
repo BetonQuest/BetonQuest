@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event;
 
-import lombok.CustomLog;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.event.Event;
@@ -9,8 +9,11 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 /**
  * Decorator for events that do not support execution with offline players.
  */
-@CustomLog
 public class OnlineProfileRequiredEvent implements Event {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(OnlineProfileRequiredEvent.class);
 
     /**
      * The event to execute.
