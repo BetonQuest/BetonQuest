@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.menu;
 
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.menu.events.MenuClickEvent;
 import org.betonquest.betonquest.menu.events.MenuCloseEvent;
@@ -25,9 +25,12 @@ import java.util.UUID;
 /**
  * Class representing a menu which is currently displayed to a player
  */
-@CustomLog
 @SuppressWarnings("PMD.CommentRequired")
 public class OpenedMenu implements Listener {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(OpenedMenu.class);
 
     /**
      * Hashmap containing all currently opened menus
@@ -157,10 +160,9 @@ public class OpenedMenu implements Listener {
     @EventHandler
     @SuppressWarnings({"PMD.NPathComplexity", "PMD.CyclomaticComplexity", "PMD.PrematureDeclaration", "PMD.CognitiveComplexity"})
     public void onClick(final InventoryClickEvent event) {
-        if (!(event.getWhoClicked() instanceof Player)) {
+        if (!(event.getWhoClicked() instanceof final Player player)) {
             return;
         }
-        final Player player = (Player) event.getWhoClicked();
         if (!player.equals(onlineProfile.getPlayer())) {
             return;
         }
@@ -223,10 +225,9 @@ public class OpenedMenu implements Listener {
 
     @EventHandler
     public void onClose(final InventoryCloseEvent event) {
-        if (!(event.getPlayer() instanceof Player)) {
+        if (!(event.getPlayer() instanceof final Player player)) {
             return;
         }
-        final Player player = (Player) event.getPlayer();
         if (!player.equals(onlineProfile.getPlayer())) {
             return;
         }

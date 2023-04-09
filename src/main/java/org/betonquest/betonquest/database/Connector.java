@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.database;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,8 +12,11 @@ import java.sql.SQLException;
 /**
  * Connects to the database and queries it.
  */
-@CustomLog
 public class Connector {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Connector.class);
 
     /**
      * Table prefix.

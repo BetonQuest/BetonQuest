@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.modules.config;
 
-import lombok.CustomLog;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
@@ -20,7 +20,6 @@ import java.util.Map;
 /**
  * Class to load all {@link QuestTemplate}s and {@link QuestPackage}s from the root directory and apply all templates.
  */
-@CustomLog
 @SuppressWarnings("PMD.DataClass")
 public class QuestManager {
     /**
@@ -43,6 +42,10 @@ public class QuestManager {
      * The name of the file that indicates a quest folder.
      */
     public static final String FILE_NAME_INDICATOR = "package";
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(QuestManager.class);
     /**
      * All loaded {@link QuestPackage}s.
      */

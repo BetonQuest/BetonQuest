@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.variables;
 
-import lombok.CustomLog;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.GlobalVariableID;
@@ -20,13 +20,15 @@ import java.util.stream.Collectors;
  * <p>
  * The variables are defined in the {@code variables} section.
  */
-@CustomLog
 public final class GlobalVariableResolver {
-
     /**
      * A regex pattern to match global variables.
      */
     public static final Pattern GLOBAL_VARIABLE_PATTERN = Pattern.compile("\\$(?<variable>[^ $\\s]+)\\$");
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(GlobalVariableResolver.class);
 
     private GlobalVariableResolver() {
     }

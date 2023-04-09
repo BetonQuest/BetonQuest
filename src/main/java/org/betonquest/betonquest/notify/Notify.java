@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.notify;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -19,8 +19,11 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public final class Notify {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Notify.class);
     private static final Map<String, Map<String, String>> CATEGORY_SETTINGS = new HashMap<>();
     private static String defaultNotifyIO;
 

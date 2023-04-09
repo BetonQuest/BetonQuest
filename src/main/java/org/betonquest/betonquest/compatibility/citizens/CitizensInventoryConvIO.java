@@ -2,9 +2,9 @@ package org.betonquest.betonquest.compatibility.citizens;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import lombok.CustomLog;
 import net.citizensnpcs.trait.SkinTrait;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.conversation.Conversation;
 import org.betonquest.betonquest.conversation.InventoryConvIO;
@@ -16,8 +16,11 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class CitizensInventoryConvIO extends InventoryConvIO {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(CitizensInventoryConvIO.class);
 
     public CitizensInventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
         super(conv, onlineProfile);
@@ -27,12 +30,11 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
     @SuppressWarnings("PMD.AvoidAccessibilityAlteration")
     protected SkullMeta updateSkullMeta(final SkullMeta meta) {
         // this only applied to Citizens NPC conversations
-        if (conv instanceof CitizensConversation) {
+        if (conv instanceof final CitizensConversation citizensConv) {
             if (Bukkit.isPrimaryThread()) {
                 throw new IllegalStateException("Must be called async!");
             }
 
-            final CitizensConversation citizensConv = (CitizensConversation) conv;
             try {
                 final SkinTrait skinTrait = Bukkit.getScheduler().callSyncMethod(BetonQuest.getInstance(), () -> citizensConv.getNPC().getOrAddTrait(SkinTrait.class)).get();
                 final String texture = skinTrait.getTexture();
@@ -47,8 +49,8 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
                     field.set(meta, gameProfile);
                     return meta;
                 }
-            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
-                     | InterruptedException | ExecutionException e) {
+            } catch (final NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
+                           | InterruptedException | ExecutionException e) {
                 LOG.debug(citizensConv.getPackage(), "Could not resolve a skin Texture!", e);
             }
         }

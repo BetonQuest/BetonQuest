@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.modules.config;
 
-import lombok.CustomLog;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.bukkit.config.custom.ConfigurationSectionDecorator;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigurationFile;
@@ -16,8 +16,11 @@ import java.net.URI;
 /**
  * Facade for easy loading and saving of configs.
  */
-@CustomLog(topic = "ConfigurationFile")
 public final class ConfigurationFileImpl extends ConfigurationSectionDecorator implements ConfigurationFile {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(ConfigurationFileImpl.class, "ConfigurationFile");
 
     /**
      * Holds the config file.

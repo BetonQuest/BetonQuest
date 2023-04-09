@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.menu;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
@@ -32,9 +32,12 @@ import java.util.Map;
 /**
  * A Item which Is displayed as option in a menu and has some events that are fired when item is clicked
  */
-@CustomLog
 @SuppressWarnings("PMD.CommentRequired")
 public class MenuItem extends SimpleYMLSection {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(MenuItem.class);
 
     /**
      * The betonquest quest item this item is based on
@@ -169,7 +172,7 @@ public class MenuItem extends SimpleYMLSection {
                     return getBoolean("close");
                 }
             }.get();
-        } catch (ObjectNotFoundException | InstructionParseException e) {
+        } catch (final ObjectNotFoundException | InstructionParseException e) {
             throw new InvalidConfigurationException(e.getMessage(), e);
         }
     }

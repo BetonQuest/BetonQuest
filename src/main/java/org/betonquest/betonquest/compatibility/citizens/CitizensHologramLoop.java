@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.citizens;
 
-import lombok.CustomLog;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.CitizensReloadEvent;
 import net.citizensnpcs.api.event.NPCDespawnEvent;
@@ -35,7 +34,6 @@ import java.util.Map;
 /**
  * Hides and shows holograms to players at an NPC's location. Based on conditions.
  */
-@CustomLog
 public class CitizensHologramLoop extends HologramLoop implements Listener {
     /**
      * The task that lets holograms follow NPCs.
@@ -78,7 +76,7 @@ public class CitizensHologramLoop extends HologramLoop implements Listener {
         if (stringVector != null) {
             try {
                 vector.add(new VectorData(pack, "(" + stringVector + ")").get(null));
-            } catch (QuestRuntimeException | InstructionParseException e) {
+            } catch (final QuestRuntimeException | InstructionParseException e) {
                 throw new InstructionParseException("Could not parse vector '" + stringVector + "': " + e.getMessage(), e);
             }
         }

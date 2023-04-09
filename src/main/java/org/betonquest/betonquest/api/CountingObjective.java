@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.api;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -12,8 +11,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * An objective that is not completed by doing some action just once, but multiple times. It provides common properties
  * and a versatile data object to track the progress.
  */
-@CustomLog(topic = "CountingObjective")
 public abstract class CountingObjective extends Objective {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(CountingObjective.class, "CountingObjective");
 
     /**
      * The message name for notification messages used by default.
@@ -355,3 +357,4 @@ public abstract class CountingObjective extends Objective {
         }
     }
 }
+

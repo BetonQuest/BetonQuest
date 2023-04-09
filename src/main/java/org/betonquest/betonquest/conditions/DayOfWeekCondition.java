@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.conditions;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Condition;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -15,8 +15,11 @@ import java.util.Locale;
  * Created by Jonas Blocher on 27.11.2017.
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class DayOfWeekCondition extends Condition {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(DayOfWeekCondition.class);
 
     private final DayOfWeek day;
 

@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.objectives;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -26,8 +26,11 @@ import java.util.Locale;
  * Player needs to get specified experience level or more.
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class ExperienceObjective extends Objective implements Listener {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(ExperienceObjective.class);
 
     /**
      * The experience level the player needs to get.

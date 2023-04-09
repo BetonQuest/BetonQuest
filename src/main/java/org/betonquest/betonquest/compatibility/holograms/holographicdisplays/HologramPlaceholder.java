@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.compatibility.holograms.holographicdisplays;
 
-import lombok.CustomLog;
 import me.filoghost.holographicdisplays.api.placeholder.IndividualPlaceholder;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.entity.Player;
@@ -12,8 +12,11 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Defines HolographicDisplays placeholder <code>{bq:package:variable}</code>.
  */
-@CustomLog
 public class HologramPlaceholder implements IndividualPlaceholder {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(HologramPlaceholder.class);
 
     /**
      * Creates new instance of HologramPlaceholder

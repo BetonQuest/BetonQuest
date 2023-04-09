@@ -1,6 +1,6 @@
 package org.betonquest.betonquest;
 
-import lombok.CustomLog;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -11,8 +11,11 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 /**
  * Represents a number which might also be a variable.
  */
-@CustomLog
 public class VariableNumber {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(VariableNumber.class);
 
     /**
      * The constant value of this variable number if no variable was set.

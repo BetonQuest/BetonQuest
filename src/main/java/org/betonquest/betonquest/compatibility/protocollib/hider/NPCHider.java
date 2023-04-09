@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.compatibility.protocollib.hider;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCSpawnEvent;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.HologramTrait;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
@@ -31,8 +31,11 @@ import java.util.Map;
 import java.util.Set;
 
 @SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods"})
-@CustomLog
 public final class NPCHider extends BukkitRunnable implements Listener {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(NPCHider.class);
 
     private static NPCHider instance;
 

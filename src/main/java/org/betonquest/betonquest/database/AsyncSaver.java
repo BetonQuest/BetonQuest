@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.database;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
@@ -12,9 +12,12 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * Saves the data to the database asynchronously.
  */
 @SuppressWarnings("PMD.DoNotUseThreads")
-@CustomLog
 @SuppressFBWarnings("IS2_INCONSISTENT_SYNC")
 public class AsyncSaver extends Thread implements Listener, Saver {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(AsyncSaver.class);
 
     /**
      * The connector that conntects to the database.

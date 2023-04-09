@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.menu.commands;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.menu.config.RPGMenuConfig;
 import org.betonquest.betonquest.menu.utils.Utils;
 import org.bukkit.Bukkit;
@@ -26,9 +26,12 @@ import java.util.List;
 /**
  * Abstract class to simplify creation of commands and implementation of tab complete
  */
-@CustomLog
 @SuppressWarnings({"PMD.AvoidCatchingGenericException", "PMD.AvoidUncheckedExceptionsInSignatures", "PMD.CommentRequired"})
 public abstract class SimpleCommand extends Command implements PluginIdentifiableCommand {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(SimpleCommand.class);
 
     public final int minimalArgs;
     private final Permission perimssion;

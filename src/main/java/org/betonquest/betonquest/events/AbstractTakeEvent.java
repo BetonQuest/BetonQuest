@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.events;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -28,9 +28,12 @@ import java.util.stream.Collectors;
  * Will be removed in 2.0 in favor of the new item system. Then the {@link TakeEvent} will be able to handle everything.
  */
 @Deprecated
-@CustomLog
 @SuppressWarnings("PMD.CommentRequired")
 public abstract class AbstractTakeEvent extends QuestEvent {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(AbstractTakeEvent.class);
 
     protected final boolean notify;
     protected final List<CheckType> checkOrder;

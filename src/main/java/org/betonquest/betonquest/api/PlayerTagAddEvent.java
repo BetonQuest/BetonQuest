@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.api;
 
-import lombok.Getter;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.profiles.ProfileEvent;
 import org.bukkit.event.HandlerList;
@@ -19,7 +18,6 @@ public class PlayerTagAddEvent extends ProfileEvent {
     /**
      * The tag that was added.
      */
-    @Getter
     private final String tag;
 
     /**
@@ -40,6 +38,10 @@ public class PlayerTagAddEvent extends ProfileEvent {
      */
     public static HandlerList getHandlerList() {
         return HANDLERS;
+    }
+
+    public String getTag() {
+        return tag;
     }
 
     /**

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.modules.config.quest;
 
-import lombok.CustomLog;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.KeyConflictException;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiSectionConfiguration;
@@ -21,8 +21,11 @@ import java.util.List;
  * This is a basic implementation for managing a quest's files.
  */
 @SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
-@CustomLog
 public abstract class Quest {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Quest.class);
     /**
      * The merged {@link MultiConfiguration} that represents this {@link Quest}.
      */

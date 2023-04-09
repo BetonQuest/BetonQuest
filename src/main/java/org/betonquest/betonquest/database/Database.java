@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.database;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.bukkit.plugin.Plugin;
 
 import java.sql.Connection;
@@ -14,8 +14,11 @@ import java.util.SortedMap;
  * SQLite, etc.)
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
-@CustomLog
 public abstract class Database {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Database.class);
 
     protected final Plugin plugin;
     protected final String prefix;

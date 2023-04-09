@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.compatibility.citizens;
 
 import de.slikey.effectlib.util.DynamicLocation;
-import lombok.CustomLog;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.compatibility.effectlib.EffectLibIntegrator;
@@ -30,8 +30,11 @@ import java.util.UUID;
  * Displays a particle above NPCs with conversations.
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class CitizensParticle extends BukkitRunnable {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(CitizensParticle.class);
 
     private static CitizensParticle instance;
     private final Map<UUID, Map<Integer, Effect>> profiles = new HashMap<>();

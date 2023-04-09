@@ -1,6 +1,6 @@
 package org.betonquest.betonquest;
 
-import lombok.CustomLog;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ItemID;
@@ -14,8 +14,11 @@ import org.bukkit.metadata.MetadataValue;
 import java.util.List;
 
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class CustomDropListener implements Listener {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(CustomDropListener.class);
 
     public CustomDropListener() {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
@@ -33,7 +36,7 @@ public class CustomDropListener implements Listener {
                     event.getDrops().add(new QuestItem(new ItemID(null, item.substring(0, separatorIndex)))
                             .generate(Integer.parseInt(item.substring(separatorIndex + 1))));
                 }
-            } catch (InstructionParseException | ObjectNotFoundException e) {
+            } catch (final InstructionParseException | ObjectNotFoundException e) {
                 LOG.warn("Error when dropping custom item from entity: " + e.getMessage(), e);
             }
             dropIndex++;

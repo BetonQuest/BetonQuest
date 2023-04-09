@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.compatibility.quests;
 
-import lombok.CustomLog;
 import me.blackvein.quests.CustomReward;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.EventID;
@@ -15,8 +15,11 @@ import java.util.Map;
  * Fires a BetonQuest event as a quest reward.
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class EventReward extends CustomReward {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(EventReward.class);
 
     public EventReward() {
         super();

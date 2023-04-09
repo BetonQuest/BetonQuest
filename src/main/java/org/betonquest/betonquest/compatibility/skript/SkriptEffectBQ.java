@@ -5,8 +5,8 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -18,8 +18,11 @@ import org.bukkit.scheduler.BukkitRunnable;
  * Skript effect, which fires specified BetonQuest's event
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class SkriptEffectBQ extends Effect {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(SkriptEffectBQ.class);
 
     private Expression<String> event;
     private Expression<Player> player;

@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
@@ -16,7 +15,6 @@ import java.util.List;
 /**
  * Hides and shows holograms to players, based on conditions at a fixed location.
  */
-@CustomLog
 public class LocationHologramLoop extends HologramLoop {
     /**
      * Starts a loop, which checks hologram conditions and shows them to players.
@@ -42,7 +40,7 @@ public class LocationHologramLoop extends HologramLoop {
         } else {
             try {
                 return new CompoundLocation(pack, GlobalVariableResolver.resolve(pack, rawLocation)).getLocation(null);
-            } catch (QuestRuntimeException | InstructionParseException e) {
+            } catch (final QuestRuntimeException | InstructionParseException e) {
                 throw new InstructionParseException("Could not parse location: " + e.getMessage(), e);
             }
         }

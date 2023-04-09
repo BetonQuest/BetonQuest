@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.quest.event;
 
-import lombok.CustomLog;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
@@ -9,8 +9,11 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 /**
  * Notification sender that sends notifications in the info category.
  */
-@CustomLog
 public class InfoNotificationSender implements NotificationSender {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(InfoNotificationSender.class);
 
     /**
      * Message package to send the message from.

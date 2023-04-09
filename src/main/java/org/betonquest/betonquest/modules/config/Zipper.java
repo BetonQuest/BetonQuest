@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.modules.config;
 
-import lombok.CustomLog;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,8 +17,11 @@ import java.util.zip.ZipOutputStream;
 /**
  * Gives the possibility to zip files or folders to a target file.
  */
-@CustomLog(topic = "Zipper")
 public final class Zipper {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Zipper.class, "Zipper");
 
     private Zipper() {
     }

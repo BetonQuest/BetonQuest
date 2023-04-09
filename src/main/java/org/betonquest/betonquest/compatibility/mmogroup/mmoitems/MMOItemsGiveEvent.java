@@ -1,12 +1,12 @@
 package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
 import net.Indyuce.mmoitems.api.player.PlayerData;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
@@ -18,8 +18,11 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class MMOItemsGiveEvent extends QuestEvent {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(MMOItemsGiveEvent.class);
 
     private final MMOItems mmoPlugin = MMOItems.plugin;
 

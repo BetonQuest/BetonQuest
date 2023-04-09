@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.api;
 
-import lombok.Getter;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -12,23 +11,13 @@ abstract public class Variable {
 
     /**
      * Stores instruction string for the condition.
-     * -- GETTER --
-     * Get the instruction object for this variable
-     *
-     * @return The instruction
      */
-    @Getter
     protected Instruction instruction;
 
     /**
      * A variable marked as static can be executed even if the profile in the
      * {@link #getValue(Profile)} method is null
-     * -- GETTER --
-     * Get the staticness of a variable
-     *
-     * @return The staticness
      */
-    @Getter
     protected boolean staticness;
 
     /**
@@ -43,6 +32,24 @@ abstract public class Variable {
      */
     public Variable(final Instruction instruction) {
         this.instruction = instruction;
+    }
+
+    /**
+     * Get the instruction object for this variable
+     *
+     * @return The instruction
+     */
+    public Instruction getInstruction() {
+        return instruction;
+    }
+
+    /**
+     * Get the staticness of a variable
+     *
+     * @return The staticness
+     */
+    public boolean isStaticness() {
+        return staticness;
     }
 
     /**

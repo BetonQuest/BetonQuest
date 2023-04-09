@@ -2,7 +2,6 @@ package org.betonquest.betonquest;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.papermc.lib.PaperLib;
-import lombok.Getter;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
@@ -298,12 +297,7 @@ public class BetonQuest extends JavaPlugin {
     private static final Map<String, QuestCanceler> CANCELERS = new HashMap<>();
     /**
      * The BetonQuest Plugin instance.
-     * -- GETTER --
-     * Get the plugin's instance.
-     *
-     * @return The plugin's instance.
      */
-    @Getter
     private static BetonQuest instance;
     private static BetonQuestLogger log;
 
@@ -316,12 +310,7 @@ public class BetonQuest extends JavaPlugin {
     private ConfigurationFile config;
     /**
      * The adventure instance.
-     * -- GETTER --
-     * Get the adventure instance.
-     *
-     * @return The adventure instance.
      */
-    @Getter
     private BukkitAudiences adventure;
     private Database database;
     private boolean isMySQLUsed;
@@ -330,7 +319,6 @@ public class BetonQuest extends JavaPlugin {
     private Updater updater;
     private GlobalData globalData;
     private PlayerHider playerHider;
-    @Getter
     private RPGMenu rpgMenu;
 
     /**
@@ -342,6 +330,15 @@ public class BetonQuest extends JavaPlugin {
      * Cache for event schedulers, holding the last execution of an event
      */
     private LastExecutionCache lastExecutionCache;
+
+    /**
+     * Get the plugin's instance.
+     *
+     * @return The plugin's instance.
+     */
+    public static BetonQuest getInstance() {
+        return instance;
+    }
 
     public static boolean conditions(final Profile profile, final Collection<ConditionID> conditionIDs) {
         final ConditionID[] ids = new ConditionID[conditionIDs.size()];
@@ -372,7 +369,7 @@ public class BetonQuest extends JavaPlugin {
                     if (!condition.get()) {
                         return false;
                     }
-                } catch (InterruptedException | ExecutionException e) {
+                } catch (final InterruptedException | ExecutionException e) {
                     // Currently conditions that are forced to be sync cause every CompletableFuture.get() call
                     // to delay the check by one tick.
                     // If this happens during a shutdown, the check will be delayed past the last tick.
@@ -440,7 +437,6 @@ public class BetonQuest extends JavaPlugin {
                         + conditionID + " for " + profile);
         return isMet;
     }
-
 
     /**
      * Fires an event for the {@link Profile} if it meets the event's conditions.
@@ -638,6 +634,19 @@ public class BetonQuest extends JavaPlugin {
         return CANCELERS;
     }
 
+    /**
+     * Get the adventure instance.
+     *
+     * @return The adventure instance.
+     */
+    public BukkitAudiences getAdventure() {
+        return adventure;
+    }
+
+    public RPGMenu getRpgMenu() {
+        return rpgMenu;
+    }
+
     @NotNull
     public ConfigurationFile getPluginConfig() {
         return config;
@@ -673,7 +682,7 @@ public class BetonQuest extends JavaPlugin {
 
         try {
             config = ConfigurationFile.create(new File(getDataFolder(), "config.yml"), this, "config.yml");
-        } catch (InvalidConfigurationException | FileNotFoundException e) {
+        } catch (final InvalidConfigurationException | FileNotFoundException e) {
             log.error("Could not load the config.yml file!", e);
             return;
         }
@@ -944,7 +953,7 @@ public class BetonQuest extends JavaPlugin {
             Class.forName("org.apache.logging.log4j.core.Filter");
             final Logger coreLogger = (Logger) LogManager.getRootLogger();
             coreLogger.addFilter(new AnswerFilter());
-        } catch (ClassNotFoundException | NoClassDefFoundError e) {
+        } catch (final ClassNotFoundException | NoClassDefFoundError e) {
             log.warn("Could not disable /betonquestanswer logging", e);
         }
 

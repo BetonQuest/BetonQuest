@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.modules.web.updater;
 
-import lombok.CustomLog;
 import org.apache.commons.lang3.tuple.Pair;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.modules.versioning.VersionComparator;
 import org.betonquest.betonquest.modules.web.updater.source.DevelopmentUpdateSource;
@@ -19,8 +19,11 @@ import java.util.Map;
  * When calling {@link #searchUpdateFor(Pair, List, VersionComparator, UpdateSourceConsumer)},
  * it will provide the latest version and the URL to download it from.
  */
-@CustomLog
 public class UpdateSourceHandler {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(UpdateSourceHandler.class);
 
     /**
      * A list of {@link ReleaseUpdateSource} instances.

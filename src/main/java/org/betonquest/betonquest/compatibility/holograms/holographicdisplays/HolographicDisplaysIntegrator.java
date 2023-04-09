@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.compatibility.holograms.holographicdisplays;
 
-import lombok.CustomLog;
 import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
 import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import me.filoghost.holographicdisplays.api.hologram.PlaceholderSetting;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
@@ -21,8 +21,12 @@ import java.util.regex.Matcher;
 /**
  * Integrates with HolographicDisplays
  */
-@CustomLog
 public class HolographicDisplaysIntegrator extends HologramIntegrator {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(HolographicDisplaysIntegrator.class);
+
     /**
      * Creates a new HolographicDisplaysIntegrator for HolographicDisplays
      */

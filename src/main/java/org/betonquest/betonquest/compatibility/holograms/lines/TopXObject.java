@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.compatibility.holograms.lines;
 
-import lombok.CustomLog;
-import lombok.Getter;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.QueryType;
 import org.bukkit.Bukkit;
@@ -15,9 +14,11 @@ import java.util.UUID;
 /**
  * Holds data of a ranking.
  */
-@CustomLog
-@Getter
 public class TopXObject {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(TopXObject.class);
 
     /**
      * Number of lines stored in maximum.
@@ -50,6 +51,10 @@ public class TopXObject {
         this.category = category;
         this.limit = limit;
         this.orderType = orderType;
+    }
+
+    public List<TopXLine> getEntries() {
+        return entries;
     }
 
     /**

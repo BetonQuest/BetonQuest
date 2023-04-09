@@ -5,8 +5,8 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -17,8 +17,11 @@ import org.bukkit.event.Event;
  * Skript condition, which checks specified BetonQuest's condition
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class SkriptConditionBQ extends Condition {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(SkriptConditionBQ.class);
 
     private Expression<Player> player;
     private Expression<String> condition;

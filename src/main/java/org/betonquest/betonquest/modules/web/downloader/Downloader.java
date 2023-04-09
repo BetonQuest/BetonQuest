@@ -3,7 +3,7 @@ package org.betonquest.betonquest.modules.web.downloader;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
-import lombok.CustomLog;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -35,10 +35,8 @@ import static java.nio.file.FileVisitResult.CONTINUE;
 /**
  * Downloads files from any public GitHub repository and extracts them to your QuestPackages folder.
  */
-@CustomLog(topic = "Downloader")
 @SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods"})
 public class Downloader implements Callable<Boolean> {
-
     /**
      * Values that are allowed as {@link #offsetPath}.
      * Currently, only {@code QuestPackages} and {@code QuestTemplates}
@@ -48,6 +46,10 @@ public class Downloader implements Callable<Boolean> {
      * The http status code 400 - Bad Request
      */
     public static final int RESPONSE_400 = 400;
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Downloader.class, "Downloader");
     /**
      * Directory where downloaded repositories should be cached
      */

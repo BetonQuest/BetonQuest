@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.compatibility.holograms.lines.AbstractLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.ItemLine;
@@ -27,12 +27,15 @@ import java.util.regex.Pattern;
 /**
  * Hides and shows holograms to players, based on conditions.
  */
-@CustomLog
 public abstract class HologramLoop {
     /**
      * Pattern to match the correct syntax for the top line content
      */
     protected static final Pattern TOP_LINE_VALIDATOR = Pattern.compile("^top:([\\w.]+);(\\w+);(\\d+);?[&§]?([\\da-f])?;?[&§]?([\\da-f])?;?[&§]?([\\da-f])?;?[&§]?([\\da-f])?$", Pattern.CASE_INSENSITIVE);
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(HologramLoop.class);
 
 
     /**
@@ -148,7 +151,7 @@ public abstract class HologramLoop {
             int stackSize;
             try {
                 stackSize = Integer.parseInt(args[1]);
-            } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            } catch (final NumberFormatException | ArrayIndexOutOfBoundsException e) {
                 stackSize = 1;
             }
             return new ItemLine(new QuestItem(itemID).generate(stackSize));

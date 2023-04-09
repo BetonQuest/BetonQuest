@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.commands;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import org.betonquest.betonquest.Backpack;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.command.Command;
@@ -14,8 +14,11 @@ import org.bukkit.entity.Player;
 /**
  * The backpack command. It opens profile's backpack.
  */
-@CustomLog
 public class BackpackCommand implements CommandExecutor {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(BackpackCommand.class);
 
     /**
      * Registers a new executor of the /backpack command

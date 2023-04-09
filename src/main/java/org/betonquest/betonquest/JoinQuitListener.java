@@ -1,6 +1,6 @@
 package org.betonquest.betonquest;
 
-import lombok.CustomLog;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -24,8 +24,12 @@ import java.io.File;
  * Listener which handles data loadin/saving when players are joining/quitting
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class JoinQuitListener implements Listener {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(JoinQuitListener.class);
+
     /**
      * Creates new listener, which will handle the data loading/saving
      */

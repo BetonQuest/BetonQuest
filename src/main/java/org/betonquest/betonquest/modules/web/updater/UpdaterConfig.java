@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.modules.web.updater;
 
-import lombok.CustomLog;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.modules.versioning.UpdateStrategy;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.bukkit.configuration.ConfigurationSection;
@@ -12,8 +12,11 @@ import java.util.Locale;
  * Represents the config for the @{@link Updater}.
  */
 @SuppressWarnings("PMD.DataClass")
-@CustomLog
 public class UpdaterConfig {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(UpdaterConfig.class);
     /**
      * The string prefix of the path to the settings in the given {@link ConfigurationSection}
      */

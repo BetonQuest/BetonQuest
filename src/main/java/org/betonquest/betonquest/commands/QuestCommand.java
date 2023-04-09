@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.commands;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -12,6 +11,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.Point;
 import org.betonquest.betonquest.Pointer;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
@@ -81,8 +81,11 @@ import java.util.stream.Stream;
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.NPathComplexity", "PMD.TooManyMethods",
         "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition",
         "PMD.CognitiveComplexity"})
-@CustomLog
 public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(QuestCommand.class);
 
     private final BetonQuest instance = BetonQuest.getInstance();
     private final BukkitAudiences bukkitAudiences;
@@ -484,7 +487,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             }
             final GiveEvent give = new GiveEvent(new Instruction(itemID.getPackage(), null, "give " + itemID.getBaseID()));
             give.fire(PlayerConverter.getID((Player) sender));
-        } catch (InstructionParseException | QuestRuntimeException e) {
+        } catch (final InstructionParseException | QuestRuntimeException e) {
             sendMessage(sender, "error", e.getMessage());
             LOG.warn("Error while creating an item: " + e.getMessage(), e);
         }
@@ -793,7 +796,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
 
     private void handleItems(final CommandSender sender, final String... args) {
         // sender must be a player
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof final Player player)) {
             LOG.debug("Cannot continue, sender must be player");
             return;
         }
@@ -822,7 +825,6 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             sendMessage(sender, "specify_package");
             return;
         }
-        final Player player = (Player) sender;
         final ItemStack item = player.getInventory().getItemInMainHand();
         final String instructions = QuestItem.itemToString(item);
         // save it in items.yml
@@ -1753,12 +1755,12 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             try {
                 downloader.call();
                 sendMessage(sender, "download_success");
-            } catch (DownloadFailedException | SecurityException e) {
+            } catch (final DownloadFailedException | SecurityException e) {
                 sendMessage(sender, "download_failed", e.getMessage());
                 LOG.debug(errSummary, e);
             } catch (final Exception e) {
                 sendMessage(sender, "download_failed", e.getClass().getSimpleName() + ": " + e.getMessage());
-                if (sender instanceof Player player) {
+                if (sender instanceof final Player player) {
                     final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.FINE, "", instance);
                     record.setThrown(e);
                     final String msgJson = new ChatFormatter().format(record);

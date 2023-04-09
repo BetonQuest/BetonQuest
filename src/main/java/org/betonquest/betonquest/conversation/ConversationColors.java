@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.conversation;
 
-import lombok.CustomLog;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.config.Config;
 import org.bukkit.ChatColor;
 
@@ -12,8 +12,11 @@ import java.util.Map;
  * Holds the colors of the conversations
  */
 @SuppressWarnings({"PMD.ClassNamingConventions", "PMD.CommentRequired"})
-@CustomLog
 public final class ConversationColors {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create(ConversationColors.class);
 
     private static ChatColor[] npcColors;
     private static ChatColor[] playerColors;
