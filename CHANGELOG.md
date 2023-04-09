@@ -153,6 +153,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `language` command - is now persistent
 - `variable` condition supports escapable underscores to avoid replacement
 - `kill` event - now kills the player, instead of dealing damage, which is more reliable
+- `lightning` event - now has a new noDamage argument
 - Things that are also changed in 1.12.X:
     - math variable now allows rounding output with the ~ operator
     - French translation has been updated

@@ -358,12 +358,14 @@ This event can switch a lever. The first argument is a location and the second o
 
 **static**
 
-Strikes a lightning at given location. The only argument is the location.
+Strikes a lightning at given location. The first argument is the location. By adding `noDamage` the lightning is only
+an effect and therefor does no damage.
 
-!!! example
-    ```YAML
-    lightning 100;64;-100;survival
-    ```
+```YAML title="Examples" 
+events:
+  strikeLightning: lightning 100;64;-100;survival
+  showEntrance: lightning 200;65;100;survival noDamage
+```
 
 @snippet:events:notify@
 

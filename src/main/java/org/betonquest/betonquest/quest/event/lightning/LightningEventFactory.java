@@ -46,8 +46,9 @@ public class LightningEventFactory implements EventFactory, StaticEventFactory {
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         final CompoundLocation location = instruction.getLocation();
+        final boolean noDamage = instruction.hasArgument("noDamage");
         return new PrimaryServerThreadEvent(
-                new LightningEvent(location),
+                new LightningEvent(location, noDamage),
                 server, scheduler, plugin
         );
     }
