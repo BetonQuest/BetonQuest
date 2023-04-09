@@ -34,7 +34,7 @@ public class CitizensParticle extends BukkitRunnable {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(CitizensParticle.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private static CitizensParticle instance;
     private final Map<UUID, Map<Integer, Effect>> profiles = new HashMap<>();

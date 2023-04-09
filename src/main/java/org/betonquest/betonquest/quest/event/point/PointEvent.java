@@ -17,7 +17,7 @@ public class PointEvent implements Event {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(PointEvent.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * The plain name of the category

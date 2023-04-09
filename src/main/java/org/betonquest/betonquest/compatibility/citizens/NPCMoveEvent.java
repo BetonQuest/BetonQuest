@@ -35,7 +35,7 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(NPCMoveEvent.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private static final Map<Integer, NPCMoveEvent> MOVING_NPCS = new HashMap<>();
 

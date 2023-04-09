@@ -54,7 +54,7 @@ public class Compatibility implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Compatibility.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * An instance of this class.

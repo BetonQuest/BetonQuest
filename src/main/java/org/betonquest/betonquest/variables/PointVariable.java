@@ -22,7 +22,7 @@ public class PointVariable extends Variable {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(PointVariable.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     protected String category;
     protected Type type;

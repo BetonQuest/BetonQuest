@@ -10,7 +10,7 @@ public class McMMOIntegrator implements Integrator {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(McMMOIntegrator.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final BetonQuest plugin;
 

@@ -35,7 +35,7 @@ public class PasteSchematicEvent extends QuestEvent {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(PasteSchematicEvent.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final CompoundLocation loc;
     private final boolean noAir;

@@ -46,7 +46,7 @@ public class Journal {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Journal.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final Profile profile;
     private final List<Pointer> pointers;

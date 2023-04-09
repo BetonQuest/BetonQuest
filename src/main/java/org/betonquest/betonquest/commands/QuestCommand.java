@@ -85,7 +85,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(QuestCommand.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final BetonQuest instance = BetonQuest.getInstance();
     private final BukkitAudiences bukkitAudiences;

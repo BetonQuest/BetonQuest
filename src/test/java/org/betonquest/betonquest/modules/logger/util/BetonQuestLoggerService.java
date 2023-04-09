@@ -3,6 +3,7 @@ package org.betonquest.betonquest.modules.logger.util;
 import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.modules.logger.BetonQuestLoggerImpl;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -48,6 +49,10 @@ public class BetonQuestLoggerService implements ParameterResolver, BeforeAllCall
     @Override
     public void beforeAll(final ExtensionContext context) {
         betonQuestLogger = mockStatic(BetonQuestLogger.class);
+        betonQuestLogger.when(BetonQuestLogger::create).thenAnswer(invocation ->
+                new BetonQuestLoggerImpl(plugin, parentLogger, getCallingClass(), null));
+        betonQuestLogger.when(() -> BetonQuestLogger.create(anyString())).thenAnswer(invocation ->
+                new BetonQuestLoggerImpl(plugin, parentLogger, getCallingClass(), invocation.getArgument(0)));
         betonQuestLogger.when(() -> BetonQuestLogger.create(any(Class.class))).thenAnswer(invocation ->
                 new BetonQuestLoggerImpl(plugin, parentLogger, invocation.getArgument(0), null));
         betonQuestLogger.when(() -> BetonQuestLogger.create(any(Class.class), anyString())).thenAnswer(invocation ->
@@ -56,6 +61,27 @@ public class BetonQuestLoggerService implements ParameterResolver, BeforeAllCall
                 new BetonQuestLoggerImpl(plugin, parentLogger, invocation.getArgument(0).getClass(), null));
         betonQuestLogger.when(() -> BetonQuestLogger.create(any(Plugin.class), anyString())).thenAnswer(invocation ->
                 new BetonQuestLoggerImpl(plugin, parentLogger, invocation.getArgument(0).getClass(), invocation.getArgument(1)));
+    }
+
+    @NotNull
+    private Class<?> getCallingClass() {
+        try {
+            final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+            boolean found = false;
+            for (final StackTraceElement stackTraceElement : stackTrace) {
+                final String className = stackTraceElement.getClassName();
+                if (className.equals(BetonQuestLogger.class.getName())) {
+                    found = true;
+                    continue;
+                }
+                if (found) {
+                    return Class.forName(className);
+                }
+            }
+        } catch (final ClassNotFoundException e) {
+            throw new IllegalStateException("It was not possible to create a logger for the current class!", e);
+        }
+        throw new IllegalStateException("It was not possible to create a logger for the current class!");
     }
 
     @Override

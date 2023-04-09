@@ -25,7 +25,7 @@ public class DecentHologramsIntegrator extends HologramIntegrator {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(DecentHologramsIntegrator.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * Creates a new DecentHologramsIntegrator for DecentHolograms

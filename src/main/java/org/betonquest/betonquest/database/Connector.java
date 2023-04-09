@@ -16,7 +16,7 @@ public class Connector {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Connector.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * Table prefix.

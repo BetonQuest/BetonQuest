@@ -26,7 +26,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(LangCommand.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public LangCommand() {

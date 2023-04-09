@@ -25,7 +25,7 @@ public abstract class Quest {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Quest.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
     /**
      * The merged {@link MultiConfiguration} that represents this {@link Quest}.
      */

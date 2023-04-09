@@ -19,7 +19,7 @@ public class EventReward extends CustomReward {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(EventReward.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     public EventReward() {
         super();

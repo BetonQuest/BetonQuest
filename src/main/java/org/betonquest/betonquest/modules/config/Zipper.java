@@ -21,7 +21,7 @@ public final class Zipper {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Zipper.class, "Zipper");
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create("Zipper");
 
     private Zipper() {
     }

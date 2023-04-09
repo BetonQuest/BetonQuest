@@ -26,7 +26,7 @@ public class Patcher {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Patcher.class, "ConfigurationFile Patcher");
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create("ConfigurationFile Patcher");
 
     /**
      * The comment at the version entry in the config.

@@ -20,7 +20,7 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(ConfigurationFileImpl.class, "ConfigurationFile");
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create("ConfigurationFile");
 
     /**
      * Holds the config file.

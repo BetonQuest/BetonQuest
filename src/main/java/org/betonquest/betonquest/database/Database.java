@@ -18,7 +18,7 @@ public abstract class Database {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Database.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     protected final Plugin plugin;
     protected final String prefix;

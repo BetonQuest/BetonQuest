@@ -35,7 +35,7 @@ public final class NPCHider extends BukkitRunnable implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(NPCHider.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private static NPCHider instance;
 

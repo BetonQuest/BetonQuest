@@ -18,7 +18,7 @@ public class ObjectivePropertyVariable extends Variable {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(ObjectivePropertyVariable.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final String propertyName;
     private final ObjectiveID objective;

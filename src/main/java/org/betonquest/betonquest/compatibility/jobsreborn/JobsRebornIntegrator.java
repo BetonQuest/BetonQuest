@@ -10,7 +10,7 @@ public class JobsRebornIntegrator implements Integrator {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(JobsRebornIntegrator.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final BetonQuest plugin;
 

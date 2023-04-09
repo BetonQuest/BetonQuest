@@ -33,7 +33,7 @@ public abstract class AbstractTakeEvent extends QuestEvent {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(AbstractTakeEvent.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     protected final boolean notify;
     protected final List<CheckType> checkOrder;

@@ -34,7 +34,7 @@ public final class Utils {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Utils.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private Utils() {
     }

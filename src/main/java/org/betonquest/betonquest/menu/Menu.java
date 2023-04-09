@@ -41,7 +41,7 @@ public class Menu extends SimpleYMLSection implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Menu.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * The internal id of the menu

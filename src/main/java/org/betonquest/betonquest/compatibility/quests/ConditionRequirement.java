@@ -19,7 +19,7 @@ public class ConditionRequirement extends CustomRequirement {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(ConditionRequirement.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     public ConditionRequirement() {
         super();

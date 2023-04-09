@@ -28,7 +28,7 @@ public class StepObjective extends Objective implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(StepObjective.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
     private static final BlockSelector PRESSURE_PLATE_SELECTOR = getPressurePlateSelector();
 
     private final CompoundLocation loc;

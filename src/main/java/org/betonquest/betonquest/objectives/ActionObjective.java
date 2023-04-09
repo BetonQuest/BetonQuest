@@ -38,7 +38,7 @@ public class ActionObjective extends Objective implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(ActionObjective.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final Click action;
     private final BlockSelector selector;

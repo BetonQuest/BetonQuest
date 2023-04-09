@@ -24,7 +24,7 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(RealtimeDailyScheduler.class, "Schedules");
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create("Schedules");
 
     /**
      * A cache where the last execution times of a schedule are stored.

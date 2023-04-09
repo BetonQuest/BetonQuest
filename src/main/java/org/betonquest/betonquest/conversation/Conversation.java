@@ -52,7 +52,7 @@ public class Conversation implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Conversation.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private static final ConcurrentHashMap<Profile, Conversation> LIST = new ConcurrentHashMap<>();
 

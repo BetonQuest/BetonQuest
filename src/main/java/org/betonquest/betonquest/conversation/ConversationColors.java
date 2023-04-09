@@ -16,7 +16,7 @@ public final class ConversationColors {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(ConversationColors.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private static ChatColor[] npcColors;
     private static ChatColor[] playerColors;

@@ -32,7 +32,7 @@ public class DieObjective extends Objective implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(DieObjective.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final boolean cancel;
     private final CompoundLocation location;

@@ -23,7 +23,7 @@ public class UpdateSourceHandler {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(UpdateSourceHandler.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * A list of {@link ReleaseUpdateSource} instances.

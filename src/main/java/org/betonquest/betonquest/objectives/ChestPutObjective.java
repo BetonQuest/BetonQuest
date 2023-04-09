@@ -42,7 +42,7 @@ public class ChestPutObjective extends Objective implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(ChestPutObjective.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final Condition chestItemCondition;
     private final Event chestTakeEvent;

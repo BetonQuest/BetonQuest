@@ -36,7 +36,7 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(MythicMobKillObjective.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * The names of all mobs that this objective should count.

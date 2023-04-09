@@ -15,7 +15,7 @@ public abstract class CountingObjective extends Objective {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(CountingObjective.class, "CountingObjective");
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create("CountingObjective");
 
     /**
      * The message name for notification messages used by default.

@@ -30,7 +30,7 @@ public class OpenedMenu implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(OpenedMenu.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * Hashmap containing all currently opened menus

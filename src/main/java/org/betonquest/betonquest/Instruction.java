@@ -37,7 +37,7 @@ public class Instruction {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Instruction.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
     private static final Pattern NUMBER_PATTERN = Pattern.compile("(?:\\s|\\G|^)(([+\\-])?\\d+)(?:\\s|$)");
     private final QuestPackage pack;
     protected String instruction;

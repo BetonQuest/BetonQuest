@@ -25,7 +25,7 @@ public class SQLite extends Database {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(SQLite.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
     private final String dbLocation;
 
     /**

@@ -18,7 +18,7 @@ public class TopXObject {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(TopXObject.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * Number of lines stored in maximum.

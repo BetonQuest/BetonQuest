@@ -38,7 +38,7 @@ public final class HandlerFactory {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(HandlerFactory.class, "LogWatcherFactory");
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create("LogWatcherFactory");
 
     private HandlerFactory() {
         // Empty

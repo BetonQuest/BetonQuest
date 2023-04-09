@@ -18,7 +18,7 @@ public class CustomDropListener implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(CustomDropListener.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     public CustomDropListener() {
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());

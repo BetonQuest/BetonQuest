@@ -35,7 +35,7 @@ public class QuestCanceler {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(QuestCanceler.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final String[] tags;
     private final String[] points;

@@ -16,7 +16,7 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(BetonQuestPlaceholder.class, "PlaceholderAPI Integration");
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create("PlaceholderAPI Integration");
 
     public BetonQuestPlaceholder() {
         super();

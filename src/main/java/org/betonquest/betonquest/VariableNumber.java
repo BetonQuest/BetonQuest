@@ -15,7 +15,7 @@ public class VariableNumber {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(VariableNumber.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * The constant value of this variable number if no variable was set.

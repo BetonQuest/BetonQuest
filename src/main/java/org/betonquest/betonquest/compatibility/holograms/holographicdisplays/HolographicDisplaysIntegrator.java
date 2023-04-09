@@ -25,7 +25,7 @@ public class HolographicDisplaysIntegrator extends HologramIntegrator {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(HolographicDisplaysIntegrator.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * Creates a new HolographicDisplaysIntegrator for HolographicDisplays

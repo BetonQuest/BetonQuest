@@ -23,7 +23,7 @@ public class MySQL extends Database {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(MySQL.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
     private final String user;
     private final String database;
     private final String password;

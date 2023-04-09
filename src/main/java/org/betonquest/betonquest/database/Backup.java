@@ -27,7 +27,7 @@ public final class Backup {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Backup.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * Private constructor to hide the implicit public one.

@@ -29,7 +29,7 @@ public class Updater {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Updater.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
     /**
      * The minimum delay when checking for updates, this prevents too many api requests when reloading the plugin often.
      */

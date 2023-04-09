@@ -19,7 +19,7 @@ public class DayOfWeekCondition extends Condition {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(DayOfWeekCondition.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final DayOfWeek day;
 

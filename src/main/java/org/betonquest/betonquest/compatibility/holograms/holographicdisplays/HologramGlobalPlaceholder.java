@@ -12,7 +12,7 @@ public class HologramGlobalPlaceholder implements GlobalPlaceholder {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(HologramGlobalPlaceholder.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * Creates new instance of HologramGlobalPlaceholder

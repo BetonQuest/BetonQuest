@@ -24,7 +24,7 @@ public class AdvancementNotifyIO extends NotifyIO {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(AdvancementNotifyIO.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final String frame;
     private final String icon;

@@ -31,7 +31,7 @@ public class ArrowShootObjective extends Objective implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(ArrowShootObjective.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final CompoundLocation loc;
     private final VariableNumber range;

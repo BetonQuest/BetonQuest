@@ -23,7 +23,7 @@ public class MenuObjective extends Objective implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(MenuObjective.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final MenuID menuID;
 
