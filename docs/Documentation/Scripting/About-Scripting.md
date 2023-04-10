@@ -143,23 +143,16 @@ objectives:
 
 #### Variables
 
-!!! warning
-    Use with caution!
-    Variable means here the variable with `%%`, not global variables with `$$`!
-    Global variables are absolutely safe and will result in an error on reload if used wrong.
+!!! warning "Use with caution!"
+    The updating behaviour of already started objectives might change in BetonQuest 3. Perhaps variable changes will be 
+    reflected in the amount of an active objective. This is not the case right now.
 
-Instead of hardcoded numbers you can use variables as amount in Objectives.
-Note that the value of the variable at the moment of assigning the objective is used and will then be stored per active objective independent.
-To assign a new value you would have to delete the old objective and start a new one,
-discards all process.
-Also, when an invalid amount for the objective is given a default value of `1` is used.
-This can happen when the variable is not initiated, has a negative value in an objective which requires a positive amount or other things.
+Some objectives support variables for their amount options.
+When the objective is started for a player, the amount is set to the variable's current value. The amount of an active objective will
+not be updated if the variable changes.
+Also, when the variable contains an invalid value for the given objective (e.g. a negative value) a default value of `1` is used.
 
-Important: Nobody will be informed when the default value is used!
-
-Also expect this feature to get changed in the future.
-
-```YAML title="Example"
+```YAML title="Examples"
 objectives:
   killMonsters: 'mobkill ZOMBIE %math.calc:(100-{point.reputation.amount})*2% events:endSiege'
   breakObsidian: 'block OBSIDIAN %randomnumber.whole.-60~-40% events:dailyReward'
