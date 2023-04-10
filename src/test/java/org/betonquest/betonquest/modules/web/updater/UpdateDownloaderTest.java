@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
@@ -71,7 +72,7 @@ class UpdateDownloaderTest {
 
     @Test
     @SuppressWarnings("PMD.DoNotUseThreads")
-    void testConcurrentDownloads(@TempDir final File tempDir) throws IOException {
+    void testConcurrentDownloads(@TempDir final File tempDir) throws IOException, InterruptedException {
         final ExecutorService service = Executors.newFixedThreadPool(1);
 
         final File file = new File(tempDir, "BetonQuest.jar");
@@ -80,20 +81,26 @@ class UpdateDownloaderTest {
         final UpdateDownloader downloader = new UpdateDownloader(downloadSource, file);
 
         final Semaphore semaphore = new Semaphore(0);
+        final CountDownLatch countDownLatch = new CountDownLatch(1);
         doAnswer(invocation -> {
+            countDownLatch.countDown();
             semaphore.acquire();
             return null;
         }).when(downloadSource).get(url, file);
-        service.execute(() -> {
-            try {
-                downloader.downloadToFile(url);
-            } catch (final QuestRuntimeException e) {
-                throw new IllegalStateException(e);
-            }
-        });
-        final QuestRuntimeException exception = assertThrows(QuestRuntimeException.class, () -> downloader.downloadToFile(url), "Expected QuestRuntimeException");
-        assertEquals("The updater is already downloading the update! Please wait until it is finished!", exception.getMessage(), "Expected exception message does not Match");
-        semaphore.release();
-        service.shutdown();
+        try {
+            service.execute(() -> {
+                try {
+                    downloader.downloadToFile(url);
+                } catch (final QuestRuntimeException e) {
+                    throw new IllegalStateException(e);
+                }
+            });
+            countDownLatch.await();
+            final QuestRuntimeException exception = assertThrows(QuestRuntimeException.class, () -> downloader.downloadToFile(url), "Expected QuestRuntimeException");
+            assertEquals("The updater is already downloading the update! Please wait until it is finished!", exception.getMessage(), "Expected exception message does not Match");
+        } finally {
+            semaphore.release();
+            service.shutdown();
+        }
     }
 }
