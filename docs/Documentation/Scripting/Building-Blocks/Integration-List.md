@@ -280,39 +280,50 @@ With this event you can fire Denizen task scripts. Don't confuse it with `skript
 
 ## EffectLib[](http://dev.bukkit.org/bukkit-plugins/effectlib/)
 
-If you install this plugin on your server you will be able to set a particle effect on NPCs with conversations and use `particle` event.
+If you install this plugin on your server you will be able to play particle effects on NPCs and locations. 
+You can also use the `particle` event to trigger particle.
 
-EffectLib is not a normal plugin, it's a developer tool - there are no official docs. However, the Magic plugin has a
-[wiki](https://reference.elmakers.com/#effectlib) for EffectLib.
-It does contain a few magic specific settings though so please don't be confused if some stuff does not work.
-There is also a [magic editor](https://sandbox.elmakers.com/#betonquestEffectLibTemplate) with autocompletion for EffectLib.
+!!! info EffectLib Documentation
+    EffectLib is not a normal plugin, it's a powerful developer tool - there are no official docs. However, the Magic plugin has a
+    [wiki](https://reference.elmakers.com/#effectlib) for EffectLib.
+    It does contain a few magic specific settings though so please don't be confused if some stuff does not work.
+    There is also a [magic editor](https://sandbox.elmakers.com/#betonquestEffectLibTemplate) with autocompletion for EffectLib.
 
-You can control the behaviour of particles around the NPCs in the `npc_effects` section.
-Each effect is defined as a separate subsection and consists of EffectLib options (described on the EffectLib page) and several BetonQuest settings.
-`npcs` is a list of all NPCs on which this effect can be displayed. If no `npcs` are specified it will use the package NPCs from _package.yml_.
-`conditions` is a list of conditions the player has to meet in order to see the effect.
-BetonQuest will find the first effect which can be displayed and show it to the player.
-`interval` controls how often the effect is displayed (in ticks). The effect will be fired from the exact location of the NPC, upwards.
-
-```YAML
-npc_effects:
-   check_interval: 50
-   disabled: false
-   farmer:
-      class: VortexEffect
-      iterations: 20
-      particle: crit_magic
+```YAML title="Example"
+effectlib: #(1)!
+   farmer: #(2)!
+      class: VortexEffect #(3)!
+      iterations: 20 #(4)!
+      particle: crit_magic 
       helixes: 3
       circles: 1
       grow: 0.1
       radius: 0.5
-      interval: 30
-      npcs:
-         - 1
-      conditions:
+      pitch: -60 #(9)!
+      yaw: 90 #(10)!
+      interval: 30 #(8)!
+      checkinterval: 80 #(11)!
+      npcs: #(5)!
+         - 1 
+      locations: #(6)!
+         - 171;72;-127;world
+      conditions: #(7)!
          - '!con_tag_started'
          - '!con_tag_finished'
 ```
+
+1. All effects need to be defined in this section.
+2. Each effect is defined as a separate subsection. You can choose any name for it.
+3. Any EffectLib effect class.
+4. This and all following options until `interval` are EffectLib parameters. You can find them in the 3rd party documentation linked above.
+5. A list of all NPCs on which this effect is displayed. This section is optional. Also, available is the possibility to use `npcs: PACKAGE`. This setting makes sure,
+ that all NPCs of the package are used.
+6. A list of all locations on wich the effect is displayed. Optional.
+7. The conditions that must be true so that the player can see this effect.
+8. Controls after how many ticks the effect is restarted. Optional, default: 100 ticks
+9. Controls the vertical direction of the effect.
+10. Controls the horizontal direction of the effect.
+11. Controls how often the conditions should be checked (in ticks). Optional, default: 100 ticks
 
 ### Events
 

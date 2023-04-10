@@ -4,7 +4,7 @@ import de.slikey.effectlib.EffectManager;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
-import org.betonquest.betonquest.compatibility.citizens.CitizensParticle;
+import org.betonquest.betonquest.compatibility.citizens.EffectLibParticleManager;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class EffectLibIntegrator implements Integrator {
@@ -31,7 +31,7 @@ public class EffectLibIntegrator implements Integrator {
     public void hook() {
         manager = new EffectManager(BetonQuest.getInstance());
         if (Compatibility.getHooked().contains("Citizens")) {
-            new CitizensParticle();
+            new EffectLibParticleManager();
         }
         plugin.registerEvents("particle", ParticleEvent.class);
     }

@@ -14,6 +14,8 @@ public class CitizensIntegrator implements Integrator {
 
     private CitizensListener citizensListener;
 
+    private EffectLibParticleManager citizensParticle;
+
     public CitizensIntegrator() {
         plugin = BetonQuest.getInstance();
     }
@@ -22,8 +24,9 @@ public class CitizensIntegrator implements Integrator {
     public void hook() {
         citizensListener = new CitizensListener();
         new CitizensWalkingListener();
+
         if (Compatibility.getHooked().contains("EffectLib")) {
-            new CitizensParticle();
+            citizensParticle = new EffectLibParticleManager();
         }
 
         // if ProtocolLib is hooked, start NPCHider
@@ -50,7 +53,7 @@ public class CitizensIntegrator implements Integrator {
     @Override
     public void reload() {
         if (Compatibility.getHooked().containsAll(Arrays.asList("Citizens", "EffectLib"))) {
-            CitizensParticle.reload();
+            citizensParticle.reload();
         }
         if (Compatibility.getHooked().contains("Citizens")) {
             citizensListener.reload();
