@@ -34,7 +34,7 @@ It is a major goal to write JUnit tests for most parts of BetonQuest.
 
 _You may need to read [Logging](../../../API/Logging.md) to understand this paragraph._
 
-This error can occur everytime the `@CustomLog` annotation is used in a class that is called by a JUnit test:
+This error can occur everytime the `BetonQuestLogger` is used in a class that is called by a JUnit test:
 
 ```
 Cannot invoke "org.bukkit.Server.getPluginManager()" because "org.bukkit.Bukkit.server" is null
@@ -48,7 +48,7 @@ class:
 public class TestClass {
 ````
 
-The test should now work as intended because a new anonymous logger is created everytime the `@CustomLog` annotation
+The test should now work as intended because a new anonymous logger is created everytime the `BetonQuestLogger`
 is used. All these loggers have a silent parent logger - so there are no visible log messages in the command line. The 
 `BetonQuestLoggerService` also enables a few new features:
 
