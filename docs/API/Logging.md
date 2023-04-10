@@ -43,16 +43,14 @@ These advantages are mainly for BetonQuest, but it is also very useful for 3rd p
 
     === "Using plain Java"    
         !!! abstract ""
-            Simply create a BetonQuestLogger instance in your class.
+            Simply create a BetonQuestLogger instance in your class as such:
     
             === "Without topic"
-                Automatically determine the class for the logger.
-                ````java linenums="1"
+                ````java linenums="1" title="Automatically determine the logging class"
                 public final class MyCustomEvent {
                     private final static BetonQuestLogger LOG = BetonQuestLogger.create();
                 ````
-                Manually specify the class for the logger.
-                ````java linenums="1"
+                ````java linenums="1" title="Manually specify the logging class"
                 public final class MyCustomEvent {
                     private final static BetonQuestLogger LOG = BetonQuestLogger.create(MyCustomEvent.class);
                 ````
