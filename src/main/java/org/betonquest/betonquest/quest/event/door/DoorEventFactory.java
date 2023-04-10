@@ -23,10 +23,12 @@ public class DoorEventFactory implements EventFactory, StaticEventFactory {
      * Server to use for syncing to the primary server thread.
      */
     private final Server server;
+
     /**
      * Scheduler to use for syncing to the primary server thread.
      */
     private final BukkitScheduler scheduler;
+
     /**
      * Plugin to use for syncing to the primary server thread.
      */
@@ -35,9 +37,9 @@ public class DoorEventFactory implements EventFactory, StaticEventFactory {
     /**
      * Create the door event factory.
      *
-     * @param server server to use
+     * @param server    server to use
      * @param scheduler scheduler to use
-     * @param plugin plugin to use
+     * @param plugin    plugin to use
      */
     public DoorEventFactory(final Server server, final BukkitScheduler scheduler, final Plugin plugin) {
         this.server = server;

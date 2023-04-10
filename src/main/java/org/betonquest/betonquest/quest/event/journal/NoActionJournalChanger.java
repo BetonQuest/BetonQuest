@@ -9,7 +9,8 @@ public class NoActionJournalChanger implements JournalChanger {
     /**
      * Create the no action journal changer.
      */
-    public NoActionJournalChanger() {}
+    public NoActionJournalChanger() {
+    }
 
     @Override
     public void changeJournal(final Journal journal) {

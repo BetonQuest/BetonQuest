@@ -28,6 +28,7 @@ class MultiSectionConfigurationKeyConflictExceptionTest {
                 key3: value3-1
                 key4: value4
             """;
+
     /**
      * Config with key3 as value
      */
@@ -37,6 +38,7 @@ class MultiSectionConfigurationKeyConflictExceptionTest {
                 key3: value3-2
                 key5: value5
             """;
+
     /**
      * Config with key3 as section
      */
@@ -56,13 +58,12 @@ class MultiSectionConfigurationKeyConflictExceptionTest {
         } catch (final KeyConflictException e) {
             assertNull(e.getMessage());
             assertEquals("""
-                            You have conflicts in your configuration files:
+                    You have conflicts in your configuration files:
 
-                                The key 'section.key3' is defined multiple times in the following configs:
-                                    - Config-1
-                                    - Config-2
-                            """
-                    , e.resolvedMessage(configs));
+                        The key 'section.key3' is defined multiple times in the following configs:
+                            - Config-1
+                            - Config-2
+                    """, e.resolvedMessage(configs));
             return;
         } catch (final InvalidSubConfigurationException e) {
             fail(e);
@@ -78,12 +79,11 @@ class MultiSectionConfigurationKeyConflictExceptionTest {
         } catch (final KeyConflictException e) {
             assertNull(e.getMessage());
             assertEquals("""
-                            You have conflicts in your configuration files:
+                    You have conflicts in your configuration files:
 
-                                The key 'section.key3' in config 'Config-1' is a path with sub keys in at least one of the following configs:
-                                    - Config-2 with 'section.key3.key'
-                            """
-                    , e.resolvedMessage(configs));
+                        The key 'section.key3' in config 'Config-1' is a path with sub keys in at least one of the following configs:
+                            - Config-2 with 'section.key3.key'
+                    """, e.resolvedMessage(configs));
             return;
         } catch (final InvalidSubConfigurationException e) {
             fail(e);
@@ -99,23 +99,22 @@ class MultiSectionConfigurationKeyConflictExceptionTest {
         } catch (final KeyConflictException e) {
             assertNull(e.getMessage());
             assertEquals("""
-                            You have conflicts in your configuration files:
+                    You have conflicts in your configuration files:
 
-                                The key 'section.key2' is defined multiple times in the following configs:
-                                    - Config-2
-                                    - Config-3
-                                The key 'section.key3' is defined multiple times in the following configs:
-                                    - Config-1
-                                    - Config-2
-                                The key 'section.key5' is defined multiple times in the following configs:
-                                    - Config-2
-                                    - Config-3
+                        The key 'section.key2' is defined multiple times in the following configs:
+                            - Config-2
+                            - Config-3
+                        The key 'section.key3' is defined multiple times in the following configs:
+                            - Config-1
+                            - Config-2
+                        The key 'section.key5' is defined multiple times in the following configs:
+                            - Config-2
+                            - Config-3
 
-                                The key 'section.key3' in config 'Config-1' is a path with sub keys in at least one of the following configs:
-                                    - Config-2 with 'section.key3'
-                                    - Config-3 with 'section.key3.key'
-                            """
-                    , e.resolvedMessage(configs));
+                        The key 'section.key3' in config 'Config-1' is a path with sub keys in at least one of the following configs:
+                            - Config-2 with 'section.key3'
+                            - Config-3 with 'section.key3.key'
+                    """, e.resolvedMessage(configs));
             return;
         } catch (final InvalidSubConfigurationException e) {
             fail(e);

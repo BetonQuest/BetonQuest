@@ -13,8 +13,8 @@ import org.bukkit.inventory.PlayerInventory;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class HandCondition extends Condition {
-
     private final QuestItem questItem;
+
     private final boolean offhand;
 
     public HandCondition(final Instruction instruction) throws InstructionParseException {

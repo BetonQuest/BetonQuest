@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
  */
 
 public final class JREVersionPrinter {
-
     /**
      * The version of the JRE.
      */
@@ -18,14 +17,17 @@ public final class JREVersionPrinter {
      * The build number of the JRE.
      */
     private final String build;
+
     /**
      * Optional information about the version of the JRE, may not be provided.
      */
     private final String optional;
+
     /**
      * Information about the preRelease version of the JRE, may not be provided.
      */
     private final String preReleaseInfo;
+
     /**
      * The vendor of the JRE.
      */

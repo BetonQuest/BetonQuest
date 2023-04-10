@@ -9,11 +9,11 @@ import org.bukkit.entity.Player;
  * The hunger event, changing the hunger of a player.
  */
 public class HungerEvent implements Event {
-
     /**
      * The hunger type, how the amount will be applied to the players hunger.
      */
     private final Hunger hunger;
+
     /**
      * The amount of hunger to apply.
      */

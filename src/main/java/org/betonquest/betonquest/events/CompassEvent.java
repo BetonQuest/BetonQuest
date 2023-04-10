@@ -29,7 +29,9 @@ public class CompassEvent extends QuestEvent {
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final Action action;
+
     private final String compass;
+
     private CompoundLocation compassLocation;
 
     public CompassEvent(final Instruction instruction) throws InstructionParseException {

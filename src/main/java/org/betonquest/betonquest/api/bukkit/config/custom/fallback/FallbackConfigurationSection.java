@@ -29,10 +29,12 @@ public class FallbackConfigurationSection implements ConfigurationSection {
      * Manager holing the original and the fallback {@link ConfigurationSection} instances.
      */
     protected final ConfigManager manager;
+
     /**
      * The parent {@link FallbackConfigurationSection}.
      */
     protected FallbackConfigurationSection parent;
+
     /**
      * The root {@link Configuration}.
      */
@@ -59,7 +61,6 @@ public class FallbackConfigurationSection implements ConfigurationSection {
         this.manager = new ConfigManager(sectionName, original, fallback);
     }
 
-
     private FallbackConfigurationSection getFallbackConfigurationSection(final String path) {
         final char separator = root.options().pathSeparator();
         final int separatorIndex = path.indexOf(separator);
@@ -84,7 +85,6 @@ public class FallbackConfigurationSection implements ConfigurationSection {
         final String suffix = path.substring(separatorIndex + 1);
         return fallbackConfigurationSection.getFallbackConfigurationSection(suffix);
     }
-
 
     @Override
     public @NotNull
@@ -659,10 +659,12 @@ public class FallbackConfigurationSection implements ConfigurationSection {
          * Name of the current {@link ConfigurationSection}
          */
         private final String sectionName;
+
         /**
          * The original {@link ConfigurationSection}.
          */
         private ConfigurationSection original;
+
         /**
          * The fallback {@link ConfigurationSection}.
          */

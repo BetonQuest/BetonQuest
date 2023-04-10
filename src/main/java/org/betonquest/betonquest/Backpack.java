@@ -48,18 +48,22 @@ public class Backpack implements Listener {
      * The {@link OnlineProfile} of the player
      */
     private final OnlineProfile onlineProfile;
+
     /**
      * Database handler for the player
      */
     private final PlayerData playerData;
+
     /**
      * Language of the player
      */
     private final String lang;
+
     /**
      * The inventory created by this object
      */
     private Inventory inv;
+
     /**
      * Currently displayed page
      */
@@ -144,11 +148,17 @@ public class Backpack implements Listener {
     @SuppressWarnings({"PMD.ShortClassName", "PMD.CyclomaticComplexity", "PMD.AvoidFieldNameMatchingTypeName"})
     private class Page extends Display {
         private final int page;
+
         private final int pages;
+
         private final int pageOffset;
+
         private final boolean showJournal;
+
         private final boolean showCancel;
+
         private final boolean showCompass;
+
         private final List<ItemStack> backpackItems;
 
         /**
@@ -413,9 +423,10 @@ public class Backpack implements Listener {
     }
 
     private class Compass extends Display {
-
         private final Map<Integer, Location> locations = new HashMap<>();
+
         private final Map<Integer, String> names = new HashMap<>();
+
         private final Map<Integer, Pair<QuestPackage, String>> items = new HashMap<>();
 
         @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NcssCount", "PMD.NPathComplexity",

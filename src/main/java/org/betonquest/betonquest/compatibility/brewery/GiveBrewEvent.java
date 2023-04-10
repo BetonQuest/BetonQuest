@@ -13,9 +13,10 @@ import java.util.Collection;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class GiveBrewEvent extends QuestEvent {
-
     private final Integer amount;
+
     private final Integer quality;
+
     private final BRecipe recipe;
 
     public GiveBrewEvent(final Instruction instruction) throws InstructionParseException {

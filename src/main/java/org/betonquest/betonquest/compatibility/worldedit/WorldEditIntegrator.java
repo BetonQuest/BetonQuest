@@ -3,7 +3,6 @@ package org.betonquest.betonquest.compatibility.worldedit;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Integrator;
 
-
 @SuppressWarnings("PMD.CommentRequired")
 public class WorldEditIntegrator implements Integrator {
 

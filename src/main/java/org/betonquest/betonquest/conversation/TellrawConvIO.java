@@ -27,19 +27,26 @@ import java.util.UUID;
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition"})
 public class TellrawConvIO extends ChatConvIO {
-
     static {
         new UnknownCommandTellrawListener();
     }
 
     protected Map<Integer, String> hashes;
+
     protected ChatColor color;
+
     protected boolean italic;
+
     protected boolean bold;
+
     protected boolean underline;
+
     protected boolean strikethrough;
+
     protected boolean magic;
+
     protected String number;
+
     private int count;
 
     public TellrawConvIO(final Conversation conv, final OnlineProfile onlineProfile) {

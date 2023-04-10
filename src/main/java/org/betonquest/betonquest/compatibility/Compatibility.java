@@ -60,6 +60,7 @@ public class Compatibility implements Listener {
      * An instance of this class.
      */
     private static Compatibility instance;
+
     /**
      * A map of all integrators.
      * The key is the name of the plugin, the value a pair of the integrator class and an instance of it.
@@ -159,8 +160,8 @@ public class Compatibility implements Listener {
         final Integrator integrator;
         try {
             integrator = integratorClass.getConstructor().newInstance();
-        } catch (final InstantiationException | IllegalAccessException | InvocationTargetException |
-                       NoSuchMethodException | NoClassDefFoundError e) {
+        } catch (final InstantiationException | IllegalAccessException | InvocationTargetException
+                       | NoSuchMethodException | NoClassDefFoundError e) {
             LOG.warn(null, "Error while integrating " + name + " with version " + hookedPlugin.getDescription().getVersion() + ": " + e, e);
             LOG.warn("You are likely running an incompatible version of " + name + ".");
             return;

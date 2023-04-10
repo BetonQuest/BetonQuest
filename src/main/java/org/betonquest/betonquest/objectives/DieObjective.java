@@ -35,6 +35,7 @@ public class DieObjective extends Objective implements Listener {
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final boolean cancel;
+
     private final CompoundLocation location;
 
     public DieObjective(final Instruction instruction) throws InstructionParseException {

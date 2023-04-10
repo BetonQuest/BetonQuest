@@ -21,10 +21,12 @@ public class LightningEventFactory implements EventFactory, StaticEventFactory {
      * Server to use for syncing to the primary server thread.
      */
     private final Server server;
+
     /**
      * Scheduler to use for syncing to the primary server thread.
      */
     private final BukkitScheduler scheduler;
+
     /**
      * Plugin to use for syncing to the primary server thread.
      */

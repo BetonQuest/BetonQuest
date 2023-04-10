@@ -42,22 +42,27 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
      * The names of all mobs that this objective should count.
      */
     private final Set<String> names = new HashSet<>();
+
     /**
      * The minimal level the killed mob must have to count.
      */
     private final VariableNumber minMobLevel;
+
     /**
      * The maximal level the killed mob must have to count.
      */
     private final VariableNumber maxMobLevel;
+
     /**
      * The radius in which any of the specified mobs dying will progress the objective for players.
      */
     private final double deathRadiusAllPlayers;
+
     /**
      * The radius in which any of the specified mobs dying without a killer will progress the objective for players.
      */
     private final double neutralDeathRadiusAllPlayers;
+
     /**
      * The text with which the mob must have been marked to count.
      */

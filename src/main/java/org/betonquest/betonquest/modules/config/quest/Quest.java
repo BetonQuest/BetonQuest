@@ -26,18 +26,22 @@ public abstract class Quest {
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+
     /**
      * The merged {@link MultiConfiguration} that represents this {@link Quest}.
      */
     protected final MultiConfiguration config;
+
     /**
      * The address of this {@link Quest}.
      */
     private final String questPath;
+
     /**
      * The root folder of this {@link Quest}.
      */
     private final File root;
+
     /**
      * The list of all {@link ConfigAccessor}s of this {@link Quest}.
      */

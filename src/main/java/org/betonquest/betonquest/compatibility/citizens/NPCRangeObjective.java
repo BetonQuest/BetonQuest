@@ -22,11 +22,14 @@ import java.util.UUID;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class NPCRangeObjective extends Objective {
-
     private final List<Integer> npcIds;
+
     private final Trigger trigger;
+
     private final VariableNumber radius;
+
     private final Map<UUID, Boolean> playersInRange;
+
     private int npcMoveTask;
 
     public NPCRangeObjective(final Instruction instruction) throws InstructionParseException {

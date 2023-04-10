@@ -15,6 +15,7 @@ import org.bukkit.util.Vector;
 @SuppressWarnings("PMD.CommentRequired")
 public class CompoundLocation {
     private final LocationData locationData;
+
     private final VectorData vectorData;
 
     /**

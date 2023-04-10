@@ -283,42 +283,67 @@ public class BetonQuest extends JavaPlugin {
     private final static int BSTATS_METRICS_ID = 551;
 
     private static final Map<String, Class<? extends Condition>> CONDITION_TYPES = new HashMap<>();
+
     private static final Map<String, Class<? extends Objective>> OBJECTIVE_TYPES = new HashMap<>();
+
     private static final Map<String, Class<? extends ConversationIO>> CONVERSATION_IO_TYPES = new HashMap<>();
+
     private static final Map<String, Class<? extends Interceptor>> INTERCEPTOR_TYPES = new HashMap<>();
+
     private static final Map<String, Class<? extends NotifyIO>> NOTIFY_IO_TYPES = new HashMap<>();
+
     private static final Map<String, Class<? extends Variable>> VARIABLE_TYPES = new HashMap<>();
+
     private static final Map<String, EventScheduling.ScheduleType<?>> SCHEDULE_TYPES = new HashMap<>();
+
     private static final Map<ConditionID, Condition> CONDITIONS = new HashMap<>();
+
     private static final Map<EventID, QuestEvent> EVENTS = new HashMap<>();
+
     private static final Map<ObjectiveID, Objective> OBJECTIVES = new HashMap<>();
+
     private static final Map<String, ConversationData> CONVERSATIONS = new HashMap<>();
+
     private static final Map<VariableID, Variable> VARIABLES = new HashMap<>();
+
     private static final Map<String, QuestCanceler> CANCELERS = new HashMap<>();
+
     /**
      * The BetonQuest Plugin instance.
      */
     private static BetonQuest instance;
+
     private static BetonQuestLogger log;
 
     /**
      * Map of registered events.
      */
     private final Map<String, QuestEventFactory> eventTypes = new HashMap<>();
+
     private final ConcurrentHashMap<Profile, PlayerData> playerDataMap = new ConcurrentHashMap<>();
+
     private String pluginTag;
+
     private ConfigurationFile config;
+
     /**
      * The adventure instance.
      */
     private BukkitAudiences adventure;
+
     private Database database;
+
     private boolean isMySQLUsed;
+
     @SuppressWarnings("PMD.DoNotUseThreads")
     private AsyncSaver saver;
+
     private Updater updater;
+
     private GlobalData globalData;
+
     private PlayerHider playerHider;
+
     private RPGMenu rpgMenu;
 
     /**
@@ -381,8 +406,8 @@ public class BetonQuest extends JavaPlugin {
                         return false;
                     }
                     if (PaperLib.isSpigot()) {
-                        log.warn("The following exception is only ok when the server is currently stopping." +
-                                "Switch to papermc.io to fix this.");
+                        log.warn("The following exception is only ok when the server is currently stopping."
+                                + "Switch to papermc.io to fix this.");
                     }
                     log.reportException(e);
                     return false;
@@ -494,9 +519,7 @@ public class BetonQuest extends JavaPlugin {
             }
         }
         if (objective.containsPlayer(profile)) {
-            log.debug(objectiveID.getPackage(),
-                    profile + " already has the " + objectiveID +
-                            " objective");
+            log.debug(objectiveID.getPackage(), profile + " already has the " + objectiveID + " objective");
             return;
         }
         objective.newPlayer(profile);

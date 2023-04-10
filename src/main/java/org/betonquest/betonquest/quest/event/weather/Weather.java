@@ -19,8 +19,7 @@ public enum Weather {
     /**
      * Stormy weather. This is rain with lighting and thunder.
      */
-    STORM(true, true),
-    ;
+    STORM(true, true);
 
     /**
      * Whether it should rain.

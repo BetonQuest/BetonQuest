@@ -36,6 +36,7 @@ public abstract class AbstractTakeEvent extends QuestEvent {
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     protected final boolean notify;
+
     protected final List<CheckType> checkOrder;
 
     public AbstractTakeEvent(final Instruction instruction) throws InstructionParseException {

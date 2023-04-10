@@ -15,11 +15,11 @@ import java.util.List;
  * Originally implemented for use with the PAPI integration.
  */
 public class TagVariable extends Variable {
-
     /**
      * The tag to check for.
      */
     private final String tagName;
+
     /**
      * The quest package to check for the tag.
      */

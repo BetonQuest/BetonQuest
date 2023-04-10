@@ -19,15 +19,14 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class TakeEvent extends AbstractTakeEvent {
-
     protected final Map<UUID, Pair<QuestItem, Integer>> neededDeletions = new ConcurrentHashMap<>();
+
     protected Item[] questItems;
 
     public TakeEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         questItems = instruction.getItemList();
     }
-
 
     @SuppressWarnings("PMD.PreserveStackTrace")
     @Override
@@ -46,7 +45,6 @@ public class TakeEvent extends AbstractTakeEvent {
         }
         return null;
     }
-
 
     @Override
     protected ItemStack[] takeDesiredAmount(final Profile profile, final ItemStack... items) {

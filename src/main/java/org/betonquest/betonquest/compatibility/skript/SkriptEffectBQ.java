@@ -25,6 +25,7 @@ public class SkriptEffectBQ extends Effect {
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private Expression<String> event;
+
     private Expression<Player> player;
 
     public SkriptEffectBQ() {

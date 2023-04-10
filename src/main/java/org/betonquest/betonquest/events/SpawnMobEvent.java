@@ -27,18 +27,28 @@ import java.util.Locale;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class SpawnMobEvent extends QuestEvent {
-
     private final CompoundLocation loc;
+
     private final EntityType type;
+
     private final VariableNumber amount;
+
     private final QuestItem helmet;
+
     private final QuestItem chestplate;
+
     private final QuestItem leggings;
+
     private final QuestItem boots;
+
     private final QuestItem mainHand;
+
     private final QuestItem offHand;
+
     private final Item[] drops;
+
     private final String name;
+
     private final String marked;
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
@@ -82,8 +92,7 @@ public class SpawnMobEvent extends QuestEvent {
         final int pAmount = amount.getInt(profile);
         for (int i = 0; i < pAmount; i++) {
             final Entity entity = location.getWorld().spawnEntity(location, type);
-            if (entity instanceof LivingEntity) {
-                final LivingEntity living = (LivingEntity) entity;
+            if (entity instanceof final LivingEntity living) {
                 final EntityEquipment equipment = living.getEquipment();
                 equipment.setHelmet(helmet == null ? null : helmet.generate(1));
                 equipment.setHelmetDropChance(0);
@@ -105,8 +114,7 @@ public class SpawnMobEvent extends QuestEvent {
                                 + item.getAmount().getInt(profile)));
                 dropIndex++;
             }
-            if (name != null && entity instanceof LivingEntity) {
-                final LivingEntity livingEntity = (LivingEntity) entity;
+            if (name != null && entity instanceof final LivingEntity livingEntity) {
                 livingEntity.setCustomName(name);
             }
             if (marked != null) {

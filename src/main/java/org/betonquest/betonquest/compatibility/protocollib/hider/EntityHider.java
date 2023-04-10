@@ -75,10 +75,14 @@ public class EntityHider implements Listener {
 
     // Current policy
     protected final Policy policy;
+
     // Listeners
     private final Listener bukkitListener;
+
     private final PacketAdapter protocolListener;
+
     protected Table<Integer, Integer, Boolean> observerEntityMap = HashBasedTable.create();
+
     private ProtocolManager manager;
 
     /**

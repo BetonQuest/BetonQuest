@@ -20,20 +20,22 @@ import java.util.regex.Pattern;
  * This is a {@link WebContentSource} for the Nexus repository.
  */
 public class NexusReleaseAndDevelopmentSource implements ReleaseUpdateSource, DevelopmentUpdateSource {
-
     /**
      * The sub path for the REST API of Nexus to append on the {@link NexusReleaseAndDevelopmentSource#apiUrl}.
      */
     public static final String SERVICE_REST_V_1 = "/service/rest/v1";
+
     /**
      * The sub path for a REST API call to Nexus to search for shaded jars
      * to append on a {@link NexusReleaseAndDevelopmentSource#SERVICE_REST_V_1}.
      */
     public static final String SEARCH_URL = "/search/assets?repository=betonquest&group=org.betonquest&name=betonquest&maven.extension=jar&maven.classifier=shaded&sort=version";
+
     /**
      * The sub path for a REST API call to Nexus with pagination to append to any path that has pagination.
      */
     public static final String CONTINUATION_TOKEN = "&continuationToken=";
+
     /**
      * Regex to get the 'betonquest.version' property from the pom.xml file
      */

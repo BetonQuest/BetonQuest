@@ -51,7 +51,6 @@ public abstract class Scheduler<S extends Schedule> {
         running = false;
     }
 
-
     /**
      * Register a new schedule to the list of schedules managed by this scheduler.
      * The schedule shall remain inactive till method {@link #start()} is called to activate all schedules.

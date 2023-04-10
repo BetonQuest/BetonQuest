@@ -34,8 +34,11 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     public final int minimalArgs;
+
     private final Permission perimssion;
+
     private CommandMap commandMap;
+
     private String usage = "null";
 
     public SimpleCommand(final String name, final int minimalArgs) {

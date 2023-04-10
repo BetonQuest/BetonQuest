@@ -32,6 +32,7 @@ class PatcherTest {
      * The patch file for this test.
      */
     private final YamlConfiguration patch = YamlConfiguration.loadConfiguration(new File("src/test/resources/modules.config/config.patch.yml"));
+
     /**
      * The config that will be patched.
      */
@@ -69,8 +70,7 @@ class PatcherTest {
                   - type: SET
                     key: journalLock
                     value: true
-                """)
-        ;
+                """);
         final Patcher patcher = new Patcher(configFromTheFuture, patch);
         assertFalse(patcher.hasUpdate(), "Patcher recognised patches from outdated versions as possible updates.");
         assertFalse(patcher.updateVersion(), "The Patcher updated the configVersion when it should not.");
@@ -108,7 +108,6 @@ class PatcherTest {
 
         assertEquals(expectedConfig.saveToString(), config.saveToString(), "The patcher must only patch when patcher.patch() is called.");
     }
-
 
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
@@ -179,7 +178,6 @@ class PatcherTest {
         final Patcher patcher = new Patcher(config, patchConfig);
         assertFalse(patcher.hasUpdate(), "An empty patch cannot provide updates.");
     }
-
 
     @Test
     void testLegacyConfig() throws InvalidConfigurationException {

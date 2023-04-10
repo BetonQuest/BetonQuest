@@ -13,6 +13,7 @@ import java.util.List;
 @SuppressWarnings("PMD.CommentRequired")
 public class EventAddLevel extends QuestEvent {
     private final String sJobName;
+
     private final Integer nAddLevel;
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")

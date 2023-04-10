@@ -18,7 +18,9 @@ import org.bukkit.entity.Player;
 public class AureliumSkillsLevelCondition extends Condition {
 
     private final VariableNumber targetLevelVar;
+
     private final Skill skill;
+
     private final boolean mustBeEqual;
 
     public AureliumSkillsLevelCondition(final Instruction instruction) throws InstructionParseException {

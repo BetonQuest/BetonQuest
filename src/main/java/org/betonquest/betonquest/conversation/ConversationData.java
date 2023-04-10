@@ -35,16 +35,25 @@ public class ConversationData {
     private static final List<String> EXTERNAL_POINTERS = new ArrayList<>();
 
     private final QuestPackage pack;
+
     private final String convName;
 
     private final Map<String, String> quester = new HashMap<>(); // maps for multiple languages
+
     private final Map<String, String> prefix = new HashMap<>(); // global conversation prefix
+
     private final EventID[] finalEvents;
+
     private final String[] startingOptions;
+
     private final boolean blockMovement;
+
     private final Map<String, Option> npcOptions;
+
     private final Map<String, Option> playerOptions;
+
     private String convIO;
+
     private String interceptor;
 
     /**
@@ -428,10 +437,10 @@ public class ConversationData {
 
     public enum OptionType {
         NPC("NPC_options", "NPC option"),
-        PLAYER("player_options", "player option"),
-        ;
+        PLAYER("player_options", "player option");
 
         private final String identifier;
+
         private final String readable;
 
         OptionType(final String identifier, final String readable) {
@@ -452,15 +461,20 @@ public class ConversationData {
      * Represents an option
      */
     private class Option {
-
         private final String name;
+
         private final OptionType type;
+
         private final Map<String, String> inlinePrefix = new HashMap<>();
 
         private final Map<String, String> text = new HashMap<>();
+
         private final List<ConditionID> conditions = new ArrayList<>();
+
         private final List<EventID> events = new ArrayList<>();
+
         private final List<String> pointers;
+
         private final List<String> extendLinks;
 
         @SuppressWarnings({"PMD.NcssCount", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
@@ -565,7 +579,6 @@ public class ConversationData {
             pointers = Arrays.stream(GlobalVariableResolver.resolve(pack, conv.getString("pointers", conv.getString("pointer", ""))).split(","))
                     .filter(StringUtils::isNotEmpty)
                     .map(String::trim).toList();
-
 
             extendLinks = Arrays.stream(GlobalVariableResolver.resolve(pack, conv.getString("extends", conv.getString("extend", ""))).split(","))
                     .filter(StringUtils::isNotEmpty)

@@ -24,9 +24,10 @@ import java.util.List;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class MobKillObjective extends CountingObjective implements Listener {
-
     private final List<EntityType> entities;
+
     protected String name;
+
     protected String marked;
 
     public MobKillObjective(final Instruction instruction) throws InstructionParseException {

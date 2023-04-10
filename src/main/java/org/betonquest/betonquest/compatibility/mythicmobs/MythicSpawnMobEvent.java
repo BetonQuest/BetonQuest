@@ -27,13 +27,18 @@ import org.bukkit.metadata.FixedMetadataValue;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class MythicSpawnMobEvent extends QuestEvent {
-
     private final CompoundLocation loc;
+
     private final String mob;
+
     private final VariableNumber amount;
+
     private final VariableNumber level;
+
     private final boolean privateMob;
+
     private final boolean targetPlayer;
+
     private final String marked;
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")

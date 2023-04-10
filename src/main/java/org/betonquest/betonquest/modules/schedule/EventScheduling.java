@@ -70,8 +70,8 @@ public class EventScheduling {
                     LOG.debug(questPackage, "Parsed schedule '" + scheduleID + "'.");
                 } catch (final InstructionParseException e) {
                     LOG.warn(questPackage, "Error loading schedule '" + scheduleID + "':" + e.getMessage(), e);
-                } catch (final InvocationTargetException | NoSuchMethodException | InstantiationException |
-                               IllegalAccessException e) {
+                } catch (final InvocationTargetException | NoSuchMethodException | InstantiationException
+                               | IllegalAccessException e) {
                     LOG.reportException(questPackage, e);
                 }
             } catch (final ObjectNotFoundException e) {

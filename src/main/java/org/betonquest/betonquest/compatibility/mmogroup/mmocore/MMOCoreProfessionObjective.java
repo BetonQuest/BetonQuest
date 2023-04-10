@@ -16,8 +16,8 @@ import org.bukkit.event.Listener;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class MMOCoreProfessionObjective extends Objective implements Listener {
-
     private final String professionName;
+
     private final int targetLevel;
 
     public MMOCoreProfessionObjective(final Instruction instruction) throws InstructionParseException {

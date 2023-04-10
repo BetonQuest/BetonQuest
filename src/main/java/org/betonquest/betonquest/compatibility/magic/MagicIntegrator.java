@@ -9,7 +9,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-
 @SuppressWarnings("PMD.CommentRequired")
 public class MagicIntegrator implements Integrator, Listener {
 

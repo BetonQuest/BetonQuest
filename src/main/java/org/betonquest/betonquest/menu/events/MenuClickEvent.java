@@ -15,8 +15,11 @@ public class MenuClickEvent extends MenuEvent implements Cancellable {
     private static final HandlerList HANDLER_LIST = new HandlerList();
 
     private final int slot;
+
     private final String itemId;
+
     private final ClickType clickType;
+
     private boolean cancelled;
 
     public MenuClickEvent(final Profile who, final MenuID menu, final int slot, final String itemId, final ClickType clickType) {

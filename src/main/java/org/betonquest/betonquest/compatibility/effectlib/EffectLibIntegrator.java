@@ -6,12 +6,12 @@ import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.citizens.CitizensParticle;
 
-
 @SuppressWarnings("PMD.CommentRequired")
 public class EffectLibIntegrator implements Integrator {
-
     private static EffectLibIntegrator instance;
+
     private final BetonQuest plugin;
+
     private EffectManager manager;
 
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")

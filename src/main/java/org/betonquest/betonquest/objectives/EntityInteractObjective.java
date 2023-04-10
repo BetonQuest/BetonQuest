@@ -48,14 +48,23 @@ public class EntityInteractObjective extends CountingObjective {
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final CompoundLocation loc;
+
     private final VariableNumber range;
+
     private final String customName;
+
     private final String realName;
+
     protected EntityType mobType;
+
     protected String marked;
+
     protected Interaction interaction;
+
     protected boolean cancel;
+
     private RightClickListener rightClickListener;
+
     private LeftClickListener leftClickListener;
 
     public EntityInteractObjective(final Instruction instruction) throws InstructionParseException {
@@ -190,10 +199,7 @@ public class EntityInteractObjective extends CountingObjective {
 
         @Override
         public String toString() {
-            return super.toString() + ";" +
-                    entities.stream()
-                            .map(UUID::toString)
-                            .collect(Collectors.joining("/"));
+            return super.toString() + ";" + entities.stream().map(UUID::toString).collect(Collectors.joining("/"));
         }
 
     }

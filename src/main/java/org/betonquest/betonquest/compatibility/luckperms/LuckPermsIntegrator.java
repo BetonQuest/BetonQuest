@@ -11,6 +11,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AtLeastOneConstructor"})
 public class LuckPermsIntegrator implements Integrator {
     private LuckPerms api;
+
     private ContextCalculator<Player> tagCalculator;
 
     @Override

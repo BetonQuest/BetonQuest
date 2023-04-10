@@ -15,15 +15,22 @@ import java.util.Locale;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class PotionHandler {
-
     private PotionType type = PotionType.WATER;
+
     private Existence typeE = Existence.WHATEVER;
+
     private boolean extended;
+
     private Existence extendedE = Existence.WHATEVER;
+
     private boolean upgraded;
+
     private Existence upgradedE = Existence.WHATEVER;
+
     private List<CustomEffectHandler> custom = new ArrayList<>();
+
     private Existence customE = Existence.WHATEVER;
+
     private boolean exact = true;
 
     public PotionHandler() {
@@ -134,12 +141,16 @@ public class PotionHandler {
     }
 
     private static class CustomEffectHandler {
-
         private PotionEffectType customType;
+
         private Existence customTypeE = Existence.WHATEVER;
+
         private int duration = 60 * 20;
+
         private Number durationE = Number.WHATEVER;
+
         private int power = 1;
+
         private Number powerE = Number.WHATEVER;
 
         public CustomEffectHandler() {

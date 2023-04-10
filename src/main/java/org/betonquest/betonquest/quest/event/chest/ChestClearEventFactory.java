@@ -17,15 +17,16 @@ import org.bukkit.scheduler.BukkitScheduler;
  * Factory to create chest events from {@link Instruction}s.
  */
 public class ChestClearEventFactory implements EventFactory, StaticEventFactory {
-
     /**
      * Server to use for syncing to the primary server thread.
      */
     private final Server server;
+
     /**
      * Scheduler to use for syncing to the primary server thread.
      */
     private final BukkitScheduler scheduler;
+
     /**
      * Plugin to use for syncing to the primary server thread.
      */

@@ -10,8 +10,8 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class TimeCondition extends Condition {
-
     private final double timeMin;
+
     private final double timeMax;
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")

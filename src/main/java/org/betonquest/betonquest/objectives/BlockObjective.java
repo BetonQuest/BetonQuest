@@ -21,9 +21,10 @@ import org.bukkit.event.block.BlockPlaceEvent;
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
 public class BlockObjective extends CountingObjective implements Listener {
-
     private final BlockSelector selector;
+
     private final boolean exactMatch;
+
     private final boolean noSafety;
 
     public BlockObjective(final Instruction instruction) throws InstructionParseException {

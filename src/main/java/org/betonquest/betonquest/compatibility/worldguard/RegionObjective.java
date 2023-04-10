@@ -32,10 +32,12 @@ import java.util.UUID;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class RegionObjective extends Objective implements Listener {
-
     private final String name;
+
     private final boolean entry;
+
     private final boolean exit;
+
     private final Map<UUID, Boolean> playersInsideRegion;
 
     public RegionObjective(final Instruction instruction) throws InstructionParseException {
@@ -90,7 +92,7 @@ public class RegionObjective extends Objective implements Listener {
         qreHandler.handle(() -> {
             final List<Entity> passengers = event.getVehicle().getPassengers();
             for (final Entity passenger : passengers) {
-                if (passenger instanceof Player player) {
+                if (passenger instanceof final Player player) {
                     checkLocation(player, event.getTo());
                 }
             }

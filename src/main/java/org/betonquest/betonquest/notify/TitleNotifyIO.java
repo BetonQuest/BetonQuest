@@ -8,9 +8,10 @@ import java.util.Map;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class TitleNotifyIO extends NotifyIO {
-
     private final int fadeIn;
+
     private final int stay;
+
     private final int fadeOut;
 
     public TitleNotifyIO(final QuestPackage pack, final Map<String, String> data) throws InstructionParseException {

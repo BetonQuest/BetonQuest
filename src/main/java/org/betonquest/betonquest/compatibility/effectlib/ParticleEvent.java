@@ -16,10 +16,12 @@ import org.bukkit.entity.Player;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class ParticleEvent extends QuestEvent {
-
     private final String effectClass;
+
     private final ConfigurationSection parameters;
+
     private final CompoundLocation loc;
+
     private final boolean privateParticle;
 
     public ParticleEvent(final Instruction instruction) throws InstructionParseException {

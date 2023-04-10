@@ -19,30 +19,37 @@ public class ScheduledTask implements BukkitTask {
      * The task id of this task.
      */
     private final int taskId;
+
     /**
      * The plugin that created this task.
      */
     private final Plugin plugin;
+
     /**
      * Whether this task is sync.
      */
     private final boolean sync;
+
     /**
      * The runnable to execute.
      */
     private final Runnable runnable;
+
     /**
      * List of runnables to execute if this task is canceled.
      */
     private final List<Runnable> cancelListeners;
+
     /**
      * Whether this task is canceled.
      */
     private boolean cancelled;
+
     /**
      * The tick when to execute this task the next time.
      */
     private long scheduledTick;
+
     /**
      * Is this task currently running.
      */
@@ -84,7 +91,6 @@ public class ScheduledTask implements BukkitTask {
     public void setRunning(final boolean running) {
         this.running = running;
     }
-
 
     /**
      * Gets the tick at which the task is scheduled to run.

@@ -10,7 +10,6 @@ import java.util.function.Function;
  * The tag event, doing what was defined in its instruction.
  */
 public class TagEvent implements Event {
-
     /**
      * Function providing the tagData for the given player.
      */
@@ -20,7 +19,6 @@ public class TagEvent implements Event {
      * Tags changer that will add or remove the defined tags.
      */
     private final TagChanger tagChanger;
-
 
     /**
      * Create a tag event.

@@ -14,8 +14,8 @@ import org.bukkit.inventory.ItemStack;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class EmptySlotsCondition extends Condition {
-
     private final VariableNumber needed;
+
     private final boolean equal;
 
     public EmptySlotsCondition(final Instruction instruction) throws InstructionParseException {

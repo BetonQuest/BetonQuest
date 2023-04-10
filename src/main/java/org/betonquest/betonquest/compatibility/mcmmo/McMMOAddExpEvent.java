@@ -16,8 +16,8 @@ import java.util.Locale;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class McMMOAddExpEvent extends QuestEvent {
-
     private final String skillType;
+
     private final VariableNumber exp;
 
     public McMMOAddExpEvent(final Instruction instruction) throws InstructionParseException {

@@ -21,18 +21,22 @@ class BetonQuestLoggerTest {
      * The {@link QuestPackage} name.
      */
     public static final String CUSTOM_CONFIG_PACKAGE = "CustomTestPackage";
+
     /**
      * The log message.
      */
     private static final String LOG_MESSAGE = "Test Message";
+
     /**
      * The processed topic of the logger from {@link BetonQuestLoggerService#LOGGER_TOPIC}.
      */
     private static final String LOGGER_TOPIC = "(" + BetonQuestLoggerService.LOGGER_TOPIC + ") ";
+
     /**
      * The log message with topic.
      */
     private static final String LOG_MESSAGE_WITH_TOPIC = LOGGER_TOPIC + LOG_MESSAGE;
+
     /**
      * The exception message.
      */

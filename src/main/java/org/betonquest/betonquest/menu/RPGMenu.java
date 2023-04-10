@@ -38,7 +38,9 @@ public class RPGMenu {
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final Map<MenuID, Menu> menus;
+
     private RPGMenuConfig config;
+
     private RPGMenuCommand pluginCommand;
 
     public RPGMenu() {
@@ -252,9 +254,10 @@ public class RPGMenu {
      * Class containing all information about a reload
      */
     public static class ReloadInformation {
-
         private final List<String> errorMessages = new ArrayList<>();
+
         private int loaded;
+
         private ReloadResult result = ReloadResult.FULL_SUCCESS;
 
         private void addError(final Throwable throwable) {

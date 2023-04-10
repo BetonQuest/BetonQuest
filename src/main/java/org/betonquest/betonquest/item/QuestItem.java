@@ -48,18 +48,28 @@ import java.util.UUID;
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.CommentRequired", "PMD.CognitiveComplexity"})
 public class QuestItem {
-
     private final BlockSelector selector;
+
     private final DurabilityHandler durability = new DurabilityHandler();
+
     private final NameHandler name = new NameHandler();
+
     private final LoreHandler lore = new LoreHandler();
+
     private final EnchantmentsHandler enchants = new EnchantmentsHandler();
+
     private final UnbreakableHandler unbreakable = new UnbreakableHandler();
+
     private final PotionHandler potion = new PotionHandler();
+
     private final BookHandler book = new BookHandler();
+
     private final HeadHandler head = HeadHandler.getServerInstance();
+
     private final ColorHandler color = new ColorHandler();
+
     private final FireworkHandler firework = new FireworkHandler();
+
     private final CustomModelDataHandler customModelData = new CustomModelDataHandler();
 
     /**
@@ -150,7 +160,8 @@ public class QuestItem {
                 case "power" -> firework.setPower(data);
                 case "firework-containing" -> firework.setNotExact();
                 //catch empty string caused by multiple whitespaces in instruction split
-                case "" -> {}
+                case "" -> {
+                }
                 default -> throw new InstructionParseException("Unknown argument: " + argumentName);
             }
         }
@@ -206,8 +217,7 @@ public class QuestItem {
             if (meta.hasCustomModelData()) {
                 customModelData = " custom-model-data:" + meta.getCustomModelData();
             }
-            if (meta instanceof BookMeta) {
-                final BookMeta bookMeta = (BookMeta) meta;
+            if (meta instanceof final BookMeta bookMeta) {
                 if (bookMeta.hasAuthor()) {
                     author = " author:" + bookMeta.getAuthor().replace(" ", "_");
                 }
@@ -228,8 +238,7 @@ public class QuestItem {
                     text = " text:" + strBldr.substring(0, strBldr.length() - 1);
                 }
             }
-            if (meta instanceof PotionMeta) {
-                final PotionMeta potionMeta = (PotionMeta) meta;
+            if (meta instanceof final PotionMeta potionMeta) {
                 final PotionData pData = potionMeta.getBasePotionData();
                 effects = " type:" + pData.getType() + (pData.isExtended() ? " extended" : "")
                         + (pData.isUpgraded() ? " upgraded" : "");
@@ -243,22 +252,17 @@ public class QuestItem {
                     effects += " effects:" + string.substring(0, string.length() - 1);
                 }
             }
-            if (meta instanceof LeatherArmorMeta) {
-                final LeatherArmorMeta armorMeta = (LeatherArmorMeta) meta;
-                if (!armorMeta.getColor().equals(Bukkit.getServer().getItemFactory().getDefaultLeatherColor())) {
-                    final DyeColor dyeColor = DyeColor.getByColor(armorMeta.getColor());
-                    color = " color:" + (dyeColor == null ? '#' + Integer.toHexString(armorMeta.getColor().asRGB()) : dyeColor.toString());
-                }
+            if (meta instanceof final LeatherArmorMeta armorMeta
+                    && !armorMeta.getColor().equals(Bukkit.getServer().getItemFactory().getDefaultLeatherColor())) {
+                final DyeColor dyeColor = DyeColor.getByColor(armorMeta.getColor());
+                color = " color:" + (dyeColor == null ? '#' + Integer.toHexString(armorMeta.getColor().asRGB()) : dyeColor.toString());
             }
-            if (meta instanceof EnchantmentStorageMeta) {
-                final EnchantmentStorageMeta storageMeta = (EnchantmentStorageMeta) meta;
-                if (storageMeta.hasStoredEnchants()) {
-                    final StringBuilder string = new StringBuilder();
-                    for (final Enchantment enchant : storageMeta.getStoredEnchants().keySet()) {
-                        string.append(enchant.getName()).append(':').append(storageMeta.getStoredEnchants().get(enchant)).append(',');
-                    }
-                    enchants = " enchants:" + string.substring(0, string.length() - 1);
+            if (meta instanceof final EnchantmentStorageMeta storageMeta && storageMeta.hasStoredEnchants()) {
+                final StringBuilder string = new StringBuilder();
+                for (final Enchantment enchant : storageMeta.getStoredEnchants().keySet()) {
+                    string.append(enchant.getName()).append(':').append(storageMeta.getStoredEnchants().get(enchant)).append(',');
                 }
+                enchants = " enchants:" + string.substring(0, string.length() - 1);
             }
             if (meta instanceof SkullMeta) {
                 skull = HeadHandler.serializeSkullMeta((SkullMeta) meta);
@@ -343,10 +347,9 @@ public class QuestItem {
 
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof QuestItem)) {
+        if (!(other instanceof final QuestItem item)) {
             return false;
         }
-        final QuestItem item = (QuestItem) other;
         return item.selector.equals(selector)
                 && item.durability.equals(durability)
                 && item.unbreakable.equals(unbreakable)
@@ -404,8 +407,7 @@ public class QuestItem {
             return false;
         }
         // advanced meta checks
-        if (meta instanceof EnchantmentStorageMeta) {
-            final EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) meta;
+        if (meta instanceof final EnchantmentStorageMeta enchantMeta) {
             if (!enchants.check(enchantMeta.getStoredEnchants())) {
                 return false;
             }
@@ -414,8 +416,7 @@ public class QuestItem {
                 return false;
             }
         }
-        if (meta instanceof PotionMeta) {
-            final PotionMeta potionMeta = (PotionMeta) meta;
+        if (meta instanceof final PotionMeta potionMeta) {
             if (!potion.checkBase(potionMeta.getBasePotionData())) {
                 return false;
             }
@@ -497,8 +498,7 @@ public class QuestItem {
         if (customModelData.getExistence() == Existence.REQUIRED) {
             meta.setCustomModelData(customModelData.get());
         }
-        if (meta instanceof EnchantmentStorageMeta) {
-            final EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) meta;
+        if (meta instanceof final EnchantmentStorageMeta enchantMeta) {
             // why no bulk adding method?!
             final Map<Enchantment, Integer> map = enchants.get();
             for (final Entry<Enchantment, Integer> e : map.entrySet()) {
@@ -510,15 +510,13 @@ public class QuestItem {
                 meta.addEnchant(e.getKey(), e.getValue(), true);
             }
         }
-        if (meta instanceof PotionMeta) {
-            final PotionMeta potionMeta = (PotionMeta) meta;
+        if (meta instanceof final PotionMeta potionMeta) {
             potionMeta.setBasePotionData(potion.getBase());
             for (final PotionEffect effect : potion.getCustom()) {
                 potionMeta.addCustomEffect(effect, true);
             }
         }
-        if (meta instanceof BookMeta) {
-            final BookMeta bookMeta = (BookMeta) meta;
+        if (meta instanceof final BookMeta bookMeta) {
             bookMeta.setTitle(book.getTitle());
             bookMeta.setAuthor(book.getAuthor());
             bookMeta.setPages(book.getText());
@@ -526,8 +524,7 @@ public class QuestItem {
         if (meta instanceof SkullMeta) {
             head.populate((SkullMeta) meta, profile);
         }
-        if (meta instanceof LeatherArmorMeta) {
-            final LeatherArmorMeta armorMeta = (LeatherArmorMeta) meta;
+        if (meta instanceof final LeatherArmorMeta armorMeta) {
             armorMeta.setColor(color.get());
         }
         if (meta instanceof FireworkMeta) {
@@ -540,8 +537,7 @@ public class QuestItem {
             final List<FireworkEffect> list = firework.getEffects();
             fireworkMeta.setEffect(list.isEmpty() ? null : list.get(0));
         }
-        if (meta instanceof Damageable) {
-            final Damageable damageableMeta = (Damageable) meta;
+        if (meta instanceof final Damageable damageableMeta) {
             damageableMeta.setDamage(getDurability());
         }
         item.setItemMeta(meta);

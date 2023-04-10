@@ -19,14 +19,17 @@ public class Version {
      * Regex for the qualifier and the build number.
      */
     public static final Pattern BUILD_QUALIFIER_PATTERN = Pattern.compile("^(?<qualifier>.*?)(?<buildnumber>0|[1-9]\\d*)?$");
+
     /**
      * This is a help object that splits the raw version into MAJOR, MINOR, PATCH and any remaining parts.
      */
     private final DefaultArtifactVersion artifactVersion;
+
     /**
      * The qualifier if existent.
      */
     private final String qualifier;
+
     /**
      * Null if no build number could be parsed.
      */

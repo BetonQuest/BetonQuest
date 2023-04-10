@@ -22,14 +22,17 @@ public abstract class HologramIntegrator implements Integrator, Comparable<Holog
      * The name of the plugin
      */
     private final String pluginName;
+
     /**
      * The minimum required version
      */
     private final String requiredVersion;
+
     /**
      * The qualifiers to parse the minimum required version
      */
     private final String[] qualifiers;
+
     /**
      * The plugin hooked by this integrator
      */

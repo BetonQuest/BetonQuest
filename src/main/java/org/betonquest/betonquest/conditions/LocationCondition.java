@@ -16,8 +16,8 @@ import org.bukkit.entity.Player;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class LocationCondition extends Condition {
-
     private final CompoundLocation loc;
+
     private final VariableNumber range;
 
     public LocationCondition(final Instruction instruction) throws InstructionParseException {

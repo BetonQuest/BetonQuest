@@ -19,8 +19,8 @@ import java.util.HashMap;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class ChestGiveEvent extends QuestEvent {
-
     private final Item[] questItems;
+
     private final CompoundLocation loc;
 
     public ChestGiveEvent(final Instruction instruction) throws InstructionParseException {

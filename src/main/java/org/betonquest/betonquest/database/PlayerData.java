@@ -43,14 +43,23 @@ public class PlayerData implements TagData {
     private final Saver saver = BetonQuest.getInstance().getSaver();
 
     private final Profile profile;
+
     private final String profileID;
+
     private final List<String> tags = new CopyOnWriteArrayList<>();
+
     private final List<Pointer> entries = new CopyOnWriteArrayList<>();
+
     private final List<Point> points = new CopyOnWriteArrayList<>();
+
     private final Map<String, String> objectives = new ConcurrentHashMap<>();
+
     private Journal journal;
+
     private List<ItemStack> backpack = new CopyOnWriteArrayList<>();
+
     private String conv;
+
     private String profileLanguage;
 
     /**
@@ -122,8 +131,8 @@ public class PlayerData implements TagData {
                 } else {
                     profileLanguage = Config.getLanguage();
                     saver.add(new Record(UpdateType.ADD_PROFILE, profileID));
-                    saver.add(new Record(UpdateType.ADD_PLAYER, profile.getPlayer().getUniqueId().toString()
-                            , profileID, "default"));
+                    saver.add(new Record(UpdateType.ADD_PLAYER, profile.getPlayer().getUniqueId().toString(),
+                            profileID, "default"));
                     saver.add(new Record(UpdateType.ADD_PLAYER_PROFILE, profile.getPlayer().getUniqueId().toString(),
                             profileID, null));
                 }

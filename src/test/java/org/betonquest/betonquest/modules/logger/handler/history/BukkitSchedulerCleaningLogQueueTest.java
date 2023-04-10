@@ -25,14 +25,17 @@ class BukkitSchedulerCleaningLogQueueTest {
      * Fixed instant representing now.
      */
     private final Instant now = Instant.now();
+
     /**
      * Fixed instant source returning {@link #now}.
      */
     private final InstantSource nowSource = InstantSource.fixed(now);
+
     /**
      * Duration that log entries are valid for.
      */
     private final Duration validFor = Duration.of(10, ChronoUnit.MINUTES);
+
     /**
      * Plugin to use.
      */

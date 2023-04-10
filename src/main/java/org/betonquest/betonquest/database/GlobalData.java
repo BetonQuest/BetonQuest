@@ -24,6 +24,7 @@ public class GlobalData implements TagData {
     private final Saver saver = BetonQuest.getInstance().getSaver();
 
     private final List<String> globalTags = new ArrayList<>();
+
     private final List<Point> globalPoints = new ArrayList<>();
 
     /**

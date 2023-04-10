@@ -21,6 +21,7 @@ public class ObjectivePropertyVariable extends Variable {
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final String propertyName;
+
     private final ObjectiveID objective;
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")

@@ -19,8 +19,8 @@ import org.bukkit.event.Listener;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class NPCInteractObjective extends Objective implements Listener {
-
     private final int npcId;
+
     private final boolean cancel;
 
     public NPCInteractObjective(final Instruction instruction) throws InstructionParseException {

@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-
 @SuppressWarnings("PMD.CommentRequired")
 public class BossBarNotifyIO extends NotifyIO {
     /**
@@ -28,10 +27,15 @@ public class BossBarNotifyIO extends NotifyIO {
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final List<BarFlag> barFlags;
+
     private final BarColor barColor;
+
     private final BarStyle style;
+
     private final double progress;
+
     private final VariableNumber stayVariable;
+
     private final int countdown;
 
     @SuppressWarnings("PMD.CyclomaticComplexity")

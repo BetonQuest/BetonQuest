@@ -34,11 +34,17 @@ public final class Config {
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+
     private static final Set<String> LANGUAGES = new LinkedHashSet<>();
+
     private static QuestManager questManager;
+
     private static BetonQuest plugin;
+
     private static ConfigurationFile messages;
+
     private static ConfigAccessor internal;
+
     private static String lang;
 
     private Config() {

@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 @SuppressWarnings("PMD.CommentRequired")
 public class LocalChatPaginator extends ChatPaginator {
     public static final Map<Character, Integer> FONT_SIZES;
+
     public static final int DEFAULT_CHAR_WIDTH = 6;
 
     static {

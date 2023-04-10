@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.menu;
 
-
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
@@ -36,9 +35,13 @@ public class OpenedMenu implements Listener {
      * Hashmap containing all currently opened menus
      */
     private static final Map<UUID, OpenedMenu> OPENED_MENUS = new HashMap<>();
+
     private final OnlineProfile onlineProfile;
+
     private final Menu data;
+
     private MenuItem[] items;
+
     private boolean closed;
 
     public OpenedMenu(final OnlineProfile onlineProfile, final Menu menu) {
@@ -214,9 +217,7 @@ public class OpenedMenu implements Listener {
                 //if close was set close the menu
                 if (close) {
                     this.close();
-                }
-                // otherwise update the contents
-                else {
+                } else {
                     this.update();
                 }
             }
