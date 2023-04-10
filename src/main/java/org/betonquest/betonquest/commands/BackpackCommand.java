@@ -18,7 +18,7 @@ public class BackpackCommand implements CommandExecutor {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(BackpackCommand.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * Registers a new executor of the /backpack command

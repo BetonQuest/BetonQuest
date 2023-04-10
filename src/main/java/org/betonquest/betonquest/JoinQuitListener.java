@@ -28,7 +28,7 @@ public class JoinQuitListener implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(JoinQuitListener.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * Creates new listener, which will handle the data loading/saving

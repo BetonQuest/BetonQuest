@@ -37,7 +37,7 @@ public class MenuItem extends SimpleYMLSection {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(MenuItem.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * The betonquest quest item this item is based on

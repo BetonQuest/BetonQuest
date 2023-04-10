@@ -16,7 +16,7 @@ public class SilentConsoleCommandSender extends SilentCommandSender implements C
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(SilentConsoleCommandSender.class, "SilentConsoleCommandSender");
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create("SilentConsoleCommandSender");
     /**
      * The wrapped command sender.
      */

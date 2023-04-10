@@ -17,7 +17,7 @@ public class AsyncSaver extends Thread implements Listener, Saver {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(AsyncSaver.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * The connector that conntects to the database.

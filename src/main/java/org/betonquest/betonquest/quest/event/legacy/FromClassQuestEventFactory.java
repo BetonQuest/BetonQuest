@@ -20,7 +20,7 @@ public class FromClassQuestEventFactory<T extends QuestEvent> implements QuestEv
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(FromClassQuestEventFactory.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * Class of the event to create.

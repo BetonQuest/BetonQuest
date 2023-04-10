@@ -19,7 +19,7 @@ public class MathVariable extends Variable {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(MathVariable.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final Token calculation;
 

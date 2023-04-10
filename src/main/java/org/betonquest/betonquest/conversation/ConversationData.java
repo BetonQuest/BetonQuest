@@ -30,7 +30,7 @@ public class ConversationData {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(ConversationData.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private static final List<String> EXTERNAL_POINTERS = new ArrayList<>();
 

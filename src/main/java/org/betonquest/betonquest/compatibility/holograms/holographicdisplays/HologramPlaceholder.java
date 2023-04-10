@@ -16,7 +16,7 @@ public class HologramPlaceholder implements IndividualPlaceholder {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(HologramPlaceholder.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * Creates new instance of HologramPlaceholder

@@ -22,7 +22,7 @@ public class SkriptEffectBQ extends Effect {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(SkriptEffectBQ.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private Expression<String> event;
     private Expression<Player> player;

@@ -16,7 +16,7 @@ public class UpdaterConfig {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(UpdaterConfig.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
     /**
      * The string prefix of the path to the settings in the given {@link ConfigurationSection}
      */

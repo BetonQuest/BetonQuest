@@ -42,7 +42,7 @@ public class Backpack implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Backpack.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * The {@link OnlineProfile} of the player

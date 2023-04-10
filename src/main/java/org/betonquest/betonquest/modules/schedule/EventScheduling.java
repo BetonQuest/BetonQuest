@@ -20,7 +20,7 @@ public class EventScheduling {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(EventScheduling.class, "Schedules");
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create("Schedules");
 
     /**
      * Map that contains all types of schedulers,

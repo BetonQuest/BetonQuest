@@ -22,7 +22,7 @@ public class MMOItemsGiveEvent extends QuestEvent {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(MMOItemsGiveEvent.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final MMOItems mmoPlugin = MMOItems.plugin;
 

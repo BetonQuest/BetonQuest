@@ -28,7 +28,7 @@ public class CitizensListener implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(CitizensListener.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final Map<UUID, Long> npcInteractionLimiter = new HashMap<>();
     private RightClickListener rightClick;

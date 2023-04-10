@@ -13,7 +13,7 @@ public class InfoNotificationSender implements NotificationSender {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(InfoNotificationSender.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * Message package to send the message from.

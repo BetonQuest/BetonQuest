@@ -35,7 +35,7 @@ public abstract class HologramLoop {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(HologramLoop.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
 
     /**

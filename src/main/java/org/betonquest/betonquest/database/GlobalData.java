@@ -18,7 +18,7 @@ public class GlobalData implements TagData {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(GlobalData.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     @SuppressWarnings("PMD.DoNotUseThreads")
     private final Saver saver = BetonQuest.getInstance().getSaver();

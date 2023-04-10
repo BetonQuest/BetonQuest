@@ -16,7 +16,7 @@ public class VariableCondition extends Condition {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(VariableCondition.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * The variable to compare with the regex.

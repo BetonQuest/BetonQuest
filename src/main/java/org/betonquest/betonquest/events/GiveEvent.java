@@ -26,7 +26,7 @@ public class GiveEvent extends QuestEvent {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(GiveEvent.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final Item[] questItems;
     private final boolean notify;

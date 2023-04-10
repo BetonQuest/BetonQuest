@@ -34,7 +34,7 @@ public class FishObjective extends CountingObjective implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(FishObjective.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final BlockSelector blockSelector;
     private final CompoundLocation hookTargetLocation;

@@ -26,7 +26,7 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(QuestEvent.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * Stores the user-provided instruction for this event.

@@ -22,7 +22,7 @@ public class RespawnObjective extends Objective implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(RespawnObjective.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final CompoundLocation location;
 

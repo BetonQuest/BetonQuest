@@ -13,7 +13,7 @@ public class OnlineProfileRequiredEvent implements Event {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(OnlineProfileRequiredEvent.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * The event to execute.

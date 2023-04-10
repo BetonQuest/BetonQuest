@@ -30,7 +30,7 @@ public class ExperienceObjective extends Objective implements Listener {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(ExperienceObjective.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * The experience level the player needs to get.

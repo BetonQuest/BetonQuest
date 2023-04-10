@@ -20,7 +20,7 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(CitizensInventoryConvIO.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     public CitizensInventoryConvIO(final Conversation conv, final OnlineProfile onlineProfile) {
         super(conv, onlineProfile);

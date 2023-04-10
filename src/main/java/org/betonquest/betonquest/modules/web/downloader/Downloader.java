@@ -49,7 +49,7 @@ public class Downloader implements Callable<Boolean> {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Downloader.class, "Downloader");
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create("Downloader");
     /**
      * Directory where downloaded repositories should be cached
      */

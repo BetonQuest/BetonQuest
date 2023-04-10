@@ -26,7 +26,7 @@ public class CompassEvent extends QuestEvent {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(CompassEvent.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final Action action;
     private final String compass;

@@ -25,7 +25,7 @@ public class BossBarNotifyIO extends NotifyIO {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(BossBarNotifyIO.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final List<BarFlag> barFlags;
     private final BarColor barColor;

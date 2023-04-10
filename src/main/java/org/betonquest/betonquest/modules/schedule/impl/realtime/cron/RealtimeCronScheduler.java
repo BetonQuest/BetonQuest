@@ -26,7 +26,7 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<RealtimeCron
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(RealtimeCronScheduler.class, "Schedules");
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create("Schedules");
 
     /**
      * A cache where the last execution times of a schedule are stored.

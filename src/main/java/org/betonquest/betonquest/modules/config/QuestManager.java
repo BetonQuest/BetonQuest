@@ -45,7 +45,7 @@ public class QuestManager {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(QuestManager.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
     /**
      * All loaded {@link QuestPackage}s.
      */

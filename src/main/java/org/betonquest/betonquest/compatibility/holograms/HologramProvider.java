@@ -30,7 +30,7 @@ public class HologramProvider implements Integrator {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(HologramProvider.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
     /**
      * HologramIntegrators when 'hooked' add themselves to this list
      */

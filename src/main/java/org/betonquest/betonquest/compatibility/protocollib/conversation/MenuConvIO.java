@@ -55,7 +55,7 @@ public class MenuConvIO extends ChatConvIO {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(MenuConvIO.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     // Thread safety
     private final ReadWriteLock lock = new ReentrantReadWriteLock();

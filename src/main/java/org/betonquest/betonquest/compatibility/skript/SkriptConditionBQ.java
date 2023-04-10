@@ -21,7 +21,7 @@ public class SkriptConditionBQ extends Condition {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(SkriptConditionBQ.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private Expression<Player> player;
     private Expression<String> condition;

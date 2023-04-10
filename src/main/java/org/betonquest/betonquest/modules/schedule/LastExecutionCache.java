@@ -25,7 +25,7 @@ public class LastExecutionCache {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(LastExecutionCache.class, "Cache");
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create("Cache");
     /**
      * Config accessor for the cache.
      */

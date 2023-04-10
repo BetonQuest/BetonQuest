@@ -14,7 +14,7 @@ public class VaultIntegrator implements Integrator {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(VaultIntegrator.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private static VaultIntegrator instance;
     private final BetonQuest plugin;

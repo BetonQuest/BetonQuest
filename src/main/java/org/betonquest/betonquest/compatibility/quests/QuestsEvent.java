@@ -15,7 +15,7 @@ public class QuestsEvent extends QuestEvent {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(QuestsEvent.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final String questName;
     private final boolean override;

@@ -31,7 +31,7 @@ public abstract class Scheduler<S extends Schedule> {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Scheduler.class, "Schedules");
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create("Schedules");
 
     /**
      * Map containing all schedules that belong to this scheduler.

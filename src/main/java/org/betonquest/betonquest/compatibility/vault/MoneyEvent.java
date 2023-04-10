@@ -20,7 +20,7 @@ public class MoneyEvent extends QuestEvent {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(MoneyEvent.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final VariableNumber amount;
     private final boolean notify;

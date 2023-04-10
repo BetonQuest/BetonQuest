@@ -23,7 +23,7 @@ public final class Notify {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Notify.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
     private static final Map<String, Map<String, String>> CATEGORY_SETTINGS = new HashMap<>();
     private static String defaultNotifyIO;
 

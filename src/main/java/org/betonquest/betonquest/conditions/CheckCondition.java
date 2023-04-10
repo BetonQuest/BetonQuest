@@ -20,7 +20,7 @@ public class CheckCondition extends Condition {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(CheckCondition.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final List<Condition> internalConditions = new ArrayList<>();
 

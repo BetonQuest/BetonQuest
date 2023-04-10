@@ -35,7 +35,7 @@ public class RPGMenu {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(RPGMenu.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final Map<MenuID, Menu> menus;
     private RPGMenuConfig config;

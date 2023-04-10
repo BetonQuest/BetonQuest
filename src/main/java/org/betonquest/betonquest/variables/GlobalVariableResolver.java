@@ -28,7 +28,7 @@ public final class GlobalVariableResolver {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(GlobalVariableResolver.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private GlobalVariableResolver() {
     }

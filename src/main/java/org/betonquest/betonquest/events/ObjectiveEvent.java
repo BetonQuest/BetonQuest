@@ -26,7 +26,7 @@ public class ObjectiveEvent extends QuestEvent {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(ObjectiveEvent.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * The BetonQuest instance.

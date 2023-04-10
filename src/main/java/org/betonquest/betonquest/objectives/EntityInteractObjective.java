@@ -45,7 +45,7 @@ public class EntityInteractObjective extends CountingObjective {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(EntityInteractObjective.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final CompoundLocation loc;
     private final VariableNumber range;

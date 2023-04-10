@@ -22,7 +22,7 @@ public class AlternativeCondition extends Condition {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(AlternativeCondition.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final List<ConditionID> conditionIDs;
 

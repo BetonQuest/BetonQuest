@@ -38,7 +38,7 @@ public abstract class Objective {
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(Objective.class);
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     protected final int notifyInterval;
     protected final boolean notify;

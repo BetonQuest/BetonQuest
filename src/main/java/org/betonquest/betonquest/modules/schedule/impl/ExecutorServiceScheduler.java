@@ -31,7 +31,7 @@ public abstract class ExecutorServiceScheduler<S extends Schedule> extends Sched
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
-    private static final BetonQuestLogger LOG = BetonQuestLogger.create(ExecutorServiceScheduler.class, "Schedules");
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create("Schedules");
     /**
      * Supplier used to create the {@link #executor}.
      */
