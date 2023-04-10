@@ -5,8 +5,6 @@ import org.betonquest.betonquest.modules.logger.util.BetonQuestLoggerService;
 import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -18,7 +16,6 @@ import static org.mockito.Mockito.*;
  */
 @SuppressWarnings({"PMD.JUnitTestsShouldIncludeAssert", "PMD.MoreThanOneLogger"})
 @ExtendWith(BetonQuestLoggerService.class)
-@Execution(ExecutionMode.SAME_THREAD)
 class BetonQuestLoggerTest {
     /**
      * The {@link QuestPackage} name.

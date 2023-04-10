@@ -13,8 +13,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.mockito.MockedStatic;
 
 import java.util.Collections;
@@ -28,7 +26,6 @@ import static org.mockito.Mockito.*;
  */
 @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity"})
 @ExtendWith(BetonQuestLoggerService.class)
-@Execution(ExecutionMode.SAME_THREAD)
 class TokenizerTest {
 
     /**
