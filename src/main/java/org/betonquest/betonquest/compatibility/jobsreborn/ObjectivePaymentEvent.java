@@ -9,6 +9,7 @@ import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -37,13 +38,13 @@ public class ObjectivePaymentEvent extends Objective implements Listener {
         final Profile profile = PlayerConverter.getID(event.getPlayer());
         if (containsPlayer(profile) && checkConditions(profile)) {
             final PaymentData playerData = (PaymentData) dataMap.get(profile);
-            final double previousAmount = playerData.getAmount();
+            final double previousAmount = playerData.amount;
             playerData.add(event.get(CurrencyType.MONEY));
 
             if (playerData.isCompleted()) {
                 completeObjective(profile);
-            } else if (notify && ((int) playerData.getAmount()) / notifyInterval != ((int) previousAmount) / notifyInterval && profile.getOnlineProfile().isPresent()) {
-                sendNotify(profile.getOnlineProfile().get(), "payment_to_receive", playerData.getAmount());
+            } else if (notify && ((int) playerData.amount) / notifyInterval != ((int) previousAmount) / notifyInterval && profile.getOnlineProfile().isPresent()) {
+                sendNotify(profile.getOnlineProfile().get(), "payment_to_receive", playerData.amount);
             }
         }
     }
@@ -65,8 +66,12 @@ public class ObjectivePaymentEvent extends Objective implements Listener {
 
     @Override
     public String getDefaultDataInstruction(final Profile profile) {
-        final int value = targetAmount.getInt(profile);
-        return value > 0 ? String.valueOf(value) : "1";
+        try {
+            final double value = targetAmount.getDouble(profile);
+            return value > 0 ? String.valueOf(value) : "1";
+        } catch (final QuestRuntimeException ignored) {
+            return "1";
+        }
     }
 
     @Override
@@ -90,10 +95,6 @@ public class ObjectivePaymentEvent extends Objective implements Listener {
         public PaymentData(final String instruction, final Profile profile, final String objID) {
             super(instruction, profile, objID);
             targetAmount = Double.parseDouble(instruction);
-        }
-
-        private double getAmount() {
-            return amount;
         }
 
         private void add(final Double amount) {
