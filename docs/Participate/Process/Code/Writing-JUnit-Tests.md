@@ -21,15 +21,6 @@ It is a major goal to write JUnit tests for most parts of BetonQuest.
 - Some parts of the code require a lot of Bukkit API mocking. If this takes too much time no tests are
   necessary
 
-!!! warning "Handling Concurrency"
-    By default, all classes and methods are executed `CONCURRENT`. This means that its tests are run in parallel which saves
-    time. Some tests cannot be executed in parallel, in such cases the following annotation needs to be 
-    added to the related methods or the entire class.
-    
-    ````java linenums="1"
-    @Execution(ExecutionMode.SAME_THREAD)
-    ````
-
 ## Handling Logging
 
 _You may need to read [Logging](../../../API/Logging.md) to understand this paragraph._
@@ -69,14 +60,6 @@ It makes it possible to assert that a log message has been logged in the silent 
 The simplest method is `assertLogEntry(Level level, String message)`, that you can use to check
 that the given message with the given level has been logged. You can also check that there are no additional log 
 messages in the `LogValidator` by calling `assertEmpty()`.
-
-!!! warning "Use `ExecutionMode.SAME_THREAD`"
-    When using the `LogValidator`, you validate that log messages are logged in the correct order. This means that
-    if you leave the `ExecutionMode` on its default (`CONCURRENT`) value, the test will fail. This happens because the
-    log messages don't have a predictable order as your tests would be executed in parallel.
-    ````java linenums="1"
-    @Execution(ExecutionMode.SAME_THREAD)
-    ````
 
 ### Advanced Features
 
