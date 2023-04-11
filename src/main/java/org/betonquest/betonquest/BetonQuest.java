@@ -111,7 +111,6 @@ import org.betonquest.betonquest.events.GiveEvent;
 import org.betonquest.betonquest.events.KillMobEvent;
 import org.betonquest.betonquest.events.ObjectiveEvent;
 import org.betonquest.betonquest.events.OpSudoEvent;
-import org.betonquest.betonquest.events.PickRandomEvent;
 import org.betonquest.betonquest.events.RunEvent;
 import org.betonquest.betonquest.events.SpawnMobEvent;
 import org.betonquest.betonquest.events.TakeEvent;
@@ -221,6 +220,7 @@ import org.betonquest.betonquest.quest.event.point.DeleteGlobalPointEventFactory
 import org.betonquest.betonquest.quest.event.point.DeletePointEventFactory;
 import org.betonquest.betonquest.quest.event.point.GlobalPointEventFactory;
 import org.betonquest.betonquest.quest.event.point.PointEventFactory;
+import org.betonquest.betonquest.quest.event.random.PickRandomEventFactory;
 import org.betonquest.betonquest.quest.event.scoreboard.ScoreboardEventFactory;
 import org.betonquest.betonquest.quest.event.setblock.SetBlockEventFactory;
 import org.betonquest.betonquest.quest.event.sudo.SudoEventFactory;
@@ -842,7 +842,7 @@ public class BetonQuest extends JavaPlugin {
         registerEvent("if", new IfElseEventFactory());
         registerEvents("variable", VariableEvent.class);
         registerNonStaticEvent("language", new LanguageEventFactory(this));
-        registerEvents("pickrandom", PickRandomEvent.class);
+        registerEvent("pickrandom", new PickRandomEventFactory());
         registerNonStaticEvent("experience", new ExperienceEventFactory(getServer(), getServer().getScheduler(), this));
         registerNonStaticEvent("notify", new NotifyEventFactory(getServer(), getServer().getScheduler(), this));
         registerEvent("notifyall", new NotifyAllEventFactory(getServer(), getServer().getScheduler(), this));
