@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 public class NonInterceptingInterceptor implements Interceptor {
 
     protected final Conversation conv;
+
     protected final Player player;
 
     public NonInterceptingInterceptor(final Conversation conv, final OnlineProfile onlineProfile) {

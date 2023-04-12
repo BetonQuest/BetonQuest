@@ -24,12 +24,16 @@ import java.util.Locale;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class ClearEvent extends QuestEvent {
-
     private final EntityType[] types;
+
     private final CompoundLocation loc;
+
     private final VariableNumber range;
+
     private final String name;
+
     private final boolean kill;
+
     private final String marked;
 
     public ClearEvent(final Instruction instruction) throws InstructionParseException {

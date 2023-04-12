@@ -40,12 +40,19 @@ public class NPCMoveEvent extends QuestEvent implements Listener {
     private static final Map<Integer, NPCMoveEvent> MOVING_NPCS = new HashMap<>();
 
     private final List<CompoundLocation> locations;
+
     private final int npcId;
+
     private final int waitTicks;
+
     private final EventID[] doneEvents;
+
     private final EventID[] failEvents;
+
     private final boolean blockConversations;
+
     private ListIterator<CompoundLocation> locationsIterator;
+
     private Profile currentProfile;
 
     public NPCMoveEvent(final Instruction instruction) throws InstructionParseException {

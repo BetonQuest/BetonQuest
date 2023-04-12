@@ -16,8 +16,8 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class KillPlayerObjective extends CountingObjective implements Listener {
-
     private final String name;
+
     private final ConditionID[] required;
 
     public KillPlayerObjective(final Instruction instruction) throws InstructionParseException {

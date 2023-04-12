@@ -25,6 +25,7 @@ public final class GlobalVariableResolver {
      * A regex pattern to match global variables.
      */
     public static final Pattern GLOBAL_VARIABLE_PATTERN = Pattern.compile("\\$(?<variable>[^ $\\s]+)\\$");
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */

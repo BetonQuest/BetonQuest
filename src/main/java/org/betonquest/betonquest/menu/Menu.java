@@ -92,7 +92,7 @@ public class Menu extends SimpleYMLSection implements Listener {
     private final RPGMenu menu = BetonQuest.getInstance().getRpgMenu();
 
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.NPathComplexity", "PMD.CyclomaticComplexity",
-            "PMD.CognitiveComplexity"})
+            "PMD.CognitiveComplexity", "checkstyle:EmptyCatchBlock"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public Menu(final MenuID menuID) throws InvalidConfigurationException {
         super(menuID.getPackage(), menuID.getFullID(), menuID.getConfig());
@@ -290,7 +290,6 @@ public class Menu extends SimpleYMLSection implements Listener {
     public int getHeight() {
         return height;
     }
-
 
     /**
      * @return the size of the menu in slots

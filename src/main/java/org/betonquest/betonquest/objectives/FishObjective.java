@@ -37,7 +37,9 @@ public class FishObjective extends CountingObjective implements Listener {
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final BlockSelector blockSelector;
+
     private final CompoundLocation hookTargetLocation;
+
     private final VariableNumber rangeVar;
 
     public FishObjective(final Instruction instruction) throws InstructionParseException {

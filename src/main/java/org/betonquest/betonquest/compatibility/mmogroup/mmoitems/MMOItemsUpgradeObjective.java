@@ -16,8 +16,8 @@ import org.bukkit.event.Listener;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class MMOItemsUpgradeObjective extends Objective implements Listener {
-
     private final String itemID;
+
     private final String itemType;
 
     public MMOItemsUpgradeObjective(final Instruction instruction) throws InstructionParseException {
@@ -27,7 +27,6 @@ public class MMOItemsUpgradeObjective extends Objective implements Listener {
         itemID = instruction.next();
         template = ObjectiveData.class;
     }
-
 
     @EventHandler(ignoreCancelled = true)
     public void onUpgradeItem(final UpgradeItemEvent event) {

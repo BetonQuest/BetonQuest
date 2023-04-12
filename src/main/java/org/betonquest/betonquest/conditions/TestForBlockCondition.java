@@ -14,9 +14,10 @@ import org.bukkit.block.Block;
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.TestClassWithoutTestCases"})
 public class TestForBlockCondition extends Condition {
-
     private final CompoundLocation loc;
+
     private final BlockSelector selector;
+
     private final boolean exactMatch;
 
     public TestForBlockCondition(final Instruction instruction) throws InstructionParseException {

@@ -16,8 +16,8 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class NPCRegionCondition extends Condition {
-
     private final int npcId;
+
     private final String region;
 
     public NPCRegionCondition(final Instruction instruction) throws InstructionParseException {

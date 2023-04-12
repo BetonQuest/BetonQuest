@@ -20,13 +20,15 @@ import org.bukkit.entity.EntityType;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class KillMobEvent extends QuestEvent {
-
     private final EntityType type;
-    private final CompoundLocation loc;
-    private final VariableNumber radius;
-    private final String name;
-    private final String marked;
 
+    private final CompoundLocation loc;
+
+    private final VariableNumber radius;
+
+    private final String name;
+
+    private final String marked;
 
     public KillMobEvent(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

@@ -16,9 +16,10 @@ import org.bukkit.event.Listener;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class MMOItemsApplyGemObjective extends Objective implements Listener {
-
     private final String itemID;
+
     private final String itemType;
+
     private final String gemID;
 
     public MMOItemsApplyGemObjective(final Instruction instruction) throws InstructionParseException {

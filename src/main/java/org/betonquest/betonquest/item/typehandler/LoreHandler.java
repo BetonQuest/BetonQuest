@@ -8,9 +8,10 @@ import java.util.List;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class LoreHandler {
-
     private final List<String> lore = new LinkedList<>();
+
     private Existence existence = Existence.WHATEVER;
+
     private boolean exact = true;
 
     public LoreHandler() {

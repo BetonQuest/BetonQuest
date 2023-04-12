@@ -17,8 +17,8 @@ import org.bukkit.scoreboard.Scoreboard;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class ScoreboardCondition extends Condition {
-
     private final String objective;
+
     private final VariableNumber count;
 
     public ScoreboardCondition(final Instruction instruction) throws InstructionParseException {

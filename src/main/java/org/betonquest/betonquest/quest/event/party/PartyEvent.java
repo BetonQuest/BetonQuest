@@ -32,7 +32,6 @@ public class PartyEvent implements Event {
      */
     private final EventID[] events;
 
-
     /**
      * Creates a new PartyEvent instance.
      *

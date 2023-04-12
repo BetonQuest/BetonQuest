@@ -24,12 +24,16 @@ import java.util.List;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class CommandObjective extends Objective implements Listener {
-
     private final String command;
+
     private final List<String> commandVariables;
+
     private final boolean ignoreCase;
+
     private final boolean exact;
+
     private final boolean cancel;
+
     private final EventID[] failEvents;
 
     public CommandObjective(final Instruction instruction) throws InstructionParseException {

@@ -22,10 +22,12 @@ import java.util.regex.Pattern;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class ShearObjective extends CountingObjective implements Listener {
-
     private final String color;
+
     private final Pattern underscore = Pattern.compile("(?<!\\\\)_");
+
     private final Pattern escapedUnderscore = Pattern.compile("(\\\\)_");
+
     private final String name;
 
     public ShearObjective(final Instruction instruction) throws InstructionParseException {

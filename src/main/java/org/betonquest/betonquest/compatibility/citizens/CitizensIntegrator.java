@@ -8,10 +8,8 @@ import org.betonquest.betonquest.compatibility.protocollib.hider.UpdateVisibilit
 
 import java.util.Arrays;
 
-
 @SuppressWarnings("PMD.CommentRequired")
 public class CitizensIntegrator implements Integrator {
-
     private final BetonQuest plugin;
 
     private CitizensListener citizensListener;

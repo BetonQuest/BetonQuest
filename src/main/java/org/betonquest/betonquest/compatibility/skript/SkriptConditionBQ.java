@@ -24,6 +24,7 @@ public class SkriptConditionBQ extends Condition {
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private Expression<Player> player;
+
     private Expression<String> condition;
 
     public SkriptConditionBQ() {

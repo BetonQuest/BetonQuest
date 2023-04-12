@@ -23,7 +23,9 @@ public class MoneyEvent extends QuestEvent {
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final VariableNumber amount;
+
     private final boolean notify;
+
     private final boolean multi;
 
     public MoneyEvent(final Instruction instruction) throws InstructionParseException {

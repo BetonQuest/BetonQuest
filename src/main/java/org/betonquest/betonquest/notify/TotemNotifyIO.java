@@ -16,7 +16,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Map;
 
-
 /**
  * Shows a totem of undying animation with a "customModelData" NBT tag.
  */
@@ -45,7 +44,6 @@ public class TotemNotifyIO extends NotifyIO {
         playSilentTotemEffect(onlineProfile.getPlayer());
         sendOffhandPacket(onlineProfile.getPlayer(), onlineProfile.getPlayer().getInventory().getItemInOffHand());
     }
-
 
     private ItemStack buildFakeTotem() {
         final ItemStack fakeTotem = new ItemStack(Material.TOTEM_OF_UNDYING);

@@ -27,6 +27,7 @@ public class AdvancementNotifyIO extends NotifyIO {
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final String frame;
+
     private final String icon;
 
     public AdvancementNotifyIO(final QuestPackage pack, final Map<String, String> data) throws InstructionParseException {

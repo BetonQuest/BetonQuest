@@ -15,8 +15,8 @@ import org.betonquest.betonquest.menu.RPGMenu;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class MenuQuestEvent extends QuestEvent {
-
     private final Operation operation;
+
     private MenuID menu;
 
     public MenuQuestEvent(final Instruction instruction) throws InstructionParseException {

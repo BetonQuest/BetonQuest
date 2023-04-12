@@ -62,8 +62,8 @@ public class CheckCondition extends Condition {
         try {
             return conditionClass.getConstructor(Instruction.class).newInstance(
                     new Instruction(this.instruction.getPackage(), null, instruction));
-        } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException |
-                       InvocationTargetException e) {
+        } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException
+                       | InvocationTargetException e) {
             if (e.getCause() instanceof InstructionParseException) {
                 throw new InstructionParseException("Error in internal condition: " + e.getCause().getMessage(), e);
             } else {

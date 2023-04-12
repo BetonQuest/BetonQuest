@@ -15,23 +15,26 @@ import java.util.concurrent.ThreadLocalRandom;
  * Note that it will return a different value for each call.
  */
 public class RandomNumberVariable extends Variable {
-
     /**
      * Used for check if fractional uses limited decimal places
      */
     private static final int DECIMAL_LENGTH = "decimal".length();
+
     /**
      * The lower bar of the random amount
      */
     private final VariableNumber low;
+
     /**
      * The higher bar of the random amount
      */
     private final VariableNumber high;
+
     /**
      * If the value should be returned as {@code double}
      */
     private final boolean fractional;
+
     /**
      * The digit amount to round to in fractional mode stored in pattern
      */
@@ -93,8 +96,8 @@ public class RandomNumberVariable extends Variable {
         if (start.startsWith("{")) {
             return parseToVariable(start, instruction);
         } else {
-            return new VariableNumber(instruction.getPackage(), instruction.hasNext() ?
-                    start + '.' + instruction.next() : start);
+            return new VariableNumber(instruction.getPackage(), instruction.hasNext()
+                    ? start + '.' + instruction.next() : start);
         }
     }
 

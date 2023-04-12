@@ -14,8 +14,8 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class HeroesExperienceEvent extends QuestEvent {
-
     private final boolean primary;
+
     private final VariableNumber amount;
 
     public HeroesExperienceEvent(final Instruction instruction) throws InstructionParseException {

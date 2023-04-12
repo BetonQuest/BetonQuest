@@ -18,15 +18,16 @@ import java.util.Optional;
  * Factory for the experience event.
  */
 public class ExperienceEventFactory implements EventFactory {
-
     /**
      * Server to use for syncing to the primary server thread.
      */
     private final Server server;
+
     /**
      * Scheduler to use for syncing to the primary server thread.
      */
     private final BukkitScheduler scheduler;
+
     /**
      * Plugin to use for syncing to the primary server thread.
      */

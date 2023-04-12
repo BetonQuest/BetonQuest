@@ -72,7 +72,6 @@ public class VariableString {
         }
     }
 
-
     /**
      * Resolves all variables in the string and returns the result.
      *

@@ -12,8 +12,8 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class SkillAPIClassCondition extends Condition {
-
     private final String className;
+
     private final boolean exact;
 
     public SkillAPIClassCondition(final Instruction instruction) throws InstructionParseException {

@@ -45,8 +45,11 @@ public class ChestPutObjective extends Objective implements Listener {
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final Condition chestItemCondition;
+
     private final Event chestTakeEvent;
+
     private final CompoundLocation loc;
+
     /**
      * Argument to manage the chest access for one or multiple players. False by default which means only one player
      * can acess the chest at the same time.

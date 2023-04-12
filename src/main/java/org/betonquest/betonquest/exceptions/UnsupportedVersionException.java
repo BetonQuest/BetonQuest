@@ -1,6 +1,3 @@
-/*
- * Created on 01.07.2018.
- */
 package org.betonquest.betonquest.exceptions;
 
 import org.bukkit.plugin.Plugin;

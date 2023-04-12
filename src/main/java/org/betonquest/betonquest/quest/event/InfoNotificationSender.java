@@ -19,10 +19,12 @@ public class InfoNotificationSender implements NotificationSender {
      * Message package to send the message from.
      */
     private final String messageName;
+
     /**
      * Quest package to send the message from.
      */
     private final QuestPackage questPackage;
+
     /**
      * Full ID of the message sending object.
      */

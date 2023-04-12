@@ -20,11 +20,12 @@ import java.util.Optional;
 @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.AbstractClassWithoutAbstractMethod", "PMD.CommentRequired",
         "PMD.TooManyMethods"})
 public abstract class SimpleYMLSection {
-
     public static final String RPG_MENU_CONFIG_SETTING = "RPGMenuConfig setting ";
 
     protected final QuestPackage pack;
+
     protected final ConfigurationSection config;
+
     protected final String name;
 
     public SimpleYMLSection(final QuestPackage pack, final String name, final ConfigurationSection config) throws InvalidConfigurationException {
@@ -192,7 +193,6 @@ public abstract class SimpleYMLSection {
         }
     }
 
-
     /**
      * Parse a material from config file
      *
@@ -312,9 +312,10 @@ public abstract class SimpleYMLSection {
      * Thrown when the config could not be loaded due to an error
      */
     public class InvalidSimpleConfigException extends InvalidConfigurationException {
-
         private static final long serialVersionUID = 5231741827329435199L;
+
         private final String message;
+
         private final String cause;
 
         public InvalidSimpleConfigException(final String cause) {

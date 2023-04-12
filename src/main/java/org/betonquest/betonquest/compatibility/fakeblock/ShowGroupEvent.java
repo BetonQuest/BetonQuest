@@ -16,6 +16,7 @@ public class ShowGroupEvent implements Event {
      * The groupNames that should be shown to the player.
      */
     private final List<String> groupNames;
+
     /**
      * PlayerGroupService to change group states for the player.
      */

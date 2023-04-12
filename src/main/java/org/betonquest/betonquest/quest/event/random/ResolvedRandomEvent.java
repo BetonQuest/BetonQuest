@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.quest.event.random;
 
-
 import org.betonquest.betonquest.id.EventID;
 
 /**

@@ -23,12 +23,16 @@ import java.util.Locale;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class EntityCondition extends Condition {
-
     private final EntityType[] types;
+
     private final VariableNumber[] amounts;
+
     private final CompoundLocation loc;
+
     private final VariableNumber range;
+
     private final String name;
+
     private final String marked;
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition"})

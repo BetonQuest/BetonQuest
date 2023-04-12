@@ -31,8 +31,11 @@ public class CitizensListener implements Listener {
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final Map<UUID, Long> npcInteractionLimiter = new HashMap<>();
+
     private RightClickListener rightClick;
+
     private LeftClickListener leftClick;
+
     private int interactionLimit;
 
     /**
@@ -49,7 +52,6 @@ public class CitizensListener implements Listener {
         if (leftClick != null) {
             HandlerList.unregisterAll(leftClick);
         }
-
 
         final BetonQuest plugin = BetonQuest.getInstance();
 

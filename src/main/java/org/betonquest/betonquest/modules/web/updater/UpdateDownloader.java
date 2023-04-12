@@ -22,10 +22,12 @@ public class UpdateDownloader {
      * The root of the files for better path description in exceptions.
      */
     private final URI relativeRoot;
+
     /**
      * A {@link File} where to create the temporary file for the download.
      */
     private final File tempFile;
+
     /**
      * The final {@link File} for the download.
      */

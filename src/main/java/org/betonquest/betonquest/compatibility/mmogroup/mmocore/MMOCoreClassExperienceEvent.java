@@ -11,8 +11,8 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class MMOCoreClassExperienceEvent extends QuestEvent {
-
     private final VariableNumber amountVar;
+
     private final boolean isLevel;
 
     public MMOCoreClassExperienceEvent(final Instruction instruction) throws InstructionParseException {

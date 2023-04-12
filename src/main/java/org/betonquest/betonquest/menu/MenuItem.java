@@ -84,7 +84,8 @@ public class MenuItem extends SimpleYMLSection {
      */
     private final boolean close;
 
-    @SuppressWarnings({"PMD.ExceptionAsFlowControl", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity", "PMD.NPathComplexity"})
+    @SuppressWarnings({"PMD.ExceptionAsFlowControl", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity",
+            "PMD.NPathComplexity", "checkstyle:EmptyCatchBlock"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public MenuItem(final QuestPackage pack, final String name, final ConfigurationSection section) throws InvalidConfigurationException {
         super(pack, name, section);
@@ -263,8 +264,8 @@ public class MenuItem extends SimpleYMLSection {
                     meta.setLore(description.getLore(profile));
                     item.setItemMeta(meta);
                 } catch (final NullPointerException npe) {
-                    LOG.error(pack, "Couldn't add custom text to '" + name + "': No text for language '" + Config.getLanguage() + "' " +
-                            "specified");
+                    LOG.error(pack, "Couldn't add custom text to '" + name + "': No text for language '"
+                            + Config.getLanguage() + "' " + "specified");
                 }
             }
             return item;
@@ -286,9 +287,10 @@ public class MenuItem extends SimpleYMLSection {
      */
     @SuppressWarnings("PMD.ShortClassName")
     public static class Item {
-
         private final ItemID itemID;
+
         private final QuestItem questItem;
+
         private final VariableNumber amount;
 
         public Item(final ItemID itemID, final VariableNumber amount) throws InstructionParseException {

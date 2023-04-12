@@ -22,11 +22,14 @@ import java.util.stream.Stream;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class PartyCondition extends Condition {
-
     private final VariableNumber range;
+
     private final ConditionID[] conditions;
+
     private final ConditionID[] everyone;
+
     private final ConditionID[] anyone;
+
     private final VariableNumber count;
 
     public PartyCondition(final Instruction instruction) throws InstructionParseException {

@@ -17,11 +17,14 @@ import java.util.ArrayList;
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.CyclomaticComplexity"})
 public class HeroesClassCondition extends Condition {
-
     private final boolean primary;
+
     private final boolean mastered;
+
     private final VariableNumber level;
+
     private final HeroClass heroClass;
+
     private final boolean any;
 
     public HeroesClassCondition(final Instruction instruction) throws InstructionParseException {

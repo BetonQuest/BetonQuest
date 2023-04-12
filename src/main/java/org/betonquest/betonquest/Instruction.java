@@ -38,13 +38,21 @@ public class Instruction {
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+
     private static final Pattern NUMBER_PATTERN = Pattern.compile("(?:\\s|\\G|^)(([+\\-])?\\d+)(?:\\s|$)");
+
     private final QuestPackage pack;
+
     protected String instruction;
+
     protected String[] parts;
+
     private ID identifier;
+
     private int nextIndex = 1;
+
     private int currentIndex = 1;
+
     private String lastOptional;
 
     public Instruction(final QuestPackage pack, final ID identifier, final String instruction) {
@@ -552,9 +560,10 @@ public class Instruction {
 
     @SuppressWarnings("PMD.ShortClassName")
     public static class Item {
-
         private final ItemID itemID;
+
         private final QuestItem questItem;
+
         private final VariableNumber amount;
 
         public Item(final ItemID itemID, final VariableNumber amount) throws InstructionParseException {

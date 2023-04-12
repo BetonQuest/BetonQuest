@@ -32,14 +32,17 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
      * Stores the user-provided instruction for this event.
      */
     protected final Instruction instruction;
+
     /**
      * Stores conditions that must be met when firing this event.
      */
     protected final ConditionID[] conditions;
+
     /**
      * Whether the event is static.
      */
     protected boolean staticness;
+
     /**
      * Whether the event is persistent.
      */
@@ -95,7 +98,6 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
     protected String getFullId() {
         return instruction.getID().getFullID();
     }
-
 
     /**
      * Fires an event for the profile if it meets the event's conditions.

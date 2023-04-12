@@ -19,8 +19,8 @@ import java.util.Locale;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class RideObjective extends Objective implements Listener {
-
     private final boolean any;
+
     private EntityType vehicle;
 
     public RideObjective(final Instruction instruction) throws InstructionParseException {

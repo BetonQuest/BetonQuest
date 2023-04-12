@@ -19,10 +19,15 @@ public final class ConversationColors {
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private static ChatColor[] npcColors;
+
     private static ChatColor[] playerColors;
+
     private static ChatColor[] textColors;
+
     private static ChatColor[] answerColors;
+
     private static ChatColor[] numberColors;
+
     private static ChatColor[] optionColors;
 
     private ConversationColors() {

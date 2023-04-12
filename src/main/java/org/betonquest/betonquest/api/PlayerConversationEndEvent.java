@@ -10,8 +10,8 @@ import org.bukkit.event.HandlerList;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class PlayerConversationEndEvent extends ProfileEvent {
-
     private static final HandlerList HANDLERS = new HandlerList();
+
     private final Conversation conversation;
 
     /**

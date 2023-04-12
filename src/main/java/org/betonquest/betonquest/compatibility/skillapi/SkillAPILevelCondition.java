@@ -17,8 +17,8 @@ import java.util.Optional;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class SkillAPILevelCondition extends Condition {
-
     private final String className;
+
     private final VariableNumber level;
 
     public SkillAPILevelCondition(final Instruction instruction) throws InstructionParseException {

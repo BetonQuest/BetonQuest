@@ -11,10 +11,10 @@ import org.bukkit.event.HandlerList;
  */
 @SuppressWarnings({"PMD.DataClass", "PMD.CommentRequired"})
 public class QuestCompassTargetChangeEvent extends ProfileEvent implements Cancellable {
-
     private static final HandlerList HANDLERS = new HandlerList();
 
     private final Location location;
+
     private boolean cancelled;
 
     public QuestCompassTargetChangeEvent(final Profile profile, final Location location) {

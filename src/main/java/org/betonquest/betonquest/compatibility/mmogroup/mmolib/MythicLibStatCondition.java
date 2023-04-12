@@ -9,9 +9,10 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class MythicLibStatCondition extends Condition {
-
     private final String statName;
+
     private final double targetLevel;
+
     private final boolean mustBeEqual;
 
     public MythicLibStatCondition(final Instruction instruction) throws InstructionParseException {

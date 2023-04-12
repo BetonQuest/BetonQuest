@@ -23,6 +23,7 @@ public class SilentCommandSender implements CommandSender {
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private static final BetonQuestLogger LOG = BetonQuestLogger.create("SilentCommandSender");
+
     /**
      * The wrapped command sender.
      */

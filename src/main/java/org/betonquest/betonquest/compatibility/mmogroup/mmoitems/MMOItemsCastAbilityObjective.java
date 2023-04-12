@@ -48,7 +48,6 @@ public class MMOItemsCastAbilityObjective extends Objective implements Listener 
         HandlerList.unregisterAll(this);
     }
 
-
     @Override
     public String getDefaultDataInstruction() {
         return "";

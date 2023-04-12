@@ -30,16 +30,17 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(BetonQuestLoggerService.class)
 @ExtendWith(MockitoExtension.class)
 class JournalEventFactoryIntegrationTest {
-
     /**
      * Fixed present time instant.
      */
     private final Instant now = Instant.now();
+
     /**
      * Mocked BetonQuest plugin.
      */
     @Mock
     private BetonQuest betonQuest;
+
     /**
      * Mocked database Saver.
      */

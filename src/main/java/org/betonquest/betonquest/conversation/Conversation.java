@@ -57,22 +57,36 @@ public class Conversation implements Listener {
     private static final ConcurrentHashMap<Profile, Conversation> LIST = new ConcurrentHashMap<>();
 
     private final OnlineProfile onlineProfile;
-    private final Player player;
-    private final QuestPackage pack;
-    private final String language;
-    private final Location location;
-    private final String convID;
-    private final List<String> blacklist;
-    private final Conversation conv;
-    private final BetonQuest plugin;
-    private final Map<Integer, String> current = new HashMap<>();
-    private final boolean messagesDelaying;
-    private ConversationData data;
-    private ConversationIO inOut;
-    private String option;
-    private boolean ended;
-    private Interceptor interceptor;
 
+    private final Player player;
+
+    private final QuestPackage pack;
+
+    private final String language;
+
+    private final Location location;
+
+    private final String convID;
+
+    private final List<String> blacklist;
+
+    private final Conversation conv;
+
+    private final BetonQuest plugin;
+
+    private final Map<Integer, String> current = new HashMap<>();
+
+    private final boolean messagesDelaying;
+
+    private ConversationData data;
+
+    private ConversationIO inOut;
+
+    private String option;
+
+    private boolean ended;
+
+    private Interceptor interceptor;
 
     /**
      * Starts a new conversation between player and npc at given location. It uses
@@ -511,8 +525,8 @@ public class Conversation implements Listener {
 
             // stop the conversation if it's canceled
             if (event.isCancelled()) {
-                LOG.debug(pack, "Conversation '" + convID + "' for '" + player.getPlayerProfile() + "' has been " +
-                        "canceled because it's PlayerConversationStartEvent has been canceled.");
+                LOG.debug(pack, "Conversation '" + convID + "' for '" + player.getPlayerProfile() + "' has been "
+                        + "canceled because it's PlayerConversationStartEvent has been canceled.");
                 return;
             }
 

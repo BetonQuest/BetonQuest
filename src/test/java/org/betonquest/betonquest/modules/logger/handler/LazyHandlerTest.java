@@ -87,7 +87,7 @@ class LazyHandlerTest {
         final LazyHandler handler = new LazyHandler(() -> internalHandler);
         handler.close();
         final Exception exception = assertThrows(IllegalStateException.class, () -> handler.publish(null), "Expected IllegalStateException is thrown");
-        assertEquals("Cannot publish log record: LazyLogHandler was closed and had not been initialized before closing."
-                , exception.getMessage(), "Expected other exception message");
+        assertEquals("Cannot publish log record: LazyLogHandler was closed and had not been initialized before closing.",
+                exception.getMessage(), "Expected other exception message");
     }
 }

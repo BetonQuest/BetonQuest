@@ -4,11 +4,23 @@
   "https://checkstyle.org/dtds/configuration_1_3.dtd">
 
 <module name="Checker">
+  <module name="SuppressWarningsFilter"/>
+
   <module name="TreeWalker">
     <property name="tabWidth" value="4"/>
-    <module name="AvoidStarImport">
-      <property name="excludes" value="org.junit.jupiter.api.Assertions,org.mockito.Mockito,org.mockito.ArgumentMatchers"/>
-    </module>
+
+    <!-- Annotations -->
+    <module name="SuppressWarningsHolder"/>
+
+    <!-- Block Checks -->
+    <module name="AvoidNestedBlocks"/>
+    <module name="EmptyBlock"/>
+    <module name="EmptyCatchBlock"/>
+    <module name="LeftCurly"/>
+    <module name="NeedBraces"/>
+    <module name="RightCurly"/>
+
+    <!-- Imports -->
     <module name="ImportOrder">
       <property name="groups" value="*,javax,java"/>
       <property name="ordered" value="true"/>
@@ -16,13 +28,44 @@
       <property name="option" value="bottom"/>
       <property name="sortStaticImportsAlphabetically" value="true"/>
     </module>
+
+    <!-- Whitespace -->
+    <module name="EmptyForInitializerPad"/>
+    <module name="EmptyForIteratorPad"/>
+    <module name="EmptyLineSeparator">
+      <property name="allowMultipleEmptyLines" value="false"/>
+      <property name="allowMultipleEmptyLinesInsideClassMembers" value="false"/>
+    </module>
+    <module name="GenericWhitespace"/>
+    <module name="MethodParamPad"/>
+    <module name="NoLineWrap"/>
+    <module name="NoWhitespaceAfter"/>
+    <module name="NoWhitespaceBefore"/>
+    <module name="NoWhitespaceBeforeCaseDefaultColon"/>
+    <module name="OperatorWrap"/>
+    <module name="ParenPad"/>
+    <module name="SeparatorWrap">
+      <property name="id" value="SeparatorWrapDot"/>
+      <property name="tokens" value="DOT"/>
+      <property name="option" value="nl"/>
+    </module>
+    <module name="SeparatorWrap">
+      <property name="id" value="SeparatorWrapComma"/>
+      <property name="tokens" value="COMMA"/>
+      <property name="option" value="eol"/>
+    </module>
+    <module name="SingleSpaceSeparator"/>
+    <module name="TypecastParenPad"/>
+    <module name="WhitespaceAfter"/>
+    <module name="WhitespaceAround"/>
+
+    <!-- Own custom rules -->
     <module name="RegexpSinglelineJava">
       <property name="format" value="\t"/>
       <property name="message" value="Indent must use space characters"/>
     </module>
   </module>
-  <module name="SuppressionFilter">
-    <property name="file" value="${checkstyle.config.path}/checkstyle-suppressions.xml"/>
-    <property name="optional" value="false"/>
-  </module>
+
+  <!-- Whitespace -->
+  <!-- <module name="FileTabCharacter"/> -->
 </module>

@@ -18,6 +18,7 @@ public class PickRandomEvent implements Event {
      * The events with there chance
      */
     private final List<RandomEvent> events;
+
     /**
      * The amount of events to fire.
      */

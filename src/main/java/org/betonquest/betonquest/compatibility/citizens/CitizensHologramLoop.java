@@ -39,10 +39,12 @@ public class CitizensHologramLoop extends HologramLoop implements Listener {
      * The task that lets holograms follow NPCs.
      */
     private final BukkitTask followTask;
+
     /**
      * List of all {@link NPCHologram}s.
      */
     private final List<NPCHologram> npcHolograms;
+
     /**
      * List of all {@link HologramWrapper}s.
      */

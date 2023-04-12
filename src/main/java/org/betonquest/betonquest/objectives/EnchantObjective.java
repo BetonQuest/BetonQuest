@@ -23,10 +23,12 @@ import java.util.Map;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class EnchantObjective extends CountingObjective implements Listener {
-
     private static final String JUST_ONE_ENCHANT = "one";
+
     private final QuestItem item;
+
     private final List<EnchantmentData> desiredEnchantments;
+
     private boolean requireOne;
 
     public EnchantObjective(final Instruction instruction) throws InstructionParseException {

@@ -18,9 +18,10 @@ import java.util.List;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class SimpleInterceptor implements Interceptor, Listener {
-
     protected final Conversation conv;
+
     protected final Player player;
+
     private final List<String> messages = new ArrayList<>();
 
     public SimpleInterceptor(final Conversation conv, final OnlineProfile onlineProfile) throws QuestRuntimeException {

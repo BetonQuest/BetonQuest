@@ -35,7 +35,9 @@ public class DelayObjective extends Objective {
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final int interval;
+
     private VariableNumber delay;
+
     private BukkitTask runnable;
 
     public DelayObjective(final Instruction instruction) throws InstructionParseException {
@@ -157,7 +159,6 @@ public class DelayObjective extends Objective {
         final String seconds = buildTimeDescription(secondsWord, secondsWordSingular, duration.toSecondsPart());
         return days + hours + minutes + seconds;
     }
-
 
     private String buildTimeDescription(final String timeUnitWord, final String timeUnitSingularWord, final long timeAmount) {
         return timeAmount >= 1 ? timeAmount + " " + (timeAmount == 1 ? timeUnitSingularWord : timeUnitWord + " ") : "";

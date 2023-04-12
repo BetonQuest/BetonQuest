@@ -26,26 +26,32 @@ public class QuestManager {
      * The character to separate {@link Quest} address parts.
      */
     public static final String PACKAGE_SEPARATOR = "-";
+
     /**
      * Name of the folder to place {@link QuestTemplate}s in.
      */
     public static final String QUEST_TEMPLATES_FOLDER = "QuestTemplates";
+
     /**
      * Name of the folder to place {@link QuestPackage}s in.
      */
     public static final String QUEST_PACKAGES_FOLDER = "QuestPackages";
+
     /**
      * The type name of the file that indicates a file for a quest in a quest folder.
      */
     public static final String FILE_TYPE_INDICATOR = ".yml";
+
     /**
      * The name of the file that indicates a quest folder.
      */
     public static final String FILE_NAME_INDICATOR = "package";
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+
     /**
      * All loaded {@link QuestPackage}s.
      */

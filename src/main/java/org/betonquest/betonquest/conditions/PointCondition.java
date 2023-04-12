@@ -18,9 +18,10 @@ import java.util.List;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class PointCondition extends Condition {
-
     protected final String category;
+
     protected final VariableNumber count;
+
     protected final boolean equal;
 
     public PointCondition(final Instruction instruction) throws InstructionParseException {

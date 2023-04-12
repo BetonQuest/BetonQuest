@@ -16,6 +16,7 @@ public class HideGroupEvent implements Event {
      * The names of the groups that should be hidden for the player.
      */
     private final List<String> groupNames;
+
     /**
      * PlayerGroupService to change group states for the player.
      */

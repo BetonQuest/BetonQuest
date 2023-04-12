@@ -5,8 +5,8 @@ import org.betonquest.betonquest.item.QuestItem.Number;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class DurabilityHandler {
-
     private short durability;
+
     private Number number = Number.WHATEVER;
 
     public DurabilityHandler() {

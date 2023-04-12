@@ -16,9 +16,10 @@ import java.util.List;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class MMOItemsItemCondition extends Condition {
-
     private final Type itemType;
+
     private final String itemID;
+
     private int amount = 1;
 
     public MMOItemsItemCondition(final Instruction instruction) throws InstructionParseException {

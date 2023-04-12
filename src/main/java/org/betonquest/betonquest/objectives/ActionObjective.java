@@ -41,10 +41,15 @@ public class ActionObjective extends Objective implements Listener {
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final Click action;
+
     private final BlockSelector selector;
+
     private final boolean exactMatch;
+
     private final CompoundLocation loc;
+
     private final VariableNumber range;
+
     private final boolean cancel;
 
     public ActionObjective(final Instruction instruction) throws InstructionParseException {

@@ -19,9 +19,10 @@ import org.bukkit.Location;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class NPCLocationCondition extends Condition {
-
     private final int npcId;
+
     private final CompoundLocation location;
+
     private final VariableNumber radius;
 
     public NPCLocationCondition(final Instruction instruction) throws InstructionParseException {

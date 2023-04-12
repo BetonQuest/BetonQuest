@@ -27,15 +27,16 @@ import static org.mockito.Mockito.*;
 @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity"})
 @ExtendWith(BetonQuestLoggerService.class)
 class TokenizerTest {
-
     /**
      * Precision up to which to check equality of floating point numbers.
      */
     public static final double REQUIRED_DOUBLE_PRECISION = 1E-7;
+
     /**
      * The profile to use for variable resolution.
      */
     public static final Profile TEST_PLAYER_PROFILE = mock(Profile.class);
+
     /**
      * The package name of the package we assume to be inside for variable resolution.
      */

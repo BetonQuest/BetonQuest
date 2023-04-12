@@ -6,11 +6,10 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.bukkit.Bukkit;
 
-
 @SuppressWarnings("PMD.CommentRequired")
 public class QuestsIntegrator implements Integrator {
-
     private static Quests questsInstance;
+
     private final BetonQuest plugin;
 
     public QuestsIntegrator() {

@@ -11,11 +11,14 @@ import java.util.List;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class FireworkHandler {
-
     private final List<FireworkEffectHandler> effects = new ArrayList<>();
+
     private int power;
+
     private Number powerN = Number.WHATEVER;
+
     private Existence effectsE = Existence.WHATEVER;
+
     private boolean exact = true;
 
     public FireworkHandler() {

@@ -52,7 +52,6 @@ public class FallbackConfigurationSectionEmptyOriginalTest extends FallbackConfi
         assertTrue(config.getComments("existingSet").isEmpty());
     }
 
-
     @Test
     @Override
     public void testSetInlineComments() {

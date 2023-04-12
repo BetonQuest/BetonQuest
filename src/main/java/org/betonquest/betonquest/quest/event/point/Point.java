@@ -26,6 +26,7 @@ public enum Point {
      * The calculator to use for this point type.
      */
     private final Calculator calculator;
+
     /**
      * The name of the category of the modification.
      */

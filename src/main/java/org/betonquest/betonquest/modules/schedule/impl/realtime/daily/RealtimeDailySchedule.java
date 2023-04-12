@@ -11,7 +11,6 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-
 /**
  * A schedule that mimics the functionality and style of the old static event system.
  * Time is just {@code HH:mm} format (e.g. 14:45)

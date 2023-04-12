@@ -138,7 +138,6 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
         return missedRuns;
     }
 
-
     @Override
     protected void schedule(final RealtimeDailySchedule schedule) {
         executor.schedule(() -> {

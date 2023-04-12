@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.variables;
 
-
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.Variable;
@@ -14,8 +13,8 @@ import java.util.Locale;
 
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition"})
 public class LocationVariable extends Variable {
-
     private final MODE mode;
+
     private final int decimalPlaces;
 
     public LocationVariable(final Instruction instruction) throws InstructionParseException {

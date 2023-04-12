@@ -125,16 +125,16 @@ public final class ConfigurationFileImpl extends ConfigurationSectionDecorator i
             final URI configPath = accessor.getConfigurationFile().getAbsoluteFile().toURI();
             final String relativePath = relativeRoot.relativize(configPath).getPath();
 
-            LOG.info("Updating config file '" + relativePath + "' from version '" + patcher.getCurrentConfigVersion() +
-                    "' to version '" + patcher.getNextConfigVersion().getVersion() + "'");
+            LOG.info("Updating config file '" + relativePath + "' from version '" + patcher.getCurrentConfigVersion()
+                    + "' to version '" + patcher.getNextConfigVersion().getVersion() + "'");
 
             final boolean flawless = patcher.patch();
             if (flawless) {
                 LOG.info("Patching complete!");
             } else {
-                LOG.warn("The patching progress did not go flawlessly. However, this does not mean your configs " +
-                        "are now corrupted. Please check the errors above to see what the patcher did. " +
-                        "You might want to adjust your config manually depending on that information.");
+                LOG.warn("The patching progress did not go flawlessly. However, this does not mean your configs "
+                        + "are now corrupted. Please check the errors above to see what the patcher did. "
+                        + "You might want to adjust your config manually depending on that information.");
             }
             return true;
         }

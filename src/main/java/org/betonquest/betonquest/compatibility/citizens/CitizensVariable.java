@@ -24,8 +24,8 @@ import java.util.Locale;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class CitizensVariable extends Variable {
-
     private final int npcId;
+
     private final TYPE key;
 
     public CitizensVariable(final Instruction instruction) throws InstructionParseException {

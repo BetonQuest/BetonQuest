@@ -29,6 +29,7 @@ public class UpdateSourceHandler {
      * A list of {@link ReleaseUpdateSource} instances.
      */
     private final List<ReleaseUpdateSource> releaseHandlerList;
+
     /**
      * A list of {@link DevelopmentUpdateSource} instances.
      */

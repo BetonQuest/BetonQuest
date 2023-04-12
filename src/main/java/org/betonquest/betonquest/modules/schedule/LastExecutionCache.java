@@ -22,10 +22,12 @@ public class LastExecutionCache {
      * The File where last executions should be cached.
      */
     public static final String CACHE_FILE = ".cache/schedules.yml";
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private static final BetonQuestLogger LOG = BetonQuestLogger.create("Cache");
+
     /**
      * Config accessor for the cache.
      */

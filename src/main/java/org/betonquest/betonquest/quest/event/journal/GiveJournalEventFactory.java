@@ -14,15 +14,16 @@ import org.bukkit.scheduler.BukkitScheduler;
  * Creates a new GiveJournalEvent from an {@link Instruction}.
  */
 public class GiveJournalEventFactory implements EventFactory {
-
     /**
      * Server to use for syncing to the primary server thread.
      */
     private final Server server;
+
     /**
      * Scheduler to use for syncing to the primary server thread.
      */
     private final BukkitScheduler scheduler;
+
     /**
      * Plugin to use for syncing to the primary server thread.
      */
@@ -45,7 +46,6 @@ public class GiveJournalEventFactory implements EventFactory {
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         return new PrimaryServerThreadEvent(
                 new OnlineProfileRequiredEvent(
-                        new GiveJournalEvent(), instruction.getPackage())
-                , server, scheduler, plugin);
+                        new GiveJournalEvent(), instruction.getPackage()), server, scheduler, plugin);
     }
 }

@@ -24,11 +24,11 @@ import java.util.regex.Pattern;
  * Factory for {@link NotifyEvent}.
  */
 public class NotifyEventFactory implements EventFactory {
-
     /**
      * A pattern for the notation of notifyIO options.
      */
     private static final Pattern KEY_VALUE_PATTERN = Pattern.compile("(?<key>[a-zA-Z]+?):(?<value>\\S+)");
+
     /**
      * A pattern for the notation of multiple translations in a single event.
      */
@@ -38,10 +38,12 @@ public class NotifyEventFactory implements EventFactory {
      * Server to use for syncing to the primary server thread.
      */
     private final Server server;
+
     /**
      * Scheduler to use for syncing to the primary server thread.
      */
     private final BukkitScheduler scheduler;
+
     /**
      * Plugin to use for syncing to the primary server thread.
      */

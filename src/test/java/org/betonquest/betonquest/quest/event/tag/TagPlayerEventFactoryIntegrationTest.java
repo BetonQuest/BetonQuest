@@ -27,12 +27,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(BetonQuestLoggerService.class)
 @ExtendWith(MockitoExtension.class)
 class TagPlayerEventFactoryIntegrationTest {
-
     /**
      * Mocked BetonQuest plugin.
      */
     @Mock
     private BetonQuest betonQuest;
+
     /**
      * Mocked database Saver.
      */

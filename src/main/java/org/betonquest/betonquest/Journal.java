@@ -49,10 +49,15 @@ public class Journal {
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final Profile profile;
+
     private final List<Pointer> pointers;
+
     private final List<String> texts = new ArrayList<>();
+
     private final ConfigurationFile config;
+
     private String lang;
+
     private String mainPage;
 
     /**

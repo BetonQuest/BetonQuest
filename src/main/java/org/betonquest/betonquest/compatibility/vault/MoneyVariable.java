@@ -12,8 +12,8 @@ import java.util.Locale;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class MoneyVariable extends Variable {
-
     private final Type type;
+
     private int amount;
 
     public MoneyVariable(final Instruction instruction) throws InstructionParseException {
