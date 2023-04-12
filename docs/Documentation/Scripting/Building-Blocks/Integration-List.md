@@ -226,6 +226,45 @@ This means that `enter` is not completed when the player gets the objective and 
     npcrange 3,5 enter 20 events:master_inRange
     ```
 
+### Variables
+
+#### Citizen Variable: `%citizen.<id>.<type>%`
+
+This variable resolves information about a Citizen NPC by id. Specifying a type determines the return: the NPC name, or full name.
+
+Types:
+* name - Return citizen name
+* full_name - Full Citizen name
+
+!!! example
+  ```YAML
+  %citizen.15.name%        # Bob
+  %citizen.15.full_name%   # &eBob
+  ```
+
+#### Citizen Location Variable: `%citizen.<id>.location.<mode>.<precision>%`
+
+This variable resolves to all Citizen location arguments: the x, y and z coordinates, the world name, the yaw and pitch
+(head rotation). The first argument is citizen, followed by the citizen ID, then location. It also supports the 
+BetonQuest [Unified Location Formatting](../Data-Formats.md#unified-location-formating) modes which can optionally be added to the end.
+
+!!! example
+  ```YAML
+  %citizen.15.location%           # -> 325;121;814;npcWorldName;12;6
+  %citizen.15.location.xyz%       # -> 325 121 814 
+  %citizen.15.location.x%         # -> 325
+  %citizen.15.location.y%         # -> 121
+  %citizen.15.location.z%         # -> 814
+  %citizen.15.location.yaw%       # -> 12
+  %citizen.15.location.pitch%     # -> 6
+  %citizen.15.location.world%     # -> npcWorldName
+  %citizen.15.location.ulfShort%  # -> 325;121;814;npcWorldName
+  %citizen.15.location.ulfLong%   # -> 325;121;814;npcWorldName;12;6
+  
+  %citizen.15.location.x.2%       # -> 325.16
+  %citizen.15.location.ulfLong.5% # -> 325.54268;121.32186;814.45824;npcWorldName;12.0;6.0
+  ```
+
 ## Denizen[](http://dev.bukkit.org/bukkit-plugins/denizen/)
 
 ### Events
