@@ -9,7 +9,6 @@ import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -66,12 +65,8 @@ public class ObjectivePaymentEvent extends Objective implements Listener {
 
     @Override
     public String getDefaultDataInstruction(final Profile profile) {
-        try {
-            final double value = targetAmount.getDouble(profile);
-            return value > 0 ? String.valueOf(value) : "1";
-        } catch (final QuestRuntimeException ignored) {
-            return "1";
-        }
+        final double value = targetAmount.getDouble(profile);
+        return value > 0 ? String.valueOf(value) : "1";
     }
 
     @Override
