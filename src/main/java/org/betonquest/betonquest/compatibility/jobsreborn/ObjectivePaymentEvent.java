@@ -2,7 +2,6 @@ package org.betonquest.betonquest.compatibility.jobsreborn;
 
 import com.gamingmesh.jobs.api.JobsPaymentEvent;
 import com.gamingmesh.jobs.container.CurrencyType;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
@@ -21,7 +20,6 @@ import java.util.Locale;
 public class ObjectivePaymentEvent extends Objective implements Listener {
     private final VariableNumber targetAmount;
 
-    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public ObjectivePaymentEvent(final Instruction instructions) throws InstructionParseException {
         super(instructions);
         template = ObjectiveData.class;
@@ -31,7 +29,6 @@ public class ObjectivePaymentEvent extends Objective implements Listener {
         }
     }
 
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @EventHandler(ignoreCancelled = true)
     public void onJobsPaymentEvent(final JobsPaymentEvent event) {
         final Profile profile = PlayerConverter.getID(event.getPlayer());
@@ -83,8 +80,8 @@ public class ObjectivePaymentEvent extends Objective implements Listener {
     }
 
     public static class PaymentData extends ObjectiveData {
-
         private final double targetAmount;
+
         private double amount;
 
         public PaymentData(final String instruction, final Profile profile, final String objID) {

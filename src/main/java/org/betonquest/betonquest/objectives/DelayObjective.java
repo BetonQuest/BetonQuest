@@ -8,7 +8,6 @@ import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
@@ -119,7 +118,7 @@ public class DelayObjective extends Objective {
         try {
             final double time = delay.getDouble(profile);
             millis = timeToMilliSeconds(time);
-        } catch (final InstructionParseException | QuestRuntimeException e) {
+        } catch (final InstructionParseException e) {
             LOG.warn("Error in delay objective '" + instruction.getID() + "': " + e.getMessage());
         }
         return Double.toString(new Date().getTime() + millis);

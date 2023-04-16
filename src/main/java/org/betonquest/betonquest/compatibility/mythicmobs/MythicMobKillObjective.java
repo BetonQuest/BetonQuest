@@ -12,7 +12,6 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
@@ -156,17 +155,8 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
     }
 
     private boolean matchesMobLevel(final OnlineProfile onlineProfile, final ActiveMob mob) {
-        try {
-            final double actualMobLevel = mob.getLevel();
-            return minMobLevel.getDouble(onlineProfile) <= actualMobLevel && maxMobLevel.getDouble(onlineProfile) >= actualMobLevel;
-        } catch (final QuestRuntimeException exception) {
-            try {
-                LOG.error(instruction.getPackage(), "Unable to resolve minMobLevel / maxMobLevel variable in " + instruction.getObjective().getFullID());
-            } catch (final InstructionParseException e) {
-                LOG.reportException(instruction.getPackage(), exception);
-            }
-            return false;
-        }
+        final double actualMobLevel = mob.getLevel();
+        return minMobLevel.getDouble(onlineProfile) <= actualMobLevel && maxMobLevel.getDouble(onlineProfile) >= actualMobLevel;
     }
 
     @Override
