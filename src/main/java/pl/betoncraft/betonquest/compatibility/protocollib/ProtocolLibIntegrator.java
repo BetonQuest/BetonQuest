@@ -27,7 +27,7 @@ public class ProtocolLibIntegrator implements Integrator {
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public void hook() throws HookException {
         final Plugin protocolLib = Bukkit.getPluginManager().getPlugin("ProtocolLib");
-        final String[] qualifierParts = protocolLib.getDescription().getVersion().split("-SNAPSHOT-b");
+        final String[] qualifierParts = protocolLib.getDescription().getVersion().split("-SNAPSHOT-");
         final String[] versionParts = qualifierParts[0].split("\\.");
         try {
             final int part1 = Integer.parseInt(versionParts[0]);
@@ -38,10 +38,10 @@ public class ProtocolLibIntegrator implements Integrator {
                     || part1 == 5 && part2 < 0
                     || part1 == 5 && part2 == 0 && part3 < 0
                     || part1 == 5 && part2 == 0 && part3 == 0 && buildNr < 610) {
-                throw new UnsupportedVersionException(protocolLib, "5.0.0-SNAPSHOT-b610");
+                throw new UnsupportedVersionException(protocolLib, "5.0.0-SNAPSHOT-636");
             }
         } catch (final NumberFormatException e) {
-            throw new UnsupportedVersionException(protocolLib, "5.0.0-SNAPSHOT-b610");
+            throw new UnsupportedVersionException(protocolLib, "5.0.0-SNAPSHOT-636");
         }
         // if Citizens is hooked, start NPCHider
         if (Compatibility.getHooked().contains("Citizens")) {
