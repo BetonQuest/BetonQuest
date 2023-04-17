@@ -59,7 +59,7 @@ public class UpdateDownloader {
             downloadSource.get(url, file);
         } catch (final IOException e) {
             throw new QuestRuntimeException("The download was interrupted! The updater could not download the file!"
-                    + " You can try if again, if it still does not work use a manual download."
+                    + " You can try it again, if it still does not work use a manual download."
                     + " The original exception was: " + e.getMessage(), e);
         } finally {
             currentlyDownloading.set(false);

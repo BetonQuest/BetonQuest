@@ -53,7 +53,7 @@ class UpdateDownloaderTest {
         final UpdateDownloader downloader = new UpdateDownloader(downloadSource, file);
 
         final QuestRuntimeException exception = assertThrows(QuestRuntimeException.class, () -> downloader.downloadToFile(url), "Expected QuestRuntimeException");
-        assertEquals("The download was interrupted! The updater could not download the file! You can try if again, if it still does not work use a manual download. The original exception was: Test Exception", exception.getMessage(), "Expected exception message does not Match");
+        assertEquals("The download was interrupted! The updater could not download the file! You can try it again, if it still does not work use a manual download. The original exception was: Test Exception", exception.getMessage(), "Expected exception message does not Match");
     }
 
     @Test

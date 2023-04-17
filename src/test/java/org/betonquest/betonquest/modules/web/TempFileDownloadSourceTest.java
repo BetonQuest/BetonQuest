@@ -13,7 +13,7 @@ import java.nio.file.StandardCopyOption;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This class test the {@link TempFileDownloadSource}.
+ * This class tests the {@link TempFileDownloadSource}.
  */
 class TempFileDownloadSourceTest {
     /**

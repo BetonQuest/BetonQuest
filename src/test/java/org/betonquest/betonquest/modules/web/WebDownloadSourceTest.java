@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * This class test the {@link WebDownloadSource}.
+ * This class tests the {@link WebDownloadSource}.
  */
 class WebDownloadSourceTest {
     /**

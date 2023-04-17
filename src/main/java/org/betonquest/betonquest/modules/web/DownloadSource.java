@@ -6,7 +6,7 @@ import java.net.URL;
 
 /**
  * This is an interface that provides basic methods to read information from a given {@link URL}
- * and save it to a given {@link File}.
+ * and saves it to a given {@link File}.
  */
 public interface DownloadSource {
 
