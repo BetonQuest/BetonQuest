@@ -29,10 +29,8 @@ public class CraftingObjective extends CountingObjective implements Listener {
     public CraftingObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "items_to_craft");
         item = instruction.getQuestItem();
-        targetAmount = instruction.getInt();
-        if (targetAmount <= 0) {
-            throw new InstructionParseException("Amount cannot be less than 1");
-        }
+        targetAmount = instruction.getVarNum();
+        preCheckAmountNotLessThanOne(targetAmount);
     }
 
     private static int calculateCraftAmount(final CraftItemEvent event) {

@@ -45,7 +45,8 @@ public class FishObjective extends CountingObjective implements Listener {
     public FishObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "fish_to_catch");
         blockSelector = new BlockSelector(instruction.next());
-        targetAmount = instruction.getInt();
+        targetAmount = instruction.getVarNum();
+        preCheckAmountNotLessThanOne(targetAmount);
 
         final QuestPackage pack = instruction.getPackage();
         final String loc = instruction.getOptional("hookLocation");
@@ -56,10 +57,6 @@ public class FishObjective extends CountingObjective implements Listener {
         } else {
             hookTargetLocation = null;
             rangeVar = null;
-        }
-
-        if (targetAmount <= 0) {
-            throw new InstructionParseException("Fish amount cannot be less than 0");
         }
     }
 

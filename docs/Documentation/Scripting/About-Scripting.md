@@ -141,6 +141,24 @@ objectives:
   startQuestByMining: 'location 100;200;300;world 5 events:start_quest_mine_folder {++global++}'
 ```
 
+#### Variables
+
+!!! warning "Use with caution!"
+    The updating behaviour of already started objectives might change in BetonQuest 3. Perhaps variable changes will be 
+    reflected in the amount of an active objective. This is not the case right now.
+
+Objectives support variables for their amount options.
+When the objective is started for a player, the amount is set to the variable's current value. The amount of an active objective will
+not be updated if the variable changes.
+Also, when the variable contains an invalid value for the given objective (e.g. a negative value) a default value of `1` is used.
+
+```YAML title="Examples"
+objectives:
+  killMonsters: 'mobkill ZOMBIE %math.calc:(100-{point.reputation.amount})*2% events:endSiege'
+  breakObsidian: 'block OBSIDIAN %randomnumber.whole.-60~-40% events:dailyReward'
+  eatSteak: 'consume steak amount:%randomnumber.whole.2~6% events:health_boost'
+```
+
 [Explore all Objectives](./Building-Blocks/Objectives-List.md){ .md-button }
 
 

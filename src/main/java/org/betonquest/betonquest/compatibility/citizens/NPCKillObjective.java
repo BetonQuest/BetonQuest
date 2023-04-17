@@ -27,10 +27,8 @@ public class NPCKillObjective extends CountingObjective implements Listener {
         if (npcId < 0) {
             throw new InstructionParseException("NPC ID cannot be less than 0");
         }
-        targetAmount = instruction.getInt(instruction.getOptional("amount"), 1);
-        if (targetAmount <= 0) {
-            throw new InstructionParseException("Amount cannot be less than 1");
-        }
+        targetAmount = instruction.getVarNum(instruction.getOptional("amount", "1"));
+        preCheckAmountNotLessThanOne(targetAmount);
     }
 
     @EventHandler(ignoreCancelled = true)

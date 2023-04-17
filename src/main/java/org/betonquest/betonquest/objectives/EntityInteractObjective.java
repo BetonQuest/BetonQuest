@@ -72,7 +72,8 @@ public class EntityInteractObjective extends CountingObjective {
         template = EntityInteractData.class;
         interaction = instruction.getEnum(Interaction.class);
         mobType = instruction.getEnum(EntityType.class);
-        targetAmount = instruction.getPositive();
+        targetAmount = instruction.getVarNum();
+        preCheckAmountNotLessThanOne(targetAmount);
         customName = parseName(instruction.getOptional("name"));
         realName = parseName(instruction.getOptional("realname"));
         marked = instruction.getOptional("marked");

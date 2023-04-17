@@ -5,7 +5,6 @@ import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 import java.text.DecimalFormat;
 import java.util.concurrent.ThreadLocalRandom;
@@ -136,7 +135,7 @@ public class RandomNumberVariable extends Variable {
                 return String.valueOf(ThreadLocalRandom.current().nextInt(
                         low.getInt(profile), high.getInt(profile) + 1));
             }
-        } catch (final IllegalArgumentException | QuestRuntimeException e) {
+        } catch (final IllegalArgumentException e) {
             return "";
         }
     }

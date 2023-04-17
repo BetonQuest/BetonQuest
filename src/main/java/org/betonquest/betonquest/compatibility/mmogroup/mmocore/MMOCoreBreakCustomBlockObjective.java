@@ -24,7 +24,8 @@ public class MMOCoreBreakCustomBlockObjective extends CountingObjective implemen
     public MMOCoreBreakCustomBlockObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "blocks_to_break");
         desiredBlockId = instruction.getOptional("block");
-        targetAmount = instruction.getInt();
+        targetAmount = instruction.getVarNum();
+        preCheckAmountNotLessThanOne(targetAmount);
     }
 
     @EventHandler(ignoreCancelled = true)
