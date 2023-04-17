@@ -47,7 +47,8 @@ case "$VERSION_TYPE" in
     RELEASE_NAME="Release-Build"
     RELEASE_DOWNLOAD_URL="https://github.com/BetonQuest/BetonQuest/releases"
     RELEASE_COMMIT_ICON_SUCCESS="$COMMIT_ICON_RELEASE"
-    DOCS_VERSION=$VERSION
+    IFS='.' read -r major minor _ <<< "$VERSION"
+    DOCS_VERSION="$major.$minor"
     ;;
 
   "development" )
