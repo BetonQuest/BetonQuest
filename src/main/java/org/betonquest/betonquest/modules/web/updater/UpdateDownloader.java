@@ -20,10 +20,12 @@ public class UpdateDownloader {
      * The {@link DownloadSource} to use.
      */
     private final DownloadSource downloadSource;
+
     /**
      * The final {@link File} for the download.
      */
     private final File file;
+
     /**
      * A flag to check if the download is currently running.
      */

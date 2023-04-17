@@ -18,6 +18,7 @@ class WebDownloadSourceTest {
      * The {@link File} to the BetonQuest.jar in the resources.
      */
     private static final File UPDATE_FILE = new File("src/test/resources/modules/web/updater/BetonQuest.jar");
+
     /**
      * The {@link Path} to the BetonQuest.jar in the resources.
      */
