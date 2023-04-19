@@ -21,10 +21,12 @@ public class PickRandomEventFactory implements EventFactory, StaticEventFactory 
      * The percentage character.
      */
     private final static char PERCENTAGE = '%';
+
     /**
      * The number of minimum percentages.
      */
     private final static int NUMBER_OF_MINIMUM_PERCENTAGES = 1;
+
     /**
      * The number of maximum percentages.
      */

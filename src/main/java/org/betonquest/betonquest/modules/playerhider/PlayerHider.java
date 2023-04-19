@@ -28,6 +28,7 @@ public class PlayerHider {
      * and the map's value is an array containing the target {@link Profile}'s conditions.
      */
     private final Map<ConditionID[], ConditionID[]> hiders;
+
     /**
      * The running hider
      */

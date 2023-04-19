@@ -8,8 +8,8 @@ import org.bukkit.Color;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class ColorHandler {
-
     private Color color = Bukkit.getServer().getItemFactory().getDefaultLeatherColor();
+
     private Existence colorE = Existence.WHATEVER;
 
     public ColorHandler() {

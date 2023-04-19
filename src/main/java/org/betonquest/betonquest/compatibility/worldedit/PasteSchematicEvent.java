@@ -38,7 +38,9 @@ public class PasteSchematicEvent extends QuestEvent {
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final CompoundLocation loc;
+
     private final boolean noAir;
+
     private final File file;
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")

@@ -40,6 +40,7 @@ public final class NPCHider extends BukkitRunnable implements Listener {
     private static NPCHider instance;
 
     private final EntityHider hider;
+
     private final Map<Integer, Set<ConditionID>> npcs;
 
     private NPCHider() {

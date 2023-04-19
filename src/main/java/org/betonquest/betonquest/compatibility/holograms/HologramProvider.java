@@ -27,10 +27,12 @@ public class HologramProvider implements Integrator {
      * Pattern to match an instruction variable in string
      */
     public static final Pattern VARIABLE_VALIDATOR = Pattern.compile("%[^ %\\s]+%");
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+
     /**
      * HologramIntegrators when 'hooked' add themselves to this list
      */

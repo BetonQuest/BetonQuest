@@ -24,6 +24,7 @@ public class ConfigAccessorImpl implements ConfigAccessor {
      * The file from which the {@link ConfigAccessorImpl#configuration} was loaded and will be saved to.
      */
     private final File configurationFile;
+
     /**
      * The loaded configurationFile represented by this {@link ConfigAccessorImpl}.
      */
@@ -105,11 +106,11 @@ public class ConfigAccessorImpl implements ConfigAccessor {
     }
 
     private void loadFromObject(final Object input, final YamlConfiguration config) throws IOException, InvalidConfigurationException {
-        if (input instanceof File file) {
+        if (input instanceof final File file) {
             config.load(file);
-        } else if (input instanceof Reader reader) {
+        } else if (input instanceof final Reader reader) {
             config.load(reader);
-        } else if (input instanceof String string) {
+        } else if (input instanceof final String string) {
             config.load(string);
         }
     }

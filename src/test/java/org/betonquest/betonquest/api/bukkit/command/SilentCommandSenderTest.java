@@ -22,6 +22,7 @@ class SilentCommandSenderTest {
      * The command sender to use.
      */
     private CommandSender sender;
+
     /**
      * The silent command sender to use.
      */

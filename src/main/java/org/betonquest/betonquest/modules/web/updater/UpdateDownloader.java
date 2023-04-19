@@ -1,14 +1,12 @@
 package org.betonquest.betonquest.modules.web.updater;
 
-import org.apache.commons.io.FileUtils;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.modules.web.DownloadSource;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Bukkit has a 'update' (default) folder, where jars that have the exact same name as a jar in the 'plugins' folder,
@@ -19,29 +17,30 @@ import java.nio.file.StandardCopyOption;
 public class UpdateDownloader {
 
     /**
-     * The root of the files for better path description in exceptions.
+     * The {@link DownloadSource} to use.
      */
-    private final URI relativeRoot;
-    /**
-     * A {@link File} where to create the temporary file for the download.
-     */
-    private final File tempFile;
+    private final DownloadSource downloadSource;
+
     /**
      * The final {@link File} for the download.
      */
-    private final File finalFile;
+    private final File file;
+
+    /**
+     * A flag to check if the download is currently running.
+     */
+    private final AtomicBoolean currentlyDownloading;
 
     /**
      * Creates a new {@link UpdateDownloader} with the given file locations.
      *
-     * @param relativeRoot The root of the files for better path description in exceptions.
-     * @param tempFile     A {@link File} where to create the temporary file for the download.
-     * @param finalFile    The final {@link File} for the download.
+     * @param downloadSource The {@link DownloadSource} to use.
+     * @param file           The final {@link File} for the download.
      */
-    public UpdateDownloader(final URI relativeRoot, final File tempFile, final File finalFile) {
-        this.relativeRoot = relativeRoot;
-        this.tempFile = tempFile;
-        this.finalFile = finalFile;
+    public UpdateDownloader(final DownloadSource downloadSource, final File file) {
+        this.downloadSource = downloadSource;
+        this.file = file;
+        this.currentlyDownloading = new AtomicBoolean(false);
     }
 
     /**
@@ -51,23 +50,19 @@ public class UpdateDownloader {
      * @throws QuestRuntimeException Is thrown if there was any exception during the download process.
      */
     public void downloadToFile(final URL url) throws QuestRuntimeException {
-        checkAndCreateFolder(tempFile.getParentFile());
-        checkAndCreateFolder(finalFile.getParentFile());
-        tempFile.deleteOnExit();
-
-        checkAndCreateFile();
+        checkAndCreateFolder(file.getParentFile());
         try {
-            downloadToFileFromURL(url, tempFile);
-            Files.move(tempFile.toPath(), finalFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        } catch (final IOException e) {
-            final String prefix = "The download was interrupted! ";
-            final String suffix = " The original exception was: " + e.getMessage();
-            if (tempFile.exists() && !tempFile.delete()) {
-                throw new QuestRuntimeException(prefix + "There is a broken file at '" + getRelativePath(tempFile)
-                        + "'. Delete this file otherwise a new download is not possible." + suffix, e);
+            final boolean runningDownload = currentlyDownloading.compareAndSet(false, true);
+            if (!runningDownload) {
+                throw new QuestRuntimeException("The updater is already downloading the update! Please wait until it is finished!");
             }
-            throw new QuestRuntimeException(prefix + "The updater could not download the file!"
-                    + " You can try if again, if it still does not work use a manual download." + suffix, e);
+            downloadSource.get(url, file);
+        } catch (final IOException e) {
+            throw new QuestRuntimeException("The download was interrupted! The updater could not download the file!"
+                    + " You can try it again, if it still does not work use a manual download."
+                    + " The original exception was: " + e.getMessage(), e);
+        } finally {
+            currentlyDownloading.set(false);
         }
     }
 
@@ -77,33 +72,12 @@ public class UpdateDownloader {
      * @return true if a successful download was already done
      */
     public boolean alreadyDownloaded() {
-        return finalFile.exists();
-    }
-
-    private void checkAndCreateFile() throws QuestRuntimeException {
-        try {
-            if (!tempFile.createNewFile()) {
-                throw new QuestRuntimeException("The file '" + getRelativePath(tempFile) + "' already exists!"
-                        + " Please wait for the active download to finish."
-                        + " If there is no active download delete the file manually.");
-            }
-        } catch (final IOException e) {
-            throw new QuestRuntimeException("The updater could not create the file '" + getRelativePath(tempFile)
-                    + "'! Reason: " + e.getMessage(), e);
-        }
+        return file.exists();
     }
 
     private void checkAndCreateFolder(final File file) throws QuestRuntimeException {
         if (!file.exists() && !file.mkdirs()) {
-            throw new QuestRuntimeException("The updater could not create the folder '" + getRelativePath(file) + "'!");
+            throw new QuestRuntimeException("The updater could not create the folder '" + file.getAbsolutePath() + "'!");
         }
-    }
-
-    private void downloadToFileFromURL(final URL url, final File file) throws IOException {
-        FileUtils.copyURLToFile(url, file, 5000, 5000);
-    }
-
-    private String getRelativePath(final File file) {
-        return relativeRoot.relativize(file.toURI()).getPath();
     }
 }

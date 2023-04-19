@@ -11,7 +11,6 @@ import org.betonquest.betonquest.modules.versioning.VersionComparator;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
-
 @SuppressWarnings("PMD.CommentRequired")
 public class ShopkeepersIntegrator implements Integrator {
 

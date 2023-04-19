@@ -30,55 +30,68 @@ public class Updater {
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+
     /**
      * The minimum delay when checking for updates, this prevents too many api requests when reloading the plugin often.
      */
     private static final TemporalAmount CHECK_DELAY = Duration.ofMinutes(10);
+
     /**
      * The minimum delay when we send a player a notification about a new update.
      */
     private static final TemporalAmount NOTIFICATION_DELAY = Duration.ofHours(20);
+
     /**
      * The indicator for dev versions.
      */
     private static final String DEV_INDICATOR = "DEV";
+
     /**
      * The plugins {@link ConfigurationFile} for the debugging settings.
      */
     private final UpdaterConfig config;
+
     /**
      * The {@link UpdateSourceHandler} to get all available versions
      */
     private final UpdateSourceHandler updateSourceHandler;
+
     /**
      * The {@link UpdateDownloader} to download new versions
      */
     private final UpdateDownloader updateDownloader;
+
     /**
      * The {@link org.bukkit.plugin.Plugin} instance.
      */
     private final BetonQuest plugin;
+
     /**
      * The {@link BukkitScheduler} instance.
      */
     private final BukkitScheduler scheduler;
+
     /**
      * The {@link InstantSource} instance.
      */
     private final InstantSource instantSource;
+
     /**
      * The last timestamp, when a player was notified.
      */
     private final Map<UUID, Instant> lastNotification;
+
     /**
      * The latest version, the key is a {@link Version} and the value is the URL for the download.
      * If the URL is empty, the version is the current installed one or the already downloaded one.
      */
     private Pair<Version, String> latest;
+
     /**
      * The last timestamp, when an update was searched.
      */
     private Instant lastCheck;
+
     /**
      * The update notification.
      */
@@ -158,7 +171,6 @@ public class Updater {
         lastCheck = currentTime;
         return true;
     }
-
 
     /**
      * Return if a new version is available.
@@ -253,6 +265,4 @@ public class Updater {
             sender.sendMessage(plugin.getPluginTag() + message);
         }
     }
-
-
 }

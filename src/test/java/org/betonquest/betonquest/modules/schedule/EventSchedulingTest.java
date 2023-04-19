@@ -77,7 +77,6 @@ class EventSchedulingTest {
         return pack;
     }
 
-
     @Test
     void testStartAll() {
         final Scheduler<?> schedulerA = registerMockedType("typeA");
@@ -148,7 +147,6 @@ class EventSchedulingTest {
         verify(simpleType).createAndScheduleNewInstance(argThat(id -> "testSimple".equals(id.getBaseID())), any());
         verify(cronType).createAndScheduleNewInstance(argThat(id -> "testRealtime".equals(id.getBaseID())), any());
     }
-
 
     @Test
     void testLoadUncheckedException() throws KeyConflictException, InvalidSubConfigurationException, InstructionParseException,

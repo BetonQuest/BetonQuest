@@ -44,6 +44,7 @@ public enum ExperienceModification {
      * The name of the ExperienceModification in the user-facing instruction.
      */
     private final String instructionName;
+
     /**
      * Instance of the calculator to calculate the experience.
      */

@@ -19,27 +19,31 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @ExtendWith(BetonQuestLoggerService.class)
 class PlayerPackageReceiverSelectorTest {
-
     /**
      * Message for test log records.
      */
     public static final String MESSAGE = "message";
+
     /**
      * Filter for a package.
      */
     private final static String OUTER_PACKAGE = "example";
+
     /**
      * Filter for a sub package of {@link #OUTER_PACKAGE}.
      */
     private final static String MIDDLE_PACKAGE = OUTER_PACKAGE + "-package";
+
     /**
      * Filter for a sub package of {@link #MIDDLE_PACKAGE}.
      */
     private final static String INNER_PACKAGE = MIDDLE_PACKAGE + "-sub";
+
     /**
      * Plugin for test log records.
      */
     private static final String PLUGIN = "TestPlugin";
+
     /**
      * Uuids to be selected on match.
      */

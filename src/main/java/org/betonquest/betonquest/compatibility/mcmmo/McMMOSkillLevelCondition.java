@@ -17,8 +17,8 @@ import java.util.Locale;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class McMMOSkillLevelCondition extends Condition {
-
     private final String skillType;
+
     private final VariableNumber level;
 
     public McMMOSkillLevelCondition(final Instruction instruction) throws InstructionParseException {

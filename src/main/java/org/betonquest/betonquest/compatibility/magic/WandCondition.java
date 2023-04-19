@@ -23,11 +23,14 @@ import java.util.UUID;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class WandCondition extends Condition {
-
     private final MagicAPI api;
+
     private final CheckType type;
+
     private final Map<String, VariableNumber> spells = new HashMap<>();
+
     private final String name;
+
     private final VariableNumber amount;
 
     @SuppressWarnings("PMD.CyclomaticComplexity")

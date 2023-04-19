@@ -139,8 +139,7 @@ public enum UpdateType {
     RENAME_ALL_OBJECTIVES(prefix -> "UPDATE " + prefix + "objectives SET objective = ? WHERE objective = ?;"),
     RENAME_ALL_POINTS(prefix -> "UPDATE " + prefix + "points SET category = ? WHERE category = ?;"),
     RENAME_ALL_GLOBAL_POINTS(prefix -> "UPDATE " + prefix + "global_points SET category = ? WHERE category = ?;"),
-    RENAME_ALL_ENTRIES(prefix -> "UPDATE " + prefix + "journal SET pointer = ? WHERE pointer = ?;"),
-    ;
+    RENAME_ALL_ENTRIES(prefix -> "UPDATE " + prefix + "journal SET pointer = ? WHERE pointer = ?;");
 
     /**
      * Function to create the SQL code from a prefix.

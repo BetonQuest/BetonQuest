@@ -20,13 +20,18 @@ import java.util.Random;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class FolderEvent extends QuestEvent {
-
     private final Random randomGenerator = new Random();
+
     private final VariableNumber delay;
+
     private final VariableNumber period;
+
     private final VariableNumber random;
+
     private final EventID[] events;
+
     private final boolean ticks;
+
     private final boolean minutes;
 
     public FolderEvent(final Instruction instruction) throws InstructionParseException {

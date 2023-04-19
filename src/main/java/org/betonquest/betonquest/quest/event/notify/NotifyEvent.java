@@ -14,11 +14,11 @@ import java.util.Map;
  * {@link Event} the implementation of the notify events.
  */
 public class NotifyEvent implements Event {
-
     /**
      * The {@link NotifyIO} to use.
      */
     private final NotifyIO notifyIO;
+
     /**
      * The translations to use.
      */

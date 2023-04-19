@@ -18,8 +18,11 @@ public abstract class ID {
     public static final List<String> PATHS = List.of("events", "conditions", "objectives", "variables");
 
     protected String identifier;
+
     protected QuestPackage pack;
+
     protected Instruction instruction;
+
     protected String rawInstruction;
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity",
@@ -60,8 +63,8 @@ public abstract class ID {
                 this.pack = Config.getPackages().get(absolute);
                 // throw error earlier so it can have more information than default one at the bottom
                 if (this.pack == null) {
-                    throw new ObjectNotFoundException("Relative path in ID '" + identifier + "' resolved to '" + absolute +
-                            "', but this package does not exist!");
+                    throw new ObjectNotFoundException("Relative path in ID '" + identifier + "' resolved to '"
+                            + absolute + "', but this package does not exist!");
                 }
                 // We want to go down
             } else if (pack != null && packName.startsWith("-")) {
@@ -71,8 +74,8 @@ public abstract class ID {
                 this.pack = Config.getPackages().get(fullPath);
                 // throw error earlier so it can have more information than default one at the bottom
                 if (this.pack == null) {
-                    throw new ObjectNotFoundException("Relative path in ID '" + identifier + "' resolved to '" + fullPath +
-                            "', but this package does not exist!");
+                    throw new ObjectNotFoundException("Relative path in ID '" + identifier + "' resolved to '"
+                            + fullPath + "', but this package does not exist!");
                 }
             } else {
                 // if no relative path is available, check if packName is a package or if it is an ID
@@ -164,9 +167,9 @@ public abstract class ID {
 
     @Override
     public boolean equals(final Object other) {
-        if (other instanceof ID identifier) {
-            return identifier.identifier.equals(this.identifier) &&
-                    identifier.pack.getQuestPath().equals(this.pack.getQuestPath());
+        if (other instanceof final ID identifier) {
+            return identifier.identifier.equals(this.identifier)
+                    && identifier.pack.getQuestPath().equals(this.pack.getQuestPath());
         }
         return false;
     }

@@ -17,9 +17,10 @@ import java.util.Objects;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class PartialDateCondition extends Condition {
-
     private final List<TimeInterval> dayOfMonth;
+
     private final List<TimeInterval> month;
+
     private final List<TimeInterval> year;
 
     public PartialDateCondition(final Instruction instruction) throws InstructionParseException {
@@ -84,7 +85,6 @@ public class PartialDateCondition extends Condition {
             this.maxValue = maxValue;
         }
 
-
         public boolean isValid(final int max) {
             return max > 0 && (maxValue == -1 || max <= maxValue);
         }
@@ -96,8 +96,8 @@ public class PartialDateCondition extends Condition {
     }
 
     public static class TimeInterval {
-
         private final int start;
+
         private final int end;
 
         public TimeInterval(final int start, final int end, final PartialDate type) throws InstructionParseException {
@@ -166,8 +166,7 @@ public class PartialDateCondition extends Condition {
                 return false;
             }
             final TimeInterval interval = (TimeInterval) other;
-            return start == interval.start &&
-                    end == interval.end;
+            return start == interval.start && end == interval.end;
         }
 
         @Override

@@ -31,10 +31,8 @@ public class TameObjective extends CountingObjective implements Listener {
             throw new InstructionParseException("Entity cannot be tamed: " + type);
         }
 
-        targetAmount = instruction.getInt();
-        if (targetAmount <= 0) {
-            throw new InstructionParseException("Amount cannot be less than 1");
-        }
+        targetAmount = instruction.getVarNum();
+        preCheckAmountNotLessThanOne(targetAmount);
     }
 
     @EventHandler(ignoreCancelled = true)

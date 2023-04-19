@@ -18,7 +18,9 @@ public class AureliumSkillsExperienceEvent extends QuestEvent {
     private final AureliumSkills aureliumSkills = AureliumAPI.getPlugin();
 
     private final VariableNumber amountVar;
+
     private final boolean isLevel;
+
     private final Skill skill;
 
     public AureliumSkillsExperienceEvent(final Instruction instruction) throws InstructionParseException {

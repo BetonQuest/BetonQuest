@@ -11,7 +11,9 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 @SuppressWarnings("PMD.CommentRequired")
 public class MMOCoreProfessionLevelCondition extends Condition {
     private final String professionName;
+
     private final VariableNumber targetLevelVar;
+
     private final boolean mustBeEqual;
 
     public MMOCoreProfessionLevelCondition(final Instruction instruction) throws InstructionParseException {

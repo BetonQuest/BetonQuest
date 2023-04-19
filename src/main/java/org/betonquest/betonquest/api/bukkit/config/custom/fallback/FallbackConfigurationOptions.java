@@ -11,11 +11,11 @@ import org.jetbrains.annotations.Nullable;
  * {@link HandleModificationConfiguration} instance.
  */
 public class FallbackConfigurationOptions extends ConfigurationOptions {
-
     /**
      * The original {@link ConfigurationOptions} hidden behind this decorator.
      */
     private final ConfigurationOptions original;
+
     /**
      * The fallback {@link ConfigurationOptions} hidden behind this decorator.
      */

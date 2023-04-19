@@ -15,10 +15,12 @@ public class SetBlockEvent implements Event {
      * The block selector
      */
     private final BlockSelector selector;
+
     /**
      * The location
      */
     private final CompoundLocation compoundLocation;
+
     /**
      * Whether to apply physics
      */

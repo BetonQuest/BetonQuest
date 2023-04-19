@@ -37,6 +37,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
      * All keys and a list of files that contains them.
      */
     private final Map<String, List<ConfigurationSection>> keyIndex;
+
     /**
      * The configs, that where modified, and need a save.
      */

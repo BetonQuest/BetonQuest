@@ -27,10 +27,15 @@ public class MMOItemsGiveEvent extends QuestEvent {
     private final MMOItems mmoPlugin = MMOItems.plugin;
 
     private final Type itemType;
+
     private final String itemID;
+
     private final boolean scale;
+
     private final boolean notify;
+
     private final boolean singleStack;
+
     private VariableNumber amountVar = new VariableNumber(1);
 
     private ItemStack mmoItem;

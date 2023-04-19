@@ -38,15 +38,25 @@ public class QuestCanceler {
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final String[] tags;
+
     private final String[] points;
+
     private final String[] journal;
+
     private final ConditionID[] conditions;
+
     private final EventID[] events;
+
     private final ObjectiveID[] objectives;
+
     private final Map<String, String> name = new HashMap<>();
+
     private final QuestPackage pack;
+
     private final String cancelerID;
+
     private final String item;
+
     private final Location loc;
 
     /**

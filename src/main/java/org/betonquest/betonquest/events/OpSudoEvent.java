@@ -51,8 +51,8 @@ public class OpSudoEvent extends QuestEvent {
 
     @SuppressWarnings("PMD.AvoidFieldNameMatchingTypeName")
     private static class Command {
-
         private final String command;
+
         private final List<String> variables;
 
         public Command(final String command) {

@@ -18,9 +18,10 @@ import org.bukkit.entity.Player;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class LookingAtCondition extends Condition {
-
     private final CompoundLocation loc;
+
     private final BlockSelector selector;
+
     private final boolean exactMatch;
 
     public LookingAtCondition(final Instruction instruction) throws InstructionParseException {

@@ -17,9 +17,9 @@ import java.util.Locale;
  * Provides information about a citizen npc.
  * <p>
  * Format:
- * {@code %citizen.<id>.<type>.<mode>.<precision>%}
+ * {@code %citizen.<id>.<argument>.<mode>.<precision>%}
  * <p>
- * Types:
+ * Arguments:
  * * name - Return citizen name
  * * full_name - Full Citizen name
  * * location - Return citizen location, defaults to ulfLong
@@ -37,9 +37,9 @@ import java.util.Locale;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class CitizensVariable extends Variable {
-
     private final int npcId;
-    private final TYPE key;
+
+    private final ARGUMENT key;
     private final MODE mode;
     private final int decimalPlaces;
 
@@ -53,7 +53,7 @@ public class CitizensVariable extends Variable {
                 throw new InstructionParseException("Not enough arguments");
             } else {
                 npcId = Integer.parseInt(splitInstruction[1]);
-                key = TYPE.valueOf(splitInstruction[2].toUpperCase(Locale.ROOT));
+                key = ARGUMENT.valueOf(splitInstruction[2].toUpperCase(Locale.ROOT));
             }
 
             if (splitInstruction.length > 3) {
@@ -73,6 +73,7 @@ public class CitizensVariable extends Variable {
     }
 
     @Override
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     @SuppressWarnings("PMD.CyclomaticComplexity")
     public String getValue(final Profile profile) {
         final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
@@ -143,7 +144,7 @@ public class CitizensVariable extends Variable {
         }
     }
 
-    private enum TYPE {
+    private enum ARGUMENT {
         NAME,
         FULL_NAME,
         LOCATION

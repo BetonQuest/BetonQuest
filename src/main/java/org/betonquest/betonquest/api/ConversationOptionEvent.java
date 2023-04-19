@@ -7,11 +7,12 @@ import org.bukkit.event.HandlerList;
 
 @SuppressWarnings({"PMD.DataClass", "PMD.CommentRequired"})
 public class ConversationOptionEvent extends ProfileEvent {
-
     private static final HandlerList HANDLERS = new HandlerList();
 
     private final Conversation conv;
+
     private final String selectedOption;
+
     private final String npcResponse;
 
     public ConversationOptionEvent(final Profile profile, final Conversation conv, final String selectedOption, final String npcResponse) {

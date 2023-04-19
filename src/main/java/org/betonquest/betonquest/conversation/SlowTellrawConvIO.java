@@ -17,8 +17,8 @@ import java.util.List;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class SlowTellrawConvIO extends TellrawConvIO {
-
     private final String npcTextColor;
+
     private List<String> endLines;
 
     public SlowTellrawConvIO(final Conversation conv, final OnlineProfile onlineProfile) {

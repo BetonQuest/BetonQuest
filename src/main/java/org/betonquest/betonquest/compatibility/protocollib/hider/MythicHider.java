@@ -26,6 +26,7 @@ public final class MythicHider extends BukkitRunnable implements Listener {
     private static MythicHider instance;
 
     private final EntityHider hider;
+
     private final Map<Entity, Set<UUID>> mythicmobs;
 
     private MythicHider() {

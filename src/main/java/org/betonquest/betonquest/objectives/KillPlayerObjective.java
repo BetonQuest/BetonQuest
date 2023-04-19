@@ -16,16 +16,14 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class KillPlayerObjective extends CountingObjective implements Listener {
-
     private final String name;
+
     private final ConditionID[] required;
 
     public KillPlayerObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "players_to_kill");
-        targetAmount = instruction.getInt();
-        if (targetAmount <= 0) {
-            throw new InstructionParseException("Amount cannot be less than 0");
-        }
+        targetAmount = instruction.getVarNum();
+        preCheckAmountNotLessThanOne(targetAmount);
         name = instruction.getOptional("name");
         required = instruction.getList(instruction.getOptional("required"), instruction::getCondition)
                 .toArray(new ConditionID[0]);

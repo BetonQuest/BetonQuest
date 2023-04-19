@@ -9,10 +9,10 @@ import org.bukkit.event.HandlerList;
  */
 @SuppressWarnings({"PMD.DataClass", "PMD.CommentRequired"})
 public class QuestDataUpdateEvent extends ProfileEvent {
-
     private static final HandlerList HANDLERS = new HandlerList();
 
     private final String objID;
+
     private final String data;
 
     public QuestDataUpdateEvent(final Profile profile, final String objID, final String data) {

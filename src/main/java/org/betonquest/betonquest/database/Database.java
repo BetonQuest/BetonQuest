@@ -21,7 +21,9 @@ public abstract class Database {
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     protected final Plugin plugin;
+
     protected final String prefix;
+
     protected Connection con;
 
     protected Database(final BetonQuest plugin) {
@@ -56,7 +58,6 @@ public abstract class Database {
             final SortedMap<MigrationKey, DatabaseUpdate> migrations = getMigrations();
             final Set<MigrationKey> executedMigrations = queryExecutedMigrations(getConnection());
             executedMigrations.forEach(migrations::remove);
-
 
             while (!migrations.isEmpty()) {
                 final MigrationKey key = migrations.firstKey();

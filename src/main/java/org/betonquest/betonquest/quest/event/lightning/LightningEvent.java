@@ -15,6 +15,7 @@ public class LightningEvent implements Event {
      * The location to strike the lightning at.
      */
     private final CompoundLocation location;
+
     /**
      * Whether the lightning should do damage.
      */

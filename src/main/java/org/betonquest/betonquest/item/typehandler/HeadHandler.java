@@ -36,26 +36,32 @@ public abstract class HeadHandler {
      * Variable placeholder literal for player name.
      */
     private static final String VARIABLE_PLAYER_NAME = "%player%";
+
     /**
      * Existence of the player UUID.
      */
     private final QuestItem.Existence playerIdE = QuestItem.Existence.WHATEVER;
+
     /**
      * Existence of the encoded texture.
      */
     private final QuestItem.Existence textureE = QuestItem.Existence.WHATEVER;
+
     /**
      * An optional player name owner of the skull.
      */
     private String owner;
+
     /**
      * An optional player ID owner of the skull, used in conjunction with the encoded texture.
      */
     private UUID playerId;
+
     /**
      * An optional encoded texture URL of the skull, used in conjunction with the player UUID.
      */
     private String texture;
+
     /**
      * Existence of the owner.
      */

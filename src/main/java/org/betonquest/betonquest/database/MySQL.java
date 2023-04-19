@@ -24,10 +24,15 @@ public class MySQL extends Database {
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+
     private final String user;
+
     private final String database;
+
     private final String password;
+
     private final String port;
+
     private final String hostname;
 
     /**
@@ -75,8 +80,9 @@ public class MySQL extends Database {
     protected Set<MigrationKey> queryExecutedMigrations(final Connection connection) throws SQLException {
         final Set<MigrationKey> executedMigrations = new HashSet<>();
         try (Statement statement = connection.createStatement()) {
-            statement.executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "migration (namespace VARCHAR(63) NOT NULL, migration_id INT, " +
-                    "time TIMESTAMP DEFAULT NOW(), PRIMARY KEY (namespace, migration_id))");
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix
+                    + "migration (namespace VARCHAR(63) NOT NULL, migration_id INT, "
+                    + "time TIMESTAMP DEFAULT NOW(), PRIMARY KEY (namespace, migration_id))");
             try (ResultSet result = statement.executeQuery("SELECT namespace, migration_id FROM " + prefix + "migration")) {
                 while (result.next()) {
                     executedMigrations.add(new MigrationKey(result.getString("namespace"), result.getInt("migration_id")));
@@ -137,77 +143,59 @@ public class MySQL extends Database {
     @SuppressFBWarnings("SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE")
     private void migration2(final Connection connection) throws SQLException {
         try (Statement statement = connection.createStatement()) {
-            statement.executeUpdate("CREATE TABLE " + prefix + "profile " +
-                    "(profileID CHAR(36) PRIMARY KEY NOT NULL)");
-            statement.executeUpdate("INSERT INTO " + prefix + "profile " +
-                    "(profileID) SELECT playerID FROM " + prefix + "player");
-            statement.executeUpdate("ALTER TABLE " + prefix + "backpack " +
-                    "CHANGE COLUMN playerID profileID CHAR(36) NOT NULL, " +
-                    "ADD FOREIGN KEY (profileID) REFERENCES " + prefix + "profile (profileID) ON DELETE CASCADE");
-            statement.executeUpdate("ALTER TABLE " + prefix + "journal " +
-                    "CHANGE COLUMN playerID profileID CHAR(36) NOT NULL, " +
-                    "MODIFY COLUMN pointer VARCHAR(255) NOT NULL, " +
-                    "ADD FOREIGN KEY (profileID) REFERENCES " + prefix + "profile (profileID) ON DELETE CASCADE");
-            statement.executeUpdate("ALTER TABLE " + prefix + "objectives " +
-                    "CHANGE COLUMN playerID profileID CHAR(36) NOT NULL, " +
-                    "MODIFY COLUMN objective VARCHAR(510) NOT NULL, " +
-                    "MODIFY COLUMN instructions VARCHAR(2046) NOT NULL, " +
-                    "DROP PRIMARY KEY," +
-                    "DROP COLUMN id");
-            statement.executeUpdate("ALTER IGNORE TABLE " + prefix + "objectives " +
-                    "ADD PRIMARY KEY (profileID, objective)");
-            statement.executeUpdate("ALTER TABLE " + prefix + "objectives " +
-                    "ADD FOREIGN KEY (profileID) REFERENCES " + prefix + "profile (profileID) ON DELETE CASCADE");
-            statement.executeUpdate("ALTER TABLE " + prefix + "points " +
-                    "CHANGE COLUMN playerID profileID CHAR(36) NOT NULL, " +
-                    "MODIFY COLUMN category VARCHAR(255) NOT NULL, " +
-                    "DROP PRIMARY KEY," +
-                    "DROP COLUMN id");
-            statement.executeUpdate("ALTER IGNORE TABLE " + prefix + "points " +
-                    "ADD PRIMARY KEY (profileID, category)");
-            statement.executeUpdate("ALTER TABLE " + prefix + "points " +
-                    "ADD FOREIGN KEY (profileID) REFERENCES " + prefix + "profile (profileID) ON DELETE CASCADE");
-            statement.executeUpdate("ALTER TABLE " + prefix + "tags " +
-                    "CHANGE COLUMN playerID profileID CHAR(36) NOT NULL, " +
-                    "MODIFY COLUMN tag VARCHAR(510) NOT NULL, " +
-                    "DROP PRIMARY KEY," +
-                    "DROP COLUMN id");
-            statement.executeUpdate("ALTER IGNORE TABLE " + prefix + "tags " +
-                    "ADD PRIMARY KEY (profileID, tag)");
-            statement.executeUpdate("ALTER TABLE " + prefix + "tags " +
-                    "ADD FOREIGN KEY (profileID) REFERENCES " + prefix + "profile (profileID) ON DELETE CASCADE");
-            statement.executeUpdate("ALTER TABLE " + prefix + "player " +
-                    "MODIFY COLUMN playerID CHAR(36) NOT NULL, " +
-                    "MODIFY COLUMN conversation VARCHAR(510), " +
-                    "ADD COLUMN active_profile CHAR(36) NOT NULL DEFAULT playerID AFTER playerID, " +
-                    "ADD FOREIGN KEY (active_profile) REFERENCES " + prefix + "profile (profileID) ON DELETE RESTRICT, " +
-                    "DROP PRIMARY KEY, " +
-                    "DROP COLUMN id");
-            statement.executeUpdate("ALTER IGNORE TABLE " + prefix + "player " +
-                    "ADD PRIMARY KEY (playerID)");
-            statement.executeUpdate("ALTER TABLE " + prefix + "player " +
-                    "ALTER COLUMN active_profile DROP DEFAULT");
-            statement.executeUpdate("CREATE TABLE " + prefix + "player_profile " +
-                    "(playerID CHAR(36) NOT NULL, " +
-                    "profileID CHAR(36) NOT NULL, " +
-                    "name VARCHAR(510), " +
-                    "PRIMARY KEY (profileID, playerID), " +
-                    "FOREIGN KEY (playerID) REFERENCES " + prefix + "player (playerID) ON DELETE CASCADE, " +
-                    "FOREIGN KEY (profileID) REFERENCES " + prefix + "profile (profileID) ON DELETE CASCADE, " +
-                    "UNIQUE KEY (playerID, name))");
-            statement.executeUpdate("INSERT INTO " + prefix + "player_profile " +
-                    "(playerID, profileID, name) SELECT playerID, active_profile, NULL " +
-                    "FROM " + prefix + "player");
-            statement.executeUpdate("ALTER TABLE " + prefix + "global_points " +
-                    "DROP PRIMARY KEY," +
-                    "DROP COLUMN id, " +
-                    "ADD PRIMARY KEY (category)");
-            statement.executeUpdate("ALTER TABLE " + prefix + "global_tags " +
-                    "DROP PRIMARY KEY," +
-                    "DROP COLUMN id, " +
-                    "MODIFY COLUMN tag VARCHAR(510) NOT NULL");
-            statement.executeUpdate("ALTER TABLE " + prefix + "global_tags " +
-                    "ADD PRIMARY KEY (tag)");
+            statement.executeUpdate("CREATE TABLE " + prefix + "profile "
+                    + "(profileID CHAR(36) PRIMARY KEY NOT NULL)");
+            statement.executeUpdate("INSERT INTO " + prefix + "profile " + "(profileID) SELECT playerID FROM "
+                    + prefix + "player");
+            statement.executeUpdate("ALTER TABLE " + prefix + "backpack "
+                    + "CHANGE COLUMN playerID profileID CHAR(36) NOT NULL, " + "ADD FOREIGN KEY (profileID) REFERENCES "
+                    + prefix + "profile (profileID) ON DELETE CASCADE");
+            statement.executeUpdate("ALTER TABLE " + prefix + "journal "
+                    + "CHANGE COLUMN playerID profileID CHAR(36) NOT NULL, "
+                    + "MODIFY COLUMN pointer VARCHAR(255) NOT NULL, " + "ADD FOREIGN KEY (profileID) REFERENCES "
+                    + prefix + "profile (profileID) ON DELETE CASCADE");
+            statement.executeUpdate("ALTER TABLE " + prefix + "objectives "
+                    + "CHANGE COLUMN playerID profileID CHAR(36) NOT NULL, "
+                    + "MODIFY COLUMN objective VARCHAR(510) NOT NULL, "
+                    + "MODIFY COLUMN instructions VARCHAR(2046) NOT NULL, " + "DROP PRIMARY KEY," + "DROP COLUMN id");
+            statement.executeUpdate("ALTER IGNORE TABLE " + prefix + "objectives "
+                    + "ADD PRIMARY KEY (profileID, objective)");
+            statement.executeUpdate("ALTER TABLE " + prefix + "objectives "
+                    + "ADD FOREIGN KEY (profileID) REFERENCES " + prefix + "profile (profileID) ON DELETE CASCADE");
+            statement.executeUpdate("ALTER TABLE " + prefix + "points "
+                    + "CHANGE COLUMN playerID profileID CHAR(36) NOT NULL, "
+                    + "MODIFY COLUMN category VARCHAR(255) NOT NULL, " + "DROP PRIMARY KEY," + "DROP COLUMN id");
+            statement.executeUpdate("ALTER IGNORE TABLE " + prefix + "points "
+                    + "ADD PRIMARY KEY (profileID, category)");
+            statement.executeUpdate("ALTER TABLE " + prefix + "points " + "ADD FOREIGN KEY (profileID) REFERENCES "
+                    + prefix + "profile (profileID) ON DELETE CASCADE");
+            statement.executeUpdate("ALTER TABLE " + prefix + "tags "
+                    + "CHANGE COLUMN playerID profileID CHAR(36) NOT NULL, "
+                    + "MODIFY COLUMN tag VARCHAR(510) NOT NULL, " + "DROP PRIMARY KEY," + "DROP COLUMN id");
+            statement.executeUpdate("ALTER IGNORE TABLE " + prefix + "tags " + "ADD PRIMARY KEY (profileID, tag)");
+            statement.executeUpdate("ALTER TABLE " + prefix + "tags " + "ADD FOREIGN KEY (profileID) REFERENCES "
+                    + prefix + "profile (profileID) ON DELETE CASCADE");
+            statement.executeUpdate("ALTER TABLE " + prefix + "player "
+                    + "MODIFY COLUMN playerID CHAR(36) NOT NULL, " + "MODIFY COLUMN conversation VARCHAR(510), "
+                    + "ADD COLUMN active_profile CHAR(36) NOT NULL DEFAULT playerID AFTER playerID, "
+                    + "ADD FOREIGN KEY (active_profile) REFERENCES " + prefix
+                    + "profile (profileID) ON DELETE RESTRICT, " + "DROP PRIMARY KEY, " + "DROP COLUMN id");
+            statement.executeUpdate("ALTER IGNORE TABLE " + prefix + "player " + "ADD PRIMARY KEY (playerID)");
+            statement.executeUpdate("ALTER TABLE " + prefix + "player "
+                    + "ALTER COLUMN active_profile DROP DEFAULT");
+            statement.executeUpdate("CREATE TABLE " + prefix + "player_profile " + "(playerID CHAR(36) NOT NULL, "
+                    + "profileID CHAR(36) NOT NULL, " + "name VARCHAR(510), " + "PRIMARY KEY (profileID, playerID), "
+                    + "FOREIGN KEY (playerID) REFERENCES " + prefix + "player (playerID) ON DELETE CASCADE, "
+                    + "FOREIGN KEY (profileID) REFERENCES " + prefix + "profile (profileID) ON DELETE CASCADE, "
+                    + "UNIQUE KEY (playerID, name))");
+            statement.executeUpdate("INSERT INTO " + prefix + "player_profile "
+                    + "(playerID, profileID, name) SELECT playerID, active_profile, NULL " + "FROM " + prefix
+                    + "player");
+            statement.executeUpdate("ALTER TABLE " + prefix + "global_points " + "DROP PRIMARY KEY,"
+                    + "DROP COLUMN id, " + "ADD PRIMARY KEY (category)");
+            statement.executeUpdate("ALTER TABLE " + prefix + "global_tags " + "DROP PRIMARY KEY,"
+                    + "DROP COLUMN id, " + "MODIFY COLUMN tag VARCHAR(510) NOT NULL");
+            statement.executeUpdate("ALTER TABLE " + prefix + "global_tags " + "ADD PRIMARY KEY (tag)");
         }
     }
 }

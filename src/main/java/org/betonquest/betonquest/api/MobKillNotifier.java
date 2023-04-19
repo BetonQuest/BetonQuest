@@ -22,6 +22,7 @@ public class MobKillNotifier {
     private static final HandlerList HANDLERS = new HandlerList();
 
     private static MobKillNotifier instance;
+
     private final List<Entity> entities = new ArrayList<>();
 
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")

@@ -10,15 +10,16 @@ import org.bukkit.World;
  * The time event, changing the time on the server.
  */
 public class TimeEvent implements Event {
-
     /**
      * The type of time that will be applied.
      */
     private final Time time;
+
     /**
      * The selector to get the world for that the time should be set.
      */
     private final WorldSelector worldSelector;
+
     /**
      * The raw time value that will be applied.
      */

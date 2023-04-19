@@ -22,6 +22,7 @@ public class VariableCondition extends Condition {
      * The variable to compare with the regex.
      */
     private final VariableString variable;
+
     /**
      * The regex the variable must match.
      */

@@ -20,13 +20,18 @@ import org.bukkit.event.player.PlayerQuitEvent;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class ConversationResumer implements Listener {
-
     private final String original;
+
     private final Player player;
+
     private final OnlineProfile onlineProfile;
+
     private final String conversationID;
+
     private final String option;
+
     private final Location loc;
+
     private final double distance;
 
     public ConversationResumer(final OnlineProfile onlineProfile, final String convID) {

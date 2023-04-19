@@ -17,42 +17,52 @@ public class UpdaterConfig {
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+
     /**
      * The string prefix of the path to the settings in the given {@link ConfigurationSection}
      */
     private static final String UPDATE_SECTION = "update.";
+
     /**
      * The separator between the {@link UpdateStrategy} and a given dev indicator
      */
     private final static String DEV_SEPARATOR = "_";
+
     /**
      * The configuration section that contains the `update` section for all settings
      */
     private final ConfigurationSection config;
+
     /**
      * The indicator for a dev version
      */
     private final String devIndicator;
+
     /**
      * The current installed version
      */
     private final Version current;
+
     /**
      * True if the updater is enabled
      */
     private boolean enabled;
+
     /**
      * True if ingame notifications are enabled
      */
     private boolean ingameNotification;
+
     /**
      * True if an automatic updates are enabled
      */
     private boolean automatic;
+
     /**
      * The configured {@link UpdateStrategy}
      */
     private UpdateStrategy strategy = UpdateStrategy.MINOR;
+
     /**
      * True if the update for development versions are enabled
      */

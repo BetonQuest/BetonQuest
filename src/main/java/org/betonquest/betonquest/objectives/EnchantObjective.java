@@ -23,18 +23,18 @@ import java.util.Map;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class EnchantObjective extends CountingObjective implements Listener {
-
     private static final String JUST_ONE_ENCHANT = "one";
+
     private final QuestItem item;
+
     private final List<EnchantmentData> desiredEnchantments;
+
     private boolean requireOne;
 
     public EnchantObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "items_to_enchant");
-        targetAmount = instruction.getInt(instruction.getOptional("amount"), 1);
-        if (targetAmount <= 0) {
-            throw new InstructionParseException("Amount cannot be less than 1.");
-        }
+        targetAmount = instruction.getVarNum(instruction.getOptional("amount", "1"));
+        preCheckAmountNotLessThanOne(targetAmount);
         item = instruction.getQuestItem();
         desiredEnchantments = instruction.getList(EnchantmentData::convert);
         if (desiredEnchantments.isEmpty()) {

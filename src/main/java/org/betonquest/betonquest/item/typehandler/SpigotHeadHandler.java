@@ -26,10 +26,12 @@ public class SpigotHeadHandler extends HeadHandler {
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+
     /**
      * Prefix for JSON structure minecraft uses for defining skin texture URL.
      */
     private static final String TEXTURE_PREFIX = "{\"textures\":{\"SKIN\":{\"url\":\"";
+
     /**
      * Suffix for JSON structure minecraft uses for defining skin texture URL.
      */

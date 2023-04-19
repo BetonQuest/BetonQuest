@@ -23,14 +23,17 @@ class ChatFormatterTest {
      * The message to send.
      */
     public static final String MESSAGE = "Message";
+
     /**
      * The formatted sent message.
      */
     public static final String FORMATTED_MESSAGE = "§f" + MESSAGE + "\"}";
+
     /**
      * The mocked plugin instance.
      */
     private final Plugin plugin;
+
     /**
      * The mocked plugin instance from an extension.
      */

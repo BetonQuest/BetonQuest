@@ -88,6 +88,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final BetonQuest instance = BetonQuest.getInstance();
+
     private final BukkitAudiences bukkitAudiences;
 
     /**
@@ -1587,10 +1588,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final String versionBetonQuestValue = colorValue + BetonQuest.getInstance().getDescription().getVersion();
         final String versionServerValue = colorValue + Bukkit.getServer().getVersion();
 
-        final TextComponent clickToDownload = updater.isUpdateAvailable() ?
-                Component.newline().append(Component.text("    "))
-                        .append(Component.text(Config.getMessage(lang, key + "click_to_download", updater.getUpdateVersion())))
-                        .hoverEvent(Component.text(clickToDownloadHint)).clickEvent(ClickEvent.runCommand(updateCommand))
+        final TextComponent clickToDownload = updater.isUpdateAvailable()
+                ? Component.newline().append(Component.text("    "))
+                .append(Component.text(Config.getMessage(lang, key + "click_to_download", updater.getUpdateVersion())))
+                .hoverEvent(Component.text(clickToDownloadHint)).clickEvent(ClickEvent.runCommand(updateCommand))
                 : Component.empty();
 
         final TreeMap<String, String> hookedTree = new TreeMap<>();

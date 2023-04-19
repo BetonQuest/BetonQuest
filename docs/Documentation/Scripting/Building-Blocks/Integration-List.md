@@ -228,11 +228,11 @@ This means that `enter` is not completed when the player gets the objective and 
 
 ### Variables
 
-#### Citizen Variable: `%citizen.<id>.<type>%`
+#### Citizen Variable: `%citizen.<id>.<argument>%`
 
-This variable resolves information about a Citizen NPC by id. Specifying a type determines the return: the NPC name, or full name.
+This variable resolves information about a Citizen NPC by id. Specifying an argument determines the return: the NPC name, or full name.
 
-Types:
+Arguments:
 * name - Return citizen name
 * full_name - Full Citizen name
 

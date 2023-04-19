@@ -26,18 +26,22 @@ public class FakeBlockEventFactory implements EventFactory {
      * Server to use for syncing to the primary server thread.
      */
     private final Server server;
+
     /**
      * Scheduler to use for syncing to the primary server thread.
      */
     private final BukkitScheduler scheduler;
+
     /**
      * Plugin to use for syncing to the primary server thread.
      */
     private final Plugin plugin;
+
     /**
      * GroupService to search for existing Groups from FakeBlock.
      */
     private final RegisteredServiceProvider<GroupService> groupService;
+
     /**
      * PlayerGroupService to change group states for the player
      */

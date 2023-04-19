@@ -12,7 +12,6 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
@@ -42,22 +41,27 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
      * The names of all mobs that this objective should count.
      */
     private final Set<String> names = new HashSet<>();
+
     /**
      * The minimal level the killed mob must have to count.
      */
     private final VariableNumber minMobLevel;
+
     /**
      * The maximal level the killed mob must have to count.
      */
     private final VariableNumber maxMobLevel;
+
     /**
      * The radius in which any of the specified mobs dying will progress the objective for players.
      */
     private final double deathRadiusAllPlayers;
+
     /**
      * The radius in which any of the specified mobs dying without a killer will progress the objective for players.
      */
     private final double neutralDeathRadiusAllPlayers;
+
     /**
      * The text with which the mob must have been marked to count.
      */
@@ -73,7 +77,8 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
         super(instruction, "mobs_to_kill");
 
         Collections.addAll(names, instruction.getArray());
-        targetAmount = instruction.getInt(instruction.getOptional("amount"), 1);
+        targetAmount = instruction.getVarNum(instruction.getOptional("amount", "1"));
+        preCheckAmountNotLessThanOne(targetAmount);
 
         final double deathRadiusAllPlayersTemp = instruction.getDouble(instruction.getOptional("deathRadiusAllPlayers"), 0);
         deathRadiusAllPlayers = Math.pow(deathRadiusAllPlayersTemp, 2);
@@ -150,17 +155,8 @@ public class MythicMobKillObjective extends CountingObjective implements Listene
     }
 
     private boolean matchesMobLevel(final OnlineProfile onlineProfile, final ActiveMob mob) {
-        try {
-            final double actualMobLevel = mob.getLevel();
-            return minMobLevel.getDouble(onlineProfile) <= actualMobLevel && maxMobLevel.getDouble(onlineProfile) >= actualMobLevel;
-        } catch (final QuestRuntimeException exception) {
-            try {
-                LOG.error(instruction.getPackage(), "Unable to resolve minMobLevel / maxMobLevel variable in " + instruction.getObjective().getFullID());
-            } catch (final InstructionParseException e) {
-                LOG.reportException(instruction.getPackage(), exception);
-            }
-            return false;
-        }
+        final double actualMobLevel = mob.getLevel();
+        return minMobLevel.getDouble(onlineProfile) <= actualMobLevel && maxMobLevel.getDouble(onlineProfile) >= actualMobLevel;
     }
 
     @Override

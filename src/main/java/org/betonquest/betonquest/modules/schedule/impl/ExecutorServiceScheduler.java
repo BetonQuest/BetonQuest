@@ -28,10 +28,12 @@ public abstract class ExecutorServiceScheduler<S extends Schedule> extends Sched
      */
     @VisibleForTesting
     static final int TERMINATION_TIMEOUT_MS = 5;
+
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private static final BetonQuestLogger LOG = BetonQuestLogger.create("Schedules");
+
     /**
      * Supplier used to create the {@link #executor}.
      */

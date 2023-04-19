@@ -13,7 +13,6 @@ import java.util.Optional;
  * Modifies global Points
  */
 public class GlobalPointEvent implements Event {
-
     /**
      * The global data
      */
@@ -23,6 +22,7 @@ public class GlobalPointEvent implements Event {
      * The category name
      */
     private final String category;
+
     /**
      * The count
      */

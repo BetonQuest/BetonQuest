@@ -22,6 +22,7 @@ class SilentConsoleCommandSenderTest extends SilentCommandSenderTest {
      * The console command sender to use.
      */
     private ConsoleCommandSender sender;
+
     /**
      * The silent console command sender to use.
      */

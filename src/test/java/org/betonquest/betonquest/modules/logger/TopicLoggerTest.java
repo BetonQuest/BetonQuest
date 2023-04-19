@@ -16,14 +16,17 @@ class TopicLoggerTest {
      * The logger topic.
      */
     private static final String LOGGER_TOPIC = "Test";
+
     /**
      * The log message.
      */
     private static final String LOG_MESSAGE = "Test Message";
+
     /**
      * The log message with topic.
      */
     private static final String LOG_MESSAGE_WITH_TOPIC = "(" + LOGGER_TOPIC + ") " + LOG_MESSAGE;
+
     /**
      * The exception message.
      */

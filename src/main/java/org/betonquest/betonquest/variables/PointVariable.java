@@ -25,7 +25,9 @@ public class PointVariable extends Variable {
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     protected String category;
+
     protected Type type;
+
     protected int amount;
 
     @SuppressWarnings("PMD")
@@ -51,7 +53,6 @@ public class PointVariable extends Variable {
                 category = instruction.getPackage().getQuestPath() + "." + category;
             }
         }
-
 
         if ("amount".equalsIgnoreCase(instruction.next())) {
             type = Type.AMOUNT;

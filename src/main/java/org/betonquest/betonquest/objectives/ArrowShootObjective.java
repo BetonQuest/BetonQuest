@@ -34,6 +34,7 @@ public class ArrowShootObjective extends Objective implements Listener {
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final CompoundLocation loc;
+
     private final VariableNumber range;
 
     public ArrowShootObjective(final Instruction instruction) throws InstructionParseException {
@@ -67,15 +68,11 @@ public class ArrowShootObjective extends Objective implements Listener {
                 @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
                 public void run() {
                     final Location arrowLocation = arrow.getLocation();
-                    try {
-                        final double pRange = range.getDouble(onlineProfile);
-                        if (arrowLocation.getWorld().equals(location.getWorld())
-                                && arrowLocation.distanceSquared(location) < pRange * pRange
-                                && checkConditions(onlineProfile)) {
-                            completeObjective(onlineProfile);
-                        }
-                    } catch (final QuestRuntimeException e) {
-                        LOG.warn(instruction.getPackage(), "Could not resolve range variable: " + e.getMessage(), e);
+                    final double pRange = range.getDouble(onlineProfile);
+                    if (arrowLocation.getWorld().equals(location.getWorld())
+                            && arrowLocation.distanceSquared(location) < pRange * pRange
+                            && checkConditions(onlineProfile)) {
+                        completeObjective(onlineProfile);
                     }
                 }
             }.runTask(BetonQuest.getInstance());

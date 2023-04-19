@@ -4,7 +4,6 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.compatibility.Integrator;
 
-
 @SuppressWarnings("PMD.CommentRequired")
 public class JobsRebornIntegrator implements Integrator {
     /**

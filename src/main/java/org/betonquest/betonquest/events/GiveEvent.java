@@ -29,7 +29,9 @@ public class GiveEvent extends QuestEvent {
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final Item[] questItems;
+
     private final boolean notify;
+
     private final boolean backpack;
 
     public GiveEvent(final Instruction instruction) throws InstructionParseException {

@@ -18,6 +18,7 @@ public class QuestsEvent extends QuestEvent {
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final String questName;
+
     private final boolean override;
 
     public QuestsEvent(final Instruction instruction) throws InstructionParseException {

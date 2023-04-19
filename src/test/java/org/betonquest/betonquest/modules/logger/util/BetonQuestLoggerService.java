@@ -24,14 +24,17 @@ public class BetonQuestLoggerService implements ParameterResolver, BeforeAllCall
      * The topic of generated {@link BetonQuestLogger} in the {@link ParameterResolver}.
      */
     public final static String LOGGER_TOPIC = "GeneratedTopic";
+
     /**
      * The mocked plugin instance.
      */
     private final Plugin plugin;
+
     /**
      * The instance of the parent logger.
      */
     private final Logger parentLogger;
+
     /**
      * The MockedStatic instance of {@link BetonQuestLogger} class.
      */

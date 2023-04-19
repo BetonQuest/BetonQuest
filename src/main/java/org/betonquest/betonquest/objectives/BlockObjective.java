@@ -4,6 +4,7 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.utils.BlockSelector;
 import org.betonquest.betonquest.utils.PlayerConverter;
@@ -21,17 +22,23 @@ import org.bukkit.event.block.BlockPlaceEvent;
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
 public class BlockObjective extends CountingObjective implements Listener {
-
     private final BlockSelector selector;
+
     private final boolean exactMatch;
+
     private final boolean noSafety;
 
     public BlockObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
         selector = instruction.getBlockSelector();
         exactMatch = instruction.hasArgument("exactMatch");
-        targetAmount = instruction.getInt();
+        targetAmount = instruction.getVarNum();
         noSafety = instruction.hasArgument("noSafety");
+    }
+
+    @Override
+    public String getDefaultDataInstruction(final Profile profile) {
+        return String.valueOf(targetAmount.getInt(profile));
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)

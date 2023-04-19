@@ -13,8 +13,8 @@ import org.bukkit.inventory.ItemStack;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class TakeBrewEvent extends QuestEvent {
-
     private final Integer count;
+
     private final BRecipe brew;
 
     public TakeBrewEvent(final Instruction instruction) throws InstructionParseException {

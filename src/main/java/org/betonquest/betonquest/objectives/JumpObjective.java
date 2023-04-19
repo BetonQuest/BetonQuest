@@ -17,7 +17,8 @@ public class JumpObjective extends CountingObjective implements Listener {
 
     public JumpObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "times_to_jump");
-        targetAmount = instruction.getInt();
+        targetAmount = instruction.getVarNum();
+        preCheckAmountNotLessThanOne(targetAmount);
     }
 
     @EventHandler(ignoreCancelled = true)

@@ -29,7 +29,8 @@ public class SmeltingObjective extends CountingObjective implements Listener {
     public SmeltingObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "items_to_smelt");
         item = instruction.getQuestItem();
-        targetAmount = instruction.getPositive();
+        targetAmount = instruction.getVarNum();
+        preCheckAmountNotLessThanOne(targetAmount);
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -54,7 +55,6 @@ public class SmeltingObjective extends CountingObjective implements Listener {
                 && event.getRawSlot() == 2
                 && !InventoryUtils.isEmptySlot(event.getCurrentItem());
     }
-
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
     private int calculateTakeAmount(final InventoryClickEvent event) {

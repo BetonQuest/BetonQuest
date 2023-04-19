@@ -18,16 +18,17 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
  * </p>
  */
 abstract public class Condition extends ForceSyncHandler<Boolean> {
-
     /**
      * Stores instruction string for the condition.
      */
     protected Instruction instruction;
+
     /**
      * If a condition is static it can be used with null player. Static events
      * can be run with static conditions.
      */
     protected boolean staticness;
+
     /**
      * If a condition is persistent it can be checked for offline player.
      * Persistent conditions can be checked in folder events after the player

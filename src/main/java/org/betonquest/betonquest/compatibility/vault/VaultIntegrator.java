@@ -8,7 +8,6 @@ import org.betonquest.betonquest.compatibility.Integrator;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
-
 @SuppressWarnings("PMD.CommentRequired")
 public class VaultIntegrator implements Integrator {
     /**
@@ -17,8 +16,11 @@ public class VaultIntegrator implements Integrator {
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private static VaultIntegrator instance;
+
     private final BetonQuest plugin;
+
     private Permission permission;
+
     private Economy economy;
 
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")

@@ -139,7 +139,10 @@ import org.betonquest.betonquest.modules.schedule.impl.realtime.daily.RealtimeDa
 import org.betonquest.betonquest.modules.schedule.impl.realtime.daily.RealtimeDailyScheduler;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.modules.versioning.java.JREVersionPrinter;
+import org.betonquest.betonquest.modules.web.DownloadSource;
+import org.betonquest.betonquest.modules.web.TempFileDownloadSource;
 import org.betonquest.betonquest.modules.web.WebContentSource;
+import org.betonquest.betonquest.modules.web.WebDownloadSource;
 import org.betonquest.betonquest.modules.web.updater.UpdateDownloader;
 import org.betonquest.betonquest.modules.web.updater.UpdateSourceHandler;
 import org.betonquest.betonquest.modules.web.updater.Updater;
@@ -283,42 +286,67 @@ public class BetonQuest extends JavaPlugin {
     private final static int BSTATS_METRICS_ID = 551;
 
     private static final Map<String, Class<? extends Condition>> CONDITION_TYPES = new HashMap<>();
+
     private static final Map<String, Class<? extends Objective>> OBJECTIVE_TYPES = new HashMap<>();
+
     private static final Map<String, Class<? extends ConversationIO>> CONVERSATION_IO_TYPES = new HashMap<>();
+
     private static final Map<String, Class<? extends Interceptor>> INTERCEPTOR_TYPES = new HashMap<>();
+
     private static final Map<String, Class<? extends NotifyIO>> NOTIFY_IO_TYPES = new HashMap<>();
+
     private static final Map<String, Class<? extends Variable>> VARIABLE_TYPES = new HashMap<>();
+
     private static final Map<String, EventScheduling.ScheduleType<?>> SCHEDULE_TYPES = new HashMap<>();
+
     private static final Map<ConditionID, Condition> CONDITIONS = new HashMap<>();
+
     private static final Map<EventID, QuestEvent> EVENTS = new HashMap<>();
+
     private static final Map<ObjectiveID, Objective> OBJECTIVES = new HashMap<>();
+
     private static final Map<String, ConversationData> CONVERSATIONS = new HashMap<>();
+
     private static final Map<VariableID, Variable> VARIABLES = new HashMap<>();
+
     private static final Map<String, QuestCanceler> CANCELERS = new HashMap<>();
+
     /**
      * The BetonQuest Plugin instance.
      */
     private static BetonQuest instance;
+
     private static BetonQuestLogger log;
 
     /**
      * Map of registered events.
      */
     private final Map<String, QuestEventFactory> eventTypes = new HashMap<>();
+
     private final ConcurrentHashMap<Profile, PlayerData> playerDataMap = new ConcurrentHashMap<>();
+
     private String pluginTag;
+
     private ConfigurationFile config;
+
     /**
      * The adventure instance.
      */
     private BukkitAudiences adventure;
+
     private Database database;
+
     private boolean isMySQLUsed;
+
     @SuppressWarnings("PMD.DoNotUseThreads")
     private AsyncSaver saver;
+
     private Updater updater;
+
     private GlobalData globalData;
+
     private PlayerHider playerHider;
+
     private RPGMenu rpgMenu;
 
     /**
@@ -381,8 +409,8 @@ public class BetonQuest extends JavaPlugin {
                         return false;
                     }
                     if (PaperLib.isSpigot()) {
-                        log.warn("The following exception is only ok when the server is currently stopping." +
-                                "Switch to papermc.io to fix this.");
+                        log.warn("The following exception is only ok when the server is currently stopping."
+                                + "Switch to papermc.io to fix this.");
                     }
                     log.reportException(e);
                     return false;
@@ -494,9 +522,7 @@ public class BetonQuest extends JavaPlugin {
             }
         }
         if (objective.containsPlayer(profile)) {
-            log.debug(objectiveID.getPackage(),
-                    profile + " already has the " + objectiveID +
-                            " objective");
+            log.debug(objectiveID.getPackage(), profile + " already has the " + objectiveID + " objective");
             return;
         }
         objective.newPlayer(profile);
@@ -974,11 +1000,11 @@ public class BetonQuest extends JavaPlugin {
     }
 
     private void setupUpdater() {
-        final Version pluginVersion = new Version(this.getDescription().getVersion());
         final File updateFolder = getServer().getUpdateFolderFile();
-        final File tempFile = new File(updateFolder, this.getFile().getName() + ".temp");
-        final File finalFile = new File(updateFolder, this.getFile().getName());
-        final UpdateDownloader updateDownloader = new UpdateDownloader(new File(".").toURI(), tempFile, finalFile);
+        final File file = new File(updateFolder, this.getFile().getName());
+        final DownloadSource downloadSource = new TempFileDownloadSource(new WebDownloadSource());
+        final UpdateDownloader updateDownloader = new UpdateDownloader(downloadSource, file);
+
         final GitHubReleaseSource gitHubReleaseSource = new GitHubReleaseSource("https://api.github.com/repos/BetonQuest/BetonQuest",
                 new WebContentSource(GitHubReleaseSource.HTTP_CODE_HANDLER));
         final NexusReleaseAndDevelopmentSource nexusReleaseAndDevelopmentSource = new NexusReleaseAndDevelopmentSource("https://betonquest.org/nexus",
@@ -986,6 +1012,8 @@ public class BetonQuest extends JavaPlugin {
         final List<ReleaseUpdateSource> releaseHandlers = List.of(gitHubReleaseSource, nexusReleaseAndDevelopmentSource);
         final List<DevelopmentUpdateSource> developmentHandlers = List.of(nexusReleaseAndDevelopmentSource);
         final UpdateSourceHandler updateSourceHandler = new UpdateSourceHandler(releaseHandlers, developmentHandlers);
+
+        final Version pluginVersion = new Version(this.getDescription().getVersion());
         updater = new Updater(config, pluginVersion, updateSourceHandler, updateDownloader, this,
                 getServer().getScheduler(), InstantSource.system());
     }

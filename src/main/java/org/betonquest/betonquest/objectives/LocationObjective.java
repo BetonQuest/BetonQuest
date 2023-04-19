@@ -33,6 +33,7 @@ public class LocationObjective extends Objective implements Listener {
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final CompoundLocation loc;
+
     private final VariableNumber range;
 
     public LocationObjective(final Instruction instruction) throws InstructionParseException {

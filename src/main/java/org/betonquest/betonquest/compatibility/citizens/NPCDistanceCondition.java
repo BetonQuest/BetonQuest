@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.citizens;
 
-
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.Instruction;
@@ -18,8 +17,8 @@ import org.bukkit.entity.Player;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class NPCDistanceCondition extends Condition {
-
     private final int npcId;
+
     private final VariableNumber distance;
 
     public NPCDistanceCondition(final Instruction instruction) throws InstructionParseException {
