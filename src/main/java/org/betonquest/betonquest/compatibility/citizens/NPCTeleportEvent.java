@@ -18,6 +18,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 @SuppressWarnings("PMD.CommentRequired")
 public class NPCTeleportEvent extends QuestEvent implements Listener {
     private final CompoundLocation location;
+
     private final int npcId;
 
     public NPCTeleportEvent(final Instruction instruction) throws InstructionParseException {

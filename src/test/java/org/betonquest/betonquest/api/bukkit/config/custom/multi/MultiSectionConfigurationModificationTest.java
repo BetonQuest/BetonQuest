@@ -27,23 +27,26 @@ import static org.junit.jupiter.api.Assertions.*;
 @Tag("ConfigurationSection")
 @SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.JUnitTestContainsTooManyAsserts", "PMD.JUnit5TestShouldBePackagePrivate"})
 public class MultiSectionConfigurationModificationTest {
-
     /**
      * {@link MultiConfiguration} part 1.
      */
     protected Configuration config1;
+
     /**
      * {@link MultiConfiguration} part 2.
      */
     protected Configuration config2;
+
     /**
      * {@link MultiConfiguration} part 3.
      */
     protected Configuration config3;
+
     /**
      * The {@link MultiConfiguration} instance for testing.
      */
     private MultiConfiguration config;
+
     /**
      * A {@link FileConfiguration} containing the result of the merged
      * {@link MultiSectionConfigurationModificationTest#config}.

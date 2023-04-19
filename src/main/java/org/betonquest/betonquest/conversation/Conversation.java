@@ -1,11 +1,11 @@
 package org.betonquest.betonquest.conversation;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.ConversationOptionEvent;
 import org.betonquest.betonquest.api.PlayerConversationEndEvent;
 import org.betonquest.betonquest.api.PlayerConversationStartEvent;
@@ -49,28 +49,45 @@ import java.util.concurrent.TimeoutException;
  * Represents a conversation between player and NPC
  */
 @SuppressWarnings({"PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods", "PMD.CommentRequired", "PMD.CommentRequired"})
-@CustomLog
 public class Conversation implements Listener {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private static final ConcurrentHashMap<Profile, Conversation> LIST = new ConcurrentHashMap<>();
 
     private final OnlineProfile onlineProfile;
-    private final Player player;
-    private final QuestPackage pack;
-    private final String language;
-    private final Location location;
-    private final String convID;
-    private final List<String> blacklist;
-    private final Conversation conv;
-    private final BetonQuest plugin;
-    private final Map<Integer, String> current = new HashMap<>();
-    private final boolean messagesDelaying;
-    private ConversationData data;
-    private ConversationIO inOut;
-    private String option;
-    private boolean ended;
-    private Interceptor interceptor;
 
+    private final Player player;
+
+    private final QuestPackage pack;
+
+    private final String language;
+
+    private final Location location;
+
+    private final String convID;
+
+    private final List<String> blacklist;
+
+    private final Conversation conv;
+
+    private final BetonQuest plugin;
+
+    private final Map<Integer, String> current = new HashMap<>();
+
+    private final boolean messagesDelaying;
+
+    private ConversationData data;
+
+    private ConversationIO inOut;
+
+    private String option;
+
+    private boolean ended;
+
+    private Interceptor interceptor;
 
     /**
      * Starts a new conversation between player and npc at given location. It uses
@@ -284,7 +301,6 @@ public class Conversation implements Listener {
         // end conversations if there are no possible options
         if (current.isEmpty()) {
             new ConversationEnder().runTask(BetonQuest.getInstance());
-            return;
         }
     }
 
@@ -515,8 +531,8 @@ public class Conversation implements Listener {
 
             // stop the conversation if it's canceled
             if (event.isCancelled()) {
-                LOG.debug(pack, "Conversation '" + convID + "' for '" + player.getPlayerProfile() + "' has been " +
-                        "canceled because it's PlayerConversationStartEvent has been canceled.");
+                LOG.debug(pack, "Conversation '" + convID + "' for '" + player.getPlayerProfile() + "' has been "
+                        + "canceled because it's PlayerConversationStartEvent has been canceled.");
                 return;
             }
 

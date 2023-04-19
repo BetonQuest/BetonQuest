@@ -1,6 +1,6 @@
 package org.betonquest.betonquest;
 
-import lombok.CustomLog;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -33,15 +33,26 @@ import java.util.regex.Pattern;
 
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessivePublicCount", "PMD.GodClass", "PMD.CommentRequired",
         "PMD.AvoidFieldNameMatchingTypeName", "PMD.AvoidLiteralsInIfCondition", "PMD.TooManyMethods"})
-@CustomLog
 public class Instruction {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+
     private static final Pattern NUMBER_PATTERN = Pattern.compile("(?:\\s|\\G|^)(([+\\-])?\\d+)(?:\\s|$)");
+
     private final QuestPackage pack;
+
     protected String instruction;
+
     protected String[] parts;
+
     private ID identifier;
+
     private int nextIndex = 1;
+
     private int currentIndex = 1;
+
     private String lastOptional;
 
     public Instruction(final QuestPackage pack, final ID identifier, final String instruction) {
@@ -88,6 +99,10 @@ public class Instruction {
     /////////////////////
     ///    GENERAL    ///
     /////////////////////
+
+    public boolean hasNext() {
+        return currentIndex < parts.length - 1;
+    }
 
     public String next() throws InstructionParseException {
         lastOptional = null;
@@ -203,7 +218,7 @@ public class Instruction {
         }
         try {
             return new QuestItem(new ItemID(pack, string));
-        } catch (ObjectNotFoundException | InstructionParseException e) {
+        } catch (final ObjectNotFoundException | InstructionParseException e) {
             throw new PartParseException("Could not load '" + string + "' item: " + e.getMessage(), e);
         }
     }
@@ -228,7 +243,7 @@ public class Instruction {
                     number = new VariableNumber(1);
                 }
                 items[i] = new Item(item, number);
-            } catch (InstructionParseException | NumberFormatException e) {
+            } catch (final InstructionParseException | NumberFormatException e) {
                 throw new PartParseException("Error while parsing '" + array[i] + "' item: " + e.getMessage(), e);
             }
         }
@@ -545,9 +560,10 @@ public class Instruction {
 
     @SuppressWarnings("PMD.ShortClassName")
     public static class Item {
-
         private final ItemID itemID;
+
         private final QuestItem questItem;
+
         private final VariableNumber amount;
 
         public Item(final ItemID itemID, final VariableNumber amount) throws InstructionParseException {

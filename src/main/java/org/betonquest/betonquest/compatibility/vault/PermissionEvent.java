@@ -11,10 +11,12 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class PermissionEvent extends QuestEvent {
-
     private final String world;
+
     private final String permission;
+
     private final boolean add;
+
     private final boolean perm;
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")

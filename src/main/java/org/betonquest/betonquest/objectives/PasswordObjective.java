@@ -28,7 +28,9 @@ import java.util.regex.Pattern;
 public class PasswordObjective extends Objective implements Listener {
 
     private final Pattern regex;
+
     private final String passwordPrefix;
+
     private final EventID[] failEvents;
 
     public PasswordObjective(final Instruction instruction) throws InstructionParseException {
@@ -62,8 +64,8 @@ public class PasswordObjective extends Objective implements Listener {
         if (!containsPlayer(onlineProfile)) {
             return false;
         }
-        final String prefix = passwordPrefix == null ?
-                Config.getMessage(BetonQuest.getInstance().getPlayerData(onlineProfile).getLanguage(), "password") : passwordPrefix;
+        final String prefix = passwordPrefix == null
+                ? Config.getMessage(BetonQuest.getInstance().getPlayerData(onlineProfile).getLanguage(), "password") : passwordPrefix;
         if (!prefix.isEmpty() && !message.toLowerCase(Locale.ROOT).startsWith(prefix.toLowerCase(Locale.ROOT))) {
             return false;
         }

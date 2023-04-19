@@ -17,8 +17,8 @@ import org.bukkit.inventory.ItemStack;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class ChestItemCondition extends Condition {
-
     private final Item[] questItems;
+
     private final CompoundLocation loc;
 
     public ChestItemCondition(final Instruction instruction) throws InstructionParseException {

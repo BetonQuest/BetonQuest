@@ -10,11 +10,11 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
  * Deletes a category from the global points.
  */
 public class DeleteGlobalPointEvent implements Event {
-
     /**
      * The category to delete.
      */
     private final String category;
+
     /**
      * The global data.
      */

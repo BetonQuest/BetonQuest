@@ -10,12 +10,16 @@ import java.util.List;
 
 @SuppressWarnings({"PMD.DataClass", "PMD.CommentRequired"})
 public class BookHandler {
-
     private String title = Config.getMessage(Config.getLanguage(), "unknown_title");
+
     private Existence titleE = Existence.WHATEVER;
+
     private String author = Config.getMessage(Config.getLanguage(), "unknown_author");
+
     private Existence authorE = Existence.WHATEVER;
+
     private List<String> text = new ArrayList<>();
+
     private Existence textE = Existence.WHATEVER;
 
     public BookHandler() {

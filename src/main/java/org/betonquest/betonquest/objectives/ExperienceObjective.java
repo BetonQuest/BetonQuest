@@ -1,14 +1,13 @@
 package org.betonquest.betonquest.objectives;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -26,8 +25,11 @@ import java.util.Locale;
  * Player needs to get specified experience level or more.
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class ExperienceObjective extends Objective implements Listener {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * The experience level the player needs to get.
@@ -44,20 +46,16 @@ public class ExperienceObjective extends Objective implements Listener {
         if (!containsPlayer(onlineProfile)) {
             return;
         }
-        try {
-            final double amount = this.amount.getDouble(onlineProfile);
-            if (newAmount >= amount) {
-                if (checkConditions(onlineProfile)) {
-                    completeObjective(onlineProfile);
-                }
-            } else if (this.notify && notify) {
-                final int level = (int) (amount - newAmount);
-                if (level % notifyInterval == 0) {
-                    sendNotify(onlineProfile, "level_to_gain", level);
-                }
+        final double amount = this.amount.getDouble(onlineProfile);
+        if (newAmount >= amount) {
+            if (checkConditions(onlineProfile)) {
+                completeObjective(onlineProfile);
             }
-        } catch (final QuestRuntimeException e) {
-            LOG.warn("Error in experience objective '" + instruction.getID() + "': " + e.getMessage());
+        } else if (this.notify && notify) {
+            final int level = (int) (amount - newAmount);
+            if (level % notifyInterval == 0) {
+                sendNotify(onlineProfile, "level_to_gain", level);
+            }
         }
     }
 
@@ -89,29 +87,24 @@ public class ExperienceObjective extends Objective implements Listener {
 
     @Override
     public String getProperty(final String name, final Profile profile) {
-        try {
-            return switch (name.toLowerCase(Locale.ROOT)) {
-                case "amount" -> profile.getOnlineProfile()
+        return switch (name.toLowerCase(Locale.ROOT)) {
+            case "amount" -> profile.getOnlineProfile()
+                    .map(OnlineProfile::getPlayer)
+                    .map(player -> player.getLevel() + player.getExp())
+                    .map(String::valueOf)
+                    .orElse("");
+            case "left" -> {
+                final double pAmount = amount.getDouble(profile);
+                yield profile.getOnlineProfile()
                         .map(OnlineProfile::getPlayer)
                         .map(player -> player.getLevel() + player.getExp())
+                        .map(exp -> pAmount - exp)
                         .map(String::valueOf)
                         .orElse("");
-                case "left" -> {
-                    final double pAmount = amount.getDouble(profile);
-                    yield profile.getOnlineProfile()
-                            .map(OnlineProfile::getPlayer)
-                            .map(player -> player.getLevel() + player.getExp())
-                            .map(exp -> pAmount - exp)
-                            .map(String::valueOf)
-                            .orElse("");
-                }
-                case "total" -> String.valueOf(amount.getDouble(profile));
-                default -> "";
-            };
-        } catch (final QuestRuntimeException e) {
-            LOG.warn("Error in experience objective '" + instruction.getID() + "': " + e.getMessage());
-            return "";
-        }
+            }
+            case "total" -> String.valueOf(amount.getDouble(profile));
+            default -> "";
+        };
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)

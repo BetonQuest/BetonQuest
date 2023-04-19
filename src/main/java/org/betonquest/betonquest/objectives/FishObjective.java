@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.objectives;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
@@ -30,17 +30,23 @@ import org.bukkit.inventory.ItemStack;
  * Requires the player to catch the fish.
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class FishObjective extends CountingObjective implements Listener {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final BlockSelector blockSelector;
+
     private final CompoundLocation hookTargetLocation;
+
     private final VariableNumber rangeVar;
 
     public FishObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "fish_to_catch");
         blockSelector = new BlockSelector(instruction.next());
-        targetAmount = instruction.getInt();
+        targetAmount = instruction.getVarNum();
+        preCheckAmountNotLessThanOne(targetAmount);
 
         final QuestPackage pack = instruction.getPackage();
         final String loc = instruction.getOptional("hookLocation");
@@ -51,10 +57,6 @@ public class FishObjective extends CountingObjective implements Listener {
         } else {
             hookTargetLocation = null;
             rangeVar = null;
-        }
-
-        if (targetAmount <= 0) {
-            throw new InstructionParseException("Fish amount cannot be less than 0");
         }
     }
 

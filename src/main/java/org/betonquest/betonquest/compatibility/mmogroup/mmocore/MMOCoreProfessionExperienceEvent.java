@@ -13,9 +13,10 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class MMOCoreProfessionExperienceEvent extends QuestEvent {
-
     private final Profession profession;
+
     private final VariableNumber amountVar;
+
     private final boolean isLevel;
 
     public MMOCoreProfessionExperienceEvent(final Instruction instruction) throws InstructionParseException {

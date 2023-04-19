@@ -5,11 +5,11 @@ package org.betonquest.betonquest;
  */
 @SuppressWarnings("PMD.AvoidFieldNameMatchingTypeName")
 public class Pointer {
-
     /**
      * String pointing to the journal entry
      */
     private final String pointer;
+
     /**
      * Timestamp indicating date of this entry
      */

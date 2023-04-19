@@ -11,7 +11,6 @@ import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.citizens.NPCRegionCondition;
 import org.bukkit.Location;
 
-
 @SuppressWarnings("PMD.CommentRequired")
 public class WorldGuardIntegrator implements Integrator {
 

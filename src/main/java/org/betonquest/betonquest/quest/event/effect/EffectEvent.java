@@ -11,27 +11,31 @@ import org.bukkit.potion.PotionEffectType;
  * Gives the player specified potion effect
  */
 public class EffectEvent implements Event {
-
     /**
      * The effect to apply.
      */
     private final PotionEffectType effect;
+
     /**
      * The duration of the effect.
      */
     private final VariableNumber duration;
+
     /**
      * The amplifier of the effect.
      */
     private final VariableNumber amplifier;
+
     /**
      * Whether the effect is ambient.
      */
     private final boolean ambient;
+
     /**
      * Whether the effect is hidden.
      */
     private final boolean hidden;
+
     /**
      * Whether the effect has an icon.
      */

@@ -20,10 +20,12 @@ import java.util.Locale;
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CommentRequired"})
 public class ItemVariable extends Variable {
-
     private final QuestItem questItem;
+
     private final Type type;
+
     private final boolean raw;
+
     private int amount;
 
     @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.AvoidLiteralsInIfCondition"})

@@ -4,6 +4,7 @@ import net.Indyuce.mmocore.api.event.PlayerLevelUpEvent;
 import net.Indyuce.mmocore.experience.Profession;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.VariableNumber;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -16,9 +17,9 @@ import org.bukkit.event.Listener;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class MMOCoreProfessionObjective extends Objective implements Listener {
-
     private final String professionName;
-    private final int targetLevel;
+
+    private final VariableNumber targetLevel;
 
     public MMOCoreProfessionObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction);
@@ -26,8 +27,7 @@ public class MMOCoreProfessionObjective extends Objective implements Listener {
         template = ObjectiveData.class;
         final String profession = instruction.next();
         professionName = "MAIN".equalsIgnoreCase(profession) ? null : profession;
-        targetLevel = instruction.getInt();
-
+        targetLevel = instruction.getVarNum();
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -40,7 +40,7 @@ public class MMOCoreProfessionObjective extends Objective implements Listener {
         if (profession != null && !profession.getName().equalsIgnoreCase(professionName)) {
             return;
         }
-        if (event.getNewLevel() < targetLevel) {
+        if (event.getNewLevel() < targetLevel.getInt(onlineProfile)) {
             return;
         }
         completeObjective(onlineProfile);

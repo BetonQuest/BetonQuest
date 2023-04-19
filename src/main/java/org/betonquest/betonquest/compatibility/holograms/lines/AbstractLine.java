@@ -14,6 +14,7 @@ public abstract class AbstractLine {
      * False if this line needs to be updated
      */
     protected final boolean staticText;
+
     /**
      * The amount of lines added by this line
      */

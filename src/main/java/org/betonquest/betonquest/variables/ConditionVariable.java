@@ -10,8 +10,8 @@ import org.betonquest.betonquest.id.ConditionID;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class ConditionVariable extends Variable {
-
     private final ConditionID conditionId;
+
     private final boolean papiMode;
 
     public ConditionVariable(final Instruction instruction) throws InstructionParseException {

@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.events;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.database.PlayerData;
@@ -22,13 +22,17 @@ import java.util.Locale;
  * Starts an objective for the player.
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
-@CustomLog
 public class ObjectiveEvent extends QuestEvent {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * The BetonQuest instance.
      */
     private final BetonQuest betonQuest;
+
     /**
      * All objectives affected by this event.
      */

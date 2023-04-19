@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.compatibility.citizens;
 
-import lombok.CustomLog;
 import net.citizensnpcs.api.event.NPCClickEvent;
 import net.citizensnpcs.api.event.NPCLeftClickEvent;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.conversation.CombatTagger;
@@ -24,12 +24,18 @@ import java.util.UUID;
  * Starts new conversations with NPCs
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class CitizensListener implements Listener {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final Map<UUID, Long> npcInteractionLimiter = new HashMap<>();
+
     private RightClickListener rightClick;
+
     private LeftClickListener leftClick;
+
     private int interactionLimit;
 
     /**
@@ -46,7 +52,6 @@ public class CitizensListener implements Listener {
         if (leftClick != null) {
             HandlerList.unregisterAll(leftClick);
         }
-
 
         final BetonQuest plugin = BetonQuest.getInstance();
 

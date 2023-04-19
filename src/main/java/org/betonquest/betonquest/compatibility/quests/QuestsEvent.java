@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.compatibility.quests;
 
-import lombok.CustomLog;
 import me.blackvein.quests.Quest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -11,10 +11,14 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
  * Starts a quests in Quests plugin.
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class QuestsEvent extends QuestEvent {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final String questName;
+
     private final boolean override;
 
     public QuestsEvent(final Instruction instruction) throws InstructionParseException {

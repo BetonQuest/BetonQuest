@@ -18,15 +18,16 @@ import static org.betonquest.betonquest.api.bukkit.config.custom.handle.Configur
  * Copies all modifications to the target {@link Configuration} to another Configuration.
  */
 public class HandleModificationToConfiguration implements ConfigurationModificationHandler {
-
     /**
      * The {@link Configuration} that stores all modifications.
      */
     private final Configuration section;
+
     /**
      * The map that stores all block comment modifications.
      */
     private final Map<String, List<String>> comments;
+
     /**
      * The map that stores all inline comment modifications.
      */

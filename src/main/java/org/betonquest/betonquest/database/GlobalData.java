@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.database;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Point;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.database.Saver.Record;
 
 import java.sql.ResultSet;
@@ -14,13 +14,17 @@ import java.util.List;
  * Represents an object storing all player-related data, which can load and save it.
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.TooManyMethods"})
-@CustomLog
 public class GlobalData implements TagData {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     @SuppressWarnings("PMD.DoNotUseThreads")
     private final Saver saver = BetonQuest.getInstance().getSaver();
 
     private final List<String> globalTags = new ArrayList<>();
+
     private final List<Point> globalPoints = new ArrayList<>();
 
     /**

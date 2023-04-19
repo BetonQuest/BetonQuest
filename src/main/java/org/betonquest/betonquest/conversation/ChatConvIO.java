@@ -26,18 +26,28 @@ import java.util.Map;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public abstract class ChatConvIO implements ConversationIO, Listener {
-
     protected final Conversation conv;
+
     protected final String name;
+
     protected final Player player;
+
     protected final Map<String, ChatColor[]> colors;
+
     private final String npcTextColor;
+
     private final double maxNpcDistance;
+
     protected int optionsCount;
+
     protected Map<Integer, String> options;
+
     protected String npcText;
+
     protected String npcName;
+
     protected String answerFormat;
+
     protected String textFormat;
 
     public ChatConvIO(final Conversation conv, final OnlineProfile onlineProfile) {

@@ -175,7 +175,7 @@
     <dependency>
       <groupId>me.filoghost.holographicdisplays</groupId>
       <artifactId>holographicdisplays-api</artifactId>
-      <version>3.0.0-SNAPSHOT</version>
+      <version>3.0.0</version>
     </dependency>
     <dependency>
       <groupId>com.gmail.nossr50.mcMMO</groupId>
@@ -375,12 +375,6 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>1.18.24</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-artifact</artifactId>
       <version>3.8.6</version>
@@ -409,7 +403,7 @@
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
-      <version>20220924</version>
+      <version>20230227</version>
     </dependency>
     <dependency>
       <groupId>com.github.spotbugs</groupId>
@@ -419,7 +413,7 @@
     <dependency>
       <groupId>com.cronutils</groupId>
       <artifactId>cron-utils</artifactId>
-      <version>9.2.0</version>
+      <version>9.2.1</version>
     </dependency>
     <dependency>
       <groupId>com.zaxxer</groupId>
@@ -575,24 +569,6 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.projectlombok</groupId>
-        <artifactId>lombok-maven-plugin</artifactId>
-        <configuration>
-          <sourceDirectory>src/main/java</sourceDirectory>
-          <outputDirectory>${project.build.directory}/delombok</outputDirectory>
-          <addOutputDirectory>false</addOutputDirectory>
-          <encoding>UTF-8</encoding>
-        </configuration>
-        <executions>
-          <execution>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>delombok</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>flatten-maven-plugin</artifactId>
         <configuration>
@@ -728,9 +704,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <sourcepath>${project.build.directory}/delombok</sourcepath>
-        </configuration>
         <executions>
           <execution>
             <id>attach-javadocs</id>
@@ -817,11 +790,6 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-enforcer-plugin</artifactId>
           <version>3.1.0</version>
-        </plugin>
-        <plugin>
-          <groupId>org.projectlombok</groupId>
-          <artifactId>lombok-maven-plugin</artifactId>
-          <version>1.18.20.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -928,7 +896,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.0.0-M7</version>
+          <version>3.0.0</version>
           <configuration>
             <reuseForks>false</reuseForks>
             <forkCount>0.5C</forkCount>
@@ -1017,9 +985,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <sourcepath>${project.build.directory}/delombok</sourcepath>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

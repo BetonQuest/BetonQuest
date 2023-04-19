@@ -25,10 +25,12 @@ import java.util.concurrent.ConcurrentHashMap;
 @SuppressWarnings("PMD.CommentRequired")
 @Deprecated
 public class MMOItemsTakeEvent extends AbstractTakeEvent {
-
     private final Type itemType;
+
     private final String itemID;
+
     private final VariableNumber deleteAmountVar;
+
     private final Map<UUID, Integer> neededDeletions = new ConcurrentHashMap<>();
 
     public MMOItemsTakeEvent(final Instruction instruction) throws InstructionParseException {

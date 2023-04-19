@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.objectives;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -41,18 +41,30 @@ import java.util.stream.Collectors;
  * The interaction can optionally be canceled by adding the argument cancel.
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class EntityInteractObjective extends CountingObjective {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final CompoundLocation loc;
+
     private final VariableNumber range;
+
     private final String customName;
+
     private final String realName;
+
     protected EntityType mobType;
+
     protected String marked;
+
     protected Interaction interaction;
+
     protected boolean cancel;
+
     private RightClickListener rightClickListener;
+
     private LeftClickListener leftClickListener;
 
     public EntityInteractObjective(final Instruction instruction) throws InstructionParseException {
@@ -60,7 +72,8 @@ public class EntityInteractObjective extends CountingObjective {
         template = EntityInteractData.class;
         interaction = instruction.getEnum(Interaction.class);
         mobType = instruction.getEnum(EntityType.class);
-        targetAmount = instruction.getPositive();
+        targetAmount = instruction.getVarNum();
+        preCheckAmountNotLessThanOne(targetAmount);
         customName = parseName(instruction.getOptional("name"));
         realName = parseName(instruction.getOptional("realname"));
         marked = instruction.getOptional("marked");
@@ -187,10 +200,7 @@ public class EntityInteractObjective extends CountingObjective {
 
         @Override
         public String toString() {
-            return super.toString() + ";" +
-                    entities.stream()
-                            .map(UUID::toString)
-                            .collect(Collectors.joining("/"));
+            return super.toString() + ";" + entities.stream().map(UUID::toString).collect(Collectors.joining("/"));
         }
 
     }

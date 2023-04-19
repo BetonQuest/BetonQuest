@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.api;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.GlobalObjectives;
 import org.betonquest.betonquest.Instruction;
@@ -35,22 +34,33 @@ import java.util.Optional;
  * </p>
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition", "PMD.TooManyMethods", "PMD.GodClass"})
-@CustomLog
 public abstract class Objective {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     protected final int notifyInterval;
+
     protected final boolean notify;
+
     protected Instruction instruction;
+
     protected ConditionID[] conditions;
+
     protected EventID[] events;
+
     protected boolean persistent;
+
     protected boolean global;
+
     protected QREHandler qreHandler = new QREHandler();
 
     /**
      * Contains all data objects of the profiles with this objective active.
      */
     protected Map<Profile, ObjectiveData> dataMap = new HashMap<>();
+
     /**
      * Should be set to the data class used to hold the objective specific information.
      */
@@ -289,8 +299,8 @@ public abstract class Objective {
     private Optional<ObjectiveData> createObjectiveData(final Profile profile, final String instructionString) {
         try {
             return Optional.of(constructObjectiveDataUnsafe(profile, instructionString));
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
-                 InvocationTargetException exception) {
+        } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException
+                       | InvocationTargetException exception) {
             handleObjectiveDataConstructionError(profile, exception);
             return Optional.empty();
         }
@@ -503,9 +513,10 @@ public abstract class Objective {
      * Stores the profile's data for the objective.
      */
     protected static class ObjectiveData {
-
         protected String instruction;
+
         protected Profile profile;
+
         protected String objID;
 
         /**

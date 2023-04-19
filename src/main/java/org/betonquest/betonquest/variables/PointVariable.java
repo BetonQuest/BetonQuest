@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.variables;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.Point;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -18,11 +18,16 @@ import java.util.Locale;
  * some other amount.
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class PointVariable extends Variable {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     protected String category;
+
     protected Type type;
+
     protected int amount;
 
     @SuppressWarnings("PMD")
@@ -48,7 +53,6 @@ public class PointVariable extends Variable {
                 category = instruction.getPackage().getQuestPath() + "." + category;
             }
         }
-
 
         if ("amount".equalsIgnoreCase(instruction.next())) {
             type = Type.AMOUNT;

@@ -1,21 +1,26 @@
 package org.betonquest.betonquest.compatibility.vault;
 
-import lombok.CustomLog;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.compatibility.Integrator;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
-
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class VaultIntegrator implements Integrator {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private static VaultIntegrator instance;
+
     private final BetonQuest plugin;
+
     private Permission permission;
+
     private Economy economy;
 
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")

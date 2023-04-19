@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.notify;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -19,16 +19,23 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-
-@CustomLog
 @SuppressWarnings("PMD.CommentRequired")
 public class BossBarNotifyIO extends NotifyIO {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final List<BarFlag> barFlags;
+
     private final BarColor barColor;
+
     private final BarStyle style;
+
     private final double progress;
+
     private final VariableNumber stayVariable;
+
     private final int countdown;
 
     @SuppressWarnings("PMD.CyclomaticComplexity")

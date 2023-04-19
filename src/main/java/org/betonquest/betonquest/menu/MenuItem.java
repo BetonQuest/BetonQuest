@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.menu;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
@@ -32,8 +32,7 @@ import java.util.Map;
 /**
  * A Item which Is displayed as option in a menu and has some events that are fired when item is clicked
  */
-@CustomLog
-@SuppressWarnings({"PMD.CommentRequired", "PMD.GodClass"})
+@SuppressWarnings("PMD.CommentRequired")
 public class MenuItem extends SimpleYMLSection {
     /**
      * Text config property for Item lore
@@ -44,6 +43,11 @@ public class MenuItem extends SimpleYMLSection {
      * Path component for text config property for Item lore
      */
     private static final String CONFIG_TEXT_PATH = CONFIG_TEXT + ".";
+
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * The betonquest quest item this item is based on
@@ -90,7 +94,8 @@ public class MenuItem extends SimpleYMLSection {
      */
     private final boolean close;
 
-    @SuppressWarnings({"PMD.ExceptionAsFlowControl", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity", "PMD.NPathComplexity"})
+    @SuppressWarnings({"PMD.ExceptionAsFlowControl", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity",
+            "PMD.NPathComplexity", "checkstyle:EmptyCatchBlock"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public MenuItem(final QuestPackage pack, final MenuID menuID, final String name, final ConfigurationSection section)
             throws InvalidConfigurationException {
@@ -169,7 +174,7 @@ public class MenuItem extends SimpleYMLSection {
                     return getBoolean("close");
                 }
             }.get();
-        } catch (ObjectNotFoundException | InstructionParseException e) {
+        } catch (final ObjectNotFoundException | InstructionParseException e) {
             throw new InvalidConfigurationException(e.getMessage(), e);
         }
     }
@@ -260,8 +265,8 @@ public class MenuItem extends SimpleYMLSection {
                     meta.setLore(description.getLore(profile));
                     item.setItemMeta(meta);
                 } catch (final NullPointerException npe) {
-                    LOG.error(pack, "Couldn't add custom text to '" + name + "': No text for language '" + Config.getLanguage() + "' " +
-                            "specified");
+                    LOG.error(pack, "Couldn't add custom text to '" + name + "': No text for language '"
+                            + Config.getLanguage() + "' " + "specified");
                 }
             }
             return item;
@@ -283,9 +288,10 @@ public class MenuItem extends SimpleYMLSection {
      */
     @SuppressWarnings("PMD.ShortClassName")
     public static class Item {
-
         private final ItemID itemID;
+
         private final QuestItem questItem;
+
         private final VariableNumber amount;
 
         public Item(final ItemID itemID, final VariableNumber amount) throws InstructionParseException {

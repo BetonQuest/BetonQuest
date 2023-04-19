@@ -23,9 +23,10 @@ import java.util.Map;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class CombatTagger implements Listener {
-
     private static final Map<Profile, Boolean> TAGGED = new HashMap<>();
+
     private static final Map<Profile, BukkitRunnable> UNTAGGERS = new HashMap<>();
+
     private final int delay;
 
     /**

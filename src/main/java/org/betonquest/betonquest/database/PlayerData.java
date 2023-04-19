@@ -1,10 +1,11 @@
 package org.betonquest.betonquest.database;
 
-import lombok.CustomLog;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Journal;
 import org.betonquest.betonquest.Point;
 import org.betonquest.betonquest.Pointer;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.PlayerTagAddEvent;
 import org.betonquest.betonquest.api.PlayerTagRemoveEvent;
@@ -31,21 +32,34 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Represents an object storing all profile-related data, which can load and save it.
  */
 @SuppressWarnings({"PMD.TooManyMethods", "PMD.CommentRequired"})
-@CustomLog
+@SuppressFBWarnings("JLM_JSR166_UTILCONCURRENT_MONITORENTER")
 public class PlayerData implements TagData {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     @SuppressWarnings("PMD.DoNotUseThreads")
     private final Saver saver = BetonQuest.getInstance().getSaver();
 
     private final Profile profile;
+
     private final String profileID;
+
     private final List<String> tags = new CopyOnWriteArrayList<>();
+
     private final List<Pointer> entries = new CopyOnWriteArrayList<>();
+
     private final List<Point> points = new CopyOnWriteArrayList<>();
+
     private final Map<String, String> objectives = new ConcurrentHashMap<>();
+
     private Journal journal;
+
     private List<ItemStack> backpack = new CopyOnWriteArrayList<>();
+
     private String conv;
+
     private String profileLanguage;
 
     /**
@@ -117,8 +131,8 @@ public class PlayerData implements TagData {
                 } else {
                     profileLanguage = Config.getLanguage();
                     saver.add(new Record(UpdateType.ADD_PROFILE, profileID));
-                    saver.add(new Record(UpdateType.ADD_PLAYER, profile.getPlayer().getUniqueId().toString()
-                            , profileID, "default"));
+                    saver.add(new Record(UpdateType.ADD_PLAYER, profile.getPlayer().getUniqueId().toString(),
+                            profileID, "default"));
                     saver.add(new Record(UpdateType.ADD_PLAYER_PROFILE, profile.getPlayer().getUniqueId().toString(),
                             profileID, null));
                 }

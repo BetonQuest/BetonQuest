@@ -225,7 +225,6 @@ class TransformerTest {
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
 
-
     @Test
     void testListRemove() throws InvalidConfigurationException {
         final String patch = """
@@ -310,7 +309,6 @@ class TransformerTest {
                 """;
         final String serializedConfig = getSerializedPatchedConfig(patch);
 
-
         final String value = CONFIG.getString("section.test");
         CONFIG.set("section.test", null);
         CONFIG.set("section.testNew", value);
@@ -328,7 +326,6 @@ class TransformerTest {
                 """;
         final String serializedConfig = getSerializedPatchedConfig(patch);
 
-
         final Object value = CONFIG.get("section.myList");
         CONFIG.set("section.myList", null);
         CONFIG.set("section.newList", value);
@@ -345,7 +342,6 @@ class TransformerTest {
                       newKey: section.testNew
                 """;
         final String serializedConfig = getSerializedPatchedConfig(patch);
-
 
         validateLogging(validator, "KEY_RENAME", "Key 'section.invalid' was not set, skipping transformation to 'section.testNew'.");
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
@@ -440,7 +436,6 @@ class TransformerTest {
 
         assertEquals(CONFIG.saveToString(), serializedConfig, "Patch was not applied correctly.");
     }
-
 
     private String getSerializedPatchedConfig(final String patch) throws InvalidConfigurationException {
         final YamlConfiguration patchConfig = new YamlConfiguration();

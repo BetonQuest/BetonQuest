@@ -20,8 +20,8 @@ import java.util.UUID;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class FreezeEvent extends QuestEvent {
-
     private static final Map<UUID, ArmorStand> STANDS = new HashMap<>();
+
     private final VariableNumber ticksVar;
 
     public FreezeEvent(final Instruction instruction) throws InstructionParseException {

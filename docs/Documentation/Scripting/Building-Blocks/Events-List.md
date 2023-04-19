@@ -218,11 +218,16 @@ events:
 
 ## Give Items: `give`
 
-Gives the player predefined items. They are specified exactly as in `item` condition - list separated by commas, every item can have amount separated by colon. Default amount is 1. If the player doesn't have required space in the inventory, the items are dropped on the ground, unless they are quest items. Then they will be put into the backpack. You can also specify `notify` keyword to display a simple message to the player about receiving items.
+Gives the player predefined items. They are specified exactly as in `item` condition - 
+list separated by commas, every item can have amount separated by colon. Default amount is 1. 
+If the player doesn't have required space in the inventory, the items are dropped on the ground,
+unless they are quest items. Then they will be put into the backpack. You can also specify `notify` keyword to display a simple message to the player about receiving items.
+The optional `backpack` argument forces quest items to be placed in the backpack.
 
 !!! example
     ```YAML
     give emerald:5,emerald_block:9
+    give important_sign notify backpack
     ```
 
 ## Give journal: `givejournal`
@@ -353,12 +358,14 @@ This event can switch a lever. The first argument is a location and the second o
 
 **static**
 
-Strikes a lightning at given location. The only argument is the location.
+Strikes a lightning at given location. The first argument is the location. By adding `noDamage` the lightning is only
+an effect and therefor does no damage.
 
-!!! example
-    ```YAML
-    lightning 100;64;-100;survival
-    ```
+```YAML title="Examples" 
+events:
+  strikeLightning: lightning 100;64;-100;survival
+  showEntrance: lightning 200;65;100;survival noDamage
+```
 
 @snippet:events:notify@
 

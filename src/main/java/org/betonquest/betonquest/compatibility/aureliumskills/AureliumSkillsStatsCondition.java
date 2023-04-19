@@ -15,10 +15,10 @@ import org.bukkit.entity.Player;
 public class AureliumSkillsStatsCondition extends Condition {
 
     private final VariableNumber targetLevelVar;
+
     private final Stat stat;
 
     private final boolean mustBeEqual;
-
 
     public AureliumSkillsStatsCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction, true);

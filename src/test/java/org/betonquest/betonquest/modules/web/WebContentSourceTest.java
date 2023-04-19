@@ -22,7 +22,6 @@ class WebContentSourceTest {
      */
     private static final int RESPONSE_CODE_403 = 403;
 
-
     @Test
     void testGet() throws IOException {
         final Path filePath = Path.of("src/test/resources/modules/web/updater/latest.json");

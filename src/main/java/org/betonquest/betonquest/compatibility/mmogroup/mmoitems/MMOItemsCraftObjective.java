@@ -29,8 +29,8 @@ import static net.Indyuce.mmoitems.api.event.PlayerUseCraftingStationEvent.Stati
 
 @SuppressWarnings("PMD.CommentRequired")
 public class MMOItemsCraftObjective extends CountingObjective implements Listener {
-
     private final Type itemType;
+
     private final String itemId;
 
     public MMOItemsCraftObjective(final Instruction instruction) throws InstructionParseException {
@@ -40,8 +40,8 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
         itemType = typeManager.get(instruction.next());
         itemId = instruction.next();
 
-        final String amountStr = instruction.getOptional("amount");
-        targetAmount = amountStr == null ? 1 : Integer.parseInt(instruction.getOptional("amount"));
+        targetAmount = instruction.getVarNum(instruction.getOptional("amount", "1"));
+        preCheckAmountNotLessThanOne(targetAmount);
     }
 
     /**
@@ -93,9 +93,8 @@ public class MMOItemsCraftObjective extends CountingObjective implements Listene
         if (containsPlayer(onlineProfile)
                 && action != StationAction.INTERACT_WITH_RECIPE
                 && action != StationAction.CANCEL_QUEUE
-                && usedRecipe instanceof CraftingRecipe
+                && usedRecipe instanceof final CraftingRecipe craftingRecipe
                 && checkConditions(onlineProfile)) {
-            final CraftingRecipe craftingRecipe = (CraftingRecipe) usedRecipe;
 
             final ItemStack craftedItem = craftingRecipe.getOutput().getItemStack(new FriendlyFeedbackProvider(FFPMMOItems.get()));
             if (isValidItem(craftedItem)) {

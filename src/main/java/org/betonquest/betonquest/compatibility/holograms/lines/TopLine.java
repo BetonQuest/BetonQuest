@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.holograms.lines;
 
-import lombok.Getter;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 
 import java.util.Arrays;
@@ -8,7 +7,6 @@ import java.util.Arrays;
 /**
  * Creates a new instance for TopLine.
  */
-@Getter
 public class TopLine extends AbstractLine {
     /**
      * Name of point. Must follow formatting <code>package.name</code>.
@@ -75,12 +73,12 @@ public class TopLine extends AbstractLine {
 
     @Override
     public String toString() {
-        return "TopLine{" +
-                "category='" + category + '\'' +
-                ", orderType=" + orderType +
-                ", linesAdded=" + linesAdded +
-                ", colors=" + Arrays.toString(colors) +
-                '}';
+        return "TopLine{"
+                + "category='" + category + '\''
+                + ", orderType=" + orderType
+                + ", linesAdded=" + linesAdded
+                + ", colors=" + Arrays.toString(colors)
+                + '}';
     }
 
     @Override

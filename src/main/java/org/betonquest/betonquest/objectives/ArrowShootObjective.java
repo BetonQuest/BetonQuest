@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.objectives;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -27,10 +27,14 @@ import org.bukkit.scheduler.BukkitRunnable;
  * Requires the player to shoot a target with a bow
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class ArrowShootObjective extends Objective implements Listener {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final CompoundLocation loc;
+
     private final VariableNumber range;
 
     public ArrowShootObjective(final Instruction instruction) throws InstructionParseException {
@@ -64,15 +68,11 @@ public class ArrowShootObjective extends Objective implements Listener {
                 @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
                 public void run() {
                     final Location arrowLocation = arrow.getLocation();
-                    try {
-                        final double pRange = range.getDouble(onlineProfile);
-                        if (arrowLocation.getWorld().equals(location.getWorld())
-                                && arrowLocation.distanceSquared(location) < pRange * pRange
-                                && checkConditions(onlineProfile)) {
-                            completeObjective(onlineProfile);
-                        }
-                    } catch (final QuestRuntimeException e) {
-                        LOG.warn(instruction.getPackage(), "Could not resolve range variable: " + e.getMessage(), e);
+                    final double pRange = range.getDouble(onlineProfile);
+                    if (arrowLocation.getWorld().equals(location.getWorld())
+                            && arrowLocation.distanceSquared(location) < pRange * pRange
+                            && checkConditions(onlineProfile)) {
+                        completeObjective(onlineProfile);
                     }
                 }
             }.runTask(BetonQuest.getInstance());

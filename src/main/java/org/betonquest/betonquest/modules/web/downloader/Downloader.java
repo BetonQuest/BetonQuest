@@ -3,7 +3,7 @@ package org.betonquest.betonquest.modules.web.downloader;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
-import lombok.CustomLog;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -35,37 +35,46 @@ import static java.nio.file.FileVisitResult.CONTINUE;
 /**
  * Downloads files from any public GitHub repository and extracts them to your QuestPackages folder.
  */
-@CustomLog(topic = "Downloader")
 @SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods"})
 public class Downloader implements Callable<Boolean> {
-
     /**
      * Values that are allowed as {@link #offsetPath}.
      * Currently, only {@code QuestPackages} and {@code QuestTemplates}
      */
     public static final List<String> ALLOWED_OFFSET_PATHS = List.of("QuestPackages", "QuestTemplates");
+
     /**
      * The http status code 400 - Bad Request
      */
     public static final int RESPONSE_400 = 400;
+
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create("Downloader");
+
     /**
      * Directory where downloaded repositories should be cached
      */
     private static final String CACHE_DIR = ".cache/downloader/";
+
     /**
      * Base URL of the GitHub refs RestAPI.
      * Namespace and ref must be replaced with actual values.
      */
     private static final String GITHUB_REFS_URL = "https://api.github.com/repos/{namespace}/git/{ref}";
+
     /**
      * Base url where the files can be downloaded.
      * Namespace and commit sha must be replaced with actual values
      */
     private static final String GITHUB_DOWNLOAD_URL = "https://github.com/{namespace}/archive/{sha}.zip";
+
     /**
      * Used to identify zip entries that are package.yml files
      */
     private static final String PACKAGE_YML = "package.yml";
+
     /**
      * The BetonQuest Data folder that contains all plugin configuration
      */

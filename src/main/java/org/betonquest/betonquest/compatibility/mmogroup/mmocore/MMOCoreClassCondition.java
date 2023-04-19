@@ -11,9 +11,10 @@ import java.util.List;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class MMOCoreClassCondition extends Condition {
-
     private final String targetClassName;
+
     private final boolean mustBeEqual;
+
     private int targetClassLevel = -1;
 
     public MMOCoreClassCondition(final Instruction instruction) throws InstructionParseException {

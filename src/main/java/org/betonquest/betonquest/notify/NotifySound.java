@@ -20,11 +20,17 @@ import java.util.Map;
 @SuppressWarnings("PMD.CommentRequired")
 class NotifySound {
     private final static String KEY_SOUND = "sound";
+
     private final static String KEY_SOUND_LOCATION = "soundlocation";
+
     private final static String KEY_SOUND_PLAYER_OFFSET = "soundplayeroffset";
+
     private final static String KEY_SOUND_CATEGORY = "soundcategory";
+
     private final static String KEY_SOUND_VOLUME = "soundvolume";
+
     private final static String KEY_SOUND_PITCH = "soundpitch";
+
     private final static String[] SOUND_OPTIONS = {KEY_SOUND_LOCATION, KEY_SOUND_PLAYER_OFFSET, KEY_SOUND_CATEGORY, KEY_SOUND_VOLUME, KEY_SOUND_PITCH};
 
     private final SoundPlayer soundPlayer;

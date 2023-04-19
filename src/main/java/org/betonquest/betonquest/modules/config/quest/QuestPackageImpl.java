@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.modules.config.quest;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.api.bukkit.config.custom.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
@@ -16,7 +15,6 @@ import java.util.List;
 /**
  * This {@link QuestPackageImpl} represents all functionality based on a {@link Quest}.
  */
-@CustomLog
 public class QuestPackageImpl extends QuestTemplate implements QuestPackage {
     /**
      * Creates a new {@link QuestPackage}.  For more information see {@link Quest}.

@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.menu;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.VariableString;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -36,9 +36,12 @@ import java.util.Optional;
 /**
  * Class representing a menu
  */
-@CustomLog
 @SuppressWarnings({"PMD.GodClass", "PMD.ShortClassName", "PMD.CommentRequired"})
 public class Menu extends SimpleYMLSection implements Listener {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * The internal id of the menu
@@ -89,7 +92,7 @@ public class Menu extends SimpleYMLSection implements Listener {
     private final RPGMenu menu = BetonQuest.getInstance().getRpgMenu();
 
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.NPathComplexity", "PMD.CyclomaticComplexity",
-            "PMD.CognitiveComplexity"})
+            "PMD.CognitiveComplexity", "checkstyle:EmptyCatchBlock"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public Menu(final MenuID menuID) throws InvalidConfigurationException {
         super(menuID.getPackage(), menuID.getFullID(), menuID.getConfig());
@@ -131,7 +134,7 @@ public class Menu extends SimpleYMLSection implements Listener {
             protected QuestItem of() throws Missing, Invalid {
                 try {
                     return new QuestItem(new ItemID(Menu.this.pack, getString("bind")));
-                } catch (ObjectNotFoundException | InstructionParseException e) {
+                } catch (final ObjectNotFoundException | InstructionParseException e) {
                     throw new Invalid("bind", e);
                 }
             }
@@ -287,7 +290,6 @@ public class Menu extends SimpleYMLSection implements Listener {
     public int getHeight() {
         return height;
     }
-
 
     /**
      * @return the size of the menu in slots

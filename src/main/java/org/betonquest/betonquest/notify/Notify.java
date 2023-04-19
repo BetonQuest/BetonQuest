@@ -1,13 +1,13 @@
 package org.betonquest.betonquest.notify;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,9 +19,14 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public final class Notify {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+
     private static final Map<String, Map<String, String>> CATEGORY_SETTINGS = new HashMap<>();
+
     private static String defaultNotifyIO;
 
     private Notify() {
@@ -111,8 +116,8 @@ public final class Notify {
             if (clazz != null) {
                 try {
                     return clazz.getConstructor(QuestPackage.class, Map.class).newInstance(pack, categoryData);
-                } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException |
-                               InvocationTargetException exception) {
+                } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException
+                               | InvocationTargetException exception) {
                     throw new InstructionParseException("Couldn't load Notify IO '" + name + "': " + exception.getMessage(), exception);
                 }
             }

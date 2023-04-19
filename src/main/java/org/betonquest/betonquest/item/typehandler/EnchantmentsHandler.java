@@ -13,9 +13,10 @@ import java.util.Map;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class EnchantmentsHandler {
-
     private List<SingleEnchantmentHandler> checkers = new ArrayList<>();
+
     private Existence checkersE = Existence.WHATEVER;
+
     private boolean exact = true;
 
     public EnchantmentsHandler() {
@@ -78,10 +79,12 @@ public class EnchantmentsHandler {
     }
 
     private static class SingleEnchantmentHandler {
-
         private Enchantment type;
+
         private Existence existence = Existence.WHATEVER;
+
         private int level = 1;
+
         private Number number = Number.WHATEVER;
 
         public SingleEnchantmentHandler() {

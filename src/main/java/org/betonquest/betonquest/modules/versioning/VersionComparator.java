@@ -23,6 +23,7 @@ public class VersionComparator implements Comparator<Version>, Serializable {
      * The chosen {@link UpdateStrategy}
      */
     private final UpdateStrategy updateStrategy;
+
     /**
      * List of qualifiers in prioritized order
      */
@@ -106,10 +107,10 @@ public class VersionComparator implements Comparator<Version>, Serializable {
     }
 
     private int compareVersions(final Version current, final Version other) {
-        final int currentQualifier = current.hasQualifier() ? qualifiers.contains(current.getQualifier()) ?
-                qualifiers.indexOf(current.getQualifier()) : Integer.MIN_VALUE : Integer.MAX_VALUE;
-        final int otherQualifier = other.hasQualifier() ? qualifiers.contains(other.getQualifier()) ?
-                qualifiers.indexOf(other.getQualifier()) : Integer.MIN_VALUE : Integer.MAX_VALUE;
+        final int currentQualifier = current.hasQualifier() ? qualifiers.contains(current.getQualifier())
+                ? qualifiers.indexOf(current.getQualifier()) : Integer.MIN_VALUE : Integer.MAX_VALUE;
+        final int otherQualifier = other.hasQualifier() ? qualifiers.contains(other.getQualifier())
+                ? qualifiers.indexOf(other.getQualifier()) : Integer.MIN_VALUE : Integer.MAX_VALUE;
         final int currentBuildNumber = current.hasBuildNumber() ? current.getBuildNumber() : Integer.MAX_VALUE;
         final int otherBuildNumber = other.hasBuildNumber() ? other.getBuildNumber() : Integer.MAX_VALUE;
 

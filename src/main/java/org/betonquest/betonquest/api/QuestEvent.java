@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.api;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
@@ -23,21 +22,27 @@ import org.betonquest.betonquest.utils.PlayerConverter;
  * {@link BetonQuest#registerEvent(String, EventFactory, StaticEventFactory) registerEvent()} method.
  * </p>
  */
-@CustomLog
 public abstract class QuestEvent extends ForceSyncHandler<Void> {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * Stores the user-provided instruction for this event.
      */
     protected final Instruction instruction;
+
     /**
      * Stores conditions that must be met when firing this event.
      */
     protected final ConditionID[] conditions;
+
     /**
      * Whether the event is static.
      */
     protected boolean staticness;
+
     /**
      * Whether the event is persistent.
      */
@@ -93,7 +98,6 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
     protected String getFullId() {
         return instruction.getID().getFullID();
     }
-
 
     /**
      * Fires an event for the profile if it meets the event's conditions.

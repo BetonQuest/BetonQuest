@@ -11,19 +11,21 @@ import org.bukkit.Location;
  * Spawns an explosion in a given location and with given stats.
  */
 public class ExplosionEvent implements Event {
-
     /**
      * The location of the explosion.
      */
     private final CompoundLocation location;
+
     /**
      * The power of the explosion.
      */
     private final VariableNumber power;
+
     /**
      * Whether the explosion should set fire.
      */
     private final boolean setsFire;
+
     /**
      * Whether the explosion should break blocks.
      */

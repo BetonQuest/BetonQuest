@@ -9,12 +9,12 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang3.StringUtils;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
@@ -51,50 +51,84 @@ import java.util.stream.Stream;
 
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods",
         "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
-@CustomLog
 public class MenuConvIO extends ChatConvIO {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     // Thread safety
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
+
     /**
      * All players that are currently on cooldown are in this list.
      * The cooldown is used to prevent players from spamming through the conversation or skipping through it by accident.
      */
     private final List<Player> selectionCooldowns = new ArrayList<>();
+
     // Actions
     protected Map<CONTROL, ACTION> controls = new HashMap<>();
+
     protected String configControlCancel = "sneak";
+
     protected int oldSelectedOption;
+
     protected int selectedOption;
+
     protected AtomicBoolean started = new AtomicBoolean(false);
+
     protected AtomicBoolean ended = new AtomicBoolean(false);
+
     protected PacketAdapter packetAdapter;
+
     protected BukkitRunnable displayRunnable;
+
     protected boolean debounce;
+
     protected BaseComponent[] displayOutput;
+
     protected String formattedNpcName;
+
     protected String configControlSelect = "jump,left_click";
+
     // Configuration
     protected Integer configLineLength = 50;
+
     protected Integer configRefreshDelay = 180;
+
     protected String configNpcWrap = "&l &r".replace('&', '§');
+
     protected String configNpcText = "&l &r&f{npc_text}".replace('&', '§');
+
     protected String configNpcTextReset = "&f".replace('&', '§');
+
     protected String configOptionWrap = "&r&l &l &l &l &r".replace('&', '§');
+
     protected String configOptionText = "&l &l &l &l &r&8[ &b{option_text}&8 ]".replace('&', '§');
+
     protected String configOptionTextReset = "&b".replace('&', '§');
+
     protected String configOptionSelected = "&l &r &r&7»&r &8[ &f&n{option_text}&8 ]".replace('&', '§');
+
     protected String configOptionSelectedReset = "&f".replace('&', '§');
+
     protected String configOptionSelectedWrap = "&r&l &l &l &l &r&f&n".replace('&', '§');
+
     protected String configControlMove = "scroll,move";
+
     protected String configNpcNameType = "chat";
+
     protected String configNpcNameAlign = "center";
+
     protected String configNpcNameFormat = "&e{npc_name}&r".replace('&', '§');
+
     protected boolean configNpcNameNewlineSeparator = true;
+
     /**
      * The amount of ticks a player must wait before selecting another option after selecting an option.
      */
     private int configSelectionCooldown = 10;
+
     private ArmorStand stand;
 
     @SuppressWarnings("PMD.CognitiveComplexity")
@@ -338,8 +372,6 @@ public class MenuConvIO extends ChatConvIO {
                 optionLines = Arrays.stream(LocalChatPaginator.wordWrap(
                         Utils.replaceReset(StringUtils.stripEnd(optionText, "\n"), configOptionSelectedReset),
                         configLineLength, configOptionSelectedWrap)).toList();
-
-
             } else {
                 final String optionText = configOptionText
                         .replace("{option_text}", options.get(optionIndex + 1))

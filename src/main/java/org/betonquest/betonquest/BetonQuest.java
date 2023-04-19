@@ -2,7 +2,6 @@ package org.betonquest.betonquest;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.papermc.lib.PaperLib;
-import lombok.Getter;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
@@ -109,17 +108,11 @@ import org.betonquest.betonquest.events.CommandEvent;
 import org.betonquest.betonquest.events.CompassEvent;
 import org.betonquest.betonquest.events.FolderEvent;
 import org.betonquest.betonquest.events.GiveEvent;
-import org.betonquest.betonquest.events.GiveJournalEvent;
 import org.betonquest.betonquest.events.KillMobEvent;
-import org.betonquest.betonquest.events.LightningEvent;
-import org.betonquest.betonquest.events.NotifyAllEvent;
-import org.betonquest.betonquest.events.NotifyEvent;
 import org.betonquest.betonquest.events.ObjectiveEvent;
 import org.betonquest.betonquest.events.OpSudoEvent;
-import org.betonquest.betonquest.events.PickRandomEvent;
 import org.betonquest.betonquest.events.RunEvent;
 import org.betonquest.betonquest.events.SpawnMobEvent;
-import org.betonquest.betonquest.events.SudoEvent;
 import org.betonquest.betonquest.events.TakeEvent;
 import org.betonquest.betonquest.events.VariableEvent;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -146,7 +139,10 @@ import org.betonquest.betonquest.modules.schedule.impl.realtime.daily.RealtimeDa
 import org.betonquest.betonquest.modules.schedule.impl.realtime.daily.RealtimeDailyScheduler;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.modules.versioning.java.JREVersionPrinter;
+import org.betonquest.betonquest.modules.web.DownloadSource;
+import org.betonquest.betonquest.modules.web.TempFileDownloadSource;
 import org.betonquest.betonquest.modules.web.WebContentSource;
+import org.betonquest.betonquest.modules.web.WebDownloadSource;
 import org.betonquest.betonquest.modules.web.updater.UpdateDownloader;
 import org.betonquest.betonquest.modules.web.updater.UpdateSourceHandler;
 import org.betonquest.betonquest.modules.web.updater.Updater;
@@ -210,6 +206,7 @@ import org.betonquest.betonquest.quest.event.effect.EffectEventFactory;
 import org.betonquest.betonquest.quest.event.experience.ExperienceEventFactory;
 import org.betonquest.betonquest.quest.event.explosion.ExplosionEventFactory;
 import org.betonquest.betonquest.quest.event.hunger.HungerEventFactory;
+import org.betonquest.betonquest.quest.event.journal.GiveJournalEventFactory;
 import org.betonquest.betonquest.quest.event.journal.JournalEventFactory;
 import org.betonquest.betonquest.quest.event.kill.KillEventFactory;
 import org.betonquest.betonquest.quest.event.language.LanguageEventFactory;
@@ -217,14 +214,19 @@ import org.betonquest.betonquest.quest.event.legacy.FromClassQuestEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactory;
 import org.betonquest.betonquest.quest.event.legacy.QuestEventFactoryAdapter;
 import org.betonquest.betonquest.quest.event.lever.LeverEventFactory;
+import org.betonquest.betonquest.quest.event.lightning.LightningEventFactory;
 import org.betonquest.betonquest.quest.event.logic.IfElseEventFactory;
+import org.betonquest.betonquest.quest.event.notify.NotifyAllEventFactory;
+import org.betonquest.betonquest.quest.event.notify.NotifyEventFactory;
 import org.betonquest.betonquest.quest.event.party.PartyEventFactory;
 import org.betonquest.betonquest.quest.event.point.DeleteGlobalPointEventFactory;
 import org.betonquest.betonquest.quest.event.point.DeletePointEventFactory;
 import org.betonquest.betonquest.quest.event.point.GlobalPointEventFactory;
 import org.betonquest.betonquest.quest.event.point.PointEventFactory;
+import org.betonquest.betonquest.quest.event.random.PickRandomEventFactory;
 import org.betonquest.betonquest.quest.event.scoreboard.ScoreboardEventFactory;
 import org.betonquest.betonquest.quest.event.setblock.SetBlockEventFactory;
+import org.betonquest.betonquest.quest.event.sudo.SudoEventFactory;
 import org.betonquest.betonquest.quest.event.tag.TagGlobalEventFactory;
 import org.betonquest.betonquest.quest.event.tag.TagPlayerEventFactory;
 import org.betonquest.betonquest.quest.event.teleport.TeleportEventFactory;
@@ -242,6 +244,7 @@ import org.betonquest.betonquest.variables.NpcNameVariable;
 import org.betonquest.betonquest.variables.ObjectivePropertyVariable;
 import org.betonquest.betonquest.variables.PlayerNameVariable;
 import org.betonquest.betonquest.variables.PointVariable;
+import org.betonquest.betonquest.variables.RandomNumberVariable;
 import org.betonquest.betonquest.variables.TagVariable;
 import org.betonquest.betonquest.variables.VersionVariable;
 import org.bstats.bukkit.Metrics;
@@ -283,53 +286,67 @@ public class BetonQuest extends JavaPlugin {
     private final static int BSTATS_METRICS_ID = 551;
 
     private static final Map<String, Class<? extends Condition>> CONDITION_TYPES = new HashMap<>();
+
     private static final Map<String, Class<? extends Objective>> OBJECTIVE_TYPES = new HashMap<>();
+
     private static final Map<String, Class<? extends ConversationIO>> CONVERSATION_IO_TYPES = new HashMap<>();
+
     private static final Map<String, Class<? extends Interceptor>> INTERCEPTOR_TYPES = new HashMap<>();
+
     private static final Map<String, Class<? extends NotifyIO>> NOTIFY_IO_TYPES = new HashMap<>();
+
     private static final Map<String, Class<? extends Variable>> VARIABLE_TYPES = new HashMap<>();
+
     private static final Map<String, EventScheduling.ScheduleType<?>> SCHEDULE_TYPES = new HashMap<>();
+
     private static final Map<ConditionID, Condition> CONDITIONS = new HashMap<>();
+
     private static final Map<EventID, QuestEvent> EVENTS = new HashMap<>();
+
     private static final Map<ObjectiveID, Objective> OBJECTIVES = new HashMap<>();
+
     private static final Map<String, ConversationData> CONVERSATIONS = new HashMap<>();
+
     private static final Map<VariableID, Variable> VARIABLES = new HashMap<>();
+
     private static final Map<String, QuestCanceler> CANCELERS = new HashMap<>();
+
     /**
      * The BetonQuest Plugin instance.
-     * -- GETTER --
-     * Get the plugin's instance.
-     *
-     * @return The plugin's instance.
      */
-    @Getter
     private static BetonQuest instance;
+
     private static BetonQuestLogger log;
 
     /**
      * Map of registered events.
      */
     private final Map<String, QuestEventFactory> eventTypes = new HashMap<>();
+
     private final ConcurrentHashMap<Profile, PlayerData> playerDataMap = new ConcurrentHashMap<>();
+
     private String pluginTag;
+
     private ConfigurationFile config;
+
     /**
      * The adventure instance.
-     * -- GETTER --
-     * Get the adventure instance.
-     *
-     * @return The adventure instance.
      */
-    @Getter
     private BukkitAudiences adventure;
+
     private Database database;
+
     private boolean isMySQLUsed;
+
     @SuppressWarnings("PMD.DoNotUseThreads")
     private AsyncSaver saver;
+
     private Updater updater;
+
     private GlobalData globalData;
+
     private PlayerHider playerHider;
-    @Getter
+
     private RPGMenu rpgMenu;
 
     /**
@@ -341,6 +358,15 @@ public class BetonQuest extends JavaPlugin {
      * Cache for event schedulers, holding the last execution of an event
      */
     private LastExecutionCache lastExecutionCache;
+
+    /**
+     * Get the plugin's instance.
+     *
+     * @return The plugin's instance.
+     */
+    public static BetonQuest getInstance() {
+        return instance;
+    }
 
     public static boolean conditions(final Profile profile, final Collection<ConditionID> conditionIDs) {
         final ConditionID[] ids = new ConditionID[conditionIDs.size()];
@@ -371,7 +397,7 @@ public class BetonQuest extends JavaPlugin {
                     if (!condition.get()) {
                         return false;
                     }
-                } catch (InterruptedException | ExecutionException e) {
+                } catch (final InterruptedException | ExecutionException e) {
                     // Currently conditions that are forced to be sync cause every CompletableFuture.get() call
                     // to delay the check by one tick.
                     // If this happens during a shutdown, the check will be delayed past the last tick.
@@ -383,8 +409,8 @@ public class BetonQuest extends JavaPlugin {
                         return false;
                     }
                     if (PaperLib.isSpigot()) {
-                        log.warn("The following exception is only ok when the server is currently stopping." +
-                                "Switch to papermc.io to fix this.");
+                        log.warn("The following exception is only ok when the server is currently stopping."
+                                + "Switch to papermc.io to fix this.");
                     }
                     log.reportException(e);
                     return false;
@@ -439,7 +465,6 @@ public class BetonQuest extends JavaPlugin {
                         + conditionID + " for " + profile);
         return isMet;
     }
-
 
     /**
      * Fires an event for the {@link Profile} if it meets the event's conditions.
@@ -497,9 +522,7 @@ public class BetonQuest extends JavaPlugin {
             }
         }
         if (objective.containsPlayer(profile)) {
-            log.debug(objectiveID.getPackage(),
-                    profile + " already has the " + objectiveID +
-                            " objective");
+            log.debug(objectiveID.getPackage(), profile + " already has the " + objectiveID + " objective");
             return;
         }
         objective.newPlayer(profile);
@@ -637,6 +660,19 @@ public class BetonQuest extends JavaPlugin {
         return CANCELERS;
     }
 
+    /**
+     * Get the adventure instance.
+     *
+     * @return The adventure instance.
+     */
+    public BukkitAudiences getAdventure() {
+        return adventure;
+    }
+
+    public RPGMenu getRpgMenu() {
+        return rpgMenu;
+    }
+
     @NotNull
     public ConfigurationFile getPluginConfig() {
         return config;
@@ -672,7 +708,7 @@ public class BetonQuest extends JavaPlugin {
 
         try {
             config = ConfigurationFile.create(new File(getDataFolder(), "config.yml"), this, "config.yml");
-        } catch (InvalidConfigurationException | FileNotFoundException e) {
+        } catch (final InvalidConfigurationException | FileNotFoundException e) {
             log.error("Could not load the config.yml file!", e);
             return;
         }
@@ -798,7 +834,7 @@ public class BetonQuest extends JavaPlugin {
         registerEvent("journal", new JournalEventFactory(this, InstantSource.system(), getSaver()));
         registerNonStaticEvent("teleport", new TeleportEventFactory(getServer(), getServer().getScheduler(), this));
         registerEvent("explosion", new ExplosionEventFactory(getServer(), getServer().getScheduler(), this));
-        registerEvents("lightning", LightningEvent.class);
+        registerEvent("lightning", new LightningEventFactory(getServer(), getServer().getScheduler(), this));
         registerNonStaticEvent("point", new PointEventFactory());
         registerEvent("globalpoint", new GlobalPointEventFactory());
         registerEvents("give", GiveEvent.class);
@@ -818,8 +854,8 @@ public class BetonQuest extends JavaPlugin {
         registerNonStaticEvent("party", new PartyEventFactory());
         registerEvents("clear", ClearEvent.class);
         registerEvents("run", RunEvent.class);
-        registerEvents("givejournal", GiveJournalEvent.class);
-        registerEvents("sudo", SudoEvent.class);
+        registerNonStaticEvent("givejournal", new GiveJournalEventFactory(getServer(), getServer().getScheduler(), this));
+        registerNonStaticEvent("sudo", new SudoEventFactory(getServer(), getServer().getScheduler(), this));
         registerEvents("opsudo", OpSudoEvent.class);
         registerEvents("chestgive", ChestGiveEvent.class);
         registerEvent("chesttake", new ChestTakeEventFactory(getServer(), getServer().getScheduler(), this));
@@ -832,10 +868,10 @@ public class BetonQuest extends JavaPlugin {
         registerEvent("if", new IfElseEventFactory());
         registerEvents("variable", VariableEvent.class);
         registerNonStaticEvent("language", new LanguageEventFactory(this));
-        registerEvents("pickrandom", PickRandomEvent.class);
+        registerEvent("pickrandom", new PickRandomEventFactory());
         registerNonStaticEvent("experience", new ExperienceEventFactory(getServer(), getServer().getScheduler(), this));
-        registerEvents("notify", NotifyEvent.class);
-        registerEvents("notifyall", NotifyAllEvent.class);
+        registerNonStaticEvent("notify", new NotifyEventFactory(getServer(), getServer().getScheduler(), this));
+        registerEvent("notifyall", new NotifyAllEventFactory(getServer(), getServer().getScheduler(), this));
         registerEvents("chat", ChatEvent.class);
         registerEvents("freeze", FreezeEvent.class);
         registerNonStaticEvent("burn", new BurnEventFactory(getServer(), getServer().getScheduler(), this));
@@ -909,6 +945,7 @@ public class BetonQuest extends JavaPlugin {
         registerVariable("version", VersionVariable.class);
         registerVariable("location", LocationVariable.class);
         registerVariable("math", MathVariable.class);
+        registerVariable("randomnumber", RandomNumberVariable.class);
 
         registerScheduleType("realtime-daily", RealtimeDailySchedule.class, new RealtimeDailyScheduler(lastExecutionCache));
         registerScheduleType("realtime-cron", RealtimeCronSchedule.class, new RealtimeCronScheduler(lastExecutionCache));
@@ -942,7 +979,7 @@ public class BetonQuest extends JavaPlugin {
             Class.forName("org.apache.logging.log4j.core.Filter");
             final Logger coreLogger = (Logger) LogManager.getRootLogger();
             coreLogger.addFilter(new AnswerFilter());
-        } catch (ClassNotFoundException | NoClassDefFoundError e) {
+        } catch (final ClassNotFoundException | NoClassDefFoundError e) {
             log.warn("Could not disable /betonquestanswer logging", e);
         }
 
@@ -963,11 +1000,11 @@ public class BetonQuest extends JavaPlugin {
     }
 
     private void setupUpdater() {
-        final Version pluginVersion = new Version(this.getDescription().getVersion());
         final File updateFolder = getServer().getUpdateFolderFile();
-        final File tempFile = new File(updateFolder, this.getFile().getName() + ".temp");
-        final File finalFile = new File(updateFolder, this.getFile().getName());
-        final UpdateDownloader updateDownloader = new UpdateDownloader(new File(".").toURI(), tempFile, finalFile);
+        final File file = new File(updateFolder, this.getFile().getName());
+        final DownloadSource downloadSource = new TempFileDownloadSource(new WebDownloadSource());
+        final UpdateDownloader updateDownloader = new UpdateDownloader(downloadSource, file);
+
         final GitHubReleaseSource gitHubReleaseSource = new GitHubReleaseSource("https://api.github.com/repos/BetonQuest/BetonQuest",
                 new WebContentSource(GitHubReleaseSource.HTTP_CODE_HANDLER));
         final NexusReleaseAndDevelopmentSource nexusReleaseAndDevelopmentSource = new NexusReleaseAndDevelopmentSource("https://betonquest.org/nexus",
@@ -975,6 +1012,8 @@ public class BetonQuest extends JavaPlugin {
         final List<ReleaseUpdateSource> releaseHandlers = List.of(gitHubReleaseSource, nexusReleaseAndDevelopmentSource);
         final List<DevelopmentUpdateSource> developmentHandlers = List.of(nexusReleaseAndDevelopmentSource);
         final UpdateSourceHandler updateSourceHandler = new UpdateSourceHandler(releaseHandlers, developmentHandlers);
+
+        final Version pluginVersion = new Version(this.getDescription().getVersion());
         updater = new Updater(config, pluginVersion, updateSourceHandler, updateDownloader, this,
                 getServer().getScheduler(), InstantSource.system());
     }

@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.config;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Journal;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
@@ -31,19 +31,32 @@ import java.util.Map;
  * Represents a quest canceler, which cancels quests for players.
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidLiteralsInIfCondition"})
-@CustomLog
 public class QuestCanceler {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final String[] tags;
+
     private final String[] points;
+
     private final String[] journal;
+
     private final ConditionID[] conditions;
+
     private final EventID[] events;
+
     private final ObjectiveID[] objectives;
+
     private final Map<String, String> name = new HashMap<>();
+
     private final QuestPackage pack;
+
     private final String cancelerID;
+
     private final String item;
+
     private final Location loc;
 
     /**
@@ -284,7 +297,7 @@ public class QuestCanceler {
             try {
                 final ItemID itemID = new ItemID(pack, item);
                 stack = new QuestItem(itemID).generate(1);
-            } catch (InstructionParseException | ObjectNotFoundException e) {
+            } catch (final InstructionParseException | ObjectNotFoundException e) {
                 LOG.warn("Could not load cancel button: " + e.getMessage(), e);
             }
         }

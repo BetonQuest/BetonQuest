@@ -15,10 +15,12 @@ import java.util.Date;
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidDuplicateLiterals"})
 public class RealTimeCondition extends Condition {
-
     private final int hoursMin;
+
     private final int minutesMin;
+
     private final int hoursMax;
+
     private final int minutesMax;
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AvoidLiteralsInIfCondition"})

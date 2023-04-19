@@ -17,10 +17,12 @@ public class VelocityEvent implements Event {
      * The vector of the direction and speed
      */
     private final VectorData vector;
+
     /**
      * Sets in which direction the vector is directed
      */
     private final VectorDirection direction;
+
     /**
      * Sets how the vector should get merged with the player-velocity
      */
@@ -36,7 +38,6 @@ public class VelocityEvent implements Event {
         this.direction = direction;
         this.modification = modification;
     }
-
 
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {

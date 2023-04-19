@@ -40,7 +40,6 @@ class RealtimeDailyScheduleTest extends ScheduleBaseTest {
         lenient().when(section.getString("time")).thenReturn("22:00");
     }
 
-
     @Test
     @Override
     @SuppressWarnings("PMD.JUnit5TestShouldBePackagePrivate")
@@ -48,7 +47,6 @@ class RealtimeDailyScheduleTest extends ScheduleBaseTest {
         final RealtimeDailySchedule schedule = createSchedule();
         assertEquals(LocalTime.of(22, 0), schedule.getTimeToRun(), "Returned time should be correct");
     }
-
 
     @Test
     void testScheduleInvalidLoad() {

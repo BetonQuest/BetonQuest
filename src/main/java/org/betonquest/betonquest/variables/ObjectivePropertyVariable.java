@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.variables;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -14,10 +14,14 @@ import org.betonquest.betonquest.id.ObjectiveID;
  * Resolves to a specified property of an objective.
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class ObjectivePropertyVariable extends Variable {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final String propertyName;
+
     private final ObjectiveID objective;
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")

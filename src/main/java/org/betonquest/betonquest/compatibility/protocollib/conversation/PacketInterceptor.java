@@ -36,9 +36,13 @@ public class PacketInterceptor implements Interceptor, Listener {
     private static final String MESSAGE_PASSTHROUGH_TAG = "§5§f§6§2§7§1§5§f";
 
     protected final Conversation conv;
+
     protected final Player player;
+
     private final List<PacketContainer> messages;
+
     private final PacketAdapter packetAdapter;
+
     private int baseComponentIndex = -1;
 
     @SuppressWarnings("PMD.CognitiveComplexity")
@@ -112,7 +116,6 @@ public class PacketInterceptor implements Interceptor, Listener {
         final BaseComponent[] components = ArrayUtils.addAll(new TextComponent[]{new TextComponent(MESSAGE_PASSTHROUGH_TAG)}, message);
         player.spigot().sendMessage(components);
     }
-
 
     @Override
     public void end() {

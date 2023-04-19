@@ -26,10 +26,12 @@ public final class ChatFormatter extends Formatter {
      * The name of the plugin that is the source of this formatter.
      */
     private final String pluginName;
+
     /**
      * The method how to display the plugin name.
      */
     private final PluginDisplayMethod displayMethod;
+
     /**
      * The short name or tag of this plugin or null.
      */

@@ -24,6 +24,7 @@ public class QuestTemplate extends Quest {
      * A list of all templates that are applied to this {@link QuestTemplate}.
      */
     private final Set<String> templates;
+
     /**
      * The final {@link MultiConfiguration} that represents this {@link QuestTemplate}.
      */

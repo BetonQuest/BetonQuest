@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.menu;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
@@ -30,12 +30,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-@CustomLog
 @SuppressWarnings("PMD.CommentRequired")
 public class RPGMenu {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final Map<MenuID, Menu> menus;
+
     private RPGMenuConfig config;
+
     private RPGMenuCommand pluginCommand;
 
     public RPGMenu() {
@@ -122,7 +127,7 @@ public class RPGMenu {
         final File config = new File(BetonQuest.getInstance().getDataFolder(), "menuConfig.yml");
         try {
             ConfigAccessor.create(config, BetonQuest.getInstance(), "menuConfig.yml");
-        } catch (InvalidConfigurationException | FileNotFoundException e) {
+        } catch (final InvalidConfigurationException | FileNotFoundException e) {
             LOG.warn(e.getMessage(), e);
         }
     }
@@ -249,9 +254,10 @@ public class RPGMenu {
      * Class containing all information about a reload
      */
     public static class ReloadInformation {
-
         private final List<String> errorMessages = new ArrayList<>();
+
         private int loaded;
+
         private ReloadResult result = ReloadResult.FULL_SUCCESS;
 
         private void addError(final Throwable throwable) {

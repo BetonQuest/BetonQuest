@@ -1,12 +1,10 @@
 package org.betonquest.betonquest.compatibility.holograms.lines;
 
-import lombok.Getter;
 import org.betonquest.betonquest.compatibility.holograms.BetonHologram;
 
 /**
  * Displays a simple text line with optional color codes
  */
-@Getter
 public class TextLine extends AbstractLine {
     /**
      * Text to be displayed.

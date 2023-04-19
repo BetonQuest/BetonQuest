@@ -23,6 +23,7 @@ public final class HologramRunner {
      * ArrayList of all holograms of a single runner.
      */
     private final List<HologramWrapper> holograms = new ArrayList<>();
+
     /**
      * Times the periodic execution of content and visibility refresh.
      */

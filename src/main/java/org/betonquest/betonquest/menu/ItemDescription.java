@@ -16,8 +16,8 @@ import java.util.List;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class ItemDescription {
-
     private final QuestPackage pack;
+
     private final List<Line> lines;
 
     public ItemDescription(final QuestPackage pack, final Collection<String> content) throws InstructionParseException {
@@ -67,6 +67,7 @@ public class ItemDescription {
     private class Line {
         @SuppressWarnings("PMD.AvoidFieldNameMatchingTypeName")
         private final String line;
+
         private final List<String> variables;
 
         public Line(final String line) throws InstructionParseException {

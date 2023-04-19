@@ -34,10 +34,12 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
      * Exception message for deprecated methods.
      */
     private final static String MESSAGE_DEPRECATED = "Not Implemented because it is already deprecated!";
+
     /**
      * Exception message for rarely used methods.
      */
     private final static String MESSAGE_UNUSED = "Not Implemented because it is rarely used!";
+
     /**
      * Exception message for methods that have a better replacement method.
      */
@@ -47,23 +49,28 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
      * The thread pool for the execution of all threads.
      */
     private final ThreadPoolExecutor pool;
+
     /**
      * List of all scheduled tasks.
      */
     private final TaskList scheduledTasks;
+
     /**
      * Deque containing all exceptions that occurred during async execution in chronological order.
      */
     private final Deque<ExecutionException> asyncExceptions;
+
     /**
      * List of all {@link Future} {@link BukkitTask}s that have been executed async with the
      * {@link ThreadPoolExecutor#execute(Runnable)} method.
      */
     private final List<Future<?>> asyncTasks;
+
     /**
      * The current tick that should be executed.
      */
     private long currentTick;
+
     /**
      * The task id for the next task.
      */
@@ -80,8 +87,7 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
     }
 
     private static Runnable wrapTask(final ScheduledTask task) {
-        return () ->
-        {
+        return () -> {
             task.setRunning(true);
             task.run();
             task.setRunning(false);
@@ -451,7 +457,6 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
         private void addTask(final @NotNull ScheduledTask task) {
             tasks.put(task.getTaskId(), task);
         }
-
 
         /**
          * Gets a list of all current tasks.

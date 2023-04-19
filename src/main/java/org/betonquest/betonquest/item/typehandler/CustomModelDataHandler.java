@@ -6,8 +6,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class CustomModelDataHandler {
-
     private QuestItem.Existence existence = QuestItem.Existence.WHATEVER;
+
     private int modelData;
 
     public CustomModelDataHandler() {

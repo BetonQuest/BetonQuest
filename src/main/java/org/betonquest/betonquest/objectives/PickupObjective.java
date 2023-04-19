@@ -23,7 +23,8 @@ public class PickupObjective extends CountingObjective implements Listener {
     public PickupObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "items_to_pickup");
         pickupItems = instruction.getItemList();
-        targetAmount = instruction.getInt(instruction.getOptional("amount"), 1);
+        targetAmount = instruction.getVarNum(instruction.getOptional("amount", "1"));
+        preCheckAmountNotLessThanOne(targetAmount);
     }
 
     @EventHandler(ignoreCancelled = true)

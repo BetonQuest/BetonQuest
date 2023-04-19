@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.compatibility.citizens;
 
-import lombok.CustomLog;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.ai.event.NavigationCancelEvent;
 import net.citizensnpcs.api.ai.event.NavigationCompleteEvent;
@@ -10,6 +9,7 @@ import net.citizensnpcs.api.event.SpawnReason;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.QuestEvent;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
@@ -31,18 +31,28 @@ import java.util.Map;
  * Moves the NPC to a specified location, optionally firing doneEvents when it's done.
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class NPCMoveEvent extends QuestEvent implements Listener {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private static final Map<Integer, NPCMoveEvent> MOVING_NPCS = new HashMap<>();
 
     private final List<CompoundLocation> locations;
+
     private final int npcId;
+
     private final int waitTicks;
+
     private final EventID[] doneEvents;
+
     private final EventID[] failEvents;
+
     private final boolean blockConversations;
+
     private ListIterator<CompoundLocation> locationsIterator;
+
     private Profile currentProfile;
 
     public NPCMoveEvent(final Instruction instruction) throws InstructionParseException {

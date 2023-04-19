@@ -1,18 +1,20 @@
 package org.betonquest.betonquest;
 
-import lombok.CustomLog;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 /**
  * Represents a number which might also be a variable.
  */
-@CustomLog
 public class VariableNumber {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * The constant value of this variable number if no variable was set.
@@ -112,9 +114,8 @@ public class VariableNumber {
      *
      * @param profile the {@link Profile} of the player for variable resolving
      * @return the double represented by this variable number
-     * @throws QuestRuntimeException when the variable does not resolve to a number
      */
-    public double getDouble(final Profile profile) throws QuestRuntimeException {
+    public double getDouble(final Profile profile) {
         return resolveVariable(profile);
     }
 
@@ -133,6 +134,16 @@ public class VariableNumber {
             }
             return parsed;
         }
+    }
+
+    /**
+     * To check if a value will be guarantied not zero or less
+     *
+     * @return true if a variable is set or the constant value is greater zero,
+     * false if no variable is set and the constant value is zero or less
+     */
+    public boolean isExplicitLessThanOne() {
+        return variable == null && number < 1;
     }
 
     @Override

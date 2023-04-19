@@ -13,6 +13,7 @@ import java.util.Locale;
 public class RideCondition extends Condition {
 
     private final boolean any;
+
     private EntityType vehicle;
 
     public RideCondition(final Instruction instruction) throws InstructionParseException {

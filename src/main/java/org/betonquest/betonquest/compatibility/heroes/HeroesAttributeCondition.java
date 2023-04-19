@@ -16,6 +16,7 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 @SuppressWarnings("PMD.CommentRequired")
 public class HeroesAttributeCondition extends Condition {
     private final AttributeType attribute;
+
     private final VariableNumber level;
 
     public HeroesAttributeCondition(final Instruction instruction) throws InstructionParseException {

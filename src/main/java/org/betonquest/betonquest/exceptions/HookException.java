@@ -1,6 +1,3 @@
-/*
- * Created on 01.07.2018.
- */
 package org.betonquest.betonquest.exceptions;
 
 import org.bukkit.plugin.Plugin;
@@ -21,7 +18,6 @@ public class HookException extends Exception {
      * The plugin
      */
     private final Plugin plugin;
-
 
     /**
      * Constructs a new exception related to a plugin

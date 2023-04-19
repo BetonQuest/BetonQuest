@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.api;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.modules.logger.BetonQuestLoggerImpl;
 import org.bukkit.Bukkit;
@@ -12,8 +11,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.logging.Level;
 
 /**
- * This is the BetonQuest log facade for manual usage or for the {@link CustomLog} annotation for usage with Lombok.
- * <p>
  * This facade uses the {@link PluginLogger} from the {@link Plugin#getLogger()} method.
  * It registers a new child logger for each class it's used in.
  * <p>
@@ -21,13 +18,49 @@ import java.util.logging.Level;
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public interface BetonQuestLogger {
-
     /**
-     * Creates a logger.
+     * Creates a logger and determines the class automatically.
+     * You can use the {@link BetonQuestLogger#create(Class)} method, to create a logger for a specific class.
      * <p>
      * Use this method to create a logger without a topic.
+     *
+     * @return A {@link BetonQuestLogger} implementation.
+     * @throws IllegalStateException Thrown if this is called from a class, that extends {@link Plugin}
+     */
+    static BetonQuestLogger create() {
+        final Class<?> clazz = getCallingClass();
+        return create(clazz);
+    }
+
+    /**
+     * Creates a logger and determines the class automatically.
+     * You can use the {@link BetonQuestLogger#create(Class, String)} method, to create a logger for a specific class.
      * <p>
-     * This method is also used by Lombok.
+     * Use this method to create a logger with a topic.
+     *
+     * @param topic The optional topic of the logger.
+     * @return A {@link BetonQuestLogger} implementation.
+     * @throws IllegalStateException Thrown if this is called from a class, that extends {@link Plugin}
+     */
+    static BetonQuestLogger create(final String topic) {
+        final Class<?> clazz = getCallingClass();
+        return create(clazz, topic);
+    }
+
+    @NotNull
+    private static Class<?> getCallingClass() {
+        try {
+            return Class.forName(Thread.currentThread().getStackTrace()[3].getClassName());
+        } catch (final ClassNotFoundException e) {
+            throw new IllegalStateException("It was not possible to create a logger for the current class!", e);
+        }
+    }
+
+    /**
+     * Creates a logger for a given class.
+     * You can also use the {@link BetonQuestLogger#create()} method, then the class is automatically determined.
+     * <p>
+     * Use this method to create a logger without a topic.
      *
      * @param clazz The class to create a logger for.
      * @return A {@link BetonQuestLogger} implementation.
@@ -38,11 +71,10 @@ public interface BetonQuestLogger {
     }
 
     /**
-     * Creates a logger.
+     * Creates a logger for a given class.
+     * You can also use the {@link BetonQuestLogger#create(String)} method, then the class is automatically determined.
      * <p>
      * Use this method to create a logger with a topic.
-     * <p>
-     * This method is used by Lombok.
      *
      * @param clazz The class to create a logger for.
      * @param topic The optional topic of the logger.
@@ -52,7 +84,7 @@ public interface BetonQuestLogger {
     @SuppressWarnings("PMD.UseProperClassLoader")
     static BetonQuestLogger create(@NotNull final Class<?> clazz, @Nullable final String topic) {
         if (Plugin.class.isAssignableFrom(clazz)) {
-            throw new IllegalStateException("It is not allowed to use the '@CustomLog' annotation from the class '"
+            throw new IllegalStateException("It is not allowed to use this create method from the class '"
                     + clazz.getName() + "' which directly or indirectly extends 'org.bukkit.plugin.Plugin'!");
         }
         for (final Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
@@ -69,8 +101,8 @@ public interface BetonQuestLogger {
      * Creates a logger.
      * <p>
      * Use this method to create a logger for the {@link Plugin} class without a topic.
-     * For other classes use the {@link BetonQuestLogger#create(Class)}
-     * or {@link BetonQuestLogger#create(Class, String)} method.
+     * For other classes use the {@link BetonQuestLogger#create()}, {@link BetonQuestLogger#create(String)},
+     * {@link BetonQuestLogger#create(Class)} or {@link BetonQuestLogger#create(Class, String)} method.
      *
      * @param plugin The plugin which is used for logging.
      * @return A {@link BetonQuestLogger} implementation.
@@ -83,8 +115,8 @@ public interface BetonQuestLogger {
      * Creates a logger.
      * <p>
      * Use this method to create a logger for the {@link Plugin} class without a topic.
-     * For other classes use the {@link BetonQuestLogger#create(Class)}
-     * or {@link BetonQuestLogger#create(Class, String)} method.
+     * For other classes use the {@link BetonQuestLogger#create()}, {@link BetonQuestLogger#create(String)},
+     * {@link BetonQuestLogger#create(Class)} or {@link BetonQuestLogger#create(Class, String)} method.
      *
      * @param plugin The plugin which is used for logging.
      * @param topic  The optional topic of the logger.

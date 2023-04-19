@@ -1,10 +1,10 @@
 package org.betonquest.betonquest.compatibility.citizens;
 
 import de.slikey.effectlib.util.DynamicLocation;
-import lombok.CustomLog;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.compatibility.effectlib.EffectLibIntegrator;
@@ -30,14 +30,22 @@ import java.util.UUID;
  * Displays a particle above NPCs with conversations.
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class CitizensParticle extends BukkitRunnable {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private static CitizensParticle instance;
+
     private final Map<UUID, Map<Integer, Effect>> profiles = new HashMap<>();
+
     private final List<Effect> effects = new ArrayList<>();
+
     private final boolean enabled;
+
     private int interval = 100;
+
     private int tick;
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.AssignmentToNonFinalStatic", "PMD.CognitiveComplexity"})
@@ -63,8 +71,8 @@ public class CitizensParticle extends BukkitRunnable {
             // load the condition check interval
             interval = section.getInt("check_interval", 100);
             if (interval <= 0) {
-                LOG.warn(pack, "Could not load npc effects of package " + pack.getQuestPath() + ": " +
-                        "Check interval must be bigger than 0.");
+                LOG.warn(pack, "Could not load npc effects of package " + pack.getQuestPath() + ": "
+                        + "Check interval must be bigger than 0.");
                 enabled = false;
                 return;
             }
@@ -89,8 +97,8 @@ public class CitizensParticle extends BukkitRunnable {
                 // load the interval between animations
                 effect.interval = settings.getInt("interval", 100);
                 if (effect.interval <= 0) {
-                    LOG.warn(pack, "Could not load npc effect " + key + " in package " + pack.getQuestPath() + ": " +
-                            "Effect interval must be bigger than 0.");
+                    LOG.warn(pack, "Could not load npc effect " + key + " in package " + pack.getQuestPath() + ": "
+                            + "Effect interval must be bigger than 0.");
                     continue;
                 }
 
@@ -219,8 +227,8 @@ public class CitizensParticle extends BukkitRunnable {
                 final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
 
                 // skip if there are no such NPC or it's not spawned or not visible
-                if (npc == null || !npc.getStoredLocation().getWorld().equals(onlineProfile.getPlayer().getWorld()) ||
-                        NPCHider.getInstance() != null && NPCHider.getInstance().isInvisible(onlineProfile, npc)) {
+                if (npc == null || !npc.getStoredLocation().getWorld().equals(onlineProfile.getPlayer().getWorld())
+                        || NPCHider.getInstance() != null && NPCHider.getInstance().isInvisible(onlineProfile, npc)) {
                     continue;
                 }
 
@@ -242,11 +250,14 @@ public class CitizensParticle extends BukkitRunnable {
 
     @SuppressWarnings("PMD.ImmutableField")
     private static class Effect {
-
         private String name;
+
         private int interval;
+
         private Set<Integer> npcs;
+
         private List<ConditionID> conditions;
+
         private ConfigurationSection settings;
 
         public Effect() {

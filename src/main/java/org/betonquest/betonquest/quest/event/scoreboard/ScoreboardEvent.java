@@ -13,15 +13,16 @@ import org.bukkit.scoreboard.Scoreboard;
  * Adds/removes/multiplies/divides scores on scoreboards.
  */
 public class ScoreboardEvent implements Event {
-
     /**
      * The name of the objective.
      */
     private final String objective;
+
     /**
      * The number to modify the score by.
      */
     private final VariableNumber count;
+
     /**
      * The modification to apply to the score.
      */

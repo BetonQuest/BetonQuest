@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.compatibility.holograms;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.compatibility.holograms.lines.AbstractLine;
 import org.betonquest.betonquest.compatibility.holograms.lines.ItemLine;
@@ -14,6 +14,7 @@ import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.ItemID;
 import org.betonquest.betonquest.item.QuestItem;
+import org.betonquest.betonquest.variables.GlobalVariableResolver;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,13 +27,16 @@ import java.util.regex.Pattern;
 /**
  * Hides and shows holograms to players, based on conditions.
  */
-@CustomLog
 public abstract class HologramLoop {
     /**
      * Pattern to match the correct syntax for the top line content
      */
     protected static final Pattern TOP_LINE_VALIDATOR = Pattern.compile("^top:([\\w.]+);(\\w+);(\\d+);?[&§]?([\\da-f])?;?[&§]?([\\da-f])?;?[&§]?([\\da-f])?;?[&§]?([\\da-f])?$", Pattern.CASE_INSENSITIVE);
 
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     /**
      * Creates a new instance of the loop.
@@ -71,9 +75,15 @@ public abstract class HologramLoop {
     }
 
     private HologramWrapper initializeHolograms(final int defaultInterval, final QuestPackage pack, final ConfigurationSection section) throws InstructionParseException {
-        final List<String> lines = section.getStringList("lines");
-        final String rawConditions = section.getString("conditions");
-        final int checkInterval = section.getInt("check_interval", defaultInterval);
+        final String checkIntervalString = GlobalVariableResolver.resolve(pack, section.getString("check_interval"));
+        final int checkInterval;
+        try {
+            checkInterval = checkIntervalString != null ? Integer.parseInt(checkIntervalString) : defaultInterval;
+        } catch (final NumberFormatException e) {
+            throw new InstructionParseException("Could not parse check interval", e);
+        }
+        final List<String> lines = GlobalVariableResolver.resolve(pack, section.getStringList("lines"));
+        final String rawConditions = GlobalVariableResolver.resolve(pack, section.getString("conditions"));
 
         final ConditionID[] conditions = parseConditions(pack, rawConditions);
 
@@ -141,7 +151,7 @@ public abstract class HologramLoop {
             int stackSize;
             try {
                 stackSize = Integer.parseInt(args[1]);
-            } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            } catch (final NumberFormatException | ArrayIndexOutOfBoundsException e) {
                 stackSize = 1;
             }
             return new ItemLine(new QuestItem(itemID).generate(stackSize));

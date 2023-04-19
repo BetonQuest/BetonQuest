@@ -22,7 +22,6 @@ public class MooncycleCondition extends Condition {
         this.thisCycle = instruction.getVarNum();
     }
 
-
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
         final Player player = profile.getOnlineProfile().get().getPlayer();

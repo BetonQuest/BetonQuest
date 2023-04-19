@@ -73,10 +73,10 @@ class LastExecutionCacheTest {
             configAccessor.when(() -> ConfigAccessor.create(any(File.class))).thenThrow(new FileNotFoundException("FileNotFound"));
             files.when(() -> Files.exists(any(Path.class))).thenReturn(true);
             lastExecutionCache = new LastExecutionCache(new File("."));
-            validator.assertLogEntry(Level.SEVERE, "(cache) Error while loading schedule cache: FileNotFound");
+            validator.assertLogEntry(Level.SEVERE, "(Cache) Error while loading schedule cache: FileNotFound");
             final Optional<Instant> result = lastExecutionCache.getLastExecutionTime(scheduleID);
             assertEquals(Optional.empty(), result, "result should be empty");
-            validator.assertLogEntry(Level.SEVERE, "(cache) Schedule cache not present!");
+            validator.assertLogEntry(Level.SEVERE, "(Cache) Schedule cache not present!");
         }
     }
 
@@ -86,7 +86,7 @@ class LastExecutionCacheTest {
         when(scheduleID.getFullID()).thenReturn("test-package.testCacheIOException");
         when(cacheAccessor.save()).thenThrow(new IOException("ioexception"));
         lastExecutionCache.cacheExecutionTime(scheduleID, Instant.parse("1970-01-01T00:00:00Z"));
-        validator.assertLogEntry(Level.SEVERE, "(cache) Could not save schedule cache: ioexception");
+        validator.assertLogEntry(Level.SEVERE, "(Cache) Could not save schedule cache: ioexception");
     }
 
     @Test
@@ -94,7 +94,7 @@ class LastExecutionCacheTest {
     void testReloadIOException(final LogValidator validator) throws IOException {
         when(cacheAccessor.reload()).thenThrow(new IOException("ioexception"));
         lastExecutionCache.reload();
-        validator.assertLogEntry(Level.SEVERE, "(cache) Could not reload schedule cache: ioexception");
+        validator.assertLogEntry(Level.SEVERE, "(Cache) Could not reload schedule cache: ioexception");
     }
 
     @Test

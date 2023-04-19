@@ -16,10 +16,12 @@ import java.util.List;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class MMOItemsHandCondition extends Condition {
-
     private final Type itemType;
+
     private final String itemID;
+
     private final boolean offhand;
+
     private int amount = 1;
 
     public MMOItemsHandCondition(final Instruction instruction) throws InstructionParseException {

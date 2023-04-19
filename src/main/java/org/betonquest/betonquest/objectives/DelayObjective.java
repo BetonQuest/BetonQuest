@@ -1,14 +1,13 @@
 package org.betonquest.betonquest.objectives;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
@@ -28,11 +27,16 @@ import java.util.Map.Entry;
  * will be completed as soon as the time is up and he logs in again.
  */
 @SuppressWarnings("PMD.CommentRequired")
-@CustomLog
 public class DelayObjective extends Objective {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final int interval;
+
     private VariableNumber delay;
+
     private BukkitTask runnable;
 
     public DelayObjective(final Instruction instruction) throws InstructionParseException {
@@ -114,7 +118,7 @@ public class DelayObjective extends Objective {
         try {
             final double time = delay.getDouble(profile);
             millis = timeToMilliSeconds(time);
-        } catch (final InstructionParseException | QuestRuntimeException e) {
+        } catch (final InstructionParseException e) {
             LOG.warn("Error in delay objective '" + instruction.getID() + "': " + e.getMessage());
         }
         return Double.toString(new Date().getTime() + millis);
@@ -154,7 +158,6 @@ public class DelayObjective extends Objective {
         final String seconds = buildTimeDescription(secondsWord, secondsWordSingular, duration.toSecondsPart());
         return days + hours + minutes + seconds;
     }
-
 
     private String buildTimeDescription(final String timeUnitWord, final String timeUnitSingularWord, final long timeAmount) {
         return timeAmount >= 1 ? timeAmount + " " + (timeAmount == 1 ? timeUnitSingularWord : timeUnitWord + " ") : "";

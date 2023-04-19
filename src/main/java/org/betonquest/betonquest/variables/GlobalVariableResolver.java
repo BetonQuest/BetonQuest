@@ -1,12 +1,14 @@
 package org.betonquest.betonquest.variables;
 
-import lombok.CustomLog;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
 import org.betonquest.betonquest.id.GlobalVariableID;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * This class resolves all global variables in a string.
@@ -18,13 +20,16 @@ import java.util.regex.Pattern;
  * <p>
  * The variables are defined in the {@code variables} section.
  */
-@CustomLog
 public final class GlobalVariableResolver {
-
     /**
      * A regex pattern to match global variables.
      */
     public static final Pattern GLOBAL_VARIABLE_PATTERN = Pattern.compile("\\$(?<variable>[^ $\\s]+)\\$");
+
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private GlobalVariableResolver() {
     }
@@ -58,5 +63,17 @@ public final class GlobalVariableResolver {
             LOG.warn(pack, e.getMessage(), e);
             return variable + "(not found)";
         }
+    }
+
+    /**
+     * Resolves all global variables recursively in the given strings
+     * with the {@link #resolve(QuestPackage, String)} method.
+     *
+     * @param pack   the package in which the input strings are defined
+     * @param inputs the inputs string
+     * @return the strings with all global variables resolved
+     */
+    public static List<String> resolve(final QuestPackage pack, final List<String> inputs) {
+        return inputs.stream().map(string -> resolve(pack, string)).collect(Collectors.toList());
     }
 }

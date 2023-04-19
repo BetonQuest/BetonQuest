@@ -19,11 +19,11 @@ import static org.junit.jupiter.api.Assertions.*;
 @Tag("ConfigurationSection")
 @SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage", "PMD.JUnit5TestShouldBePackagePrivate"})
 public class UnmodifiableConfigurationTest extends ConfigurationBaseTest {
-
     /**
      * The values in the configuration before the test did run.
      */
     private Map<String, Object> values;
+
     /**
      * The values of the default section in the configuration before the test did run.
      */

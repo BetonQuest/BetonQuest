@@ -11,15 +11,16 @@ import org.betonquest.betonquest.id.EventID;
  * The if else event. Either execute the one or the other event, depending on the condition.
  */
 public class IfElseEvent implements Event {
-
     /**
      * The condition to check.
      */
     private final ConditionID condition;
+
     /**
      * The event to run if the condition is true.
      */
     private final EventID event;
+
     /**
      * The event to run if the condition is false.
      */

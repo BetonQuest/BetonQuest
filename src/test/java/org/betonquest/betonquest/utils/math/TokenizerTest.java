@@ -13,8 +13,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.mockito.MockedStatic;
 
 import java.util.Collections;
@@ -28,17 +26,17 @@ import static org.mockito.Mockito.*;
  */
 @SuppressWarnings({"deprecation", "PMD.CyclomaticComplexity"})
 @ExtendWith(BetonQuestLoggerService.class)
-@Execution(ExecutionMode.SAME_THREAD)
 class TokenizerTest {
-
     /**
      * Precision up to which to check equality of floating point numbers.
      */
     public static final double REQUIRED_DOUBLE_PRECISION = 1E-7;
+
     /**
      * The profile to use for variable resolution.
      */
     public static final Profile TEST_PLAYER_PROFILE = mock(Profile.class);
+
     /**
      * The package name of the package we assume to be inside for variable resolution.
      */

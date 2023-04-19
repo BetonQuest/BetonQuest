@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.objectives;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.VariableNumber;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.Objective;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.api.profiles.Profile;
@@ -34,14 +34,22 @@ import static org.bukkit.event.block.Action.RIGHT_CLICK_BLOCK;
  * them is supported.
  */
 @SuppressWarnings({"PMD.GodClass", "PMD.CommentRequired"})
-@CustomLog
 public class ActionObjective extends Objective implements Listener {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
 
     private final Click action;
+
     private final BlockSelector selector;
+
     private final boolean exactMatch;
+
     private final CompoundLocation loc;
+
     private final VariableNumber range;
+
     private final boolean cancel;
 
     public ActionObjective(final Instruction instruction) throws InstructionParseException {

@@ -10,10 +10,12 @@ import java.util.List;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class Slots {
-
     private final int start;
+
     private final int end;
+
     private final List<MenuItem> items;
+
     private final Type type;
 
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidUncheckedExceptionsInSignatures"})
@@ -221,9 +223,10 @@ public class Slots {
     }
 
     public static class SlotException extends Exception {
-
         private static final long serialVersionUID = 2796975671139425046L;
+
         private final int slot;
+
         private final String slots;
 
         public SlotException(final int slot, final String slots, final String message) {

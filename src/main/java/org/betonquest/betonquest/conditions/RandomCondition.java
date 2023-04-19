@@ -15,9 +15,10 @@ import java.util.Random;
  */
 @SuppressWarnings("PMD.CommentRequired")
 public class RandomCondition extends Condition {
-
     private final Random random = new Random();
+
     private final VariableNumber valueMax;
+
     private final VariableNumber rangeOfRandom;
 
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")

@@ -19,6 +19,7 @@ public class FakeBlockIntegrator implements Integrator {
      * The minimum required version of FakeBlock.
      */
     public static final String REQUIRED_VERSION = "2.0.1";
+
     /**
      * The instance of {@link BetonQuest}.
      */

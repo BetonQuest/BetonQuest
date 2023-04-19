@@ -13,7 +13,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -30,6 +29,7 @@ import java.util.regex.Pattern;
 public class VariableObjective extends Objective implements Listener {
 
     public static final Pattern CHAT_VARIABLE_PATTERN = Pattern.compile("^(?<key>[a-zA-Z]+): (?<value>.+)$");
+
     private final boolean noChat;
 
     public VariableObjective(final Instruction instruction) throws InstructionParseException {

@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.utils;
 
-import lombok.CustomLog;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -33,10 +33,16 @@ import java.util.regex.PatternSyntaxException;
  * brackets. Regex allowed
  */
 @SuppressWarnings({"PMD.CommentRequired", "PMD.GodClass"})
-@CustomLog
 public class BlockSelector {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+
     private final List<Material> materials;
+
     private final Map<String, String> states;
+
     private final Random random = new Random();
 
     /**

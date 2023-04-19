@@ -9,9 +9,10 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class MMOCoreAttributeCondition extends Condition {
-
     private final String attribute;
+
     private final VariableNumber targetLevelVar;
+
     private final boolean mustBeEqual;
 
     public MMOCoreAttributeCondition(final Instruction instruction) throws InstructionParseException {

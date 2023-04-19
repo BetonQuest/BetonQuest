@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.api.schedule;
 
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.modules.schedule.ScheduleID;
 
@@ -26,9 +26,12 @@ import java.util.Map;
  *
  * @param <S> Type of Schedule
  */
-@CustomLog(topic = "Schedules")
 @SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
 public abstract class Scheduler<S extends Schedule> {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create("Schedules");
 
     /**
      * Map containing all schedules that belong to this scheduler.
@@ -47,7 +50,6 @@ public abstract class Scheduler<S extends Schedule> {
         schedules = new HashMap<>();
         running = false;
     }
-
 
     /**
      * Register a new schedule to the list of schedules managed by this scheduler.

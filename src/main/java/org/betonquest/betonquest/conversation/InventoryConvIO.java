@@ -2,8 +2,8 @@ package org.betonquest.betonquest.conversation;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.papermc.lib.PaperLib;
-import lombok.CustomLog;
 import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.utils.LocalChatPaginator;
@@ -36,30 +36,51 @@ import java.util.Map;
  * Inventory GUI for conversations.
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.TooManyFields", "PMD.CommentRequired", "PMD.AvoidFieldNameMatchingMethodName", "PMD.AvoidLiteralsInIfCondition", "PMD.NPathComplexity"})
-@CustomLog
 public class InventoryConvIO implements Listener, ConversationIO {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+
     private static final Map<String, ItemStack> SKULL_CACHE = new HashMap<>();
 
     protected String response;
+
     protected Map<Integer, String> options = new HashMap<>();
+
     protected int playerOptionsCount;
+
     protected String npcName;
+
     protected String npcNameColor;
+
     protected String npcTextColor;
+
     protected String numberFormat;
+
     protected String optionColor;
+
     protected String answerPrefix;
+
     protected Conversation conv;
+
     protected Player player;
+
     protected Inventory inv;
+
     protected boolean processingLastClick;
+
     protected boolean allowClose;
+
     protected boolean switching;
+
     protected Location loc;
+
     protected boolean printMessages;
 
     // Config
     protected boolean showNumber = true;
+
     protected boolean showNPCText = true;
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
@@ -247,8 +268,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
             if (showNPCText) {
                 // NPC Text
                 lines.addAll(Arrays.asList(LocalChatPaginator.wordWrap(
-                        Utils.replaceReset(npcNameColor + npcName + ChatColor.RESET + ": " +
-                                response, npcTextColor),
+                        Utils.replaceReset(npcNameColor + npcName + ChatColor.RESET + ": " + response, npcTextColor),
                         45)));
             }
 

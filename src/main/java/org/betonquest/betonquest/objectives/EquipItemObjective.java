@@ -19,8 +19,8 @@ import java.util.Locale;
 
 @SuppressWarnings({"PMD.CommentRequired", "PMD.CyclomaticComplexity"})
 public class EquipItemObjective extends Objective implements Listener {
-
     private final QuestItem questItems;
+
     private final PlayerArmorChangeEvent.SlotType slotType;
 
     public EquipItemObjective(final Instruction instruction) throws InstructionParseException {

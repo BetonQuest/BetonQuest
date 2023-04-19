@@ -23,7 +23,8 @@ public class BreedObjective extends CountingObjective implements Listener {
     public BreedObjective(final Instruction instruction) throws InstructionParseException {
         super(instruction, "animals_to_breed");
         type = instruction.getEntity();
-        targetAmount = instruction.getPositive();
+        targetAmount = instruction.getVarNum();
+        preCheckAmountNotLessThanOne(targetAmount);
     }
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")

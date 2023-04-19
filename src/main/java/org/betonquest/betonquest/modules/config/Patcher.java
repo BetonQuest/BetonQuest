@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.modules.config;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.CustomLog;
+import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.patcher.PatchException;
 import org.betonquest.betonquest.api.config.patcher.PatchTransformer;
 import org.betonquest.betonquest.modules.versioning.UpdateStrategy;
@@ -22,33 +22,42 @@ import java.util.regex.Pattern;
 /**
  * Patches BetonQuest's configuration file.
  */
-@CustomLog(topic = "ConfigurationFile Patcher")
 public class Patcher {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create("ConfigurationFile Patcher");
 
     /**
      * The comment at the version entry in the config.
      */
     private static final String VERSION_CONFIG_COMMENT = "Don't change this! The plugin's automatic config updater handles it.";
+
     /**
      * The path to the config's version in the config.
      */
     private static final String CONFIG_VERSION_PATH = "configVersion";
+
     /**
      * Default version that is used for logging when no configVersion is set.
      */
     private static final String USER_DEFAULT_VERSION = "Legacy config";
+
     /**
      * Default version that is used when no configVersion is set.
      */
     private static final String TECHNICAL_DEFAULT_VERSION = "0.0.0-CONFIG-0";
+
     /**
      * Regex pattern of the internal config version schema.
      */
     private static final Pattern VERSION_PATTERN = Pattern.compile("(\\d*\\.\\d*\\.\\d*)\\.(\\d*)");
+
     /**
      * The config to patch.
      */
     private final ConfigurationSection pluginConfig;
+
     /**
      * A config that contains one or more patches that will be applied to the pluginConfig.
      * <br>
@@ -62,10 +71,12 @@ public class Patcher {
      * A pair of patchable versions with the corresponding config path in the patch file.
      */
     private final NavigableMap<Version, String> patchableVersions = new TreeMap<>(new VersionComparator(UpdateStrategy.MAJOR, "CONFIG-"));
+
     /**
      * The {@link VersionComparator} that compares the versions of patches.
      */
     private final VersionComparator comparator = new VersionComparator(UpdateStrategy.MAJOR, "CONFIG-");
+
     /**
      * The current version of the plugin's config.
      */
