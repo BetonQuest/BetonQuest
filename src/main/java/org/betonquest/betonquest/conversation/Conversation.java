@@ -21,6 +21,7 @@ import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -218,11 +219,14 @@ public class Conversation implements Listener {
             new ConversationEnder().runTask(BetonQuest.getInstance());
             return;
         }
+
         String text = data.getText(onlineProfile, language, option, OptionType.NPC);
         // resolve variables
         for (final String variable : BetonQuest.resolveVariables(text)) {
             text = text.replace(variable, plugin.getVariableValue(data.getPackName(), variable, onlineProfile));
         }
+        text = ChatColor.translateAlternateColorCodes('&', text);
+
         // print option to the player
         inOut.setNpcResponse(data.getQuester(language), text);
 
@@ -284,6 +288,8 @@ public class Conversation implements Listener {
             for (final String variable : BetonQuest.resolveVariables(text)) {
                 text = text.replace(variable, plugin.getVariableValue(data.getPackName(), variable, onlineProfile));
             }
+            text = ChatColor.translateAlternateColorCodes('&', text);
+
             inOut.addPlayerOption(text);
         }
         new BukkitRunnable() {
