@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.Variable;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.Location;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -38,32 +39,35 @@ public class LocationVariable extends Variable {
         }
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override
     public String getValue(final Profile profile) {
         final Location playerLocation = profile.getOnlineProfile().get().getPlayer().getLocation();
 
-        switch (mode) {
-            case XYZ:
-                return buildFormattedLocation(playerLocation, buildPart(1) + " " + buildPart(2) + " " + buildPart(3));
-            case X:
-                return buildFormattedLocation(playerLocation, buildPart(1));
-            case Y:
-                return buildFormattedLocation(playerLocation, buildPart(2));
-            case Z:
-                return buildFormattedLocation(playerLocation, buildPart(3));
-            case WORLD:
-                return buildFormattedLocation(playerLocation, "%4$s");
-            case YAW:
-                return buildFormattedLocation(playerLocation, buildPart(5));
-            case PITCH:
-                return buildFormattedLocation(playerLocation, buildPart(6));
-            case ULF_SHORT:
-                return buildFormattedLocation(playerLocation, buildPart(1) + ";" + buildPart(2) + ";" + buildPart(3) + ";" + "%4$s");
-            case ULF_LONG:
-                return buildFormattedLocation(playerLocation, buildPart(1) + ";" + buildPart(2) + ";" + buildPart(3) + ";" + "%4$s" + ";" + buildPart(5) + ";" + buildPart(6));
-        }
-        return "";
+        return getForLocation(playerLocation);
+    }
+
+    /**
+     * Gets the location for the given mode.
+     *
+     * @param location The location to get the value for.
+     * @return The value for the given location.
+     */
+    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @NotNull
+    public String getForLocation(final Location location) {
+        return switch (mode) {
+            case XYZ -> buildFormattedLocation(location, buildPart(1) + " " + buildPart(2) + " " + buildPart(3));
+            case X -> buildFormattedLocation(location, buildPart(1));
+            case Y -> buildFormattedLocation(location, buildPart(2));
+            case Z -> buildFormattedLocation(location, buildPart(3));
+            case WORLD -> buildFormattedLocation(location, "%4$s");
+            case YAW -> buildFormattedLocation(location, buildPart(5));
+            case PITCH -> buildFormattedLocation(location, buildPart(6));
+            case ULF_SHORT ->
+                    buildFormattedLocation(location, buildPart(1) + ";" + buildPart(2) + ";" + buildPart(3) + ";" + "%4$s");
+            case ULF_LONG ->
+                    buildFormattedLocation(location, buildPart(1) + ";" + buildPart(2) + ";" + buildPart(3) + ";" + "%4$s" + ";" + buildPart(5) + ";" + buildPart(6));
+        };
     }
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
@@ -106,7 +110,7 @@ public class LocationVariable extends Variable {
         WORLD("world"),
         YAW("yaw"),
         PITCH("pitch"),
-        ULF_SHORT("ulfShort"),
+        ULF_SHORT("QuestPackage"),
         ULF_LONG("ulfLong");
 
         private final String name;
