@@ -138,7 +138,6 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - the section `disabled` got removed
     - the section `check_interval` is now an inner section of the effect and now called `checkinterval`
     - next to the `npcs` section there is now an `locations` section
-    - optional is `npcs: PACKAGES` possible to give every npc of the package the effect
     - effects will now follow npcs if they're pathing to another spot
 - AureliumSkills updated to version Beta1.2.5
 - PikaMug Quests updated to version 4.1.3

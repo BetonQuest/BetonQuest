@@ -294,6 +294,7 @@ effectlib:
 
 1. This field is optional. You can delete this if you had the default value of `100`.
 2. This field is new and optional. It replaces the old `check_interval` field. You can delete this if you had the default value of `100`.
-3. In case you never had the `npcs` field you now need to make `npcs: PACKAGE` so all effects will be added to the npcs defined in the package.
+3. In case you never had the `npcs` field and the effect were played on every npc in the package,
+you now need to add the `npcs` section with every npc the effect should be played at.
 4. In case you never had the `pitch` field, you need to use the default value of `-90`.
 </div>

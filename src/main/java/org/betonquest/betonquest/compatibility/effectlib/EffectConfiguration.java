@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.compatibility.citizens;
+package org.betonquest.betonquest.compatibility.effectlib;
 
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.utils.location.CompoundLocation;

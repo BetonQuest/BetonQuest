@@ -1,8 +1,9 @@
-package org.betonquest.betonquest.compatibility.citizens;
+package org.betonquest.betonquest.compatibility.effectlib;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
@@ -83,7 +84,10 @@ public class EffectLibParticleManager {
                     continue;
                 }
 
-                final Set<Integer> npcs = loadNpcs(pack, settings);
+                final Set<Integer> npcs = new HashSet<>();
+                if (Compatibility.getHooked().contains("Citizens")) {
+                    npcs.addAll(loadNpcs(settings));
+                }
                 final List<CompoundLocation> locations = loadLocations(pack, settings, key);
                 final List<ConditionID> conditions = loadConditions(pack, key, settings);
 
@@ -139,28 +143,11 @@ public class EffectLibParticleManager {
     }
 
     @NotNull
-    private Set<Integer> loadNpcs(final QuestPackage pack, final ConfigurationSection settings) {
+    private Set<Integer> loadNpcs(final ConfigurationSection settings) {
         final Set<Integer> npcs = new HashSet<>();
         if (settings.isList(NPCS_CONFIG_SECTION)) {
             npcs.addAll(settings.getIntegerList(NPCS_CONFIG_SECTION));
-        } else {
-            final String setting = settings.getString(NPCS_CONFIG_SECTION);
-            if (setting == null || !setting.equalsIgnoreCase("PACKAGE")) {
-                return npcs;
-            }
-            final ConfigurationSection npcSection = pack.getConfig().getConfigurationSection(NPCS_CONFIG_SECTION);
-            if (npcSection == null) {
-                return npcs;
-            }
-            for (final String npcID : npcSection.getKeys(false)) {
-                try {
-                    npcs.add(Integer.parseInt(npcID));
-                } catch (final NumberFormatException e) {
-                    LOG.debug(pack, "Could not parse number!", e);
-                }
-            }
         }
         return npcs;
     }
 }
-

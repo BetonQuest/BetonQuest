@@ -2,9 +2,7 @@ package org.betonquest.betonquest.compatibility.effectlib;
 
 import de.slikey.effectlib.EffectManager;
 import org.betonquest.betonquest.BetonQuest;
-import org.betonquest.betonquest.compatibility.Compatibility;
 import org.betonquest.betonquest.compatibility.Integrator;
-import org.betonquest.betonquest.compatibility.citizens.EffectLibParticleManager;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class EffectLibIntegrator implements Integrator {
@@ -13,6 +11,8 @@ public class EffectLibIntegrator implements Integrator {
     private final BetonQuest plugin;
 
     private EffectManager manager;
+
+    private EffectLibParticleManager particleManager;
 
     @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
     public EffectLibIntegrator() {
@@ -30,15 +30,13 @@ public class EffectLibIntegrator implements Integrator {
     @Override
     public void hook() {
         manager = new EffectManager(BetonQuest.getInstance());
-        if (Compatibility.getHooked().contains("Citizens")) {
-            new EffectLibParticleManager();
-        }
+        particleManager = new EffectLibParticleManager();
         plugin.registerEvents("particle", ParticleEvent.class);
     }
 
     @Override
     public void reload() {
-        // Empty
+        particleManager.reload();
     }
 
     @Override

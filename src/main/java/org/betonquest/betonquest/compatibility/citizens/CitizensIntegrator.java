@@ -6,15 +6,11 @@ import org.betonquest.betonquest.compatibility.Integrator;
 import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
 import org.betonquest.betonquest.compatibility.protocollib.hider.UpdateVisibilityNowEvent;
 
-import java.util.Arrays;
-
 @SuppressWarnings("PMD.CommentRequired")
 public class CitizensIntegrator implements Integrator {
     private final BetonQuest plugin;
 
     private CitizensListener citizensListener;
-
-    private EffectLibParticleManager citizensParticle;
 
     public CitizensIntegrator() {
         plugin = BetonQuest.getInstance();
@@ -24,10 +20,6 @@ public class CitizensIntegrator implements Integrator {
     public void hook() {
         citizensListener = new CitizensListener();
         new CitizensWalkingListener();
-
-        if (Compatibility.getHooked().contains("EffectLib")) {
-            citizensParticle = new EffectLibParticleManager();
-        }
 
         // if ProtocolLib is hooked, start NPCHider
         if (Compatibility.getHooked().contains("ProtocolLib")) {
@@ -52,9 +44,6 @@ public class CitizensIntegrator implements Integrator {
 
     @Override
     public void reload() {
-        if (Compatibility.getHooked().containsAll(Arrays.asList("Citizens", "EffectLib"))) {
-            citizensParticle.reload();
-        }
         if (Compatibility.getHooked().contains("Citizens")) {
             citizensListener.reload();
         }

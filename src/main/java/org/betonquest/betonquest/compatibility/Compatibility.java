@@ -77,11 +77,16 @@ public class Compatibility implements Listener {
         registerCompatiblePlugins();
 
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+
         // Integrate already enabled plugins in case Bukkit messes up the loading order
         for (final Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
             integratePlugin(plugin);
         }
 
+        final Integrator effectLibIntegrator = integrators.get("EffectLib").getValue();
+        if (effectLibIntegrator != null) {
+            effectLibIntegrator.reload();
+        }
         //Must be called after all plugins have been integrated
         HologramProvider.init();
 

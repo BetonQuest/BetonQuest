@@ -316,8 +316,7 @@ effectlib: #(1)!
 2. Each effect is defined as a separate subsection. You can choose any name for it.
 3. Any EffectLib effect class.
 4. This and all following options until `interval` are EffectLib parameters. You can find them in the 3rd party documentation linked above.
-5. A list of all NPCs on which this effect is displayed. This section is optional. Also, available is the possibility to use `npcs: PACKAGE`. This setting makes sure,
- that all NPCs of the package are used.
+5. A list of all NPCs on which this effect is displayed. This section is optional.
 6. A list of all locations on wich the effect is displayed. Optional.
 7. The conditions that must be true so that the player can see this effect.
 8. Controls after how many ticks the effect is restarted. Optional, default: 100 ticks
