@@ -7,6 +7,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class ItemDescription {
         }
         final List<String> lore = new ArrayList<>(lines.size());
         for (final Line line : lines) {
-            lore.add(line.resolve(profile));
+            lore.addAll(Arrays.asList(line.resolve(profile).split("\\R")));
         }
         return lore;
     }
@@ -71,7 +72,7 @@ public class ItemDescription {
 
         public Line(final String line) throws InstructionParseException {
             //set line
-            this.line = ChatColor.translateAlternateColorCodes('&', line);
+            this.line = line;
             //find variables
             this.variables = new ArrayList<>();
             for (final String variable : BetonQuest.resolveVariables(line)) {
@@ -98,7 +99,7 @@ public class ItemDescription {
             for (final String variable : variables) {
                 line = line.replace(variable, BetonQuest.getInstance().getVariableValue(pack.getQuestPath(), variable, profile));
             }
-            return line;
+            return ChatColor.translateAlternateColorCodes('&', line);
         }
     }
 

@@ -35,6 +35,16 @@ import java.util.Map;
 @SuppressWarnings("PMD.CommentRequired")
 public class MenuItem extends SimpleYMLSection {
     /**
+     * Text config property for Item lore
+     */
+    private static final String CONFIG_TEXT = "text";
+
+    /**
+     * Path component for text config property for Item lore
+     */
+    private static final String CONFIG_TEXT_PATH = CONFIG_TEXT + ".";
+
+    /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private static final BetonQuestLogger LOG = BetonQuestLogger.create();
@@ -87,7 +97,8 @@ public class MenuItem extends SimpleYMLSection {
     @SuppressWarnings({"PMD.ExceptionAsFlowControl", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity",
             "PMD.NPathComplexity", "checkstyle:EmptyCatchBlock"})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public MenuItem(final QuestPackage pack, final String name, final ConfigurationSection section) throws InvalidConfigurationException {
+    public MenuItem(final QuestPackage pack, final MenuID menuID, final String name, final ConfigurationSection section)
+            throws InvalidConfigurationException {
         super(pack, name, section);
         try {
             //load item
@@ -104,17 +115,7 @@ public class MenuItem extends SimpleYMLSection {
             // load description
             this.descriptions = new HashMap<>();
             try {
-                if (section.isConfigurationSection("text")) {
-                    for (final String lang : section.getConfigurationSection("text").getKeys(false)) {
-                        this.descriptions.put(lang, new ItemDescription(this.pack, getStringList("text." + lang)));
-                    }
-                    if (!this.descriptions.containsKey(Config.getLanguage())) {
-                        throw new Missing("text." + Config.getLanguage());
-                    }
-                } else {
-                    this.descriptions.put(Config.getLanguage(),
-                            new ItemDescription(this.pack, getStringList("text")));
-                }
+                this.descriptions.putAll(generateDescriptions(menuID.getFullID(), section));
             } catch (final Missing ignored) {
             }
             //load events
@@ -320,4 +321,47 @@ public class MenuItem extends SimpleYMLSection {
         }
     }
 
+    private Map<String, ItemDescription> generateDescriptions(final String menuID, final ConfigurationSection section)
+            throws Missing, InstructionParseException {
+        final Map<String, ItemDescription> descriptions = new HashMap<>();
+
+        if (section.contains(CONFIG_TEXT)) {
+            if (section.isConfigurationSection(CONFIG_TEXT)) {
+                descriptions.putAll(generateLanguageDescriptions(menuID, section));
+            } else if (section.isString(CONFIG_TEXT)) {
+                descriptions.put(Config.getLanguage(), new ItemDescription(this.pack, getString(CONFIG_TEXT).lines().toList()));
+            } else if (section.isList(CONFIG_TEXT)) {
+                descriptions.put(Config.getLanguage(), new ItemDescription(this.pack, getStringList(CONFIG_TEXT)));
+            } else {
+                throw new InstructionParseException("Unrecognized item '" + name + "' text configuration in menu '"
+                        + menuID + "'");
+            }
+        }
+
+        return descriptions;
+    }
+
+    private Map<String, ItemDescription> generateLanguageDescriptions(final String menuID, final ConfigurationSection section)
+            throws Missing, InstructionParseException {
+        final Map<String, ItemDescription> descriptions = new HashMap<>();
+
+        final ConfigurationSection textSection = section.getConfigurationSection(CONFIG_TEXT);
+        if (textSection != null) {
+            for (final String lang : textSection.getKeys(false)) {
+                if (section.isString(CONFIG_TEXT_PATH + lang)) {
+                    descriptions.put(lang, new ItemDescription(this.pack, getString(CONFIG_TEXT_PATH + lang).lines().toList()));
+                } else if (section.isList(CONFIG_TEXT_PATH + lang)) {
+                    descriptions.put(lang, new ItemDescription(this.pack, getStringList(CONFIG_TEXT_PATH + lang)));
+                } else {
+                    throw new InstructionParseException("Unrecognized item '" + name + "' text language '" + lang
+                            + "' configuration in menu '" + menuID + "'");
+                }
+            }
+            if (!descriptions.containsKey(Config.getLanguage())) {
+                throw new Missing(CONFIG_TEXT_PATH + Config.getLanguage());
+            }
+        }
+
+        return descriptions;
+    }
 }
