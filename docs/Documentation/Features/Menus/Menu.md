@@ -83,26 +83,23 @@ The text can be provided as a single string with newlines, a multi-line string, 
 skeletonQuestDone:
   item: "questDoneItem"
   text:
-    - "&2Quest reputation: &6&l%point.quest_reputation.amount%" #(1)!
-    - "Complete quests to gain reputation!" #(2)!
+    - "&2Reputation: &6&l%point.quest_reputation.amount%"
+    - "Make quests to gain reputation!"
 ```
 
 ``` YAML title="String with Newlines Example"
 skeletonQuestDone:
   item: "questDoneItem"
-  text: "&2Quest reputation: &6&l%point.quest_reputation.amount%\nComplete quests to gain reputation!" #(1)! #(2)!
+  text: "&2Reputation: &6&l%point.quest_reputation.amount% \nMake quests to gain reputation!"
 ```
 
 ``` YAML title="Multi-line String Example"
 skeletonQuestDone:
   item: "questDoneItem"
   text: |-
-    &2Quest reputation: &6&l%point.quest_reputation.amount% #(1)!
-    Complete quests to gain reputation! #(2)!
+    &2Reputation: &6&l%point.quest_reputation.amount%
+    Make quests to gain reputation!
 ```
-
-1. The name of the item.
-2. The description of the item.
 
 Just like the text in conversations you can provide [translations](../../Features/Conversations.md#translations) for all languages:
 ``` YAML title="Translation Example"
