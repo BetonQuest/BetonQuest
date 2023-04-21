@@ -12,23 +12,68 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Locale;
 
-@SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition"})
+/**
+ * Provides information about a Player's Location.
+ * <p>
+ * Format:
+ * {@code %location.<mode>.<precision>%}
+ * <p>
+ * Modes:
+ * * xyz - The x, y and z location of the npc, separated by spaces
+ * * x - The x location of the npc
+ * * y - The y location of the npc
+ * * z - The z location of the npc
+ * * world - The world location of the npc
+ * * yaw - The yaw of the npc
+ * * pitch - The pitch of the npc
+ * * ulfShort - The location of the npc in the form x;y;z;world
+ * * ulfLong - The location of the npc in the form x;y;z;world;yaw;pitch
+ * Precision is decimals of precision desired, defaults to 0.
+ */
 public class LocationVariable extends Variable {
+    /**
+     * The minimum number of required arguments when using a LocationVariable through an Instruction.
+     */
+    private static final int MINIMUM_INSTRUCTION_ARGUMENTS = 2;
+
+    /**
+     * The minimum number of required arguments when using a LocationVariable through an Instruction and including an
+     * optional precision number of decimals.
+     */
+    private static final int MINIMUM_INSTRUCTION_ARGUMENTS_WITH_OPTIONAL_PRECISION = 3;
+
+    /**
+     * The default String value to return if the Player Profile cannot be resolved.
+     */
+    private static final String DEFAULT_VALUE = null;
+
+    /**
+     * The mode of the location response required. Provides multiple output formats.
+     * @see MODE
+     */
     private final MODE mode;
 
+    /**
+     * The decimals of precision required, defaults to 0.
+     */
     private final int decimalPlaces;
 
+    /**
+     * Construct a new LocationVariable that allows for resolution of information about a Player's Location.
+     * @param instruction The Instruction.
+     * @throws InstructionParseException If there was an error parsing the Instruction.
+     */
     public LocationVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
 
         final String[] splitInstruction = instruction.getInstruction().split("\\.");
-        if (splitInstruction.length >= 2) {
+        if (splitInstruction.length >= MINIMUM_INSTRUCTION_ARGUMENTS) {
             mode = MODE.getMode(splitInstruction[1]);
         } else {
             mode = MODE.ULF_LONG;
         }
 
-        if (splitInstruction.length >= 3) {
+        if (splitInstruction.length >= MINIMUM_INSTRUCTION_ARGUMENTS_WITH_OPTIONAL_PRECISION) {
             try {
                 decimalPlaces = Integer.parseInt(splitInstruction[2]);
             } catch (final NumberFormatException exception) {
@@ -41,9 +86,9 @@ public class LocationVariable extends Variable {
 
     @Override
     public String getValue(final Profile profile) {
-        final Location playerLocation = profile.getOnlineProfile().get().getPlayer().getLocation();
-
-        return getForLocation(playerLocation);
+        return profile.getOnlineProfile()
+                .map(onlineProfile -> getForLocation(onlineProfile.getPlayer().getLocation()))
+                .orElse(DEFAULT_VALUE);
     }
 
     /**
@@ -102,23 +147,70 @@ public class LocationVariable extends Variable {
         }
     }
 
+    /**
+     * The mode of data required from the LocationVariable for the Player.
+     */
     private enum MODE {
+        /**
+         * The x, y and z location of the player, separated by spaces
+         */
         XYZ("xyz"),
+
+        /**
+         * The x location of the player
+         */
         X("x"),
+
+        /**
+         * The y location of the player
+         */
         Y("y"),
+
+        /**
+         * The z location of the player
+         */
         Z("z"),
+
+        /**
+         * The world location of the player
+         */
         WORLD("world"),
+
+        /**
+         * The yaw of the player
+         */
         YAW("yaw"),
+
+        /**
+         * The pitch of the player
+         */
         PITCH("pitch"),
+
+        /**
+         * The location of the player in the form x;y;z;world
+         */
         ULF_SHORT("ulfShort"),
+
+        /**
+         * The location of the player in the form x;y;z;world;yaw;pitch
+         */
         ULF_LONG("ulfLong");
 
+        /**
+         * The name of the Mode.
+         */
         private final String name;
 
         MODE(final String name) {
             this.name = name;
         }
 
+        /**
+         * Get the Mode corresponding to the specified String.
+         * @param mode The mode as a String.
+         * @return A Mode.
+         * @throws InstructionParseException If there is an error parsing the mode String.
+         */
         public static MODE getMode(final String mode) throws InstructionParseException {
             for (final MODE targetMode : MODE.values()) {
                 if (targetMode.name.equalsIgnoreCase(mode)) {

@@ -22,17 +22,7 @@ import java.util.Locale;
  * * name - Return citizen name
  * * full_name - Full Citizen name
  * * location - Return citizen location, defaults to ulfLong
- * Modes:
- * * xyz - The x, y and z location of the npc, separated by spaces
- * * x - The x location of the npc
- * * y - The y location of the npc
- * * z - The z location of the npc
- * * world - The world location of the npc
- * * yaw - The yaw of the npc
- * * pitch - The pitch of the npc
- * * ulfShort - The location of the npc in the form x;y;z;world
- * * ulfLong - The location of the npc in the form x;y;z;world;yaw;pitch
- * Precision is decimals of precision desired, defaults to 0.
+ * Modes: refer to LocationVariable documentation for details.
  * @see org.betonquest.betonquest.variables.LocationVariable
  */
 public class CitizensVariable extends Variable {
