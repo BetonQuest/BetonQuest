@@ -54,20 +54,29 @@ public class CitizensVariable extends Variable {
     public CitizensVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
 
-        try {
-            final String[] splitInstruction = instruction.getInstruction().split("\\.");
-            if (splitInstruction.length < MINIMUM_INSTRUCTION_ARGUMENTS) {
-                throw new InstructionParseException("Not enough arguments");
-            } else {
+        final String[] splitInstruction = instruction.getInstruction().split("\\.");
+        if (splitInstruction.length < MINIMUM_INSTRUCTION_ARGUMENTS) {
+            throw new InstructionParseException("Not enough arguments, must have at least " + MINIMUM_INSTRUCTION_ARGUMENTS);
+        } else {
+            try {
                 npcId = Integer.parseInt(splitInstruction[1]);
-                key = ARGUMENT.valueOf(splitInstruction[2].toUpperCase(Locale.ROOT));
+                if (npcId < 0) {
+                    throw new InstructionParseException("The specified NPC ID was not a positive or zero integer");
+                }
+            } catch (final NumberFormatException e) {
+                throw new InstructionParseException("The specified NPC ID was not a valid integer", e);
             }
 
-            final String newInstruction = String.join(".", Arrays.copyOfRange(splitInstruction, 2, splitInstruction.length));
-            location = new LocationVariable(new Instruction(instruction.getPackage(), null, newInstruction));
-        } catch (final IllegalArgumentException exception) {
-            throw new InstructionParseException(exception);
+            final String argument = splitInstruction[2].toUpperCase(Locale.ROOT);
+            try {
+                key = ARGUMENT.valueOf(argument);
+            } catch (final IllegalArgumentException e) {
+                throw new InstructionParseException("Specified CitizenVariable argument was not recognized: '" + argument + "'", e);
+            }
         }
+
+        final String newInstruction = String.join(".", Arrays.copyOfRange(splitInstruction, 2, splitInstruction.length));
+        location = new LocationVariable(new Instruction(instruction.getPackage(), null, newInstruction));
     }
 
     @Override
