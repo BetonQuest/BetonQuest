@@ -110,7 +110,7 @@ public class LocationVariable extends Variable {
         WORLD("world"),
         YAW("yaw"),
         PITCH("pitch"),
-        ULF_SHORT("QuestPackage"),
+        ULF_SHORT("ulfShort"),
         ULF_LONG("ulfLong");
 
         private final String name;

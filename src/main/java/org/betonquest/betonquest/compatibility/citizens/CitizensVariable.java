@@ -33,22 +33,40 @@ import java.util.Locale;
  * * ulfShort - The location of the npc in the form x;y;z;world
  * * ulfLong - The location of the npc in the form x;y;z;world;yaw;pitch
  * Precision is decimals of precision desired, defaults to 0.
+ * @see org.betonquest.betonquest.variables.LocationVariable
  */
-@SuppressWarnings("PMD.CommentRequired")
 public class CitizensVariable extends Variable {
+    /**
+     * The minimum number of required arguments when using a CitizensVariable through an Instruction.
+     */
+    private static final int MINIMUM_INSTRUCTION_ARGUMENTS = 3;
+
+    /**
+     * The integer ID of the NPC.
+     */
     private final int npcId;
 
+    /**
+     * The type of information to retrieve for the NPC: name, full_name, or location.
+     */
     private final ARGUMENT key;
 
+    /**
+     * A wrapper for the location property of the NPC.
+     */
     private final LocationVariable location;
 
-    @SuppressWarnings({"PMD.CommentRequired", "PMD.AvoidLiteralsInIfCondition"})
+    /**
+     * Construct a new CitizensVariable that allows for resolution of information about a Citizens NPC.
+     * @param instruction The Instruction.
+     * @throws InstructionParseException If there was an error parsing the Instruction.
+     */
     public CitizensVariable(final Instruction instruction) throws InstructionParseException {
         super(instruction);
 
         try {
             final String[] splitInstruction = instruction.getInstruction().split("\\.");
-            if (splitInstruction.length < 3) {
+            if (splitInstruction.length < MINIMUM_INSTRUCTION_ARGUMENTS) {
                 throw new InstructionParseException("Not enough arguments");
             } else {
                 npcId = Integer.parseInt(splitInstruction[1]);
@@ -64,7 +82,6 @@ public class CitizensVariable extends Variable {
 
     @Override
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     public String getValue(final Profile profile) {
         final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
         if (npc == null) {
@@ -78,9 +95,23 @@ public class CitizensVariable extends Variable {
         };
     }
 
+    /**
+     * The type of information to retrieve for the NPC: name, full_name, or location.
+     */
     private enum ARGUMENT {
+        /**
+         * Retrieve the name of the NPC.
+         */
         NAME,
+
+        /**
+         * Retrieve the full name of the NPC.
+         */
         FULL_NAME,
+
+        /**
+         * Retrieve the location of the NPC.
+         */
         LOCATION
     }
 
