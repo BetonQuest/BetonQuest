@@ -18,17 +18,17 @@ import java.util.Locale;
  * Format:
  * {@code %location.<mode>.<precision>%}
  * <p>
- * Modes:
- * * xyz - The x, y and z location of the npc, separated by spaces
- * * x - The x location of the npc
- * * y - The y location of the npc
- * * z - The z location of the npc
- * * world - The world location of the npc
- * * yaw - The yaw of the npc
- * * pitch - The pitch of the npc
- * * ulfShort - The location of the npc in the form x;y;z;world
- * * ulfLong - The location of the npc in the form x;y;z;world;yaw;pitch
- * Precision is decimals of precision desired, defaults to 0.
+ * Modes:<br>
+ * * xyz - The x, y and z location of the npc, separated by spaces<br>
+ * * x - The x location of the npc<br>
+ * * y - The y location of the npc<br>
+ * * z - The z location of the npc<br>
+ * * world - The world location of the npc<br>
+ * * yaw - The yaw of the npc<br>
+ * * pitch - The pitch of the npc<br>
+ * * ulfShort - The location of the npc in the form x;y;z;world<br>
+ * * ulfLong - The location of the npc in the form x;y;z;world;yaw;pitch<br>
+ * Precision is decimals of precision desired, defaults to 0.<br>
  */
 public class LocationVariable extends Variable {
     /**
@@ -49,6 +49,7 @@ public class LocationVariable extends Variable {
 
     /**
      * The mode of the location response required. Provides multiple output formats.
+     *
      * @see MODE
      */
     private final MODE mode;
@@ -60,6 +61,7 @@ public class LocationVariable extends Variable {
 
     /**
      * Construct a new LocationVariable that allows for resolution of information about a Player's Location.
+     *
      * @param instruction The Instruction.
      * @throws InstructionParseException If there was an error parsing the Instruction.
      */
@@ -207,6 +209,7 @@ public class LocationVariable extends Variable {
 
         /**
          * Get the Mode corresponding to the specified String.
+         *
          * @param mode The mode as a String.
          * @return A Mode.
          * @throws InstructionParseException If there is an error parsing the mode String.

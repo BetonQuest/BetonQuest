@@ -18,11 +18,12 @@ import java.util.Locale;
  * Format:
  * {@code %citizen.<id>.<argument>.<mode>.<precision>%}
  * <p>
- * Arguments:
- * * name - Return citizen name
- * * full_name - Full Citizen name
- * * location - Return citizen location, defaults to ulfLong
- * Modes: refer to LocationVariable documentation for details.
+ * Arguments:<br>
+ * * name - Return citizen name<br>
+ * * full_name - Full Citizen name<br>
+ * * location - Return citizen location, defaults to ulfLong<br>
+ * Modes: refer to LocationVariable documentation for details.<br>
+ *
  * @see org.betonquest.betonquest.variables.LocationVariable
  */
 public class CitizensVariable extends Variable {
@@ -48,6 +49,7 @@ public class CitizensVariable extends Variable {
 
     /**
      * Construct a new CitizensVariable that allows for resolution of information about a Citizens NPC.
+     *
      * @param instruction The Instruction.
      * @throws InstructionParseException If there was an error parsing the Instruction.
      */
