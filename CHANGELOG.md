@@ -56,6 +56,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - top lists ordered by point values of players
     - `npcs` list now supports global variables as NPC ID in NPC Holograms
 - menus now support global variables
+- exposed the Citizen variable and enhanced location capabilities
 - menus now support string with newline or string list text values for lore
 - amount of objectives now support variables
 - `freeze` event - ProtocolLib compatibility feature: Blocks the player from moving for the specified amount of ticks
