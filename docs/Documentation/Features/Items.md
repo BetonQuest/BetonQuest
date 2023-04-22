@@ -33,11 +33,11 @@ These are arguments that can be applied to every item:
 - `custom-model-data` - set the custom model data of the item. You have to specify the data value: `custom-model-data:3`. To check that an item does not have custom model data set `no-custom-model-data`.
 
 - `flags` - item flags that govern the visibility of some item info (comma delimited) including:
-    - HIDE_ENCHANTS: Hide the ItemStack enchants
+    - HIDE_ENCHANTS: Hide the item's enchants
     - HIDE_ATTRIBUTES: Hide attributes like damage
-    - HIDE_UNBREAKABLE: Hide unbreakable state
-    - HIDE_DESTROYS: Hide what the ItemStack can break or destroy
-    - HIDE_PLACED_ON: Hide where the ItemStack can be placed
+    - HIDE_UNBREAKABLE: Hide the unbreakable of the item state
+    - HIDE_DESTROYS: Hide what the item can break or destroy
+    - HIDE_PLACED_ON: Hide where the item can be placed
     - HIDE_POTION_EFFECTS: Hide potion effects, book and firework info, map tool tips, banner patters, and enchantments
     - HIDE_DYE: Hide the dye labels on colored leather armor
 
