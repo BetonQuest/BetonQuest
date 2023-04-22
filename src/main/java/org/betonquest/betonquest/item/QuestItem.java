@@ -493,7 +493,9 @@ public class QuestItem {
         meta.setDisplayName(name.get());
         meta.setLore(lore.get());
         meta.setUnbreakable(unbreakable.isUnbreakable());
-        if (flags.get() != null) flags.get().forEach(meta::addItemFlags);
+        if (flags.get() != null) {
+            flags.get().forEach(meta::addItemFlags);
+        }
         if (customModelData.getExistence() == Existence.REQUIRED) {
             meta.setCustomModelData(customModelData.get());
         }
