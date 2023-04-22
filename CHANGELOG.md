@@ -58,6 +58,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - menus now support global variables
 - menus now support string with newline or string list text values for lore
 - amount of objectives now support variables
+- added quest item flag recording and restore
 - `freeze` event - ProtocolLib compatibility feature: Blocks the player from moving for the specified amount of ticks
 - `block` objective - properties: `absoluteAmount`, `absoluteLeft` and `absoluteTotal`
 - `command` objective

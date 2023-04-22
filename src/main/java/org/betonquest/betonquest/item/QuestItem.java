@@ -5,17 +5,7 @@ import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.betonquest.betonquest.id.ItemID;
-import org.betonquest.betonquest.item.typehandler.BookHandler;
-import org.betonquest.betonquest.item.typehandler.ColorHandler;
-import org.betonquest.betonquest.item.typehandler.CustomModelDataHandler;
-import org.betonquest.betonquest.item.typehandler.DurabilityHandler;
-import org.betonquest.betonquest.item.typehandler.EnchantmentsHandler;
-import org.betonquest.betonquest.item.typehandler.FireworkHandler;
-import org.betonquest.betonquest.item.typehandler.HeadHandler;
-import org.betonquest.betonquest.item.typehandler.LoreHandler;
-import org.betonquest.betonquest.item.typehandler.NameHandler;
-import org.betonquest.betonquest.item.typehandler.PotionHandler;
-import org.betonquest.betonquest.item.typehandler.UnbreakableHandler;
+import org.betonquest.betonquest.item.typehandler.*;
 import org.betonquest.betonquest.utils.BlockSelector;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -23,6 +13,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.Damageable;
@@ -36,12 +27,8 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.UUID;
 
 /**
  * Represents an item handled by the configuration.
@@ -71,6 +58,8 @@ public class QuestItem {
     private final FireworkHandler firework = new FireworkHandler();
 
     private final CustomModelDataHandler customModelData = new CustomModelDataHandler();
+
+    private final FlagHandler flags = new FlagHandler();
 
     /**
      * Creates new instance of the quest item using the ID
@@ -159,6 +148,7 @@ public class QuestItem {
                 case "firework" -> firework.setEffects(data);
                 case "power" -> firework.setPower(data);
                 case "firework-containing" -> firework.setNotExact();
+                case "flags" -> flags.parse(data);
                 //catch empty string caused by multiple whitespaces in instruction split
                 case "" -> {
                 }
@@ -189,6 +179,7 @@ public class QuestItem {
         String firework = "";
         String unbreakable = "";
         String customModelData = "";
+        String flags = "";
         if (item.getDurability() != 0) {
             durability = " durability:" + item.getDurability();
         }
@@ -314,10 +305,13 @@ public class QuestItem {
                     builder.append(':').append(effect.hasTrail()).append(':').append(effect.hasFlicker());
                 }
             }
+            if (meta.getItemFlags().size() > 0) {
+                flags = " flags:" + String.join(",", meta.getItemFlags().stream().map(ItemFlag::name).sorted().toList());
+            }
         }
         // put it all together in a single string
         return item.getType() + durability + name + lore + enchants + title + author + text
-                + effects + color + skull + firework + unbreakable + customModelData;
+                + effects + color + skull + firework + unbreakable + customModelData + flags;
     }
 
     /**
@@ -361,12 +355,13 @@ public class QuestItem {
                 && item.head.equals(head)
                 && item.color.equals(color)
                 && item.firework.equals(firework)
-                && item.customModelData.equals(customModelData);
+                && item.customModelData.equals(customModelData)
+                && item.flags.equals(flags);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(selector, durability, name, lore, enchants, unbreakable, potion, book, head, color, firework, customModelData);
+        return Objects.hash(selector, durability, name, lore, enchants, unbreakable, potion, book, head, color, firework, customModelData, flags);
     }
 
     /**
@@ -404,6 +399,9 @@ public class QuestItem {
             return false;
         }
         if (!customModelData.check(meta)) {
+            return false;
+        }
+        if (!flags.check(meta)) {
             return false;
         }
         // advanced meta checks
@@ -495,6 +493,7 @@ public class QuestItem {
         meta.setDisplayName(name.get());
         meta.setLore(lore.get());
         meta.setUnbreakable(unbreakable.isUnbreakable());
+        if (flags.get() != null) flags.get().forEach(meta::addItemFlags);
         if (customModelData.getExistence() == Existence.REQUIRED) {
             meta.setCustomModelData(customModelData.get());
         }
@@ -675,6 +674,13 @@ public class QuestItem {
      */
     public int getPower() {
         return firework.getPower();
+    }
+
+    /**
+     * @return the set of ItemFlags
+     */
+    public Set<ItemFlag> getFlags() {
+        return flags.get();
     }
 
     public enum Existence {
