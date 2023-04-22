@@ -107,3 +107,5 @@ items:
     next_button: ''
     cancel_button: "DEFAULT"
     compass_button: "DEFAULT"
+profiles:
+  initial_name: 'default'

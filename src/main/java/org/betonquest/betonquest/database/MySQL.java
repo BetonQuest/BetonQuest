@@ -72,6 +72,7 @@ public class MySQL extends Database {
         final SortedMap<MigrationKey, DatabaseUpdate> migrations = new TreeMap<>();
         migrations.put(new MigrationKey("betonquest", 1), this::migration1);
         migrations.put(new MigrationKey("betonquest", 2), this::migration2);
+        migrations.put(new MigrationKey("betonquest", 3), this::migration3);
         return migrations;
     }
 
@@ -196,6 +197,15 @@ public class MySQL extends Database {
             statement.executeUpdate("ALTER TABLE " + prefix + "global_tags " + "DROP PRIMARY KEY,"
                     + "DROP COLUMN id, " + "MODIFY COLUMN tag VARCHAR(510) NOT NULL");
             statement.executeUpdate("ALTER TABLE " + prefix + "global_tags " + "ADD PRIMARY KEY (tag)");
+        }
+    }
+
+    private void migration3(final Connection connection) throws SQLException {
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate("UPDATE " + prefix + "player_profile " + "SET name = '" + profileInitialName
+                    + "' WHERE name = NULL");
+            statement.executeUpdate("ALTER TABLE " + prefix + "player_profile " + "MODIFY COLUMN name "
+                    + "VARCHAR(63) NOT NULL");
         }
     }
 }

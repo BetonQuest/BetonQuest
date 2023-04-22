@@ -70,6 +70,7 @@ public class SQLite extends Database {
         final SortedMap<MigrationKey, DatabaseUpdate> migrations = new TreeMap<>();
         migrations.put(new MigrationKey("betonquest", 1), this::migration1);
         migrations.put(new MigrationKey("betonquest", 2), this::migration2);
+        migrations.put(new MigrationKey("betonquest", 3), this::migration3);
         return migrations;
     }
 
@@ -128,8 +129,6 @@ public class SQLite extends Database {
                     + "AUTOINCREMENT, tag TEXT NOT NULL);");
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "global_points (id INTEGER PRIMARY KEY "
                     + "AUTOINCREMENT, category VARCHAR(256) NOT NULL, count INT NOT NULL);");
-        } catch (final SQLException e) {
-            LOG.error("There was an exception with SQL", e);
         }
     }
 
@@ -219,8 +218,25 @@ public class SQLite extends Database {
             statement.executeUpdate("DROP TABLE " + prefix + "global_points");
             statement.executeUpdate("ALTER TABLE " + prefix + "global_points_tmp " + "RENAME TO " + prefix
                     + "global_points");
-        } catch (final SQLException e) {
-            LOG.error("There was an exception with SQL", e);
+        }
+    }
+
+    private void migration3(final Connection connection) throws SQLException {
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate("UPDATE " + prefix + "player_profile " + "SET name = '" + profileInitialName
+                    + "' WHERE name IS NULL");
+            statement.executeUpdate("CREATE TABLE " + prefix + "player_profile_tmp" + "(playerID CHAR(36) NOT NULL, "
+                    + "profileID CHAR(36) NOT NULL, " + "name VARCHAR(63) NOT NULL, "
+                    + "PRIMARY KEY (playerID, profileID), "
+                    + "FOREIGN KEY (playerID) REFERENCES " + prefix + "player (playerID) ON DELETE CASCADE, "
+                    + "FOREIGN KEY (profileID) REFERENCES " + prefix + "profile (profileID) ON DELETE CASCADE, "
+                    + "UNIQUE (playerID, name))");
+            statement.executeUpdate("INSERT OR IGNORE INTO " + prefix + "player_profile_tmp "
+                    + "(playerID, profileID, name) "
+                    + "SELECT playerID, profileID, name FROM " + prefix + "player_profile");
+            statement.executeUpdate("DROP TABLE " + prefix + "player_profile");
+            statement.executeUpdate("ALTER TABLE " + prefix + "player_profile_tmp RENAME TO "
+                    + prefix + "player_profile");
         }
     }
 }
