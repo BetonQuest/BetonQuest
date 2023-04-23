@@ -83,10 +83,6 @@ public class Compatibility implements Listener {
             integratePlugin(plugin);
         }
 
-        final Integrator effectLibIntegrator = integrators.get("EffectLib").getValue();
-        if (effectLibIntegrator != null) {
-            effectLibIntegrator.reload();
-        }
         //Must be called after all plugins have been integrated
         HologramProvider.init();
 
