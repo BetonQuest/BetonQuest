@@ -19,6 +19,7 @@ Skip to the first version that is newer than the version that you're migrating f
 - [2.0.0-DEV-485 - Experience changes](#200-dev-485-experience-changes)
 - [2.0.0-DEV-538 - Smelt Objective](#200-dev-538-smelt-objective)
 - [2.0.0-DEV-539 - NPC Holograms](#200-dev-539-npc-holograms)
+- [2.0.0-DEV-547 - Database migration for profiles](#200-dev-643-database-migration-for-profiles)
 
 ### 2.0.0-DEV-98 - RPGMenu Merge
 
@@ -216,3 +217,17 @@ npc_holograms:
 2. You can delete this if you had the default value of `100` (or whatever you set in "_config.yml_").
 3. You can delete this if you had the default value of `false`.
 </div>
+
+### 2.0.0-DEV-547 - Database migration for profiles
+
+The database migrated to a new format for profiles and every profile will have a name. You can set a initial creation
+name in your config.yml, so every new generated profile (through migration or joining of a new player) will get this name. 
+If you don't set a initial name, the initial name will be "default".
+
+!!! info "Example"
+    ```YAML title="config.yml"
+    profiles:
+      initial_name: player # (1)!
+    ```
+    
+    1. Only set this if you want to change the initial name. If you don't set this, the initial name will be "default".

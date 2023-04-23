@@ -24,11 +24,14 @@ public abstract class Database {
 
     protected final String prefix;
 
+    protected final String profileInitialName;
+
     protected Connection con;
 
     protected Database(final BetonQuest plugin) {
         this.plugin = plugin;
         this.prefix = plugin.getPluginConfig().getString("mysql.prefix", "");
+        this.profileInitialName = plugin.getPluginConfig().getString("profiles.initial_name", "");
     }
 
     public Connection getConnection() {

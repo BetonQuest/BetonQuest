@@ -72,6 +72,7 @@ public class MySQL extends Database {
         final SortedMap<MigrationKey, DatabaseUpdate> migrations = new TreeMap<>();
         migrations.put(new MigrationKey("betonquest", 1), this::migration1);
         migrations.put(new MigrationKey("betonquest", 2), this::migration2);
+        migrations.put(new MigrationKey("betonquest", 3), this::migration3);
         return migrations;
     }
 
@@ -154,35 +155,36 @@ public class MySQL extends Database {
                     + "CHANGE COLUMN playerID profileID CHAR(36) NOT NULL, "
                     + "MODIFY COLUMN pointer VARCHAR(255) NOT NULL, " + "ADD FOREIGN KEY (profileID) REFERENCES "
                     + prefix + "profile (profileID) ON DELETE CASCADE");
+            statement.executeUpdate("DELETE FROM " + prefix + "objectives WHERE id NOT IN "
+                    + "(SELECT MIN(id) FROM " + prefix + "objectives GROUP BY playerID, objective)");
             statement.executeUpdate("ALTER TABLE " + prefix + "objectives "
                     + "CHANGE COLUMN playerID profileID CHAR(36) NOT NULL, "
                     + "MODIFY COLUMN objective VARCHAR(510) NOT NULL, "
-                    + "MODIFY COLUMN instructions VARCHAR(2046) NOT NULL, " + "DROP PRIMARY KEY," + "DROP COLUMN id");
-            statement.executeUpdate("ALTER IGNORE TABLE " + prefix + "objectives "
-                    + "ADD PRIMARY KEY (profileID, objective)");
-            statement.executeUpdate("ALTER TABLE " + prefix + "objectives "
+                    + "MODIFY COLUMN instructions VARCHAR(2046) NOT NULL, " + "DROP PRIMARY KEY," + "DROP COLUMN id "
+                    + "ADD PRIMARY KEY (profileID, objective) "
                     + "ADD FOREIGN KEY (profileID) REFERENCES " + prefix + "profile (profileID) ON DELETE CASCADE");
+            statement.executeUpdate("DELETE FROM " + prefix + "points WHERE id NOT IN "
+                    + "(SELECT MIN(id) FROM " + prefix + "points GROUP BY playerID, category)");
             statement.executeUpdate("ALTER TABLE " + prefix + "points "
                     + "CHANGE COLUMN playerID profileID CHAR(36) NOT NULL, "
-                    + "MODIFY COLUMN category VARCHAR(255) NOT NULL, " + "DROP PRIMARY KEY," + "DROP COLUMN id");
-            statement.executeUpdate("ALTER IGNORE TABLE " + prefix + "points "
-                    + "ADD PRIMARY KEY (profileID, category)");
-            statement.executeUpdate("ALTER TABLE " + prefix + "points " + "ADD FOREIGN KEY (profileID) REFERENCES "
-                    + prefix + "profile (profileID) ON DELETE CASCADE");
+                    + "MODIFY COLUMN category VARCHAR(255) NOT NULL, " + "DROP PRIMARY KEY," + "DROP COLUMN id "
+                    + "ADD PRIMARY KEY (profileID, category) "
+                    + "ADD FOREIGN KEY (profileID) REFERENCES " + prefix + "profile (profileID) ON DELETE CASCADE");
+            statement.executeUpdate("DELETE FROM " + prefix + "tags WHERE id NOT IN "
+                    + "(SELECT MIN(id) FROM " + prefix + "tags GROUP BY playerID, tag)");
             statement.executeUpdate("ALTER TABLE " + prefix + "tags "
                     + "CHANGE COLUMN playerID profileID CHAR(36) NOT NULL, "
-                    + "MODIFY COLUMN tag VARCHAR(510) NOT NULL, " + "DROP PRIMARY KEY," + "DROP COLUMN id");
-            statement.executeUpdate("ALTER IGNORE TABLE " + prefix + "tags " + "ADD PRIMARY KEY (profileID, tag)");
-            statement.executeUpdate("ALTER TABLE " + prefix + "tags " + "ADD FOREIGN KEY (profileID) REFERENCES "
-                    + prefix + "profile (profileID) ON DELETE CASCADE");
+                    + "MODIFY COLUMN tag VARCHAR(510) NOT NULL, " + "DROP PRIMARY KEY," + "DROP COLUMN id "
+                    + "ADD PRIMARY KEY (profileID, tag) "
+                    + "ADD FOREIGN KEY (profileID) REFERENCES " + prefix + "profile (profileID) ON DELETE CASCADE");
+            statement.executeUpdate("DELETE FROM " + prefix + "player WHERE id NOT IN "
+                    + "(SELECT MIN(id) FROM " + prefix + "player GROUP BY playerID)");
             statement.executeUpdate("ALTER TABLE " + prefix + "player "
                     + "MODIFY COLUMN playerID CHAR(36) NOT NULL, " + "MODIFY COLUMN conversation VARCHAR(510), "
                     + "ADD COLUMN active_profile CHAR(36) NOT NULL DEFAULT playerID AFTER playerID, "
                     + "ADD FOREIGN KEY (active_profile) REFERENCES " + prefix
-                    + "profile (profileID) ON DELETE RESTRICT, " + "DROP PRIMARY KEY, " + "DROP COLUMN id");
-            statement.executeUpdate("ALTER IGNORE TABLE " + prefix + "player " + "ADD PRIMARY KEY (playerID)");
-            statement.executeUpdate("ALTER TABLE " + prefix + "player "
-                    + "ALTER COLUMN active_profile DROP DEFAULT");
+                    + "profile (profileID) ON DELETE RESTRICT, " + "DROP PRIMARY KEY, " + "DROP COLUMN id "
+                    + "ADD PRIMARY KEY (playerID) " + "ALTER COLUMN active_profile DROP DEFAULT");
             statement.executeUpdate("CREATE TABLE " + prefix + "player_profile " + "(playerID CHAR(36) NOT NULL, "
                     + "profileID CHAR(36) NOT NULL, " + "name VARCHAR(510), " + "PRIMARY KEY (profileID, playerID), "
                     + "FOREIGN KEY (playerID) REFERENCES " + prefix + "player (playerID) ON DELETE CASCADE, "
@@ -196,6 +198,15 @@ public class MySQL extends Database {
             statement.executeUpdate("ALTER TABLE " + prefix + "global_tags " + "DROP PRIMARY KEY,"
                     + "DROP COLUMN id, " + "MODIFY COLUMN tag VARCHAR(510) NOT NULL");
             statement.executeUpdate("ALTER TABLE " + prefix + "global_tags " + "ADD PRIMARY KEY (tag)");
+        }
+    }
+
+    private void migration3(final Connection connection) throws SQLException {
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate("UPDATE " + prefix + "player_profile " + "SET name = '" + profileInitialName
+                    + "' WHERE name = NULL");
+            statement.executeUpdate("ALTER TABLE " + prefix + "player_profile " + "MODIFY COLUMN name "
+                    + "VARCHAR(63) NOT NULL");
         }
     }
 }
