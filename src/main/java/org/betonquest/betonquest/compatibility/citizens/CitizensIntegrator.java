@@ -44,9 +44,7 @@ public class CitizensIntegrator implements Integrator {
 
     @Override
     public void reload() {
-        if (Compatibility.getHooked().contains("Citizens")) {
-            citizensListener.reload();
-        }
+        citizensListener.reload();
     }
 
     @Override

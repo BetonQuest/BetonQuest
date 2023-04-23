@@ -3,6 +3,7 @@ package org.betonquest.betonquest.compatibility.effectlib;
 import de.slikey.effectlib.EffectManager;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.compatibility.Integrator;
+import org.betonquest.betonquest.exceptions.HookException;
 
 @SuppressWarnings("PMD.CommentRequired")
 public class EffectLibIntegrator implements Integrator {
@@ -30,8 +31,12 @@ public class EffectLibIntegrator implements Integrator {
     @Override
     public void hook() {
         manager = new EffectManager(BetonQuest.getInstance());
-        particleManager = new EffectLibParticleManager();
         plugin.registerEvents("particle", ParticleEvent.class);
+    }
+
+    @Override
+    public void postHook() throws HookException {
+        particleManager = new EffectLibParticleManager();
     }
 
     @Override
