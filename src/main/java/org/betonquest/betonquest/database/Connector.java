@@ -52,7 +52,7 @@ public class Connector {
         try {
             connection.prepareStatement("SELECT 1").executeQuery().close();
         } catch (final SQLException e) {
-            LOG.warn("Reconnecting to the database", e);
+            LOG.error("Reconnecting to the database", e);
             database.closeConnection();
             connection = database.getConnection();
         }
@@ -89,7 +89,7 @@ public class Connector {
             variableResolver.resolve(statement);
             return statement.executeQuery();
         } catch (final SQLException e) {
-            LOG.warn("There was a exception with SQL", e);
+            LOG.error("There was a exception with SQL", e);
             return null;
         }
     }
