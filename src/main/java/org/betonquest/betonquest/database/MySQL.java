@@ -171,8 +171,8 @@ public class MySQL extends Database {
                     + "MODIFY COLUMN pointer VARCHAR(255) NOT NULL, "
                     + "ADD FOREIGN KEY (profileID) REFERENCES " + prefix + "profile (profileID) ON DELETE CASCADE");
             statement.executeUpdate("DELETE FROM " + prefix + "objectives "
-                    + "WHERE id NOT IN "
-                    + "(SELECT MIN(id) FROM " + prefix + "objectives GROUP BY playerID, objective)");
+                    + "WHERE id NOT IN (SELECT t.min_id FROM ("
+                    + "SELECT MIN(id) AS min_id FROM " + prefix + "objectives GROUP BY playerID, objective) t )");
             statement.executeUpdate("ALTER TABLE " + prefix + "objectives "
                     + "CHANGE COLUMN playerID profileID CHAR(36) NOT NULL, "
                     + "MODIFY COLUMN objective VARCHAR(510) NOT NULL, "
@@ -182,8 +182,8 @@ public class MySQL extends Database {
                     + "ADD PRIMARY KEY (profileID, objective), "
                     + "ADD FOREIGN KEY (profileID) REFERENCES " + prefix + "profile (profileID) ON DELETE CASCADE");
             statement.executeUpdate("DELETE FROM " + prefix + "points "
-                    + "WHERE id NOT IN "
-                    + "(SELECT MIN(id) FROM " + prefix + "points GROUP BY playerID, category)");
+                    + "WHERE id NOT IN (SELECT t.min_id FROM ("
+                    + "SELECT MIN(id) AS min_id FROM " + prefix + "points GROUP BY playerID, category) t )");
             statement.executeUpdate("ALTER TABLE " + prefix + "points "
                     + "CHANGE COLUMN playerID profileID CHAR(36) NOT NULL, "
                     + "MODIFY COLUMN category VARCHAR(255) NOT NULL, "
@@ -192,8 +192,8 @@ public class MySQL extends Database {
                     + "ADD PRIMARY KEY (profileID, category), "
                     + "ADD FOREIGN KEY (profileID) REFERENCES " + prefix + "profile (profileID) ON DELETE CASCADE");
             statement.executeUpdate("DELETE FROM " + prefix + "tags "
-                    + "WHERE id NOT IN "
-                    + "(SELECT MIN(id) FROM " + prefix + "tags GROUP BY playerID, tag)");
+                    + "WHERE id NOT IN (SELECT t.min_id FROM ("
+                    + "SELECT MIN(id) AS min_id FROM " + prefix + "tags GROUP BY playerID, tag) t )");
             statement.executeUpdate("ALTER TABLE " + prefix + "tags "
                     + "CHANGE COLUMN playerID profileID CHAR(36) NOT NULL, "
                     + "MODIFY COLUMN tag VARCHAR(510) NOT NULL, "
@@ -203,7 +203,7 @@ public class MySQL extends Database {
                     + "ADD FOREIGN KEY (profileID) REFERENCES " + prefix + "profile (profileID) ON DELETE CASCADE");
             statement.executeUpdate("DELETE FROM " + prefix + "player "
                     + "WHERE id NOT IN "
-                    + "(SELECT MIN(id) FROM " + prefix + "player GROUP BY playerID)");
+                    + "(SELECT t.min_id FROM (SELECT MIN(id) AS min_id FROM " + prefix + "player GROUP BY playerID) t)");
             statement.executeUpdate("ALTER TABLE " + prefix + "player "
                     + "MODIFY COLUMN playerID CHAR(36) NOT NULL, "
                     + "MODIFY COLUMN conversation VARCHAR(510), "
