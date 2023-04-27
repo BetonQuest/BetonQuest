@@ -241,7 +241,7 @@ public class MySQL extends Database {
             statement.executeUpdate("UPDATE " + prefix + "player_profile "
                     + "SET name = '" + profileInitialName + "' WHERE name IS NULL");
             statement.executeUpdate("ALTER TABLE " + prefix + "player_profile "
-                    + "MODIFY COLUMN name " + "VARCHAR(63) NOT NULL");
+                    + "MODIFY COLUMN name VARCHAR(63) NOT NULL");
         }
     }
 }
