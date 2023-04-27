@@ -239,7 +239,7 @@ public class MySQL extends Database {
     private void migration3(final Connection connection) throws SQLException {
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate("UPDATE " + prefix + "player_profile "
-                    + "SET name = '" + profileInitialName + "' WHERE name = NULL");
+                    + "SET name = '" + profileInitialName + "' WHERE name IS NULL");
             statement.executeUpdate("ALTER TABLE " + prefix + "player_profile "
                     + "MODIFY COLUMN name " + "VARCHAR(63) NOT NULL");
         }
