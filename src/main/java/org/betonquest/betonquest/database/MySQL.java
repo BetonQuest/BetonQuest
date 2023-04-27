@@ -207,12 +207,12 @@ public class MySQL extends Database {
             statement.executeUpdate("ALTER TABLE " + prefix + "player "
                     + "MODIFY COLUMN playerID CHAR(36) NOT NULL, "
                     + "MODIFY COLUMN conversation VARCHAR(510), "
+                    + "ALTER COLUMN active_profile DROP DEFAULT, "
                     + "ADD COLUMN active_profile CHAR(36) NOT NULL DEFAULT playerID AFTER playerID, "
-                    + "ADD FOREIGN KEY (active_profile) REFERENCES " + prefix + "profile (profileID) ON DELETE RESTRICT, "
                     + "DROP PRIMARY KEY, "
                     + "DROP COLUMN id, "
                     + "ADD PRIMARY KEY (playerID), "
-                    + "ALTER COLUMN active_profile DROP DEFAULT");
+                    + "ADD FOREIGN KEY (active_profile) REFERENCES " + prefix + "profile (profileID) ON DELETE RESTRICT");
             statement.executeUpdate("CREATE TABLE " + prefix + "player_profile ("
                     + "playerID CHAR(36) NOT NULL, "
                     + "profileID CHAR(36) NOT NULL, "
