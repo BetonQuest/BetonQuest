@@ -64,7 +64,7 @@ public abstract class Database {
 
             while (!migrations.isEmpty()) {
                 final MigrationKey key = migrations.firstKey();
-                final var migration = migrations.remove(key);
+                final DatabaseUpdate migration = migrations.remove(key);
                 migration.executeUpdate(getConnection());
                 markMigrationExecuted(getConnection(), key);
             }
