@@ -221,7 +221,7 @@ public class MySQL extends Database {
                     + "FOREIGN KEY (profileID) REFERENCES " + prefix + "profile (profileID) ON DELETE CASCADE, "
                     + "UNIQUE KEY (playerID, name))");
             statement.executeUpdate("INSERT INTO " + prefix + "player_profile "
-                    + "(playerID, profileID, name) SELECT playerID, active_profile, NULL " + "FROM " + prefix + "player");
+                    + "(playerID, profileID, name) SELECT playerID, active_profile, NULL FROM " + prefix + "player");
             statement.executeUpdate("ALTER TABLE " + prefix + "global_points "
                     + "DROP PRIMARY KEY,"
                     + "DROP COLUMN id, "
