@@ -187,7 +187,7 @@ public class MySQL extends Database {
             statement.executeUpdate("ALTER TABLE " + prefix + "points "
                     + "CHANGE COLUMN playerID profileID CHAR(36) NOT NULL, "
                     + "MODIFY COLUMN category VARCHAR(255) NOT NULL, "
-                    + "DROP PRIMARY KEY,"
+                    + "DROP PRIMARY KEY, "
                     + "DROP COLUMN id, "
                     + "ADD PRIMARY KEY (profileID, category), "
                     + "ADD FOREIGN KEY (profileID) REFERENCES " + prefix + "profile (profileID) ON DELETE CASCADE");
@@ -197,7 +197,7 @@ public class MySQL extends Database {
             statement.executeUpdate("ALTER TABLE " + prefix + "tags "
                     + "CHANGE COLUMN playerID profileID CHAR(36) NOT NULL, "
                     + "MODIFY COLUMN tag VARCHAR(510) NOT NULL, "
-                    + "DROP PRIMARY KEY,"
+                    + "DROP PRIMARY KEY, "
                     + "DROP COLUMN id, "
                     + "ADD PRIMARY KEY (profileID, tag), "
                     + "ADD FOREIGN KEY (profileID) REFERENCES " + prefix + "profile (profileID) ON DELETE CASCADE");
@@ -223,11 +223,11 @@ public class MySQL extends Database {
             statement.executeUpdate("INSERT INTO " + prefix + "player_profile "
                     + "(playerID, profileID, name) SELECT playerID, active_profile, NULL FROM " + prefix + "player");
             statement.executeUpdate("ALTER TABLE " + prefix + "global_points "
-                    + "DROP PRIMARY KEY,"
+                    + "DROP PRIMARY KEY, "
                     + "DROP COLUMN id, "
                     + "ADD PRIMARY KEY (category)");
             statement.executeUpdate("ALTER TABLE " + prefix + "global_tags "
-                    + "DROP PRIMARY KEY,"
+                    + "DROP PRIMARY KEY, "
                     + "DROP COLUMN id, "
                     + "MODIFY COLUMN tag VARCHAR(510) NOT NULL");
             statement.executeUpdate("ALTER TABLE " + prefix + "global_tags "
