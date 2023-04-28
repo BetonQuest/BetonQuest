@@ -111,27 +111,42 @@ public class MySQL extends Database {
     @SuppressFBWarnings("SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE")
     private void migration1(final Connection connection) throws SQLException {
         try (Statement statement = connection.createStatement()) {
-            statement.executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "objectives (id INTEGER PRIMARY KEY "
-                    + "AUTO_INCREMENT, playerID VARCHAR(256) NOT NULL, objective VARCHAR(512)"
-                    + " NOT NULL, instructions VARCHAR(2048) NOT NULL)");
-            statement.executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "tags (id INTEGER PRIMARY KEY "
-                    + "AUTO_INCREMENT, playerID VARCHAR(256) NOT NULL, tag TEXT NOT NULL)");
-            statement.executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "points (id INTEGER PRIMARY KEY "
-                    + "AUTO_INCREMENT, playerID VARCHAR(256) NOT NULL, category VARCHAR(256) "
-                    + "NOT NULL, count INT NOT NULL);");
-            statement.executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "journal (id INTEGER PRIMARY KEY "
-                    + "AUTO_INCREMENT, playerID VARCHAR(256) NOT NULL, pointer "
-                    + "VARCHAR(256) NOT NULL, date TIMESTAMP NOT NULL);");
-            statement.executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "backpack (id INTEGER PRIMARY KEY "
-                    + "AUTO_INCREMENT, playerID VARCHAR(256) NOT NULL, instruction "
-                    + "TEXT NOT NULL, amount INT NOT NULL);");
-            statement.executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "player (id INTEGER PRIMARY KEY "
-                    + "AUTO_INCREMENT, playerID VARCHAR(256) NOT NULL, language VARCHAR(16) NOT NULL, "
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "objectives ("
+                    + "id INTEGER PRIMARY KEY AUTO_INCREMENT, "
+                    + "playerID VARCHAR(256) NOT NULL, "
+                    + "objective VARCHAR(512)  NOT NULL, "
+                    + "instructions VARCHAR(2048) NOT NULL)");
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "tags ("
+                    + "id INTEGER PRIMARY KEY AUTO_INCREMENT, "
+                    + "playerID VARCHAR(256) NOT NULL, "
+                    + "tag TEXT NOT NULL)");
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "points ("
+                    + "id INTEGER PRIMARY KEY AUTO_INCREMENT, "
+                    + "playerID VARCHAR(256) NOT NULL, "
+                    + "category VARCHAR(256) NOT NULL, "
+                    + "count INT NOT NULL);");
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "journal ("
+                    + "id INTEGER PRIMARY KEY AUTO_INCREMENT, "
+                    + "playerID VARCHAR(256) NOT NULL, "
+                    + "pointer VARCHAR(256) NOT NULL, "
+                    + "date TIMESTAMP NOT NULL);");
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "backpack ("
+                    + "id INTEGER PRIMARY KEY AUTO_INCREMENT, "
+                    + "playerID VARCHAR(256) NOT NULL, "
+                    + "instruction TEXT NOT NULL, "
+                    + "amount INT NOT NULL);");
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "player ("
+                    + "id INTEGER PRIMARY KEY AUTO_INCREMENT, "
+                    + "playerID VARCHAR(256) NOT NULL, "
+                    + "language VARCHAR(16) NOT NULL, "
                     + "conversation VARCHAR(512));");
-            statement.executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "global_tags (id INTEGER PRIMARY KEY "
-                    + "AUTO_INCREMENT, tag TEXT NOT NULL);");
-            statement.executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "global_points (id INTEGER PRIMARY KEY "
-                    + "AUTO_INCREMENT, category VARCHAR(256) NOT NULL, count INT NOT NULL);");
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "global_tags ("
+                    + "id INTEGER PRIMARY KEY AUTO_INCREMENT, "
+                    + "tag TEXT NOT NULL);");
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "global_points ("
+                    + "id INTEGER PRIMARY KEY AUTO_INCREMENT, "
+                    + "category VARCHAR(256) NOT NULL, "
+                    + "count INT NOT NULL);");
         }
     }
 
@@ -144,69 +159,98 @@ public class MySQL extends Database {
     @SuppressFBWarnings("SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE")
     private void migration2(final Connection connection) throws SQLException {
         try (Statement statement = connection.createStatement()) {
-            statement.executeUpdate("CREATE TABLE " + prefix + "profile "
-                    + "(profileID CHAR(36) PRIMARY KEY NOT NULL)");
-            statement.executeUpdate("INSERT INTO " + prefix + "profile " + "(profileID) SELECT playerID FROM "
-                    + prefix + "player");
+            statement.executeUpdate("CREATE TABLE " + prefix + "profile ("
+                    + "profileID CHAR(36) PRIMARY KEY NOT NULL)");
+            statement.executeUpdate("INSERT INTO " + prefix + "profile "
+                    + "(profileID) SELECT playerID FROM " + prefix + "player");
+            deleteOrphaned(statement, "backpack");
             statement.executeUpdate("ALTER TABLE " + prefix + "backpack "
-                    + "CHANGE COLUMN playerID profileID CHAR(36) NOT NULL, " + "ADD FOREIGN KEY (profileID) REFERENCES "
-                    + prefix + "profile (profileID) ON DELETE CASCADE");
+                    + "CHANGE COLUMN playerID profileID CHAR(36) NOT NULL, "
+                    + "ADD FOREIGN KEY (profileID) REFERENCES " + prefix + "profile (profileID) ON DELETE CASCADE");
+            deleteOrphaned(statement, "journal");
             statement.executeUpdate("ALTER TABLE " + prefix + "journal "
                     + "CHANGE COLUMN playerID profileID CHAR(36) NOT NULL, "
-                    + "MODIFY COLUMN pointer VARCHAR(255) NOT NULL, " + "ADD FOREIGN KEY (profileID) REFERENCES "
-                    + prefix + "profile (profileID) ON DELETE CASCADE");
-            statement.executeUpdate("DELETE FROM " + prefix + "objectives WHERE id NOT IN "
-                    + "(SELECT MIN(id) FROM " + prefix + "objectives GROUP BY playerID, objective)");
+                    + "MODIFY COLUMN pointer VARCHAR(255) NOT NULL, "
+                    + "ADD FOREIGN KEY (profileID) REFERENCES " + prefix + "profile (profileID) ON DELETE CASCADE");
+            deleteDuplicates(statement, "objectives", "objective");
+            deleteOrphaned(statement, "objectives");
             statement.executeUpdate("ALTER TABLE " + prefix + "objectives "
                     + "CHANGE COLUMN playerID profileID CHAR(36) NOT NULL, "
                     + "MODIFY COLUMN objective VARCHAR(510) NOT NULL, "
-                    + "MODIFY COLUMN instructions VARCHAR(2046) NOT NULL, " + "DROP PRIMARY KEY," + "DROP COLUMN id "
-                    + "ADD PRIMARY KEY (profileID, objective) "
+                    + "MODIFY COLUMN instructions VARCHAR(2046) NOT NULL, "
+                    + "DROP PRIMARY KEY, "
+                    + "DROP COLUMN id, "
+                    + "ADD PRIMARY KEY (profileID, objective), "
                     + "ADD FOREIGN KEY (profileID) REFERENCES " + prefix + "profile (profileID) ON DELETE CASCADE");
-            statement.executeUpdate("DELETE FROM " + prefix + "points WHERE id NOT IN "
-                    + "(SELECT MIN(id) FROM " + prefix + "points GROUP BY playerID, category)");
+            deleteDuplicates(statement, "points", "category");
+            deleteOrphaned(statement, "points");
             statement.executeUpdate("ALTER TABLE " + prefix + "points "
                     + "CHANGE COLUMN playerID profileID CHAR(36) NOT NULL, "
-                    + "MODIFY COLUMN category VARCHAR(255) NOT NULL, " + "DROP PRIMARY KEY," + "DROP COLUMN id "
-                    + "ADD PRIMARY KEY (profileID, category) "
+                    + "MODIFY COLUMN category VARCHAR(255) NOT NULL, "
+                    + "DROP PRIMARY KEY, "
+                    + "DROP COLUMN id, "
+                    + "ADD PRIMARY KEY (profileID, category), "
                     + "ADD FOREIGN KEY (profileID) REFERENCES " + prefix + "profile (profileID) ON DELETE CASCADE");
-            statement.executeUpdate("DELETE FROM " + prefix + "tags WHERE id NOT IN "
-                    + "(SELECT MIN(id) FROM " + prefix + "tags GROUP BY playerID, tag)");
+            deleteDuplicates(statement, "tags", "tag");
+            deleteOrphaned(statement, "tags");
             statement.executeUpdate("ALTER TABLE " + prefix + "tags "
                     + "CHANGE COLUMN playerID profileID CHAR(36) NOT NULL, "
-                    + "MODIFY COLUMN tag VARCHAR(510) NOT NULL, " + "DROP PRIMARY KEY," + "DROP COLUMN id "
-                    + "ADD PRIMARY KEY (profileID, tag) "
+                    + "MODIFY COLUMN tag VARCHAR(510) NOT NULL, "
+                    + "DROP PRIMARY KEY, "
+                    + "DROP COLUMN id, "
+                    + "ADD PRIMARY KEY (profileID, tag), "
                     + "ADD FOREIGN KEY (profileID) REFERENCES " + prefix + "profile (profileID) ON DELETE CASCADE");
-            statement.executeUpdate("DELETE FROM " + prefix + "player WHERE id NOT IN "
-                    + "(SELECT MIN(id) FROM " + prefix + "player GROUP BY playerID)");
+            deleteDuplicates(statement, "player", null);
             statement.executeUpdate("ALTER TABLE " + prefix + "player "
-                    + "MODIFY COLUMN playerID CHAR(36) NOT NULL, " + "MODIFY COLUMN conversation VARCHAR(510), "
-                    + "ADD COLUMN active_profile CHAR(36) NOT NULL DEFAULT playerID AFTER playerID, "
-                    + "ADD FOREIGN KEY (active_profile) REFERENCES " + prefix
-                    + "profile (profileID) ON DELETE RESTRICT, " + "DROP PRIMARY KEY, " + "DROP COLUMN id "
-                    + "ADD PRIMARY KEY (playerID) " + "ALTER COLUMN active_profile DROP DEFAULT");
-            statement.executeUpdate("CREATE TABLE " + prefix + "player_profile " + "(playerID CHAR(36) NOT NULL, "
-                    + "profileID CHAR(36) NOT NULL, " + "name VARCHAR(510), " + "PRIMARY KEY (profileID, playerID), "
+                    + "MODIFY COLUMN playerID CHAR(36) NOT NULL, "
+                    + "MODIFY COLUMN conversation VARCHAR(510), "
+                    + "ADD COLUMN active_profile CHAR(36) NOT NULL DEFAULT (playerID) AFTER playerID, "
+                    + "DROP PRIMARY KEY, "
+                    + "DROP COLUMN id, "
+                    + "ADD PRIMARY KEY (playerID), "
+                    + "ADD FOREIGN KEY (active_profile) REFERENCES " + prefix + "profile (profileID) ON DELETE RESTRICT");
+            statement.executeUpdate("ALTER TABLE " + prefix + "player "
+                    + "ALTER COLUMN active_profile DROP DEFAULT ");
+            statement.executeUpdate("CREATE TABLE " + prefix + "player_profile ("
+                    + "playerID CHAR(36) NOT NULL, "
+                    + "profileID CHAR(36) NOT NULL, "
+                    + "name VARCHAR(510), " + "PRIMARY KEY (profileID, playerID), "
                     + "FOREIGN KEY (playerID) REFERENCES " + prefix + "player (playerID) ON DELETE CASCADE, "
                     + "FOREIGN KEY (profileID) REFERENCES " + prefix + "profile (profileID) ON DELETE CASCADE, "
                     + "UNIQUE KEY (playerID, name))");
             statement.executeUpdate("INSERT INTO " + prefix + "player_profile "
-                    + "(playerID, profileID, name) SELECT playerID, active_profile, NULL " + "FROM " + prefix
-                    + "player");
-            statement.executeUpdate("ALTER TABLE " + prefix + "global_points " + "DROP PRIMARY KEY,"
-                    + "DROP COLUMN id, " + "ADD PRIMARY KEY (category)");
-            statement.executeUpdate("ALTER TABLE " + prefix + "global_tags " + "DROP PRIMARY KEY,"
-                    + "DROP COLUMN id, " + "MODIFY COLUMN tag VARCHAR(510) NOT NULL");
-            statement.executeUpdate("ALTER TABLE " + prefix + "global_tags " + "ADD PRIMARY KEY (tag)");
+                    + "(playerID, profileID, name) SELECT playerID, active_profile, NULL FROM " + prefix + "player");
+            statement.executeUpdate("ALTER TABLE " + prefix + "global_points "
+                    + "DROP PRIMARY KEY, "
+                    + "DROP COLUMN id, "
+                    + "ADD PRIMARY KEY (category)");
+            statement.executeUpdate("ALTER TABLE " + prefix + "global_tags "
+                    + "DROP PRIMARY KEY, "
+                    + "DROP COLUMN id, "
+                    + "MODIFY COLUMN tag VARCHAR(510) NOT NULL, "
+                    + "ADD PRIMARY KEY (tag)");
         }
+    }
+
+    private void deleteOrphaned(final Statement statement, final String table) throws SQLException {
+        statement.executeUpdate("DELETE FROM " + prefix + table + " "
+                + "WHERE playerID NOT IN (SELECT playerID FROM " + prefix + "player)");
+    }
+
+    @SuppressFBWarnings("SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE")
+    private void deleteDuplicates(final Statement statement, final String table, final String groupBy) throws SQLException {
+        final String groupByClause = groupBy == null ? "" : ", " + groupBy;
+        statement.executeUpdate("DELETE FROM " + prefix + table + " "
+                + "WHERE id NOT IN (SELECT t.min_id FROM ("
+                + "SELECT MIN(id) AS min_id FROM " + prefix + table + " GROUP BY playerID" + groupByClause + ") t )");
     }
 
     private void migration3(final Connection connection) throws SQLException {
         try (Statement statement = connection.createStatement()) {
-            statement.executeUpdate("UPDATE " + prefix + "player_profile " + "SET name = '" + profileInitialName
-                    + "' WHERE name = NULL");
-            statement.executeUpdate("ALTER TABLE " + prefix + "player_profile " + "MODIFY COLUMN name "
-                    + "VARCHAR(63) NOT NULL");
+            statement.executeUpdate("UPDATE " + prefix + "player_profile "
+                    + "SET name = '" + profileInitialName + "' WHERE name IS NULL");
+            statement.executeUpdate("ALTER TABLE " + prefix + "player_profile "
+                    + "MODIFY COLUMN name VARCHAR(63) NOT NULL");
         }
     }
 }
