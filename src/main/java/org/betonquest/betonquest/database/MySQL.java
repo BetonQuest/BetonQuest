@@ -204,7 +204,7 @@ public class MySQL extends Database {
             statement.executeUpdate("ALTER TABLE " + prefix + "player "
                     + "MODIFY COLUMN playerID CHAR(36) NOT NULL, "
                     + "MODIFY COLUMN conversation VARCHAR(510), "
-                    + "ADD COLUMN active_profile CHAR(36) NOT NULL DEFAULT playerID AFTER playerID, "
+                    + "ADD COLUMN active_profile CHAR(36) NOT NULL DEFAULT (playerID) AFTER playerID, "
                     + "DROP PRIMARY KEY, "
                     + "DROP COLUMN id, "
                     + "ADD PRIMARY KEY (playerID), "
