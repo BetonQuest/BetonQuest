@@ -77,6 +77,7 @@ public class Compatibility implements Listener {
         registerCompatiblePlugins();
 
         Bukkit.getPluginManager().registerEvents(this, BetonQuest.getInstance());
+
         // Integrate already enabled plugins in case Bukkit messes up the loading order
         for (final Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
             integratePlugin(plugin);
@@ -103,6 +104,24 @@ public class Compatibility implements Listener {
     public static List<String> getHooked() {
         return instance.integrators.entrySet().stream().filter(entry -> entry.getValue().getRight() != null)
                 .map(Map.Entry::getKey).toList();
+    }
+
+    /**
+     * After all integrations are successfully hooked,
+     * this method can be called to activate cross compatibility features.
+     */
+    public static void postHook() {
+        instance.integrators.values().stream()
+                .filter(pair -> pair.getRight() != null)
+                .forEach(pair -> {
+                    final Integrator integrator = pair.getRight();
+                    try {
+                        integrator.postHook();
+                    } catch (final HookException e) {
+                        LOG.warn("Error while enabling some features while post hooking into " + pair.getLeft()
+                                + " reason: " + e.getMessage(), e);
+                    }
+                });
     }
 
     /**
@@ -162,7 +181,7 @@ public class Compatibility implements Listener {
             integrator = integratorClass.getConstructor().newInstance();
         } catch (final InstantiationException | IllegalAccessException | InvocationTargetException
                        | NoSuchMethodException | NoClassDefFoundError e) {
-            LOG.warn(null, "Error while integrating " + name + " with version " + hookedPlugin.getDescription().getVersion() + ": " + e, e);
+            LOG.warn("Error while integrating " + name + " with version " + hookedPlugin.getDescription().getVersion() + ": " + e, e);
             LOG.warn("You are likely running an incompatible version of " + name + ".");
             return;
         }

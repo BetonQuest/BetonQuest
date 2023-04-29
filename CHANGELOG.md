@@ -133,6 +133,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     - individual refresh rate for each hologram
     - the boolean follow is now set per hologram
     - the vector offset origin has been changed. The hologram is now directly above the NPCs head by default. This means all previously custom vectors are now increased by 3 blocks on the y-axis.
+  - npc_effects are reworked
+    - the section changed its naming from `npc_effects` to `effectlib`
+    - the section `disabled` got removed
+    - the section `check_interval` is now an inner section of the effect and now called `checkinterval`
+    - next to the `npcs` section there is now an `locations` section
+    - effects will now follow npcs if they're pathing to another spot
 - AureliumSkills updated to version Beta1.2.5
 - PikaMug Quests updated to version 4.1.3
 - Items now support AIR

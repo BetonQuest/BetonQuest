@@ -20,6 +20,7 @@ Skip to the first version that is newer than the version that you're migrating f
 - [2.0.0-DEV-538 - Smelt Objective](#200-dev-538-smelt-objective)
 - [2.0.0-DEV-539 - NPC Holograms](#200-dev-539-npc-holograms)
 - [2.0.0-DEV-644 - Database migration for profiles](#200-dev-644-database-migration-for-profiles)
+- [2.0.0-DEV-647 - EffectLib](#200-dev-647-effectlib)
 
 ### 2.0.0-DEV-98 - RPGMenu Merge
 
@@ -231,3 +232,70 @@ If you don't set a initial name, the initial name will be "default".
     ```
     
     1. Only set this if you want to change the initial name. If you don't set this, the initial name will be "default".
+
+### 2.0.0-DEV-647 - EffectLib
+
+The EffectLib integration was rewritten. With this rewrite, the following things are now possible:
+
+- NPC effects will now move with the NPC
+- Effects can be assigned to locations
+
+The following changes need to be done:
+
+- Rename `npc_effects` to `effectlib`.
+- Add `pitch: -90` to preserve the old rotation to NPC effects.
+- Remove `check_interval` from the npc_effects section
+- Remove `disabled` from the npc_effects section
+
+<div class="grid" markdown>
+
+```YAML title="Old Syntax"
+npc_effects:
+   check_interval: 50
+   disabled: false
+   farmer:
+      class: VortexEffect
+      iterations: 20
+      particle: crit_magic
+      helixes: 3
+      circles: 1
+      grow: 0.1
+      radius: 0.5
+      interval: 30
+      npcs:
+         - 1
+      conditions:
+         - '!con_tag_started'
+         - '!con_tag_finished'
+```
+
+```YAML title="New Syntax"
+effectlib: 
+   farmer: 
+      class: VortexEffect 
+      iterations: 20 
+      particle: crit_magic 
+      helixes: 3
+      circles: 1
+      grow: 0.1
+      radius: 0.5
+      pitch: -60 #(4)!
+      yaw: 90
+      interval: 30 #(1)!
+      checkinterval: 80 #(2)!
+      npcs: #(3)!
+         - 1 
+      locations:
+         - 171;72;-127;world
+      conditions: 
+         - '!con_tag_started'
+         - '!con_tag_finished'
+
+```
+
+1. This field is optional. You can delete this if you had the default value of `100`.
+2. This field is new and optional. It replaces the old `check_interval` field. You can delete this if you had the default value of `100`.
+3. In case you never had the `npcs` field and the effect were played on every npc in the package,
+you now need to add the `npcs` section with every npc the effect should be played at.
+4. In case you never had the `pitch` field, you need to use the default value of `-90`.
+</div>

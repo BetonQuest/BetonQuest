@@ -1,0 +1,114 @@
+package org.betonquest.betonquest.compatibility.effectlib;
+
+import de.slikey.effectlib.util.DynamicLocation;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
+import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.api.BetonQuestLogger;
+import org.betonquest.betonquest.api.profiles.OnlineProfile;
+import org.betonquest.betonquest.compatibility.protocollib.hider.NPCHider;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
+import org.betonquest.betonquest.utils.PlayerConverter;
+import org.betonquest.betonquest.utils.location.CompoundLocation;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * A {@link BukkitRunnable} that shows an EffectLib effect to all players that meet the required conditions.
+ */
+public class EffectLibRunnable extends BukkitRunnable {
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private static final BetonQuestLogger LOG = BetonQuestLogger.create();
+
+    /**
+     * The configuration of the effect to show.
+     */
+    private final EffectConfiguration effectConfiguration;
+
+    /**
+     * All player profiles that meet the conditions for this classes' effect.
+     */
+    private List<OnlineProfile> activeProfiles;
+
+    /**
+     * The last game tick the conditions were checked on;
+     */
+    private int lastConditionCheckTick;
+
+    /**
+     * Constructs this runnable with the given effect.
+     *
+     * @param effectConfiguration the effect to show.
+     */
+    public EffectLibRunnable(final EffectConfiguration effectConfiguration) {
+        super();
+        this.effectConfiguration = effectConfiguration;
+        this.activeProfiles = new ArrayList<>();
+    }
+
+    @Override
+    public void run() {
+        if (Bukkit.getCurrentTick() - lastConditionCheckTick >= effectConfiguration.conditionCheckInterval()) {
+            activeProfiles = checkActiveEffects();
+            lastConditionCheckTick = Bukkit.getCurrentTick();
+        }
+        activateEffects(activeProfiles);
+    }
+
+    private List<OnlineProfile> checkActiveEffects() {
+        final List<OnlineProfile> activePlayerEffects = new ArrayList<>();
+        for (final OnlineProfile onlineProfile : PlayerConverter.getOnlineProfiles()) {
+            if (!BetonQuest.conditions(onlineProfile, effectConfiguration.conditions())) {
+                continue;
+            }
+            activePlayerEffects.add(onlineProfile);
+        }
+        return activePlayerEffects;
+    }
+
+    private void activateEffects(final List<OnlineProfile> activePlayers) {
+        for (final OnlineProfile currentPlayer : activePlayers) {
+            if (!effectConfiguration.npcs().isEmpty()) {
+                runNPCEffects(currentPlayer, effectConfiguration);
+            }
+            if (!effectConfiguration.locations().isEmpty()) {
+                runLocationEffects(currentPlayer, effectConfiguration);
+            }
+        }
+    }
+
+    private void runNPCEffects(final OnlineProfile profile, final EffectConfiguration effect) {
+        for (final Integer npcId : effect.npcs()) {
+            final NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
+            final Player player = profile.getPlayer();
+
+            if (npc == null || !npc.getStoredLocation().getWorld().equals(player.getWorld())
+                    || NPCHider.getInstance() != null && NPCHider.getInstance().isInvisible(profile, npc)) {
+                continue;
+            }
+
+            EffectLibIntegrator.getEffectManager().start(effect.effectClass(), effect.settings(), new DynamicLocation(npc.getEntity()),
+                    new DynamicLocation(null, null), (ConfigurationSection) null, player);
+        }
+    }
+
+    private void runLocationEffects(final OnlineProfile profile, final EffectConfiguration effect) {
+        for (final CompoundLocation compoundLocation : effect.locations()) {
+            final Location location;
+            try {
+                location = compoundLocation.getLocation(profile);
+                EffectLibIntegrator.getEffectManager().start(effect.effectClass(), effect.settings(), location, profile.getPlayer());
+            } catch (final QuestRuntimeException exception) {
+                LOG.warn("Error while resolving a location of an EffectLib particle effect of type '" + effect.effectClass() + "'. Check that your location (variables) are correct. Error:", exception);
+            }
+        }
+    }
+}
