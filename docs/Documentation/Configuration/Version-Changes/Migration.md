@@ -20,6 +20,7 @@ Skip to the first version that is newer than the version that you're migrating f
 - [2.0.0-DEV-538 - Smelt Objective](#200-dev-538-smelt-objective)
 - [2.0.0-DEV-539 - NPC Holograms](#200-dev-539-npc-holograms)
 - [2.0.0-DEV-644 - Database migration for profiles](#200-dev-644-database-migration-for-profiles)
+- [2.0.0-DEV-647 - EffectLib](#200-dev-647-effectlib)
 
 ### 2.0.0-DEV-98 - RPGMenu Merge
 
@@ -232,7 +233,7 @@ If you don't set a initial name, the initial name will be "default".
     
     1. Only set this if you want to change the initial name. If you don't set this, the initial name will be "default".
 
-### 2.0.0-DEV-539 - EffectLib
+### 2.0.0-DEV-647 - EffectLib
 
 The EffectLib integration was rewritten. With this rewrite, the following things are now possible:
 
