@@ -406,10 +406,14 @@ Looking for [console commands](#command-command)?
 ## Party event: `party`
 
 Runs the specified list of events (third argument) for every player in a [party](../Parties.md).
+The last optional `amount` argument sets a maximum of selected players.
+Note that the order is not specified, so the player causing this event is not necessary the first selected,
+and any negative value ignores a maximum amount.
 
 !!! example
     ```YAML
     party 10 has_tag1,!has_tag2 give_reward
+    party 10 has_tag1,!has_tag2 give_special_reward amount:3
     ```
 
 ## Pick random: `pickrandom`
