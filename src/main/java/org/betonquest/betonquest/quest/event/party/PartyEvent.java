@@ -9,6 +9,7 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.utils.Utils;
+import org.bukkit.Location;
 
 import java.util.List;
 
@@ -60,6 +61,7 @@ public class PartyEvent implements Event {
         int toExecute;
         if (amount != null) {
             toExecute = amount.getInt(profile);
+            sortPartyByDistance(profile.getOnlineProfile().get().getPlayer().getLocation(), members);
         } else {
             toExecute = -1;
         }
@@ -72,5 +74,18 @@ public class PartyEvent implements Event {
             }
             toExecute--;
         }
+    }
+
+    private void sortPartyByDistance(final Location center, final List<OnlineProfile> members) {
+        members.sort((o1, o2) -> {
+            final double distance1 = center.distanceSquared(o1.getPlayer().getLocation());
+            final double distance2 = center.distanceSquared(o2.getPlayer().getLocation());
+            if (distance1 < distance2) {
+                return -1;
+            } else if (distance1 > distance2) {
+                return 1;
+            }
+            return 0;
+        });
     }
 }

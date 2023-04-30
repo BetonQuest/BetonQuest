@@ -407,7 +407,7 @@ Looking for [console commands](#command-command)?
 
 Runs the specified list of events (third argument) for every player in a [party](../Parties.md).
 The last optional `amount` argument sets a maximum of selected players.
-Note that the order is not specified, so the player causing this event is not necessary the first selected,
+Note this is ordered by distance to the player, so he will be the first if he meets the conditions,
 and any negative value ignores a maximum amount.
 
 !!! example
