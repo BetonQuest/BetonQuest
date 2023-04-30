@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.utils;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import it.unimi.dsi.fastutil.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestLogger;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
@@ -8,13 +9,13 @@ import org.betonquest.betonquest.api.profiles.OnlineProfile;
 import org.betonquest.betonquest.config.Config;
 import org.betonquest.betonquest.database.Backup;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
-import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.modules.config.Zipper;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
@@ -23,8 +24,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Various utilities.
@@ -161,15 +164,17 @@ public final class Utils {
     }
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public static List<OnlineProfile> getParty(final OnlineProfile onlineProfile, final double range, final ConditionID... conditions) throws QuestRuntimeException {
+    public static Map<OnlineProfile, Double> getParty(final OnlineProfile onlineProfile, final double range, final ConditionID... conditions) {
         final Location loc = onlineProfile.getPlayer().getLocation();
+        final World world = loc.getWorld();
         final double squared = range * range;
 
-        return loc.getWorld().getPlayers().stream()
-                .filter(player -> player.getLocation().distanceSquared(loc) <= squared)
-                .map(PlayerConverter::getID)
-                .filter(otherProfile -> BetonQuest.conditions(otherProfile, conditions))
-                .toList();
+        return PlayerConverter.getOnlineProfiles().stream()
+                .filter(profile -> world.equals(profile.getPlayer().getWorld()))
+                .map(profile -> Pair.of(profile, profile.getPlayer().getLocation().distanceSquared(loc)))
+                .filter(pair -> pair.right() <= squared)
+                .filter(pair -> BetonQuest.conditions(pair.left(), conditions))
+                .collect(Collectors.toMap(Pair::left, Pair::right));
     }
 
     /**

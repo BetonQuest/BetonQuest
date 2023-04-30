@@ -9,9 +9,10 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import org.betonquest.betonquest.id.ConditionID;
 import org.betonquest.betonquest.id.EventID;
 import org.betonquest.betonquest.utils.Utils;
-import org.bukkit.Location;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Fires specified events for every player in the party
@@ -56,36 +57,26 @@ public class PartyEvent implements Event {
 
     @Override
     public void execute(final Profile profile) throws QuestRuntimeException {
-        final List<OnlineProfile> members = Utils.getParty(profile.getOnlineProfile().get(), range.getDouble(profile),
-                conditions);
-        int toExecute;
-        if (amount != null) {
-            toExecute = amount.getInt(profile);
-            sortPartyByDistance(profile.getOnlineProfile().get().getPlayer().getLocation(), members);
-        } else {
-            toExecute = -1;
-        }
-        for (final OnlineProfile member : members) {
-            if (toExecute == 0) {
-                return;
-            }
+        for (final OnlineProfile member : getMemberList(profile)) {
             for (final EventID event : events) {
                 BetonQuest.event(member, event);
             }
-            toExecute--;
         }
     }
 
-    private void sortPartyByDistance(final Location center, final List<OnlineProfile> members) {
-        members.sort((o1, o2) -> {
-            final double distance1 = center.distanceSquared(o1.getPlayer().getLocation());
-            final double distance2 = center.distanceSquared(o2.getPlayer().getLocation());
-            if (distance1 < distance2) {
-                return -1;
-            } else if (distance1 > distance2) {
-                return 1;
-            }
-            return 0;
-        });
+    private Set<OnlineProfile> getMemberList(final Profile profile) {
+        final int toExecute = amount != null ? amount.getInt(profile) : -1;
+        final Map<OnlineProfile, Double> members = Utils.getParty(profile.getOnlineProfile().get(), range.getDouble(profile),
+                conditions);
+
+        if (toExecute < 0) {
+            return members.keySet();
+        }
+
+        return members.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue())
+                .limit(toExecute)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toSet());
     }
 }

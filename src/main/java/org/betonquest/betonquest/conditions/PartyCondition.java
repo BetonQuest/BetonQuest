@@ -13,7 +13,7 @@ import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -23,6 +23,8 @@ import java.util.stream.Stream;
 @SuppressWarnings("PMD.CommentRequired")
 public class PartyCondition extends Condition {
     private final VariableNumber range;
+
+    private final VariableNumber amount;
 
     private final ConditionID[] conditions;
 
@@ -39,13 +41,15 @@ public class PartyCondition extends Condition {
         everyone = instruction.getList(instruction.getOptional("every"), instruction::getCondition).toArray(new ConditionID[0]);
         anyone = instruction.getList(instruction.getOptional("any"), instruction::getCondition).toArray(new ConditionID[0]);
         count = instruction.getVarNum(instruction.getOptional("count"));
+        final String amountString = instruction.getOptional("amount");
+        amount = amountString != null ? instruction.getVarNum(amountString) : null;
     }
 
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
         // get the party
-        final List<OnlineProfile> members = Utils.getParty(profile.getOnlineProfile().get(), range.getDouble(profile),
-                conditions);
+        final Set<OnlineProfile> members = Utils.getParty(profile.getOnlineProfile().get(), range.getDouble(profile),
+                conditions).keySet();
         // check every condition against every player - all of them must meet those conditions
         final Stream<OnlineProfile> partyStream = Bukkit.isPrimaryThread() ? members.stream() : members.parallelStream();
         if (!partyStream.allMatch(member -> BetonQuest.conditions(member, everyone))) {
