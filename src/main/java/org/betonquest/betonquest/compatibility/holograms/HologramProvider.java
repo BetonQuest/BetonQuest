@@ -151,14 +151,10 @@ public class HologramProvider implements Integrator {
     @Override
     public void hook() throws HookException {
         this.locationHologramLoop = new LocationHologramLoop();
-        new HologramListener();
-    }
-
-    @Override
-    public void postHook() throws HookException {
         if (Compatibility.getHooked().contains("Citizens")) {
             this.citizensHologramLoop = new CitizensHologramLoop();
         }
+        new HologramListener();
     }
 
     @Override
