@@ -24,8 +24,6 @@ import java.util.stream.Stream;
 public class PartyCondition extends Condition {
     private final VariableNumber range;
 
-    private final VariableNumber amount;
-
     private final ConditionID[] conditions;
 
     private final ConditionID[] everyone;
@@ -41,8 +39,6 @@ public class PartyCondition extends Condition {
         everyone = instruction.getList(instruction.getOptional("every"), instruction::getCondition).toArray(new ConditionID[0]);
         anyone = instruction.getList(instruction.getOptional("any"), instruction::getCondition).toArray(new ConditionID[0]);
         count = instruction.getVarNum(instruction.getOptional("count"));
-        final String amountString = instruction.getOptional("amount");
-        amount = amountString != null ? instruction.getVarNum(amountString) : null;
     }
 
     @Override
