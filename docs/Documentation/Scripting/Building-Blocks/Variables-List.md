@@ -29,6 +29,11 @@ The variable will return `true` or `false` by default. If you add `papiMode` to 
 You can translate the papiMode's result by changing the values of `condition_variable_met` `condition_variable_not_met` in 
 the *messages.yml* config.
 
+```
+%condition.myCondition%
+%condition.myCondition.papiMode%
+``` 
+
 ## BetonQuest Data Types
 
 ### Point Variable
@@ -104,10 +109,6 @@ variables:
 ```
 
 ## Other Variables
-```
-%condition.myCondition%
-%condition.myCondition.papiMode%
-``` 
 
 ### Item Variable
 
