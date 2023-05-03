@@ -76,7 +76,7 @@ public class PlayerData implements TagData {
     /**
      * Loads all data for the profile and puts it in appropriate lists.
      */
-    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity"})
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity", "PMD.CognitiveComplexity", "PMD.AvoidDuplicateLiterals"})
     public final void loadAllPlayerData() {
         try {
 
@@ -134,7 +134,7 @@ public class PlayerData implements TagData {
                     saver.add(new Record(UpdateType.ADD_PLAYER, profile.getPlayer().getUniqueId().toString(),
                             profileID, "default"));
                     saver.add(new Record(UpdateType.ADD_PLAYER_PROFILE, profile.getPlayer().getUniqueId().toString(),
-                            profileID, null));
+                            profileID, BetonQuest.getInstance().getPluginConfig().getString("profiles.initial_name", "default")));
                 }
 
                 LOG.debug("There are " + objectives.size() + " objectives, " + tags.size() + " tags, " + points.size()
