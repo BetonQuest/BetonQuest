@@ -406,10 +406,16 @@ Looking for [console commands](#command-command)?
 ## Party event: `party`
 
 Runs the specified list of events (third argument) for every player in a [party](../Parties.md).
+The last optional argument `amount` specifies a maximum number of players to select.
+Selected players will be picked from the party if they are in range and meet the conditions.
+Players are selected according to their distance from the player who triggered the event.
+For example, if the 'amount' is two, the player who triggered the event and the player closest to that player will be selected.
+A negative amount will select all players and therefore act as if there was no amount given.
 
 !!! example
     ```YAML
     party 10 has_tag1,!has_tag2 give_reward
+    party 10 has_tag1,!has_tag2 give_special_reward amount:3
     ```
 
 ## Pick random: `pickrandom`

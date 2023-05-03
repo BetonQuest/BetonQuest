@@ -13,7 +13,7 @@ import org.betonquest.betonquest.utils.Utils;
 import org.bukkit.Bukkit;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -44,8 +44,8 @@ public class PartyCondition extends Condition {
     @Override
     protected Boolean execute(final Profile profile) throws QuestRuntimeException {
         // get the party
-        final List<OnlineProfile> members = Utils.getParty(profile.getOnlineProfile().get(), range.getDouble(profile),
-                conditions);
+        final Set<OnlineProfile> members = Utils.getParty(profile.getOnlineProfile().get(), range.getDouble(profile),
+                conditions).keySet();
         // check every condition against every player - all of them must meet those conditions
         final Stream<OnlineProfile> partyStream = Bukkit.isPrimaryThread() ? members.stream() : members.parallelStream();
         if (!partyStream.allMatch(member -> BetonQuest.conditions(member, everyone))) {

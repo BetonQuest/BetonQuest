@@ -23,8 +23,9 @@ public class PartyEventFactory implements EventFactory {
     @Override
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         final VariableNumber range = instruction.getVarNum();
+        final VariableNumber amount = instruction.getVarNum(instruction.getOptional("amount"));
         final ConditionID[] conditions = instruction.getList(instruction::getCondition).toArray(new ConditionID[0]);
         final EventID[] events = instruction.getList(instruction::getEvent).toArray(new EventID[0]);
-        return new OnlineProfileRequiredEvent(new PartyEvent(range, conditions, events), instruction.getPackage());
+        return new OnlineProfileRequiredEvent(new PartyEvent(range, amount, conditions, events), instruction.getPackage());
     }
 }
