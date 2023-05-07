@@ -50,7 +50,7 @@ public final class GlobalVariableResolver {
         while (matcher.find()) {
             final String variable = matcher.group("variable");
             final String replacement = getReplacement(pack, variable);
-            matcher.appendReplacement(variableInput, replacement);
+            matcher.appendReplacement(variableInput, replacement.replace("\\", "\\\\").replace("$", "\\$"));
         }
         matcher.appendTail(variableInput);
         return variableInput.toString();
