@@ -23,7 +23,7 @@ echo "[Webhook]: Preparing git related variables...";
 AUTHOR_NAME="$(git log -1 "$GITHUB_SHA" --pretty="%aN")"
 COMMITTER_NAME="$(git log -1 "$GITHUB_SHA" --pretty="%cN")"
 COMMIT_SUBJECT="$(git log -1 "$GITHUB_SHA" --pretty="%s")"
-COMMIT_MESSAGE="$(git log -1 "$GITHUB_SHA" --pretty="%b" | sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g')"
+COMMIT_MESSAGE="$(git log -1 "$GITHUB_SHA" --pretty="%b" | sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g; s/"/\\"/g')"
 COMMIT_URL="https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA"
 BRANCH_NAME="${GITHUB_REF#*/*/}"
 REPO_URL="https://github.com/$GITHUB_REPOSITORY"
