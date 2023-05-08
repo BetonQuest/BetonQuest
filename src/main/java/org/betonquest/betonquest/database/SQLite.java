@@ -158,7 +158,7 @@ public class SQLite extends Database {
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate("CREATE TABLE " + prefix + "profile ("
                     + "profileID CHAR(36) PRIMARY KEY NOT NULL)");
-            statement.executeUpdate("INSERT INTO " + prefix + "profile "
+            statement.executeUpdate("INSERT OR IGNORE INTO " + prefix + "profile "
                     + "(profileID) SELECT playerID FROM " + prefix + "player");
             statement.executeUpdate("CREATE TABLE " + prefix + "backpack_tmp ("
                     + "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
