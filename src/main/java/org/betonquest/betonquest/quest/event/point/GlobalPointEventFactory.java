@@ -27,11 +27,8 @@ public class GlobalPointEventFactory implements EventFactory, StaticEventFactory
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         final String category = Utils.addPackage(instruction.getPackage(), instruction.next());
         final String number = instruction.next();
-        if (instruction.hasArgument("action")) {
-            final String action = instruction.getOptional("action");
-            if (action == null) {
-                throw new InstructionParseException("Missing modification action: " + instruction.current());
-            }
+        final String action = instruction.getOptional("action");
+        if (action != null) {
             try {
                 final Point type = Point.valueOf(action.toUpperCase(Locale.ROOT));
                 return new GlobalPointEvent(category, new VariableNumber(instruction.getPackage(), number), type);
