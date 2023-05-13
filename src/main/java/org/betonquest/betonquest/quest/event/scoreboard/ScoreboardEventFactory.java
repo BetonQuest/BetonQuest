@@ -45,15 +45,11 @@ public class ScoreboardEventFactory implements EventFactory {
     }
 
     @Override
-    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     public Event parseEvent(final Instruction instruction) throws InstructionParseException {
         final String objective = instruction.next();
         final String number = instruction.next();
-        if (instruction.hasArgument("action")) {
-            final String action = instruction.getOptional("action");
-            if (action == null) {
-                throw new InstructionParseException("Missing modification action: " + instruction.current());
-            }
+        final String action = instruction.getOptional("action");
+        if (action != null) {
             try {
                 final ScoreModification type = ScoreModification.valueOf(action.toUpperCase(Locale.ROOT));
                 return new PrimaryServerThreadEvent(
