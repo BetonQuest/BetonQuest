@@ -128,7 +128,7 @@ public class Conversation implements Listener {
         // check if data is present
         if (data == null) {
             LOG.warn(pack, "Conversation '" + conversationID
-                    + "' does not exist. Check for errors on /q reload! It probably couldn't be loaded due to some other error.");
+                    + "' does not exist. Check for errors on /bq reload! It probably couldn't be loaded due to some other error.");
             return;
         }
 
