@@ -26,6 +26,10 @@ The `ConfigurationFile` extends `ConfigurationSection` and therefore provides al
 You can reload, save and delete the ConfigurationFile by calling it's corresponding `reload()`, `save()` and `delete()`
 methods.
 
+Make sure to add a `configVersion` key with an empty string as it's value when adding a new config resource file.
+The patcher will then automatically set the version to the newest available patch version.
+This frees you from the hassle of updating the `configVersion` key in the default resource file every time you add a patch.
+ 
 !!! warning "Reloading Behaviour"
     When reloading the `ConfigurationFile`, it loads a new `ConfigurationSection` from the related file and replaces the old root.
     This means that all references to old child `ConfigurationSection` in your code will be outdated and need to be updated.
