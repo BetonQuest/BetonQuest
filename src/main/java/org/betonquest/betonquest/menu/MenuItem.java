@@ -116,7 +116,8 @@ public class MenuItem extends SimpleYMLSection {
             this.descriptions = new HashMap<>();
             try {
                 this.descriptions.putAll(generateDescriptions(menuID.getFullID(), section));
-            } catch (final Missing ignored) {
+            } catch (final Missing e) {
+                LOG.warn("Missing description for menu item " + menuID.getFullID() + " in " + pack.getQuestPath() + "! Reason: " + e.getMessage(), e);
             }
             //load events
             this.leftClick = new ArrayList<>();
@@ -283,44 +284,6 @@ public class MenuItem extends SimpleYMLSection {
         return name;
     }
 
-    /**
-     * Extended, static copy of org.betonquest.betonquest.Instruction.Item for easier quest item handling
-     */
-    @SuppressWarnings("PMD.ShortClassName")
-    public static class Item {
-        private final ItemID itemID;
-
-        private final QuestItem questItem;
-
-        private final VariableNumber amount;
-
-        public Item(final ItemID itemID, final VariableNumber amount) throws InstructionParseException {
-            this.itemID = itemID;
-            this.questItem = new QuestItem(itemID);
-            this.amount = amount;
-        }
-
-        public ItemID getID() {
-            return itemID;
-        }
-
-        public QuestItem getItem() {
-            return questItem;
-        }
-
-        public boolean isItemEqual(final ItemStack item) {
-            return questItem.compare(item);
-        }
-
-        public VariableNumber getAmount() {
-            return amount;
-        }
-
-        public ItemStack generate(final Profile profile) throws QuestRuntimeException {
-            return questItem.generate(amount.getInt(profile), profile);
-        }
-    }
-
     private Map<String, ItemDescription> generateDescriptions(final String menuID, final ConfigurationSection section)
             throws Missing, InstructionParseException {
         final Map<String, ItemDescription> descriptions = new HashMap<>();
@@ -363,5 +326,43 @@ public class MenuItem extends SimpleYMLSection {
         }
 
         return descriptions;
+    }
+
+    /**
+     * Extended, static copy of org.betonquest.betonquest.Instruction.Item for easier quest item handling
+     */
+    @SuppressWarnings("PMD.ShortClassName")
+    public static class Item {
+        private final ItemID itemID;
+
+        private final QuestItem questItem;
+
+        private final VariableNumber amount;
+
+        public Item(final ItemID itemID, final VariableNumber amount) throws InstructionParseException {
+            this.itemID = itemID;
+            this.questItem = new QuestItem(itemID);
+            this.amount = amount;
+        }
+
+        public ItemID getID() {
+            return itemID;
+        }
+
+        public QuestItem getItem() {
+            return questItem;
+        }
+
+        public boolean isItemEqual(final ItemStack item) {
+            return questItem.compare(item);
+        }
+
+        public VariableNumber getAmount() {
+            return amount;
+        }
+
+        public ItemStack generate(final Profile profile) throws QuestRuntimeException {
+            return questItem.generate(amount.getInt(profile), profile);
+        }
     }
 }

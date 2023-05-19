@@ -55,7 +55,7 @@ public final class Config {
      */
     @SuppressWarnings({"PMD.AssignmentToNonFinalStatic", "PMD.CognitiveComplexity", "PMD.NPathComplexity"})
     @SuppressFBWarnings({"NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", "EI_EXPOSE_STATIC_REP2"})
-    public static void setup(final BetonQuest plugin) {
+    public static void setup(final BetonQuest plugin, final ConfigurationFile config) {
         Config.plugin = plugin;
         LANGUAGES.clear();
 
@@ -68,7 +68,7 @@ public final class Config {
             return;
         }
 
-        lang = plugin.getPluginConfig().getString("language");
+        lang = config.getString("language");
         for (final String key : messages.getKeys(false)) {
             if (!"global".equals(key)) {
                 LOG.debug("Loaded " + key + " language");

@@ -724,7 +724,7 @@ public class BetonQuest extends JavaPlugin {
         log.debug("BetonQuest " + version + " is starting...");
         log.debug(jreInfo);
 
-        Config.setup(this);
+        Config.setup(this, config);
         Notify.load();
 
         final boolean mySQLEnabled = config.getBoolean("mysql.enabled", true);
@@ -1229,7 +1229,7 @@ public class BetonQuest extends JavaPlugin {
         } catch (final IOException e) {
             log.warn("Could not reload config! " + e.getMessage(), e);
         }
-        Config.setup(this);
+        Config.setup(this, config);
         Notify.load();
         lastExecutionCache.reload();
 
