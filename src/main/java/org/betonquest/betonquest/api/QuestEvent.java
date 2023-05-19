@@ -119,6 +119,10 @@ public abstract class QuestEvent extends ForceSyncHandler<Void> {
     private void handleNullProfile() throws QuestRuntimeException {
         if (staticness) {
             LOG.debug(instruction.getPackage(), "Static event will be fired without a profile.");
+            if (!BetonQuest.conditions(null, conditions)) {
+                LOG.debug(instruction.getPackage(), "Event conditions were not met");
+                return;
+            }
             handle(null);
             return;
         }

@@ -115,13 +115,13 @@ abstract class AbstractData<T extends Cloneable> {
     }
 
     private T parseVariableObject(final Profile profile) throws QuestRuntimeException {
-        if (profile == null) {
-            throw new QuestRuntimeException("Variable cannot be accessed without the player."
-                    + " Consider changing it to absolute coordinates");
-        }
         final String[] variables = new String[this.objectVariables.size()];
         for (int i = 0; i < this.objectVariables.size(); i++) {
             final Variable var = this.objectVariables.get(i);
+            if (profile == null && !var.isStaticness()) {
+                throw new QuestRuntimeException("Variable cannot be accessed without the player."
+                        + " Consider changing it to absolute coordinates");
+            }
             variables[i] = var.getValue(profile);
         }
         final String result = String.format(objectFormatted, (Object[]) variables);

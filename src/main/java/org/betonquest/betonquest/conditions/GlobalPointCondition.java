@@ -15,6 +15,8 @@ public class GlobalPointCondition extends PointCondition {
 
     public GlobalPointCondition(final Instruction instruction) throws InstructionParseException {
         super(instruction);
+        staticness = true;
+        persistent = true;
     }
 
     @Override
