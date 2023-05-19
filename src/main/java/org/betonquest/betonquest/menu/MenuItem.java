@@ -117,7 +117,8 @@ public class MenuItem extends SimpleYMLSection {
             try {
                 this.descriptions.putAll(generateDescriptions(menuID.getFullID(), section));
             } catch (final Missing e) {
-                LOG.warn("Missing description for menu item " + menuID.getFullID() + " in " + pack.getQuestPath() + "! Reason: " + e.getMessage(), e);
+                LOG.warn("Missing description for menu item  '" + itemID.getFullID() + "' in menu '"
+                        + menuID.getFullID() + "' in package '" + pack.getQuestPath() + "'! Reason: " + e.getMessage(), e);
             }
             //load events
             this.leftClick = new ArrayList<>();
