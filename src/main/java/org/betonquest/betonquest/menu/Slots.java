@@ -2,6 +2,7 @@ package org.betonquest.betonquest.menu;
 
 import org.betonquest.betonquest.api.profiles.Profile;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -223,6 +224,7 @@ public class Slots {
     }
 
     public static class SlotException extends Exception {
+        @Serial
         private static final long serialVersionUID = 2796975671139425046L;
 
         private final int slot;

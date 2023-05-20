@@ -6,10 +6,6 @@ import java.io.Serial;
  *
  */
 public class PatchException extends Exception {
-
-    /**
-     * Explicitly defining this ensures correct serialization across JVM implementations.
-     */
     @Serial
     private static final long serialVersionUID = -3188700840301371500L;
 
