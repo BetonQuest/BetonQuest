@@ -9,9 +9,6 @@ import java.io.Serial;
  * supported
  */
 public class UnsupportedVersionException extends HookException {
-    /**
-     * serialVersionUID.
-     */
     @Serial
     private static final long serialVersionUID = 7965553395053833302L;
 

@@ -196,12 +196,7 @@
   <rule ref="category/java/design.xml/UseUtilityClass"/>
 
   <rule ref="category/java/documentation.xml/CommentContent"/>
-  <rule ref="category/java/documentation.xml/CommentRequired">
-    <properties>
-      <property name="serialVersionUIDCommentRequired" value="Required"/>
-      <property name="serialPersistentFieldsCommentRequired" value="Required"/>
-    </properties>
-  </rule>
+  <rule ref="category/java/documentation.xml/CommentRequired"/>
   <rule ref="category/java/documentation.xml/CommentSize">
     <properties>
       <property name="maxLines" value="1000"/>

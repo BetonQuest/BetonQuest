@@ -22,6 +22,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -590,7 +591,7 @@ public class Instruction {
     }
 
     public class PartParseException extends InstructionParseException {
-
+        @Serial
         private static final long serialVersionUID = 2007556828888605511L;
 
         /**

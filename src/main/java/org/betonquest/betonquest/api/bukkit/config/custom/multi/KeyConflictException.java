@@ -15,9 +15,6 @@ import java.util.stream.Collectors;
  * This exception represents a conflict with two keys in multiple configurations.
  */
 public class KeyConflictException extends InvalidConfigurationException {
-    /**
-     * serialVersionUID.
-     */
     @Serial
     private static final long serialVersionUID = 3529254335908123119L;
 
