@@ -22,7 +22,7 @@ class NexusReleaseAndDevelopmentSourceTest {
 
     @SuppressWarnings({"PMD.JUnitTestContainsTooManyAsserts"})
     @Test
-    void testNexusReleaseSource() throws IOException {
+    void returns_correct_release_versions_with_url() throws IOException {
         final Path filePathShadedPage1 = Path.of("src/test/resources/modules/web/updater/nexusShadedPage1.json");
         final Path filePathShadedPage2 = Path.of("src/test/resources/modules/web/updater/nexusShadedPage2.json");
         final String apiUrlShadedPage1 = API_URL + NexusReleaseAndDevelopmentSource.SERVICE_REST_V_1 + NexusReleaseAndDevelopmentSource.SEARCH_URL;
@@ -52,7 +52,7 @@ class NexusReleaseAndDevelopmentSourceTest {
 
     @SuppressWarnings({"PMD.JUnitTestContainsTooManyAsserts"})
     @Test
-    void testNexusDevelopmentSource() throws IOException {
+    void returns_correct_development_versions_with_url() throws IOException {
         final Path filePathShadedPage1 = Path.of("src/test/resources/modules/web/updater/nexusShadedPage1.json");
         final Path filePathShadedPage2 = Path.of("src/test/resources/modules/web/updater/nexusShadedPage2.json");
         final String apiUrlShadedPage1 = API_URL + NexusReleaseAndDevelopmentSource.SERVICE_REST_V_1 + NexusReleaseAndDevelopmentSource.SEARCH_URL;
