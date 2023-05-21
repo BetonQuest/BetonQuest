@@ -6,24 +6,20 @@ Schedules allow you to run events periodically at specific times for the entire 
 
 ## Static Events
 When running events from a schedule it is unclear how events should behave:  
-Should an event be run once for each player on the server?  
-For events like `setblock` this would mean that the event is executed 20 times if 20 players are online. 
+Should an event be run once for each player on the server? 
+For events like `setblock` this would mean that the event is executed 20 times if 20 players are online.
+And what about offline players?    
 
 This problem is solved by dividing all events into two categories:
 
 1. **Static events** are not tied to a specific player, meaning they can be run independent.  
    `setblock` for example always changes the same block, no matter for who it was called.  
-   When run by a schedule a static event will fire exactly once.
+   When run by a schedule a static event will fire exactly once. You can only assign conditions that are static as well to such events.
 
 2. **Non-static events** are always tied to a specific player.
-   They will be run once for each online player.
+   They will be run once for each online player. You can assign both non-static and static conditions to such events.
 
-!!! warning
-
-    **Static events used by schedules can only have static conditions defined,
-    as the plugin cannot check any condition which requires a player when run by the server.**
-
-All static events have a static flag in the docs, so you can easily distinguish them from non-static ones.
+All static events and conditions have a static flag in the docs, so you can easily distinguish them from non-static ones.
 
 !!! example
 
