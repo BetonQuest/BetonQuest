@@ -20,8 +20,8 @@ This problem is solved by dividing all events into two categories:
 
 !!! warning
 
-    **Static events used by schedules cannot have conditions defined,
-    as the plugin cannot check any condition for a player who is offline.**
+    **Static events used by schedules can only have static conditions defined,
+    as the plugin cannot check any condition which requires a player when run by the server.**
 
 All static events have a static flag in the docs, so you can easily distinguish them from non-static ones.
 
