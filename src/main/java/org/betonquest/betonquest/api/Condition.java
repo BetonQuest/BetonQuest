@@ -17,7 +17,7 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
  * registerConditions()} method.
  * </p>
  */
-abstract public class Condition extends ForceSyncHandler<Boolean> {
+public abstract class Condition extends ForceSyncHandler<Boolean> {
     /**
      * Stores instruction string for the condition.
      */

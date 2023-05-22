@@ -27,17 +27,17 @@ class PlayerPackageReceiverSelectorTest {
     /**
      * Filter for a package.
      */
-    private final static String OUTER_PACKAGE = "example";
+    private static final String OUTER_PACKAGE = "example";
 
     /**
      * Filter for a sub package of {@link #OUTER_PACKAGE}.
      */
-    private final static String MIDDLE_PACKAGE = OUTER_PACKAGE + "-package";
+    private static final String MIDDLE_PACKAGE = OUTER_PACKAGE + "-package";
 
     /**
      * Filter for a sub package of {@link #MIDDLE_PACKAGE}.
      */
-    private final static String INNER_PACKAGE = MIDDLE_PACKAGE + "-sub";
+    private static final String INNER_PACKAGE = MIDDLE_PACKAGE + "-sub";
 
     /**
      * Plugin for test log records.

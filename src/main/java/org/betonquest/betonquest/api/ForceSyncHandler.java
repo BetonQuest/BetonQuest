@@ -15,7 +15,7 @@ import java.util.concurrent.Future;
  *
  * @param <T> Return type of the {@link ForceSyncHandler#execute(Profile)} method (This could also be {@link Void}).
  */
-abstract public class ForceSyncHandler<T> {
+public abstract class ForceSyncHandler<T> {
     /**
      * Whether the {@link ForceSyncHandler} forces a sync execution.
      */

@@ -29,6 +29,9 @@
       <property name="sortStaticImportsAlphabetically" value="true"/>
     </module>
 
+    <!-- Modifiers -->
+    <module name="ModifierOrder"/>
+
     <!-- Whitespace -->
     <module name="EmptyForInitializerPad"/>
     <module name="EmptyForIteratorPad"/>

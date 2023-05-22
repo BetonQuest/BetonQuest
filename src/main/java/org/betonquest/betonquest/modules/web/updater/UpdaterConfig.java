@@ -26,7 +26,7 @@ public class UpdaterConfig {
     /**
      * The separator between the {@link UpdateStrategy} and a given dev indicator
      */
-    private final static String DEV_SEPARATOR = "_";
+    private static final String DEV_SEPARATOR = "_";
 
     /**
      * The configuration section that contains the `update` section for all settings
