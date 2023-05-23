@@ -17,13 +17,13 @@ public class LocationData extends AbstractData<Location> {
     /**
      * This regex matches the format of a location.
      */
-    public final static String REGEX_LOCATION = REGEX_DATA + ";" + REGEX_DATA + ";" + REGEX_DATA + ";"
+    public static final String REGEX_LOCATION = REGEX_DATA + ";" + REGEX_DATA + ";" + REGEX_DATA + ";"
             + REGEX_DATA + "(;" + REGEX_DATA + ";" + REGEX_DATA + ")?";
 
     /**
      * The compiled Pattern of {@link LocationData#REGEX_LOCATION}.
      */
-    public final static Pattern PATTERN_LOCATION = Pattern.compile("^" + REGEX_LOCATION + "$");
+    public static final Pattern PATTERN_LOCATION = Pattern.compile("^" + REGEX_LOCATION + "$");
 
     /**
      * This class parses a string into a {@link Location}.

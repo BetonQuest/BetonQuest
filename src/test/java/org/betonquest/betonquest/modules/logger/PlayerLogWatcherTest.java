@@ -24,7 +24,7 @@ class PlayerLogWatcherTest {
     /**
      * Test pattern.
      */
-    private final static String PATTERN = "test-pattern";
+    private static final String PATTERN = "test-pattern";
 
     @Test
     void testNewLogWatcherHasNoFilters(@Mock final ReceiverSelectorRegistry registry) {

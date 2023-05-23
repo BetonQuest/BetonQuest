@@ -182,7 +182,7 @@ public abstract class Objective {
      * @param profile the {@link Profile} for which the property is to be returned
      * @return the property with given name
      */
-    abstract public String getProperty(String name, Profile profile);
+    public abstract String getProperty(String name, Profile profile);
 
     /**
      * This method fires events for the objective and removes it from the profile's

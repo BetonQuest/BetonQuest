@@ -12,7 +12,7 @@ import java.util.Locale;
 /**
  * A utility class for working with MMOItems.
  */
-final public class MMOItemsUtils {
+public final class MMOItemsUtils {
 
     /**
      * Utility classes shouldn't be instantiated.

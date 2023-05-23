@@ -15,12 +15,12 @@ public class VectorData extends AbstractData<Vector> {
     /**
      * This regex matches the format of a vector.
      */
-    public final static String REGEX_VECTOR = "\\(" + REGEX_DATA + ";" + REGEX_DATA + ";" + REGEX_DATA + "\\)";
+    public static final String REGEX_VECTOR = "\\(" + REGEX_DATA + ";" + REGEX_DATA + ";" + REGEX_DATA + "\\)";
 
     /**
      * The compiled Pattern of {@link VectorData#REGEX_VECTOR}.
      */
-    public final static Pattern PATTERN_VECTOR = Pattern.compile("^" + REGEX_VECTOR + "$");
+    public static final Pattern PATTERN_VECTOR = Pattern.compile("^" + REGEX_VECTOR + "$");
 
     /**
      * This class parses a string into a {@link Vector}.

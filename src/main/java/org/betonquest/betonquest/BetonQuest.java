@@ -283,7 +283,7 @@ import java.util.regex.Pattern;
         "PMD.CommentRequired", "PMD.AvoidDuplicateLiterals", "PMD.AvoidFieldNameMatchingMethodName",
         "PMD.AtLeastOneConstructor", "PMD.ExcessivePublicCount", "PMD.TooManyFields"})
 public class BetonQuest extends JavaPlugin {
-    private final static int BSTATS_METRICS_ID = 551;
+    private static final int BSTATS_METRICS_ID = 551;
 
     private static final Map<String, Class<? extends Condition>> CONDITION_TYPES = new HashMap<>();
 

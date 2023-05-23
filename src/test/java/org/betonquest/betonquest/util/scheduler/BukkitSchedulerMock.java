@@ -33,17 +33,17 @@ public class BukkitSchedulerMock implements BukkitScheduler, AutoCloseable, Clos
     /**
      * Exception message for deprecated methods.
      */
-    private final static String MESSAGE_DEPRECATED = "Not Implemented because it is already deprecated!";
+    private static final String MESSAGE_DEPRECATED = "Not Implemented because it is already deprecated!";
 
     /**
      * Exception message for rarely used methods.
      */
-    private final static String MESSAGE_UNUSED = "Not Implemented because it is rarely used!";
+    private static final String MESSAGE_UNUSED = "Not Implemented because it is rarely used!";
 
     /**
      * Exception message for methods that have a better replacement method.
      */
-    private final static String MESSAGE_UNWANTED = "Not Implemented because it should not be used! Instead use ";
+    private static final String MESSAGE_UNWANTED = "Not Implemented because it should not be used! Instead use ";
 
     /**
      * The thread pool for the execution of all threads.

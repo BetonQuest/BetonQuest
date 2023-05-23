@@ -7,7 +7,7 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 /**
  * Represents a variable in conversations.
  */
-abstract public class Variable {
+public abstract class Variable {
 
     /**
      * Stores instruction string for the condition.
