@@ -18,6 +18,7 @@ Skript, Vault, WorldEdit, FastAsyncWorldEdit and WorldGuard._
 Some plugins also hook into BetonQuest and provide support by themselves:  
 [nuNPCDestinations](https://www.spigotmc.org/resources/13863/),
 [CalebCompass](https://www.spigotmc.org/resources/82674/),
+[Depenizen](https://github.com/DenizenScript/Depenizen),
 [NotQuests](https://www.spigotmc.org/resources/95872/),
 [HonnyCompass](https://github.com/honnisha/HonnyCompass)
 [MythicDungeons](https://www.spigotmc.org/resources/102699/)
@@ -267,16 +268,18 @@ BetonQuest [Unified Location Formatting](../Data-Formats.md#unified-location-for
 
 ## Denizen[](http://dev.bukkit.org/bukkit-plugins/denizen/)
 
+
+Depenizen is also integrated with BetonQuest! Discover available features on the [meta documentation](https://meta.denizenscript.com/Docs/Search/BetonQuest).
+
 ### Events
 
 #### Script: `script`
 
 With this event you can fire Denizen task scripts. Don't confuse it with `skript` event, these are different. The first and only argument is the name of the script.
 
-!!! example
-    ```YAML
-    script beton
-    ```
+```YAML title="Example"
+runDenizenScript: "script beton"
+```
 
 ## EffectLib[](http://dev.bukkit.org/bukkit-plugins/effectlib/)
 
