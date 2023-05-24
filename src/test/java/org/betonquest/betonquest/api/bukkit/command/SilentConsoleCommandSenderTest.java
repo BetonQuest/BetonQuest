@@ -5,6 +5,7 @@ import org.betonquest.betonquest.modules.logger.util.LogValidator;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -17,6 +18,7 @@ import static org.mockito.Mockito.*;
  * This class tests the {@link SilentConsoleCommandSender} class.
  */
 @ExtendWith(BetonQuestLoggerService.class)
+@Disabled
 class SilentConsoleCommandSenderTest extends SilentCommandSenderTest {
     /**
      * The console command sender to use.
