@@ -3,6 +3,7 @@ package org.betonquest.betonquest.modules.web.updater.source.implementations;
 import org.betonquest.betonquest.modules.versioning.Version;
 import org.betonquest.betonquest.modules.web.ContentSource;
 import org.betonquest.betonquest.modules.web.WebContentSource;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ class GitHubReleaseSourceTest {
 
     @SuppressWarnings({"PMD.JUnitTestContainsTooManyAsserts"})
     @Test
-    void testGitHubReleaseSource() throws IOException {
+    void returns_correct_release_versions_with_url() throws IOException {
         final Path filePath = Path.of("src/test/resources/modules/web/updater/github.json");
         final String apiUrl = "https://github.com/BetonQuest/BetonQuest";
         final String apiUrlReleases = "https://github.com/BetonQuest/BetonQuest" + GitHubReleaseSource.RELEASES_URL;
@@ -41,12 +42,20 @@ class GitHubReleaseSourceTest {
         assertEquals(apiUrlReleases + "/download/v1.12.1/BetonQuest.jar", url2, "The download URL is not correct");
     }
 
-    @Test
-    void testReadStringFromURLThrowsException() {
-        final WebContentSource.HTTPCodeHandler handler = GitHubReleaseSource.HTTP_CODE_HANDLER;
+    @Nested
+    class handle {
 
-        final IOException exception = assertThrowsExactly(IOException.class, () -> handler.handle(HTTP_FORBIDDEN), "Expected IOException");
-        assertEquals("It looks like too many requests were made to the update server, please wait until you have been unblocked.", exception.getMessage(), "Exception messages are not equal");
+        @Test
+        void throws_exception() {
+            final WebContentSource.HTTPCodeHandler handler = GitHubReleaseSource.HTTP_CODE_HANDLER;
+            final IOException exception = assertThrowsExactly(IOException.class, () -> handler.handle(HTTP_FORBIDDEN), "Expected IOException");
+            assertEquals("It looks like too many requests were made to the update server, please wait until you have been unblocked.", exception.getMessage(), "Exception messages are not equal");
+        }
 
+        @Test
+        void does_not_throw_exception() {
+            final WebContentSource.HTTPCodeHandler handler = GitHubReleaseSource.HTTP_CODE_HANDLER;
+            assertDoesNotThrow(() -> handler.handle(0), "No Exception expected");
+        }
     }
 }

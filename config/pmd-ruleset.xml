@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
-<ruleset name="Custom Rules"
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         name="Custom Rules"
          xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
 
   <description>
@@ -70,7 +70,8 @@
 
   <rule ref="category/java/codestyle.xml/AtLeastOneConstructor">
     <properties>
-      <property name="violationSuppressXPath" value="//ClassOrInterfaceDeclaration[matches(@Image, '^.*Test$')]"/>
+      <property name="violationSuppressXPath"
+                value="//ClassOrInterfaceDeclaration[matches(@Image, '^.*(Test|Fixture)$')]"/>
     </properties>
   </rule>
   <rule ref="category/java/codestyle.xml/AvoidDollarSigns"/>
@@ -79,7 +80,12 @@
   <rule ref="category/java/codestyle.xml/AvoidUsingNativeCode"/>
   <rule ref="category/java/codestyle.xml/BooleanGetMethodName"/>
   <rule ref="category/java/codestyle.xml/CallSuperInConstructor"/>
-  <rule ref="category/java/codestyle.xml/ClassNamingConventions"/>
+  <rule ref="category/java/codestyle.xml/ClassNamingConventions">
+    <properties>
+      <property name="violationSuppressXPath"
+                value="//ClassOrInterfaceBodyDeclaration/Annotation/MarkerAnnotation//Name[@Image='Nested']"/>
+    </properties>
+  </rule>
   <rule ref="category/java/codestyle.xml/CommentDefaultAccessModifier">
     <properties>
       <property name="ignoredAnnotations" value="com.google.common.annotations.VisibleForTesting
@@ -123,7 +129,11 @@
   <!--<rule ref="category/java/codestyle.xml/LongVariable"/>-->
   <rule ref="category/java/codestyle.xml/MDBAndSessionBeanNamingConvention"/>
   <rule ref="category/java/codestyle.xml/MethodArgumentCouldBeFinal"/>
-  <rule ref="category/java/codestyle.xml/MethodNamingConventions"/>
+  <rule ref="category/java/codestyle.xml/MethodNamingConventions">
+    <properties>
+      <property name="junit5TestPattern" value="[a-zA-Z][a-zA-Z0-9_]*"/>
+    </properties>
+  </rule>
   <rule ref="category/java/codestyle.xml/NoPackage"/>
   <!--<rule ref="category/java/codestyle.xml/OnlyOneReturn"/>-->
   <rule ref="category/java/codestyle.xml/PackageCase"/>
@@ -133,7 +143,12 @@
   <rule ref="category/java/codestyle.xml/ShortClassName"/>
   <rule ref="category/java/codestyle.xml/ShortMethodName"/>
   <rule ref="category/java/codestyle.xml/ShortVariable"/>
-  <rule ref="category/java/codestyle.xml/TooManyStaticImports"/>
+  <rule ref="category/java/codestyle.xml/TooManyStaticImports">
+    <properties>
+      <property name="violationSuppressXPath"
+                value="//ClassOrInterfaceDeclaration[matches(@Image, '^.*(Test|Fixture)$')]"/>
+    </properties>
+  </rule>
   <rule ref="category/java/codestyle.xml/UnnecessaryAnnotationValueElement"/>
   <rule ref="category/java/codestyle.xml/UnnecessaryCast"/>
   <!--<rule ref="category/java/codestyle.xml/UnnecessaryConstructor"/>-->
@@ -196,7 +211,12 @@
   <rule ref="category/java/design.xml/UseUtilityClass"/>
 
   <rule ref="category/java/documentation.xml/CommentContent"/>
-  <rule ref="category/java/documentation.xml/CommentRequired"/>
+  <rule ref="category/java/documentation.xml/CommentRequired">
+    <properties>
+      <property name="violationSuppressXPath"
+                value="//ClassOrInterfaceDeclaration[matches(@Image, '^.*(Test|Fixture)$')]"/>
+    </properties>
+  </rule>
   <rule ref="category/java/documentation.xml/CommentSize">
     <properties>
       <property name="maxLines" value="1000"/>
