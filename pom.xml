@@ -953,6 +953,9 @@
               <version>1.2.0</version>
             </dependency>
           </dependencies>
+          <configuration>
+            <reportsDirectory>${basedir}/target/site</reportsDirectory>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
