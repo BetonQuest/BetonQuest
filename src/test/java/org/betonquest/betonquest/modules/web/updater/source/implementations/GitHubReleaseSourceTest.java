@@ -53,7 +53,7 @@ class GitHubReleaseSourceTest {
         }
 
         @Test
-        void does_not_throws_exception() {
+        void does_not_throw_exception() {
             final WebContentSource.HTTPCodeHandler handler = GitHubReleaseSource.HTTP_CODE_HANDLER;
             assertDoesNotThrow(() -> handler.handle(0), "No Exception expected");
         }
