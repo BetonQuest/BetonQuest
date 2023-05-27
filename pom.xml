@@ -433,6 +433,11 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-launcher</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <scope>test</scope>
@@ -964,9 +969,6 @@
               <version>1.2.0</version>
             </dependency>
           </dependencies>
-          <configuration>
-            <reportsDirectory>${basedir}/target/site</reportsDirectory>
-          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
